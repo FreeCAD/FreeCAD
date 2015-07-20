@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProviderDatum_H
 
 #include "Gui/ViewProviderGeometryObject.h"
+#include <Base/BoundBox.h>
 
 namespace PartDesignGui {
 
@@ -63,6 +64,19 @@ protected:
     void onChanged(const App::Property* prop);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+
+
+    //
+    /**
+     * @brief getRelevantExtents computes the bounding box of the objects
+     * relevant to the datum feature, which is intended to be used for
+     * determinimg the size of the rendered piece of the datum.
+     * @return Bounding box of body, if the datum is in a body. Bounding box of
+     * all visible shapes of a part, if in a part but not in a body. Bounding
+     * box of all visible Part::Feature-derived objects if just in a document.
+     * This behavior is subject to change.
+     */
+    virtual Base::BoundBox3d getRelevantExtents();
 
 protected:
     SoSeparator* pShapeSep;

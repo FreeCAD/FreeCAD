@@ -110,29 +110,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         base = TopoDS_Shape();
     }
 
-/*
-    // Find Body feature which owns this Pad and get the shape of the feature preceding this one for fusing
-    // This method was rejected in favour of the BaseFeature property because that makes the feature atomic (independent of the
-    // Body object). See
-    // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3831
-    // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3855
-    PartDesign::Body* body = getBody();
-    if (body == NULL) {
-        return new App::DocumentObjectExecReturn(
-                    "In order to use PartDesign you need an active Body object in the document. "
-                    "Please make one active or create one. If you have a legacy document "
-                    "with PartDesign objects without Body, use the transfer function in "
-                    "PartDesign to put them into a Body."
-                    );
-    }
-    const Part::TopoShape& prevShape = body->getPreviousSolid(this);
-    TopoDS_Shape support;
-    if (prevShape.isNull())
-        // ignore, because support isn't mandatory
-        support = TopoDS_Shape();
-    else
-        support = prevShape._Shape;
-*/
 
     // get the Sketch plane
     Base::Placement SketchPos = sketch->Placement.getValue();

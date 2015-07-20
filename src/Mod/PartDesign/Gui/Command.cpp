@@ -522,9 +522,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             cmd.openCommand(tmp.c_str());
             cmd.doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",support.getValue()->getNameInDocument());
         } else {
-            PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-            if (pcActiveBody == 0)
-                return;
+            PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
 
             std::string FeatName = cmd.getUniqueObjectName(name.c_str());
 
@@ -547,8 +545,10 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                     QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit seleted objects. Select something else."));
                 }
             }
-            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
-                           pcActiveBody->getNameInDocument(), FeatName.c_str());
+            if (pcActiveBody) {
+                cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                               pcActiveBody->getNameInDocument(), FeatName.c_str());
+            }
             cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
             cmd.doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
         }
@@ -667,7 +667,11 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
 
     // No PartDesign feature without Body past FreeCAD 0.13
-    if(!pcActiveBody) return;
+    if(!pcActiveBody) {
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        rcCmdMgr.runCommandByName("Sketcher_NewSketch");
+        return;
+    }
 
     Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
@@ -893,10 +897,9 @@ bool CmdPartDesignNewSketch::isActive(void)
 void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const bool hidePrevSolid = true)
 {
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
-    if (pcActiveBody == 0)
-        throw Base::Exception("No active body!");
 
-    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+    if (pcActiveBody)
+        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
 
     if (pcActiveBody != NULL) {
@@ -939,8 +942,8 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
     for (std::vector<App::DocumentObject*>::iterator s = sketches.begin(); s != sketches.end(); s++) {
  
         // Check whether this plane belongs to the active body   
-        if (!pcActiveBody->hasFeature(*s)) {
-            if(pcActivePart->hasObject(*s, true))
+        if (pcActiveBody && !pcActiveBody->hasFeature(*s)) {
+            if(pcActivePart && pcActivePart->hasObject(*s, true))
                 status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
             else 
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
@@ -968,7 +971,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
             continue;
         }
         
-        if (pcActiveBody->isAfterTip(*s)){
+        if (pcActiveBody && pcActiveBody->isAfterTip(*s)){
             status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
             continue;
         }
@@ -1005,9 +1008,6 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
 void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                         boost::function<void (Part::Part2DObject*, std::string)> func)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (!pcActiveBody) return;
-
     bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
     // First check selections
@@ -1050,8 +1050,6 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                     which.c_str(), FeatName.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",
                     FeatName.c_str(), sketch->getNameInDocument());
-        //Gui::Command::doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
-        //            pcActiveBody->getNameInDocument(), FeatName.c_str());
 
         func(sketch, FeatName);
     };
@@ -2061,8 +2059,8 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (!pcActiveBody) return;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+    //if (!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features;
 
@@ -2082,8 +2080,12 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         PartDesign::Transformed* trFeat = static_cast<PartDesign::Transformed*>(features.front());
 
         // Move the insert point back one feature
-        App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
-        App::DocumentObject* prevFeature = pcActiveBody->getPrevFeature(trFeat);
+        App::DocumentObject* oldTip = 0;
+        App::DocumentObject* prevFeature = 0;
+        if (pcActiveBody){
+            oldTip = pcActiveBody->Tip.getValue();
+            prevFeature = pcActiveBody->getPrevFeature(trFeat);
+        }
         Gui::Selection().clearSelection();
         if (prevFeature != NULL)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
@@ -2091,8 +2093,9 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
 
         // Remove the Transformed feature from the Body
-        doCommand(Doc, "App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
-                  pcActiveBody->getNameInDocument(), trFeat->getNameInDocument());
+        if(pcActiveBody)
+            doCommand(Doc, "App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+                      pcActiveBody->getNameInDocument(), trFeat->getNameInDocument());
 
         // Create a MultiTransform feature and move the Transformed feature inside it
         std::string FeatName = getUniqueObjectName("MultiTransform");
@@ -2105,7 +2108,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         finishFeature(this, FeatName);
 
         // Restore the insert point
-        if (oldTip != trFeat) {
+        if (pcActiveBody && oldTip != trFeat) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
@@ -2120,7 +2123,9 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
                 return;
 
             // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
-            App::DocumentObject* prevSolid = pcActiveBody->getPrevSolidFeature(NULL, true);
+            App::DocumentObject* prevSolid = 0;
+            if (pcActiveBody)
+                pcActiveBody->getPrevSolidFeature(NULL, true);
             if (prevSolid != NULL) {
                 Part::Feature* feat = static_cast<Part::Feature*>(prevSolid);
                 doCommand(Doc,"App.activeDocument().%s.Shape = App.activeDocument().%s.Shape",
