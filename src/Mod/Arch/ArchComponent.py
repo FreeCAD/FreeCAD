@@ -240,7 +240,7 @@ class ComponentTaskPanel:
         if it:
             mod = None
             for a in self.attribs:
-                if it == getattr(self,"tree"+a):
+                if it.text(0) == getattr(self,"tree"+a).text(0):
                     mod = a
             for o in FreeCADGui.Selection.getSelection():
                 addToComponent(self.obj,o,mod)
