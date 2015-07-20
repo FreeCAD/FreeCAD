@@ -664,7 +664,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 
 void CmdPartDesignNewSketch::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
 
     // No PartDesign feature without Body past FreeCAD 0.13
     if(!pcActiveBody) {
@@ -894,19 +894,35 @@ bool CmdPartDesignNewSketch::isActive(void)
 // Common utility functions for all features creating solids
 //===========================================================================
 
-void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const bool hidePrevSolid = true)
+void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
+       App::DocumentObject* prevSolidFeature = nullptr, const bool hidePrevSolid = true)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+    PartDesign::Body *pcActiveBody;
 
-    if (pcActiveBody)
-        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
-                   pcActiveBody->getNameInDocument(), FeatName.c_str());
-
-    if (pcActiveBody != NULL) {
-        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, false);
-        if (hidePrevSolid && (prevSolidFeature != NULL))
-            cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
+    if (prevSolidFeature) {
+        pcActiveBody = PartDesignGui::getBodyFor(prevSolidFeature, /*messageIfNot = */false);
+    } else { // insert into the same body as the given previous one
+        pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
+
+    if (pcActiveBody) {
+        App::DocumentObject* lastSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, true);
+        if (!prevSolidFeature || prevSolidFeature == lastSolidFeature) {
+            // If the previous feature not given or is the Tip add Feature after it.
+            cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                    pcActiveBody->getNameInDocument(), FeatName.c_str());
+            prevSolidFeature = lastSolidFeature;
+        } else {
+            // Insert the feature into the body after the given one.
+            cmd->doCommand(cmd->Doc,   
+                    "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s, True)",
+                    pcActiveBody->getNameInDocument(), FeatName.c_str(), prevSolidFeature->getNameInDocument());
+        }
+    }
+
+    if (hidePrevSolid && prevSolidFeature && (prevSolidFeature != NULL))
+        cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
+
     cmd->updateActive();
     // #0001721: use '0' as edit value to avoid switching off selection in
     // ViewProviderGeometryObject::setEditViewer
@@ -927,7 +943,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
 
 // Take a list of Part2DObjects and erase those which are not eligible for creating a
 // SketchBased feature.
- const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
+const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                                  std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
                                  std::vector<App::DocumentObject*>::iterator& firstValidSketch)
 {
@@ -1458,15 +1474,15 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 
 void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
-    if (!pcActiveBody) 
-        return;
-
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
 
-    if (selection.size() != 1) {
+    if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+            QObject::tr("Select an edge, face or body."));
+        return;
+    } else if (selection.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select an edge, face or body from a single body."));
         return;
     }
 
@@ -1479,12 +1495,6 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
     }
 
     Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
-
-    if (base != pcActiveBody->getPrevSolidFeature(NULL, true)) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong base feature"),
-            QObject::tr("Only the current Tip of the active Body can be selected as the base feature"));
-        return;
-    }
 
     std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
     if (SubNames.size() == 0) {
@@ -1514,7 +1524,7 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
     cmd->doCommand(cmd->Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",which.c_str(), FeatName.c_str());
     cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
     doCommand(Gui,"Gui.Selection.clearSelection()");
-    finishFeature(cmd, FeatName);
+    finishFeature(cmd, FeatName, base);
 }
 
 //===========================================================================
@@ -2216,7 +2226,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Boolean','%s')",FeatName.c_str());
     if (!bodyString.empty())
         doCommand(Doc,"App.activeDocument().%s.Bodies = %s",FeatName.c_str(),bodyString.c_str());
-    finishFeature(this, FeatName, false);
+    finishFeature(this, FeatName, nullptr, false);
 }
 
 bool CmdPartDesignBoolean::isActive(void)
