@@ -1320,7 +1320,8 @@ def processdxf(document,filename,getShapes=False):
                             newob.ViewObject.FontSize = draftui.fontsize
                         else:
                             st = rawValue(dim,3)
-                            newob.ViewObject.FontSize = float(getdimheight(st))*TEXTSCALING
+                            size = getdimheight(st) or 1
+                            newob.ViewObject.FontSize = float(size)*TEXTSCALING
     else:
         FreeCAD.Console.PrintMessage("skipping dimensions...\n")
 
