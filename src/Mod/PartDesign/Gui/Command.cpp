@@ -930,28 +930,38 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
  const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                                  std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
                                  std::vector<App::DocumentObject*>::iterator& firstValidSketch)
-{        
-    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false);   
-    App::Part* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false); 
-    
+{
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false);
+    App::Part* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+
     // TODO: If the user previously opted to allow multiple use of sketches or use of sketches from other bodies,
     // then count these as valid sketches!
     unsigned validSketches = 0;
     firstValidSketch = sketches.end();
 
     for (std::vector<App::DocumentObject*>::iterator s = sketches.begin(); s != sketches.end(); s++) {
- 
-        // Check whether this plane belongs to the active body   
-        if (pcActiveBody && !pcActiveBody->hasFeature(*s)) {
-            if(pcActivePart && pcActivePart->hasObject(*s, true))
-                status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
-            else 
+
+        if (!pcActiveBody) {
+            // We work in the old style outside any body
+            if (PartDesign::Body::findBodyOf (*s)) {
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-            
+                ++validSketches;
+                continue;
+            }
+        } else if (!pcActiveBody->hasFeature(*s)) {
+            // Check whether this plane belongs to the active body
+            if(pcActivePart && pcActivePart->hasObject(*s, true)) {
+                status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
+            } else if (PartDesign::Body::findBodyOf(*s)) {
+                status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
+            } else {
+                status.push_back(PartDesignGui::TaskFeaturePick::notInBody);
+            }
+
             ++validSketches;
             continue;
         }
-        
+
         //Base::Console().Error("Checking sketch %s\n", (*s)->getNameInDocument());
         // Check whether this sketch is already being used by another feature
         // Body features don't count...
@@ -970,7 +980,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
             status.push_back(PartDesignGui::TaskFeaturePick::isUsed);
             continue;
         }
-        
+
         if (pcActiveBody && pcActiveBody->isAfterTip(*s)){
             status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
             continue;
@@ -1053,17 +1063,22 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
         func(sketch, FeatName);
     };
-    
-    //if there is a sketch selected which is from annother body or part we need to bring up the 
+
+    //if there is a sketch selected which is from annother body or part we need to bring up the
     //pick task dialog to decide how those are handled
-    bool ext = std::find(status.begin(), status.end(), PartDesignGui::TaskFeaturePick::otherBody) != status.end();
-    ext |= std::find(status.begin(), status.end(), PartDesignGui::TaskFeaturePick::otherPart) != status.end();
+    bool ext = std::find_if( status.begin(), status.end(),
+            [] (const PartDesignGui::TaskFeaturePick::featureStatus& s) {
+                return s == PartDesignGui::TaskFeaturePick::otherBody ||
+                    s == PartDesignGui::TaskFeaturePick::otherPart ||
+                    s == PartDesignGui::TaskFeaturePick::notInBody;
+            }
+        ) != status.end();
 
     // If there is more than one selection/possibility, show dialog and let user pick sketch
     if ((bNoSketchWasSelected && validSketches > 1)  ||
         (!bNoSketchWasSelected && sketches.size() > 1) ||
          ext ) {
-        
+
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
@@ -1086,7 +1101,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
         pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, worker);
         if(ext)
             pickDlg->showExternal(true);
-        
+
         Gui::Control().showDialog(pickDlg);
     }
     else {
