@@ -45,7 +45,6 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/Body.h>
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
 #include "Workbench.h"

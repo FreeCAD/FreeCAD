@@ -296,33 +296,40 @@ void TaskDlgSketchBasedParameters::clicked(int)
 
 bool TaskDlgSketchBasedParameters::reject()
 {
-    // get the support and Sketch
     PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    // get the Sketch
     Sketcher::SketchObject *pcSketch;
     if (pcSketchBased->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Sketch.getValue());
     }    
 
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(pcSketchBased);
+
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     
-    // if abort command deleted the object the sketch is visible again
+
+    // if abort command deleted the object the sketch is visible again as well as the previous feature
     if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    }
 
-    // Body housekeeping
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-	if (activeBody != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-		App::DocumentObject* tip = activeBody->Tip.getValue();
-		App::DocumentObject* prev = activeBody->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
+        // Body housekeeping
+        if (body != NULL) {
+            // Make the new Tip and the previous solid feature visible again
+            // TODO: do we really should make them both visiable?
+            App::DocumentObject* tip = body->Tip.getValue();
+            App::DocumentObject* prev = body->getPrevSolidFeature(pcSketchBased);
+            if (tip != NULL) {
+                Gui::Application::Instance->getViewProvider(tip)->show();
+                if ((tip != prev) && (prev != NULL))
+                    Gui::Application::Instance->getViewProvider(prev)->show();
+            }
+        } else {
+            App::DocumentObject *pcSupport = pcSketch->Support.getValue();
+            if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
+                Gui::Application::Instance->getViewProvider(pcSupport)->show();
         }
     }
 
