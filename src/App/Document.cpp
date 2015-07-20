@@ -202,44 +202,339 @@ void Document::writeDependencyGraphViz(std::ostream &out)
 
 void Document::exportGraphviz(std::ostream& out) const
 {
-    std::vector<std::string> names;
-    names.reserve(d->objectMap.size());
-    DependencyList DepList;
-    std::map<DocumentObject*,Vertex> VertexObjectList;
+    /* Typedefs for a graph with graphviz attributes */
+    typedef std::map<std::string, std::string> GraphvizAttributes;
+    typedef subgraph< adjacency_list<vecS, vecS, directedS,
+            property<vertex_attribute_t, GraphvizAttributes>,
+            property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
+            property<graph_name_t, std::string,
+            property<graph_graph_attribute_t,  GraphvizAttributes,
+            property<graph_vertex_attribute_t, GraphvizAttributes,
+            property<graph_edge_attribute_t,   GraphvizAttributes>
+            > > > > > Graph;
 
-    // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        // add the object as Vertex and remember the index
-        VertexObjectList[It->second] = add_vertex(DepList);
-        names.push_back(It->second->Label.getValue());
-    }
+    /**
+     * @brief The GraphCreator class
+     *
+     * This class creates the dependency graph for a document.
+     *
+     */
 
-    // Add external document objects
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2) {
-                std::map<DocumentObject*,Vertex>::const_iterator item = VertexObjectList.find(*It2);
+    class GraphCreator {
+    public:
 
-                if (item == VertexObjectList.end()) {
-                    VertexObjectList[*It2] = add_vertex(DepList);
-                    names.push_back(std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue());
+        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0) {
+            build();
+        }
+
+        const Graph & getGraph() const { return DepList; }
+
+    private:
+
+        void build() {
+            // Set attribute(s) for main graph
+            get_property(DepList, graph_graph_attribute)["compound"] = "true";
+
+            addSubgraphs();
+            buildAdjacencyList();
+            addEdges();
+        }
+
+        /**
+         * @brief getId returns a canonical string for a DocumentObject.
+         * @param docObj Document object to get an ID from
+         * @return A string
+         */
+
+        std::string getId(const DocumentObject * docObj) {
+            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument();
+        }
+
+        /**
+         * @brief getId returns a canonical string for an ObjectIdentifier;
+         * @param path
+         * @return A string
+         */
+
+        std::string getId(const ObjectIdentifier & path) {
+            DocumentObject * docObj = path.getDocumentObject();
+
+            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
+        }
+
+        std::string getClusterName(const DocumentObject * docObj) const {
+            return std::string("cluster") + docObj->getNameInDocument();
+        }
+
+        /**
+         * @brief setGraphAttributes Set graph attributes on a subgraph for a DocumentObject node.
+         * @param obj DocumentObject
+         */
+
+        void setGraphAttributes(const DocumentObject * obj) {
+            assert(GraphList[obj] != 0);
+            get_property(*GraphList[obj], graph_name) = getClusterName(obj);
+            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
+            get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
+        }
+
+        /**
+         * @brief setPropertyVertexAttributes Set vertex attributes for a Porperty node in a graph.
+         * @param g Graph
+         * @param vertex Property node
+         * @param name Name of node
+         */
+
+        void setPropertyVertexAttributes(Graph & g, Vertex vertex, const std::string & name) {
+            get(vertex_attribute, g)[vertex]["label"] = name;
+            get(vertex_attribute, g)[vertex]["shape"] = "box";
+            get(vertex_attribute, g)[vertex]["style"] = "dashed";
+            get(vertex_attribute, g)[vertex]["fontsize"] = "8pt";
+        }
+
+        /**
+         * @brief addSubgraphIfNeeded Add a subgraph to the main graph if it is needed, i.e there are defined at least one expression in hte
+         *                            document object, or other objects are referencing properties in it.
+         * @param obj DocumentObject to assess.
+         */
+
+        void addSubgraphIfNeeded(DocumentObject * obj) {
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();
+
+            if (expressions.size() > 0) {
+
+                // If documentObject has an expression, create a subgraph for it
+                if (!GraphList[obj]) {
+                    GraphList[obj] = &DepList.create_subgraph();
+                    setGraphAttributes(obj);
+                }
+
+                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+                while (i != expressions.end()) {
+                    std::set<ObjectIdentifier> deps;
+
+                    i->second.expression->getDeps(deps);
+
+                    std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+                    while (j != deps.end()) {
+                        DocumentObject * o = j->getDocumentObject();
+
+                        // Doesn't exist already?
+                        if (!GraphList[o]) {
+                            GraphList[o] = &DepList.create_subgraph();
+                            setGraphAttributes(o);
+                        }
+                        ++j;
+                    }
+                    ++i;
                 }
             }
         }
-    }
 
-    // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2)
-                add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
+        /**
+         * @brief add Add @docObj to the graph, including all expressions (and dependencies) it includes.
+         * @param docObj The document object to add.
+         * @param name Name of node.
+         */
+
+        void add(DocumentObject * docObj, const std::string & name, const std::string & label) {
+            Graph * sgraph = GraphList[docObj] ? GraphList[docObj] : &DepList;
+
+            // Keep a list of all added document objects.
+            objects.insert(docObj);
+
+            // Add vertex to graph. Track global and local index
+            LocalVertexList[getId(docObj)] = add_vertex(*sgraph);
+            GlobalVertexList[getId(docObj)] = vertex_no++;
+
+            // Set node label
+            if (name == label)
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
+            else
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
+
+            // If node is in main graph, style it with rounded corners. If not, remove the border as the subgraph will contain it.
+            if (sgraph == &DepList) {
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
+            }
+            else
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["color"] = "none";
+
+            // Add expressions and its dependencies
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+
+            // Add nodes for each property that has an expression attached to it
+            while (i != expressions.end()) {
+                std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(i->first));
+                if (k == GlobalVertexList.end()) {
+                    int vid = LocalVertexList[getId(i->first)] = add_vertex(*sgraph);
+                    GlobalVertexList[getId(i->first)] = vertex_no++;
+                    setPropertyVertexAttributes(*sgraph, vid, i->first.toString());
+                }
+
+                ++i;
+            }
+
+            // Add all dependencies
+            i = expressions.begin();
+            while (i != expressions.end()) {
+
+                // Get dependencies
+                std::set<ObjectIdentifier> deps;
+                i->second.expression->getDeps(deps);
+
+                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+                while (j != deps.end()) {
+                    DocumentObject * depObjDoc = j->getDocumentObject();
+                    std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(*j));
+
+                    if (k == GlobalVertexList.end()) {
+                        Graph * depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
+
+                        LocalVertexList[getId(*j)] = add_vertex(*depSgraph);
+                        GlobalVertexList[getId(*j)] = vertex_no++;
+                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(*j)], j->getPropertyName() + j->getSubPathStr());
+                    }
+
+                    ++j;
+                }
+                ++i;
+            }
+
         }
-    }
 
-    if (!names.empty())
-        boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
+        void addSubgraphs() {
+            // Internal document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+                addSubgraphIfNeeded(It->second);
+
+            // Add external document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+
+                        if (item == GlobalVertexList.end())
+                            addSubgraphIfNeeded(*It2);
+                    }
+                }
+            }
+        }
+
+        // Filling up the adjacency List
+        void buildAdjacencyList() {
+            // Add internal document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+                add(It->second, It->second->getNameInDocument(), It->second->Label.getValue());
+
+            // Add external document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+
+                        if (item == GlobalVertexList.end())
+                            add(*It2,
+                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->getNameInDocument(),
+                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue());
+                    }
+                }
+            }
+        }
+
+        void addEdges() {
+            // Get edge properties for main graph
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+
+            // Track edges between document objects connected by expression dependencies
+            std::set<std::pair<const DocumentObject*, const DocumentObject*> > existingEdges;
+
+            // Add edges between properties
+            std::set<const DocumentObject*>::const_iterator j = objects.begin();
+            while (j != objects.end()) {
+                const DocumentObject * docObj = *j;
+
+                // Add expressions and its dependencies
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+
+                while (i != expressions.end()) {
+                    std::set<ObjectIdentifier> deps;
+                    i->second.expression->getDeps(deps);
+
+                    // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                    std::set<ObjectIdentifier>::const_iterator k = deps.begin();
+                    while (k != deps.end()) {
+                        DocumentObject * depObjDoc = k->getDocumentObject();
+                        Edge edge;
+                        bool inserted;
+
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(i->first)], GlobalVertexList[getId(*k)], DepList);
+
+                        // Add this edge to the set of all expression generated edges
+                        existingEdges.insert(std::make_pair(docObj, depObjDoc));
+
+                        // Edges between properties should be a bit smaller, and dashed
+                        edgeAttrMap[edge]["arrowsize"] = "0.5";
+                        edgeAttrMap[edge]["style"] = "dashed";
+                        ++k;
+                    }
+                    ++i;
+                }
+                ++j;
+            }
+
+            // Add edges between document objects
+            for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        const DocumentObject * docObj = It->second;
+
+                        // Skip duplicate edges
+                        if (edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList).second)
+                            continue;
+
+                        // Skip edge if an expression edge already exists
+                        if (existingEdges.find(std::make_pair(docObj, *It2)) != existingEdges.end())
+                            continue;
+
+                        // Add edge
+
+                        Edge edge;
+                        bool inserted;
+
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList);
+
+                        // Set properties to make arrows go between subgraphs if needed
+                        if (GraphList[docObj])
+                            edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
+                        if (GraphList[*It2])
+                            edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
+                    }
+                }
+            }
+
+        }
+
+        const struct DocumentP* d;
+        Graph DepList;
+        int vertex_no;
+        std::map<std::string, Vertex> LocalVertexList;
+        std::map<std::string, Vertex> GlobalVertexList;
+        std::set<const DocumentObject*> objects;
+        std::map<const DocumentObject*, Graph*> GraphList;
+    };
+
+    GraphCreator g(d);
+
+    boost::write_graphviz(out, g.getGraph());
 }
 
 //bool _has_cycle_dfs(const DependencyList & g, vertex_t u, default_color_type * color)
