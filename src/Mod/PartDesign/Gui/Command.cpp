@@ -746,7 +746,9 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     QObject::tr("You have to select a face or plane from the active body!"));
                 return;
             }
-        } else if (pcActiveBody->getNextSolidFeature() != obj) {
+        } else if (!obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())
+                   && pcActiveBody->getNextSolidFeature() != obj) {
+            // TOOD: checkme why it's forbidden!?
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from inactive feature"),
                 QObject::tr("You can only use the last solid feature as sketch support"));
             return;
