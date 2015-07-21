@@ -45,6 +45,7 @@
 #include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
+#include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include "ReferenceSelection.h"
@@ -57,7 +58,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
 
-TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent)
+TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView, QWidget *parent)
     : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution",tr("Revolution parameters"))
 {
     // we need a separate container widget to add all controls to
@@ -85,18 +86,42 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
 
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
-    double l = pcRevolution->Angle.getValue();
-    bool mirrored = pcRevolution->Midplane.getValue();
-    bool reversed = pcRevolution->Reversed.getValue();
+    //bind property mirrors
+    PartDesign::SketchBased* pcFeat = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    if (pcFeat->isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
+        PartDesign::Revolution* rev = static_cast<PartDesign::Revolution*>(vp->getObject());
+        this->propAngle = &(rev->Angle);
+        this->propMidPlane = &(rev->Midplane);
+        this->propReferenceAxis = &(rev->ReferenceAxis);
+        this->propReversed = &(rev->Reversed);
+    } else {
+        assert(pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId()));
+        PartDesign::Groove* rev = static_cast<PartDesign::Groove*>(vp->getObject());
+        this->propAngle = &(rev->Angle);
+        this->propMidPlane = &(rev->Midplane);
+        this->propReferenceAxis = &(rev->ReferenceAxis);
+        this->propReversed = &(rev->Reversed);
+    }
+
+    double l = propAngle->getValue();
+    bool mirrored = propMidPlane->getValue();
+    bool reversed = propReversed->getValue();
 
     ui->revolveAngle->setValue(l);
     blockUpdate = false;
     updateUI();
 
+
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
-    ui->revolveAngle->bind(pcRevolution->Angle);
+
+    PartDesign::SketchBased* sketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    // TODO This is quite ugly better redo it (2015-11-02, Fat-Zer)
+    if ( sketchBased->isDerivedFrom(PartDesign::Revolution::getClassTypeId() ) ) {
+        ui->revolveAngle->bind(static_cast<PartDesign::Revolution *> ( sketchBased )->Angle);
+    } else if ( sketchBased->isDerivedFrom(PartDesign::Groove::getClassTypeId() ) ) {
+        ui->revolveAngle->bind(static_cast<PartDesign::Groove *> ( sketchBased )->Angle);
+    }
 
     ui->revolveAngle->blockSignals(false);
     ui->axis->blockSignals(false);
@@ -135,8 +160,8 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         this->axesInList.clear();
 
         //add sketch axes
-        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
-        Part::Part2DObject* pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
+        PartDesign::SketchBased* pcFeat = static_cast<PartDesign::Revolution*>(vp->getObject());
+        Part::Part2DObject* pcSketch = static_cast<Part::Part2DObject*>(pcFeat->Sketch.getValue());
         if (pcSketch){
             addAxisToCombo(pcSketch,"V_Axis",QObject::tr("Vertical sketch axis"));
             addAxisToCombo(pcSketch,"H_Axis",QObject::tr("Horizontal sketch axis"));
@@ -165,22 +190,20 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
     }//endif forceRefill
 
     //add current link, if not in list
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
     //first, figure out the item number for current axis
     int indexOfCurrent = -1;
-    App::DocumentObject* ax = pcRevolution->ReferenceAxis.getValue();
-    const std::vector<std::string> &subList = pcRevolution->ReferenceAxis.getSubValues();
+    App::DocumentObject* ax = propReferenceAxis->getValue();
+    const std::vector<std::string> &subList = propReferenceAxis->getSubValues();
     for(int i = 0  ;  i < axesInList.size()  ;  i++) {
         if(ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues())
             indexOfCurrent = i;
     }
     if ( indexOfCurrent == -1  &&  ax ){
-        const std::vector<std::string> &sublist = pcRevolution->ReferenceAxis.getSubValues();
-        assert(sublist.size() <= 1);
+        assert(subList.size() <= 1);
         std::string sub;
-        if (sublist.size()>0)
-            sub = sublist[0];
-        addAxisToCombo(ax, sub, getRefStr(ax, sublist));
+        if (subList.size()>0)
+            sub = subList[0];
+        addAxisToCombo(ax, sub, getRefStr(ax, subList));
         indexOfCurrent = axesInList.size()-1;
     }
 
@@ -215,13 +238,12 @@ void TaskRevolutionParameters::updateUI()
 void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
 
         exitSelectionMode();
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
-        getReferencedSelection(pcRevolution, msg, selObj, axis);
-        pcRevolution->ReferenceAxis.setValue(selObj, axis);
+        getReferencedSelection(vp->getObject(), msg, selObj, axis);
+        propReferenceAxis->setValue(selObj, axis);
 
         recomputeFeature();
         updateUI();
@@ -231,8 +253,7 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
 
 void TaskRevolutionParameters::onAngleChanged(double len)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
-    pcRevolution->Angle.setValue(len);
+    propAngle->setValue(len);
     exitSelectionMode();
     recomputeFeature();
 }
@@ -241,59 +262,58 @@ void TaskRevolutionParameters::onAxisChanged(int num)
 {
     if (blockUpdate)
         return;
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
+    PartDesign::SketchBased* pcRevolution = static_cast<PartDesign::SketchBased*>(vp->getObject());
 
     if(axesInList.size() == 0)
         return;
 
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
-    if (pcSketch) {
-        App::DocumentObject *oldRefAxis = pcRevolution->ReferenceAxis.getValue();
-        std::vector<std::string> oldSubRefAxis = pcRevolution->ReferenceAxis.getSubValues();
+    App::DocumentObject *oldRefAxis = propReferenceAxis->getValue();
+    std::vector<std::string> oldSubRefAxis = propReferenceAxis->getSubValues();
 
-        App::PropertyLinkSub &lnk = *(axesInList[num]);
-        if(lnk.getValue() == 0){
-            // enter reference selection mode
-            TaskSketchBasedParameters::onSelectReference(true, true, false, true);
-        } else {
-            if (! pcRevolution->getDocument()->isIn(lnk.getValue())){
-                Base::Console().Error("Object was deleted\n");
-                return;
-            }
-            pcRevolution->ReferenceAxis.Paste(lnk);
-            exitSelectionMode();
+    App::PropertyLinkSub &lnk = *(axesInList[num]);
+    if(lnk.getValue() == 0){
+        // enter reference selection mode
+        TaskSketchBasedParameters::onSelectReference(true, true, false, true);
+    } else {
+        if (! pcRevolution->getDocument()->isIn(lnk.getValue())){
+            Base::Console().Error("Object was deleted\n");
+            return;
         }
+        propReferenceAxis->Paste(lnk);
+        exitSelectionMode();
+    }
 
-        App::DocumentObject *newRefAxis = pcRevolution->ReferenceAxis.getValue();
-        const std::vector<std::string> &newSubRefAxis = pcRevolution->ReferenceAxis.getSubValues();
-        if (oldRefAxis != newRefAxis ||
-            oldSubRefAxis.size() != newSubRefAxis.size() ||
-            oldSubRefAxis[0] != newSubRefAxis[0]) {
-            bool reversed = pcRevolution->suggestReversed();
-            if (reversed != pcRevolution->Reversed.getValue()) {
-                pcRevolution->Reversed.setValue(reversed);
-                ui->checkBoxReversed->blockSignals(true);
-                ui->checkBoxReversed->setChecked(reversed);
-                ui->checkBoxReversed->blockSignals(false);
-            }
+    App::DocumentObject *newRefAxis = propReferenceAxis->getValue();
+    const std::vector<std::string> &newSubRefAxis = propReferenceAxis->getSubValues();
+    if (oldRefAxis != newRefAxis ||
+        oldSubRefAxis.size() != newSubRefAxis.size() ||
+        oldSubRefAxis[0] != newSubRefAxis[0]) {
+        bool reversed = propReversed->getValue();
+        if(pcRevolution->isDerivedFrom(PartDesign::Revolution::getClassTypeId()))
+            reversed = static_cast<PartDesign::Revolution*>(pcRevolution)->suggestReversed();
+        if(pcRevolution->isDerivedFrom(PartDesign::Groove::getClassTypeId()))
+            reversed = static_cast<PartDesign::Groove*>(pcRevolution)->suggestReversed();
+
+        if (reversed != propReversed->getValue()) {
+            propReversed->setValue(reversed);
+            ui->checkBoxReversed->blockSignals(true);
+            ui->checkBoxReversed->setChecked(reversed);
+            ui->checkBoxReversed->blockSignals(false);
         }
     }
 
-    updateUI();
     recomputeFeature();
 }
 
 void TaskRevolutionParameters::onMidplane(bool on)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
-    pcRevolution->Midplane.setValue(on);
+    propMidPlane->setValue(on);
     recomputeFeature();
 }
 
 void TaskRevolutionParameters::onReversed(bool on)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
-    pcRevolution->Reversed.setValue(on);
+    propReversed->setValue(on);
     recomputeFeature();
 }
 
@@ -312,7 +332,7 @@ void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::
     if(lnk.getValue() == 0){
         throw Base::Exception("Still in reference selection mode; reference wasn't selected yet");
     } else {
-        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
+        PartDesign::SketchBased* pcRevolution = static_cast<PartDesign::SketchBased*>(vp->getObject());
         if (! pcRevolution->getDocument()->isIn(lnk.getValue())){
             throw Base::Exception("Object was deleted");
             return;
@@ -401,8 +421,7 @@ void TaskRevolutionParameters::apply()
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution *RevolutionView)
+TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView)
     : TaskDlgSketchBasedParameters(RevolutionView)
 {
     assert(RevolutionView);

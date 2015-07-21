@@ -39,7 +39,6 @@ set(PartDesignGui_MOC_HDRS
     TaskDressUpParameters.h
     #TaskHoleParameters.h
     TaskRevolutionParameters.h
-    TaskGrooveParameters.h
     TaskTransformedMessages.h
     TaskTransformedParameters.h
     TaskMirroredParameters.h
@@ -69,7 +68,6 @@ set(PartDesignGui_UIC_SRCS
     TaskBooleanParameters.ui
     #TaskHoleParameters.ui
     TaskRevolutionParameters.ui
-    TaskGrooveParameters.ui
     TaskTransformedMessages.ui
     TaskMirroredParameters.ui
     TaskLinearPatternParameters.ui
@@ -176,9 +174,6 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskRevolutionParameters.ui
     TaskRevolutionParameters.cpp
     TaskRevolutionParameters.h
-    TaskGrooveParameters.ui
-    TaskGrooveParameters.cpp
-    TaskGrooveParameters.h
     TaskTransformedMessages.ui
     TaskTransformedMessages.cpp
     TaskTransformedMessages.h
