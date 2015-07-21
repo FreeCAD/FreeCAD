@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 
 #include "ViewProviderGroove.h"
-#include "TaskGrooveParameters.h"
+#include "TaskRevolutionParameters.h"
 
 using namespace PartDesignGui;
 
@@ -86,8 +86,8 @@ bool ViewProviderGroove::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgGrooveParameters *padDlg = qobject_cast<TaskDlgGrooveParameters *>(dlg);
-        if (padDlg && padDlg->getGrooveView() != this)
+        TaskDlgRevolutionParameters *padDlg = qobject_cast<TaskDlgRevolutionParameters *>(dlg);
+        if (padDlg && padDlg->getRevolutionView() != this)
             padDlg = 0; // another pad left open its task panel
         if (dlg && !padDlg) {
             QMessageBox msgBox;
@@ -112,7 +112,7 @@ bool ViewProviderGroove::setEdit(int ModNum)
         if (padDlg)
             Gui::Control().showDialog(padDlg);
         else
-            Gui::Control().showDialog(new TaskDlgGrooveParameters(this));
+            Gui::Control().showDialog(new TaskDlgRevolutionParameters(this));
 
         return true;
     }
