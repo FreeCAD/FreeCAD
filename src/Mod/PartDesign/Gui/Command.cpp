@@ -62,6 +62,9 @@
 #include "Utils.h"
 #include "WorkflowManager.h"
 
+// TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
+#include "ui_DlgReference.h"
+
 using namespace std;
 
 
@@ -90,12 +93,52 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                 bEditSelected = true;
         }
 
+        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+
         if (bEditSelected) {
             std::string tmp = std::string("Edit ")+name;
             cmd.openCommand(tmp.c_str());
             cmd.doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",support.getValue()->getNameInDocument());
-        } else {
-            PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+        } else if (pcActiveBody) {
+
+            auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+
+            // TODO Check how this will work outside of a body (2015-10-20, Fat-Zer)
+            //check the prerequisites for the selected objects
+            //the user has to decide which option we should take if external references are used
+            bool ext = false;
+            for(App::DocumentObject* obj : support.getValues()) {
+                if(!pcActiveBody->hasFeature(obj)) 
+                    ext = true;
+            }
+            // TODO rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
+            if(ext) {
+                QDialog* dia = new QDialog;
+                Ui_Dialog dlg;
+                dlg.setupUi(dia);
+                dia->setModal(true);
+                int result = dia->exec();
+                if(result == QDialog::DialogCode::Rejected) 
+                    return;
+                else if(!dlg.radioXRef->isChecked()) {
+
+                    std::vector<App::DocumentObject*> objs;
+                    std::vector<std::string> subs = support.getSubValues();
+                    int index = 0;
+                    for(App::DocumentObject* obj : support.getValues()) {
+
+                        objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked()));
+                        auto oBody = PartDesignGui::getBodyFor(obj, false);
+                        if (oBody && pcActiveBody) {
+                            pcActiveBody->addFeature(objs.back());
+                        } else if (pcActivePart) {
+                            pcActivePart->addObject(objs.back());
+                        }
+
+                    }
+                }
+
+            };
 
             std::string FeatName = cmd.getUniqueObjectName(name.c_str());
 
@@ -246,6 +289,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     }
 
     if (bEditSelected) {
+        // TODO probably we not should handle edit here (2015-10-26, Fat-Zer)
         std::string tmp = std::string("Edit ShapeBinder");
         openCommand(tmp.c_str());
         doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",
@@ -254,7 +298,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
         if (pcActiveBody == 0)
             return;
-
+            
         std::string FeatName = getUniqueObjectName("ShapeBinder");
         std::string tmp = std::string("Create ShapeBinder");
 
@@ -385,16 +429,30 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         if (!pcActiveBody->hasFeature(obj)) {
             if ( !obj->isDerivedFrom ( App::Plane::getClassTypeId() ) )  {
                 // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from other body"),
-                    QObject::tr("You have to select a face or plane from the active body!"));
-                return;
+
+                auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+
+                //check the prerequisites for the selected objects
+                //the user has to decide which option we should take if external references are used
+                // TODO share this with UnifiedDatumCommand() (2015-10-20, Fat-Zer)
+                QDialog* dia = new QDialog;
+                Ui_Dialog dlg;
+                dlg.setupUi(dia);
+                dia->setModal(true);
+                int result = dia->exec();
+                if(result == QDialog::DialogCode::Rejected)
+                    return;
+                else if(!dlg.radioXRef->isChecked()) {
+
+                    const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
+                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub[0], dlg.radioIndependent->isChecked());
+                    auto oBody = PartDesignGui::getBodyFor(obj, false);
+                    if(oBody)
+                        pcActiveBody->addFeature(copy);
+                    else
+                        pcActivePart->addObject(copy);
+                }
             }
-        } else if (!obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())
-                   && pcActiveBody->Tip.getValue () != obj) {
-            // TODO  checkme why it's forbidden!?  (2015-08-05, Fat-Zer)
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from inactive feature"),
-                QObject::tr("You can only use the Tip as sketch support"));
-            return;
         }
 
         // create Sketch on Face or Plane
@@ -738,11 +796,35 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                     s == PartDesignGui::TaskFeaturePick::notInBody;
             }
         ) != status.end();
+    // TODO Clean this up (2015-10-20, Fat-Zer)
+    auto* pcActiveBody = PartDesignGui::getBody(false);
+    if(pcActiveBody  && !bNoSketchWasSelected && ext) {
+
+        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+
+        // TODO share this with UnifiedDatumCommand() (2015-10-20, Fat-Zer)
+        QDialog* dia = new QDialog;
+        Ui_Dialog dlg;
+        dlg.setupUi(dia);
+        dia->setModal(true);
+        int result = dia->exec();
+        if(result == QDialog::DialogCode::Rejected)
+            return;
+        else if(!dlg.radioXRef->isChecked()) {
+
+            auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
+            auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
+            if(oBody)
+                pcActiveBody->addFeature(copy);
+            else
+                pcActivePart->addObject(copy);
+
+        }
+    }
 
     // If there is more than one selection/possibility, show dialog and let user pick sketch
     if ((bNoSketchWasSelected && validSketches > 1)  ||
-        (!bNoSketchWasSelected && sketches.size() > 1) ||
-        (!bNoSketchWasSelected && ext) ) {
+        (!bNoSketchWasSelected && sketches.size() > 1)) {
 
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
@@ -847,7 +929,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pocket");
     sToolTipText  = QT_TR_NOOP("Create a pocket with the selected sketch");
-    sWhatsThis    = "PartDesign_Pocket";
+    sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pocket";
 }

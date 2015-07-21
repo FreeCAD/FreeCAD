@@ -83,6 +83,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPipeOrientation.ui
     TaskPipeScaling.ui
     TaskLoftParameters.ui
+    DlgReference.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
