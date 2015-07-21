@@ -117,12 +117,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             
             TopExp_Explorer ex;
             int i=0;
-            for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next()) {
-                wiresections[i].push_back(TopoDS::Wire(ex.Current()));
+            for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
                 if(i>=wiresections.size())
                     return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
-                
-                ++i;
+                wiresections[i].push_back(TopoDS::Wire(ex.Current()));
             }
             if(i<wiresections.size())
                     return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
