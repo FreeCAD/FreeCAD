@@ -33,7 +33,7 @@ namespace PartDesign
 {
 
 /*Those two feature are not realy a classical datum. They are fully defined shapes and not
- *infinit geometries likeplanes and lines. Also they are not calculated by references and hence
+ *infinit geometries like planes and lines. Also they are not calculated by references and hence
  *are not "attaced" to anything. Furthermore real shapes must be visualized. This makes it hard
  *to reuse the existing datum infrastructure and a special handling foor those two types is
  *created.
@@ -50,7 +50,8 @@ public:
 
     App::PropertyLinkSubList    Support;
 
-    static TopoShape buildShapeFromReferences(std::vector<App::DocumentObject*> objects, std::vector<std::string> subobjects);
+    static void getFilterdReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
+    static TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
 
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderShapeBinder";
