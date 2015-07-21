@@ -222,7 +222,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
             if(*st == otherBody) {
 
                 if(ui->bodyRadioIndependent->isChecked()) {
-                    auto copy = makeCopy(obj, true);
+                    auto copy = makeCopy(obj, "", true);
                     activeBody->addFeature(copy);
                     result.push_back(copy);
                 } else {
@@ -232,7 +232,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
             else if(*st == otherPart) {
 
                 if(!ui->partRadioXRef->isChecked()) {
-                    auto copy = makeCopy(obj, ui->partRadioIndependent->isChecked());
+                    auto copy = makeCopy(obj, "", ui->partRadioIndependent->isChecked());
 
                     auto oBody = PartDesignGui::getBodyFor(obj, false);
                     if(oBody)
@@ -246,7 +246,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
                     result.push_back(obj);
             } else if(*st == notInBody) {
                 if(ui->bodyRadioIndependent->isChecked()) {
-                    auto copy = makeCopy(obj, true);
+                    auto copy = makeCopy(obj, "", true);
                     activeBody->addFeature(copy);
                     // doesn't supposed to get here anything but sketch but to be on the safe side better to check
                     if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
@@ -270,7 +270,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
     return result;
 }
 
-App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool independent) {
+App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool independent) {
     App::DocumentObject* copy = nullptr;
     if(independent) {
 
@@ -308,11 +308,19 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool in
             }
 
             cprop->Paste(*prop);
+            
         }
+        
+        if(!sub.empty() && copy &&
+            copy->isDerivedFrom(Part::Feature::getClassTypeId()) && obj->isDerivedFrom(Part::Feature::getClassTypeId()))
+            static_cast<Part::Feature*>(copy)->Shape.setValue(static_cast<Part::Feature*>(obj)->Shape.getShape().getSubShape(sub.c_str()));
     }
     else {
 
         auto name =  std::string("Reference") + std::string(obj->getNameInDocument());
+        const char* entity = std::string("").c_str();
+        if(!sub.empty())
+            entity = sub.c_str();
 
         // TODO Replace it with commands (2015-09-11, Fat-Zer)
         if(obj->isDerivedFrom(Part::Datum::getClassTypeId())) {
@@ -323,7 +331,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool in
             //datum adjust their size dependend on the part size, hence simply copying the shape is
             //not enough
             Part::Datum *datumCopy = static_cast<Part::Datum*>(copy);
-            datumCopy->Support.setValue(obj, "");
+            datumCopy->Support.setValue(obj, entity);
 
             if(obj->getTypeId() == PartDesign::Point::getClassTypeId()) {
                 datumCopy->MapMode.setValue(mm0Vertex);
@@ -338,13 +346,13 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool in
         else if(obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
                 obj->getTypeId() == PartDesign::ShapeBinder2D::getClassTypeId()) {
             copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder2D", name.c_str());
-            static_cast<PartDesign::ShapeBinder2D*>(copy)->Support.setValue(obj, "");
+            static_cast<PartDesign::ShapeBinder2D*>(copy)->Support.setValue(obj, entity);
         }
         else if(obj->getTypeId() == PartDesign::ShapeBinder::getClassTypeId() ||
                 obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
 
             copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder", name.c_str());
-            static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, "");
+            static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity);
         }
     }
 
