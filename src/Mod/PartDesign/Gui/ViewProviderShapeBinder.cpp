@@ -24,12 +24,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 # include <Inventor/nodes/SoSeparator.h>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
+
+#include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Gui/Control.h>
 
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ViewProviderShapeBinder.h"
+#include "TaskShapeBinder.h"
 
 using namespace PartDesignGui;
 
@@ -64,9 +72,104 @@ ViewProviderShapeBinder::~ViewProviderShapeBinder()
 }
 
 bool ViewProviderShapeBinder::setEdit(int ModNum) {
-    return true;//PartGui::ViewProviderPartExt::setEdit(ModNum);
+    // TODO Share code with other view providers (2015-09-11, Fat-Zer)
+    
+    if (ModNum == ViewProvider::Default || ModNum == 1 ) {
+        
+        // When double-clicking on the item for this pad the
+        // object unsets and sets its edit mode without closing
+        // the task panel
+        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+        TaskDlgShapeBinder *sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
+        if (sbDlg)
+            sbDlg = 0; // another pad left open its task panel
+        if (dlg && !sbDlg) {
+            QMessageBox msgBox;
+            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
+            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::Yes);
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::Yes)
+                Gui::Control().reject();
+            else
+                return false;
+        }
+
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+
+        // start the edit dialog
+        if (sbDlg)
+            Gui::Control().showDialog(sbDlg);
+        else
+            Gui::Control().showDialog(new TaskDlgShapeBinder(this,ModNum == 1));
+
+        return true;
+    }
+    else {
+        return ViewProviderPart::setEdit(ModNum);
+    }
 }
 
 void ViewProviderShapeBinder::unsetEdit(int ModNum) {
-    return;//PartGui::ViewProviderPartExt::unsetEdit(ModNum);
+    
+    PartGui::ViewProviderPart::unsetEdit(ModNum);
+}
+
+void ViewProviderShapeBinder::highlightReferences(const bool on, bool auxillery) {
+    
+    Part::Feature* obj;
+    std::vector<std::string> subs;
+    
+    if(getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
+        PartDesign::ShapeBinder::getFilterdReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
+    else if(getObject()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()))
+        PartDesign::ShapeBinder::getFilterdReferences(&static_cast<PartDesign::ShapeBinder2D*>(getObject())->Support, obj, subs);
+    else 
+        return;
+        
+    PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(obj));
+    if (svp == NULL) return;
+
+    if (on) {        
+         if (!subs.empty() && originalLineColors.empty()) {
+            TopTools_IndexedMapOfShape eMap;
+            TopExp::MapShapes(obj->Shape.getValue(), TopAbs_EDGE, eMap);
+            originalLineColors = svp->LineColorArray.getValues();
+            std::vector<App::Color> lcolors = originalLineColors;
+            lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
+            
+            TopExp::MapShapes(obj->Shape.getValue(), TopAbs_FACE, eMap);
+            originalFaceColors = svp->DiffuseColor.getValues();
+            std::vector<App::Color> fcolors = originalFaceColors;
+            fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
+
+            for (std::string e : subs) {
+                if(e.substr(4) == "Edge") {
+                    
+                    int idx = atoi(e.substr(4).c_str()) - 1;
+                    if (idx < lcolors.size())
+                        lcolors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                }
+                else if(e.substr(4) == "Face")  {
+                    
+                    int idx = atoi(e.substr(4).c_str()) - 1;
+                    if (idx < fcolors.size())
+                        fcolors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                }
+            }
+            svp->LineColorArray.setValues(lcolors);
+            svp->DiffuseColor.setValues(fcolors);
+        }
+    } else {
+        if (!subs.empty() && !originalLineColors.empty()) {
+            svp->LineColorArray.setValues(originalLineColors);
+            originalLineColors.clear();
+            
+            svp->DiffuseColor.setValues(originalFaceColors);
+            originalFaceColors.clear();
+        }
+    }
 }
