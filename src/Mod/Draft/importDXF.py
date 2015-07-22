@@ -1467,6 +1467,9 @@ def open(filename):
     readPreferences()
     if dxfReader:
         docname = os.path.splitext(os.path.basename(filename))[0]
+        if isinstance(docname,unicode): 
+            import sys #workaround since newDocument currently can't handle unicode filenames
+            docname = docname.encode(sys.getfilesystemencoding())
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
         processdxf(doc,filename)
