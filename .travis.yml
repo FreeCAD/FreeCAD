@@ -45,7 +45,7 @@ before_install:
     - sudo apt-get install -y qt4-qmake
     - sudo apt-get install -y shiboken
     - sudo apt-get install -y swig
-#Patch the system - there is a bug related to invalid location of lins on ubuntu 12.04
+#Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
     - sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
 
 install:
