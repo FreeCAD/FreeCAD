@@ -37,6 +37,11 @@ class PartDesignExport DressUp : public PartDesign::Feature
 public:
     DressUp();
 
+    /**
+     * Base feature and it's subelements to which dressup operation will be aplied to.
+     * It always refers to the same feature Feature::BaseFeature does, but unlike it
+     * the Base property also includes SubLinks.
+     */
     App::PropertyLinkSub Base;
 
     short mustExecute() const;
