@@ -272,7 +272,7 @@ TaskSketchBasedParameters::~TaskSketchBasedParameters()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp)
-    : TaskDialog(),vp(vp)
+    : TaskDlgFeatureParameters(vp)
 {
 }
 
@@ -283,57 +283,25 @@ TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters()
 
 //==== calls from the TaskView ===============================================================
 
-
-void TaskDlgSketchBasedParameters::open()
-{
-    
-}
-
-void TaskDlgSketchBasedParameters::clicked(int)
-{
-    
-}
-
 bool TaskDlgSketchBasedParameters::reject()
 {
     PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
     // get the Sketch
-    Sketcher::SketchObject *pcSketch;
-    if (pcSketchBased->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Sketch.getValue());
-    }    
-
-    PartDesign::Body* body = PartDesign::Body::findBodyOf(pcSketchBased);
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Sketch.getValue());
+    bool rv;
     
+    // rv should be true anyway but to be on the safe side dur to thurver changes better respect it.
+    rv = TaskDlgFeatureParameters::reject();
 
-    // if abort command deleted the object the sketch is visible again as well as the previous feature
+    // if abort command deleted the object the sketch is visible again.
+    // The the previous one feature already should be made visiable
     if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
+        // Make the sketch visiable
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-        // Body housekeeping
-        if (body != NULL) {
-            // Make the new Tip and the previous solid feature visible again
-            // TODO: do we really should make them both visiable?
-            App::DocumentObject* tip = body->Tip.getValue();
-            App::DocumentObject* prev = body->getPrevSolidFeature(pcSketchBased);
-            if (tip != NULL) {
-                Gui::Application::Instance->getViewProvider(tip)->show();
-                if ((tip != prev) && (prev != NULL))
-                    Gui::Application::Instance->getViewProvider(prev)->show();
-            }
-        } else {
-            App::DocumentObject *pcSupport = pcSketch->Support.getValue();
-            if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-                Gui::Application::Instance->getViewProvider(pcSupport)->show();
-        }
     }
 
-    return true;
+    return rv;
 }
 
 

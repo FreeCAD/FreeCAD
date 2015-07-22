@@ -247,7 +247,7 @@ bool TaskDlgThicknessParameters::accept()
 
     TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
 
-    std::string name = DressUpView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",name.c_str(),draftparameter->getValue());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());

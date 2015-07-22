@@ -484,7 +484,7 @@ TaskDlgPadParameters::~TaskDlgPadParameters()
 bool TaskDlgPadParameters::accept()
 {
 
-    // save the history 
+    // save the history
     parameter->saveHistory();
 
     try {
