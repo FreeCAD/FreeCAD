@@ -1474,31 +1474,49 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 // Common utility functions for Dressup features
 //===========================================================================
 
-void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
+bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
+        Gui::SelectionObject &selected)
 {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    selection = cmd->getSelection().getSelectionEx();
 
     if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select an edge, face or body."));
-        return;
+        return false;
     } else if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select an edge, face or body from a single body."));
-        return;
+        return false;
     }
 
     Gui::Selection().clearSelection();
 
-    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
+    // set the
+    selected = selection[0];
+
+    if (!selected.isObjectTypeOf(Part::Feature::getClassTypeId())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
-            QString::fromStdString(which) + QObject::tr(" works only on parts."));
-        return;
+            QObject::tr("%1 works only on parts.").arg(QString::fromStdString(which)));
+        return false;
     }
 
-    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+    Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
 
-    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
+    const Part::TopoShape& TopShape = base->Shape.getShape();
+
+    if (TopShape._Shape.IsNull()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Shape of the selected Part is empty"));
+        return false;
+    }
+
+    return true;
+}
+
+void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
+        Part::Feature *base, const std::vector<std::string> & SubNames)
+{
     if (SubNames.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QString::fromStdString(which) + QObject::tr(" not possible on selected faces/edges."));
@@ -1509,7 +1527,7 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
     SelString += "(App.";
     SelString += "ActiveDocument";
     SelString += ".";
-    SelString += selection[0].getFeatName();
+    SelString += base->getNameInDocument();
     SelString += ",[";
     for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
         SelString += "\"";
@@ -1527,6 +1545,19 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
     cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
     doCommand(Gui,"Gui.Selection.clearSelection()");
     finishFeature(cmd, FeatName, base);
+}
+
+void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
+{
+    Gui::SelectionObject selected;
+    if (!dressupGetSelected ( cmd, which, selected))
+        return;
+
+    Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
+
+    std::vector<std::string> SubNames = std::vector<std::string>(selected.getSubNames());
+
+    finishDressupFeature (cmd, which, base, SubNames);
 }
 
 //===========================================================================
@@ -1603,41 +1634,16 @@ CmdPartDesignDraft::CmdPartDesignDraft()
 
 void CmdPartDesignDraft::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (!pcActiveBody) return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-
-    if (selection.size() < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more faces."));
+    Gui::SelectionObject selected;
+    if (!dressupGetSelected ( this, "Draft", selected))
         return;
-    }
 
-    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
-            QObject::tr("Draft works only on parts."));
-        return;
-    }
-
-    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
-
-    if (base != pcActiveBody->getPrevSolidFeature(NULL, true)) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong base feature"),
-            QObject::tr("Only the current Tip of the active Body can be selected as the base feature"));
-        return;
-    }
-
+    Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
+    std::vector<std::string> SubNames = std::vector<std::string>(selected.getSubNames());
     const Part::TopoShape& TopShape = base->Shape.getShape();
-    if (TopShape._Shape.IsNull()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Shape of selected Part is empty."));
-        return;
-    }
+    size_t i = 0;
 
-    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
-    unsigned int i = 0;
-
+    // filter out the edges
     while(i < SubNames.size())
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
@@ -1656,40 +1662,7 @@ void CmdPartDesignDraft::activated(int iMsg)
         i++;
     }
 
-    if (SubNames.size() == 0) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("No draft possible on selected faces."));
-        return;
-    }
-
-    std::string SelString;
-    SelString += "(App.";
-    SelString += "ActiveDocument";
-    SelString += ".";
-    SelString += selection[0].getFeatName();
-    SelString += ",[";
-    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
-        SelString += "\"";
-        SelString += *it;
-        SelString += "\"";
-        if(it != --SubNames.end())
-            SelString += ",";
-    }
-    SelString += "])";
-
-    std::string FeatName = getUniqueObjectName("Draft");
-
-    // We don't create any defaults for neutral plane and pull direction, but Draft::execute()
-    // will choose them.
-    // Note: When the body feature is there, the best thing would be to get pull direction and
-    // neutral plane from the preceding feature in the tree. Or even store them as default in
-    // the Body feature itself
-    openCommand("Make Draft");
-    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Draft\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Angle = %f",FeatName.c_str(), 1.5);
-
-    finishFeature(this, FeatName);
+    finishDressupFeature (this, "Draft", base, SubNames);
 }
 
 bool CmdPartDesignDraft::isActive(void)
@@ -1717,41 +1690,15 @@ CmdPartDesignThickness::CmdPartDesignThickness()
 
 void CmdPartDesignThickness::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (!pcActiveBody) return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-
-    if (selection.size() < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more faces."));
+    Gui::SelectionObject selected;
+    if (!dressupGetSelected ( this, "Thickness", selected))
         return;
-    }
 
-    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
-            QObject::tr("Thickness works only on parts"));
-        return;
-    }
+    Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
+    std::vector<std::string> SubNames = std::vector<std::string>(selected.getSubNames());
+    size_t i = 0;
 
-    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
-
-    if (base != pcActiveBody->getPrevSolidFeature(NULL, true)) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong base feature"),
-            QObject::tr("Only the current Tip of the active Body can be selected as the base feature"));
-        return;
-    }
-
-    const Part::TopoShape& TopShape = base->Shape.getShape();
-    if (TopShape._Shape.IsNull()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Shape of selected Part is empty"));
-        return;
-    }
-
-    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
-    unsigned int i = 0;
-
+    // filter out the edges
     while(i < SubNames.size())
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
@@ -1763,35 +1710,7 @@ void CmdPartDesignThickness::activated(int iMsg)
         i++;
     }
 
-    if (SubNames.size() == 0) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("No thickness possible with selected faces"));
-        return;
-    }
-
-    std::string SelString;
-    SelString += "(App.";
-    SelString += "ActiveDocument";
-    SelString += ".";
-    SelString += selection[0].getFeatName();
-    SelString += ",[";
-    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
-        SelString += "\"";
-        SelString += *it;
-        SelString += "\"";
-        if(it != --SubNames.end())
-            SelString += ",";
-    }
-    SelString += "])";
-
-    std::string FeatName = getUniqueObjectName("Thickness");
-
-    openCommand("Make Thickness");
-    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Thickness\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Value = %f",FeatName.c_str(), 1.);
-
-    finishFeature(this, FeatName);
+    finishDressupFeature (this, "Thickness", base, SubNames);
 }
 
 bool CmdPartDesignThickness::isActive(void)
