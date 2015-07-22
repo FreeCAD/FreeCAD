@@ -434,7 +434,17 @@ TaskDlgPocketParameters::~TaskDlgPocketParameters()
 
 bool TaskDlgPocketParameters::accept()
 {
+<<<<<<< b551f892abed242e90afa77240bbdd7dcf7fc45c
+    try {
+        parameter->apply();
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        return false;
+    }
+=======
     parameter->apply();
+>>>>>>> PartDesignGui: Make DressUp and SketchSupport propertie dialogs use common accept() structure
 
     return TaskDlgSketchBasedParameters::accept();
 }

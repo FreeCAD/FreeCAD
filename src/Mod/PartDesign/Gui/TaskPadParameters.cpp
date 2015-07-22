@@ -373,12 +373,15 @@ int TaskPadParameters::getMode(void) const
     return ui->changeMode->currentIndex();
 }
 
-QByteArray TaskPadParameters::getFaceName(void) const
+QString TaskPadParameters::getFaceName(void) const
 {
-    if (getMode() == 3)
-        return getFaceReference(ui->lineFaceName->text(), ui->lineFaceName->property("FaceName").toString()).toLatin1();
-    else
-        return "";
+    if (getMode() == 3) {
+        QString faceName = ui->lineFaceName->property("FaceName").toString();
+        if (!faceName.isEmpty()) {
+            return getFaceReference(ui->lineFaceName->text(), faceName);
+        }
+    }
+    return QString();
 }
 
 TaskPadParameters::~TaskPadParameters()
@@ -446,18 +449,15 @@ void TaskPadParameters::apply()
     ui->lengthEdit2->apply();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",cname,getMode());
-    std::string facename = getFaceName().data();
+    QString facename = getFaceName();
 
-    if (!facename.empty()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), facename.c_str());
-    } else
+    if (!facename.isEmpty()) {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s",
+                cname, facename.toLatin1().data());
+    } else {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", cname);
+    }
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f", name.c_str(), getOffset());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (!vp->getObject()->isValid())
-        throw Base::Exception(vp->getObject()->getStatusString());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
@@ -483,20 +483,11 @@ TaskDlgPadParameters::~TaskDlgPadParameters()
 
 bool TaskDlgPadParameters::accept()
 {
-
     // save the history
     parameter->saveHistory();
+    parameter->apply();
 
-    try {
-        //Gui::Command::openCommand("Pad changed");
-        parameter->apply();
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
-        return false;
-    }
-
-    return true;
+    return TaskDlgSketchBasedParameters::accept();
 }
 
 

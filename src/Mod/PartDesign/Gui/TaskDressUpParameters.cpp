@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <QListWidgetItem>
-# include <QMessageBox>
 #endif
 
 #include "TaskDressUpParameters.h"
@@ -156,7 +155,7 @@ void TaskDressUpParameters::hideObject()
     if (doc != NULL && base != NULL) {
         doc->setHide(DressUpView->getObject()->getNameInDocument());
         doc->setShow(base->getNameInDocument());
-    }    
+    }
 }
 
 void TaskDressUpParameters::showObject()
@@ -206,25 +205,16 @@ bool TaskDlgDressUpParameters::accept()
     std::string name = vp->getObject()->getNameInDocument();
     getDressUpView()->highlightReferences(false);
 
-    try {
-        std::vector<std::string> refs = parameter->getReferences();
-        std::stringstream str;
-        str << "App.ActiveDocument." << name.c_str() << ".Base = (App.ActiveDocument."
-            << parameter->getBase()->getNameInDocument() << ",[";
-        for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
-            str << "\"" << *it << "\",";
-        str << "])";
-        Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
-        return false;
-    }
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
+    std::vector<std::string> refs = parameter->getReferences();
+    std::stringstream str;
+    str << "App.ActiveDocument." << name.c_str() << ".Base = (App.ActiveDocument."
+        << parameter->getBase()->getNameInDocument() << ",[";
+    for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
+        str << "\"" << *it << "\",";
+    str << "])";
+    Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
 
-    return true;
+    return TaskDlgFeatureParameters::accept();
 }
 
 #include "moc_TaskDressUpParameters.cpp"

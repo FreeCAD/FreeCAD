@@ -27,7 +27,6 @@
 # include <sstream>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
 # include <Precision.hxx>
 #endif
 
@@ -283,13 +282,32 @@ TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters()
 
 //==== calls from the TaskView ===============================================================
 
+
+bool TaskDlgSketchBasedParameters::accept() {
+    App::DocumentObject* feature = vp->getObject();
+
+    // Make sure the feature is what we are expecting
+    // Should be fine but you never know...
+    if ( !feature->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId()) ) {
+        throw Base::Exception("Bad object processed in the sketch based dialog.");
+    }
+
+    App::DocumentObject* sketch = static_cast<PartDesign::SketchBased*>(feature)->Sketch.getValue();
+
+    if (sketch) {
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
+    }
+
+    return TaskDlgFeatureParameters::accept();
+}
+
 bool TaskDlgSketchBasedParameters::reject()
 {
     PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
     // get the Sketch
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Sketch.getValue());
     bool rv;
-    
+
     // rv should be true anyway but to be on the safe side dur to thurver changes better respect it.
     rv = TaskDlgFeatureParameters::reject();
 

@@ -44,7 +44,6 @@ class ViewProvider;
 namespace PartDesignGui { 
 
 
-
 class TaskPadParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
@@ -76,7 +75,7 @@ private:
     double getLength2(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
-    QByteArray getFaceName(void) const;
+    QString getFaceName(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI(int index);
 
