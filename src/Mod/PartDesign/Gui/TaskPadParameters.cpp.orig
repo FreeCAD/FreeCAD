@@ -27,12 +27,12 @@
 # include <sstream>
 # include <QRegExp>
 # include <QTextStream>
+# include <QMessageBox>
 # include <Precision.hxx>
 #endif
 
-#include "ui_TaskPocketParameters.h"
-#include "TaskPocketParameters.h"
-#include <Base/UnitsApi.h>
+#include "ui_TaskPadParameters.h"
+#include "TaskPadParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -43,7 +43,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeaturePocket.h>
+#include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
@@ -52,28 +52,30 @@
 using namespace PartDesignGui;
 using namespace Gui;
 
-/* TRANSLATOR PartDesignGui::TaskPocketParameters */
+/* TRANSLATOR PartDesignGui::TaskPadParameters */
 
-TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent)
-    : TaskSketchBasedParameters(PocketView, parent, "PartDesign_Pocket",tr("Pocket parameters"))
+TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidget *parent)
+    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad",tr("Pad parameters"))
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPocketParameters();
+    ui = new Ui_TaskPadParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->pocketLength, SIGNAL(valueChanged(double)),
+    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplane(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversed(bool)));
+    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onLength2Changed(double)));
     connect(ui->spinOffset, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplaneChanged(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
-    connect(ui->buttonFace, SIGNAL(pressed()),
+    connect(ui->buttonFace, SIGNAL(clicked()),
             this, SLOT(onButtonFace()));
     connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
             this, SLOT(onFaceName(QString)));
@@ -83,7 +85,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature recomputes
-    ui->pocketLength->blockSignals(true);
+    ui->lengthEdit->blockSignals(true);
+    ui->lengthEdit2->blockSignals(true);
     ui->spinOffset->blockSignals(true);
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
@@ -91,15 +94,20 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lineFaceName->blockSignals(true);
     ui->changeMode->blockSignals(true);
 
+    // set the history path
+    ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
+    ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
+
     // Get the feature data
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
-    double l = pcPocket->Length.getValue();
-    double off = pcPocket->Offset.getValue();
-    bool midplane = pcPocket->Midplane.getValue();
-    bool reversed = pcPocket->Reversed.getValue();
-    int index = pcPocket->Type.getValue(); // must extract value here, clear() kills it!
-    App::DocumentObject* obj =  pcPocket->UpToFace.getValue();
-    std::vector<std::string> subStrings = pcPocket->UpToFace.getSubValues();
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    Base::Quantity l = pcPad->Length.getQuantityValue();
+    bool midplane = pcPad->Midplane.getValue();
+    bool reversed = pcPad->Reversed.getValue();
+    Base::Quantity l2 = pcPad->Length2.getQuantityValue();
+    double off = pcPad->Offset.getValue();
+    int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
+    App::DocumentObject* obj = pcPad->UpToFace.getValue();
+    std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
     std::string upToFace;
     int faceId = -1;
     if ((obj != NULL) && !subStrings.empty()) {
@@ -109,13 +117,22 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     }
 
     // Fill data into dialog elements
-    ui->pocketLength->setMinimum(0);
-    ui->pocketLength->setMaximum(INT_MAX);
-    ui->pocketLength->setValue(l);
-    ui->spinOffset->setMinimum(-INT_MAX);
+    ui->lengthEdit->setMinimum(0);
+    ui->lengthEdit->setMaximum(INT_MAX);
+    ui->lengthEdit->setValue(l);
+    ui->lengthEdit2->setMinimum(0);
+    ui->lengthEdit2->setMaximum(INT_MAX);
+    ui->lengthEdit2->setValue(l2);
     ui->spinOffset->setMaximum(INT_MAX);
+    ui->spinOffset->setMinimum(-INT_MAX);
     ui->spinOffset->setValue(off);
+
+    // Bind input fields to properties
+    ui->lengthEdit->bind(pcPad->Length);
+    ui->lengthEdit2->bind(pcPad->Length2);
     ui->checkBoxMidplane->setChecked(midplane);
+    // According to bug #0000521 the reversed option
+    // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
     if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
         ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
@@ -127,102 +144,113 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
-    ui->changeMode->insertItem(1, tr("Through all"));
+    ui->changeMode->insertItem(1, tr("To last"));
     ui->changeMode->insertItem(2, tr("To first"));
     ui->changeMode->insertItem(3, tr("Up to face"));
+    ui->changeMode->insertItem(4, tr("Two dimensions"));
     ui->changeMode->setCurrentIndex(index);
 
-    // Bind input fields to properties
-    ui->pocketLength->bind(pcPocket->Length);
-
-    ui->pocketLength->blockSignals(false);
+    // activate and de-activate dialog elements as appropriate
+    ui->lengthEdit->blockSignals(false);
+    ui->lengthEdit2->blockSignals(false);
     ui->spinOffset->blockSignals(false);
     ui->checkBoxMidplane->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);
     ui->buttonFace->blockSignals(false);
     ui->lineFaceName->blockSignals(false);
     ui->changeMode->blockSignals(false);
-
-    ui->checkBoxReversed->setVisible(true);
-
     updateUI(index);
 
-    //// check if the sketch has support
-    //Sketcher::SketchObject *pcSketch;
-    //if (pcPocket->Sketch.getValue()) {
-    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue());
-    //    if (pcSketch->Support.getValue())
-    //        // in case of sketch with support, reverse makes no sense (goes into the part)
-    //        ui->checkBoxReversed->setEnabled(0);
-    //    else
-    //        ui->checkBoxReversed->setChecked(reversed);
-    //}
+    // if it is a newly created object use the last value of the history
+    if(newObj){
+        ui->lengthEdit->setToLastUsedValue();
+        ui->lengthEdit->selectNumber();
+        ui->lengthEdit2->setToLastUsedValue();
+        ui->lengthEdit2->selectNumber();
+    }
 }
 
-void TaskPocketParameters::updateUI(int index)
+void TaskPadParameters::updateUI(int index)
 {
-    if (index == 0) { // Only this option requires a numeric value // Dimension
-        ui->pocketLength->setVisible(true);
-        ui->pocketLength->setEnabled(true);
-        ui->pocketLength->selectAll();
-        QMetaObject::invokeMethod(ui->pocketLength, "setFocus", Qt::QueuedConnection);
+    if (index == 0) {  // dimension
+        ui->lengthEdit->setVisible(true);
+        ui->lengthEdit->setEnabled(true);
+        ui->lengthEdit->selectNumber();
+        ui->labelLength->setVisible(true);
         ui->spinOffset->setVisible(false);
         ui->spinOffset->setEnabled(false);
-        ui->spinOffset->setEnabled(false);
+        ui->labelOffset->setVisible(false);
+        // Make sure that the spin box has the focus to get key events
+        // Calling setFocus() directly doesn't work because the spin box is not
+        // yet visible.
+        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
         ui->checkBoxMidplane->setEnabled(true);
         // Reverse only makes sense if Midplane is not true
-        ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked()); // Will flip direction of dimension
+        ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked());
+        ui->labelLength2->setVisible(false);
+        ui->lengthEdit2->setVisible(false);
+        ui->lengthEdit2->setEnabled(false);
         ui->buttonFace->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
         onButtonFace(false);
-    } else if (index == 1) { // Through all
-        ui->checkBoxMidplane->setEnabled(true);
-        ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked()); // Will flip direction of through all
-        ui->pocketLength->setVisible(false);
-        ui->pocketLength->setEnabled(false);
-        ui->spinOffset->setVisible(false);
-        ui->spinOffset->setVisible(false);
-        ui->spinOffset->setEnabled(false);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-        onButtonFace(false);
-    } else if (index == 2) { // Neither value nor face required // To First
-        ui->pocketLength->setEnabled(false);
-        ui->pocketLength->setVisible(false);
-        ui->checkBoxMidplane->setEnabled(false); // Can't have a midplane to a single face
-        ui->checkBoxReversed->setEnabled(false); // Will change the direction it seeks for its first face?
-                                                 // Doesnt work so is currently disabled. Fix probably lies 
-                                                 // somwhere in IF block on line 125 of FeaturePocket.cpp
-        ui->labelLength->setVisible(false);
-        ui->spinOffset->setVisible(true);
-        ui->spinOffset->setEnabled(true);
-        ui->labelOffset->setVisible(true);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-        onButtonFace(false);
-    } else if (index == 3) { // Only this option requires to select a face // Up to face
-        ui->pocketLength->setEnabled(false);
-        ui->pocketLength->setVisible(false);
+    } else if (index == 1 || index == 2) { // up to first/last
+        ui->lengthEdit->setVisible(false);
+        ui->lengthEdit->setEnabled(false);
         ui->labelLength->setVisible(false);
         ui->spinOffset->setVisible(true);
         ui->spinOffset->setEnabled(true);
         ui->labelOffset->setVisible(true);
         ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(false); // No need for reverse since user-chosen face will dtermine direction
+        ui->checkBoxReversed->setEnabled(true);
+        ui->labelLength2->setVisible(false);
+        ui->lengthEdit2->setVisible(false);
+        ui->lengthEdit2->setEnabled(false);
+        ui->buttonFace->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+        onButtonFace(false);
+    } else if (index == 3) { // up to face
+        ui->lengthEdit->setVisible(false);
+        ui->lengthEdit->setEnabled(false);
+        ui->labelLength->setVisible(false);
+        ui->spinOffset->setVisible(true);
+        ui->spinOffset->setEnabled(true);
+        ui->labelOffset->setVisible(true);
+        ui->checkBoxMidplane->setEnabled(false);
+        ui->checkBoxReversed->setEnabled(false);
+        ui->labelLength2->setVisible(false);
+        ui->lengthEdit2->setVisible(false);
+        ui->lengthEdit2->setEnabled(false);
         ui->buttonFace->setEnabled(true);
         ui->lineFaceName->setEnabled(true);
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->text().isEmpty() || (ui->lineFaceName->text() == tr("No face selected")))
             onButtonFace(true);
+    } else { // two dimensions
+        ui->lengthEdit->setEnabled(true);
+        ui->lengthEdit->setVisible(true);
+        ui->lengthEdit->selectNumber();
+        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
+        ui->labelLength->setVisible(true);
+        ui->spinOffset->setVisible(false);
+        ui->spinOffset->setEnabled(false);
+        ui->labelOffset->setVisible(false);
+        ui->checkBoxMidplane->setEnabled(false);
+        ui->checkBoxReversed->setEnabled(false);
+        ui->labelLength2->setVisible(true);
+        ui->lengthEdit2->setVisible(true);
+        ui->lengthEdit2->setEnabled(true);
+        ui->buttonFace->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+        onButtonFace(false);
     }
 }
 
-void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         QString refText = onAddSelection(msg);
-        if (refText.length() > 0) {
+        if (refText.length() != 0) {
             ui->lineFaceName->blockSignals(true);
             ui->lineFaceName->setText(refText);
             ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
@@ -236,134 +264,137 @@ void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->lineFaceName->blockSignals(false);
         }
     }
+
     else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->lineFaceName->blockSignals(true);
-        ui->lineFaceName->setText(tr("No face selected"));
+        ui->lineFaceName->setText(tr(""));
         ui->lineFaceName->setProperty("FaceName", QByteArray());
         ui->lineFaceName->blockSignals(false);
     }
 }
 
-void TaskPocketParameters::onLengthChanged(double len)
+void TaskPadParameters::onLengthChanged(double len)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
-    pcPocket->Length.setValue(len);
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Length.setValue(len);
     recomputeFeature();
 }
 
-void TaskPocketParameters::onOffsetChanged(double len)
+void TaskPadParameters::onMidplane(bool on)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
-    pcPocket->Offset.setValue(len);
-    recomputeFeature();
-}
-
-void TaskPocketParameters::onMidplaneChanged(bool on)
-{
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
-    pcPocket->Midplane.setValue(on);
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Midplane.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
     recomputeFeature();
 }
 
-void TaskPocketParameters::onReversedChanged(bool on)
+void TaskPadParameters::onReversed(bool on)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
-    pcPocket->Reversed.setValue(on);
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Reversed.setValue(on);
     recomputeFeature();
 }
 
-void TaskPocketParameters::onModeChanged(int index)
+void TaskPadParameters::onLength2Changed(double len)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Length2.setValue(len);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onOffsetChanged(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Offset.setValue(len);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onModeChanged(int index)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
 
     switch (index) {
         case 0:
-            // Why? See below for "UpToFace"
-            pcPocket->Type.setValue("Length");
-            if (oldLength < Precision::Confusion())
-                oldLength = 5.0;
-            pcPocket->Length.setValue(oldLength);
-            ui->pocketLength->setValue(oldLength);
+            pcPad->Type.setValue("Length");
+            // Avoid error message
+            if (ui->lengthEdit->value() < Precision::Confusion())
+                ui->lengthEdit->setValue(5.0);
             break;
-        case 1:
-            oldLength = pcPocket->Length.getValue();
-            pcPocket->Type.setValue("ThroughAll");
-            break;
-        case 2:
-            oldLength = pcPocket->Length.getValue();
-            pcPocket->Type.setValue("UpToFirst");
-            break;
-        case 3:
-            // Because of the code at the begining of Pocket::execute() which is used to detect
-            // broken legacy parts, we must set the length to zero here!
-            oldLength = pcPocket->Length.getValue();
-            pcPocket->Type.setValue("UpToFace");
-            pcPocket->Length.setValue(0.0);
-            ui->pocketLength->setValue(0.0);
-            break;
-        default:
-            pcPocket->Type.setValue("Length");
+        case 1: pcPad->Type.setValue("UpToLast"); break;
+        case 2: pcPad->Type.setValue("UpToFirst"); break;
+        case 3: pcPad->Type.setValue("UpToFace"); break;
+        default: pcPad->Type.setValue("TwoLengths");
     }
 
     updateUI(index);
     recomputeFeature();
 }
 
-void TaskPocketParameters::onButtonFace(const bool pressed) {
+void TaskPadParameters::onButtonFace(const bool pressed)
+{
     TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);
 }
 
-void TaskPocketParameters::onFaceName(const QString& text)
+void TaskPadParameters::onFaceName(const QString& text)
 {
     ui->lineFaceName->setProperty("FaceName", TaskSketchBasedParameters::onFaceName(text));
 }
 
-double TaskPocketParameters::getLength(void) const
+double TaskPadParameters::getLength(void) const
 {
-    return ui->pocketLength->value().getValue();
+    return ui->lengthEdit->value().getValue();
 }
 
-double TaskPocketParameters::getOffset(void) const
-{
-    return ui->spinOffset->value();
-}
-
-bool   TaskPocketParameters::getReversed(void) const
+bool   TaskPadParameters::getReversed(void) const
 {
     return ui->checkBoxReversed->isChecked();
 }
 
-int TaskPocketParameters::getMode(void) const
+bool   TaskPadParameters::getMidplane(void) const
+{
+    return ui->checkBoxMidplane->isChecked();
+}
+
+double TaskPadParameters::getLength2(void) const
+{
+    return ui->lengthEdit2->value().getValue();
+}
+
+double TaskPadParameters::getOffset(void) const
+{
+    return ui->spinOffset->value();
+}
+
+int TaskPadParameters::getMode(void) const
 {
     return ui->changeMode->currentIndex();
 }
 
-QString TaskPocketParameters::getFaceName(void) const
+QString TaskPadParameters::getFaceName(void) const
 {
-    // TODO Make it return None rather than empty string (2015-11-03, Fat-Zer)
     if (getMode() == 3) {
         QString faceName = ui->lineFaceName->property("FaceName").toString();
         if (!faceName.isEmpty()) {
             return getFaceReference(ui->lineFaceName->text(), faceName);
         }
     }
-    return QString ();
+    return QString();
 }
 
-TaskPocketParameters::~TaskPocketParameters()
+TaskPadParameters::~TaskPadParameters()
 {
     delete ui;
 }
 
-void TaskPocketParameters::changeEvent(QEvent *e)
+void TaskPadParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
-        ui->pocketLength->blockSignals(true);
+        ui->lengthEdit->blockSignals(true);
+        ui->lengthEdit2->blockSignals(true);
         ui->spinOffset->blockSignals(true);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
@@ -371,9 +402,10 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         ui->retranslateUi(proxy);
         ui->changeMode->clear();
         ui->changeMode->addItem(tr("Dimension"));
-        ui->changeMode->addItem(tr("Through all"));
+        ui->changeMode->addItem(tr("To last"));
         ui->changeMode->addItem(tr("To first"));
         ui->changeMode->addItem(tr("Up to face"));
+        ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
         QStringList parts = ui->lineFaceName->text().split(QChar::fromAscii(':'));
@@ -383,31 +415,48 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         if (upToFace.indexOf("Face") == 0) {
             faceId = upToFace.remove(0,4).toInt(&ok);
         }
+#if QT_VERSION >= 0x040700
+        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+#endif
         ui->lineFaceName->setText(ok ?
                                   parts[0] + QString::fromAscii(":") + tr("Face") + QString::number(faceId) :
-                                  tr("No face selected"));
-        ui->pocketLength->blockSignals(false);
+                                  QString());
+        ui->lengthEdit->blockSignals(false);
+        ui->lengthEdit2->blockSignals(false);
         ui->spinOffset->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
     }
 }
 
-void TaskPocketParameters::apply()
+void TaskPadParameters::saveHistory(void)
+{
+    // save the user values to history 
+    ui->lengthEdit->pushToHistory();
+    ui->lengthEdit2->pushToHistory();
+}
+
+void TaskPadParameters::apply()
 {
     std::string name = vp->getObject()->getNameInDocument();
+    const char * cname = name.c_str();
 
-    //Gui::Command::openCommand("Pocket changed");
-    ui->pocketLength->apply();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),getMode());
+    ui->lengthEdit->apply();
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",cname,getReversed()?1:0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",cname,getMidplane()?1:0);
+
+    ui->lengthEdit2->apply();
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",cname,getMode());
     QString facename = getFaceName();
 
     if (!facename.isEmpty()) {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s",
-                name.c_str(), facename.toLatin1().data() );
-    } else
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i", name.c_str(), getReversed()?1:0);
+                cname, facename.toLatin1().data());
+    } else {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", cname);
+    }
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f", name.c_str(), getOffset());
 }
 
@@ -416,28 +465,43 @@ void TaskPocketParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
-    : TaskDlgSketchBasedParameters(PocketView)
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj)
+    : TaskDlgSketchBasedParameters(PadView)
 {
-    assert(vp);
-    parameter  = new TaskPocketParameters(static_cast<ViewProviderPocket*>(vp));
+    assert(PadView);
+    parameter  = new TaskPadParameters(static_cast<ViewProviderPad*>(PadView));
 
     Content.push_back(parameter);
 }
 
-TaskDlgPocketParameters::~TaskDlgPocketParameters()
+TaskDlgPadParameters::~TaskDlgPadParameters()
 {
 
 }
 
 //==== calls from the TaskView ===============================================================
 
-bool TaskDlgPocketParameters::accept()
+bool TaskDlgPadParameters::accept()
 {
+    // save the history
+    parameter->saveHistory();
     parameter->apply();
 
+<<<<<<< b551f892abed242e90afa77240bbdd7dcf7fc45c
+    try {
+        //Gui::Command::openCommand("Pad changed");
+        parameter->apply();
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        return false;
+    }
+
+    return true;
+=======
     return TaskDlgSketchBasedParameters::accept();
+>>>>>>> PartDesignGui: Make DressUp and SketchSupport propertie dialogs use common accept() structure
 }
 
 
-#include "moc_TaskPocketParameters.cpp"
+#include "moc_TaskPadParameters.cpp"

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QMessageBox>
 #endif
 
 #include <Gui/Application.h>
@@ -46,6 +47,40 @@ TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider *
 TaskDlgFeatureParameters::~TaskDlgFeatureParameters()
 {
 
+}
+
+bool TaskDlgFeatureParameters::accept() {
+    App::DocumentObject* feature = vp->getObject();
+
+    try {
+        // Make sure the feature is what we are expecting
+        // Should be fine but you never know...
+        if ( !feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
+            throw Base::Exception("Bad object processed in the feature dialog.");
+        }
+
+        App::DocumentObject* support = static_cast<PartDesign::Feature*>(feature)->BaseFeature.getValue();
+
+        if (support) {
+            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",
+                    support->getNameInDocument());
+        }
+
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+
+        if (!feature->isValid()) {
+            throw Base::Exception(vp->getObject()->getStatusString());
+        }
+
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::Command::commitCommand();
+    } catch (const Base::Exception& e) {
+        // Generally the only thing that should fail is feature->isValid() others should be fine
+        QMessageBox::warning( 0, tr("Input error"), QString::fromAscii(e.what()));
+        return false;
+    }
+
+    return true;
 }
 
 bool TaskDlgFeatureParameters::reject()

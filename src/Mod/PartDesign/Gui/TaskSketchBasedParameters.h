@@ -34,7 +34,7 @@ namespace App {
 class Property;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
 /// Convenience class to collect common methods for all SketchBased features
@@ -55,7 +55,7 @@ protected:
     const QByteArray onFaceName(const QString& text);
     QString getFaceReference(const QString& obj, const QString& sub) const;
     void recomputeFeature();
-    
+
     App::DocumentObject* getPartPlanes(const char* str) const;
     App::DocumentObject* getPartLines(const char* str) const;
 
@@ -77,6 +77,8 @@ public:
     ~TaskDlgSketchBasedParameters();
 
 public:
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
 };

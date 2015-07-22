@@ -53,9 +53,6 @@ public:
     TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent = 0);
     ~TaskPocketParameters();
 
-    double getOffset(void) const;
-    bool getReversed(void) const;
-    QByteArray getFaceName(void) const;
     void apply();
 
 private Q_SLOTS:
@@ -74,6 +71,10 @@ private:
     double getLength(void) const;
     bool getMidplane(void) const;
     int getMode(void) const;
+    double getOffset(void) const;
+    bool getReversed(void) const;
+    QString getFaceName(void) const;
+
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI(int index);
 
