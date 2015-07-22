@@ -148,9 +148,16 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
 
 void DressUp::onChanged(const App::Property* prop)
 {
+    // the BaseFeature property should always link to the same feature as the Base
     if (prop == &BaseFeature) {
-        // if attached to a sketch then mark it as read-only
-        this->Placement.setStatus(App::Property::ReadOnly, BaseFeature.getValue() != 0);
+        if (Base.getValue() != BaseFeature.getValue()) {
+            Base.setValue (BaseFeature.getValue());
+        }
+    } else if (prop == &Base) {
+        // track the vice-versa changes
+        if (Base.getValue() != BaseFeature.getValue()) {
+            BaseFeature.setValue (Base.getValue());
+        }
     }
 
     Feature::onChanged(prop);
