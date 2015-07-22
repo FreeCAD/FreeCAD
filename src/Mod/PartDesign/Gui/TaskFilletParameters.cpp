@@ -56,14 +56,6 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
     proxy = new QWidget(this);
     ui = new Ui_TaskFilletParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->filletRadius, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -81,6 +73,16 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
     {
         ui->listWidgetReferences->addItem(QString::fromStdString(*i));
     }
+
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->filletRadius, SIGNAL(valueChanged(double)),
+            this, SLOT(onLengthChanged(double)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     ui->listWidgetReferences->addAction(action);
