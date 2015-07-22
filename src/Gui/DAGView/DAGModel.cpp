@@ -317,7 +317,8 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
     "App::PropertyLink",
     "App::PropertyLinkList",
     "App::PropertyLinkSub",
-    "App::PropertyLinkSubList"
+    "App::PropertyLinkSubList",
+    "App::PropertyLinkPickList"
   };
   
   if (linkTypes.find(propertyIn.getTypeId().getName()) != linkTypes.end())
