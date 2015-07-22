@@ -26,8 +26,9 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include "ViewProvider.h"
+
+#include "TaskFeatureParameters.h"
 
 namespace App {
 class Property;
@@ -67,7 +68,7 @@ protected:
     bool blockUpdate;
 };
 
-class TaskDlgSketchBasedParameters : public Gui::TaskView::TaskDialog
+class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters
 {
     Q_OBJECT
 
@@ -76,24 +77,8 @@ public:
     ~TaskDlgSketchBasedParameters();
 
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept()=0;
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-protected:
-    PartDesignGui::ViewProvider   *vp;
 };
 
 } //namespace PartDesignGui

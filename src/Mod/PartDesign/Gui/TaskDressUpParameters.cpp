@@ -42,7 +42,6 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
-#include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
 using namespace PartDesignGui;
@@ -190,7 +189,7 @@ void TaskDressUpParameters::exitSelectionMode()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView)
-    : TaskDialog(),DressUpView(DressUpView)
+    : TaskDlgFeatureParameters(DressUpView)
 {
     assert(DressUpView);
 }
@@ -204,8 +203,8 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters()
 
 bool TaskDlgDressUpParameters::accept()
 {
-    std::string name = DressUpView->getObject()->getNameInDocument();
-    DressUpView->highlightReferences(false);
+    std::string name = vp->getObject()->getNameInDocument();
+    getDressUpView()->highlightReferences(false);
 
     try {
         std::vector<std::string> refs = parameter->getReferences();
@@ -227,42 +226,5 @@ bool TaskDlgDressUpParameters::accept()
 
     return true;
 }
-
-bool TaskDlgDressUpParameters::reject()
-{
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-    App::DocumentObject* pcSupport = pcDressUp->Base.getValue();
-	PartDesign::Body* body = PartDesign::Body::findBodyOf (pcDressUp);
-
-    DressUpView->highlightReferences(false);
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");    
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcDressUp)) {
-        // Body housekeeping
-        if (body != NULL) {
-            // Make the new Tip and the previous solid feature visible again
-            // TODO: share the code with TaskDlgSketchBasedDlg::reject()
-            App::DocumentObject* tip  = body->Tip.getValue();
-            App::DocumentObject* prev = body->getPrevSolidFeature();
-            if (tip != NULL) {
-                Gui::Application::Instance->getViewProvider(tip)->show();
-                if ((tip != prev) && (prev != NULL))
-                    Gui::Application::Instance->getViewProvider(prev)->show();
-            }
-        } else {
-            if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-                Gui::Application::Instance->getViewProvider(pcSupport)->show();
-        }
-    }
-
-    return true;
-}
-
-
 
 #include "moc_TaskDressUpParameters.cpp"

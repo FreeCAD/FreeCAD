@@ -26,8 +26,8 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
 
 class QListWidget;
@@ -78,7 +78,7 @@ protected:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDressUpParameters : public Gui::TaskView::TaskDialog
+class TaskDlgDressUpParameters : public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
@@ -87,29 +87,13 @@ public:
     virtual ~TaskDlgDressUpParameters();
 
     ViewProviderDressUp* getDressUpView() const
-    { return DressUpView; }
-
+    { return static_cast<ViewProviderDressUp*>(vp); }
 
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open() {}
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int) {}
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderDressUp   *DressUpView;
-
     TaskDressUpParameters  *parameter;
 };
 

@@ -291,7 +291,7 @@ bool TaskDlgDraftParameters::accept()
         return false;
     }
 
-    std::string name = DressUpView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),draftparameter->getAngle());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
