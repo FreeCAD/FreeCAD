@@ -61,35 +61,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     proxy = new QWidget(this);
     ui = new Ui_TaskPocketParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->pocketLength, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffsetChanged(double)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplaneChanged(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
-    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
-    connect(ui->buttonFace, SIGNAL(pressed()),
-            this, SLOT(onButtonFace()));
-    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
-            this, SLOT(onFaceName(QString)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
 
     this->groupLayout()->addWidget(proxy);
-
-    // Temporarily prevent unnecessary feature recomputes
-    ui->pocketLength->blockSignals(true);
-    ui->spinOffset->blockSignals(true);
-    ui->checkBoxMidplane->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
-    ui->buttonFace->blockSignals(true);
-    ui->lineFaceName->blockSignals(true);
-    ui->changeMode->blockSignals(true);
 
     // Get the feature data
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
@@ -135,13 +108,24 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     // Bind input fields to properties
     ui->pocketLength->bind(pcPocket->Length);
 
-    ui->pocketLength->blockSignals(false);
-    ui->spinOffset->blockSignals(false);
-    ui->checkBoxMidplane->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
-    ui->buttonFace->blockSignals(false);
-    ui->lineFaceName->blockSignals(false);
-    ui->changeMode->blockSignals(false);
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->pocketLength, SIGNAL(valueChanged(double)),
+            this, SLOT(onLengthChanged(double)));
+    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffsetChanged(double)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplaneChanged(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversedChanged(bool)));
+    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->buttonFace, SIGNAL(pressed()),
+            this, SLOT(onButtonFace()));
+    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
+            this, SLOT(onFaceName(QString)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 
     ui->checkBoxReversed->setVisible(true);
 

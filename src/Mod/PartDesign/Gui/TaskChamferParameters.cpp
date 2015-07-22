@@ -57,15 +57,6 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
     proxy = new QWidget(this);
     ui = new Ui_TaskChamferParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->chamferDistance, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
-
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
@@ -82,6 +73,16 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
     {
         ui->listWidgetReferences->addItem(QString::fromStdString(*i));
     }
+
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->chamferDistance, SIGNAL(valueChanged(double)),
+            this, SLOT(onLengthChanged(double)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     ui->listWidgetReferences->addAction(action);

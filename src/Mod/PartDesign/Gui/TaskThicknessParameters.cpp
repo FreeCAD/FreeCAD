@@ -56,21 +56,6 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     proxy = new QWidget(this);
     ui = new Ui_TaskThicknessParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->Value, SIGNAL(valueChanged(double)),
-            this, SLOT(onValueChanged(double)));
-    connect(ui->checkReverse, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->modeComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
-    connect(ui->joinComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onJoinTypeChanged(int)));
-
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
@@ -90,6 +75,22 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     {
         ui->listWidgetReferences->addItem(QString::fromStdString(*i));
     }
+
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->Value, SIGNAL(valueChanged(double)),
+            this, SLOT(onValueChanged(double)));
+    connect(ui->checkReverse, SIGNAL(toggled(bool)),
+            this, SLOT(onReversedChanged(bool)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->modeComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->joinComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onJoinTypeChanged(int)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     ui->listWidgetReferences->addAction(action);

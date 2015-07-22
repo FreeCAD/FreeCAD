@@ -61,38 +61,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     proxy = new QWidget(this);
     ui = new Ui_TaskPadParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplane(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversed(bool)));
-    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
-            this, SLOT(onLength2Changed(double)));
-    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffsetChanged(double)));
-    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
-    connect(ui->buttonFace, SIGNAL(clicked()),
-            this, SLOT(onButtonFace()));
-    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
-            this, SLOT(onFaceName(QString)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
 
     this->groupLayout()->addWidget(proxy);
-
-    // Temporarily prevent unnecessary feature recomputes
-    ui->lengthEdit->blockSignals(true);
-    ui->lengthEdit2->blockSignals(true);
-    ui->spinOffset->blockSignals(true);
-    ui->checkBoxMidplane->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
-    ui->buttonFace->blockSignals(true);
-    ui->lineFaceName->blockSignals(true);
-    ui->changeMode->blockSignals(true);
 
     // set the history path
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
@@ -150,16 +120,26 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     ui->changeMode->insertItem(4, tr("Two dimensions"));
     ui->changeMode->setCurrentIndex(index);
 
-    // activate and de-activate dialog elements as appropriate
-    ui->lengthEdit->blockSignals(false);
-    ui->lengthEdit2->blockSignals(false);
-    ui->spinOffset->blockSignals(false);
-    ui->checkBoxMidplane->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
-    ui->buttonFace->blockSignals(false);
-    ui->lineFaceName->blockSignals(false);
-    ui->changeMode->blockSignals(false);
-    updateUI(index);
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onLengthChanged(double)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplane(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversed(bool)));
+    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onLength2Changed(double)));
+    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffsetChanged(double)));
+    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->buttonFace, SIGNAL(clicked()),
+            this, SLOT(onButtonFace()));
+    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
+            this, SLOT(onFaceName(QString)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 
     // if it is a newly created object use the last value of the history
     if(newObj){

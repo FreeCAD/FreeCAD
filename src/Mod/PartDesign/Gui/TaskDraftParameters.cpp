@@ -57,20 +57,6 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     proxy = new QWidget(this);
     ui = new Ui_TaskDraftParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->draftAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onAngleChanged(double)));
-    connect(ui->checkReverse, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->buttonPlane, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonPlane(bool)));
-    connect(ui->buttonLine, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonLine(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -91,6 +77,22 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     {
         ui->listWidgetReferences->addItem(QString::fromStdString(*i));
     }
+
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->draftAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->checkReverse, SIGNAL(toggled(bool)),
+            this, SLOT(onReversedChanged(bool)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->buttonPlane, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonPlane(bool)));
+    connect(ui->buttonLine, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonLine(bool)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     ui->listWidgetReferences->addAction(action);
