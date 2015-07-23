@@ -64,7 +64,7 @@ Pocket::Pocket()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
-    ADD_PROPERTY(Offset,(0.0));
+    ADD_PROPERTY_TYPE(Offset,(0.0),"Pad",App::Prop_None,"Offset from face in which pad will end");
 }
 
 short Pocket::mustExecute() const
@@ -72,6 +72,7 @@ short Pocket::mustExecute() const
     if (Placement.isTouched() ||
         Type.isTouched() ||
         Length.isTouched() ||
+        Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
     return SketchBased::mustExecute();

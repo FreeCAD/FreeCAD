@@ -48,15 +48,6 @@
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>10.000000000000000</double>
-       </property>
       </widget>
      </item>
     </layout>
@@ -71,20 +62,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="spinOffset">
-       <property name="minimum">
-        <double>0.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit"/>
      </item>
     </layout>
    </item>
@@ -117,15 +95,6 @@
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
        <property name="minimum">
-        <double>0.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
         <double>0.000000000000000</double>
        </property>
       </widget>
