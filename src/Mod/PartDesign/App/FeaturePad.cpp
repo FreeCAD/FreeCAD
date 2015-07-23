@@ -69,7 +69,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Length,(100.0),"Pad",App::Prop_None,"Pad length");
     ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"P");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",App::Prop_None,"Face where pad will end");
-    ADD_PROPERTY(Offset,(0.0));
+    ADD_PROPERTY_TYPE(Offset,(0.0),"Pad",App::Prop_None,"Offset from face in which pad will end");
 }
 
 short Pad::mustExecute() const
@@ -78,6 +78,7 @@ short Pad::mustExecute() const
         Type.isTouched() ||
         Length.isTouched() ||
         Length2.isTouched() ||
+        Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
     return SketchBased::mustExecute();
