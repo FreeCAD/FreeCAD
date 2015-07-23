@@ -75,6 +75,7 @@ const bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges&
 
         PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
         App::DocumentObject* base = this->getBase();
+
         // TODO: Must we make a copy here instead of assigning to const char* ?
         const char* fname = base->getNameInDocument();        
         if (strcmp(msg.pObjectName, fname) != 0)
@@ -168,10 +169,14 @@ void TaskDressUpParameters::showObject()
     }
 }
 
-App::DocumentObject* TaskDressUpParameters::getBase(void) const
+Part::Feature* TaskDressUpParameters::getBase(void) const
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-    return pcDressUp->Base.getValue();
+    // Unlikely but this may throw an exception in case we are started to edit an object which base feature
+    // was deleted. This exception will be likely unhandled inside the dialog and pass upper, But an error
+    // message inside the report view is better than a SEGFAULT.
+    // TODO: generally this situation should be prevented in ViewProviderDressUp
+    return pcDressUp->getBaseObject();
 }
 
 void TaskDressUpParameters::exitSelectionMode()
