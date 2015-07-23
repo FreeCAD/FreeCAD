@@ -64,20 +64,18 @@ void DressUp::positionByBaseFeature(void)
         this->Placement.setValue(base->Placement.getValue());
 }
 
-Part::TopoShape DressUp::getBaseShape()
+Part::Feature *DressUp::getBaseObject() const
 {
-    App::DocumentObject* link = BaseFeature.getValue();
-    if (!link)
-        link = this->Base.getValue(); // For legacy features
-    if (!link)
-        throw Base::Exception("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::Exception("Linked object is not a Part object");
-    Part::Feature* base = static_cast<Part::Feature*>(link);
-    const Part::TopoShape& shape = base->Shape.getShape();
-    if (shape._Shape.IsNull())
-        throw Base::Exception("Cannot draft invalid shape");
-    return shape;
+    try {
+        return Feature::getBaseObject();
+    } catch (const Base::Exception &) {
+        App::DocumentObject* base = Base.getValue();
+        if(!base)
+            throw Base::Exception("No Base object linked");
+        if(!base->isDerivedFrom(Part::Feature::getClassTypeId()))
+            throw Base::Exception("Linked object is not a Part object");
+        return static_cast<Part::Feature*>(base);
+    }
 }
 
 void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
@@ -142,20 +140,21 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
         else {
             SubNames.erase(SubNames.begin()+i);
         }
-    }        
+    }
 }
 
 
 void DressUp::onChanged(const App::Property* prop)
 {
-    // the BaseFeature property should always link to the same feature as the Base
+    // the BaseFeature property should track the Base and vice-versa as long as
+    // the feature is inside a body (aka BaseFeature is nonzero)
     if (prop == &BaseFeature) {
-        if (Base.getValue() != BaseFeature.getValue()) {
+        if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
             Base.setValue (BaseFeature.getValue());
         }
     } else if (prop == &Base) {
         // track the vice-versa changes
-        if (Base.getValue() != BaseFeature.getValue()) {
+        if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
             BaseFeature.setValue (Base.getValue());
         }
     }
