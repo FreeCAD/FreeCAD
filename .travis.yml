@@ -1,9 +1,5 @@
 language: cpp
 
-branches:
-  only:
-    - master
-
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y doxygen
