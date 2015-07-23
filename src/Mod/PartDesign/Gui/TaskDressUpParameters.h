@@ -32,6 +32,10 @@
 
 class QListWidget;
 
+namespace Part {
+    class Feature;
+}
+
 namespace PartDesignGui {
 
 class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
@@ -43,7 +47,7 @@ public:
     virtual ~TaskDressUpParameters();
 
     const std::vector<std::string> getReferences(void) const;
-    App::DocumentObject *getBase(void) const;
+    Part::Feature *getBase(void) const;
 
     void hideObject();
     void showObject();
