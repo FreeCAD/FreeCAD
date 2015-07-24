@@ -67,7 +67,9 @@ add_library(
 )
 
 target_link_libraries(area ${Boost_LIBRARIES})
-set_target_properties(area PROPERTIES PREFIX "") 
+
+SET_BIN_DIR(area area)
+SET_PYTHON_PREFIX_SUFFIX(area)
 
 # this figures out where to install the Python modules
 execute_process(
