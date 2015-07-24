@@ -104,42 +104,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
 
             // TODO Check how this will work outside of a body (2015-10-20, Fat-Zer)
-            //check the prerequisites for the selected objects
-            //the user has to decide which option we should take if external references are used
-            bool ext = false;
-            for(App::DocumentObject* obj : support.getValues()) {
-                if(!pcActiveBody->hasFeature(obj)) 
-                    ext = true;
-            }
             // TODO rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
-            if(ext) {
-                QDialog* dia = new QDialog;
-                Ui_Dialog dlg;
-                dlg.setupUi(dia);
-                dia->setModal(true);
-                int result = dia->exec();
-                if(result == QDialog::DialogCode::Rejected) 
-                    return;
-                else if(!dlg.radioXRef->isChecked()) {
-
-                    std::vector<App::DocumentObject*> objs;
-                    std::vector<std::string> subs = support.getSubValues();
-                    int index = 0;
-                    for(App::DocumentObject* obj : support.getValues()) {
-
-                        objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked()));
-                        auto oBody = PartDesignGui::getBodyFor(obj, false);
-                        if (oBody && pcActiveBody) {
-                            pcActiveBody->addFeature(objs.back());
-                        } else if (pcActivePart) {
-                            pcActivePart->addObject(objs.back());
-                        }
-
-                    }
-                }
-
-            };
-
             std::string FeatName = cmd.getUniqueObjectName(name.c_str());
 
             std::string tmp = std::string("Create ")+name;
