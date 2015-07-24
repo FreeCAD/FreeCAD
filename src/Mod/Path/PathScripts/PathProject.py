@@ -43,6 +43,7 @@ class ObjectPathProject:
     def __init__(self,obj):
 #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", translate("PostProcessor","Select the Post Processor file for this project"))
         obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", translate("OutputFile","The NC output file for this project"))
+        obj.setEditorMode("OutputFile",0) #set to default mode
 #        obj.addProperty("App::PropertyBool","Editor","CodeOutput",translate("Show Editor","Show G-Code in simple editor after posting code"))
 #        obj.addProperty("Path::PropertyTooltable","Tooltable",  "Path",translate("PathProject","The tooltable of this feature"))
         obj.addProperty("App::PropertyString",    "Description","Path",translate("PathProject","An optional description for this project"))

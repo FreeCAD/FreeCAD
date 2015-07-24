@@ -253,8 +253,11 @@ def explore(filename=None):
 
 def open(filename,skip=[],only=[],root=None):
     "opens an IFC file in a new document"
-    
+
     docname = os.path.splitext(os.path.basename(filename))[0]
+    if isinstance(docname,unicode): 
+        import sys #workaround since newDocument currently can't handle unicode filenames
+        docname = docname.encode(sys.getfilesystemencoding())
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename,doc.Name,skip,only,root)
@@ -666,10 +669,6 @@ def export(exportList,filename):
     except:
         FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
         return
-        
-    if isinstance(filename,unicode): 
-        import sys #workaround since ifcopenshell currently can't handle unicode filenames
-        filename = filename.encode(sys.getfilesystemencoding())
 
     version = FreeCAD.Version()
     owner = FreeCAD.ActiveDocument.CreatedBy
@@ -690,7 +689,7 @@ def export(exportList,filename):
     ifctemplate = ifctemplate.replace("$timestamp",str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
     template = tempfile.mkstemp(suffix=".ifc")[1]
     of = pyopen(template,"wb")
-    of.write(ifctemplate)
+    of.write(ifctemplate.encode("utf8"))
     of.close()
     global ifcfile, surfstyles
     ifcfile = ifcopenshell.open(template)
@@ -877,6 +876,11 @@ def export(exportList,filename):
                 ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
 
     if DEBUG: print "writing ",filename,"..."
+    
+    if isinstance(filename,unicode): 
+        import sys #workaround since ifcopenshell currently can't handle unicode filenames
+        filename = filename.encode(sys.getfilesystemencoding())
+    
     ifcfile.write(filename)
 
 

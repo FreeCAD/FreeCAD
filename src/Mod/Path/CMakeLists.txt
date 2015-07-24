@@ -1,4 +1,5 @@
 add_subdirectory(App)
+add_subdirectory(libarea)
 
 if(BUILD_GUI)
     add_subdirectory(Gui)

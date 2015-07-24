@@ -27,9 +27,22 @@ import FreeCAD,FreeCADGui
 import Part
 from FreeCAD import Vector
 
+def equals(p1,p2):
+    '''returns True if vertexes have same coordinates within precision amount of digits '''
+    precision = 12 #hardcoded
+    p=precision
+    u = Vector(p1.X,p1.Y,p1.Z)
+    v = Vector(p2.X,p2.Y,p2.Z)
+    vector = (u.sub(v))
+    isNull = (round(vector.x,p)==0 and round(vector.y,p)==0 and round(vector.z,p)==0)
+    return isNull 
+
+
 
 def Sort2Edges(edgelist):
-    '''Sort2Edges(edgelist) simple function to reorder the start and end pts of two edges based on their selection order. Returns the list, the start point, and their common point, => edgelist, vertex, vertex'''
+    '''Sort2Edges(edgelist) simple function to reorder the start and end pts of two edges 
+    based on their selection order. Returns the list, the start point, 
+    and their common point, => edgelist, vertex, vertex'''
     if len(edgelist)>=2:
         vlist = []
         e0 = edgelist[0]
@@ -39,22 +52,22 @@ def Sort2Edges(edgelist):
         b0 = e1.Vertexes[0]
         b1 = e1.Vertexes[1]      
         # comparison routine to order two edges:
-        if a1.isSame(b0):
+        if equals(a1,b0):
             vlist.append((a0.Point.x,a0.Point.y))
             vlist.append((a1.Point.x,a1.Point.y))
             vlist.append((b1.Point.x,b1.Point.y))
 
-        elif a0.isSame(b0):
+        if equals(a0,b0):
             vlist.append((a1.Point.x,a1.Point.y))
             vlist.append((a0.Point.x,a0.Point.y))
             vlist.append((b1.Point.x,b1.Point.y))
 
-        elif a0.isSame(b1):
+        if equals(a0,b1):
             vlist.append((a1.Point.x,a1.Point.y))
             vlist.append((a0.Point.x,a0.Point.y))
             vlist.append((b0.Point.x,b0.Point.y))
 
-        elif a1.isSame(b1):
+        if equals(a1,b1):
             vlist.append((a0.Point.x,a0.Point.y))
             vlist.append((a1.Point.x,a1.Point.y))
             vlist.append((b0.Point.x,b0.Point.y))
