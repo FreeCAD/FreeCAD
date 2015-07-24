@@ -42,7 +42,7 @@ def makeMechanicalAnalysis(name):
     '''makeFemAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     _FemAnalysis(obj)
-    _ViewProviderFemAnalysis(obj.ViewObject)
+    _ViewProviderFemAnalysis()
     #FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -230,9 +230,9 @@ class _FemAnalysis:
 class _ViewProviderFemAnalysis:
     "A View Provider for the Material object"
 
-    def __init__(self, vobj):
+    def __init__(self):
         #vobj.addProperty("App::PropertyLength", "BubbleSize", "Base", str(translate("Fem", "The size of the axis bubbles")))
-        vobj.Proxy = self
+        pass
 
     def getIcon(self):
         return ":/icons/Fem_Analysis.svg"
