@@ -1,0 +1,53 @@
+language: cpp
+
+before_install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -y doxygen
+    - sudo apt-get install -y libboost-dev
+    - sudo apt-get install -y libboost-filesystem-dev
+    - sudo apt-get install -y libboost-program-options-dev
+    - sudo apt-get install -y libboost-python-dev
+    - sudo apt-get install -y libboost-regex-dev
+    - sudo apt-get install -y libboost-signals-dev
+    - sudo apt-get install -y libboost-system-dev
+    - sudo apt-get install -y libboost-thread-dev
+    - sudo apt-get install -y libcoin60
+    - sudo apt-get install -y libcoin60-dev
+    - sudo apt-get install -y libeigen3-dev
+    - sudo apt-get install -y liboce-foundation-dev
+    - sudo apt-get install -y liboce-foundation1
+    - sudo apt-get install -y liboce-modeling-dev
+    - sudo apt-get install -y liboce-modeling1
+    - sudo apt-get install -y liboce-ocaf-dev
+    - sudo apt-get install -y liboce-ocaf-lite-dev
+    - sudo apt-get install -y liboce-ocaf-lite1
+    - sudo apt-get install -y liboce-ocaf1
+    - sudo apt-get install -y liboce-visualization-dev
+    - sudo apt-get install -y liboce-visualization1
+    - sudo apt-get install -y libopencascade-modeling-6.5.0
+    - sudo apt-get install -y libpyside-dev
+    - sudo apt-get install -y libqtcore4
+    - sudo apt-get install -y libshiboken-dev
+    - sudo apt-get install -y libxerces-c-dev
+    - sudo apt-get install -y libxmu-dev
+    - sudo apt-get install -y libxmu-headers
+    - sudo apt-get install -y libxmu6
+    - sudo apt-get install -y libxmuu-dev
+    - sudo apt-get install -y libxmuu1
+    - sudo apt-get install -y oce-draw
+    - sudo apt-get install -y pyside-tools
+    - sudo apt-get install -y python-dev
+    - sudo apt-get install -y python-pyside
+    - sudo apt-get install -y qt4-dev-tools
+    - sudo apt-get install -y qt4-qmake
+    - sudo apt-get install -y shiboken
+    - sudo apt-get install -y swig
+#Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
+    - sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
+
+install:
+    - mkdir build && cd build && cmake ../
+
+script:
+    - make
+    - PYTHONPATH=$(pwd)/lib/ python -c "import sys, unittest, FreeCAD, TestApp; sys.exit(0 if unittest.TextTestRunner().run(TestApp.All()).wasSuccessful() else 1)"
