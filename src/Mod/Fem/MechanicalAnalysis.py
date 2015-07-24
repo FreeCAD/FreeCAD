@@ -23,12 +23,12 @@
 import ccxFrdReader
 import FreeCAD
 from FemTools import FemTools
-import FemGui
 import os
 import time
 
 if FreeCAD.GuiUp:
     import FreeCADGui
+    import FemGui
     from PySide import QtCore, QtGui
     from PySide.QtCore import Qt
     from PySide.QtGui import QApplication
@@ -79,7 +79,6 @@ class _CommandNewMechanicalAnalysis:
         FreeCADGui.Selection.clearSelection()
 
     def IsActive(self):
-        import FemGui
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is None
 
 
@@ -649,9 +648,10 @@ def results_present():
     return results
 
 
-FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
-FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
-FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
-FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
-FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
-FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
+    FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
+    FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
+    FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
+    FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
+    FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())

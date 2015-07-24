@@ -22,7 +22,6 @@
 
 
 import FreeCAD
-import FemGui
 from PySide import QtCore
 
 
@@ -37,6 +36,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if analysis:
             self.analysis = analysis
         else:
+            import FemGui
             self.analysis = FemGui.getActiveAnalysis()
         if self.analysis:
             self.update_objects()
