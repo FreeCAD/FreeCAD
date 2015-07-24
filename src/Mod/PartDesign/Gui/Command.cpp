@@ -269,8 +269,9 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         openCommand(tmp.c_str());
 
-        if(support.getValue()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()) ||
-                support.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if ( support.getValue() &&
+               ( support.getValue()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()) ||
+                 support.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()) ) ) {
             doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",
                     "PartDesign::ShapeBinder2D",FeatName.c_str());
         } else {
@@ -408,7 +409,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 if(result == QDialog::DialogCode::Rejected)
                     return;
                 else if(!dlg.radioXRef->isChecked()) {
-
+                    // TODO This fails if we had match PlainFilter2 (2015-10-31, Fat-Zer)
                     const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
                     auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub[0], dlg.radioIndependent->isChecked());
                     auto oBody = PartDesignGui::getBodyFor(obj, false);
