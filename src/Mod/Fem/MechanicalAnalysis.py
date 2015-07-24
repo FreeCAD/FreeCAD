@@ -314,8 +314,6 @@ class _JobControlTaskPanel:
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
     def printCalculiXstdout(self):
-        #There is probably no need to show user output from CalculiX. It should be
-        #written to a file in the calcs directory and shown to user upon request [BUTTON]
         out = self.Calculix.readAllStandardOutput()
         if out.isEmpty():
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
