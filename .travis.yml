@@ -6,6 +6,7 @@ before_install:
     - sudo apt-get install -y libboost-dev
     - sudo apt-get install -y libboost-filesystem-dev
     - sudo apt-get install -y libboost-program-options-dev
+    - sudo apt-get install -y libboost-python-dev
     - sudo apt-get install -y libboost-regex-dev
     - sudo apt-get install -y libboost-signals-dev
     - sudo apt-get install -y libboost-system-dev
