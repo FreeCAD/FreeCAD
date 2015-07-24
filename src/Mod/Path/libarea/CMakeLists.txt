@@ -7,14 +7,18 @@ endif (CMAKE_BUILD_TOOL MATCHES "make")
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
-if(Boost_FOUND)
+if(NOT FREECAD_LIBPACK_USE)
+    find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
+    if(Boost_FOUND)
+        include_directories(${Boost_INCLUDE_DIRS})
+        MESSAGE(STATUS "found Boost: " ${Boost_LIB_VERSION})
+        MESSAGE(STATUS "boost-incude dirs are: " ${Boost_INCLUDE_DIRS})
+        MESSAGE(STATUS "boost-python lib is: " ${Boost_PYTHON_LIBRARY})
+        MESSAGE(STATUS "boost_LIBRARY_DIRS is: " ${Boost_LIBRARY_DIRS})
+        MESSAGE(STATUS "Boost_LIBRARIES is: " ${Boost_LIBRARIES})
+    endif()
+else()
     include_directories(${Boost_INCLUDE_DIRS})
-    MESSAGE(STATUS "found Boost: " ${Boost_LIB_VERSION})
-    MESSAGE(STATUS "boost-incude dirs are: " ${Boost_INCLUDE_DIRS})
-    MESSAGE(STATUS "boost-python lib is: " ${Boost_PYTHON_LIBRARY})
-    MESSAGE(STATUS "boost_LIBRARY_DIRS is: " ${Boost_LIBRARY_DIRS})
-    MESSAGE(STATUS "Boost_LIBRARIES is: " ${Boost_LIBRARIES})    
 endif()
 
 # this defines the source-files for library
