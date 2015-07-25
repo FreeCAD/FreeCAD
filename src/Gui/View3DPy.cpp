@@ -86,7 +86,8 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewRear",&View3DInventorPy::viewRear,"viewRear()");
     add_varargs_method("viewRight",&View3DInventorPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&View3DInventorPy::viewTop,"viewTop()");
-    add_varargs_method("viewAxometric",&View3DInventorPy::viewAxometric,"viewAxometric()");
+    add_varargs_method("viewAxometric",&View3DInventorPy::viewAxonometric,"viewAxonometric()"); // for backward compatibility
+    add_varargs_method("viewAxonometric",&View3DInventorPy::viewAxonometric,"viewAxonometric()");
     add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
     add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
     add_varargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
@@ -418,7 +419,7 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewAxometric(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewAxonometric(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
