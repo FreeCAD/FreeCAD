@@ -8,7 +8,7 @@ endif(OPENCV2_FOUND)
 
 include_directories(
     ${OPENCV_INCLUDE2_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XERCESC_INCLUDE_DIR}
