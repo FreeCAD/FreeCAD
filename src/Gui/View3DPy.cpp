@@ -426,13 +426,11 @@ Py::Object View3DInventorPy::viewAxonometric(const Py::Tuple& args)
 
     try {
         //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),90)
-        //p2=App.Rotation(App.Vector(0,0,1),45)
-        //p3=App.Rotation(App.Vector(1,1,0),45)
-        //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-        //p4=p3.multiply(p2).multiply(p1)
+        //p1=App.Rotation(App.Vector(1,0,0),45)
+        //p2=App.Rotation(App.Vector(0,0,1),-45)
+        //p3=p2.multiply(p1)
         _view->getViewer()->setCameraOrientation(SbRotation
-            (0.424708f, 0.17592f, 0.339851f, 0.820473f));
+            (0.353553f, -0.146447f, -0.353553f, 0.853553f));
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
