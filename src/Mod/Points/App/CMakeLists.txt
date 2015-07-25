@@ -14,7 +14,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${PCL_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${XERCESC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
 )

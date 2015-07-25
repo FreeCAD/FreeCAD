@@ -2,7 +2,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${QT_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${XERCESC_INCLUDE_DIR}
 )
 

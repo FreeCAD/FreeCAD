@@ -17,7 +17,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${XERCESC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}

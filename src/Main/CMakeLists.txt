@@ -7,7 +7,7 @@ if(BUILD_GUI)
         ${COIN3D_INCLUDE_DIR}
         ${ZLIB_INCLUDE_DIR}
         ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_PATH}
+        ${PYTHON_INCLUDE_DIRS}
         ${XERCESC_INCLUDE_DIR}
     )
 else(BUILD_GUI)
@@ -15,7 +15,7 @@ else(BUILD_GUI)
         ${Boost_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
         ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_PATH}
+        ${PYTHON_INCLUDE_DIRS}
         ${XERCESC_INCLUDE_DIR}
     )
 endif(BUILD_GUI)
