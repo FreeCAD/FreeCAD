@@ -1180,18 +1180,18 @@ StdCmdViewAxo::StdCmdViewAxo()
   : Command("Std_ViewAxo")
 {
   sGroup      = QT_TR_NOOP("Standard-View");
-  sMenuText   = QT_TR_NOOP("Axometric");
-  sToolTipText= QT_TR_NOOP("Set to axometric view");
+  sMenuText   = QT_TR_NOOP("Axonometric");
+  sToolTipText= QT_TR_NOOP("Set to axonometric view");
   sWhatsThis  = "Std_ViewXX";
-  sStatusTip  = QT_TR_NOOP("Set to axometric view");
-  sPixmap     = "view-axometric";
+  sStatusTip  = QT_TR_NOOP("Set to axonometric view");
+  sPixmap     = "view-axonometric";
   sAccel      = "0";
   eType         = Alter3DView;
 }
 
 void StdCmdViewAxo::activated(int iMsg)
 {
-  doCommand(Command::Gui,"Gui.activeDocument().activeView().viewAxometric()");
+  doCommand(Command::Gui,"Gui.activeDocument().activeView().viewAxonometric()");
 }
 
 //===========================================================================
