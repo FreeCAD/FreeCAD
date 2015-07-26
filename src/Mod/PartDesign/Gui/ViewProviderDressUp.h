@@ -38,7 +38,7 @@ class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
 public:
     /// constructor
     ViewProviderDressUp()
-        : featureName("undefined") {}
+        {}
     /// destructor
     virtual ~ViewProviderDressUp()
         {}
@@ -46,16 +46,14 @@ public:
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*);
 
-    virtual bool onDelete(const std::vector<std::string> &);
-
     /// Highlight the references that have been selected
     void highlightReferences(const bool on);
-
-    // The feature name of the subclass
-    std::string featureName;
-
-protected:
-    const bool checkDlgOpen(TaskDlgDressUpParameters* dressUpDlg);
+    
+    /** 
+     * Returns the feature Name associated with the view provider.
+     * Should be reimplemented in the successor.
+     */
+    virtual const std::string & featureName() const;
 
 private:
     std::vector<App::Color> originalFaceColors;

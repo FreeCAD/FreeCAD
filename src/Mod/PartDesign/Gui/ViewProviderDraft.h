@@ -36,11 +36,14 @@ class PartDesignGuiExport ViewProviderDraft : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderDraft()
-        { featureName = std::string("Draft");
-          sPixmap = "PartDesign_Draft.svg"; }
+        { sPixmap = "PartDesign_Draft.svg"; }
+
+    /// return "Draft"
+    virtual const std::string & featureName() const;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
 };
 
 } // namespace PartDesignGui

@@ -45,53 +45,27 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
 
+
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr((std::string("Edit ") + featureName + " feature").c_str()), receiver, member);
+    // TODO check if this gets a sane translation (2015-07-26, Fat-Zer)
+    act = menu->addAction(QObject::tr((std::string("Edit ") + featureName() + " feature").c_str()), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
-const bool ViewProviderDressUp::checkDlgOpen(TaskDlgDressUpParameters* dressUpDlg) {
-    // When double-clicking on the item for this feature the
-    // object unsets and sets its edit mode without closing
-    // the task panel
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    dressUpDlg = qobject_cast<TaskDlgDressUpParameters *>(dlg);
 
-    if ((dressUpDlg != NULL) && (dressUpDlg->getDressUpView() != this))
-        dressUpDlg = NULL; // another transformed feature left open its task panel
-
-    if ((dlg != NULL) && (dressUpDlg == NULL)) {
-        QMessageBox msgBox;
-        msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-        msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::Yes);
-        int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes)
-            Gui::Control().closeDialog();
-        else
-            return false;
-    }
-
-    // clear the selection (convenience)
-    Gui::Selection().clearSelection();
-
-    // Continue (usually in virtual method setEdit())
-    return true;
+const std::string & ViewProviderDressUp::featureName() const {
+    static const std::string name = "Undefined";
+    return name;
 }
 
-bool ViewProviderDressUp::onDelete(const std::vector<std::string> &s)
-{
-    return ViewProvider::onDelete(s);
-}
 
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
-    Part::Feature* base = static_cast<Part::Feature*>(pcDressUp->Base.getValue());
+    Part::Feature* base = pcDressUp->getBaseObject (/*silent =*/ true);
     if (base == NULL) return;
     PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));

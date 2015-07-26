@@ -50,8 +50,8 @@ using namespace Gui;
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
     : allowFaces(selectFaces), allowEdges(selectEdges), 
-      TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName).c_str()),
-              QString::fromAscii((DressUpView->featureName + " parameters").c_str()),
+      TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName()).c_str()),
+              QString::fromAscii((DressUpView->featureName() + " parameters").c_str()),
               true,
               parent),
       DressUpView(DressUpView)

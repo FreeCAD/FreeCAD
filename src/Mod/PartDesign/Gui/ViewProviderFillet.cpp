@@ -24,45 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-# include <QMessageBox>
 #endif
 
-#include "ViewProviderFillet.h"
 #include "TaskFilletParameters.h"
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-
+#include "ViewProviderFillet.h"
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderFillet,PartDesignGui::ViewProviderDressUp)
 
-bool ViewProviderFillet::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgDressUpParameters *dressUpDlg = NULL;
 
-        if (checkDlgOpen(dressUpDlg)) {
-            // always change to PartDesign WB, remember where we come from
-            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-            // start the edit dialog
-            if (dressUpDlg)
-                Gui::Control().showDialog(dressUpDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgFilletParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderDressUp::setEdit(ModNum);
-    }
+const std::string & ViewProviderFillet::featureName() const {
+    static const std::string name = "Fillet";
+    return name;
 }
 
 
+TaskDlgFeatureParameters *ViewProviderFillet::getEditDialog() {
+    return new TaskDlgFilletParameters (this);
+}

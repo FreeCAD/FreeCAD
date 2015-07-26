@@ -24,49 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-# include <QMessageBox>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
 #endif
 
-#include "ViewProviderDraft.h"
 #include "TaskDraftParameters.h"
-#include <Mod/PartDesign/App/FeatureDraft.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-
+#include "ViewProviderDraft.h"
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderDraft,PartDesignGui::ViewProviderDressUp)
 
-bool ViewProviderDraft::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgDressUpParameters *dressUpDlg = NULL;
 
-        if (checkDlgOpen(dressUpDlg)) {
-            // always change to PartDesign WB, remember where we come from
-            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-            // start the edit dialog
-            if (dressUpDlg)
-                Gui::Control().showDialog(dressUpDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgDraftParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderDressUp::setEdit(ModNum);
-    }
+const std::string & ViewProviderDraft::featureName() const {
+    static const std::string name = "Draft";
+    return name;
 }
 
 
+TaskDlgFeatureParameters *ViewProviderDraft::getEditDialog() {
+    return new TaskDlgDraftParameters (this);
+}

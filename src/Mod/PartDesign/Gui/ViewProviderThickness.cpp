@@ -24,46 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
 #endif
 
-#include "ViewProviderThickness.h"
 #include "TaskThicknessParameters.h"
-#include <Mod/PartDesign/App/FeatureThickness.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-
+#include "ViewProviderThickness.h"
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderThickness,PartDesignGui::ViewProviderDressUp)
 
-bool ViewProviderThickness::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-		TaskDlgDressUpParameters *dressUpDlg = NULL;
 
-        if (checkDlgOpen(dressUpDlg)) {
-            // always change to PartDesign WB, remember where we come from
-            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-            // start the edit dialog
-            if (dressUpDlg)
-                Gui::Control().showDialog(dressUpDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgThicknessParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderDressUp::setEdit(ModNum);
-    }
+const std::string & ViewProviderThickness::featureName() const {
+    static const std::string name = "Thickness";
+    return name;
 }
 
 
+TaskDlgFeatureParameters *ViewProviderThickness::getEditDialog() {
+    return new TaskDlgThicknessParameters (this);
+}
