@@ -24,12 +24,12 @@
 #ifndef PARTGUI_ViewProviderPocket_H
 #define PARTGUI_ViewProviderPocket_H
 
-#include "ViewProvider.h"
+#include "ViewProviderSketchBased.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPocket : public ViewProvider
+class PartDesignGuiExport ViewProviderPocket : public ViewProviderSketchBased
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderPocket);
 
@@ -39,14 +39,11 @@ public:
     /// destructor
     virtual ~ViewProviderPocket();
 
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
 
-    virtual bool onDelete(const std::vector<std::string> &);
-
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly created TaskDlgPocketParameters
+    virtual TaskDlgFeatureParameters *getEditDialog();
 
 };
 

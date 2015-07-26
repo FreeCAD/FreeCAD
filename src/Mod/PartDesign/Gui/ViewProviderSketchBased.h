@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,38 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKFEATUREPARAMETERS_H_NAHKE2YZ
-#define TASKFEATUREPARAMETERS_H_NAHKE2YZ
-
-
-#include <Gui/TaskView/TaskDialog.h>
+#ifndef VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
+#define VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
 
 #include "ViewProvider.h"
 
 namespace PartDesignGui {
 
-/// A common base for sketch based, dressup and other solid parameters dialogs
-class TaskDlgFeatureParameters : public Gui::TaskView::TaskDialog
+/**
+ * A common base class for Sketch based view providers
+ */
+class PartDesignGuiExport ViewProviderSketchBased : public ViewProvider
 {
-    Q_OBJECT
+    PROPERTY_HEADER(PartDesignGui::ViewProviderSketchBased);
 
 public:
-    TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
-    ~TaskDlgFeatureParameters();
+    /// constructor
+    ViewProviderSketchBased();
+    /// destructor
+    virtual ~ViewProviderSketchBased();
 
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    /// grouping handling
+    std::vector<App::DocumentObject*> claimChildren(void)const;
 
-    /// Returns the view provider dialog is runed for
-     PartDesignGui::ViewProvider *viewProvider() const { return vp; }
-protected:
-    PartDesignGui::ViewProvider *vp;
+    virtual bool onDelete(const std::vector<std::string> &);
 };
 
-} //namespace PartDesignGui
+} /* PartDesignGui  */
 
-
-#endif /* end of include guard: TASKFEATUREPARAMETERS_H_NAHKE2YZ */
+#endif /* end of include guard: VIEWPROVIDERSKETCHBASED_H_QKP3UG9A */

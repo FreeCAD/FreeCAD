@@ -26,40 +26,26 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
-# include <QMessageBox>
 #endif
 
-#include "ViewProviderPocket.h"
 #include "TaskPocketParameters.h"
-#include <Mod/PartDesign/App/FeaturePocket.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
+
+#include "ViewProviderPocket.h"
 
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPocket,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPocket,PartDesignGui::ViewProviderSketchBased)
 
 ViewProviderPocket::ViewProviderPocket()
 {
-    sPixmap = "PartDesign_Pocket.svg"; 
+    sPixmap = "PartDesign_Pocket.svg";
 }
 
 ViewProviderPocket::~ViewProviderPocket()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderPocket::claimChildren(void)const
-{
-    std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = static_cast<PartDesign::Pocket*>(getObject())->Sketch.getValue();
-    if (sketch != NULL)
-        temp.push_back(sketch);
-
-    return temp;
-}
 
 void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -69,61 +55,8 @@ void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const 
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPocket::setEdit(int ModNum)
+
+TaskDlgFeatureParameters *ViewProviderPocket::getEditDialog()
 {
-    if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this pad the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgPocketParameters *padDlg = qobject_cast<TaskDlgPocketParameters *>(dlg);
-        if (padDlg && padDlg->getPocketView() != this)
-            padDlg = 0; // another pad left open its task panel
-        if (dlg && !padDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().reject();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        if (padDlg)
-            Gui::Control().showDialog(padDlg);
-        else
-            Gui::Control().showDialog(new TaskDlgPocketParameters(this));
-
-        return true;
-    }
-    else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
-    }
+    return new TaskDlgPocketParameters( this );
 }
-
-bool ViewProviderPocket::onDelete(const std::vector<std::string> &s)
-{
-    // get the Sketch
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(getObject()); 
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcPocket->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);
-}
-
-

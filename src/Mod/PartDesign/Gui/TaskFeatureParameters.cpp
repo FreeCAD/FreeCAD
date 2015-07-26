@@ -92,33 +92,27 @@ bool TaskDlgFeatureParameters::reject()
     // Find out previous feature we won't be able to do it after abort
     // (at least in the body case)
     App::DocumentObject* previous;
-    if (body) {
-        // NOTE: feature->getBaseObject() should return the same for body
-        previous = body->getPrevSolidFeature(feature, /*inclusive =*/ false);
-    } else {
-        previous = feature->getBaseObject();
+    try {
+        previous = feature->getBaseObject(); // throws on errors
+    } catch (const Base::Exception &ex) {
+        previous = 0;
     }
 
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
-
     // if abort command deleted the object make the previous feature visible again
     if (!Gui::Application::Instance->getViewProvider(feature)) {
-        // Body housekeeping
-        if (body != NULL) {
-            // Make the tip or the prebious feature visiable again with preference to the previous one
+        // Make the tip or the previous feature visiable again with preference to the previous one
+        // TODO: ViewProvider::onDelete has the same code. May be this one is excess?
+        if (previous && Gui::Application::Instance->getViewProvider(previous)) {
+            Gui::Application::Instance->getViewProvider(previous)->show();
+        } else if (body != NULL) {
             App::DocumentObject* tip = body->Tip.getValue();
-
-            if (previous && Gui::Application::Instance->getViewProvider(previous)) {
-                Gui::Application::Instance->getViewProvider(previous)->show();
-            } else if (tip && Gui::Application::Instance->getViewProvider(tip)) {
+            if (tip && Gui::Application::Instance->getViewProvider(tip)) {
                 Gui::Application::Instance->getViewProvider(tip)->show();
             }
-        } else {
-            if (previous && Gui::Application::Instance->getViewProvider(previous))
-                Gui::Application::Instance->getViewProvider(previous)->show();
         }
     }
 

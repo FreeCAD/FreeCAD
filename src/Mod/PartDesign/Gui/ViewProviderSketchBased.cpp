@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,38 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKFEATUREPARAMETERS_H_NAHKE2YZ
-#define TASKFEATUREPARAMETERS_H_NAHKE2YZ
+
+#include "PreCompiled.h"
+
+#ifndef _PreComp_
+#endif
+
+#include <Gui/Application.h>
+#include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
+
+#include "ViewProviderSketchBased.h"
 
 
-#include <Gui/TaskView/TaskDialog.h>
+using namespace PartDesignGui;
 
-#include "ViewProvider.h"
+PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
 
-namespace PartDesignGui {
 
-/// A common base for sketch based, dressup and other solid parameters dialogs
-class TaskDlgFeatureParameters : public Gui::TaskView::TaskDialog
+ViewProviderSketchBased::ViewProviderSketchBased()
 {
-    Q_OBJECT
-
-public:
-    TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
-    ~TaskDlgFeatureParameters();
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-
-    /// Returns the view provider dialog is runed for
-     PartDesignGui::ViewProvider *viewProvider() const { return vp; }
-protected:
-    PartDesignGui::ViewProvider *vp;
-};
-
-} //namespace PartDesignGui
+}
 
 
-#endif /* end of include guard: TASKFEATUREPARAMETERS_H_NAHKE2YZ */
+ViewProviderSketchBased::~ViewProviderSketchBased()
+{
+}
+
+
+std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) const {
+    std::vector<App::DocumentObject*> temp;
+    App::DocumentObject* sketch = static_cast<PartDesign::SketchBased*>(getObject())->Sketch.getValue();
+    if (sketch != NULL)
+        temp.push_back(sketch);
+
+    return temp;
+}
+
+
+bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
+    PartDesign::SketchBased* feature = static_cast<PartDesign::SketchBased*>(getObject());
+
+    // get the Sketch
+    Sketcher::SketchObject *pcSketch = 0;
+    if (feature->Sketch.getValue())
+        pcSketch = static_cast<Sketcher::SketchObject*>(feature->Sketch.getValue());
+
+    // if abort command deleted the object the sketch is visible again
+    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
+        Gui::Application::Instance->getViewProvider(pcSketch)->show();
+
+    return ViewProvider::onDelete(s);
+}

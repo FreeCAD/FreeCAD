@@ -89,6 +89,8 @@ SET(PartDesignGuiViewProvider_SRCS CommandPrimitive.cpp
     ViewProvider.h
     ViewProviderBody.cpp
     ViewProviderBody.h
+    ViewProviderSketchBased.cpp
+    ViewProviderSketchBased.h
     ViewProviderPad.cpp
     ViewProviderPad.h
     #ViewProviderHole.cpp
