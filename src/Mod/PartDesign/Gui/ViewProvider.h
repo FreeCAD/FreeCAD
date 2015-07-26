@@ -53,9 +53,11 @@ protected:
 
     virtual bool onDelete(const std::vector<std::string> &);
 
-    /// Returns a newly create dialog for the part to be placed in the task view
-    // TODO make it pure virtual when finish implementation for all view providers (2015-07-24, Fat-Zer)
-    virtual TaskDlgFeatureParameters *getEditDialog()/* =0 */;
+    /**
+     * Returns a newly create dialog for the part to be placed in the task view
+     * Must be reimplemented in subclasses.
+     */
+    virtual TaskDlgFeatureParameters *getEditDialog();
 
     std::string oldWb;
     App::DocumentObject* oldTip;
