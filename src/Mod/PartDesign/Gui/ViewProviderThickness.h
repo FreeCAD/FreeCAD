@@ -36,11 +36,14 @@ class PartDesignGuiExport ViewProviderThickness : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderThickness()
-        { featureName = std::string("Thickness");
-          sPixmap = "PartDesign_Thickness.svg"; }
+        { sPixmap = "PartDesign_Thickness.svg"; }
+
+    /// return "Thickness"
+    virtual const std::string & featureName() const;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
 };
 
 } // namespace PartDesignGui

@@ -24,46 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-# include <QMessageBox>
 #endif
 
-#include "ViewProviderChamfer.h"
 #include "TaskChamferParameters.h"
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-
+#include "ViewProviderChamfer.h"
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderChamfer,PartDesignGui::ViewProviderDressUp)
 
-bool ViewProviderChamfer::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgDressUpParameters *dressUpDlg = NULL;
 
-        if (checkDlgOpen(dressUpDlg)) {
-            // always change to PartDesign WB, remember where we come from
-            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-            // start the edit dialog
-            if (dressUpDlg)
-                Gui::Control().showDialog(dressUpDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgChamferParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderDressUp::setEdit(ModNum);
-    }
+const std::string & ViewProviderChamfer::featureName() const {
+    static const std::string name = "Chamfer";
+    return name;
 }
 
 
-
+TaskDlgFeatureParameters *ViewProviderChamfer::getEditDialog() {
+    return new TaskDlgChamferParameters (this);
+}

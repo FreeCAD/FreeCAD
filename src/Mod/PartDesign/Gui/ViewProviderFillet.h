@@ -36,11 +36,14 @@ class PartDesignGuiExport ViewProviderFillet : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderFillet()
-        { featureName = std::string("Fillet");
-          sPixmap = "PartDesign_Fillet.svg"; }
+        { sPixmap = "PartDesign_Fillet.svg"; }
+
+    /// return "Fillet"
+    virtual const std::string & featureName() const;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
 };
 
 } // namespace PartDesignGui
