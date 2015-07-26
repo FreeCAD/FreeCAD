@@ -50,8 +50,11 @@ public:
     /**
      * Returns the BaseFeature property's object if it's set othervice returns Base's
      * feature property object otherviceeature property's object (if any)
+     * @param silent if couldn't determine the base feature and silent == true,
+     *               silently return a nullptr, otherwice throw Base::Exception.
+     *               Default is false.
      */
-    virtual Part::Feature* getBaseObject() const;
+    virtual Part::Feature* getBaseObject(bool silent=false) const;
     /// extracts all edges from the subshapes (inkluding face edges) and furthermore adds
     /// all C0 continius edges to the vector
     void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);

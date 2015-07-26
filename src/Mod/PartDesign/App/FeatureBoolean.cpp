@@ -69,10 +69,9 @@ short Boolean::mustExecute() const
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
     // Check the parameters
-    const Part::Feature* baseFeature;
-    try {
-        baseFeature = getBaseObject();
-    } catch (const Base::Exception&) {
+    const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
+
+    if (!baseFeature) {
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid BaseFeature");
     }
 

@@ -67,8 +67,13 @@ public:
       */
     virtual void transformPlacement(const Base::Placement &transform);
 
-    /// Verifies the linked Sketch object
-    Part::Part2DObject* getVerifiedSketch() const;
+    /**
+     * Verifies the linked Sketch object
+     * @param silent if sketch property is malformed and the parameter is true
+     *               silently returns nullptr, otherwice throw a Base::Exception.
+     *               Default is false.
+     */
+    Part::Part2DObject* getVerifiedSketch(bool silent=false) const;
     /// Returns the wires the sketch is composed of
     std::vector<TopoDS_Wire> getSketchWires() const;
     /// Returns the face of the sketch support (if any)
@@ -77,7 +82,7 @@ public:
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;    
 
-    virtual Part::Feature* getBaseObject() const;
+    virtual Part::Feature* getBaseObject(bool silent=false) const;
 
 protected:
     void onChanged(const App::Property* prop);

@@ -123,11 +123,10 @@ short SketchBased::mustExecute() const
 
 void SketchBased::positionByPrevious(void)
 {
-    try{
-        //use placement of base
-        Part::Feature* feat = getBaseObject();
+    Part::Feature* feat = getBaseObject(/* silent = */ true);
+    if (feat) {
         this->Placement.setValue(feat->Placement.getValue());
-    } catch (Base::Exception) {
+    } else {
         //no base. Use either Sketch support's placement, or sketch's placement itself.
         Part::Part2DObject *sketch = getVerifiedSketch();
         App::DocumentObject* support = sketch->Support.getValue();
@@ -141,22 +140,31 @@ void SketchBased::positionByPrevious(void)
 
 void SketchBased::transformPlacement(const Base::Placement &transform)
 {
-    try{
-        Part::Feature* feat = getBaseObject();
+    Part::Feature* feat = getBaseObject(/* silent = */ true);
+    if (feat) {
         feat->transformPlacement(transform);
-    } catch (Base::Exception) {
+    } else {
         Part::Part2DObject *sketch = getVerifiedSketch();
         sketch->transformPlacement(transform);
     }
     positionByPrevious();
 }
 
-Part::Part2DObject* SketchBased::getVerifiedSketch() const {
+Part::Part2DObject* SketchBased::getVerifiedSketch(bool silent) const {
     App::DocumentObject* result = Sketch.getValue();
-    if (!result)
-        throw Base::Exception("No sketch linked");
-    if (!result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        throw Base::Exception("Linked object is not a Sketch or Part2DObject");
+    const char* err = nullptr;
+
+    if (!result) {
+        err = "No sketch linked";
+    } else {
+        if (!result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+            err = "Linked object is not a Sketch or Part2DObject";
+    }
+
+    if (!silent && err) {
+        throw Base::Exception (err);
+    }
+
     return static_cast<Part::Part2DObject*>(result);
 }
 
@@ -231,19 +239,39 @@ int SketchBased::getSketchAxisCount(void) const
     return sketch->getAxisCount();
 }
 
-Part::Feature *SketchBased::getBaseObject() const
+Part::Feature *SketchBased::getBaseObject(bool silent) const
 {
-    try{
-        return Feature::getBaseObject();
-    } catch (Base::Exception) {
-        Part::Part2DObject* sketch = getVerifiedSketch();
-        App::DocumentObject* spt = sketch->Support.getValue();
-        if(!spt)
-            throw Base::Exception ("No base set, no sketch support either");
-        if(!spt->isDerivedFrom(Part::Feature::getClassTypeId()))
-            throw Base::Exception ("No base set, sketch support is not Part::Feature");
-        return static_cast<Part::Feature*>(spt);
+    // Test the base's class feature.
+    Part::Feature *rv = Feature::getBaseObject(/* silent = */ true);
+    if (rv) {
+        return rv;
     }
+
+    // getVerifiedSketch() may throw it's own exception if fail
+    Part::Part2DObject* sketch = getVerifiedSketch(silent);
+
+    if (!sketch) {
+        return nullptr;
+    }
+
+    const char* err = nullptr;
+
+    App::DocumentObject* spt = sketch->Support.getValue();
+    if (spt) {
+        if (spt->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            rv = static_cast<Part::Feature*>(spt);
+        } else {
+            err = "No base set, sketch support is not Part::Feature";
+        }
+    } else {
+        err = "No base set, no sketch support either";
+    }
+
+    if (!silent && err) {
+        throw Base::Exception (err);
+    }
+
+    return rv;
 }
 
 void SketchBased::onChanged(const App::Property* prop)

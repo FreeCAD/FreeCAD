@@ -56,8 +56,13 @@ public:
     /// Check whether the given feature is a datum feature
     static bool isDatum(const App::DocumentObject* feature);
 
-    /// Returns the BaseFeature property's object (if any)
-    virtual Part::Feature* getBaseObject() const;
+    /**
+     * Returns the BaseFeature property's object (if any)
+     * @param silent if couldn't determine the base feature and silent == true,
+     *               silently return a nullptr, otherwice throw Base::Exception. 
+     *               Default is false.
+     */
+    virtual Part::Feature* getBaseObject(bool silent=false) const;
     /// Returns the BaseFeature property's shape (if any)
     virtual const TopoDS_Shape& getBaseShape() const;
     /// Returns the BaseFeature property's TopoShape (if any)

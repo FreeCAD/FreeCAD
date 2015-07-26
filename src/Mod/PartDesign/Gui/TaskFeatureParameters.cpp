@@ -59,11 +59,11 @@ bool TaskDlgFeatureParameters::accept() {
             throw Base::Exception("Bad object processed in the feature dialog.");
         }
 
-        App::DocumentObject* support = static_cast<PartDesign::Feature*>(feature)->BaseFeature.getValue();
+        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
 
-        if (support) {
+        if (previous) {
             Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",
-                    support->getNameInDocument());
+                    previous->getNameInDocument());
         }
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
@@ -91,12 +91,7 @@ bool TaskDlgFeatureParameters::reject()
 
     // Find out previous feature we won't be able to do it after abort
     // (at least in the body case)
-    App::DocumentObject* previous;
-    try {
-        previous = feature->getBaseObject(); // throws on errors
-    } catch (const Base::Exception &ex) {
-        previous = 0;
-    }
+    App::DocumentObject* previous = feature->getBaseObject(/* silent = */ true );
 
     // roll back the done things
     Gui::Command::abortCommand();

@@ -91,15 +91,26 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
     throw Base::Exception("getPointFromFace(): Not implemented yet for this case");
 }
 
-Part::Feature* Feature::getBaseObject() const {
+Part::Feature* Feature::getBaseObject(bool silent) const {
     App::DocumentObject* BaseLink = BaseFeature.getValue();
-    if (BaseLink == NULL) throw Base::Exception("Base property not set");
-    Part::Feature* BaseObject = NULL;
-    if (BaseLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        BaseObject = static_cast<Part::Feature*>(BaseLink);
+    Part::Feature* BaseObject = nullptr;
+    const char *err = nullptr;
 
-    if (BaseObject == NULL)
-        throw Base::Exception("No base feature linked");
+    if (BaseLink) {
+        if (BaseLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            BaseObject = static_cast<Part::Feature*>(BaseLink);
+        }
+        if (!BaseObject) {
+            err =  "No base feature linked";
+        }
+    } else {
+        err = "Base property not set";
+    }
+
+    // If the funtion not in silent mode throw the exception discribing the error
+    if (!silent && err) {
+        throw Base::Exception(err);
+    }
 
     return BaseObject;
 }

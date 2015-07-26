@@ -64,18 +64,30 @@ void DressUp::positionByBaseFeature(void)
         this->Placement.setValue(base->Placement.getValue());
 }
 
-Part::Feature *DressUp::getBaseObject() const
+Part::Feature *DressUp::getBaseObject(bool silent) const
 {
-    try {
-        return Feature::getBaseObject();
-    } catch (const Base::Exception &) {
-        App::DocumentObject* base = Base.getValue();
-        if(!base)
-            throw Base::Exception("No Base object linked");
-        if(!base->isDerivedFrom(Part::Feature::getClassTypeId()))
-            throw Base::Exception("Linked object is not a Part object");
-        return static_cast<Part::Feature*>(base);
+    Part::Feature *rv = Feature::getBaseObject(/* silent = */ true);
+    if (rv) {
+        return rv;
     }
+
+    const char* err = nullptr;
+    App::DocumentObject* base = Base.getValue();
+    if (base) {
+        if(base->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            rv = static_cast<Part::Feature*>(base);
+        } else {
+            err = "Linked object is not a Part object";
+        }
+    } else {
+        err = "No Base object linked";
+    }
+
+    if (!silent && err) {
+        throw Base::Exception(err);
+    }
+
+    return rv;
 }
 
 void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
