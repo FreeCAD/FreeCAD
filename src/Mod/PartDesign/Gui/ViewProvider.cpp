@@ -167,14 +167,8 @@ void ViewProvider::updateData(const App::Property* prop)
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
 {
-    App::DocumentObject* previous;
     PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(getObject());
-
-    try {
-        previous = feature->getBaseObject();
-    } catch (const Base::Exception &ex) {
-        previous = 0;
-    }
+    App::DocumentObject* previous = feature->getBaseObject(/* silent = */ true );
 
     // Make the tip or the previous feature visiable again with preference to the previous one
     // if the feature was visiable itself
