@@ -88,4 +88,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPad_H
+#endif // PARTGUI_ViewProviderDatum_H
