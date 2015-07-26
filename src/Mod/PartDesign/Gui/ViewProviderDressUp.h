@@ -55,6 +55,9 @@ public:
      */
     virtual const std::string & featureName() const;
 
+protected:
+    virtual bool setEdit(int ModNum);
+
 private:
     std::vector<App::Color> originalFaceColors;
     std::vector<App::Color> originalLineColors;
