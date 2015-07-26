@@ -26,42 +26,26 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
-# include <QMessageBox>
 #endif
 
-#include "ViewProviderPad.h"
 #include "TaskPadParameters.h"
-#include "Workbench.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePad.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
+
+#include "ViewProviderPad.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPad,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPad,PartDesignGui::ViewProviderSketchBased)
 
 ViewProviderPad::ViewProviderPad()
 {
-    sPixmap = "Tree_PartDesign_Pad.svg"; 
+    sPixmap = "Tree_PartDesign_Pad.svg";
 }
 
 ViewProviderPad::~ViewProviderPad()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderPad::claimChildren(void)const
-{
-    std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = static_cast<PartDesign::Pad*>(getObject())->Sketch.getValue();
-    if (sketch != NULL)
-        temp.push_back(sketch);
-
-    return temp;
-}
-
+// TODO This methode could also be unified with other features (2015-07-26, Fat-Zer)
 void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
@@ -70,61 +54,9 @@ void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const cha
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPad::setEdit(int ModNum)
+TaskDlgFeatureParameters *ViewProviderPad::getEditDialog()
 {
-    if (ModNum == ViewProvider::Default || ModNum == 1 ) {
-        // When double-clicking on the item for this pad the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgPadParameters *padDlg = qobject_cast<TaskDlgPadParameters *>(dlg);
-        if (padDlg && padDlg->getPadView() != this)
-            padDlg = 0; // another pad left open its task panel
-        if (dlg && !padDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().reject();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        if (padDlg)
-            Gui::Control().showDialog(padDlg);
-        else
-            Gui::Control().showDialog(new TaskDlgPadParameters(this,ModNum == 1));
-
-        return true;
-    }
-    else {
-        return ViewProviderPart::setEdit(ModNum);
-    }
+    // TODO fix setting values from the history: now it doesn't work neither in
+    //      the master and in the migrated branch  (2015-07-26, Fat-Zer)
+    return new TaskDlgPadParameters( this );
 }
-
-bool ViewProviderPad::onDelete(const std::vector<std::string> &s)
-{
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcPad->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);
-}
-

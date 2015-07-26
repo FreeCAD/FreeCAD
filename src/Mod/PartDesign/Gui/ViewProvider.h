@@ -29,6 +29,11 @@
 
 namespace PartDesignGui {
 
+class TaskDlgFeatureParameters;
+
+/**
+ * A common base class for all part design features view providers
+ */
 class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart {
     typedef PartGui::ViewProviderPart inherited;
     PROPERTY_HEADER(PartDesignGui::ViewProvider);
@@ -43,9 +48,14 @@ public:
     void updateData(const App::Property*);
 
 protected:
+    virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
     virtual bool onDelete(const std::vector<std::string> &);
+
+    /// Returns a newly create dialog for the part to be placed in the task view
+    // TODO make it pure virtual when finish implementation for all view providers (2015-07-24, Fat-Zer)
+    virtual TaskDlgFeatureParameters *getEditDialog()/* =0 */;
 
     std::string oldWb;
     App::DocumentObject* oldTip;

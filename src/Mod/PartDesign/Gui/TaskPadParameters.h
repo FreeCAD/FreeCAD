@@ -91,7 +91,7 @@ class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj=false);
+    TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
     ~TaskDlgPadParameters();
 
     ViewProviderPad* getPadView() const

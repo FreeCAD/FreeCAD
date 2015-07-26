@@ -139,6 +139,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     updateUI(index);
 
     // if it is a newly created object use the last value of the history
+    // TODO: newObj doesn't supplied normally by any caller (2015-07-24, Fat-Zer)
     if(newObj){
         ui->lengthEdit->setToLastUsedValue();
         ui->lengthEdit->selectNumber();
