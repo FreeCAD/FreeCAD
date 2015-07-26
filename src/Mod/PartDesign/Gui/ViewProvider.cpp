@@ -55,7 +55,7 @@ ViewProvider::~ViewProvider()
 bool ViewProvider::doubleClicked(void)
 {
 	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
-
+    // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
 	if (body != NULL) {
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
         // Also, this way the user won't be tempted to use future geometry as external references for the sketch
@@ -113,23 +113,26 @@ bool ViewProvider::setEdit(int ModNum)
         // always change to PartDesign WB, remember where we come from
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
-        // start the edit dialog
-        if (featureDlg) {
-            Gui::Control().showDialog(featureDlg);
-        } else {
-            Gui::Control().showDialog(this->getEditDialog());
+        // start the edit dialog if
+        if (!featureDlg) {
+            featureDlg = this->getEditDialog();
+            if (!featureDlg) { // Shouldn't generally happen
+                throw Base::Exception ("Failed to create new edit dialog.");
+            }
         }
 
+        Gui::Control().showDialog(featureDlg);
         return true;
     } else {
         return PartGui::ViewProviderPart::setEdit(ModNum);
     }
 }
 
-TaskDlgFeatureParameters *ViewProvider::getEditDialog()
-{
+
+TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
     throw Base::Exception("getEditDialog() not implemented");
 }
+
 
 void ViewProvider::unsetEdit(int ModNum)
 {
