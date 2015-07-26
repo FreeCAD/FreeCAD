@@ -24,6 +24,7 @@
 #*                                                                         *
 #***************************************************************************/
 
+import Fem
 import FreeCAD
 import unittest
 
@@ -43,6 +44,24 @@ class FemTest(unittest.TestCase):
         import MechanicalAnalysis
         analysis = MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')
         self.failUnless(analysis, "FemTest of new analysis failed")
+
+    def test_new_mesh(self):
+        FreeCAD.Console.PrintMessage('\nChecking FEM new mesh...\n')
+        mesh = Fem.FemMesh()
+
+        mesh.addNode(0, 1, 0)
+        mesh.addNode(0, 0, 1)
+        mesh.addNode(1, 0, 0)
+        mesh.addNode(0, 0, 0)
+        mesh.addNode(0, 0.5, 0.5)
+        mesh.addNode(0.5, 0.03, .5)
+        mesh.addNode(0.5, 0.5, 0.03)
+        mesh.addNode(0, 0.5, 0)
+        mesh.addNode(0.03, 0, 0.5)
+        mesh.addNode(0.5, 0, 0)
+
+        mesh.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        self.failUnless(mesh, "FemTest of new mesh failed")
 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
