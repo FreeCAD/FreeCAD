@@ -175,7 +175,7 @@ Part::Feature* TaskDressUpParameters::getBase(void) const
     // Unlikely but this may throw an exception in case we are started to edit an object which base feature
     // was deleted. This exception will be likely unhandled inside the dialog and pass upper, But an error
     // message inside the report view is better than a SEGFAULT.
-    // TODO: generally this situation should be prevented in ViewProviderDressUp
+    // Generally this situation should be prevented in ViewProviderDressUp::setEdit()
     return pcDressUp->getBaseObject();
 }
 

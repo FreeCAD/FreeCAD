@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QVariant>
 # include <QMenu>
 # include <QAction>
 # include <QMessageBox>
@@ -32,14 +31,12 @@
 # include <TopExp.hxx>
 #endif
 
-#include "ViewProviderDressUp.h"
-#include "TaskDressUpParameters.h"
 #include <Mod/PartDesign/App/FeatureDressUp.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 
+#include "ViewProviderDressUp.h"
+
+#include "TaskDressUpParameters.h"
 
 using namespace PartDesignGui;
 
@@ -62,6 +59,29 @@ const std::string & ViewProviderDressUp::featureName() const {
 }
 
 
+bool ViewProviderDressUp::setEdit(int ModNum) {
+    if (ModNum == ViewProvider::Default ) {
+        // Here we should prevent edit of a Feature with missing base
+        // Otherwise it could call unhandled exception.
+        PartDesign::DressUp* dressUp = static_cast<PartDesign::DressUp*>(getObject());
+        assert (dressUp);
+        if (dressUp->getBaseObject (/*silent =*/ true)) {
+            return ViewProvider::setEdit(ModNum);
+        } else {
+            QMessageBox::warning ( 0, QObject::tr("Feature error"),
+                    QObject::tr("%1 misses a base feature.\n"
+                           "This feature is broken and can't be edited.")
+                        .arg( QString::fromLatin1(dressUp->getNameInDocument()) )
+                );
+            return false;
+        }
+
+    } else {
+        return ViewProvider::setEdit(ModNum);
+    }
+}
+
+
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
@@ -74,7 +94,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
     std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
     std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
 
-    if (on) {        
+    if (on) {
         if (!faces.empty() && originalFaceColors.empty()) {
             TopTools_IndexedMapOfShape fMap;
             TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
@@ -89,7 +109,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
                     colors[idx] = App::Color(1.0,0.0,1.0); // magenta
             }
             vp->DiffuseColor.setValues(colors);
-        } 
+        }
         if (!edges.empty() && originalLineColors.empty()) {
             TopTools_IndexedMapOfShape eMap;
             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
@@ -108,7 +128,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
         if (!faces.empty() && !originalFaceColors.empty()) {
             vp->DiffuseColor.setValues(originalFaceColors);
             originalFaceColors.clear();
-        } 
+        }
         if (!edges.empty() && !originalLineColors.empty()) {
             vp->LineColorArray.setValues(originalLineColors);
             originalLineColors.clear();
