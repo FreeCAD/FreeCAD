@@ -30,6 +30,7 @@ set(Boost_LIBRARIES
     optimized boost_system-vc110-mt-1_55.lib 
     optimized boost_graph-vc110-mt-1_55.lib 
     optimized boost_program_options-vc110-mt-1_55.lib
+    optimized boost_python-vc110-mt-1_55.lib
     optimized boost_regex-vc110-mt-1_55.lib
     optimized boost_signals-vc110-mt-1_55.lib
     optimized boost_thread-vc110-mt-1_55.lib
@@ -37,6 +38,7 @@ set(Boost_LIBRARIES
     debug boost_system-vc110-mt-gd-1_55.lib
     debug boost_graph-vc110-mt-gd-1_55.lib 
     debug boost_program_options-vc110-mt-gd-1_55.lib
+    debug boost_python-vc110-mt-gd-1_55.lib
     debug boost_regex-vc110-mt-gd-1_55.lib
     debug boost_signals-vc110-mt-gd-1_55.lib
     debug boost_thread-vc110-mt-gd-1_55.lib
