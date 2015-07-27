@@ -18,6 +18,7 @@ CompressiveStrength=
 YoungsModulus=12000 MPa
 Elasticity=
 FractureToughness=
+Density=0.7 kg/m^3
 
 [FEM]
 PoissonRatio=0.05

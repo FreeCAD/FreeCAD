@@ -122,8 +122,12 @@ class inp_writer:
             # write material properties
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
             f.write('*ELASTIC \n')
-            f.write('{}, '.format(YM_in_MPa))
+            f.write('{}, \n'.format(YM_in_MPa))
             f.write('{0:.3f}\n'.format(PR))
+            density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
+            density_in_kg_per_mm3 = density.getValueAs('t/mm^3')
+            f.write('*DENSITY \n')
+            f.write('{}, \n'.format(density_in_kg_per_mm3))
             # write element properties
             if len(self.material_objects) == 1:
                 f.write('*SOLID SECTION, ELSET=' + mat_obj_name + ', MATERIAL=' + mat_name + '\n')

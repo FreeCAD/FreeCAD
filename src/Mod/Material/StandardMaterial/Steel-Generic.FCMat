@@ -30,6 +30,7 @@ CompressiveStrength=
 Elasticity=
 ; http://en.wikipedia.org/wiki/Fracture_toughness
 FractureToughness:
+Density=7900 kg/m^3
 
 [FEM]
 PoissonRatio = 0.3
