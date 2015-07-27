@@ -581,7 +581,7 @@ def loadTexture(filename,size=None):
             return img
     return None
     
-def getMovableChildren(objectslist,recursive=False):
+def getMovableChildren(objectslist,recursive=True):
     '''getMovableChildren(objectslist,[recursive]): extends the given list of objects
     with all child objects that have a "MoveWithHost" property set to True. If
     recursive is True, all descendents are considered, otherwise only direct children.'''
