@@ -107,6 +107,10 @@ void MeshCurvature::ComputePerVertex()
         }
     }
 
+    // in case of an empty mesh no curvature can be calculated
+    if (myKernel.CountPoints() == 0 || myKernel.CountFacets() == 0)
+        return;
+
     // compute vertex based curvatures
     Wm4::MeshCurvature<double> meshCurv(myKernel.CountPoints(), &(aPnts[0]), myKernel.CountFacets(), &(aIdx[0]));
 
