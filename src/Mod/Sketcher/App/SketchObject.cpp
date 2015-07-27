@@ -1719,15 +1719,14 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
         if (!(this->testIfLinkDAGCompatible(pObj))){
             if (rsn)
                 *rsn = rlCircularReference;
-            return false
-            ;
+            return false;
         }
     } catch (Base::Exception &e) {
         Base::Console().Warning("Probably, there is a circular reference in the document. Error: %s\n", e.what());
         return true; //prohibiting this reference won't remove the problem anyway...
     }
+    
 
-    /*
     // Note: Checking for the body of the support doesn't work when the support are the three base planes
     App::DocumentObject *support = this->Support.getValue();
     Part::BodyBase* body = Part::BodyBase::findBodyOf(this);
@@ -1745,7 +1744,6 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     }
 
     return true;
-    */
 }
 
 int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId/*=Sketcher::none*/)

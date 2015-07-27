@@ -175,7 +175,6 @@ DocumentObjectGroup* DocumentObject::getGroup() const
 bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
 {
     std::vector<App::DocumentObject*> linkTo_in_vector;
-    linkTo_in_vector.reserve(1);
     linkTo_in_vector.push_back(linkTo);
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
