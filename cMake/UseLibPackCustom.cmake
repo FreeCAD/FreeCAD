@@ -30,6 +30,7 @@ set(Boost_LIBRARIES
     optimized boost_system-vc90-mt-1_41.lib 
 	optimized boost_graph-vc90-mt-1_41.lib 
 	optimized boost_program_options-vc90-mt-1_41.lib
+	optimized boost_python-vc90-mt-1_41.lib
 	optimized boost_regex-vc90-mt-1_41.lib
 	optimized boost_signals-vc90-mt-1_41.lib
 	optimized boost_thread-vc90-mt-1_41.lib
@@ -37,6 +38,7 @@ set(Boost_LIBRARIES
 	debug boost_system-vc90-mt-gd-1_41.lib
 	debug boost_graph-vc90-mt-gd-1_41.lib 
 	debug boost_program_options-vc90-mt-gd-1_41.lib
+	debug boost_python-vc90-mt-gd-1_41.lib
 	debug boost_regex-vc90-mt-gd-1_41.lib
 	debug boost_signals-vc90-mt-gd-1_41.lib
 	debug boost_thread-vc90-mt-gd-1_41.lib

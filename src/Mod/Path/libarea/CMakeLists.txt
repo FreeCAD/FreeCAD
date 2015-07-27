@@ -66,7 +66,29 @@ add_library(
   ${PYAREA_SRC}
 )
 
-target_link_libraries(area ${Boost_LIBRARIES})
+if(MSVC)
+    set(area_LIBS
+        ${Boost_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+        debug MSVCRTD.LIB
+        debug MSVCPRTD.LIB
+        optimized MSVCRT.LIB
+        optimized MSVCPRT.LIB
+    )
+elseif(MINGW)
+    set(area_LIBS
+        ${Boost_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+        Rpcrt4.lib
+    )
+else(MSVC)
+    set(area_LIBS
+        ${Boost_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+    )
+endif(MSVC)
+
+target_link_libraries(area ${area_LIBS})
 
 SET_BIN_DIR(area area)
 SET_PYTHON_PREFIX_SUFFIX(area)

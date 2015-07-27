@@ -29,11 +29,13 @@ set(Boost_LIBRARIES
 	optimized boost_filesystem-vc80-mt.lib 
 	#optimized boost_graph-vc80-mt.lib 
 	optimized boost_program_options-vc80-mt.lib
+	optimized boost_python-vc80-mt.lib
 	optimized boost_regex-vc80-mt.lib
 	optimized boost_signals-vc80-mt.lib
 	debug boost_filesystem-vc80-mt-gd.lib 
 	#debug boost_graph-vc80-mt-gd.lib 
 	debug boost_program_options-vc80-mt-gd.lib
+	debug boost_python-vc80-mt-gd.lib
 	debug boost_regex-vc80-mt-gd.lib
 	debug boost_signals-vc80-mt-gd.lib
 )
