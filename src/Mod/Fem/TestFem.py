@@ -81,6 +81,15 @@ class FemTest(unittest.TestCase):
         force_constraint.Reversed = True
         self.failUnless(force_constraint, "FemTest of new force constraint failed")
 
+    def test_new_pressure_constraint(self):
+        FreeCAD.Console.PrintMessage('\nChecking FEM new pressure constraint...\n')
+        box = self.active_doc.addObject("Part::Box", "Box")
+        pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
+        pressure_constraint.References = [(box, "Face1")]
+        pressure_constraint.Pressure = 10.000000
+        pressure_constraint.Reversed = True
+        self.failUnless(pressure_constraint, "FemTest of new pressure constraint failed")
+
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
