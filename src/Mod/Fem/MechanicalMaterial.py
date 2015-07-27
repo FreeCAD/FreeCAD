@@ -133,6 +133,7 @@ class _MechanicalMaterialTaskPanel:
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
         QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
+        QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
         self.previous_material = self.obj.Material
         self.import_materials()
         previous_mat_path = self.get_material_path(self.previous_material)
@@ -169,6 +170,14 @@ class _MechanicalMaterialTaskPanel:
             material = self.obj.Material
             # FreeCAD uses kPa internall for Stress
             material['YoungsModulus'] = unicode(value) + " kPa"
+            self.obj.Material = material
+
+    def density_changed(self, value):
+        import Units
+        old_density = Units.Quantity(self.obj.Material['Density'])
+        if old_density != value:
+            material = self.obj.Material
+            material['Density'] = unicode(value) + " kg/mm^3"
             self.obj.Material = material
 
     def pr_changed(self, value):
@@ -212,6 +221,8 @@ class _MechanicalMaterialTaskPanel:
             print ' YM = ', matmap['YoungsModulus']
         if 'PoissonRatio' in matmap:
             print ' PR = ', matmap['PoissonRatio']
+        if 'Density' in matmap:
+            print ' RO = ', matmap['Density']
 
     def set_mat_params_in_combo_box(self, matmap):
         if 'YoungsModulus' in matmap:
@@ -221,6 +232,11 @@ class _MechanicalMaterialTaskPanel:
             self.form.input_fd_young_modulus.setText("{} {}".format(ym_with_new_unit, ym_new_unit))
         if 'PoissonRatio' in matmap:
             self.form.spinBox_poisson_ratio.setValue(float(matmap['PoissonRatio']))
+        if 'Density' in matmap:
+            density_new_unit = "kg/m^3"
+            density = FreeCAD.Units.Quantity(matmap['Density'])
+            density_with_new_unit = density.getValueAs(density_new_unit)
+            self.form.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
 
     def add_transient_material(self, material):
         material_name = self.get_material_name(material)

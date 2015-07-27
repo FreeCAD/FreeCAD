@@ -24,6 +24,7 @@ SpecificPrice= 4
 YoungsModulus=3640 MPa
 ; http://en.wikipedia.org/wiki/Ultimate_tensile_strength 
 UltimateTensileStrength= 49.6 MPa
+Density=1300 kg/m^3
 
 
 [FEM]

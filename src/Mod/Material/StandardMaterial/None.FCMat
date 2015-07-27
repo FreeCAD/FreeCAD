@@ -22,6 +22,7 @@ SpecificPrice = 0.0
 YoungsModulus=0 MPa
 ; http://en.wikipedia.org/wiki/Ultimate_tensile_strength in 
 UltimateTensileStrength= 0 MPa
+Density=0 kg/m^3
 
 [FEM]
 PoissonRatio = 0.0
