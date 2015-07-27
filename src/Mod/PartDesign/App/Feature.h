@@ -59,7 +59,7 @@ public:
     /**
      * Returns the BaseFeature property's object (if any)
      * @param silent if couldn't determine the base feature and silent == true,
-     *               silently return a nullptr, otherwice throw Base::Exception. 
+     *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
     virtual Part::Feature* getBaseObject(bool silent=false) const;
