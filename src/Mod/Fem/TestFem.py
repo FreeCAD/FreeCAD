@@ -38,6 +38,7 @@ class FemTest(unittest.TestCase):
             FreeCAD.newDocument("FemTest")
         finally:
             FreeCAD.setActiveDocument("FemTest")
+        self.active_doc = FreeCAD.ActiveDocument
 
     def test_new_analysis(self):
         FreeCAD.Console.PrintMessage('\nChecking FEM new analysis...\n')
@@ -62,6 +63,13 @@ class FemTest(unittest.TestCase):
 
         mesh.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         self.failUnless(mesh, "FemTest of new mesh failed")
+
+    def test_new_fixed_constraint(self):
+        FreeCAD.Console.PrintMessage('\nChecking FEM new fixed constraint...\n')
+        box = self.active_doc.addObject("Part::Box", "Box")
+        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        fixed_constraint.References = [(box, "Face1")]
+        self.failUnless(fixed_constraint, "FemTest of new fixed constraint failed")
 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
