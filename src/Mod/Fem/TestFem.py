@@ -71,6 +71,16 @@ class FemTest(unittest.TestCase):
         fixed_constraint.References = [(box, "Face1")]
         self.failUnless(fixed_constraint, "FemTest of new fixed constraint failed")
 
+    def test_new_force_constraint(self):
+        FreeCAD.Console.PrintMessage('\nChecking FEM new force constraint...\n')
+        box = self.active_doc.addObject("Part::Box", "Box")
+        force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
+        force_constraint.References = [(box, "Face1")]
+        force_constraint.Force = 10.000000
+        force_constraint.Direction = (box, ["Edge12"])
+        force_constraint.Reversed = True
+        self.failUnless(force_constraint, "FemTest of new force constraint failed")
+
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
