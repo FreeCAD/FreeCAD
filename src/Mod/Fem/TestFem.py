@@ -39,6 +39,7 @@ class FemTest(unittest.TestCase):
         finally:
             FreeCAD.setActiveDocument("FemTest")
         self.active_doc = FreeCAD.ActiveDocument
+        self.create_box()
 
     def test_new_analysis(self):
         FreeCAD.Console.PrintMessage('\nChecking FEM new analysis...\n')
@@ -64,31 +65,40 @@ class FemTest(unittest.TestCase):
         mesh.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         self.failUnless(mesh, "FemTest of new mesh failed")
 
+    def create_box(self):
+        self.box = self.active_doc.addObject("Part::Box", "Box")
+
+    def create_fixed_constraint(self):
+        self.fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        self.fixed_constraint.References = [(self.box, "Face1")]
+
     def test_new_fixed_constraint(self):
         FreeCAD.Console.PrintMessage('\nChecking FEM new fixed constraint...\n')
-        box = self.active_doc.addObject("Part::Box", "Box")
-        fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
-        fixed_constraint.References = [(box, "Face1")]
-        self.failUnless(fixed_constraint, "FemTest of new fixed constraint failed")
+        self.create_fixed_constraint()
+        self.failUnless(self.fixed_constraint, "FemTest of new fixed constraint failed")
+
+    def create_force_constraint(self):
+        self.force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
+        self.force_constraint.References = [(self.box, "Face1")]
+        self.force_constraint.Force = 10.000000
+        self.force_constraint.Direction = (self.box, ["Edge12"])
+        self.force_constraint.Reversed = True
 
     def test_new_force_constraint(self):
         FreeCAD.Console.PrintMessage('\nChecking FEM new force constraint...\n')
-        box = self.active_doc.addObject("Part::Box", "Box")
-        force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
-        force_constraint.References = [(box, "Face1")]
-        force_constraint.Force = 10.000000
-        force_constraint.Direction = (box, ["Edge12"])
-        force_constraint.Reversed = True
-        self.failUnless(force_constraint, "FemTest of new force constraint failed")
+        self.create_force_constraint()
+        self.failUnless(self.force_constraint, "FemTest of new force constraint failed")
+
+    def create_pressure_constraint(self):
+        self.pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
+        self.pressure_constraint.References = [(self.box, "Face1")]
+        self.pressure_constraint.Pressure = 10.000000
+        self.pressure_constraint.Reversed = True
 
     def test_new_pressure_constraint(self):
         FreeCAD.Console.PrintMessage('\nChecking FEM new pressure constraint...\n')
-        box = self.active_doc.addObject("Part::Box", "Box")
-        pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
-        pressure_constraint.References = [(box, "Face1")]
-        pressure_constraint.Pressure = 10.000000
-        pressure_constraint.Reversed = True
-        self.failUnless(pressure_constraint, "FemTest of new pressure constraint failed")
+        self.create_pressure_constraint()
+        self.failUnless(self.pressure_constraint, "FemTest of new pressure constraint failed")
 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
