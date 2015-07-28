@@ -218,7 +218,7 @@ CmdFemConstraintBearing::CmdFemConstraintBearing()
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a bearing");
     sWhatsThis      = "Fem_ConstraintBearing";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_ConstraintBearing";
+    sPixmap         = "fem-constraint-bearing";
 }
 
 void CmdFemConstraintBearing::activated(int iMsg)
