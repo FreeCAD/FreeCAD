@@ -44,9 +44,9 @@ endif(WIN32)
 
 # ================================================================================
 
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     set(CMAKE_COMPILER_IS_CLANGXX TRUE)
-endif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
