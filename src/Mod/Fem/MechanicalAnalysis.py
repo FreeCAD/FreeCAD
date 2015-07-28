@@ -84,7 +84,7 @@ class _CommandNewMechanicalAnalysis:
 
 class _CommandFemFromShape:
     def GetResources(self):
-        return {'Pixmap': 'Fem_FemMesh',
+        return {'Pixmap': 'fem-fem-mesh-from-shape',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh from shape")}
 
