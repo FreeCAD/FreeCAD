@@ -18,7 +18,7 @@ if(DOXYGEN_FOUND)
 
     # directory order seems important for correct macro expansion
     # (files containing macros definitions must be parsed before the files using them)
-    SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIR}/Inventor/fields/SoSubField.h 
+    SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIRS}/Inventor/fields/SoSubField.h 
                            ${CMAKE_SOURCE_DIR}/src/CXX 
                            ${CMAKE_SOURCE_DIR}/src/zipios++ 
                            ${CMAKE_SOURCE_DIR}/src/3rdParty

@@ -31,7 +31,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
@@ -42,17 +42,15 @@ include_directories(
 if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
-         debug ${COIN3D_LIBRARY_DEBUG}
-         optimized ${COIN3D_LIBRARY_RELEASE}
+         ${COIN3D_LIBRARIES}
          ${QT_LIBRARIES}
          ${QT_QTUITOOLS_LIBRARY}
          ${OPENGL_gl_LIBRARY}
     )
 else(MSVC)
     set(FreeCADGui_LIBS
-        FreeCADBase
         FreeCADApp
-        ${COIN3D_LIBRARY}
+        ${COIN3D_LIBRARIES}
         ${QT_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}

@@ -67,10 +67,10 @@ set(SMESH_LIBRARIES
 set(SMESH_FOUND TRUE) 
 	
 # Coin3D
-find_path(COIN3D_INCLUDE_DIR Inventor/So.h
+find_path(COIN3D_INCLUDE_DIRS Inventor/So.h
 ${FREECAD_LIBPACK_DIR}/include/Coin-2.4.5
 )
-find_path(COIN3D_INCLUDE_DIR Inventor/So.h
+find_path(COIN3D_INCLUDE_DIRS Inventor/So.h
 ${FREECAD_LIBPACK_DIR}/include/Coin-3.1.3
 )
 find_library(COIN3D_LIBRARY_RELEASE coin2
@@ -85,6 +85,8 @@ find_library(COIN3D_LIBRARY_RELEASE coin3
 find_library(COIN3D_LIBRARY_DEBUG coin3d
     "${FREECAD_LIBPACK_DIR}/lib"
 )
+set(COIN3D_LIBRARIES optimized ${COIN3D_LIBRARY_RELEASE}
+                     debug ${COIN3D_LIBRARY_DEBUG})
 
 set(COIN3D_FOUND TRUE) 
 
