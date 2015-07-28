@@ -265,4 +265,5 @@ class _MechanicalMaterialTaskPanel:
             self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
 
 
-FreeCADGui.addCommand('Fem_MechanicalMaterial', _CommandMechanicalMaterial())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Fem_MechanicalMaterial', _CommandMechanicalMaterial())
