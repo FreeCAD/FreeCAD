@@ -48,7 +48,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintFixed, FemGui::ViewProviderFemC
 
 ViewProviderFemConstraintFixed::ViewProviderFemConstraintFixed()
 {
-    sPixmap = "Fem_ConstraintFixed";
+    sPixmap = "fem-constraint-fixed";
 }
 
 ViewProviderFemConstraintFixed::~ViewProviderFemConstraintFixed()

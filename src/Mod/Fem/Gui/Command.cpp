@@ -256,7 +256,7 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a fixed geometric entity");
     sWhatsThis      = "Fem_ConstraintFixed";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_ConstraintFixed";
+    sPixmap         = "fem-constraint-fixed";
 }
 
 void CmdFemConstraintFixed::activated(int iMsg)
