@@ -182,7 +182,7 @@ class _CommandQuickAnalysis:
 class _CommandMechanicalShowResult:
     "the Fem JobControl command definition"
     def GetResources(self):
-        return {'Pixmap': 'Fem_Result',
+        return {'Pixmap': 'fem-result',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result"),
                 'Accel': "S, R",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result information of an analysis")}
