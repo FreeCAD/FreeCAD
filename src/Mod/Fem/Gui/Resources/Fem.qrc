@@ -3,7 +3,7 @@
         <file>icons/Fem_FemMesh.svg</file>
         <file>icons/Fem_FemMesh_createnodebypoly.svg</file>
         <file>icons/fem-analysis.svg</file>
-        <file>icons/Fem_ConstraintForce.svg</file>
+        <file>icons/fem-constraint-force.svg</file>
         <file>icons/fem-constraint-fixed.svg</file>
         <file>icons/Fem_ConstraintPressure.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
