@@ -111,7 +111,7 @@ class _CommandFemFromShape:
 class _CommandMechanicalJobControl:
     "the Fem JobControl command definition"
     def GetResources(self):
-        return {'Pixmap': 'Fem_NewAnalysis',
+        return {'Pixmap': 'fem-new-analysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Start calculation"),
                 'Accel': "S, C",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
