@@ -183,9 +183,9 @@ class _CommandMechanicalShowResult:
     "the Fem JobControl command definition"
     def GetResources(self):
         return {'Pixmap': 'Fem_Result',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result"),
                 'Accel': "S, R",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result information of an analysis")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result information of an analysis")}
 
     def Activated(self):
         self.result_object = None
