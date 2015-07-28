@@ -50,7 +50,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderResult, Gui::ViewProviderDocumentObject)
 
 ViewProviderResult::ViewProviderResult()
 {
-  sPixmap = "Fem_Result";
+  sPixmap = "fem-result";
 
 }
 
