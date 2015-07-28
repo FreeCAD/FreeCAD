@@ -7,7 +7,7 @@ endif (CMAKE_BUILD_TOOL MATCHES "make")
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if(NOT FREECAD_LIBPACK_USE)
+if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
     if(Boost_FOUND)
         include_directories(${Boost_INCLUDE_DIRS})
