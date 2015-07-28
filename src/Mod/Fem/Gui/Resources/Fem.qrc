@@ -5,7 +5,7 @@
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-constraint-force.svg</file>
         <file>icons/fem-constraint-fixed.svg</file>
-        <file>icons/Fem_ConstraintPressure.svg</file>
+        <file>icons/fem-constraint-pressure.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
         <file>icons/fem-constraint-gear.svg</file>
         <file>icons/Fem_ConstraintPulley.svg</file>
