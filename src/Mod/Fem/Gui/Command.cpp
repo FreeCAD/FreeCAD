@@ -411,7 +411,7 @@ CmdFemConstraintPulley::CmdFemConstraintPulley()
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a pulley");
     sWhatsThis      = "Fem_ConstraintPulley";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_ConstraintPulley";
+    sPixmap         = "fem-constraint-pulley";
 }
 
 void CmdFemConstraintPulley::activated(int iMsg)
