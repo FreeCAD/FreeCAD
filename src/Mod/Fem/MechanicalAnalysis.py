@@ -128,7 +128,7 @@ class _CommandMechanicalJobControl:
 
 class _CommandPurgeFemResults:
     def GetResources(self):
-        return {'Pixmap': 'Fem_Purge_Results',
+        return {'Pixmap': 'fem-purge-results',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results"),
                 'Accel': "S, S",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results from an analysis")}
