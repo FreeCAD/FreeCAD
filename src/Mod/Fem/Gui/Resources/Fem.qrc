@@ -8,7 +8,7 @@
         <file>icons/fem-constraint-pressure.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
         <file>icons/fem-constraint-gear.svg</file>
-        <file>icons/Fem_ConstraintPulley.svg</file>
+        <file>icons/fem-constraint-pulley.svg</file>
         <file>icons/fem-add-fem-mesh.svg</file>
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
