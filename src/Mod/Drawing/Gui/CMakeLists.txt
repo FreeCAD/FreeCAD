@@ -14,7 +14,7 @@ include_directories(
     ${QT_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 

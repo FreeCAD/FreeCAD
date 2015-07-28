@@ -7,7 +7,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${SOQT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(SpreadsheetGui_LIBS

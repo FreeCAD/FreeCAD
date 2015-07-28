@@ -25,7 +25,7 @@ include_directories(
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})

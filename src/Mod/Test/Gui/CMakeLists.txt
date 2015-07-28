@@ -3,7 +3,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${QT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(TestGui_LIBS

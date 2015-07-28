@@ -18,10 +18,10 @@ set(PYTHON_EXECUTABLE   ${FREECAD_LIBPACK_DIR}/bin/python.exe)
 set(PYTHONLIBS_FOUND TRUE) 
 	
 # XercesC
-set(XERCESC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/xercesc)
-set(XERCESC_LIBRARIES       xerces-c_2.lib)
-set(XERCESC_DEBUG_LIBRARIES xerces-c_2D.lib)
-set(XERCESC_FOUND TRUE) 
+set(XercesC_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/xercesc)
+set(XercesC_LIBRARIES       xerces-c_2.lib)
+set(XercesC_DEBUG_LIBRARIES xerces-c_2D.lib)
+set(XercesC_FOUND TRUE) 
 	
 # Boost
 set(Boost_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/boost)
