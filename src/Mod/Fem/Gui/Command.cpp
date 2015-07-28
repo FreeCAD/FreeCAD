@@ -93,7 +93,7 @@ CmdFemCreateAnalysis::CmdFemCreateAnalysis()
     sToolTipText    = QT_TR_NOOP("Create a FEM analysis");
     sWhatsThis      = "Fem_CreateAnalysis";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_Analysis";
+    sPixmap         = "fem-analysis";
 }
 
 void CmdFemCreateAnalysis::activated(int iMsg)

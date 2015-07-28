@@ -53,7 +53,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObject
 
 ViewProviderFemAnalysis::ViewProviderFemAnalysis()
 {
-    sPixmap = "Fem_Analysis";
+    sPixmap = "fem-analysis";
 }
 
 ViewProviderFemAnalysis::~ViewProviderFemAnalysis()

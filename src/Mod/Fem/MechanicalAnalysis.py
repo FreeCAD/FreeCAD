@@ -50,7 +50,7 @@ def makeMechanicalAnalysis(name):
 class _CommandNewMechanicalAnalysis:
     "the Fem Analysis command definition"
     def GetResources(self):
-        return {'Pixmap': 'Fem_Analysis',
+        return {'Pixmap': 'fem-analysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "New mechanical analysis"),
                 'Accel': "N, A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new mechanical analysis")}
@@ -235,7 +235,7 @@ class _ViewProviderFemAnalysis:
         pass
 
     def getIcon(self):
-        return ":/icons/Fem_Analysis.svg"
+        return ":/icons/fem-analysis.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
