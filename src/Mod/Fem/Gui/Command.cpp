@@ -373,7 +373,7 @@ CmdFemConstraintGear::CmdFemConstraintGear()
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a gear");
     sWhatsThis      = "Fem_ConstraintGear";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_ConstraintGear";
+    sPixmap         = "fem-constraint-gear";
 }
 
 void CmdFemConstraintGear::activated(int iMsg)
