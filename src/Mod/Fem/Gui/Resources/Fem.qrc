@@ -1,6 +1,6 @@
 <RCC>
     <qresource> 
-        <file>icons/Fem_FemMesh.svg</file>
+        <file>icons/fem-fem-mesh-from-shape.svg</file>
         <file>icons/Fem_FemMesh_createnodebypoly.svg</file>
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-constraint-force.svg</file>
