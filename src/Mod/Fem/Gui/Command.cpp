@@ -155,7 +155,7 @@ CmdFemAddPart::CmdFemAddPart()
     sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
     sWhatsThis      = "Fem_FemAddPart";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_AddFemMesh";
+    sPixmap         = "fem-add-fem-mesh";
 }
 
 void CmdFemAddPart::activated(int iMsg)
