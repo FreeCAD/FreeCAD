@@ -86,6 +86,11 @@ ENDSEC;
 END-ISO-10303-21;
 """
 
+def decode(filename):
+    if isinstance(filename,unicode): 
+        # workaround since ifcopenshell currently can't handle unicode filenames
+        filename = filename.encode("utf8")
+    return filename
 
 def doubleClickTree(item,column):
     txt = item.text(column)
@@ -118,9 +123,7 @@ def explore(filename=None):
         
     from PySide import QtCore,QtGui
     
-    if isinstance(filename,unicode): 
-        import sys #workaround since ifcopenshell currently can't handle unicode filenames
-        filename = filename.encode(sys.getfilesystemencoding())
+    filename = decode(filename)
         
     if not os.path.exists(filename):
         print "File not found"
@@ -255,9 +258,7 @@ def open(filename,skip=[],only=[],root=None):
     "opens an IFC file in a new document"
 
     docname = os.path.splitext(os.path.basename(filename))[0]
-    if isinstance(docname,unicode): 
-        import sys #workaround since newDocument currently can't handle unicode filenames
-        docname = docname.encode(sys.getfilesystemencoding())
+    docname = decode(docname)
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename,doc.Name,skip,only,root)
@@ -303,9 +304,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print "done."
     
     global ifcfile # keeping global for debugging purposes
-    if isinstance(filename,unicode): 
-        import sys #workaround since ifcopenshell currently can't handle unicode filenames
-        filename = filename.encode(sys.getfilesystemencoding())
+    filename = decode(filename)
     ifcfile = ifcopenshell.open(filename)
     from ifcopenshell import geom
     settings = ifcopenshell.geom.settings()
@@ -877,10 +876,8 @@ def export(exportList,filename):
 
     if DEBUG: print "writing ",filename,"..."
     
-    if isinstance(filename,unicode): 
-        import sys #workaround since ifcopenshell currently can't handle unicode filenames
-        filename = filename.encode(sys.getfilesystemencoding())
-    
+    filename = decode(filename)
+        
     ifcfile.write(filename)
 
 
