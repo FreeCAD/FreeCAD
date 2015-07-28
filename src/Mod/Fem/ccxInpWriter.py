@@ -1,7 +1,5 @@
-import FemGui
 import FreeCAD
 import os
-import time
 import sys
 
 
@@ -46,8 +44,7 @@ class inp_writer:
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for m in self.material_objects:
             mat_obj = m['Object']
-            mat_obj_name = mat_obj.Name
-            mat_name = mat_obj.Material['Name'][:80]
+            mat_obj_name = mat_obj.Name[:80]
 
             f.write('*ELSET,ELSET=' + mat_obj_name + '\n')
             if len(self.material_objects) == 1:
@@ -342,16 +339,9 @@ class inp_writer:
         f.write('*END STEP \n')
 
     def write_footer(self, f):
-        FcVersionInfo = FreeCAD.Version()
         f.write('\n***********************************************************\n')
         f.write('** CalculiX Input file\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        f.write('**\n')
-        f.write('**   written by    --> FreeCAD ' + FcVersionInfo[0] + '.' + FcVersionInfo[1] + '.' + FcVersionInfo[2] + '\n')
-        f.write('**   written on    --> ' + time.ctime() + '\n')
-        f.write('**   file name     --> ' + os.path.basename(FreeCAD.ActiveDocument.FileName) + '\n')
-        f.write('**   analysis name --> ' + FemGui.getActiveAnalysis().Name + '\n')
-        f.write('**\n')
         f.write('**\n')
         f.write('**   Units\n')
         f.write('**\n')
