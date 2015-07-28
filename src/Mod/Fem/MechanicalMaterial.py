@@ -47,7 +47,7 @@ def makeMechanicalMaterial(name):
 class _CommandMechanicalMaterial:
     "the Fem Material command definition"
     def GetResources(self):
-        return {'Pixmap': 'Fem_Material',
+        return {'Pixmap': 'fem-material',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Mechanical material..."),
                 'Accel': "M, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates or edit the mechanical material definition.")}
@@ -93,7 +93,7 @@ class _ViewProviderMechanicalMaterial:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/Fem_Material.svg"
+        return ":/icons/fem-material.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
