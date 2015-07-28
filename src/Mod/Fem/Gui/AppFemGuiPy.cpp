@@ -99,7 +99,7 @@ static PyObject * open(PyObject *self, PyObject *args)
 
         if (ext == QLatin1String("inp")) {
             Gui::TextEditor* editor = new Gui::TextEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/Fem_Inp_Editor.svg"));
+            editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/fem-inp-editor.svg"));
             Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
             editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
             edit->setDisplayName(Gui::EditorView::FileName);
