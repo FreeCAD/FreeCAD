@@ -145,7 +145,7 @@ class _CommandPurgeFemResults:
 
 class _CommandQuickAnalysis:
     def GetResources(self):
-        return {'Pixmap': 'Fem_Quick_Analysis',
+        return {'Pixmap': 'fem-quick-analysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
                 'Accel': "R, C",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
