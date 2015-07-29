@@ -86,10 +86,15 @@ ENDSEC;
 END-ISO-10303-21;
 """
 
-def decode(filename):
+def decode(filename,utf=False):
     if isinstance(filename,unicode): 
         # workaround since ifcopenshell currently can't handle unicode filenames
-        filename = filename.encode("utf8")
+        if utf:
+            encoding = True
+        else:
+            import sys
+            encoding = sys.getfilesystemencoding()
+        filename = filename.encode(encoding)
     return filename
 
 def doubleClickTree(item,column):
@@ -123,7 +128,7 @@ def explore(filename=None):
         
     from PySide import QtCore,QtGui
     
-    filename = decode(filename)
+    filename = decode(filename,utf=True)
         
     if not os.path.exists(filename):
         print "File not found"
@@ -258,7 +263,7 @@ def open(filename,skip=[],only=[],root=None):
     "opens an IFC file in a new document"
 
     docname = os.path.splitext(os.path.basename(filename))[0]
-    docname = decode(docname)
+    docname = decode(docname,utf=True)
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename,doc.Name,skip,only,root)
@@ -305,7 +310,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     
     global ifcfile # keeping global for debugging purposes
     filename = decode(filename)
-    ifcfile = ifcopenshell.open(filename)
+    ifcfile = ifcopenshell.open(filename,utf=True)
     from ifcopenshell import geom
     settings = ifcopenshell.geom.settings()
     settings.set(settings.USE_BREP_DATA,True)
