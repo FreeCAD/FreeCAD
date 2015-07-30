@@ -80,6 +80,17 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
+    }else if (unit == Unit::Density){
+        if(UnitValue < 0.0001){
+            unitString = QString::fromLatin1("kg/m^3");
+            factor = 0.000000001;
+        }else if(UnitValue < 1.0){
+            unitString = QString::fromLatin1("kg/cm^3");
+            factor = 0.001;
+        }else{
+            unitString = QString::fromLatin1("kg/mm^3");
+            factor = 1.0;
+        }
     }else if ((unit == Unit::Pressure) || (unit == Unit::Stress)){
         if(UnitValue < 10.0){// Pa is the smallest
             unitString = QString::fromLatin1("Pa");
