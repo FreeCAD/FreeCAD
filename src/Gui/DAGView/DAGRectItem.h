@@ -38,9 +38,6 @@ namespace Gui
     public:
       RectItem(QGraphicsItem* parent = 0);
       void setBackgroundBrush(const QBrush &brushIn){backgroundBrush = brushIn;}
-      void setPreselectionBrush(const QBrush &brushIn){preSelectionBrush = brushIn;}
-      void setSelectionBrush(const QBrush &brushIn){selectionBrush = brushIn;}
-      void setBothBrush(const QBrush &brushIn){bothBrush = brushIn;}
       void setEditingBrush(const QBrush &brushIn){editBrush = brushIn;}
       void preHighlightOn(){preSelected = true;}
       void preHighlightOff(){preSelected = false;}
@@ -55,9 +52,6 @@ namespace Gui
       virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
     private:
       QBrush backgroundBrush; //!< brush used for background. not used yet.
-      QBrush selectionBrush; //!< brush used when selected.
-      QBrush preSelectionBrush; //!< brush used when pre selected.
-      QBrush bothBrush; //!< brush for when both selected and preSelected.
       QBrush editBrush; //!< brush used when object is in edit mode.
       //start with booleans, may expand to state.
       bool selected;

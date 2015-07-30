@@ -50,6 +50,7 @@
 #include <unordered_set>
 
 #include <Base/TimeInfo.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -240,14 +241,6 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   
   //setup rectangle.
   auto *rectangle = (*theGraph)[virginVertex].rectangle.get();
-  rectangle->setPen(Qt::NoPen);
-  QColor preSelectionColor = qApp->palette().highlight().color();
-  preSelectionColor.setAlphaF(0.25);
-  rectangle->setPreselectionBrush(QBrush(preSelectionColor));
-  rectangle->setSelectionBrush(qApp->palette().highlight());
-  QColor bothSelectionColor = qApp->palette().highlight().color();
-  bothSelectionColor.setAlphaF(0.75);
-  rectangle->setBothBrush(QBrush(bothSelectionColor));
   rectangle->setEditingBrush(QBrush(Qt::yellow));
   
   (*theGraph)[virginVertex].icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
@@ -526,18 +519,17 @@ void Model::updateSlot()
       this->removeItem((*theGraph)[currentEdge].connector.get());
   }
   
-  
   indexVerticesEdges();
   Path sorted;
-  try {
-      // this sort gives the execute
-      boost::topological_sort(*theGraph, std::back_inserter(sorted));
+  try
+  {
+    boost::topological_sort(*theGraph, std::back_inserter(sorted));
   }
-  catch (const std::exception& e) {
-      std::cerr << "Document::recompute: " << e.what() << std::endl;
-      return;
+  catch(const boost::not_a_dag &)
+  {
+    Base::Console().Error("not a dag exception in DAGView::Model::updateSlot()\n");
+    return;
   }
-
   //index the vertices in sort order.
   int tempIndex = 0;
   for (const auto &currentVertex : sorted)
