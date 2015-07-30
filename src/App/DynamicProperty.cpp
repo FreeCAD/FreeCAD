@@ -289,12 +289,16 @@ std::string DynamicProperty::encodeAttribute(const std::string& str) const
             tmp += "&lt;";
         else if (*it == '"')
             tmp += "&quot;";
+        else if (*it == '\'')
+            tmp += "&apos;";
         else if (*it == '&')
             tmp += "&amp;";
         else if (*it == '>')
             tmp += "&gt;";
+        else if (*it == '\r')
+            tmp += "&#xD;";
         else if (*it == '\n')
-            tmp += " ";
+            tmp += "&#xA;";
         else
             tmp += *it;
     }
