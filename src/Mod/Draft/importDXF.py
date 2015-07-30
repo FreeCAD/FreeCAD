@@ -175,8 +175,10 @@ def deformat(text):
                     print("unable to decode text: ",text)
     t = ns
     # replace degrees, diameters chars
-    t = re.sub('%%d','°',t)
-    t = re.sub('%%c','Ø',t)
+    t = re.sub('%%d',u'°',t)
+    t = re.sub('%%c',u'Ø',t)
+    t = re.sub('%%D',u'°',t)
+    t = re.sub('%%C',u'Ø',t)
     #print("output text: ",t)
     return t
 
