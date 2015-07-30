@@ -1011,3 +1011,11 @@ if(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
               WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+
+# Print message to start build process
+if (${CMAKE_BUILD_TOOL} MATCHES "make")
+    MESSAGE("=======================================\n"
+            "Now run 'make' to build ${PACKAGE_NAME}\n"
+            "=======================================\n")
+endif()
+
