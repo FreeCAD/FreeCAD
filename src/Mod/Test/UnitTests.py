@@ -28,6 +28,7 @@ class UnitBasicCases(unittest.TestCase):
         self.failUnless(compare(tu('(m^2*kg)/(A^2*s^3)'), 1000000.0))
         self.failUnless(compare(tu('2*pi rad'), 360.0))
         self.failUnless(compare(tu('2*pi rad') / tu('gon'), 400.0))
+        self.failUnless(compare(tu('999 kg') / tu('1 m^3'), 0.000009999))
 
     def testImperial(self):
         #tu = FreeCAD.Units.translateUnit
