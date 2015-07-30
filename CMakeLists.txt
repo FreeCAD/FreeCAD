@@ -437,7 +437,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
 #http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=677598
 # Acceptable versions of Python
-set(Python_ADDITIONAL_VERSIONS "2.3" "2.4" "2.5" "2.6" "2.7" "2.8" "2.9")
+set(Python_ADDITIONAL_VERSIONS "2.5" "2.6" "2.7" "2.8" "2.9")
 
 # For building on OS X
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -560,7 +560,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 
     IF(NOT PYTHONLIBS_FOUND)
-        MESSAGE(FATAL_ERROR "Python not found, install python!")
+        MESSAGE(FATAL_ERROR "=================================\n"
+                            "Python not found, install Python!\n"
+                            "=================================\n")
     ENDIF(NOT PYTHONLIBS_FOUND)
 
 # -------------------------------- pcl ----------------------------------
@@ -572,15 +574,30 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # -------------------------------- Boost --------------------------------
 
-    SET( _boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS} "1.41.0" "1.39.0" "1.38.0" "1.37.0"
-        "1.36.1" "1.36.0" "1.35.1" "1.35.0" "1.35" "1.34.1" "1.34.0" "1.34"
-        "1.33.1" "1.33.0" "1.33" )
+    SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
     find_package(Boost COMPONENTS filesystem program_options regex signals system thread REQUIRED)
+
+    IF(NOT Boost_FOUND)
+        MESSAGE(FATAL_ERROR "========================================\n"
+                            "boost not found, install the components:\n"
+                            " * filesystem\n"
+                            " * program_options\n"
+                            " * regex\n"
+                            " * signals\n"
+                            " * system\n"
+                            " * thread\n"
+                            "========================================\n")
+    ENDIF(NOT Boost_FOUND)
 
 # -------------------------------- XercesC --------------------------------
 
     find_package(XercesC REQUIRED)
+    IF(NOT XercesC_FOUND)
+        MESSAGE(FATAL_ERROR "==================\n"
+                            "XercesC not found!\n"
+                            "==================\n")
+    ENDIF(NOT XercesC_FOUND)
 
 # -------------------------------- ZLIB --------------------------------
 
@@ -593,6 +610,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- OpenCasCade --------------------------------
 
     find_package(OpenCasCade)
+    IF(NOT OCC_FOUND)
+        MESSAGE(FATAL_ERROR "================================================================\n"
+                            "Neither OpenCASCADE Community Edition nor OpenCASCADE was found!\n"
+                            "================================================================\n")
+    ENDIF(NOT OCC_FOUND)
 
 # -------------------------------- Salome SMESH --------------------------
 
@@ -626,12 +648,19 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     find_package(SWIG)
 
     IF(NOT SWIG_FOUND)
-        MESSAGE("SWIG was not found, build no SWIG binding for pivy")
+        MESSAGE("==================================================\n"
+                "SWIG was not found, build no SWIG binding for pivy\n"
+                "==================================================\n")
     ENDIF(NOT SWIG_FOUND)
 
 # -------------------------------- Eigen --------------------------------
 
     find_package(Eigen3)
+    IF(NOT EIGEN3_FOUND)
+        MESSAGE("====================\n"
+                "Eigen3 was not found\n"
+                "====================\n")
+    ENDIF(NOT EIGEN3_FOUND)
 
 # -------------------------------- ODE ----------------------------------
 
@@ -650,16 +679,21 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         set(QT_USE_QTUITOOLS TRUE)
         set(QT_USE_QTWEBKIT TRUE)
     endif(BUILD_GUI)
-    find_package(Qt4 REQUIRED)
+
+    find_package(Qt4)# REQUIRED
 
     include(${QT_USE_FILE})
 
     IF(NOT QT4_FOUND)
-        MESSAGE("Library qt-4.3 or above is not available, install QT or FreeCAD Gui version will not be built")
+        MESSAGE(FATAL_ERROR "=======================\n"
+                            "Qt libraries not found!\n"
+                            "=======================\n")
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("Qt Webkit not found, will not build browser integration!")
+        MESSAGE("========================================================\n"
+                "Qt Webkit not found, will not build browser integration!\n"
+                "========================================================\n")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 
@@ -693,7 +727,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(FREECAD_USE_FREETYPE)
         find_package(Freetype)
         if(NOT FREETYPE_FOUND)
-            MESSAGE("FreeType2 library is not available. Part module will lack of makeWireString().")
+            MESSAGE("==============================================================================\n"
+                    "FreeType2 library is not available. Part module will lack of makeWireString().\n"
+                    "==============================================================================\n")
         endif(NOT FREETYPE_FOUND)
     endif(FREECAD_USE_FREETYPE)
 
@@ -709,12 +745,21 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                         "Found OpenGLU: ${OPENGL_glu_LIBRARY}"
                         "[${OPENGL_glu_LIBRARY}][${OEPNGL_INCLUDE_DIR}]")
                 else(OPENGL_GLU_FOUND)
-                    message(FATAL_ERROR "The GLU library is required. Make sure it is installed.")
+                    message(FATAL_ERROR "==============================\n"
+                                        "The GLU library was not found.\n"
+                                        "==============================\n")
                 endif(OPENGL_GLU_FOUND)
 
 # -------------------------------- Coin3D --------------------------------
 
-        find_package(Coin3D REQUIRED)
+        if(BUILD_GUI)
+            find_package(Coin3D REQUIRED)
+            if(NOT COIN3D_FOUND)
+                MESSAGE(FATAL_ERROR "====================\n"
+                                    "Coin3D was not found\n"
+                                    "====================\n")
+            endif(NOT COIN3D_FOUND)
+        endif(BUILD_GUI)
 
 # ------------------------------ Spaceball -------------------------------
 
@@ -735,9 +780,21 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         endif(DEFINED MACPORTS_PREFIX)
 
-        find_package(Shiboken REQUIRED)
-        find_package(PySide REQUIRED)
-        find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
+        find_package(Shiboken)# REQUIRED
+        if(NOT SHIBOKEN_INCLUDE_DIR)
+            MESSAGE(FATAL_ERROR "===================\n"
+                                "shiboken not found.\n"
+                                "===================\n")
+        endif(NOT SHIBOKEN_INCLUDE_DIR)
+
+        find_package(PySide)# REQUIRED
+        if(NOT PYSIDE_INCLUDE_DIR)
+            MESSAGE(FATAL_ERROR "=================\n"
+                                "PySide not found.\n"
+                                "=================\n")
+        endif(NOT PYSIDE_INCLUDE_DIR)
+
+        find_package(PySideTools REQUIRED) # PySide utilities (pyside-uic & pyside-rcc)
 
 # ------------------------------ Matplotlib ------------------------------
 
