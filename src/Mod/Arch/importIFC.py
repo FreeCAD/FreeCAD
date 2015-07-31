@@ -309,8 +309,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print "done."
     
     global ifcfile # keeping global for debugging purposes
-    filename = decode(filename)
-    ifcfile = ifcopenshell.open(filename,utf=True)
+    filename = decode(filename,utf=True)
+    ifcfile = ifcopenshell.open(filename)
     from ifcopenshell import geom
     settings = ifcopenshell.geom.settings()
     settings.set(settings.USE_BREP_DATA,True)
