@@ -418,19 +418,10 @@ TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(ViewProviderPolarPa
 
 bool TaskDlgPolarPatternParameters::accept()
 {
-    try {
-        // Handle Originals
-        if (!TaskDlgTransformedParameters::accept())
-            return false;
 
         parameter->apply();
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
-        return false;
-    }
 
-    return true;
+    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskPolarPatternParameters.cpp"

@@ -36,6 +36,8 @@
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Part.h>
+#include <App/Line.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -44,6 +46,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -132,11 +135,7 @@ void TaskPolarPatternParameters::setupUI()
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL)
-<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
-            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
-=======
-            ui->listWidgetFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
->>>>>>> Fixed bugs in various features that reversed the list of selections
+            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 
@@ -148,7 +147,25 @@ void TaskPolarPatternParameters::setupUI()
     ui->checkReverse->setEnabled(true);
     ui->polarAngle->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
+    
+    App::DocumentObject* sketch = getSketchObject();
+    if (!(sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
+        sketch = 0;
+    this->axesLinks.setCombo(*(ui->comboAxis));
+    this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
     updateUI();
+    
+    //show the parts coordinate system axis for selection
+    App::Part* part = getPartFor(getObject(), false);
+    if(part) {        
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+            origin->setTemporaryVisibilityAxis(true);
+        }            
+     }
 }
 
 void TaskPolarPatternParameters::updateUI()
@@ -159,31 +176,15 @@ void TaskPolarPatternParameters::updateUI()
 
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-    App::DocumentObject* axisFeature = pcPolarPattern->Axis.getValue();
-    std::vector<std::string> axes = pcPolarPattern->Axis.getSubValues();
     bool reverse = pcPolarPattern->Reversed.getValue();
     double angle = pcPolarPattern->Angle.getValue();
     unsigned occurrences = pcPolarPattern->Occurrences.getValue();
 
-    for (int i=ui->comboAxis->count()-1; i >= 1; i--)
-        ui->comboAxis->removeItem(i);
-
-    if (axisFeature != NULL && !axes.empty()) {
-        if (axes.front() == "N_Axis")
-            ui->comboAxis->setCurrentIndex(0);
-        else {
-            ui->comboAxis->addItem(getRefStr(axisFeature, axes));
-            ui->comboAxis->setCurrentIndex(1);
-        }
-    } else {
-        // Error message?
+    if (axesLinks.setCurrentLink(pcPolarPattern->Axis) == -1){
+        //failed to set current, because the link isnt in the list yet
+        axesLinks.addLink(pcPolarPattern->Axis, getRefStr(pcPolarPattern->Axis.getValue(),pcPolarPattern->Axis.getSubValues()));
+        axesLinks.setCurrentLink(pcPolarPattern->Axis);
     }
-
-    if (selectionMode == reference) {
-        ui->comboAxis->addItem(tr("Select an edge or datum line"));
-        ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
-    } else
-        ui->comboAxis->addItem(tr("Select reference..."));
 
     // Note: These three lines would trigger onLength(), on Occurrences() and another updateUI() if we
     // didn't check for blockUpdate
@@ -210,39 +211,33 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
 
         if (originalSelected(msg)) {
             if (selectionMode == addFeature)
-<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
-                ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
-=======
-                ui->listWidgetFeatures->addItem(QString::fromAscii(msg.pObjectName));
->>>>>>> Fixed bugs in various features that reversed the list of selections
+                ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
             else
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
             exitSelectionMode();
         } else if (selectionMode == reference) {
             // Note: ReferenceSelection has already checked the selection for validity
             exitSelectionMode();
-            if (!blockUpdate) {
-                std::vector<std::string> axes;
-                App::DocumentObject* selObj;
-                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-                pcPolarPattern->Axis.setValue(selObj, axes);
+            std::vector<std::string> axes;
+            App::DocumentObject* selObj;
+            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
+            pcPolarPattern->Axis.setValue(selObj, axes);
 
-                recomputeFeature();
-                updateUI();
-            }
-            else {
-                for (int i=ui->comboAxis->count()-1; i >= 1; i--)
-                    ui->comboAxis->removeItem(i);
+            recomputeFeature();
+            updateUI();
+        } else if( strstr(msg.pObjectName, App::Part::BaselineTypes[0]) == nullptr || 
+                   strstr(msg.pObjectName, App::Part::BaselineTypes[1]) == nullptr ||
+                   strstr(msg.pObjectName, App::Part::BaselineTypes[2]) == nullptr) {
+           
+            std::vector<std::string> axes;
+            App::DocumentObject* selObj;
+            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
+            pcPolarPattern->Axis.setValue(selObj, axes);
 
-                std::vector<std::string> axes;
-                App::DocumentObject* selObj;
-                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-                ui->comboAxis->addItem(getRefStr(selObj, axes));
-                ui->comboAxis->setCurrentIndex(1);
-                ui->comboAxis->addItem(tr("Select reference..."));
-            }
+            recomputeFeature();
+            updateUI();
         }
     }
 }
@@ -288,20 +283,21 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-    if (num == 0) {
-        pcPolarPattern->Axis.setValue(getSketchObject(), std::vector<std::string>(1,"N_Axis"));
-        exitSelectionMode();
+    try{
+        if(axesLinks.getCurrentLink().getValue() == 0){
+            // enter reference selection mode
+            hideObject();
+            showBase();
+            selectionMode = reference;
+            Gui::Selection().clearSelection();
+            addReferenceSelectionGate(true, false);
+        } else {
+            exitSelectionMode();
+            pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());
+        }
+    } catch (Base::Exception &e) {
+        QMessageBox::warning(0,tr("Error"),QString::fromAscii(e.what()));
     }
-    else if (num == ui->comboAxis->count() - 1) {
-        // enter reference selection mode
-        hideObject();
-        showBase();
-        selectionMode = reference;
-        Gui::Selection().clearSelection();
-        addReferenceSelectionGate(true, false);
-    }
-    else if (num == 1)
-        exitSelectionMode();
 
     kickUpdateViewTimer();
 }
@@ -337,19 +333,9 @@ void TaskPolarPatternParameters::onFeatureDeleted(void)
 
 void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {    
-    obj = getSketchObject();
-    sub = std::vector<std::string>(1,"");
-
-    if (ui->comboAxis->currentIndex() == 0) {
-        sub[0] = "N_Axis";
-    } else if (ui->comboAxis->count() > 2 && ui->comboAxis->currentIndex() == 1) {
-        QStringList parts = ui->comboAxis->currentText().split(QChar::fromAscii(':'));
-        obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
-        if (parts.size() > 1)
-            sub[0] = parts[1].toStdString();
-    } else {
-        obj = NULL;
-    }
+    const App::PropertyLinkSub &lnk = axesLinks.getCurrentLink();
+    obj = lnk.getValue();
+    sub = lnk.getSubValues();
 }
 
 const bool TaskPolarPatternParameters::getReverse(void) const
@@ -370,6 +356,17 @@ const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 
 TaskPolarPatternParameters::~TaskPolarPatternParameters()
 {
+    //hide the parts coordinate system axis for selection
+    App::Part* part = getPartFor(getObject(), false);
+    if(part) {
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(false);
+        }            
+    }
+    
     delete ui;
     if (proxy)
         delete proxy;
@@ -390,10 +387,11 @@ void TaskPolarPatternParameters::apply()
     App::DocumentObject* obj;
     getAxis(obj, axes);
     std::string axis = getPythonStr(obj, axes);
-    if (!axis.empty()) {            
+    if (!axis.empty() && obj) {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), axis.c_str());
-    } else
+    } else {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = None", name.c_str());
+    }
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
     ui->polarAngle->apply();
     ui->spinOccurrences->apply();
@@ -420,19 +418,18 @@ TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(ViewProviderPolarPa
 
 bool TaskDlgPolarPatternParameters::accept()
 {
-    try {
-        // Handle Originals
-        if (!TaskDlgTransformedParameters::accept())
-            return false;
 
         parameter->apply();
+<<<<<<< a6aea83ec9ef83d52a06178b32175b3e79f73c65
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
+=======
+>>>>>>> PartDesign: make transform parameter dialogs use common base code with other dialogs
 
-    return true;
+    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskPolarPatternParameters.cpp"

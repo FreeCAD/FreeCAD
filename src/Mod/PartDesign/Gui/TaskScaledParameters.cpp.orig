@@ -114,11 +114,7 @@ void TaskScaledParameters::setupUI()
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL)
-<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
-            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
-=======
-            ui->listWidgetFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
->>>>>>> Fixed bugs in various features that reversed the list of selections
+            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 
@@ -153,11 +149,7 @@ void TaskScaledParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
         if (selectionMode == addFeature)
-<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
-            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
-=======
-            ui->listWidgetFeatures->addItem(QString::fromAscii(msg.pObjectName));
->>>>>>> Fixed bugs in various features that reversed the list of selections
+            ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
         else
             removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
         exitSelectionMode();
@@ -264,20 +256,18 @@ TaskDlgScaledParameters::TaskDlgScaledParameters(ViewProviderScaled *ScaledView)
 
 bool TaskDlgScaledParameters::accept()
 {
-    try {
-        //Gui::Command::openCommand("Scaled changed");
-        // Handle Originals
-        if (!TaskDlgTransformedParameters::accept())
-            return false;
 
         parameter->apply();
+<<<<<<< a6aea83ec9ef83d52a06178b32175b3e79f73c65
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
+=======
+>>>>>>> PartDesign: make transform parameter dialogs use common base code with other dialogs
 
-    return true;
+    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskScaledParameters.cpp"

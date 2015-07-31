@@ -49,8 +49,14 @@ public:
       */
     App::PropertyLinkList Originals;
 
-    /// Return first original, which serves as "Support" until Body feature becomes functional
-    App::DocumentObject* getSupportObject() const;
+    /**
+     * Returns the BaseFeature property's object(if any) otherwise return first original,
+     *         which serves as "Support" for old style workflows
+     * @param silent if couldn't determine the base feature and silent == true,
+     *               silently return a nullptr, otherwise throw Base::Exception. 
+     *               Default is false.
+     */
+    virtual Part::Feature* getBaseObject(bool silent=false) const;
 
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;

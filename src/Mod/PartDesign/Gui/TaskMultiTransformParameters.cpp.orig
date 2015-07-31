@@ -142,11 +142,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
         if ((*i) != NULL)
-<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
-            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
-=======
-            ui->listWidgetFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
->>>>>>> Fixed bugs in various features that reversed the list of selections
+            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 }
@@ -155,11 +151,7 @@ void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChange
 {
     if (originalSelected(msg)) {
         if (selectionMode == addFeature)
-<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
-            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
-=======
-            ui->listWidgetFeatures->addItem(QString::fromAscii(msg.pObjectName));
->>>>>>> Fixed bugs in various features that reversed the list of selections
+            ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
         else
             removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
         exitSelectionMode();
@@ -450,6 +442,7 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMul
 
 bool TaskDlgMultiTransformParameters::accept()
 {
+<<<<<<< a6aea83ec9ef83d52a06178b32175b3e79f73c65
     std::string name = TransformedView->getObject()->getNameInDocument();
 
     try {
@@ -478,16 +471,31 @@ bool TaskDlgMultiTransformParameters::accept()
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
-    }
+=======
+    std::string name = vp->getObject()->getNameInDocument();
 
-    return true;
+    // Set up transformations
+    TaskMultiTransformParameters* mtParameter = static_cast<TaskMultiTransformParameters*>(parameter);
+    std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
+    std::stringstream str;
+    str << "App.ActiveDocument." << name.c_str() << ".Transformations = [";
+    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
+    {
+        if ((*it) != NULL)
+            str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
+>>>>>>> PartDesign: make transform parameter dialogs use common base code with other dialogs
+    }
+    str << "]";
+    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+
+    return TaskDlgFeatureParameters::accept ();
 }
 
 bool TaskDlgMultiTransformParameters::reject()
 {
     // Get objects before view is invalidated
     // For the same reason we can't delegate showing the originals to TaskDlgTransformedParameters::reject()
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(vp->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     // Delete the transformation features - must happen before abortCommand()!
@@ -497,10 +505,6 @@ bool TaskDlgMultiTransformParameters::reject()
             Gui::Command::doCommand(
                 Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument());
     }
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
     return TaskDlgTransformedParameters::reject();
 }
