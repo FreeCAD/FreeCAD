@@ -395,6 +395,26 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 
 bool TaskDlgTransformedParameters::accept()
 {
+<<<<<<< a6aea83ec9ef83d52a06178b32175b3e79f73c65
+    std::string name = TransformedView->getObject()->getNameInDocument();
+
+    try {
+        //Gui::Command::openCommand(featureName + " changed");
+        std::vector<App::DocumentObject*> originals = parameter->getOriginals();
+        std::stringstream str;
+        str << "App.ActiveDocument." << name.c_str() << ".Originals = [";
+        for (std::vector<App::DocumentObject*>::const_iterator it = originals.begin(); it != originals.end(); ++it)
+        {
+            if ((*it) != NULL)
+                str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
+        }
+        str << "]";
+        Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        return false;
+=======
     std::string name = vp->getObject()->getNameInDocument();
 
     //Gui::Command::openCommand(featureName + " changed");
@@ -405,6 +425,7 @@ bool TaskDlgTransformedParameters::accept()
     {
         if ((*it) != NULL)
             str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
+>>>>>>> PartDesign: make transform parameter dialogs use common base code with other dialogs
     }
     str << "]";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());

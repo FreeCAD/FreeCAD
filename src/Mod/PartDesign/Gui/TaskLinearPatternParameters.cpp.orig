@@ -192,51 +192,6 @@ void TaskLinearPatternParameters::updateUI()
         dirLinks.setCurrentLink(pcLinearPattern->Direction);
     }
 
-<<<<<<< 05d084614fa15ead10b7283f4f36e3e587279953
-    for (int i=ui->comboDirection->count()-1; i >= maxcount; i--)
-        ui->comboDirection->removeItem(i);
-    for (int i=ui->comboDirection->count(); i < maxcount; i++)
-        ui->comboDirection->addItem(QString::fromLatin1("Sketch axis %1").arg(i-5));
-
-    bool undefined = false;
-    if (directionFeature != NULL && !directions.empty()) {
-        bool is_base_line = directionFeature->isDerivedFrom(App::Line::getClassTypeId());
-        
-        if (directions.front() == "H_Axis")
-            ui->comboDirection->setCurrentIndex(0);
-        else if (directions.front() == "V_Axis")
-            ui->comboDirection->setCurrentIndex(1);
-        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
-            ui->comboDirection->setCurrentIndex( sketch ? 2 : 0);
-        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[1]) == 0)
-            ui->comboDirection->setCurrentIndex(sketch ? 3 : 1);
-        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[2]) == 0)
-            ui->comboDirection->setCurrentIndex(sketch ? 4 : 2);
-        else if (directions.front().size() > (sketch ? 4 : 2)  && directions.front().substr(0,4) == "Axis") {
-            int pos = (sketch ? 5 : 3) + std::atoi(directions.front().substr(4,4000).c_str());
-            if (pos <= maxcount)
-                ui->comboDirection->setCurrentIndex(pos);
-            else
-                undefined = true;
-        } else {
-            ui->comboDirection->addItem(getRefStr(directionFeature, directions));
-            ui->comboDirection->setCurrentIndex(maxcount);
-        }
-    } else {
-        undefined = true;
-    }
-
-    if (selectionMode == reference) {
-        ui->comboDirection->addItem(tr("Select an edge/face or datum line/plane"));
-        ui->comboDirection->setCurrentIndex(ui->comboDirection->count() - 1);
-    } else if (undefined) {
-        ui->comboDirection->addItem(tr("Undefined"));
-        ui->comboDirection->setCurrentIndex(ui->comboDirection->count() - 1);
-    } else
-        ui->comboDirection->addItem(tr("Select reference..."));
-
-=======
->>>>>>> PartDesign: rework axis and plane comboboxes and make it work without part.
     // Note: These three lines would trigger onLength(), on Occurrences() and another updateUI() if we
     // didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
@@ -472,19 +427,19 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(ViewProviderLinea
 
 bool TaskDlgLinearPatternParameters::accept()
 {
-    try {
-        // Handle Originals
-        if (!TaskDlgTransformedParameters::accept())
-            return false;
 
+<<<<<<< a6aea83ec9ef83d52a06178b32175b3e79f73c65
         parameter->apply();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
+=======
+    parameter->apply();
+>>>>>>> PartDesign: make transform parameter dialogs use common base code with other dialogs
 
-    return true;
+    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskLinearPatternParameters.cpp"

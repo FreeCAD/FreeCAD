@@ -227,6 +227,16 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
+<<<<<<< a6aea83ec9ef83d52a06178b32175b3e79f73c65
+    virtual bool isAllowedAlterDocument(void) const
+        { return false; }
+
+    /// returns for Close and Help button
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+        { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+
+=======
+>>>>>>> PartDesign: make transform parameter dialogs use common base code with other dialogs
 protected:
     TaskTransformedParameters  *parameter;
     TaskTransformedMessages  *message;

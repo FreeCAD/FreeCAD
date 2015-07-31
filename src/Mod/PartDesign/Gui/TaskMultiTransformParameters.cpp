@@ -442,44 +442,29 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMul
 
 bool TaskDlgMultiTransformParameters::accept()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
 
-    try {
-        //Gui::Command::openCommand("MultiTransform changed");
-        // Handle Originals
-        if (!TaskDlgTransformedParameters::accept())
-            return false;
-
-        TaskMultiTransformParameters* mtParameter = static_cast<TaskMultiTransformParameters*>(parameter);
-        std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
-        std::stringstream str;
-        str << "App.ActiveDocument." << name.c_str() << ".Transformations = [";
-        for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
-        {
-            if ((*it) != NULL)
-                str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
-        }
-        str << "]";
-        Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!TransformedView->getObject()->isValid())
-            throw Base::Exception(TransformedView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+    // Set up transformations
+    TaskMultiTransformParameters* mtParameter = static_cast<TaskMultiTransformParameters*>(parameter);
+    std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
+    std::stringstream str;
+    str << "App.ActiveDocument." << name.c_str() << ".Transformations = [";
+    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
+    {
+        if ((*it) != NULL)
+            str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
     }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
-        return false;
-    }
+    str << "]";
+    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
 
-    return true;
+    return TaskDlgFeatureParameters::accept ();
 }
 
 bool TaskDlgMultiTransformParameters::reject()
 {
     // Get objects before view is invalidated
     // For the same reason we can't delegate showing the originals to TaskDlgTransformedParameters::reject()
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(vp->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     // Delete the transformation features - must happen before abortCommand()!

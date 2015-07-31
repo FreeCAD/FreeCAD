@@ -67,21 +67,37 @@ Transformed::Transformed()
 
 void Transformed::positionBySupport(void)
 {
-    Part::Feature *support = static_cast<Part::Feature*>(getSupportObject());
-    if ((support != NULL) && support->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+    // TODO May be here better to throw exception (silent=false) (2015-07-27, Fat-Zer)
+    Part::Feature *support = getBaseObject(/* silent =*/ true);
+    if (support)
         this->Placement.setValue(support->Placement.getValue());
 }
 
-App::DocumentObject* Transformed::getSupportObject() const
-{
-    if (BaseFeature.getValue() != NULL)
-        return BaseFeature.getValue();
-    else {
-        if (!Originals.getValues().empty())
-            return Originals.getValues().front(); // For legacy features
-        else
-            return NULL;
+Part::Feature* Transformed::getBaseObject(bool silent) const {
+    Part::Feature *rv = Feature::getBaseObject(/* silent = */ true);
+    if (rv) {
+        return rv;
     }
+
+    const char* err = nullptr;
+    const std::vector<App::DocumentObject*> & originals = Originals.getValues();
+    // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here first 
+    App::DocumentObject* firstOriginal = originals.empty() ? NULL : originals.front();
+    if (firstOriginal) {
+        if(firstOriginal->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            rv = static_cast<Part::Feature*>(firstOriginal);
+        } else {
+            err = "Transformation feature Linked object is not a Part object";
+        }
+    } else {
+        err = "No originals linked to the transformed feature.";
+    }
+
+    if (!silent && err) {
+        throw Base::Exception(err);
+    }
+
+    return rv;
 }
 
 App::DocumentObject* Transformed::getSketchObject() const
@@ -195,9 +211,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return App::DocumentObject::StdReturn; // No transformations defined, exit silently
 
     // Get the support
-    Part::Feature* supportFeature = static_cast<Part::Feature*>(getSupportObject());
-    if (supportFeature == NULL)
-        return new App::DocumentObjectExecReturn("No support for transformation feature");
+    Part::Feature* supportFeature = getBaseObject();
+
+    try {
+        supportFeature = getBaseObject();
+    } catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
