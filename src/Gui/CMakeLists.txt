@@ -67,6 +67,13 @@ IF(SPNAV_FOUND)
         ${FreeCADGui_LIBS}
         ${SPNAV_LIBRARIES}
     )
+    find_package(X11 QUIET)
+    if (X11_FOUND)
+        set(FreeCADGui_LIBS
+            ${FreeCADGui_LIBS}
+            ${X11_X11_LIB}
+        )
+    endif(X11_FOUND)
 ENDIF(SPNAV_FOUND)
 
 IF(OCULUS_FOUND)
