@@ -75,7 +75,12 @@ namespace PartDesignGui {
 
 PartDesign::Body *getBody(bool messageIfNot)
 {
-    PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body * activeBody = nullptr;
+    Gui::MDIView *activeView = Gui::Application::Instance->activeView();
+
+    if (activeView) {
+        activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    }
 
     if (!activeBody && messageIfNot) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
