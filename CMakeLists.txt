@@ -227,143 +227,50 @@ if (FREECAD_BUILD_DEBIAN)
     #set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
 
+if(BUILD_MESH_PART OR BUILD_FEM)
+    set(BUILD_SMESH ON)
+endif()
+
 # ==============================================================================
 #inter-module dependencies
 
-#took these from Mod/Complete/App/AppComplete.cpp. appears to be working.
-if(BUILD_COMPLETE)
-  set(BUILD_MESH ON)
-  set(BUILD_POINTS ON)
-  set(BUILD_DRAWING ON)
-  set(BUILD_RAYTRACING ON)
-  set(BUILD_PART_DESIGN ON)
-  set(BUILD_IMAGE ON)
-  set(BUILD_DRAFT ON)
-endif(BUILD_COMPLETE)
+# Takes a dependent module followed by a variable-length list of prerequisite
+# modules.  Warns if any of the prerequisite modules are disabled.
+function(REQUIRES_MODS dependent)
+    if(${dependent})
+        foreach(prerequisite ${ARGN})
+            if(NOT ${prerequisite})
+                message(WARNING
+                        "${dependent} requires ${ARGN} each be ON, but "
+                        "${prerequisite} is \"${${prerequisite}}\"")
+            endif(NOT ${prerequisite})
+        endforeach()
+    endif(${dependent})
+endfunction(REQUIRES_MODS)
 
-#inferred from .py files. appears to be working.
-if(BUILD_ARCH)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-  set(BUILD_DRAFT ON)
-endif(BUILD_ARCH)
-
-#inferred from .py files. appears to be working.
-if(BUILD_OPENSCAD)
-  set(BUILD_MESH_PART ON)
-  set(BUILD_DRAFT ON)
-endif(BUILD_OPENSCAD)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_INSPECTION)
-  set(BUILD_MESH ON)
-  set(BUILD_POINTS ON)
-  set(BUILD_PART ON)
-endif(BUILD_INSPECTION)
-
-#inferred from .py files. appears to be working.
-if(BUILD_SHIP)
-  set(BUILD_PART ON)
-  set(BUILD_PLOT ON)
-  set(BUILD_IMAGE ON)
-endif(BUILD_SHIP)
-
-#inferred from .py files. appears to be working.
-if(BUILD_SPREADSHEET)
-  set(BUILD_DRAFT ON)
-endif(BUILD_SPREADSHEET)
-
-#this has been tested. appears to be working.
-if(BUILD_DRAFT)
-  set(BUILD_SKETCHER ON)
-endif(BUILD_DRAFT)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_PART_DESIGN)
-  set(BUILD_SKETCHER ON)
-endif(BUILD_PART_DESIGN)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_REVERSEENGINEERING)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-endif(BUILD_REVERSEENGINEERING)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_MESH_PART)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-  set(BUILD_SMESH ON)
-endif(BUILD_MESH_PART)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_RAYTRACING)
-  set(BUILD_PART ON)
-endif(BUILD_RAYTRACING)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_DRAWING)
-  set(BUILD_PART ON)
-  set(BUILD_SPREADSHEET ON)
-endif(BUILD_DRAWING)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_ROBOT)
-  set(BUILD_PART ON)
-endif(BUILD_ROBOT)
-
-#path module dependencies.
-if(BUILD_PATH)
-  set(BUILD_PART ON)
-  #set(BUILD_ROBOT ON) reenable this when using KDL
-endif(BUILD_PATH)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_SKETCHER)
-  set(BUILD_PART ON)
-endif(BUILD_SKETCHER)
-
-#inferred from .py files. built, but not sure how to test.
-if(BUILD_IDF)
-  set(BUILD_PART ON)
-endif(BUILD_IDF)
-
-#inferred from cmakelists.txt. built, but not sure how to test.
-if(BUILD_IMPORT)
-  set(BUILD_PART ON)
-endif(BUILD_IMPORT)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_FEM)
-  set(BUILD_PART ON)
-  set(BUILD_SMESH ON)
-endif(BUILD_FEM)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_SANDBOX)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-endif(BUILD_SANDBOX)
-
-#inferred from header includes. not tested.
-if(BUILD_JTREADER)
-  set(BUILD_MESH ON)
-endif(BUILD_JTREADER)
-
-#a runtime dependency
-if(BUILD_START)
-  set(BUILD_WEB ON)
-endif(BUILD_START)
-
-#leaving test module for someone else.
-#image has none. as far as I can tell.
-#mesh has none. as far as I can tell.
-#part has none. as far as I can tell.
-#material has none. as far as I can tell.
-#web has none. as far as I can tell.
-#assembly has none. as far as I can tell.
-#plot has none. as far as I can tell.
-#points has none. as far as I can tell
+REQUIRES_MODS(BUILD_COMPLETE           BUILD_MESH BUILD_POINTS BUILD_DRAWING
+                                       BUILD_RAYTRACING BUILD_PART_DESIGN
+                                       BUILD_IMAGE BUILD_DRAFT)
+REQUIRES_MODS(BUILD_ARCH               BUILD_PART BUILD_MESH BUILD_DRAFT)
+REQUIRES_MODS(BUILD_DRAFT              BUILD_SKETCHER)
+REQUIRES_MODS(BUILD_DRAWING            BUILD_PART BUILD_SPREADSHEET)
+REQUIRES_MODS(BUILD_FEM                BUILD_PART)
+REQUIRES_MODS(BUILD_IDF                BUILD_PART)
+REQUIRES_MODS(BUILD_IMPORT             BUILD_PART)
+REQUIRES_MODS(BUILD_INSPECTION         BUILD_MESH BUILD_POINTS BUILD_PART)
+REQUIRES_MODS(BUILD_JTREADER           BUILD_MESH)
+REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_OPENSCAD           BUILD_MESH_PART BUILD_DRAFT)
+REQUIRES_MODS(BUILD_PART_DESIGN        BUILD_SKETCHER)
+REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT)
+REQUIRES_MODS(BUILD_RAYTRACING         BUILD_PART)
+REQUIRES_MODS(BUILD_REVERSEENGINEERING BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_ROBOT              BUILD_PART)
+REQUIRES_MODS(BUILD_SANDBOX            BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_SHIP               BUILD_PART BUILD_PLOT BUILD_IMAGE)
+REQUIRES_MODS(BUILD_SKETCHER           BUILD_PART)
+REQUIRES_MODS(BUILD_SPREADSHEET        BUILD_DRAFT)
+REQUIRES_MODS(BUILD_START              BUILD_WEB)
 
 # ==============================================================================
 
