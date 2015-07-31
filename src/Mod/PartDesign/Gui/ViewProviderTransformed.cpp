@@ -109,7 +109,8 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     pcRoot->addChild(pcRejectedRoot);
 
     recomputeFeature();
-    return true;
+
+    return ViewProvider::setEdit(ModNum);
 }
 
 void ViewProviderTransformed::unsetEdit(int ModNum)
@@ -134,36 +135,6 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
 bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 {
     return ViewProvider::onDelete(s);
-}
-
-const bool ViewProviderTransformed::checkDlgOpen(TaskDlgTransformedParameters* transformedDlg) {
-    // When double-clicking on the item for this feature the
-    // object unsets and sets its edit mode without closing
-    // the task panel
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    transformedDlg = qobject_cast<TaskDlgTransformedParameters *>(dlg);
-
-    if ((transformedDlg != NULL) && (transformedDlg->getTransformedView() != this))
-        transformedDlg = NULL; // another transformed feature left open its task panel
-
-    if ((dlg != NULL) && (transformedDlg == NULL)) {
-        QMessageBox msgBox;
-        msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-        msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::Yes);
-        int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes)
-            Gui::Control().reject();
-        else
-            return false;
-    }
-
-    // clear the selection (convenience)
-    Gui::Selection().clearSelection();
-
-    // Continue (usually in virtual method setEdit())
-    return true;
 }
 
 void ViewProviderTransformed::recomputeFeature(void)

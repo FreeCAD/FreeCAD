@@ -41,7 +41,9 @@ public:
     virtual bool onDelete(const std::vector<std::string> &);
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
+
 
 };
 
