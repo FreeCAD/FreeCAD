@@ -36,7 +36,7 @@ import unittest
 # All changes in ccxInpWriter resulting in changes of the .inp file should
 # be reflected in src/Mod/Fem/test_file.inp and the m5d_standard variable
 # should be updated
-md5_standard = "4de49f1f9ef63e56f180bb42f7b55ccf"
+md5_standard = "5f1739821b1c741a6f35655af102bb14"
 mesh_name = 'Mesh'
 working_dir = '/tmp/FEM/'
 mesh_points_file = 'Mod/Fem/mesh_points.csv'
@@ -83,6 +83,7 @@ class FemTest(unittest.TestCase):
         mat['Name'] = "Test Material"
         mat['YoungsModulus'] = "20000 MPa"
         mat['PoissonRatio'] = "0.36"
+        mat['Density'] = "1000 kg/m^3"
         self.new_material_object.Material = mat
 
     def create_fixed_constraint(self):
