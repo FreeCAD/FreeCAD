@@ -45,9 +45,11 @@ ViewProviderPad::~ViewProviderPad()
 {
 }
 
-// TODO This methode could also be unified with other features (2015-07-26, Fat-Zer)
 void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    // Note: This methode couldn't be unified with others because menu entry string
+    //       should present united in sources for proper translation and shouldn't be 
+    //       constructed on runtime.
     QAction* act;
     act = menu->addAction(QObject::tr("Edit pad"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
