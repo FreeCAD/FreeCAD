@@ -253,7 +253,7 @@ void ViewProviderFillet::updateData(const App::Property* prop)
             colFill.resize(fillMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
 
             bool setColor=false;
-            if (colBase.size() == baseMap.Extent()) {
+            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[0], colBase, colFill);
                 setColor = true;
             }
@@ -356,7 +356,7 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
             colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
 
             bool setColor=false;
-            if (colBase.size() == baseMap.Extent()) {
+            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[0], colBase, colCham);
                 setColor = true;
             }

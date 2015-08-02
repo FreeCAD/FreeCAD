@@ -164,7 +164,7 @@ void TaskGroup::actionEvent (QActionEvent* e)
     switch (e->type()) {
     case QEvent::ActionAdded:
         {
-            QSint::ActionLabel *label = this->createItem(action);
+            this->createItem(action);
             break;
         }
     case QEvent::ActionChanged:

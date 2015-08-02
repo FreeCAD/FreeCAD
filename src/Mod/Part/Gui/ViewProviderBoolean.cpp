@@ -106,7 +106,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
             colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
 
             bool setColor=false;
-            if (colBase.size() == baseMap.Extent()) {
+            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[0], colBase, colBool);
                 setColor = true;
             }
@@ -115,7 +115,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                 applyColor(hist[0], colBase, colBool);
                 setColor = true;
             }
-            if (colTool.size() == toolMap.Extent()) {
+            if (static_cast<int>(colTool.size()) == toolMap.Extent()) {
                 applyColor(hist[1], colTool, colBool);
                 setColor = true;
             }
@@ -199,7 +199,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
 
             Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
             std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            if (colBase.size() == baseMap.Extent()) {
+            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[index], colBase, colBool);
                 setColor = true;
             }
@@ -316,7 +316,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
 
             Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
             std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            if (colBase.size() == baseMap.Extent()) {
+            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[index], colBase, colBool);
                 setColor = true;
             }

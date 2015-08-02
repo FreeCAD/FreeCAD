@@ -826,7 +826,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
-        Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
+        //Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
         // work around for OCC bug #23314 (FC #0954)
         // the exact conditions for failure are unknown.  building the helix 1 turn at a time

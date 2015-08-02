@@ -494,7 +494,6 @@ StdCmdRevert::StdCmdRevert()
 
 void StdCmdRevert::activated(int iMsg)
 {
-    App::Document* doc = App::GetApplication().getActiveDocument();
     QMessageBox msgBox;
     msgBox.setText(qApp->translate("Std_Revert","This will discard all the changes since last file save."));
     msgBox.setInformativeText(qApp->translate("Std_Revert","Are you sure?"));
@@ -1009,7 +1008,6 @@ void StdCmdDelete::activated(int iMsg)
             if (vpedit) {
                 // check if the edited view provider is selected
                 for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                    App::DocumentObject* obj = ft->getObject();
                     Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
                     if (vp == vpedit) {
                         if (!ft->getSubNames().empty()) {
@@ -1031,7 +1029,6 @@ void StdCmdDelete::activated(int iMsg)
                 // check if we can delete the object
                 for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
                     App::DocumentObject* obj = ft->getObject();
-                    Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
                     std::vector<App::DocumentObject*> links = obj->getInList();
                     if (!links.empty()) {
                         // check if the referenced objects are groups or are selected too

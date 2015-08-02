@@ -54,9 +54,9 @@ ImageReader::readImage(const SbString & filename, SbImage & sbimage) const
 {
   QImage image;
   if (image.load(filename.getString())) {
-    int c;
-    int w = image.width();
-    int h = image.height();
+    //int c;
+    //int w = image.width();
+    //int h = image.height();
 
     // Keep in 8-bits mode if that was what we read
     if (image.depth() != 8 || !image.isGrayscale()) {

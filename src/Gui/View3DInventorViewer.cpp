@@ -1297,9 +1297,6 @@ void View3DInventorViewer::setRenderType(const RenderType type)
         break;
     case Image:
         {
-            const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-            SbVec2s size = vp.getViewportSizePixels();
-
             QGLWidget* gl = static_cast<QGLWidget*>(this->viewport());
             gl->makeCurrent();
             int w = gl->width();

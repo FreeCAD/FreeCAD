@@ -76,13 +76,13 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QGLWidget * shar
   initialsoeventmanager(false),
   headlight(NULL),
   cachecontext(NULL),
-  contextmenu(NULL),
   contextmenuenabled(true),
   autoredrawenabled(true),
   interactionmodeenabled(false),
   clearzbuffer(true),
   clearwindow(true),
-  addactions(true)
+  addactions(true),
+  contextmenu(NULL)
 {
   this->cachecontext = findCacheContext(masterptr, sharewidget);
 
