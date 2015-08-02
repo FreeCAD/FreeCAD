@@ -496,7 +496,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             SoGroup* childGroup =  viewProvider->getChildRoot();
 
             // size not the same -> build up the list new
-            if(childGroup->getNumChildren() != children.size()){
+            if(childGroup->getNumChildren() != static_cast<int>(children.size())){
 
                 childGroup->removeAllChildren();
             

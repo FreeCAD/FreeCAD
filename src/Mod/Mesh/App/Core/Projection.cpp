@@ -396,7 +396,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
 
     // cut all facets with plane
     std::list< std::pair<Base::Vector3f, Base::Vector3f> > cutLine;
-    unsigned long start = 0, end = 0;
+    //unsigned long start = 0, end = 0;
     for (std::vector<unsigned long>::iterator it = facets.begin(); it != facets.end(); ++it) {
         Base::Vector3f e1, e2;
         MeshGeomFacet tria = kernel.GetFacet(*it);
@@ -418,7 +418,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
                         else
                             cutLine.push_back(std::pair<Base::Vector3f, Base::Vector3f>(v1, e1));
 
-                        start = it - facets.begin();
+                        //start = it - facets.begin();
                     }
 
                     if (*it == f2) { // end facet
@@ -427,7 +427,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
                         else
                             cutLine.push_back(std::pair<Base::Vector3f, Base::Vector3f>(v2, e1));
 
-                        end = it - facets.begin();
+                        //end = it - facets.begin();
                     }
                 }
             }

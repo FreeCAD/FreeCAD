@@ -294,6 +294,8 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
             }
             break;
+        default:
+            break;
         }
     }
     if (processed)
@@ -342,6 +344,8 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     doZoom(viewer->getSoRenderManager()->getCamera(), FALSE, posn);
                 }
                 processed = TRUE;
+                break;
+            default:
                 break;
             }//switch key
         }
@@ -474,8 +478,8 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         if (evIsButton) {
             const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
-            const SbBool press //the button was pressed (if false -> released)
-                    = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+            //const SbBool press //the button was pressed (if false -> released)
+            //        = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
             switch(button){
             case SoMouseButtonEvent::BUTTON1:
             case SoMouseButtonEvent::BUTTON2:
@@ -495,7 +499,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         //the essence part 1!
         //mouse movement into camera motion. Suppress if in gesture. Ignore until threshold is surpassed.
         if (evIsLoc2 && ! this->inGesture && this->mouseMoveThresholdBroken) {
-            const SoLocation2Event * const event = (const SoLocation2Event *) ev;
+            //const SoLocation2Event * const event = (const SoLocation2Event *) ev;
             if (curmode == NavigationStyle::ZOOMING) {//doesn't happen
                 this->zoomByCursor(posn, prevnormalized);
                 processed = TRUE;

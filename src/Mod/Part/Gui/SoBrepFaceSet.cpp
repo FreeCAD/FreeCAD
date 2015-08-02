@@ -866,6 +866,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             break;
         }
         v4 = viptr < viendptr ? *viptr++ : -1;
+        (void)v4;
 
         /* vertex 1 *********************************************************/
         if (mbind == PER_PART) {

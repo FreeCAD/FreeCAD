@@ -568,10 +568,10 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
     SoMaterialBinding* binding = new SoMaterialBinding;
     SoMaterial* material = new SoMaterial;
 
-    if (mat.diffuseColor.size() == coords->point.getNum()) {
+    if (static_cast<int>(mat.diffuseColor.size()) == coords->point.getNum()) {
         binding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
     }
-    else if (mat.diffuseColor.size() == faces->coordIndex.getNum()/4) {
+    else if (static_cast<int>(mat.diffuseColor.size()) == faces->coordIndex.getNum()/4) {
         binding->value = SoMaterialBinding::PER_FACE_INDEXED;
     }
 

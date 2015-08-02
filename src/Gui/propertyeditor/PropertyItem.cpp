@@ -1709,7 +1709,7 @@ QVariant PropertyEnumItem::value(const App::Property* prop) const
     const std::vector<std::string>& value = prop_enum->getEnumVector();
     long currentItem = prop_enum->getValue();
 
-    if (currentItem < 0 || currentItem >= value.size())
+    if (currentItem < 0 || currentItem >= static_cast<long>(value.size()))
         return QVariant(QString());
     return QVariant(QString::fromUtf8(value[currentItem].c_str()));
 }

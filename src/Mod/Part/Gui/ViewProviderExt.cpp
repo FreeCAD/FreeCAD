@@ -762,7 +762,6 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 *
             Deviation.getValue();
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
 
         // create or use the mesh on the data structure
 #if OCC_VERSION_HEX >= 0x060600

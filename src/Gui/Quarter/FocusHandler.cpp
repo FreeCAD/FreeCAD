@@ -66,6 +66,8 @@ FocusHandler::eventFilter(QObject * obj, QEvent * event)
   case QEvent::FocusOut:
     this->focusEvent("sim.coin3d.coin.InputFocus.OUT");
     break;
+  default:
+    break;
   }
   return QObject::eventFilter(obj, event);
 }
