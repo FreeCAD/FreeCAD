@@ -61,18 +61,6 @@ public:
     {
     }
 private:
-    void slotCreatedDocument(const App::Document& Doc)
-    {
-    }
-    void slotDeletedDocument(const App::Document& Doc)
-    {
-    }
-    void slotCreatedObject(const App::DocumentObject& Obj)
-    {
-    }
-    void slotDeletedObject(const App::DocumentObject& Obj)
-    {
-    }
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
     {
         if (object == &Obj && Prop.getTypeId() == Part::PropertyGeometryList::getClassTypeId()) {

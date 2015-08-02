@@ -148,10 +148,6 @@ void DlgEvaluateMeshImp::slotChangedObject(const App::DocumentObject& Obj, const
     }
 }
 
-void DlgEvaluateMeshImp::slotCreatedDocument(const App::Document& Doc)
-{
-}
-
 void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
 {
     if (&Doc == getDocument()) {
