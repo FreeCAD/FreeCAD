@@ -43,24 +43,6 @@ SheetObserver::SheetObserver(App::Document * document, PropertySheet *_sheet)
 }
 
 /**
-  * Unimplemented.
-  *
-  */
-
-void SheetObserver::slotCreatedDocument(const App::Document &Doc)
-{
-}
-
-/**
-  * Unimplemented.
-  *
-  */
-
-void SheetObserver::slotDeletedDocument(const App::Document &Doc)
-{
-}
-
-/**
   * Invalidate cells that depend on this document object.
   *
   */

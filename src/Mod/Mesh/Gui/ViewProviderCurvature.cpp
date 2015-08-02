@@ -224,14 +224,6 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     pcColorBar->setRange( fMin, fMax, 3 );
 }
 
-void ViewProviderMeshCurvature::slotCreatedObject(const App::DocumentObject& Obj)
-{
-}
-
-void ViewProviderMeshCurvature::slotDeletedObject(const App::DocumentObject& Obj)
-{
-}
-
 void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     // we get this for any object for that a property has changed. Thus, we must regard that object
@@ -246,14 +238,6 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
             static_cast<Mesh::Curvature*>(pcObject)->Source.touch(); // make sure to recompute the feature
         }
     }
-}
-
-void ViewProviderMeshCurvature::slotCreatedDocument(const App::Document& Doc)
-{
-}
-
-void ViewProviderMeshCurvature::slotDeletedDocument(const App::Document& Doc)
-{
 }
 
 void ViewProviderMeshCurvature::attach(App::DocumentObject *pcFeat)
