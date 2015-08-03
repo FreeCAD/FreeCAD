@@ -39,6 +39,7 @@
 #include <Mod/PartDesign/App/Feature.h>
 
 #include "Utils.h"
+#include "WorkflowManager.h"
 
 
 
@@ -61,6 +62,9 @@ CmdPartDesignPart::CmdPartDesignPart()
 
 void CmdPartDesignPart::activated(int iMsg)
 {
+    if ( PartDesignGui::assureModernWorkflow( getDocument() ) )
+        return;
+
     openCommand("Add a part");
     std::string FeatName = getUniqueObjectName("Part");
 
@@ -76,7 +80,7 @@ void CmdPartDesignPart::activated(int iMsg)
 
 bool CmdPartDesignPart::isActive(void)
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
 }
 
 //===========================================================================
@@ -98,6 +102,8 @@ CmdPartDesignBody::CmdPartDesignBody()
 
 void CmdPartDesignBody::activated(int iMsg)
 {
+    if ( PartDesignGui::assureModernWorkflow( getDocument() ) )
+        return;
     std::vector<App::DocumentObject*> features =
         getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     App::DocumentObject* baseFeature = nullptr;
@@ -154,7 +160,40 @@ void CmdPartDesignBody::activated(int iMsg)
 
 bool CmdPartDesignBody::isActive(void)
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+}
+
+//===========================================================================
+// PartDesign_Migrate
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignMigrate);
+
+CmdPartDesignMigrate::CmdPartDesignMigrate()
+  : Command("PartDesign_Migrate")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Migrate");
+    sToolTipText  = QT_TR_NOOP("Migrate document to the new workflow");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartDesignMigrate::activated(int iMsg)
+{
+    App::Document *doc = getDocument();
+    // TODO make a proper implementation
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Not implemented yet"),
+            QObject::tr("The migration not implemented yet, just force-switching to the new workflow.\n"
+                "Previous workflow was: %1").arg(int(
+                    PartDesignGui::WorkflowManager::instance()->determinWorkflow( doc ) )));
+    PartDesignGui::WorkflowManager::instance()->forceWorkflow(doc, PartDesignGui::Workflow::Modern);
+}
+
+bool CmdPartDesignMigrate::isActive(void)
+{
+    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
 }
 
 //===========================================================================
@@ -290,10 +329,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg) {
 
 bool CmdPartDesignDuplicateSelection::isActive(void)
 {
-    if (getActiveGuiDocument())
-        return true;
-    else
-        return false;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -387,7 +423,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
             } catch (Base::Exception &) {
                 QMessageBox::warning( Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
                         QObject::tr("Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.").
-                        arg( QString::fromAscii( sketch->getNameInDocument() ) ) );
+                        arg( QString::fromAscii( sketch->Label.getValue () ) ) );
             }
         }
     }
@@ -397,6 +433,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
 bool CmdPartDesignMoveFeature::isActive(void)
 {
+    return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
     return hasActiveDocument ();
 }
 
@@ -494,7 +531,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
 bool CmdPartDesignMoveFeatureInTree::isActive(void)
 {
-    return hasActiveDocument ();
+    return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
 }
 
 
@@ -508,6 +545,7 @@ void CreatePartDesignBodyCommands(void)
 
     rcCmdMgr.addCommand(new CmdPartDesignPart());
     rcCmdMgr.addCommand(new CmdPartDesignBody());
+    rcCmdMgr.addCommand(new CmdPartDesignMigrate());
     rcCmdMgr.addCommand(new CmdPartDesignMoveTip());
 
     rcCmdMgr.addCommand(new CmdPartDesignDuplicateSelection());
