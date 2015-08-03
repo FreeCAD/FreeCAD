@@ -189,7 +189,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << analyze << "Mesh_HarmonizeNormals" << "Mesh_FlipNormals" << "Separator" 
           << "Mesh_FillupHoles" << "Mesh_FillInteractiveHole" << "Mesh_RemoveComponents"
           << "Mesh_RemoveCompByHand" << "Mesh_AddFacet" << "Mesh_Smoothing" << "Separator" 
-          << "Mesh_BuildRegularSolid" << boolean << "Separator" << "Mesh_PolySelect" << "Mesh_PolyCut"
+          << "Mesh_BuildRegularSolid" << boolean << "Separator" << "Mesh_Merge" << "Mesh_PolySelect" << "Mesh_PolyCut"
           << "Mesh_PolySplit" << "Mesh_PolySegm" << "Mesh_PolyTrim" << "Mesh_TrimByPlane" << "Mesh_Segmentation"
           << "Mesh_VertexCurvature";
     return root;
