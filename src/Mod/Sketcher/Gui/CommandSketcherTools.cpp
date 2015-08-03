@@ -1027,88 +1027,89 @@ void CmdSketcherSymmetry::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle non-external edges
         if ((it->size() > 4 && it->substr(0,4) == "Edge") ||
-	    (it->size() > 12 && it->substr(0,12) == "ExternalEdge")) {
+            (it->size() > 12 && it->substr(0,12) == "ExternalEdge")) {
 	  
-	    if(it->substr(0,4) == "Edge") {
-		LastGeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-		LastPointPos = Sketcher::none;
-	    }
-	    else {
-		LastGeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
-		LastPointPos = Sketcher::none;
-	    }
-	    
-	    // reference can be external or non-external
-	    LastGeo = Obj->getGeometry(LastGeoId);            
-	    // Only for supported types
-	    if(LastGeo->getTypeId() == Part::GeomLineSegment::getClassTypeId())
-		lastgeotype = line;
-	    else
-		lastgeotype = invalid;
+            if(it->substr(0,4) == "Edge") {
+                LastGeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
+                LastPointPos = Sketcher::none;
+            }
+            else {
+                LastGeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
+                LastPointPos = Sketcher::none;
+            }
+            
+            // reference can be external or non-external
+            LastGeo = Obj->getGeometry(LastGeoId);            
+            // Only for supported types
+            if(LastGeo->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+                lastgeotype = line;
+            else
+                lastgeotype = invalid;
 
-	    // lines to make symmetric (only non-external)
-	    if(LastGeoId>=0) {
-		geoids++;	    
-		stream << LastGeoId << ",";
-	    }
-	}
-	else if(it->size() > 6 && it->substr(0,6) == "Vertex"){
-	// only if it is a GeomPoint
-	    int VtId = std::atoi(it->substr(6,4000).c_str()) - 1;
-	    int GeoId;
-	    Sketcher::PointPos PosId;
-	    Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-	    if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
-		LastGeoId = GeoId;
-		LastPointPos = Sketcher::start;
-		lastgeotype = point;
-		
-		// points to make symmetric
-		if(LastGeoId>=0) {
-		    geoids++;	    
-		    stream << LastGeoId << ",";
-		}		
-	    }
-	}
+            // lines to make symmetric (only non-external)
+            if(LastGeoId>=0) {
+                geoids++;	    
+            stream << LastGeoId << ",";
+            }
+        }
+        else if(it->size() > 6 && it->substr(0,6) == "Vertex"){
+        // only if it is a GeomPoint
+            int VtId = std::atoi(it->substr(6,4000).c_str()) - 1;
+            int GeoId;
+            Sketcher::PointPos PosId;
+            Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+            
+            if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                LastGeoId = GeoId;
+                LastPointPos = Sketcher::start;
+                lastgeotype = point;
+                
+                // points to make symmetric
+                if(LastGeoId>=0) {
+                    geoids++;	    
+                    stream << LastGeoId << ",";
+                }
+            }
+        }
     }
     
     bool lastvertexoraxis=false;
     // check if last selected element is a Vertex, not being a GeomPoint
     if(SubNames.rbegin()->size() > 6 && SubNames.rbegin()->substr(0,6) == "Vertex"){
-	int VtId = std::atoi(SubNames.rbegin()->substr(6,4000).c_str()) - 1;
-	int GeoId;
-	Sketcher::PointPos PosId;
-	Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-	if (Obj->getGeometry(GeoId)->getTypeId() != Part::GeomPoint::getClassTypeId()) {
-	    LastGeoId = GeoId;
-	    LastPointPos = PosId;
-	    lastgeotype = point;
-	    lastvertexoraxis=true;
-	}
+        int VtId = std::atoi(SubNames.rbegin()->substr(6,4000).c_str()) - 1;
+        int GeoId;
+        Sketcher::PointPos PosId;
+        Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+        if (Obj->getGeometry(GeoId)->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+            LastGeoId = GeoId;
+            LastPointPos = PosId;
+            lastgeotype = point;
+            lastvertexoraxis=true;
+        }
     }
     // check if last selected element is horizontal axis
     else if(SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "H_Axis"){
-	LastGeoId = -1;
-	LastPointPos = Sketcher::none;
-	lastgeotype = line;
-	lastvertexoraxis=true;
+        LastGeoId = -1;
+        LastPointPos = Sketcher::none;
+        lastgeotype = line;
+        lastvertexoraxis=true;
     }    
     // check if last selected element is vertical axis
     else if(SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "V_Axis"){
-	LastGeoId = -2;
-	LastPointPos = Sketcher::none;
-	lastgeotype = line;
-	lastvertexoraxis=true;
+        LastGeoId = -2;
+        LastPointPos = Sketcher::none;
+        lastgeotype = line;
+        lastvertexoraxis=true;
     }
     // check if last selected element is the root point
     else if(SubNames.rbegin()->size() == 9 && SubNames.rbegin()->substr(0,9) == "RootPoint"){
-	LastGeoId = -1;
-	LastPointPos = Sketcher::start;
-	lastgeotype = point;
-	lastvertexoraxis=true;
+        LastGeoId = -1;
+        LastPointPos = Sketcher::start;
+        lastgeotype = point;
+        lastvertexoraxis=true;
     }
     
-    if ( geoids < 2 || (geoids<1 && LastGeoId<0) || (geoids<1 && lastvertexoraxis) ) {
+    if ( geoids == 0 || (geoids == 1 && LastGeoId>=0 && !lastvertexoraxis) ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction."));
         return;      
