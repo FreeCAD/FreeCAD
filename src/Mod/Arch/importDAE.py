@@ -50,7 +50,7 @@ def open(filename):
     "called when freecad wants to open a file"
     if not checkCollada(): 
         return
-    docname = os.path.splitext(os.path.basename(filename))[0]
+    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
     doc.Label = decode(docname)
     FreeCAD.ActiveDocument = doc
