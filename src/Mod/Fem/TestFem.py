@@ -29,17 +29,12 @@ import FemTools
 import FreeCAD
 import MechanicalAnalysis
 import csv
-import hashlib
 import tempfile
 import unittest
 
-# md5sum of src/Mod/Fem/test_file.inp
-# All changes in ccxInpWriter resulting in changes of the .inp file should
-# be reflected in src/Mod/Fem/test_file.inp and the m5d_standard variable
-# should be updated
-md5_standard = "55b91f57fdc13ec471689e63f9529d38"
 mesh_name = 'Mesh'
 working_dir = tempfile.gettempdir() + '/FEM/'
+standard_inp_file = FreeCAD.getHomePath() + 'Mod/Fem/inp_standard.inp'
 mesh_points_file = FreeCAD.getHomePath() + 'Mod/Fem/mesh_points.csv'
 mesh_volumes_file = FreeCAD.getHomePath() + 'Mod/Fem/mesh_volumes.csv'
 
@@ -104,6 +99,22 @@ class FemTest(unittest.TestCase):
         self.pressure_constraint.Pressure = 10.000000
         self.pressure_constraint.Reversed = True
 
+    def compare_inp_files(self, file_name1, file_name2):
+        file1 = open(file_name1, 'r')
+        file2 = open(file_name2, 'r')
+        f1 = file1.readlines()
+        f2 = file2.readlines()
+        lf1 = [l for l in f1 if not l.startswith('**')]
+        lf2 = [l for l in f2 if not l.startswith('**')]
+        import difflib
+        diff = difflib.unified_diff(lf1, lf2, n=0)
+        result = ''
+        for l in diff:
+            result += l
+        file1.close()
+        file2.close()
+        return result
+
     def test_new_analysis(self):
         FreeCAD.Console.PrintMessage('\nChecking FEM new analysis...\n')
         self.create_new_analysis()
@@ -141,10 +152,11 @@ class FemTest(unittest.TestCase):
 
         FreeCAD.Console.PrintMessage('\nChecking FEM inp file write...\n')
         fea.setup_working_dir(working_dir)
+        FreeCAD.Console.PrintMessage('\nWriting {}/{}.inp\n'.format(working_dir, mesh_name))
         error = fea.write_inp_file()
-        md5_test = hashlib.md5(open(working_dir + mesh_name + '.inp', 'rb').read()).hexdigest()
-        self.assertEqual(md5_standard, md5_test, "FemTools write_inp_file failed. md5 \
-                         sums don't match. md5 for the test file is {}".format(md5_test))
+        FreeCAD.Console.PrintMessage('\nComparing {} to {}/{}.inp\n'.format(standard_inp_file, working_dir, mesh_name))
+        ret = self.compare_inp_files(standard_inp_file, working_dir + "/" + mesh_name + '.inp')
+        self.assertFalse(ret, "FemTools write_inp_file test failed.\n{}".format(ret))
 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")

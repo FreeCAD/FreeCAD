@@ -13,6 +13,10 @@ INSTALL(
         ccxFrdReader.py
         ccxInpWriter.py
         FemTools.py
+        TestFem.py
+	mesh_points.csv
+	mesh_volumes.csv
+	inp_standard.inp
         FemExample.py
         MechanicalAnalysis.py
         MechanicalMaterial.py

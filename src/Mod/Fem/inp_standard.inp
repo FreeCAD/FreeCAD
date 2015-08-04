@@ -451,7 +451,10 @@ Eall
 ** Young's modulus unit is MPa = N/mm2
 *MATERIAL, NAME=Test Material
 *ELASTIC 
-20000 , 0.360
+20000 , 
+0.360
+*DENSITY 
+1e-09 , 
 *SOLID SECTION, ELSET=MechanicalMaterial, MATERIAL=Test Material
 
 ***********************************************************
@@ -521,6 +524,12 @@ S
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
+**   written by    --> FreeCAD 0.16.5287 (Git)
+**   written on    --> Thu Jul 30 11:22:52 2015
+**   file name     --> 
+**   analysis name --> MechanicalAnalysis
+**
+**
 **
 **   Units
 **
