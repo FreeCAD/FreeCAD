@@ -1089,6 +1089,11 @@ void PropertySheet::renamedDocument(const App::Document * doc)
     }
 }
 
+void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
+{
+    docDeps.erase(const_cast<App::DocumentObject*>(docObj));
+}
+
 void PropertySheet::documentSet()
 {
     documentName[owner->getDocument()] = owner->getDocument()->Label.getValue();
