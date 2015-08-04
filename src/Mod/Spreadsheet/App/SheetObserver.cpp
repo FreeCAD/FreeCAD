@@ -60,6 +60,7 @@ void SheetObserver::slotCreatedObject(const DocumentObject &Obj)
 void SheetObserver::slotDeletedObject(const DocumentObject &Obj)
 {
     sheet->invalidateDependants(&Obj);
+    sheet->deletedDocumentObject(&Obj);
 }
 
 /**

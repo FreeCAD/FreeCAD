@@ -143,6 +143,8 @@ public:
 
     void renamedDocument(const App::Document *doc);
 
+    void deletedDocumentObject(const App::DocumentObject *docObj);
+
     void documentSet();
 
 private:
