@@ -2782,7 +2782,7 @@ class Trimex(Modifier):
         dvec = self.point.sub(self.newpoint)
         if not shift: delta = DraftVecUtils.project(dvec,self.normal)
         else: delta = dvec
-        if self.force:
+        if self.force and delta.Length:
             ratio = self.force/delta.Length
             delta.multiply(ratio)
         if real: return delta
