@@ -834,8 +834,10 @@ PyObject* SketchObjectPy::addArray(PyObject *args)
 {
     PyObject *pcObj, *pcVect;
     int rows,cols;
-
-    if (!PyArg_ParseTuple(args, "OO!ii", &pcObj, &(Base::VectorPy::Type), &pcVect,&rows,&cols))
+    double perpscale=1.0;
+    PyObject* constraindisplacement= Py_False;
+    
+    if (!PyArg_ParseTuple(args, "OO!ii|O!d", &pcObj, &(Base::VectorPy::Type), &pcVect,&rows,&cols, &PyBool_Type, &constraindisplacement,&perpscale))
         return 0;
 
     Base::Vector3d vect = static_cast<Base::VectorPy*>(pcVect)->value();
@@ -849,7 +851,7 @@ PyObject* SketchObjectPy::addArray(PyObject *args)
 		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect,rows,cols) + 1;
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect,rows,cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
     
 	if(ret == -1)
 	    throw Py::TypeError("Copy operation unsuccessful!");    

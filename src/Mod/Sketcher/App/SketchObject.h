@@ -152,8 +152,10 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
-    /// adds a copy of the geometric elements displaced by the displacement vector
-    int addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, int csize=2, int rsize=1);
+    /// with default parameters adds a copy of the geometric elements displaced by the displacement vector.
+    /// It creates an array of csize elements in the direction of the displacement vector by rsize elements in the
+    /// direction perpendicular to the displacement vector, wherein the modulus of this perpendicular vector is scaled by perpscale.
+    int addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, int csize=2, int rsize=1, bool constraindisplacement = false, double perpscale = 1.0);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
