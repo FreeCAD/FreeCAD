@@ -754,6 +754,9 @@ class ViewProviderComponent:
             if hasattr(self.Object,"Tool"):
                 if self.Object.Tool:
                     c.append(self.Object.Tool)
+            if hasattr(self.Object,"Subvolume"):
+                if self.Object.Subvolume:
+                    c.append(self.Object.Subvolume)
             return c
         return []
 
