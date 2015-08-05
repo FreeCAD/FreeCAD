@@ -30,17 +30,18 @@ import FreeCAD
 import MechanicalAnalysis
 import csv
 import hashlib
+import tempfile
 import unittest
 
 # md5sum of src/Mod/Fem/test_file.inp
 # All changes in ccxInpWriter resulting in changes of the .inp file should
 # be reflected in src/Mod/Fem/test_file.inp and the m5d_standard variable
 # should be updated
-md5_standard = "5f1739821b1c741a6f35655af102bb14"
+md5_standard = "55b91f57fdc13ec471689e63f9529d38"
 mesh_name = 'Mesh'
-working_dir = '/tmp/FEM/'
-mesh_points_file = 'Mod/Fem/mesh_points.csv'
-mesh_volumes_file = 'Mod/Fem/mesh_volumes.csv'
+working_dir = tempfile.gettempdir() + '/FEM/'
+mesh_points_file = FreeCAD.getHomePath() + 'Mod/Fem/mesh_points.csv'
+mesh_volumes_file = FreeCAD.getHomePath() + 'Mod/Fem/mesh_volumes.csv'
 
 
 class FemTest(unittest.TestCase):
@@ -143,7 +144,7 @@ class FemTest(unittest.TestCase):
         error = fea.write_inp_file()
         md5_test = hashlib.md5(open(working_dir + mesh_name + '.inp', 'rb').read()).hexdigest()
         self.assertEqual(md5_standard, md5_test, "FemTools write_inp_file failed. md5 \
-                         sums don't match. md5 for the test file is ()".format(md5_test))
+                         sums don't match. md5 for the test file is {}".format(md5_test))
 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
