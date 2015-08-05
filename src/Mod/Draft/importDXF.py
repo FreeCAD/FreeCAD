@@ -1289,7 +1289,7 @@ def processdxf(document,filename,getShapes=False):
                     d = rawValue(dim,50)
                     if d: angle = float(d)
                     else: angle = 0
-                except ValueError:
+                except (ValueError,TypeError):
                     warn(dim)
                 else:
                     lay=locateLayer(layer)
