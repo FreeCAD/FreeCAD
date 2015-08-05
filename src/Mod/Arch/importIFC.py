@@ -44,6 +44,11 @@ typesmap = { "Site":       ["IfcSite"],
              "Equipment":  ["IfcFurnishingElement","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"]
            }
 
+# which IFC entity (product) is a structural object
+structuralifcobjects = ('IfcStructuralSurfaceMember', 'IfcStructuralCurveMember', 
+                        'IfcStructuralPointConnection', 'IfcStructuralSurfaceConnection', 
+                        'IfcStructuralAction', 'IfcStructuralPointAction')
+
 # specific name translations
 translationtable = { "Foundation":"Footing",
                      "Floor":"BuildingStorey",
@@ -286,8 +291,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
     MERGE_MATERIALS = p.GetBool("ifcMergeMaterials",False)
     if root:
         ROOT_ELEMENT = root
-    MERGE_MODE = p.GetInt("ifcImportMode",0)
-    if MERGE_MODE > 0:
+    MERGE_MODE_ARCH = p.GetInt("ifcImportModeArch",0)
+    MERGE_MODE_STRUCT = p.GetInt("ifcImportModeStruct",1)
+    if MERGE_MODE_ARCH > 0:
         SEPARATE_OPENINGS = False
         GET_EXTRUSIONS = False
     if not SEPARATE_OPENINGS:
@@ -318,6 +324,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     settings.set(settings.USE_WORLD_COORDS,True)
     if SEPARATE_OPENINGS: 
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
+    if MERGE_MODE_STRUCT != 3:
+        settings.set(settings.INCLUDE_CURVES,True)
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
@@ -331,15 +339,19 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # building relations tables
     objects = {} # { id:object, ... }
     additions = {} # { host:[child,...], ... }
+    groups = {} # { host:[child,...], ... }     # used in structural IFC
     subtractions = [] # [ [opening,host], ... ]
     properties = {} # { host:[property, ...], ... }
     colors = {} # { id:(r,g,b) }
     shapes = {} # { id:shaoe } only used for merge mode
+    structshapes = {} # { id:shaoe } only used for merge mode
     mattable = {} # { objid:matid }
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
         additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
+    for r in ifcfile.by_type("IfcRelAssignsToGroup"):
+        groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
     for r in ifcfile.by_type("IfcRelVoidsElement"):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
     for r in ifcfile.by_type("IfcRelDefinesByProperties"):
@@ -403,6 +415,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
         baseobj = None
         brep = None
 
+        archobj = True  # assume all objects not in structuralifcobjects are architecture
+        if ptype in structuralifcobjects:
+            archobj = False
+        if MERGE_MODE_ARCH == 4 and archobj:
+            if DEBUG: print " skipped."
+            continue
+        if MERGE_MODE_STRUCT == 3 and not archobj:
+            if DEBUG: print " skipped."
+            continue
         if pid in skip: # user given id skip list
             if DEBUG: print " skipped."
             continue
@@ -425,9 +446,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
 
             if not shape.isNull():
-                if MERGE_MODE > 0:
+                if (MERGE_MODE_ARCH > 0 and archobj) or not archobj:
                     if ptype == "IfcSpace": # do not add spaces to compounds
                         if DEBUG: print "skipping space ",pid
+                    elif not archobj:
+                        structshapes[pid] = shape
+                        if DEBUG: print shape.Solids
+                        baseobj = shape
                     else:
                         shapes[pid] = shape
                         if DEBUG: print shape.Solids
@@ -456,7 +481,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         else:
             if DEBUG: print " no brep ",
             
-        if MERGE_MODE == 0:
+        if MERGE_MODE_ARCH == 0 and archobj :
             
             # full Arch objects
             for freecadtype,ifctypes in typesmap.items():
@@ -490,7 +515,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if DEBUG: print sols
                 objects[pid] = obj
                         
-        elif MERGE_MODE == 1:
+        elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
             
             # non-parametric Arch objects
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
@@ -500,7 +525,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
                 
-        elif MERGE_MODE == 2:
+        elif (MERGE_MODE_ARCH == 2 and archobj) or (MERGE_MODE_STRUCT == 1 and not archobj):
             
             # Part shapes
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
@@ -540,11 +565,57 @@ def insert(filename,docname,skip=[],only=[],root=None):
     progressbar.stop()
     FreeCAD.ActiveDocument.recompute()
         
-    if MERGE_MODE == 3:
+    if MERGE_MODE_STRUCT == 2:
+
+        if DEBUG: print "Joining Structural shapes..."
+
+        for host,children in groups.items(): # Structural
+            if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
+                compound = []
+                for c in children:
+                    if c in structshapes.keys():
+                        compound.append(structshapes[c])
+                        del structshapes[c]
+                if compound:
+                    name = ifcfile[host].Name or "AnalysisModel"
+                    if PREFIX_NUMBERS: name = "ID" + str(host) + " " + name
+                    obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                    obj.Label = name
+                    obj.Shape = Part.makeCompound(compound)
+        if structshapes: # remaining Structural shapes
+            obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedStruct")
+            obj.Shape = Part.makeCompound(structshapes.values())
+    else:
         
-        if DEBUG: print "Joining shapes..."
+        if DEBUG: print "Processing Struct relationships..."
+
+        # groups
+        for host,children in groups.items():
+            if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
+                obj =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","AnalysisModel")
+                objects[host] = obj
+                if host in objects.keys():
+                    cobs = [objects[child] for child in children if child in objects.keys()]
+                    if cobs:
+                        if DEBUG: print "adding ",len(cobs), " object(s) to ", objects[host].Label
+                        Arch.addComponents(cobs,objects[host])
+                        if DEBUG: FreeCAD.ActiveDocument.recompute()
+
+        if MERGE_MODE_ARCH > 2:  # if ArchObj is compound or ArchObj not imported
+            FreeCAD.ActiveDocument.recompute()
+
+            # cleaning bad shapes
+            for obj in objects.values():
+                if obj.isDerivedFrom("Part::Feature"):
+                    if obj.Shape.isNull():
+                        Arch.rebuildArchShape(obj)
+
+
+    if MERGE_MODE_ARCH == 3:
         
-        for host,children in additions.items():
+        if DEBUG: print "Joining Arch shapes..."
+        
+        for host,children in additions.items(): # Arch
             if ifcfile[host].is_a("IfcBuildingStorey"):
                 compound = []
                 for c in children:
@@ -562,13 +633,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                     obj.Label = name
                     obj.Shape = Part.makeCompound(compound)
-        if shapes: # remaining shapes
-            obj = FreeCAD.ActiveDocument.addObject("Part::Feature","Unclaimed")
+        if shapes: # remaining Arch shapes
+            obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedArch")
             obj.Shape = Part.makeCompound(shapes.values())
             
     else:
         
-        if DEBUG: print "Processing relationships..."
+        if DEBUG: print "Processing Arch relationships..."
         
         # subtractions
         if SEPARATE_OPENINGS:
