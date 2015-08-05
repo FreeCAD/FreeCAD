@@ -2011,7 +2011,8 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     return Geometry.getSize()-1;
 }
 
-int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, int csize/*=2*/, int rsize/*=1*/)
+int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, int csize/*=2*/, int rsize/*=1*/, 
+                          bool constraindisplacement /*= false*/, double perpscale /*= 1.0*/)
 {
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
     std::vector< Part::Geometry * > newgeoVals(geovals);
@@ -2021,83 +2022,142 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     
     int cgeoid = getHighestCurveIndex()+1;
     
+    int iterfirstgeoid = -1 ;
+    
+    Base::Vector3d iterfirstpoint;
+    
+    int refgeoid = -1;
+    
+    int colrefgeoid = 0, rowrefgeoid = 0;
+    
+    int currentrowfirstgeoid= -1, prevrowstartfirstgeoid = -1, prevfirstgeoid = -1;
+    
+    Sketcher::PointPos refposId;
+    
     std::map<int, int> geoIdMap;
     
-    Base::Vector3d perpendicularDisplacement = Base::Vector3d(displacement.y,-displacement.x,0);
+    Base::Vector3d perpendicularDisplacement = Base::Vector3d(perpscale*displacement.y,perpscale*-displacement.x,0);
     
     int x,y;
     
-    for (y=0;y<rsize;y++) {
+    for (y=0;y<rsize;y++) {        
         for (x=0;x<csize;x++) {
-            if(x == 0 && y == 0)
+            
+            if(x == 0 && y == 0) { // the reference for constraining array elements is the first valid point of the first element
+                const Part::Geometry *geo = getGeometry(*(geoIdList.begin()));
+                refgeoid=*(geoIdList.begin());
+                currentrowfirstgeoid = refgeoid;
+                iterfirstgeoid = refgeoid;
+                if(geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                    geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ){
+                    refposId = Sketcher::mid;
+                }
+                else
+                    refposId = Sketcher::start;
+                
                 continue; // the first element is already in place
+            }
+            else {
+                prevfirstgeoid = iterfirstgeoid;
+                
+                iterfirstgeoid = cgeoid;
+                
+                if( x == 0 ) { // if first element of second row
+                    prevrowstartfirstgeoid = currentrowfirstgeoid;
+                    currentrowfirstgeoid = cgeoid;
+                }
+            }
             
             for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
                 const Part::Geometry *geo = getGeometry(*it);
-                Part::Geometry *geosym = geo->clone();
+                Part::Geometry *geocopy = geo->clone();
                 
                 // Handle Geometry
-                if(geosym->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
-                    Part::GeomLineSegment *geosymline = static_cast<Part::GeomLineSegment *>(geosym);
+                if(geocopy->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
+                    Part::GeomLineSegment *geosymline = static_cast<Part::GeomLineSegment *>(geocopy);
                     Base::Vector3d sp = geosymline->getStartPoint();
                     Base::Vector3d ep = geosymline->getEndPoint();
+                    Base::Vector3d ssp = geosymline->getStartPoint()+double(x)*displacement+double(y)*perpendicularDisplacement;
                     
-                    geosymline->setPoints(  sp+double(x)*displacement+double(y)*perpendicularDisplacement,
+                    geosymline->setPoints(  ssp,
                                             ep+double(x)*displacement+double(y)*perpendicularDisplacement);
+                    
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = ssp;
                 }
-                else if(geosym->getTypeId() == Part::GeomCircle::getClassTypeId()){
-                    Part::GeomCircle *geosymcircle = static_cast<Part::GeomCircle *>(geosym);
-                    Base::Vector3d cp = geosymcircle->getCenter();	
+                else if(geocopy->getTypeId() == Part::GeomCircle::getClassTypeId()){
+                    Part::GeomCircle *geosymcircle = static_cast<Part::GeomCircle *>(geocopy);
+                    Base::Vector3d cp = geosymcircle->getCenter();
+                    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;
 
-                    geosymcircle->setCenter(cp+double(x)*displacement+double(y)*perpendicularDisplacement);
+                    geosymcircle->setCenter(scp);
+                    
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = scp;
                 }
-                else if(geosym->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()){
-                    Part::GeomArcOfCircle *geoaoc = static_cast<Part::GeomArcOfCircle *>(geosym);
+                else if(geocopy->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()){
+                    Part::GeomArcOfCircle *geoaoc = static_cast<Part::GeomArcOfCircle *>(geocopy);
                     Base::Vector3d cp = geoaoc->getCenter();
                     Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;
                     
                     geoaoc->setCenter(scp);
+                    
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geoaoc->getStartPoint(true);
                 }
-                else if(geosym->getTypeId() == Part::GeomEllipse::getClassTypeId()){
-                    Part::GeomEllipse *geosymellipse = static_cast<Part::GeomEllipse *>(geosym);
+                else if(geocopy->getTypeId() == Part::GeomEllipse::getClassTypeId()){
+                    Part::GeomEllipse *geosymellipse = static_cast<Part::GeomEllipse *>(geocopy);
                     Base::Vector3d cp = geosymellipse->getCenter();
                     Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;
 
                     geosymellipse->setCenter(scp);
+                    
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = scp;
                 }
-                else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
-                    Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
-                    Base::Vector3d cp = geosymaoe->getCenter();
+                else if(geocopy->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
+                    Part::GeomArcOfEllipse *geoaoe = static_cast<Part::GeomArcOfEllipse *>(geocopy);
+                    Base::Vector3d cp = geoaoe->getCenter();
                     Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;		
 
-                    geosymaoe->setCenter(scp);
+                    geoaoe->setCenter(scp);
+                    
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geoaoe->getStartPoint(true);
                 }
-                else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
-                    Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
-                    Base::Vector3d cp = geosympoint->getPoint();
-
-                    geosympoint->setPoint(cp+double(x)*displacement+double(y)*perpendicularDisplacement);
+                else if(geocopy->getTypeId() == Part::GeomPoint::getClassTypeId()){
+                    Part::GeomPoint *geopoint = static_cast<Part::GeomPoint *>(geocopy);
+                    Base::Vector3d cp = geopoint->getPoint();
+                    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;
+                    geopoint->setPoint(scp);
+                    
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = scp;                    
                 }
                 else {
-                    Base::Console().Error("Unsupported Geometry!! Just copying it.\n");
+                    Base::Console().Error("Unsupported Geometry!! Just skipping it.\n");
+                    continue;
                 }
 
-                newgeoVals.push_back(geosym);
+                newgeoVals.push_back(geocopy);
                 geoIdMap.insert(std::make_pair(*it, cgeoid));
                 cgeoid++;
             }
             
-            // handle constraints
+            // handle geometry constraints
             for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
             
                 std::vector<int>::const_iterator fit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->First);
                 
                 if(fit != geoIdList.end()) { // if First of constraint is in geoIdList
                     
-                    if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {	    
-                        Constraint *constNew = (*it)->clone();
-                        constNew->First = geoIdMap[(*it)->First];
-                        newconstrVals.push_back(constNew);
+                    if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
+                        if( ((*it)->Type != Sketcher::DistanceX && (*it)->Type != Sketcher::DistanceY ) || 
+                            (*it)->FirstPos == Sketcher::none ) { // if it is not a point locking DistanceX/Y
+                            Constraint *constNew = (*it)->clone();
+                            constNew->First = geoIdMap[(*it)->First];
+                            newconstrVals.push_back(constNew);
+                        }
                     }
                     else { // other geoids intervene in this constraint
                     
@@ -2127,6 +2187,159 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 }
             }
 
+            // handle inter-geometry constraints
+            // example: App.ActiveDocument.Sketch.addArray([0,1], App.Vector(150,150,0),3,4,True)
+            if(constraindisplacement){
+                
+                // add a construction line
+                Part::GeomLineSegment *constrline= new Part::GeomLineSegment();
+                
+                Base::Vector3d spdisp = Vector3d(); // initializes to 0,0,0
+                
+                Base::Vector3d sp = getPoint(refgeoid,refposId)+ ( ( x == 0 )?
+                                (double(x)*displacement+double(y-1)*perpendicularDisplacement):
+                                (double(x-1)*displacement+double(y)*perpendicularDisplacement)); // position of the reference point
+                Base::Vector3d ep = iterfirstpoint; // position of the current instance corresponding point
+                constrline->setPoints(sp,ep);
+                constrline->Construction=true;
+                
+                newgeoVals.push_back(constrline);
+                
+                Constraint *constNew;
+                
+                if(x == 0) { // first element of a row
+                    
+                    // add coincidents for construction line
+                    constNew = new Constraint();
+                    constNew->Type = Sketcher::Coincident;
+                    constNew->First = prevrowstartfirstgeoid;
+                    constNew->FirstPos = refposId;
+                    constNew->Second = cgeoid;
+                    constNew->SecondPos = Sketcher::start;
+                    newconstrVals.push_back(constNew);
+                    
+                    constNew = new Constraint();
+                    constNew->Type = Sketcher::Coincident;
+                    constNew->First = iterfirstgeoid;
+                    constNew->FirstPos = refposId;
+                    constNew->Second = cgeoid;
+                    constNew->SecondPos = Sketcher::end;
+                    newconstrVals.push_back(constNew);
+                    
+                    if( y == 1 ) { // it is the first added element of this row in the perpendicular to displacementvector direction
+                        rowrefgeoid = cgeoid;
+                        cgeoid++;
+                        
+                        // add length (or equal if perpscale==1) and perpendicular
+                        if(perpscale==1.0) {
+                            constNew = new Constraint();
+                            constNew->Type = Sketcher::Equal;
+                            constNew->First = rowrefgeoid;
+                            constNew->FirstPos = Sketcher::none;
+                            constNew->Second = colrefgeoid;
+                            constNew->SecondPos = Sketcher::none;
+                            newconstrVals.push_back(constNew);                            
+                        } else {
+                            constNew = new Constraint();
+                            constNew->Type = Sketcher::Distance;
+                            constNew->First = rowrefgeoid;
+                            constNew->FirstPos = Sketcher::none;
+                            constNew->Value = perpendicularDisplacement.Length();
+                            newconstrVals.push_back(constNew);
+                        }
+                        
+                        constNew = new Constraint();
+                        constNew->Type = Sketcher::Perpendicular;
+                        constNew->First = rowrefgeoid;
+                        constNew->FirstPos = Sketcher::none;
+                        constNew->Second = colrefgeoid;
+                        constNew->SecondPos = Sketcher::none;
+                        newconstrVals.push_back(constNew);                            
+                    }
+                    else { // it is just one more element in the col direction
+                        cgeoid++;
+                        
+                        // all other first rowers get an equality and perpendicular constraint
+                        constNew = new Constraint();
+                        constNew->Type = Sketcher::Equal;
+                        constNew->First = rowrefgeoid;
+                        constNew->FirstPos = Sketcher::none;
+                        constNew->Second = cgeoid-1;
+                        constNew->SecondPos = Sketcher::none;
+                        newconstrVals.push_back(constNew);
+                        
+                        constNew = new Constraint();
+                        constNew->Type = Sketcher::Perpendicular;
+                        constNew->First = cgeoid-1;
+                        constNew->FirstPos = Sketcher::none;
+                        constNew->Second = colrefgeoid;
+                        constNew->SecondPos = Sketcher::none;
+                        newconstrVals.push_back(constNew);                        
+                          
+                    }
+                }
+                else { // any element not being the first element of a row
+                    
+                    // add coincidents for construction line
+                    constNew = new Constraint();
+                    constNew->Type = Sketcher::Coincident;
+                    constNew->First = prevfirstgeoid;
+                    constNew->FirstPos = refposId;
+                    constNew->Second = cgeoid;
+                    constNew->SecondPos = Sketcher::start;
+                    newconstrVals.push_back(constNew);
+                    
+                    constNew = new Constraint();
+                    constNew->Type = Sketcher::Coincident;
+                    constNew->First = iterfirstgeoid;
+                    constNew->FirstPos = refposId;
+                    constNew->Second = cgeoid;
+                    constNew->SecondPos = Sketcher::end;
+                    newconstrVals.push_back(constNew);
+                    
+                    if(y == 0 && x == 1) { // first element of the first row                           
+                            colrefgeoid = cgeoid;
+                            cgeoid++;
+                            
+                            // add length and Angle
+                            constNew = new Constraint();
+                            constNew->Type = Sketcher::Distance;
+                            constNew->First = colrefgeoid;
+                            constNew->FirstPos = Sketcher::none;
+                            constNew->Value = displacement.Length();
+                            newconstrVals.push_back(constNew);
+
+                            constNew = new Constraint();
+                            constNew->Type = Sketcher::Angle;
+                            constNew->First = colrefgeoid;
+                            constNew->FirstPos = Sketcher::none;
+                            constNew->Value = atan2(displacement.y,displacement.x);
+                            newconstrVals.push_back(constNew);                            
+                            
+                    }
+                    else { // any other element
+                        cgeoid++;
+
+                        // all other elements get an equality and parallel constraint
+                        constNew = new Constraint();
+                        constNew->Type = Sketcher::Equal;
+                        constNew->First = colrefgeoid;
+                        constNew->FirstPos = Sketcher::none;
+                        constNew->Second = cgeoid-1;
+                        constNew->SecondPos = Sketcher::none;
+                        newconstrVals.push_back(constNew);
+                        
+                        constNew = new Constraint();
+                        constNew->Type = Sketcher::Parallel;
+                        constNew->First = cgeoid-1;
+                        constNew->FirstPos = Sketcher::none;
+                        constNew->Second = colrefgeoid;
+                        constNew->SecondPos = Sketcher::none;
+                        newconstrVals.push_back(constNew);                        
+                    }
+                }
+            }
+            
             geoIdMap.clear(); // after each creation reset map so that the key-value is univoque
         }
     }

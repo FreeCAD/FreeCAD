@@ -246,7 +246,10 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
         << "Sketcher_SelectConflictingConstraints"
         << "Sketcher_SelectElementsAssociatedWithConstraints"
         << "Sketcher_RestoreInternalAlignmentGeometry" 
-	<< "Sketcher_Symmetry";
+        << "Sketcher_Symmetry"
+        << "Sketcher_Copy"
+        << "Sketcher_LinearArray";
+    
 }
 template <>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel){
@@ -254,7 +257,9 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
         << "Sketcher_ConnectLines"
         << "Sketcher_SelectConstraints"
         << "Sketcher_RestoreInternalAlignmentGeometry"
-	<< "Sketcher_Symmetry";
+        << "Sketcher_Symmetry"
+        << "Sketcher_Copy"
+        << "Sketcher_LinearArray";
 }
 
 template <typename T>
