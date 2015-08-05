@@ -599,8 +599,7 @@ class _Window(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",translate("Arch","the components of this window"))
         obj.addProperty("App::PropertyLength","HoleDepth","Arch",translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
-        # the following line creates problem when restoring saved files (wrongly attributes it to the window shape). Disabling for now...
-        #obj.addProperty("Part::PropertyPartShape","Subvolume","Arch",translate("Arch","an optional volume to be subtracted from hosts of this window"))
+        obj.addProperty("App::PropertyLink","Subvolume","Arch",translate("Arch","an optional object that defines a volume to be subtracted from hosts of this window"))
         obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this window (for preset windows only)"))
         obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this window (for preset windows only)"))
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal direction of this window"))
@@ -707,8 +706,12 @@ class _Window(ArchComponent.Component):
         # check if we have a custom subvolume
         if hasattr(obj,"Subvolume"):
             if obj.Subvolume:
-                if not obj.Subvolume.isNull():
-                    return obj.Subvolume
+                if obj.Subvolume.isDerivedFrom("Part::Feature"):
+                    if not obj.Subvolume.Shape.isNull():
+                        sh = obj.Subvolume.Shape.copy()   
+                        if plac:
+                            sh.Placement = plac
+                        return sh
 
         # getting extrusion depth
         base = None
