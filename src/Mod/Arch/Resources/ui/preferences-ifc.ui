@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
-    <height>399</height>
+    <width>456</width>
+    <height>478</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,7 +60,7 @@
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Import IFC objects as</string>
+           <string>Import arch IFC objects as</string>
           </property>
          </widget>
         </item>
@@ -70,7 +70,7 @@
            <string>Specifies what kind of objects will be created in FreeCAD</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ifcImportMode</cstring>
+           <cstring>ifcImportModeArch</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -93,6 +93,55 @@
           <item>
            <property name="text">
             <string>One compound per floor</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Do not import Arch objects</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Import struct IFC objects as</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox_2">
+          <property name="toolTip">
+           <string>Specifies what kind of objects will be created in FreeCAD</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcImportModeStruct</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Non-parametric Arch objects</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Simple Part shapes</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>One compound for all</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Do not import structural objects</string>
            </property>
           </item>
          </widget>
