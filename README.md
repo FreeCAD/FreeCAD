@@ -1,5 +1,7 @@
 FreeCAD
-=======
+-------
+
+![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
 FreeCAD is a general purpose feature-based, parametric 3D modeler for 
 CAD, MCAD, CAx, CAE and PLM, aimed directly at mechanical engineering 
@@ -21,14 +23,14 @@ Bug tracker:        http://www.freecadweb.org/tracker/
 Git repository:     http://sourceforge.net/p/free-cad/code/ci/master/tree/
 
 Installing
-==========
+----------
 
 Precompiled (installable) packages are usually available to you from 
 several sources and are described on the FreeCAD download page: 
 http://www.freecadweb.org/wiki/index.php?title=Download
 
 Compiling
-=========
+---------
 
 Compiling FreeCAD requires to install several libraries and their 
 development files such as OpenCasCADe, Coin and Qt, listed in the 
@@ -47,7 +49,7 @@ For Cygwin:  http://www.freecadweb.org/wiki/?title=CompileOnCygwin
 For MinGW:   http://www.freecadweb.org/wiki/?title=CompileOnMinGW
 
 Usage & Getting help
-====================
+--------------------
 
 The FreeCAD documentation wiki contains a lot of documentation on 
 general FreeCAD usage, python scripting, and development. The following
