@@ -440,4 +440,4 @@ void CreatePartDesignPrimitiveCommands(void)
 
     rcCmdMgr.addCommand(new CmdPrimtiveCompAdditive);
     rcCmdMgr.addCommand(new CmdPrimtiveCompSubtractive);
- }
+}

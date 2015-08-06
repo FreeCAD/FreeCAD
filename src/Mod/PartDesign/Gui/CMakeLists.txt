@@ -84,7 +84,7 @@ set(PartDesignGui_UIC_SRCS
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
-SET(PartDesignGuiViewProvider_SRCS CommandPrimitive.cpp
+SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderBody.cpp
@@ -225,6 +225,7 @@ SET(PartDesignGuiModule_SRCS
     AppPartDesignGui.cpp
     Command.cpp
     CommandPrimitive.cpp
+    CommandBody.cpp
     Resources/PartDesign.qrc
     PreCompiled.cpp
     PreCompiled.h

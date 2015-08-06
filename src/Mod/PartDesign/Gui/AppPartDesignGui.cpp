@@ -63,6 +63,7 @@
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
+void CreatePartDesignBodyCommands(void);
 void CreatePartDesignPrimitiveCommands(void);
 
 void loadPartDesignResource()
@@ -116,6 +117,7 @@ PyMODINIT_FUNC initPartDesignGui()
 
     // instantiating the commands
     CreatePartDesignCommands();
+    CreatePartDesignBodyCommands();
     CreatePartDesignPrimitiveCommands();
 
     PartDesignGui::Workbench                 ::init();
