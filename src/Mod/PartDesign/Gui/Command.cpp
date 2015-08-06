@@ -139,36 +139,48 @@ CmdPartDesignBody::CmdPartDesignBody()
 
 void CmdPartDesignBody::activated(int iMsg)
 {
-    openCommand("Add a body");
-    std::string FeatName = getUniqueObjectName("Body");
+    std::vector<App::DocumentObject*> features =
+        getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    App::DocumentObject* baseFeature = nullptr;
+
+    if (!features.empty()) {
+        if (features.size() == 1) {
+            baseFeature = features[0];
+            // TODO Check if the feature belongs to another body and may be some other sanity checks (2015-08-04, Fat-Zer)
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Body may be based no more than on one feature."));
+            return;
+        }
+    }
 
     // first check if Part is already created:
-    App::Part *actPart =  getDocument()->Tip.getValue<App::Part *>();
+    App::Part *actPart = getDocument()->Tip.getValue<App::Part *>();
     std::string PartName;
 
     if(!actPart){
-        // if not, creating a part and set it up by calling the appropiated function in Workbench
-        //if we create a new part we automaticly get a new body, there is no need to create a second one
-        PartName = getUniqueObjectName("Part");
-        doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
-        PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
-        doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, PartName.c_str());
-
-    } else {
-        PartName = actPart->getNameInDocument();
-        // add the Body feature itself, and make it active
-        doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
-        //doCommand(Doc,"App.activeDocument().%s.Model = []",FeatName.c_str());
-        //doCommand(Doc,"App.activeDocument().%s.Tip = None",FeatName.c_str());
-        addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-        doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, FeatName.c_str());
-   
-        // Make the "Create sketch" prompt appear in the task panel
-        doCommand(Gui,"Gui.Selection.clearSelection()");
-        doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",PartName.c_str(),FeatName.c_str());
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        rcCmdMgr.runCommandByName("PartDesign_Part");
+        actPart = getDocument()->Tip.getValue<App::Part *>();
     }
+
+    openCommand("Add a body");
+    std::string FeatName = getUniqueObjectName("Body");
+
+    PartName = actPart->getNameInDocument();
+    // add the Body feature itself, and make it active
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", FeatName.c_str());
+    if (baseFeature) {
+        doCommand(Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
+                FeatName.c_str(), baseFeature->getNameInDocument());
+    }
+    addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
+    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, FeatName.c_str());
+
+    // Make the "Create sketch" prompt appear in the task panel
+    doCommand(Gui,"Gui.Selection.clearSelection()");
+    doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",PartName.c_str(),FeatName.c_str());
 
     updateActive();
 }
@@ -188,8 +200,8 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Insert here");
-    sToolTipText  = QT_TR_NOOP("Move insert point to selected feature");
+    sMenuText     = QT_TR_NOOP("Set tip");
+    sToolTipText  = QT_TR_NOOP("Move the tip of the body");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MoveTip";
@@ -197,51 +209,47 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
 
 void CmdPartDesignMoveTip::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if(!pcActiveBody) return;
-
-    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(
+            Part::Feature::getClassTypeId() );
     App::DocumentObject* selFeature;
+    PartDesign::Body* body= nullptr;
 
-    if (features.empty()) {
-        // Insert at the beginning of this body
-        selFeature = NULL;
-    } else {
+    if ( features.size() == 1 ) {
         selFeature = features.front();
-        if (selFeature->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-            // Insert at the beginning of this body
-            selFeature = NULL;
-        } else if (!pcActiveBody->hasFeature(selFeature)) {
-            // Switch to other body
-            pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
-            if (pcActiveBody != NULL)
-                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s',App.activeDocument().%s)",
-                                        PDBODYKEY, pcActiveBody->getNameInDocument());
-            else
-                return;
+        if ( selFeature->getTypeId().isDerivedFrom ( PartDesign::Body::getClassTypeId() ) ) {
+            body = static_cast<PartDesign::Body *> ( selFeature );
+        } else {
+            body = PartDesignGui::getBodyFor ( selFeature, /* messageIfNot =*/ false );
         }
+    } else {
+        selFeature = nullptr;
+    }
+    // TODO Refuse to set tip to nonsolid features (2015-08-05, Fat-Zer)
+
+    if (!selFeature || !body ) {
+        QMessageBox::warning (0, QObject::tr( "Selection error" ),
+                QObject::tr( "Select exactly one PartDesign feature or a body." ) );
+        return;
+    } else if (!body) {
+        QMessageBox::warning (0, QObject::tr( "Selection error" ),
+                QObject::tr( "Couldn't determin a body for selected feature." ) );
+        return;
     }
 
     openCommand("Move insert point to selected feature");
-    App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
-    if (oldTip != NULL) {
-        if (!oldTip->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", oldTip->getNameInDocument());
-        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
-        if (prevSolidFeature != NULL)
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
+    App::DocumentObject* oldTip = body->Tip.getValue();
+    if (oldTip) {
+        doCommand(Gui, "Gui.activeDocument().hide(\"%s\")", oldTip->getNameInDocument() );
     }
 
-    if (selFeature == NULL) {
-        doCommand(Doc,"App.activeDocument().%s.Tip = None", pcActiveBody->getNameInDocument());
+    if (selFeature == body) {
+        doCommand(Doc,"App.activeDocument().%s.Tip = None", body->getNameInDocument());
     } else {
-        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(), selFeature->getNameInDocument());
+        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",body->getNameInDocument(),
+                selFeature->getNameInDocument());
 
-        // Adjust visibility to show only the Tip feature and (if the Tip feature is not solid) the solid feature prior to the Tip
+        // Adjust visibility to show only the Tip feature
         doCommand(Gui,"Gui.activeDocument().show(\"%s\")", selFeature->getNameInDocument());
-        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
-        if ((prevSolidFeature != NULL) && !PartDesign::Body::isSolidFeature(selFeature))
-            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", prevSolidFeature->getNameInDocument());
     }
 
     // TOOD: Hide all datum features after the Tip feature? But the user might have already hidden some and wants to see
@@ -271,8 +279,8 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
     sPixmap         = "";
 }
 
-void CmdPartDesignDuplicateSelection::activated(int iMsg)
-{
+void CmdPartDesignDuplicateSelection::activated(int iMsg) {
+    // TODO Review the function (2015-08-05, Fat-Zer)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if(!pcActiveBody) return;
 
@@ -314,9 +322,6 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     // Adjust visibility of features
     doCommand(Gui,"Gui.activeDocument().show(\"%s\")", newFeatures.back()->getNameInDocument());
-    App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
-    if ((prevSolidFeature != NULL) && !PartDesign::Body::isSolidFeature(selFeature))
-        doCommand(Gui,"Gui.activeDocument().show(\"%s\")", prevSolidFeature->getNameInDocument());
 }
 
 bool CmdPartDesignDuplicateSelection::isActive(void)
@@ -375,16 +380,18 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
         // Find body of this feature
         Part::BodyBase* source = PartDesign::Body::findBodyOf(*f);
-        bool featureIsTip = false;
+        bool featureWasTip = false;
 
         if (source == target) continue;
 
         // Remove from the source body if the feature belonged to a body
         if (source) {
-            featureIsTip = (source->Tip.getValue() == *f);
+            featureWasTip = (source->Tip.getValue() == *f);
             doCommand(Doc,"App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
                       source->getNameInDocument(), (*f)->getNameInDocument());
         }
+
+        App::DocumentObject* targetOldTip = target->Tip.getValue();
 
         // Add to target body (always at the Tip)
         doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
@@ -393,20 +400,26 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         doCommand(Gui,"App.activeDocument().recompute()");
 
         // Adjust visibility of features
-        if (PartDesign::Body::isSolidFeature(*f)) {
-            // If we removed the tip of the source body, make the new tip visible
-            if (featureIsTip) {
-                App::DocumentObject* prevSolidFeature = source->getPrevSolidFeature();
-                if (prevSolidFeature) {
-                    doCommand(Gui,"Gui.activeDocument().show(\"%s\")", prevSolidFeature->getNameInDocument());
-                }
-            }
+        // TODO: May be something can be done in view provider (2015-08-05, Fat-Zer)
+        // If we removed the tip of the source body, make the new tip visible
+        if (featureWasTip ) {
+            App::DocumentObject * sourceNewTip = source->Tip.getValue();
+            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", sourceNewTip->getNameInDocument());
+        }
 
-            // Hide old tip and show new tip (the moved feature) of the target body
-            App::DocumentObject* prevSolidFeature = target->getPrevSolidFeature();
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
-            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", (*f)->getNameInDocument());
-        } else if ((*f)->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+        // Hide old tip and show new tip (the moved feature) of the target body
+        App::DocumentObject* targetNewTip = target->Tip.getValue();
+        if ( targetOldTip != targetNewTip ) {
+            if ( targetOldTip ) {
+                doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", targetOldTip->getNameInDocument());
+            }
+            if (targetNewTip) {
+                doCommand(Gui,"Gui.activeDocument().show(\"%s\")", targetNewTip->getNameInDocument());
+            }
+        }
+
+        // Fix sketch support
+        if ((*f)->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(*f);
             try {
                 PartDesignGui::Workbench::fixSketchSupport(sketch);
@@ -421,10 +434,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
 bool CmdPartDesignMoveFeature::isActive(void)
 {
-    if (getActiveGuiDocument())
-        return true;
-    else
-        return false;
+    return hasActiveDocument ();
 }
 
 DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree);
@@ -699,7 +709,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
 
             const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
-            if (sub.size() > 1){
+            if (sub.size() > 1) {
                 // No assert for wrong user input!
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
                     QObject::tr("You have to select a single face as support for a sketch!"));
@@ -710,7 +720,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             const Part::TopoShape &shape = feat->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
             const TopoDS_Face& face = TopoDS::Face(sh);
-            if (face.IsNull()){
+            if (face.IsNull()) {
                 // No assert for wrong user input!
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No support face selected"),
                     QObject::tr("You have to select a face as support for a sketch!"));
@@ -747,10 +757,10 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 return;
             }
         } else if (!obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())
-                   && pcActiveBody->getNextSolidFeature() != obj) {
-            // TOOD: checkme why it's forbidden!?
+                   && pcActiveBody->Tip.getValue () != obj) {
+            // TODO  checkme why it's forbidden!?  (2015-08-05, Fat-Zer)
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from inactive feature"),
-                QObject::tr("You can only use the last solid feature as sketch support"));
+                QObject::tr("You can only use the Tip as sketch support"));
             return;
         }
 
@@ -789,7 +799,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                             status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
                         else
                             status.push_back(PartDesignGui::TaskFeaturePick::invalidShape);
-                        
+
                         if (firstValidPlane == planes.end())
                             firstValidPlane = p;
                         validPlanes++;
@@ -804,12 +814,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             if (!pcActiveBody->hasFeature(*p)) {
                 if(pcActivePart->hasObject(*p, true))
                     status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
-                else 
+                else
                     status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-                
+
                 continue;
             } else {
-                if (pcActiveBody->isAfterTip(*p)){
+                if (pcActiveBody->isAfterInsertPoint(*p)) {
                     status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
                     continue;
                 }
@@ -908,7 +918,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
     }
 
     if (pcActiveBody) {
-        App::DocumentObject* lastSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, true);
+        App::DocumentObject* lastSolidFeature = pcActiveBody->Tip.getValue();
         if (!prevSolidFeature || prevSolidFeature == lastSolidFeature) {
             // If the previous feature not given or is the Tip add Feature after it.
             cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
@@ -916,7 +926,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
             prevSolidFeature = lastSolidFeature;
         } else {
             // Insert the feature into the body after the given one.
-            cmd->doCommand(cmd->Doc,   
+            cmd->doCommand(cmd->Doc,
                     "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s, True)",
                     pcActiveBody->getNameInDocument(), FeatName.c_str(), prevSolidFeature->getNameInDocument());
         }
@@ -999,7 +1009,7 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
             continue;
         }
 
-        if (pcActiveBody && pcActiveBody->isAfterTip(*s)){
+        if (pcActiveBody && pcActiveBody->isAfterInsertPoint(*s)){
             status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
             continue;
         }
@@ -1409,19 +1419,19 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 }
 
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
-{          
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
-        
+
         // specific parameters for pipe
         Gui::Command::updateActive();
 
         finishSketchBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
-    
+
     prepareSketchBased(this, "AdditiveLoft", worker);
 }
 
@@ -1449,19 +1459,19 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 }
 
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
-{          
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
-        
+
         // specific parameters for pipe
         Gui::Command::updateActive();
 
         finishSketchBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
-    
+
     prepareSketchBased(this, "SubtractiveLoft", worker);
 }
 
@@ -1749,7 +1759,7 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
         Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
-
+        // TODO Wjat that function supposed to do? (2015-08-05, Fat-Zer)
         func(FeatName, features);
     };
 
@@ -2069,9 +2079,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
                 return;
 
             // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
-            App::DocumentObject* prevSolid = 0;
-            if (pcActiveBody)
-                pcActiveBody->getPrevSolidFeature(NULL, true);
+            App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
             if (prevSolid != NULL) {
                 Part::Feature* feat = static_cast<Part::Feature*>(prevSolid);
                 doCommand(Doc,"App.activeDocument().%s.Shape = App.activeDocument().%s.Shape",

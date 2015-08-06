@@ -4480,9 +4480,10 @@ namespace SketcherGui {
 
             // Note: its better to search the support of the sketch in case the sketch support is a base plane
             Part::BodyBase* body = Part::BodyBase::findBodyOf(sketch);
-            if ((body != NULL) && (Part::BodyBase::findBodyOf(pObj) == body) && body->isAfterTip(pObj))
-                // Don't allow selection after the Tip feature in the same body
+            if ((body != NULL) && (Part::BodyBase::findBodyOf(pObj) == body) && body->isAfter(pObj, sketch)) {
+                // Don't allow selection after the sketch in the same body
                 return false;
+            }
 
             if (!sSubName || sSubName[0] == '\0')
                 return false;
@@ -4491,7 +4492,7 @@ namespace SketcherGui {
                 (element.size() > 6 && element.substr(0,6) == "Vertex") ||
                 (element.size() > 4 && element.substr(0,4) == "Face")) {
                 return true;
-            }            
+            }
             if (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
                 pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
                 return true;

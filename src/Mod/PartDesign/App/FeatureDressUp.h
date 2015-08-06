@@ -60,7 +60,7 @@ public:
     void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);
 
 protected:
-    void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop);
 };
 
 } //namespace PartDesign

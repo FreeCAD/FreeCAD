@@ -71,7 +71,7 @@ public:
     TopLoc_Location getLocation() const;
     
 protected:
-    void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop);
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common

@@ -56,30 +56,16 @@ public:
     }
     //@}
 
-    /// Get the tip shape
-    const Part::TopoShape getTipShape();
-
     /// Return the previous feature
     App::DocumentObject* getPrevFeature(App::DocumentObject *start = NULL) const;
-
-    /**
-      * Return the solid feature before the given feature, or before the Tip feature
-      * That is, sketches and datum features are skipped
-      * If inclusive is true, start or the Tip is returned if it is a solid feature
-      */
-    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL, const bool inclusive = true);
-
-    /**
-      * Return the next solid feature after the given feature, or after the Tip feature
-      * That is, sketches and datum features are skipped
-      * If inclusive is true, start or the Tip is returned if it is a solid feature
-      */
-    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL, const bool inclusive = true);
 
     // Return the shape of the feature preceding this feature
     //const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
-    /// Add the feature into the body at the current insert point (Tip feature)
+    /**
+     * Add the feature into the body at the current insert point.
+     * The insertion poin is the before next solid after the Tip feature
+     */
     void addFeature(App::DocumentObject* feature);
 
     /**
@@ -98,8 +84,11 @@ public:
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
 
-    /// Checks if the given document object is a feaure of this body
-    bool isFeature(App::DocumentObject* feature);
+    /**
+     * Checks if the given document object lays after the current insert point
+     * (place before next solid after the Tip)
+     */
+    bool isAfterInsertPoint(App::DocumentObject* feature);
 
     /// Return true if the given feature is member of a MultiTransform feature
     static const bool isMemberOfMultiTransform(const App::DocumentObject* f);
@@ -130,7 +119,22 @@ public:
 
 protected:
     virtual void onSettingDocument();
-    
+
+    /// Adjusts the first solid's feature's base on on BaseFeature getting setted
+    virtual void onChanged (const App::Property* prop);
+
+    /**
+      * Return the solid feature before the given feature, or before the Tip feature
+      * That is, sketches and datum features are skipped
+      */
+    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL);
+
+    /**
+      * Return the next solid feature after the given feature, or after the Tip feature
+      * That is, sketches and datum features are skipped
+      */
+    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
+
 private:
     App::DocumentObject* rememberTip;
     boost::signals::scoped_connection connection;

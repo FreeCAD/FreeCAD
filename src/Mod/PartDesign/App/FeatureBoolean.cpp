@@ -128,7 +128,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         if(!part->hasObject(body))
             return new App::DocumentObjectExecReturn("Cannot do boolean on bodies of different parts");
         
-        TopoDS_Shape shape = body->getTipShape()._Shape;
+        TopoDS_Shape shape = body->Shape.getValue();
 
         // Move the shape to the location of the base shape in the other body
         Base::Placement pl = body->Placement.getValue();

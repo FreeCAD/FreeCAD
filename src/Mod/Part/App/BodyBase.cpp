@@ -39,28 +39,15 @@ PROPERTY_SOURCE(Part::BodyBase, Part::Feature)
 
 BodyBase::BodyBase()
 {
-    ADD_PROPERTY(Model,(0));
-    ADD_PROPERTY(Tip  ,(0));
-}
-
-short BodyBase::mustExecute() const
-{
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
-    return 0;
-}
-
-App::DocumentObjectExecReturn *BodyBase::execute(void)
-{
- 
-    return App::DocumentObject::StdReturn;
+    ADD_PROPERTY(Model       , (0) );
+    ADD_PROPERTY(Tip         , (0) );
+    ADD_PROPERTY(BaseFeature , (0) );
 }
 
 const bool BodyBase::hasFeature(const App::DocumentObject* f) const
 {
-    const std::vector<App::DocumentObject*> features = Model.getValues();
-    return std::find(features.begin(), features.end(), f) != features.end();
+    const std::vector<App::DocumentObject*> &features = Model.getValues();
+    return f == BaseFeature.getValue() || std::find(features.begin(), features.end(), f) != features.end();
 }
 
 BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
@@ -78,15 +65,42 @@ BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
     return NULL;
 }
 
-const bool BodyBase::isAfterTip(const App::DocumentObject *f) const {
-    App::DocumentObject* tipFeature = Tip.getValue();
-    if (tipFeature == NULL)
-        return true;
+const bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentObject* target) const {
+    assert (feature);
 
-    std::vector<App::DocumentObject*> features = Model.getValues();
-    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
-    std::vector<App::DocumentObject*>::const_iterator tip = std::find(features.begin(), features.end(), tipFeature);
-    return (it > tip);
+    if (feature == target) {
+        return false;
+    }
+
+    if (!target || target == BaseFeature.getValue() ) {
+        return hasFeature (feature);
+    }
+
+    const std::vector<App::DocumentObject *> & features = Model.getValues();
+    auto featureIt = std::find(features.begin(), features.end(), feature);
+    auto targetIt = std::find(features.begin(), features.end(), target);
+
+    if (featureIt == features.end()) {
+        return false;
+    } else {
+        return featureIt > targetIt;
+    }
 }
 
+void BodyBase::onBeforeChange (const App::Property* prop) {
+    // If we are changing the base feature and tip point to it reset it
+    if ( prop == &BaseFeature && BaseFeature.getValue() == Tip.getValue() && BaseFeature.getValue() ) {
+        Tip.setValue( nullptr );
+    }
+    Part::Feature::onBeforeChange ( prop );
 }
+
+void BodyBase::onChanged (const App::Property* prop) {
+    // If the tip is zero and we are adding a base feature to the body set it to be the tip
+    if ( prop == &BaseFeature && !Tip.getValue() && BaseFeature.getValue() ) {
+        Tip.setValue( BaseFeature.getValue () );
+    }
+    Part::Feature::onChanged ( prop );
+}
+
+} /* Part */
