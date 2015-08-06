@@ -17,16 +17,21 @@ FreeCAD runs exactly the same way on Windows, Mac OSX, BSD and Linux
 platforms.
 
 Home page:          http://www.freecadweb.org
+
 Documentation wiki: http://www.freecadweb.org/wiki/
+
 Forum:              http://forum.freecadweb.org/
+
 Bug tracker:        http://www.freecadweb.org/tracker/
-Git repository:     http://sourceforge.net/p/free-cad/code/ci/master/tree/
+
+Git repository:     https://github.com/FreeCAD/FreeCAD
 
 Installing
 ----------
 
 Precompiled (installable) packages are usually available to you from 
-several sources and are described on the FreeCAD download page: 
+several sources and are described on the FreeCAD download page:
+
 http://www.freecadweb.org/wiki/index.php?title=Download
 
 Compiling
@@ -43,9 +48,13 @@ you will usually need to compile them yourself.
 The pages below contain up-to-date build instructions:
 
 For Linux:   http://www.freecadweb.org/wiki/?title=CompileOnUnix
+
 For Windows: http://www.freecadweb.org/wiki/?title=CompileOnWindows
+
 For Mac OSX: http://www.freecadweb.org/wiki/?title=CompileOnMac
+
 For Cygwin:  http://www.freecadweb.org/wiki/?title=CompileOnCygwin
+
 For MinGW:   http://www.freecadweb.org/wiki/?title=CompileOnMinGW
 
 Usage & Getting help
@@ -56,10 +65,15 @@ general FreeCAD usage, python scripting, and development. The following
 pages might help you to get started:
 
 Getting started:    http://www.freecadweb.org/wiki/?title=Getting_started
+
 Features list:      http://www.freecadweb.org/wiki/?title=Feature_list
+
 Frequent questions: http://www.freecadweb.org/wiki/?title=FAQ
+
 Workbenches:        http://www.freecadweb.org/wiki/?title=Workbench_Concept
+
 Scripting:          http://www.freecadweb.org/wiki/?title=Power_users_hub
+
 Development:        http://www.freecadweb.org/wiki/?title=Developer_hub
 
 The FreeCAD forum at http://forum.freecadweb.org is also a great place
