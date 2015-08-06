@@ -172,16 +172,16 @@ PartDesign::Body *Workbench::setUpPart(const App::Part *part)
     Gui::ViewProviderPart::setUpPart(part);
 
     // check for Bodies
-    std::vector<App::DocumentObject*> bodies = part->getObjectsOfType(PartDesign::Body::getClassTypeId());
-    assert(bodies.size() == 0);
+    // std::vector<App::DocumentObject*> bodies = part->getObjectsOfType(PartDesign::Body::getClassTypeId());
+    // assert(bodies.size() == 0);
 
-    std::string PartName = part->getNameInDocument();
-    std::string BodyName = part->getDocument()->getUniqueObjectName("MainBody");
+    // std::string PartName = part->getNameInDocument();
+    // std::string BodyName = part->getDocument()->getUniqueObjectName("MainBody");
 
     Gui::Command::addModule(Gui::Command::Doc, "PartDesign");
-    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", BodyName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, BodyName.c_str());
+    // Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", BodyName.c_str());
+    // Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
+    // Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, BodyName.c_str());
     Gui::Command::updateActive();
 
     return NULL;

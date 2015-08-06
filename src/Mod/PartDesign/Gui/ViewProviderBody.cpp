@@ -70,7 +70,7 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
     // call parent attach method
     ViewProviderPart::attach(pcFeat);
 
-
+    // TODO fixup the "Body" display mode (2015-08-07, Fat-Zer)
     // putting all together with the switch
     addDisplayMaskMode(pcBodyTip, "Body");
     addDisplayMaskMode(pcBodyChildren, "Through");
@@ -106,12 +106,12 @@ bool ViewProviderBody::doubleClicked(void)
 {
     // assure the PartDesign workbench
     Gui::Command::assureWorkbench("PartDesignWorkbench");
-    
+
     //and set correct active objects
     auto* part = PartDesignGui::getPartFor(getObject(), false);
     if(part!=Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(PARTKEY))
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, part->getNameInDocument());
-    
+
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, this->getObject()->getNameInDocument());
 
     return true;
@@ -119,7 +119,8 @@ bool ViewProviderBody::doubleClicked(void)
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 {
-    std::vector<App::DocumentObject*> Model = static_cast<PartDesign::Body*>(getObject())->Model.getValues();
+    PartDesign::Body* bodyObj = static_cast<PartDesign::Body*>(getObject());
+    const std::vector<App::DocumentObject*> &Model = bodyObj->Model.getValues();
     std::set<App::DocumentObject*> OutSet;
 
     // search for objects handled (claimed) by the features
@@ -136,23 +137,34 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 
     // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
     std::vector<App::DocumentObject*> Result;
+
+    // Clame for the base feature first
+    if (bodyObj->BaseFeature.getValue()) {
+        Result.push_back (bodyObj->BaseFeature.getValue());
+    }
+
+    // return the rest as claim set of the Body
     for (std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it) {
         if (OutSet.find(*it) == OutSet.end())
             Result.push_back(*it);
     }
 
-    // return the rest as claim set of the Body
     return Result;
 }
 
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 {
-    //std::vector<App::DocumentObject*> children = static_cast<PartDesign::Body*>(getObject())->Model.getValues();
-    //Base::Console().Error("Body 3D claimed children:\n");
-    //for (std::vector<App::DocumentObject*>::const_iterator o = children.begin(); o != children.end(); o++)
-    //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
-    return static_cast<PartDesign::Body*>(getObject())->Model.getValues();
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+
+    const std::vector<App::DocumentObject*> & features = body->Model.getValues();
+
+    std::vector<App::DocumentObject*> rv;
+
+    rv.push_back( body->BaseFeature.getValue() );
+    rv.insert( rv.end(), features.begin(), features.end());
+    // TODO Check what will happen if BaseFature will be shared by severral bodies (2015-08-04, Fat-Zer)
+    return rv;
 
 }
 
@@ -164,7 +176,7 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 //    //Base::Console().Error("ViewProviderBody::updateTree()\n");
 //    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 //    bool active = body->IsActive.getValue();
-//    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");    
+//    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
 //    std::vector<App::DocumentObject*> features = body->Model.getValues();
 //    bool highlight = true;

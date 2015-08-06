@@ -97,24 +97,14 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
     PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
     PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
-    App::DocumentObject* curSolid = 0;//the last solid of the body, the one that is likely visible, but can't be used for up-to-face
-    if (activeBody)
-        curSolid = activeBody->getPrevSolidFeature();
-    else
-        curSolid = pcSketchBased;
-
-    App::DocumentObject* prevSolid = 0;//the solid this feature will be fused to
-    try {
-        prevSolid = pcSketchBased->getBaseObject();
-    } catch (Base::Exception) {
-        //this feature is a starting feature
-    }
+    // The solid this feature will be fused to
+    App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );
 
     if (pressed) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            if (curSolid)
-                doc->setHide(curSolid->getNameInDocument());
+            if (pcSketchBased)
+                doc->setHide(pcSketchBased->getNameInDocument());
             if (prevSolid)
                 doc->setShow(prevSolid->getNameInDocument());
         }
@@ -125,8 +115,8 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
         Gui::Selection().rmvSelectionGate();
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            if (curSolid)
-                doc->setShow(curSolid->getNameInDocument());
+            if (pcSketchBased)
+                doc->setShow(pcSketchBased->getNameInDocument());
             if (prevSolid)
                 doc->setHide(prevSolid->getNameInDocument());
         }

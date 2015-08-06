@@ -917,17 +917,6 @@ bool TaskDlgDatumParameters::reject()
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
 
 	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-    // Body housekeeping
-	if (activeBody != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-		App::DocumentObject* tip = activeBody->Tip.getValue();
-		App::DocumentObject* prev = activeBody->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
 
     return true;
 }

@@ -127,17 +127,15 @@ bool ViewProviderPart::doubleClicked(void)
 
 bool ViewProviderPart::onDelete(const std::vector<std::string> &)
 {
+    // TODO Why the heck it's here? (2015-08-05, Fat-Zer)
     // Body feature housekeeping
     Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
     if (body != NULL) {
         body->removeFeature(getObject());
         // Make the new Tip and the previous solid feature visible again
         App::DocumentObject* tip = body->Tip.getValue();
-        App::DocumentObject* prev = body->getPrevSolidFeature();
         if (tip != NULL) {
             Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
         }
     }
 

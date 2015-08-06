@@ -30,9 +30,9 @@
 namespace PartDesignGui {
 
 /** ViewProvider of the Body feature
- *  This class manage the visual apperance of the features in the 
- *  Body feature. That mean while editing only the tip feature is 
- *  visible. If the Body is not active it shows only the result shape (tip). 
+ *  This class manage the visual apperance of the features in the
+ *  Body feature. That mean while editing only the tip feature is
+ *  visible. If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
 class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart
@@ -44,21 +44,21 @@ public:
     ViewProviderBody();
     /// destructor
     virtual ~ViewProviderBody();
-    
+
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
 
     virtual bool doubleClicked(void);
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     // returns the root node where the children gets collected(3D)
     virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
-    std::vector<App::DocumentObject*> claimChildren3D(void)const;
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
     /// Update the children's highlighting when triggered
-    void updateData(const App::Property* prop);    
+    void updateData(const App::Property* prop);
 
 private:
     /// group used to store children collected by claimChildren3D()

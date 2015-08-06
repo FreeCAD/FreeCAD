@@ -31,11 +31,11 @@
 namespace Part
 {
 /** Base class of all body objects in FreeCAD
-  * A body is used, e.g. in PartDesign, to agregate
-  * some modeling features to one shape. As long as not
-  * in edit or active on a workbench, the body shows only the
-  * resulting shape to the outside (Tip link).
-  */
+ * A body is used, e.g. in PartDesign, to agregate
+ * some modeling features to one shape. As long as not
+ * in edit or active on a workbench, the body shows only the
+ * resulting shape to the outside (Tip link).
+ */
 class PartExport BodyBase : public Part::Feature
 {
     PROPERTY_HEADER(Part::BodyBase);
@@ -43,40 +43,46 @@ class PartExport BodyBase : public Part::Feature
 public:
     BodyBase();
 
+    /// The list of features
     App::PropertyLinkList   Model;
+
+    /**
+     * The final feature of the body it is associated with.
+     * Note: tip may either point to the BaseFeature or to some feature inside the Model list.
+     *       in case it points to the model the PartDesign::Body guaranties that it is a solid.
+     */
     App::PropertyLink       Tip;
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    //const char* getViewProviderName(void) const {
-    //    return "PartDesignGui::ViewProviderBodyBase";
-    //}
-    //@}
+    /**
+     * A base object of the body, serves as a base object for the first feature of the body.
+     * A Part::Feature link to make bodies be able based upon non-PartDesign Features.
+     */
+    App::PropertyLink BaseFeature;
 
     // These methods are located here to avoid a dependency of ViewProviderSketchObject on PartDesign
     /// Remove the feature from the body
     virtual void removeFeature(App::DocumentObject* feature){}
 
-    /// Return true if the feature belongs to this body
+    /// Return true if the feature belongs to this body or either the body is based on the feature
     const bool hasFeature(const App::DocumentObject *f) const;
 
+    /// Return true if the feature belongs to the body and is located after the target
+    const bool isAfter(const App::DocumentObject *feature, const App::DocumentObject *target) const;
+
     /**
-      * Return the solid feature before the given feature, or before the Tip feature
-      * That is, sketches and datum features are skipped
-      * If inclusive is true, start or the Tip is returned if it is a solid feature
-      */
-    virtual App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL, const bool inclusive = true)
-        { return NULL; }
-
-    /// Return true if the feature is located after the current Tip feature
-    const bool isAfterTip(const App::DocumentObject *f) const;
-
-    /// Return the body which this feature belongs too, or NULL
+     * Return the body which this feature belongs too, or NULL.
+     * Note: Normally each PartDesign feature belongs to a single body,
+     *       But if a body is based on the feature it also will be return...
+     *       But there are could be more features based on the same body.
+     * TODO introduce a findBodiesOf() if needed (2015-08-04, Fat-Zer)
+     */
     static BodyBase* findBodyOf(const App::DocumentObject* f);
+
+protected:
+    /// If BaseFeature is getting changed and Tip points to it resets the Tip
+    virtual void onBeforeChange (const App::Property* prop);
+    /// If BaseFeature is setted and Tip is null sets the Tip to it
+    virtual void onChanged (const App::Property* prop);
 
 };
 
