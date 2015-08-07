@@ -111,8 +111,9 @@ void Body::onChanged(const App::Property *prop)
 short Body::mustExecute() const
 {
     if ( Tip.isTouched() ||
-         BaseFeature.isTouched() )
+         BaseFeature.isTouched() ) {
         return 1;
+    }
     return Part::BodyBase::mustExecute();
 }
 
