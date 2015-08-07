@@ -1712,16 +1712,10 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     App::DocumentObject *support = this->Support.getValue();
     Part::BodyBase* body = Part::BodyBase::findBodyOf(this);
     if (body != NULL) {
-        if (Part::BodyBase::findBodyOf(pObj) != body) {
+        if ( ! body->hasFeature (pObj) && !this->allowOtherBody ) {
             // Selection outside of body not allowed if flag is not set
-            if (!this->allowOtherBody)
-                return false;
+            return false;
         }
-
-        // Datum features are always allowed
-        if(pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-           pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-            return true;
     } else {
         // Legacy parts - don't allow selection outside of the support
         if (pObj != support)
