@@ -755,7 +755,7 @@ void SMESHDS_Mesh::RemoveFreeNode(const SMDS_MeshNode * n,
 //function : RemoveElement
 //purpose  : 
 //========================================================================
-void SMESHDS_Mesh::RemoveElement(const SMDS_MeshElement * elt)
+void SMESHDS_Mesh::RemoveElement(const SMDS_MeshElement * elt, bool removenodes)
 {
   if (elt->GetType() == SMDSAbs_Node)
   {
@@ -779,9 +779,18 @@ void SMESHDS_Mesh::RemoveElement(const SMDS_MeshElement * elt)
   list<const SMDS_MeshElement *> removedElems;
   list<const SMDS_MeshElement *> removedNodes;
 
-  SMDS_Mesh::RemoveElement(elt, removedElems, removedNodes, false);
+  SMDS_Mesh::RemoveElement(elt, removedElems, removedNodes, removenodes);
   
-  removeFromContainers( myShapeIndexToSubMesh, myGroups, removedElems, false );
+  removeFromContainers( myShapeIndexToSubMesh, myGroups, removedElems, removenodes );
+}
+
+//=======================================================================
+//function : RemoveFreeElement
+//purpose  : 
+//=======================================================================
+void SMESHDS_Mesh::RemoveFreeElement(const SMDS_MeshElement * elt)
+{
+    RemoveFreeElement (elt, 0);
 }
 
 //=======================================================================
@@ -1036,7 +1045,7 @@ void SMESHDS_Mesh::UnSetMeshElementOnShape(const SMDS_MeshElement * elem,
 //=======================================================================
 TopoDS_Shape SMESHDS_Mesh::ShapeToMesh() const
 {
-	return myShape;
+    return myShape;
 }
 
 //=======================================================================
@@ -1552,7 +1561,7 @@ SMDS_MeshVolume* SMESHDS_Mesh::AddVolumeWithID(int n1, int n2, int n3, int n4, i
                                  n15,n25,n35,n45);
   return anElem;
 }
-	
+
 //=======================================================================
 //function : AddVolumeWithID
 //purpose  : 2d order pyramid of 13 nodes
