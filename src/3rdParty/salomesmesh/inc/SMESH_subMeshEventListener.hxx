@@ -33,7 +33,7 @@
 
 class  SMESH_subMesh;
 class  SMESH_Hypothesis;
-struct SMESH_subMeshEventListenerData;
+struct  SMESH_subMeshEventListenerData;
 
 // ------------------------------------------------------------------
 /*!
