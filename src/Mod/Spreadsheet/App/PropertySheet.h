@@ -105,7 +105,7 @@ public:
 
     void removeColumns(int col, int count);
 
-    unsigned int getMemSize (void);
+    virtual unsigned int getMemSize (void) const;
 
     bool mergeCells(CellAddress from, CellAddress to);
 
