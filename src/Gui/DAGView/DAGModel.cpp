@@ -527,7 +527,15 @@ void Model::updateSlot()
   
   indexVerticesEdges();
   Path sorted;
-  boost::topological_sort(*theGraph, std::back_inserter(sorted));
+  try {
+      // this sort gives the execute
+      boost::topological_sort(*theGraph, std::back_inserter(sorted));
+  }
+  catch (const std::exception& e) {
+      std::cerr << "Document::recompute: " << e.what() << std::endl;
+      return;
+  }
+
   //index the vertices in sort order.
   int tempIndex = 0;
   for (const auto &currentVertex : sorted)
