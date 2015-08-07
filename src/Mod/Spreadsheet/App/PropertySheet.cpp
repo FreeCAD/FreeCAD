@@ -764,7 +764,7 @@ void PropertySheet::removeColumns(int col, int count)
     }
 }
 
-unsigned int PropertySheet::getMemSize()
+unsigned int PropertySheet::getMemSize() const
 {
     return sizeof(*this);
 }
