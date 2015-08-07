@@ -505,21 +505,63 @@ void Workbench::slotNewObject(const App::DocumentObject& obj)
 
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
-    if (strcmp(recipient,"Tree") == 0)
-    {
-        if (Gui::Selection().countObjectsOfType(PartDesign::Body::getClassTypeId()) +
-            Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
-            Gui::Selection().countObjectsOfType(Part::Datum::getClassTypeId()) +
-            Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
+    auto selection = Gui::Selection().getSelection();
+    // Add move Tip Command
+    if ( selection.size () >= 1 ) {
+        App::DocumentObject *feature = selection.front().pObject;
+        PartDesign::Body *body =  PartDesignGui::getBodyFor ( feature, false );
+        // lote of assertion so feature sould be marked as a tip
+        if ( selection.size () == 1 && feature && (
+            feature->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||
+            ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
+            ( feature->isDerivedFrom ( Part::Feature::getClassTypeId () ) && body &&
+              body->BaseFeature.getValue() == feature )
+        ) ) {
             *item << "PartDesign_MoveTip";
-        if (Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
-            Gui::Selection().countObjectsOfType(Part::Datum::getClassTypeId()) +
-            Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
-            *item << "PartDesign_MoveFeature"
-                  << "PartDesign_MoveFeatureInTree";
-        if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
-            Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
-            *item << "PartDesign_MultiTransform";
+        }
+
+        if (strcmp(recipient, "Tree") == 0) {
+
+            Gui::MDIView *activeView = Gui::Application::Instance->activeView();
+
+            if ( selection.size () > 0 && activeView ) {
+                bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
+                                        PartDesign::Body::getClassTypeId () ) > 0;
+
+                if ( docHaveBodies ) {
+                    bool addMoveFeature = true;
+                    bool addMoveFeatureInTree = (body != nullptr);
+                    for (auto sel: selection) {
+                        // if at least one selected feature cannot be moved to a body
+                        // disable the entry
+                        if ( addMoveFeature && !PartDesign::Body::isAllowed ( sel.pObject ) ) {
+                            addMoveFeature = false;
+                        }
+                        // if all at lest one selected feature doesn't belongs to the same body
+                        // disable the menu entry
+                        if ( addMoveFeatureInTree && !body->hasFeature ( sel.pObject ) ) {
+                            addMoveFeatureInTree = false;
+                        }
+
+                        if ( !addMoveFeatureInTree && !addMoveFeature ) {
+                            break;
+                        }
+                    }
+
+                    if (addMoveFeature) {
+                        *item   << "PartDesign_MoveFeature";
+                    }
+
+                    if (addMoveFeatureInTree) {
+                        *item   << "PartDesign_MoveFeatureInTree";
+                    }
+                }
+            }
+
+            if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
+                Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+                *item << "PartDesign_MultiTransform";
+        }
     }
 }
 
