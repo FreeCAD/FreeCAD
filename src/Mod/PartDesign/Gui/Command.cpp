@@ -1839,36 +1839,27 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
 
 void CmdPartDesignBoolean::activated(int iMsg)
 {
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    if (!pcActiveBody) return;
+
     Gui::SelectionFilter BodyFilter("SELECT PartDesign::Body COUNT 1..");
-    PartDesign::Body* body;
+    PartDesign::Body* body = nullptr;
     std::string bodyString("");
 
     if (BodyFilter.match()) {
         body = static_cast<PartDesign::Body*>(BodyFilter.Result[0][0].getObject());
         std::vector<App::DocumentObject*> bodies;
         std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
-        i++;
         for (; i != BodyFilter.Result.end(); i++) {
             for (std::vector<Gui::SelectionObject>::iterator j = i->begin(); j != i->end(); j++) {
-                bodies.push_back(j->getObject());
+                if(j->getObject() != pcActiveBody)
+                    bodies.push_back(j->getObject());
             }
         }
         bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
-    } else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No body selected"),
-            QObject::tr("Please select a body for the boolean operation"));
-        return;
     }
 
     openCommand("Create Boolean");
-
-    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-    // Make sure we are working on the selected body
-    if (body != activeBody) {
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelection(body->getDocument()->getName(), body->Tip.getValue()->getNameInDocument());
-        Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-    }
 
     std::string FeatName = getUniqueObjectName("Boolean");
 
