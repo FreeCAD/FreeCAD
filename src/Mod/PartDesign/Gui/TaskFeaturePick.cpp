@@ -321,9 +321,9 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
     else {
 
         auto name =  std::string("Reference") + std::string(obj->getNameInDocument());
-        const char* entity = std::string("").c_str();
+        std::string entity;
         if(!sub.empty())
-            entity = sub.c_str();
+            entity = sub;
 
         Part::PropertyPartShape* shapeProp = nullptr;
 
@@ -352,11 +352,11 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             // TODO Recheck this. This looks strange in case of independent copy (2015-10-31, Fat-Zer)
             if(!independent) {
-                datumCopy->Support.setValue(obj, entity);
+                datumCopy->Support.setValue(obj, entity.c_str());
                 datumCopy->MapMode.setValue(mode);
             }
-            else if(strcmp(entity,"") != 0) {
-                datumCopy->Shape.setValue(static_cast<Part::Datum*>(obj)->Shape.getShape().getSubShape(entity));
+            else if(!entity.empty()) {
+                datumCopy->Shape.setValue(static_cast<Part::Datum*>(obj)->Shape.getShape().getSubShape(entity.c_str()));
             } else {
                 datumCopy->Shape.setValue(static_cast<Part::Datum*>(obj)->Shape.getValue());
             }
@@ -366,7 +366,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder2D", name.c_str());
 
             if(!independent)
-                static_cast<PartDesign::ShapeBinder2D*>(copy)->Support.setValue(obj, entity);
+                static_cast<PartDesign::ShapeBinder2D*>(copy)->Support.setValue(obj, entity.c_str());
             else
                 shapeProp = &static_cast<PartDesign::ShapeBinder*>(copy)->Shape;
         }
@@ -376,9 +376,16 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder", name.c_str());
 
             if(!independent)
-                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity);
+                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity.c_str());
             else
                 shapeProp = &static_cast<PartDesign::ShapeBinder*>(copy)->Shape;
+        }
+
+        if(independent && shapeProp) {
+            if(entity.empty())
+                shapeProp->setValue(static_cast<Part::Feature*>(obj)->Shape.getValue());
+            else
+                shapeProp->setValue(static_cast<Part::Feature*>(obj)->Shape.getShape().getSubShape(entity.c_str()));
         }
     }
 

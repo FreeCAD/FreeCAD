@@ -263,7 +263,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
         if (pcActiveBody == 0)
             return;
-            
+
         std::string FeatName = getUniqueObjectName("ShapeBinder");
         std::string tmp = std::string("Create ShapeBinder");
 
@@ -409,14 +409,21 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 if(result == QDialog::DialogCode::Rejected)
                     return;
                 else if(!dlg.radioXRef->isChecked()) {
-                    // TODO This fails if we had match PlainFilter2 (2015-10-31, Fat-Zer)
-                    const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
-                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub[0], dlg.radioIndependent->isChecked());
-                    auto oBody = PartDesignGui::getBodyFor(obj, false);
-                    if(oBody)
+
+                    std::string sub;
+                    if(FaceFilter.match())
+                        sub = FaceFilter.Result[0][0].getSubNames()[0];
+                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub, dlg.radioIndependent->isChecked());
+
+                    if(pcActiveBody)
                         pcActiveBody->addFeature(copy);
-                    else
+                    else if (pcActivePart)
                         pcActivePart->addObject(copy);
+
+                    if(PlaneFilter.match())
+                        supportString = std::string("(App.activeDocument().") + copy->getNameInDocument() + ", '')";
+                    else
+                        supportString = std::string("(App.activeDocument().") + copy->getNameInDocument() + ", '" + sub +"')";
                 }
             }
         }
@@ -785,6 +792,30 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
             else
                 pcActivePart->addObject(copy);
 
+        }
+    }
+
+    if(!bNoSketchWasSelected && ext) {
+
+        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+
+        QDialog* dia = new QDialog;
+        Ui_Dialog dlg;
+        dlg.setupUi(dia);
+        dia->setModal(true);
+        int result = dia->exec();
+        if(result == QDialog::DialogCode::Rejected)
+            return;
+        else if(!dlg.radioXRef->isChecked()) {
+
+                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
+                auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
+                if(oBody)
+                    pcActiveBody->addFeature(copy);
+                else
+                    pcActivePart->addObject(copy);
+
+                sketches[0] = copy;
         }
     }
 
