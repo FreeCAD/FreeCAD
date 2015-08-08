@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2012     *
+ *   Copyright (c) Jï¿½rgen Riegel          (juergen.riegel@web.de) 2012     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,6 +51,7 @@
 #include "View3DInventorViewer.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "SoAxisCrossKit.h"
+#include "Window.h"
 //#include <SoDepthBuffer.h>
 
 #include <App/PropertyGeo.h>
@@ -84,6 +85,12 @@ ViewProviderLine::ViewProviderLine()
         0,1,-1
     };
 
+    // Create the selection node
+    pcHighlight = createFromSettings();
+    pcHighlight->ref();
+    if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
+        Selectable.setValue(false);
+    
     pMat->diffuseColor.setNum(1);
     pMat->diffuseColor.set1Value(0, SbColor(50./255., 150./255., 250./255.));
 
@@ -113,6 +120,7 @@ ViewProviderLine::ViewProviderLine()
 
 ViewProviderLine::~ViewProviderLine()
 {
+    pcHighlight->unref();
     pCoords->unref();
     pLines->unref();
     pMat->unref();
@@ -157,6 +165,10 @@ void ViewProviderLine::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
 
+    pcHighlight->objectName = pcObject->getNameInDocument();
+    pcHighlight->documentName = pcObject->getDocument()->getName();
+    pcHighlight->subElementName = "Main";
+    
     SoSeparator  *sep = new SoSeparator();
     SoAnnotation *lineSep = new SoAnnotation();
 
@@ -168,10 +180,10 @@ void ViewProviderLine::attach(App::DocumentObject* pcObject)
 
     sep->addChild(matBinding);
     sep->addChild(pMat);
-//    sep->addChild(getHighlightNode());
-//    pcHighlight->addChild(style);
-//    pcHighlight->addChild(pCoords);
-//    pcHighlight->addChild(pLines);
+    sep->addChild(pcHighlight);
+    pcHighlight->addChild(style);
+    pcHighlight->addChild(pCoords);
+    pcHighlight->addChild(pLines);
 
     style = new SoDrawStyle();
     style->lineWidth = 2.0f;
@@ -182,9 +194,9 @@ void ViewProviderLine::attach(App::DocumentObject* pcObject)
     pText->string.setValue(SbString(pcObject->Label.getValue()));
     lineSep->addChild(pTranslation);
     lineSep->addChild(pText);
-//    pcHighlight->addChild(lineSep);
-//
-//    pcHighlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
+    pcHighlight->addChild(lineSep);
+
+    pcHighlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
     addDisplayMaskMode(sep, "Base");
 }
 
@@ -239,6 +251,40 @@ bool ViewProviderLine::setEdit(int ModNum)
 void ViewProviderLine::unsetEdit(int ModNum)
 {
 
+}
+
+Gui::SoFCSelection* ViewProviderLine::createFromSettings() const
+{
+    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
+
+    float transparency;
+    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+    bool enablePre = hGrp->GetBool("EnablePreselection", true);
+    bool enableSel = hGrp->GetBool("EnableSelection", true);
+    if (!enablePre) {
+        sel->highlightMode = Gui::SoFCSelection::OFF;
+    }
+    else {
+        // Search for a user defined value with the current color as default
+        SbColor highlightColor = sel->colorHighlight.getValue();
+        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
+        highlightColor.setPackedValue((uint32_t)highlight, transparency);
+        sel->colorHighlight.setValue(highlightColor);
+    }
+    if (!enableSel || !Selectable.getValue()) {
+        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
+    }
+    else {
+        // Do the same with the selection color
+        SbColor selectionColor = sel->colorSelection.getValue();
+        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        selection = hGrp->GetUnsigned("SelectionColor", selection);
+        selectionColor.setPackedValue((uint32_t)selection, transparency);
+        sel->colorSelection.setValue(selectionColor);
+    }
+
+    return sel;
 }
 
 // ----------------------------------------------------------------------------

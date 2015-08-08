@@ -41,6 +41,7 @@ class SoFont;
 namespace Gui
 {
 
+class SoFCSelection;
 
 class GuiExport ViewProviderLine : public ViewProviderGeometryObject
 {
@@ -70,9 +71,11 @@ public:
     virtual void unsetEdit(int ModNum);
 
 protected:
+    SoFCSelection* createFromSettings() const;
     void onChanged(const App::Property* prop);
 
 private:
+    SoFCSelection    * pcHighlight;
     SoCoordinate3    * pCoords;
     SoMaterial       * pMat;
     SoIndexedLineSet * pLines;
