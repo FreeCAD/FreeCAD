@@ -1298,7 +1298,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Fillet");
     sToolTipText  = QT_TR_NOOP("Make a fillet on an edge, face or body");
-    sWhatsThis    = "PartDesign_Fillet";
+    sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Fillet";
 }
@@ -1325,7 +1325,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Chamfer");
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
-    sWhatsThis    = "PartDesign_Chamfer";
+    sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Chamfer";
 }
@@ -1539,7 +1539,7 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Mirrored");
     sToolTipText  = QT_TR_NOOP("create a mirrored feature");
-    sWhatsThis    = "PartDesign_Mirrored";
+    sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
 }
