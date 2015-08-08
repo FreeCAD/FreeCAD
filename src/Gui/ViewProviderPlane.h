@@ -38,8 +38,10 @@ class SoMaterial;
 class SoAsciiText;
 class SoFont;
 
-namespace Gui
+namespace Gui 
 {
+    
+class SoFCSelection;
 
 
 class GuiExport ViewProviderPlane : public ViewProviderGeometryObject
@@ -70,9 +72,11 @@ public:
     virtual void unsetEdit(int ModNum);
     
 protected:
+    SoFCSelection* createFromSettings() const;
     void onChanged(const App::Property* prop);
 
 private:
+    SoFCSelection    * pcHighlight;
     SoCoordinate3    * pCoords;
     SoMaterial       * pMat;
     SoIndexedLineSet * pLines;

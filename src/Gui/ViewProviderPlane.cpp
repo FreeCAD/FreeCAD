@@ -51,6 +51,7 @@
 #include "View3DInventorViewer.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "SoAxisCrossKit.h"
+#include "Window.h"
 //#include <SoDepthBuffer.h>
 
 #include <App/PropertyGeo.h>
@@ -85,6 +86,13 @@ ViewProviderPlane::ViewProviderPlane()
         0,1,2,3,0,-1
     };
 
+    // Create the selection node
+    pcHighlight = createFromSettings();
+    pcHighlight->ref();
+    if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
+        Selectable.setValue(false);
+
+
     pMat->diffuseColor.setNum(1);
     pMat->diffuseColor.set1Value(0, SbColor(50./255., 150./255., 250./255.));
 
@@ -112,6 +120,7 @@ ViewProviderPlane::ViewProviderPlane()
 
 ViewProviderPlane::~ViewProviderPlane()
 {
+    pcHighlight->unref();
     pCoords->unref();
     pLines->unref();
     pMat->unref();
@@ -155,9 +164,12 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
 
+    pcHighlight->objectName = pcObject->getNameInDocument();
+    pcHighlight->documentName = pcObject->getDocument()->getName();
+    pcHighlight->subElementName = "Main";
+
     SoSeparator  *sep = new SoSeparator();
     SoAnnotation *lineSep = new SoAnnotation();
-    SoFCSelection *highlight = new SoFCSelection();
 
     SoDrawStyle* style = new SoDrawStyle();
     style->lineWidth = 2.0f;
@@ -167,10 +179,10 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
 
     sep->addChild(matBinding);
     sep->addChild(pMat);
-    sep->addChild(highlight);
-    highlight->addChild(style);
-    highlight->addChild(pCoords);
-    highlight->addChild(pLines);
+    sep->addChild(pcHighlight);
+    pcHighlight->addChild(style);
+    pcHighlight->addChild(pCoords);
+    pcHighlight->addChild(pLines);
 
     style = new SoDrawStyle();
     style->lineWidth = 2.0f;
@@ -181,9 +193,9 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
     pText->string.setValue(SbString(pcObject->Label.getValue()));
     lineSep->addChild(pTranslation);
     lineSep->addChild(pText);
-    highlight->addChild(lineSep);
+    pcHighlight->addChild(lineSep);
 
-    highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
+    pcHighlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
     addDisplayMaskMode(sep, "Base");
 }
 
@@ -238,6 +250,40 @@ bool ViewProviderPlane::setEdit(int ModNum)
 void ViewProviderPlane::unsetEdit(int ModNum)
 {
 
+}
+
+Gui::SoFCSelection* ViewProviderPlane::createFromSettings() const
+{
+    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
+
+    float transparency;
+    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+    bool enablePre = hGrp->GetBool("EnablePreselection", true);
+    bool enableSel = hGrp->GetBool("EnableSelection", true);
+    if (!enablePre) {
+        sel->highlightMode = Gui::SoFCSelection::OFF;
+    }
+    else {
+        // Search for a user defined value with the current color as default
+        SbColor highlightColor = sel->colorHighlight.getValue();
+        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
+        highlightColor.setPackedValue((uint32_t)highlight, transparency);
+        sel->colorHighlight.setValue(highlightColor);
+    }
+    if (!enableSel || !Selectable.getValue()) {
+        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
+    }
+    else {
+        // Do the same with the selection color
+        SbColor selectionColor = sel->colorSelection.getValue();
+        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        selection = hGrp->GetUnsigned("SelectionColor", selection);
+        selectionColor.setPackedValue((uint32_t)selection, transparency);
+        sel->colorSelection.setValue(selectionColor);
+    }
+
+    return sel;
 }
 
 // ----------------------------------------------------------------------------
