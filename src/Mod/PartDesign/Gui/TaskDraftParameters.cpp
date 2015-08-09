@@ -29,7 +29,6 @@
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"
-#include "Workbench.h"
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>

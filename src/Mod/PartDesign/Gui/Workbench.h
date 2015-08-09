@@ -34,18 +34,6 @@ class ViewProviderDocumentObject;
 
 }
 
-namespace PartDesign {
-    class Body;
-}
-
-namespace App {
-    class Part;
-}
-
-namespace Sketcher {
-    class SketchObject;
-}
-
 namespace PartDesignGui {
 
 // pointer to the active assembly object
@@ -53,15 +41,6 @@ namespace PartDesignGui {
 //extern Gui::Document                   *ActiveGuiDoc;
 //extern App::Document                   *ActiveAppDoc;
 //extern Gui::ViewProviderDocumentObject *ActiveVp;
-
-/// Return active body or show a warning message
-PartDesign::Body *getBody(bool messageIfNot);
-/**
- * Finds a body for the given feature. And shows a message if not found
- * Also unlike Body::findBodyFor it checks if the active body has the feature first.
- */
-PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot);
-App::Part        *getPartFor(const App::DocumentObject*, bool messageIfNot);
 
 /**
  * @author Werner Mayer
@@ -82,18 +61,6 @@ public:
     /// Add custom entries to the context menu
     virtual void setupContextMenu(const char* recipient, Gui::MenuItem*) const;
 
-    /** Setup a Part for PartDesign
-     * This methode is use to populate a Part object with all
-     * necesarry PartDesign and base objects to allow the use
-     * in PartDesign. Its called from within PartDesign as well
-     * as from other modules which wish to set up a Part for PartDesin
-     * (e.g. Assembly):
-     */
-    static PartDesign::Body *setUpPart(const App::Part *);
-
-    /// Fix sketch support after moving a free sketch into a body
-    static void fixSketchSupport(Sketcher::SketchObject* sketch);
-
 protected:
   Gui::MenuItem* setupMenuBar() const;
   Gui::ToolBarItem* setupToolBars() const;
@@ -111,7 +78,7 @@ private:
    // Add new objects to the body, if appropriate
    //void slotNewObject(const App::DocumentObject& obj);
 
-   void _doMigration(const App::Document* doc);
+   //void _doMigration(const App::Document* doc);
    void _switchToDocument(const App::Document* doc);
 
 };

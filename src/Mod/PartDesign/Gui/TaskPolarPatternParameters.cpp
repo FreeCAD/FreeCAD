@@ -28,11 +28,6 @@
 # include <QTimer>
 #endif
 
-#include "ui_TaskPolarPatternParameters.h"
-#include "TaskPolarPatternParameters.h"
-#include "TaskMultiTransformParameters.h"
-#include "Workbench.h"
-#include "ReferenceSelection.h"
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -50,6 +45,13 @@
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/DatumLine.h>
+
+#include "ReferenceSelection.h"
+#include "TaskMultiTransformParameters.h"
+#include "Utils.h"
+
+#include "ui_TaskPolarPatternParameters.h"
+#include "TaskPolarPatternParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;

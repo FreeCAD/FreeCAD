@@ -46,7 +46,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
-#include "Workbench.h"
 
 using namespace PartDesignGui;
 using namespace Gui;

@@ -23,8 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
 # include <QListIterator>
 #endif
 
@@ -38,11 +36,13 @@
 #include <Base/Tools.h>
 #include <Base/Reader.h>
 
-#include "ui_TaskFeaturePick.h"
-#include "TaskFeaturePick.h"
-#include "Workbench.h"
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+
+#include "Utils.h"
+
+#include "ui_TaskFeaturePick.h"
+#include "TaskFeaturePick.h"
 
 using namespace PartDesignGui;
 
@@ -226,7 +226,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
                     // doesn't supposed to get here anything but sketch but to be on the safe side better to check
                     if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
                         Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
-                            Workbench::fixSketchSupport(sketch);
+                        PartDesignGui::fixSketchSupport(sketch);
                     }
                     result.push_back(copy);
                 }

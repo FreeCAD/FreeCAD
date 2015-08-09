@@ -43,7 +43,6 @@
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include "ReferenceSelection.h"
-#include "Workbench.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -52,8 +51,8 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
-	PartDesign::Body* ActivePartObject = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-	App::Part*        activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
+    PartDesign::Body* ActivePartObject = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    App::Part*        activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
 
     // Don't allow selection in other document
     if ((support != NULL) && (pDoc != support->getDocument()))

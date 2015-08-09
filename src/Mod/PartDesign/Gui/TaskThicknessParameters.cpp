@@ -28,7 +28,6 @@
 
 #include "ui_TaskThicknessParameters.h"
 #include "TaskThicknessParameters.h"
-#include "Workbench.h"
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>

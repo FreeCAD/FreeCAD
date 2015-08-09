@@ -27,11 +27,7 @@
 # include <QMessageBox>
 #endif
 
-#include "ui_TaskMirroredParameters.h"
-#include "TaskMirroredParameters.h"
-#include "TaskMultiTransformParameters.h"
-#include "Workbench.h"
-#include "ReferenceSelection.h"
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Part.h>
@@ -41,13 +37,20 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/FeatureMirrored.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+
+#include "ReferenceSelection.h"
+#include "TaskMultiTransformParameters.h"
+#include "Utils.h"
+
+#include "ui_TaskMirroredParameters.h"
+#include "TaskMirroredParameters.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;

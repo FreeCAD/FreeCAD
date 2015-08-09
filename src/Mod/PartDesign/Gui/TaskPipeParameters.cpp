@@ -50,7 +50,6 @@
 #include <Mod/PartDesign/App/Body.h>
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
-#include "Workbench.h"
 
 using namespace PartDesignGui;
 using namespace Gui;

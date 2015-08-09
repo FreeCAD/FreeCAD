@@ -28,7 +28,6 @@
 #endif
 
 #include "TaskDressUpParameters.h"
-#include "Workbench.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>

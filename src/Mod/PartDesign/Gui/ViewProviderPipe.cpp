@@ -29,7 +29,6 @@
 
 #include "ViewProviderPipe.h"
 //#include "TaskPipeParameters.h"
-#include "Workbench.h"
 #include "TaskPipeParameters.h"
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePipe.h>

@@ -39,7 +39,6 @@
 
 #include "ViewProviderDatumLine.h"
 #include "TaskDatumParameters.h"
-#include "Workbench.h"
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepPointSet.h>

@@ -28,11 +28,7 @@
 # include <QTimer>
 #endif
 
-#include "ui_TaskLinearPatternParameters.h"
-#include "TaskLinearPatternParameters.h"
-#include "TaskMultiTransformParameters.h"
-#include "Workbench.h"
-#include "ReferenceSelection.h"
+#include <Base/Console.h>
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -44,14 +40,21 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderOrigin.h>
+
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+
+#include "ReferenceSelection.h"
+#include "TaskMultiTransformParameters.h"
+#include "Utils.h"
+
+#include "ui_TaskLinearPatternParameters.h"
+#include "TaskLinearPatternParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;

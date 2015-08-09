@@ -55,12 +55,11 @@
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 
-#include "Workbench.h"
-
-using namespace std;
-
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
+#include "Utils.h"
+
+using namespace std;
 
 
 //===========================================================================

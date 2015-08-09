@@ -22,7 +22,6 @@
 
 
 #include "PreCompiled.h"
-#include "Workbench.h"
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 #ifndef _PreComp_
@@ -31,12 +30,15 @@
 # include <QMessageBox>
 #endif
 
+#include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Action.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
 #include <Base/Console.h>
+
+#include "Utils.h"
 
 using namespace std;
 

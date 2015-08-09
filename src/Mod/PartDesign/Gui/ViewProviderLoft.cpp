@@ -29,7 +29,6 @@
 
 #include "ViewProviderLoft.h"
 //#include "TaskLoftParameters.h"
-#include "Workbench.h"
 #include "TaskLoftParameters.h"
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureLoft.h>

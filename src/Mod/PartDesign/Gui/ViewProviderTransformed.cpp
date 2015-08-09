@@ -47,7 +47,6 @@
 # include <QMessageBox>
 #endif
 
-#include "Workbench.h"
 #include "ViewProviderTransformed.h"
 #include "TaskTransformedParameters.h"
 #include <Base/Console.h>

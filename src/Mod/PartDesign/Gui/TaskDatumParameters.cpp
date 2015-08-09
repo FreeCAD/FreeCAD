@@ -31,8 +31,7 @@
 # include <Precision.hxx>
 #endif
 
-#include "ui_TaskDatumParameters.h"
-#include "TaskDatumParameters.h"
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Plane.h>
@@ -43,15 +42,18 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
+
 #include "ReferenceSelection.h"
-#include "Workbench.h"
+#include "Utils.h"
+
+#include "ui_TaskDatumParameters.h"
+#include "TaskDatumParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -599,7 +601,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
     if (obj == NULL) return;
 
     std::string subElement;
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
@@ -916,7 +918,7 @@ bool TaskDlgDatumParameters::reject()
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
 
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
     return true;
 }
