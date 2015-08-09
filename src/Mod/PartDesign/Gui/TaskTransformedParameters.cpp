@@ -31,9 +31,7 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
-#include "TaskTransformedParameters.h"
-#include "TaskMultiTransformParameters.h"
-#include "Workbench.h"
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Part.h>
@@ -45,13 +43,19 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
+
 #include "ReferenceSelection.h"
+#include "TaskMultiTransformParameters.h"
+#include "Utils.h"
+
+#include "TaskTransformedParameters.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;

@@ -40,7 +40,6 @@
 
 #include "ViewProviderDatumPlane.h"
 #include "TaskDatumParameters.h"
-#include "Workbench.h"
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>

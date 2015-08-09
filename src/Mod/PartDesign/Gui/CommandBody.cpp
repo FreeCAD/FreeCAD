@@ -38,7 +38,8 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 
-#include "Workbench.h"
+#include "Utils.h"
+
 
 
 //===========================================================================
@@ -67,7 +68,7 @@ void CmdPartDesignPart::activated(int iMsg)
     PartName = getUniqueObjectName("Part");
     doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
     doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
-    PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
+    PartDesignGui::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
     doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, PartName.c_str());
 
     updateActive();
@@ -382,7 +383,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         if (feat->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(feat);
             try {
-                PartDesignGui::Workbench::fixSketchSupport(sketch);
+                PartDesignGui::fixSketchSupport(sketch);
             } catch (Base::Exception &) {
                 QMessageBox::warning( Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
                         QObject::tr("Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.").

@@ -38,7 +38,7 @@
 #include <Mod/PartDesign/App/BodyPy.h>
 
 #include "ViewProviderBody.h"
-#include "Workbench.h"
+#include "Utils.h"
 
 
 //static PyObject * setActiveBody(PyObject *self, PyObject *args)
@@ -92,7 +92,7 @@ static PyObject * setUpPart(PyObject *self, PyObject *args)
     // Should be set!
     assert(part);    
     
-    PartDesignGui::Workbench::setUpPart(part);
+    PartDesignGui::setUpPart(part);
 
     Py_Return;
 }

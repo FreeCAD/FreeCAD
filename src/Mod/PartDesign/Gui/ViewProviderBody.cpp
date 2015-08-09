@@ -24,24 +24,26 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <Inventor/nodes/SoGroup.h>
 #endif
 
-#include "ViewProviderBody.h"
-#include "Workbench.h"
+#include <Base/Console.h>
+#include <App/Part.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
+
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumCS.h>
-#include <algorithm>
 
-#include "Base/Console.h"
-#include <App/Part.h>
+#include "Utils.h"
+
+#include "ViewProviderBody.h"
 
 using namespace PartDesignGui;
 

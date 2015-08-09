@@ -26,9 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-#include "ui_TaskRevolutionParameters.h"
-#include "TaskRevolutionParameters.h"
 #include <Base/UnitsApi.h>
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Part.h>
@@ -39,7 +38,6 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderOrigin.h>
@@ -48,10 +46,12 @@
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
-#include "ReferenceSelection.h"
-#include "TaskSketchBasedParameters.h"
-#include "Workbench.h"
 
+#include "ReferenceSelection.h"
+#include "Utils.h"
+
+#include "ui_TaskRevolutionParameters.h"
+#include "TaskRevolutionParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;

@@ -51,19 +51,22 @@
 # include <GeomAPI_IntCS.hxx>
 #endif
 
-#include "ViewProviderDatum.h"
-#include "TaskDatumParameters.h"
-#include "Workbench.h"
 #include <App/Part.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/MDIView.h>
+
+#include <Mod/PartDesign/App/DatumPoint.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+
+#include "TaskDatumParameters.h"
+#include "Utils.h"
+
+#include "ViewProviderDatum.h"
 
 using namespace PartDesignGui;
 
@@ -260,11 +263,11 @@ bool ViewProviderDatum::doubleClicked(void)
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-	if (activeBody != NULL) {
+    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    if (activeBody != NULL) {
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
         // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-		oldTip = activeBody->Tip.getValue();
+        oldTip = activeBody->Tip.getValue();
         if (oldTip != this->pcObject)
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         else
@@ -285,9 +288,9 @@ void ViewProviderDatum::unsetEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
-		PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
-		if ((activeBody != NULL) && (oldTip != NULL)) {
+        if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
