@@ -1,3 +1,5 @@
+add_subdirectory(App)
+
 PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
 
 SET(Draft_SRCS

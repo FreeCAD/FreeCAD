@@ -1,0 +1,42 @@
+if(MSVC)
+    add_definitions(-DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
+else(MSVC)
+    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
+endif(MSVC)
+
+
+include_directories(
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${Boost_INCLUDE_DIRS}
+    ${OCC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+)
+link_directories(${OCC_LIBRARY_DIR})
+
+set(DraftUtils_LIBS
+    Part
+    FreeCADApp
+)
+
+SET(DraftUtils_SRCS
+    AppDraftUtils.cpp
+    AppDraftUtilsPy.cpp
+    PreCompiled.cpp
+    PreCompiled.h
+    dxf.cpp
+    dxf.h
+    DraftDxf.cpp
+    DraftDxf.h
+)
+
+add_library(DraftUtils SHARED ${DraftUtils_SRCS})
+target_link_libraries(DraftUtils ${DraftUtils_LIBS})
+
+
+SET_BIN_DIR(DraftUtils DraftUtils /Mod/Draft)
+SET_PYTHON_PREFIX_SUFFIX(DraftUtils)
+
+INSTALL(TARGETS DraftUtils DESTINATION ${CMAKE_INSTALL_LIBDIR})
