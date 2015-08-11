@@ -45,9 +45,11 @@ typesmap = { "Site":       ["IfcSite"],
            }
 
 # which IFC entity (product) is a structural object
-structuralifcobjects = ('IfcStructuralSurfaceMember', 'IfcStructuralCurveMember', 
-                        'IfcStructuralPointConnection', 'IfcStructuralSurfaceConnection', 
-                        'IfcStructuralAction', 'IfcStructuralPointAction')
+structuralifcobjects = (
+                        "IfcStructuralCurveMember", "IfcStructuralSurfaceMember",
+                        "IfcStructuralPointConnection", "IfcStructuralSurfaceConnection",
+                        "IfcStructuralAction", "IfcStructuralPointAction", "IfcStructuralLinearActionVarying", "IfcStructuralPlanarAction"
+                       )
 
 # specific name translations
 translationtable = { "Foundation":"Footing",
@@ -418,6 +420,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
         archobj = True  # assume all objects not in structuralifcobjects are architecture
         if ptype in structuralifcobjects:
             archobj = False
+            if DEBUG: print " :  structural object :",
+        else:
+            if DEBUG: print " :  architecture object :",
         if MERGE_MODE_ARCH == 4 and archobj:
             if DEBUG: print " skipped."
             continue
@@ -479,7 +484,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 #continue
                 
         else:
-            if DEBUG: print " no brep ",
+            if DEBUG: print " no brep \n",
             
         if MERGE_MODE_ARCH == 0 and archobj :
             
@@ -592,6 +597,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         # groups
         for host,children in groups.items():
             if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
+                # print host, ' --> ', children
                 obj =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
                 if host in objects.keys():
