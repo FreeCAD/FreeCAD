@@ -860,7 +860,7 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
-    App::Document* doc = obj->getDocument();
+    App::Document* doc = obj ? obj->getDocument() : 0;
     if (doc) {
         Gui::Document* gui = getDocument(doc);
         if (gui) {
