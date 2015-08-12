@@ -221,7 +221,11 @@ void MeshBuilder::Finish (bool freeMemory)
 
     // free all memory of the internal structures
     // Note: this scope is needed to free memory immediately
+#if defined(_MSC_VER) && defined(_DEBUG)
+    // Just do nothing here as it may take a long time when running the debugger
+#else
     { std::vector<MeshPointIterator>().swap(_pointsIterator); }
+#endif
     _points.clear();
 
     SetNeighbourhood();
