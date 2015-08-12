@@ -41,6 +41,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include <Base/Parameter.h>
+#include <Base/Matrix.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -124,22 +125,53 @@ void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double mi
 }
 
 
-void DraftDxfRead::OnReadText(const double *point, const double height, const std::string text)
+void DraftDxfRead::OnReadText(const double *point, const double height, const char* text)
 {
     // not yet implemented
 }
 
 
+void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const char* name, double rotation)
+{
+    std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << std::endl;
+    for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
+        std::string k = i->first;
+        std::string prefix = "BLOCKS ";
+        prefix += name;
+        prefix += " ";
+        if(k.substr(0, prefix.size()) == prefix) {
+            BRep_Builder builder;
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            std::vector<Part::TopoShape*> v = i->second;
+            for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
+                const TopoDS_Shape& sh = (*j)->_Shape;
+                if (!sh.IsNull())
+                    builder.Add(comp, sh);
+            }
+            if (!comp.IsNull()) {
+                Part::TopoShape* pcomp = new Part::TopoShape(comp);
+                Base::Matrix4D mat;
+                mat.scale(scale[0],scale[1],scale[2]);
+                mat.rotZ(rotation);
+                mat.move(point[0],point[1],point[2]);
+                pcomp->transformShape(mat,true);
+                AddObject(pcomp);
+            }
+        }
+    } 
+}
+
+
 void DraftDxfRead::AddObject(Part::TopoShape *shape)
 {
-    if (optionGroupLayers) {
-        std::cout << "layer:" << LayerName() << std::endl;
-        std::vector <Part::TopoShape*> vec;
-        if (layers.count(LayerName()))
-            vec = layers[LayerName()];
-        vec.push_back(shape);
-        layers[LayerName()] = vec;
-    } else {
+    //std::cout << "layer:" << LayerName() << std::endl;
+    std::vector <Part::TopoShape*> vec;
+    if (layers.count(LayerName()))
+        vec = layers[LayerName()];
+    vec.push_back(shape);
+    layers[LayerName()] = vec;
+    if (!optionGroupLayers) {
         Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", "Shape");
         pcFeature->Shape.setValue(*shape);
     }
@@ -156,18 +188,20 @@ void DraftDxfRead::AddGraphics() const
             builder.MakeCompound(comp);
             std::string k = i->first;
             std::vector<Part::TopoShape*> v = i->second;
-            std::cout << "joining:" << k << " size " << v.size() << std::endl;
-            for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
-                const TopoDS_Shape& sh = (*j)->_Shape;
-                if (!sh.IsNull())
-                    builder.Add(comp, sh);
+            if(k.substr(0, 6) != "BLOCKS") {
+                std::cout << "joining:" << k << " size " << v.size() << std::endl;
+                for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
+                    const TopoDS_Shape& sh = (*j)->_Shape;
+                    if (!sh.IsNull())
+                        builder.Add(comp, sh);
+                }
+                if (!comp.IsNull()) {
+                    std::cout << "valid shape" << std::endl;
+                    Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", k.c_str());
+                    pcFeature->Shape.setValue(comp);
+                } 
+                else std::cout << "invalid shape" << std::endl;
             }
-            if (!comp.IsNull()) {
-                std::cout << "valid shape" << std::endl;
-                Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", k.c_str());
-                pcFeature->Shape.setValue(comp);
-            } 
-            else std::cout << "invalid shape" << std::endl;
         }
     }
 }
