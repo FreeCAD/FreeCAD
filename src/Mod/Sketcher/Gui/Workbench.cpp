@@ -257,6 +257,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
     consaccel << "Sketcher_CloseShape"
         << "Sketcher_ConnectLines"
         << "Sketcher_SelectConstraints"
+        << "Sketcher_SelectElementsAssociatedWithConstraints"
         << "Sketcher_RestoreInternalAlignmentGeometry"
         << "Sketcher_Symmetry"
         << "Sketcher_CompCopy"
