@@ -84,6 +84,7 @@
 #include <QImageWriter>
 #include <qinputdialog.h>
 #include <QItemDelegate>
+#include <QStyledItemDelegate>
 #include <QItemEditorFactory>
 #include <qlabel.h>
 #include <qlayout.h>
