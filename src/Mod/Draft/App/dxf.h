@@ -124,6 +124,7 @@ private:
     void OnReadArc(double start_angle, double end_angle, double radius, const double* c, double z_extrusion_dir, bool hidden);
     void OnReadCircle(const double* c, double radius, bool hidden);
     void OnReadEllipse(const double* c, const double* m, double ratio, double start_angle, double end_angle);
+    bool ReadInsert();
 
     void get_line();
     void put_line(const char *value);
@@ -150,6 +151,7 @@ public:
     virtual void OnReadCircle(const double* s, const double* c, bool dir, bool hidden){}
     virtual void OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir){}
     virtual void OnReadSpline(struct SplineData& sd){}
+    virtual void OnReadInsert(const double* point, const double* scale, const char* name, double rotation){}
     virtual void AddGraphics() const { }
 
     std::string LayerName() const;

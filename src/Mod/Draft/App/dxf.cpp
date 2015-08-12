@@ -1311,6 +1311,102 @@ void CDxfRead::OnReadEllipse(const double* c, const double* m, double ratio, dou
     OnReadEllipse(c, major_radius, minor_radius, rotation, start_angle, end_angle, true);
 }
 
+
+bool CDxfRead::ReadInsert()
+{
+    double c[3]; // coordinate
+    double s[3]; // scale
+    double rot = 0.0; // rotation
+    char name[1024];
+    s[0] = 1.0;
+    s[1] = 1.0;
+    s[2] = 1.0;
+
+    while(!((*m_ifs).eof()))
+    {
+        get_line();
+        int n;
+        if(sscanf(m_str, "%d", &n) != 1)
+        {
+            printf("CDxfRead::ReadInsert() Failed to read integer from '%s'\n", m_str);
+            return false;
+        }
+        std::istringstream ss;
+        ss.imbue(std::locale("C"));
+        switch(n){
+            case 0: 
+                // next item found
+                DerefACI();
+                OnReadInsert(c, s, name, rot * Pi/180);
+                return(true);
+            case 8: 
+                // Layer name follows
+                get_line();
+                strcpy(m_layer_name, m_str);
+                break;
+            case 10:
+                // coord x
+                get_line();
+                ss.str(m_str); ss >> c[0]; c[0] = mm(c[0]); if(ss.fail()) return false;
+                break;
+            case 20:
+                // coord y
+                get_line();
+                ss.str(m_str); ss >> c[1]; c[1] = mm(c[1]); if(ss.fail()) return false;
+                break;
+            case 30:
+                // coord z
+                get_line();
+                ss.str(m_str); ss >> c[2]; c[2] = mm(c[2]); if(ss.fail()) return false;
+                break;
+            case 41:
+                // scale x
+                get_line();
+                ss.str(m_str); ss >> s[0]; if(ss.fail()) return false;
+                break;
+            case 42:
+                // scale y
+                get_line();
+                ss.str(m_str); ss >> s[1]; if(ss.fail()) return false;
+                break;
+            case 43:
+                // scale z
+                get_line();
+                ss.str(m_str); ss >> s[2]; if(ss.fail()) return false;
+                break;
+            case 50:
+                // rotation
+                get_line();
+                ss.str(m_str); ss >> rot; if(ss.fail()) return false;
+                break;
+            case 2:
+                // block name
+                get_line();
+                strcpy(name, m_str);
+                break;
+            case 62:
+                // color index
+                get_line();
+                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                break;
+            case 100:
+            case 39:
+            case 210:
+            case 220:
+            case 230:
+                // skip the next line
+                get_line();
+                break;
+            default:
+                // skip the next line
+                get_line();
+                break;
+        }
+    }
+    return false;
+}
+
+
 void CDxfRead::get_line()
 {
     if (m_unused_line[0] != '\0')
@@ -1551,6 +1647,14 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
                 if(!ReadPoint())
                 {
                     printf("CDxfRead::DoRead() Failed to read Point\n");
+                    return;
+                }
+                continue;
+            }
+            else if (!strcmp(m_str, "INSERT")) {
+                if(!ReadInsert())
+                {
+                    printf("CDxfRead::DoRead() Failed to read Insert\n");
                     return;
                 }
                 continue;
