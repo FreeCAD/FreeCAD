@@ -183,6 +183,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     SketcherGui::addSketcherWorkbenchSketchActions( *part );
     *part << geom
           << cons
+          << consaccel
           << "Separator"
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
