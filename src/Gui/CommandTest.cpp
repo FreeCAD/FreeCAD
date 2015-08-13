@@ -33,6 +33,8 @@
 # include <QMdiSubWindow>
 # include <QWaitCondition>
 # include <QTranslator>
+# include <QRunnable>
+# include <QThreadPool>
 #endif
 
 #include <Base/Console.h>
@@ -638,6 +640,110 @@ bool CmdTestMDI3::isActive(void)
     return getMainWindow()->activeWindow();
 }
 
+DEF_STD_CMD(CmdTestConsoleOutput);
+
+CmdTestConsoleOutput::CmdTestConsoleOutput()
+  : Command("Std_TestConsoleOutput")
+{
+    sGroup      = QT_TR_NOOP("Standard-Test");
+    sMenuText   = QT_TR_NOOP("Test console output");
+    sToolTipText= QT_TR_NOOP("Test console output");
+    sStatusTip  = QT_TR_NOOP("Test console output");
+}
+
+namespace Gui {
+class TestConsoleObserver : public Base::ConsoleObserver
+{
+    QMutex mutex;
+public:
+    int matchMsg, matchWrn, matchErr, matchLog;
+    TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
+    {
+    }
+    virtual void Warning(const char * msg)
+    {
+        mutex.lock();
+        matchWrn += strcmp(msg, "Write a warning to the console output.\n");
+        mutex.unlock();
+    }
+    virtual void Message(const char * msg)
+    {
+        mutex.lock();
+        matchMsg += strcmp(msg, "Write a message to the console output.\n");
+        mutex.unlock();
+    }
+    virtual void Error(const char * msg)
+    {
+        mutex.lock();
+        matchErr += strcmp(msg, "Write an error to the console output.\n");
+        mutex.unlock();
+    }
+    virtual void Log(const char * msg)
+    {
+        mutex.lock();
+        matchLog += strcmp(msg, "Write a log to the console output.\n");
+        mutex.unlock();
+    }
+};
+
+class ConsoleMessageTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Message("Write a message to the console output.\n");
+    }
+};
+
+class ConsoleWarningTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Warning("Write a warning to the console output.\n");
+    }
+};
+
+class ConsoleErrorTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Error("Write an error to the console output.\n");
+    }
+};
+
+class ConsoleLogTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Log("Write a log to the console output.\n");
+    }
+};
+
+}
+
+void CmdTestConsoleOutput::activated(int iMsg)
+{
+    TestConsoleObserver obs;
+    Base::Console().AttachObserver(&obs);
+    QThreadPool::globalInstance()->start(new ConsoleMessageTask);
+    QThreadPool::globalInstance()->start(new ConsoleWarningTask);
+    QThreadPool::globalInstance()->start(new ConsoleErrorTask);
+    QThreadPool::globalInstance()->start(new ConsoleLogTask);
+    QThreadPool::globalInstance()->waitForDone();
+    Base::Console().DetachObserver(&obs);
+
+    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0) {
+        Base::Console().Error("Race condition in Console class\n");
+    }
+}
+
 
 namespace Gui {
 
@@ -661,6 +767,7 @@ void CreateTestCommands(void)
     rcCmdMgr.addCommand(new CmdTestMDI1());
     rcCmdMgr.addCommand(new CmdTestMDI2());
     rcCmdMgr.addCommand(new CmdTestMDI3());
+    rcCmdMgr.addCommand(new CmdTestConsoleOutput());
 }
 
 } // namespace Gui

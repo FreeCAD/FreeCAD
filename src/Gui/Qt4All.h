@@ -37,12 +37,14 @@
 #include <QProcess>
 #include <qrect.h>
 #include <qregexp.h>
+#include <qrunnable.h>
 #include <QSet>
 #include <QSignalMapper>
 #include <QTemporaryFile>
 #include <qtextcodec.h>
 #include <qtextstream.h>
 #include <qthread.h>
+#include <qthreadpool.h>
 #include <qtimer.h>
 #include <qtranslator.h>
 #include <QUrl>
