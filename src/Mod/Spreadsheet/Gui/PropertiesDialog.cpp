@@ -90,9 +90,9 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     if (style.find("underline") != style.end())
         ui->styleUnderline->setChecked(true);
 
-    ui->displayUnit->setText(QString::fromStdString(displayUnit.stringRep));
+    ui->displayUnit->setText(Base::Tools::fromStdString(displayUnit.stringRep));
 
-    ui->alias->setText(QString::fromStdString(alias));
+    ui->alias->setText(Base::Tools::fromStdString(alias));
 
     // Colors
     connect(ui->foregroundColor, SIGNAL(colorChanged(QColor)), this, SLOT(foregroundColorChanged(QColor)));
@@ -212,7 +212,7 @@ void PropertiesDialog::aliasChanged(const QString & text)
         catch (...) {
             aliasOk = true;
             palette.setColor(QPalette::Text, Qt::black);
-            alias = text.toStdString();
+            alias = Base::Tools::toStdString(text);
         }
     }
     else {
