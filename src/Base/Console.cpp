@@ -42,9 +42,6 @@ using namespace Base;
 
 
 
-char format[4024];  // global buffer 
-const unsigned int format_len = 4024;
-
 
 //**************************************************************************
 // Construction destruction
@@ -171,6 +168,9 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
  */
 void ConsoleSingleton::Message( const char *pMsg, ... )
 {
+    char format[4024];
+    const unsigned int format_len = 4024;
+
     va_list namelessVars;
     va_start(namelessVars, pMsg);  // Get the "..." vars
     vsnprintf(format, format_len, pMsg, namelessVars);
@@ -195,6 +195,9 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
  */
 void ConsoleSingleton::Warning( const char *pMsg, ... )
 {
+    char format[4024];
+    const unsigned int format_len = 4024;
+
     va_list namelessVars;
     va_start(namelessVars, pMsg);  // Get the "..." vars
     vsnprintf(format, format_len, pMsg, namelessVars);
@@ -219,6 +222,9 @@ void ConsoleSingleton::Warning( const char *pMsg, ... )
  */
 void ConsoleSingleton::Error( const char *pMsg, ... )
 {
+    char format[4024];
+    const unsigned int format_len = 4024;
+
     va_list namelessVars;
     va_start(namelessVars, pMsg);  // Get the "..." vars
     vsnprintf(format, format_len, pMsg, namelessVars);
@@ -246,6 +252,9 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
 
 void ConsoleSingleton::Log( const char *pMsg, ... )
 {
+    char format[4024];
+    const unsigned int format_len = 4024;
+
     if (!_bVerbose)
     {
         va_list namelessVars;
