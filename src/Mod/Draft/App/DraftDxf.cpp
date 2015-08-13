@@ -42,8 +42,10 @@
 
 #include <Base/Parameter.h>
 #include <Base/Matrix.h>
+#include <Base/Vector3D.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Annotation.h>
 #include <Mod/Part/App/PartFeature.h>
 
 using namespace DraftUtils;
@@ -127,7 +129,13 @@ void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double mi
 
 void DraftDxfRead::OnReadText(const double *point, const double height, const char* text)
 {
-    // not yet implemented
+    Base::Vector3d pt(point[0],point[1],point[2]);
+    if(LayerName().substr(0, 6) != "BLOCKS") {
+        App::Annotation *pcFeature = (App::Annotation *)document->addObject("App::Annotation", "Text");
+        pcFeature->LabelText.setValue(Deformat(text));
+        pcFeature->Position.setValue(pt);
+    }
+    else std::cout << "skipped text in block: " << LayerName() << std::endl;
 }
 
 
@@ -178,9 +186,39 @@ void DraftDxfRead::AddObject(Part::TopoShape *shape)
 }
 
 
+const char* DraftDxfRead::Deformat(const char* text)
+{
+    // this function removes DXF formatting from texts
+    std::stringstream ss;
+    bool escape = false; // turned on when finding an escape character
+    bool longescape = false; // turned on for certain escape codes that expect additional chars
+    for(unsigned int i = 0; i<strlen(text); i++) {
+        if (text[i] == '\\')
+            escape = true;
+        else if (escape) {
+            if (longescape) {
+                if (text[i] == ';') {
+                    escape = false;
+                    longescape = false;
+                }
+            } else {
+                if ( (text[i] == 'H') || (text[i] == 'Q') || (text[i] == 'W') || 
+                     (text[i] == 'F') || (text[i] == 'A') || (text[i] == 'C') || 
+                     (text[i] == 'T') )
+                    longescape = true;
+                else
+                    escape = false;
+            }
+        }
+        else if ( (text[i] != '{') && (text[i] != '}') )
+            ss << text[i];
+    }
+    return ss.str().c_str();
+}
+
+
 void DraftDxfRead::AddGraphics() const
 {
-    std::cout << "end of file" << std::endl;
     if (optionGroupLayers) {
         for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
             BRep_Builder builder;
@@ -189,18 +227,15 @@ void DraftDxfRead::AddGraphics() const
             std::string k = i->first;
             std::vector<Part::TopoShape*> v = i->second;
             if(k.substr(0, 6) != "BLOCKS") {
-                std::cout << "joining:" << k << " size " << v.size() << std::endl;
                 for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
                     const TopoDS_Shape& sh = (*j)->_Shape;
                     if (!sh.IsNull())
                         builder.Add(comp, sh);
                 }
                 if (!comp.IsNull()) {
-                    std::cout << "valid shape" << std::endl;
                     Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", k.c_str());
                     pcFeature->Shape.setValue(comp);
                 } 
-                else std::cout << "invalid shape" << std::endl;
             }
         }
     }

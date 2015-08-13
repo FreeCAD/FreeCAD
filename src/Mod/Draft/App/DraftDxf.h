@@ -46,7 +46,8 @@ namespace DraftUtils
         void AddGraphics() const;
     
         // FreeCAD-specific functions
-        void AddObject(Part::TopoShape *shape);
+        void AddObject(Part::TopoShape *shape); //Called by OnRead functions to add Part objects
+        const char* Deformat(const char* text); // Removes DXF formating from texts
         
     protected:
         App::Document *document;
