@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__=   "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
+__title__ =  "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
 __author__ = "Yorik van Havre"
 __url__ =    "http://www.freecadweb.org"
 
@@ -46,9 +46,10 @@ typesmap = { "Site":       ["IfcSite"],
 
 # which IFC entity (product) is a structural object
 structuralifcobjects = (
-                        "IfcStructuralCurveMember", "IfcStructuralSurfaceMember",
-                        "IfcStructuralPointConnection", "IfcStructuralSurfaceConnection",
-                        "IfcStructuralAction", "IfcStructuralPointAction", "IfcStructuralLinearActionVarying", "IfcStructuralPlanarAction"
+                       "IfcStructuralCurveMember", "IfcStructuralSurfaceMember",
+                       "IfcStructuralPointConnection", "IfcStructuralCurveConnection", "IfcStructuralSurfaceConnection",
+                       "IfcStructuralAction", "IfcStructuralPointAction", 
+                       "IfcStructuralLinearAction", "IfcStructuralLinearActionVarying", "IfcStructuralPlanarAction"
                        )
 
 # specific name translations
@@ -327,7 +328,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if SEPARATE_OPENINGS:
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
     if MERGE_MODE_STRUCT != 3:
-        settings.set(settings.INCLUDE_CURVES,True)
+        try:
+            settings.set(settings.INCLUDE_CURVES,True)
+        except:
+            FreeCAD.Console.PrintError("Set INCLUDE_CURVES failed. IfcOpenShell seams to be an Outdated Developer Version.\n")
+            FreeCAD.Console.PrintError("Import of StructuralAnalysisView Entities will not work!\n")
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
