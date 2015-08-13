@@ -248,7 +248,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
         << "Sketcher_RestoreInternalAlignmentGeometry" 
         << "Sketcher_Symmetry"
         << "Sketcher_Copy"
-        << "Sketcher_LinearArray";
+        << "Sketcher_RectangularArray";
     
 }
 template <>
@@ -259,7 +259,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
         << "Sketcher_RestoreInternalAlignmentGeometry"
         << "Sketcher_Symmetry"
         << "Sketcher_Copy"
-        << "Sketcher_LinearArray";
+        << "Sketcher_RectangularArray";
 }
 
 template <typename T>
