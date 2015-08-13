@@ -28,6 +28,8 @@
 # include <Precision.hxx>
 #endif
 
+# include <QMessageBox>
+
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
@@ -47,7 +49,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ViewProviderSketch.h"
-#include "SketchLinearArrayDialog.h"
+#include "SketchRectangularArrayDialog.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -1232,8 +1234,8 @@ static const char *cursor_createcopy[]={
     class DrawSketchHandlerCopy: public DrawSketchHandler
     {
     public:
-        DrawSketchHandlerCopy(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements): geoIdList(geoidlist), OriginGeoId (origingeoid),
-        OriginPos(originpos), nElements(nelements), Mode(STATUS_SEEK_First), EditCurve(2){}
+        DrawSketchHandlerCopy(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements, bool clone): geoIdList(geoidlist), OriginGeoId (origingeoid),
+        OriginPos(originpos), nElements(nelements), Clone(clone), Mode(STATUS_SEEK_First), EditCurve(2){}
         virtual ~DrawSketchHandlerCopy(){}
         /// mode table
         enum SelectMode {
@@ -1295,10 +1297,10 @@ static const char *cursor_createcopy[]={
                 
                 try{
                     Gui::Command::doCommand(
-                        Gui::Command::Doc, "App.ActiveDocument.%s.addCopy(%s,App.Vector(%f,%f,0))",
+                        Gui::Command::Doc, "App.ActiveDocument.%s.addCopy(%s,App.Vector(%f,%f,0),%s)",
                                             sketchgui->getObject()->getNameInDocument(), 
-                                            geoIdList.c_str(), vector.fX, vector.fY
-                    ); 
+                                            geoIdList.c_str(), vector.fX, vector.fY,
+                                            (Clone?"True":"False")); 
                     
                     Gui::Command::commitCommand();
                 }
@@ -1332,6 +1334,7 @@ static const char *cursor_createcopy[]={
         int OriginGeoId;
         Sketcher::PointPos OriginPos;
         int nElements;
+        bool Clone;
         std::vector<Base::Vector2D> EditCurve;
         std::vector<AutoConstraint> sugConstr1;
     };
@@ -1455,7 +1458,22 @@ void CmdSketcherCopy::activated(int iMsg)
         }  
     }
     
-    ActivateAcceleratorHandler(getActiveGuiDocument(),new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids));
+    bool clone=false;
+    
+    // Ask the user if he wants to clone or to simple copy
+    int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric constraints"),
+                                    QObject::tr("Do you want to clone the object, i.e. substitute dimensional constraints by geometric constraints?"),
+                                    QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
+    // use an equality constraint
+    if (ret == QMessageBox::Yes) {
+        clone = true;
+    }
+    else if (ret == QMessageBox::Cancel) {
+        // do nothing
+        return;
+    }
+    
+    ActivateAcceleratorHandler(getActiveGuiDocument(),new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids, clone));
 }
 
 
@@ -1466,7 +1484,7 @@ bool CmdSketcherCopy::isActive(void)
 }
 
 /* XPM */
-static const char *cursor_createlineararray[]={
+static const char *cursor_createrectangulararray[]={
     "32 32 3 1",
     "+ c white",
     "# c red",
@@ -1504,15 +1522,15 @@ static const char *cursor_createlineararray[]={
     "................................",
     "................................"};
     
-    class DrawSketchHandlerLinearArray: public DrawSketchHandler
+    class DrawSketchHandlerRectangularArray: public DrawSketchHandler
     {
     public:
-        DrawSketchHandlerLinearArray(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements,
-                                     int rows,int cols,bool constraintSeparation,
-                                     bool equalVerticalHorizontalSpacing ): geoIdList(geoidlist), OriginGeoId (origingeoid),
+        DrawSketchHandlerRectangularArray(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements, bool clone,
+                                     int rows, int cols, bool constraintSeparation,
+                                     bool equalVerticalHorizontalSpacing ): geoIdList(geoidlist), OriginGeoId (origingeoid), Clone(clone),
             Rows(rows), Cols(cols), ConstraintSeparation(constraintSeparation), EqualVerticalHorizontalSpacing(equalVerticalHorizontalSpacing),
             OriginPos(originpos), nElements(nelements), Mode(STATUS_SEEK_First), EditCurve(2){}
-        virtual ~DrawSketchHandlerLinearArray(){}
+        virtual ~DrawSketchHandlerRectangularArray(){}
         /// mode table
         enum SelectMode {
             STATUS_SEEK_First,      /**< enum value ----. */
@@ -1521,7 +1539,7 @@ static const char *cursor_createlineararray[]={
         
         virtual void activated(ViewProviderSketch *sketchgui)
         {
-            setCursor(QPixmap(cursor_createlineararray),7,7);
+            setCursor(QPixmap(cursor_createrectangulararray),7,7);
             Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
             EditCurve[0] = Base::Vector2D(Origin.x,Origin.y);
         }
@@ -1573,9 +1591,10 @@ static const char *cursor_createlineararray[]={
                 
                 try{
                     Gui::Command::doCommand(
-                        Gui::Command::Doc, "App.ActiveDocument.%s.addArray(%s, App.Vector(%f,%f,0),%d,%d,%s,%f)",
+                        Gui::Command::Doc, "App.ActiveDocument.%s.addRectangularArray(%s, App.Vector(%f,%f,0),%s,%d,%d,%s,%f)",
                                             sketchgui->getObject()->getNameInDocument(), 
                                             geoIdList.c_str(), vector.fX, vector.fY,
+                                            (Clone?"True":"False"),
                                             Cols, Rows,
                                             (ConstraintSeparation?"True":"False"),
                                             (EqualVerticalHorizontalSpacing?1.0:0.5));
@@ -1612,6 +1631,7 @@ static const char *cursor_createlineararray[]={
         int OriginGeoId;
         Sketcher::PointPos OriginPos;
         int nElements;
+        bool Clone;
         int Rows;
         int Cols;
         bool ConstraintSeparation;
@@ -1621,23 +1641,23 @@ static const char *cursor_createlineararray[]={
     };
     
 
-DEF_STD_CMD_A(CmdSketcherLinearArray);
+DEF_STD_CMD_A(CmdSketcherRectangularArray);
 
-CmdSketcherLinearArray::CmdSketcherLinearArray()
-:Command("Sketcher_LinearArray")
+CmdSketcherRectangularArray::CmdSketcherRectangularArray()
+:Command("Sketcher_RectangularArray")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("LinearArray");
-    sToolTipText    = QT_TR_NOOP("Creates a lineararray of the geometry taking as reference the last selected point");
+    sMenuText       = QT_TR_NOOP("Rectangular Array");
+    sToolTipText    = QT_TR_NOOP("Creates an rectangular array pattern of the geometry taking as reference the last selected point");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_LinearArray";
+    sPixmap         = "Sketcher_RectangularArray";
     sAccel          = "";
     eType           = ForEdit;
 }
 
-void CmdSketcherLinearArray::activated(int iMsg)
+void CmdSketcherRectangularArray::activated(int iMsg)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -1741,11 +1761,11 @@ void CmdSketcherLinearArray::activated(int iMsg)
     }
     
     // Pop-up asking for values
-    SketchLinearArrayDialog * slad = new SketchLinearArrayDialog();
-    
+    SketchRectangularArrayDialog * slad = new SketchRectangularArrayDialog();
+        
     if( slad->exec() == QDialog::Accepted )
         ActivateAcceleratorHandler(getActiveGuiDocument(),
-                                   new DrawSketchHandlerLinearArray(geoIdList, LastGeoId, LastPointPos, geoids, 
+                                   new DrawSketchHandlerRectangularArray(geoIdList, LastGeoId, LastPointPos, geoids, slad->Clone,
                                                                     slad->Rows, slad->Cols, slad->ConstraintSeparation,
                                                                     slad->EqualVerticalHorizontalSpacing));
     
@@ -1755,7 +1775,7 @@ void CmdSketcherLinearArray::activated(int iMsg)
 
 
 
-bool CmdSketcherLinearArray::isActive(void)
+bool CmdSketcherRectangularArray::isActive(void)
 {
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
@@ -1776,5 +1796,5 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
     rcCmdMgr.addCommand(new CmdSketcherCopy());
-    rcCmdMgr.addCommand(new CmdSketcherLinearArray());
+    rcCmdMgr.addCommand(new CmdSketcherRectangularArray());
 }

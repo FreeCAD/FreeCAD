@@ -37,7 +37,7 @@ set(SketcherGui_MOC_HDRS
     TaskDlgEditSketch.h
     SketchOrientationDialog.h
     SketcherSettings.h
-    SketchLinearArrayDialog.h
+    SketchRectangularArrayDialog.h
     PropertyConstraintListItem.h
 )
 fc_wrap_cpp(SketcherGui_MOC_SRCS ${SketcherGui_MOC_HDRS})
@@ -55,7 +55,7 @@ set(SketcherGui_UIC_SRCS
     InsertDatum.ui
     SketchOrientationDialog.ui
     SketcherSettings.ui
-    SketchLinearArrayDialog.ui
+    SketchRectangularArrayDialog.ui
 )
 qt4_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
 
@@ -112,8 +112,8 @@ SET(SketcherGui_SRCS
     SketchOrientationDialog.h
     SketcherSettings.cpp
     SketcherSettings.h
-    SketchLinearArrayDialog.h
-    SketchLinearArrayDialog.cpp
+    SketchRectangularArrayDialog.h
+    SketchRectangularArrayDialog.cpp
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp

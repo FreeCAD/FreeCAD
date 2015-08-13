@@ -759,6 +759,7 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
     PyObject *pcObj;
     int refGeoId;
     int refPosId = Sketcher::none;
+    
     if (!PyArg_ParseTuple(args, "Oi|i", &pcObj, &refGeoId, &refPosId))
 	return 0;
 
@@ -795,8 +796,9 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
 PyObject* SketchObjectPy::addCopy(PyObject *args)
 {
     PyObject *pcObj, *pcVect;
+    PyObject* clone= Py_False;
 
-    if (!PyArg_ParseTuple(args, "OO!", &pcObj, &(Base::VectorPy::Type), &pcVect))
+    if (!PyArg_ParseTuple(args, "OO!|O!", &pcObj, &(Base::VectorPy::Type), &pcVect, &PyBool_Type, &clone))
         return 0;
 
     Base::Vector3d vect = static_cast<Base::VectorPy*>(pcVect)->value();
@@ -810,7 +812,7 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
 		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect) + 1;
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, PyObject_IsTrue(clone) ? true : false) + 1;
     
 	if(ret == -1)
 	    throw Py::TypeError("Copy operation unsuccessful!");    
@@ -830,14 +832,16 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
     throw Py::TypeError(error);    
 }
 
-PyObject* SketchObjectPy::addArray(PyObject *args)
+PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
 {
     PyObject *pcObj, *pcVect;
     int rows,cols;
     double perpscale=1.0;
     PyObject* constraindisplacement= Py_False;
+    PyObject* clone= Py_False;
     
-    if (!PyArg_ParseTuple(args, "OO!ii|O!d", &pcObj, &(Base::VectorPy::Type), &pcVect,&rows,&cols, &PyBool_Type, &constraindisplacement,&perpscale))
+    if (!PyArg_ParseTuple(args, "OO!O!ii|O!d", &pcObj, &(Base::VectorPy::Type), &pcVect, 
+            &PyBool_Type, &clone, &rows, &cols, &PyBool_Type, &constraindisplacement,&perpscale))
         return 0;
 
     Base::Vector3d vect = static_cast<Base::VectorPy*>(pcVect)->value();
@@ -851,7 +855,8 @@ PyObject* SketchObjectPy::addArray(PyObject *args)
 		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect,rows,cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, PyObject_IsTrue(clone) ? true : false, 
+                                                      rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
     
 	if(ret == -1)
 	    throw Py::TypeError("Copy operation unsuccessful!");    

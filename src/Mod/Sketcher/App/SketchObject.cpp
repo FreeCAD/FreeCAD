@@ -2011,7 +2011,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     return Geometry.getSize()-1;
 }
 
-int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, int csize/*=2*/, int rsize/*=1*/, 
+int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, bool clone /*=false*/, int csize/*=2*/, int rsize/*=1*/, 
                           bool constraindisplacement /*= false*/, double perpscale /*= 1.0*/)
 {
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
@@ -2153,10 +2153,29 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     
                     if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
                         if( ((*it)->Type != Sketcher::DistanceX && (*it)->Type != Sketcher::DistanceY ) || 
-                            (*it)->FirstPos == Sketcher::none ) { // if it is not a point locking DistanceX/Y
-                            Constraint *constNew = (*it)->clone();
-                            constNew->First = geoIdMap[(*it)->First];
-                            newconstrVals.push_back(constNew);
+                            (*it)->FirstPos == Sketcher::none ) { // if it is not a point locking DistanceX/Y             
+                                if (((*it)->Type == Sketcher::DistanceX || 
+                                    (*it)->Type == Sketcher::DistanceY ||
+                                    (*it)->Type == Sketcher::Distance  ||
+                                    (*it)->Type == Sketcher::Radius ) && clone ) {
+                                    // Distances on a single Element are mapped to equality constraints in clone mode
+                                    Constraint *constNew = (*it)->clone();
+                                    constNew->Type = Sketcher::Equal;
+                                    constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
+                                    newconstrVals.push_back(constNew);
+                                }
+                                else if ((*it)->Type == Sketcher::Angle && clone){
+                                    // Angles on a single Element are mapped to parallel constraints in clone mode
+                                    Constraint *constNew = (*it)->clone();
+                                    constNew->Type = Sketcher::Parallel;
+                                    constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
+                                    newconstrVals.push_back(constNew);                                    
+                                }
+                                else {
+                                    Constraint *constNew = (*it)->clone();
+                                    constNew->First = geoIdMap[(*it)->First];
+                                    newconstrVals.push_back(constNew);
+                                }
                         }
                     }
                     else { // other geoids intervene in this constraint
@@ -2165,10 +2184,23 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                         
                         if(sit != geoIdList.end()) { // Second is also in the list
                             if( (*it)->Third == Constraint::GeoUndef ) {
-                                Constraint *constNew = (*it)->clone();
-                                constNew->First = geoIdMap[(*it)->First];
-                                constNew->Second = geoIdMap[(*it)->Second];
-                                newconstrVals.push_back(constNew);
+                                if (((*it)->Type == Sketcher::DistanceX || 
+                                    (*it)->Type == Sketcher::DistanceY ||
+                                    (*it)->Type == Sketcher::Distance) && ((*it)->First == (*it)->Second) && clone ) {
+                                    // Distances on a two Elements, which must be points of the same line are mapped to equality constraints in clone mode
+                                    Constraint *constNew = (*it)->clone();
+                                    constNew->Type = Sketcher::Equal;
+                                    constNew->FirstPos = Sketcher::none;
+                                    constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
+                                    constNew->SecondPos = Sketcher::none;
+                                    newconstrVals.push_back(constNew);
+                                }
+                                else {
+                                    Constraint *constNew = (*it)->clone();
+                                    constNew->First = geoIdMap[(*it)->First];
+                                    constNew->Second = geoIdMap[(*it)->Second];
+                                    newconstrVals.push_back(constNew);
+                                }                                
                             }
                             else {
                                 std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
@@ -2188,7 +2220,6 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
             }
 
             // handle inter-geometry constraints
-            // example: App.ActiveDocument.Sketch.addArray([0,1], App.Vector(150,150,0),3,4,True)
             if(constraindisplacement){
                 
                 // add a construction line

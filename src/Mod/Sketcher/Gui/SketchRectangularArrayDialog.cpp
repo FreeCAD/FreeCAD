@@ -20,36 +20,62 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketchLinearArrayDialog_H
-#define SKETCHERGUI_SketchLinearArrayDialog_H
+#include "PreCompiled.h"
 
-#include <Base/Placement.h>
-#include <QDialog>
+#ifndef _PreComp_
+# include <QPixmap>
+# include <QDialog>
+#endif
 
-namespace SketcherGui {
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
-class Ui_SketchLinearArrayDialog;
-class SketchLinearArrayDialog : public QDialog
+#include "ui_SketchRectangularArrayDialog.h"
+#include "SketchRectangularArrayDialog.h"
+
+using namespace SketcherGui;
+
+SketchRectangularArrayDialog::SketchRectangularArrayDialog(void)
+  : QDialog(Gui::getMainWindow()), ui(new Ui_SketchRectangularArrayDialog)
 {
-    Q_OBJECT
-
-public:
-    SketchLinearArrayDialog(void);
-    ~SketchLinearArrayDialog();
-
-    void accept();
+    ui->setupUi(this);
     
-    int Rows;
-    int Cols;
-    bool ConstraintSeparation;
-    bool EqualVerticalHorizontalSpacing;    
+    ui->RowsQuantitySpinBox->onRestore();
+    ui->ColsQuantitySpinBox->onRestore();
+    ui->ConstraintSeparationCheckBox->onRestore();
+    ui->EqualVerticalHorizontalSpacingCheckBox->onRestore();
+    ui->CloneCheckBox->onRestore();
+    
+    updateValues();
+}
 
-protected:
-    void updateValues(void);
-private:
-    Ui_SketchLinearArrayDialog* ui;
-};
+SketchRectangularArrayDialog::~SketchRectangularArrayDialog()
+{
 
 }
 
-#endif // SKETCHERGUI_SketchLinearArrayDialog_H
+void SketchRectangularArrayDialog::accept()
+{
+    ui->RowsQuantitySpinBox->onSave();
+    ui->ColsQuantitySpinBox->onSave();
+    ui->ConstraintSeparationCheckBox->onSave();
+    ui->EqualVerticalHorizontalSpacingCheckBox->onSave();
+    ui->CloneCheckBox->onSave();
+    
+    updateValues();
+    
+    QDialog::accept();
+}
+
+void SketchRectangularArrayDialog::updateValues(void)
+{
+    Rows = ui->RowsQuantitySpinBox->value();
+    Cols = ui->ColsQuantitySpinBox->value();
+    ConstraintSeparation = ui->ConstraintSeparationCheckBox->isChecked();
+    EqualVerticalHorizontalSpacing = ui->EqualVerticalHorizontalSpacingCheckBox->isChecked();
+    Clone = ui->CloneCheckBox->isChecked();    
+}
+
+#include "moc_SketchRectangularArrayDialog.cpp"
