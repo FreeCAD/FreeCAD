@@ -25,6 +25,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
@@ -183,7 +184,7 @@ void CmdSpreadsheetImport::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Spreadsheet");
         Sheet * sheet = freecad_dynamic_cast<Sheet>(App::GetApplication().getActiveDocument()->addObject("Spreadsheet::Sheet", FeatName.c_str()));
 
-        sheet->importFromFile(fileName.toStdString(), '\t', '"', '\\');        
+        sheet->importFromFile(Base::Tools::toStdString(fileName), '\t', '"', '\\');
         sheet->execute();
     }
 }
@@ -225,7 +226,7 @@ void CmdSpreadsheetExport::activated(int iMsg)
                                                                 formatList,
                                                                 &selectedFilter);
             if (!fileName.isEmpty())
-                sheet->exportToFile(fileName.toStdString(), '\t', '"', '\\');
+                sheet->exportToFile(Base::Tools::toStdString(fileName), '\t', '"', '\\');
         }
     }
 }
