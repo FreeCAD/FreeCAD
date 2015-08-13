@@ -30,6 +30,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <QString>
 
 namespace Base
 {
@@ -154,7 +155,22 @@ struct BaseExport Tools
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char *s);
+
+    /**
+     * @brief toStdString Convert a QString into a UTF-8 encoded std::string.
+     * @param s String to convert.
+     * @return A std::string encoded as UTF-8.
+     */
+    static inline std::string toStdString(const QString& s) { QByteArray tmp = s.toUtf8(); return std::string(tmp.constData(), tmp.size()); }
+
+    /**
+     * @brief fromStdString Convert a std::string encoded as UTF-8 into a QString.
+     * @param s std::string, expected to be UTF-8 encoded.
+     * @return String represented as a QString.
+     */
+    static inline QString fromStdString(const std::string & s) { return QString::fromUtf8(s.c_str(), s.size()); }
 };
+
 
 } // namespace Base
 
