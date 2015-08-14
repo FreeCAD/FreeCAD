@@ -36,6 +36,7 @@ set(SketcherGui_MOC_HDRS
     TaskSketcherValidation.h
     TaskDlgEditSketch.h
     SketchOrientationDialog.h
+    SketchMirrorDialog.h
     SketcherSettings.h
     SketchRectangularArrayDialog.h
     PropertyConstraintListItem.h
@@ -54,6 +55,7 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherValidation.ui
     InsertDatum.ui
     SketchOrientationDialog.ui
+    SketchMirrorDialog.ui
     SketcherSettings.ui
     SketchRectangularArrayDialog.ui
 )
@@ -110,6 +112,8 @@ SET(SketcherGui_SRCS
     EditDatumDialog.h
     SketchOrientationDialog.cpp
     SketchOrientationDialog.h
+    SketchMirrorDialog.cpp
+    SketchMirrorDialog.h
     SketcherSettings.cpp
     SketcherSettings.h
     SketchRectangularArrayDialog.h
