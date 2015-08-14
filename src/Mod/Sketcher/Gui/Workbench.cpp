@@ -271,7 +271,8 @@ template <>
 inline void SketcherAddWorkspaceSketchExtra<Gui::MenuItem>(Gui::MenuItem& sketch){
     sketch  << "Sketcher_ReorientSketch"
             << "Sketcher_ValidateSketch"
-            << "Sketcher_MergeSketches";
+            << "Sketcher_MergeSketches"
+            << "Sketcher_MirrorSketch";
 }
 
 template <typename T>

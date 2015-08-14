@@ -46,6 +46,7 @@
 #include <Mod/Part/App/Part2DObject.h>
 
 #include "SketchOrientationDialog.h"
+#include "SketchMirrorDialog.h"
 #include "ViewProviderSketch.h"
 #include "TaskSketcherValidation.h"
 #include "../App/Constraint.h"
@@ -506,10 +507,121 @@ bool CmdSketcherValidateSketch::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
+DEF_STD_CMD_A(CmdSketcherMirrorSketch);
+
+CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
+: Command("Sketcher_MirrorSketch")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Mirror sketch");
+    sToolTipText    = QT_TR_NOOP("Mirror sketch");
+    sWhatsThis      = "Sketcher_MirrorSketch";
+    sStatusTip      = sToolTipText;
+    eType           = 0;
+    sPixmap         = "Sketcher_MirrorSketch";
+}
+
+void CmdSketcherMirrorSketch::activated(int iMsg)
+{
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    if (selection.size() < 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
+            qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches, please."));
+        return;
+    }
+    
+    // Ask the user which kind of mirroring he wants
+    SketchMirrorDialog * smd = new SketchMirrorDialog();
+    
+    int refgeoid=-1;
+    Sketcher::PointPos refposid=Sketcher::none;
+    
+    if( smd->exec() == QDialog::Accepted ){
+        refgeoid=smd->RefGeoid;
+        refposid=smd->RefPosid;
+        
+        delete smd;
+    }
+    else {
+        delete smd;
+        return;
+    }
+    
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    
+    openCommand("Create a mirror Sketch for each sketch");
+    
+    for (std::vector<Gui::SelectionObject>::const_iterator it=selection.begin(); it != selection.end(); ++it) {
+        // create Sketch 
+        std::string FeatName = getUniqueObjectName("MirroredSketch");
+        
+        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+        
+        Sketcher::SketchObject* mirrorsketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));       
+        
+        const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
+        
+        Base::Placement pl = Obj->Placement.getValue();
+        
+        Base::Vector3d p = pl.getPosition();
+        Base::Rotation r = pl.getRotation();
+        
+        doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",
+                  FeatName.c_str(),
+                  p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+        
+        Sketcher::SketchObject* tempsketch = new Sketcher::SketchObject();
+        
+        int addedGeometries=tempsketch->addGeometry(Obj->getInternalGeometry());
+        
+        int addedConstraints=tempsketch->addConstraints(Obj->Constraints.getValues());
+
+        std::vector<int> geoIdList;
+        
+        for(int i=0;i<=addedGeometries;i++)
+            geoIdList.push_back(i);
+        
+        tempsketch->addSymmetric(geoIdList, refgeoid, refposid);
+                
+        std::vector<Part::Geometry *> tempgeo = tempsketch->getInternalGeometry();
+        std::vector<Sketcher::Constraint *> tempconstr = tempsketch->Constraints.getValues();
+        
+        int nconstraints = tempconstr.size();
+        
+        std::vector<Part::Geometry *> mirrorgeo (tempgeo.begin()+addedGeometries+1,tempgeo.end());
+        std::vector<Sketcher::Constraint *> mirrorconstr (tempconstr.begin()+addedConstraints+1,tempconstr.end());
+        
+        for(std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
+ 
+            if((*itc)->First!=Sketcher::Constraint::GeoUndef || (*itc)->First==-1 || (*itc)->First==-2) // not x, y axes or origin
+                (*itc)->First-=(addedGeometries+1);
+            if((*itc)->Second!=Sketcher::Constraint::GeoUndef || (*itc)->Second==-1 || (*itc)->Second==-2) // not x, y axes or origin
+                (*itc)->Second-=(addedGeometries+1);
+            if((*itc)->Third!=Sketcher::Constraint::GeoUndef || (*itc)->Third==-1 || (*itc)->Third==-2) // not x, y axes or origin
+                (*itc)->Third-=(addedGeometries+1);
+        }
+        
+        mirrorsketch->addGeometry(mirrorgeo);
+        mirrorsketch->addConstraints(mirrorconstr);
+        
+        delete tempsketch;
+    }
+    
+    doCommand(Gui,"App.activeDocument().recompute()");
+    
+}
+
+bool CmdSketcherMirrorSketch::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
 DEF_STD_CMD_A(CmdSketcherMergeSketches);
 
 CmdSketcherMergeSketches::CmdSketcherMergeSketches()
-  : Command("Sketcher_MergeSketches")
+: Command("Sketcher_MergeSketches")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -526,18 +638,18 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
-            qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches, please."));
+                             qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
+                             qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches, please."));
         return;
     }
-
+    
     Sketcher::SketchObject* Obj1 = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     
     App::Document* doc = App::GetApplication().getActiveDocument();
-       
+    
     // create Sketch 
     std::string FeatName = getUniqueObjectName("Sketch");
-
+    
     openCommand("Create a merge Sketch");
     doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
     
@@ -553,16 +665,16 @@ void CmdSketcherMergeSketches::activated(int iMsg)
         int addedConstraints=mergesketch->addConstraints(Obj->Constraints.getValues());
         
         for(int i=0; i<=(addedConstraints-baseConstraints); i++){
-                Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
-                
-                if(constraint->First!=Sketcher::Constraint::GeoUndef || constraint->First==-1 || constraint->First==-2) // not x, y axes or origin
-                    constraint->First+=baseGeometry;
-                if(constraint->Second!=Sketcher::Constraint::GeoUndef || constraint->Second==-1 || constraint->Second==-2) // not x, y axes or origin
-                    constraint->Second+=baseGeometry;
-                if(constraint->Third!=Sketcher::Constraint::GeoUndef || constraint->Third==-1 || constraint->Third==-2) // not x, y axes or origin
-                    constraint->Third+=baseGeometry;
-        }
+            Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
             
+            if(constraint->First!=Sketcher::Constraint::GeoUndef || constraint->First==-1 || constraint->First==-2) // not x, y axes or origin
+                constraint->First+=baseGeometry;
+            if(constraint->Second!=Sketcher::Constraint::GeoUndef || constraint->Second==-1 || constraint->Second==-2) // not x, y axes or origin
+                constraint->Second+=baseGeometry;
+            if(constraint->Third!=Sketcher::Constraint::GeoUndef || constraint->Third==-1 || constraint->Third==-2) // not x, y axes or origin
+                constraint->Third+=baseGeometry;
+        }
+        
         baseGeometry=addedGeometries+1;
         baseConstraints=addedConstraints+1;
     }
@@ -576,8 +688,6 @@ bool CmdSketcherMergeSketches::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-
-
 void CreateSketcherCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -589,5 +699,6 @@ void CreateSketcherCommands(void)
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());
     rcCmdMgr.addCommand(new CmdSketcherViewSketch());
     rcCmdMgr.addCommand(new CmdSketcherValidateSketch());
+    rcCmdMgr.addCommand(new CmdSketcherMirrorSketch());
     rcCmdMgr.addCommand(new CmdSketcherMergeSketches());
 }
