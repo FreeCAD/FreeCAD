@@ -49,7 +49,9 @@
 #include "ViewProviderAnnotation.h"
 #include <App/Annotation.h>
 #include <App/PropertyGeo.h>
+#include <App/Application.h>
 #include <App/PropertyStandard.h>
+#include <Base/Parameter.h>
 #include <Gui/BitmapFactory.h>
 #include "SoFCSelection.h"
 #include "SoTextLabel.h"
@@ -66,7 +68,11 @@ PROPERTY_SOURCE(Gui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
 
 ViewProviderAnnotation::ViewProviderAnnotation() 
 {
-    ADD_PROPERTY(TextColor,(1.0f,1.0f,1.0f));
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long col = hGrp->GetUnsigned("AnnotationTextColor",4294967295UL); // light grey
+    float r,g,b;
+    r = ((col >> 24) & 0xff) / 255.0; g = ((col >> 16) & 0xff) / 255.0; b = ((col >> 8) & 0xff) / 255.0;
+    ADD_PROPERTY(TextColor,(r,g,b));
     ADD_PROPERTY(Justification,((long)0));
     Justification.setEnums(JustificationEnums);
     ADD_PROPERTY(FontSize,(12));

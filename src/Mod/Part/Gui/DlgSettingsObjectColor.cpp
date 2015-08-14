@@ -60,6 +60,8 @@ void DlgSettingsObjectColor::saveSettings()
     DefaultShapeVertexColor->onSave();
     DefaultShapeVertexWidth->onSave();
     BoundingBoxColor->onSave();
+    // Annotations
+    AnnotationTextColor->onSave();
 }
 
 void DlgSettingsObjectColor::loadSettings()
@@ -71,6 +73,8 @@ void DlgSettingsObjectColor::loadSettings()
     DefaultShapeVertexColor->onRestore();
     DefaultShapeVertexWidth->onRestore();
     BoundingBoxColor->onRestore();
+    // Annotations
+    AnnotationTextColor->onRestore();
 }
 
 /**
