@@ -26,6 +26,7 @@
 # include <cfloat>
 # include <QMessageBox>
 # include <Precision.hxx>
+# include <QApplication>
 #endif
 
 # include <QMessageBox>
@@ -1339,23 +1340,16 @@ static const char *cursor_createcopy[]={
         std::vector<AutoConstraint> sugConstr1;
     };
 
-DEF_STD_CMD_A(CmdSketcherCopy);
+class SketcherCopy : public Gui::Command {
+public:    
+    SketcherCopy(const char* name);
+    void activate(bool clone);
+};
 
-CmdSketcherCopy::CmdSketcherCopy()
-:Command("Sketcher_Copy")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Copy");
-    sToolTipText    = QT_TR_NOOP("Creates a copy of the geometry taking as reference the last selected point");
-    sWhatsThis      = sToolTipText;
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Copy";
-    sAccel          = "CTRL+C";
-    eType           = ForEdit;
-}
+SketcherCopy::SketcherCopy(const char* name): Command(name)
+{}
 
-void CmdSketcherCopy::activated(int iMsg)
+void SketcherCopy::activate(bool clone)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -1437,9 +1431,9 @@ void CmdSketcherCopy::activated(int iMsg)
                              QObject::tr("A copy requires at least one selected non-external geometric element"));
         return;      
     }    
-        
+    
     std::string geoIdList = stream.str();
-        
+    
     // remove the last added comma and brackets to make the python list
     int index = geoIdList.rfind(',');
     geoIdList.resize(index);      
@@ -1452,16 +1446,14 @@ void CmdSketcherCopy::activated(int iMsg)
         if( LastGeo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
             LastGeo->getTypeId() == Part::GeomEllipse::getClassTypeId() ) {
             LastPointPos = Sketcher::mid;    
-        }
-        else {
-            LastPointPos = Sketcher::start;    
-        }  
+            }
+            else {
+                LastPointPos = Sketcher::start;    
+            }  
     }
     
-    bool clone=false;
-    
     // Ask the user if he wants to clone or to simple copy
-    int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric constraints"),
+    /*int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric constraints"),
                                     QObject::tr("Do you want to clone the object, i.e. substitute dimensional constraints by geometric constraints?"),
                                     QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
     // use an equality constraint
@@ -1471,17 +1463,169 @@ void CmdSketcherCopy::activated(int iMsg)
     else if (ret == QMessageBox::Cancel) {
         // do nothing
         return;
-    }
+    }*/
     
-    ActivateAcceleratorHandler(getActiveGuiDocument(),new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids, clone));
+    ActivateAcceleratorHandler(getActiveGuiDocument(),new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids, clone));    
+}
+        
+class CmdSketcherCopy : public SketcherCopy
+{
+public:
+    CmdSketcherCopy();
+    virtual ~CmdSketcherCopy(){}
+    virtual const char* className() const
+    { return "CmdSketcherCopy"; }
+protected: 
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+};        
+
+CmdSketcherCopy::CmdSketcherCopy()
+:SketcherCopy("Sketcher_Copy")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Copy");
+    sToolTipText    = QT_TR_NOOP("Creates a simple copy of the geometry taking as reference the last selected point");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Copy";
+    sAccel          = "";
+    eType           = ForEdit;
 }
 
-
+void CmdSketcherCopy::activated(int iMsg)
+{
+    activate(false);
+}
 
 bool CmdSketcherCopy::isActive(void)
 {
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
+        
+class CmdSketcherClone : public SketcherCopy
+{
+public:
+    CmdSketcherClone();
+    virtual ~CmdSketcherClone(){}
+    virtual const char* className() const
+    { return "CmdSketcherClone"; }
+protected: 
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+};
+
+CmdSketcherClone::CmdSketcherClone()
+:SketcherCopy("Sketcher_Clone")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Clone");
+    sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Clone";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherClone::activated(int iMsg)
+{
+    activate(true);
+}
+
+bool CmdSketcherClone::isActive(void)
+{
+    return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
+}
+
+
+DEF_STD_CMD_ACL(CmdSketcherCompCopy);
+
+CmdSketcherCompCopy::CmdSketcherCompCopy()
+: Command("Sketcher_CompCopy")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Copy");
+    sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
+    sWhatsThis      = "Sketcher_CompCopy";
+    sStatusTip      = sToolTipText;
+    sAccel          = "CTRL+C";    
+    eType           = ForEdit;
+}
+
+void CmdSketcherCompCopy::activated(int iMsg)
+{
+    if (iMsg==0){
+        CmdSketcherClone sc;
+        sc.activate(true);
+    }
+    else if (iMsg==1) {
+        CmdSketcherCopy sc;
+        sc.activate(false);
+    }
+    else
+        return;
+    
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+    pcAction->setShortcut(QString::fromAscii("CTRL+C"));
+}
+
+Gui::Action * CmdSketcherCompCopy::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+    
+    QAction* clone = pcAction->addAction(QString());
+    clone->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Clone"));
+    QAction* copy = pcAction->addAction(QString());
+    copy->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Copy"));
+    
+    _pcAction = pcAction;
+    languageChange();
+    
+    pcAction->setIcon(clone->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+    
+    pcAction->setShortcut(QString::fromAscii(sAccel));
+    
+    return pcAction;
+}
+
+void CmdSketcherCompCopy::languageChange()
+{
+    Command::languageChange();
+    
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    QAction* clone = a[0];
+    clone->setText(QApplication::translate("Sketcher_CompCopy","Clone"));
+    clone->setToolTip(QApplication::translate("Sketcher_Clone","Creates a clone of the geometry taking as reference the last selected point"));
+    clone->setStatusTip(QApplication::translate("Sketcher_Clone","Creates a clone of the geometry taking as reference the last selected point"));
+    QAction* copy = a[1];
+    copy->setText(QApplication::translate("Sketcher_CompCopy","Copy"));
+    copy->setToolTip(QApplication::translate("Sketcher_Copy","Creates a simple copy of the geometry taking as reference the last selected point"));
+    copy->setStatusTip(QApplication::translate("Sketcher_Copy","Creates a simple copy of the geometry taking as reference the last selected point"));
+}
+
+bool CmdSketcherCompCopy::isActive(void)
+{
+    return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
+}
+
 
 /* XPM */
 static const char *cursor_createrectangulararray[]={
@@ -1796,5 +1940,7 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
     rcCmdMgr.addCommand(new CmdSketcherCopy());
+    rcCmdMgr.addCommand(new CmdSketcherClone());
+    rcCmdMgr.addCommand(new CmdSketcherCompCopy());
     rcCmdMgr.addCommand(new CmdSketcherRectangularArray());
 }

@@ -247,6 +247,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
         << "Sketcher_SelectElementsAssociatedWithConstraints"
         << "Sketcher_RestoreInternalAlignmentGeometry" 
         << "Sketcher_Symmetry"
+        << "Sketcher_Clone"
         << "Sketcher_Copy"
         << "Sketcher_RectangularArray";
     
@@ -258,7 +259,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
         << "Sketcher_SelectConstraints"
         << "Sketcher_RestoreInternalAlignmentGeometry"
         << "Sketcher_Symmetry"
-        << "Sketcher_Copy"
+        << "Sketcher_CompCopy"
         << "Sketcher_RectangularArray";
 }
 
