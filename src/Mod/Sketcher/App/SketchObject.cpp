@@ -489,7 +489,7 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
 
     std::vector< Part::Geometry * > newVals(vals);
     for (std::vector<Part::Geometry *>::const_iterator it = geoList.begin(); it != geoList.end(); ++it) {
-        if((*it)->getTypeId() != Part::GeomPoint::getClassTypeId())
+        if(construction && (*it)->getTypeId() != Part::GeomPoint::getClassTypeId())
             const_cast<Part::Geometry *>(*it)->Construction = construction;
         
         newVals.push_back(*it);
