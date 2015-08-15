@@ -248,6 +248,22 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   (*theGraph)[virginVertex].text->setFont(this->font());
   
   graphDirty = true;
+  
+  //we are here before python objects are instantiated. so at this point
+  //the getIcon method doesn't reflect the python override.
+  //so we hack in a delay to get the latest icon and set it for the graphics item.
+  lastAddedVertex = virginVertex;
+  QTimer::singleShot(0, this, SLOT(iconUpdateSlot()));
+}
+
+void Model::iconUpdateSlot()
+{
+  if (lastAddedVertex == Graph::null_vertex())
+    return;
+  const ViewProviderDocumentObject *VPDObject = findRecord(lastAddedVertex, *graphLink).VPDObject;
+  (*theGraph)[lastAddedVertex].icon->setPixmap(VPDObject->getIcon().pixmap(iconSize, iconSize));
+  lastAddedVertex = Graph::null_vertex();
+  this->invalidate();
 }
 
 void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
@@ -264,6 +280,9 @@ void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
   auto inRange = boost::in_edges(vertex, *theGraph);
   for (auto inEdgeIt = inRange.first; inEdgeIt != inRange.second; ++inEdgeIt)
     this->removeItem((*theGraph)[*inEdgeIt].connector.get());
+  
+  if (vertex == lastAddedVertex)
+    lastAddedVertex = Graph::null_vertex();
   
   //remove the actual vertex.
   boost::clear_vertex(vertex, *theGraph);
