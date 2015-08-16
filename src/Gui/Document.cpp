@@ -511,14 +511,14 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                         // cycling to all views of the document to remove the viewprovider from the viewer itself
                         for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
                             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-                            if (activeView && viewProvider) {
+                            if (activeView && viewProvider && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+                                // Note about hasViewProvider()
+                                //remove the viewprovider serves the purpose of detaching the inventor nodes from the 
+                                //top level root in the viewer. However, if some of the children were grouped beneath the object
+                                //earlier they are not anymore part of the toplevel inventor node. we need to check for that.
                                 if (d->_editViewProvider == ChildViewProvider)
                                     resetEdit();
-                                //remove the viewprovider serves the purpose of detaching the inventor nodes from the 
-                                //top level root in the viewer. However, if some of the children were grouped beneath the object 
-                                //earlier they are not anymore part of the toplevel inventor node. we need to check for that.
-                                if(activeView->getViewer()->hasViewProvider(ChildViewProvider))
-                                    activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
                             }
                         }
                     }
