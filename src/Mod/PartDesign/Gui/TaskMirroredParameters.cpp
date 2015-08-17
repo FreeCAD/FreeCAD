@@ -322,12 +322,9 @@ bool TaskDlgMirroredParameters::accept()
     std::vector<std::string> mirrorPlanes;
     App::DocumentObject* obj;
     mirrorParameter->getMirrorPlane(obj, mirrorPlanes);
-    std::string mirrorPlane = getPythonStr(obj, mirrorPlanes);
-    if (!mirrorPlane.empty() && obj) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), mirrorPlane.c_str());
-    } else {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = None", name.c_str());
-    }
+    std::string mirrorPlane = buildLinkSingleSubPythonStr(obj, mirrorPlanes);
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), mirrorPlane.c_str());
 
     return TaskDlgTransformedParameters::accept();
 }

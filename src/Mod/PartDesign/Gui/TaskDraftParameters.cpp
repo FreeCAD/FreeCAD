@@ -280,13 +280,18 @@ bool TaskDlgDraftParameters::accept()
 {
     parameter->showObject();
 
-    // Force the user to select a neutral plane
     std::vector<std::string> strings;
     App::DocumentObject* obj;
     TaskDraftParameters* draftparameter = static_cast<TaskDraftParameters*>(parameter);
+
     draftparameter->getPlane(obj, strings);
-    std::string neutralPlane = getPythonStr(obj, strings);
-    if (neutralPlane.empty()) {
+    std::string neutralPlane = buildLinkSingleSubPythonStr(obj, strings);
+
+    draftparameter->getLine(obj, strings);
+    std::string pullDirection = buildLinkSingleSubPythonStr(obj, strings);
+
+    // Force the user to select a neutral plane
+    if (neutralPlane.empty() || neutralPlane == "None") {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
             QObject::tr("Please select a plane or an edge plus a pull direction"));
         return false;
@@ -296,16 +301,8 @@ bool TaskDlgDraftParameters::accept()
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),draftparameter->getAngle());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
-    if (!neutralPlane.empty()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), neutralPlane.c_str());
-    } else
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = None", name.c_str());
-    draftparameter->getLine(obj, strings);
-    std::string pullDirection = getPythonStr(obj, strings);
-    if (!pullDirection.empty()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), pullDirection.c_str());
-    } else
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = None", name.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), neutralPlane.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), pullDirection.c_str());
 
     return TaskDlgDressUpParameters::accept();
 }

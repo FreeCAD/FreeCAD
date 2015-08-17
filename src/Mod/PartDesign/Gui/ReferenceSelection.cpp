@@ -61,7 +61,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     if (plane && (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())))
         // Note: It is assumed that a Part has exactly 3 App::Plane objects at the root of the feature tree
         return true;
-    
+
     if (edge && (pObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())))
         return true;
 
@@ -82,7 +82,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return false;
     }
 
-    // Handle selection of geometry elements       
+    // Handle selection of geometry elements
     if (!sSubName || sSubName[0] == '\0')
         return false;
     if (!allowOtherBody) {
@@ -148,7 +148,7 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     selSub = std::vector<std::string>(1,subname);
 }
 
-const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
 {
     if (obj == NULL)
         return QString::fromAscii("");
@@ -162,19 +162,38 @@ const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::s
         return QString();
 }
 
-const std::string getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs)
+{
+    if ( obj == NULL)
+        return "None";
+
+    std::string result("[");
+
+    for (const auto & sub : subs)
+        result += "\"" + sub + "\",";
+    result += "]";
+
+    return result;
+}
+
+std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
+        const std::vector<std::string>& subs)
 {
     if (obj == NULL)
-        return "";
+        return "None";
 
     if (PartDesign::Feature::isDatum(obj))
         return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
     else
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + sub.front() + "\"])";
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + subs.front() + "\"])";
 }
 
-const std::string getPythonStr(const std::vector<App::DocumentObject*> objs)
+std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & objs)
 {
+    if ( objs.empty() ) {
+        return "None";
+    }
+
     std::string result("[");
 
     for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
@@ -184,4 +203,29 @@ const std::string getPythonStr(const std::vector<App::DocumentObject*> objs)
     return result;
 }
 
+std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
+        const std::vector<std::string>& subs)
+{
+    if ( objs.empty() ) {
+        return "None";
+    }
+
+    std::string result("[");
+
+    assert (objs.size () == subs.size () );
+
+    for (size_t i=0, objs_sz=objs.size(); i < objs_sz; i++) {
+        if (objs[i] ) {
+            result += '(';
+            result += std::string("App.activeDocument().").append( objs[i]->getNameInDocument () );
+            result += ",\"";
+            result += subs[i];
+            result += "\"),";
+        }
+    }
+
+    result += "]";
+
+    return result;
+}
 }

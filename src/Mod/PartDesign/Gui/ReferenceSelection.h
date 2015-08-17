@@ -58,12 +58,16 @@ public:
 void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub);
 /// Return reference as string for UI elements (format <obj>:<subelement>
-const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
-/// Return reference as string for python in the format (<obj>, ["<subelement>",])
-const std::string getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
+QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
+/// Return reference as string for python in the format (<obj> ["sub1", "sub2", ...])
+std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs);
+/// Return reference as string for python in the format (<obj> ["sub"?])
+std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs);
 /// Return reference as string for python in the format [obj1, obj2, ...,]
-const std::string getPythonStr(const std::vector<App::DocumentObject*> objs);
-
+std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & objs);
+/// Returns sub reference list as a python string in the format [(obj1,"sub1"),(obj2,"sub2"),...]
+std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
+        const std::vector<std::string>& subs);
 } //namespace PartDesignGui
 
 #endif // GUI_ReferenceSelection_H

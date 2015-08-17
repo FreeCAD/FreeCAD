@@ -29,6 +29,7 @@
 #endif
 
 #include <App/Part.h>
+#include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
@@ -37,10 +38,11 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 
+#include "ReferenceSelection.h"
 #include "Utils.h"
-
 
 //===========================================================================
 // Helper for Body

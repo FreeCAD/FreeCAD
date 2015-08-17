@@ -395,12 +395,9 @@ void TaskLinearPatternParameters::apply()
     std::vector<std::string> directions;
     App::DocumentObject* obj;
     getDirection(obj, directions);
-    std::string direction = getPythonStr(obj, directions);
-    if (!direction.empty() && obj) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), direction.c_str());
-    } else {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = None", name.c_str());
-    }
+    std::string direction = buildLinkSingleSubPythonStr(obj, directions);
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), direction.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
 
     ui->spinLength->apply();

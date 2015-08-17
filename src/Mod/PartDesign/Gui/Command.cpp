@@ -1693,7 +1693,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
                 bodies.push_back(j->getObject());
             }
         }
-        bodyString = PartDesignGui::getPythonStr(bodies);
+        bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No body selected"),
             QObject::tr("Please select a body for the boolean operation"));
