@@ -1247,6 +1247,8 @@ def move(objectslist,vector,copy=False):
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::Annotation",getRealName(obj.Name))
                 newobj.LabelText = obj.LabelText
+                if gui:
+                    formatObject(newobj,obj)
             else:
                 newobj = obj
             newobj.Position = obj.Position.add(vector)
@@ -1256,6 +1258,7 @@ def move(objectslist,vector,copy=False):
                 _Dimension(newobj)
                 if gui:
                     _ViewProviderDimension(newobj.ViewObject)
+                    formatObject(newobj,obj)
             else:
                 newobj = obj
             newobj.Start = obj.Start.add(vector)
