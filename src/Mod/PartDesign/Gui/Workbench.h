@@ -78,7 +78,6 @@ private:
    // Add new objects to the body, if appropriate
    //void slotNewObject(const App::DocumentObject& obj);
 
-   //void _doMigration(const App::Document* doc);
    void _switchToDocument(const App::Document* doc);
 
 };

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com      *
+ *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -189,6 +189,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     // Find the normal distance from origin to the sketch plane
     gp_Pln pln(gp_Pnt (pnt.x, pnt.y, pnt.z), gp_Dir(sketchVector.x, sketchVector.y, sketchVector.z));
     double offset = pln.Distance(gp_Pnt(0,0,0));
+    // TODO Issue a message if sketch have coordinates offset inside the plain (2016-08-15, Fat-Zer)
 
     if (fabs(offset) < Precision::Confusion()) {
         // One of the base planes
@@ -222,9 +223,120 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
                 sketch->getNameInDocument(), reverseSketch ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
                 sketch->getNameInDocument(),Attacher::AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
     }
 }
 
+bool isPartDesignAwareObjecta (App::DocumentObject *obj, bool respectGroups = false ) {
+    return (obj->isDerivedFrom( PartDesign::Feature::getClassTypeId () ) ||
+            PartDesign::Body::isAllowed ( obj ) ||
+            obj->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||
+            ( respectGroups && (
+                                obj->isDerivedFrom (App::GeoFeatureGroup::getClassTypeId () ) ||
+                                obj->isDerivedFrom (App::DocumentObjectGroup::getClassTypeId () )
+                               ) ) );
+}
 
-} /* PartDesignGui */ 
+bool isAnyNonPartDesignLinksTo ( PartDesign::Feature *feature, bool respectGroups ) {
+    App::Document *doc = feature->getDocument();
+
+    for ( const auto & obj: doc->getObjects () ) {
+         if ( !isPartDesignAwareObjecta ( obj, respectGroups ) ) {
+             std::vector <App::Property *> properties;
+             obj->getPropertyList ( properties );
+             for (auto prop: properties ) {
+                if ( prop->isDerivedFrom ( App::PropertyLink::getClassTypeId() ) ) {
+                    if ( static_cast <App::PropertyLink *> ( prop )->getValue () == feature ) {
+                        return true;
+                    }
+                } else if ( prop->isDerivedFrom ( App::PropertyLinkSub::getClassTypeId() ) ) {
+                    if ( static_cast <App::PropertyLinkSub *> ( prop )->getValue () == feature ) {
+                        return true;
+                    }
+                } else if ( prop->isDerivedFrom ( App::PropertyLinkList::getClassTypeId() ) ) {
+                    auto values = static_cast <App::PropertyLinkList *> ( prop )->getValues ();
+                    if ( std::find ( values.begin (), values.end (), feature ) != values.end() ) {
+                        return true;
+                    }
+                } else if ( prop->isDerivedFrom ( App::PropertyLinkSubList::getClassTypeId() ) ) {
+                    auto values = static_cast <App::PropertyLinkSubList *> ( prop )->getValues ();
+                    if ( std::find ( values.begin (), values.end (), feature ) != values.end() ) {
+                        return true;
+                    }
+                }
+             }
+         }
+    }
+
+    return false;
+}
+
+void relinkToBody (PartDesign::Feature *feature) {
+    App::Document *doc = feature->getDocument();
+    PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
+
+    if (!body) {
+        throw Base::Exception ("Coudn't find body for the feature");
+    }
+
+    std::string bodyName = body->getNameInDocument ();
+
+    for ( const auto & obj: doc->getObjects () ) {
+        if ( !isPartDesignAwareObjecta ( obj ) ) {
+            std::vector <App::Property *> properties;
+            obj->getPropertyList ( properties );
+            for (auto prop: properties ) {
+                std::string valueStr;
+                if ( prop->isDerivedFrom ( App::PropertyLink::getClassTypeId() ) ) {
+                    App::PropertyLink *propLink = static_cast <App::PropertyLink *> ( prop );
+                    if ( propLink->getValue() != feature ) {
+                        continue;
+                    }
+                    valueStr = std::string ( "App.activeDocument()." ).append ( bodyName );
+                } else if ( prop->isDerivedFrom ( App::PropertyLinkSub::getClassTypeId() ) ) {
+                    App::PropertyLinkSub *propLink = static_cast <App::PropertyLinkSub *> ( prop );
+                    if ( propLink->getValue() != feature ) {
+                        continue;
+                    }
+                    valueStr = buildLinkSubPythonStr ( body, propLink->getSubValues() );
+                } else if ( prop->isDerivedFrom ( App::PropertyLinkList::getClassTypeId() ) ) {
+                    App::PropertyLinkList *propLink = static_cast <App::PropertyLinkList *> ( prop );
+                    std::vector <App::DocumentObject *> linkList = propLink->getValues ();
+                    bool valueChanged=false;
+                    for (auto & link : linkList ) {
+                        if ( link == feature ) {
+                            link = body;
+                            valueChanged = true;
+                        }
+                    }
+                    if ( valueChanged ) {
+                        valueStr = buildLinkListPythonStr ( linkList );
+                        // TODO Issue some message here due to it likely will break something
+                        //     (2015-08-13, Fat-Zer)
+                    }
+                } else if ( prop->isDerivedFrom ( App::PropertyLinkSub::getClassTypeId() ) ) {
+                    App::PropertyLinkSubList *propLink = static_cast <App::PropertyLinkSubList *> ( prop );
+                    std::vector <App::DocumentObject *> linkList = propLink->getValues ();
+                    bool valueChanged=false;
+                    for (auto & link : linkList ) {
+                        if ( link == feature ) {
+                            link = body;
+                            valueChanged = true;
+                        }
+                    }
+                    if ( valueChanged ) {
+                        valueStr = buildLinkSubListPythonStr ( linkList, propLink->getSubValues() );
+                        // TODO Issue some message here due to it likely will break something
+                        //     (2015-08-13, Fat-Zer)
+                    }
+                }
+
+                if ( !valueStr.empty () ) {
+                    Gui::Command::doCommand ( Gui::Command::Doc, "App.activeDocument().%s.%s=%s",
+                            obj->getNameInDocument (), prop->getName (), valueStr.c_str() );
+                }
+            }
+        }
+    }
+}
+
+} /* PartDesignGui */

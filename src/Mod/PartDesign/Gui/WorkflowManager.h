@@ -69,7 +69,6 @@ public:
 
     /**
      * Force the desired workflow in document
-     * Note: currently added for testing purpose; May be removed later
      */
     void forceWorkflow (const App::Document *doc, Workflow wf);
 

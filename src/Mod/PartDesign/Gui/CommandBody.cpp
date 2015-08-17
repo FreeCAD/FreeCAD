@@ -1,5 +1,5 @@
 /***************************************************************************
- *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com      *
+ *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,20 +28,47 @@
 # include <QInputDialog>
 #endif
 
+#include <Base/Console.h>
 #include <App/Part.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "Utils.h"
 #include "WorkflowManager.h"
 
 
+//===========================================================================
+// Shared functions
+//===========================================================================
+
+namespace PartDesignGui {
+
+/// Returns active part, if there is no such, creates a new part, if it fails, shows a message
+App::Part* assertActivePart () {
+    App::Part* rv= Gui::Application::Instance->activeView()->getActiveObject<App::Part *> ( PARTKEY );
+
+    if ( !rv ) {
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        rcCmdMgr.runCommandByName("PartDesign_Part");
+        rv = Gui::Application::Instance->activeView()->getActiveObject<App::Part *> ( PARTKEY );
+        if ( !rv ) {
+            QMessageBox::critical ( 0, QObject::tr( "Part creation failed" ),
+                    QObject::tr( "Failed to create a part object." ) );
+        }
+    }
+
+    return rv;
+}
+
+} /* PartDesignGui */
 
 //===========================================================================
 // PartDesign_Part
@@ -62,7 +89,7 @@ CmdPartDesignPart::CmdPartDesignPart()
 
 void CmdPartDesignPart::activated(int iMsg)
 {
-    if ( PartDesignGui::assureModernWorkflow( getDocument() ) )
+    if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
         return;
 
     openCommand("Add a part");
@@ -71,7 +98,9 @@ void CmdPartDesignPart::activated(int iMsg)
     std::string PartName;
     PartName = getUniqueObjectName("Part");
     doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
-    doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
+    // TODO We really must to set label ourselfs? (2015-08-17, Fat-Zer)
+    doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
+            QObject::tr(PartName.c_str()).toUtf8().data());
     PartDesignGui::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
     doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, PartName.c_str());
 
@@ -102,7 +131,7 @@ CmdPartDesignBody::CmdPartDesignBody()
 
 void CmdPartDesignBody::activated(int iMsg)
 {
-    if ( PartDesignGui::assureModernWorkflow( getDocument() ) )
+    if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
         return;
     std::vector<App::DocumentObject*> features =
         getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
@@ -128,19 +157,17 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     // first check if Part is already created:
-    App::Part *actPart = getDocument()->Tip.getValue<App::Part *>();
-    std::string PartName;
-
-    if(!actPart){
-        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-        rcCmdMgr.runCommandByName("PartDesign_Part");
-        actPart = getDocument()->Tip.getValue<App::Part *>();
+    App::Part *actPart = PartDesignGui::assertActivePart ();
+    if (!actPart) {
+        return;
     }
 
-    openCommand("Add a body");
+    std::string PartName = actPart->getNameInDocument();
+
+    openCommand("Add a Body");
+
     std::string FeatName = getUniqueObjectName("Body");
 
-    PartName = actPart->getNameInDocument();
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", FeatName.c_str());
     if (baseFeature) {
@@ -175,7 +202,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Migrate");
-    sToolTipText  = QT_TR_NOOP("Migrate document to the new workflow");
+    sToolTipText  = QT_TR_NOOP("Migrate document to the modern partdesign workflow");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
 }
@@ -183,17 +210,197 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
 void CmdPartDesignMigrate::activated(int iMsg)
 {
     App::Document *doc = getDocument();
-    // TODO make a proper implementation
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Not implemented yet"),
-            QObject::tr("The migration not implemented yet, just force-switching to the new workflow.\n"
-                "Previous workflow was: %1").arg(int(
-                    PartDesignGui::WorkflowManager::instance()->determinWorkflow( doc ) )));
-    PartDesignGui::WorkflowManager::instance()->forceWorkflow(doc, PartDesignGui::Workflow::Modern);
+
+    std::set<PartDesign::Feature*> migrateFeatures;
+
+
+    // Retrive all PartDesign Features objects and filter out features already belongs to some body
+    for ( const auto & feat: doc->getObjects(  ) ) {
+         if( feat->isDerivedFrom( PartDesign::Feature::getClassTypeId() ) &&
+                 !PartDesign::Body::findBodyOf( feat ) && PartDesign::Body::isSolidFeature ( feat ) ) {
+             migrateFeatures.insert ( static_cast <PartDesign::Feature *>( feat ) );
+         }
+    }
+
+    if ( migrateFeatures.empty() ) {
+        if ( !PartDesignGui::isModernWorkflow ( doc ) ) {
+            // If there is nothing to migrate and workflow is still old just set it to modern
+            PartDesignGui::WorkflowManager::instance()->forceWorkflow (
+                    doc, PartDesignGui::Workflow::Modern );
+        } else {
+            // Huh? nothing to migrate?
+            QMessageBox::warning ( 0, QObject::tr ( "Nothing to migrate" ),
+                    QObject::tr ( "No PartDesign features which doesn't belong to a body found."
+                        " Nothing to migrate." ) );
+        }
+        return;
+    }
+
+    // Note: this action is undoable, should it be?
+    PartDesignGui::WorkflowManager::instance()->forceWorkflow ( doc, PartDesignGui::Workflow::Modern );
+
+    // Put features into chains. Each chain should become a separate body.
+    std::list< std::list<PartDesign::Feature *> > featureChains;
+    std::list<PartDesign::Feature *> chain; //< the current chain we are working on
+
+    for (auto featIt = migrateFeatures.begin(); !migrateFeatures.empty(); ) {
+        Part::Feature *base = (*featIt)->getBaseObject( /*silent =*/ true );
+
+        chain.push_front ( *featIt );
+
+        if ( !base || !base->isDerivedFrom (PartDesign::Feature::getClassTypeId () ) ||
+                PartDesignGui::isAnyNonPartDesignLinksTo ( static_cast <PartDesign::Feature *>(base),
+                                                           /*respectGroups=*/ true ) ) {
+            // a feature based on nothing as well as on non-partdesign solid starts a new chain
+            auto newChainIt = featureChains.emplace (featureChains.end());
+            newChainIt->splice (newChainIt->end(), chain);
+        } else {
+            // we are basing on some partdesign feature wich supposed to belong to some body
+            PartDesign::Feature *baseFeat = static_cast <PartDesign::Feature *>( base );
+
+            auto baseFeatSetIt = find ( migrateFeatures.begin (), migrateFeatures.end (), baseFeat );
+
+            if ( baseFeatSetIt != migrateFeatures.end() ) {
+                // base feature is pending for migration, switch to it and continue over
+                migrateFeatures.erase(featIt);
+                featIt = baseFeatSetIt;
+                continue;
+            } else {
+                // The base feature seems already assigned to some chain
+                // Find which
+                std::list<PartDesign::Feature *>::iterator baseFeatIt;
+                auto chainIt = std::find_if( featureChains.begin(), featureChains.end(),
+                        [baseFeat, &baseFeatIt] ( std::list<PartDesign::Feature *>&chain ) mutable -> bool {
+                            baseFeatIt = std::find( chain.begin(), chain.end(), baseFeat );
+                            return baseFeatIt !=  chain.end();
+                        } );
+
+                if ( chainIt != featureChains.end() ) {
+                    assert (baseFeatIt != chainIt->end());
+                    if ( std::next ( baseFeatIt ) == chainIt->end() ) {
+                        // just append our chain to already found
+                        chainIt->splice ( chainIt->end(), chain );
+                        // TODO If we will hit a third part everything will be messed up again.
+                        //      Probably it will require a yet another smart-ass find_if. (2015-08-10, Fat-Zer)
+                    } else {
+                        // We have a fork of a partDesign feature here
+                        // add a chain for current body
+                        auto newChainIt = featureChains.emplace (featureChains.end());
+                        newChainIt->splice (newChainIt->end(), chain);
+                        // add a chain for forked one
+                        newChainIt = featureChains.emplace (featureChains.end());
+                        newChainIt->splice (newChainIt->end(), *chainIt,
+                                std::next ( baseFeatIt ), chainIt->end());
+                    }
+                } else {
+                    // The feature is not present in list pending for migration,
+                    // This generally shouldn't happen but may be if we run into some broken file
+                    // Try to find out the body we should insert into
+                    // TODO Some error/warning is needed here (2015-08-10, Fat-Zer)
+                    auto newChainIt = featureChains.emplace (featureChains.end());
+                    newChainIt->splice (newChainIt->end(), chain);
+                }
+            }
+        }
+        migrateFeatures.erase ( featIt );
+        featIt = migrateFeatures.begin ();
+        // TODO Align visability (2015-08-17, Fat-Zer)
+    } /* for */
+
+    // add a part if there is no active yet
+    App::Part *actPart = PartDesignGui::assertActivePart ();
+
+    if (!actPart) {
+        return;
+    }
+
+    // do the actual migration
+    Gui::Command::openCommand("Migrate legacy part design features to Bodies");
+
+    for ( auto chainIt = featureChains.begin(); !featureChains.empty();
+            featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
+#ifndef FC_DEBUG
+        if ( chainIt->empty () ) { // prevent crash in release in case of errors
+            continue;
+        }
+#else
+        assert ( !chainIt->empty () );
+#endif
+        Part::Feature *base = chainIt->front()->getBaseObject ( /*silent =*/ true );
+
+        // Find a suitable chain to work with
+        for( ; chainIt != featureChains.end(); chainIt ++) {
+            base = chainIt->front()->getBaseObject ( /*silent =*/ true );
+            if (!base || !base->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) ) {
+                break;   // no base is ok
+            } else {
+                // The base feature is a PartDesign, it's a fork, try to reassign it to a body...
+                base = PartDesign::Body::findBodyOf ( base );
+                if ( base ) {
+                    break;
+                }
+            }
+        }
+
+        if ( chainIt == featureChains.end() ) {
+            // Shouldn't happen, may be only in case of some circular dependency?
+            // TODO Some error message (2015-08-11, Fat-Zer)
+            chainIt = featureChains.begin();
+            base = chainIt->front()->getBaseObject ( /*silent =*/ true );
+        }
+
+        // Construct a Pretty Body name based on the Tip
+        std::string bodyName = getUniqueObjectName (
+                std::string ( chainIt->back()->getNameInDocument() ).append ( "Body" ).c_str () ) ;
+
+        // Create a body for the chain
+        doCommand ( Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str () );
+        doCommand ( Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
+                actPart->getNameInDocument (), bodyName.c_str () );
+        if (base) {
+            doCommand ( Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
+                bodyName.c_str (), base->getNameInDocument () );
+        }
+
+        // Fill the body with features
+        for ( auto feature: *chainIt ) {
+            if ( feature->isDerivedFrom ( PartDesign::SketchBased::getClassTypeId() ) ) {
+                // add the sketch and also reroute it if needed
+                PartDesign::SketchBased *sketchBased = static_cast<PartDesign::SketchBased *> ( feature );
+                Part::Part2DObject *sketch = sketchBased->getVerifiedSketch( /*silent =*/ true);
+                if ( sketch ) {
+                    doCommand ( Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                            bodyName.c_str (), sketch->getNameInDocument() );
+
+                    if ( sketch->isDerivedFrom ( Sketcher::SketchObject::getClassTypeId() ) ) {
+                        try {
+                            PartDesignGui::fixSketchSupport ( static_cast<Sketcher::SketchObject *> ( sketch ) );
+                        } catch (Base::Exception &) {
+                            QMessageBox::critical(Gui::getMainWindow(),
+                                    QObject::tr("Sketch plane cannot be migrated"),
+                                    QObject::tr("Please edit '%1' and redefine it to use a Base or "
+                                        "Datum plane as the sketch plane.").
+                                    arg(QString::fromUtf8(sketch->Label.getValue()) ) );
+                        }
+                    } else {
+                        // TODO Message that sketchbased is based not on a sketch (2015-08-11, Fat-Zer)
+                    }
+                }
+            }
+            doCommand ( Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                    bodyName.c_str (), feature->getNameInDocument() );
+
+            PartDesignGui::relinkToBody ( feature );
+        }
+
+    }
+
+    updateActive();
 }
 
 bool CmdPartDesignMigrate::isActive(void)
 {
-    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument();
 }
 
 //===========================================================================

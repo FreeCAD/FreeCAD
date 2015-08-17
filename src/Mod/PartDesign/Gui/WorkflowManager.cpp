@@ -72,10 +72,11 @@ WorkflowManager::~WorkflowManager() {
 // Those destruction/construction is not really needed and could be done in the instance()
 // but to make things a bit more cleare better to keep them around.
 void WorkflowManager::init() {
-    if (_instance) {
-        throw Base::Exception( "Trying to init the workflow manager second time." );
+    if (!_instance) {
+        _instance = new WorkflowManager();
+    } else {
+        //throw Base::Exception( "Trying to init the workflow manager second time." );
     }
-    _instance = new WorkflowManager();
 }
 
 WorkflowManager *WorkflowManager::instance() {
@@ -135,7 +136,6 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
 
     // Guess the workflow again
     rv = guessWorkflow (doc);
-
     if (rv != Workflow::Modern) {
         QMessageBox msgBox;
 
@@ -156,7 +156,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
                     "If you refuse to migrate you won't be able to use new PartDesign features"
                     " like Bodies and Parts. As a result you also won't be able to use your parts"
                     " in the assembly workbench.\n"
-                    "Although you will be able to migrate any moment later with 'Part Design->Migrate'." ) );
+                    "Although you will be able to migrate any moment later with 'Part Design->Migrate...'." ) );
         msgBox.setIcon( QMessageBox::Question );
         QPushButton * yesBtn      = msgBox.addButton ( QMessageBox::Yes );
         QPushButton * manuallyBtn = msgBox.addButton (
@@ -171,7 +171,6 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
         msgBox.exec();
 
         if ( msgBox.clickedButton() == yesBtn ) {
-            // TODO Assure that this will actually work (2015-08-02, Fat-Zer)
             Gui::Application::Instance->commandManager().runCommandByName("PartDesign_Migrate");
             rv = Workflow::Modern;
         } else if ( msgBox.clickedButton() == manuallyBtn ) {
@@ -183,6 +182,7 @@ Workflow WorkflowManager::determinWorkflow( App::Document *doc) {
 
     // Actually set the result in our map
     dwMap[ doc ] = rv;
+
     return rv;
 }
 

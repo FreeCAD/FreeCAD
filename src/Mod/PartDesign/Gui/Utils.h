@@ -1,5 +1,5 @@
 /***************************************************************************
- *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com      *
+ *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
  */
 namespace PartDesign {
     class Body;
+    class Feature;
 }
 
 namespace App {
@@ -64,6 +65,15 @@ PartDesign::Body *setUpPart(const App::Part *);
 /// Fix sketch support after moving a free sketch into a body
 void fixSketchSupport(Sketcher::SketchObject* sketch);
 
-} /* PartDesignGui */ 
+/**
+ * Returns true if document has any non-PartDesign objects that links to the given object.
+ * If respectGroups is true don't count links from App::GeoFeatureGroup-derived objects (default is false)
+ */
+bool isAnyNonPartDesignLinksTo ( PartDesign::Feature *feature, bool respectGroups=false );
+
+/// Relink all nonPartDesign features to the body instead of the given partDesign Feature
+void relinkToBody ( PartDesign::Feature *feature );
+
+} /* PartDesignGui */
 
 #endif /* end of include guard: UTILS_H_CS5LK2ZQ */
