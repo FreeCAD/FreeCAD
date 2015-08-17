@@ -141,7 +141,7 @@ void DraftDxfRead::OnReadText(const double *point, const double height, const ch
 
 void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const char* name, double rotation)
 {
-    std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << std::endl;
+    std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << " scale " << scale[0] << "," << scale[1] << "," << scale[2] << std::endl;
     for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
         std::string k = i->first;
         std::string prefix = "BLOCKS ";
@@ -202,12 +202,19 @@ const char* DraftDxfRead::Deformat(const char* text)
                     longescape = false;
                 }
             } else {
-                if ( (text[i] == 'H') || (text[i] == 'Q') || (text[i] == 'W') || 
-                     (text[i] == 'F') || (text[i] == 'A') || (text[i] == 'C') || 
-                     (text[i] == 'T') )
+                if ( (text[i] == 'H') || (text[i] == 'h') ||
+                     (text[i] == 'Q') || (text[i] == 'q') ||
+                     (text[i] == 'W') || (text[i] == 'w') ||
+                     (text[i] == 'F') || (text[i] == 'f') ||
+                     (text[i] == 'A') || (text[i] == 'a') ||
+                     (text[i] == 'C') || (text[i] == 'c') ||
+                     (text[i] == 'T') || (text[i] == 't') )
                     longescape = true;
-                else
+                else {
+                    if ( (text[i] == 'P') || (text[i] == 'p') )
+                        ss << "\n";
                     escape = false;
+                }
             }
         }
         else if ( (text[i] != '{') && (text[i] != '}') )
