@@ -44,10 +44,16 @@ def getIndices(shape,offset):
     flist = []
     curves = None
     for e in shape.Edges:
-        if not isinstance(e.Curve,Part.Line):
-            if not curves:
-                curves = shape.tessellate(1)
-                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+        try:
+            if not isinstance(e.Curve,Part.Line):
+                if not curves:
+                    curves = shape.tessellate(1)
+                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+                    break
+        except: # unimplemented curve type
+            curves = shape.tessellate(1)
+            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+            break
     if curves:
         for v in curves[0]:
             vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
