@@ -389,7 +389,7 @@ void TaskRevolutionParameters::apply()
     std::vector<std::string> sub;
     App::DocumentObject* obj;
     getReferenceAxis(obj, sub);
-    std::string axis = getPythonStr(obj, sub);
+    std::string axis = buildLinkSingleSubPythonStr(obj, sub);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(), getMidplane() ? 1 : 0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(), getReversed() ? 1 : 0);
@@ -418,6 +418,7 @@ TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
 bool TaskDlgRevolutionParameters::accept()
 {
     parameter->apply();
+
     return TaskDlgSketchBasedParameters::accept();
 }
 
