@@ -58,6 +58,7 @@
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
 #include "Utils.h"
+#include "WorkflowManager.h"
 
 using namespace std;
 
@@ -234,19 +235,24 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 
 void CmdPartDesignNewSketch::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+    App::Document *doc = getDocument ();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody( 
+            /*messageIfNot = */ PartDesignGui::assureModernWorkflow ( doc ) );
 
     // No PartDesign feature without Body past FreeCAD 0.13
-    if(!pcActiveBody) {
-        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-        rcCmdMgr.runCommandByName("Sketcher_NewSketch");
+    if ( !pcActiveBody ) {
+        // Call normal sketch command for old workflow
+        if ( PartDesignGui::isLegacyWorkflow ( doc) ) {
+            Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+            rcCmdMgr.runCommandByName("Sketcher_NewSketch");
+        }
         return;
     }
 
     Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
-    Gui::SelectionFilter PlaneFilter2 ("SELECT PartDesign::Plane COUNT 1");
+    Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1");
     if (PlaneFilter2.match())
         PlaneFilter = PlaneFilter2;
 
