@@ -454,7 +454,7 @@ Eall
 20000 , 
 0.360
 *DENSITY 
-1e-09 , 
+1.000e-09, 
 *SOLID SECTION, ELSET=MechanicalMaterial, MATERIAL=Test Material
 
 ***********************************************************
