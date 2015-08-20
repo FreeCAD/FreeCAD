@@ -249,6 +249,58 @@ bool MeshSelection::deleteSelection()
     return true;
 }
 
+bool MeshSelection::deleteSelectionBorder()
+{
+    // delete all selected faces
+    bool deletion = false;
+    std::list<ViewProviderMesh*> views = getViewProviders();
+    for (std::list<ViewProviderMesh*>::iterator it = views.begin(); it != views.end(); ++it) {
+        Mesh::Feature* mf = static_cast<Mesh::Feature*>((*it)->getObject());
+
+        // mark the selected facet as visited
+        std::vector<unsigned long> selection, remove;
+        std::set<unsigned long> borderPoints;
+        MeshCore::MeshAlgorithm meshAlg(mf->Mesh.getValue().getKernel());
+        meshAlg.GetFacetsFlag(selection, MeshCore::MeshFacet::SELECTED);
+        meshAlg.GetBorderPoints(selection, borderPoints);
+        std::vector<unsigned long> border;
+        border.insert(border.begin(), borderPoints.begin(), borderPoints.end());
+
+        meshAlg.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
+        meshAlg.SetFacetsFlag(selection, MeshCore::MeshFacet::VISIT);
+        meshAlg.ResetPointFlag(MeshCore::MeshPoint::VISIT);
+        meshAlg.SetPointsFlag(border, MeshCore::MeshPoint::VISIT);
+
+        // collect neighbour facets that are not selected and that share a border point
+        const MeshCore::MeshPointArray& points = mf->Mesh.getValue().getKernel().GetPoints();
+        const MeshCore::MeshFacetArray& faces = mf->Mesh.getValue().getKernel().GetFacets();
+        unsigned long numFaces = faces.size();
+        for (unsigned long i = 0; i < numFaces; i++) {
+            const MeshCore::MeshFacet& face = faces[i];
+            if (!face.IsFlag(MeshCore::MeshFacet::VISIT)) {
+                for (int j=0; j<3; j++) {
+                    if (points[face._aulPoints[j]].IsFlag(MeshCore::MeshPoint::VISIT)) {
+                        remove.push_back(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!remove.empty()) {
+            deletion = true;
+            // remove duplicates
+            std::sort(remove.begin(), remove.end());
+            remove.erase(std::unique(remove.begin(), remove.end()), remove.end());
+
+            (*it)->setSelection(remove);
+            (*it)->deleteSelection();
+        }
+    }
+
+    return deletion;
+}
+
 void MeshSelection::invertSelection()
 {
     std::list<ViewProviderMesh*> views = getViewProviders();
