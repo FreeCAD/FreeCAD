@@ -49,6 +49,7 @@ public:
     void startDeselection();
     void stopSelection();
     bool deleteSelection();
+    bool deleteSelectionBorder();
     void fullSelection();
     void clearSelection();
     void invertSelection();
