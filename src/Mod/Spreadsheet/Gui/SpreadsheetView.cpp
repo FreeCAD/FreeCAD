@@ -43,6 +43,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/ExpressionCompleter.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Command.h>
@@ -73,7 +74,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     ui->setupUi(w);
     setCentralWidget(w);
 
-    delegate = new SpreadsheetDelegate();
+    delegate = new SpreadsheetDelegate(sheet);
     ui->cells->setModel(model);
     ui->cells->setItemDelegate(delegate);
     ui->cells->setSheet(sheet);
@@ -110,6 +111,9 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_ForegroundColor"));
     if (fgList.size() > 0)
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
+
+    // Set document object to create auto completer
+    ui->cellContent->setDocumentObject(sheet);
 }
 
 SheetView::~SheetView()
@@ -195,6 +199,9 @@ void SheetView::updateContentLine()
             cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
         ui->cellContent->setEnabled(true);
+
+        // Update completer model; for the time being, we do this by setting the document object of the input line.
+        ui->cellContent->setDocumentObject(sheet);
     }
 }
 
@@ -273,6 +280,11 @@ void SheetView::resizeRow(int col, int newSize)
 
 void SheetView::editingFinished()
 {
+    if (ui->cellContent->completerActive()) {
+        ui->cellContent->hideCompleter();
+        return;
+    }
+
     QModelIndex i = ui->cells->currentIndex();
 
     // Update data in cell

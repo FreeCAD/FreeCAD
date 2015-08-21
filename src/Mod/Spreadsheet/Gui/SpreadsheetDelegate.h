@@ -27,13 +27,17 @@
 
 #include <QItemDelegate>
 
+namespace Spreadsheet {
+class Sheet;
+}
+
 namespace SpreadsheetGui {
 
 class SpreadsheetDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-    explicit SpreadsheetDelegate(QWidget *parent = 0);
+    explicit SpreadsheetDelegate(Spreadsheet::Sheet * sheet, QWidget *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &,
                           const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -43,7 +47,8 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 private Q_SLOTS:
     void commitAndCloseEditor();
-
+private:
+    Spreadsheet::Sheet * sheet;
 };
 
 }
