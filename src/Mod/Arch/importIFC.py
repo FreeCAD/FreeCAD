@@ -165,6 +165,7 @@ def explore(filename=None):
     entities += ifc.by_type("IfcProperty")
     entities += ifc.by_type("IfcPhysicalSimpleQuantity")
     entities += ifc.by_type("IfcMaterial")
+    entities += ifc.by_type("IfcProductRepresentation")
     entities = sorted(entities, key=lambda eid: eid.id())
 
     done = []
@@ -353,6 +354,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     shapes = {} # { id:shaoe } only used for merge mode
     structshapes = {} # { id:shaoe } only used for merge mode
     mattable = {} # { objid:matid }
+    sharedobjects = {} # { representationmapid:object }
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
@@ -406,6 +408,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     from FreeCAD import Base
     progressbar = Base.ProgressIndicator()
     progressbar.start("Importing IFC objects...",len(products))
+    if DEBUG: print "Processing objects..."
 
     # products
     for product in products:
@@ -413,7 +416,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         pid = product.id()
         guid = product.GlobalId
         ptype = product.is_a()
-        if DEBUG: print count,"/",len(products)," creating object ",pid," : ",ptype,
+        if DEBUG: print count+1,"/",len(products)," creating object #",pid," : ",ptype,
         name = str(ptype[3:])
         if product.Name:
             name = product.Name.decode("unicode_escape").encode("utf8")
@@ -421,13 +424,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
         obj = None
         baseobj = None
         brep = None
+        shape = None
 
         archobj = True  # assume all objects not in structuralifcobjects are architecture
         if ptype in structuralifcobjects:
             archobj = False
-            if DEBUG: print " :  structural object :",
+            if DEBUG: print " (struct)",
         else:
-            if DEBUG: print " :  architecture object :",
+            if DEBUG: print " (arch)",
         if MERGE_MODE_ARCH == 4 and archobj:
             if DEBUG: print " skipped."
             continue
@@ -440,6 +444,20 @@ def insert(filename,docname,skip=[],only=[],root=None):
         if ptype in SKIP: # preferences-set type skip list
             if DEBUG: print " skipped."
             continue
+
+        # detect if this object is sharing its shape
+        clone = None
+        store = None
+        if product.Representation and MERGE_MODE_ARCH == 0 and archobj:
+            for s in product.Representation.Representations:
+                if s.RepresentationIdentifier.upper() == "BODY":
+                    if s.Items[0].is_a("IfcMappedItem"):
+                        bid = s.Items[0].MappingSource.id()
+                        if bid in sharedobjects:
+                            clone = sharedobjects[bid]
+                        else:
+                            sharedobjects[bid] = None
+                            store = bid
 
         try:
             cr = ifcopenshell.geom.create_shape(settings,product)
@@ -461,27 +479,30 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print "skipping space ",pid
                     elif not archobj:
                         structshapes[pid] = shape
-                        if DEBUG: print shape.Solids
+                        if DEBUG: print shape.Solids," ",
                         baseobj = shape
                     else:
                         shapes[pid] = shape
-                        if DEBUG: print shape.Solids
+                        if DEBUG: print shape.Solids," ",
                         baseobj = shape
                 else:
-                    if GET_EXTRUSIONS:
-                        ex = Arch.getExtrusionData(shape)
-                        if ex:
-                            print "extrusion ",
-                            baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
-                            baseface.Shape = ex[0]
-                            baseobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion",name+"_body")
-                            baseobj.Base = baseface
-                            baseobj.Dir = ex[1]
-                            if FreeCAD.GuiUp:
-                                baseface.ViewObject.hide()
-                    if not baseobj:
-                        baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
-                        baseobj.Shape = shape
+                    if clone:
+                        if DEBUG: print "clone ",
+                    else:
+                        if GET_EXTRUSIONS:
+                            ex = Arch.getExtrusionData(shape)
+                            if ex:
+                                print "extrusion ",
+                                baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
+                                baseface.Shape = ex[0]
+                                baseobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion",name+"_body")
+                                baseobj.Base = baseface
+                                baseobj.Dir = ex[1]
+                                if FreeCAD.GuiUp:
+                                    baseface.ViewObject.hide()
+                        if (not baseobj):
+                            baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                            baseobj.Shape = shape
             else:
                 if DEBUG: print  "null shape ",
             if not shape.isValid():
@@ -489,17 +510,29 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 #continue
 
         else:
-            if DEBUG: print " no brep \n",
+            if DEBUG: print " no brep ",
 
-        if MERGE_MODE_ARCH == 0 and archobj :
+        if MERGE_MODE_ARCH == 0 and archobj:
 
             # full Arch objects
             for freecadtype,ifctypes in typesmap.items():
                 if ptype in ifctypes:
-                    obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                    if clone:
+                        obj = getattr(Arch,"make"+freecadtype)(name=name)
+                        obj.CloneOf = clone
+                        if shape:
+                            v = shape.Solids[0].CenterOfMass.sub(clone.Shape.Solids[0].CenterOfMass)
+                            p = FreeCAD.Placement(obj.Placement)
+                            p.move(v)
+                            obj.Placement = p
+                    else:
+                        obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                        if store:
+                            sharedobjects[store] = obj
                     obj.Label = name
                     if FreeCAD.GuiUp and baseobj:
-                        baseobj.ViewObject.hide()
+                        if hasattr(baseobj,"ViewObject"):
+                            baseobj.ViewObject.hide()
                     # setting role
                     try:
                         r = ptype[3:]
@@ -521,7 +554,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if not obj:
                 obj = Arch.makeComponent(baseobj,name=name)
             if obj:
-                sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else "[]"
+                sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else ""
                 if DEBUG: print sols
                 objects[pid] = obj
 
@@ -786,7 +819,15 @@ def export(exportList,filename):
     objectslist = Arch.pruneIncluded(objectslist)
     products = {} # { Name: IfcEntity, ... }
     surfstyles = {} # { (r,g,b): IfcEntity, ... }
+    clones = {} # { Basename:[Clonename1,Clonename2,...] }
+    sharedobjects = {} # { BaseName: IfcRepresentationMap }
     count = 1
+
+    # build clones table
+    for o in objectlist:
+        b = Draft.getCloneBase(o,strict=True)
+        if b:
+            clones.setdefault(b.Name,[]).append(o.Name)
 
     # products
     for obj in objectslist:
