@@ -231,6 +231,17 @@ class TemplatePyGroup:
     def GetResources(self):
         return {'Pixmap'  : 'python', 'MenuText': 'Group command', 'ToolTip': 'Example group command'}
 
+class TemplatePyCheckable:
+    "Example toggle command class"
+    def Activated(self, index):
+        if index == 0:
+            print "Toggle is off"
+        else:
+            print "Toggle is on"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'python', 'MenuText': 'Toggle command', 'ToolTip': 'Example toggle command', 'Checkable': True}
+
 #---------------------------------------------------------------------------
 # Adds the commands to the FreeCAD command manager
 #---------------------------------------------------------------------------
@@ -244,3 +255,4 @@ FreeCADGui.addCommand('TemplatePyGrp_1',TemplatePyGrp_1())
 FreeCADGui.addCommand('TemplatePyGrp_2',TemplatePyGrp_2())
 FreeCADGui.addCommand('TemplatePyGrp_3',TemplatePyGrp_3())
 FreeCADGui.addCommand('TemplatePyGroup',TemplatePyGroup())
+FreeCADGui.addCommand('TemplatePyCheckable',TemplatePyCheckable())
