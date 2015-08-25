@@ -351,6 +351,8 @@ public:
     const char* getStatusTip  () const;
     const char* getPixmap     () const;
     const char* getAccel      () const;
+    bool isCheckable          () const;
+    bool isChecked            () const;
     //@}
 
 protected:
