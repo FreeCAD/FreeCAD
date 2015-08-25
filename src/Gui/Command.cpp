@@ -807,8 +807,10 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
     // call the method "GetResources()" of the command object
     _pcPyResourceDict = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
     // check if the "GetResources()" method returns a Dict object
-    if (!PyDict_Check(_pcPyResourceDict))
-        throw Base::Exception("PythonCommand::PythonCommand(): Method GetResources() of the Python command object returns the wrong type (has to be Py Dictonary)");
+    if (!PyDict_Check(_pcPyResourceDict)) {
+        throw Base::Exception("PythonCommand::PythonCommand(): Method GetResources() of the Python "
+                              "command object returns the wrong type (has to be dict)");
+    }
 
     // check for command type
     std::string cmdType = getResource("CmdType");
@@ -834,8 +836,10 @@ const char* PythonCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResourceDict,sName);
     if (!pcTemp)
         return "";
-    if (!PyString_Check(pcTemp))
-        throw Base::Exception("PythonCommand::getResource(): Method GetResources() of the Python command object returns a dictionary which holds not only strings");
+    if (!PyString_Check(pcTemp)) {
+        throw Base::Exception("PythonCommand::getResource(): Method GetResources() of the Python "
+                              "command object returns a dictionary which holds not only strings");
+    }
 
     return PyString_AsString(pcTemp);
 }
@@ -963,7 +967,7 @@ PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
     // check if the "GetResources()" method returns a Dict object
     if (!PyDict_Check(_pcPyResource)) {
         throw Base::TypeError("PythonGroupCommand::PythonGroupCommand(): Method GetResources() of the Python "
-                              "command object returns the wrong type (has to be Py Dictonary)");
+                              "command object returns the wrong type (has to be dict)");
     }
 
     // check for command type
