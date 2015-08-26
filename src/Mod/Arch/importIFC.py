@@ -522,9 +522,12 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.CloneOf = clone
                         if shape:
                             v = shape.Solids[0].CenterOfMass.sub(clone.Shape.Solids[0].CenterOfMass)
-                            p = FreeCAD.Placement(obj.Placement)
-                            p.move(v)
-                            obj.Placement = p
+                            r = getRotation(product)
+                            if not r.isNull():
+                                v = v.add(clone.Shape.Solids[0].CenterOfMass)
+                                v = v.add(r.multVec(clone.Shape.Solids[0].CenterOfMass.negative()))
+                            obj.Placement.Rotation = r
+                            obj.Placement.move(v)
                     else:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if store:
@@ -596,7 +599,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # color
             if FreeCAD.GuiUp and (pid in colors) and hasattr(obj.ViewObject,"ShapeColor"):
-                if DEBUG: print "    setting color: ",colors[pid]
+                if DEBUG: print "    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255)
                 obj.ViewObject.ShapeColor = colors[pid]
 
             # if DEBUG is on, recompute after each shape
@@ -810,7 +813,7 @@ def export(exportList,filename):
     of = pyopen(templatefile,"wb")
     of.write(template.encode("utf8"))
     of.close()
-    global ifcfile, surfstyles
+    global ifcfile, surfstyles, clones, sharedobjects
     ifcfile = ifcopenshell.open(templatefile)
     history = ifcfile.by_type("IfcOwnerHistory")[0]
     context = ifcfile.by_type("IfcGeometricRepresentationContext")[0]
@@ -824,10 +827,13 @@ def export(exportList,filename):
     count = 1
 
     # build clones table
-    for o in objectlist:
+    for o in objectslist:
         b = Draft.getCloneBase(o,strict=True)
         if b:
             clones.setdefault(b.Name,[]).append(o.Name)
+            
+    print "clones table: ",clones
+    print objectslist
 
     # products
     for obj in objectslist:
@@ -1017,8 +1023,29 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     placement = None
     productdef = None
     shapetype = "no shape"
+    tostore = False
+    
+    # check for clones
+    for k,v in clones.items():
+        if (obj.Name == k ) or (obj.Name in v):
+            if k in sharedobjects:
+                # base shape already exists
+                repmap = sharedobjects[k]
+                pla = obj.Placement
+                axis1 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+                axis2 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
+                axis3 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+                origin = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
+                transf = ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
+                mapitem = ifcfile.createIfcMappedItem(repmap,transf)
+                shapes = [mapitem]
+                solidType = "MappedRepresentation"
+                shapetype = "clone"
+            else:
+                # base shape not yet created
+                tostore = k
 
-    if not forcebrep:
+    if (not shapes) and (not forcebrep):
         profile = None
         if hasattr(obj,"Proxy"):
             if hasattr(obj.Proxy,"getProfiles"):
@@ -1119,7 +1146,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             shapetype = "extrusion"
 
     if not shapes:
-
         # brep representation
         fcshape = None
         solidType = "Brep"
@@ -1200,6 +1226,24 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     if shapes:
 
+        if tostore:
+            subrep = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
+            xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
+            zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
+            ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
+            gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
+            pla = FreeCAD.ActiveDocument.getObject(k).Placement
+            axis1 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+            axis2 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
+            origin = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
+            axis3 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+            transf = ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
+            mapitem = ifcfile.createIfcMappedItem(repmap,transf)
+            shapes = [mapitem]
+            sharedobjects[k] = repmap
+            solidType = "MappedRepresentation"
+
         # set surface style
         if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
             # only set a surface style if the object has no material.
@@ -1221,7 +1265,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 surfstyles[rgb] = psa
             for shape in shapes:
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
-
 
         xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
         zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
@@ -1277,4 +1320,18 @@ def setRepresentation(representation):
                             e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
                             result.append(e)
     return result
+    
+    
+def getRotation(entity):
+    "returns a FreeCAD rotation from an IfcProduct with a IfcMappedItem representation"
+    try:
+        rmap = entity.Representation.Representations[0].Items[0].MappingTarget
+        u = FreeCAD.Vector(rmap.Axis1.DirectionRatios)
+        v = FreeCAD.Vector(rmap.Axis2.DirectionRatios)
+        w = FreeCAD.Vector(rmap.Axis3.DirectionRatios)
+    except AttributeError:
+        return FreeCAD.Rotation()
+    import WorkingPlane
+    p = WorkingPlane.plane(u=u,v=v,w=w)
+    return p.getRotation().Rotation
 
