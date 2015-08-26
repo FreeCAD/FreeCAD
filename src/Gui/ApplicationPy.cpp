@@ -411,10 +411,6 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
                     return 0;
                 }
                 else {
-                    QString cmd = QString::fromLatin1(
-                        "Gui.getDocument(\"%1\").mdiViewsOfType('Gui::View3DInventor')[0].dumpSelection(\"%2\")"
-                        ).arg(QLatin1String(doc->getName())).arg(fi.absoluteFilePath());
-                    Base::Interpreter().runString(cmd.toUtf8());
                 }
             }
             else if (ext == QLatin1String("pdf")) {
