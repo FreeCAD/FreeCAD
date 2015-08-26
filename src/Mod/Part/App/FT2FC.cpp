@@ -54,6 +54,7 @@
 #include <Geom_Plane.hxx>
 #include <Geom2d_BezierCurve.hxx>
 #include <gp_Trsf.hxx>
+#include <Precision.hxx>
 
 #include <Base/Console.h>
 #include "TopoShape.h"
@@ -207,10 +208,12 @@ static int line_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
    gp_Pnt2d v2(pt->x, pt->y);
-   Handle(Geom2d_TrimmedCurve) lseg = GCE2d_MakeSegment(v1,v2);
-   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg , dc->surf);
-   dc->Edges.push_back(edge);
-   dc->LastVert = *pt;
+   if (!v1.IsEqual(v2, Precision::Confusion())) {
+       Handle(Geom2d_TrimmedCurve) lseg = GCE2d_MakeSegment(v1,v2);
+       TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg , dc->surf);
+       dc->Edges.push_back(edge);
+       dc->LastVert = *pt;
+   }
    return 0;
 }
    
