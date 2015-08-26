@@ -41,6 +41,9 @@ public:
     static void finish();
     /// helper to apply a SoWriteAction to a node and write it to a string
     static const std::string& writeNodesToString(SoNode * root);
+    static bool writeToVRML(SoNode* node, const char* filename, bool binary);
+    // Write to VRML or Inventor file
+    static bool writeToFile(SoNode* node, const char* filename, bool binary);
 };
 
 } // namespace Gui
