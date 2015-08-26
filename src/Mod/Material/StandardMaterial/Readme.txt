@@ -11,4 +11,9 @@ Enlargen the base of Materials for FreeCAD will greatly benefit the usability of
 help us to add new Materials, review existing ones or add additional vlaues. A good source for material 
 defininitons are text-books or the www.matweb.com database.
 
-2013 Juergen Riegel 
+2013 Juergen Riegel
+
+Edit:
+This is work in progress. Please verify material properties before use.
+
+Please use provided TEMPLATE.FCMat file to create new materials
