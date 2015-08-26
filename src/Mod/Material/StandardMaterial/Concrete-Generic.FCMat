@@ -12,4 +12,5 @@ ProductURL = http://en.wikipedia.org/wiki/Concrete
 YoungsModulus = 32000 MPa
 PoissonRatio = 0.17
 CompressiveStrength = 25 MPa
+Density = 2400 kg/m^3
 StandardCode = Masterformat 03 33 13
