@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=S235JRG1
-NameDE=USt37-2
-MaterialNumber=1.0036
-Norm=EN 10025
-KindOfMaterial=Mild steel
-KindOfMaterialDE=Baustahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=üblich für mäßige Beanspruchung
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=360
-; Yield Strength - Re - N/mm²
-YieldStrength=235
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=26
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = S235JRG1
+NameDE = USt37-2
+DescriptionDE = üblich für mäßige Beanspruchung
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 360
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Mild steel
+KindOfMaterialDE = Baustahl
+MaterialNumber = 1.0036
+ModulusOfShare = 81000
+Norm = EN 10025
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 26
+YieldStrength = 235

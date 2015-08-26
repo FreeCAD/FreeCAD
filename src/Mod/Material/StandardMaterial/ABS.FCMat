@@ -3,28 +3,14 @@
 ; information about the content of such cards you can find here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-; General name, need to be the same as the file name
-Name=ABS
-; Father of ABS is Thermoplast
-Father=Thermoplast
-; more elaborate description of this material card:
-Description: This is a blend ABS material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards.
-; Specific wight in kg/mm^3 
-SpecificWeight=3.5e-06
-; No special Vendor
-Vendor:
-; For blend materials the wikipedia page is a good source of information:
-ProductURL=http://en.wikipedia.org/wiki/Acrylonitrile_butadiene_styrene
-; for blends a rough estimation  Euro/Kg
-SpecificPrice= 3
-
-[Mechanical]
-; youngs modulus (or E-Module or Modulus of Elasticty) (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
-YoungsModulus=2320 MPa
-; http://en.wikipedia.org/wiki/Ultimate_tensile_strength in 
-UltimateTensileStrength= 38 MPa
-Density=1070 kg/m^3
-
-[FEM]
+[FCMat]
+Name = ABS
+Description = This is a blend ABS material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards.
+Father = Thermoplast
+SpecificWeight = 3.50E-006
+ProductURL = http://en.wikipedia.org/wiki/Acrylonitrile_butadiene_styrene
+SpecificPrice = 3
+YoungsModulus = 2320 MPa
+UltimateTensileStrength = 38 MPa
 PoissonRatio = 0.35
+Density = 1070 kg/m^3

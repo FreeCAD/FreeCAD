@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=EN-GJS-800-1
-NameDE=GGG-80
-MaterialNumber=0.7080
-Norm=EN 1563
-KindOfMaterial=Cast iron
-KindOfMaterialDE=Guss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7200
-Description=
-DescriptionDE=Zahnräder
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=800
-; Yield Strength - Re - N/mm²
-YieldStrength=480
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=180000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=67000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=2
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = EN-GJS-800-1
+NameDE = GGG-80
+DescriptionDE = Zahnräder
+Father = Metal
+SpecificWeight = 7200
+YoungsModulus = 180000 MPa
+UltimateTensileStrength = 800
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.708
+ModulusOfShare = 67000
+Norm = EN 1563
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 2
+YieldStrength = 480

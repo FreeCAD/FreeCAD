@@ -3,39 +3,20 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=S420N
-NameDE=St E 420
-MaterialNumber=1.8902
-Norm=EN 10113-2
-KindOfMaterial=Fine grain steel
-KindOfMaterialDE=Feinkornstahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=Zeitfestigkeit bei geringen dynamischen Lasten; Fahrzeugrahmen, Druckbehälter
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=520
-; Yield Strength - Re - N/mm²
-YieldStrength=420
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=19
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = S420N
+NameDE = St E 420
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 520
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Fine grain steel
+KindOfMaterialDE = Feinkornstahl
+MaterialNumber = 1.8902
+ModulusOfShare = 81000
+Norm = EN 10113-2
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 19
+YieldStrength = 420

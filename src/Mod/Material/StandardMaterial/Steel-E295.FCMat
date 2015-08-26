@@ -3,39 +3,20 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=E295
-NameDE=St50-2
-MaterialNumber=1.0050
-Norm=EN 10025
-KindOfMaterial=Mild steel
-KindOfMaterialDE=Baustahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=mittlere Beanspruchung; Wellen, Achsen, Bolzen
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=490
-; Yield Strength - Re - N/mm²
-YieldStrength=295
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=20
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = E295
+NameDE = St50-2
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 490
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Mild steel
+KindOfMaterialDE = Baustahl
+MaterialNumber = 1.005
+ModulusOfShare = 81000
+Norm = EN 10025
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 20
+YieldStrength = 295

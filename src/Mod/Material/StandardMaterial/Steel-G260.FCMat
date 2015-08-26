@@ -3,39 +3,20 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=G260
-NameDE=GS 52
-MaterialNumber=1.0552
-Norm=DIN 1681
-KindOfMaterial=Cast steel
-KindOfMaterialDE=Stahlguss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=mittlere dynamische und stoßartige Belastung, gut schweißbar; Pumpengehäuse, Zahnräder
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=520
-; Yield Strength - Re - N/mm²
-YieldStrength=260
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=18
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = G260
+NameDE = GS 52
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 520
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Cast steel
+KindOfMaterialDE = Stahlguss
+MaterialNumber = 1.0552
+ModulusOfShare = 81000
+Norm = DIN 1681
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 18
+YieldStrength = 260

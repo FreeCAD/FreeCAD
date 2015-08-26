@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=EN-GJS-400-15
-NameDE=GGG-40
-MaterialNumber=0.7040
-Norm=EN 1563
-KindOfMaterial=Cast iron
-KindOfMaterialDE=Guss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7200
-Description=
-DescriptionDE=Pumpen-, Getriebegehäuse
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=400
-; Yield Strength - Re - N/mm²
-YieldStrength=250
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=167000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=65000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=15
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = EN-GJS-400-15
+NameDE = GGG-40
+DescriptionDE = Pumpen-, Getriebegehäuse
+Father = Metal
+SpecificWeight = 7200
+YoungsModulus = 167000 MPa
+UltimateTensileStrength = 400
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.704
+ModulusOfShare = 65000
+Norm = EN 1563
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 15
+YieldStrength = 250
