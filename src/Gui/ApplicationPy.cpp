@@ -30,6 +30,8 @@
 # include <QPrinter>
 # include <QFileInfo>
 # include <Inventor/SoInput.h>
+# include <Inventor/actions/SoGetPrimitiveCountAction.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <xercesc/util/XMLString.hpp>
@@ -42,7 +44,9 @@
 #include "MainWindow.h"
 #include "EditorView.h"
 #include "PythonEditor.h"
+#include "SoFCDB.h"
 #include "View3DInventor.h"
+#include "ViewProvider.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -411,6 +415,34 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
                     return 0;
                 }
                 else {
+                    SoSeparator* sep = new SoSeparator();
+                    sep->ref();
+
+                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                        PyObject* item = (*it).ptr();
+                        if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
+                            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+
+                            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+                            if (vp) {
+                                sep->addChild(vp->getRoot());
+                            }
+                        }
+                    }
+
+
+                    SoGetPrimitiveCountAction action;
+                    action.setCanApproximate(true);
+                    action.apply(sep);
+
+                    bool binary = false;
+                    if (action.getTriangleCount() > 100000 ||
+                        action.getPointCount() > 30000 ||
+                        action.getLineCount() > 10000)
+                        binary = true;
+
+                    SoFCDB::writeToFile(sep, Utf8Name.c_str(), binary);
+                    sep->unref();
                 }
             }
             else if (ext == QLatin1String("pdf")) {
