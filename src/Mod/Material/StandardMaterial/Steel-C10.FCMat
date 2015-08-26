@@ -3,39 +3,20 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=German norm only!
-NameDE=C10
-MaterialNumber=1.0301
-Norm=DIN 17210
-KindOfMaterial=Case-hardened steel
-KindOfMaterialDE=Einsatzstahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=kleine Teile härtbar; Bolzen, Büchsen, Gelenke
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=650
-; Yield Strength - Re - N/mm²
-YieldStrength=380
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=16
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = [DE]C10
+NameDE = C10
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 650
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Case-hardened steel
+KindOfMaterialDE = Einsatzstahl
+MaterialNumber = 1.0301
+ModulusOfShare = 81000
+Norm = DIN 17210
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 16
+YieldStrength = 380

@@ -1,22 +1,22 @@
-; C50E - 1.1206 - EN 10083-1
+; E335 GC - 1.0543 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = C50E
-NameDE = Ck50
+Name = E335 GC
+NameDE = St60-2K
 Father = Metal
 SpecificWeight = 7800
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 750
+UltimateTensileStrength = 690
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
-KindOfMaterial = Heat-treatable steel
-KindOfMaterialDE = Vergütungsstahl
-MaterialNumber = 1.1206
+KindOfMaterial = Mild steel
+KindOfMaterialDE = Baustahl
+MaterialNumber = 1.0543
 ModulusOfShare = 81000
-Norm = EN 10083-1
+Norm = EN 10025
 ThermalExpansionCoefficient = 1.10E-005
-UltimateStrain = 13
-YieldStrength = 520
+UltimateStrain = 0
+YieldStrength = 490

@@ -3,26 +3,13 @@
 ; information about the content of such cards you can find here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
+[FCMat]
 Name = None
+Description = This is a not defined material
 Father = None
-; more elaborate description of this material card:
-Description: This is a not defined material
-; Specific wight in kg/mm^3 
-SpecificWeight = 0.0
-; No special Vendor
-Vendor:
-; For blend materials the wikipedia page is a good source of information:
-ProductURL =
-; for blends a rough estimation  Euro/Kg
-SpecificPrice = 0.0
-
-[Mechanical]
-; youngs modulus (or E-Module or Modulus of Elasticty) (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
-YoungsModulus=0 MPa
-; http://en.wikipedia.org/wiki/Ultimate_tensile_strength in 
-UltimateTensileStrength= 0 MPa
-Density=0 kg/m^3
-
-[FEM]
-PoissonRatio = 0.0
+SpecificWeight = 0
+SpecificPrice = 0
+YoungsModulus = 0 MPa
+UltimateTensileStrength = 0 MPa
+PoissonRatio = 0
+Density = 0 kg/m^3

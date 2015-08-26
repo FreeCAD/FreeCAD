@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=15CrNi6
-NameDE=15CrNi6
-MaterialNumber=1.5919
-Norm=EN 10084
-KindOfMaterial=Case-hardened steel
-KindOfMaterialDE=Einsatzstahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=höchste Beanspruchung,  Achsen, Wellen, Ritzel, Nocken, Kegelräder
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=1000
-; Yield Strength - Re - N/mm²
-YieldStrength=680
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=9
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = 15CrNi6
+Description = High-strength carbon steel
+DescriptionDE = höchste Beanspruchung, Achsen, Wellen, Ritzel, Nocken, Kegelräder
+DescriptionPL = Wysokowytrzymała stal węglowa
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 1000
+PoissonRatio = 0.3
+KindOfMaterial = Case-hardened steel
+KindOfMaterialDE = Einsatzstahl
+MaterialNumber = 1.5919
+ModulusOfShare = 81000
+Norm = EN 10084
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 9
+YieldStrength = 680

@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=EN-GJL-300
-NameDE=GG-30
-MaterialNumber=0.6030
-Norm=EN 1561
-KindOfMaterial=Cast iron
-KindOfMaterialDE=Guss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7200
-Description=
-DescriptionDE=hochbeanspruchbar, für Motorständer, Lagerschalen
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=300
-; Yield Strength - Re - N/mm²
-YieldStrength=195
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=125000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=48000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=0
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,00E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = EN-GJL-300
+NameDE = GG-30
+DescriptionDE = hochbeanspruchbar, für Motorständer, Lagerschalen
+Father = Metal
+SpecificWeight = 7200
+YoungsModulus = 125000 MPa
+UltimateTensileStrength = 300
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.603
+ModulusOfShare = 48000
+Norm = EN 1561
+ThermalExpansionCoefficient = 1.00E-005
+UltimateStrain = 0
+YieldStrength = 195

@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=EN-GJL-100
-NameDE=GG-10
-MaterialNumber=0.6010
-Norm=EN 1561
-KindOfMaterial=Cast iron
-KindOfMaterialDE=Guss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7200
-Description=
-DescriptionDE=für gering beanspruchte Teile
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=100
-; Yield Strength - Re - N/mm²
-YieldStrength=0
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=88000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=34000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=0
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,00E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = EN-GJL-100
+NameDE = GG-10
+DescriptionDE = für gering beanspruchte Teile
+Father = Metal
+SpecificWeight = 7200
+YoungsModulus = 88000 MPa
+UltimateTensileStrength = 100
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.601
+ModulusOfShare = 34000
+Norm = EN 1561
+ThermalExpansionCoefficient = 1.00E-005
+UltimateStrain = 0
+YieldStrength = 0

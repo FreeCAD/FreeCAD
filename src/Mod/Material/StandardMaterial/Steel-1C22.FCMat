@@ -3,39 +3,22 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=1C22
-NameDE=C22
-MaterialNumber=1.0402
-Norm=EN 10083-1
-KindOfMaterial=Heat-treatable steel
-KindOfMaterialDE=Vergütungsstahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=kleiner Vergütungsdurchmesser, gut schweißbar
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=400
-; Yield Strength - Re - N/mm²
-YieldStrength=230
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=27
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = 1C22
+NameDE = C22
+Description = Case hardened alloy steel
+DescriptionDE = kleiner Vergütungsdurchmesser, gut schweißbar
+DescriptionPL = Stal stopowa do nawęglania
+Father = Metal
+SpecificWeight = 7.80E-009
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 400
+PoissonRatio = 0.3
+KindOfMaterial = Heat-treatable steel
+KindOfMaterialDE = Vergütungsstahl
+MaterialNumber = 1.0402
+ModulusOfShare = 81000
+Norm = EN 10083-1
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 27
+YieldStrength = 230

@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=EN-GJL-200
-NameDE=GG-20
-MaterialNumber=0.6020
-Norm=EN 1561
-KindOfMaterial=Cast iron
-KindOfMaterialDE=Guss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7200
-Description=
-DescriptionDE=Hebel, Lager , Lagerböcke
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=200
-; Yield Strength - Re - N/mm²
-YieldStrength=130
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=105000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=40000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=0
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,00E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = EN-GJL-200
+NameDE = GG-20
+DescriptionDE = Hebel, Lager , Lagerböcke
+Father = Metal
+SpecificWeight = 7200
+YoungsModulus = 105000 MPa
+UltimateTensileStrength = 200
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.602
+ModulusOfShare = 40000
+Norm = EN 1561
+ThermalExpansionCoefficient = 1.00E-005
+UltimateStrain = 0
+YieldStrength = 130

@@ -3,39 +3,20 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=C55E
-NameDE=Ck55
-MaterialNumber=1.1203
-Norm=EN 10083-1
-KindOfMaterial=Heat-treatable steel
-KindOfMaterialDE=Vergütungsstahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=kleine Vergütungsdurchmesser, oberflächenhärtbar; Wellen, Radreifen, Kurbelwellen, Zahnräder
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=800
-; Yield Strength - Re - N/mm²
-YieldStrength=550
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=13
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = C55E
+NameDE = Ck55
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 800
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Heat-treatable steel
+KindOfMaterialDE = Vergütungsstahl
+MaterialNumber = 1.1203
+ModulusOfShare = 81000
+Norm = EN 10083-1
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 13
+YieldStrength = 550

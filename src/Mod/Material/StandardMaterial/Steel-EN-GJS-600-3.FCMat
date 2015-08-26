@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=EN-GJS-600-3
-NameDE=GGG-60
-MaterialNumber=0.7060
-Norm=EN 1563
-KindOfMaterial=Cast iron
-KindOfMaterialDE=Guss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7200
-Description=
-DescriptionDE=Kurbelwellen, Stangen
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=600
-; Yield Strength - Re - N/mm²
-YieldStrength=370
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=177000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=67000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=2
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = EN-GJS-600-3
+NameDE = GGG-60
+DescriptionDE = Kurbelwellen, Stangen
+Father = Metal
+SpecificWeight = 7200
+YoungsModulus = 177000 MPa
+UltimateTensileStrength = 600
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.706
+ModulusOfShare = 67000
+Norm = EN 1563
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 2
+YieldStrength = 370

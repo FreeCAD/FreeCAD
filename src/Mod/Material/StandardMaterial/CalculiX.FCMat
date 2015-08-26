@@ -1,15 +1,12 @@
-; Standard Material for CalculiX Sample Calculations
+; Standard material for CalculiX sample calculations
+; (c) 2013 Juergen Riegel (CC-BY 3.0)
+; information about the content of such cards you can find here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-; General name, need to be the same as the file name
-Name=CalculiX
-; Father of steel is metal
-Father=Metal
-
-[Mechanical]
-; youngs modulus (or E-Module) 
-YoungsModulus=210000 MPa
-Density=1000 kg/m^3
-
-[FEM]
+[FCMat]
+Name = CalculiX
+Description = Standard material for CalculiX sample calculations
+Father = Metal
+YoungsModulus = 210000 MPa
 PoissonRatio = 0.3
+Density = 1000 kg/m^3

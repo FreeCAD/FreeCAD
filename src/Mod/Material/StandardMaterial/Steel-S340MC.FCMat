@@ -3,39 +3,21 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=S340MC
-NameDE=QStE340 TM
-MaterialNumber=1.0974
-Norm=SEW 092
-KindOfMaterial=Cold forming steel
-KindOfMaterialDE=Kaltumformstahl
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7800
-Description=
-DescriptionDE=gut biegbar, Fahrgestellrahmen, Hilfsrahmen, nicht für Punktlasten
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=480
-; Yield Strength - Re - N/mm²
-YieldStrength=340
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=210000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=81000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=25
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,10E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = S340MC
+NameDE = QStE340 TM
+DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen, nicht für Punktlasten
+Father = Metal
+SpecificWeight = 7800
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 480
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Cold forming steel
+KindOfMaterialDE = Kaltumformstahl
+MaterialNumber = 1.0974
+ModulusOfShare = 81000
+Norm = SEW 092
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 25
+YieldStrength = 340

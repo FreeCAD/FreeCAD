@@ -3,39 +3,20 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=EN-GJL-250
-NameDE=GG-25
-MaterialNumber=0.6025
-Norm=EN 1561
-KindOfMaterial=Cast iron
-KindOfMaterialDE=Guss
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=7200
-Description=
-DescriptionDE=druckdicht, wärmebeständig bis 400°C; für Armaturen
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=250
-; Yield Strength - Re - N/mm²
-YieldStrength=165
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=115000 MPa
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=44000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=0
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=1,00E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = EN-GJL-250
+NameDE = GG-25
+Father = Metal
+SpecificWeight = 7200
+YoungsModulus = 115000 MPa
+UltimateTensileStrength = 250
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.6025
+ModulusOfShare = 44000
+Norm = EN 1561
+ThermalExpansionCoefficient = 1.00E-005
+UltimateStrain = 0
+YieldStrength = 165
