@@ -23,8 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/actions/SoToVRML2Action.h>
+# include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/VRMLnodes/SoVRMLParent.h>
 #endif
+
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
+#include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
 #include "SoFCColorBar.h"
@@ -37,6 +43,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCInteractiveElement.h"
+#include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
 #include "SoAxisCrossKit.h"
@@ -199,4 +206,73 @@ const std::string& Gui::SoFCDB::writeNodesToString(SoNode * root)
     cReturnString = buffer;
     free(buffer);
     return cReturnString;
+}
+
+bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
+{
+    SoVRMLAction vrml2;
+    vrml2.apply(node);
+    SoToVRML2Action tovrml2;
+    tovrml2.apply(node);
+    SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
+    vrmlRoot->ref();
+    std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
+    vrmlRoot->unref(); // release the memory as soon as possible
+
+    Base::FileInfo fi(filename);
+    if (binary) {
+        // We want to write compressed VRML but Coin 2.4.3 doesn't do it even though
+        // SoOutput::getAvailableCompressionMethods() delivers a string list that
+        // contains 'GZIP'. setCompression() was called directly after opening the file,
+        // returned TRUE and no error message appeared but anyway it didn't work.
+        // Strange is that reading GZIPped VRML files works.
+        // So, we do the compression on our own.
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
+        zipios::GZIPOutputStream gzip(str);
+
+        if (gzip) {
+            gzip << buffer;
+            gzip.close();
+            return true;
+        }
+    }
+    else {
+        Base::ofstream str(fi, std::ios::out);
+
+        if (str) {
+            str << buffer;
+            str.close();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
+{
+    bool ret = false;
+    Base::FileInfo fi(filename);
+
+    // Write VRML V2.0
+    if (fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
+        // If 'wrz' is set then force compression
+        if (fi.hasExtension("wrz"))
+            binary = true;
+
+        ret = SoFCDB::writeToVRML(node, filename, binary);
+    }
+    else if (fi.hasExtension("iv")) {
+        // Write Inventor in ASCII
+        std::string buffer = SoFCDB::writeNodesToString(node);
+        Base::ofstream str(Base::FileInfo(filename), std::ios::out);
+
+        if (str) {
+            str << buffer;
+            str.close();
+            ret = true;
+        }
+    }
+
+    return ret;
 }

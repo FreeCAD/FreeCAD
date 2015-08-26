@@ -91,7 +91,6 @@
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
-#include <zipios++/gzipoutputstream.h>
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
@@ -1130,48 +1129,7 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
     bool ret = false;
     Base::FileInfo fi(filename);
 
-    // Write VRML V2.0
-    if (fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
-        // If 'wrz' is set then force compression
-        if (fi.hasExtension("wrz"))
-            binary = true;
-
-        SoVRMLAction vrml2;
-        vrml2.apply(node);
-        SoToVRML2Action tovrml2;
-        tovrml2.apply(node);
-        SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
-        vrmlRoot->ref();
-        std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
-        vrmlRoot->unref(); // release the memory as soon as possible
-
-        if (binary) {
-            // We want to write compressed VRML but Coin 2.4.3 doesn't do it even though
-            // SoOutput::getAvailableCompressionMethods() delivers a string list that
-            // contains 'GZIP'. setCompression() was called directly after opening the file,
-            // returned TRUE and no error message appeared but anyway it didn't work.
-            // Strange is that reading GZIPped VRML files works.
-            // So, we do the compression on our own.
-            Base::ofstream str(fi, std::ios::out | std::ios::binary);
-            zipios::GZIPOutputStream gzip(str);
-
-            if (gzip) {
-                gzip << buffer;
-                gzip.close();
-                ret = true;
-            }
-        }
-        else {
-            Base::ofstream str(fi, std::ios::out);
-
-            if(str) {
-                str << buffer;
-                str.close();
-                ret = true;
-            }
-        }
-    }
-    else if (fi.hasExtension("idtf") || fi.hasExtension("svg")) {
+    if (fi.hasExtension("idtf") || fi.hasExtension("svg")) {
         int ps=4;
         QColor c = Qt::white;
         std::auto_ptr<SoVectorizeAction> vo;
@@ -1198,15 +1156,8 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
         out->closeFile();
     }
     else {
-        // Write Inventor in ASCII
-        std::string buffer = SoFCDB::writeNodesToString(node);
-        Base::ofstream str(Base::FileInfo(filename), std::ios::out);
-
-        if (str) {
-            str << buffer;
-            str.close();
-            ret = true;
-        }
+        // Try VRML and Inventor format
+        ret = SoFCDB::writeToFile(node, filename, binary);
     }
 
     return ret;
