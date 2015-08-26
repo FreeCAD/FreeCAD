@@ -14,6 +14,7 @@ SpecificWeight = 7.80E-009
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 400
 PoissonRatio = 0.3
+Density = 7800 kg/m^3
 KindOfMaterial = Heat-treatable steel
 KindOfMaterialDE = Vergütungsstahl
 MaterialNumber = 1.0402
