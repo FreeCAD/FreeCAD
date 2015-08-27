@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QPixmap>
+# include <QMessageBox>
 #endif
 
 #include <App/DocumentObjectGroup.h>
@@ -131,7 +132,10 @@ bool ViewProviderDocumentObjectGroup::canDragObjects() const
 
 void ViewProviderDocumentObjectGroup::dragObject(App::DocumentObject* obj)
 {
-    static_cast<App::DocumentObjectGroup*>(getObject())->removeObject(obj);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
+            "App.getDocument(\"%s\").getObject(\"%s\"))",
+            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
+            obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
 bool ViewProviderDocumentObjectGroup::canDropObjects() const
@@ -141,7 +145,10 @@ bool ViewProviderDocumentObjectGroup::canDropObjects() const
 
 void ViewProviderDocumentObjectGroup::dropObject(App::DocumentObject* obj)
 {
-    static_cast<App::DocumentObjectGroup*>(getObject())->addObject(obj);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").addObject("
+            "App.getDocument(\"%s\").getObject(\"%s\"))",
+            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
+            obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
@@ -152,8 +159,22 @@ std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) 
 
 bool ViewProviderDocumentObjectGroup::onDelete(const std::vector<std::string> &)
 {
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                                     ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    assert ( getObject ()->isDerivedFrom ( App::DocumentObjectGroup::getClassTypeId () ) );
+    App::DocumentObjectGroup *group = static_cast<App::DocumentObjectGroup *> (getObject());
+    // If the group is nonempty ask the user if he wants to delete it's content
+    if ( group->Group.getSize () ) {
+        QMessageBox::StandardButton choice = 
+            QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
+                QObject::tr ( "The group %1 is not empty, delete it's content as well?")
+                    .arg ( QString::fromUtf8 ( group->Label.getValue () ) ), 
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
+
+        if ( choice == QMessageBox::Yes ) {
+            Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
+                    ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+        }
+    }
     return true;
 }
 

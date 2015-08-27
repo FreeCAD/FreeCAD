@@ -45,11 +45,11 @@ public:
 
     /** @name Object handling  */
     //@{
-    /** Adds an object of \a sType with \a pObjectName to the document this group belongs to and 
+    /** Adds an object of \a sType with \a pObjectName to the document this group belongs to and
      * append it to this group as well.
      */
     DocumentObject *addObject(const char* sType, const char* pObjectName);
-    /* Adds the object \a obj to this group. 
+    /* Adds the object \a obj to this group.
      */
     void addObject(DocumentObject* obj);
     /** Removes an object from this group.
