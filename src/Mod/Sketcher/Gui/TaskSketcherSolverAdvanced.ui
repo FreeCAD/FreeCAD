@@ -557,8 +557,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonDefaults">
+       <property name="toolTip">
+        <string>Resets all solver values to their default values</string>
+       </property>
        <property name="text">
-        <string>Set Defaults</string>
+        <string>Restore Defaults</string>
        </property>
       </widget>
      </item>
