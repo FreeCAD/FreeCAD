@@ -193,6 +193,13 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 //    }
 //}
 
+bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
+    Gui::Command::doCommand(Gui::Command::Doc,
+            "App.getDocument(\"%s\").getObject(\"%s\").removeModelFromDocument()"
+            ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    return true;
+}
+
 void ViewProviderBody::updateData(const App::Property* prop)
 {
     //Base::Console().Error("ViewProviderBody::updateData for %s\n", getObject()->getNameInDocument());

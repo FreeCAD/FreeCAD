@@ -112,6 +112,9 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
+    /// Delets all the objects linked to the model.
+    void removeModelFromDocument();
+
     /// Return the bounding box of the Tip Shape, taking into account datum features
     Base::BoundBox3d getBoundBox();
 
@@ -138,7 +141,6 @@ protected:
 private:
     App::DocumentObject* rememberTip;
     boost::signals::scoped_connection connection;
-    void onDelete(const App::DocumentObject& obj);
 };
 
 } //namespace PartDesign

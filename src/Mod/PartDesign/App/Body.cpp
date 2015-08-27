@@ -462,18 +462,14 @@ void Body::onSettingDocument() {
     if(connection.connected())
         connection.disconnect();
 
-    getDocument()->signalDeletedObject.connect(boost::bind(&Body::onDelete, this, _1));
-
     Part::BodyBase::onSettingDocument();
 }
 
-void Body::onDelete(const App::DocumentObject& obj) {
-    // TODO Handle this in view provider rather here (2015-08-06, Fat-Zer)
-    if(&obj == this) {
-        //delete all child objects if needed
-        std::vector<DocumentObject*> grp = Model.getValues();
-        for (auto obj : grp)
-            this->getDocument()->remObject(obj->getNameInDocument(), true);
+void Body::removeModelFromDocument() {
+    //delete all child objects if needed
+    std::set<DocumentObject*> grp ( Model.getValues().begin (), Model.getValues().end() );
+    for (auto obj : grp) {
+        this->getDocument()->remObject(obj->getNameInDocument(), true);
     }
 }
 

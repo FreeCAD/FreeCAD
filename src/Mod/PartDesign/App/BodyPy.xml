@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="BodyBasePy"  
+  <PythonExport
+    Father="BodyBasePy"
     Name="BodyPy"
-    Twin="Body" 
-    TwinPointer="Body" 
-    Include="Mod/PartDesign/App/Body.h" 
-    Namespace="PartDesign" 
-    FatherInclude="Mod/Part/App/BodyBasePy.h" 
+    Twin="Body"
+    TwinPointer="Body"
+    Include="Mod/PartDesign/App/Body.h"
+    Namespace="PartDesign"
+    FatherInclude="Mod/Part/App/BodyBasePy.h"
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -16,11 +16,6 @@
     <Methode Name="addFeature">
             <Documentation>
                     <UserDocu>addFeature(feat) - Add the given feature after the current Tip feature</UserDocu>
-            </Documentation>
-    </Methode>
-    <Methode Name="removeFeature">
-            <Documentation>
-                    <UserDocu>removeFeature(feat) - Remove the given feature from the Body</UserDocu>
             </Documentation>
     </Methode>
     <Methode Name="insertFeature">
@@ -36,6 +31,16 @@
 
                         @note the methode doesn't modifies the Tip unlike addFeature()
                     </UserDocu>
+            </Documentation>
+    </Methode>
+    <Methode Name="removeFeature">
+            <Documentation>
+                    <UserDocu>removeFeature(feat) - Remove the given feature from the Body</UserDocu>
+            </Documentation>
+    </Methode>
+    <Methode Name="removeModelFromDocument">
+            <Documentation>
+                <UserDocu>Delets all the objects linked to the model.</UserDocu>
             </Documentation>
     </Methode>
   </PythonExport>
