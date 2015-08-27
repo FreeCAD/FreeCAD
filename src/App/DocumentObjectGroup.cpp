@@ -103,12 +103,18 @@ DocumentObject *DocumentObjectGroup::getObject(const char *Name) const
     return 0;
 }
 
-bool DocumentObjectGroup::hasObject(const DocumentObject* obj) const
+bool DocumentObjectGroup::hasObject(const DocumentObject* obj, bool recursive) const
 {
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj)
+        if (*it == obj) {
             return true;
+        } else if ( recursive && (*it)->isDerivedFrom (App::DocumentObjectGroup::getTypeId()) ) {
+            App::DocumentObjectGroup *subGroup = static_cast<App::DocumentObjectGroup *> (*it);
+            if (subGroup->hasObject (obj, recursive)) {
+                return true;
+            }
+        }
     }
 
     return false;

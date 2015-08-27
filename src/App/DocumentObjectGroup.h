@@ -64,8 +64,10 @@ public:
     DocumentObject *getObject(const char* Name) const;
     /**
      * Checks whether the object \a obj is part of this group.
+     * @param obj        the object to check for.
+     * @param recursive  if true check also if the obj is child of some sub group (default is false).
      */
-    bool hasObject(const DocumentObject* obj) const;
+    bool hasObject(const DocumentObject* obj, bool recursive=false) const;
     /**
      * Checks whether this group object is a child (or sub-child)
      * of the given group object.

@@ -54,7 +54,7 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderPart, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(Gui::ViewProviderPart, Gui::ViewProviderGeoFeatureGroup)
 
 
 /**
@@ -93,10 +93,10 @@ void ViewProviderPart::updateData(const App::Property* prop)
 void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App::Property&)
 {
     App::Part* part = static_cast<App::Part*>(pcObject);
-    if(static_cast<App::Part*>(pcObject)->hasObject(&obj) &&
+    if ( &obj == pcObject || (
         obj.getTypeId() != App::Origin::getClassTypeId() &&
         obj.getTypeId() != App::Plane::getClassTypeId() &&
-        obj.getTypeId() != App::Line::getClassTypeId()) {
+        obj.getTypeId() != App::Line::getClassTypeId() ) ) {
 
         View3DInventorViewer* viewer = static_cast<View3DInventor*>(this->getActiveView())->getViewer();
         SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());

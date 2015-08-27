@@ -57,7 +57,6 @@ public:
     /// Meta descriptons
     App::PropertyMap     Meta;
 
-
     /** License string
     * Holds the short license string for the Item, e.g. CC-BY
     * for the Creative Commons license suit.
@@ -91,13 +90,6 @@ public:
 
     static const char* BaseplaneTypes[3];
     static const char* BaselineTypes[3];
-    
-protected:
-    virtual void onSettingDocument();
-    
-private:    
-    boost::signals::scoped_connection connection;
-    void onDelete(const App::DocumentObject& obj);
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;

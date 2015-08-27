@@ -81,24 +81,6 @@ PyObject *Part::getPyObject()
     return Py::new_reference_to(PythonObject); 
 }
 
-void Part::onSettingDocument() {
-    
-    if(connection.connected())
-        connection.disconnect();
-    
-    getDocument()->signalDeletedObject.connect(boost::bind(&Part::onDelete, this, _1));
-    App::DocumentObject::onSettingDocument();
-}
-
-void Part::onDelete(const App::DocumentObject& obj) {
-    
-    if(&obj == this) {        
-        //delete all child objects if needed
-        this->removeObjectsFromDocument();        
-    }
-}
-
-
 // Python feature ---------------------------------------------------------
 
 // Not quit sure yet makeing Part derivable in Python is good Idea!
