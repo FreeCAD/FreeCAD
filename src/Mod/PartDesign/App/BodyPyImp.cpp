@@ -113,4 +113,12 @@ PyObject* BodyPy::removeFeature(PyObject *args)
     Py_Return;
 }
 
+PyObject*  BodyPy::removeModelFromDocument(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    getBodyPtr()->removeModelFromDocument();
+    Py_Return;
+}
 

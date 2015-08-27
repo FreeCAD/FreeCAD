@@ -57,6 +57,8 @@ public:
     virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
+    virtual bool onDelete(const std::vector<std::string> &);
+
     /// Update the children's highlighting when triggered
     void updateData(const App::Property* prop);
 
