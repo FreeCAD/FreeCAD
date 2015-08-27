@@ -96,19 +96,19 @@ void Workbench::_switchToDocument(const App::Document* doc)
             Gui::Application::Instance->activeView()->setActiveObject(docPart, "Part");
           //if (docPart->countObjectsOfType(PartDesign::Body::getClassTypeId()) < 1)
           //  setUpPart(docPart);
-
-          PartDesign::Body *tempBody = dynamic_cast<PartDesign::Body *> (docPart->getObjectsOfType(PartDesign::Body::getClassTypeId()).front());
-          if (tempBody) {
-              PartDesign::Body *viewBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-              activeBody = viewBody;
-              if (!viewBody)
-                activeBody = tempBody;
-              else if (!docPart->hasObject(viewBody))
-                activeBody = tempBody;
-
-              if (activeBody != viewBody)
-                Gui::Application::Instance->activeView()->setActiveObject(activeBody, PDBODYKEY);
-          }
+// TODO Commented out for thurther remove or rewrite  (2015-08-27, Fat-Zer)
+//          PartDesign::Body *tempBody = dynamic_cast<PartDesign::Body *> (docPart->getObjectsOfType(PartDesign::Body::getClassTypeId()).front());
+//          if (tempBody) {
+//              PartDesign::Body *viewBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+//              activeBody = viewBody;
+//              if (!viewBody)
+//                activeBody = tempBody;
+//              else if (!docPart->hasObject(viewBody))
+//                activeBody = tempBody;
+//
+//              if (activeBody != viewBody)
+//                Gui::Application::Instance->activeView()->setActiveObject(activeBody, PDBODYKEY);
+//          }
       }
     }
 
