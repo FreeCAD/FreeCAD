@@ -1116,8 +1116,6 @@ void Application::initTypes(void)
     // Document classes
     App ::DocumentObject            ::init();
     App ::GeoFeature                ::init();
-    App ::GeoFeatureGroup           ::init();
-    App ::GeoFeatureGroupPython     ::init();
     App ::FeatureTest               ::init();
     App ::FeatureTestException      ::init();
     App ::FeaturePython             ::init();
@@ -1125,6 +1123,8 @@ void Application::initTypes(void)
     App ::Document                  ::init();
     App ::DocumentObjectGroup       ::init();
     App ::DocumentObjectGroupPython ::init();
+    App ::GeoFeatureGroup           ::init();
+    App ::GeoFeatureGroupPython     ::init();
     App ::DocumentObjectFileIncluded::init();
     App ::InventorObject            ::init();
     App ::VRMLObject                ::init();

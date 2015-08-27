@@ -58,11 +58,6 @@ public:
 
     virtual bool onDelete(const std::vector<std::string> &);
 
-    /// get called if the user hover over a object in the tree 
-    //virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
-    /// get called if the user drops some objects
-    //virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
-
     /// helper to set up the standard content of a Part Object
     static void setUpPart(const App::Part *part);
 protected:

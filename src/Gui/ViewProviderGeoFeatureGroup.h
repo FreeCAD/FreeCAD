@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,12 +26,11 @@
 #define GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
 
 
-#include "ViewProviderGeometryObject.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderDocumentObjectGroup.h"
 
 namespace Gui {
 
-class GuiExport ViewProviderGeoFeatureGroup : public ViewProviderGeometryObject
+class GuiExport ViewProviderGeoFeatureGroup : public ViewProviderDocumentObjectGroup
 {
     PROPERTY_HEADER(Gui::ViewProviderGeoFeatureGroup);
 
@@ -40,23 +40,15 @@ public:
     /// destructor.
     virtual ~ViewProviderGeoFeatureGroup();
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
-    virtual SoGroup* getChildRoot(void) const {return pcGroupChildren;};      
+    virtual SoGroup* getChildRoot(void) const {return pcGroupChildren;};
 
-    QIcon getIcon(void) const;
     virtual void attach(App::DocumentObject* pcObject);
     virtual void setDisplayMode(const char* ModeName);
     virtual std::vector<std::string> getDisplayModes(void) const;
 
-    virtual bool onDelete(const std::vector<std::string> &);
-
-    /// get called if the user hover over a object in the tree 
-    //virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
-    /// get called if the user drops some objects
-    //virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
-    
+    virtual void updateData(const App::Property*);
 protected:
     SoGroup *pcGroupChildren;
 };

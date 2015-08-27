@@ -125,8 +125,13 @@ public:
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const
     { return std::vector<Base::Vector3d>(); }
-    /// get called if the object is about to get deleted. Here you can delete other objects to or switch visibility of others.
-    virtual bool onDelete(const std::vector<std::string> &)
+    /**
+     * Get called if the object is about to get deleted.
+     * Here you can delete other objects, switch their visibility or prevent the deletion of the object.
+     * @param subNames  list of selected subelements
+     * @return          true if the deletion is approoved by the view provider.
+     */
+    virtual bool onDelete(const std::vector<std::string> &subNames)
     { return true;}
     //@}
 

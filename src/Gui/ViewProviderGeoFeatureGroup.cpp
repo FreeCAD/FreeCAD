@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,36 +25,21 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QPixmap>
+# include <Inventor/nodes/SoGroup.h>
 #endif
 
-#include <App/Part.h>
-#include <App/Document.h>
+#include <App/GeoFeatureGroup.h>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderGeoFeatureGroup.h"
-#include "Application.h"
-#include "Command.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "Tree.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
 
 
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderDocumentObjectGroup)
 
-
-/**
- * Creates the view provider for an object group.
- */
 ViewProviderGeoFeatureGroup::ViewProviderGeoFeatureGroup()
 {
-
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();
 }
@@ -64,64 +50,71 @@ ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup()
     pcGroupChildren = 0;
 }
 
+std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren3D(void) const {
+    App::GeoFeatureGroup *geoGroup = static_cast<App::GeoFeatureGroup *>(getObject());
+    const auto & objs = geoGroup->Group.getValues();
 
+    std::set<App::DocumentObject*> rvSet;
+    // search recursively for all non-geoGroups and claim their children either
+    std::set<App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
 
-std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren(void)const
-{
-    return std::vector<App::DocumentObject*>(static_cast<App::Part*>(getObject())->Items.getValues());
-}
+    for ( auto objIt = curSearchSet.begin(); !curSearchSet.empty();
+            curSearchSet.erase (objIt), objIt = curSearchSet.begin() ) {
+        // Check if we havent already processed the element may happen in case of nontree structure
+        // Note: this case generally indicates malformed structure
+        if ( rvSet.find (*objIt) != rvSet.end() ) {
+            continue;
+        }
 
-std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren3D(void)const
-{
-   return std::vector<App::DocumentObject*>(static_cast<App::Part*>(getObject())->Items.getValues());
-}
+        rvSet.insert (*objIt);
 
+        if ( (*objIt)->isDerivedFrom ( App::DocumentObjectGroup::getClassTypeId () ) &&
+            !(*objIt)->isDerivedFrom ( App::GeoFeatureGroup::getClassTypeId () ) ) {
 
-bool ViewProviderGeoFeatureGroup::onDelete(const std::vector<std::string> &)
-{
-    //Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-    //                                 ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
-    return true;
-}
+            // add the non-GeoGroup's content to search
+            App::DocumentObjectGroup *group = static_cast<App::DocumentObjectGroup *> (*objIt);
+            const auto & objs = group->Group.getValues();
 
+            curSearchSet.insert ( objs.begin(), objs.end() );
+        }
+    }
 
-
-/**
- * Returns the pixmap for the list item.
- */
-QIcon ViewProviderGeoFeatureGroup::getIcon() const
-{
-    QIcon groupIcon;
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon),
-                        QIcon::Normal, QIcon::Off);
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirOpenIcon),
-                        QIcon::Normal, QIcon::On);
-    return groupIcon;
+    return std::vector<App::DocumentObject*> ( rvSet.begin(), rvSet.end() );
 }
 
 void ViewProviderGeoFeatureGroup::attach(App::DocumentObject* pcObject)
 {
-    addDisplayMaskMode(pcGroupChildren, "Part");
-    Gui::ViewProviderGeometryObject::attach(pcObject);
+    addDisplayMaskMode(pcGroupChildren, "Group");
+    Gui::ViewProviderDocumentObjectGroup::attach(pcObject);
 }
 
 void ViewProviderGeoFeatureGroup::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("Part",ModeName)==0 )
-        setDisplayMaskMode("Part");
+    if ( strcmp("Group",ModeName)==0 )
+        setDisplayMaskMode("Group");
 
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    ViewProviderDocumentObjectGroup::setDisplayMode( ModeName );
 }
 
 std::vector<std::string> ViewProviderGeoFeatureGroup::getDisplayModes(void) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
+    std::vector<std::string> StrList = ViewProviderDocumentObjectGroup::getDisplayModes();
 
     // add your own modes
-    StrList.push_back("Part");
+    StrList.push_back("Group");
 
     return StrList;
+}
+
+void ViewProviderGeoFeatureGroup::updateData(const App::Property* prop)
+{
+    if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
+             strcmp(prop->getName(), "Placement") == 0) {
+        setTransformation ( static_cast<const App::PropertyPlacement*>(prop)->getValue().toMatrix() );
+    } else {
+        ViewProviderDocumentObjectGroup::updateData ( prop );
+    }
 }
 
 // Python feature -----------------------------------------------------------------------

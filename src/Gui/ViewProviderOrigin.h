@@ -48,7 +48,10 @@ public:
     
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
-    
+
+    virtual bool canDragObjects() const;
+    virtual bool canDropObjects() const;
+
     virtual QIcon getIcon(void) const;
     
     //temporary mode to override visibility of grouped objects

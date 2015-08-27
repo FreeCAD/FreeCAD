@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,15 +28,15 @@
 #endif
 
 #include <App/Document.h>
+
 #include "GeoFeatureGroup.h"
 #include "GeoFeatureGroupPy.h"
 #include "FeaturePythonPyImp.h"
 
-
 using namespace App;
 
 
-PROPERTY_SOURCE(App::GeoFeatureGroup, App::GeoFeature)
+PROPERTY_SOURCE(App::GeoFeatureGroup, App::DocumentObjectGroup)
 
 
 //===========================================================================
@@ -44,130 +45,33 @@ PROPERTY_SOURCE(App::GeoFeatureGroup, App::GeoFeature)
 
 GeoFeatureGroup::GeoFeatureGroup(void)
 {
-    ADD_PROPERTY(Items,(0));
+    ADD_PROPERTY(Placement,(Base::Placement()));
 }
 
 GeoFeatureGroup::~GeoFeatureGroup(void)
 {
 }
 
-DocumentObject* GeoFeatureGroup::addObject(const char* sType, const char* pObjectName)
+void GeoFeatureGroup::transformPlacement(const Base::Placement &transform)
 {
-    DocumentObject* obj = getDocument()->addObject(sType, pObjectName);
-    if (obj) addObject(obj);
-    return obj;
+    // NOTE: Keep in sync with APP::GeoFeature
+    Base::Placement plm = this->Placement.getValue();
+    plm = transform * plm;
+    this->Placement.setValue(plm);
 }
 
-void GeoFeatureGroup::addObject(DocumentObject* obj)
+GeoFeatureGroup* GeoFeatureGroup::getGroupOfObject(const DocumentObject* obj)
 {
-    if (!hasObject(obj)) {
-        std::vector<DocumentObject*> grp = Items.getValues();
-        grp.push_back(obj);
-        Items.setValues(grp);
-    }
-}
-
-void GeoFeatureGroup::removeObject(DocumentObject* obj)
-{
-    std::vector<DocumentObject*> grp = Items.getValues();
-    for (std::vector<DocumentObject*>::iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj) {
-            grp.erase(it);
-            Items.setValues(grp);
-            break;
-        }
-    }
-}
-
-void GeoFeatureGroup::removeObjectsFromDocument()
-{
-    std::vector<DocumentObject*> grp = Items.getValues();
-    for (std::vector<DocumentObject*>::iterator it = grp.begin(); it != grp.end(); ++it) {
-        removeObjectFromDocument(*it);
-    }
-}
-
-void GeoFeatureGroup::removeObjectFromDocument(DocumentObject* obj)
-{
-    // remove all children
-    if (obj->getTypeId().isDerivedFrom(GeoFeatureGroup::getClassTypeId())) {
-        std::vector<DocumentObject*> grp = static_cast<GeoFeatureGroup*>(obj)->Items.getValues();
-        for (std::vector<DocumentObject*>::iterator it = grp.begin(); it != grp.end(); ++it) {
-            // recursive call to remove all subgroups
-            removeObjectFromDocument(*it);
-        }
+    const Document* doc = obj->getDocument();
+    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GeoFeatureGroup::getClassTypeId());
+    for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
+        GeoFeatureGroup* grp = (GeoFeatureGroup*)(*it);
+        if (grp->hasObject(obj))
+            return grp;
     }
 
-    this->getDocument()->remObject(obj->getNameInDocument(), true);
-}
-
-DocumentObject *GeoFeatureGroup::getObject(const char *Name) const
-{
-    DocumentObject* obj = getDocument()->getObject(Name);
-    if (obj && hasObject(obj))
-        return obj;
     return 0;
 }
-
-bool GeoFeatureGroup::hasObject(const DocumentObject* obj, bool recursive) const
-{
-    const std::vector<DocumentObject*>& grp = Items.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj)
-            return true;
-        if (recursive && (*it)->getTypeId().isDerivedFrom(GeoFeatureGroup::getClassTypeId())) {
-            if (static_cast<GeoFeatureGroup*>(*it)->hasObject(obj, recursive))
-                return true;
-        }
-    }
-
-    return false;
-}
-
-bool GeoFeatureGroup::isChildOf(const GeoFeatureGroup* group) const
-{
-    const std::vector<DocumentObject*>& grp = group->Items.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == this)
-            return true;
-        if ((*it)->getTypeId().isDerivedFrom(GeoFeatureGroup::getClassTypeId())) {
-            if (this->isChildOf(static_cast<GeoFeatureGroup*>(*it)))
-                return true;
-        }
-    }
-
-    return false;
-}
-
-std::vector<DocumentObject*> GeoFeatureGroup::getObjects() const
-{
-    return Items.getValues();
-}
-
-std::vector<DocumentObject*> GeoFeatureGroup::getObjectsOfType(const Base::Type& typeId) const
-{
-    std::vector<DocumentObject*> type;
-    const std::vector<DocumentObject*>& grp = Items.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
-            type.push_back(*it);
-    }
-
-    return type;
-}
-
-int GeoFeatureGroup::countObjectsOfType(const Base::Type& typeId) const
-{
-    int type=0;
-    const std::vector<DocumentObject*>& grp = Items.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
-            type++;
-    }
-
-    return type;
-}
-
 
 PyObject *GeoFeatureGroup::getPyObject()
 {
@@ -175,7 +79,7 @@ PyObject *GeoFeatureGroup::getPyObject()
         // ref counter is set to 1
         PythonObject = Py::Object(new GeoFeatureGroupPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 // Python feature ---------------------------------------------------------

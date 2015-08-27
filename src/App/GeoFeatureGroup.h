@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2014     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,76 +25,48 @@
 #ifndef APP_GeoFeatureGroup_H
 #define APP_GeoFeatureGroup_H
 
-#include "GeoFeature.h"
-#include "PropertyLinks.h"
 #include <App/FeaturePython.h>
 
+#include "DocumentObjectGroup.h"
+#include "PropertyGeo.h"
 
 namespace App
 {
 
-
-/** Base class of all geometric document objects.
+/**
+ * The base class for placeable group of DocumentObjects
  */
-class AppExport GeoFeatureGroup : public App::GeoFeature
+class AppExport GeoFeatureGroup : public App::DocumentObjectGroup
 {
     PROPERTY_HEADER(App::GeoFeatureGroup);
 
 public:
-    PropertyLinkList Items;
+    PropertyPlacement Placement;
 
+    /**
+     * @brief transformPlacement applies transform to placement of this shape.
+     * Override this function to propagate the change of placement to base
+     * features, for example. By the time of writing this comment, the function
+     * was only called by alignment task (Edit->Alignment)
+     * @param transform (input).
+     */
+    virtual void transformPlacement(const Base::Placement &transform);
     /// Constructor
     GeoFeatureGroup(void);
     virtual ~GeoFeatureGroup();
+
+    /** Returns the geo feature group which contains this object.
+     * In case this object is not part of any geoFeatureGroup 0 is returned.
+     * Unlike DocumentObjectGroup::getGroupOfObject serches only for GeoFeatureGroups
+     */
+    static GeoFeatureGroup* getGroupOfObject(const DocumentObject* obj);
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "Gui::ViewProviderGeoFeatureGroup";
     }
-    /** @name Object handling  */
-    //@{
-    /** Adds an object of \a sType with \a pObjectName to the document this group belongs to and 
-     * append it to this group as well.
-     */
-    DocumentObject *addObject(const char* sType, const char* pObjectName);
-    /* Adds the object \a obj to this group. 
-     */
-    void addObject(DocumentObject* obj);
-    /** Removes an object from this group.
-     */
-    void removeObject(DocumentObject* obj);
-    /** Removes all children objects from this group and the document.
-     */
-    void removeObjectsFromDocument();
-    /** Returns the object of this group with \a Name. If the group doesn't have such an object 0 is returned.
-     * @note This method might return 0 even if the document this group belongs to contains an object with this name.
-     */
-    DocumentObject *getObject(const char* Name) const;
-    /**
-     * Checks whether the object \a obj is GeoFeatureGroup of this group.
-     */
-    bool hasObject(const App::DocumentObject* obj, bool recursive = false) const;
-    /**
-     * Checks whether this group object is a child (or sub-child)
-     * of the given group object.
-     */
-    bool isChildOf(const GeoFeatureGroup*) const;
-    /** Returns a list of all objects this group does have.
-     */
-    std::vector<DocumentObject*> getObjects() const;
-    /** Returns a list of all objects of \a typeId this group does have.
-     */
-    std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
-    /** Returns the number of objects of \a typeId this group does have.
-     */
-    int countObjectsOfType(const Base::Type& typeId) const;
-    //@}
 
     virtual PyObject *getPyObject(void);
-
-private:
-    void removeObjectFromDocument(DocumentObject*);
-
 };
 
 typedef App::FeaturePythonT<GeoFeatureGroup> GeoFeatureGroupPython;

@@ -53,7 +53,7 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderGeoFeatureGroup)
 
 
 /**
@@ -69,6 +69,18 @@ ViewProviderOrigin::ViewProviderOrigin()
 ViewProviderOrigin::~ViewProviderOrigin()
 {
 }
+
+
+bool ViewProviderOrigin::canDragObjects() const
+{
+    return false;
+}
+
+bool ViewProviderOrigin::canDropObjects() const
+{
+    return false;
+}
+
 
 bool ViewProviderOrigin::setEdit(int ModNum)
 {
