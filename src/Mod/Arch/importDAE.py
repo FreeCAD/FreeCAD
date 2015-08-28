@@ -111,7 +111,7 @@ def read(filename):
             obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature","Mesh")
             obj.Mesh = newmesh
 
-def export(exportList,filename):
+def export(exportList,filename,tessellation=1):
     "called when freecad exports a file"
     if not checkCollada(): return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -128,24 +128,14 @@ def export(exportList,filename):
         vindex = []
         nindex = []
         findex = []
+        m = None
         if obj.isDerivedFrom("Part::Feature"):
             print "exporting object ",obj.Name, obj.Shape
-            m = obj.Shape.tessellate(1)
-            # vertex indices
-            for v in m[0]:
-                vindex.extend([v.x*scale,v.y*scale,v.z*scale])
-            # normals
-            for f in obj.Shape.Faces:
-                n = f.normalAt(0,0)
-                for i in range(len(f.tessellate(1)[1])):
-                    nindex.extend([n.x,n.y,n.z])
-            # face indices
-            for i in range(len(m[1])):
-                f = m[1][i]
-                findex.extend([f[0],i,f[1],i,f[2],i])
+            m = Mesh.Mesh(obj.Shape.tessellate(tessellation))
         elif obj.isDerivedFrom("Mesh::Feature"):
             print "exporting object ",obj.Name, obj.Mesh
             m = obj.Mesh
+        if m:
             # vertex indices
             for v in m.Topology[0]:
                 vindex.extend([v.x*scale,v.y*scale,v.z*scale])
