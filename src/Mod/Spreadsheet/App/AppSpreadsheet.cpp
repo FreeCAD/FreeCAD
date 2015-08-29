@@ -17,7 +17,7 @@
 
 #include <Base/Console.h>
 #include "Sheet.h"
-#include "Expression.h"
+#include "SpreadsheetExpression.h"
 
 
 /* registration table  */

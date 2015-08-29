@@ -46,6 +46,7 @@
 #include <Base/Console.h>
 #include <sstream>
 
+using namespace Base;
 using namespace Gui;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -137,7 +138,7 @@ void ViewProviderSheet::setupContextMenu(QMenu * menu, QObject *receiver, const 
 
 Sheet *ViewProviderSheet::getSpreadsheetObject() const
 {
-    return Spreadsheet::freecad_dynamic_cast<Sheet>(pcObject);
+    return freecad_dynamic_cast<Sheet>(pcObject);
 }
 
 bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
@@ -149,7 +150,7 @@ bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
     // View is not closed, delete cell contents instead if it is active
     if (Gui::Application::Instance->activeDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView * sheetView = Spreadsheet::freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+        SpreadsheetGui::SheetView * sheetView = freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
 
         if (sheetView) {
             Sheet * sheet = sheetView->getSheet();

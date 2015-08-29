@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSION_H
-#define EXPRESSION_H
+#ifndef SPREADSHEET_EXPRESSION_H
+#define SPREADSHEET_EXPRESSION_H
 
 #include <string>
 #include <App/DocumentObject.h>

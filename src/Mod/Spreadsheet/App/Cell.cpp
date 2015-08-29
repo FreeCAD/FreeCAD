@@ -30,7 +30,7 @@
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include "Expression.h"
+#include "SpreadsheetExpression.h"
 #include "Sheet.h"
 #include <iomanip>
 
@@ -38,7 +38,7 @@
 #define __func__ __FUNCTION__
 #endif
 
-using namespace App;
+using namespace Base;
 using namespace Spreadsheet;
 
 const int Cell::EXPRESSION_SET       = 1;
@@ -183,7 +183,7 @@ const Expression *Cell::getExpression() const
 bool Cell::getStringContent(std::string & s) const
 {
     if (expression) {
-        if (Spreadsheet::freecad_dynamic_cast<StringExpression>(expression)) {
+        if (freecad_dynamic_cast<StringExpression>(expression)) {
             s = static_cast<StringExpression*>(expression)->getText();
             char * end;
             errno = 0;
@@ -192,9 +192,9 @@ bool Cell::getStringContent(std::string & s) const
             if (!*end && errno == 0)
                 s = "'" + s;
         }
-        else if (Spreadsheet::freecad_dynamic_cast<ConstantExpression>(expression))
+        else if (freecad_dynamic_cast<ConstantExpression>(expression))
             s = "=" + expression->toString();
-        else if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(expression))
+        else if (freecad_dynamic_cast<NumberExpression>(expression))
             s = expression->toString();
         else
             s = "=" + expression->toString();
@@ -307,7 +307,7 @@ bool Cell::getStyle(std::set<std::string> & _style) const
   *
   */
 
-void Cell::setForeground(const Color &color)
+void Cell::setForeground(const App::Color &color)
 {
     if (color != foregroundColor) {
         PropertySheet::Signaller signaller(*owner);
@@ -322,7 +322,7 @@ void Cell::setForeground(const Color &color)
   *
   */
 
-bool Cell::getForeground(Color &color) const
+bool Cell::getForeground(App::Color &color) const
 {
     color = foregroundColor;
     return isUsed(FOREGROUND_COLOR_SET);
@@ -333,7 +333,7 @@ bool Cell::getForeground(Color &color) const
   *
   */
 
-void Cell::setBackground(const Color &color)
+void Cell::setBackground(const App::Color &color)
 {
     if (color != backgroundColor) {
         PropertySheet::Signaller signaller(*owner);
@@ -350,7 +350,7 @@ void Cell::setBackground(const Color &color)
   *
   */
 
-bool Cell::getBackground(Color &color) const
+bool Cell::getBackground(App::Color &color) const
 {
     color = backgroundColor;
     return isUsed(BACKGROUND_COLOR_SET);
@@ -569,12 +569,12 @@ void Cell::restore(Base::XMLReader &reader)
         setAlignment(alignmentCode);
     }
     if (foregroundColor) {
-        Color color = decodeColor(foregroundColor, Color(0, 0, 0, 1));
+        App::Color color = decodeColor(foregroundColor, App::Color(0, 0, 0, 1));
 
         setForeground(color);
     }
     if (backgroundColor) {
-        Color color = decodeColor(backgroundColor, Color(1, 1, 1, 1));
+        App::Color color = decodeColor(backgroundColor, App::Color(1, 1, 1, 1));
 
         setBackground(color);
     }
@@ -609,7 +609,7 @@ void Cell::save(Base::Writer &writer) const
         std::string content;
 
         getStringContent(content);
-        writer.Stream() << "content=\"" << Property::encodeAttribute(content) << "\" ";
+        writer.Stream() << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
     }
 
     if (isUsed(ALIGNMENT_SET))
@@ -625,10 +625,10 @@ void Cell::save(Base::Writer &writer) const
         writer.Stream() << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
 
     if (isUsed(DISPLAY_UNIT_SET))
-        writer.Stream() << "displayUnit=\"" << Property::encodeAttribute(displayUnit.stringRep) << "\" ";
+        writer.Stream() << "displayUnit=\"" << App::Property::encodeAttribute(displayUnit.stringRep) << "\" ";
 
     if (isUsed(ALIAS_SET))
-        writer.Stream() << "alias=\"" << Property::encodeAttribute(alias) << "\" ";
+        writer.Stream() << "alias=\"" << App::Property::encodeAttribute(alias) << "\" ";
 
     if (isUsed(SPANS_SET)) {
         writer.Stream() << "rowSpan=\"" << rowSpan<< "\" ";
@@ -759,7 +759,7 @@ std::string Cell::encodeAlignment(int alignment)
   *
   */
 
-std::string Cell::encodeColor(const Color & color)
+std::string Cell::encodeColor(const App::Color & color)
 {
     std::stringstream tmp;
 
@@ -807,10 +807,10 @@ std::string Cell::encodeStyle(const std::set<std::string> & style)
   *
   */
 
-Color Cell::decodeColor(const std::string & color, const Color & defaultColor)
+App::Color Cell::decodeColor(const std::string & color, const App::Color & defaultColor)
 {
     if (color.size() == 7 || color.size() == 9) {
-        Color c;
+        App::Color c;
 
         if (color[0] != '#')
             return defaultColor;

@@ -41,7 +41,7 @@
 #include <stack>
 #include <deque>
 #include <algorithm>
-#include "Expression.h"
+#include "SpreadsheetExpression.h"
 #include <Base/Unit.h>
 #include <App/PropertyUnits.h>
 #include "Utils.h"
@@ -65,7 +65,6 @@
 #endif
 
 using namespace Base;
-using namespace App;
 using namespace Spreadsheet;
 
 Path::Path(const App::DocumentObject * _owner, const std::string & property)
@@ -141,7 +140,7 @@ int Path::numComponents() const
     return components.size();
 }
 
-Path Path::parse(const DocumentObject * docObj, const char *expr)
+Path Path::parse(const App::DocumentObject * docObj, const char *expr)
 {
     return Path();
 }
@@ -173,17 +172,17 @@ std::string Path::toString() const
 
 std::string Path::getPythonAccessor() const
 {
-    const Property * prop = getProperty();
+    const App::Property * prop = getProperty();
 
     if (!prop)
         throw Exception(std::string("Property '") + getPropertyName() + std::string("' not found."));
 
-    const DocumentObject * docObj = Spreadsheet::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+    const App::DocumentObject * docObj = freecad_dynamic_cast<App::DocumentObject>(prop->getContainer());
 
     if (!docObj)
         throw Exception("Document object not found");
 
-    const Document * doc = docObj->getDocument();
+    const App::Document * doc = docObj->getDocument();
 
     return "App.getDocument('" +
             std::string(doc->getName()) + "')." +
@@ -296,7 +295,7 @@ std::string Path::Component::toString() const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Spreadsheet::Expression, Base::BaseClass);
 
-Expression::Expression(const DocumentObject *_owner)
+Expression::Expression(const App::DocumentObject *_owner)
     : owner(_owner)
 {
 
@@ -306,7 +305,7 @@ Expression::~Expression()
 {
 }
 
-Expression * Expression::parse(const DocumentObject *owner, const std::string &buffer)
+Expression * Expression::parse(const App::DocumentObject *owner, const std::string &buffer)
 {
     return ExpressionParser::parse(owner, buffer.c_str());
 }
@@ -317,7 +316,7 @@ Expression * Expression::parse(const DocumentObject *owner, const std::string &b
 
 TYPESYSTEM_SOURCE(Spreadsheet::UnitExpression, Spreadsheet::Expression);
 
-UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantity & _quantity, const std::string &_unitStr)
+UnitExpression::UnitExpression(const App::DocumentObject *_owner, const Base::Quantity & _quantity, const std::string &_unitStr)
     : Expression(_owner)
     , quantity(_quantity)
     , unitStr(_unitStr)
@@ -386,7 +385,7 @@ Expression *UnitExpression::copy() const
 
 TYPESYSTEM_SOURCE(Spreadsheet::NumberExpression, Spreadsheet::Expression);
 
-NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity &_quantity)
+NumberExpression::NumberExpression(const App::DocumentObject *_owner, const Quantity &_quantity)
     : UnitExpression(_owner, _quantity)
 {
 }
@@ -483,8 +482,8 @@ Expression * OperatorExpression::eval() const
     NumberExpression * v2;
     NumberExpression * output = 0;
 
-    v1 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e1.get());
-    v2 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e2.get());
+    v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
+    v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
 
     if (v1 == 0 || v2 == 0)
         throw Exception("Invalid expression");
@@ -567,7 +566,7 @@ Expression *OperatorExpression::simplify() const
     Expression * v2 = right->simplify();
 
     // Both arguments reduced to numerics? Then evaluate and return answer
-    if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(v1) && Spreadsheet::freecad_dynamic_cast<NumberExpression>(v2)) {
+    if (freecad_dynamic_cast<NumberExpression>(v1) && freecad_dynamic_cast<NumberExpression>(v2)) {
         delete v1;
         delete v2;
         return eval();
@@ -718,7 +717,7 @@ void OperatorExpression::visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(Spreadsheet::FunctionExpression, Spreadsheet::UnitExpression);
 
-FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::vector<Expression *> _args)
+FunctionExpression::FunctionExpression(const App::DocumentObject *_owner, Function _f, std::vector<Expression *> _args)
     : UnitExpression(_owner)
     , f(_f)
     , args(_args)
@@ -785,7 +784,7 @@ Expression * FunctionExpression::eval() const
     case MIN:
     case MAX:
     {
-        RangeExpression * v = Spreadsheet::freecad_dynamic_cast<RangeExpression>(args[0]);
+        RangeExpression * v = freecad_dynamic_cast<RangeExpression>(args[0]);
         Quantity q;
         Quantity mean;
         Quantity M2;
@@ -799,17 +798,17 @@ Expression * FunctionExpression::eval() const
         Range range(v->getRange());
 
         do {
-            Property * p = owner->getPropertyByName(range.address().c_str());
-            PropertyQuantity * qp;
-            PropertyFloat * fp;
+            App::Property * p = owner->getPropertyByName(range.address().c_str());
+            App::PropertyQuantity * qp;
+            App::PropertyFloat * fp;
             Quantity value;
 
             if (!p)
                 continue;
 
-            if ( (qp = Spreadsheet::freecad_dynamic_cast<PropertyQuantity>(p)) )
+            if ( (qp = freecad_dynamic_cast<App::PropertyQuantity>(p)) )
                 value = qp->getQuantityValue();
-            else if ( (fp = Spreadsheet::freecad_dynamic_cast<PropertyFloat>(p)) )
+            else if ( (fp = freecad_dynamic_cast<App::PropertyFloat>(p)) )
                 value = fp->getValue();
             else
                 throw Exception("Invalid property type for aggregate");
@@ -875,8 +874,8 @@ Expression * FunctionExpression::eval() const
 
     std::auto_ptr<Expression> e1(args[0]->eval());
     std::auto_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
-    NumberExpression * v1 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e1.get());
-    NumberExpression * v2 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e2.get());
+    NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
+    NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
     double output = 0;
     Unit unit;
     double scaler = 1;
@@ -1055,7 +1054,7 @@ Expression *FunctionExpression::simplify() const
     Expression * v1 = args[0]->simplify();
 
     // Argument simplified to numeric expression? Then return evaluate and return
-    if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(v1)) {
+    if (freecad_dynamic_cast<NumberExpression>(v1)) {
         switch (f) {
         case ATAN2:
         case MOD:
@@ -1063,7 +1062,7 @@ Expression *FunctionExpression::simplify() const
         {
             Expression * v2 = args[1]->simplify();
 
-            if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(v2)) {
+            if (freecad_dynamic_cast<NumberExpression>(v2)) {
                 delete v1;
                 delete v2;
                 return eval();
@@ -1199,7 +1198,7 @@ void FunctionExpression::visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(Spreadsheet::VariableExpression, Spreadsheet::UnitExpression);
 
-VariableExpression::VariableExpression(const DocumentObject *_owner, Path _var)
+VariableExpression::VariableExpression(const App::DocumentObject *_owner, Path _var)
     : UnitExpression(_owner)
     , var(_var)
 {
@@ -1228,11 +1227,11 @@ bool VariableExpression::isTouched() const
 
 const App::DocumentObject * Path::getDocumentObject(const App::Document * doc, const std::string & name) const
 {
-    DocumentObject * o1 = 0;
-    DocumentObject * o2 = 0;
-    std::vector<DocumentObject*> docObjects = doc->getObjects();
+    App::DocumentObject * o1 = 0;
+    App::DocumentObject * o2 = 0;
+    std::vector<App::DocumentObject*> docObjects = doc->getObjects();
 
-    for (std::vector<DocumentObject*>::iterator j = docObjects.begin(); j != docObjects.end(); ++j) {
+    for (std::vector<App::DocumentObject*>::iterator j = docObjects.begin(); j != docObjects.end(); ++j) {
         if (strcmp((*j)->Label.getValue(), name.c_str()) == 0) {
             // Found object with matching label
             if (o1 != 0)
@@ -1323,7 +1322,7 @@ void Path::resolve()
     }
 }
 
-Document * Path::getDocument() const
+App::Document * Path::getDocument() const
 {
     App::Document * doc = 0;
     const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
@@ -1339,7 +1338,7 @@ Document * Path::getDocument() const
     return doc;
 }
 
-const DocumentObject *Path::getDocumentObject() const
+const App::DocumentObject *Path::getDocumentObject() const
 {
     const App::Document * doc = getDocument();
 
@@ -1349,7 +1348,7 @@ const DocumentObject *Path::getDocumentObject() const
     return  getDocumentObject(doc, documentObjectName);
 }
 
-const Property *Path::getProperty() const
+const App::Property *Path::getProperty() const
 {
     const App::Document * doc = getDocument();
 
@@ -1376,12 +1375,12 @@ const Property *Path::getProperty() const
   * @returns The Property object if it is derived from either PropertyInteger, PropertyFloat, or PropertyString.
   */
 
-const Property * VariableExpression::getProperty() const
+const App::Property * VariableExpression::getProperty() const
 {
 #ifdef FULL_EXPRESSION_SUPPORT
     const Property * prop = docObject->getPropertyByPath(var);
 #else
-    const Property * prop = var.getProperty();
+    const App::Property * prop = var.getProperty();
 #endif
     if (prop)
         return prop;
@@ -1523,7 +1522,7 @@ void VariableExpression::renameDocument(const std::string &oldName, const std::s
 
 TYPESYSTEM_SOURCE(Spreadsheet::StringExpression, Spreadsheet::Expression);
 
-StringExpression::StringExpression(const DocumentObject *_owner, const std::string &_text)
+StringExpression::StringExpression(const App::DocumentObject *_owner, const std::string &_text)
     : Expression(_owner)
     , text(_text)
 {
@@ -1563,7 +1562,7 @@ Expression *StringExpression::copy() const
 
 TYPESYSTEM_SOURCE(Spreadsheet::ConditionalExpression, Spreadsheet::Expression);
 
-ConditionalExpression::ConditionalExpression(const DocumentObject *_owner, Expression *_condition, Expression *_trueExpr, Expression *_falseExpr)
+ConditionalExpression::ConditionalExpression(const App::DocumentObject *_owner, Expression *_condition, Expression *_trueExpr, Expression *_falseExpr)
     : Expression(_owner)
     , condition(_condition)
     , trueExpr(_trueExpr)
@@ -1586,7 +1585,7 @@ bool ConditionalExpression::isTouched() const
 Expression *ConditionalExpression::eval() const
 {
     std::auto_ptr<Expression> e(condition->eval());
-    NumberExpression * v = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e.get());
+    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
         throw Exception("Invalid expression");
@@ -1600,7 +1599,7 @@ Expression *ConditionalExpression::eval() const
 Expression *ConditionalExpression::simplify() const
 {
     std::auto_ptr<Expression> e(condition->simplify());
-    NumberExpression * v = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e.get());
+    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
@@ -1643,7 +1642,7 @@ void ConditionalExpression::visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(Spreadsheet::ConstantExpression, Spreadsheet::NumberExpression);
 
-ConstantExpression::ConstantExpression(const DocumentObject *_owner, std::string _name, const Quantity & _quantity)
+ConstantExpression::ConstantExpression(const App::DocumentObject *_owner, std::string _name, const Quantity & _quantity)
     : NumberExpression(_owner, _quantity)
     , name(_name)
 {
@@ -1702,15 +1701,19 @@ static std::stack<std::string> labels;                /**< Label string primitiv
 static std::map<std::string, FunctionExpression::Function> registered_functions;                /**< Registerd functions */
 
 // show the parser the lexer method
+#undef YYTOKENTYPE
+#undef YYSTYPE
+#undef YYSTYPE_ISDECLARED
 #define yylex ExpressionParserlex
 int ExpressionParserlex(void);
 
 // Parser, defined in ExpressionParser.y
-#include "ExpressionParser.tab.c"
+#include <Mod/Spreadsheet/App/ExpressionParser.tab.c>
+#include <Mod/Spreadsheet/App/ExpressionParser.tab.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in ExpressionParser.l
-#include "lex.ExpressionParser.c"
+#include <Mod/Spreadsheet/App/lex.ExpressionParser.c>
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 #ifdef _MSC_VER
 # define strdup _strdup
@@ -1776,7 +1779,7 @@ std::string Path::String::toString() const
 
 TYPESYSTEM_SOURCE(Spreadsheet::RangeExpression, Spreadsheet::Expression);
 
-RangeExpression::RangeExpression(const DocumentObject *_owner, const std::string &begin, const std::string &end)
+RangeExpression::RangeExpression(const App::DocumentObject *_owner, const std::string &begin, const std::string &end)
     : Expression(_owner)
     , range((begin + ":" + end).c_str())
 {
@@ -1787,7 +1790,7 @@ bool RangeExpression::isTouched() const
     Range i(range);
 
     do {
-        Property * prop = owner->getPropertyByName(i.address().c_str());
+        App::Property * prop = owner->getPropertyByName(i.address().c_str());
 
         if (prop && prop->isTouched())
             return true;
@@ -1895,13 +1898,13 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     delete ScanResult;
 
     if (unitExpression) {
-        NumberExpression * num = Spreadsheet::freecad_dynamic_cast<NumberExpression>(simplified);
+        NumberExpression * num = freecad_dynamic_cast<NumberExpression>(simplified);
 
         if (num) {
            simplified = new UnitExpression(num->getOwner(), num->getQuantity());
             delete num;
         }
-        return Spreadsheet::freecad_dynamic_cast<UnitExpression>(simplified);
+        return freecad_dynamic_cast<UnitExpression>(simplified);
     }
     else {
         delete simplified;

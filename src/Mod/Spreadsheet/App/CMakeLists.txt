@@ -17,8 +17,8 @@ set(Spreadsheet_LIBS
 )
 
 set(Spreadsheet_SRCS
-    Expression.cpp
-    Expression.h
+    SpreadsheetExpression.cpp
+    SpreadsheetExpression.h
     Cell.cpp
     Cell.h
     DisplayUnit.h

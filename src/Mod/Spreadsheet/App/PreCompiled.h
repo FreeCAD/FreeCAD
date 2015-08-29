@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) Eivind Kvedalen        (eivind@kvedalen.name) 2015      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,41 +22,58 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef SPREADSHEET_PRECOMPILED_H
+#define SPREADSHEET_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Exporting of App classes
+// Importing of App classes
 #ifdef FC_OS_WIN32
 # define SpreadsheetExport __declspec(dllexport)
+# define SpreadsheetGuiExport __declspec(dllexport)
 #else // for Linux
 # define SpreadsheetExport
+# define SpreadsheetGuiExport
 #endif
 
-/// here get the warnings of to long specifieres disabled (needed for VC6)
+
+// here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#   pragma warning( disable : 4251 )
-#   pragma warning( disable : 4275 )
-#   pragma warning( disable : 4503 )
-#   pragma warning( disable : 4786 )  // specifier longer then 255 chars
+# pragma warning( disable : 4251 )
+# pragma warning( disable : 4503 )
+# pragma warning( disable : 4786 )  // specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
 
-// standard
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
-
+// Python
 #include <Python.h>
 
-#endif // _PreComp_
+// standard
+#include <iostream>
+#include <assert.h>
+#include <math.h>
+
+// STL
+#include <vector>
+#include <map>
+#include <string>
+#include <list>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <bitset>
+
+#ifdef FC_OS_WIN32
+# include <windows.h>
 #endif
 
+// Qt Toolkit
+#ifndef __Qt4All__
+# include <Gui/Qt4All.h>
+#endif
+
+#endif //_PreComp_
+
+#endif // SPREADSHEET_PRECOMPILED_H

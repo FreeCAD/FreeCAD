@@ -31,7 +31,6 @@
 #include "Utils.h"
 #include <PropertyRowHeightsPy.h>
 
-using namespace App;
 using namespace Spreadsheet;
 
 const int PropertyRowHeights::defaultHeight = 20;
@@ -46,7 +45,7 @@ PropertyRowHeights::PropertyRowHeights(const PropertyRowHeights &other)
 {
 }
 
-Property *PropertyRowHeights::Copy() const
+App::Property *PropertyRowHeights::Copy() const
 {
     PropertyRowHeights * prop = new PropertyRowHeights(*this);
 

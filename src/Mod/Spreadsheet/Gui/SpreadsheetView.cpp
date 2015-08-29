@@ -37,7 +37,7 @@
 
 #include "SpreadsheetView.h"
 #include "SpreadsheetDelegate.h"
-#include <Mod/Spreadsheet/App/Expression.h>
+#include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/Range.h>
 #include <Gui/MainWindow.h>
