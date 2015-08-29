@@ -60,7 +60,7 @@ QtCoinCompatibility::SbImageToQImage(const SbImage & sbimage, QImage & img)
                         "Implementation not tested for 3 colors or more"
                            );
   }
-  QImage::Format format;
+  QImage::Format format=QImage::Format_Invalid;
   if (nc==3||nc==4) {
     format=QImage::Format_RGB32;
   }

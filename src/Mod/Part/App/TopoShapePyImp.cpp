@@ -1748,18 +1748,21 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     pSuppType1 = PyString_FromString("Vertex");
                     pSupportIndex1 = _getSupportIndex("Vertex",ts1,suppS1);
                     pParm1 = Py_None;
+                    pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsOnEdge:
                     pSuppType1 = PyString_FromString("Edge");
                     pSupportIndex1 = _getSupportIndex("Edge",ts1,suppS1);
                     extss.ParOnEdgeS1(i,t1);
                     pParm1 = PyFloat_FromDouble(t1);
+                    pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsInFace:
                     pSuppType1 = PyString_FromString("Face");
                     pSupportIndex1 = _getSupportIndex("Face",ts1,suppS1);
                     extss.ParOnFaceS1(i,u1,v1);
                     pParm1 = PyTuple_New(2);
+                    pParm2 = Py_None;
                     PyTuple_SetItem(pParm1,0,PyFloat_FromDouble(u1));
                     PyTuple_SetItem(pParm1,1,PyFloat_FromDouble(v1));
                     break;
@@ -1768,6 +1771,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     pSuppType1 = PyString_FromString("Unknown");
                     pSupportIndex1 = PyInt_FromLong(-1);
                     pParm1 = Py_None;
+                    pParm2 = Py_None;
             }
 
             P2 = extss.PointOnShape2(i);

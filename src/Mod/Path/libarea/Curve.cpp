@@ -86,7 +86,7 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 	if(might_be_an_arc.size() < 2)return false;
 
 	// find middle point
-	int num = might_be_an_arc.size();
+	int num = static_cast<int>(might_be_an_arc.size());
 	int i = 0;
 	const CVertex* mid_vt = NULL;
 	int mid_i = (num-1)/2;
@@ -465,7 +465,7 @@ void CCurve::ChangeStart(const Point &p) {
 
 	bool started = false;
 	bool finished = false;
-	int start_span;
+	int start_span = 0;
 	bool closed = IsClosed();
 
 	for(int i = 0; i < (closed ? 2:1); i++)
@@ -911,7 +911,6 @@ double CCurve::PointToPerim(const Point& p)const
 {
 	double best_dist = 0.0;
 	double perim_at_best_dist = 0.0;
-	Point best_point = Point(0, 0);
 	bool best_dist_found = false;
 
 	double perim = 0.0;

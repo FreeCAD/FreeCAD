@@ -152,9 +152,9 @@ void Trajectory::generateTrajectory(void)
     pcTrajectory = new KDL::Trajectory_Composite();
 
     // pointer to the pieces while iterating
-    KDL::Trajectory_Segment     *pcTrak;
-    KDL::Path                   *pcPath;
-    KDL::VelocityProfile        *pcVelPrf;
+    KDL::Trajectory_Segment     *pcTrak=0;
+    KDL::Path                   *pcPath=0;
+    KDL::VelocityProfile        *pcVelPrf=0;
     KDL::Path_RoundedComposite  *pcRoundComp=0;
     KDL::Frame                  Last;
 

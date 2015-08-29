@@ -152,8 +152,7 @@ bool ViewProviderDrawingPage::onDelete(const std::vector<std::string> & items)
 
 void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
+    menu->addAction(QObject::tr("Show drawing"), receiver, member);
 }
 
 bool ViewProviderDrawingPage::setEdit(int ModNum)

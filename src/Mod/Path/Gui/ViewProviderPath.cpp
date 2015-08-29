@@ -274,7 +274,7 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 else
                     norm.Set(0,0,1);
                 Base::Vector3d center = (last + cmd.getCenter());
-                double radius = (last - center).Length();
+                //double radius = (last - center).Length();
                 double angle = (next - center).GetAngle(last - center);
                 // BUGGY: not needed anyway?
                 //Base::Vector3d anorm = (last - center) % (next - center);
@@ -308,7 +308,7 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 
             } else if ((name=="G81")||(name=="G82")||(name=="G83")||(name=="G84")||(name=="G85")||(name=="G86")||(name=="G89")){
                 // drill,tap,bore
-                double r;
+                double r = 0;
                 if (cmd.has("R"))
                     r = cmd.getValue("R");
                 Base::Vector3d p1(next.x,next.y,last.z);

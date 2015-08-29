@@ -92,7 +92,7 @@ void Toolpath::insertCommand(const Command &Cmd, int pos)
 {
     if (pos == -1) {
         addCommand(Cmd);
-    } else if (pos <= vpcCommands.size()) {
+    } else if (pos <= static_cast<int>(vpcCommands.size())) {
         Command *tmp = new Command(Cmd);
         vpcCommands.insert(vpcCommands.begin()+pos,tmp);
     } else {
@@ -106,7 +106,7 @@ void Toolpath::deleteCommand(int pos)
     if (pos == -1) {
         //delete(*vpcCommands.rbegin()); // causes crash
         vpcCommands.pop_back();
-    } else if (pos <= vpcCommands.size()) {
+    } else if (pos <= static_cast<int>(vpcCommands.size())) {
         vpcCommands.erase (vpcCommands.begin()+pos);
     } else {
         throw Base::Exception("Index not in range");
