@@ -86,14 +86,7 @@ PyObject* BezierSurfacePy::isURational(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsURational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isVRational(PyObject *args)
@@ -104,14 +97,7 @@ PyObject* BezierSurfacePy::isVRational(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isUPeriodic(PyObject *args)
@@ -122,14 +108,7 @@ PyObject* BezierSurfacePy::isUPeriodic(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isVPeriodic(PyObject *args)
@@ -140,14 +119,7 @@ PyObject* BezierSurfacePy::isVPeriodic(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isUClosed(PyObject *args)
@@ -158,14 +130,7 @@ PyObject* BezierSurfacePy::isUClosed(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isVClosed(PyObject *args)
@@ -176,14 +141,7 @@ PyObject* BezierSurfacePy::isVClosed(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::increase(PyObject *args)

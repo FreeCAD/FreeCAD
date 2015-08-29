@@ -78,14 +78,7 @@ PyObject* BSplineCurvePy::isRational(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
@@ -95,14 +88,7 @@ PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::isClosed(PyObject *args)
@@ -112,14 +98,7 @@ PyObject* BSplineCurvePy::isClosed(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::increaseDegree(PyObject * args)
@@ -249,14 +228,7 @@ PyObject* BSplineCurvePy::removeKnot(PyObject * args)
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = curve->RemoveKnot(Index,M,tol);
-        if (ok) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -1106,14 +1078,7 @@ PyObject* BSplineCurvePy::join(PyObject *args)
 
     bool ok = curve1->join(spline);
 
-    if (ok) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(ok ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::makeC1Continuous(PyObject *args)

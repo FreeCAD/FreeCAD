@@ -1788,11 +1788,7 @@ bool PropertyBool::getValue(void) const
 
 PyObject *PropertyBool::getPyObject(void)
 {
-    if (_lValue)
-        {Py_INCREF(Py_True); return Py_True;}
-    else
-        {Py_INCREF(Py_False); return Py_False;}
-
+    return PyBool_FromLong(_lValue ? 1 : 0);
 }
 
 void PropertyBool::setPyObject(PyObject *value)
@@ -1904,12 +1900,10 @@ PyObject *PropertyBoolList::getPyObject(void)
     for(int i = 0;i<getSize(); i++) {
         bool v = _lValueList[i];
         if (v) {
-            Py_INCREF(Py_True);
-            PyTuple_SetItem(tuple, i, Py_True);
+            PyTuple_SetItem(tuple, i, PyBool_FromLong(1));
         }
         else {
-            Py_INCREF(Py_False);
-            PyTuple_SetItem(tuple, i, Py_False);
+            PyTuple_SetItem(tuple, i, PyBool_FromLong(0));
         }
     }
     return tuple;
