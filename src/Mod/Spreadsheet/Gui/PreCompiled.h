@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) Eivind Kvedalen        (eivind@kvedalen.name) 2015      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,8 +22,8 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef SPREADSHEET_PRECOMPILED_H
+#define SPREADSHEET_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -76,4 +77,4 @@
 
 #endif //_PreComp_
 
-#endif // __PRECOMPILED_GUI__
+#endif // SPREADSHEET_PRECOMPILED_H

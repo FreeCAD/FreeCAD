@@ -37,7 +37,7 @@
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include "Expression.h"
+#include "SpreadsheetExpression.h"
 #include "Sheet.h"
 #include "SheetObserver.h"
 #include "Utils.h"
@@ -51,8 +51,8 @@
 #include <boost/bind.hpp>
 #include <deque>
 
+using namespace Base;
 using namespace Spreadsheet;
-using namespace App;
 
 PROPERTY_SOURCE(Spreadsheet::Sheet, App::DocumentObject)
 
@@ -229,7 +229,7 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
     std::set<CellAddress>::const_iterator i = usedCells.begin();
 
     while (i != usedCells.end()) {
-        Property * prop = getProperty(*i);
+        App::Property * prop = getProperty(*i);
 
         if (prevRow != -1 && prevRow != i->row()) {
             for (int j = prevRow; j < i->row(); ++j)
@@ -243,12 +243,12 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
 
         std::stringstream field;
 
-        if (prop->isDerivedFrom((PropertyQuantity::getClassTypeId())))
-            field << static_cast<PropertyQuantity*>(prop)->getValue();
-        else if (prop->isDerivedFrom((PropertyFloat::getClassTypeId())))
-            field << static_cast<PropertyFloat*>(prop)->getValue();
-        else if (prop->isDerivedFrom((PropertyString::getClassTypeId())))
-            field << static_cast<PropertyString*>(prop)->getValue();
+        if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId())))
+            field << static_cast<App::PropertyQuantity*>(prop)->getValue();
+        else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId())))
+            field << static_cast<App::PropertyFloat*>(prop)->getValue();
+        else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId())))
+            field << static_cast<App::PropertyString*>(prop)->getValue();
         else
             assert(0);
 
@@ -391,12 +391,12 @@ PyObject *Sheet::getPyObject(void)
   *
   */
 
-Property * Sheet::getProperty(CellAddress key) const
+App::Property * Sheet::getProperty(CellAddress key) const
 {
     return props.getDynamicPropertyByName(key.toString().c_str());
 }
 
-Property * Sheet::getProperty(const char * addr) const
+App::Property * Sheet::getProperty(const char * addr) const
 {
     return props.getDynamicPropertyByName(addr);
 }
@@ -407,7 +407,7 @@ Property * Sheet::getProperty(const char * addr) const
   *
   */
 
-void Sheet::getCellAddress(const Property *prop, CellAddress & address)
+void Sheet::getCellAddress(const App::Property *prop, CellAddress & address)
 {
     std::map<const App::Property*, CellAddress >::const_iterator i = propAddress.find(prop);
 
@@ -460,21 +460,21 @@ void Sheet::onSettingDocument()
   *
   */
 
-Property * Sheet::setFloatProperty(CellAddress key, double value)
+App::Property * Sheet::setFloatProperty(CellAddress key, double value)
 {
-    Property * prop = props.getPropertyByName(key.toString().c_str());
-    PropertyFloat * floatProp;
+    App::Property * prop = props.getPropertyByName(key.toString().c_str());
+    App::PropertyFloat * floatProp;
 
-    if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
+    if (!prop || prop->getTypeId() != App::PropertyFloat::getClassTypeId()) {
         if (prop) {
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        floatProp = Spreadsheet::freecad_dynamic_cast<PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true));
+        floatProp = freecad_dynamic_cast<App::PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, App::Prop_ReadOnly | App::Prop_Transient, true, true));
         floatProp->StatusBits.set(3);
     }
     else
-        floatProp = static_cast<PropertyFloat*>(prop);
+        floatProp = static_cast<App::PropertyFloat*>(prop);
 
     propAddress[floatProp] = key;
     floatProp->setValue(value);
@@ -492,9 +492,9 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
   *
   */
 
-Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base::Unit & unit)
+App::Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base::Unit & unit)
 {
-    Property * prop = props.getPropertyByName(key.toString().c_str());
+    App::Property * prop = props.getPropertyByName(key.toString().c_str());
     PropertySpreadsheetQuantity * quantityProp;
 
     if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
@@ -502,8 +502,8 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true);
-        quantityProp = Spreadsheet::freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
+        App::Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, App::Prop_ReadOnly | App::Prop_Transient, true, true);
+        quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
         quantityProp->StatusBits.set(3);
     }
     else
@@ -527,17 +527,17 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
   *
   */
 
-Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
+App::Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 {
-    Property * prop = props.getPropertyByName(key.toString().c_str());
-    PropertyString * stringProp = Spreadsheet::freecad_dynamic_cast<PropertyString>(prop);
+    App::Property * prop = props.getPropertyByName(key.toString().c_str());
+    App::PropertyString * stringProp = freecad_dynamic_cast<App::PropertyString>(prop);
 
     if (!stringProp) {
         if (prop) {
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        stringProp = Spreadsheet::freecad_dynamic_cast<PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true));
+        stringProp = freecad_dynamic_cast<App::PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, App::Prop_ReadOnly | App::Prop_Transient, true, true));
         stringProp->StatusBits.set(3);
     }
 
@@ -550,7 +550,7 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 void Sheet::updateAlias(CellAddress key)
 {
     std::string alias;
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    App::Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
 
     if (!prop)
         return;
@@ -570,7 +570,7 @@ void Sheet::updateAlias(CellAddress key)
         }
 
         if (!aliasProp)
-            aliasProp = props.addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true);
+            aliasProp = props.addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, App::Prop_ReadOnly | App::Prop_Transient, true, true);
 
         aliasProp->Paste(*prop);
     }
@@ -604,7 +604,7 @@ void Sheet::updateProperty(CellAddress key)
         }
 
         /* Eval returns either NumberExpression or StringExpression objects */
-        if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(output)) {
+        if (freecad_dynamic_cast<NumberExpression>(output)) {
             NumberExpression * number = static_cast<NumberExpression*>(output);
             if (number->getUnit().isEmpty())
                 setFloatProperty(key, number->getValue());
@@ -612,7 +612,7 @@ void Sheet::updateProperty(CellAddress key)
                 setQuantityProperty(key, number->getValue(), number->getUnit());
         }
         else
-            setStringProperty(key, Spreadsheet::freecad_dynamic_cast<StringExpression>(output)->getText().c_str());
+            setStringProperty(key, freecad_dynamic_cast<StringExpression>(output)->getText().c_str());
 
         delete output;
     }
@@ -631,9 +631,9 @@ void Sheet::updateProperty(CellAddress key)
   *
   */
 
-Property *Sheet::getPropertyByName(const char* name) const
+App::Property *Sheet::getPropertyByName(const char* name) const
 {
-    Property * prop = getProperty(name);
+    App::Property * prop = getProperty(name);
 
     if (prop)
         return prop;
@@ -641,7 +641,7 @@ Property *Sheet::getPropertyByName(const char* name) const
         return DocumentObject::getPropertyByName(name);
 }
 
-const char *Sheet::getPropertyName(const Property *prop) const
+const char *Sheet::getPropertyName(const App::Property *prop) const
 {
     const char * name = props.getPropertyName(prop);
 
@@ -811,7 +811,7 @@ App::DocumentObjectExecReturn *Sheet::execute(void)
     if (cellErrors.size() == 0)
         return App::DocumentObject::StdReturn;
     else
-        return new DocumentObjectExecReturn("One or more cells failed contains errors.", this);
+        return new App::DocumentObjectExecReturn("One or more cells failed contains errors.", this);
 }
 
 /**
@@ -845,7 +845,7 @@ void Sheet::clear(CellAddress address, bool all)
 {
     Cell * cell = getCell(address);
     std::string addr = address.toString();
-    Property * prop = props.getDynamicPropertyByName(addr.c_str());
+    App::Property * prop = props.getDynamicPropertyByName(addr.c_str());
 
     // Remove alias, if defined
     std::string aliasStr;
@@ -1005,12 +1005,12 @@ void Sheet::setStyle(CellAddress address, const std::set<std::string> &_style)
     cells.setStyle(address, _style);
 }
 
-void Sheet::setForeground(CellAddress address, const Color &color)
+void Sheet::setForeground(CellAddress address, const App::Color &color)
 {
     cells.setForeground(address, color);
 }
 
-void Sheet::setBackground(CellAddress address, const Color &color)
+void Sheet::setBackground(CellAddress address, const App::Color &color)
 {
     cells.setBackground(address, color);
 }
@@ -1087,17 +1087,17 @@ void Sheet::onDocumentRestored()
     execute();
 }
 
-void Sheet::onRelabledDocument(const Document &document)
+void Sheet::onRelabledDocument(const App::Document &document)
 {
     cells.renamedDocument(&document);
     cells.purgeTouched();
 }
 
-void Sheet::onRenamedDocument(const Document &document)
+void Sheet::onRenamedDocument(const App::Document &document)
 {
 }
 
-void Sheet::observeDocument(Document * document)
+void Sheet::observeDocument(App::Document * document)
 {
     ObserverMap::const_iterator it = observers.find(document->getName());
 
@@ -1115,7 +1115,7 @@ void Sheet::observeDocument(Document * document)
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity);
 
-Property *PropertySpreadsheetQuantity::Copy() const
+App::Property *PropertySpreadsheetQuantity::Copy() const
 {
     PropertySpreadsheetQuantity * obj = new PropertySpreadsheetQuantity();
 

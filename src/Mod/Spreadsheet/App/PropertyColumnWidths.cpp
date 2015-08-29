@@ -31,7 +31,6 @@
 #include "Utils.h"
 #include <PropertyColumnWidthsPy.h>
 
-using namespace App;
 using namespace Spreadsheet;
 
 const int PropertyColumnWidths::defaultWidth = 100;

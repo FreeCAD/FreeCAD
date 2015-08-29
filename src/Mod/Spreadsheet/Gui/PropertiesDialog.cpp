@@ -22,7 +22,7 @@
 
 #include "PropertiesDialog.h"
 #include <Base/Tools.h>
-#include <Mod/Spreadsheet/App/Expression.h>
+#include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
 #include <Mod/Spreadsheet/App/Range.h>
 #include <Gui/Command.h>
 #include "ui_PropertiesDialog.h"
