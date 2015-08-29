@@ -257,7 +257,8 @@ int Enumeration::getInt(void) const
 std::vector<std::string> Enumeration::getEnumVector(void) const
 {
     // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
+    if (!_EnumArray)
+        return std::vector<std::string>();
 
     std::vector<std::string> result;
     const char **plEnums = _EnumArray;
