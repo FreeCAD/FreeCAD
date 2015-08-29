@@ -94,7 +94,7 @@ boost::python::tuple transformed_point(const geoff_geometry::Matrix &matrix, dou
 static void print_curve(const CCurve& c)
 {
 	std::size_t nvertices = c.m_vertices.size();
-	printf("number of vertices = %d\n", nvertices);
+	printf("number of vertices = %lu\n", nvertices);
 	int i = 0;
 	for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
 	{
