@@ -420,14 +420,7 @@ PyObject* TopoShapeFacePy::isPartOfDomain(PyObject *args)
         //tol = std::max<double>(dialen, tol);
         BRepTopAdaptor_FClass2d CL(face,tol);
         TopAbs_State state = CL.Perform(gp_Pnt2d(u,v));
-        if (state == TopAbs_ON || state == TopAbs_IN) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong((state == TopAbs_ON || state == TopAbs_IN) ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

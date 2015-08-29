@@ -212,14 +212,7 @@ PyObject* GeometrySurfacePy::isUPeriodic(PyObject * args)
     Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* GeometrySurfacePy::isVPeriodic(PyObject * args)
@@ -230,14 +223,7 @@ PyObject* GeometrySurfacePy::isVPeriodic(PyObject * args)
     Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* GeometrySurfacePy::isUClosed(PyObject * args)
@@ -248,14 +234,7 @@ PyObject* GeometrySurfacePy::isUClosed(PyObject * args)
     Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* GeometrySurfacePy::isVClosed(PyObject * args)
@@ -266,14 +245,7 @@ PyObject* GeometrySurfacePy::isVClosed(PyObject * args)
     Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* GeometrySurfacePy::UPeriod(PyObject * args)

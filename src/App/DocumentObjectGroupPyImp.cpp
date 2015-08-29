@@ -185,14 +185,8 @@ PyObject*  DocumentObjectGroupPy::hasObject(PyObject *args)
         return NULL;
     }
 
-    if (getDocumentObjectGroupPtr()->hasObject(docObj->getDocumentObjectPtr())) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    } 
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    bool v = getDocumentObjectGroupPtr()->hasObject(docObj->getDocumentObjectPtr());
+    return PyBool_FromLong(v ? 1 : 0);
 }
 
 PyObject *DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const

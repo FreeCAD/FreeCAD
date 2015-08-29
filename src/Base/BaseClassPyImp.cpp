@@ -45,14 +45,8 @@ PyObject*  BaseClassPy::isDerivedFrom(PyObject *args)
         return NULL;                    // NULL triggers exception
 
     Base::Type type = Base::Type::fromName(name);
-    if (type != Base::Type::badType() && getBaseClassPtr()->getTypeId().isDerivedFrom(type)) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    bool v = (type != Base::Type::badType() && getBaseClassPtr()->getTypeId().isDerivedFrom(type));
+    return PyBool_FromLong(v ? 1 : 0);
 }
 
 PyObject*  BaseClassPy::getAllDerivedFrom(PyObject *args)
