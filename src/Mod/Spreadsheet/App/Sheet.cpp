@@ -622,6 +622,7 @@ void Sheet::updateProperty(CellAddress key)
         clear(key);
 
     cellUpdated(key);
+    (void)prop;
 }
 
 /**

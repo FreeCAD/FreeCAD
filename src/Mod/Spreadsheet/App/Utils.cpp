@@ -145,7 +145,6 @@ int Spreadsheet::decodeColumn(const std::string &colstr)
 
 Spreadsheet::CellAddress Spreadsheet::stringToAddress(const char * strAddress)
 {
-    int i = 0;
     static const boost::regex e("\\${0,1}([A-Za-z]+)\\${0,1}([0-9]+)");
     boost::cmatch cm;
 

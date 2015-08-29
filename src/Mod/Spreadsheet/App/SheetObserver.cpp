@@ -37,8 +37,8 @@ using namespace App;
 
 SheetObserver::SheetObserver(App::Document * document, PropertySheet *_sheet)
     : DocumentObserver(document)
-    , sheet(_sheet)
     , refCount(1)
+    , sheet(_sheet)
 {
 }
 
