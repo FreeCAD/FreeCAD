@@ -168,7 +168,10 @@ int main( int argc, char ** argv )
         }
 
         Gui::Application::initApplication();
-        Base::Interpreter().replaceStdOutput();
+
+        // Only if 'RunMode' is set to 'Gui' do the replacement
+        if (App::Application::Config()["RunMode"] == "Gui")
+            Base::Interpreter().replaceStdOutput();
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc,argv);
