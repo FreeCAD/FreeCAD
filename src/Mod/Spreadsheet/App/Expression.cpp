@@ -111,7 +111,7 @@ bool Path::operator <(const Path &other) const
     if (components.size() > other.components.size())
         return false;
 
-    for (int i = 0; i < components.size(); ++i) {
+    for (std::size_t i = 0; i < components.size(); ++i) {
         if (components[i].component < other.components[i].component)
             return true;
         if (components[i].component > other.components[i].component)
@@ -448,8 +448,8 @@ TYPESYSTEM_SOURCE(Spreadsheet::OperatorExpression, Spreadsheet::Expression);
 
 OperatorExpression::OperatorExpression(const App::DocumentObject *_owner, Expression * _left, Operator _op, Expression * _right)
     : UnitExpression(_owner)
-    , left(_left)
     , op(_op)
+    , left(_left)
     , right(_right)
 {
 
@@ -592,6 +592,8 @@ std::string OperatorExpression::toString() const
         break;
     case POS:
         s << "+";
+        break;
+    default:
         break;
     }
 
@@ -843,6 +845,8 @@ Expression * FunctionExpression::eval() const
                 if (first || value > q)
                     q = value;
                 break;
+            default:
+                break;
             }
 
             first = false;
@@ -857,6 +861,8 @@ Expression * FunctionExpression::eval() const
                 q = Quantity();
             else
                 q = (M2 / (n - 1.0)).pow(Quantity(0.5));
+            break;
+        default:
             break;
         }
 
@@ -1054,6 +1060,7 @@ Expression *FunctionExpression::simplify() const
         case ATAN2:
         case MOD:
         case POW:
+        {
             Expression * v2 = args[1]->simplify();
 
             if (freecad_dynamic_cast<NumberExpression>(v2)) {
@@ -1067,6 +1074,9 @@ Expression *FunctionExpression::simplify() const
                 a.push_back(v2);
                 return new FunctionExpression(owner, f, a);
             }
+        }
+        default:
+            break;
         }
         delete v1;
         return eval();
