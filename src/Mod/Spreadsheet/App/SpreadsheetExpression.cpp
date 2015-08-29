@@ -369,6 +369,10 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["atan2"] = FunctionExpression::ATAN2;
         registered_functions["mod"] = FunctionExpression::MOD;
         registered_functions["pow"] = FunctionExpression::POW;
+        registered_functions["round"] = FunctionExpression::ROUND;
+        registered_functions["trunc"] = FunctionExpression::TRUNC;
+        registered_functions["ceil"] = FunctionExpression::CEIL;
+        registered_functions["floor"] = FunctionExpression::FLOOR;
 
         // Aggregates
         registered_functions["sum"] = static_cast<FunctionExpression::Function>(AggregateFunctionExpression::SUM);
