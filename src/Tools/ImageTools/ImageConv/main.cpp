@@ -52,7 +52,7 @@ int main( int argc, char **argv )
             {
                 QStringList nameFilters;
                 CCmdParam para = cCmdP.GetArgumentList("-i");
-                for (TVector<TString>::iterator it = para.m_strings.begin(); it != para.m_strings.end(); it++)
+                for (TVector<TString>::iterator it = para.m_strings.begin(); it != para.m_strings.end(); ++it)
                 {
                     cout << "Search for " << it->c_str() << endl;
                     nameFilters.append(it->c_str());
@@ -74,7 +74,7 @@ int main( int argc, char **argv )
                 cICApp.SetUpdateBmpFactory(cCmdP.HasSwitch("-a") || cCmdP.HasSwitch("--update"));
                 QStringList nameFilters;
                 CCmdParam para = cCmdP.GetArgumentList("-i");
-                for (TVector<TString>::iterator it = para.m_strings.begin(); it != para.m_strings.end(); it++)
+                for (TVector<TString>::iterator it = para.m_strings.begin(); it != para.m_strings.end(); ++it)
                 {
                     cout << "Search for " << it->c_str() << endl;
                     nameFilters.append(it->c_str());

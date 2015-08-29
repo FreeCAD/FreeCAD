@@ -82,10 +82,10 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (unsigned long ulFacetId
 
         std::set<unsigned long> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); pI++) {
+        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
             const std::set<unsigned long> &rclISet = _clPt2Fa[*pI]; 
             // search all facets hanging on this point
-            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); pJ++) {
+            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
                 if (rclF.IsFlag(MeshFacet::MARKED) == false) {
@@ -119,7 +119,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (unsigned long ulFacetId
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     int i = 0;
-    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); pI++, i++)
+    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, ++i)
         raclResultPoints[i] = _rclPAry[*pI];
 
     if (bAddPoints == true) {
@@ -175,10 +175,10 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (unsigned long u
 
         std::set<unsigned long> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); pI++) {
+        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
             const std::set<unsigned long> &rclISet = _clPt2Fa[*pI]; 
             // search all facets hanging on this point
-            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); pJ++) {
+            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
                 if (rclF.IsFlag(MeshFacet::MARKED) == false) {
@@ -193,7 +193,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (unsigned long u
     }
 
     // reset marked facets
-    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); pF++)
+    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); ++pF)
         (*pF)->ResetFlag(MeshFacet::MARKED);
 
     // copy points in result container
@@ -201,7 +201,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets (unsigned long u
     std::copy(_aclPointsResult.begin(), _aclPointsResult.end(), raclResultPoints.begin());
 
     // facet points
-    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); pI++) {
+    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI) {
         if (InnerPoint(_rclPAry[*pI]) == true)
             raclResultPoints.push_back(_rclPAry[*pI]);
     }
@@ -234,7 +234,7 @@ bool MeshSearchNeighbours::AccumulateNeighbours (const MeshFacet &rclF, unsigned
             std::vector<Base::Vector3f> &rclT = _aclSampledFacets[ulFIdx];
             std::vector<Base::Vector3f> clTmp;
             clTmp.reserve(rclT.size());
-            for (std::vector<Base::Vector3f>::iterator pI = rclT.begin(); pI != rclT.end(); pI++) {
+            for (std::vector<Base::Vector3f>::iterator pI = rclT.begin(); pI != rclT.end(); ++pI) {
                 if (InnerPoint(*pI) == true)
                     clTmp.push_back(*pI);
             }
@@ -249,7 +249,7 @@ bool MeshSearchNeighbours::ExpandRadius (unsigned long ulMinPoints)
 {
     // add facets from current level
     _aclResult.insert(_aclOuter.begin(), _aclOuter.end());
-    for (std::set<unsigned long>::iterator pI = _aclOuter.begin(); pI != _aclOuter.end(); pI++)
+    for (std::set<unsigned long>::iterator pI = _aclOuter.begin(); pI != _aclOuter.end(); ++pI)
         _rclPAry[*pI].SetFlag(MeshPoint::MARKED);
 
     if (_aclResult.size() < ulMinPoints) {
@@ -287,10 +287,10 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (unsigned long ulFa
 
         std::set<unsigned long> aclTmp;
         aclTmp.swap(_aclOuter);
-        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); pI++) {
+        for (std::set<unsigned long>::iterator pI = aclTmp.begin(); pI != aclTmp.end(); ++pI) {
             const std::set<unsigned long> &rclISet = _clPt2Fa[*pI]; 
             // search all facets hanging on this point
-            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); pJ++) {
+            for (std::set<unsigned long>::const_iterator pJ = rclISet.begin(); pJ != rclISet.end(); ++pJ) {
                 const MeshFacet &rclF = f_beg[*pJ];
 
                 for (int i = 0; i < 3; i++) {
@@ -313,15 +313,15 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (unsigned long ulFa
     }
 
     // reset marked facets, points
-    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); pF++)
+    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); ++pF)
         (*pF)->ResetFlag(MeshFacet::MARKED);
-    for (std::set<unsigned long>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); pR++)
+    for (std::set<unsigned long>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
         _rclPAry[*pR].ResetFlag(MeshPoint::MARKED);
 
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     int i = 0;
-    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); pI++, i++)
+    for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, ++i)
         raclResultPoints[i] = _rclPAry[*pI];
 
     // copy facets in result container

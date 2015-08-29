@@ -850,7 +850,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
 
   Inside(clBB, aulFacets, rclPt, fMaxSearchArea, true);
 
-  for (std::vector<unsigned long>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); pI++)
+  for (std::vector<unsigned long>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI)
   {    
     float fDist;
 
@@ -920,7 +920,7 @@ void MeshFacetGrid::SearchNearestFacetInGrid(unsigned long ulX, unsigned long ul
                                              unsigned long &rulFacetInd) const
 {
   const std::set<unsigned long> &rclSet = _aulGrid[ulX][ulY][ulZ];
-  for (std::set<unsigned long>::const_iterator pI = rclSet.begin(); pI != rclSet.end(); pI++)
+  for (std::set<unsigned long>::const_iterator pI = rclSet.begin(); pI != rclSet.end(); ++pI)
   {
     float fDist = _pclMesh->GetFacet(*pI).DistanceToPoint(rclPt);
     if (fDist < rfMinDist)

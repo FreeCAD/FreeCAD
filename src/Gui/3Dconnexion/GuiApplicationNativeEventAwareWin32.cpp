@@ -452,7 +452,7 @@ void Gui::GUIApplicationNativeEventAware::On3dmouseInput()
 	bool bIsForeground = (::GetActiveWindow() != NULL);
 	if (!bIsForeground) {
 		// set all cached data to zero so that a zero event is seen and the cached data deleted
-		for (std::map<HANDLE, TInputData>::iterator it = fDevice2Data.begin(); it != fDevice2Data.end(); it++) {
+		for (std::map<HANDLE, TInputData>::iterator it = fDevice2Data.begin(); it != fDevice2Data.end(); ++it) {
 			it->second.fAxes.assign(6, .0);
 			it->second.fIsDirty = true;
 		}

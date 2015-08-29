@@ -167,7 +167,7 @@ std::vector<unsigned long> MeshEvalDuplicatePoints::GetIndices() const
         // get first item which adjacent element has the same vertex
         vt = std::adjacent_find(vt, vertices.end(), pred);
         if (vt < vertices.end()) {
-            vt++;
+            ++vt;
             aInds.push_back(*vt - rPoints.begin());
         }
     }
@@ -200,12 +200,12 @@ bool MeshFixDuplicatePoints::Fixup()
         if (next < vertices.end()) {
             std::vector<VertexIterator>::iterator first = next;
             unsigned long first_index = *first - rPoints.begin();
-            next++;
+            ++next;
             while (next < vertices.end() && pred(*first, *next)) {
                 unsigned long next_index = *next - rPoints.begin();
                 mapPointIndex[next_index] = first_index;
                 pointIndices.push_back(next_index);
-                next++;
+                ++next;
             }
         }
     }
@@ -374,7 +374,7 @@ std::vector<unsigned long> MeshEvalDuplicateFacets::GetIndices() const
         // get first item which adjacent element has the same face
         ft = std::adjacent_find(ft, faces.end(), pred);
         if (ft < faces.end()) {
-            ft++;
+            ++ft;
             aInds.push_back(*ft - rFacets.begin());
         }
     }
@@ -566,7 +566,7 @@ unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength
 
         // remove points, fix indices
         for (std::set<std::pair<unsigned long, unsigned long> >::iterator pI = aclPtDelList.begin();
-            pI != aclPtDelList.end(); pI++) {
+            pI != aclPtDelList.end(); ++pI) {
             // one of the point pairs is already processed
             if ((rclPAry[pI->first].IsFlag(MeshPoint::VISIT) == true) ||
                 (rclPAry[pI->second].IsFlag(MeshPoint::VISIT) == true))

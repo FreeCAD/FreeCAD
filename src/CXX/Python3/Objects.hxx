@@ -2689,7 +2689,7 @@ namespace Py
         void clear()
         {
             List k = keys();
-            for( List::iterator i = k.begin(); i != k.end(); i++ )
+            for( List::iterator i = k.begin(); i != k.end(); ++i )
             {
                 delItem( *i );
             }

@@ -67,7 +67,7 @@ void Edgecluster::Perform()
     Standard_Integer nbEdges = 0;
     Standard_Integer nbNonEdges = 0;
     std::vector<TopoDS_Edge>::iterator aVectorIt;
-    for (aVectorIt = m_unsortededges.begin();aVectorIt != m_unsortededges.end();aVectorIt++)
+    for (aVectorIt = m_unsortededges.begin();aVectorIt != m_unsortededges.end();++aVectorIt)
     {
         if (IsValidEdge(*aVectorIt))
         {
@@ -88,7 +88,7 @@ void Edgecluster::Perform()
 		//Lets start with a vertice that only has one edge (that means start or end point of the merged edges!)
         tMapPntEdge::iterator iter; 
 		bool closed = true;
-		for(iter=m_vertices.begin();iter!=m_vertices.end();iter++)
+		for(iter=m_vertices.begin();iter!=m_vertices.end();++iter)
 		{
 			if (iter->second.size()==1)
 			{

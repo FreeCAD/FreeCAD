@@ -641,7 +641,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
             return dummy;
 
         // Add additional boundaries (inner wires).
-        for (wireIt++; wireIt != allWires.end(); ++wireIt)
+        for (++wireIt; wireIt != allWires.end();++wireIt)
         {
             faceMaker.Add(*wireIt);
             if (!faceMaker.IsDone())
@@ -671,7 +671,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
                 return dummy;
 
             // Add additional boundaries (inner wires).
-            for (wireIt++; wireIt != innerWires.end(); ++wireIt)
+            for (++wireIt; wireIt != innerWires.end();++wireIt)
             {
                 faceMaker.Add(*wireIt);
                 if (!faceMaker.IsDone())
@@ -927,7 +927,7 @@ TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType &faces) const
         return TopoDS_Face();
 
     //add additional boundaries.
-    for (wireIt++; wireIt != wires.end(); ++wireIt)
+    for (++wireIt; wireIt != wires.end();++wireIt)
     {
         faceMaker.Add(*wireIt);
         if (!faceMaker.IsDone())

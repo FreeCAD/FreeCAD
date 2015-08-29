@@ -864,7 +864,7 @@ void ParameterGrp::Clear(void)
 
     // deleting the nodes
     DOMNode* pcTemp;
-    for (std::vector<DOMNode*>::iterator It=vecNodes.begin();It!=vecNodes.end();It++) {
+    for (std::vector<DOMNode*>::iterator It=vecNodes.begin();It!=vecNodes.end();++It) {
         pcTemp = _pGroupNode->removeChild(*It);
         //delete pcTemp;
         pcTemp->release();

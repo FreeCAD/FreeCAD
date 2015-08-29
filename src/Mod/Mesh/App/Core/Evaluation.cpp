@@ -289,7 +289,7 @@ bool MeshEvalSolid::Evaluate ()
 {
   std::vector<MeshGeomEdge> edges;
   _rclMesh.GetEdges( edges );
-  for (std::vector<MeshGeomEdge>::iterator it = edges.begin(); it != edges.end(); it++)
+  for (std::vector<MeshGeomEdge>::iterator it = edges.begin(); it != edges.end(); ++it)
   {
     if (it->_bBorder)
       return false;
@@ -360,7 +360,7 @@ bool MeshEvalTopology::Evaluate ()
     int count = 0;
     std::vector<unsigned long> facets;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             count++;
             facets.push_back(pE->f);
@@ -828,7 +828,7 @@ bool MeshEvalNeighbourhood::Evaluate ()
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             f1 = pE->f;
             count++;
@@ -894,7 +894,7 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             f1 = pE->f;
             count++;
@@ -968,7 +968,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             f1 = pE->f;
             count++;
