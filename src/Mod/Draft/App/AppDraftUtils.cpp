@@ -46,7 +46,7 @@ extern "C" {
             PyErr_SetString(PyExc_ImportError, e.what());
             return;
         }
-        PyObject* DraftUtilsModule = Py_InitModule3("DraftUtils", DraftUtils_methods, module_DraftUtils_doc);   /* mod name, table ptr */
+        Py_InitModule3("DraftUtils", DraftUtils_methods, module_DraftUtils_doc);   /* mod name, table ptr */
         Base::Console().Log("Loading DraftUtils module... done\n");
     }
 

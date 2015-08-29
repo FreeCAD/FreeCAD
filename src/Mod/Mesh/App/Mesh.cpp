@@ -860,6 +860,9 @@ void MeshObject::cut(const Base::Polygon2D& polygon2d,
     case OUTER:
         inner = false;
         break;
+    default:
+        inner = true;
+        break;
     }
 
     MeshCore::MeshFacetGrid meshGrid(this->_kernel);

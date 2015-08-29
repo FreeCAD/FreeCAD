@@ -333,7 +333,7 @@ void CrossSections::on_sectionsBox_toggled(bool b)
     else {
         CrossSections::Plane type = plane();
         Base::Vector3d c = bbox.CalcCenter();
-        double value;
+        double value = 0;
         switch (type) {
             case CrossSections::XY:
                 value = c.z;
@@ -362,7 +362,7 @@ void CrossSections::on_checkBothSides_toggled(bool b)
 void CrossSections::on_countSections_valueChanged(int v)
 {
     CrossSections::Plane type = plane();
-    double dist;
+    double dist = 0;
     switch (type) {
         case CrossSections::XY:
             dist = bbox.LengthZ() / v;

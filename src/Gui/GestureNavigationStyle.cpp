@@ -375,7 +375,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         this->mousedownConsumedEvent[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will loose a subclass, though.
                         cnt++;
                         assert(cnt<=2);
-                        if(cnt>sizeof(mousedownConsumedEvent)){
+                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvent))){
                             cnt=sizeof(mousedownConsumedEvent);//we are in trouble
                         }
                         processed = true;//just consume this event, and wait for the move threshold to be broken to start dragging/panning

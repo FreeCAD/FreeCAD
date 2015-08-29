@@ -428,17 +428,16 @@ void recur(std::list<CArea> &arealist, const CArea& a1, const CAreaPocketParams 
 static CArea make_obround(const Point& p0, const Point& p1, double radius)
 {
     Point dir = p1 - p0;
-    double d = dir.length();
     dir.normalize();
     Point right(dir.y, -dir.x);
     CArea obround;
     CCurve c;
-	if(fabs(radius) < 0.0000001)radius = (radius > 0.0) ? 0.002 : (-0.002);
+    if(fabs(radius) < 0.0000001)radius = (radius > 0.0) ? 0.002 : (-0.002);
     Point vt0 = p0 + right * radius;
     Point vt1 = p1 + right * radius;
     Point vt2 = p1 - right * radius;
     Point vt3 = p0 - right * radius;
-	c.append(vt0);
+    c.append(vt0);
     c.append(vt1);
     c.append(CVertex(1, vt2, p1));
     c.append(vt3);
@@ -446,12 +445,12 @@ static CArea make_obround(const Point& p0, const Point& p1, double radius)
     obround.append(c);
     return obround;
 }
-    
+
 static bool feed_possible(const CArea &area_for_feed_possible, const Point& p0, const Point& p1, double tool_radius)
 {
     CArea obround = make_obround(p0, p1, tool_radius);
     obround.Subtract(area_for_feed_possible);
-	return obround.m_curves.size() == 0;
+    return obround.m_curves.empty();
 }
 
 void MarkOverlappingOffsetIslands(std::list<IslandAndOffset> &offset_islands)

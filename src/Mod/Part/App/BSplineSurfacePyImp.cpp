@@ -1281,7 +1281,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAbs_Shape c;
+        GeomAbs_Shape c = GeomAbs_CN;
         switch(continuity){
         case 0:
             c = GeomAbs_C0;

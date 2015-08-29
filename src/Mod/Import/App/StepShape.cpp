@@ -81,7 +81,7 @@ int StepShape::read(const char* fileName)
     Handle(TColStd_HSequenceOfTransient) list = aReader.GiveList(); 
 
     //Use method StepData_StepModel::NextNumberForLabel to find its rank with the following:
-    Standard_CString label = "#...";
+    //Standard_CString label = "#...";
     Handle_StepData_StepModel model = aReader.StepModel();
     //rank = model->NextNumberForLabe(label, 0, Standard_False);
 

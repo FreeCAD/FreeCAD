@@ -82,7 +82,7 @@ public:
 	void Offset(double inwards_value);
 	void Thicken(double value);
 	void FitArcs();
-	unsigned int num_curves(){return m_curves.size();}
+	unsigned int num_curves(){return static_cast<unsigned int>(m_curves.size());}
 	Point NearestPoint(const Point& p)const;
 	void GetBox(CBox2D &box);
 	void Reorder();

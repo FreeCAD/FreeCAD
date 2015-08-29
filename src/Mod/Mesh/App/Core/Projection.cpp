@@ -325,7 +325,7 @@ bool MeshProjection::connectLines(std::list< std::pair<Base::Vector3f, Base::Vec
         // get nearest line
         float  fMin  = fMaxDist * fMaxDist;
 
-        bool  bPos;
+        bool  bPos = false;
         for (it = cutLines.begin(); it != cutLines.end(); ++it) {
             float fD1 = Base::DistanceP2(curr, it->first);
             float fD2 = Base::DistanceP2(curr, it->second);

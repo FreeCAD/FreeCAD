@@ -63,7 +63,7 @@ void CompleteGuiExport initCompleteGui()
 
     // try to load dependent modules, currently not (AssemblyGui, CamGui)
     char *modules[] = {"PartGui", "MeshGui", "MeshPartGui", "PointsGui", "DrawingGui", "RaytracingGui", "SketcherGui", "PartDesignGui", "ImageGui", "TestGui"};
-    char nModules = sizeof(modules) / sizeof(char*);
+    size_t nModules = sizeof(modules) / sizeof(char*);
     for (size_t i = 0; i < nModules; i++) {
         try {
             Base::Interpreter().loadModule(modules[i]);

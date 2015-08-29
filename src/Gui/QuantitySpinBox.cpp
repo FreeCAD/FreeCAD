@@ -67,6 +67,7 @@ public:
         QString copy = input;
 
         int len = copy.size();
+        pos = len;
         const bool plus = max >= 0;
         const bool minus = min <= 0;
 
@@ -274,7 +275,7 @@ void QuantitySpinBox::userInput(const QString & text)
     Q_D(QuantitySpinBox);
 
     QString tmp = text;
-    int pos;
+    int pos = 0;
     QValidator::State state;
     Base::Quantity res = d->validateAndInterpret(tmp, pos, state);
     if (state == QValidator::Acceptable) {
@@ -446,7 +447,7 @@ void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
 {
     Q_D(QuantitySpinBox);
 
-    int pos;
+    int pos = 0;
     QString text = lineEdit()->text();
     QValidator::State state;
     d->validateAndInterpret(text, pos, state);

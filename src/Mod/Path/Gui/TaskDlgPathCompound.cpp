@@ -134,7 +134,7 @@ bool TaskDlgPathCompound::accept()
     Path::FeatureCompound* pcCompound = static_cast<Path::FeatureCompound*>(CompoundView->getObject());
     App::Document* pcDoc = static_cast<App::Document*>(pcCompound->getDocument());
     std::vector<std::string> names = parameter->getList();
-    for(int i = 0; i < names.size(); i++)
+    for(std::size_t i = 0; i < names.size(); i++)
     {
         App::DocumentObject* pcPath = static_cast<App::DocumentObject*>(pcDoc->getObject(names[i].c_str()));
         paths.push_back(pcPath);
