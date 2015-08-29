@@ -105,14 +105,14 @@ Cell::Cell(const Cell &other)
     , owner(other.owner)
     , used(other.used)
     , expression(other.expression ? other.expression->copy() : 0)
-    , style(other.style)
     , alignment(other.alignment)
+    , style(other.style)
     , foregroundColor(other.foregroundColor)
     , backgroundColor(other.backgroundColor)
     , displayUnit(other.displayUnit)
     , computedUnit(other.computedUnit)
-    , colSpan(other.colSpan)
     , rowSpan(other.rowSpan)
+    , colSpan(other.colSpan)
 {
 }
 

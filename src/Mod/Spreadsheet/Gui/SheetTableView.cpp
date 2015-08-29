@@ -153,7 +153,6 @@ void SheetTableView::removeRows()
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
-    int extra = 0;
 
     /* Make sure rows are sorted in descending order */
     for (QModelIndexList::const_iterator it = rows.begin(); it != rows.end(); ++it)

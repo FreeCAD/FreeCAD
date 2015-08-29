@@ -481,7 +481,7 @@ Expression * OperatorExpression::eval() const
     NumberExpression * v1;
     std::auto_ptr<Expression> e2(right->eval());
     NumberExpression * v2;
-    NumberExpression * output;
+    NumberExpression * output = 0;
 
     v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
@@ -877,7 +877,7 @@ Expression * FunctionExpression::eval() const
     std::auto_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
     NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
-    double output;
+    double output = 0;
     Unit unit;
     double scaler = 1;
 

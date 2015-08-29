@@ -106,7 +106,7 @@ static std::string getUnitString(const Base::Unit & unit)
     std::string unitStr;
 
     if (numerator.size() > 0) {
-        for (int i = 0; i < numerator.size(); ++i) {
+        for (std::size_t i = 0; i < numerator.size(); ++i) {
             if (i > 0)
                 unitStr += "*";
             unitStr += numerator[i];
@@ -120,7 +120,7 @@ static std::string getUnitString(const Base::Unit & unit)
 
         if (denominator.size() > 1)
             unitStr += "(";
-        for (int i = 0; i < denominator.size(); ++i) {
+        for (std::size_t i = 0; i < denominator.size(); ++i) {
             if (i > 0)
                 unitStr += "*";
             unitStr += denominator[i];
