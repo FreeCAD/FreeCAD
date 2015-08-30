@@ -87,7 +87,7 @@ double Constraint::maxStep(MAP_pD_D &dir, double lim)
 int Constraint::findParamInPvec(double *param)
 {
     int ret = -1;
-    for( int i=0 ; i<pvec.size() ; i++ ){
+    for( std::size_t i=0 ; i<pvec.size() ; i++ ){
         if ( param == pvec[i] ) {
             ret = i;
             break;
@@ -1171,7 +1171,7 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double *err, double *gr
     a = e.getRadMaj(c,f1,b,db,da);
 
     DeriVector2 poa;//point to align to
-    bool by_y_not_by_x;//a flag to indicate if the alignment error function is for y (false - x, true - y).
+    bool by_y_not_by_x = false;//a flag to indicate if the alignment error function is for y (false - x, true - y).
 
     switch(AlignmentType){
         case EllipsePositiveMajorX:

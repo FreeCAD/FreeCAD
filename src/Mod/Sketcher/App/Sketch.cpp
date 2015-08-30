@@ -886,6 +886,8 @@ int Sketch::addConstraint(const Constraint *constraint)
             case EllipseFocus2: 
                 rtn = addInternalAlignmentEllipseFocus2(constraint->First,constraint->Second);
                 break;
+            default:
+                break;
         }
         break;
     case SnellsLaw:
@@ -1233,8 +1235,6 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
     } else if (Geoms[geoId1].type == Ellipse) {
-        GCS::Ellipse &e = Ellipses[Geoms[geoId1].index];
-        
         if (Geoms[geoId2].type == Circle) {
             Base::Console().Error("Direct tangency constraint between circle and ellipse is not supported. Use tangent-via-point instead.");
             return -1;
@@ -1748,7 +1748,6 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
         return -1;
     }
     GCS::Point &p1 = Points[pointId1];
-    GCS::Point &p2 = Points[pointId2];
 
     // add the parameters (refractive indexes)   
     // n1 uses the place hold by n2divn1, so that is retrivable in updateNonDrivingConstraints
@@ -2097,10 +2096,10 @@ int Sketch::solve(void)
         isFine = true;
     }
     
-    int ret;
+    int ret = -1;
     bool valid_solution;
     std::string solvername;
-    int defaultsoltype;
+    int defaultsoltype = -1;
     
     if(isInitMove){
         solvername = "DogLeg"; // DogLeg is used for dragging (same as before)
