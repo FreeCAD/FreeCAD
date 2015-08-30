@@ -26,7 +26,7 @@
 
 #include "GeoFeatureGroup.h"
 #include "PropertyLinks.h"
-#include <boost/signals.hpp>
+
 
 
 namespace App

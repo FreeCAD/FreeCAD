@@ -33,7 +33,7 @@ namespace App
 {
 
 
-/** Describe a origin of a local coordinate system
+/** Base class of all geometric document objects.
  */
 class AppExport Origin : public App::GeoFeatureGroup
 {
