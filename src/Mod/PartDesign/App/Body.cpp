@@ -469,7 +469,7 @@ void Body::removeModelFromDocument() {
     //delete all child objects if needed
     std::set<DocumentObject*> grp ( Model.getValues().begin (), Model.getValues().end() );
     for (auto obj : grp) {
-        this->getDocument()->remObject(obj->getNameInDocument(), true);
+        this->getDocument()->remObject(obj->getNameInDocument());
     }
 }
 

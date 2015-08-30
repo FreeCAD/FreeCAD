@@ -170,6 +170,8 @@ public:
      * Unicode names are set through the Label property.
      */
     DocumentObject *addObject(const char* sType, const char* pObjectName=0);
+    /// Remove a feature out of the document
+    void remObject(const char* sName);
     /** Add an existing feature with sName (ASCII) to this document and set it active.
      * Unicode names are set through the Label property.
      * This is an overloaded function of the function above and can be used to create
@@ -179,11 +181,6 @@ public:
      */
     void addObject(DocumentObject*, const char* pObjectName=0);
     
-        /** Remove a feature out of the document.
-     * If i is marked as undeletable an exeption is thrown. If you want to delete in nonetheless set 
-     * the function parameter \a forceIfUndeletable to true
-     */    
-    void remObject(const char* sName, bool forceIfUndeletable = false);
 
     /** Copy an object from another document to this document
      * If \a recursive is true then all objects this object depends on

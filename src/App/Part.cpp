@@ -30,9 +30,8 @@
 #include <App/Plane.h>
 
 #include "Part.h"
-#include "Origin.h"
 #include "PartPy.h"
-#include <boost/bind.hpp>
+
 
 using namespace App;
 
@@ -65,6 +64,7 @@ Part::Part(void)
     ADD_PROPERTY_TYPE(LicenseURL, ("http://creativecommons.org/licenses/by/3.0/"), 0, App::Prop_None, "URL to the license text/contract");
     // color and apperance
     ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
+
 }
 
 Part::~Part(void)
