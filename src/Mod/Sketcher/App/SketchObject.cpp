@@ -615,7 +615,7 @@ int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList
 
     //test if tangent constraints have been added; AutoLockTangency.
     std::vector< Constraint * > tbd;//list of temporary copies that need to be deleted
-    for(int i = newVals.size()-ConstraintList.size(); i<newVals.size(); i++){
+    for(std::size_t i = newVals.size()-ConstraintList.size(); i<newVals.size(); i++){
         if( newVals[i]->Type == Tangent || newVals[i]->Type == Perpendicular ){
             Constraint *constNew = newVals[i]->clone();
             AutoLockTangencyAndPerpty(constNew);
@@ -627,7 +627,7 @@ int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList
     this->Constraints.setValues(newVals);
 
     //clean up - delete temporary copies of constraints that were made to affect the constraints
-    for(int i=0; i<tbd.size(); i++){
+    for(std::size_t i=0; i<tbd.size(); i++){
         delete (tbd[i]);
     }
 
@@ -1626,12 +1626,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         bool minor=false;
         bool focus1=false;
         bool focus2=false;
-        
-        int majorelementindex=-1;
-        int minorelementindex=-1;
-        int focus1elementindex=-1;
-        int focus2elementindex=-1;
-        
+
         const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
         
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
@@ -1641,19 +1636,15 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
                 switch((*it)->AlignmentType){
                     case Sketcher::EllipseMajorDiameter:
                         major=true;
-                        majorelementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseMinorDiameter:
                         minor=true;
-                        minorelementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseFocus1: 
                         focus1=true;
-                        focus1elementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseFocus2: 
                         focus2=true;
-                        focus2elementindex=(*it)->First;
                         break;
                     default:
                         return -1;
@@ -1794,12 +1785,7 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
     const Part::Geometry *geo = getGeometry(GeoId);            
     // Only for supported types
     if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-        // First we search what has to be deleted
-        bool major=false;
-        bool minor=false;
-        bool focus1=false;
-        bool focus2=false;
-        
+       
         int majorelementindex=-1;
         int minorelementindex=-1;
         int focus1elementindex=-1;
@@ -1813,19 +1799,15 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
             {
                 switch((*it)->AlignmentType){
                     case Sketcher::EllipseMajorDiameter:
-                        major=true;
                         majorelementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseMinorDiameter:
-                        minor=true;
                         minorelementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseFocus1: 
-                        focus1=true;
                         focus1elementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseFocus2: 
-                        focus2=true;
                         focus2elementindex=(*it)->First;
                         break;
                     default:
@@ -1839,8 +1821,6 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         int minorconstraints=0;
         int focus1constraints=0;
         int focus2constraints=0;
-        
-        int decrgeo=0;
         
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
             it != vals.end(); ++it) {
@@ -2224,7 +2204,6 @@ void SketchObject::rebuildExternalGeometry(void)
                                     
                                     //gp_Dir normal = e.Axis().Direction();
                                     gp_Dir normal = gp_Dir(0,0,1);
-                                    gp_Dir xdir = e.XAxis().Direction();
                                     gp_Ax2 xdirref(p, normal);
 
                                     if (P1.SquareDistance(P2) < Precision::Confusion()) {
@@ -2521,9 +2500,6 @@ bool SketchObject::evaluateConstraints() const
 
 void SketchObject::validateConstraints()
 {
-    int intGeoCount = getHighestCurveIndex() + 1;
-    int extGeoCount = getExternalGeometryCount();
-
     std::vector<Part::Geometry *> geometry = getCompleteGeometry();
     const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValues();
 
@@ -2624,7 +2600,7 @@ double SketchObject::calculateConstraintError(int ConstrId)
         GeoIdList.push_back(cstr->Third);
 
         //add only necessary geometry to the sketch
-        for(int i=0; i<GeoIdList.size(); i++){
+        for(std::size_t i=0; i<GeoIdList.size(); i++){
             g = GeoIdList[i];
             if (g != Constraint::GeoUndef){
                 GeoIdList[i] = sk.addGeometry(this->getGeometry(g));
@@ -2724,7 +2700,7 @@ void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) 
 
 int SketchObject::getVertexIndexGeoPos(int GeoId, PointPos PosId) const
 {
-    for(int i=0;i<VertexId2GeoId.size();i++) {
+    for(std::size_t i=0;i<VertexId2GeoId.size();i++) {
         if(VertexId2GeoId[i]==GeoId && VertexId2PosId[i]==PosId)
             return i;
     }
@@ -2751,7 +2727,7 @@ int SketchObject::changeConstraintsLocking(bool bLock)
 
     std::vector< Constraint * > tbd;//list of temporary Constraint copies that need to be deleted later
 
-    for(int i = 0; i<newVals.size(); i++){
+    for(std::size_t i = 0; i<newVals.size(); i++){
         if( newVals[i]->Type == Tangent || newVals[i]->Type == Perpendicular ){
             //create a constraint copy, affect it, replace the pointer
             cntToBeAffected++;
@@ -2768,7 +2744,7 @@ int SketchObject::changeConstraintsLocking(bool bLock)
     this->Constraints.setValues(newVals);
 
     //clean up - delete temporary copies of constraints that were made to affect the constraints
-    for(int i=0; i<tbd.size(); i++){
+    for(std::size_t i=0; i<tbd.size(); i++){
         delete (tbd[i]);
     }
 
@@ -2786,7 +2762,6 @@ int SketchObject::changeConstraintsLocking(bool bLock)
  */
 int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 {
-    int cntSuccess = 0;
     int cntToBeAffected = 0;//==cntSuccess+cntFail
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
@@ -2794,7 +2769,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 
     std::vector< Constraint * > tbd;//list of temporary Constraint copies that need to be deleted later
 
-    for(int ic = 0; ic<newVals.size(); ic++){//ic = index of constraint
+    for(std::size_t ic = 0; ic<newVals.size(); ic++){//ic = index of constraint
         bool affected=false;
         Constraint *constNew = 0;
         for(int ig=1; ig<=3; ig++){//cycle through constraint.first, second, third
@@ -2850,7 +2825,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
     }
 
     //clean up - delete temporary copies of constraints that were made to affect the constraints
-    for(int i=0; i<tbd.size(); i++){
+    for(std::size_t i=0; i<tbd.size(); i++){
         delete (tbd[i]);
     }
 

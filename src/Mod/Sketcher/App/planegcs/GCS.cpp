@@ -167,20 +167,37 @@ typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Gra
 
 // System
 System::System()
-: plist(0), clist(0),
-  c2p(), p2c(),
-  subSystems(0), subSystemsAux(0),
-  reference(0),
-  hasUnknowns(false), hasDiagnosis(false), isInit(false),
-  maxIter(100), maxIterRedundant(100), 
-  sketchSizeMultiplier(true), sketchSizeMultiplierRedundant(true),
-  convergence(1e-10), convergenceRedundant(1e-10),
-  qrAlgorithm(EigenSparseQR), debugMode(Minimal),
-  LM_eps(1E-10), LM_eps1(1E-80), LM_tau(1E-3),
-  DL_tolg(1E-80), DL_tolx(1E-80), DL_tolf(1E-10),
-  LM_epsRedundant(1E-10), LM_eps1Redundant(1E-80), LM_tauRedundant(1E-3),
-  DL_tolgRedundant(1E-80), DL_tolxRedundant(1E-80), DL_tolfRedundant(1E-10),
-  qrpivotThreshold(1E-13)
+  : plist(0)
+  , clist(0)
+  , c2p()
+  , p2c()
+  , subSystems(0)
+  , subSystemsAux(0)
+  , reference(0)
+  , hasUnknowns(false)
+  , hasDiagnosis(false)
+  , isInit(false)
+  , maxIter(100)
+  , maxIterRedundant(100)
+  , sketchSizeMultiplier(true)
+  , sketchSizeMultiplierRedundant(true)
+  , convergence(1e-10)
+  , convergenceRedundant(1e-10)
+  , qrAlgorithm(EigenSparseQR)
+  , qrpivotThreshold(1E-13)
+  , debugMode(Minimal)
+  , LM_eps(1E-10)
+  , LM_eps1(1E-80)
+  , LM_tau(1E-3)
+  , DL_tolg(1E-80)
+  , DL_tolx(1E-80)
+  , DL_tolf(1E-10)
+  , LM_epsRedundant(1E-10)
+  , LM_eps1Redundant(1E-80)
+  , LM_tauRedundant(1E-3)
+  , DL_tolgRedundant(1E-80)
+  , DL_tolxRedundant(1E-80)
+  , DL_tolfRedundant(1E-10)
 {
     // currently Eigen only supports multithreading for multiplications
     // There is no appreciable gain from using more threads
@@ -877,7 +894,7 @@ double System::calculateConstraintErrorByTag(int tagId)
 
 void System::rescaleConstraint(int id, double coeff)
 {
-    if (id >= clist.size() || id < 0)
+    if (id >= static_cast<int>(clist.size()) || id < 0)
         return;
     if (clist[id])
         clist[id]->rescale(coeff);
@@ -999,7 +1016,7 @@ void System::initSolution(Algorithm alg)
 
     // calculates subSystems and subSystemsAux from clists, plists and reductionmaps
     clearSubSystems();
-    for (int cid=0; cid < clists.size(); cid++) {
+    for (std::size_t cid=0; cid < clists.size(); cid++) {
         std::vector<Constraint *> clist0, clist1;
         for (std::vector<Constraint *>::const_iterator constr=clists[cid].begin();
              constr != clists[cid].end(); ++constr) {
@@ -1830,9 +1847,9 @@ int System::diagnose(Algorithm alg)
     #endif
     
     Eigen::MatrixXd R;
-    int paramsNum;
-    int constrNum;
-    int rank;
+    int paramsNum = 0;
+    int constrNum = 0;
+    int rank = 0;
     Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
     
     if(qrAlgorithm==EigenDenseQR){
@@ -1940,7 +1957,7 @@ int System::diagnose(Algorithm alg)
             for (int j=rank; j < constrNum; j++) {
                 for (int row=0; row < rank; row++) {
                     if (fabs(R(row,j)) > 1e-10) {
-                        int origCol;
+                        int origCol = 0;
                         
                         if(qrAlgorithm==EigenDenseQR)
                             origCol=qrJT.colsPermutation().indices()[row];
@@ -1952,7 +1969,7 @@ int System::diagnose(Algorithm alg)
                         conflictGroups[j-rank].push_back(clist[origCol]);
                     }
                 }
-                int origCol;
+                int origCol = 0;
                         
                 if(qrAlgorithm==EigenDenseQR)
                     origCol=qrJT.colsPermutation().indices()[j];
@@ -1972,9 +1989,9 @@ int System::diagnose(Algorithm alg)
             SET_I satisfiedGroups;
             while (1) {
                 std::map< Constraint *, SET_I > conflictingMap;
-                for (int i=0; i < conflictGroups.size(); i++) {
+                for (std::size_t i=0; i < conflictGroups.size(); i++) {
                     if (satisfiedGroups.count(i) == 0) {
-                        for (int j=0; j < conflictGroups[i].size(); j++) {
+                        for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
                             Constraint *constr = conflictGroups[i][j];
                             if (constr->getTag() != 0) // exclude constraints tagged with zero
                                 conflictingMap[constr].insert(i);
@@ -1988,8 +2005,8 @@ int System::diagnose(Algorithm alg)
                 Constraint *mostPopular = NULL;
                 for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
                      it != conflictingMap.end(); it++) {
-                    if (it->second.size() > maxPopularity ||
-                        (it->second.size() == maxPopularity && mostPopular &&
+                    if (static_cast<int>(it->second.size()) > maxPopularity ||
+                        (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
                          it->first->getTag() > mostPopular->getTag())) {
                         mostPopular = it->first;
                         maxPopularity = it->second.size();
@@ -2049,7 +2066,7 @@ int System::diagnose(Algorithm alg)
                 conflictGroups.clear();
                 for (int i=conflictGroupsOrig.size()-1; i >= 0; i--) {
                     bool isRedundant = false;
-                    for (int j=0; j < conflictGroupsOrig[i].size(); j++) {
+                    for (std::size_t j=0; j < conflictGroupsOrig[i].size(); j++) {
                         if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
                             isRedundant = true;
                             break;
@@ -2065,8 +2082,8 @@ int System::diagnose(Algorithm alg)
 
             // simplified output of conflicting tags
             SET_I conflictingTagsSet;
-            for (int i=0; i < conflictGroups.size(); i++) {
-                for (int j=0; j < conflictGroups[i].size(); j++) {
+            for (std::size_t i=0; i < conflictGroups.size(); i++) {
+                for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
                     conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
                 }
             }

@@ -617,7 +617,6 @@ PyObject* SketchObjectPy::getDriving(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &constrid))
         return 0;
 
-    SketchObject* obj = this->getSketchObjectPtr();
     if (this->getSketchObjectPtr()->getDriving(constrid, driving)) {
         PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
         return 0;

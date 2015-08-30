@@ -187,7 +187,8 @@ bool Cell::getStringContent(std::string & s) const
             s = static_cast<StringExpression*>(expression)->getText();
             char * end;
             errno = 0;
-            strtod(s.c_str(), &end);
+            double d = strtod(s.c_str(), &end);
+            (void)d; // fix gcc warning
             if (!*end && errno == 0)
                 s = "'" + s;
         }

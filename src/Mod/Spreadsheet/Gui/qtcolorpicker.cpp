@@ -897,7 +897,7 @@ void ColorPickerPopup::regenerateGrid()
 */
 void ColorPickerPopup::getColorFromDialog()
 {
-    bool ok;
+    //bool ok;
     //QRgb rgb = QColorDialog::getRgba(lastSel.rgba(), &ok, parentWidget());
     QColor col = QColorDialog::getColor(lastSel,parentWidget(),0,QColorDialog::ShowAlphaChannel);
     if (!col.isValid())
