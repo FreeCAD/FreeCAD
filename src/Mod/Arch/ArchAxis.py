@@ -277,38 +277,41 @@ class _ViewProviderAxis:
                        ('X',10),('IX',9),('V',5),('IV',4),('I',1))
                 num = 0
                 for t in self.bubbletexts:
-                    if vobj.NumberingStyle == "1,2,3":
+                    if hasattr(vobj,"NumberingStyle"):
+                        if vobj.NumberingStyle == "1,2,3":
+                            t.string = str(num+1)
+                        elif vobj.NumberingStyle == "01,02,03":
+                            t.string = str(num+1).zfill(2)
+                        elif vobj.NumberingStyle == "001,002,003":
+                            t.string = str(num+1).zfill(3)
+                        elif vobj.NumberingStyle == "A,B,C":
+                            result = ""
+                            base = num/26
+                            if base:
+                                result += chars[base].upper()
+                            remainder = num % 26
+                            result += chars[remainder].upper()
+                            t.string = result
+                        elif vobj.NumberingStyle == "a,b,c":
+                            result = ""
+                            base = num/26
+                            if base:
+                                result += chars[base]
+                            remainder = num % 26
+                            result += chars[remainder]
+                            t.string = result
+                        elif vobj.NumberingStyle == "I,II,III":
+                            result = ""
+                            num += 1
+                            for numeral, integer in roman:
+                                while num >= integer:
+                                    result += numeral
+                                    num -= integer
+                            t.string = result
+                        elif vobj.NumberingStyle == "L0,L1,L2":
+                            t.string = "L"+str(num)
+                    else:
                         t.string = str(num+1)
-                    elif vobj.NumberingStyle == "01,02,03":
-                        t.string = str(num+1).zfill(2)
-                    elif vobj.NumberingStyle == "001,002,003":
-                        t.string = str(num+1).zfill(3)
-                    elif vobj.NumberingStyle == "A,B,C":
-                        result = ""
-                        base = num/26
-                        if base:
-                            result += chars[base].upper()
-                        remainder = num % 26
-                        result += chars[remainder].upper()
-                        t.string = result
-                    elif vobj.NumberingStyle == "a,b,c":
-                        result = ""
-                        base = num/26
-                        if base:
-                            result += chars[base]
-                        remainder = num % 26
-                        result += chars[remainder]
-                        t.string = result
-                    elif vobj.NumberingStyle == "I,II,III":
-                        result = ""
-                        num += 1
-                        for numeral, integer in roman:
-                            while num >= integer:
-                                result += numeral
-                                num -= integer
-                        t.string = result
-                    elif vobj.NumberingStyle == "L0,L1,L2":
-                        t.string = "L"+str(num)
                     num += 1
 
 
