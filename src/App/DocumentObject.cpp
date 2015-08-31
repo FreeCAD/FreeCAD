@@ -59,7 +59,7 @@ DocumentObject::DocumentObject(void)
 DocumentObject::~DocumentObject(void)
 {
     if (!PythonObject.is(Py::_None())){
-        // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed 
+        // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
         // Python object or not. In the constructor we forced the wrapper to own the object so we need
         // not to dec'ref the Python object any more.
         // But we must still invalidate the Python object because it need not to be
@@ -115,7 +115,7 @@ const char* DocumentObject::getStatusString(void) const
 const char *DocumentObject::getNameInDocument(void) const
 {
     // Note: It can happen that we query the internal name of an object even if it is not
-    // part of a document (anymore). This is the case e.g. if we have a reference in Python 
+    // part of a document (anymore). This is the case e.g. if we have a reference in Python
     // to an object that has been removed from the document. In this case we should rather
     // return 0.
     //assert(pcNameInDocument);
@@ -221,7 +221,7 @@ PyObject *DocumentObject::getPyObject(void)
         // ref counter is set to 1
         PythonObject = Py::Object(new DocumentObjectPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 std::vector<PyObject *> DocumentObject::getPySubObjects(const std::vector<std::string>&) const
