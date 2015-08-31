@@ -127,7 +127,6 @@ public:
     const std::string & getPropertyName() const { return components[propertyIndex].component; }
 
     const Component & getPropertyComponent(std::size_t i) const { assert(i < components.size()); return components[propertyIndex + i]; }
-    const std::string & getSubComponent(int i) const { assert(i >= 1); return components[propertyIndex - 1].component; }
 
     std::string getSubPathStr() const;
 
