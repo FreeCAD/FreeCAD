@@ -759,25 +759,25 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
     PyObject *pcObj;
     int refGeoId;
     int refPosId = Sketcher::none;
-    
+
     if (!PyArg_ParseTuple(args, "Oi|i", &pcObj, &refGeoId, &refPosId))
-	return 0;
+        return 0;
 
     if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-	    if (PyInt_Check((*it).ptr()))
-		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+            if (PyInt_Check((*it).ptr()))
+                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
         }
 
         int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,(Sketcher::PointPos) refPosId) + 1;
-    
-	if(ret == -1)
-	    throw Py::TypeError("Symmetric operation unsuccessful!");    
-    
-	std::size_t numGeo = geoIdList.size();
+
+        if(ret == -1)
+            throw Py::TypeError("Symmetric operation unsuccessful!");    
+
+        std::size_t numGeo = geoIdList.size();
         Py::Tuple tuple(numGeo);
         for (std::size_t i=0; i<numGeo; ++i) {
             int geoId = ret - int(numGeo - i);
@@ -791,7 +791,6 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
     error += pcObj->ob_type->tp_name;
     throw Py::TypeError(error);
 }
-
 
 PyObject* SketchObjectPy::addCopy(PyObject *args)
 {
@@ -808,16 +807,16 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-	    if (PyInt_Check((*it).ptr()))
-		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+            if (PyInt_Check((*it).ptr()))
+                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
         }
 
         int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, PyObject_IsTrue(clone) ? true : false) + 1;
     
-	if(ret == -1)
-	    throw Py::TypeError("Copy operation unsuccessful!");    
-    
-	std::size_t numGeo = geoIdList.size();
+        if(ret == -1)
+            throw Py::TypeError("Copy operation unsuccessful!");
+
+        std::size_t numGeo = geoIdList.size();
         Py::Tuple tuple(numGeo);
         for (std::size_t i=0; i<numGeo; ++i) {
             int geoId = ret - int(numGeo - i);

@@ -1027,32 +1027,32 @@ void CmdSketcherSymmetry::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    
+
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
     std::stringstream ss;
-    
+
     getSelection().clearSelection();
 
     int nelements = SubNames.size();
-    
+
     int LastGeoId;
     Sketcher::PointPos LastPointPos = Sketcher::none;
     const Part::Geometry *LastGeo;
     typedef enum { invalid = -1, line = 0, point = 1 } GeoType;
 
     GeoType lastgeotype = invalid;
-        
+
     // create python command with list of elements
     std::stringstream stream;
     int geoids = 0;
-        
+
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle non-external edges
         if ((it->size() > 4 && it->substr(0,4) == "Edge") ||
             (it->size() > 12 && it->substr(0,12) == "ExternalEdge")) {
-	  
-            if(it->substr(0,4) == "Edge") {
+
+            if (it->substr(0,4) == "Edge") {
                 LastGeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
                 LastPointPos = Sketcher::none;
             }
@@ -1060,7 +1060,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
                 LastGeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
                 LastPointPos = Sketcher::none;
             }
-            
+
             // reference can be external or non-external
             LastGeo = Obj->getGeometry(LastGeoId);            
             // Only for supported types
@@ -1071,22 +1071,22 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
             // lines to make symmetric (only non-external)
             if(LastGeoId>=0) {
-                geoids++;	    
-            stream << LastGeoId << ",";
+                geoids++;
+                stream << LastGeoId << ",";
             }
         }
         else if(it->size() > 6 && it->substr(0,6) == "Vertex"){
-        // only if it is a GeomPoint
+            // only if it is a GeomPoint
             int VtId = std::atoi(it->substr(6,4000).c_str()) - 1;
             int GeoId;
             Sketcher::PointPos PosId;
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-            
+
             if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
                 LastGeoId = GeoId;
                 LastPointPos = Sketcher::start;
                 lastgeotype = point;
-                
+
                 // points to make symmetric
                 if(LastGeoId>=0) {
                     geoids++;	    
@@ -1095,7 +1095,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
             }
         }
     }
-    
+
     bool lastvertexoraxis=false;
     // check if last selected element is a Vertex, not being a GeomPoint
     if(SubNames.rbegin()->size() > 6 && SubNames.rbegin()->substr(0,6) == "Vertex"){
@@ -1116,7 +1116,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
         LastPointPos = Sketcher::none;
         lastgeotype = line;
         lastvertexoraxis=true;
-    }    
+    }
     // check if last selected element is vertical axis
     else if(SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "V_Axis"){
         LastGeoId = -2;
@@ -1131,19 +1131,19 @@ void CmdSketcherSymmetry::activated(int iMsg)
         lastgeotype = point;
         lastvertexoraxis=true;
     }
-    
+
     if ( geoids == 0 || (geoids == 1 && LastGeoId>=0 && !lastvertexoraxis) ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction."));
-        return;      
-    }    
-    
+        return;
+    }
+
     if ( lastgeotype == invalid ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("The last element must be a point or a line serving as reference for the symmetry construction."));
-        return;      
+        return;
     }
-    
+
     std::string geoIdList = stream.str();
 
     // missing cases:
@@ -1152,41 +1152,41 @@ void CmdSketcherSymmetry::activated(int iMsg)
     // 3- Last element is a point (Vertex)
 
     if(LastGeoId>=0 && !lastvertexoraxis) {
-	// if LastGeoId was added remove the last element
-	int index = geoIdList.rfind(',');
-	index = geoIdList.rfind(',',index-1);
-	geoIdList.resize(index);
+        // if LastGeoId was added remove the last element
+        int index = geoIdList.rfind(',');
+        index = geoIdList.rfind(',',index-1);
+        geoIdList.resize(index);
     }
     else {
-	int index = geoIdList.rfind(',');
-	geoIdList.resize(index);      
+        int index = geoIdList.rfind(',');
+        geoIdList.resize(index);      
     }
-    
+
     geoIdList.insert(0,1,'[');
     geoIdList.append(1,']');
-    
+
     Gui::Command::openCommand("Create Symmetric geometry");
-    
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
+
     try{
-	Gui::Command::doCommand(
-	    Gui::Command::Doc, "App.ActiveDocument.%s.addSymmetric(%s,%d,%d)",
-	    Obj->getNameInDocument(), geoIdList.c_str(), LastGeoId, LastPointPos
-	); 
-	
+        Gui::Command::doCommand(
+            Gui::Command::Doc, "App.ActiveDocument.%s.addSymmetric(%s,%d,%d)",
+            Obj->getNameInDocument(), geoIdList.c_str(), LastGeoId, LastPointPos
+        ); 
+
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-	Base::Console().Error("%s\n", e.what());
-	Gui::Command::abortCommand();
+        Base::Console().Error("%s\n", e.what());
+        Gui::Command::abortCommand();
     }
-    
+
     if(autoRecompute)
-	Gui::Command::updateActive();
+        Gui::Command::updateActive();
     else
-	Obj->solve();
+        Obj->solve();
 }
 
 bool CmdSketcherSymmetry::isActive(void)
