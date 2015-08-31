@@ -47,6 +47,7 @@ enum ObjectStatus {
     New = 2,
     Recompute = 3,
     Restore = 4,
+    Delete = 5,
     Expand = 16
 };
 
@@ -114,6 +115,8 @@ public:
     bool isRecomputing() const {return StatusBits.test(3);}
     /// returns true if this objects is currently restoring from file
     bool isRestoring() const {return StatusBits.test(4);}
+    /// returns true if this objects is currently restoring from file
+    bool isDeleting() const {return StatusBits.test(5);}
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
     /// return the status bits
@@ -194,7 +197,7 @@ protected:
      *  2 - object is marked as 'new'
      *  3 - object is marked as 'recompute', i.e. the object gets recomputed now
      *  4 - object is marked as 'restoring', i.e. the object gets loaded at the moment
-     *  5 - reserved
+     *  5 - object is marked as 'deleting', i.e. the object gets deleted at the moment
      *  6 - reserved
      *  7 - reserved
      * 16 - object is marked as 'expanded' in the tree view
@@ -213,6 +216,10 @@ protected:
     virtual void onDocumentRestored() {}
     /// get called after setting the document
     virtual void onSettingDocument() {}
+    /// get called after a brand new object was created
+    virtual void setupObject() {}
+    /// get called when object is going to be removed from the document
+    virtual void unsetupObject() {}
 
      /// python object of this class and all descendend
 protected: // attributes

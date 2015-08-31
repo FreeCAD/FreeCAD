@@ -135,12 +135,13 @@ struct DocumentP
     std::map<std::string,DocumentObject*> objectMap;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
-    Transaction *activeTransaction;
+    Transaction *activeTransaction; ///< FIXME: has no effect (2015-09-01, Fat-Zer)
     int iTransactionMode;
     int iTransactionCount;
     std::map<int,Transaction*> mTransactions;
     std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
+    bool undoing; ///< document in the midle of undo or redo
     bool closable;
     bool keepTrailingDigits;
     int iUndoMode;
@@ -156,6 +157,7 @@ struct DocumentP
         iTransactionMode = 0;
         iTransactionCount = 0;
         rollback = false;
+        undoing = false;
         closable = true;
         keepTrailingDigits = true;
         iUndoMode = 0;
@@ -572,9 +574,10 @@ bool Document::undo(void)
         // redo
         d->activeUndoTransaction = new Transaction();
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
-
+        d->undoing = true;
         // applying the undo
         mUndoTransactions.back()->apply(*this,false);
+        d->undoing = false;
 
         // save the redo
         mRedoTransactions.push_back(d->activeUndoTransaction);
@@ -603,7 +606,9 @@ bool Document::redo(void)
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
+        d->undoing = true;
         mRedoTransactions.back()->apply(*this,true);
+        d->undoing = false;
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
 
@@ -1110,7 +1115,7 @@ void Document::Restore(Base::XMLReader &reader)
             string name = reader.getAttribute("name");
 
             try {
-                addObject(type.c_str(),name.c_str());
+                addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             }
             catch ( Base::Exception& ) {
                 Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -1226,7 +1231,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(),name.c_str());
+            App::DocumentObject* obj = addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             if (obj) {
                 objs.push_back(obj);
                 // use this name for the later access because an object with
@@ -1464,6 +1469,8 @@ void Document::restore (void)
     // !TODO mind exeptions while restoring!
     clearUndos();
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
+        // NOTE don't call unsetupObject () here due to it is intended to do some manipulations
+        //      on other objects, but here we are wiping out document completely
         signalDeletedObject(*(*obj));
         delete *obj;
     }
@@ -1930,7 +1937,7 @@ void Document::recomputeFeature(DocumentObject* Feat)
         _recomputeFeature(Feat);
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
+DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
@@ -1976,6 +1983,11 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
     //_DepConMap[pcObject] = add_vertex(_DepList);
 
     pcObject->Label.setValue( ObjectName );
+
+    // Call the object-specific initialization
+    if (!d->undoing && !d->rollback && isNew) {
+        pcObject->setupObject ();
+    }
 
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->StatusBits.set(2);
@@ -2066,7 +2078,15 @@ void Document::remObject(const char* sName)
     if (d->activeObject == pos->second)
         d->activeObject = 0;
 
+    // Mark the object as about to be deleted
+    pos->second->StatusBits.set (ObjectStatus::Delete);
+    if (!d->undoing && !d->rollback) {
+        pos->second->unsetupObject();
+    }
     signalDeletedObject(*(pos->second));
+    // TODO Check me if it's needed (2015-09-01, Fat-Zer)
+    pos->second->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
+
     if (!d->vertexMap.empty()) {
         // recompute of document is running
         for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
@@ -2124,10 +2144,18 @@ void Document::_remObject(DocumentObject* pcObject)
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
 
+
     if (d->activeObject == pcObject)
         d->activeObject = 0;
 
+    // Mark the object as about to be deleted
+    pcObject->StatusBits.set (ObjectStatus::Delete);
+    if (!d->undoing && !d->rollback) {
+        pcObject->unsetupObject();
+    }
     signalDeletedObject(*pcObject);
+    // TODO Check me if it's needed (2015-09-01, Fat-Zer)
+    pcObject->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
     
     //remove the tip if needed
     if(Tip.getValue() == pcObject) {
