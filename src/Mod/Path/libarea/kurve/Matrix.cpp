@@ -622,7 +622,7 @@ namespace geoff_geometry {
 	 void Plane::Mirrored(Matrix* tmMirrored) {
 		 // calculates a mirror transformation that mirrors 2d about plane
 	 
-		Point3d p1 = this->Near(Point3d(0.,0.,0.));
+		//Point3d p1 = this->Near(Point3d(0.,0.,0.));
 		if(tmMirrored->m_unit == false) tmMirrored->Unit();
 
 		double nx = this->normal.getx();
