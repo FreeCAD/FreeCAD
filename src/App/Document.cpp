@@ -109,7 +109,7 @@ using namespace zipios;
 
 #if FC_DEBUG
 #  define FC_LOGFEATUREUPDATE
-#endif 
+#endif
 
 // typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
 typedef boost::adjacency_list <
@@ -1507,7 +1507,7 @@ void Document::restore (void)
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
     reader.readFiles(zipstream);
-    
+
     // reset all touched
     for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
         It->second->connectRelabelSignals();
@@ -1530,7 +1530,7 @@ bool Document::isSaved() const
  * matches with the file name where the document is stored to.
  * In contrast to Label the method getName() returns the internal name of the document that only
  * matches with Label when loading or creating a document because then both are set to the same value.
- * Since the internal name cannot be changed during runtime it must differ from the Label after saving 
+ * Since the internal name cannot be changed during runtime it must differ from the Label after saving
  * the document the first time or saving it under a new file name.
  * @ note More than one document can have the same label name.
  * @ note The internal is always guaranteed to be unique because @ref Application::newDocument() checks
@@ -1627,7 +1627,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         Vertex v = add_vertex(DepList);
         ObjectMap[*it] = v;
         VertexMap[v] = *it;
-    }  
+    }
 
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
         std::vector<DocumentObject*> outList = (*it)->getOutList();
@@ -2099,7 +2099,7 @@ void Document::remObject(const char* sName)
 
     // Before deleting we must nullify all dependant objects
     breakDependency(pos->second, true);
-    
+
     //and remove the tip if needed
     if(Tip.getValue() && strcmp(Tip.getValue()->getNameInDocument(), sName)==0) {
         Tip.setValue(nullptr);
@@ -2156,7 +2156,7 @@ void Document::_remObject(DocumentObject* pcObject)
     signalDeletedObject(*pcObject);
     // TODO Check me if it's needed (2015-09-01, Fat-Zer)
     pcObject->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
-    
+
     //remove the tip if needed
     if(Tip.getValue() == pcObject) {
         Tip.setValue(nullptr);

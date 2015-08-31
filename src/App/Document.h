@@ -85,7 +85,7 @@ public:
     PropertyUUID   Uid;
     /** License string
       * Holds the short license string for the Item, e.g. CC-BY
-      * for the Creative Commons license suit. 
+      * for the Creative Commons license suit.
       */
     App::PropertyString  License;
     /// License descripton/contract URL
@@ -121,7 +121,7 @@ public:
     boost::signal<void (const App::Document&)> signalRedo;
     /** signal on load/save document
      * this signal is given when the document gets streamed.
-     * you can use this hook to write additional information in 
+     * you can use this hook to write additional information in
      * the file (like the Gui::Document it does).
      */
     boost::signal<void (Base::Writer   &)> signalSaveDocument;
@@ -248,16 +248,16 @@ public:
     /** @name methods for the UNDO REDO and Transaction handling */
     //@{
     /// switch the level of Undo/Redo
-    void setUndoMode(int iMode);  
+    void setUndoMode(int iMode);
     /// switch the level of Undo/Redo
-    int getUndoMode(void) const;  
+    int getUndoMode(void) const;
     /// switch the tranaction mode
     void setTransactionMode(int iMode);
     /// Open a new command Undo/Redo, an UTF-8 name can be specified
     void openTransaction(const char* name=0);
     // Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
-    /// Abort the  actually running transaction. 
+    /// Abort the  actually running transaction.
     void abortTransaction();
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
@@ -312,7 +312,7 @@ public:
     friend class Transaction;
     friend class TransactionObject;
 
-    /// Destruction 
+    /// Destruction
     virtual ~Document();
 
 protected:
