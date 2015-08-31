@@ -167,9 +167,12 @@ public:
     /** @name Object handling  */
     //@{
     /** Add a feature of sType with sName (ASCII) to this document and set it active.
-     * Unicode names are set through the Label property.
+     * Unicode names are set through the Label propery.
+     * @param sType       the type of created object
+     * @param pObjectName if nonNULL use that name otherwise generate a new uniq name based on the \a sType
+     * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
      */
-    DocumentObject *addObject(const char* sType, const char* pObjectName=0);
+    DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
     /// Remove a feature out of the document
     void remObject(const char* sName);
     /** Add an existing feature with sName (ASCII) to this document and set it active.
