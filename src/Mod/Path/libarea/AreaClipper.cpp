@@ -134,6 +134,7 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 	}
 }
 
+#if 0
 static bool IsPolygonClockwise(const TPolygon& p)
 {
 #if 1
@@ -158,6 +159,8 @@ static bool IsPolygonClockwise(const TPolygon& p)
 	return IsClockwise(p);
 #endif
 }
+#endif
+
 
 static void MakeLoop(const DoubleAreaPoint &pt0, const DoubleAreaPoint &pt1, const DoubleAreaPoint &pt2, double radius)
 {
