@@ -38,7 +38,10 @@
 using namespace SketcherGui;
 
 SketchMirrorDialog::SketchMirrorDialog(void)
-  : QDialog(Gui::getMainWindow()), ui(new Ui_SketchMirrorDialog), RefGeoid(-1), RefPosid(Sketcher::none)
+  : QDialog(Gui::getMainWindow())
+  , RefGeoid(-1)
+  , RefPosid(Sketcher::none)
+  , ui(new Ui_SketchMirrorDialog)
 {
     ui->setupUi(this);
 }

@@ -587,9 +587,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
                 
         std::vector<Part::Geometry *> tempgeo = tempsketch->getInternalGeometry();
         std::vector<Sketcher::Constraint *> tempconstr = tempsketch->Constraints.getValues();
-        
-        int nconstraints = tempconstr.size();
-        
+
         std::vector<Part::Geometry *> mirrorgeo (tempgeo.begin()+addedGeometries+1,tempgeo.end());
         std::vector<Sketcher::Constraint *> mirrorconstr (tempconstr.begin()+addedConstraints+1,tempconstr.end());
         
@@ -642,31 +640,29 @@ void CmdSketcherMergeSketches::activated(int iMsg)
                              qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches, please."));
         return;
     }
-    
-    Sketcher::SketchObject* Obj1 = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    
+
     App::Document* doc = App::GetApplication().getActiveDocument();
-    
+
     // create Sketch 
     std::string FeatName = getUniqueObjectName("Sketch");
-    
+
     openCommand("Create a merge Sketch");
     doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-    
+
     Sketcher::SketchObject* mergesketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
-    
+
     int baseGeometry=0;
     int baseConstraints=0;
-    
+
     for (std::vector<Gui::SelectionObject>::const_iterator it=selection.begin(); it != selection.end(); ++it) {
         const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
         int addedGeometries=mergesketch->addGeometry(Obj->getInternalGeometry());
-        
+
         int addedConstraints=mergesketch->addConstraints(Obj->Constraints.getValues());
-        
+
         for(int i=0; i<=(addedConstraints-baseConstraints); i++){
             Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
-            
+
             if(constraint->First!=Sketcher::Constraint::GeoUndef || constraint->First==-1 || constraint->First==-2) // not x, y axes or origin
                 constraint->First+=baseGeometry;
             if(constraint->Second!=Sketcher::Constraint::GeoUndef || constraint->Second==-1 || constraint->Second==-2) // not x, y axes or origin
@@ -674,13 +670,12 @@ void CmdSketcherMergeSketches::activated(int iMsg)
             if(constraint->Third!=Sketcher::Constraint::GeoUndef || constraint->Third==-1 || constraint->Third==-2) // not x, y axes or origin
                 constraint->Third+=baseGeometry;
         }
-        
+
         baseGeometry=addedGeometries+1;
         baseConstraints=addedConstraints+1;
     }
-    
+
     doCommand(Gui,"App.activeDocument().recompute()");
-    
 }
 
 bool CmdSketcherMergeSketches::isActive(void)

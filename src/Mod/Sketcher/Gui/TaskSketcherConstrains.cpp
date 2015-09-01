@@ -348,13 +348,11 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
 
 void TaskSketcherConstrains::on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status)
 {
-    ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
-    if (!item) return;
-    
+    ConstraintItem *citem = dynamic_cast<ConstraintItem*>(item);
+    if (!citem) return;
+
     Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ToggleDrivingConstraint");
-       
     slotConstraintsChanged();
-    
 }
 
 void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetItem *item)

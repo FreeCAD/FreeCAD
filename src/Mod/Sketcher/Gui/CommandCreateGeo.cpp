@@ -239,15 +239,13 @@ public:
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
-            
-            int currentgeoid= getHighestCurveIndex();
-            
+
             Gui::Command::openCommand("Add sketch line");
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                       sketchgui->getObject()->getNameInDocument(),
                       EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY,
                       geometryCreationMode==Construction?"True":"False");
-                        
+
             Gui::Command::commitCommand();
 
             // add auto constraints for the line segment start
@@ -261,10 +259,10 @@ public:
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
                 sugConstr2.clear();
             }
-            
+
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-            
+
             if(autoRecompute)
                 Gui::Command::updateActive();
             else
@@ -272,10 +270,10 @@ public:
 
             EditCurve.clear();
             sketchgui->drawEdit(EditCurve);
-            
+
             //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
-            
+
             if(continuousMode){
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
@@ -1352,7 +1350,6 @@ public:
         if (Mode==STATUS_End) {
             unsetCursor();
             resetPositionText();
-            int currentgeoid= getHighestCurveIndex();
             
             Gui::Command::openCommand("Add sketch arc");
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -1650,8 +1647,7 @@ public:
         if (Mode==STATUS_End) {
             unsetCursor();
             resetPositionText();
-            int currentgeoid= getHighestCurveIndex();
-            
+
             Gui::Command::openCommand("Add sketch arc");
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
@@ -1958,7 +1954,6 @@ public:
             double ry = EditCurve[1].fY - EditCurve[0].fY;
             unsetCursor();
             resetPositionText();
-            int currentgeoid= getHighestCurveIndex();
             
             Gui::Command::openCommand("Add sketch circle");
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -3568,7 +3563,6 @@ public:
         if (Mode==STATUS_End) {
             unsetCursor();
             resetPositionText();
-            int currentgeoid= getHighestCurveIndex();
             Gui::Command::openCommand("Add sketch circle");
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.Circle"
@@ -3832,8 +3826,6 @@ public:
         if (selectionDone){
             unsetCursor();
             resetPositionText();
-            
-            int currentgeoid= getHighestCurveIndex();
 
             Gui::Command::openCommand("Add sketch point");
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
@@ -4993,14 +4985,11 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
-
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
             Gui::Command::openCommand("Add hexagon");
 
-            int currentgeoid= getHighestCurveIndex();
-            
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,
                         "import ProfileLib.RegularPolygon\n"
@@ -5011,10 +5000,10 @@ public:
                                             geometryCreationMode==Construction?"True":"False");
                 
                 Gui::Command::commitCommand();
-                
+
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-        
+
                 // add auto constraints at the center of the polygon
                 if (sugConstr1.size() > 0) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
@@ -5026,7 +5015,7 @@ public:
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 1, Sketcher::end);
                     sugConstr2.clear();
                 }
-                
+
                 if(autoRecompute)
                     Gui::Command::updateActive();
                 else
@@ -5035,17 +5024,17 @@ public:
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
                 Gui::Command::abortCommand();
-                
+
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                
+
                 if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
                     Gui::Command::updateActive();
             }
-            
+
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
-            
+
             if(continuousMode){
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;

@@ -634,7 +634,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
         if (it->size() > 10 && it->substr(0,10) == "Constraint") {
             int ConstrId = std::atoi(it->substr(10,4000).c_str()) - 1;
             
-            if(ConstrId<vals.size()){
+            if(ConstrId < static_cast<int>(vals.size())){
                 if(vals[ConstrId]->First!=Constraint::GeoUndef){
                     ss.str(std::string());
                     
@@ -743,8 +743,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    
+
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
     std::stringstream ss;
@@ -770,7 +769,6 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 bool minor=false;
                 bool focus1=false;
                 bool focus2=false;
-                bool extra_elements=false;
                 
                 int majorelementindex=-1;
                 int minorelementindex=-1;
@@ -799,6 +797,8 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                             case Sketcher::EllipseFocus2: 
                                 focus2=true;
                                 focus2elementindex=(*it)->First;
+                                break;
+                            default:
                                 break;
                         }
                     }
@@ -880,8 +880,6 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 
                 int currentgeoid= Obj->getHighestCurveIndex();
                 int incrgeo= 0;
-                int majorindex=-1;
-                int minorindex=-1;
                 
                 Base::Vector3d center;
                 double majord;
@@ -926,7 +924,6 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                         
                         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
                         selection[0].getFeatName(),currentgeoid+incrgeo+1,GeoId); // constrain major axis
-                        majorindex=currentgeoid+incrgeo+1;
                         incrgeo++;
                     }
                     if(!minor)
@@ -937,7 +934,6 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                         
                         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
                         selection[0].getFeatName(),currentgeoid+incrgeo+1,GeoId); // constrain minor axis
-                        minorindex=currentgeoid+incrgeo+1;
                         incrgeo++;
                     }
                     if(!focus1)
@@ -1026,7 +1022,6 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -1034,9 +1029,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     getSelection().clearSelection();
 
-    int nelements = SubNames.size();
-
-    int LastGeoId;
+    int LastGeoId = 0;
     Sketcher::PointPos LastPointPos = Sketcher::none;
     const Part::Geometry *LastGeo;
     typedef enum { invalid = -1, line = 0, point = 1 } GeoType;
@@ -1235,8 +1228,17 @@ static const char *cursor_createcopy[]={
     class DrawSketchHandlerCopy: public DrawSketchHandler
     {
     public:
-        DrawSketchHandlerCopy(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements, bool clone): geoIdList(geoidlist), OriginGeoId (origingeoid),
-        OriginPos(originpos), nElements(nelements), Clone(clone), Mode(STATUS_SEEK_First), EditCurve(2){}
+        DrawSketchHandlerCopy(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements, bool clone)
+        : Mode(STATUS_SEEK_First)
+        , geoIdList(geoidlist)
+        , OriginGeoId(origingeoid)
+        , OriginPos(originpos)
+        , nElements(nelements)
+        , Clone(clone)
+        , EditCurve(2)
+        {
+        }
+
         virtual ~DrawSketchHandlerCopy(){}
         /// mode table
         enum SelectMode {
@@ -1364,19 +1366,16 @@ void SketcherCopy::activate(bool clone)
     
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    
+
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
     std::stringstream ss;
     
     getSelection().clearSelection();
-    
-    int nelements = SubNames.size();
-    
-    int LastGeoId;
+
+    int LastGeoId = 0;
     Sketcher::PointPos LastPointPos = Sketcher::none;
-    const Part::Geometry *LastGeo;
+    const Part::Geometry *LastGeo = 0;
     
     // create python command with list of elements
     std::stringstream stream;
@@ -1670,10 +1669,22 @@ static const char *cursor_createrectangulararray[]={
     {
     public:
         DrawSketchHandlerRectangularArray(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements, bool clone,
-                                     int rows, int cols, bool constraintSeparation,
-                                     bool equalVerticalHorizontalSpacing ): geoIdList(geoidlist), OriginGeoId (origingeoid), Clone(clone),
-            Rows(rows), Cols(cols), ConstraintSeparation(constraintSeparation), EqualVerticalHorizontalSpacing(equalVerticalHorizontalSpacing),
-            OriginPos(originpos), nElements(nelements), Mode(STATUS_SEEK_First), EditCurve(2){}
+                                          int rows, int cols, bool constraintSeparation,
+                                          bool equalVerticalHorizontalSpacing )
+            : Mode(STATUS_SEEK_First)
+            , geoIdList(geoidlist)
+            , OriginGeoId(origingeoid)
+            , OriginPos(originpos)
+            , nElements(nelements)
+            , Clone(clone)
+            , Rows(rows)
+            , Cols(cols)
+            , ConstraintSeparation(constraintSeparation)
+            , EqualVerticalHorizontalSpacing(equalVerticalHorizontalSpacing)
+            , EditCurve(2)
+        {
+        }
+            
         virtual ~DrawSketchHandlerRectangularArray(){}
         /// mode table
         enum SelectMode {
@@ -1816,19 +1827,16 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    
+
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
     std::stringstream ss;
     
     getSelection().clearSelection();
-    
-    int nelements = SubNames.size();
-    
-    int LastGeoId;
+
+    int LastGeoId = 0;
     Sketcher::PointPos LastPointPos = Sketcher::none;
-    const Part::Geometry *LastGeo;
+    const Part::Geometry *LastGeo = 0;
     
     // create python command with list of elements
     std::stringstream stream;

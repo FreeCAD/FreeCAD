@@ -90,7 +90,6 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPr
     ui->if_pressure->setMaximum(FLOAT_MAX);
     //1000 because FreeCAD used kPa internally
     Base::Quantity p = Base::Quantity(1000 * f, Base::Unit::Stress);
-    double val = p.getValueAs(Base::Quantity::MegaPascal);
     ui->if_pressure->setValue(p);
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {

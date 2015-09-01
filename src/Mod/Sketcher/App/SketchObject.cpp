@@ -2028,7 +2028,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
     int currentrowfirstgeoid= -1, prevrowstartfirstgeoid = -1, prevfirstgeoid = -1;
 
-    Sketcher::PointPos refposId;
+    Sketcher::PointPos refposId = Sketcher::none;
 
     std::map<int, int> geoIdMap;
 
@@ -2071,7 +2071,6 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 // Handle Geometry
                 if(geocopy->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
                     Part::GeomLineSegment *geosymline = static_cast<Part::GeomLineSegment *>(geocopy);
-                    Base::Vector3d sp = geosymline->getStartPoint();
                     Base::Vector3d ep = geosymline->getEndPoint();
                     Base::Vector3d ssp = geosymline->getStartPoint()+double(x)*displacement+double(y)*perpendicularDisplacement;
 
@@ -2220,9 +2219,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                 // add a construction line
                 Part::GeomLineSegment *constrline= new Part::GeomLineSegment();
-                
-                Base::Vector3d spdisp = Vector3d(); // initializes to 0,0,0
-                
+
                 Base::Vector3d sp = getPoint(refgeoid,refposId)+ ( ( x == 0 )?
                                 (double(x)*displacement+double(y-1)*perpendicularDisplacement):
                                 (double(x-1)*displacement+double(y)*perpendicularDisplacement)); // position of the reference point

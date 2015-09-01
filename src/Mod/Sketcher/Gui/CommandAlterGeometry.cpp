@@ -126,11 +126,6 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             return;
         }
 
-        // make sure the selected object is the sketch in edit mode
-        const App::DocumentObject* obj = selection[0].getObject();
-        ViewProviderSketch* sketchView = static_cast<ViewProviderSketch*>
-            (Gui::Application::Instance->getViewProvider(obj));
-
         // undo command open
         openCommand("Toggle draft from/to draft");
 
