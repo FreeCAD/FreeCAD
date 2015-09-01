@@ -55,7 +55,7 @@ DeriVector2 DeriVector2::getNormalized() const
 {
     double l=length();
     if(l==0.0) {
-        return DeriVector2(0, 0, dx/0.0, dy/0.0);
+        return DeriVector2(0, 0, dx, dy);
     } else {
         DeriVector2 rtn;
         rtn.x = x/l;

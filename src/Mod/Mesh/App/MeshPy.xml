@@ -155,6 +155,14 @@ Example:
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getPointNormals" Const="true">
+			<Documentation>
+				<UserDocu>
+					getPointNormals()
+					Get the normals of the points.
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="countSegments" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of segments which may also be 0</UserDocu>
