@@ -488,7 +488,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
       glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
     }
     // Position for Datum Text Label
-    float angle;
+    float angle = 0;
 
     SbVec3f textOffset;
 
@@ -533,13 +533,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Get magnitude of angle between horizontal
         angle = atan2f(dir[1],dir[0]);
-        bool flip=false;
         if (angle > M_PI_2+M_PI/12) {
             angle -= (float)M_PI;
-            flip = true;
         } else if (angle <= -M_PI_2+M_PI/12) {
             angle += (float)M_PI;
-            flip = true;
         }
 
         textOffset = midpos + norm * length + dir * length2;
@@ -654,13 +651,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Get magnitude of angle between horizontal
         angle = atan2f(dir[1],dir[0]);
-        bool flip=false;
         if (angle > M_PI_2+M_PI/12) {
             angle -= (float)M_PI;
-            flip = true;
         } else if (angle <= -M_PI_2+M_PI/12) {
             angle += (float)M_PI;
-            flip = true;
         }
 
         textOffset = pos;

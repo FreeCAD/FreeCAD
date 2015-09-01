@@ -1011,7 +1011,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         return false;
     }
 
-    bool preselectChanged;
+    bool preselectChanged = false;
     if (Mode != STATUS_SELECT_Point &&
         Mode != STATUS_SELECT_Edge &&
         Mode != STATUS_SELECT_Constraint &&
@@ -1168,9 +1168,6 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
 
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     Constraint *Constr = constrlist[constNum];
-
-    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-    int extGeoCount = getSketchObject()->getExternalGeometryCount();
     
     // with memory allocation
     const std::vector<Part::Geometry *> geomlist = getSketchObject()->getSolvedSketch().extractGeometry(true, true);
@@ -2277,7 +2274,7 @@ void ViewProviderSketch::updateColor(void)
         // Non DatumLabel Nodes will have a material excluding coincident
         bool hasMaterial = false;
 
-        SoMaterial *m;
+        SoMaterial *m = 0;
         if (!hasDatumLabel && type != Sketcher::Coincident && type !=InternalAlignment) {
             hasMaterial = true;
             m = dynamic_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
@@ -2306,7 +2303,6 @@ void ViewProviderSketch::updateColor(void)
                             int cGeoId = edit->CurvIdToGeoId[i];
                             
                             if(cGeoId == constraint->First) {
-                                int indexes=(edit->CurveSet->numVertices[i]);
                                 color[i] = SelectColor;
                                 break;
                             }
@@ -2644,8 +2640,8 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 
     QImage compositeIcon;
     float closest = FLT_MAX;  // Closest distance between avPos and any icon
-    SoImage *thisDest;
-    SoInfo *thisInfo;
+    SoImage *thisDest = 0;
+    SoInfo *thisInfo = 0;
 
     // Tracks all constraint IDs that are combined into this icon
     QString idString;
@@ -3163,7 +3159,6 @@ Restart:
             SoSeparator *sep = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
             const Constraint *Constr = *it;
 
-            bool major_radius = false; // this is checked in the radius to reuse code
             // distinquish different constraint types to build up
             switch (Constr->Type) {
                 case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
@@ -3786,7 +3781,6 @@ Restart:
                                 const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
                                 p0 = Base::convertTo<SbVec3f>(arc->getCenter());
 
-                                Base::Vector3d dir = arc->getEndPoint(/*emulateCCWXY=*/true)-arc->getStartPoint(/*emulateCCWXY=*/true);
                                 arc->getRange(startangle, endangle,/*emulateCCWXY=*/true);
                                 range = endangle - startangle;
                             }
