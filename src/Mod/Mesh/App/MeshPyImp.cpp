@@ -685,6 +685,22 @@ PyObject*  MeshPy::setPoint(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::getPointNormals(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        std::vector<Base::Vector3d> normals = getMeshObjectPtr()->getPointNormals();
+        Py::Tuple ary(normals.size());
+        std::size_t numNormals = normals.size();
+        for (std::size_t i=0; i<numNormals; i++) {
+            ary.setItem(i, Py::Vector(normals[i]));
+        }
+        return Py::new_reference_to(ary);
+    } PY_CATCH;
+}
+
 PyObject* MeshPy::countSegments(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
