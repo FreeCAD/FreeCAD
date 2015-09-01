@@ -224,14 +224,17 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
         pLabel->string.setNum((int)lines.size());
         pLabel3d->string.setNum((int)lines.size());
         for (std::vector<std::string>::const_iterator it = lines.begin(); it != lines.end(); ++it) {
+            const char* cs = it->c_str();
+            if (it->empty())
+                cs = " "; // empty lines make coin crash, we use a space instead
 #if (COIN_MAJOR_VERSION <= 3)
             QByteArray latin1str;
-            latin1str = (QString::fromUtf8(it->c_str())).toLatin1();
+            latin1str = (QString::fromUtf8(cs)).toLatin1();
             pLabel->string.set1Value(index, SbString(latin1str.constData()));
             pLabel3d->string.set1Value(index, SbString(latin1str.constData()));
 #else
-            pLabel->string.set1Value(index, SbString(it->c_str()));
-            pLabel3d->string.set1Value(index, SbString(it->c_str()));
+            pLabel->string.set1Value(index, SbString(cs));
+            pLabel3d->string.set1Value(index, SbString(cs));
 #endif
             index++;
         }
