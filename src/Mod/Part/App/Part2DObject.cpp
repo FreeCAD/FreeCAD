@@ -46,7 +46,6 @@
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
-#include <App/Plane.h>
 #include <App/Property.h>
 #include <App/PropertyLinks.h>
 #include "Part2DObject.h"

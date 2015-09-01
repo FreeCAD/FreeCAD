@@ -31,7 +31,7 @@
 #endif
 
 
-#include <App/Plane.h>
+#include <App/OriginFeature.h>
 #include <Base/Exception.h>
 #include "FeatureMirrored.h"
 #include "DatumPlane.h"

@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,11 +27,15 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QPixmap>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <boost/bind.hpp>
 #endif
 
+
+#include <Base/Vector3D.h>
 #include <App/Origin.h>
-#include <App/Plane.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <App/Document.h>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -46,125 +51,170 @@
 #include "View3DInventorViewer.h"
 
 #include "Base/Console.h"
-#include <boost/bind.hpp>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoSeparator.h>
+
+#include <App/Origin.h>
 
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderGeoFeatureGroup)
-
+PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderDocumentObject)
 
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderOrigin::ViewProviderOrigin() 
-  : tempVisMode(false)
+ViewProviderOrigin::ViewProviderOrigin()
 {
+    ADD_PROPERTY_TYPE ( Size, (Base::Vector3d(10,10,10)), 0, App::Prop_ReadOnly,
+            "The displayed size of the origin" );
+
     sPixmap = "CoordinateSystem";
     Visibility.setValue(false);
+
+    pcGroupChildren = new SoGroup();
+    pcGroupChildren->ref();
 }
 
-ViewProviderOrigin::~ViewProviderOrigin()
-{
+ViewProviderOrigin::~ViewProviderOrigin() {
+    pcGroupChildren->unref();
+    pcGroupChildren = 0;
 }
 
-
-bool ViewProviderOrigin::canDragObjects() const
-{
-    return false;
+std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren(void) const {
+    return static_cast<App::Origin*>( getObject() )->OriginFeatures.getValues ();
 }
 
-bool ViewProviderOrigin::canDropObjects() const
-{
-    return false;
+std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren3D(void) const {
+    return claimChildren ();
 }
 
-
-bool ViewProviderOrigin::setEdit(int ModNum)
+void ViewProviderOrigin::attach(App::DocumentObject* pcObject)
 {
-    return true;
+    addDisplayMaskMode(pcGroupChildren, "Base");
+    Gui::ViewProviderDocumentObject::attach(pcObject);
 }
 
-void ViewProviderOrigin::unsetEdit(int ModNum)
+std::vector<std::string> ViewProviderOrigin::getDisplayModes(void) const
 {
-
+    return { "Base" };
 }
 
-QIcon ViewProviderOrigin::getIcon(void) const
+void ViewProviderOrigin::setDisplayMode(const char* ModeName)
 {
-    return Gui::ViewProvider::getIcon();
+    if (strcmp(ModeName, "Base") == 0)
+        setDisplayMaskMode("Base");
+    ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-void ViewProviderOrigin::setTemporaryVisibilityMode(bool onoff, Gui::Document* doc)
-{
-    tempVisDoc = doc;
-    
-    if(tempVisMode == onoff)
-        return;
-    
-    tempVisMode = onoff;
-    if(onoff && doc) {
-        App::Origin* origin = static_cast<App::Origin*>(pcObject);
-        tempVisMap.clear();
-        
-        for(App::DocumentObject* obj : origin->getObjects()) {
-            Gui::ViewProvider* vp = doc->getViewProvider(obj);
-            if(vp) {
-                tempVisMap[vp] = vp->isVisible();
-                vp->setVisible(false);
+void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
+    App::Origin* origin = static_cast<App::Origin*>( getObject() );
+
+    bool saveState = tempVisMap.empty();
+
+    try {
+        // Remember & Set axis visability
+        for(App::DocumentObject* obj : origin->axes()) {
+            if (obj) {
+                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+                if(vp) {
+                    if (saveState) {
+                        tempVisMap[vp] = vp->isVisible();
+                    }
+                    vp->setVisible(axis);
+                }
             }
         }
-        tempVisMap[this] = isVisible();
-        setVisible(true);
+
+        // Remember & Set plane visability
+        for(App::DocumentObject* obj : origin->planes()) {
+            if (obj) {
+                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+                if(vp) {
+                    if (saveState) {
+                        tempVisMap[vp] = vp->isVisible();
+                    }
+                    vp->setVisible(plane);
+                }
+            }
+        }
+    } catch (const Base::Exception &ex) {
+        Base::Console().Error ("%s\n", ex.what() );
     }
-    else if(!onoff) {    
-        for(std::pair<Gui::ViewProvider*, bool> pair : tempVisMap) 
-            pair.first->setVisible(pair.second);
-    }
+
+    // Remember & Set self visability
+    tempVisMap[this] = isVisible();
+    setVisible(true);
+
 }
 
-void ViewProviderOrigin::setTemporaryVisibility(App::DocumentObject* obj, bool onoff)
-{
-    Gui::ViewProvider* vp = tempVisDoc->getViewProvider(obj);
-    if(vp) {
-        vp->setVisible(onoff);
+void ViewProviderOrigin::resetTemporaryVisibility() {
+    for(std::pair<Gui::ViewProvider*, bool> pair : tempVisMap) {
+        pair.first->setVisible(pair.second);
     }
+    tempVisMap.clear ();
 }
 
-bool ViewProviderOrigin::isTemporaryVisibilityMode()
-{
-    return tempVisMode;
+bool ViewProviderOrigin::isTemporaryVisibility() {
+    return !tempVisMap.empty();
 }
 
-void ViewProviderOrigin::setTemporaryVisibilityAxis(bool onoff)
-{
-    for(App::DocumentObject* obj : static_cast<App::Origin*>(pcObject)->getObjectsOfType(App::Line::getClassTypeId())) {
-     
-        Gui::ViewProvider* vp = tempVisDoc->getViewProvider(obj);
-        vp->setVisible(onoff);        
+void ViewProviderOrigin::onChanged(const App::Property* prop) {
+    if (prop == &Size) {
+        try {
+            Gui::Application *app = Gui::Application::Instance;
+            Base::Vector3d sz = Size.getValue ();
+            App::Origin* origin = static_cast<App::Origin*>(pcObject);
+
+            // find planes view providers
+            Gui::ViewProviderPlane* vpPlaneXY, *vpPlaneXZ, *vpPlaneYZ;
+            vpPlaneXY = static_cast<Gui::ViewProviderPlane *> ( app->getViewProvider ( origin->getXY () ) );
+            vpPlaneXZ = static_cast<Gui::ViewProviderPlane *> ( app->getViewProvider ( origin->getXZ () ) );
+            vpPlaneYZ = static_cast<Gui::ViewProviderPlane *> ( app->getViewProvider ( origin->getYZ () ) );
+
+            // set their sizes
+            if (vpPlaneXY) {
+                vpPlaneXY->Size.setValue ( std::max ( sz.x, sz.y ) );
+            }
+            if (vpPlaneXZ) {
+                vpPlaneXZ->Size.setValue ( std::max ( sz.x, sz.z ) );
+            }
+            if (vpPlaneYZ) {
+                vpPlaneYZ->Size.setValue ( std::max ( sz.y, sz.z ) );
+            }
+
+            //find Lines view providers
+            Gui::ViewProviderLine* vpLineX, *vpLineY, *vpLineZ;
+            vpLineX = static_cast<Gui::ViewProviderLine *> ( app->getViewProvider ( origin->getX () ) );
+            vpLineY = static_cast<Gui::ViewProviderLine *> ( app->getViewProvider ( origin->getY () ) );
+            vpLineZ = static_cast<Gui::ViewProviderLine *> ( app->getViewProvider ( origin->getZ () ) );
+
+            if (vpLineX) {
+                vpLineX->Size.setValue ( std::min ( vpPlaneXY->Size.getValue(), vpPlaneXZ->Size.getValue() ) );
+            }
+            if (vpLineY) {
+                vpLineY->Size.setValue ( std::min ( vpPlaneXY->Size.getValue(), vpPlaneYZ->Size.getValue() ) );
+            }
+            if (vpLineZ) {
+                vpLineZ->Size.setValue ( std::min ( vpPlaneXZ->Size.getValue(), vpPlaneYZ->Size.getValue() ) );
+            }
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what() );
+        }
     }
+
+    ViewProviderDocumentObject::onChanged ( prop );
 }
 
-void ViewProviderOrigin::setTemporaryVisibilityPlanes(bool onoff)
-{
-    for(App::DocumentObject* obj : static_cast<App::Origin*>(pcObject)->getObjectsOfType(App::Plane::getClassTypeId())) {
-     
-        Gui::ViewProvider* vp = tempVisDoc->getViewProvider(obj);
-        vp->setVisible(onoff);        
+bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
+    App::Origin* origin = static_cast<App::Origin*>( getObject() );
+
+    if ( !origin->getInList().empty() ) {
+        return false;
     }
-}
 
+    for (auto obj: origin->OriginFeatures.getValues() ) {
+        Gui::Command::doCommand( Gui::Command::Doc, "App.getDocument(\"%s\").removeObject(\"%s\")",
+                obj->getDocument()->getName(), obj->getNameInDocument() );
+    }
 
-
-// Python feature -----------------------------------------------------------------------
-
-namespace Gui {
-/// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginPython, Gui::ViewProviderOrigin)
-/// @endcond
-
-// explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderOrigin>;
+    return true;
 }

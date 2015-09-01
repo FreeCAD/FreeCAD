@@ -36,8 +36,7 @@
 #include "FeatureLinearPattern.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
-#include <App/Plane.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <Base/Axis.h>
 #include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>

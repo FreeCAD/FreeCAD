@@ -33,7 +33,7 @@
 #endif
 
 #include <App/DocumentObjectGroup.h>
-#include <App/Plane.h>
+#include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>

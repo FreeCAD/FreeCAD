@@ -34,8 +34,8 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Plane.h>
-#include <App/Line.h>
+#include <App/Origin.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -67,8 +67,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     if (obj == NULL)
         return QObject::tr("No reference selected");
 
-    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-        obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId()) ||
+    if (obj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
         obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
         // App::Plane, Liine or Datum feature
         return QString::fromAscii(obj->getNameInDocument());
@@ -217,10 +216,8 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
         auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-            origin->setTemporaryVisibilityAxis(true);
-            origin->setTemporaryVisibilityPlanes(true);
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibility(true, true);
         }            
     }   
     if (pcDatum->Support.getSize() == 0)
@@ -402,8 +399,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::string subname = msg.pSubName;
 
         // Remove subname for planes and datum features
-        if (selObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-            selObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId()) ||
+        if (selObj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
             selObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
             subname = "";
 
@@ -778,8 +774,8 @@ TaskDatumParameters::~TaskDatumParameters()
         auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(false);
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
+            origin->resetTemporaryVisibility();
         }            
     }
     

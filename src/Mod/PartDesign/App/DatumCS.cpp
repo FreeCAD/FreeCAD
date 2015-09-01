@@ -29,9 +29,7 @@
 #include "DatumPoint.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
-#include <App/Plane.h>
 #include <App/Part.h>
-#include <App/Line.h>
 #include <Base/Exception.h>
 #include <gp_Pln.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>

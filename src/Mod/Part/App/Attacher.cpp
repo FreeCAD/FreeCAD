@@ -54,8 +54,7 @@
 
 #include "Attacher.h"
 #include <Base/Console.h>
-#include <App/Plane.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 
 using namespace Part;
 using namespace Attacher;
@@ -614,6 +613,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
                 shapes[i] = &(shape->_Shape);
             }
         } else if (  geof->isDerivedFrom(App::Plane::getClassTypeId())  ){
+            // TODO Why this assert is here? (2015-08-31, Fat-Zer)
             assert(sub[i].length()==0);//no more support for "back"/"front" on planes. Use mapReversed instead.
             //obtain Z axis and origin of placement
             Base::Vector3d norm;

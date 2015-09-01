@@ -35,7 +35,7 @@
 #include <algorithm>
 
 #include <App/DocumentObjectGroup.h>
-#include <App/Plane.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -307,11 +307,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         }
 
         if (!pcActiveBody->hasFeature(obj)) {
+            // TODO check what the heck is going on here (2015-08-31, Fat-Zer)
             bool isBasePlane = false;
             if(obj->isDerivedFrom(App::Plane::getClassTypeId()))  {
                 App::Plane* pfeat = static_cast<App::Plane*>(obj);
                 for (unsigned i = 0; i < 3; i++) {
-                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->PlaneType.getValue()) == 0) {
+                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->Role.getValue()) == 0) {
                         isBasePlane = true;
                         break;
                     }
@@ -360,7 +361,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             if((*p)->isDerivedFrom(App::Plane::getClassTypeId()))  {
                 App::Plane* pfeat = static_cast<App::Plane*>(*p);
                 for (unsigned i = 0; i < 3; i++) {
-                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->PlaneType.getValue()) == 0) {
+                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->Role.getValue()) == 0) {
                         if(pcActivePart->hasObject(pfeat, true))
                             status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
                         else

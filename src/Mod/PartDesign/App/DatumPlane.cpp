@@ -59,9 +59,7 @@
 #endif
 
 #include <QObject>
-#include <App/Plane.h>
 #include <App/Part.h>
-#include <App/Line.h>
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"

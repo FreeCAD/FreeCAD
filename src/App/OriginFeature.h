@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2012     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,43 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef ORIGINFEATURE_H_6ZWJPB5V
+#define ORIGINFEATURE_H_6ZWJPB5V
 
-#include "PreCompiled.h"
+#include "GeoFeature.h"
 
-#ifndef _PreComp_
-#endif
-
-
-#include "Line.h"
-
-using namespace App;
-
-
-PROPERTY_SOURCE(App::Line, App::GeoFeature)
-
-
-//===========================================================================
-// Feature
-//===========================================================================
-
-Line::Line(void)
+namespace App
 {
-    ADD_PROPERTY(LineType,(""));
-    Placement.StatusBits.set(3, true);
 
-}
+class Origin;
 
-Line::~Line(void)
+/** Plane Object
+ *  Used to define planar support for all kind of operations in the document space
+ */
+class AppExport OriginFeature: public App::GeoFeature
 {
-}
+    PROPERTY_HEADER(App::OriginFeature);
+public:
+    /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
+    PropertyString Role;
 
-Base::BoundBox3d Line::getBoundBox()
-{
-    return Base::BoundBox3d(-10, -10, -10, 10, 10, 10);
-}
+    /// Constructor
+    OriginFeature(void);
+    virtual ~OriginFeature();
 
+    /// Finds the origin object this plane belongs to
+    App::Origin *getOrigin ();
+};
 
+class AppExport Plane: public App::OriginFeature {
+    PROPERTY_HEADER(App::OriginFeature);
+public:
+    virtual const char* getViewProviderName(void) const {
+        return "Gui::ViewProviderPlane";
+    }
+};
 
+class AppExport Line: public App::OriginFeature {
+    PROPERTY_HEADER(App::OriginFeature);
+public:
+    virtual const char* getViewProviderName(void) const {
+        return "Gui::ViewProviderLine";
+    }
+};
 
+} //namespace App
 
-
+#endif /* end of include guard: ORIGINFEATURE_H_6ZWJPB5V */

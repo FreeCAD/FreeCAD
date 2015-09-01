@@ -58,7 +58,7 @@ public:
     std::vector<std::string> getDisplayModes(void) const;
     void setDisplayMode(const char* ModeName);
 
-   /// indicates if the ViewProvider use the new Selection model
+    /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const {return true;}
     /// indicates if the ViewProvider can be selected
     virtual bool isSelectable(void) const ;

@@ -38,7 +38,7 @@
 #include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 
 using namespace PartDesign;
 

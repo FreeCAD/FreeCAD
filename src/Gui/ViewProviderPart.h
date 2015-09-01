@@ -56,7 +56,7 @@ public:
 
     virtual bool doubleClicked(void);
 
-    virtual bool onDelete(const std::vector<std::string> &);
+//    virtual bool onDelete(const std::vector<std::string> &);
 
     /// helper to set up the standard content of a Part Object
     static void setUpPart(const App::Part *part);

@@ -78,16 +78,18 @@ SET(Document_CPP_SRCS
     GeoFeatureGroupPyImp.cpp
     GeoFeatureGroup.cpp
     Part.cpp
+    Origin.cpp
     Path.cpp
     InventorObject.cpp
     MeasureDistance.cpp
     Placement.cpp
+<<<<<<< ae7effa304095ee3d286ea7bb545636960e262d5
     Plane.cpp
-<<<<<<< 328aeaab9aed22c3b94c79bd7e49404342a44cea
     Range.cpp
-=======
     Line.cpp
->>>>>>> add base lines
+=======
+    OriginFeature.cpp
+>>>>>>> App/Origin: big refactoring
     Transactions.cpp
     VRMLObject.cpp
     MaterialObject.cpp
@@ -112,16 +114,18 @@ SET(Document_HPP_SRCS
     GeoFeature.h
     GeoFeatureGroup.h
     Part.h
+    Origin.h
     Path.h
     InventorObject.h
     MeasureDistance.h
     Placement.h
+<<<<<<< ae7effa304095ee3d286ea7bb545636960e262d5
     Plane.h
-<<<<<<< 328aeaab9aed22c3b94c79bd7e49404342a44cea
     Range.h
-=======
     Line.h
->>>>>>> add base lines
+=======
+    OriginFeature.h
+>>>>>>> App/Origin: big refactoring
     Transactions.h
     VRMLObject.h
     MaterialObject.h

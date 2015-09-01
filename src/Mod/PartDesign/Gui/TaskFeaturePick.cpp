@@ -32,6 +32,8 @@
 #include <Gui/Document.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <App/Document.h>
+#include <App/Origin.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Base/Tools.h>
 #include <Base/Reader.h>
@@ -85,31 +87,42 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     connect(ui->nobodyRadioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->nobodyRadioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
 
-    auto guidoc = Gui::Application::Instance->activeDocument();
-    auto origin_obj = App::GetApplication().getActiveDocument()->getObjectsOfType<App::Origin>();
+    enum { axisBit=0, planeBit = 1};
 
+    // Note generally there shouldn't be more then one origin
+    std::map <App::Origin*, std::bitset<2> > originVisStatus;
+
+    auto statusIt = status.cbegin();
+    auto objIt = objects.begin();
     assert(status.size() == objects.size());
-    std::vector<featureStatus>::const_iterator st = status.begin();
-    for (std::vector<App::DocumentObject*>::const_iterator o = objects.begin(); o != objects.end(); o++) {
-        QListWidgetItem* item = new QListWidgetItem(QString::fromAscii((*o)->getNameInDocument()) +
-                                                    QString::fromAscii(" (") + getFeatureStatusString(*st) + QString::fromAscii(")"));
+    for (; statusIt != status.end(); ++statusIt, ++objIt) {
+        QListWidgetItem* item = new QListWidgetItem(
+                QString::fromAscii((*objIt)->getNameInDocument()) +
+                QString::fromAscii(" (") + getFeatureStatusString(*statusIt) + QString::fromAscii(")") );
         ui->listWidget->addItem(item);
 
         //check if we need to set any origin in temporary visibility mode
-        for(App::Origin* obj : origin_obj) {
-            if(obj->hasObject(*o) && (*st != invalidShape)) {
-                Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*>(guidoc->getViewProvider(obj));
-                if(!vpo->isTemporaryVisibilityMode())
-                    vpo->setTemporaryVisibilityMode(true, guidoc);
+        if (*statusIt != invalidShape && (*objIt)->isDerivedFrom ( App::OriginFeature::getClassTypeId () )) {
+            App::Origin *origin = static_cast<App::OriginFeature*> (*objIt)->getOrigin ();
+            if (origin) {
+                if ((*objIt)->isDerivedFrom ( App::Plane::getClassTypeId () )) {
+                    originVisStatus[ origin ].set (planeBit, true);
+                } else if ( (*objIt)->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+                    originVisStatus[ origin ].set (axisBit, true);
+                }
 
-                vpo->setTemporaryVisibility(*o, true);
+                Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*> (
+                        Gui::Application::Instance->getViewProvider(*objIt) );
+                if (vpo) {
+                    vpo->setTemporaryVisibility( originVisStatus[origin][axisBit],
+                            originVisStatus[origin][planeBit]);
+                }
                 origins.push_back(vpo);
-                break;
             }
         }
-
-        st++;
     }
+
+    // TODO may be update origin API to show only some objects (2015-08-31, Fat-Zer)
 
     groupLayout()->addWidget(proxy);
     statuses = status;
@@ -119,7 +132,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 TaskFeaturePick::~TaskFeaturePick()
 {
     for(Gui::ViewProviderOrigin* vpo : origins)
-        vpo->setTemporaryVisibilityMode(false, NULL);
+        vpo->resetTemporaryVisibility();
 
 }
 

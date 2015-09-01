@@ -38,7 +38,7 @@
 #include <Base/Tools.h>
 #include <Base/QuantityPy.h>
 #include <App/Document.h>
-#include <App/Plane.h>
+#include <App/OriginFeature.h>
 #include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)

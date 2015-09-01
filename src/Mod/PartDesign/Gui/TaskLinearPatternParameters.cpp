@@ -34,7 +34,7 @@
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/Origin.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -170,10 +170,9 @@ void TaskLinearPatternParameters::setupUI()
         auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-            origin->setTemporaryVisibilityAxis(true);
-        }            
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibility(true, false);
+        }
     }
 }
 
@@ -370,8 +369,8 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
         auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(false);
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
+            origin->resetTemporaryVisibility();
         }            
     }
     
