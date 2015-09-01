@@ -357,16 +357,16 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
-        vobj.addProperty("App::PropertyStringList", "Text",        "Arch",translate("Arch","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
-        vobj.addProperty("App::PropertyString",     "FontName",    "Arch",translate("Arch","The name of the font"))
-        vobj.addProperty("App::PropertyColor",      "TextColor",   "Arch",translate("Arch","The color of the area text"))
-        vobj.addProperty("App::PropertyLength",     "FontSize",    "Arch",translate("Arch","The size of the text font"))
-        vobj.addProperty("App::PropertyLength",     "FirstLine",  "Arch",translate("Arch","The size of the first line of text"))
-        vobj.addProperty("App::PropertyFloat",      "LineSpacing", "Arch",translate("Arch","The space between the lines of text"))
-        vobj.addProperty("App::PropertyVector",     "TextPosition","Arch",translate("Arch","The position of the text. Leave (0,0,0) for automatic position"))
-        vobj.addProperty("App::PropertyEnumeration","TextAlign",   "Arch",translate("Arch","The justification of the text"))
-        vobj.addProperty("App::PropertyInteger",    "Decimals",    "Arch",translate("Arch","The number of decimals to use for calculated texts"))
-        vobj.addProperty("App::PropertyBool",       "ShowUnit",    "Arch",translate("Arch","Show the unit suffix"))
+        vobj.addProperty("App::PropertyStringList",    "Text",        "Arch",translate("Arch","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
+        vobj.addProperty("App::PropertyString",        "FontName",    "Arch",translate("Arch","The name of the font"))
+        vobj.addProperty("App::PropertyColor",         "TextColor",   "Arch",translate("Arch","The color of the area text"))
+        vobj.addProperty("App::PropertyLength",        "FontSize",    "Arch",translate("Arch","The size of the text font"))
+        vobj.addProperty("App::PropertyLength",        "FirstLine",   "Arch",translate("Arch","The size of the first line of text"))
+        vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Arch",translate("Arch","The space between the lines of text"))
+        vobj.addProperty("App::PropertyVectorDistance","TextPosition","Arch",translate("Arch","The position of the text. Leave (0,0,0) for automatic position"))
+        vobj.addProperty("App::PropertyEnumeration",   "TextAlign",   "Arch",translate("Arch","The justification of the text"))
+        vobj.addProperty("App::PropertyInteger",       "Decimals",    "Arch",translate("Arch","The number of decimals to use for calculated texts"))
+        vobj.addProperty("App::PropertyBool",          "ShowUnit",    "Arch",translate("Arch","Show the unit suffix"))
         vobj.TextColor = (0.0,0.0,0.0,1.0)
         vobj.Text = ["$label","$area"]
         vobj.TextAlign = ["Left","Center","Right"]

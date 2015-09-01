@@ -83,7 +83,7 @@ class _Frame(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Profile","Arch","The profile used to build this frame")
         obj.addProperty("App::PropertyBool","Align","Arch","Specifies if the profile must be aligned with the extrusion wires")
-        obj.addProperty("App::PropertyVector","Offset","Arch","An offset vector between the base sketch and the frame")
+        obj.addProperty("App::PropertyVectorDistance","Offset","Arch","An offset vector between the base sketch and the frame")
         obj.addProperty("App::PropertyInteger","BasePoint","Arch","Crossing point of the path on the profile.")
         obj.addProperty("App::PropertyAngle","Rotation","Arch","The rotation of the profile around its extrusion axis")
         self.Type = "Frame"
