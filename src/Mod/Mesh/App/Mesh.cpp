@@ -834,6 +834,26 @@ Base::Vector3d MeshObject::getPointNormal(unsigned long index) const
     return normal;
 }
 
+std::vector<Base::Vector3d> MeshObject::getPointNormals() const
+{
+    std::vector<Base::Vector3f> temp = _kernel.CalcVertexNormals();
+
+    std::vector<Base::Vector3d> normals;
+    normals.reserve(temp.size());
+    for (std::vector<Base::Vector3f>::iterator it = temp.begin(); it != temp.end(); ++it) {
+        Base::Vector3d normal = transformToOutside(*it);
+        // the normal is a vector, hence we must not apply the translation part
+        // of the transformation to the vector
+        normal.x -= _Mtrx[0][3];
+        normal.y -= _Mtrx[1][3];
+        normal.z -= _Mtrx[2][3];
+        normal.Normalize();
+        normals.push_back(normal);
+    }
+
+    return normals;
+}
+
 void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, std::vector<MeshObject::TPolylines> &sections,
                                float fMinEps, bool bConnectPolygons) const
 {
