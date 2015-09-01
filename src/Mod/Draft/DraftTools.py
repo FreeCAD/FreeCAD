@@ -4058,7 +4058,7 @@ class Draft2Sketch(Modifier):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Draft2Sketch',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Convert bidirectionally between Draft and Sketch objects")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2Sketch", "Convert bidirectionally between Draft and Sketch objects")}
 
     def Activated(self):
         Modifier.Activated(self)
