@@ -33,10 +33,9 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Plane.h>
 #include <App/Part.h>
 #include <App/Origin.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -199,59 +198,6 @@ void TaskSketchBasedParameters::recomputeFeature()
         pcSketchBased->getDocument()->recomputeFeature(pcSketchBased);
     }
 }
-
-
-App::DocumentObject* TaskSketchBasedParameters::getPartPlanes(const char* str) const {
-
-    //TODO: Adjust to GRAPH handling when available
-    App::DocumentObject* obj = vp->getObject();
-    App::Part* part = getPartFor(obj, false);
-    if(!part)
-        return nullptr;
-    
-    std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-    if(origs.size()<1)
-        return nullptr;
-    
-    App::Origin* orig = static_cast<App::Origin*>(origs[0]);
-    auto planes = orig->getObjectsOfType(App::Plane::getClassTypeId());
-    for(App::DocumentObject* plane : planes) {
-        
-        if( strcmp(static_cast<App::Plane*>(plane)->PlaneType.getValue(), str) == 0)
-            return plane;
-    }
-    
-    return nullptr;
-}
-
-
-App::DocumentObject* TaskSketchBasedParameters::getPartLines(const char* str) const {
-
-    //TODO: Adjust to GRAPH handling when available
-    App::DocumentObject* obj = vp->getObject();
-    App::Part* part = getPartFor(obj, false);
-    
-
-    std::vector<App::DocumentObject*> origs;
-    if(part)
-        origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-    else
-        origs = vp->getObject()->getDocument()->getObjectsOfType(App::Origin::getClassTypeId());
-
-    if(origs.size()<1)
-        return nullptr;
-    
-    App::Origin* orig = static_cast<App::Origin*>(origs[0]);
-    auto lines = orig->getObjectsOfType(App::Line::getClassTypeId());
-    for(App::DocumentObject* line : lines) {
-        
-        if( strcmp(static_cast<App::Line*>(line)->LineType.getValue(), str) == 0)
-            return line;
-    }
-    
-    return nullptr;
-}
-
 
 TaskSketchBasedParameters::~TaskSketchBasedParameters()
 {

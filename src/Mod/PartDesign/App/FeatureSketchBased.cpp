@@ -67,11 +67,10 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
-#include <App/Plane.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Mod/Part/App/modelRefine.h>
 #include "FeatureSketchBased.h"
@@ -1054,12 +1053,7 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
     if (pcReferenceAxis->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
         const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
         base = Base::Vector3d(0,0,0);
-        if( strcmp(line->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
-            dir = Base::Vector3d(1,0,0);
-        else if( strcmp(line->LineType.getValue(), App::Part::BaselineTypes[1]) == 0)
-            dir = Base::Vector3d(0,1,0);
-        else if( strcmp(line->LineType.getValue(), App::Part::BaselineTypes[2]) == 0)
-            dir = Base::Vector3d(0,0,1);
+        line->Placement.getValue().multVec (Base::Vector3d (1,0,0), dir);
 
         // Check that axis is perpendicular with sketch plane!
         if (sketchplane.Axis().Direction().Angle(gp_Dir(dir.x, dir.y, dir.z)) < Precision::Angular())

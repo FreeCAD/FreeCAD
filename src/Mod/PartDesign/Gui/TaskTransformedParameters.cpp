@@ -36,8 +36,7 @@
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/Origin.h>
-#include <App/Plane.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -173,51 +172,6 @@ void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, co
     }
 }
 
-
-App::DocumentObject* TaskTransformedParameters::getPartPlanes(const char* str) const {
-    //TODO: Adjust to GRAPH handling when available
-    App::DocumentObject* obj = getObject();
-    App::Part* part = getPartFor(obj, false);
-    
-    if (part) {
-        std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(origs.size()<1)
-            return nullptr;
-
-        App::Origin* orig = static_cast<App::Origin*>(origs[0]);
-        auto planes = orig->getObjectsOfType(App::Plane::getClassTypeId());
-        for(App::DocumentObject* plane : planes) {
-            if( strcmp(static_cast<App::Plane*>(plane)->PlaneType.getValue(), str) == 0)
-                return plane;
-        }
-    }
-    
-    return nullptr;
-}
-
-
-App::DocumentObject* TaskTransformedParameters::getPartLines(const char* str) const {
-
-    //TODO: Adjust to GRAPH handling when available
-    App::DocumentObject* obj = getObject();
-    App::Part* part = getPartFor(obj, false);
-    if (part) {
-        std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(origs.size()<1)
-            return nullptr;
-
-        App::Origin* orig = static_cast<App::Origin*>(origs[0]);
-        auto lines = orig->getObjectsOfType(App::Line::getClassTypeId());
-        for(App::DocumentObject* line : lines) {
-
-            if( strcmp(static_cast<App::Line*>(line)->LineType.getValue(), str) == 0)
-                return line;
-        }
-    }
-    
-    return nullptr;
-}
-
 void TaskTransformedParameters::fillAxisCombo(ComboLinks &combolinks,
                                               Part::Part2DObject* sketch)
 {
@@ -237,16 +191,21 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks &combolinks,
     }
 
     //add part axes
-    App::DocumentObject* line = 0;
-    line = getPartLines(App::Part::BaselineTypes[0]);
-    if(line)
-        combolinks.addLink(line,"",tr("Base X axis"));
-    line = getPartLines(App::Part::BaselineTypes[1]);
-    if(line)
-        combolinks.addLink(line,"",tr("Base Y axis"));
-    line = getPartLines(App::Part::BaselineTypes[2]);
-    if(line)
-        combolinks.addLink(line,"",tr("Base Z axis"));
+    App::DocumentObject* obj = getObject();
+    App::Part* part = getPartFor(obj, false);
+
+    if (part) {
+        try {
+            std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
+
+            App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+            combolinks.addLink(orig->getX(),"",tr("Base X axis"));
+            combolinks.addLink(orig->getY(),"",tr("Base Y axis"));
+            combolinks.addLink(orig->getZ(),"",tr("Base Z axis"));
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what() );
+        }
+    }
 
     //add "Select reference"
     combolinks.addLink(0,std::string(),tr("Select reference..."));
@@ -270,20 +229,24 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks &combolinks,
     }
 
     //add part baseplanes
-    App::DocumentObject* plane = 0;
-    plane = getPartPlanes(App::Part::BaseplaneTypes[0]);
-    if(plane)
-        combolinks.addLink(plane,"",tr("Base XY plane"));
-    plane = getPartPlanes(App::Part::BaseplaneTypes[1]);
-    if(plane)
-        combolinks.addLink(plane,"",tr("Base XZ plane"));
-    plane = getPartPlanes(App::Part::BaseplaneTypes[2]);
-    if(plane)
-        combolinks.addLink(plane,"",tr("Base YZ plane"));
+    App::DocumentObject* obj = getObject();
+    App::Part* part = getPartFor(obj, false);
+
+    if (part) {
+        try {
+            std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
+
+            App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+            combolinks.addLink(orig->getXY(),"",tr("Base XY plane"));
+            combolinks.addLink(orig->getYZ(),"",tr("Base YZ plane"));
+            combolinks.addLink(orig->getXZ(),"",tr("Base XZ plane"));
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what() );
+        }
+    }
 
     //add "Select reference"
     combolinks.addLink(0,std::string(),tr("Select reference..."));
-
 }
 
 void TaskTransformedParameters::recomputeFeature() {

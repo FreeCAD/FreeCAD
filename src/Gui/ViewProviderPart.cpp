@@ -30,12 +30,12 @@
 
 #include <App/Part.h>
 #include <App/Origin.h>
-#include <App/Plane.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <App/Document.h>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderPart.h"
+#include "ViewProviderOrigin.h"
 #include "ViewProviderPlane.h"
 #include "ViewProviderLine.h"
 #include "Application.h"
@@ -92,6 +92,7 @@ void ViewProviderPart::updateData(const App::Property* prop)
 
 void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App::Property&)
 {
+    Gui::Document* gdoc = Gui::Application::Instance->getDocument ( getObject()->getDocument() );
     App::Part* part = static_cast<App::Part*>(pcObject);
     if ( &obj == pcObject || (
         obj.getTypeId() != App::Origin::getClassTypeId() &&
@@ -118,14 +119,9 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
             }
         };
 
-        if(bbox.getSize().length() < 1e-7) {
-            bbox = SbBox3f(10., 10., 10., 10., 10., 10.);
-        }
-
         //get the bounding box values
-        SbVec3f size = bbox.getSize()*1.3;
-        SbVec3f max = bbox.getMax()*1.3;
-        SbVec3f min = bbox.getMin()*1.3;
+        SbVec3f max = bbox.getMax();
+        SbVec3f min = bbox.getMin();
 
         auto origins = part->getObjectsOfType(App::Origin::getClassTypeId());
         if (origins.empty())
@@ -134,34 +130,20 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         if(!origin)
             return;
 
-        //get the planes and set their values
-        std::vector<App::DocumentObject*> planes = origin->getObjectsOfType(App::Plane::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
 
-             Gui::ViewProviderPlane* vp = dynamic_cast<Gui::ViewProviderPlane*>(Gui::Application::Instance->getViewProvider(*p));
-             if(vp) {
-                if (strcmp(App::Part::BaseplaneTypes[0], dynamic_cast<App::Plane*>(*p)->PlaneType.getValue()) == 0)
-                        vp->Size.setValue(std::max(std::abs(std::min(min[0], min[1])),std::max(max[0], max[1])));
-                else if (strcmp(App::Part::BaseplaneTypes[1], dynamic_cast<App::Plane*>(*p)->PlaneType.getValue()) == 0)
-                        vp->Size.setValue(std::max(std::abs(std::min(min[0], min[2])),std::max(max[0], max[2])));
-                else if (strcmp(App::Part::BaseplaneTypes[2], dynamic_cast<App::Plane*>(*p)->PlaneType.getValue()) == 0)
-                        vp->Size.setValue(std::max(std::abs(std::min(min[1], min[2])),std::max(max[1], max[2])));
-             }
+        Base::Vector3d size;
+        for (uint_fast8_t i=0; i<3; i++) {
+            size[i] = std::max ( fabs ( max[i] ), fabs ( min[i] ) );
+            if (size[i] < 1e-7) { // TODO replace it with some non-magick value (2015-08-31, Fat-Zer)
+                size[i] = ViewProviderOrigin::defaultSize();
+            }
         }
 
-        //get the lines and set their values
-        std::vector<App::DocumentObject*> lines = origin->getObjectsOfType(App::Line::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::const_iterator p = lines.begin(); p != lines.end(); p++) {
-
-             Gui::ViewProviderLine* vp = dynamic_cast<Gui::ViewProviderLine*>(Gui::Application::Instance->getViewProvider(*p));
-             if(vp) {
-                if (strcmp(App::Part::BaselineTypes[0], dynamic_cast<App::Line*>(*p)->LineType.getValue()) == 0)
-                        vp->Size.setValue(std::max(std::abs(std::min(min[0], min[1])),std::max(max[0], max[1])));
-                else if (strcmp(App::Part::BaselineTypes[1], dynamic_cast<App::Line*>(*p)->LineType.getValue()) == 0)
-                        vp->Size.setValue(std::max(std::abs(std::min(min[0], min[2])),std::max(max[0], max[2])));
-                else if (strcmp(App::Part::BaselineTypes[2], dynamic_cast<App::Line*>(*p)->LineType.getValue()) == 0)
-                        vp->Size.setValue(std::max(std::abs(std::min(min[1], min[2])),std::max(max[1], max[2])));
-             }
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(origin);
+        if (vp) {
+            assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
+            Gui::ViewProviderOrigin *vpOrigin = static_cast<Gui::ViewProviderOrigin *> (vp);
+            vpOrigin->Size.setValue ( size * 1.3 );
         }
     }
 }
@@ -180,14 +162,14 @@ bool ViewProviderPart::doubleClicked(void)
     return true;
 }
 
-
-bool ViewProviderPart::onDelete(const std::vector<std::string> &)
-{
-    if(getActiveView()->getActiveObject<App::Part*>(PARTKEY) == getObject())
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', None)", PARTKEY);
-
-    return true;
-}
+// commented out for thurther rewrite (2015-09-01, Fat-Zer)
+// bool ViewProviderPart::onDelete(const std::vector<std::string> &)
+// {
+//     if(getActiveView()->getActiveObject<App::Part*>(PARTKEY) == getObject())
+//         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', None)", PARTKEY);
+//
+//     return true;
+// }
 
 void ViewProviderPart::Restore(Base::XMLReader &reader)
 {
@@ -212,72 +194,16 @@ QIcon ViewProviderPart::getIcon() const
 
 void ViewProviderPart::setUpPart(const App::Part *part)
 {
-	// add the standard planes at the root of the Part
+	// add the origin at the root of the Part
     // first check if they already exist
-    // FIXME: If the user renames them, they won't be found...
-    bool found = false;
-    std::vector<App::DocumentObject*> planes = part->getObjectsOfType(App::Plane::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
-        for (unsigned i = 0; i < 3; i++) {
-            if (strcmp(App::Part::BaseplaneTypes[i], dynamic_cast<App::Plane*>(*p)->PlaneType.getValue()) == 0) {
-                found = true;
-                break;
-            }
-        }
-        if (found) break;
-    }
+    std::vector<App::DocumentObject*> origins = part->getObjectsOfType(App::Origin::getClassTypeId());
 
-    if (!found) {
-        // ... and put them in the 'Origin' group
+    if ( origins.empty() ) {
         std::string oname = part->getDocument()->getUniqueObjectName("Origin");
         Gui::Command::doCommand(Gui::Command::Doc,"Origin = App.activeDocument().addObject('App::Origin','%s')", oname.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"Origin.Label = '%s'", QObject::tr("Origin").toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(Origin)", part->getNameInDocument());
-
-        // Add the planes ...
-        std::string pname = part->getDocument()->getUniqueObjectName(App::Part::BaseplaneTypes[0]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", pname.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.PlaneType = '%s'", App::Part::BaseplaneTypes[0]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", oname.c_str());
-
-        pname = part->getDocument()->getUniqueObjectName(App::Part::BaseplaneTypes[1]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", pname.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,1),180))");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.PlaneType = '%s'", App::Part::BaseplaneTypes[1]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", oname.c_str());
-
-        pname = part->getDocument()->getUniqueObjectName(App::Part::BaseplaneTypes[2]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", pname.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,1,1),120))");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.PlaneType = '%s'", App::Part::BaseplaneTypes[2]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", oname.c_str());
-
-        // Add the lines ...
-        std::string lname = part->getDocument()->getUniqueObjectName(App::Part::BaselineTypes[0]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Line','%s')", lname.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.LineType = '%s'", App::Part::BaselineTypes[0]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("X-Axis").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", oname.c_str());
-
-        lname = part->getDocument()->getUniqueObjectName(App::Part::BaselineTypes[1]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Line','%s')", lname.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,0,1),90))");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.LineType = '%s'", App::Part::BaselineTypes[1]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("Y-Axis").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", oname.c_str());
-
-        lname = part->getDocument()->getUniqueObjectName(App::Part::BaselineTypes[2]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Line','%s')", lname.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.LineType = '%s'", App::Part::BaselineTypes[2]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("Z-Axis").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", oname.c_str());
-
     }
-
 }
 
 

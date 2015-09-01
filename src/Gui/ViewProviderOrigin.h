@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,50 +25,62 @@
 #ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
 #define GUI_VIEWPROVIDER_ViewProviderOrigin_H
 
+#include <App/PropertyGeo.h>
 
-#include "ViewProviderGeoFeatureGroup.h"
-
-#include <App/PropertyStandard.h>
-#include <App/Origin.h>
-
-
+#include "ViewProviderDocumentObject.h"
 
 namespace Gui {
 
-class Document;  
-  
-class GuiExport ViewProviderOrigin : public ViewProviderGeoFeatureGroup
+class Document;
+
+class GuiExport ViewProviderOrigin : public ViewProviderDocumentObject
 {
     PROPERTY_HEADER(Gui::ViewProviderOrigin);
 
 public:
+    /// Size of the origin as setted by the part.
+    App::PropertyVector Size;
+
     /// constructor.
     ViewProviderOrigin();
     /// destructor.
     virtual ~ViewProviderOrigin();
-    
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
 
-    virtual bool canDragObjects() const;
-    virtual bool canDropObjects() const;
+    /// @name Override methodes
+    ///@{
+    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
 
-    virtual QIcon getIcon(void) const;
-    
-    //temporary mode to override visibility of grouped objects
-    void setTemporaryVisibilityMode(bool onoff, Gui::Document* doc = NULL);
-    bool isTemporaryVisibilityMode();
-    void setTemporaryVisibilityAxis(bool onoff);
-    void setTemporaryVisibilityPlanes(bool onoff);
-    void setTemporaryVisibility(App::DocumentObject* obj, bool onoff);
-    
+    virtual SoGroup* getChildRoot(void) const {return pcGroupChildren;};
+
+    virtual void attach(App::DocumentObject* pcObject);
+    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual void setDisplayMode(const char* ModeName);
+    ///@}
+
+    /** @name Temporary visability mode
+     * Control the visability of origin and associated objects when needed
+     */
+    ///@{
+    /// Set temporary visability of some of origin's objects e.g. while rotating or mirroring
+    void setTemporaryVisibility (bool axis, bool planes);
+    /// Returns true if the origin in temporary visability mode
+    bool isTemporaryVisibility ();
+    /// Reset the visability
+    void resetTemporaryVisibility ();
+    ///@}
+
+    /// Returns default size. Use this if it is not possible to determin apropriate size by other means
+    static double defaultSize() {return 10.;}
+protected:
+    virtual void onChanged(const App::Property* prop);
+    virtual bool onDelete(const std::vector<std::string> &);
+
 private:
-    bool tempVisMode;
-    Gui::Document* tempVisDoc;
-    std::map<Gui::ViewProvider*, bool> tempVisMap; 
-};
+    SoGroup *pcGroupChildren;
 
-typedef ViewProviderPythonFeatureT<ViewProviderOrigin> ViewProviderOriginPython;
+    std::map<Gui::ViewProvider*, bool> tempVisMap;
+};
 
 } // namespace Gui
 

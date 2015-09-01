@@ -32,7 +32,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Part.h>
-#include <App/Line.h>
+#include <App/Origin.h>
+#include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -163,9 +164,8 @@ void TaskPolarPatternParameters::setupUI()
         auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-            origin->setTemporaryVisibilityAxis(true);
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibility(true, false);
         }            
      }
 }
@@ -365,7 +365,7 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
             origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(false);
+            origin->resetTemporaryVisibility();
         }            
     }
     

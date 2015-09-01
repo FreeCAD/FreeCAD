@@ -64,7 +64,7 @@
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 
-#include <App/Plane.h>
+#include <App/OriginFeature.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/DatumFeature.h>

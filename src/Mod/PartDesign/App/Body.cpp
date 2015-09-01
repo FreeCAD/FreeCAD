@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 #endif
 
-#include <App/Plane.h>
 #include <Base/Placement.h>
 
 #include "Feature.h"
@@ -413,6 +412,7 @@ App::DocumentObjectExecReturn *Body::execute(void)
 
 Base::BoundBox3d Body::getBoundBox()
 {
+    // TODO review the function (2015-08-31, Fat-Zer)
     Base::BoundBox3d result;
 
     Part::Feature* tipSolid = static_cast<Part::Feature*>(Tip.getValue());
@@ -422,7 +422,8 @@ Base::BoundBox3d Body::getBoundBox()
     }
 
     if (!tipSolid || tipSolid->Shape.getValue().IsNull()) {
-        result = App::Plane::getBoundBox();
+        // TODO check that all callers are correctly handle if bounding box is null (2015-08-31, Fat-Zer)
+        result = Base::BoundBox3d ();
     } else {
         result = tipSolid->Shape.getShape().getBoundBox();
     }
@@ -439,9 +440,6 @@ Base::BoundBox3d Body::getBoundBox()
         } else if ((*m)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
             PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(*m);
             result.Add(plane->getBasePoint());
-        } else if ((*m)->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-            // Note: We only take into account the base planes here
-            result.Add(Base::Vector3d(0,0,0));
         }
     }
 

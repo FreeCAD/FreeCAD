@@ -27,7 +27,6 @@
 #endif
 
 #include <App/Document.h>
-#include <App/Plane.h>
 
 #include "Part.h"
 #include "PartPy.h"

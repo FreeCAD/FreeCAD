@@ -109,9 +109,9 @@ std::vector<std::string> ViewProviderGeoFeatureGroup::getDisplayModes(void) cons
 
 void ViewProviderGeoFeatureGroup::updateData(const App::Property* prop)
 {
-    if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
-             strcmp(prop->getName(), "Placement") == 0) {
-        setTransformation ( static_cast<const App::PropertyPlacement*>(prop)->getValue().toMatrix() );
+    App::GeoFeatureGroup *obj = static_cast<App::GeoFeatureGroup*> ( getObject() );
+    if (prop == &obj->Placement) {
+        setTransformation ( obj->Placement.getValue().toMatrix() );
     } else {
         ViewProviderDocumentObjectGroup::updateData ( prop );
     }

@@ -30,9 +30,8 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
-#include <App/Plane.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <App/Line.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Mod/Part/App/TopoShape.h>

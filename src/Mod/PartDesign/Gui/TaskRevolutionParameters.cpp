@@ -32,7 +32,7 @@
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/Origin.h>
-#include <App/Line.h>
+#include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -136,15 +136,15 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-            origin->setTemporaryVisibilityAxis(true);
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibility(true, false);
         }            
      } 
 }
 
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 {
+    // TODO share the code with TaskTransformedParameters (2015-08-31, Fat-Zer)
     bool oldVal_blockUpdate = blockUpdate;
     blockUpdate = true;
 
@@ -174,16 +174,21 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         }
 
         //add part axes
-        App::DocumentObject* line = 0;
-        line = getPartLines(App::Part::BaselineTypes[0]);
-        if(line)
-            addAxisToCombo(line,"",tr("Base X axis"));
-        line = getPartLines(App::Part::BaselineTypes[1]);
-        if(line)
-            addAxisToCombo(line,"",tr("Base Y axis"));
-        line = getPartLines(App::Part::BaselineTypes[2]);
-        if(line)
-            addAxisToCombo(line,"",tr("Base Z axis"));
+        App::DocumentObject* obj = vp->getObject();
+        App::Part* part = getPartFor(obj, false);
+
+        if (part) {
+            try {
+                std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
+
+                App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+                addAxisToCombo(orig->getX(),"",tr("Base X axis"));
+                addAxisToCombo(orig->getY(),"",tr("Base Y axis"));
+                addAxisToCombo(orig->getZ(),"",tr("Base Z axis"));
+            } catch (const Base::Exception &ex) {
+                Base::Console().Error ("%s\n", ex.what() );
+            }
+        }
 
         //add "Select reference"
         addAxisToCombo(0,std::string(),tr("Select reference..."));
@@ -360,8 +365,8 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
         auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
         if(!app_origin.empty()) {
             ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibilityMode(false);
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
+            origin->resetTemporaryVisibility();
         }            
     }
     

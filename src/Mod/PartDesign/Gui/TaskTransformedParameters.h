@@ -189,9 +189,6 @@ protected:
     virtual void clearButtons()=0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
-    App::DocumentObject* getPartPlanes(const char* str) const;
-    App::DocumentObject* getPartLines(const char* str) const;
-
     void fillAxisCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
     void fillPlanesCombo(ComboLinks &combolinks, Part2DObject *sketch);
 

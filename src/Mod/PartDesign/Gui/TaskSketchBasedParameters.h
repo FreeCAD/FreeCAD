@@ -56,9 +56,6 @@ protected:
     QString getFaceReference(const QString& obj, const QString& sub) const;
     void recomputeFeature();
 
-    App::DocumentObject* getPartPlanes(const char* str) const;
-    App::DocumentObject* getPartLines(const char* str) const;
-
 protected Q_SLOTS:
     void onUpdateView(bool on);
 

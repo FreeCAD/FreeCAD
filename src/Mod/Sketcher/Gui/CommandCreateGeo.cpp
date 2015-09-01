@@ -36,7 +36,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
-#include <App/Plane.h>
+#include <App/OriginFeature.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
