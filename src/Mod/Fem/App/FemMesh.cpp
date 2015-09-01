@@ -414,7 +414,6 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
     SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
     while (vol_iter->more()) {
         const SMDS_MeshVolume* vol = vol_iter->next();
-        int numFaces = vol->NbFaces();
         SMDS_ElemIteratorPtr face_iter = vol->facesIterator();
 
         while (face_iter->more()) {
