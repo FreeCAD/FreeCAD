@@ -117,24 +117,9 @@ public:
      */
     virtual ~PropertyVectorDistance();
 
-    /** Sets the property
-     */
-    void setValue(const Base::Vector3d &vec);
-    void setValue(double x, double y, double z);
-
-    /** This method returns a string representation of the property
-     */
-    const Base::Vector3d &getValue(void) const;
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorDistanceItem";
     }
-
-    virtual unsigned int getMemSize (void) const {
-        return sizeof(Base::Vector3d);
-    }
-
-private:
-    Base::Vector3d _cVec;
 };
 
 

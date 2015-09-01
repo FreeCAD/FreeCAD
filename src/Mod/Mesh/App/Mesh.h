@@ -205,6 +205,7 @@ public:
     void setPoint(unsigned long, const Base::Vector3d& v);
     void smooth(int iterations, float d_max);
     Base::Vector3d getPointNormal(unsigned long) const;
+    std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
     void cut(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);
