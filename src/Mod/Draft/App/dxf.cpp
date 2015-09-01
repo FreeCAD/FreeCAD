@@ -1419,10 +1419,10 @@ void CDxfRead::get_line()
     m_ifs->getline(m_str, 1024);
 
     char str[1024];
-    int len = strlen(m_str);
+    size_t len = strlen(m_str);
     int j = 0;
     bool non_white_found = false;
-    for(int i = 0; i<len; i++){
+    for(size_t i = 0; i<len; i++){
         if(non_white_found || (m_str[i] != ' ' && m_str[i] != '\t')){
             if(m_str[i] != '\r')
             {

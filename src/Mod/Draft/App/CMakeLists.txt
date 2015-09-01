@@ -1,5 +1,5 @@
 if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
+    add_definitions(-DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH -D_CRT_SECURE_NO_WARNINGS)
 else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
