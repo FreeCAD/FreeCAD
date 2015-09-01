@@ -176,6 +176,27 @@ void PropertyVector::Paste(const Property &from)
 
 
 //**************************************************************************
+// PropertyVectorDistance
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector);
+
+//**************************************************************************
+// Construction/Destruction
+
+
+PropertyVectorDistance::PropertyVectorDistance()
+{
+
+}
+
+PropertyVectorDistance::~PropertyVectorDistance()
+{
+
+}
+
+
+//**************************************************************************
 // PropertyVectorList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

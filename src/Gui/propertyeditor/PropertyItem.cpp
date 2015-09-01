@@ -1011,9 +1011,9 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
     QString data = QString::fromAscii("(%1, %2, %3)")
-                    .arg(x.getUserString())
-                    .arg(y.getUserString())
-                    .arg(z.getUserString());
+                    .arg(x.getValue())
+                    .arg(y.getValue())
+                    .arg(z.getValue());
     setPropertyValue(data);
 }
 

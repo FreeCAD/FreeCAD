@@ -1073,6 +1073,7 @@ void Application::initTypes(void)
     App ::PropertyLinkSubList       ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();
+    App ::PropertyVectorDistance    ::init();
     App ::PropertyVectorList        ::init();
     App ::PropertyPlacement         ::init();
     App ::PropertyPlacementLink     ::init();
