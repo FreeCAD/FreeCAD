@@ -613,8 +613,6 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
                 shapes[i] = &(shape->_Shape);
             }
         } else if (  geof->isDerivedFrom(App::Plane::getClassTypeId())  ){
-            // TODO Why this assert is here? (2015-08-31, Fat-Zer)
-            assert(sub[i].length()==0);//no more support for "back"/"front" on planes. Use mapReversed instead.
             //obtain Z axis and origin of placement
             Base::Vector3d norm;
             geof->Placement.getValue().getRotation().multVec(Base::Vector3d(0.0,0.0,1.0),norm);
@@ -626,7 +624,6 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
             storage.push_back( builder.Shape() );
             shapes[i] = &(storage[storage.size()-1]);
         } else if (  geof->isDerivedFrom(App::Line::getClassTypeId())  ){
-            assert(sub[i].length()==0);
             //obtain X axis and origin of placement
             //note an inconsistency: App::Line is along local X, PartDesign::DatumLine is along local Z.
             Base::Vector3d dir;
