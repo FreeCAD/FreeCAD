@@ -103,6 +103,7 @@ namespace KDL {
             return Frame(Vector(0.0,0.0,scale*q+offset));
             break;
         case None:
+        default:
             return Frame::Identity();
             break;
         }
@@ -136,6 +137,7 @@ namespace KDL {
             return Twist(Vector(0.0,0.0,scale*qdot),Vector(0.0,0.0,0.0));
             break;
         case None:
+        default:
             return Twist::Zero();
             break;
         }
@@ -170,6 +172,7 @@ namespace KDL {
         return Vector(0.,0.,1.);
         break;
       case None:
+      default:
         return Vector::Zero();
         break;
       }
