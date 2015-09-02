@@ -52,13 +52,13 @@ public:
     QIcon getIcon(void) const;
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes(void) const;
-    void hide(void);
-    void show(void);
+    virtual void hide(void);
+    virtual void show(void);
     bool isShow(void) const;
 
     virtual bool onDelete(const std::vector<std::string> &);
 
-    /// get called if the user hover over a object in the tree 
+    /// get called if the user hover over a object in the tree
     virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
     /// get called if the user drops some objects
     virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
