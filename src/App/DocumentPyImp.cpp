@@ -88,6 +88,25 @@ PyObject*  DocumentPy::saveAs(PyObject * args)
     Py_Return;
 }
 
+PyObject*  DocumentPy::saveCopy(PyObject * args)
+{
+    char* fn;
+    if (!PyArg_ParseTuple(args, "s", &fn))     // convert args: Python->C 
+        return NULL;                    // NULL triggers exception 
+    if (!getDocumentPtr()->saveCopy(fn)) {
+        PyErr_Format(PyExc_ValueError, "Object attribute 'FileName' is not set");
+        return NULL;
+    }
+
+    Base::FileInfo fi(fn);
+    if (!fi.isReadable()) {
+        PyErr_Format(PyExc_IOError, "No such file or directory: '%s'", fn);
+        return NULL;
+    }
+
+    Py_Return;
+}
+
 PyObject*  DocumentPy::load(PyObject * args)
 {
     char* filename=0;

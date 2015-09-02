@@ -644,6 +644,33 @@ bool Document::saveAs(void)
     }
 }
 
+/// Save a copy of the document under a new file name
+bool Document::saveCopy(void)
+{
+    getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename..."));
+
+    QString exe = qApp->applicationName();
+    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
+                                             QString(), QObject::tr("%1 document (*.FCStd)").arg(exe));
+    if (!fn.isEmpty()) {
+        QFileInfo fi;
+        fi.setFile(fn);
+
+        const char * DocName = App::GetApplication().getDocumentName(getDocument());
+
+        // save as new file name
+        Gui::WaitCursor wc;
+        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveCopy(\"%s\")"
+                                       , DocName, (const char*)fn.toUtf8());
+
+        return true;
+    }
+    else {
+        getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
+        return false;
+    }
+}
+
 unsigned int Document::getMemSize (void) const
 {
     unsigned int size = 0;
