@@ -79,25 +79,6 @@
 //    return PartDesignGui::ActivePartObject->getPyObject();
 //}
 
-void setUpPart(App::Part *part);
-
-static PyObject * setUpPart(PyObject *self, PyObject *args)
-{
-    PyObject *object=0;
-    if (! PyArg_ParseTuple(args,"O!",&(App::PartPy::Type), &object) )
-        return NULL;
-
-   
-    App::Part* part = static_cast<App::PartPy*>(object)->getPartPtr();
-    // Should be set!
-    assert(part);    
-    
-    PartDesignGui::setUpPart(part);
-
-    Py_Return;
-}
-
-
 /* registration table  */
 struct PyMethodDef Assembly_methods[] = {
     //{"setActiveBody"       ,setActiveBody      ,METH_VARARGS,
@@ -105,9 +86,6 @@ struct PyMethodDef Assembly_methods[] = {
 
     //{"getActiveBody"       ,getActiveBody      ,METH_NOARGS,
     // "getActiveBody() -- Get the PartBody object in work."},
-
-    {"setUpPart"       ,setUpPart      ,METH_VARARGS,
-     "setUpPart(Part) -- Sets a empty part object up for usage in PartDesign."},
 
     {NULL, NULL}        /* end of table marker */
 };

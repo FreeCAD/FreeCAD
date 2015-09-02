@@ -29,6 +29,8 @@
 #endif
 
 #include <App/Part.h>
+#include <App/Origin.h>
+#include <App/OriginFeature.h>
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -132,27 +134,6 @@ static void buildDefaultPartAndBody(const App::Document* doc)
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Part',App.activeDocument().%s)", PartName.c_str());
 }
 
-PartDesign::Body *setUpPart(const App::Part *part)
-{
-    // first do the general Part setup
-    Gui::ViewProviderPart::setUpPart(part);
-
-    // check for Bodies
-    // std::vector<App::DocumentObject*> bodies = part->getObjectsOfType(PartDesign::Body::getClassTypeId());
-    // assert(bodies.size() == 0);
-
-    // std::string PartName = part->getNameInDocument();
-    // std::string BodyName = part->getDocument()->getUniqueObjectName("MainBody");
-
-    Gui::Command::addModule(Gui::Command::Doc, "PartDesign");
-    // Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", BodyName.c_str());
-    // Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
-    // Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, BodyName.c_str());
-    Gui::Command::updateActive();
-
-    return NULL;
-}
-
 
 void fixSketchSupport (Sketcher::SketchObject* sketch)
 {
@@ -163,10 +144,16 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
 
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
-
     if (!body) {
         throw Base::Exception ("Coudn't find body for the sketch");
     }
+
+    // Get the Origin for the body
+    App::OriginGroup *grp = App::OriginGroup::getGroupOfObject (body);
+    if (!grp) {
+        throw  Base::Exception ("Coudn't find group for body");
+    }
+    App::Origin *origin = grp->getOrigin (); // May throw by itself
 
     Base::Placement plm = sketch->Placement.getValue();
     Base::Vector3d pnt = plm.getPosition();
@@ -177,17 +164,19 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     rot.multVec(sketchVector, sketchVector);
     bool reverseSketch = (sketchVector.x + sketchVector.y + sketchVector.z) < 0.0 ;
     if (reverseSketch) sketchVector *= -1.0;
-    int index;
+
+    App::Plane *plane =0;
 
     if (sketchVector == Base::Vector3d(0,0,1))
-        index = 0;
+        plane = origin->getXY ();
     else if (sketchVector == Base::Vector3d(0,1,0))
-        index = 1;
+        plane = origin->getXZ ();
     else if (sketchVector == Base::Vector3d(1,0,0))
-        index = 2;
+        plane = origin->getYZ ();
     else {
         throw Base::Exception("Sketch plane cannot be migrated");
     }
+    assert (plane);
 
     // Find the normal distance from origin to the sketch plane
     gp_Pln pln(gp_Pnt (pnt.x, pnt.y, pnt.z), gp_Dir(sketchVector.x, sketchVector.y, sketchVector.z));
@@ -197,7 +186,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     if (fabs(offset) < Precision::Confusion()) {
         // One of the base planes
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",
-                sketch->getNameInDocument(), App::Part::BaseplaneTypes[index]);
+                sketch->getNameInDocument(), plane->getNameInDocument () );
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
                 sketch->getNameInDocument(), reverseSketch ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
@@ -211,16 +200,21 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
             offset *= -1.0;
 
         std::string Datum = doc->getUniqueObjectName("DatumPlane");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",Datum.c_str());
-        QString refStr = QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(App::Part::BaseplaneTypes[index]) +
-            QString::fromAscii(",'')]");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",Datum.c_str(), refStr.toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",Datum.c_str(), AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",Datum.c_str(), offset);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",
+                Datum.c_str());
+        QString refStr = QString::fromAscii("[(App.activeDocument().%1,'')]")
+            .arg ( QString::fromAscii ( plane->getNameInDocument () ) );
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
+                Datum.c_str(), refStr.toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
+                Datum.c_str(), AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",
+                Datum.c_str(), offset);
         Gui::Command::doCommand(Gui::Command::Doc,
                 "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s)",
                 body->getNameInDocument(), Datum.c_str(), sketch->getNameInDocument());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                "App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",
                 sketch->getNameInDocument(), Datum.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
                 sketch->getNameInDocument(), reverseSketch ? "True" : "False");

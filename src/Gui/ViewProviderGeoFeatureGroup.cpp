@@ -51,41 +51,13 @@ ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup()
 }
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren3D(void) const {
-    App::GeoFeatureGroup *geoGroup = static_cast<App::GeoFeatureGroup *>(getObject());
-    const auto & objs = geoGroup->Group.getValues();
-
-    std::set<App::DocumentObject*> rvSet;
-    // search recursively for all non-geoGroups and claim their children either
-    std::set<App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
-
-    for ( auto objIt = curSearchSet.begin(); !curSearchSet.empty();
-            curSearchSet.erase (objIt), objIt = curSearchSet.begin() ) {
-        // Check if we havent already processed the element may happen in case of nontree structure
-        // Note: this case generally indicates malformed structure
-        if ( rvSet.find (*objIt) != rvSet.end() ) {
-            continue;
-        }
-
-        rvSet.insert (*objIt);
-
-        if ( (*objIt)->isDerivedFrom ( App::DocumentObjectGroup::getClassTypeId () ) &&
-            !(*objIt)->isDerivedFrom ( App::GeoFeatureGroup::getClassTypeId () ) ) {
-
-            // add the non-GeoGroup's content to search
-            App::DocumentObjectGroup *group = static_cast<App::DocumentObjectGroup *> (*objIt);
-            const auto & objs = group->Group.getValues();
-
-            curSearchSet.insert ( objs.begin(), objs.end() );
-        }
-    }
-
-    return std::vector<App::DocumentObject*> ( rvSet.begin(), rvSet.end() );
+    return static_cast<App::GeoFeatureGroup *>(getObject())->getGeoSubObjects ();
 }
 
 void ViewProviderGeoFeatureGroup::attach(App::DocumentObject* pcObject)
 {
-    addDisplayMaskMode(pcGroupChildren, "Group");
     Gui::ViewProviderDocumentObjectGroup::attach(pcObject);
+    addDisplayMaskMode(pcGroupChildren, "Group");
 }
 
 void ViewProviderGeoFeatureGroup::setDisplayMode(const char* ModeName)

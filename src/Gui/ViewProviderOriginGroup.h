@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,38 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
+#define VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
-#define GUI_VIEWPROVIDER_ViewProviderPart_H
+#include <boost/signals.hpp>
 
-
-#include "ViewProviderOriginGroup.h"
-#include "ViewProviderPythonFeature.h"
-
+#include "ViewProviderGeoFeatureGroup.h"
 
 namespace Gui {
 
-class GuiExport ViewProviderPart : public ViewProviderOriginGroup
+class GuiExport ViewProviderOriginGroup: public ViewProviderGeoFeatureGroup
 {
-    PROPERTY_HEADER(Gui::ViewProviderPart);
-
+    PROPERTY_HEADER(Gui::ViewProviderOriginGroup);
 public:
-    /// constructor.
-    ViewProviderPart();
-    /// destructor.
-    virtual ~ViewProviderPart();
+    ViewProviderOriginGroup ();
+    virtual ~ViewProviderOriginGroup ();
 
-    QIcon getIcon(void) const;
+    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
-    virtual bool doubleClicked(void);
+    virtual void attach(App::DocumentObject *pcObject);
+    virtual void updateData(const App::Property* prop);
+
+    void updateOriginSize();
+
 protected:
-    /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    void slotChangedObjectApp ( const App::DocumentObject& obj );
+    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
+
+private:
+    std::vector<App::DocumentObject*> constructChildren (
+            const std::vector<App::DocumentObject*> &children ) const;
+
+    boost::signals::connection connectChangedObjectApp;
+    boost::signals::connection connectChangedObjectGui;
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
+} /* Gui  */
 
-} // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
-
+#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H_JIXBOPA7 */

@@ -35,6 +35,7 @@
 #include <algorithm>
 
 #include <App/DocumentObjectGroup.h>
+#include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
@@ -43,7 +44,7 @@
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
- 
+
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include <Mod/PartDesign/App/Body.h>
@@ -236,7 +237,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 void CmdPartDesignNewSketch::activated(int iMsg)
 {
     App::Document *doc = getDocument ();
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody( 
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
             /*messageIfNot = */ PartDesignGui::assureModernWorkflow ( doc ) );
 
     // No PartDesign feature without Body past FreeCAD 0.13
@@ -307,18 +308,8 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         }
 
         if (!pcActiveBody->hasFeature(obj)) {
-            // TODO check what the heck is going on here (2015-08-31, Fat-Zer)
-            bool isBasePlane = false;
-            if(obj->isDerivedFrom(App::Plane::getClassTypeId()))  {
-                App::Plane* pfeat = static_cast<App::Plane*>(obj);
-                for (unsigned i = 0; i < 3; i++) {
-                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->Role.getValue()) == 0) {
-                        isBasePlane = true;
-                        break;
-                    }
-                }
-            }
-            if (!isBasePlane) {
+            if ( !obj->isDerivedFrom ( App::Plane::getClassTypeId() ) )  {
+                // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from other body"),
                     QObject::tr("You have to select a face or plane from the active body!"));
                 return;
@@ -346,55 +337,48 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     }
     else {
         // Get a valid plane from the user
-        std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
-        std::vector<App::DocumentObject*> planes = getDocument()->getObjectsOfType(App::Plane::getClassTypeId());
-        std::vector<App::DocumentObject*> planestmp = getDocument()->getObjectsOfType(PartDesign::Plane::getClassTypeId());
-        planes.insert(planes.end(), planestmp.begin(), planestmp.end());
-
         unsigned validPlanes = 0;
-        std::vector<App::DocumentObject*>::const_iterator firstValidPlane = planes.end();
 
         App::Part* pcActivePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(PARTKEY);
-        for (std::vector<App::DocumentObject*>::iterator p = planes.begin(); p != planes.end(); p++) {
-            // Check whether this plane is a base plane
-            bool base = false;
-            if((*p)->isDerivedFrom(App::Plane::getClassTypeId()))  {
-                App::Plane* pfeat = static_cast<App::Plane*>(*p);
-                for (unsigned i = 0; i < 3; i++) {
-                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->Role.getValue()) == 0) {
-                        if(pcActivePart->hasObject(pfeat, true))
-                            status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
-                        else
-                            status.push_back(PartDesignGui::TaskFeaturePick::invalidShape);
 
-                        if (firstValidPlane == planes.end())
-                            firstValidPlane = p;
-                        validPlanes++;
-                        base = true;
-                        break;
-                    }
+        std::vector<App::DocumentObject*> planes;
+        std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
+
+        // Baseplanes are preaprooved
+        if ( pcActivePart ) {
+            try {
+                for ( auto plane: pcActivePart->getOrigin ()->planes() ) {
+                    planes.push_back (plane);
+                    status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
+                    validPlanes++;
                 }
+            } catch (const Base::Exception &ex) {
+                        Base::Console().Error ("%s\n", ex.what() );
             }
-            if (base) continue;
+        }
 
+        std::vector<App::DocumentObject*> datumPlanes =
+            getDocument()->getObjectsOfType(PartDesign::Plane::getClassTypeId());
+
+        for (auto plane: datumPlanes) {
+            planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if (!pcActiveBody->hasFeature(*p)) {
-                if(pcActivePart->hasObject(*p, true))
+            if (!pcActiveBody->hasFeature(plane)) {
+                if ( pcActivePart && pcActivePart->hasObject ( plane, true ) ) {
                     status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
-                else
+                } else {
                     status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
+                }
 
                 continue;
             } else {
-                if (pcActiveBody->isAfterInsertPoint(*p)) {
+                if (pcActiveBody->isAfterInsertPoint ( plane ) ) {
                     status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
                     continue;
                 }
             }
 
             // All checks passed - found a valid plane
-            if (firstValidPlane == planes.end())
-                firstValidPlane = p;
             validPlanes++;
             status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
         }
@@ -1409,10 +1393,11 @@ void CmdPartDesignMirrored::activated(int iMsg)
                 Gui::Command::doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
         }
-        else {
-            doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
-                      App::Part::BaseplaneTypes[0]);
-        }
+        // TODO Check if default mirrored plane correctly set (2015-09-01, Fat-Zer)
+        // else {
+        //     doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+        //               App::Part::BaseplaneTypes[0]);
+        // }
 
         finishTransformed(cmd, FeatName);
     };
@@ -1456,10 +1441,11 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
                 doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
         }
-        else {
-            doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
-                      App::Part::BaselineTypes[0]);
-        }
+        // TODO Check if default direction correctly set (2015-09-01, Fat-Zer)
+        // else {
+        //     doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+        //               App::Part::BaselineTypes[0]);
+        // }
         doCommand(Doc,"App.activeDocument().%s.Length = 100", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
 
@@ -1505,10 +1491,11 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
                 doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
         }
-        else {
-            doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
-                      App::Part::BaselineTypes[0]);
-        }
+        // TODO Check if default axis correctly set (2015-09-01, Fat-Zer)
+        // else {
+        //     doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+        //               App::Part::BaselineTypes[0]);
+        // }
 
         doCommand(Doc,"App.activeDocument().%s.Angle = 360", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());

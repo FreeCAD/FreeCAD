@@ -32,7 +32,7 @@
 #include <Base/Placement.h>
 
 #include <App/Document.h>
-#include <App/OriginFeature.h>
+#include "OriginFeature.h"
 
 #include "Origin.h"
 
@@ -123,7 +123,7 @@ App::DocumentObjectExecReturn *Origin::execute(void) {
         setError ();
         return new App::DocumentObjectExecReturn ( ex.what () );
     }
- //   purgeError ();
+
     return DocumentObject::execute ();
 }
 

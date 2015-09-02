@@ -209,17 +209,19 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->listOfModes->blockSignals(false);
     updateUI();
     updateListOfModes(eMapMode(pcDatum->MapMode.getValue()));
-    
+
     //temporary show coordinate systems for selection
     App::Part* part = getPartFor(DatumView->getObject(), false);
-    if(part) {        
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibility(true, true);
-        }            
-    }   
+    if(part) {
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, true);
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
+    }
     if (pcDatum->Support.getSize() == 0)
         autoNext = true;
     else
@@ -771,14 +773,16 @@ TaskDatumParameters::~TaskDatumParameters()
     //end temporary view mode of coordinate system
     App::Part* part = getPartFor(DatumView->getObject(), false);
     if(part) {
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->resetTemporaryVisibility();
-        }            
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
     }
-    
+
     delete ui;
 }
 

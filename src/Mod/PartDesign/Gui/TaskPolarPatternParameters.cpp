@@ -161,12 +161,14 @@ void TaskPolarPatternParameters::setupUI()
     //show the parts coordinate system axis for selection
     App::Part* part = getPartFor(getObject(), false);
     if(part) {        
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibility(true, false);
-        }            
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, false);
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
      }
 }
 
@@ -217,29 +219,20 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             else
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
             exitSelectionMode();
-        } else if (selectionMode == reference) {
-            // Note: ReferenceSelection has already checked the selection for validity
+        } else {
+            // TODO checkme (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> axes;
             App::DocumentObject* selObj;
             PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
             getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-            pcPolarPattern->Axis.setValue(selObj, axes);
+            // Note: ReferenceSelection has already checked the selection for validity
+            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+                pcPolarPattern->Axis.setValue(selObj, axes);
 
-            recomputeFeature();
-            updateUI();
-        } else if( strstr(msg.pObjectName, App::Part::BaselineTypes[0]) == nullptr || 
-                   strstr(msg.pObjectName, App::Part::BaselineTypes[1]) == nullptr ||
-                   strstr(msg.pObjectName, App::Part::BaselineTypes[2]) == nullptr) {
-           
-            std::vector<std::string> axes;
-            App::DocumentObject* selObj;
-            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-            pcPolarPattern->Axis.setValue(selObj, axes);
-
-            recomputeFeature();
-            updateUI();
+                recomputeFeature();
+                updateUI();
+            }
         }
     }
 }
@@ -361,12 +354,14 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
     //hide the parts coordinate system axis for selection
     App::Part* part = getPartFor(getObject(), false);
     if(part) {
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-            origin->resetTemporaryVisibility();
-        }            
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility ();
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
     }
     
     delete ui;

@@ -166,12 +166,14 @@ void TaskLinearPatternParameters::setupUI()
 
     //show the parts coordinate system axis for selection
     App::Part* part = getPartFor(getObject(), false);
-    if(part) {        
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibility(true, false);
+    if(part) {
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, false);
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
         }
     }
 }
@@ -223,29 +225,20 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
 
             exitSelectionMode();
-        } else if (selectionMode == reference) {
-            // Note: ReferenceSelection has already checked the selection for validity
+        } else {
+            // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
             App::DocumentObject* selObj;
             PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
             getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-            pcLinearPattern->Direction.setValue(selObj, directions);
+            // Note: ReferenceSelection has already checked the selection for validity
+            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+                pcLinearPattern->Direction.setValue(selObj, directions);
 
-            recomputeFeature();
-            updateUI();
-        } else if( strstr(msg.pObjectName, App::Part::BaselineTypes[0]) == nullptr || 
-                   strstr(msg.pObjectName, App::Part::BaselineTypes[1]) == nullptr ||
-                   strstr(msg.pObjectName, App::Part::BaselineTypes[2]) == nullptr) {
-           
-            std::vector<std::string> directions;
-            App::DocumentObject* selObj;
-            PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-            getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-            pcLinearPattern->Direction.setValue(selObj, directions);
-
-            recomputeFeature();
-            updateUI();
+                recomputeFeature();
+                updateUI();
+            }
         }
     }
 }
@@ -366,12 +359,14 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
     //hide the parts coordinate system axis for selection
     App::Part* part = getPartFor(getObject(), false);
     if(part) {
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->resetTemporaryVisibility();
-        }            
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
     }
     
     delete ui;
