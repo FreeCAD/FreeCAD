@@ -159,13 +159,12 @@ std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) 
 
 bool ViewProviderDocumentObjectGroup::onDelete(const std::vector<std::string> &)
 {
-    assert ( getObject ()->isDerivedFrom ( App::DocumentObjectGroup::getClassTypeId () ) );
     App::DocumentObjectGroup *group = static_cast<App::DocumentObjectGroup *> (getObject());
     // If the group is nonempty ask the user if he wants to delete it's content
     if ( group->Group.getSize () ) {
         QMessageBox::StandardButton choice = 
             QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
-                QObject::tr ( "The group %1 is not empty, delete it's content as well?")
+                QObject::tr ( "The %1 is not empty, delete it's content as well?")
                     .arg ( QString::fromUtf8 ( group->Label.getValue () ) ), 
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
 
