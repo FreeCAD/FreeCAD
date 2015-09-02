@@ -1001,6 +1001,24 @@ bool Document::saveAs(const char* file)
     return save();
 }
 
+bool Document::saveCopy(const char* file)
+{
+    std::string originalFileName = this->FileName.getStrValue();
+    std::string originalLabel = this->Label.getStrValue();
+    Base::FileInfo fi(file);
+    if (this->FileName.getStrValue() != file) {
+        this->FileName.setValue(file);
+        this->Label.setValue(fi.fileNamePure());
+        this->Uid.touch(); // this forces a rename of the transient directory
+        bool result = save();
+        this->FileName.setValue(originalFileName);
+        this->Label.setValue(originalLabel);
+        this->Uid.touch();
+        return result;
+    }
+    return false;
+}
+
 // Save the document under the name it has been opened
 bool Document::save (void)
 {

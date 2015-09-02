@@ -120,6 +120,8 @@ public:
     bool save(void);
     /// Save the document under a new file name
     bool saveAs(void);
+    /// Save a copy of the document under a new file name
+    bool saveCopy(void);
     /// This method is used to save properties or very small amounts of data to an XML document.
     virtual void Save (Base::Writer &writer) const;
     /// This method is used to restore properties from an XML document.

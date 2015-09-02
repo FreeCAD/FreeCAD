@@ -23,6 +23,11 @@
         <UserDocu>Save the document under a new name to disk</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="saveCopy">
+      <Documentation>
+        <UserDocu>Save a copy of the document under a new name to disk</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="load">
       <Documentation>
         <UserDocu>Load the document from the given path</UserDocu>

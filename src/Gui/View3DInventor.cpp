@@ -701,6 +701,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         getGuiDocument()->saveAs();
         return true;
     }
+    else if (strcmp("SaveCopy",pMsg) == 0) {
+        getGuiDocument()->saveCopy();
+        return true;
+    }
     else
         return false;
 }
@@ -710,6 +714,8 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     if  (strcmp("Save",pMsg) == 0)
         return true;
     else if (strcmp("SaveAs",pMsg) == 0)
+        return true;
+    else if (strcmp("SaveCopy",pMsg) == 0)
         return true;
     else if (strcmp("Undo",pMsg) == 0) {
         App::Document* doc = getAppDocument();

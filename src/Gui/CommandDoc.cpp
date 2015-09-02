@@ -477,6 +477,38 @@ bool StdCmdSaveAs::isActive(void)
 }
 
 //===========================================================================
+// Std_SaveCopy
+//===========================================================================
+DEF_STD_CMD_A(StdCmdSaveCopy);
+
+StdCmdSaveCopy::StdCmdSaveCopy()
+  :Command("Std_SaveCopy")
+{
+  sGroup        = QT_TR_NOOP("File");
+  sMenuText     = QT_TR_NOOP("Save a &Copy...");
+  sToolTipText  = QT_TR_NOOP("Save a copy of the active document under a new file name");
+  sWhatsThis    = "Std_SaveCopy";
+  sStatusTip    = QT_TR_NOOP("Save a copy of the active document under a new file name");
+  //sPixmap       = "document-save-as";
+}
+
+void StdCmdSaveCopy::activated(int iMsg)
+{
+#if 0
+  Gui::Document* pActiveDoc = getActiveGuiDocument();
+  if ( pActiveDoc )
+    pActiveDoc->saveCopy();
+  else
+#endif
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveCopy\")");
+}
+
+bool StdCmdSaveCopy::isActive(void)
+{
+  return ( getActiveGuiDocument() ? true : false );
+}
+
+//===========================================================================
 // Std_Revert
 //===========================================================================
 DEF_STD_CMD_A(StdCmdRevert);
@@ -1327,6 +1359,7 @@ void CreateDocCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
+    rcCmdMgr.addCommand(new StdCmdSaveCopy());
     rcCmdMgr.addCommand(new StdCmdRevert());
     rcCmdMgr.addCommand(new StdCmdProjectInfo());
     rcCmdMgr.addCommand(new StdCmdProjectUtil());
