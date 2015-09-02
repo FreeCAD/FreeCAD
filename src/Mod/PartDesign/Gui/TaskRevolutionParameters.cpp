@@ -133,12 +133,14 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     //show the parts coordinate system axis for selection
     App::Part* part = getPartFor(vp->getObject(), false);
     if(part) {        
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->setTemporaryVisibility(true, false);
-        }            
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, false);
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
      } 
 }
 
@@ -179,9 +181,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 
         if (part) {
             try {
-                std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-
-                App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+                App::Origin* orig = part->getOrigin();
                 addAxisToCombo(orig->getX(),"",tr("Base X axis"));
                 addAxisToCombo(orig->getY(),"",tr("Base Y axis"));
                 addAxisToCombo(orig->getZ(),"",tr("Base Z axis"));
@@ -362,14 +362,16 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
     //hide the parts coordinate system axis for selection
     App::Part* part = getPartFor(vp->getObject(), false);
     if(part) {
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->resetTemporaryVisibility();
-        }            
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
     }
-    
+
     delete ui;
 
     for(int i = 0  ;  i < axesInList.size()  ;  i++ ){

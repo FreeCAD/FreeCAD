@@ -60,14 +60,84 @@ void GeoFeatureGroup::transformPlacement(const Base::Placement &transform)
     this->Placement.setValue(plm);
 }
 
-GeoFeatureGroup* GeoFeatureGroup::getGroupOfObject(const DocumentObject* obj)
+std::vector<App::DocumentObject*> GeoFeatureGroup::getGeoSubObjects () const {
+    const auto & objs = Group.getValues();
+
+    std::set<const App::DocumentObjectGroup*> processedGroups;
+    std::set<App::DocumentObject*> rvSet;
+    std::set<App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
+
+    processedGroups.insert ( this );
+
+    while ( !curSearchSet.empty() ) {
+        rvSet.insert ( curSearchSet.begin (), curSearchSet.end () );
+
+        std::set<App::DocumentObject*> nextSearchSet;
+        for ( auto obj: curSearchSet) {
+            if ( isNonGeoGroup (obj) ) {
+                const App::DocumentObjectGroup *grp = static_cast<const App::DocumentObjectGroup *> (obj);
+                // Check if we havent already processed the element may happen in case of nontree structure
+                // Note: if the condition is false this generally indicates malformed structure
+                if ( processedGroups.find (grp) == processedGroups.end() ) {
+                    processedGroups.insert ( grp );
+                    const auto & objs = grp->Group.getValues();
+                    nextSearchSet.insert (objs.begin(), objs.end());
+                }
+            }
+        }
+        nextSearchSet.swap (curSearchSet);
+    }
+
+    return std::vector<App::DocumentObject*> ( rvSet.begin(), rvSet.end() );
+}
+
+bool GeoFeatureGroup::geoHasObject (const DocumentObject* obj) const {
+    const auto & objs = Group.getValues();
+
+    if (!obj) {
+        return false;
+    }
+
+    std::set<const App::DocumentObjectGroup*> processedGroups;
+    std::set<const App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
+
+    processedGroups.insert ( this );
+
+    while ( !curSearchSet.empty() ) {
+        if ( curSearchSet.find (obj) != curSearchSet.end() ) {
+            return true;
+        }
+        std::set<const App::DocumentObject*> nextSearchSet;
+        for ( auto obj: curSearchSet) {
+            if ( isNonGeoGroup (obj) ) {
+                const App::DocumentObjectGroup *grp = static_cast<const App::DocumentObjectGroup *> (obj);
+                if ( processedGroups.find (grp) == processedGroups.end() ) {
+                    processedGroups.insert ( grp );
+                    const auto & objs = grp->Group.getValues();
+                    nextSearchSet.insert (objs.begin(), objs.end());
+                }
+            }
+        }
+        nextSearchSet.swap (curSearchSet);
+    }
+    return false;
+}
+
+GeoFeatureGroup* GeoFeatureGroup::getGroupOfObject(const DocumentObject* obj, bool indirect)
 {
     const Document* doc = obj->getDocument();
     std::vector<DocumentObject*> grps = doc->getObjectsOfType(GeoFeatureGroup::getClassTypeId());
     for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
         GeoFeatureGroup* grp = (GeoFeatureGroup*)(*it);
-        if (grp->hasObject(obj))
-            return grp;
+        if ( indirect ) {
+            if (grp->geoHasObject(obj)) {
+                return grp;
+            }
+        } else {
+            if (grp->hasObject(obj)) {
+                return grp;
+            }
+        }
     }
 
     return 0;

@@ -89,7 +89,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
     enum { axisBit=0, planeBit = 1};
 
-    // Note generally there shouldn't be more then one origin
+    // NOTE: generally there shouldn't be more then one origin
     std::map <App::Origin*, std::bitset<2> > originVisStatus;
 
     auto statusIt = status.cbegin();
@@ -110,15 +110,21 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                 } else if ( (*objIt)->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
                     originVisStatus[ origin ].set (axisBit, true);
                 }
-
-                Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*> (
-                        Gui::Application::Instance->getViewProvider(*objIt) );
-                if (vpo) {
-                    vpo->setTemporaryVisibility( originVisStatus[origin][axisBit],
-                            originVisStatus[origin][planeBit]);
-                }
-                origins.push_back(vpo);
             }
+        }
+    }
+
+    // Setup the origin's temporary visability
+    for ( const auto & originPair: originVisStatus ) {
+        const auto &origin = originPair.first;
+        const auto &status = originPair.second;
+
+        Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*> (
+                Gui::Application::Instance->getViewProvider ( origin ) );
+        if (vpo) {
+            vpo->setTemporaryVisibility( originVisStatus[origin][axisBit],
+                    originVisStatus[origin][planeBit]);
+            origins.push_back(vpo);
         }
     }
 

@@ -11,7 +11,7 @@
       FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>This class handles document objects in Part</UserDocu>
+      <UserDocu>This class handles placeable group of document objects</UserDocu>
     </Documentation>
 
   </PythonExport>

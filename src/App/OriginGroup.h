@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2014     *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,76 +20,57 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef ORIGINGROUP_H_QHTU73IF
+#define ORIGINGROUP_H_QHTU73IF
 
-#ifndef APP_Part_H
-#define APP_Part_H
-
-#include "OriginGroup.h"
+#include "GeoFeatureGroup.h"
 #include "PropertyLinks.h"
 
+namespace App {
+class Origin;
 
-
-namespace App
-{
-
-
-/** Base class of all geometric document objects.
+/**
+ * Represents an abstact placeable group of objects with an associated Origin
  */
-class AppExport Part : public App::OriginGroup
+class OriginGroup: public App::GeoFeatureGroup
 {
-    PROPERTY_HEADER(App::Part);
-
+    PROPERTY_HEADER(App::OriginGroup);
 public:
-    /// type of the part
-    PropertyString Type;
+    OriginGroup ();
+    virtual ~OriginGroup ();
 
-    /** @name base properties of all Assembly Items
-    * This properties corospond mostly to the meta information
-    * in the App::Document class
-    */
-    //@{
-    /// Id e.g. Part number
-    App::PropertyString  Id;
-    /// unique identifier of the Item 
-    App::PropertyUUID    Uid;
-    /// material descriptons
-    App::PropertyMap     Material;
-    /// Meta descriptons
-    App::PropertyMap     Meta;
-
-    /** License string
-    * Holds the short license string for the Item, e.g. CC-BY
-    * for the Creative Commons license suit.
-    */
-    App::PropertyString  License;
-    /// License descripton/contract URL
-    App::PropertyString  LicenseURL;
-    //@}
-
-    /** @name Visual properties */
-    //@{
-    /** Base color of the Item
-    If the transparency value is 1.0
-    the color or the next hirachy is used
-    */
-    App::PropertyColor Color;
-    //@}
-
-    /// Constructor
-    Part(void);
-    virtual ~Part();
+    /// Returns the origin link or throws an exception
+    App::Origin *getOrigin () const;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "Gui::ViewProviderPart";
+    virtual const char* getViewProviderName () const {
+        return "Gui::ViewProviderOriginGroup";
     }
 
-    virtual PyObject *getPyObject(void);
+    /** 
+     * Returns the origin group which contains this object.
+     * In case this object is not part of any geoFeatureGroup 0 is returned.
+     * @param obj       the object to search for
+     * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
+     *                  default is true
+     */
+    static OriginGroup* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
+
+    /// Returns true on changing OriginFeature set
+    virtual short mustExecute () const;
+    
+    /// Origin linked to the group
+    PropertyLink Origin;
+
+protected:
+    /// Checks integrity of the Origin
+    virtual App::DocumentObjectExecReturn *execute ();
+    /// Creates the corresponding Origin object
+    virtual void setupObject ();
+    /// Removes all planes and axis if they are still linked to the document
+    virtual void unsetupObject ();
 };
 
-//typedef App::FeaturePythonT<Part> PartPython;
+} /* App */
 
-} //namespace App
-
-
-#endif // APP_Part_H
+#endif /* end of include guard: ORIGINGROUP_H_QHTU73IF */

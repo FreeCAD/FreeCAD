@@ -132,22 +132,23 @@ void TaskMirroredParameters::setupUI()
     this->planeLinks.setCombo(*(ui->comboPlane));
     ui->comboPlane->setEnabled(true);
 
-    
     App::DocumentObject* sketch = getSketchObject();
     if (!sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         sketch = 0;
     this->fillPlanesCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
 
     updateUI();
-    
+
     //show the parts coordinate system axis for selection
     App::Part* part = getPartFor(getObject(), false);
     if(part) {
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin.front() ));
-            origin->setTemporaryVisibility(true, false);
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, false);
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
         }
     }
 }
@@ -179,30 +180,20 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             else
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
             exitSelectionMode();
-        } else if (selectionMode == reference) {
-            // Note: ReferenceSelection has already checked the selection for validity
+        } else {
+            // TODO checkme (2015-09-01, Fat-Zer)
             exitSelectionMode();
-
             std::vector<std::string> mirrorPlanes;
             App::DocumentObject* selObj;
             PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
             getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-            pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
+            // Note: ReferenceSelection has already checked the selection for validity
+            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
+                pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
 
-            recomputeFeature();
-            updateUI();
-        } else if( strstr(msg.pObjectName, App::Part::BaseplaneTypes[0]) == nullptr || 
-                   strstr(msg.pObjectName, App::Part::BaseplaneTypes[1]) == nullptr ||
-                   strstr(msg.pObjectName, App::Part::BaseplaneTypes[2]) == nullptr) {
-           
-            std::vector<std::string> planes;
-            App::DocumentObject* selObj;
-            PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-            getReferencedSelection(pcMirrored, msg, selObj, planes);
-            pcMirrored->MirrorPlane.setValue(selObj, planes);
-
-            recomputeFeature();
-            updateUI();
+                recomputeFeature();
+                updateUI();
+            }
         }
     }
 }
@@ -278,15 +269,16 @@ TaskMirroredParameters::~TaskMirroredParameters()
     //hide the parts coordinate system axis for selection
     App::Part* part = getPartFor(getObject(), false);
     if(part) {
-        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-        if(!app_origin.empty()) {
-            ViewProviderOrigin* origin;
-            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(app_origin[0]));
-            origin->resetTemporaryVisibility();
-        }            
+        try {
+            App::Origin *origin = part->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
     }
-    
-    
+
     delete ui;
     if (proxy)
         delete proxy;

@@ -46,8 +46,7 @@ public:
     /**
      * @brief transformPlacement applies transform to placement of this shape.
      * Override this function to propagate the change of placement to base
-     * features, for example. By the time of writing this comment, the function
-     * was only called by alignment task (Edit->Alignment)
+     * features.
      * @param transform (input).
      */
     virtual void transformPlacement(const Base::Placement &transform);
@@ -55,13 +54,28 @@ public:
     GeoFeatureGroup(void);
     virtual ~GeoFeatureGroup();
 
+    /// Returns all geometrically controlled objects: all objects of this group and it's non-geo subgroups
+    std::vector<App::DocumentObject*> getGeoSubObjects () const;
+
+    /// Returns true if either the group or one of it's non-geo subgroups has the object
+    bool geoHasObject (const DocumentObject* obj) const;
+
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
      * Unlike DocumentObjectGroup::getGroupOfObject serches only for GeoFeatureGroups
+     * @param obj       the object to search for
+     * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
+     *                  default is true
      */
-    static GeoFeatureGroup* getGroupOfObject(const DocumentObject* obj);
+    static GeoFeatureGroup* getGroupOfObject(const DocumentObject* obj, bool indirect=true);
 
-    /// returns the type name of the ViewProvider
+    /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
+    static bool isNonGeoGroup(const DocumentObject* obj) {
+        return obj->isDerivedFrom ( App::DocumentObjectGroup::getClassTypeId () ) &&
+            !obj->isDerivedFrom ( App::GeoFeatureGroup::getClassTypeId () );
+    }
+
+    /// Returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "Gui::ViewProviderGeoFeatureGroup";
     }

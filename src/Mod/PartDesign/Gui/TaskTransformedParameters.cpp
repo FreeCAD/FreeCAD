@@ -196,9 +196,7 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks &combolinks,
 
     if (part) {
         try {
-            std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-
-            App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+            App::Origin* orig = part->getOrigin();
             combolinks.addLink(orig->getX(),"",tr("Base X axis"));
             combolinks.addLink(orig->getY(),"",tr("Base Y axis"));
             combolinks.addLink(orig->getZ(),"",tr("Base Z axis"));
@@ -234,9 +232,7 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks &combolinks,
 
     if (part) {
         try {
-            std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-
-            App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+            App::Origin* orig = part->getOrigin();
             combolinks.addLink(orig->getXY(),"",tr("Base XY plane"));
             combolinks.addLink(orig->getYZ(),"",tr("Base YZ plane"));
             combolinks.addLink(orig->getXZ(),"",tr("Base XZ plane"));

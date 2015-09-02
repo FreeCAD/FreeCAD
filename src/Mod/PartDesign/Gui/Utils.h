@@ -51,17 +51,6 @@ PartDesign::Body *getBody(bool messageIfNot);
 PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot);
 App::Part        *getPartFor(const App::DocumentObject*, bool messageIfNot);
 
-
-/** Setup a Part for PartDesign
- * This methode is use to populate a Part object with all
- * necesarry PartDesign and base objects to allow the use
- * in PartDesign. Its called from within PartDesign as well
- * as from other modules which wish to set up a Part for PartDesin
- * (e.g. Assembly):
- * TODO any reasons why this should return a value? (2015-08-08, Fat-Zer)
- */
-PartDesign::Body *setUpPart(const App::Part *);
-
 /// Fix sketch support after moving a free sketch into a body
 void fixSketchSupport(Sketcher::SketchObject* sketch);
 
