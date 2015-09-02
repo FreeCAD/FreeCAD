@@ -48,10 +48,17 @@ else(MSVC)
         ${QT_QTCORE_LIBRARY}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
+    )
+endif(MSVC)
+
+# needed for OpenSUSE
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    set(FreeCADBase_LIBS
+        ${FreeCADBase_LIBS}
         -lutil
         -ldl
     )
-endif(MSVC)
+endif()
 
 generate_from_xml(BaseClassPy)
 generate_from_xml(BoundBoxPy)
