@@ -1636,12 +1636,10 @@ def draftify(objectslist,makeblock=False,delete=True):
                         nobj.Shape = w
                 else:
                     nobj = makeWire(w)
-                #if obj.Shape.Faces:
-                #    nobj.ViewObject.DisplayMode = "Flat Lines"
-                #else:
-                #    nobj.ViewObject.DisplayMode = "Wireframe"
                 newobjlist.append(nobj)
                 formatObject(nobj,obj)
+                # sketches are always in wireframe mode. In Draft we don't like that!
+                nobj.ViewObject.DisplayMode = "Flat Lines"
             if delete:
                 FreeCAD.ActiveDocument.removeObject(obj.Name)
     FreeCAD.ActiveDocument.recompute()
