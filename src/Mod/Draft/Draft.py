@@ -5046,7 +5046,8 @@ class _Clone(_DraftObject):
                 if not o.isDerivedFrom("Part::Part2DObject"):
                     FreeCAD.Console.PrintWarning("Warning 2D Clone "+obj.Name+" contains 3D geometry")
                     return
-        for o in obj.Objects:
+        objs = getGroupContents(obj.Objects)
+        for o in objs:
             if o.isDerivedFrom("Part::Feature"):
                 if o.Shape.isNull():
                     return
