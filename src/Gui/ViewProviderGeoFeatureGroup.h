@@ -48,6 +48,15 @@ public:
     virtual void setDisplayMode(const char* ModeName);
     virtual std::vector<std::string> getDisplayModes(void) const;
 
+    /// Show the object in the view: suppresses behavior of DocumentObjectGroup
+    virtual void show(void) {
+        ViewProviderDocumentObject::show();
+    }
+    /// Hide the object in the view: suppresses behavior of DocumentObjectGroup
+    virtual void hide(void) {
+        ViewProviderDocumentObject::hide();
+    }
+
     virtual void updateData(const App::Property*);
 protected:
     SoGroup *pcGroupChildren;
