@@ -225,7 +225,7 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
 QPixmap BitmapFactoryInst::pixmap(const char* name) const
 {
     if (!name || *name == '\0')
-        return QPixmap(px);
+        return QPixmap();
 
     // as very first test check whether the pixmap is in the cache
     QMap<std::string, QPixmap>::ConstIterator it = d->xpmCache.find(name);

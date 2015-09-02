@@ -402,6 +402,8 @@ public:
     const char* getStatusTip  () const;
     const char* getPixmap     () const;
     const char* getAccel      () const;
+    bool isExclusive          () const;
+    bool hasDropDownMenu      () const;
     //@}
 
 protected:

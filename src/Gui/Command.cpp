@@ -1094,7 +1094,8 @@ bool PythonGroupCommand::isActive(void)
 Action * PythonGroupCommand::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
+    pcAction->setDropDownMenu(hasDropDownMenu());
+    pcAction->setExclusive(isExclusive());
 
     applyCommandData(this->getName(), pcAction);
 
@@ -1103,6 +1104,7 @@ Action * PythonGroupCommand::createAction(void)
     try {
         Base::PyGILStateLocker lock;
         Py::Object cmd(_pcPyCommand);
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
         Py::Callable call(cmd.getAttr("GetCommands"));
         Py::Tuple args;
@@ -1111,6 +1113,11 @@ Action * PythonGroupCommand::createAction(void)
             Py::String str(*it);
             QAction* cmd = pcAction->addAction(QString());
             cmd->setProperty("CommandName", QByteArray(static_cast<std::string>(str).c_str()));
+
+            PythonCommand* pycmd = dynamic_cast<PythonCommand*>(rcCmdMgr.getCommandByName(cmd->property("CommandName").toByteArray()));
+            if (pycmd) {
+                cmd->setCheckable(pycmd->isCheckable());
+            }
         }
 
         if (cmd.hasAttr("GetDefaultCommand")) {
@@ -1227,6 +1234,38 @@ const char* PythonGroupCommand::getPixmap() const
 const char* PythonGroupCommand::getAccel() const
 {
     return getResource("Accel");
+}
+
+bool PythonGroupCommand::isExclusive() const
+{
+    PyObject* item = PyDict_GetItemString(_pcPyResource,"Exclusive");
+    if (!item) {
+        return false;
+    }
+
+    if (PyBool_Check(item)) {
+        return PyObject_IsTrue(item) ? true : false;
+    }
+    else {
+        throw Base::Exception("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
+                              "command object contains the key 'Exclusive' which is not a boolean");
+    }
+}
+
+bool PythonGroupCommand::hasDropDownMenu() const
+{
+    PyObject* item = PyDict_GetItemString(_pcPyResource,"DropDownMenu");
+    if (!item) {
+        return true;
+    }
+
+    if (PyBool_Check(item)) {
+        return PyObject_IsTrue(item) ? true : false;
+    }
+    else {
+        throw Base::Exception("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
+                              "command object contains the key 'DropDownMenu' which is not a boolean");
+    }
 }
 
 //===========================================================================
