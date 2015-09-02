@@ -89,8 +89,8 @@ std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren3D(void) cons
 
 void ViewProviderOrigin::attach(App::DocumentObject* pcObject)
 {
-    addDisplayMaskMode(pcGroupChildren, "Base");
     Gui::ViewProviderDocumentObject::attach(pcObject);
+    addDisplayMaskMode(pcGroupChildren, "Base");
 }
 
 std::vector<std::string> ViewProviderOrigin::getDisplayModes(void) const
@@ -162,40 +162,37 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
         try {
             Gui::Application *app = Gui::Application::Instance;
             Base::Vector3d sz = Size.getValue ();
-            App::Origin* origin = static_cast<App::Origin*>(pcObject);
+            App::Origin* origin = static_cast<App::Origin*> ( getObject() );
 
-            // find planes view providers
+            // Calculate axes and planes sizes
+            double szXY = std::max ( sz.x, sz.y );
+            double szXZ = std::max ( sz.x, sz.z );
+            double szYZ = std::max ( sz.y, sz.z );
+
+            double szX = std::min ( szXY, szXZ );
+            double szY = std::min ( szXY, szYZ );
+            double szZ = std::min ( szXZ, szYZ );
+
+            // Find view providers
             Gui::ViewProviderPlane* vpPlaneXY, *vpPlaneXZ, *vpPlaneYZ;
+            Gui::ViewProviderLine* vpLineX, *vpLineY, *vpLineZ;
+            // Planes
             vpPlaneXY = static_cast<Gui::ViewProviderPlane *> ( app->getViewProvider ( origin->getXY () ) );
             vpPlaneXZ = static_cast<Gui::ViewProviderPlane *> ( app->getViewProvider ( origin->getXZ () ) );
             vpPlaneYZ = static_cast<Gui::ViewProviderPlane *> ( app->getViewProvider ( origin->getYZ () ) );
-
-            // set their sizes
-            if (vpPlaneXY) {
-                vpPlaneXY->Size.setValue ( std::max ( sz.x, sz.y ) );
-            }
-            if (vpPlaneXZ) {
-                vpPlaneXZ->Size.setValue ( std::max ( sz.x, sz.z ) );
-            }
-            if (vpPlaneYZ) {
-                vpPlaneYZ->Size.setValue ( std::max ( sz.y, sz.z ) );
-            }
-
-            //find Lines view providers
-            Gui::ViewProviderLine* vpLineX, *vpLineY, *vpLineZ;
+            // Axes
             vpLineX = static_cast<Gui::ViewProviderLine *> ( app->getViewProvider ( origin->getX () ) );
             vpLineY = static_cast<Gui::ViewProviderLine *> ( app->getViewProvider ( origin->getY () ) );
             vpLineZ = static_cast<Gui::ViewProviderLine *> ( app->getViewProvider ( origin->getZ () ) );
 
-            if (vpLineX) {
-                vpLineX->Size.setValue ( std::min ( vpPlaneXY->Size.getValue(), vpPlaneXZ->Size.getValue() ) );
-            }
-            if (vpLineY) {
-                vpLineY->Size.setValue ( std::min ( vpPlaneXY->Size.getValue(), vpPlaneYZ->Size.getValue() ) );
-            }
-            if (vpLineZ) {
-                vpLineZ->Size.setValue ( std::min ( vpPlaneXZ->Size.getValue(), vpPlaneYZ->Size.getValue() ) );
-            }
+            // set their sizes
+            if (vpPlaneXY) { vpPlaneXY->Size.setValue ( szXY ); }
+            if (vpPlaneXZ) { vpPlaneXZ->Size.setValue ( szXZ ); }
+            if (vpPlaneYZ) { vpPlaneYZ->Size.setValue ( szYZ ); }
+            if (vpLineX) { vpLineX->Size.setValue ( szX ); }
+            if (vpLineY) { vpLineY->Size.setValue ( szY ); }
+            if (vpLineZ) { vpLineZ->Size.setValue ( szZ ); }
+
         } catch (const Base::Exception &ex) {
             Base::Console().Error ("%s\n", ex.what() );
         }
