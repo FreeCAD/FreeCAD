@@ -113,6 +113,19 @@ protected:
     void run();
 };
 
+class SandboxAppExport DocumentSaverThread : public QThread
+{
+public:
+    DocumentSaverThread(App::Document* doc, QObject* parent=0);
+    ~DocumentSaverThread();
+
+protected:
+    void run();
+
+private:
+    App::Document* doc;
+};
+
 }
 
 #endif // SANDBOX_DOCUMENTTHREAD_H
