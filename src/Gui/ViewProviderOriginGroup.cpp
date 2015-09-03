@@ -114,7 +114,8 @@ void ViewProviderOriginGroup::slotChangedObjectApp ( const App::DocumentObject& 
 }
 
 void ViewProviderOriginGroup::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
-    if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) ) {
+    if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
+         !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
         // Ignore origins to avoid infinite recursion (not likely in a well-formed focument, 
         //          but may happen in documents designed in old versions of assembly branch )
         App::OriginGroup *group = static_cast<App::OriginGroup*> ( getObject() );
