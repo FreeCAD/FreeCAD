@@ -834,6 +834,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
+    ViewProviderOriginFeature.cpp
     ViewProviderPlane.cpp
     ViewProviderLine.cpp
     ViewProviderGeoFeatureGroup.cpp
@@ -857,6 +858,7 @@ SET(Viewprovider_SRCS
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h
+    ViewProviderOriginFeature.h
     ViewProviderPlane.h
     ViewProviderLine.h
     ViewProviderGeoFeatureGroup.h

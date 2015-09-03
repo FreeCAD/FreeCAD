@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) J�rgen Riegel          (juergen.riegel@web.de) 2012     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2012    *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,269 +25,56 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QApplication>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/details/SoLineDetail.h>
-#include <Inventor/nodes/SoAsciiText.h>
-#include "ViewProviderLine.h"
-#include "SoFCSelection.h"
-#include "Application.h"
-#include "Document.h"
-#include "View3DInventorViewer.h"
-#include "Inventor/SoAutoZoomTranslation.h"
-#include "SoAxisCrossKit.h"
-#include "Window.h"
-//#include <SoDepthBuffer.h>
+#include "ViewProviderOrigin.h"
 
-#include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
-#include <App/MeasureDistance.h>
-#include <Base/Console.h>
+#include "ViewProviderLine.h"
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderOriginFeature)
 
 
 ViewProviderLine::ViewProviderLine()
-{
+{ }
 
-    ADD_PROPERTY(Size,(1.0));
+ViewProviderLine::~ViewProviderLine()
+{ }
 
-    pMat = new SoMaterial();
-    pMat->ref();
+void ViewProviderLine::attach ( App::DocumentObject *obj ) {
+    ViewProviderOriginFeature::attach ( obj );
 
-    float size = Size.getValue(); // Note: If you change this, you need to also adapt App/Line.cpp getBoundBox()
+    static const float size = ViewProviderOrigin::defaultSize ();
 
-    SbVec3f verts[4] =
-    {
-        SbVec3f(-size,0,0), SbVec3f(size,0,0),
-    };
+    static const SbVec3f verts[2] = { SbVec3f(size, 0, 0),   SbVec3f ( -size, 0, 0 ) };
 
     // indexes used to create the edges
-    static const int32_t lines[6] =
-    {
-        0,1,-1
-    };
+    static const int32_t lines[4] = { 0, 1, -1 };
 
-    // Create the selection node
-    pcHighlight = createFromSettings();
-    pcHighlight->ref();
-    if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
-        Selectable.setValue(false);
-    
-    pMat->diffuseColor.setNum(1);
-    pMat->diffuseColor.set1Value(0, SbColor(50./255., 150./255., 250./255.));
+    SoSeparator *sep = getOriginFeatureRoot ();
 
-    pCoords = new SoCoordinate3();
-    pCoords->ref();
-    pCoords->point.setNum(2);
-    pCoords->point.setValues(0, 2, verts);
+    SoCoordinate3 *pCoords = new SoCoordinate3 ();
+    pCoords->point.setNum (2);
+    pCoords->point.setValues ( 0, 2, verts );
+    sep->addChild ( pCoords );
 
-    pLines  = new SoIndexedLineSet();
+    SoIndexedLineSet *pLines  = new SoIndexedLineSet ();
     pLines->ref();
     pLines->coordIndex.setNum(3);
     pLines->coordIndex.setValues(0, 3, lines);
+    sep->addChild ( pLines );
 
-    pFont = new SoFont();
-    pFont->size.setValue(Size.getValue()/10.);
+    SoTranslation *textTranslation = new SoTranslation ();
+    textTranslation->ref ();
+    textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size / 30., 0 ) );
+    sep->addChild ( textTranslation );
 
-    pTranslation = new SoTranslation();
-    pTranslation->ref();
-    pTranslation->translation.setValue(SbVec3f(-1,0,0));
-
-    pText = new SoAsciiText();
-    pText->ref();
-    pText->width.setValue(-1);
-
-    sPixmap = "view-measurement";
+    sep->addChild ( getLabel () );
 }
-
-ViewProviderLine::~ViewProviderLine()
-{
-    pcHighlight->unref();
-    pCoords->unref();
-    pLines->unref();
-    pMat->unref();
-    pTranslation->unref();
-    pText->unref();
-}
-
-void ViewProviderLine::onChanged(const App::Property* prop)
-{
-        if (prop == &Size){
-                float size = Size.getValue(); // Note: If you change this, you need to also adapt App/Line.cpp getBoundBox()
-
-                SbVec3f verts[2] =
-                {
-                    SbVec3f(-size,0,0), SbVec3f(size,0,0),
-                };
-
-                pCoords->point.setValues(0, 2, verts);
-                pFont->size.setValue(Size.getValue()/10.);
-                pTranslation->translation.setValue(SbVec3f(-size,0,0));
-        }
-        else
-         ViewProviderGeometryObject::onChanged(prop);
-}
-
-std::vector<std::string> ViewProviderLine::getDisplayModes(void) const
-{
-    // add modes
-    std::vector<std::string> StrList;
-    StrList.push_back("Base");
-    return StrList;
-}
-
-void ViewProviderLine::setDisplayMode(const char* ModeName)
-{
-    if (strcmp(ModeName, "Base") == 0)
-        setDisplayMaskMode("Base");
-    ViewProviderGeometryObject::setDisplayMode(ModeName);
-}
-
-void ViewProviderLine::attach(App::DocumentObject* pcObject)
-{
-    ViewProviderGeometryObject::attach(pcObject);
-
-    pcHighlight->objectName = pcObject->getNameInDocument();
-    pcHighlight->documentName = pcObject->getDocument()->getName();
-    pcHighlight->subElementName = "Main";
-    
-    SoSeparator  *sep = new SoSeparator();
-    SoAnnotation *lineSep = new SoAnnotation();
-
-    SoDrawStyle* style = new SoDrawStyle();
-    style->lineWidth = 2.0f;
-
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
-    matBinding->value = SoMaterialBinding::OVERALL;
-
-    sep->addChild(matBinding);
-    sep->addChild(pMat);
-    sep->addChild(pcHighlight);
-    pcHighlight->addChild(style);
-    pcHighlight->addChild(pCoords);
-    pcHighlight->addChild(pLines);
-
-    style = new SoDrawStyle();
-    style->lineWidth = 2.0f;
-    style->linePattern.setValue(0xF000);
-    lineSep->addChild(style);
-    lineSep->addChild(pLines);
-    lineSep->addChild(pFont);
-    pText->string.setValue(SbString(pcObject->Label.getValue()));
-    lineSep->addChild(pTranslation);
-    lineSep->addChild(pText);
-    pcHighlight->addChild(lineSep);
-
-    pcHighlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
-    addDisplayMaskMode(sep, "Base");
-}
-
-void ViewProviderLine::updateData(const App::Property* prop)
-{
-    pText->string.setValue(SbString(pcObject->Label.getValue()));
-    ViewProviderGeometryObject::updateData(prop);
-}
-
-std::string ViewProviderLine::getElement(const SoDetail* detail) const
-{
-    if (detail) {
-        if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-            const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getLineIndex();
-            if (edge == 0)
-            {
-                return std::string("Main");
-            }
-        }
-    }
-
-    return std::string("");
-}
-
-SoDetail* ViewProviderLine::getDetail(const char* subelement) const
-{
-    SoLineDetail* detail = 0;
-    std::string subelem(subelement);
-    int edge = -1;
-
-    if(subelem == "Main") edge = 0;
-
-    if(edge >= 0) {
-         detail = new SoLineDetail();
-         detail->setPartIndex(edge);
-    }
-
-    return detail;
-}
-
-bool ViewProviderLine::isSelectable(void) const
-{
-    return true;
-}
-
-bool ViewProviderLine::setEdit(int ModNum)
-{
-    return true;
-}
-
-void ViewProviderLine::unsetEdit(int ModNum)
-{
-
-}
-
-Gui::SoFCSelection* ViewProviderLine::createFromSettings() const
-{
-    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
-
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    bool enablePre = hGrp->GetBool("EnablePreselection", true);
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    if (!enablePre) {
-        sel->highlightMode = Gui::SoFCSelection::OFF;
-    }
-    else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = sel->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        sel->colorHighlight.setValue(highlightColor);
-    }
-    if (!enableSel || !Selectable.getValue()) {
-        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    }
-    else {
-        // Do the same with the selection color
-        SbColor selectionColor = sel->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        sel->colorSelection.setValue(selectionColor);
-    }
-
-    return sel;
-}
-
-// ----------------------------------------------------------------------------
-
-

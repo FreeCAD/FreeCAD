@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2012     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2012    *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,64 +25,19 @@
 #ifndef GUI_ViewProviderLine_H
 #define GUI_ViewProviderLine_H
 
-#include "ViewProviderGeometryObject.h"
-#include <QObject>
-
-class SoFontStyle;
-class SoText2;
-class SoBaseColor;
-class SoTranslation;
-class SoCoordinate3;
-class SoIndexedLineSet;
-class SoEventCallback;
-class SoMaterial;
-class SoAsciiText;
-class SoFont;
+#include "ViewProviderOriginFeature.h"
 
 namespace Gui
 {
 
-class SoFCSelection;
-
-class GuiExport ViewProviderLine : public ViewProviderGeometryObject
-{
+class GuiExport ViewProviderLine : public ViewProviderOriginFeature {
     PROPERTY_HEADER(Gui::ViewProviderLine);
-
 public:
     /// Constructor
     ViewProviderLine(void);
     virtual ~ViewProviderLine();
 
-    App::PropertyFloat  Size;
-
-    void attach(App::DocumentObject *);
-    void updateData(const App::Property*);
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
-
-   /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const {return true;}
-    /// indicates if the ViewProvider can be selected
-    virtual bool isSelectable(void) const ;
-    /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const;
-    virtual SoDetail* getDetail(const char*) const;
-    
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-
-protected:
-    SoFCSelection* createFromSettings() const;
-    void onChanged(const App::Property* prop);
-
-private:
-    SoFCSelection    * pcHighlight;
-    SoCoordinate3    * pCoords;
-    SoMaterial       * pMat;
-    SoIndexedLineSet * pLines;
-    SoAsciiText      * pText;
-    SoFont           * pFont;
-    SoTranslation    * pTranslation;
+    virtual void attach ( App::DocumentObject * );
 };
 
 } //namespace Gui
