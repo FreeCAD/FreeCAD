@@ -605,9 +605,9 @@ CmdPartCompound::CmdPartCompound()
 void CmdPartCompound::activated(int iMsg)
 {
     unsigned int n = getSelection().countObjectsOfType(Part::Feature::getClassTypeId());
-    if (n < 2) {
+    if (n < 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two shapes or more, please."));
+            QObject::tr("Select one shape or more, please."));
         return;
     }
 
@@ -632,7 +632,7 @@ void CmdPartCompound::activated(int iMsg)
 
 bool CmdPartCompound::isActive(void)
 {
-    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=2;
+    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=1;
 }
 
 //===========================================================================
