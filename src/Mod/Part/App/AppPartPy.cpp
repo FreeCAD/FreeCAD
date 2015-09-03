@@ -1536,14 +1536,24 @@ static std::list<TopoDS_Edge> sort_Edges(double tol3d, const std::vector<TopoDS_
             }
             else if (pEI->v2.SquareDistance(last) <= tol3d) {
                 last = pEI->v1;
-                sorted.push_back(pEI->edge);
+                Standard_Real first, last;
+                const Handle_Geom_Curve & curve = BRep_Tool::Curve(pEI->edge, first, last);
+                first = curve->ReversedParameter(first);
+                last = curve->ReversedParameter(last);
+                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                sorted.push_back(edgeReversed);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
                 break;
             }
             else if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
-                sorted.push_front(pEI->edge);
+                Standard_Real first, last;
+                const Handle_Geom_Curve & curve = BRep_Tool::Curve(pEI->edge, first, last);
+                first = curve->ReversedParameter(first);
+                last = curve->ReversedParameter(last);
+                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                sorted.push_front(edgeReversed);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
                 break;
