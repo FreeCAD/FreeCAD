@@ -115,7 +115,6 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     }
     highlight->objectName    = getObject()->getNameInDocument();
     highlight->documentName  = getObject()->getDocument()->getName();
-//    highlight->subElementName = "Main";
     highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
 
     // Style for normal (visiable) lines
@@ -176,30 +175,4 @@ void ViewProviderOriginFeature::setDisplayMode (const char* ModeName)
     if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
     ViewProviderGeometryObject::setDisplayMode(ModeName);
-}
-
-std::string ViewProviderOriginFeature::getElement ( const SoDetail *detail ) const {
-// TODO Explain what the heck here is or delete (2015-09-02, Fat-Zer)
-//    if (detail) {
-//        if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-//            const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-//            if (line_detail->getLineIndex() == 0)
-//            {
-//                return std::string("Main");
-//            }
-//        }
-//    }
-
-  return std::string("");
-}
-
-SoDetail* ViewProviderOriginFeature::getDetail ( const char* subelement ) const {
-// TODO Explain what the heck here is or delete (2015-09-02, Fat-Zer)
-//    if ( strcmp(subelement, "Main") == 0 ) {
-//        SoLineDetail* detail = new SoLineDetail();
-//        detail->setPartIndex( 0 );
-//        return detail;
-//    }
-
-    return 0;
 }
