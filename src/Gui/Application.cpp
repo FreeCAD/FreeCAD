@@ -1696,7 +1696,11 @@ void Application::runApplication(void)
     MainWindow mw;
     mw.setWindowTitle(mainApp.applicationName());
 
-    AutoSaver::instance()->setTimeout(3);
+    ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
+    int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
+    if (!hDocGrp->GetBool("AutoSaveEnabled", true))
+        timeout = 0;
+    AutoSaver::instance()->setTimeout(timeout * 60000);
 
     // set toolbar icon size
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");

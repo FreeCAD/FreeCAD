@@ -37,13 +37,14 @@
 #include <App/Document.h>
 
 #include "WaitCursor.h"
+#include "Widgets.h"
 
 using namespace Gui;
 
 AutoSaver* AutoSaver::self = 0;
 
 AutoSaver::AutoSaver(QObject* parent)
-  : QObject(parent), timeout(5)
+  : QObject(parent), timeout(900000)
 {
     App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, _1));
     App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, _1));
@@ -60,18 +61,24 @@ AutoSaver* AutoSaver::instance()
     return self;
 }
 
-void AutoSaver::setTimeout(int s)
+void AutoSaver::setTimeout(int ms)
 {
-    timeout = Base::clamp<int>(s, 0, 30);
+    timeout = Base::clamp<int>(ms, 0, 3600000); // between 0 and 60 min
+
+    // go through the attached documents and apply the new timeout
+    for (std::map<std::string, int>::iterator it = timerMap.begin(); it != timerMap.end(); ++it) {
+        if (it->second > 0)
+            killTimer(it->second);
+        int id = timeout > 0 ? startTimer(timeout) : 0;
+        it->second = id;
+    }
 }
 
 void AutoSaver::slotCreateDocument(const App::Document& Doc)
 {
     std::string name = Doc.getName();
-    if (timeout > 0) {
-        int id = startTimer(timeout * 60000);
-        timerMap[name] = id;
-    }
+    int id = timeout > 0 ? startTimer(timeout) : 0;
+    timerMap[name] = id;
 }
 
 void AutoSaver::slotDeleteDocument(const App::Document& Doc)
@@ -79,7 +86,8 @@ void AutoSaver::slotDeleteDocument(const App::Document& Doc)
     std::string name = Doc.getName();
     std::map<std::string, int>::iterator it = timerMap.find(name);
     if (it != timerMap.end()) {
-        killTimer(it->second);
+        if (it->second > 0)
+            killTimer(it->second);
         timerMap.erase(it);
     }
 }
@@ -100,23 +108,38 @@ void AutoSaver::saveDocument(const std::string& name)
         bool save = hGrp->GetBool("SaveThumbnail",false);
         hGrp->SetBool("SaveThumbnail",false);
 
+        Gui::StatusWidget* sw = new Gui::StatusWidget(qApp->activeWindow());
+        sw->setStatusText(tr("Please wait until the AutoRecovery file has been saved..."));
+        sw->show();
+        qApp->processEvents();
+
         // open extra scope to close ZipWriter properly
+        Base::StopWatch watch;
+        watch.start();
         {
             Base::ofstream file(tmp, std::ios::out | std::ios::binary);
-            Base::ZipWriter writer(file);
+            if (file.is_open()) {
+                Base::ZipWriter writer(file);
 
-            writer.setComment("FreeCAD Document");
-            writer.setLevel(0);
-            writer.putNextEntry("Document.xml");
+                writer.setComment(doc->Label.getValue()); // store the document's current label
+                writer.setLevel(1); // apparently the fastest compression
+                writer.putNextEntry("Document.xml");
 
-            doc->Save(writer);
+                doc->Save(writer);
 
-            // Special handling for Gui document.
-            doc->signalSaveDocument(writer);
+                // Special handling for Gui document.
+                doc->signalSaveDocument(writer);
 
-            // write additional files
-            writer.writeFiles();
+                // write additional files
+                writer.writeFiles();
+            }
         }
+
+        sw->hide();
+        sw->deleteLater();
+
+        std::string str = watch.toString(watch.elapsed());
+        Base::Console().Log("Save AutoRecovery file: %s\n", str.c_str());
         hGrp->SetBool("SaveThumbnail",save);
     }
 }

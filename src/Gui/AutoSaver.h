@@ -50,9 +50,9 @@ private:
 public:
     static AutoSaver* instance();
     /*!
-     Sets the timeout in minutes. A value of 0 means that no timer is used.
+     Sets the timeout in milliseconds. A value of 0 means that no timer is used.
      */
-    void setTimeout(int s);
+    void setTimeout(int ms);
 
 protected:
     void slotCreateDocument(const App::Document& Doc);
@@ -61,7 +61,7 @@ protected:
     void saveDocument(const std::string&);
 
 private:
-    int timeout; /*!< Timeout in minutes */
+    int timeout; /*!< Timeout in milliseconds */
     std::map<std::string, int> timerMap;
 };
 
