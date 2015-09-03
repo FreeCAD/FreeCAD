@@ -50,18 +50,10 @@ public:
     /// Get pointer to the text label associated with the feature
     SoAsciiText * getLabel () { return pLabel; }
 
-    /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel () const
-        { return true; }
-
     virtual void attach(App::DocumentObject *);
     virtual void updateData(const App::Property *);
-    virtual std::vector<std::string> getDisplayModes() const;
-    virtual void setDisplayMode(const char *ModeName);
-
-    /// return a hit element to the selection path or 0
-    virtual std::string getElement ( const SoDetail *detail ) const;
-    virtual SoDetail* getDetail ( const char *subelement ) const;
+    virtual std::vector<std::string> getDisplayModes () const;
+    virtual void setDisplayMode (const char* ModeName);
 
     /// @name Suppress ViewProviderGeometryObject's behaviour
     ///@{
