@@ -155,6 +155,7 @@ set(Gui_MOC_HDRS
     Action.h
     ActionFunction.h
     Assistant.h
+    AutoSaver.h
     CallTips.h
     CombiView.h
     Control.h
@@ -955,6 +956,7 @@ SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 SET(FreeCADGui_CPP_SRCS
     Application.cpp
     ApplicationPy.cpp
+    AutoSaver.cpp
     BitmapFactory.cpp
     Document.cpp
     DocumentModel.cpp
@@ -975,6 +977,7 @@ SET(FreeCADGui_CPP_SRCS
 )
 SET(FreeCADGui_SRCS 
     Application.h
+    AutoSaver.h
     BitmapFactory.h
     Document.h
     DocumentModel.h

@@ -130,6 +130,34 @@ void CmdSandboxDocumentTestThread::activated(int iMsg)
 
 // -------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdSandboxDocumentSaveThread);
+
+CmdSandboxDocumentSaveThread::CmdSandboxDocumentSaveThread()
+  :Command("Sandbox_SaveThread")
+{
+    sAppModule    = "Sandbox";
+    sGroup        = QT_TR_NOOP("Sandbox");
+    sMenuText     = QT_TR_NOOP("Save thread");
+    sToolTipText  = QT_TR_NOOP("Sandbox save function");
+    sWhatsThis    = QT_TR_NOOP("Sandbox save function");
+    sStatusTip    = QT_TR_NOOP("Sandbox save function");
+}
+
+void CmdSandboxDocumentSaveThread::activated(int iMsg)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    Sandbox::DocumentSaverThread* dt = new Sandbox::DocumentSaverThread(doc);
+    QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
+    dt->start();
+}
+
+bool CmdSandboxDocumentSaveThread::isActive()
+{
+    return App::GetApplication().getActiveDocument() != 0;
+}
+
+// -------------------------------------------------------------------------------
+
 DEF_STD_CMD(CmdSandboxDocThreadWithSeq);
 
 CmdSandboxDocThreadWithSeq::CmdSandboxDocThreadWithSeq()
@@ -1410,6 +1438,7 @@ void CreateSandboxCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdSandboxDocumentThread());
     rcCmdMgr.addCommand(new CmdSandboxDocumentTestThread());
+    rcCmdMgr.addCommand(new CmdSandboxDocumentSaveThread());
     rcCmdMgr.addCommand(new CmdSandboxDocThreadWithSeq());
     rcCmdMgr.addCommand(new CmdSandboxDocThreadBusy());
     rcCmdMgr.addCommand(new CmdSandboxDocumentNoThread());

@@ -62,6 +62,7 @@
 #include <App/DocumentObjectPy.h>
 
 #include "Application.h"
+#include "AutoSaver.h"
 #include "GuiApplicationNativeEventAware.h"
 #include "MainWindow.h"
 #include "Document.h"
@@ -1694,6 +1695,8 @@ void Application::runApplication(void)
     Application app(true);
     MainWindow mw;
     mw.setWindowTitle(mainApp.applicationName());
+
+    AutoSaver::instance()->setTimeout(3);
 
     // set toolbar icon size
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
