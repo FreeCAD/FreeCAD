@@ -27,6 +27,7 @@
 
 #include "DlgSettingsDocumentImp.h"
 #include "PrefWidgets.h"
+#include "AutoSaver.h"
 
 using namespace Gui::Dialog;
 
@@ -40,6 +41,9 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     : PreferencePage( parent )
 {
     this->setupUi(this);
+    prefSaveTransaction->hide();
+    prefDiscardTransaction->hide();
+
     prefCountBackupFiles->setMaximum(INT_MAX);
     prefCompression->setMinimum(Z_NO_COMPRESSION);
     prefCompression->setMaximum(Z_BEST_COMPRESSION);
@@ -73,6 +77,13 @@ void DlgSettingsDocumentImp::saveSettings()
     prefAuthor->onSave();
     prefSetAuthorOnSave->onSave();
     prefCompany->onSave();
+    prefAutoSaveEnabled->onSave();
+    prefAutoSaveTimeout->onSave();
+
+    int timeout = prefAutoSaveTimeout->value();
+    if (!prefAutoSaveEnabled->isChecked())
+        timeout = 0;
+    AutoSaver::instance()->setTimeout(timeout * 60000);
 }
 
 void DlgSettingsDocumentImp::loadSettings()
@@ -93,6 +104,8 @@ void DlgSettingsDocumentImp::loadSettings()
     prefAuthor->onRestore();
     prefSetAuthorOnSave->onRestore();
     prefCompany->onRestore();
+    prefAutoSaveEnabled->onRestore();
+    prefAutoSaveTimeout->onRestore();
 }
 
 /**
