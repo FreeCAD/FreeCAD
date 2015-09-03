@@ -61,6 +61,9 @@ public:
     static void finish(void);
     SoFCSelection(void);
 
+    /// Load highlight settings from the configuration
+    void applySettings ();
+
     enum HighlightModes {
         AUTO, ON, OFF
     };
