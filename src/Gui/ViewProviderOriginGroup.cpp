@@ -37,6 +37,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderOrigin.h"
+#include "ViewProviderOriginFeature.h"
 
 #include "ViewProviderOriginGroup.h"
 
