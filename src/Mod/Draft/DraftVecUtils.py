@@ -27,6 +27,11 @@ __url__ = ["http://www.freecadweb.org"]
 
 "a vector math library for FreeCAD"
 
+## \defgroup DRAFTVECUTILS DraftVecUtils
+#  \ingroup DRAFT
+#
+# Vector math utilities
+
 import math,FreeCAD
 from FreeCAD import Vector, Matrix
 

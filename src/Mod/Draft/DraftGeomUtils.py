@@ -25,6 +25,11 @@ __title__="FreeCAD Draft Workbench - Geometry library"
 __author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
 __url__ = ["http://www.freecadweb.org"]
 
+## \defgroup DRAFTGEOMUTILS DraftGeomUtils
+#  \ingroup DRAFT
+#
+# Shapes manipulation utilities
+
 "this file contains generic geometry functions for manipulating Part shapes"
 
 import FreeCAD, Part, DraftVecUtils, math, cmath

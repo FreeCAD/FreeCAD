@@ -26,6 +26,11 @@ __title__="FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
+## \defgroup DRAFTGUI DraftGui
+#  \ingroup DRAFT
+#
+# GUI elements and utilities of the Draft workbench
+
 '''
 This is the GUI part of the Draft module.
 Report to Draft.py for info
