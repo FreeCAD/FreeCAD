@@ -149,9 +149,9 @@ class _ViewProviderSectionPlane:
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
         vobj.addProperty("App::PropertyBool","CutView","Arch",translate("Arch","Show the cut in the 3D view"))
-        vobj.DisplayLength = 1
-        vobj.DisplayHeight = 1
-        vobj.ArrowSize = 1
+        vobj.DisplayLength = 1000
+        vobj.DisplayHeight = 1000
+        vobj.ArrowSize = 50
         vobj.Transparency = 85
         vobj.LineWidth = 1
         vobj.LineColor = (0.0,0.0,0.4,1.0)
