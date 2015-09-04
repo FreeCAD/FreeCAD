@@ -202,6 +202,7 @@ set(Gui_MOC_HDRS
     DlgUndoRedo.h
     DockWindow.h
     DockWindowManager.h
+    DocumentRecovery.h
     EditorView.h
     FileDialog.h
     Flag.h
@@ -303,6 +304,7 @@ SET(Gui_UIC_SRCS
     DlgTreeWidget.ui
     DlgLocationAngle.ui
     DlgLocationPos.ui
+    DocumentRecovery.ui
     DownloadManager.ui
     DownloadItem.ui
     MouseButtons.ui
@@ -375,6 +377,7 @@ SET(Dialog_CPP_SRCS
     DownloadDialog.cpp
     DownloadItem.cpp
     DownloadManager.cpp
+    DocumentRecovery.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -405,6 +408,7 @@ SET(Dialog_HPP_SRCS
     DownloadDialog.h
     DownloadItem.h
     DownloadManager.h
+    DocumentRecovery.h
 )
 
 SET(Dialog_SRCS
@@ -432,6 +436,7 @@ SET(Dialog_SRCS
     DlgTreeWidget.ui
     DownloadManager.ui
     DownloadItem.ui
+    DocumentRecovery.ui
     MouseButtons.ui
     InputVector.ui
     Placement.ui

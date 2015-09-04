@@ -87,6 +87,7 @@
 #include "DlgOnlineHelpImp.h"
 #include "SpaceballEvent.h"
 #include "Control.h"
+#include "DocumentRecovery.h"
 #include "TaskView/TaskView.h"
 
 #include "SplitView3DInventor.h"
@@ -1913,7 +1914,8 @@ void Application::checkForPreviousCrashes()
                             if (tmp.rmdir(it->filePath()))
                                 countDeletedDocs++;
                         }
-                        else {
+                        // search for the existance of a recovery file
+                        else if (doc_dir.exists(QLatin1String("fc_recovery_file.fcstd"))) {
                             // store the transient directory in case it's not empty
                             restoreDocFiles << *it;
                         }
@@ -1930,6 +1932,8 @@ void Application::checkForPreviousCrashes()
     }
 
     if (!restoreDocFiles.isEmpty()) {
-        //TODO:
+        Gui::Dialog::DocumentRecovery dlg(restoreDocFiles, Gui::getMainWindow());
+        if (dlg.foundDocuments())
+            dlg.exec();
     }
 }

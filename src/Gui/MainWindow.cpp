@@ -1014,7 +1014,9 @@ void MainWindow::delayedStartup()
         App::GetApplication().newDocument();
     }
 
-    Application::Instance->checkForPreviousCrashes();
+    if (hGrp->GetBool("RecoveryEnabled", true)) {
+        Application::Instance->checkForPreviousCrashes();
+    }
 }
 
 void MainWindow::appendRecentFile(const QString& filename)

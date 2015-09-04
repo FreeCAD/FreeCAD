@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,6 +25,8 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QFile>
+# include <QTextStream>
 # include <boost/bind.hpp>
 #endif
 
@@ -97,8 +99,22 @@ void AutoSaver::saveDocument(const std::string& name)
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
     if (doc) {
+        // Write recovery meta file
+        QFile file(QString::fromLatin1("%1/fc_recovery_file.xml")
+            .arg(QString::fromUtf8(doc->TransientDir.getValue())));
+        if (file.open(QFile::WriteOnly)) {
+            QTextStream str(&file);
+            str.setCodec("UTF-8");
+            str << "<?xml version='1.0' encoding='utf-8'?>" << endl
+                << "<AutoRecovery SchemaVersion=\"1\">" << endl;
+            str << "  <Status>Created</Status>" << endl;
+            str << "  <Label>" << doc->Label.getValue() << "</Label>" << endl; // store the document's current label
+            str << "</AutoRecovery>" << endl;
+            file.close();
+        }
+
         std::string fn = doc->TransientDir.getValue();
-        fn += "/fc_autosave_file.fcstd";
+        fn += "/fc_recovery_file.fcstd";
         Base::FileInfo tmp(fn);
 
         // make sure to tmp. disable saving thumbnails because this causes trouble if the
@@ -121,7 +137,7 @@ void AutoSaver::saveDocument(const std::string& name)
             if (file.is_open()) {
                 Base::ZipWriter writer(file);
 
-                writer.setComment(doc->Label.getValue()); // store the document's current label
+                writer.setComment("AutoRecovery file");
                 writer.setLevel(1); // apparently the fastest compression
                 writer.putNextEntry("Document.xml");
 
