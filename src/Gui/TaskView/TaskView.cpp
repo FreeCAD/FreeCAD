@@ -28,6 +28,7 @@
 # include <QActionEvent>
 # include <QApplication>
 # include <QCursor>
+# include <QPointer>
 # include <QPushButton>
 #endif
 
@@ -586,6 +587,23 @@ void TaskView::removeDialog(void)
 
 void TaskView::updateWatcher(void)
 {
+    // In case a child of the TaskView has the focus and get hidden we have
+    // to make sure that set the focus on a widget that won't be hidden or
+    // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
+    // to the mdi area which may switch to another mdi view which is not an
+    // acceptable behaviour.
+    QWidget *fw = QApplication::focusWidget();
+    if (!fw)
+        this->setFocus();
+    QPointer<QWidget> fwp = fw;
+    while (fw &&  !fw->isWindow()) {
+        if (fw == this) {
+            this->setFocus();
+            break;
+        }
+        fw = fw->parentWidget();
+    }
+
     // add all widgets for all watcher to the task view
     for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it) {
         bool match = (*it)->shouldShow();
@@ -597,6 +615,11 @@ void TaskView::updateWatcher(void)
                 (*it2)->hide();
         }
     }
+
+    // In case the previous widget that had the focus is still visible
+    // give it the focus back.
+    if (fwp && fwp->isVisible())
+        fwp->setFocus();
 }
 
 void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
@@ -639,6 +662,22 @@ void TaskView::addTaskWatcher(void)
 
 void TaskView::removeTaskWatcher(void)
 {
+    // In case a child of the TaskView has the focus and get hidden we have
+    // to make sure that set the focus on a widget that won't be hidden or
+    // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
+    // to the mdi area which may switch to another mdi view which is not an
+    // acceptable behaviour.
+    QWidget *fw = QApplication::focusWidget();
+    if (!fw)
+        this->setFocus();
+    while (fw &&  !fw->isWindow()) {
+        if (fw == this) {
+            this->setFocus();
+            break;
+        }
+        fw = fw->parentWidget();
+    }
+
     // remove all widgets
     for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it) {
         std::vector<QWidget*> &cont = (*it)->getWatcherContent();
