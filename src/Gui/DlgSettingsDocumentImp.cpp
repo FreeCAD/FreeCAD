@@ -77,6 +77,7 @@ void DlgSettingsDocumentImp::saveSettings()
     prefAuthor->onSave();
     prefSetAuthorOnSave->onSave();
     prefCompany->onSave();
+    prefRecovery->onSave();
     prefAutoSaveEnabled->onSave();
     prefAutoSaveTimeout->onSave();
 
@@ -104,6 +105,7 @@ void DlgSettingsDocumentImp::loadSettings()
     prefAuthor->onRestore();
     prefSetAuthorOnSave->onRestore();
     prefCompany->onRestore();
+    prefRecovery->onRestore();
     prefAutoSaveEnabled->onRestore();
     prefAutoSaveTimeout->onRestore();
 }

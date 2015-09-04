@@ -75,6 +75,7 @@ public:
         QString projectFile;
         QString xmlFile;
         QString label;
+        QString fileName;
         QString tooltip;
         Status status;
     };
@@ -154,7 +155,8 @@ void DocumentRecovery::accept()
                 // If something goes wrong an exception will be thrown here
                 document->restore();
 
-                document->FileName.setValue(std::string());
+                file = it->fileName;
+                document->FileName.setValue(file.toUtf8().constData());
                 document->Label.setValue(it->label.toUtf8().constData());
 
                 // Set the modified flag so that the user cannot close by accident
@@ -233,6 +235,7 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
             break;
         }
         str << "  <Label>" << info.label << "</Label>" << endl;
+        str << "  <FileName>" << info.fileName << "</FileName>" << endl;
         str << "</AutoRecovery>" << endl;
         file.close();
     }
@@ -258,6 +261,10 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
 
             if (cfg.contains(QString::fromLatin1("Label"))) {
                 info.label = cfg[QString::fromLatin1("Label")];
+            }
+
+            if (cfg.contains(QString::fromLatin1("FileName"))) {
+                info.fileName = cfg[QString::fromLatin1("FileName")];
             }
 
             if (cfg.contains(QString::fromLatin1("Status"))) {
@@ -299,6 +306,7 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
 
     QVector<QString> filter;
     filter << QString::fromLatin1("Label");
+    filter << QString::fromLatin1("FileName");
     filter << QString::fromLatin1("Status");
 
     QDomElement child;
