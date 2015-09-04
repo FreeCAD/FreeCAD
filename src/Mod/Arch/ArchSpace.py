@@ -341,7 +341,7 @@ class _Space(ArchComponent.Component):
             sh = obj.Shape.copy()
             cutplane,v1,v2 = ArchCommands.getCutVolume(pl,sh)
             e = sh.section(cutplane)
-            e = DraftGeomUtils.sortEdges(e.Edges)
+            e = Part.__sortEdges__(e.Edges)
             w = Part.Wire(e)
             f = Part.Face(w)
             return f.Area

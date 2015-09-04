@@ -1588,7 +1588,7 @@ def getWire(wire,nospline=False,lw=True):
         else:
             # Polyline format
             return ((v.x,v.y,v.z),None,[None,None],b)
-    edges = DraftGeomUtils.sortEdges(wire.Edges)
+    edges = Part.__sortEdges__(wire.Edges)
     points = []
     # print("processing wire ",wire.Edges)
     for edge in edges:
