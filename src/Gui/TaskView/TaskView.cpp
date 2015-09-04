@@ -593,6 +593,8 @@ void TaskView::updateWatcher(void)
     // to the mdi area which may switch to another mdi view which is not an
     // acceptable behaviour.
     QWidget *fw = QApplication::focusWidget();
+    if (!fw)
+        this->setFocus();
     QPointer<QWidget> fwp = fw;
     while (fw &&  !fw->isWindow()) {
         if (fw == this) {
@@ -666,6 +668,8 @@ void TaskView::removeTaskWatcher(void)
     // to the mdi area which may switch to another mdi view which is not an
     // acceptable behaviour.
     QWidget *fw = QApplication::focusWidget();
+    if (!fw)
+        this->setFocus();
     while (fw &&  !fw->isWindow()) {
         if (fw == this) {
             this->setFocus();
