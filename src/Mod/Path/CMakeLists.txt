@@ -23,6 +23,7 @@ SET(PathScripts_SRCS
     PathScripts/centroid_post.py
     PathScripts/comparams_post.py
     PathScripts/dumper_post.py
+    PathScripts/rml_post.py
     PathScripts/TooltableEditor.py
     PathScripts/PathProfile.py
     PathScripts/PathPocket.py
