@@ -27,6 +27,11 @@ __title__="FreeCAD Draft Workbench GUI Tools"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
 __url__ = "http://www.freecadweb.org"
 
+## \defgroup DRAFTTOOLS DraftTools
+#  \ingroup DRAFT
+#
+# GUI Commands of the Draft workbench
+
 #---------------------------------------------------------------------------
 # Generic stuff
 #---------------------------------------------------------------------------

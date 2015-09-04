@@ -25,6 +25,16 @@ __title__="FreeCAD Arch API"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+## \defgroup ARCH Arch
+#  \ingroup WORKBENCHES
+#
+#  Architecture and BIM module
+#
+#  This module provides tools specialized in architectural and Building
+#  Information Modeling (BIM).
+
+'''The Arch module provides tools specialized in architectural BIM modeling.'''
+
 import FreeCAD
 if FreeCAD.GuiUp:
 	import FreeCADGui

@@ -29,51 +29,22 @@ __title__="FreeCAD Draft Workbench"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Daniel Falck"
 __url__ = "http://www.freecadweb.org"
 
-'''
-General description:
+## \addtogroup DRAFT
+#
+#  This module offers a range of tools to create and manipulate basic 2D objects
+#
+#  The module allows to create 2D geometric objects such as line, rectangle, circle,
+#  etc, modify these objects by moving, scaling or rotating them, and offers a couple of
+#  other utilities to manipulate further these objects, such as decompose them (downgrade)
+#  into smaller elements.
+#
+#  The functionality of the module is divided into GUI tools, usable from the
+#  FreeCAD interface, and corresponding python functions, that can perform the same
+#  operation programmatically.
+#
 
-    The Draft module is a FreeCAD module for drawing/editing 2D entities.
-    The aim is to give FreeCAD basic 2D-CAD capabilities (similar
-    to Autocad and other similar software). This modules is made to be run
-    inside FreeCAD and needs the PySide and pivy modules available.
+'''The Draft module offers a range of tools to create and manipulate basic 2D objects'''
 
-User manual:
-
-    http://www.freecadweb.org/wiki/index.php?title=2d_Drafting_Module
-
-How it works / how to extend:
-
-    This module is written entirely in python. If you know a bit of python
-    language, you are welcome to modify this module or to help us to improve it.
-    Suggestions are also welcome on the FreeCAD discussion forum.
-    
-    If you want to have a look at the code, here is a general explanation. The
-    Draft module is divided in several files:
-
-    - Draft.py: Hosts the functions that are useful for scripting outside of
-    the Draft module, it is the "Draft API"
-    - DraftGui.py: Creates and manages the special Draft toolbar
-    - DraftTools.py: Contains the user tools of the Draft module (the commands
-    from the Draft menu), and a couple of helpers such as the "Trackers"
-    (temporary geometry used while drawing)
-    - DraftVecUtils.py: a vector math library, contains functions that are not
-    implemented in the standard FreeCAD vector
-    - DraftGeomUtils.py: a library of misc functions to manipulate shapes.
-        
-    The Draft.py contains everything to create geometry in the scene. You
-    should start there if you intend to modify something. Then, the DraftTools
-    are where the FreeCAD commands are defined, while in DraftGui.py
-    you have the ui part, ie. the draft command bar. Both DraftTools and
-    DraftGui are loaded at module init by InitGui.py, which is called directly by FreeCAD.
-    The tools all have an Activated() function, which is called by FreeCAD when the
-    corresponding FreeCAD command is invoked. Most tools then create the trackers they
-    will need during operation, then place a callback mechanism, which will detect
-    user input and do the necessary cad operations. They also send commands to the
-    command bar, which will display the appropriate controls. While the scene event
-    callback watches mouse events, the keyboard is being watched by the command bar.
-'''
-
-# import FreeCAD modules
 import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc
 from FreeCAD import Vector
 
@@ -90,17 +61,17 @@ arrowtypes = ["Dot","Circle","Arrow"]
 # General functions
 #---------------------------------------------------------------------------
 
-def stringencodecoin(str):
-    """Encode a unicode object to be used as a string in coin"""
+def stringencodecoin(ustr):
+    """stringencodecoin(str): Encodes a unicode object to be used as a string in coin"""
     try:
         from pivy import coin
         coin4 = coin.COIN_MAJOR_VERSION >= 4
     except (ImportError, AttributeError):
         coin4 = False
     if coin4:
-        return str.encode('utf-8')
+        return ustr.encode('utf-8')
     else:
-        return str.encode('latin1')
+        return ustr.encode('latin1')
 
 def typecheck (args_and_types, name="?"):
     "typecheck([arg1,type),(arg2,type),...]): checks arguments types"
@@ -5358,4 +5329,3 @@ class _ViewProviderVisGroup:
                                     # touch the page if something was changed
                                     if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
                                         vobj.Object.InList[0].touch()
-
