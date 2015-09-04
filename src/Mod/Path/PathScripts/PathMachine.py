@@ -23,11 +23,11 @@
 #***************************************************************************
 ''' A CNC machine object to define how code is posted '''
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,Path
 import PathScripts
 from PathScripts import PathProject, PathUtils
 from PySide import QtCore,QtGui
-import os, sys
+import os, sys    
 
 # Qt tanslation handling
 try:
@@ -228,6 +228,7 @@ class CommandPathMachine:
 
 if FreeCAD.GuiUp: 
     # register the FreeCAD command
+    import FreeCADGui
     FreeCADGui.addCommand('Path_Machine',CommandPathMachine())
 
 
