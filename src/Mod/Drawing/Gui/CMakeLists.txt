@@ -95,6 +95,15 @@ fc_target_copy_resource(DrawingGui
     ${CMAKE_BINARY_DIR}/Mod/Drawing
     InitGui.py)
 
+SET(DrawingGuiIcon_SVG
+    Resources/icons/actions/drawing-landscape.svg
+)
+
+fc_copy_sources(DrawingGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing" ${DrawingGuiIcon_SVG})
+
+INSTALL(FILES ${DrawingGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons/actions")
+
+
 SET_BIN_DIR(DrawingGui DrawingGui /Mod/Drawing)
 SET_PYTHON_PREFIX_SUFFIX(DrawingGui)
 

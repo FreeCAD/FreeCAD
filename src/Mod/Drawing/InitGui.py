@@ -30,87 +30,19 @@
 #***************************************************************************/
 
 
+class DrawingWorkbench (Workbench):
+    "Drawing workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Drawing/Resources/icons/actions/drawing-landscape.svg"
+        self.__class__.MenuText = "Drawing"
+        self.__class__.ToolTip = "Drawing workbench"
 
-class DrawingWorkbench ( Workbench ):
-	"Drawing workbench object"
-	Icon = """
-			/* XPM */
-			static const char *colors[]={
-			"16 16 49 1",
-			"Qt c None",
-			".	c #B0B0B0",
-			"+	c #C8C8C8",
-			"@	c #CACACA",
-			"#	c #CBCBCB",
-			"$	c #CDCDCD",
-			"%	c #D0D0D0",
-			"&	c #D1D1D1",
-			"*	c #D2D2D2",
-			"=	c #D3D3D3",
-			"-	c #D4D4D4",
-			";	c #D7D7D7",
-			">	c #D8D8D8",
-			",	c #E6E6E6",
-			"'	c #E7E7E7",
-			")	c #E5E5E5",
-			"!	c #E0E0E0",
-			"~	c #E4E4E4",
-			"{	c #DEDEDE",
-			"]	c #E1E1E1",
-			"^	c #DADADA",
-			"/	c #CCCCCC",
-			"(	c #EAEAEA",
-			"_	c #EBEBEB",
-			":	c #E9E9E9",
-			"<	c #E8E8E8",
-			"[	c #E2E2E2",
-			"}	c #DDDDDD",
-			"|	c #ECECEC",
-			"1	c #DBDBDB",
-			"2	c #EEEEEE",
-			"3	c #EDEDED",
-			"4	c #E3E3E3",
-			"5	c #F0F0F0",
-			"6	c #F1F1F1",
-			"7	c #EFEFEF",
-			"8	c #F2F2F2",
-			"9	c #F3F3F3",
-			"0	c #D6D6D6",
-			"a	c #F4F4F4",
-			"b	c #F5F5F5",
-			"c	c #F7F7F7",
-			"d	c #F6F6F6",
-			"e	c #F8F8F8",
-			"f	c #F9F9F9",
-			"g	c #CFCFCF",
-			"h	c #B3B3B3",
-			"i	c #CECECE",
-			"j	c #BBBBBB",
-			"                ",
-			"                ",
-			" .+@#$%&*=-;>>$ ",
-			" #,'')!)~{!]!{^ ",
-			" /(___(::<',~[} ",
-			" /||||_(:<')~[1 ",
-			" /22223|_(<')4^ ",
-			" $5665723_(<,~; ",
-			" $89986523_:')0 ",
-			" /abba9673|(<)- ",
-			" $bccda852|(<,* ",
-			" $defcb852|(<,% ",
-			" /bccda852|(<,g ",
-			" hggggiiigiiiij ",
-			"                ",
-			"                "};
-			"""
-	MenuText = "Drawing"
-	ToolTip = "Drawing workbench"
 
-	def Initialize(self):
-		# load the module
-		import DrawingGui
-	def GetClassName(self):
-		return "DrawingGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import DrawingGui
+    def GetClassName(self):
+        return "DrawingGui::Workbench"
         
 Gui.addWorkbench(DrawingWorkbench())
 
