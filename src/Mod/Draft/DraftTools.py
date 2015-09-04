@@ -2718,7 +2718,7 @@ class Trimex(Modifier):
             self.extrudeMode = False
             if self.obj.Shape.Wires:
                 self.edges = self.obj.Shape.Wires[0].Edges
-                self.edges = DraftGeomUtils.sortEdges(self.edges)
+                self.edges = Part.__sortEdges__(self.edges)
             else:
                 self.edges = self.obj.Shape.Edges
             self.ghost = []
