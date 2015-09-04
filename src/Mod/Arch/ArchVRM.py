@@ -180,7 +180,7 @@ class Renderer:
         norm = face[0].normalAt(0,0)
         for w in face[0].Wires:
             verts = []
-            edges = DraftGeomUtils.sortEdges(w.Edges)
+            edges = Part.__sortEdges__(w.Edges)
             #print len(edges)," edges after sorting"
             for e in edges:
                 v = e.Vertexes[0].Point
@@ -217,7 +217,7 @@ class Renderer:
         wires = []
         for w in face[0].Wires:
             verts = []
-            edges = DraftGeomUtils.sortEdges(w.Edges)
+            edges = Part.__sortEdges__(w.Edges)
             for e in edges:
                 v = e.Vertexes[0].Point
                 verts.append(FreeCAD.Vector(v.x,v.y,0))
@@ -568,7 +568,7 @@ class Renderer:
         "Returns a SVG path data string from a 2D wire"
         def tostr(val):
             return str(round(val,DraftVecUtils.precision()))
-        edges = DraftGeomUtils.sortEdges(w.Edges)
+        edges = Part.__sortEdges__(w.Edges)
         v = edges[0].Vertexes[0].Point
         svg = 'M '+ tostr(v.x) +' '+ tostr(v.y) + ' '
         for e in edges:

@@ -619,7 +619,7 @@ def findClosest(basepoint,pointslist):
 def concatenate(shape):
     "concatenate(shape) -- turns several faces into one"
     edges = getBoundary(shape)
-    edges = sortEdges(edges)
+    edges = Part.__sortEdges__(edges)
     try:
         wire=Part.Wire(edges)
         face=Part.Face(wire)
@@ -656,11 +656,13 @@ def isLine(bsp):
         if bsp.tangent(i*step) != b:
             return False
     return True
-    
+
+
 def sortEdges(edges):
-    """Sort edges in path order, i.e., such that the end point of edge N
-    equals the start point of edge N+1.
-    """
+    "Deprecated. Use Part__sortEdges__ instead"
+    
+    raise DeprecationWarning("Deprecated. Use Part__sortEdges__ instead")
+    
     # Build a dictionary of edges according to their end points.
     # Each entry is a set of edges that starts, or ends, at the
     # given vertex hash.
@@ -733,9 +735,12 @@ def sortEdges(edges):
     # All done.
     return ret
 
-def sortEdgesOld(lEdges, aVertex=None):
-    "an alternative, more accurate version of Part.__sortEdges__ (old version)"
 
+def sortEdgesOld(lEdges, aVertex=None):
+    "Deprecated. Use Part__sortEdges__ instead"
+    
+    raise DeprecationWarning("Deprecated. Use Part__sortEdges__ instead")
+    
     #There is no reason to limit this to lines only because every non-closed edge always
     #has exactly two vertices (wmayer)
     #for e in lEdges:
@@ -922,7 +927,7 @@ def superWire(edgeslist,closed=False):
                 vd = v2.sub(v1)
                 vd.scale(.5,.5,.5)
                 return v1.add(vd)
-        edges = sortEdges(edgeslist)
+        edges = Part.__sortEdges__(edgeslist)
         print(edges)
         newedges = []
         for i in range(len(edges)):
@@ -999,35 +1004,6 @@ def findMidpoint(edge):
     else:
         return None
 
-# OBSOLETED
-#def complexity(obj):
-#    '''
-#    tests given object for shape complexity:
-#    1: line
-#    2: arc
-#    3: circle
-#    4: open wire with no arc
-#    5: closed wire
-#    6: wire with arcs
-#    7: faces
-#    8: faces with arcs
-#    '''
-#    shape = obj.Shape
-#    if shape.Faces:
-#        for e in shape.Edges:
-#            if (isinstance(e.Curve,Part.Circle)): return 8
-#        return 7
-#    if shape.Wires:
-#        for e in shape.Edges:
-#            if (isinstance(e.Curve,Part.Circle)): return 6
-#        for w in shape.Wires:
-#            if w.isClosed(): return 5
-#        return 4
-#    if (isinstance(shape.Edges[0].Curve,Part.Circle)):
-#        if len(shape.Vertexes) == 1:
-#            return 3
-#        return 2
-#    return 1
 
 def findPerpendicular(point,edgeslist,force=None):
     '''
@@ -1060,7 +1036,7 @@ def findPerpendicular(point,edgeslist,force=None):
         else: return None
         return None
 
-def offset(edge,vector):
+def offset(edge,vector,trim=False):
     '''
     offset(edge,vector)
     returns a copy of the edge at a certain (vector) distance
@@ -1075,8 +1051,12 @@ def offset(edge,vector):
         return Part.Line(v1,v2).toShape()
     elif geomType(edge) == "Circle":
         rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
-        newrad = Vector.add(rad,vector).Length
-        return Part.Circle(edge.Curve.Center,NORM,newrad).toShape()
+        curve = Part.Circle(edge.Curve)
+        curve.Radius = Vector.add(rad,vector).Length
+        if trim:
+            return Part.ArcOfCircle(curve,edge.FirstParameter,edge.LastParameter).toShape()
+        else:
+            return curve.toShape()
     else:
         return None
 
@@ -1147,7 +1127,7 @@ def offsetWire(wire,dvec,bind=False,occ=False):
     the wire. If bind is True (and the shape is open), the original
     wire and the offsetted one are bound by 2 edges, forming a face.
     '''
-    edges = sortEdges(wire.Edges)
+    edges = Part.__sortEdges__(wire.Edges)
     norm = getNormal(wire)
     closed = isReallyClosed(wire)
     nedges = []
@@ -1174,13 +1154,11 @@ def offsetWire(wire,dvec,bind=False,occ=False):
                 v = vec(curredge)
             angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
-        nedge = offset(curredge,delta)
+        #print "edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta
+        nedge = offset(curredge,delta,trim=True)
         if not nedge:
             return None
-        if isinstance(curredge.Curve,Part.Circle):
-            nedge = Part.ArcOfCircle(nedge.Curve,curredge.FirstParameter,curredge.LastParameter).toShape()
         nedges.append(nedge)
-        FreeCAD.n=nedges
     nedges = connect(nedges,closed)
     if bind and not closed:
         e1 = Part.Line(edges[0].Vertexes[0].Point,nedges[0].Vertexes[0].Point).toShape()
@@ -1374,6 +1352,7 @@ def isPlanar(shape):
 def findWiresOld(edges):
         '''finds connected edges in the list, and returns a list of lists containing edges
         that can be connected'''
+        raise DeprecationWarning("This function shouldn't be called anymore - use findWires() instead")
         def verts(shape):
                 return [shape.Vertexes[0].Point,shape.Vertexes[-1].Point]
         def group(shapes):
@@ -1529,7 +1508,7 @@ def cleanFaces(shape):
                 fset = []
                 for i in isle: fset.append(find(i))
                 bounds = getBoundary(fset)
-                shp = Part.Wire(sortEdges(bounds))
+                shp = Part.Wire(Part.__sortEdges__(bounds))
                 shp = Part.Face(shp)
                 if shp.normalAt(0.5,0.5) != find(isle[0]).normalAt(0.5,0.5):
                         shp.reverse()
@@ -1617,7 +1596,7 @@ def getCubicDimensions(shape):
 def removeInterVertices(wire):
         '''removeInterVertices(wire) - remove unneeded vertices (those that
         are in the middle of a straight line) from a wire, returns a new wire.'''
-        edges = sortEdges(wire.Edges)
+        edges = Part__sortEdges__(wire.Edges)
         nverts = []
         def getvec(v1,v2):
                 if not abs(round(v1.getAngle(v2),precision()) in [0,round(math.pi,precision())]):
@@ -1689,7 +1668,7 @@ def fillet(lEdges,r,chamfer=False):
             return existingCurveType
             
     rndEdges = lEdges[0:2]
-    rndEdges = sortEdges(rndEdges)
+    rndEdges = Part__sortEdges__(rndEdges)
 
     if len(rndEdges) < 2 :
         return rndEdges
@@ -1943,7 +1922,7 @@ def filletWire(aWire,r,chamfer=False):
     size of the chamfer'''
     
     edges = aWire.Edges
-    edges = sortEdges(edges)
+    edges = Part.__sortEdges__(edges)
     filEdges = [edges[0]]
     for i in range(len(edges)-1):
         result = fillet([filEdges[-1],edges[i+1]],r,chamfer)

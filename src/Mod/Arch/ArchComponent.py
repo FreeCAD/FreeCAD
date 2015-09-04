@@ -423,7 +423,7 @@ class Component:
                                                 dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
                                                 wire = DraftGeomUtils.offsetWire(wire,dvec2)
                                         w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                                        w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                                        w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                         sh = DraftGeomUtils.bind(w1,w2)
                                     elif obj.Align == "Right":
                                         dvec.multiply(w)
@@ -433,7 +433,7 @@ class Component:
                                                 dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
                                                 wire = DraftGeomUtils.offsetWire(wire,dvec2)
                                         w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                                        w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                                        w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                         sh = DraftGeomUtils.bind(w1,w2)
                                     elif obj.Align == "Center":
                                         dvec.multiply(w/2)

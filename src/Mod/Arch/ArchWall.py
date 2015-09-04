@@ -499,16 +499,6 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                     return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
-    def getDisplayModes(self,vobj):
-        return ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Flat 2D"]
-
-    def setDisplayMode(self,mode):
-        self.Object.Proxy.execute(self.Object)
-        if mode == "Flat 2D":
-            return "Flat Lines"
-        else:
-            return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
-
     def attach(self,vobj):
         self.Object = vobj.Object
         return

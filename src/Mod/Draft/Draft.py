@@ -785,7 +785,7 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     import DraftGeomUtils, Part
     if not isinstance(pointslist,list):
         e = pointslist.Wires[0].Edges
-        pointslist = Part.Wire(DraftGeomUtils.sortEdges(e))
+        pointslist = Part.Wire(Part.__sortEdges__(e))
         nlist = []
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
@@ -1760,13 +1760,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'id="%s" ' % pathname
         svg += ' d="'
         if not wires:
-            egroups = (DraftGeomUtils.sortEdges(edges),)
+            egroups = (Part.__sortEdges__(edges),)
         else:
             egroups = []
             for w in wires:
                 w1=w.copy()
                 w1.fixWire()
-                egroups.append(DraftGeomUtils.sortEdges(w1.Edges))
+                egroups.append(Part.__sortEdges__(w1.Edges))
         for egroupindex, edges in enumerate(egroups):
             vs=() #skipped for the first edge
             for edgeindex,e in enumerate(edges):
@@ -2648,7 +2648,7 @@ def upgrade(objects,delete=False,force=None):
                     newobj.Shape = f
                 else:
                     edges.append(Part.Line(p1,p0).toShape())
-                    w = Part.Wire(DraftGeomUtils.sortEdges(edges))
+                    w = Part.Wire(Part.__sortEdges__(edges))
                     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Wire")
                     newobj.Shape = w
                 addList.append(newobj)
@@ -2751,7 +2751,7 @@ def upgrade(objects,delete=False,force=None):
             for e in o.Shape.Edges:
                 edges.append(e)
         try:
-            nedges = DraftGeomUtils.sortEdges(edges[:])
+            nedges = Part.__sortEdges__(edges[:])
             # for e in nedges: print("debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point)
             w = Part.Wire(nedges)
         except Part.OCCError:
@@ -4678,7 +4678,7 @@ class _Shape2DView(_DraftObject):
                             c = sh.section(cutp)
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
                                 try:
-                                    c = Part.Wire(DraftGeomUtils.sortEdges(c.Edges))
+                                    c = Part.Wire(Part.__sortEdges__(c.Edges))
                                 except Part.OCCError:
                                     pass
                                 else:
@@ -4949,7 +4949,7 @@ class _PathArray(_DraftObject):
         import DraftGeomUtils
         closedpath = DraftGeomUtils.isReallyClosed(pathwire)
         normal = DraftGeomUtils.getNormal(pathwire)
-        path = DraftGeomUtils.sortEdges(pathwire.Edges)
+        path = Part.__sortEdges__(pathwire.Edges)
         ends = []
         cdist = 0
         for e in path:                                                 # find cumulative edge end distance

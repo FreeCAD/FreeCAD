@@ -63,7 +63,7 @@ def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickn
                 w = obj.Base.Shape.Wires[0]
         if w:
             if w.isClosed():
-                edges = DraftGeomUtils.sortEdges(w.Edges)
+                edges = Part.__sortEdges__(w.Edges)
                 l = len(edges)
     
                 la = len(angles)
@@ -545,7 +545,7 @@ class _Roof(ArchComponent.Component):
                         self.shps = []
                         self.subVolshps = []
                         heights = []
-                        edges = DraftGeomUtils.sortEdges(w.Edges)
+                        edges = Part.__sortEdges__(w.Edges)
                         l = len(edges)
                         print("le contour contient "+str(l)+" aretes")
                         for i in range(l):

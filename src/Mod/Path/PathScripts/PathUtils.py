@@ -248,10 +248,10 @@ def SortPath(wire,Side,radius,clockwise,firstedge=None,SegLen =0.5):
                 else:
                     preoffset.append(e)
 
-            sortedpreoff = DraftGeomUtils.sortEdgesOld(preoffset)
+            sortedpreoff = Part.__sortEdges__(preoffset)
             wire = Part.Wire(sortedpreoff)
         else:
-            sortedpreoff = DraftGeomUtils.sortEdgesOld(edgelist)
+            sortedpreoff = Part.__sortEdges__(edgelist)
             wire = Part.Wire(sortedpreoff)
 
     edgelist = []
