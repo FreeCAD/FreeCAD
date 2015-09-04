@@ -21,51 +21,44 @@
  ***************************************************************************/
 
 
-#ifndef GUI_AUTOSAVER_H
-#define GUI_AUTOSAVER_H
+#ifndef GUI_DIALOG_DOCUMENTRECOVERY_H
+#define GUI_DIALOG_DOCUMENTRECOVERY_H
 
-#include <QObject>
-#include <map>
-#include <string>
+#include <QDialog>
+#include <QScopedPointer>
+#include <QList>
+#include <QFileInfo>
 
-namespace App {
-class Document;
-}
+namespace Gui { namespace Dialog {
 
-namespace Gui {
+class DocumentRecoveryPrivate;
 
 /*!
- The class AutoSaver is used to automatically save a document to a temporary file.
  @author Werner Mayer
  */
-class AutoSaver : public QObject
+class DocumentRecovery : public QDialog
 {
     Q_OBJECT
 
-private:
-    static AutoSaver* self;
-    AutoSaver(QObject* parent);
-    virtual ~AutoSaver();
-
 public:
-    static AutoSaver* instance();
-    /*!
-     Sets the timeout in milliseconds. A value of 0 means that no timer is used.
-     */
-    void setTimeout(int ms);
+    DocumentRecovery(const QList<QFileInfo>&, QWidget* parent = 0);
+    virtual ~DocumentRecovery();
+
+    void accept();
+    bool foundDocuments() const;
 
 protected:
-    void slotCreateDocument(const App::Document& Doc);
-    void slotDeleteDocument(const App::Document& Doc);
-    void timerEvent(QTimerEvent * event);
-    void saveDocument(const std::string&);
+    void closeEvent(QCloseEvent*);
 
 private:
-    int timeout; /*!< Timeout in milliseconds */
-    std::map<std::string, int> timerMap;
+    QScopedPointer<DocumentRecoveryPrivate> d_ptr;
+    Q_DISABLE_COPY(DocumentRecovery)
+    Q_DECLARE_PRIVATE(DocumentRecovery)
 };
+
+} //namespace Dialog
 
 } //namespace Gui
 
 
-#endif //GUI_AUTOSAVER_H
+#endif //GUI_DIALOG_DOCUMENTRECOVERY_H
