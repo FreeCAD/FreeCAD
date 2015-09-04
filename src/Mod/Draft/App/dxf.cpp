@@ -1407,6 +1407,108 @@ bool CDxfRead::ReadInsert()
 }
 
 
+bool CDxfRead::ReadDimension()
+{
+    double s[3]; // startpoint
+    double e[3]; // endpoint
+    double p[3]; // dimpoint
+    double rot = 0.0; // rotation
+
+    while(!((*m_ifs).eof()))
+    {
+        get_line();
+        int n;
+        if(sscanf(m_str, "%d", &n) != 1)
+        {
+            printf("CDxfRead::ReadInsert() Failed to read integer from '%s'\n", m_str);
+            return false;
+        }
+        std::istringstream ss;
+        ss.imbue(std::locale("C"));
+        switch(n){
+            case 0: 
+                // next item found
+                DerefACI();
+                OnReadDimension(s, e, p, rot * Pi/180);
+                return(true);
+            case 8: 
+                // Layer name follows
+                get_line();
+                strcpy(m_layer_name, m_str);
+                break;
+            case 12:
+                // start x
+                get_line();
+                ss.str(m_str); ss >> s[0]; s[0] = mm(s[0]); if(ss.fail()) return false;
+                break;
+            case 22:
+                // start y
+                get_line();
+                ss.str(m_str); ss >> s[1]; s[1] = mm(s[1]); if(ss.fail()) return false;
+                break;
+            case 32:
+                // start z
+                get_line();
+                ss.str(m_str); ss >> s[2]; s[2] = mm(s[2]); if(ss.fail()) return false;
+                break;
+            case 13:
+                // end x
+                get_line();
+                ss.str(m_str); ss >> e[0]; e[0] = mm(e[0]); if(ss.fail()) return false;
+                break;
+            case 23:
+                // end y
+                get_line();
+                ss.str(m_str); ss >> e[1]; e[1] = mm(e[1]); if(ss.fail()) return false;
+                break;
+            case 33:
+                // end z
+                get_line();
+                ss.str(m_str); ss >> e[2]; e[2] = mm(e[2]); if(ss.fail()) return false;
+                break;
+            case 14:
+                // dimline x
+                get_line();
+                ss.str(m_str); ss >> p[0]; p[0] = mm(p[0]); if(ss.fail()) return false;
+                break;
+            case 24:
+                // dimline y
+                get_line();
+                ss.str(m_str); ss >> p[1]; p[1] = mm(p[1]); if(ss.fail()) return false;
+                break;
+            case 34:
+                // dimline z
+                get_line();
+                ss.str(m_str); ss >> p[2]; p[2] = mm(p[2]); if(ss.fail()) return false;
+                break;
+            case 50:
+                // rotation
+                get_line();
+                ss.str(m_str); ss >> rot; if(ss.fail()) return false;
+                break;
+            case 62:
+                // color index
+                get_line();
+                ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
+                break;
+            case 100:
+            case 39:
+            case 210:
+            case 220:
+            case 230:
+                // skip the next line
+                get_line();
+                break;
+            default:
+                // skip the next line
+                get_line();
+                break;
+        }
+    }
+    return false;
+}
+
+
 void CDxfRead::get_line()
 {
     if (m_unused_line[0] != '\0')

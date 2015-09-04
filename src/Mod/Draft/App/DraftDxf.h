@@ -43,6 +43,7 @@ namespace DraftUtils
         void OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir);
         void OnReadSpline(struct SplineData& sd);
         void OnReadInsert(const double* point, const double* scale, const char* name, double rotation);
+        void OnReadDimension(const double* s, const double* e, const double* point, double rotation);
         void AddGraphics() const;
     
         // FreeCAD-specific functions
