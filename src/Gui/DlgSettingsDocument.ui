@@ -200,6 +200,22 @@
        </widget>
       </item>
       <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefRecovery">
+        <property name="text">
+         <string>Run AutoRecovery at startup</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>RecoveryEnabled</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="Gui::PrefCheckBox" name="prefAutoSaveEnabled">
@@ -244,7 +260,7 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="Line" name="line1_2_3">
         <property name="frameShape">
          <enum>QFrame::HLine</enum>
@@ -257,7 +273,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
         <property name="text">
          <string>Save thumbnail into project file when saving document</string>
@@ -270,7 +286,7 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>

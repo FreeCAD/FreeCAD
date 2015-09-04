@@ -109,6 +109,7 @@ void AutoSaver::saveDocument(const std::string& name)
                 << "<AutoRecovery SchemaVersion=\"1\">" << endl;
             str << "  <Status>Created</Status>" << endl;
             str << "  <Label>" << doc->Label.getValue() << "</Label>" << endl; // store the document's current label
+            str << "  <FileName>" << doc->FileName.getValue() << "</FileName>" << endl; // store the document's current filename
             str << "</AutoRecovery>" << endl;
             file.close();
         }
