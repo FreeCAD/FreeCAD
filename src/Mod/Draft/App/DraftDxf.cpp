@@ -171,6 +171,12 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
 }
 
 
+void DraftDxfRead::OnReadDimension(const double* s, const double* e, const double* point, double rotation)
+{
+    std::cout << "Dimension: " << std::endl;
+}
+
+
 void DraftDxfRead::AddObject(Part::TopoShape *shape)
 {
     //std::cout << "layer:" << LayerName() << std::endl;
