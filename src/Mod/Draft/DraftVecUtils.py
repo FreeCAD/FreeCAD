@@ -32,7 +32,7 @@ from FreeCAD import Vector, Matrix
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 def precision():
-    return params.GetInt("precision")
+    return params.GetInt("precision",6)
 
 def typecheck (args_and_types, name="?"):
     for v,t in args_and_types:

@@ -84,7 +84,7 @@ def getIndices(shape,offset):
             else:
                 fi = ""
                 # OCC vertices are unsorted. We need to sort in the right order...
-                edges = DraftGeomUtils.sortEdges(f.OuterWire.Edges)
+                edges = Part.__sortEdges__(f.OuterWire.Edges)
                 #print edges
                 for e in edges:
                     #print e.Vertexes[0].Point,e.Vertexes[1].Point

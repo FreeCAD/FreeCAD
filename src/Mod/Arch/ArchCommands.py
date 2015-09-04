@@ -321,7 +321,7 @@ def closeHole(shape):
     for e in shape.Edges:
         if lut[e.hashCode()] == 1:
             bound.append(e)
-    bound = DraftGeomUtils.sortEdges(bound)
+    bound = Part.__sortEdges__(bound)
     try:
         nface = Part.Face(Part.Wire(bound))
         shell = Part.makeShell(shape.Faces+[nface])

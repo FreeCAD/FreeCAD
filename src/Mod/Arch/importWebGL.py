@@ -171,7 +171,7 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
             result += tab+"geom.faces.push( new THREE.Face3"+str(f)+" );\n"
         for f in obj.Shape.Faces:
             for w in f.Wires:
-                wo = Part.Wire(DraftGeomUtils.sortEdges(w.Edges))
+                wo = Part.Wire(Part.__sortEdges__(w.Edges))
                 wires.append(wo.discretize(QuasiDeflection=0.1))
 
     elif obj.isDerivedFrom("Mesh::Feature"):

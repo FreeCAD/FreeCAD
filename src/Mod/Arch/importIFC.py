@@ -1081,7 +1081,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                             # extruded polyline
                             if not curves:
-                                w = Part.Wire(DraftGeomUtils.sortEdges(p.Edges))
+                                w = Part.Wire(Part.__sortEdges__(p.Edges))
                                 pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
                                 pol = ifcfile.createIfcPolyline(pts)
 
@@ -1089,7 +1089,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             else:
                                 segments = []
                                 last = None
-                                edges = DraftGeomUtils.sortEdges(p.Edges)
+                                edges = Part.__sortEdges__(p.Edges)
                                 for e in edges:
                                     if isinstance(e.Curve,Part.Circle):
                                         follow = True
@@ -1195,7 +1195,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 shapetype = "brep"
                 for fcface in fcsolid.Faces:
                     loops = []
-                    verts = [v.Point for v in Part.Wire(DraftGeomUtils.sortEdges(fcface.OuterWire.Edges)).Vertexes]
+                    verts = [v.Point for v in Part.Wire(Part.__sortEdges__(fcface.OuterWire.Edges)).Vertexes]
                     c = fcface.CenterOfMass
                     v1 = verts[0].sub(c)
                     v2 = verts[1].sub(c)
@@ -1208,7 +1208,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     loops.append(bound)
                     for wire in fcface.Wires:
                         if wire.hashCode() != fcface.OuterWire.hashCode():
-                            verts = [v.Point for v in Part.Wire(DraftGeomUtils.sortEdges(wire.Edges)).Vertexes]
+                            verts = [v.Point for v in Part.Wire(Part.__sortEdges__(wire.Edges)).Vertexes]
                             v1 = verts[0].sub(c)
                             v2 = verts[1].sub(c)
                             if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:

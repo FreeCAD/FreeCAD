@@ -297,8 +297,8 @@ def makewire(path,checkclosed=False,donttry=False):
         closed if required the 'connectEdgesToWires' function is used'''
         if not donttry:
                 try:
-                        import DraftGeomUtils
-                        sh = Part.Wire(DraftGeomUtils.sortEdges(path))
+                        import Part
+                        sh = Part.Wire(Part.__sortEdges__(path))
                         #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
                 except Part.OCCError:# BRep_API:command not done

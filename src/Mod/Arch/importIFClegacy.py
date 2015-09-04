@@ -1198,7 +1198,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
         t = []
         if len(data.Wires) == 1:
             import Part,DraftGeomUtils
-            data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
+            data = Part.Wire(Part.__sortEdges__(data.Wires[0].Edges))
             verts = data.Vertexes
             try:
                 c = data.CenterOfMass
@@ -1274,7 +1274,7 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
                     ecurves = []
                     last = None
                     import DraftGeomUtils
-                    edges = DraftGeomUtils.sortEdges(p.Edges)
+                    edges = Part.__sortEdges__(p.Edges)
                     for e in edges:
                         if isinstance(e.Curve,Part.Circle):
                             import math

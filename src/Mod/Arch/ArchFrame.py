@@ -139,7 +139,7 @@ class _Frame(ArchComponent.Component):
                 profile = baseprofile.copy()
                 #basepoint = profile.Placement.Base
                 if hasattr(obj,"BasePoint"):
-                    edges = DraftGeomUtils.sortEdges(profile.Edges)
+                    edges = Part.__sortEdges__(profile.Edges)
                     basepointliste = [profile.CenterOfMass]
                     for edge in edges:
                         basepointliste.append(DraftGeomUtils.findMidpoint(edge))
