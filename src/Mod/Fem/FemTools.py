@@ -189,23 +189,25 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     def load_results(self):
         import ccxFrdReader
         import os
+        self.results_present = False
+        result_file = self.base_name + ".frd"
         if os.path.isfile(self.base_name + ".frd"):
-            ccxFrdReader.importFrd(self.base_name + ".frd", self.analysis)
-            self.results_present = True
+            ccxFrdReader.importFrd(result_file, self.analysis)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.result_object = m
+            if self.result_object is not None:
+                self.results_present = True
         else:
-            self.results_present = False
+            raise Exception('FEM: No results found at {}!'.format(result_file))
 
     def use_results(self, results_name=None):
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
-                ro = m
-        if not ro:
-            print "{} doesn't exist".format(results_name)
-        else:
-            self.result_object = ro
+                self.result_object = m
+                break
+        if not self.result_object:
+            raise ("{} doesn't exist".format(results_name))
 
     def run(self):
         ret_code = 0
