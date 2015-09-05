@@ -188,10 +188,7 @@ class _CommandMechanicalShowResult:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result information of an analysis")}
 
     def Activated(self):
-        self.result_object = None
-        for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemResultObject"):
-                self.result_object = i
+        self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
 
         if not self.result_object:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
@@ -622,11 +619,12 @@ class _ResultControlTaskPanel:
 
     def update(self):
         self.MeshObject = None
+        self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
+
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemMeshObject"):
                 self.MeshObject = i
-            elif i.isDerivedFrom('Fem::FemResultObject'):
-                self.result_object = i
+                break
 
     def accept(self):
         FreeCADGui.Control.closeDialog()
@@ -645,6 +643,16 @@ def results_present():
             results = True
     return results
 
+
+def get_results_object(sel):
+    if (len(sel) == 1):
+        if sel[0].isDerivedFrom("Fem::FemResultObject"):
+            return sel[0]
+
+    for i in FemGui.getActiveAnalysis().Member:
+        if(i.isDerivedFrom("Fem::FemResultObject")):
+            return i
+    return None
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
