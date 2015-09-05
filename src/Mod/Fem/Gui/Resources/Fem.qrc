@@ -17,6 +17,7 @@
         <file>icons/fem-new-analysis.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-quick-analysis.svg</file>
+        <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-result.svg</file>
         <file>icons/preferences-fem.svg</file>
         <file>translations/Fem_af.qm</file>

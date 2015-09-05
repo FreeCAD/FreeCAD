@@ -179,6 +179,36 @@ class _CommandQuickAnalysis:
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
+class _CommandFrequencyAnalysis:
+    def GetResources(self):
+        return {'Pixmap': 'fem-frequency-analysis',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Frequency_Analysis", "Run frequency analysis with CalculiX ccx"),
+                'Accel': "R, F",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Frequency_Analysis", "Write .inp file and run frequency analysis with CalculiX ccx")}
+
+    def Activated(self):
+        def load_results(ret_code):
+            if ret_code == 0:
+                self.fea.load_results()
+            else:
+                print "CalculiX failed ccx finished with error {}".format(ret_code)
+
+        self.fea = FemTools()
+        self.fea.purge_results()
+        self.fea.reset_mesh_color()
+        self.fea.reset_mesh_deformation()
+        self.fea.set_analysis_type('frequency')
+        message = self.fea.check_prerequisites()
+        if message:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            return
+        self.fea.finished.connect(load_results)
+        QtCore.QThreadPool.globalInstance().start(self.fea)
+
+    def IsActive(self):
+        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
+
+
 class _CommandMechanicalShowResult:
     "the Fem JobControl command definition"
     def GetResources(self):
@@ -595,19 +625,28 @@ class _ResultControlTaskPanel:
         self.form.le_max.setProperty("unit", unit)
         self.form.le_max.setText("{:.6} {}".format(maxm, unit))
 
+    def update_displacement(self, factor=None):
+        if factor is None:
+            if FreeCAD.FEM_dialog["show_disp"]:
+                factor = self.form.hsb_displacement_factor.value()
+            else:
+                factor = 0
+        self.MeshObject.ViewObject.applyDisplacement(factor)
+
     def show_displacement(self, checked):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         FreeCAD.FEM_dialog["show_disp"] = checked
-        factor = 0.0
-        if checked:
-            factor = self.form.hsb_displacement_factor.value()
+        if "result_object" in FreeCAD.FEM_dialog:
+            if FreeCAD.FEM_dialog["result_object"] != self.result_object:
+                self.update_displacement(reset=True)
+        FreeCAD.FEM_dialog["result_object"] = self.result_object
         self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
-        self.MeshObject.ViewObject.applyDisplacement(factor)
+        self.update_displacement()
         QtGui.qApp.restoreOverrideCursor()
 
     def hsb_disp_factor_changed(self, value):
-        self.MeshObject.ViewObject.applyDisplacement(value)
         self.form.sb_displacement_factor.setValue(value)
+        self.update_displacement()
 
     def sb_disp_factor_max_changed(self, value):
         FreeCAD.FEM_dialog["disp_factor_max"] = value
@@ -659,5 +698,6 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
     FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
     FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
+    FreeCADGui.addCommand('Fem_Frequency_Analysis', _CommandFrequencyAnalysis())
     FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
     FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())

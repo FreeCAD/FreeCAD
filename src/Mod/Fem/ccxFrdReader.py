@@ -34,21 +34,21 @@ if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
 
 
-displacement = []
-
-
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
 def readResult(frd_input):
     frd_file = pyopen(frd_input, "r")
     nodes = {}
-    disp = {}
-    stress = {}
     elements = {}
+    results = []
+    mode_results = {}
+    mode_disp = {}
+    mode_stress = {}
 
-    disp_found = False
+    mode_disp_found = False
     nodes_found = False
-    stress_found = False
+    mode_stress_found = False
     elements_found = False
+    eigenmode = 0
     elem = -1
     elemType = 0
 
@@ -83,21 +83,23 @@ def readResult(frd_input):
             node_id_8 = int(line[83:93])
             node_id_10 = int(line[93:103])
             elements[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10)
+        #Check if we found new eigenmode
+        if line[5:10] == "PMODE":
+            eigenmode = int(line[30:36])
         #Check if we found displacement section
         if line[5:9] == "DISP":
-            disp_found = True
+            mode_disp_found = True
         #we found a displacement line in the frd file
-        if disp_found and (line[1:3] == "-1"):
+        if mode_disp_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
-            disp_x = float(line[13:25])
-            disp_y = float(line[25:37])
-            disp_z = float(line[37:49])
-            disp[elem] = FreeCAD.Vector(disp_x, disp_y, disp_z)
-            displacement.append((disp_x, disp_y, disp_z))
+            mode_disp_x = float(line[13:25])
+            mode_disp_y = float(line[25:37])
+            mode_disp_z = float(line[37:49])
+            mode_disp[elem] = FreeCAD.Vector(mode_disp_x, mode_disp_y, mode_disp_z)
         if line[5:11] == "STRESS":
-            stress_found = True
+            mode_stress_found = True
         #we found a displacement line in the frd file
-        if stress_found and (line[1:3] == "-1"):
+        if mode_stress_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             stress_1 = float(line[13:25])
             stress_2 = float(line[25:37])
@@ -105,26 +107,50 @@ def readResult(frd_input):
             stress_4 = float(line[49:61])
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
-            stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
+            mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
         #Check for the end of a section
         if line[1:3] == "-3":
-            #the section with the displacements and the nodes ended
-            disp_found = False
+            if mode_disp_found:
+                mode_disp_found = False
+
+            if mode_stress_found:
+                mode_stress_found = False
+
+            if mode_disp and mode_stress:
+                mode_results = {}
+                mode_results['number'] = eigenmode
+                mode_results['disp'] = mode_disp
+                mode_results['stress'] = mode_stress
+                results.append(mode_results)
+                mode_disp = {}
+                mode_stress = {}
+                eigenmode = 0
             nodes_found = False
-            stress_found = False
             elements_found = False
 
     frd_file.close()
-    FreeCAD.Console.PrintLog('Read CalculiX result: {} Nodes, {} Displacements and {} Stress values\n'.format(len(nodes), len(disp), len(stress)))
+    return {'Nodes': nodes, 'Tet10Elem': elements, 'Results': results}
 
-    return {'Nodes': nodes, 'Tet10Elem': elements, 'Displacement': disp, 'Stress': stress}
+
+def calculate_von_mises(i):
+    # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
+    s11 = i[0]
+    s22 = i[1]
+    s33 = i[2]
+    s12 = i[3]
+    s23 = i[4]
+    s31 = i[5]
+    s11s22 = pow(s11 - s22, 2)
+    s22s33 = pow(s22 - s33, 2)
+    s33s11 = pow(s33 - s11, 2)
+    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) * pow(s31, 2))
+    vm_stress = sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31))
+    return vm_stress
 
 
 def importFrd(filename, Analysis=None):
-    mstress = []
-    global displacement
-    displacement = []
     m = readResult(filename)
+    result_set_number = len(m['Results'])
     MeshObject = None
     if(len(m) > 0):
         import Fem
@@ -134,11 +160,23 @@ def importFrd(filename, Analysis=None):
             AnalysisObject.Label = AnalysisName
         else:
             AnalysisObject = Analysis
-        results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', 'Results')
+
+        if 'Nodes' in m:
+            positions = []
+            for k, v in m['Nodes'].iteritems():
+                positions.append(v)
+            p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+            p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+
+            x_span = abs(p_x_max - p_x_min)
+            y_span = abs(p_y_max - p_y_min)
+            z_span = abs(p_z_max - p_z_min)
+            span = max(x_span, y_span, z_span)
 
         if ('Tet10Elem' in m) and ('Nodes' in m) and (not Analysis):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
+
             for i in nds:
                 n = nds[i]
                 mesh.addNode(n[0], n[1], n[2], i)
@@ -151,58 +189,74 @@ def importFrd(filename, Analysis=None):
                 MeshObject.FemMesh = mesh
                 AnalysisObject.Member = AnalysisObject.Member + [MeshObject]
 
-        if 'Displacement' in m:
-            disp = m['Displacement']
+        for result_set in m['Results']:
+            eigenmode_number = result_set['number']
+            if result_set_number > 1:
+                results_name = 'Mode_' + str(eigenmode_number) + '_results'
+            else:
+                results_name = 'Results'
+            results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
+
+            disp = result_set['disp']
+            l = len(disp)
+            displacement = []
+            for k, v in disp.iteritems():
+                displacement.append(v)
+
+            x_max, y_max, z_max = map(max, zip(*displacement))
+            if result_set_number > 1:
+                max_disp = max(x_max, y_max, z_max)
+                # Allow for max displacement to be 0.1% of the span
+                # FIXME - add to Preferences
+                max_allowed_disp = 0.001 * span
+                scale = max_allowed_disp / max_disp
+            else:
+                scale = 1.0
+
             if len(disp) > 0:
-                results.DisplacementVectors = disp.values()
+                results.DisplacementVectors = map((lambda x: x * scale), disp.values())
                 results.ElementNumbers = disp.keys()
                 if(MeshObject):
                     results.Mesh = MeshObject
-        if 'Stress' in m:
-            stress = m['Stress']
+
+            stress = result_set['stress']
             if len(stress) > 0:
+                mstress = []
                 for i in stress.values():
-                    # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
-                    s11 = i[0]
-                    s22 = i[1]
-                    s33 = i[2]
-                    s12 = i[3]
-                    s23 = i[4]
-                    s31 = i[5]
-                    s11s22 = pow(s11 - s22, 2)
-                    s22s33 = pow(s22 - s33, 2)
-                    s33s11 = pow(s33 - s11, 2)
-                    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) * pow(s31, 2))
-                    mstress.append(sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31)))
+                    mstress.append(calculate_von_mises(i))
+                if result_set_number > 1:
+                    results.StressValues = map((lambda x: x * scale), mstress)
+                else:
+                    results.StressValues = mstress
 
-                results.StressValues = mstress
-                if (results.ElementNumbers != 0 and results.ElementNumbers != stress.keys()):
-                    print "Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement"
-                    results.ElementNumbers = stress.keys()
-                if(MeshObject):
-                    results.Mesh = MeshObject
+            if (results.ElementNumbers != 0 and results.ElementNumbers != stress.keys()):
+                print ("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
+                       .format(results.ElementNumbers, len(results.StressValues)))
+                results.ElementNumbers = stress.keys()
 
-        l = len(displacement)
-        x_max, y_max, z_max = map(max, zip(*displacement))
-        x_min, y_min, z_min = map(min, zip(*displacement))
-        sum_list = map(sum, zip(*displacement))
-        x_avg, y_avg, z_avg = [i / l for i in sum_list]
-        s_max = max(mstress)
-        s_min = min(mstress)
-        s_avg = sum(mstress) / l
-        disp_abs = []
-        for d in displacement:
-            disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-        results.DisplacementLengths = disp_abs
-        a_max = max(disp_abs)
-        a_min = min(disp_abs)
-        a_avg = sum(disp_abs) / l
-        results.Stats = [x_min, x_avg, x_max,
-                         y_min, y_avg, y_max,
-                         z_min, z_avg, z_max,
-                         a_min, a_avg, a_max,
-                         s_min, s_avg, s_max]
-        AnalysisObject.Member = AnalysisObject.Member + [results]
+            x_min, y_min, z_min = map(min, zip(*displacement))
+            sum_list = map(sum, zip(*displacement))
+            x_avg, y_avg, z_avg = [i / l for i in sum_list]
+
+            s_max = max(results.StressValues)
+            s_min = min(results.StressValues)
+            s_avg = sum(results.StressValues) / l
+
+            disp_abs = []
+            for d in displacement:
+                disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+            results.DisplacementLengths = disp_abs
+
+            a_max = max(disp_abs)
+            a_min = min(disp_abs)
+            a_avg = sum(disp_abs) / l
+
+            results.Stats = [x_min, x_avg, x_max,
+                             y_min, y_avg, y_max,
+                             z_min, z_avg, z_max,
+                             a_min, a_avg, a_max,
+                             s_min, s_avg, s_max]
+            AnalysisObject.Member = AnalysisObject.Member + [results]
 
         if(FreeCAD.GuiUp):
             import FemGui

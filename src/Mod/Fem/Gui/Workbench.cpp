@@ -70,6 +70,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Separator"
          << "Fem_MechanicalJobControl"
          << "Fem_Quick_Analysis"
+         << "Fem_Frequency_Analysis"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
     return root;
@@ -97,6 +98,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "Separator"
          << "Fem_MechanicalJobControl"
          << "Fem_Quick_Analysis"
+         << "Fem_Frequency_Analysis"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
 
