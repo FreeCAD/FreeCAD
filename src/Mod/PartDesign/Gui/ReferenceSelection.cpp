@@ -31,6 +31,8 @@
 #endif
 
 #include <App/OriginFeature.h>
+#include <App/GeoFeatureGroup.h>
+#include <App/Origin.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -41,6 +43,9 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+
+#include "Utils.h"
+
 #include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
@@ -50,26 +55,62 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
-    PartDesign::Body* ActivePartObject = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-    App::Part*        activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
+    // TODO review this function (2015-09-04, Fat-Zer)
+    PartDesign::Body *body;
+    App::GeoFeatureGroup *geoGroup;
+
+    if ( support ) {
+        body = PartDesign::Body::findBodyOf (support);
+    } else {
+        body = PartDesignGui::getBody (false);
+    }
+
+    if ( body ) { // Search for Part of the body
+        geoGroup = App::GeoFeatureGroup::getGroupOfObject ( body ) ;
+    } else if ( support ) { // if no body search part for support
+        geoGroup = App::GeoFeatureGroup::getGroupOfObject ( support ) ;
+    } else { // fallback to active part
+        geoGroup = PartDesignGui::getActivePart ( );
+    }
 
     // Don't allow selection in other document
-    if ((support != NULL) && (pDoc != support->getDocument()))
+    if ( support && pDoc != support->getDocument() ) {
         return false;
+    }
 
-    if (plane && (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())))
-        // Note: It is assumed that a Part has exactly 3 App::Plane objects at the root of the feature tree
-        return true;
+    // Enable selection from origin of current part/
+    if ( pObj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ) {
+        bool fits = false;
+        if ( plane && pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ) {
+            fits = true;
+        } else if ( edge && pObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId()) ) {
+            fits = true;
+        }
 
-    if (edge && (pObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())))
-        return true;
+        if (fits) { // check that it is actually belongs to the choosen body or part
+            try { // here are some throwers
+                if (body) {
+                    if (body->getOrigin ()->hasObject (pObj) ) {
+                        return true;
+                    }
+                } else if (geoGroup && geoGroup->isDerivedFrom ( App::OriginGroup::getClassTypeId () ) ) {
+                    if ( static_cast<App::OriginGroup *>(geoGroup)->getOrigin ()->hasObject (pObj) ) {
+                        return true;
+                    }
+                }
+            } catch (const Base::Exception)
+            { }
+        }
+        return false; // The Plane/Axis doesn't fits our needs
+    }
 
     if (pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        // Allow selecting Part::Datum features from the active Body
-        if (ActivePartObject == NULL)
+
+        if (!body) { // Allow selecting Part::Datum features from the active Body
             return false;
-        if (!allowOtherBody && !ActivePartObject->hasFeature(pObj))
+        } else if (!allowOtherBody && !body->hasFeature(pObj)) {
             return false;
+        }
 
         if (plane && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
             return true;

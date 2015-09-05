@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <Inventor/nodes/SoGroup.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <Base/Console.h>
@@ -51,19 +52,18 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
 
 ViewProviderBody::ViewProviderBody()
 {
-    pcBodyChildren = new SoGroup();
+    pcBodyChildren = new SoSeparator();
     pcBodyChildren->ref();
-    pcBodyTip     = new SoGroup();
+    pcBodyTip = new SoSeparator();
     pcBodyTip->ref();
+
     sPixmap = "PartDesign_Body_Tree.svg";
 }
 
 ViewProviderBody::~ViewProviderBody()
 {
-    pcBodyChildren->unref();
-    pcBodyChildren = 0;
-    pcBodyTip->unref();
-    pcBodyTip = 0;
+    pcBodyChildren->unref ();
+    pcBodyTip->unref ();
 }
 
 
@@ -71,37 +71,38 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderPart::attach(pcFeat);
+    PartDesign::Body *body = static_cast <PartDesign::Body *> (pcFeat);
 
-    // TODO fixup the "Body" display mode (2015-08-07, Fat-Zer)
-    // putting all together with the switch
-    addDisplayMaskMode(pcBodyTip, "Body");
+    App::DocumentObject *tip = body->Tip.getValue ();
+
+    if (tip) {
+        Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider (tip);
+        if (vp) {
+            pcBodyTip->addChild ( vp->getRoot () );
+        }
+    }
+
     addDisplayMaskMode(pcBodyChildren, "Through");
+    addDisplayMaskMode(pcBodyTip, "Tip");
 }
+
+// TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
+// TODO differnt icon in tree if mode is Through (2015-09-05, Fat-Zer)
+// TODO drag&drop (2015-09-05, Fat-Zer)
 
 void ViewProviderBody::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("Body",ModeName)==0 )
-        setDisplayMaskMode("Body");
-    if ( strcmp("Main",ModeName)==0 )
-        setDisplayMaskMode("Main");
     if ( strcmp("Through",ModeName)==0 )
         setDisplayMaskMode("Through");
-
+    if ( strcmp("Tip",ModeName)==0 )
+        setDisplayMaskMode("Tip");
+    // TODO When switching into Tip mode switch it's visability to true (2015-09-05, Fat-Zer)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderBody::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
-
-    // add your own modes
-    StrList.push_back("Through");
-    StrList.push_back("Body");
-
-    return StrList;
+std::vector<std::string> ViewProviderBody::getDisplayModes(void) const {
+    return {"Through" , "Tip"};
 }
-
 
 
 bool ViewProviderBody::doubleClicked(void)
@@ -121,35 +122,35 @@ bool ViewProviderBody::doubleClicked(void)
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 {
-    PartDesign::Body* bodyObj = static_cast<PartDesign::Body*>(getObject());
-    const std::vector<App::DocumentObject*> &Model = bodyObj->Model.getValues();
-    std::set<App::DocumentObject*> OutSet;
+    PartDesign::Body* body= static_cast<PartDesign::Body*> ( getObject () );
+    const std::vector<App::DocumentObject*> &model = body->Model.getValues ();
+    std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
 
     // search for objects handled (claimed) by the features
-    for(std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it){
-        if (*it == NULL) continue;
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(*it);
-        if (vp == NULL) continue;
-        std::vector<App::DocumentObject*> children = vp->claimChildren();
-        for (std::vector<App::DocumentObject*>::const_iterator ch = children.begin(); ch != children.end(); ch++) {
-            if ((*ch) != NULL)
-                OutSet.insert(*ch);
-        }
+    for( auto obj: model){
+        if (!obj) { continue; }
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
+        if (!vp) { continue; }
+
+        auto children = vp->claimChildren();
+        std::remove_copy ( children.begin (), children.end (), std::inserter (outSet, outSet.begin () ), nullptr);
     }
 
     // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
     std::vector<App::DocumentObject*> Result;
 
-    // Clame for the base feature first
-    if (bodyObj->BaseFeature.getValue()) {
-        Result.push_back (bodyObj->BaseFeature.getValue());
+    if (body->Origin.getValue()) { // Clame for the Origin
+        Result.push_back (body->Origin.getValue());
+    }
+    if (body->BaseFeature.getValue()) { // Clame for the base feature
+        Result.push_back (body->BaseFeature.getValue());
     }
 
-    // return the rest as claim set of the Body
-    for (std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it) {
-        if (OutSet.find(*it) == OutSet.end())
-            Result.push_back(*it);
-    }
+    // claim for rest content not claimed by any other features
+    std::remove_copy_if (model.begin(), model.end(), std::back_inserter (Result),
+            [outSet] (App::DocumentObject* obj) {
+                return outSet.find (obj) != outSet.end();
+            } );
 
     return Result;
 }
@@ -160,14 +161,21 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
     const std::vector<App::DocumentObject*> & features = body->Model.getValues();
+    App::DocumentObject *originObj   = body->Origin.getValue();
+    App::DocumentObject *baseFeature = body->BaseFeature.getValue();
 
     std::vector<App::DocumentObject*> rv;
 
-    rv.push_back( body->BaseFeature.getValue() );
-    rv.insert( rv.end(), features.begin(), features.end());
+    if (body->Origin.getValue()) { // Add origin
+        rv.push_back (body->Origin.getValue());
+    }
+    if ( body->BaseFeature.getValue() ) { // Add Base Feature
+        rv.push_back (body->BaseFeature.getValue());
+    }
+
+    std::copy (features.begin(), features.end(), std::back_inserter (rv) );
     // TODO Check what will happen if BaseFature will be shared by severral bodies (2015-08-04, Fat-Zer)
     return rv;
-
 }
 
 //void ViewProviderBody::updateTree()
@@ -194,6 +202,7 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 //}
 
 bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
+    // TODO May be do it conditionally? (2015-09-05, Fat-Zer)
     Gui::Command::doCommand(Gui::Command::Doc,
             "App.getDocument(\"%s\").getObject(\"%s\").removeModelFromDocument()"
             ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
@@ -202,18 +211,34 @@ bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
 
 void ViewProviderBody::updateData(const App::Property* prop)
 {
-    //Base::Console().Error("ViewProviderBody::updateData for %s\n", getObject()->getNameInDocument());
-    //if (ActiveGuiDoc == NULL)
-    //    // PartDesign workbench not active
-    //    return PartGui::ViewProviderPart::updateData(prop);
 
-    //if ((/*prop->getTypeId() == App::PropertyBool::getClassTypeId() && strcmp(prop->getName(),"IsActive") == 0) ||*/
-    //    (prop->getTypeId() == App::PropertyLink::getClassTypeId() && strcmp(prop->getName(),"Tip") == 0) ||
-    //    (prop->getTypeId() == App::PropertyLinkList::getClassTypeId() && strcmp(prop->getName(),"Model") == 0))
-    //   // updateTree();
-
-    // Update the visual size of datums
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+
+    if (prop == &body->Model || prop == &body->BaseFeature) {
+        // update sizes of origins and datums
+        // TODO Write this (2015-09-05, Fat-Zer)
+    } else if (prop == &body->Tip) {
+        // Adjust the internals to display
+        App::DocumentObject *tip = body->Tip.getValue ();
+
+        if (tip) {
+            Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider (tip);
+            if (vp) {
+                SoNode *tipRoot = vp->getRoot ();
+                if ( pcBodyTip->findChild (tipRoot) == -1 ) {
+                    pcBodyTip->removeAllChildren ();
+                    pcBodyTip->addChild ( tipRoot );
+                }
+                // Else our tip is already shown
+            } else {
+                pcBodyTip->removeAllChildren ();
+            }
+        } else {
+            pcBodyTip->removeAllChildren ();
+        }
+    }
+
+    // TODO rewrite this, it's quite a hacky way of notifying (2015-09-05, Fat-Zer)
     std::vector<App::DocumentObject*> features = body->Model.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
         App::PropertyPlacement* plm = NULL;

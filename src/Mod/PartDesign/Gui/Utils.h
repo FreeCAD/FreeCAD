@@ -50,6 +50,7 @@ PartDesign::Body *getBody(bool messageIfNot);
  */
 PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot);
 App::Part        *getPartFor(const App::DocumentObject*, bool messageIfNot);
+App::Part        *getActivePart();
 
 /// Fix sketch support after moving a free sketch into a body
 void fixSketchSupport(Sketcher::SketchObject* sketch);

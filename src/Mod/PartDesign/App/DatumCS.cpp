@@ -24,12 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #endif
-
+// TODO Cleanup headers (2015-09-04, Fat-Zer)
 #include "DatumCS.h"
 #include "DatumPoint.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
-#include <App/Part.h>
 #include <Base/Exception.h>
 #include <gp_Pln.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>

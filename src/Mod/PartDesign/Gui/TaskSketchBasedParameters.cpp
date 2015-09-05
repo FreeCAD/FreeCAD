@@ -33,7 +33,6 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <Gui/Application.h>

@@ -57,9 +57,8 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <Standard_Version.hxx>
 #endif
-
+// TODO Cleanup headers (2015-09-04, Fat-Zer)
 #include <QObject>
-#include <App/Part.h>
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"

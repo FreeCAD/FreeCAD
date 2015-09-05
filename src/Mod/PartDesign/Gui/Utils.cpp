@@ -99,6 +99,15 @@ PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
     return nullptr;
 }
 
+App::Part* getActivePart() {
+    Gui::MDIView *activeView = Gui::Application::Instance->activeView();
+    if ( activeView ) {
+        return activeView->getActiveObject<App::Part*> (PARTKEY);
+    } else {
+        return 0;
+    }
+}
+
 App::Part* getPartFor(const App::DocumentObject* obj, bool messageIfNot) {
 
     if(!obj)
@@ -108,7 +117,7 @@ App::Part* getPartFor(const App::DocumentObject* obj, bool messageIfNot) {
     if(body)
         obj = body;
 
-    //get the part every body should belong to
+    //get the part
     for(App::Part* p : obj->getDocument()->getObjectsOfType<App::Part>()) {
         if(p->hasObject(obj)) {
             return p;
@@ -149,11 +158,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     }
 
     // Get the Origin for the body
-    App::OriginGroup *grp = App::OriginGroup::getGroupOfObject (body);
-    if (!grp) {
-        throw  Base::Exception ("Coudn't find group for body");
-    }
-    App::Origin *origin = grp->getOrigin (); // May throw by itself
+    App::Origin *origin = body->getOrigin (); // May throw by itself
 
     Base::Placement plm = sketch->Placement.getValue();
     Base::Vector3d pnt = plm.getPosition();

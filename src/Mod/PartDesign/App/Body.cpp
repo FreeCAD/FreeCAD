@@ -22,39 +22,39 @@
 
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+#include <boost/bind.hpp>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Placement.h>
 
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/Origin.h>
+
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/PartFeature.h>
+
+
 #include "Feature.h"
-#include "Body.h"
-#include "BodyPy.h"
 #include "FeatureSketchBased.h"
 #include "FeatureTransformed.h"
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/PartFeature.h>
-
-#include <boost/bind.hpp>
+#include "Body.h"
+#include "BodyPy.h"
 
 using namespace PartDesign;
-
-namespace PartDesign {
 
 
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
-Body::Body()
-{
-    Placement.StatusBits.set(3, true);
-    //ADD_PROPERTY(IsActive,(0));
+Body::Body() {
+    ADD_PROPERTY_TYPE (Origin, (0), 0, App::Prop_Hidden, "Origin linked to the body" );
 }
 
 /*
@@ -446,15 +446,6 @@ Base::BoundBox3d Body::getBoundBox()
     return result;
 }
 
-PyObject *Body::getPyObject(void)
-{
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new BodyPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject);
-}
-
 void Body::onSettingDocument() {
 
     if(connection.connected())
@@ -479,11 +470,58 @@ void Body::onChanged (const App::Property* prop) {
             assert ( nextSolid->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
             static_cast<PartDesign::Feature*>(nextSolid)->BaseFeature.setValue( baseFeature );
         }
-
     }
 
     Part::BodyBase::onChanged ( prop );
 }
 
+App::Origin *Body::getOrigin () const {
+    App::DocumentObject *originObj = Origin.getValue ();
 
-} /* PartDesign */
+    if ( !originObj ) {
+        std::stringstream err;
+        err << "Can't find Origin for \"" << getNameInDocument () << "\"";
+        throw Base::Exception ( err.str().c_str () );
+
+    } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
+        std::stringstream err;
+        err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
+            << ") linked to the Origin of \"" << getNameInDocument () << "\"";
+        throw Base::Exception ( err.str().c_str () );
+    } else {
+            return static_cast<App::Origin *> ( originObj );
+    }
+}
+
+void Body::setupObject () {
+    // NOTE: the code shared with App::OriginGroup
+    App::Document *doc = getDocument ();
+
+    std::string objName = std::string ( getNameInDocument() ).append ( "Origin" );
+
+    App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
+
+    assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
+    Origin.setValue ( originObj );
+
+    Part::BodyBase::setupObject ();
+}
+
+void Body::unsetupObject () {
+    App::DocumentObject *origin = Origin.getValue ();
+
+    if (origin && !origin->isDeleting ()) {
+        origin->getDocument ()->remObject (origin->getNameInDocument());
+    }
+
+    Part::BodyBase::unsetupObject ();
+}
+
+PyObject *Body::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new BodyPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}

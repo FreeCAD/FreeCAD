@@ -51,7 +51,7 @@
 # include <GeomAPI_IntCS.hxx>
 #endif
 
-#include <App/Part.h>
+#include <App/DocumentObjectGroup.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
@@ -311,11 +311,11 @@ Base::BoundBox3d ViewProviderDatum::getRelevantExtents()
     if (body != NULL)
         bbox = body->getBoundBox();
     else {
-        App::Part* part = getPartFor(this->getObject(),false);
+        App::DocumentObjectGroup* group =  App::DocumentObjectGroup::getGroupOfObject(this->getObject());
         std::vector<App::DocumentObject*> objs;
 
-        if(part)
-            objs = part->getObjectsOfType(Part::Feature::getClassTypeId());
+        if(group)
+            objs = group->getObjectsOfType(Part::Feature::getClassTypeId());
         else
             objs = this->getObject()->getDocument()->getObjectsOfType(Part::Feature::getClassTypeId());
 

@@ -41,7 +41,6 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
-#include <App/Part.h>
 
 using namespace PartDesign;
 
@@ -90,19 +89,6 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     if(!baseBody)
          return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
 
-    // TODO: share the code snippet with PartDesignGui::getPartFor()
-    //get the part every body should belong to
-    App::Part* part = NULL;
-    for(App::Part* p : this->getDocument()->getObjectsOfType<App::Part>()) {
-        if(p->hasObject(baseBody)) {
-            part = p;
-            break;
-        }            
-    }
-    if(!part)
-         return new App::DocumentObjectExecReturn("Cannot do boolean on body which is not in a part");
-
-    
     // TODO: Why is Feature::getLocation() protected?
     Base::Placement place = baseBody->Placement.getValue();
     Base::Rotation rot(place.getRotation());
@@ -125,8 +111,6 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         // Extract the body shape. Its important to get the actual feature that provides the last solid in the body
         // so that the placement will be right
         PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-        if(!part->hasObject(body))
-            return new App::DocumentObjectExecReturn("Cannot do boolean on bodies of different parts");
         
         TopoDS_Shape shape = body->Shape.getValue();
 

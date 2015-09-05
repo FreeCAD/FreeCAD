@@ -30,7 +30,6 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <Gui/Application.h>
@@ -43,6 +42,7 @@
 #include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/FeatureMirrored.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ReferenceSelection.h"
@@ -140,10 +140,10 @@ void TaskMirroredParameters::setupUI()
     updateUI();
 
     //show the parts coordinate system axis for selection
-    App::Part* part = getPartFor(getObject(), false);
-    if(part) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
+    if(body) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
@@ -267,10 +267,10 @@ void TaskMirroredParameters::apply()
 TaskMirroredParameters::~TaskMirroredParameters()
 {
     //hide the parts coordinate system axis for selection
-    App::Part* part = getPartFor(getObject(), false);
-    if(part) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
+    if ( body ) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();

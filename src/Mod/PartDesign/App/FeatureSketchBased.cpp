@@ -71,7 +71,6 @@
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/OriginFeature.h>
-#include <App/Part.h>
 #include <Mod/Part/App/modelRefine.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"

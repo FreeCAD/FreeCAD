@@ -31,7 +31,6 @@
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <Gui/Application.h>
@@ -46,6 +45,7 @@
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/Body.h>
 
 #include "ReferenceSelection.h"
 #include "TaskMultiTransformParameters.h"
@@ -150,19 +150,20 @@ void TaskPolarPatternParameters::setupUI()
     ui->checkReverse->setEnabled(true);
     ui->polarAngle->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
-    
+
     App::DocumentObject* sketch = getSketchObject();
     if (!(sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
         sketch = 0;
     this->axesLinks.setCombo(*(ui->comboAxis));
     this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
     updateUI();
-    
+
     //show the parts coordinate system axis for selection
-    App::Part* part = getPartFor(getObject(), false);
-    if(part) {        
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
+
+    if(body) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
@@ -327,7 +328,7 @@ void TaskPolarPatternParameters::onFeatureDeleted(void)
 }
 
 void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
-{    
+{
     const App::PropertyLinkSub &lnk = axesLinks.getCurrentLink();
     obj = lnk.getValue();
     sub = lnk.getSubValues();
@@ -352,10 +353,10 @@ const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 TaskPolarPatternParameters::~TaskPolarPatternParameters()
 {
     //hide the parts coordinate system axis for selection
-    App::Part* part = getPartFor(getObject(), false);
-    if(part) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
+    if ( body ) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility ();
@@ -363,7 +364,7 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
-    
+
     delete ui;
     if (proxy)
         delete proxy;

@@ -157,30 +157,30 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     // first check if Part is already created:
-    App::Part *actPart = PartDesignGui::assertActivePart ();
-    if (!actPart) {
-        return;
-    }
-
-    std::string PartName = actPart->getNameInDocument();
+    App::Part *actPart = PartDesignGui::getActivePart ();
 
     openCommand("Add a Body");
 
-    std::string FeatName = getUniqueObjectName("Body");
+    std::string bodyName = getUniqueObjectName("Body");
 
     // add the Body feature itself, and make it active
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str());
     if (baseFeature) {
         doCommand(Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
-                FeatName.c_str(), baseFeature->getNameInDocument());
+                bodyName.c_str(), baseFeature->getNameInDocument());
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, FeatName.c_str());
+    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", 
+            PDBODYKEY, bodyName.c_str());
 
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
-    doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",PartName.c_str(),FeatName.c_str());
+    doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", bodyName.c_str());
+    if (actPart) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
+                 actPart->getNameInDocument(), bodyName.c_str());
+    }
+
 
     updateActive();
 }
@@ -307,6 +307,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         // TODO Align visability (2015-08-17, Fat-Zer)
     } /* for */
 
+    // TODO make it work without parts (2015-09-04, Fat-Zer)
     // add a part if there is no active yet
     App::Part *actPart = PartDesignGui::assertActivePart ();
 

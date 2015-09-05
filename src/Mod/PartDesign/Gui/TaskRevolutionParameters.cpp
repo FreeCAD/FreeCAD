@@ -30,7 +30,6 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <Gui/Application.h>
@@ -129,19 +128,19 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     ui->checkBoxReversed->blockSignals(false);
 
     setFocus ();
-    
+
     //show the parts coordinate system axis for selection
-    App::Part* part = getPartFor(vp->getObject(), false);
-    if(part) {        
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject () );
+    if(body) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
         } catch (const Base::Exception &ex) {
             Base::Console().Error ("%s\n", ex.what () );
         }
-     } 
+     }
 }
 
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
@@ -177,11 +176,11 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 
         //add part axes
         App::DocumentObject* obj = vp->getObject();
-        App::Part* part = getPartFor(obj, false);
 
-        if (part) {
+        PartDesign::Body * body = PartDesign::Body::findBodyOf ( obj );
+        if (body) {
             try {
-                App::Origin* orig = part->getOrigin();
+                App::Origin* orig = body->getOrigin();
                 addAxisToCombo(orig->getX(),"",tr("Base X axis"));
                 addAxisToCombo(orig->getY(),"",tr("Base Y axis"));
                 addAxisToCombo(orig->getZ(),"",tr("Base Z axis"));
@@ -360,10 +359,10 @@ bool   TaskRevolutionParameters::getReversed(void) const
 TaskRevolutionParameters::~TaskRevolutionParameters()
 {
     //hide the parts coordinate system axis for selection
-    App::Part* part = getPartFor(vp->getObject(), false);
-    if(part) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject() );
+    if ( body ) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();

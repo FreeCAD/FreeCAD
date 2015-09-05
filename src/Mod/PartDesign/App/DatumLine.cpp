@@ -60,9 +60,8 @@
 # include <Standard_Version.hxx>
 #endif
 
+// TODO Cleanup Headers (2015-09-04, Fat-Zer)
 #include <QObject>
-#include <App/OriginFeature.h>
-#include <App/Part.h>
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
