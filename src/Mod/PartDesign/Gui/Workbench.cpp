@@ -28,7 +28,6 @@
 # include <QMessageBox>
 #endif
 
-#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -67,36 +66,36 @@ Workbench::~Workbench() {
 
 void Workbench::_switchToDocument(const App::Document* doc)
 {
-    if (doc == NULL) return;
-
-    PartDesign::Body* activeBody = NULL;
-    std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-
-    // No tip, so build up structure or migrate
-    if (!doc->Tip.getValue())
-    {
-        ;/*if (doc->countObjects() == 0){
-            buildDefaultPartAndBody(doc);
-            activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-            assert(activeBody);
-        } else {
-            // empty document with no tip, so do migration
-            _doMigration(doc);
-                        activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-                        assert(activeBody);
-                }
-                */
-    }
-    else
-    {
-      App::Part *docPart = dynamic_cast<App::Part *>(doc->Tip.getValue());
-      if (docPart) {
-          App::Part *viewPart = Gui::Application::Instance->activeView()->getActiveObject<App::Part *>("Part");
-          if (viewPart != docPart)
-            Gui::Application::Instance->activeView()->setActiveObject(docPart, "Part");
-          //if (docPart->countObjectsOfType(PartDesign::Body::getClassTypeId()) < 1)
-          //  setUpPart(docPart);
-// TODO Commented out for thurther remove or rewrite  (2015-08-27, Fat-Zer)
+// TODO Commented out for thurther remove or rewrite  (2015-09-04, Fat-Zer)
+//    if (doc == NULL) return;
+//
+//    PartDesign::Body* activeBody = NULL;
+//    std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
+//
+//    // No tip, so build up structure or migrate
+//    if (!doc->Tip.getValue())
+//    {
+//        ;/*if (doc->countObjects() == 0){
+//            buildDefaultPartAndBody(doc);
+//            activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+//            assert(activeBody);
+//        } else {
+//            // empty document with no tip, so do migration
+//            _doMigration(doc);
+//                        activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+//                        assert(activeBody);
+//                }
+//                */
+//    }
+//    else
+//    {
+//      App::Part *docPart = dynamic_cast<App::Part *>(doc->Tip.getValue());
+//      if (docPart) {
+//          App::Part *viewPart = Gui::Application::Instance->activeView()->getActiveObject<App::Part *>("Part");
+//          if (viewPart != docPart)
+//            Gui::Application::Instance->activeView()->setActiveObject(docPart, "Part");
+//          //if (docPart->countObjectsOfType(PartDesign::Body::getClassTypeId()) < 1)
+//          //  setUpPart(docPart);
 //          PartDesign::Body *tempBody = dynamic_cast<PartDesign::Body *> (docPart->getObjectsOfType(PartDesign::Body::getClassTypeId()).front());
 //          if (tempBody) {
 //              PartDesign::Body *viewBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
@@ -109,15 +108,15 @@ void Workbench::_switchToDocument(const App::Document* doc)
 //              if (activeBody != viewBody)
 //                Gui::Application::Instance->activeView()->setActiveObject(activeBody, PDBODYKEY);
 //          }
-      }
-    }
-
-    /*if (activeBody == NULL) {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
-            QObject::tr("No body was found in this document, and none could be created. Please report this bug."
-                        "We recommend you do not use this document with the PartDesign workbench until the bug has been fixed."
-                        ));
-    }*/
+//      }
+//    }
+//
+//    /*if (activeBody == NULL) {
+//        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
+//            QObject::tr("No body was found in this document, and none could be created. Please report this bug."
+//                        "We recommend you do not use this document with the PartDesign workbench until the bug has been fixed."
+//                        ));
+//    }*/
 }
 
 void Workbench::slotActiveDocument(const Gui::Document& Doc)

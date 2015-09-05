@@ -26,13 +26,15 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 
+class SoGroup;
+class SoSeparator;
 
 namespace PartDesignGui {
 
 /** ViewProvider of the Body feature
  *  This class manage the visual apperance of the features in the
- *  Body feature. That mean while editing only the tip feature is
- *  visible. If the Body is not active it shows only the result shape (tip).
+ *  Body feature. That mean while editing all visible features are shown.
+ *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
 class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart
@@ -63,9 +65,9 @@ public:
     void updateData(const App::Property* prop);
 
 private:
-    /// group used to store children collected by claimChildren3D()
+    /// group used to store children collected by claimChildren3D() in the through (edit) mode.
     SoGroup *pcBodyChildren;
-    /// group used to show the tip element in "edit" mode
+    /// The tip node used to display the Body when it doesn't edited.
     SoGroup *pcBodyTip;
 
     /// Update the children's highlighting

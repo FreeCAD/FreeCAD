@@ -29,6 +29,10 @@
 
 #include <boost/signals.hpp>
 
+namespace App {
+    class Origin;
+}
+
 namespace PartDesign
 {
 
@@ -50,6 +54,7 @@ public:
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderBody";
@@ -58,9 +63,6 @@ public:
 
     /// Return the previous feature
     App::DocumentObject* getPrevFeature(App::DocumentObject *start = NULL) const;
-
-    // Return the shape of the feature preceding this feature
-    //const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
     /**
      * Add the feature into the body at the current insert point.
@@ -83,6 +85,9 @@ public:
 
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
+
+    /// Delets all the objects linked to the model.
+    void removeModelFromDocument();
 
     /**
      * Checks if the given document object lays after the current insert point
@@ -112,13 +117,16 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
-    /// Delets all the objects linked to the model.
-    void removeModelFromDocument();
-
     /// Return the bounding box of the Tip Shape, taking into account datum features
     Base::BoundBox3d getBoundBox();
 
+    /// Returns the origin link or throws an exception
+    App::Origin *getOrigin () const;
+
     PyObject *getPyObject(void);
+
+    /// Origin linked to the property, please use getOrigin () to access it
+    App::PropertyLink Origin;
 
 protected:
     virtual void onSettingDocument();
@@ -138,8 +146,12 @@ protected:
       */
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
 
+    /// Creates the corresponding Origin object
+    virtual void setupObject ();
+    /// Removes all planes and axis if they are still linked to the document
+    virtual void unsetupObject ();
+
 private:
-    App::DocumentObject* rememberTip;
     boost::signals::scoped_connection connection;
 };
 

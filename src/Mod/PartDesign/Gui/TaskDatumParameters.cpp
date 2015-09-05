@@ -36,7 +36,6 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
-#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -211,10 +210,10 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     updateListOfModes(eMapMode(pcDatum->MapMode.getValue()));
 
     //temporary show coordinate systems for selection
-    App::Part* part = getPartFor(DatumView->getObject(), false);
-    if(part) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( DatumView->getObject() );
+    if(body) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, true);
@@ -771,10 +770,10 @@ bool   TaskDatumParameters::getFlip() const
 TaskDatumParameters::~TaskDatumParameters()
 {
     //end temporary view mode of coordinate system
-    App::Part* part = getPartFor(DatumView->getObject(), false);
-    if(part) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( DatumView->getObject() );
+    if(body) {
         try {
-            App::Origin *origin = part->getOrigin();
+            App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();

@@ -339,21 +339,21 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // Get a valid plane from the user
         unsigned validPlanes = 0;
 
-        App::Part* pcActivePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(PARTKEY);
+        App::GeoFeatureGroup* geoGroup = App::GeoFeatureGroup::getGroupOfObject ( pcActiveBody );
 
         std::vector<App::DocumentObject*> planes;
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
 
         // Baseplanes are preaprooved
-        if ( pcActivePart ) {
+        if ( pcActiveBody ) {
             try {
-                for ( auto plane: pcActivePart->getOrigin ()->planes() ) {
+                for ( auto plane: pcActiveBody->getOrigin ()->planes() ) {
                     planes.push_back (plane);
                     status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
                     validPlanes++;
                 }
             } catch (const Base::Exception &ex) {
-                        Base::Console().Error ("%s\n", ex.what() );
+                Base::Console().Error ("%s\n", ex.what() );
             }
         }
 
@@ -363,24 +363,34 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         for (auto plane: datumPlanes) {
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if (!pcActiveBody->hasFeature(plane)) {
-                if ( pcActivePart && pcActivePart->hasObject ( plane, true ) ) {
-                    status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
+            if ( pcActiveBody && pcActiveBody->hasFeature(plane) ) {
+                if ( !pcActiveBody->isAfterInsertPoint ( plane ) ) {
+                    validPlanes++;
+                    status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
                 } else {
-                    status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-                }
-
-                continue;
-            } else {
-                if (pcActiveBody->isAfterInsertPoint ( plane ) ) {
                     status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
-                    continue;
+                }
+            } else {
+                PartDesign::Body *planeBody = PartDesign::Body::findBodyOf (plane);
+                if ( planeBody ) {
+                    if ( ( geoGroup && geoGroup->hasObject ( planeBody, true ) ) ||
+                           !App::GeoFeatureGroup::getGroupOfObject (planeBody) ) {
+                        status.push_back ( PartDesignGui::TaskFeaturePick::otherBody );
+                    } else {
+                        status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
+                    }
+                } else {
+                    if ( ( geoGroup && geoGroup->hasObject ( plane, true ) ) ||
+                           !App::GeoFeatureGroup::getGroupOfObject ( plane ) ) {
+                        status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
+                    } else if (pcActiveBody) {
+                        status.push_back ( PartDesignGui::TaskFeaturePick::notInBody );
+                    } else { // if we are outside a body count it as valid
+                        validPlanes++;
+                        status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
+                    }
                 }
             }
-
-            // All checks passed - found a valid plane
-            validPlanes++;
-            status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
         }
 
         if (validPlanes == 0) {
@@ -510,6 +520,7 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                                  std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
                                  std::vector<App::DocumentObject*>::iterator& firstValidSketch)
 {
+    // TODO Review the function for non-part bodies (2015-09-04, Fat-Zer)
     PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false);
     App::Part* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
 
@@ -1599,6 +1610,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         Gui::Selection().clearSelection();
         if (prevFeature != NULL)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
+        // TODO Review this (2015-09-05, Fat-Zer)
         openCommand("Convert to MultiTransform feature");
         doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
 

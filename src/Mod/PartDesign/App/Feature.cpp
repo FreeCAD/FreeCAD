@@ -33,7 +33,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
-
+// TODO Cleanup headers (2015-09-04, Fat-Zer)
 #include <Base/Exception.h>
 #include "App/Document.h"
 #include "App/OriginFeature.h"

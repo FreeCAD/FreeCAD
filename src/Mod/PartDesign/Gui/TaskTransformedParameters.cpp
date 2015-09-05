@@ -34,7 +34,6 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <Gui/Application.h>
@@ -192,11 +191,11 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks &combolinks,
 
     //add part axes
     App::DocumentObject* obj = getObject();
-    App::Part* part = getPartFor(obj, false);
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( obj );
 
-    if (part) {
+    if (body) {
         try {
-            App::Origin* orig = part->getOrigin();
+            App::Origin* orig = body->getOrigin();
             combolinks.addLink(orig->getX(),"",tr("Base X axis"));
             combolinks.addLink(orig->getY(),"",tr("Base Y axis"));
             combolinks.addLink(orig->getZ(),"",tr("Base Z axis"));
@@ -228,11 +227,11 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks &combolinks,
 
     //add part baseplanes
     App::DocumentObject* obj = getObject();
-    App::Part* part = getPartFor(obj, false);
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( obj );
 
-    if (part) {
+    if (body) {
         try {
-            App::Origin* orig = part->getOrigin();
+            App::Origin* orig = body->getOrigin();
             combolinks.addLink(orig->getXY(),"",tr("Base XY plane"));
             combolinks.addLink(orig->getYZ(),"",tr("Base YZ plane"));
             combolinks.addLink(orig->getXZ(),"",tr("Base XZ plane"));
