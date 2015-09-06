@@ -31,12 +31,17 @@
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
-
+#include <App/PropertyUnits.h>
+#include <App/DocumentObject.h>
+#include "ExpressionCompleter.h"
+#include "Command.h"
 #include "InputField.h"
 #include "BitmapFactory.h"
 
 using namespace Gui;
+using namespace App;
 using namespace Base;
 
 // --------------------------------------------------------------------
@@ -59,7 +64,8 @@ private:
 // --------------------------------------------------------------------
 
 InputField::InputField(QWidget * parent)
-  : QLineEdit(parent),
+  : ExpressionLineEdit(parent),
+    ExpressionBinding(),
     validInput(true),
     actUnitValue(0),
     Maximum(DOUBLE_MAX),
@@ -92,6 +98,43 @@ InputField::~InputField()
 {
 }
 
+void InputField::bind(const App::ObjectIdentifier &_path)
+{
+    ExpressionBinding::bind(_path);
+
+    PropertyQuantity * prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+
+    if (prop)
+        actQuantity = prop->getValue();
+
+    DocumentObject * docObj = getPath().getDocumentObject();
+
+    if (docObj) {
+        boost::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
+
+        if (expr)
+            newInput(Tools::fromStdString(expr->toString()));
+    }
+
+    // Create document object, to initialize completer
+    setDocumentObject(docObj);
+}
+
+bool InputField::apply(const std::string &propName)
+{
+    if (!ExpressionBinding::apply(propName)) {
+        Gui::Command::doCommand(Gui::Command::Doc,"%s = %f", propName.c_str(), getQuantity().getValue());
+        return true;
+    }
+    else
+        return false;
+}
+
+bool InputField::apply()
+{
+    return ExpressionBinding::apply();
+}
+
 QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 {
     QString key = QString::fromAscii("%1_%2x%3")
@@ -110,6 +153,15 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 
 void InputField::updateText(const Base::Quantity& quant)
 {
+    if (isBound()) {
+        boost::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
+
+        if (e) {
+            setText(Tools::fromStdString(e->toString()));
+            return;
+        }
+    }
+
     double dFactor;
     QString txt = quant.getUserString(dFactor,actUnitStr);
     actUnitValue = quant.getValue()/dFactor;
@@ -182,7 +234,22 @@ void InputField::newInput(const QString & text)
     try {
         QString input = text;
         fixup(input);
-        res = Quantity::parse(input);
+
+        if (isBound()) {
+            boost::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
+
+            setExpression(e);
+
+            std::auto_ptr<Expression> evalRes(getExpression()->eval());
+
+            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
+            if (value) {
+                res.setValue(value->getValue());
+                res.setUnit(value->getUnit());
+            }
+        }
+        else
+            res = Quantity::parse(input);
     }
     catch(Base::Exception &e){
         ErrorText = e.what();
