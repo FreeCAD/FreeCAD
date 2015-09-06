@@ -67,7 +67,7 @@ public:
         QString copy = input;
 
         int len = copy.size();
-        pos = len;
+
         const bool plus = max >= 0;
         const bool minus = min <= 0;
 
