@@ -25,16 +25,26 @@
 #define GUI_INPUTFIELD_H
 
 #include <QValidator>
+#include <App/Property.h>
+#include <App/Expression.h>
 #include <Base/Parameter.h>
 #include <Base/Quantity.h>
 #include "Widgets.h"
 #include "Window.h"
 #include "SpinBox.h"
 #include "FileDialog.h"
+#include "ExpressionBinding.h"
+#include "ExpressionCompleter.h"
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
 #endif
+
+namespace App {
+class DocumentObject;
+class ObjectIdentifier;
+class Expression;
+}
 
 namespace Gui {
 
@@ -46,9 +56,9 @@ namespace Gui {
  * and managing default and history values.
  * Although it's derived from a QLineEdit widget, it supports most of the properties and signals
  * of a spin box.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
-class GuiExport InputField : public QLineEdit
+class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
 {
     Q_OBJECT
 
@@ -62,7 +72,7 @@ class GuiExport InputField : public QLineEdit
 
 
 public:
-    InputField ( QWidget * parent = 0 );
+    InputField (QWidget * parent = 0);
     virtual ~InputField();
 
     /// set the field with a quantity
@@ -132,6 +142,10 @@ public:
     std::vector<QString> getSavedValues(void);
     //@}
 
+    void bind(const App::ObjectIdentifier &_path);
+    bool apply(const std::string &propName);
+    bool apply();
+
 Q_SIGNALS:
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
@@ -187,6 +201,8 @@ private:
     double StepSize;
     int HistorySize;
     int SaveSize;
+
+    QPalette defaultPalette;
 };
 
 } // namespace Gui
