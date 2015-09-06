@@ -176,7 +176,13 @@ public:
     /// retrieves for a GeoId and PosId the Vertex number 
     int getVertexIndexGeoPos(int GeoId, PointPos PosId) const;
 
-    /// retrieves for a Vertex number a list with all coincident points
+    // retrieves an array of maps, each map containing the points that are coincidence by virtue of 
+    // any number of direct or indirect coincidence constraints
+    const std::vector< std::map<int, Sketcher::PointPos> > getCoincidenceGroups();
+    // returns if the given geoId is fixed (coincident) with external geometry on any of the possible relevant points
+    void isCoincidentWithExternalGeometry(int GeoId, bool &start_external, bool &mid_external, bool &end_external);
+        
+    /// retrieves for a Vertex number a list with all coincident points (sharing a single coincidence constraint)
     void getCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
                              std::vector<PointPos> &PosIdList);
     void getCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);

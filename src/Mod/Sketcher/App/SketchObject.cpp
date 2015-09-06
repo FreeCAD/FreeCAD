@@ -3074,6 +3074,95 @@ void SketchObject::rebuildVertexIndex(void)
     }
 }
 
+const std::vector< std::map<int, Sketcher::PointPos> > SketchObject::getCoincidenceGroups()
+{
+    // this function is different from that in getCoincidentPoints in that:
+    // - getCoincidentPoints only considers direct coincidence (the points that are linked via a single coincidence)
+    // - this function provides an array of maps of points, each map containing the points that are coincident by virtue
+    //   of any number of interrelated coincidence constraints (if coincidence 1-2 and coincidence 2-3, {1,2,3} are in that set)
+    
+    const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+    
+    std::vector< std::map<int, Sketcher::PointPos> > coincidenttree;
+    // push the constraints
+    for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it) {
+        if( (*it)->Type == Sketcher::Coincident ) {
+            int firstpresentin=-1;
+            int secondpresentin=-1;
+            
+            int i=0;
+            
+            for(std::vector< std::map<int, Sketcher::PointPos> >::const_iterator iti = coincidenttree.begin(); iti != coincidenttree.end(); ++iti,i++) {
+                // First
+                std::map<int, Sketcher::PointPos>::const_iterator filiterator;
+                filiterator = (*iti).find((*it)->First);
+                if( filiterator != (*iti).end()) {
+                    if((*it)->FirstPos == (*filiterator).second)
+                        firstpresentin = i;
+                }
+                // Second
+                filiterator = (*iti).find((*it)->Second);
+                if( filiterator != (*iti).end()) {
+                    if((*it)->SecondPos == (*filiterator).second)                                
+                        secondpresentin = i;
+                }                             
+            }
+            
+            if ( firstpresentin!=-1 && secondpresentin!=-1) {
+                // we have to merge those sets into one
+                coincidenttree[firstpresentin].insert(coincidenttree[secondpresentin].begin(), coincidenttree[secondpresentin].end());
+                coincidenttree.erase(coincidenttree.begin()+secondpresentin);
+            }
+            else if ( firstpresentin==-1 && secondpresentin==-1 ) {
+                // we do not have any of the values, so create a setCursor
+                std::map<int, Sketcher::PointPos> tmp;
+                tmp.insert(std::pair<int, Sketcher::PointPos>((*it)->First,(*it)->FirstPos));
+                tmp.insert(std::pair<int, Sketcher::PointPos>((*it)->Second,(*it)->SecondPos));
+                coincidenttree.push_back(tmp);
+            }
+            else if ( firstpresentin != -1 ) {
+                // add to existing group
+                coincidenttree[firstpresentin].insert(std::pair<int, Sketcher::PointPos>((*it)->Second,(*it)->SecondPos));
+            }
+            else { // secondpresentin != -1
+                // add to existing group
+                coincidenttree[secondpresentin].insert(std::pair<int, Sketcher::PointPos>((*it)->First,(*it)->FirstPos));
+            }
+            
+        }
+    }
+    
+    return coincidenttree;
+}
+
+void SketchObject::isCoincidentWithExternalGeometry(int GeoId, bool &start_external, bool &mid_external, bool &end_external) {
+
+    start_external=false;
+    mid_external=false;
+    end_external=false;
+    
+    const std::vector< std::map<int, Sketcher::PointPos> > coincidenttree = getCoincidenceGroups();
+    
+    for(std::vector< std::map<int, Sketcher::PointPos> >::const_iterator it = coincidenttree.begin(); it != coincidenttree.end(); ++it) {
+        
+        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+        
+        geoId1iterator = (*it).find(GeoId);
+        
+        if( geoId1iterator != (*it).end()) {
+            // If First is in this set and the first key in this ordered element key is external
+            if( (*it).begin()->first < 0 ) {
+                if( (*geoId1iterator).second == Sketcher::start )
+                    start_external=true;
+                else if ( (*geoId1iterator).second == Sketcher::mid )
+                    mid_external=true;
+                else if ( (*geoId1iterator).second == Sketcher::end )
+                    end_external=true;
+            }
+        }
+    }
+}
+
 void SketchObject::getCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
                                        std::vector<PointPos> &PosIdList)
 {

@@ -428,16 +428,36 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                                        );
                 } break;
             case Sketcher::Horizontal: {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
-                                        ,sketchgui->getObject()->getNameInDocument()
-                                        ,geoId1
-                                       );
+                
+                bool start_external;
+                bool mid_external;
+                bool end_external;
+                
+                dynamic_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
+                
+                if( !(start_external && end_external) ) {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+                    ,sketchgui->getObject()->getNameInDocument()
+                    ,geoId1
+                    );
+                }
+
                 } break;
             case Sketcher::Vertical: {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
-                                        ,sketchgui->getObject()->getNameInDocument()
-                                        ,geoId1
-                                       );
+                
+                bool start_external;
+                bool mid_external;
+                bool end_external;
+                
+                dynamic_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
+                
+                if( !(start_external && end_external) ) {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
+                    ,sketchgui->getObject()->getNameInDocument()
+                    ,geoId1
+                    );
+                }
+                
                 } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(sketchgui->getObject());
