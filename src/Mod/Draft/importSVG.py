@@ -386,6 +386,7 @@ class svgHandler(xml.sax.ContentHandler):
                 "retrieving Draft parameters"
                 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
                 self.style = params.GetInt("svgstyle")
+                self.disableUnitScaling = params.GetBool("svgDisableUnitScaling",False)
                 self.count = 0
                 self.transform = None
                 self.grouptransform = []
@@ -467,36 +468,37 @@ class svgHandler(xml.sax.ContentHandler):
                 
                 if name == 'svg':
                         m=FreeCAD.Matrix()
-                        if 'width' in data and 'height' in data and \
-                            'viewBox' in data:
-                                vbw=float(data['viewBox'][2])
-                                vbh=float(data['viewBox'][3])
-                                w=attrs.getValue('width')
-                                h=attrs.getValue('height')
-                                self.viewbox=(vbw,vbh)
-                                if len(self.grouptransform)==0:
-                                    unitmode='mm'
-                                else: #nested svg element
-                                    unitmode='css'
-                                abw = getsize(w,unitmode)
-                                abh = getsize(h,unitmode)
-                                sx=abw/vbw
-                                sy=abh/vbh
-                                preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
-                                uniformscaling = round(sx/sy,5) == 1
-                                if uniformscaling:
-                                    m.scale(Vector(sx,sy,1))
-                                else:
-                                    FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
-                                    if preservearstr.startswith('none'):
+                        if not self.disableUnitScaling:
+                            if 'width' in data and 'height' in data and \
+                                'viewBox' in data:
+                                    vbw=float(data['viewBox'][2])
+                                    vbh=float(data['viewBox'][3])
+                                    w=attrs.getValue('width')
+                                    h=attrs.getValue('height')
+                                    self.viewbox=(vbw,vbh)
+                                    if len(self.grouptransform)==0:
+                                        unitmode='mm'
+                                    else: #nested svg element
+                                        unitmode='css'
+                                    abw = getsize(w,unitmode)
+                                    abh = getsize(h,unitmode)
+                                    sx=abw/vbw
+                                    sy=abh/vbh
+                                    preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
+                                    uniformscaling = round(sx/sy,5) == 1
+                                    if uniformscaling:
                                         m.scale(Vector(sx,sy,1))
-                                    else: #preserve the aspect ratio
-                                        if preservearstr.endswith('slice'):
-                                            sxy=max(sx,sy)
-                                        else:
-                                            sxy=min(sx,sy)
-                                        m.scale(Vector(sxy,sxy,1))
-                        elif len(self.grouptransform)==0:
+                                    else:
+                                        FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
+                                        if preservearstr.startswith('none'):
+                                            m.scale(Vector(sx,sy,1))
+                                        else: #preserve the aspect ratio
+                                            if preservearstr.endswith('slice'):
+                                                sxy=max(sx,sy)
+                                            else:
+                                                sxy=min(sx,sy)
+                                            m.scale(Vector(sxy,sxy,1))
+                            elif len(self.grouptransform)==0:
                                 #fallback to 90 dpi
                                 m.scale(Vector(25.4/90.0,25.4/90.0,1))
                         self.grouptransform.append(m) 
