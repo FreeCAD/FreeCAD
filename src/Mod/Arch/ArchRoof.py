@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Draft, math, ArchComponent, DraftVecUtils, DraftGeomUtils
+import FreeCAD, Draft, math, ArchComponent, DraftVecUtils
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -40,6 +40,7 @@ def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickn
     face from an existing object. You can provide a list of angles, run, idrel, thickness,
     overhang for each edges in the wire to define the roof shape. The default for angle is 45
     and the list is automatically complete to match with number of edges in the wire.'''
+    import Part
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
     w = None
@@ -240,6 +241,7 @@ class _Roof(ArchComponent.Component):
         self.profilsDico[i]["rot"] = rot
 
     def calcDraftEdges(self, i):
+        import DraftGeomUtils
         edge = self.profilsDico[i]["edge"]
         vec = self.profilsDico[i]["vec"]
         rot = self.profilsDico[i]["rot"]
@@ -253,6 +255,7 @@ class _Roof(ArchComponent.Component):
         self.profilsDico[i]["ridge"] = ridge
 
     def calcEave(self, i):
+        import DraftGeomUtils
         pt0Eave1 = DraftGeomUtils.findIntersection(self.findProfil(i-1)["eaveD"],self.findProfil(i)["eaveD"],infinite1=True,infinite2=True,)
         pt1Eave1 = DraftGeomUtils.findIntersection(self.findProfil(i)["eaveD"],self.findProfil(i+1)["eaveD"],infinite1=True,infinite2=True,)
         eave = DraftGeomUtils.edg(FreeCAD.Vector(pt0Eave1[0]),FreeCAD.Vector(pt1Eave1[0]))
@@ -291,6 +294,7 @@ class _Roof(ArchComponent.Component):
         return profil
 
     def nextPignon(self, i):
+        import DraftGeomUtils
         print("Next : pignon")
         profilCurrent = self.findProfil(i)
         profilNext1 = self.findProfil(i+1)
@@ -317,6 +321,7 @@ class _Roof(ArchComponent.Component):
         self.ptsPaneProject.append(FreeCAD.Vector(point[0]))
 
     def backPignon(self, i):
+        import DraftGeomUtils
         print("Back : pignon")
         profilCurrent = self.findProfil(i)
         profilBack1 = self.findProfil(i-1)
@@ -345,6 +350,7 @@ class _Roof(ArchComponent.Component):
         #self.ptsPaneProject.append(FreeCAD.Vector(profilCurrent["eave"].Vertexes[0].Point[0]))
 
     def nextSameHeight(self, i):
+        import DraftGeomUtils
         print("Next : ht1 = ht2")
         profilCurrent = self.findProfil(i)
         profilNext1 = self.findProfil(i+1)
@@ -364,6 +370,7 @@ class _Roof(ArchComponent.Component):
         self.ptsPaneProject.append(FreeCAD.Vector(ptInterRidges[0]))
 
     def backSameHeight(self, i):
+        import DraftGeomUtils
         print("Back : ht1 = ht0")
         profilCurrent = self.findProfil(i)
         profilBack1 = self.findProfil(i-1)
@@ -383,6 +390,7 @@ class _Roof(ArchComponent.Component):
             self.ptsPaneProject.append(FreeCAD.Vector(profilCurrent["eave"].Vertexes[0].Point))
 
     def nextHigher(self, i):
+        import DraftGeomUtils
         print("Next : ht2 > ht1")
         profilCurrent = self.findProfil(i)
         profilNext1 = self.findProfil(i+1)
@@ -407,6 +415,7 @@ class _Roof(ArchComponent.Component):
         self.ptsPaneProject.append(FreeCAD.Vector(ptInterRidges[0]))
 
     def backHigher(self, i):
+        import DraftGeomUtils
         print("Back : ht1 < ht0")
         profilCurrent = self.findProfil(i)
         profilBack1 = self.findProfil(i-1)
@@ -429,6 +438,7 @@ class _Roof(ArchComponent.Component):
 
 
     def nextSmaller(self, i):
+        import DraftGeomUtils
         print("Next : ht2 < ht1")
         profilCurrent = self.findProfil(i)
         profilNext1 = self.findProfil(i+1)
@@ -455,6 +465,7 @@ class _Roof(ArchComponent.Component):
         self.ptsPaneProject.append(FreeCAD.Vector(ptInterRidges))
 
     def backSmaller(self, i):
+        import DraftGeomUtils
         print("Back : ht0 < ht1")
         profilCurrent = self.findProfil(i)
         profilBack1 = self.findProfil(i-1)
