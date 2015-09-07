@@ -104,6 +104,7 @@ if(OCC_FOUND)
     TKSTL
     TKShHealing
     TKXSBase
+    TKBin
     TKBool
     TKBO
     TKBRep

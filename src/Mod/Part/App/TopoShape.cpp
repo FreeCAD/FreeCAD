@@ -144,6 +144,8 @@
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
 # include <Standard_Version.hxx>
 #endif
+# include <BinTools.hxx>
+# include <BinTools_ShapeSet.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Poly_PolygonOnTriangulation.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
@@ -670,6 +672,21 @@ void TopoShape::importBrep(std::istream& str)
     }
 }
 
+void TopoShape::importBinary(std::istream& str)
+{
+    BinTools_ShapeSet set;
+    set.Read(str);
+    Standard_Integer index;
+    BinTools::GetInteger(str, index);
+
+    try {
+        this->_Shape = set.Shape(index);
+    }
+    catch (Standard_Failure) {
+        throw Base::RuntimeError("Failed to read shape from binary stream");
+    }
+}
+
 void TopoShape::write(const char *FileName) const
 {
     Base::FileInfo File(FileName);
@@ -756,6 +773,14 @@ void TopoShape::exportBrep(const char *filename) const
 void TopoShape::exportBrep(std::ostream& out) const
 {
     BRepTools::Write(this->_Shape, out);
+}
+
+void TopoShape::exportBinary(std::ostream& out)
+{
+    BinTools_ShapeSet set;
+    Standard_Integer index = set.Add(this->_Shape);
+    set.Write(out);
+    BinTools::PutInteger(out, index);
 }
 
 void TopoShape::dump(std::ostream& out) const

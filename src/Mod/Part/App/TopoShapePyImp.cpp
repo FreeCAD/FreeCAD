@@ -355,6 +355,26 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::exportBinary(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read binary brep
+        std::ofstream str(input, std::ios::out | std::ios::binary);
+        getTopoShapePtr()->exportBinary(str);
+        str.close();
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PartExceptionOCCError,e.what());
+        return NULL;
+    }
+
+    Py_Return;
+}
+
 PyObject*  TopoShapePy::dumpToString(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -421,6 +441,26 @@ PyObject*  TopoShapePy::importBrep(PyObject *args)
         str.rdbuf(&buf);
         //std::stringstream str(input);
         getTopoShapePtr()->importBrep(str);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PartExceptionOCCError,e.what());
+        return NULL;
+    }
+
+    Py_Return;
+}
+
+PyObject*  TopoShapePy::importBinary(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read binary brep
+        std::ifstream str(input, std::ios::in | std::ios::binary);
+        getTopoShapePtr()->importBinary(str);
+        str.close();
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError,e.what());
