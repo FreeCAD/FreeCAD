@@ -67,7 +67,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.mesh.ViewObject.ElementColor = {}
             self.mesh.ViewObject.setNodeColorByScalars()
 
-    def show_result(self, result_type="Sabs"):
+    def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":
             self.reset_mesh_color()
@@ -81,7 +81,19 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 match = {"U1": 0, "U2": 1, "U3": 2}
                 d = zip(*self.result_object.DisplacementVectors)
                 values = list(d[match[result_type]])
-            self.mesh.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, values)
+            self.show_color_by_scalar_with_cutoff(values, limit)
+
+    def show_color_by_scalar_with_cutoff(self, values, limit=None):
+        if limit:
+            filtered_values = []
+            for v in values:
+                if v > limit:
+                    filtered_values.append(limit)
+                else:
+                    filtered_values.append(v)
+        else:
+            filtered_values = values
+        self.mesh.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, filtered_values)
 
     def show_displacement(self, displacement_factor=0.0):
         self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers,
