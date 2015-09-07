@@ -181,11 +181,14 @@ public:
     const std::vector< std::map<int, Sketcher::PointPos> > getCoincidenceGroups();
     // returns if the given geoId is fixed (coincident) with external geometry on any of the possible relevant points
     void isCoincidentWithExternalGeometry(int GeoId, bool &start_external, bool &mid_external, bool &end_external);
-        
+    // returns a map containing all the GeoIds that are coincident with the given point as keys, and the PosIds as values associated
+    // with the keys.
+    const std::map<int, Sketcher::PointPos> getAllCoincidentPoints(int GeoId, PointPos PosId);
+    
     /// retrieves for a Vertex number a list with all coincident points (sharing a single coincidence constraint)
-    void getCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
+    void getDirectlyCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
                              std::vector<PointPos> &PosIdList);
-    void getCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);
+    void getDirectlyCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
     /// generates a warning message about constraint conflicts and appends it to the given message
