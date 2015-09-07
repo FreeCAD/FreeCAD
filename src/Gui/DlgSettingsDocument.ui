@@ -520,7 +520,7 @@
          <string>http://en.wikipedia.org/wiki/All_rights_reserved</string>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>prefLicenseUrl</cstring>
