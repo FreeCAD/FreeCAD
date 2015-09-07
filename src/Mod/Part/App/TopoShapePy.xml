@@ -53,6 +53,11 @@ Sub-elements such as vertices, edges or faces are accessible as:
         <UserDocu>Export the content of this shape to an BREP file. BREP is a CasCade native format.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="exportBinary" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape in binary format to a file.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="exportBrepToString" Const="true">
       <Documentation>
         <UserDocu>Export the content of this shape to a string in BREP format. BREP is a CasCade native format.</UserDocu>
@@ -70,12 +75,17 @@ Sub-elements such as vertices, edges or faces are accessible as:
     </Methode>
     <Methode Name="importBrep">
       <Documentation>
+        <UserDocu>Load the shape from a file in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importBinary">
+      <Documentation>
         <UserDocu>Import the content to this shape of a string in BREP format.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="importBrepFromString">
       <Documentation>
-        <UserDocu>Import the content to this shape from a string in BREP format.</UserDocu>
+        <UserDocu>Load the shape from a string that keeps the content in BREP format.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="extrude" Const="true">

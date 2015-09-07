@@ -376,6 +376,7 @@ set(OCC_LIBRARIES
     TKSTL
     TKShHealing
     TKXSBase
+    TKBin
     TKBool
     TKBO
     TKBRep

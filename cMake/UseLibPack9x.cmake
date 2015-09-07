@@ -371,6 +371,7 @@ set(OCC_LIBRARIES
     optimized TKSTL
     optimized TKShHealing
     optimized TKXSBase
+    optimized TKBin
     optimized TKBool
     optimized TKBO
     optimized TKBRep
@@ -396,6 +397,7 @@ set(OCC_DEBUG_LIBRARIES
     debug TKSTLd
     debug TKShHealingd
     debug TKXSBased
+    debug TKBind
     debug TKBoold
     debug TKBOd
     debug TKBRepd
