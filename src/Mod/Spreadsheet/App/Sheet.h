@@ -127,9 +127,9 @@ public:
 
     void setContent(CellAddress address, const char * value);
 
-    void setAlignment(CellAddress address, int _alignment);
+    void setAlignment(CellAddress address, int alignment);
 
-    void setStyle(CellAddress address, const std::set<std::string> & _style);
+    void setStyle(CellAddress address, const std::set<std::string> & style);
 
     void setForeground(CellAddress address, const App::Color &color);
 
