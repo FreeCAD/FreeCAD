@@ -3205,17 +3205,30 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1,
 {
     if (GeoId1 == GeoId2 && PosId1 == PosId2)
         return true;
-
-    const std::vector<Constraint *> &constraints = this->Constraints.getValues();
-    for (std::vector<Constraint *>::const_iterator it=constraints.begin();
-         it != constraints.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident)
-            if (((*it)->First == GeoId1 && (*it)->FirstPos == PosId1 &&
-                 (*it)->Second == GeoId2 && (*it)->SecondPos == PosId2) ||
-                ((*it)->First == GeoId2 && (*it)->FirstPos == PosId2 &&
-                 (*it)->Second == GeoId1 && (*it)->SecondPos == PosId1))
-                return true;
+    
+    const std::vector< std::map<int, Sketcher::PointPos> > coincidenttree = getCoincidenceGroups();
+    
+    for(std::vector< std::map<int, Sketcher::PointPos> >::const_iterator it = coincidenttree.begin(); it != coincidenttree.end(); ++it) {
+        
+        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+        
+        geoId1iterator = (*it).find(GeoId1);
+        
+        if( geoId1iterator != (*it).end()) {
+            // If First is in this set
+            std::map<int, Sketcher::PointPos>::const_iterator geoId2iterator;
+            
+            geoId2iterator = (*it).find(GeoId2);
+            
+            if( geoId2iterator != (*it).end()) {
+                // If Second is in this set
+                if ((*geoId1iterator).second == PosId1 &&
+                    (*geoId2iterator).second == PosId2)
+                    return true;                  
+            }
+        }
     }
+
     return false;
 }
 
