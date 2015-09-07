@@ -3981,7 +3981,7 @@ namespace SketcherGui {
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 std::vector<int> GeoIdList;
                 std::vector<Sketcher::PointPos> PosIdList;
-                Sketch->getCoincidentPoints(VtId, GeoIdList, PosIdList);
+                Sketch->getDirectlyCoincidentPoints(VtId, GeoIdList, PosIdList);
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = Sketch->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = Sketch->getGeometry(GeoIdList[1]);
@@ -4080,7 +4080,7 @@ public:
                 double radius=-1;
                 std::vector<int> GeoIdList;
                 std::vector<Sketcher::PointPos> PosIdList;
-                sketchgui->getSketchObject()->getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+                sketchgui->getSketchObject()->getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);

@@ -535,7 +535,7 @@ int SketchObject::delGeometry(int GeoId)
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
     for (PointPos PosId = start; PosId != mid; ) {
-        getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+        getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
         if (GeoIdList.size() > 1) {
             delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
             transferConstraints(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
@@ -820,7 +820,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim)
     // Find the other geometry Id associated with the coincident point
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
-    getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+    getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 
     // only coincident points between two (non-external) edges can be filleted
     if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
@@ -3163,7 +3163,31 @@ void SketchObject::isCoincidentWithExternalGeometry(int GeoId, bool &start_exter
     }
 }
 
-void SketchObject::getCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
+const std::map<int, Sketcher::PointPos> SketchObject::getAllCoincidentPoints(int GeoId, PointPos PosId) {
+    
+    const std::vector< std::map<int, Sketcher::PointPos> > coincidenttree = getCoincidenceGroups();
+        
+    for(std::vector< std::map<int, Sketcher::PointPos> >::const_iterator it = coincidenttree.begin(); it != coincidenttree.end(); ++it) {
+        
+        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+        
+        geoId1iterator = (*it).find(GeoId);
+        
+        if( geoId1iterator != (*it).end()) {
+            // If GeoId is in this set
+
+            if ((*geoId1iterator).second == PosId) // and posId matches
+                return (*it);                  
+        }
+    }
+    
+    std::map<int, Sketcher::PointPos> empty;
+    
+    return empty;
+}
+
+
+void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
                                        std::vector<PointPos> &PosIdList)
 {
     const std::vector<Constraint *> &constraints = this->Constraints.getValues();
@@ -3191,13 +3215,13 @@ void SketchObject::getCoincidentPoints(int GeoId, PointPos PosId, std::vector<in
     }
 }
 
-void SketchObject::getCoincidentPoints(int VertexId, std::vector<int> &GeoIdList,
+void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int> &GeoIdList,
                                        std::vector<PointPos> &PosIdList)
 {
     int GeoId;
     PointPos PosId;
     getGeoVertexIndex(VertexId, GeoId, PosId);
-    getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+    getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 }
 
 bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1,
