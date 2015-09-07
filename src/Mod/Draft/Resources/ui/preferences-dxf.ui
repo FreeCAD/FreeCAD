@@ -62,6 +62,29 @@
        <number>9</number>
       </property>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_4">
+          <property name="toolTip">
+           <string>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</string>
+          </property>
+          <property name="text">
+           <string>Use legacy python importer</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfUseLegacyImporter</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
          <widget class="QLabel" name="label_3">

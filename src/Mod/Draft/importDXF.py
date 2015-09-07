@@ -1467,35 +1467,51 @@ def warn(dxfobject,num=None):
 def open(filename):
     "called when freecad opens a file."
     readPreferences()
-    if dxfReader:
+    if dxfUseLegacyImporter:
+        if dxfReader:
+            docname = os.path.splitext(os.path.basename(filename))[0]
+            if isinstance(docname,unicode): 
+                import sys #workaround since newDocument currently can't handle unicode filenames
+                docname = docname.encode(sys.getfilesystemencoding())
+            doc = FreeCAD.newDocument(docname)
+            doc.Label = decodeName(docname)
+            processdxf(doc,filename)
+            return doc
+        else:
+            errorDXFLib(gui)
+    else:
         docname = os.path.splitext(os.path.basename(filename))[0]
         if isinstance(docname,unicode): 
             import sys #workaround since newDocument currently can't handle unicode filenames
             docname = docname.encode(sys.getfilesystemencoding())
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
-        processdxf(doc,filename)
-        return doc
-    else:
-        errorDXFLib(gui)
+        FreeCAD.setActiveDocument(docname)
+        import DraftUtils
+        DraftUtils.readDXF(filename)
 
 def insert(filename,docname):
     "called when freecad imports a file"
     readPreferences()
-    if dxfReader:
-        groupname = os.path.splitext(os.path.basename(filename))[0]
-        try:
-            doc=FreeCAD.getDocument(docname)
-        except NameError:
-            doc=FreeCAD.newDocument(docname)
-        FreeCAD.setActiveDocument(docname)
-        importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
-        importgroup.Label = decodeName(groupname)
-        processdxf(doc,filename)
-        for l in layers:
-            importgroup.addObject(l)
+    if dxfUseLegacyImporter:
+        if dxfReader:
+            groupname = os.path.splitext(os.path.basename(filename))[0]
+            try:
+                doc=FreeCAD.getDocument(docname)
+            except NameError:
+                doc=FreeCAD.newDocument(docname)
+            FreeCAD.setActiveDocument(docname)
+            importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
+            importgroup.Label = decodeName(groupname)
+            processdxf(doc,filename)
+            for l in layers:
+                importgroup.addObject(l)
+        else:
+            errorDXFLib(gui)
     else:
-        errorDXFLib(gui)
+        FreeCAD.setActiveDocument(docname)
+        import DraftUtils
+        DraftUtils.readDXF(filename)
 
 def getShapes(filename):
     "reads a dxf file and returns a list of shapes from its contents"
@@ -1944,7 +1960,7 @@ def readPreferences():
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch, dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth, dxfImportTexts, dxfImportLayouts
     global dxfImportPoints, dxfImportHatches, dxfUseStandardSize, dxfGetColors, dxfUseDraftVisGroups
-    global dxfFillMode, dxfBrightBackground, dxfDefaultColor
+    global dxfFillMode, dxfBrightBackground, dxfDefaultColor, dxfUseLegacyImporter
     dxfCreatePart = p.GetBool("dxfCreatePart",True)
     dxfCreateDraft = p.GetBool("dxfCreateDraft",False)
     dxfCreateSketch = p.GetBool("dxfCreateSketch",False)
@@ -1961,5 +1977,6 @@ def readPreferences():
     dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
     dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
     dxfFillMode = p.GetBool("fillmode",True)
+    dxfUseLegacyImporter = p.GetBool("dxfUseLegacyImporter",True)
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
