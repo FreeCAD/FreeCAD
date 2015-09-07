@@ -167,13 +167,16 @@ private:
 
     friend class Cell;
 
+    /*! Cell data in this property */
     std::map<CellAddress, Cell*> data;
 
+    /*! Set of cells that have been marked dirty */
     std::set<CellAddress> dirty;
 
-    /* Merged cells; cell -> anchor cell */
+    /*! Merged cells; cell -> anchor cell */
     std::map<CellAddress, CellAddress> mergedCells;
 
+    /*! Owner of this property */
     Sheet * owner;
 
     /*
@@ -190,39 +193,41 @@ private:
 
     void rebuildDocDepList();
 
-    /* Cell dependencies, i.e when a change occurs to property given in key,
+    /*! Cell dependencies, i.e when a change occurs to property given in key,
       the set of addresses needs to be recomputed.
       */
     std::map<std::string, std::set< CellAddress > > propertyNameToCellMap;
 
-    /* Properties this cell depends on */
+    /*! Properties this cell depends on */
     std::map<CellAddress, std::set< std::string > > cellToPropertyNameMap;
 
-    /* Cell dependencies, i.e when a change occurs to documentObject given in key,
+    /*! Cell dependencies, i.e when a change occurs to documentObject given in key,
       the set of addresses needs to be recomputed.
       */
     std::map<std::string, std::set< CellAddress > > documentObjectToCellMap;
 
-    /* DocumentObject this cell depends on */
+    /*! DocumentObject this cell depends on */
     std::map<CellAddress, std::set< std::string > > cellToDocumentObjectMap;
 
-    /* Other document objects the sheet depends on */
+    /*! Other document objects the sheet depends on */
     std::set<App::DocumentObject*> docDeps;
 
-    /* Name of document objects, used for renaming */
+    /*! Name of document objects, used for renaming */
     std::map<const App::DocumentObject*, std::string> documentObjectName;
 
-    /* Name of documents, used for renaming */
+    /*! Name of documents, used for renaming */
     std::map<const App::Document*, std::string> documentName;
 
-    /* Mapping of cell position to alias property */
+    /*! Mapping of cell position to alias property */
     std::map<CellAddress, std::string> aliasProp;
 
-    /* Mapping of alias property to cell position */
+    /*! Mapping of alias property to cell position */
     std::map<std::string, CellAddress> revAliasProp;
 
+    /*! Internal counter used to track when to emit aboutToSet and hasSetValue calls */
     int signalCounter;
 
+    /*! The associated python object */
     Py::Object PythonObject;
 };
 

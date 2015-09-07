@@ -92,6 +92,13 @@ Sheet::Sheet()
     onRelabledDocumentConnection = App::GetApplication().signalRelabelDocument.connect(boost::bind(&Spreadsheet::Sheet::onRelabledDocument, this, _1));
 }
 
+/**
+ * @brief Sheet::~Sheet
+ *
+ * The destructor; clear properties to release all memory.
+ *
+ */
+
 Sheet::~Sheet()
 {
     clearAll();
@@ -271,9 +278,10 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
 }
 
 /**
-  * Merge a rectangle specified by \a from and \a to into one logical cell.
+  * Merge a rectangle specified by \a range into one logical cell.
   * Data in all but the upper right cell are cleared when the cells are merged.
   *
+  * @param range Range to merge.
   * @returns True if the cells were merged, false if the merge was unsuccessful.
   *
   */
@@ -297,7 +305,7 @@ void Sheet::splitCell(CellAddress address)
 }
 
 /**
-  * Get contents of the cell specified by \a key, or 0 if it is not defined
+  * Get contents of the cell specified by \a address, or 0 if it is not defined
   *
   * @returns A CellContent object or 0.
   */
@@ -308,8 +316,9 @@ Cell *Sheet::getCell(CellAddress address)
 }
 
 /**
-  * Get cell contents specified by (\a row, \a col).
+  * Get cell contents specified by \a address.
   *
+  * @param address
   */
 
 Cell *Sheet::getNewCell(CellAddress address)
@@ -338,13 +347,11 @@ void Sheet::setCell(const char * address, const char * contents)
 }
 
 /**
-  * Set cell at \a row, \a col to \a expression. The original string given by the user
-  * is specified in \a value. If a merged cell is specified, the upper right corner of the
+  * Set cell at \a address to \a value. If a merged cell is specified, the upper right corner of the
   * merged cell must be specified.
   *
-  * @param row        Row position of cell.
-  * @param col        Column position of cell.
-  * @param value      String value of original expression.
+  * @param address    Row position of cell.
+  * @param value      String value of expression.
   *
   */
 
@@ -397,13 +404,19 @@ App::Property * Sheet::getProperty(CellAddress key) const
     return props.getDynamicPropertyByName(key.toString().c_str());
 }
 
+/**
+ * @brief Get a dynamic property.
+ * @param addr Name of dynamic propeerty.
+ * @return Pointer to property, or 0 if it does not exist.
+ */
+
 App::Property * Sheet::getProperty(const char * addr) const
 {
     return props.getDynamicPropertyByName(addr);
 }
 
 /**
-  * Get the address as (\a row, \a col) of the Property \a prop. This function
+  * Get the address as \a address of the Property \a prop. This function
   * throws an exception if the property is not found.
   *
   */
@@ -418,15 +431,30 @@ void Sheet::getCellAddress(const App::Property *prop, CellAddress & address)
         throw Base::Exception("Property is not a cell");
 }
 
+/**
+ * @brief Get a map with column indices and widths.
+ * @return Map with results.
+ */
+
 std::map<int, int> Sheet::getColumnWidths() const
 {
     return columnWidths.getValues();
 }
 
+/**
+ * @brief Get a map with row indices and heights.
+ * @return Map with results
+ */
+
 std::map<int, int> Sheet::getRowHeights() const
 {
     return rowHeights.getValues();
 }
+
+/**
+ * @brief Set selected position for property to \a address.
+ * @param address Target position
+ */
 
 void Sheet::setPosition(CellAddress address)
 {
@@ -435,6 +463,11 @@ void Sheet::setPosition(CellAddress address)
     currRow.purgeTouched();
     currColumn.purgeTouched();
 }
+
+/**
+ * @brief Remove all aliases.
+ *
+ */
 
 void Sheet::removeAliases()
 {
@@ -446,6 +479,10 @@ void Sheet::removeAliases()
     }
     removedAliases.clear();
 }
+
+/**
+ * Update internal structure when document is set for this property.
+ */
 
 void Sheet::onSettingDocument()
 {
@@ -548,6 +585,11 @@ App::Property * Sheet::setStringProperty(CellAddress key, const std::string & va
     return stringProp;
 }
 
+/**
+ * @brief Update the alias for the cell at \a key.
+ * @param key Cell to update.
+ */
+
 void Sheet::updateAlias(CellAddress key)
 {
     std::string alias;
@@ -642,6 +684,12 @@ App::Property *Sheet::getPropertyByName(const char* name) const
         return DocumentObject::getPropertyByName(name);
 }
 
+/**
+ * @brief Get name of a property, given a pointer to it.
+ * @param prop Pointer to property.
+ * @return Pointer to string.
+ */
+
 const char *Sheet::getPropertyName(const App::Property *prop) const
 {
     const char * name = props.getPropertyName(prop);
@@ -651,6 +699,11 @@ const char *Sheet::getPropertyName(const App::Property *prop) const
     else
         return PropertyContainer::getPropertyName(prop);
 }
+
+/**
+ * @brief Recompute cell at address \a p.
+ * @param p Address of cell.
+ */
 
 void Sheet::recomputeCell(CellAddress p)
 {
@@ -816,7 +869,7 @@ App::DocumentObjectExecReturn *Sheet::execute(void)
 }
 
 /**
-  * Unimplemented.
+  * Determine whether this object needs to be executed to update internal structures.
   *
   */
 
@@ -871,8 +924,7 @@ void Sheet::clear(CellAddress address, bool all)
 /**
   * Get row an column span for the cell at (row, col).
   *
-  * @param row  Row address of cell
-  * @param col  Column address of cell
+  * @param address Address of cell
   * @param rows The number of unit cells this cell spans
   * @param cols The number of unit rows this cell spans
   *
@@ -886,8 +938,7 @@ void Sheet::getSpans(CellAddress address, int &rows, int &cols) const
 /**
   * Determine whether this cell is merged with another or not.
   *
-  * @param row
-  * @param col
+  * @param adderss
   *
   * @returns True if cell is merged, false if not.
   *
@@ -898,20 +949,44 @@ bool Sheet::isMergedCell(CellAddress address) const
     return cells.isMergedCell(address);
 }
 
+/**
+ * @brief Set column with of column \a col to \a width-
+ * @param col   Index of column.
+ * @param width New width of column.
+ */
+
 void Sheet::setColumnWidth(int col, int width)
 {
     columnWidths.setValue(col, width);
 }
+
+/**
+ * @brief Get column with of column at index \a col.
+ * @param col
+ * @return
+ */
 
 int Sheet::getColumnWidth(int col) const
 {
     return columnWidths.getValue(col);
 }
 
+/**
+ * @brief Set row height of row given by index in \row to \a height.
+ * @param row Row index.
+ * @param height New height of row.
+ */
+
 void Sheet::setRowHeight(int row, int height)
 {
     rowHeights.setValue(row, height);
 }
+
+/**
+ * @brief Get height of row at index \a row.
+ * @param row Index of row.
+ * @return Height
+ */
 
 int Sheet::getRowHeight(int row) const
 {
@@ -991,45 +1066,100 @@ void Sheet::removeRows(int row, int count)
     cells.removeRows(row, count);
 }
 
+/**
+ * @brief Set content of cell at \a address to \a value.
+ * @param address Address of cell
+ * @param value New value
+ */
+
 void Sheet::setContent(CellAddress address, const char *value)
 {
     cells.setContent(address, value);
 }
 
-void Sheet::setAlignment(CellAddress address, int _alignment)
+/**
+ * @brief Set alignment of content in cell at \a address to \a alignment.
+ * @param address Address of cell
+ * @param alignment New alignment
+ */
+
+void Sheet::setAlignment(CellAddress address, int alignment)
 {
-    cells.setAlignment(address, _alignment);
+    cells.setAlignment(address, alignment);
 }
 
-void Sheet::setStyle(CellAddress address, const std::set<std::string> &_style)
+/**
+ * @brief Set style of cell at \a address to \a style.
+ * @param address Address of cell
+ * @param style New style
+ */
+
+void Sheet::setStyle(CellAddress address, const std::set<std::string> &style)
 {
-    cells.setStyle(address, _style);
+    cells.setStyle(address, style);
 }
+
+/**
+ * @brief Set foreground (text color) of cell at address \a address to \a color.
+ * @param address Address of cell
+ * @param color New color
+ */
 
 void Sheet::setForeground(CellAddress address, const App::Color &color)
 {
     cells.setForeground(address, color);
 }
 
+/**
+ * @brief Set background color of cell at address \a address to \a color.
+ * @param address Address of cell
+ * @param color New color
+ */
+
 void Sheet::setBackground(CellAddress address, const App::Color &color)
 {
     cells.setBackground(address, color);
 }
+
+/**
+ * @brief Set display unit of cell at address \a address to \a unit.
+ * @param address Address of cell
+ * @param unit New unit
+ */
 
 void Sheet::setDisplayUnit(CellAddress address, const std::string &unit)
 {
     cells.setDisplayUnit(address, unit);
 }
 
+/**
+ * @brief Set computed unit for cell at address \a address to \a unit.
+ * @param address Address of cell
+ * @param unit New unit.
+ */
+
 void Sheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
 {
     cells.setComputedUnit(address, unit);
 }
 
+/**
+ * @brief Set alias for cell at address \a address to \a alias.
+ * @param address Address of cell
+ * @param alias New alias.
+ */
+
 void Sheet::setAlias(CellAddress address, const std::string &alias)
 {
     cells.setAlias(address, alias);
 }
+
+/**
+ * @brief Set row and column span for the cell at address \a address to \a rows and \a columns.
+ * @param address Address to upper right corner of cell
+ * @param rows Rows to span
+ * @param columns Columns to span
+ */
 
 void Sheet::setSpans(CellAddress address, int rows, int columns)
 {
@@ -1047,21 +1177,44 @@ void Sheet::moveCell(CellAddress currPos, CellAddress newPos)
     cells.moveCell(currPos, newPos);
 }
 
+/**
+ * @brief Called when a document object is renamed.
+ * @param docObj Renamed document object.
+ */
+
 void Sheet::renamedDocumentObject(const App::DocumentObject * docObj)
 {
     cells.renamedDocumentObject(docObj);
     cells.touch();
 }
 
+/**
+ * @brief Called when alias \a alias at \a address is removed.
+ * @param address Address of alias.
+ * @param alias Removed alias.
+ */
+
 void Sheet::aliasRemoved(CellAddress address, const std::string & alias)
 {
     removedAliases[address] = alias;
 }
 
+/**
+ * @brief Return a set of dependencies links for cell at \a address.
+ * @param address Address of cell
+ * @return Set of dependencies.
+ */
+
 std::set<std::string> Sheet::dependsOn(CellAddress address) const
 {
     return cells.getDeps(address);
 }
+
+/**
+ * @brief Compute links to cells that cell at \a address provides input to.
+ * @param address Address of cell
+ * @param result Set of links.
+ */
 
 void Sheet::providesTo(CellAddress address, std::set<std::string> & result) const
 {
@@ -1073,6 +1226,12 @@ void Sheet::providesTo(CellAddress address, std::set<std::string> & result) cons
     for (std::set<CellAddress>::const_iterator i = tmpResult.begin(); i != tmpResult.end(); ++i)
         result.insert(std::string(docName) + "#" + std::string(docObjName) + "." + i->toString());
 }
+
+/**
+ * @brief Compute links to cells that cell at \a address provides input to.
+ * @param address Address of cell
+ * @param result Set of links.
+ */
 
 void Sheet::providesTo(CellAddress address, std::set<CellAddress> & result) const
 {
@@ -1088,15 +1247,30 @@ void Sheet::onDocumentRestored()
     execute();
 }
 
+/**
+ * @brief Slot called when a document is relabelled.
+ * @param document Relabelled document.
+ */
+
 void Sheet::onRelabledDocument(const App::Document &document)
 {
     cells.renamedDocument(&document);
     cells.purgeTouched();
 }
 
+/**
+ * @brief Unimplemented.
+ * @param document
+ */
+
 void Sheet::onRenamedDocument(const App::Document &document)
 {
 }
+
+/**
+ * @brief Create a document observer for this sheet. Used to track changes.
+ * @param document document to observer.
+ */
 
 void Sheet::observeDocument(App::Document * document)
 {
