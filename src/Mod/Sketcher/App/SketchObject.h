@@ -222,6 +222,10 @@ public:
     bool evaluateConstraints() const;
     /// Remove constraints with invalid indexes
     void validateConstraints();
+    /// Checks if support is valid
+    bool evaluateSupport(void);
+    /// validate External Links (remove invalid external links)
+    void validateExternalLinks(void);
     
     /// gets DoF of last solver execution
     inline int getLastDoF() const {return lastDoF;}

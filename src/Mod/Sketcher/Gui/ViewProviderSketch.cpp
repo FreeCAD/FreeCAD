@@ -4223,6 +4223,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
     // so as not to trigger an onChanged that would set the document as modified and trigger a recompute
     // if we just close the sketch without touching anything.
+    if(getSketchObject()->Support.getValue())
+        if (!getSketchObject()->evaluateSupport())
+            getSketchObject()->validateExternalLinks();
+    
     getSketchObject()->solve(false);
     UpdateSolverInformation();
     draw(false);
