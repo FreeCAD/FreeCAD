@@ -448,8 +448,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
                 QObject::tr( "Couldn't determin a body for the selected feature '%s'.", selFeature->Label.getValue() ) );
         return;
     } else if ( !selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId () ) &&
-            !selFeature->getTypeId().isDerivedFrom ( PartDesign::Body::getClassTypeId() ) &&
-            body->BaseFeature.getValue() != selFeature ) {
+            selFeature != body && body->BaseFeature.getValue() != selFeature ) {
         QMessageBox::warning (0, QObject::tr( "Selection error" ),
                 QObject::tr( "Only a solid feature can be the tip of a body." ) );
         return;
