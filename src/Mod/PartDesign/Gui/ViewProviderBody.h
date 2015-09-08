@@ -28,7 +28,8 @@
 
 class SoGroup;
 class SoSeparator;
-
+class SbBox3f;
+class SoGetBoundingBoxAction;
 namespace PartDesignGui {
 
 /** ViewProvider of the Body feature
@@ -62,8 +63,16 @@ public:
     virtual bool onDelete(const std::vector<std::string> &);
 
     /// Update the children's highlighting when triggered
-    void updateData(const App::Property* prop);
+    virtual void updateData(const App::Property* prop);
 
+    /// Update the sizes of origin and datums
+    void updateOriginDatumSize ();
+
+    /**
+     * Return the bounding box of visible features
+     * @note datums are counted as their base point only
+     */
+    SbBox3f getBoundBox ();
 private:
     /// group used to store children collected by claimChildren3D() in the through (edit) mode.
     SoGroup *pcBodyChildren;
@@ -72,8 +81,6 @@ private:
 
     /// Update the children's highlighting
     //void updateTree();
-
-
 };
 
 

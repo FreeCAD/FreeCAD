@@ -102,3 +102,7 @@ TopoDS_Shape Datum::getShape() const
     sh.setPlacement(Placement.getValue());
     return sh._Shape;
 }
+
+Base::Vector3d Datum::getBasePoint () const {
+    return Placement.getValue().getPosition();
+}

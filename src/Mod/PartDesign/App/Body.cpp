@@ -410,42 +410,6 @@ App::DocumentObjectExecReturn *Body::execute(void)
 
 }
 
-Base::BoundBox3d Body::getBoundBox()
-{
-    // TODO review the function (2015-08-31, Fat-Zer)
-    Base::BoundBox3d result;
-
-    Part::Feature* tipSolid = static_cast<Part::Feature*>(Tip.getValue());
-    if (tipSolid && tipSolid->Shape.getValue().IsNull()) {
-        // This can happen when a new feature is added without having its Shape property set yet
-        tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature());
-    }
-
-    if (!tipSolid || tipSolid->Shape.getValue().IsNull()) {
-        // TODO check that all callers are correctly handle if bounding box is null (2015-08-31, Fat-Zer)
-        result = Base::BoundBox3d ();
-    } else {
-        result = tipSolid->Shape.getShape().getBoundBox();
-    }
-
-    std::vector<App::DocumentObject*> model = Model.getValues();
-    // TODO: In DatumLine and DatumPlane, recalculate the Base point to be as near as possible to the origin (0,0,0)
-    for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
-        if ((*m)->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
-            PartDesign::Point* point = static_cast<PartDesign::Point*>(*m);
-            result.Add(point->getPoint());
-        } else if ((*m)->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
-            PartDesign::Line* line = static_cast<PartDesign::Line*>(*m);
-            result.Add(line->getBasePoint());
-        } else if ((*m)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
-            PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(*m);
-            result.Add(plane->getBasePoint());
-        }
-    }
-
-    return result;
-}
-
 void Body::onSettingDocument() {
 
     if(connection.connected())

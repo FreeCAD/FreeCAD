@@ -42,10 +42,11 @@ public:
     virtual ~ViewProviderDatumCoordinateSystem();
 
     virtual void updateData(const App::Property*);
-    
+
+    virtual void setExtents (Base::BoundBox3d bbox);
 private:
-    void getPointForDirection(Base::Vector3d Dir, Base::Vector3d& p);
-    
+    void getPointForDirection(Base::Vector3d Dir, const Base::BoundBox3d& bbox, Base::Vector3d& p);
+
     SoTranslation *transX, *transY, *transZ;
     SoFont* font;
 };

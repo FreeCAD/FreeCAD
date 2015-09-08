@@ -43,7 +43,6 @@ public:
         return "PartDesignGui::ViewProviderDatumPlane";
     }
 
-    Base::Vector3d getBasePoint();
     Base::Vector3d getNormal();
 
 protected:

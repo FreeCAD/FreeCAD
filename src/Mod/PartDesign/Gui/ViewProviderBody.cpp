@@ -24,16 +24,21 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
-# include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/SbBox3d.h>
+# include <Precision.hxx>
 #endif
 
 #include <Base/Console.h>
 #include <App/Part.h>
+#include <App/Origin.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderOrigin.h>
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -42,6 +47,7 @@
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumCS.h>
 
+#include "ViewProviderDatum.h"
 #include "Utils.h"
 
 #include "ViewProviderBody.h"
@@ -66,7 +72,6 @@ ViewProviderBody::~ViewProviderBody()
     pcBodyTip->unref ();
 }
 
-
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
@@ -89,11 +94,13 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
 // TODO differnt icon in tree if mode is Through (2015-09-05, Fat-Zer)
 // TODO drag&drop (2015-09-05, Fat-Zer)
+// TODO Add activate () call (2015-09-08, Fat-Zer)
 
 void ViewProviderBody::setDisplayMode(const char* ModeName)
 {
     if ( strcmp("Through",ModeName)==0 )
         setDisplayMaskMode("Through");
+    // TODO Use other Part::features display modes instead of the "Tip" (2015-09-08, Fat-Zer)
     if ( strcmp("Tip",ModeName)==0 )
         setDisplayMaskMode("Tip");
     // TODO When switching into Tip mode switch it's visability to true (2015-09-05, Fat-Zer)
@@ -110,12 +117,17 @@ bool ViewProviderBody::doubleClicked(void)
     // assure the PartDesign workbench
     Gui::Command::assureWorkbench("PartDesignWorkbench");
 
-    //and set correct active objects
-    auto* part = PartDesignGui::getPartFor(getObject(), false);
-    if(part!=Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(PARTKEY))
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, part->getNameInDocument());
+    // and set correct active objects
+    auto* part = App::Part::getPartOfObject ( getObject() );
+    if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
+        Gui::Command::doCommand ( Gui::Command::Gui,
+                "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+                PARTKEY, part->getNameInDocument() );
+    }
 
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, this->getObject()->getNameInDocument());
+    Gui::Command::doCommand ( Gui::Command::Gui,
+            "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+            PDBODYKEY, this->getObject()->getNameInDocument() );
 
     return true;
 }
@@ -166,18 +178,20 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 
     std::vector<App::DocumentObject*> rv;
 
-    if (body->Origin.getValue()) { // Add origin
+    if ( body->Origin.getValue() ) { // Add origin
         rv.push_back (body->Origin.getValue());
     }
     if ( body->BaseFeature.getValue() ) { // Add Base Feature
         rv.push_back (body->BaseFeature.getValue());
     }
 
+    // Add all other stuff
     std::copy (features.begin(), features.end(), std::back_inserter (rv) );
-    // TODO Check what will happen if BaseFature will be shared by severral bodies (2015-08-04, Fat-Zer)
+
     return rv;
 }
 
+// TODO To be deleted (2015-09-08, Fat-Zer)
 //void ViewProviderBody::updateTree()
 //{
 //    if (ActiveGuiDoc == NULL) return;
@@ -211,12 +225,11 @@ bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
 
 void ViewProviderBody::updateData(const App::Property* prop)
 {
-
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
     if (prop == &body->Model || prop == &body->BaseFeature) {
         // update sizes of origins and datums
-        // TODO Write this (2015-09-05, Fat-Zer)
+        updateOriginDatumSize ();
     } else if (prop == &body->Tip) {
         // Adjust the internals to display
         App::DocumentObject *tip = body->Tip.getValue ();
@@ -225,7 +238,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
             Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider (tip);
             if (vp) {
                 SoNode *tipRoot = vp->getRoot ();
-                if ( pcBodyTip->findChild (tipRoot) == -1 ) {
+                if ( pcBodyTip->findChild ( tipRoot ) == -1 ) {
                     pcBodyTip->removeAllChildren ();
                     pcBodyTip->addChild ( tipRoot );
                 }
@@ -238,23 +251,67 @@ void ViewProviderBody::updateData(const App::Property* prop)
         }
     }
 
-    // TODO rewrite this, it's quite a hacky way of notifying (2015-09-05, Fat-Zer)
-    std::vector<App::DocumentObject*> features = body->Model.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
-        App::PropertyPlacement* plm = NULL;
-        if ((*f)->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId()))
-            plm = &(static_cast<PartDesign::Line*>(*f)->Placement);
-        else if ((*f)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId()))
-            plm = &(static_cast<PartDesign::Plane*>(*f)->Placement);
-        else if ((*f)->getTypeId().isDerivedFrom(PartDesign::CoordinateSystem::getClassTypeId()))
-            plm = &(static_cast<PartDesign::CoordinateSystem*>(*f)->Placement);
+    PartGui::ViewProviderPart::updateData(prop);
+}
 
-        if (plm != NULL) {
-            Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
-            if (vp != NULL)
-                vp->updateData(plm);
+void ViewProviderBody::updateOriginDatumSize () {
+    PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
+    // Use different bounding boxes for datums and for origins:
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(this->getActiveView())->getViewer();
+    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+
+    const auto & model = body->getFullModel ();
+
+    // BBox for Datums is calculated from all visible objects but treating datums as their basepoints only
+    SbBox3f bboxDatums = ViewProviderDatum::getRelevantBoundBox ( bboxAction, model );
+    // BBox for origin should take into account datums size also
+    SbBox3f bboxOrigins = bboxDatums;
+
+    for(App::DocumentObject* obj : model) {
+        if ( obj->isDerivedFrom ( Part::Datum::getClassTypeId () ) ) {
+            ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
+            if (!vp) { continue; }
+
+            ViewProviderDatum *vpDatum = static_cast <ViewProviderDatum *> (vp) ;
+
+            vpDatum->setExtents ( bboxDatums );
+
+            bboxAction.apply ( vp->getRoot () );
+            bboxOrigins.extendBy ( bboxAction.getBoundingBox () );
         }
     }
 
-    PartGui::ViewProviderPart::updateData(prop);
+    // get the bounding box values
+    SbVec3f max = bboxOrigins.getMax();
+    SbVec3f min = bboxOrigins.getMin();
+
+    // obtain an Origin and it's ViewProvider
+    App::Origin* origin = 0;
+    Gui::ViewProviderOrigin* vpOrigin = 0;
+    try {
+        origin = body->getOrigin ();
+        assert (origin);
+
+        Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider(origin);
+        if (!vp) {
+            throw Base::Exception ("No view provider linked to the Origin");
+        }
+        assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
+        vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
+    } catch (const Base::Exception &ex) {
+        Base::Console().Error ("%s\n", ex.what() );
+        return;
+    }
+
+    // calculate the desired origin size
+    Base::Vector3d size;
+
+    for (uint_fast8_t i=0; i<3; i++) {
+        size[i] = std::max ( fabs ( max[i] ), fabs ( min[i] ) );
+        if (size[i] < Precision::Confusion() ) {
+            size[i] = Gui::ViewProviderOrigin::defaultSize();
+        }
+    }
+
+    vpOrigin->Size.setValue ( size*1.2 );
 }

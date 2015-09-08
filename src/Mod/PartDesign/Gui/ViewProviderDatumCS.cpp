@@ -62,7 +62,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumCoordinateSystem,PartDesignGui::
 ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
 {
     sPixmap = "PartDesign_CoordinateSystem.svg";
-    
+
     SoMaterial* material = new SoMaterial();
     material->diffuseColor.setNum(4);
     material->diffuseColor.set1Value(0, SbColor(0.f, 0.f, 0.f));
@@ -73,7 +73,7 @@ ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
     binding->value = SoMaterialBinding::PER_FACE_INDEXED;
     pShapeSep->addChild(binding);
     pShapeSep->addChild(material);
-    
+
     font = new SoFont();
     font->ref();
     transX = new SoTranslation();
@@ -95,15 +95,21 @@ ViewProviderDatumCoordinateSystem::~ViewProviderDatumCoordinateSystem()
 void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
 {
     if (strcmp(prop->getName(),"Placement") == 0) {
-        
-        
+        updateExtents ();
+    }
+
+    ViewProviderDatum::updateData(prop);
+}
+
+void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
+    // TODO Review the function (2015-09-08, Fat-Zer)
         Base::Vector3d base(0,0,0);
         Base::Vector3d dir(0,0,1);
         Base::Vector3d x, y, z;
-        getPointForDirection(Base::Vector3d(1,0,0), x);
-        getPointForDirection(Base::Vector3d(0,1,0), y);
-        getPointForDirection(Base::Vector3d(0,0,1), z);
-        
+        getPointForDirection(Base::Vector3d(1,0,0), bbox, x);
+        getPointForDirection(Base::Vector3d(0,1,0), bbox, y);
+        getPointForDirection(Base::Vector3d(0,0,1), bbox, z);
+
         //normalize all to equal lengths
         Base::Vector3d axis = (x.Sqr() > y.Sqr()) ? x : y;
         axis = (axis.Sqr() > z.Sqr()) ? axis : z;
@@ -141,7 +147,7 @@ void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
             lineSet->materialIndex.set1Value(1,2);
             lineSet->materialIndex.set1Value(2,3);
             pShapeSep->addChild(lineSet);
-            
+
             pShapeSep->addChild(font);
             font->size = axis.Length()/10.;
             pShapeSep->addChild(transX);
@@ -162,14 +168,14 @@ void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
             t = new SoAsciiText();
             t->string = "Z";
             pShapeSep->addChild(t);
-            
+
         } else {
             coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(2));
             coord->point.set1Value(0, base.x, base.y, base.z);
             coord->point.set1Value(1, x.x, x.y, x.z);
             coord->point.set1Value(2, y.x, y.y, y.z);
             coord->point.set1Value(3, z.x, z.y, z.z);
-            
+
             x = 9./10.*x;
             y = 9./10.*y;
             font->size = axis.Length()/10.;
@@ -177,24 +183,21 @@ void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
             transY->translation.setValue(SbVec3f(-x.x + y.x, x.y + y.y, -x.z + y.z));
             transZ->translation.setValue(SbVec3f(-y.x + z.x, -y.y + z.y, -y.z + z.z));
         }
-    }
-    
-    ViewProviderDatum::updateData(prop);
 }
 
-void ViewProviderDatumCoordinateSystem::getPointForDirection(Base::Vector3d dir, Base::Vector3d& p) {
+void ViewProviderDatumCoordinateSystem::getPointForDirection(Base::Vector3d dir, const Base::BoundBox3d& in_bbox, Base::Vector3d& p) {
 
     // Gets called whenever a property of the attached object changes
     PartDesign::CoordinateSystem* pcDatum = static_cast<PartDesign::CoordinateSystem*>(this->getObject());
     Base::Placement plm = pcDatum->Placement.getValue();
     plm.invert();
-    
+
     Base::Vector3d base(0,0,0);
     // Get limits of the line from bounding box of the body
     PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
     if (body == NULL)
         return;
-    Base::BoundBox3d bbox = body->getBoundBox();
+    Base::BoundBox3d bbox = in_bbox;
     bbox = bbox.Transformed(plm.toMatrix());
     bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
     if (bbox.IsInBox(base)) {

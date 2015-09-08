@@ -117,9 +117,6 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
-    /// Return the bounding box of the Tip Shape, taking into account datum features
-    Base::BoundBox3d getBoundBox();
-
     /// Returns the origin link or throws an exception
     App::Origin *getOrigin () const;
 

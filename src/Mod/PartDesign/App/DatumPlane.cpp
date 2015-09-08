@@ -98,11 +98,6 @@ void Plane::onChanged(const App::Property *prop)
     Part::Datum::onChanged(prop);
 }
 
-Base::Vector3d Plane::getBasePoint()
-{
-    return Placement.getValue().getPosition();
-}
-
 Base::Vector3d Plane::getNormal()
 {
     Base::Rotation rot = Placement.getValue().getRotation();

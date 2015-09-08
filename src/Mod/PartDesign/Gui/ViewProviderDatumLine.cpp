@@ -54,7 +54,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumLine,PartDesignGui::ViewProvider
 ViewProviderDatumLine::ViewProviderDatumLine()
 {
     sPixmap = "PartDesign_Line.svg";
-    
+    // TODO Let the base class handle material (2015-09-07, Fat-Zer)
     SoMaterial* material = new SoMaterial();
     material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
     material->transparency.setValue(0.2f);
@@ -72,47 +72,52 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
     PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
 
     if (strcmp(prop->getName(),"Placement") == 0) {
-        Base::Placement plm = pcDatum->Placement.getValue();
-        plm.invert();
-        Base::Vector3d base(0,0,0);
-        Base::Vector3d dir(0,0,1);
-
-        // Get limits of the line from bounding box of the body
-        Base::BoundBox3d bbox = this->getRelevantExtents();
-
-        bbox = bbox.Transformed(plm.toMatrix());
-        Base::Vector3d p1, p2;
-        if (bbox.IsInBox(base)) {
-            bbox.IntersectionPoint(base, dir, p1, Precision::Confusion());
-            bbox.IntersectionPoint(base, -dir, p2, Precision::Confusion());
-        } else {
-            bbox.IntersectWithLine(base, dir, p1, p2);
-            if ((p1 == Base::Vector3d(0,0,0)) && (p2 == Base::Vector3d(0,0,0)))
-                bbox.IntersectWithLine(base, -dir, p1, p2);
-        }
-
-        // Display the line
-        PartGui::SoBrepEdgeSet* lineSet;
-        SoCoordinate3* coord;
-
-        if (pShapeSep->getNumChildren() == 1) {
-            coord = new SoCoordinate3();
-            coord->point.setNum(2);
-            coord->point.set1Value(0, p1.x, p1.y, p1.z);
-            coord->point.set1Value(1, p2.x, p2.y, p2.z);
-            pShapeSep->addChild(coord);
-            lineSet = new PartGui::SoBrepEdgeSet();
-            lineSet->coordIndex.setNum(2);
-            lineSet->coordIndex.set1Value(0, 0);
-            lineSet->coordIndex.set1Value(1, 1);
-            pShapeSep->addChild(lineSet);
-        } else {
-            coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
-            coord->point.set1Value(0, p1.x, p1.y, p1.z);
-            coord->point.set1Value(1, p2.x, p2.y, p2.z);
-        }
+        updateExtents ();
     }
 
     ViewProviderDatum::updateData(prop);
 }
 
+
+void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
+    PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
+
+    Base::Placement plm = pcDatum->Placement.getValue();
+    plm.invert();
+    Base::Vector3d base(0,0,0);
+    Base::Vector3d dir(0,0,1);
+
+    // TODO transform point rather the bbox (2015-09-07, Fat-Zer)
+    Base::BoundBox3d my_bbox = bbox.Transformed(plm.toMatrix());
+    Base::Vector3d p1, p2;
+    if (my_bbox.IsInBox(base)) {
+        my_bbox.IntersectionPoint(base, dir, p1, Precision::Confusion());
+        my_bbox.IntersectionPoint(base, -dir, p2, Precision::Confusion());
+    } else {
+        my_bbox.IntersectWithLine(base, dir, p1, p2);
+        if ((p1 == Base::Vector3d(0,0,0)) && (p2 == Base::Vector3d(0,0,0)))
+            my_bbox.IntersectWithLine(base, -dir, p1, p2);
+    }
+
+    // Display the line
+    PartGui::SoBrepEdgeSet* lineSet;
+    SoCoordinate3* coord;
+
+    // TODO Move initialization to the attach() (2015-09-07, Fat-Zer)
+    if (pShapeSep->getNumChildren() == 1) {
+        coord = new SoCoordinate3();
+        coord->point.setNum(2);
+        coord->point.set1Value(0, p1.x, p1.y, p1.z);
+        coord->point.set1Value(1, p2.x, p2.y, p2.z);
+        pShapeSep->addChild(coord);
+        lineSet = new PartGui::SoBrepEdgeSet();
+        lineSet->coordIndex.setNum(2);
+        lineSet->coordIndex.set1Value(0, 0);
+        lineSet->coordIndex.set1Value(1, 1);
+        pShapeSep->addChild(lineSet);
+    } else {
+        coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
+        coord->point.set1Value(0, p1.x, p1.y, p1.z);
+        coord->point.set1Value(1, p2.x, p2.y, p2.z);
+    }
+}

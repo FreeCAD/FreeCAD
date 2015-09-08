@@ -55,7 +55,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPlane,PartDesignGui::ViewProvide
 ViewProviderDatumPlane::ViewProviderDatumPlane()
 {
     sPixmap = "PartDesign_Plane.svg";
-    
+    // TODO Use general material object (2015-09-07, Fat-Zer)
     SoMaterial* material = new SoMaterial();
     material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
     material->transparency.setValue(0.5f);
@@ -73,13 +73,23 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
     PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
 
     if (strcmp(prop->getName(),"Placement") == 0) {
+        updateExtents ();
+    }
+
+    ViewProviderDatum::updateData(prop);
+}
+
+
+void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
+    PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
+
         Base::Placement plm = pcDatum->Placement.getValue();
+
         plm.invert();
         Base::Vector3d base(0,0,0);
         Base::Vector3d normal(0,0,1);
 
         // Get limits of the plane from bounding box of the body
-        Base::BoundBox3d bbox = this->getRelevantExtents();
         bbox = bbox.Transformed(plm.toMatrix());
         double dlength = bbox.CalcDiagonalLength();
         if (dlength < Precision::Confusion())
@@ -246,9 +256,5 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
             lineSet->coordIndex.set1Value(points.size(), 0);
             lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);
         }
-    }
-
-    ViewProviderDatum::updateData(prop);
 }
-
 
