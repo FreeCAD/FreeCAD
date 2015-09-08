@@ -50,7 +50,7 @@ public:
     //@{
     /// Id e.g. Part number
     App::PropertyString  Id;
-    /// unique identifier of the Item 
+    /// unique identifier of the Item
     App::PropertyUUID    Uid;
     /// material descriptons
     App::PropertyMap     Material;
@@ -83,6 +83,15 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "Gui::ViewProviderPart";
     }
+
+    /**
+     * Returns the part which contains this object.
+     * In case this object is not belongs to any Part 0 is returned.
+     * @param obj       the object to search for
+     * @param indirect  if true return if the part that so-called geoHas the object, @see geoHasObject()
+     *                  default is true
+     */
+    static App::Part* getPartOfObject (const DocumentObject* obj, bool indirect=true);
 
     virtual PyObject *getPyObject(void);
 };

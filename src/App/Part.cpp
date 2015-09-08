@@ -66,6 +66,26 @@ Part::~Part(void)
 {
 }
 
+App::Part *Part::getPartOfObject (const DocumentObject* obj, bool indirect) {
+    const Document* doc = obj->getDocument();
+    std::vector<DocumentObject*> grps = doc->getObjectsOfType ( Part::getClassTypeId() );
+
+    for (auto partObj: grps) {
+        Part* part = static_cast <Part* >(partObj);
+        if ( indirect ) {
+            if ( part->geoHasObject (obj) ) {
+                return part;
+            }
+        } else {
+            if ( part->hasObject (obj) ) {
+                return part;
+            }
+        }
+    }
+
+    return 0;
+}
+
 
 PyObject *Part::getPyObject()
 {
@@ -73,7 +93,7 @@ PyObject *Part::getPyObject()
         // ref counter is set to 1
         PythonObject = Py::Object(new PartPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 // Python feature ---------------------------------------------------------
