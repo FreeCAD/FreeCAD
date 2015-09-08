@@ -24,11 +24,7 @@
 #ifndef PARTDESIGN_DATUMLINE_H
 #define PARTDESIGN_DATUMLINE_H
 
-#include <QString>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/AttachableObject.h>
 
 namespace PartDesign
 {
@@ -46,10 +42,6 @@ public:
     }
 
     Base::Vector3d getDirection() const;
-
-protected:
-    virtual void onChanged(const App::Property* prop);
-
 };
 
 } //namespace PartDesign

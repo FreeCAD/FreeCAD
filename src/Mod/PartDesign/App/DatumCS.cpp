@@ -22,38 +22,20 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-// TODO Cleanup headers (2015-09-04, Fat-Zer)
-#include "DatumCS.h"
-#include "DatumPoint.h"
-#include "DatumPlane.h"
-#include "DatumLine.h"
-#include <Base/Exception.h>
-#include <gp_Pln.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <TopoDS.hxx>
-#include <GeomAbs_SurfaceType.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Geom_Plane.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <GeomAbs_CurveType.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Quaternion.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <QObject>
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
+#ifndef _PreComp_
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <gp_Pln.hxx>
 #endif
+
+#include "DatumCS.h"
 
 using namespace PartDesign;
 
 
 // ============================================================================
 
-    
+
 PROPERTY_SOURCE(PartDesign::CoordinateSystem, Part::Datum)
 
 CoordinateSystem::CoordinateSystem()
@@ -69,11 +51,6 @@ CoordinateSystem::CoordinateSystem()
 
 CoordinateSystem::~CoordinateSystem()
 {
-}
-
-void CoordinateSystem::onChanged(const App::Property *prop)
-{
-    Part::Datum::onChanged(prop);
 }
 
 Base::Vector3d CoordinateSystem::getXAxis()

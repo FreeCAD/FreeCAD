@@ -24,8 +24,6 @@
 #ifndef PARTDESIGN_DATUMCS_H
 #define PARTDESIGN_DATUMCS_H
 
-#include <QString>
-#include <App/PropertyLinks.h>
 #include <Mod/Part/App/DatumFeature.h>
 
 namespace PartDesign
@@ -46,10 +44,6 @@ public:
     Base::Vector3d getXAxis();
     Base::Vector3d getYAxis();
     Base::Vector3d getZAxis();
-
-protected:
-    virtual void onChanged(const App::Property* prop);
-
 };
 
 } //namespace PartDesign

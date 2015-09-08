@@ -22,48 +22,12 @@
 
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <cfloat>
-# include <BRepLib.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepBuilderAPI_GTransform.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_GTrsf.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_Line.hxx>
-# include <Handle_Geom_Curve.hxx>
-# include <Handle_Geom_Surface.hxx>
-# include <Handle_Geom_Plane.hxx>
-# include <Handle_Geom2d_Line.hxx>
-# include <GeomAPI_IntCS.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
-# include <Precision.hxx>
-# include <Standard_Real.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Standard_Version.hxx>
 #endif
 
 #include "DatumFeature.h"
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include "Mod/Part/App/PrimitiveFeature.h"
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
 
 using namespace Part;
 using namespace Attacher;
@@ -77,16 +41,6 @@ Datum::Datum(void)
 
 Datum::~Datum()
 {
-}
-
-void Datum::onChanged (const App::Property* prop)
-{
-    AttachableObject::onChanged(prop);
-}
-
-App::DocumentObjectExecReturn *Datum::execute(void)
-{
-    return AttachableObject::execute();
 }
 
 void Datum::onDocumentRestored()

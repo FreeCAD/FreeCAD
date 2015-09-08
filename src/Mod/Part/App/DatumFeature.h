@@ -45,9 +45,6 @@ public:
     virtual ~Datum();
     //short mustExecute();
 
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-
     /// returns the type name of the view provider
     virtual const char* getViewProviderName(void) const = 0;
 
@@ -57,7 +54,6 @@ public:
     /// Returns a point of the feature it counts as it's base
     virtual Base::Vector3d getBasePoint () const;
 protected:
-    void onChanged (const App::Property* prop);
     void onDocumentRestored();
 };
 
