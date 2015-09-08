@@ -51,16 +51,22 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         else:
             raise Exception('FEM: No active analysis found!')
 
+    ## Removes all result objects
+    #  @param self The python object self
     def purge_results(self):
         for m in self.analysis.Member:
             if (m.isDerivedFrom('Fem::FemResultObject')):
                 FreeCAD.ActiveDocument.removeObject(m.Name)
         self.results_present = False
 
+    ## Resets mesh deformation
+    #  @param self The python object self
     def reset_mesh_deformation(self):
         if self.mesh:
             self.mesh.ViewObject.applyDisplacement(0.0)
 
+    ## Resets mesh color
+    #  @param self The python object self
     def reset_mesh_color(self):
         if self.mesh:
             self.mesh.ViewObject.NodeColor = {}
