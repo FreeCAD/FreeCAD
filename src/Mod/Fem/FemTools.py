@@ -73,6 +73,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.mesh.ViewObject.ElementColor = {}
             self.mesh.ViewObject.setNodeColorByScalars()
 
+    ## Resets mesh color, deformation and removes all result objects
+    #  @param self The python object self
+    def reset_all(self):
+        self.purge_results()
+        self.reset_mesh_color()
+        self.reset_mesh_deformation()
+
     def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":

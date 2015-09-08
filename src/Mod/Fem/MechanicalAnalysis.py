@@ -135,9 +135,7 @@ class _CommandPurgeFemResults:
 
     def Activated(self):
         fea = FemTools()
-        fea.purge_results()
-        fea.reset_mesh_color()
-        fea.reset_mesh_deformation()
+        fea.reset_all()
 
     def IsActive(self):
         return FreeCADGui.ActiveDocument is not None and results_present()
@@ -159,9 +157,7 @@ class _CommandQuickAnalysis:
                 print "CalculiX failed ccx finished with error {}".format(ret_code)
 
         self.fea = FemTools()
-        self.fea.purge_results()
-        self.fea.reset_mesh_color()
-        self.fea.reset_mesh_deformation()
+        self.fea.reset_all()
         message = self.fea.check_prerequisites()
         if message:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
@@ -194,9 +190,7 @@ class _CommandFrequencyAnalysis:
                 print "CalculiX failed ccx finished with error {}".format(ret_code)
 
         self.fea = FemTools()
-        self.fea.purge_results()
-        self.fea.reset_mesh_color()
-        self.fea.reset_mesh_deformation()
+        self.fea.reset_all()
         self.fea.set_analysis_type('frequency')
         message = self.fea.check_prerequisites()
         if message:
@@ -397,9 +391,7 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("Loading result sets...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
-        fea.purge_results()
-        fea.reset_mesh_color()
-        fea.reset_mesh_deformation()
+        fea.reset_all()
         if os.path.isfile(self.base_name + '.frd'):
             QApplication.setOverrideCursor(Qt.WaitCursor)
             ccxFrdReader.importFrd(self.base_name + '.frd', FemGui.getActiveAnalysis())
