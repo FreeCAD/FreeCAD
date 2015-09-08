@@ -24,8 +24,6 @@
 #ifndef PARTDESIGN_DATUMPLANE_H
 #define PARTDESIGN_DATUMPLANE_H
 
-#include <QString>
-#include <App/PropertyLinks.h>
 #include <Mod/Part/App/DatumFeature.h>
 
 namespace PartDesign
@@ -44,9 +42,6 @@ public:
     }
 
     Base::Vector3d getNormal();
-
-protected:
-    virtual void onChanged(const App::Property* prop);
 };
 
 } //namespace PartDesign
