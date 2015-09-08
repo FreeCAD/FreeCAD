@@ -1673,7 +1673,7 @@ def fillet(lEdges,r,chamfer=False):
             return existingCurveType
             
     rndEdges = lEdges[0:2]
-    rndEdges = Part__sortEdges__(rndEdges)
+    rndEdges = Part.__sortEdges__(rndEdges)
 
     if len(rndEdges) < 2 :
         return rndEdges
