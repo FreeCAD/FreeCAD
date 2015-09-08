@@ -2763,6 +2763,98 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
     return 0;
 }
 
+bool SketchObject::evaluateSupport(void)
+{
+    // returns false if the shape if broken, null or non-planar
+    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
+    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        return false;
+    
+    const std::vector<std::string> &sub = Support.getSubValues();
+    assert(sub.size()==1);
+    // get the selected sub shape (a Face)
+    const Part::TopoShape &shape = part->Shape.getShape();
+    
+    if (shape._Shape.IsNull())
+        return false;
+    
+    TopoDS_Shape sh;
+    try {
+        sh = shape.getSubShape(sub[0].c_str());
+    }
+    catch (Standard_Failure) {
+        return false;
+    }
+    const TopoDS_Face &face = TopoDS::Face(sh);
+    if (face.IsNull())
+        return false;
+    
+    BRepAdaptor_Surface adapt(face);
+    if (adapt.GetType() != GeomAbs_Plane)
+        return false; // No planar face
+    
+    return true;
+}
+
+void SketchObject::validateExternalLinks(void)
+{
+    std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
+    std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+    
+    bool rebuild = false ;
+    
+    for (int i=0; i < int(Objects.size()); i++) {
+        const App::DocumentObject *Obj=Objects[i];
+        const std::string SubElement=SubElements[i];
+        
+        const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
+        const Part::TopoShape& refShape=refObj->Shape.getShape();
+        
+        TopoDS_Shape refSubShape;
+        try {
+            refSubShape = refShape.getSubShape(SubElement.c_str());
+        }
+        catch (Standard_Failure) {
+            rebuild = true ;
+            Objects.erase(Objects.begin()+i);
+            SubElements.erase(SubElements.begin()+i);
+                        
+            const std::vector< Constraint * > &constraints = Constraints.getValues();
+            std::vector< Constraint * > newConstraints(0);
+            int GeoId = -3 - i;
+            for (std::vector<Constraint *>::const_iterator it = constraints.begin();
+                 it != constraints.end(); ++it) {
+                if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
+                    Constraint *copiedConstr = (*it)->clone();
+                    if (copiedConstr->First < GeoId &&
+                        copiedConstr->First != Constraint::GeoUndef)
+                        copiedConstr->First += 1;
+                    if (copiedConstr->Second < GeoId &&
+                        copiedConstr->Second != Constraint::GeoUndef)
+                        copiedConstr->Second += 1;
+                    if (copiedConstr->Third < GeoId &&
+                        copiedConstr->Third != Constraint::GeoUndef)
+                        copiedConstr->Third += 1;
+                    
+                    newConstraints.push_back(copiedConstr);
+                }
+            }
+            
+            Constraints.setValues(newConstraints);
+            i--; // we deleted an item, so the next one took its place
+        }  
+    }
+    
+    if (rebuild) {
+        ExternalGeometry.setValues(Objects,SubElements);
+        rebuildExternalGeometry();
+        Constraints.acceptGeometry(getCompleteGeometry());
+        rebuildVertexIndex();
+        solve(true); // we have to update this sketch and everything depending on it.
+    }
+    
+}
+
 void SketchObject::rebuildExternalGeometry(void)
 {
     // get the actual lists of the externals
@@ -3570,7 +3662,10 @@ void SketchObject::onChanged(const App::Property* prop)
 void SketchObject::onDocumentRestored()
 {
     try {
-        rebuildExternalGeometry();
+        if(Support.getValue()) {
+            validateExternalLinks();
+            rebuildExternalGeometry();            
+        }
         Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (...) {
