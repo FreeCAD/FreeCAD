@@ -664,9 +664,9 @@ def isLine(bsp):
 
 
 def sortEdges(edges):
-    "Deprecated. Use Part__sortEdges__ instead"
+    "Deprecated. Use Part.__sortEdges__ instead"
     
-    raise DeprecationWarning("Deprecated. Use Part__sortEdges__ instead")
+    raise DeprecationWarning("Deprecated. Use Part.__sortEdges__ instead")
     
     # Build a dictionary of edges according to their end points.
     # Each entry is a set of edges that starts, or ends, at the
@@ -742,9 +742,9 @@ def sortEdges(edges):
 
 
 def sortEdgesOld(lEdges, aVertex=None):
-    "Deprecated. Use Part__sortEdges__ instead"
+    "Deprecated. Use Part.__sortEdges__ instead"
     
-    raise DeprecationWarning("Deprecated. Use Part__sortEdges__ instead")
+    raise DeprecationWarning("Deprecated. Use Part.__sortEdges__ instead")
     
     #There is no reason to limit this to lines only because every non-closed edge always
     #has exactly two vertices (wmayer)
@@ -1601,7 +1601,7 @@ def getCubicDimensions(shape):
 def removeInterVertices(wire):
         '''removeInterVertices(wire) - remove unneeded vertices (those that
         are in the middle of a straight line) from a wire, returns a new wire.'''
-        edges = Part__sortEdges__(wire.Edges)
+        edges = Part.__sortEdges__(wire.Edges)
         nverts = []
         def getvec(v1,v2):
                 if not abs(round(v1.getAngle(v2),precision()) in [0,round(math.pi,precision())]):
@@ -1673,7 +1673,7 @@ def fillet(lEdges,r,chamfer=False):
             return existingCurveType
             
     rndEdges = lEdges[0:2]
-    rndEdges = Part__sortEdges__(rndEdges)
+    rndEdges = Part.__sortEdges__(rndEdges)
 
     if len(rndEdges) < 2 :
         return rndEdges
