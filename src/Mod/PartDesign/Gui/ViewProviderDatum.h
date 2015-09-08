@@ -27,6 +27,9 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
 
+class SbBox3f;
+class SoGetBoundingBoxAction;
+
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject
@@ -39,7 +42,7 @@ public:
     /// destructor
     virtual ~ViewProviderDatum();
 
-    /// grouping handling 
+    /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual void attach(App::DocumentObject *);
@@ -57,26 +60,49 @@ public:
     virtual std::string getElement(const SoDetail *) const;
     virtual SoDetail* getDetail(const char*) const;
 
+    /**
+     * Update the visual size to match the given extents
+     * @note should be reimplemented in the offspings
+     * @note use FreeCAD-specific bbox here to simplify the math in derived classes
+     */
+    virtual void setExtents (Base::BoundBox3d bbox)
+        { }
+
+    /// Update the visual sizes. This overloaded version of the previous function to allow pass coin type
+    void setExtents (const SbBox3f &bbox);
+
+    /// update size to match the guessed bounding box
+    void updateExtents ();
+
     /// The datum type (Plane, Line or Point)
+    // TODO remove this atribute (2015-09-08, Fat-Zer)
     QString datumType;
+
+    /**
+     * Computes apropriate bounding box for the given list of objects to be passed to setExtents ()
+     * @param bboxAction  a coin action for traverse the given objects views.
+     * @param objs        the list of objects to traverse, due to we traverse the scene graph, the geo children
+     *                    will likely be traveresed too.
+     */
+    static SbBox3f getRelevantBoundBox (
+            SoGetBoundingBoxAction &bboxAction,
+            const std::vector <App::DocumentObject *> &objs);
 
 protected:
     void onChanged(const App::Property* prop);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
-
-    //
     /**
-     * @brief getRelevantExtents computes the bounding box of the objects
-     * relevant to the datum feature, which is intended to be used for
-     * determinimg the size of the rendered piece of the datum.
-     * @return Bounding box of body, if the datum is in a body. Bounding box of
-     * all visible shapes of a part, if in a part but not in a body. Bounding
-     * box of all visible Part::Feature-derived objects if just in a document.
-     * This behavior is subject to change.
+     * Gueses the context this datum belongs to and returns apropriate bounding box of all
+     *  visiable content of the feature
+     *
+     * Currently known contexts are:
+     *  - PartDesign::Body
+     *  - App::DocumentObjectGroup (App::Part as well as subclass)
+     *  - Whole document
      */
-    virtual Base::BoundBox3d getRelevantExtents();
+    SbBox3f getRelevantBoundBox() const;
 
 protected:
     SoSeparator* pShapeSep;

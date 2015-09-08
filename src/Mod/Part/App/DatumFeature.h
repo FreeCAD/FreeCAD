@@ -54,6 +54,8 @@ public:
     /// Return a shape including Placement representing the datum feature
     TopoDS_Shape getShape() const;
 
+    /// Returns a point of the feature it counts as it's base
+    virtual Base::Vector3d getBasePoint () const;
 protected:
     void onChanged (const App::Property* prop);
     void onDocumentRestored();

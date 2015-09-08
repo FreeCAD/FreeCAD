@@ -40,6 +40,7 @@ public:
 
     virtual void updateData(const App::Property*);
 
+    virtual void setExtents (Base::BoundBox3d bbox);
 };
 
 } // namespace PartDesignGui

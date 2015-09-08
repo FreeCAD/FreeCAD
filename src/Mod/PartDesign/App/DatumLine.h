@@ -45,7 +45,6 @@ public:
         return "PartDesignGui::ViewProviderDatumLine";
     }
 
-    Base::Vector3d getBasePoint() const;
     Base::Vector3d getDirection() const;
 
 protected:

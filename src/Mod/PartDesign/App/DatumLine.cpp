@@ -100,11 +100,6 @@ void Line::onChanged(const App::Property *prop)
     Part::Datum::onChanged(prop);
 }
 
-Base::Vector3d Line::getBasePoint() const
-{
-    return Placement.getValue().getPosition();
-}
-
 Base::Vector3d Line::getDirection() const
 {
     Base::Rotation rot = Placement.getValue().getRotation();

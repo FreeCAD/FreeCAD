@@ -40,6 +40,7 @@ public:
 
     virtual void updateData(const App::Property*);
 
+    // Note: don't overload setExtents () here because point doesn't really depends on it
 };
 
 } // namespace PartDesignGui

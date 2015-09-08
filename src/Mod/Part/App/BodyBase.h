@@ -59,6 +59,16 @@ public:
      */
     App::PropertyLink BaseFeature;
 
+    /// Returns all Model objects prepanded by BaseFeature (if any)
+    std::vector<App::DocumentObject *> getFullModel () {
+        std::vector<App::DocumentObject *> rv;
+        if ( BaseFeature.getValue () ) {
+            rv.push_back ( BaseFeature.getValue () );
+        }
+        std::copy ( Model.getValues ().begin (), Model.getValues ().end (), std::back_inserter (rv) );
+        return rv;
+    }
+
     // These methods are located here to avoid a dependency of ViewProviderSketchObject on PartDesign
     /// Remove the feature from the body
     virtual void removeFeature(App::DocumentObject* feature){}

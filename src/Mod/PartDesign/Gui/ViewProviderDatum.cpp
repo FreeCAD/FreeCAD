@@ -27,6 +27,7 @@
 # include <QMessageBox>
 # include <QAction>
 # include <QMenu>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoShapeHints.h>
@@ -52,10 +53,13 @@
 #endif
 
 #include <App/DocumentObjectGroup.h>
+#include <App/GeoFeatureGroup.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/MDIView.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -64,6 +68,7 @@
 #include <Mod/PartDesign/App/DatumCS.h>
 
 #include "TaskDatumParameters.h"
+#include "ViewProviderBody.h"
 #include "Utils.h"
 
 #include "ViewProviderDatum.h"
@@ -73,7 +78,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
 
 ViewProviderDatum::ViewProviderDatum()
-{    
+{
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
 
@@ -304,39 +309,73 @@ void ViewProviderDatum::unsetEdit(int ModNum)
     }
 }
 
-Base::BoundBox3d ViewProviderDatum::getRelevantExtents()
-{
-    Base::BoundBox3d bbox;
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
-    if (body != NULL)
-        bbox = body->getBoundBox();
-    else {
-        App::DocumentObjectGroup* group =  App::DocumentObjectGroup::getGroupOfObject(this->getObject());
-        std::vector<App::DocumentObject*> objs;
-
-        if(group)
-            objs = group->getObjectsOfType(Part::Feature::getClassTypeId());
-        else
-            objs = this->getObject()->getDocument()->getObjectsOfType(Part::Feature::getClassTypeId());
-
-        for(App::DocumentObject* obj: objs){
-            Part::Feature* feat = static_cast<Part::Feature*>(obj);
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(feat);
-            if (vp->isVisible()){
-                Base::BoundBox3d bbf = feat->Shape.getBoundingBox();
-                if (bbf.CalcDiagonalLength() < Precision::Infinite())
-                    bbox.Add(bbf);
-            }
-
-        }
-        if (bbox.CalcDiagonalLength() < Precision::Confusion()){
-            bbox.Add(Base::Vector3d(-10.0,-10.0,-10.0));
-            bbox.Add(Base::Vector3d(10.0,10.0,10.0));
-        }
-
-    }
-    bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
-    return bbox;
-
+void ViewProviderDatum::updateExtents () {
+    setExtents ( getRelevantBoundBox () );
 }
 
+void ViewProviderDatum::setExtents (const SbBox3f &bbox) {
+    const SbVec3f & min = bbox.getMin ();
+    const SbVec3f & max = bbox.getMax ();
+    setExtents ( Base::BoundBox3d ( min.getValue()[0], min.getValue()[1], min.getValue()[2],
+                                    max.getValue()[0], max.getValue()[1], max.getValue()[2] ) );
+}
+
+SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
+    std::vector<App::DocumentObject *> objs;
+
+    // Probe body first
+    PartDesign::Body* body = PartDesign::Body::findBodyOf ( this->getObject() );
+    if (body) {
+        objs = body->getFullModel ();
+    } else {
+        // Probe if we belongs to some group
+        App::DocumentObjectGroup* group =  App::DocumentObjectGroup::getGroupOfObject ( this->getObject () );
+
+        if(group) {
+            objs = group->getObjects ();
+        } else {
+            // Fallback to whole document
+            objs = this->getObject ()->getDocument ()->getObjects ();
+        }
+    }
+
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(this->getActiveView())->getViewer();
+    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+    SbBox3f bbox = getRelevantBoundBox (bboxAction, objs);
+
+    if ( bbox.getVolume () < Precision::Confusion() ) {
+        bbox.extendBy ( SbVec3f (-10.0,-10.0,-10.0) );
+        bbox.extendBy ( SbVec3f ( 10.0, 10.0, 10.0) );
+    }
+
+    return bbox;
+}
+
+SbBox3f ViewProviderDatum::getRelevantBoundBox (
+        SoGetBoundingBoxAction &bboxAction, const std::vector <App::DocumentObject *> &objs )
+{
+    SbBox3f bbox(0,0,0, 0,0,0);
+
+    // Adds the bbox of given feature to the output
+    for (auto obj :objs) {
+        ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) { continue; }
+        if (!vp->isVisible ()) { continue; }
+
+        if (obj->isDerivedFrom (Part::Datum::getClassTypeId() ) ) {
+            // Treat datums only as their basepoint
+            // I hope it's ok to take FreeCAD's point here
+            Base::Vector3d basePoint = static_cast<Part::Datum *> ( obj )->getBasePoint ();
+            bbox.extendBy (SbVec3f(basePoint.x, basePoint.y, basePoint.z ));
+        } else {
+            bboxAction.apply ( vp->getRoot () );
+            SbBox3f obj_bbox =  bboxAction.getBoundingBox ();
+
+            if ( obj_bbox.getVolume () < Precision::Infinite () ) {
+                bbox.extendBy ( obj_bbox );
+            }
+        }
+    }
+
+    return bbox;
+}

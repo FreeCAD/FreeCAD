@@ -66,6 +66,7 @@ ViewProviderDatumPoint::~ViewProviderDatumPoint()
 
 void ViewProviderDatumPoint::updateData(const App::Property* prop)
 {
+    // TODO Review this (2015-09-07, Fat-Zer)
     if (strcmp(prop->getName(),"Placement") == 0) {
         // The only reason to do this is to display the point in the correct position after loading the document
         SoMarkerSet* marker = static_cast<SoMarkerSet*>(pShapeSep->getChild(1));
