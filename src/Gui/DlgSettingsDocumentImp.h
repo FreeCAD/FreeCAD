@@ -32,25 +32,25 @@ namespace Dialog {
 
 /**
  * The DlgSettingsDocumentImp class implements a preference page to change settings
- * for the Inventor viewer.
+ * for the document.
  * \author Jürgen Riegel
  */
- class DlgSettingsDocumentImp : public PreferencePage, public Ui_DlgSettingsDocument
-{ 
-  Q_OBJECT
+class DlgSettingsDocumentImp : public PreferencePage, public Ui_DlgSettingsDocument
+{
+    Q_OBJECT
 
 public:
-  DlgSettingsDocumentImp( QWidget* parent = 0 );
-  ~DlgSettingsDocumentImp();
+    DlgSettingsDocumentImp( QWidget* parent = 0 );
+    ~DlgSettingsDocumentImp();
 
-  void saveSettings();
-  void loadSettings();
-  
+    void saveSettings();
+    void loadSettings();
+
 protected Q_SLOTS:
     void onLicenseTypeChanged(int index);
 
 protected:
-  void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e);
 };
 
 } // namespace Dialog

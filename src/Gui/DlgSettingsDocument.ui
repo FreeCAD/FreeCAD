@@ -235,9 +235,6 @@
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="prefAutoSaveTimeout">
-          <property name="text" stdset="0">
-           <string>15 min</string>
-          </property>
           <property name="suffix">
            <string notr="true"> min</string>
           </property>
@@ -517,7 +514,7 @@
          <string>An URL where the user can find more details about the license</string>
         </property>
         <property name="text">
-         <string>http://en.wikipedia.org/wiki/All_rights_reserved</string>
+         <string notr="true">http://en.wikipedia.org/wiki/All_rights_reserved</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>

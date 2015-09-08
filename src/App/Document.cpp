@@ -636,39 +636,52 @@ Document::Document(void)
     int licenseId = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType",0);
     std::string license;
+    std::string licenseUrl;
     switch (licenseId) {
         case 0:
             license = "All rights reserved";
+            licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
             break;
         case 1:
             license = "CreativeCommons Attribution";
+            licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
             break;
         case 2:
             license = "CreativeCommons Attribution-ShareAlike";
+            licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
             break;
         case 3:
             license = "CreativeCommons Attribution-NoDerivatives";
+            licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
             break;
         case 4:
             license = "CreativeCommons Attribution-NonCommercial";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
             break;
         case 5:
             license = "CreativeCommons Attribution-NonCommercial-ShareAlike";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
             break;
         case 6:
             license = "CreativeCommons Attribution-NonCommercial-NoDerivatives";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
             break;
         case 7:
             license = "Public Domain";
+            licenseUrl = "http://en.wikipedia.org/wiki/Public_domain";
             break;
         case 8:
             license = "FreeArt";
+            licenseUrl = "http://artlibre.org/licence/lal";
             break;
         default:
             license = "Other";
+            break;
     }
-    std::string licenseUrl = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl","http://en.wikipedia.org/wiki/All_rights_reserved");
+
+    licenseUrl = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
+
     ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
 

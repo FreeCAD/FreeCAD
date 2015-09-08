@@ -128,6 +128,8 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
  */
 void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 {
+    prefLicenseUrl->setReadOnly(true);
+
     switch (index) {
         case 0:
             prefLicenseUrl->setText(QString::fromAscii("http://en.wikipedia.org/wiki/All_rights_reserved"));
@@ -157,7 +159,9 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
             prefLicenseUrl->setText(QString::fromAscii("http://artlibre.org/licence/lal"));
             break;
         default:
-            prefLicenseUrl->setText(QString::fromAscii(""));
+            prefLicenseUrl->clear();
+            prefLicenseUrl->setReadOnly(false);
+            break;
     }
 }
 
