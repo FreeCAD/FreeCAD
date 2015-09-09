@@ -75,7 +75,8 @@ SET(FemScripts_SRCS
     FemTools.py
     mesh_points.csv
     mesh_volumes.csv
-    inp_standard.inp
+    static_analysis.inp
+    frequency_analysis.inp
     MechanicalAnalysis.ui
     MechanicalAnalysis.py
     MechanicalMaterial.ui
