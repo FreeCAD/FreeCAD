@@ -24,76 +24,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <Poly_Polygon3D.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepTools.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <GeomAbs_CurveType.hxx>
-# include <GeomAbs_SurfaceType.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_BezierSurface.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <gp_Trsf.hxx>
-# include <Poly_Array1OfTriangle.hxx>
-# include <Poly_Triangulation.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Poly_PolygonOnTriangulation.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoLocateHighlight.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoNormal.h>
-# include <Inventor/nodes/SoNormalBinding.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoScale.h>
-# include <QWidget>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 #include <Base/Exception.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/Selection.h>
-#include <Gui/View3DInventorViewer.h>
 
+#include <Mod/Part/App/PartFeature.h>
 
 #include "ViewProvider.h"
-#include "SoFCShapeObject.h"
-
-#include <Mod/Part/App/BodyBase.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PrimitiveFeature.h>
 
 
 using namespace PartGui;
@@ -123,27 +62,6 @@ bool ViewProviderPart::doubleClicked(void)
         Base::Console().Error("%s\n", e.what());
         return false;
     }
-}
-
-bool ViewProviderPart::onDelete(const std::vector<std::string> &)
-{
-    // TODO Why the heck it's here? (2015-08-05, Fat-Zer)
-    // Body feature housekeeping
-    Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
-    if (body != NULL) {
-        body->removeFeature(getObject());
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-        }
-    }
-
-    // TODO: Ask user what to do about dependent objects, e.g. Sketches that have this feature as their support
-    // 1. Delete
-    // 2. Suppress
-    // 3. Re-route
-    return true;
 }
 
 void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
