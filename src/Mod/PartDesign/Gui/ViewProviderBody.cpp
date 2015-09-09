@@ -24,9 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/bind.hpp>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/SbBox3d.h>
 # include <Precision.hxx>
 #endif
 
@@ -39,6 +39,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderOriginFeature.h>
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -89,6 +90,18 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 
     addDisplayMaskMode(pcBodyChildren, "Through");
     addDisplayMaskMode(pcBodyTip, "Tip");
+
+    App::Document *adoc  = pcObject->getDocument ();
+    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
+
+    assert ( adoc );
+    assert ( gdoc );
+
+    connectChangedObjectApp = adoc->signalChangedObject.connect (
+            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, _1) );
+
+    connectChangedObjectGui = gdoc->signalChangedObject.connect (
+            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, _1) );
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -252,6 +265,28 @@ void ViewProviderBody::updateData(const App::Property* prop)
     }
 
     PartGui::ViewProviderPart::updateData(prop);
+}
+
+
+void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj ) {
+    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
+    if ( body && body->hasFeature (&obj ) ) {
+        updateOriginDatumSize ();
+    }
+}
+
+void ViewProviderBody::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp ) {
+    if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
+         !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
+        // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
+        //          but may happen in documents designed in old versions of assembly branch )
+        PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
+        App::DocumentObject *obj = vp.getObject ();
+
+        if ( body && obj && body->hasFeature ( obj ) ) {
+            updateOriginDatumSize ();
+        }
+    }
 }
 
 void ViewProviderBody::updateOriginDatumSize () {
