@@ -45,6 +45,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
+#include <App/Origin.h>
 
 #include "Action.h"
 #include "Application.h"
@@ -559,7 +560,7 @@ DEF_STD_CMD_A(StdCmdProjectInfo);
 StdCmdProjectInfo::StdCmdProjectInfo()
   :Command("Std_ProjectInfo")
 {
-  // seting the 
+  // seting the
   sGroup        = QT_TR_NOOP("File");
   sMenuText     = QT_TR_NOOP("Project i&nformation...");
   sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
@@ -590,7 +591,7 @@ DEF_STD_CMD_A(StdCmdProjectUtil);
 StdCmdProjectUtil::StdCmdProjectUtil()
   :Command("Std_ProjectUtil")
 {
-    // seting the 
+    // seting the
     sGroup        = QT_TR_NOOP("Tools");
     sWhatsThis    = "Std_ProjectUtil";
     sMenuText     = QT_TR_NOOP("Project utility...");
@@ -1077,9 +1078,11 @@ void StdCmdDelete::activated(int iMsg)
                         for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
                             if (
                                   (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) &&
+                                  (!(*lt)->getTypeId().isDerivedFrom(App::Origin::getClassTypeId())) &&
                                   (!rSel.isSelected(*lt)) &&
                                   (!(*lt)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::BodyBase")))
                                 ){
+                                // TODO Do something with this hack of Part::BodyBase (2015-09-09, Fat-Zer)
                                 autoDeletion = false;
                                 affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
                             }
@@ -1099,7 +1102,7 @@ void StdCmdDelete::activated(int iMsg)
                                                          "Are you sure you want to continue?\n\n");
                     for (const auto &currentLabel : affectedLabels)
                       bodyMessageStream << currentLabel << '\n';
-                    
+
                     int ret = QMessageBox::question(Gui::getMainWindow(),
                         qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
                         QMessageBox::Yes, QMessageBox::No);
@@ -1158,7 +1161,7 @@ void StdCmdRefresh::activated(int iMsg)
         //testing the changes of properties.
         //openCommand("Refresh active document");
         doCommand(Doc,"App.activeDocument().recompute()");
-        //commitCommand(); 
+        //commitCommand();
     }
 }
 

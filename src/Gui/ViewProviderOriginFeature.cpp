@@ -38,6 +38,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/OriginFeature.h>
 
 #include "SoFCSelection.h"
 #include "Window.h"
@@ -175,4 +176,15 @@ void ViewProviderOriginFeature::setDisplayMode (const char* ModeName)
     if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
     ViewProviderGeometryObject::setDisplayMode(ModeName);
+}
+
+bool ViewProviderOriginFeature::onDelete(const std::vector<std::string> &) {
+    App::OriginFeature *feat = static_cast <App::OriginFeature *> ( getObject() );
+    // Forbid deletion if there is an origin thes feature belongs to
+
+    if ( feat->getOrigin () ) {
+        return false;
+    } else {
+        return true;
+    }
 }

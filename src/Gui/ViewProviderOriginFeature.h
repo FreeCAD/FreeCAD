@@ -65,6 +65,7 @@ public:
 
 protected:
     virtual void onChanged ( const App::Property* prop );
+    virtual bool onDelete ( const std::vector<std::string> & );
 protected:
     SoSeparator    * pOriginFeatureRoot;
     SoScale        * pScale;
