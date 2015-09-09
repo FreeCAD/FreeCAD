@@ -87,11 +87,14 @@ public:
             SoGetBoundingBoxAction &bboxAction,
             const std::vector <App::DocumentObject *> &objs);
 
+    /// Default size used to produce the default bbox
+    static const double defaultSize;
+
     // Returnd default bounding box if relevant is can't be used for some reason
     static SbBox3f defaultBoundBox ();
 
     // Returns a default marging factor (part of size )
-    static double margingFactor () { return 0.1; };
+    static double marginFactor () { return 0.1; };
 
 protected:
     virtual bool setEdit(int ModNum);
