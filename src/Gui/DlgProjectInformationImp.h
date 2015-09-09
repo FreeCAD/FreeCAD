@@ -46,6 +46,7 @@ public:
 
 private Q_SLOTS:
     void open_url();
+    void onLicenseTypeChanged(int index);
 
 private:
     App::Document* _doc;
