@@ -20,50 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_IntCS.hxx>
 #endif
 
-#include "ViewProviderDatumLine.h"
-#include "TaskDatumParameters.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumLine.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
+
+#include "ViewProviderDatumLine.h"
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumLine,PartDesignGui::ViewProviderDatum)
 
-ViewProviderDatumLine::ViewProviderDatumLine()
-{
+ViewProviderDatumLine::ViewProviderDatumLine() {
     sPixmap = "PartDesign_Line.svg";
-    // TODO Let the base class handle material (2015-09-07, Fat-Zer)
-    SoMaterial* material = new SoMaterial();
-    material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
-    material->transparency.setValue(0.2f);
-    pShapeSep->addChild(material);
+
+    pCoords = new SoCoordinate3();
+    pCoords->ref ();
 }
 
-ViewProviderDatumLine::~ViewProviderDatumLine()
-{
+ViewProviderDatumLine::~ViewProviderDatumLine() {
+    pCoords->unref ();
+}
 
+void ViewProviderDatumLine::attach ( App::DocumentObject *obj ) {
+    ViewProviderDatum::attach ( obj );
+
+    PartGui::SoBrepEdgeSet* lineSet;
+
+    ViewProviderDatum::setExtents ( defaultBoundBox () );
+    getShapeRoot ()->addChild(pCoords);
+
+    lineSet = new PartGui::SoBrepEdgeSet();
+    lineSet->coordIndex.setNum(3);
+    lineSet->coordIndex.set1Value(0, 0);
+    lineSet->coordIndex.set1Value(1, 1);
+    lineSet->coordIndex.set1Value(2, SO_END_LINE_INDEX);
+
+    getShapeRoot ()->addChild(lineSet);
 }
 
 void ViewProviderDatumLine::updateData(const App::Property* prop)
@@ -82,42 +80,17 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
 void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
     PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
 
-    Base::Placement plm = pcDatum->Placement.getValue();
-    plm.invert();
-    Base::Vector3d base(0,0,0);
-    Base::Vector3d dir(0,0,1);
+    Base::Placement plm = pcDatum->Placement.getValue ().inverse ();
 
-    // TODO transform point rather the bbox (2015-09-07, Fat-Zer)
-    Base::BoundBox3d my_bbox = bbox.Transformed(plm.toMatrix());
-    Base::Vector3d p1, p2;
-    if (my_bbox.IsInBox(base)) {
-        my_bbox.IntersectionPoint(base, dir, p1, Precision::Confusion());
-        my_bbox.IntersectionPoint(base, -dir, p2, Precision::Confusion());
-    } else {
-        my_bbox.IntersectWithLine(base, dir, p1, p2);
-        if ((p1 == Base::Vector3d(0,0,0)) && (p2 == Base::Vector3d(0,0,0)))
-            my_bbox.IntersectWithLine(base, -dir, p1, p2);
-    }
+    // Transform the box to the line's coordinates, the result line will be larger than the bbox
+    bbox = bbox.Transformed ( plm.toMatrix() );
+    // Add origin of the line to the box if it's not
+    bbox.Add ( Base::Vector3d (0, 0, 0) );
+
+    double marging = bbox.LengthZ () * margingFactor ();
 
     // Display the line
-    PartGui::SoBrepEdgeSet* lineSet;
-    SoCoordinate3* coord;
-
-    // TODO Move initialization to the attach() (2015-09-07, Fat-Zer)
-    if (pShapeSep->getNumChildren() == 1) {
-        coord = new SoCoordinate3();
-        coord->point.setNum(2);
-        coord->point.set1Value(0, p1.x, p1.y, p1.z);
-        coord->point.set1Value(1, p2.x, p2.y, p2.z);
-        pShapeSep->addChild(coord);
-        lineSet = new PartGui::SoBrepEdgeSet();
-        lineSet->coordIndex.setNum(2);
-        lineSet->coordIndex.set1Value(0, 0);
-        lineSet->coordIndex.set1Value(1, 1);
-        pShapeSep->addChild(lineSet);
-    } else {
-        coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
-        coord->point.set1Value(0, p1.x, p1.y, p1.z);
-        coord->point.set1Value(1, p2.x, p2.y, p2.z);
-    }
+    pCoords->point.setNum (2);
+    pCoords->point.set1Value(0, 0, 0, bbox.MaxZ + marging );
+    pCoords->point.set1Value(1, 0, 0, bbox.MinZ - marging );
 }

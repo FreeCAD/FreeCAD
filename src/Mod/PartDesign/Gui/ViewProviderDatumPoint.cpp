@@ -30,9 +30,7 @@
 #endif
 
 #include "ViewProviderDatumPoint.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
-#include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/Part/Gui/SoBrepPointSet.h>
+// #include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 
 using namespace PartDesignGui;
@@ -42,38 +40,41 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPoint,PartDesignGui::ViewProvide
 ViewProviderDatumPoint::ViewProviderDatumPoint()
 {
     sPixmap = "PartDesign_Point.svg";
-    
-    SoMFVec3f v;
-    v.setNum(1);
-    v.set1Value(0, 0,0,0);
-    SoVertexProperty* vprop = new SoVertexProperty();
-    vprop->vertex = v;
-    // Using a marker gives a larger point but it doesn't do highlighting automatically like the SoBrepPointSet
-    SoMarkerSet* marker = new SoMarkerSet();
-    marker->markerIndex = SoMarkerSet::DIAMOND_FILLED_9_9;
-    marker->vertexProperty = vprop;
-    marker->numPoints = 1;
-    PartGui::SoBrepPointSet* points = new PartGui::SoBrepPointSet();
-    points->vertexProperty = vprop;
-    points->numPoints = 1;
-    pShapeSep->addChild(points);
-    pShapeSep->addChild(marker);
+
+    // SoMarkerSet won't be drawn if transparency is nonzero, so disabble it
+    Transparency.setValue (0);
+    Transparency.StatusBits.set ( 3, true ); //< make transparency hidden
 }
 
 ViewProviderDatumPoint::~ViewProviderDatumPoint()
 {
 }
 
-void ViewProviderDatumPoint::updateData(const App::Property* prop)
-{
-    // TODO Review this (2015-09-07, Fat-Zer)
-    if (strcmp(prop->getName(),"Placement") == 0) {
-        // The only reason to do this is to display the point in the correct position after loading the document
-        SoMarkerSet* marker = static_cast<SoMarkerSet*>(pShapeSep->getChild(1));
-        marker->touch();
-        PartGui::SoBrepPointSet* points = static_cast<PartGui::SoBrepPointSet*>(pShapeSep->getChild(0));
-        points->touch();
+void ViewProviderDatumPoint::attach ( App::DocumentObject *obj ) {
+    ViewProviderDatum::attach ( obj );
+
+    SoMFVec3f v;
+    v.setNum(1);
+    v.set1Value(0, 0,0,0);
+
+    SoVertexProperty* vprop = new SoVertexProperty();
+    vprop->vertex = v;
+
+    // Using a marker gives a larger point but it doesn't do highlighting automatically like the SoBrepPointSet
+    // TODO Fix the highlight (may be via additional pcHighlight node?) (2015-09-09, Fat-Zer)
+    SoMarkerSet* marker = new SoMarkerSet();
+    marker->vertexProperty = vprop;
+    marker->numPoints = 1;
+    marker->markerIndex = SoMarkerSet::DIAMOND_FILLED_9_9;
+
+    getShapeRoot ()->addChild(marker);
+}
+
+void ViewProviderDatumPoint::onChanged (const App::Property* prop) {
+    // Forbid to set trancparency
+    if (prop == &Transparency && Transparency.getValue() != 0) {
+        Transparency.setValue (0);
     }
 
-    ViewProviderDatum::updateData(prop);
+    ViewProviderDatum::onChanged (prop);
 }

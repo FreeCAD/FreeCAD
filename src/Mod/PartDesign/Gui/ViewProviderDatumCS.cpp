@@ -71,8 +71,8 @@ ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
     material->diffuseColor.set1Value(3, SbColor(0.f, 0.f, 1.f));
     SoMaterialBinding* binding = new SoMaterialBinding();
     binding->value = SoMaterialBinding::PER_FACE_INDEXED;
-    pShapeSep->addChild(binding);
-    pShapeSep->addChild(material);
+    getShapeRoot ()->addChild(binding);
+    getShapeRoot ()->addChild(material);
 
     font = new SoFont();
     font->ref();
@@ -122,7 +122,7 @@ void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
         PartGui::SoBrepEdgeSet* lineSet;
         SoCoordinate3* coord;
 
-        if (pShapeSep->getNumChildren() == 2) {
+        if (getShapeRoot ()->getNumChildren() == 2) {
             coord = new SoCoordinate3();
             coord->point.setNum(4);
             coord->point.set1Value(0, base.x, base.y, base.z);
@@ -130,7 +130,7 @@ void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
             coord->point.set1Value(2, y.x, y.y, y.z);
             coord->point.set1Value(3, z.x, z.y, z.z);
 
-            pShapeSep->addChild(coord);
+            getShapeRoot ()->addChild(coord);
             lineSet = new PartGui::SoBrepEdgeSet();
             lineSet->coordIndex.setNum(9);
             lineSet->coordIndex.set1Value(0, 0);
@@ -146,31 +146,31 @@ void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
             lineSet->materialIndex.set1Value(0,1);
             lineSet->materialIndex.set1Value(1,2);
             lineSet->materialIndex.set1Value(2,3);
-            pShapeSep->addChild(lineSet);
+            getShapeRoot ()->addChild(lineSet);
 
-            pShapeSep->addChild(font);
+            getShapeRoot ()->addChild(font);
             font->size = axis.Length()/10.;
-            pShapeSep->addChild(transX);
+            getShapeRoot ()->addChild(transX);
             transX->translation.setValue(SbVec3f(x.x,x.y,x.z));
             SoAsciiText* t = new SoAsciiText();
             t->string = "X";
-            pShapeSep->addChild(t);
-            pShapeSep->addChild(transY);
+            getShapeRoot ()->addChild(t);
+            getShapeRoot ()->addChild(transY);
             transY->translation.setValue(SbVec3f(-x.x + y.x, x.y + y.y, -x.z + y.z));
             t = new SoAsciiText();
             t->string = "Y";
-            pShapeSep->addChild(t);
-            pShapeSep->addChild(transZ);
+            getShapeRoot ()->addChild(t);
+            getShapeRoot ()->addChild(transZ);
             auto* rot = new SoRotation();
             rot->rotation = SbRotation(SbVec3f(0,1,0), M_PI/2);
-            pShapeSep->addChild(rot);
+            getShapeRoot ()->addChild(rot);
             transZ->translation.setValue(SbVec3f(-y.x + z.x, -y.y + z.y, -y.z + z.z));
             t = new SoAsciiText();
             t->string = "Z";
-            pShapeSep->addChild(t);
+            getShapeRoot ()->addChild(t);
 
         } else {
-            coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(2));
+            coord = static_cast<SoCoordinate3*>(getShapeRoot ()->getChild(2));
             coord->point.set1Value(0, base.x, base.y, base.z);
             coord->point.set1Value(1, x.x, x.y, x.z);
             coord->point.set1Value(2, y.x, y.y, y.z);

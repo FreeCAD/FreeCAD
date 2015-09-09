@@ -47,7 +47,6 @@ public:
 
     virtual void attach(App::DocumentObject *);
     virtual bool onDelete(const std::vector<std::string> &);
-    virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
     virtual bool doubleClicked(void);
     std::vector<std::string> getDisplayModes(void) const;
     void setDisplayMode(const char* ModeName);
@@ -88,8 +87,13 @@ public:
             SoGetBoundingBoxAction &bboxAction,
             const std::vector <App::DocumentObject *> &objs);
 
+    // Returnd default bounding box if relevant is can't be used for some reason
+    static SbBox3f defaultBoundBox ();
+
+    // Returns a default marging factor (part of size )
+    static double margingFactor () { return 0.1; };
+
 protected:
-    void onChanged(const App::Property* prop);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
@@ -104,7 +108,10 @@ protected:
      */
     SbBox3f getRelevantBoundBox() const;
 
-protected:
+    // Get the separator to fill with datum content
+    SoSeparator *getShapeRoot () { return pShapeSep; }
+
+private:
     SoSeparator* pShapeSep;
     std::string oldWb;
     App::DocumentObject* oldTip;

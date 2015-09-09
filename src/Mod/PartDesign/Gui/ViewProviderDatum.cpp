@@ -58,6 +58,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/MDIView.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -82,6 +83,16 @@ ViewProviderDatum::ViewProviderDatum()
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
 
+    // set default color for datums (golden yellow with 60% transparency)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
+            "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
+
+    App::Color col ( (uint32_t) shcol );
+    ShapeColor.setValue ( col );
+
+    Transparency.setValue (col.a * 100);
+
     oldWb = "";
     oldTip = NULL;
 }
@@ -93,8 +104,9 @@ ViewProviderDatum::~ViewProviderDatum()
 
 void ViewProviderDatum::attach(App::DocumentObject *obj)
 {
-    ViewProviderGeometryObject::attach(obj);
+    ViewProviderGeometryObject::attach ( obj );
 
+    // TODO remove this field (2015-09-08, Fat-Zer)
     App::DocumentObject* o = getObject();
     if (o->getTypeId() == PartDesign::Plane::getClassTypeId())
         datumType = QObject::tr("Plane");
@@ -108,21 +120,21 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     SoShapeHints* hints = new SoShapeHints();
     hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);
     hints->vertexOrdering.setValue(SoShapeHints::COUNTERCLOCKWISE);
-    SoMaterialBinding* bind = new SoMaterialBinding();
     SoDrawStyle* fstyle = new SoDrawStyle();
     fstyle->style = SoDrawStyle::FILLED;
-    SoBaseColor* color = new SoBaseColor();
-    color->rgb.setValue(0.9f, 0.9f, 0.3f);
-    SoSeparator* sep = new SoSeparator();
-    SoPickStyle* ps = new SoPickStyle();
-    ps->style = SoPickStyle::SHAPE;
+    SoPickStyle* pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::SHAPE;
+    SoMaterialBinding* matBinding = new SoMaterialBinding;
+    matBinding->value = SoMaterialBinding::OVERALL;
 
+    SoSeparator* sep = new SoSeparator();
     sep->addChild(hints);
-    sep->addChild(bind);
     sep->addChild(fstyle);
-    sep->addChild(color);
-    sep->addChild(ps);
+    sep->addChild(pickStyle);
+    sep->addChild(matBinding);
+    sep->addChild(pcShapeMaterial);
     sep->addChild(pShapeSep);
+
     addDisplayMaskMode(sep, "Base");
 }
 
@@ -138,10 +150,7 @@ bool ViewProviderDatum::onDelete(const std::vector<std::string> &)
 
 std::vector<std::string> ViewProviderDatum::getDisplayModes(void) const
 {
-    // add modes
-    std::vector<std::string> StrList;
-    StrList.push_back("Base");
-    return StrList;
+    return { "Base" };
 }
 
 void ViewProviderDatum::setDisplayMode(const char* ModeName)
@@ -149,16 +158,6 @@ void ViewProviderDatum::setDisplayMode(const char* ModeName)
     if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
     ViewProviderGeometryObject::setDisplayMode(ModeName);
-}
-
-void ViewProviderDatum::onChanged(const App::Property* prop)
-{
-    /*if (prop == &Shape) {
-        updateData(prop);
-    }
-    else {*/
-        ViewProviderGeometryObject::onChanged(prop);
-    //}
 }
 
 std::string ViewProviderDatum::getElement(const SoDetail* detail) const
@@ -222,7 +221,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
 {
     if (!ViewProvider::setEdit(ModNum))
         return false;
-
+    // TODO Share this code with Features view providers somehow (2015-09-08, Fat-Zer)
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this datum feature the
         // object unsets and sets its edit mode without closing
@@ -268,8 +267,11 @@ bool ViewProviderDatum::doubleClicked(void)
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
-    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body* activeBody = getActiveView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    // TODO check if this feature belongs to the active body
+    //      and if not set the body it belongs to as active (2015-09-08, Fat-Zer)
     if (activeBody != NULL) {
+        // TODO Rewrite this (2015-09-08, Fat-Zer)
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
         // Also, this way the user won't be tempted to use future geometry as external references for the sketch
         oldTip = activeBody->Tip.getValue();
@@ -344,8 +346,7 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
     SbBox3f bbox = getRelevantBoundBox (bboxAction, objs);
 
     if ( bbox.getVolume () < Precision::Confusion() ) {
-        bbox.extendBy ( SbVec3f (-10.0,-10.0,-10.0) );
-        bbox.extendBy ( SbVec3f ( 10.0, 10.0, 10.0) );
+        bbox.extendBy ( defaultBoundBox () );
     }
 
     return bbox;
@@ -378,4 +379,9 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox (
     }
 
     return bbox;
+}
+
+SbBox3f ViewProviderDatum::defaultBoundBox () {
+    double defSz = Gui::ViewProviderOrigin::defaultSize ();
+    return SbBox3f ( -defSz, -defSz, -defSz, defSz, defSz, defSz );
 }
