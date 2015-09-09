@@ -41,13 +41,15 @@ public:
     ViewProviderDatumCoordinateSystem();
     virtual ~ViewProviderDatumCoordinateSystem();
 
+    virtual void attach ( App::DocumentObject *obj );
     virtual void updateData(const App::Property*);
 
     virtual void setExtents (Base::BoundBox3d bbox);
 private:
-    void getPointForDirection(Base::Vector3d Dir, const Base::BoundBox3d& bbox, Base::Vector3d& p);
-
-    SoTranslation *transX, *transY, *transZ;
+    SoCoordinate3 *coord;
+    SoTranslation *axisLabelXTrans;
+    SoTranslation *axisLabelXToYTrans;
+    SoTranslation *axisLabelYToZTrans;
     SoFont* font;
 };
 
