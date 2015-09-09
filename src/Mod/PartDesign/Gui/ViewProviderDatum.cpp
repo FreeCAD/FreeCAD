@@ -78,6 +78,9 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
 
+// static data
+const double ViewProviderDatum::defaultSize = Gui::ViewProviderOrigin::defaultSize ();
+
 ViewProviderDatum::ViewProviderDatum()
 {
     pShapeSep = new SoSeparator();
@@ -382,6 +385,6 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox (
 }
 
 SbBox3f ViewProviderDatum::defaultBoundBox () {
-    double defSz = Gui::ViewProviderOrigin::defaultSize ();
-    return SbBox3f ( -defSz, -defSz, -defSz, defSz, defSz, defSz );
+    return SbBox3f ( -defaultSize, -defaultSize, -defaultSize,
+            defaultSize, defaultSize, defaultSize );
 }
