@@ -33,8 +33,10 @@ import tempfile
 import unittest
 
 mesh_name = 'Mesh'
-working_dir = tempfile.gettempdir() + '/FEM/'
-standard_inp_file = FreeCAD.getHomePath() + 'Mod/Fem/inp_standard.inp'
+static_analysis_dir = tempfile.gettempdir() + '/FEM_static/'
+frequency_analysis_dir = tempfile.gettempdir() + '/FEM_frequency/'
+static_analysis_inp_file = FreeCAD.getHomePath() + 'Mod/Fem/static_analysis.inp'
+frequency_analysis_inp_file = FreeCAD.getHomePath() + 'Mod/Fem/frequency_analysis.inp'
 mesh_points_file = FreeCAD.getHomePath() + 'Mod/Fem/mesh_points.csv'
 mesh_volumes_file = FreeCAD.getHomePath() + 'Mod/Fem/mesh_volumes.csv'
 
@@ -151,11 +153,19 @@ class FemTest(unittest.TestCase):
         self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
 
         FreeCAD.Console.PrintMessage('\nChecking FEM inp file write...\n')
-        fea.setup_working_dir(working_dir)
-        FreeCAD.Console.PrintMessage('\nWriting {}/{}.inp\n'.format(working_dir, mesh_name))
+        fea.setup_working_dir(static_analysis_dir)
+        FreeCAD.Console.PrintMessage('\nWriting {}/{}.inp for static analysis\n'.format(static_analysis_dir, mesh_name))
         error = fea.write_inp_file()
-        FreeCAD.Console.PrintMessage('\nComparing {} to {}/{}.inp\n'.format(standard_inp_file, working_dir, mesh_name))
-        ret = self.compare_inp_files(standard_inp_file, working_dir + "/" + mesh_name + '.inp')
+        FreeCAD.Console.PrintMessage('\nComparing {} to {}/{}.inp\n'.format(static_analysis_inp_file, static_analysis_dir, mesh_name))
+        ret = self.compare_inp_files(static_analysis_inp_file, static_analysis_dir + "/" + mesh_name + '.inp')
+        self.assertFalse(ret, "FemTools write_inp_file test failed.\n{}".format(ret))
+
+        fea.set_analysis_type("frequency")
+        fea.setup_working_dir(frequency_analysis_dir)
+        FreeCAD.Console.PrintMessage('\nWriting {}/{}.inp for frequency analysis\n'.format(frequency_analysis_dir, mesh_name))
+        error = fea.write_inp_file()
+        FreeCAD.Console.PrintMessage('\nComparing {} to {}/{}.inp\n'.format(frequency_analysis_inp_file, frequency_analysis_dir, mesh_name))
+        ret = self.compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + "/" + mesh_name + '.inp')
         self.assertFalse(ret, "FemTools write_inp_file test failed.\n{}".format(ret))
 
     def tearDown(self):

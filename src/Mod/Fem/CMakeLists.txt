@@ -16,7 +16,8 @@ INSTALL(
         TestFem.py
 	mesh_points.csv
 	mesh_volumes.csv
-	inp_standard.inp
+	static_analysis.inp
+	frequency_analysis.inp
         FemExample.py
         MechanicalAnalysis.py
         MechanicalMaterial.py
