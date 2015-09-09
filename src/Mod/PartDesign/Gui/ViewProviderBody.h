@@ -73,6 +73,11 @@ public:
      * @note datums are counted as their base point only
      */
     SbBox3f getBoundBox ();
+
+protected:
+    void slotChangedObjectApp ( const App::DocumentObject& obj );
+    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
+
 private:
     /// group used to store children collected by claimChildren3D() in the through (edit) mode.
     SoGroup *pcBodyChildren;
@@ -81,6 +86,9 @@ private:
 
     /// Update the children's highlighting
     //void updateTree();
+
+    boost::signals::connection connectChangedObjectApp;
+    boost::signals::connection connectChangedObjectGui;
 };
 
 
