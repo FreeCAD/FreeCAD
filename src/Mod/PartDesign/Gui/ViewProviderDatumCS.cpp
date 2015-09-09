@@ -24,36 +24,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoAsciiText.h>
-#include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoRotation.h>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_IntCS.hxx>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoRotation.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include "ViewProviderDatumCS.h"
 #include "TaskDatumParameters.h"
-#include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/Part/Gui/SoBrepPointSet.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <math.h>
+
+#include "ViewProviderDatumCS.h"
 
 using namespace PartDesignGui;
 
@@ -63,6 +47,30 @@ ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
 {
     sPixmap = "PartDesign_CoordinateSystem.svg";
 
+    coord = new SoCoordinate3();
+    coord->ref();
+    font = new SoFont();
+    font->ref();
+    axisLabelXTrans = new SoTranslation();
+    axisLabelXTrans->ref();
+    axisLabelXToYTrans = new SoTranslation();
+    axisLabelXToYTrans->ref();
+    axisLabelYToZTrans = new SoTranslation();
+    axisLabelYToZTrans->ref();
+}
+
+ViewProviderDatumCoordinateSystem::~ViewProviderDatumCoordinateSystem()
+{
+    coord->unref();
+    font->unref();
+    axisLabelXTrans->unref();
+    axisLabelXToYTrans->unref();
+    axisLabelYToZTrans->unref();
+}
+
+void ViewProviderDatumCoordinateSystem::attach ( App::DocumentObject *obj ) {
+    ViewProviderDatum::attach ( obj );
+
     SoMaterial* material = new SoMaterial();
     material->diffuseColor.setNum(4);
     material->diffuseColor.set1Value(0, SbColor(0.f, 0.f, 0.f));
@@ -71,25 +79,62 @@ ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
     material->diffuseColor.set1Value(3, SbColor(0.f, 0.f, 1.f));
     SoMaterialBinding* binding = new SoMaterialBinding();
     binding->value = SoMaterialBinding::PER_FACE_INDEXED;
+
     getShapeRoot ()->addChild(binding);
     getShapeRoot ()->addChild(material);
 
-    font = new SoFont();
-    font->ref();
-    transX = new SoTranslation();
-    transX->ref();
-    transY = new SoTranslation();
-    transY->ref();
-    transZ = new SoTranslation();
-    transZ->ref();
-}
+    coord = new SoCoordinate3();
+    coord->point.setNum(4);
 
-ViewProviderDatumCoordinateSystem::~ViewProviderDatumCoordinateSystem()
-{
-    font->unref();
-    transX->unref();
-    transY->unref();
-    transZ->unref();
+    ViewProviderDatum::setExtents ( defaultBoundBox () );
+
+    getShapeRoot ()->addChild(coord);
+
+    SoDrawStyle* style = new SoDrawStyle ();
+    style->lineWidth = 1.5f;
+    getShapeRoot ()->addChild(style);
+
+    PartGui::SoBrepEdgeSet* lineSet = new PartGui::SoBrepEdgeSet();
+    lineSet->coordIndex.setNum(9);
+    // X
+    lineSet->coordIndex.set1Value(0, 0);
+    lineSet->coordIndex.set1Value(1, 1);
+    lineSet->coordIndex.set1Value(2, SO_END_LINE_INDEX);
+    // Y
+    lineSet->coordIndex.set1Value(3, 0);
+    lineSet->coordIndex.set1Value(4, 2);
+    lineSet->coordIndex.set1Value(5, SO_END_LINE_INDEX);
+    // Z
+    lineSet->coordIndex.set1Value(6, 0);
+    lineSet->coordIndex.set1Value(7, 3);
+    lineSet->coordIndex.set1Value(8, SO_END_LINE_INDEX);
+
+    lineSet->materialIndex.setNum(3);
+    lineSet->materialIndex.set1Value(0,1);
+    lineSet->materialIndex.set1Value(1,2);
+    lineSet->materialIndex.set1Value(2,3);
+    getShapeRoot ()->addChild(lineSet);
+
+    getShapeRoot ()->addChild(font);
+
+    // Transformation for axis labels are relative so no need in separators
+    getShapeRoot ()->addChild(axisLabelXTrans);
+    SoAsciiText* t = new SoAsciiText();
+    t->string = "X";
+    getShapeRoot ()->addChild(t);
+
+    getShapeRoot ()->addChild(axisLabelXToYTrans);
+    t = new SoAsciiText();
+    t->string = "Y";
+    getShapeRoot ()->addChild(t);
+
+    getShapeRoot ()->addChild(axisLabelYToZTrans);
+    SoRotation *rot = new SoRotation();
+    rot->rotation = SbRotation(SbVec3f(1,1,1), 2*M_PI/3);
+    getShapeRoot ()->addChild(rot);
+    t = new SoAsciiText();
+    t->string = "Z";
+    getShapeRoot ()->addChild(t);
 }
 
 void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
@@ -102,111 +147,23 @@ void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
 }
 
 void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
-    // TODO Review the function (2015-09-08, Fat-Zer)
-        Base::Vector3d base(0,0,0);
-        Base::Vector3d dir(0,0,1);
-        Base::Vector3d x, y, z;
-        getPointForDirection(Base::Vector3d(1,0,0), bbox, x);
-        getPointForDirection(Base::Vector3d(0,1,0), bbox, y);
-        getPointForDirection(Base::Vector3d(0,0,1), bbox, z);
+    // Axis lingth of the CS is 1/3 of maximum bbox dimention, any smarter sizing will make it only worser
+    double axisLength = std::max ( { bbox.LengthX (), bbox.LengthY(), bbox.LengthZ() } );
+    axisLength *= (1 + marginFactor ()) / 3;
 
-        //normalize all to equal lengths
-        Base::Vector3d axis = (x.Sqr() > y.Sqr()) ? x : y;
-        axis = (axis.Sqr() > z.Sqr()) ? axis : z;
-        x = x.Normalize()*axis.Length();
-        y = y.Normalize()*axis.Length();
-        z = z.Normalize()*axis.Length();
+    coord->point.set1Value ( 0, 0, 0, 0 );
+    coord->point.set1Value ( 1, axisLength, 0, 0 );
+    coord->point.set1Value ( 2, 0, axisLength, 0 );
+    coord->point.set1Value ( 3, 0, 0, axisLength );
 
+    double fontSz = axisLength / 10.;
+    font->size = fontSz;
 
-        // Display the line
-        PartGui::SoBrepEdgeSet* lineSet;
-        SoCoordinate3* coord;
+    double labelPos = 9./10.*axisLength;
+    double labelOffset = fontSz/8.;
 
-        if (getShapeRoot ()->getNumChildren() == 2) {
-            coord = new SoCoordinate3();
-            coord->point.setNum(4);
-            coord->point.set1Value(0, base.x, base.y, base.z);
-            coord->point.set1Value(1, x.x, x.y, x.z);
-            coord->point.set1Value(2, y.x, y.y, y.z);
-            coord->point.set1Value(3, z.x, z.y, z.z);
-
-            getShapeRoot ()->addChild(coord);
-            lineSet = new PartGui::SoBrepEdgeSet();
-            lineSet->coordIndex.setNum(9);
-            lineSet->coordIndex.set1Value(0, 0);
-            lineSet->coordIndex.set1Value(1, 1);
-            lineSet->coordIndex.set1Value(2, -1);
-            lineSet->coordIndex.set1Value(3, 0);
-            lineSet->coordIndex.set1Value(4, 2);
-            lineSet->coordIndex.set1Value(5, -1);
-            lineSet->coordIndex.set1Value(6, 0);
-            lineSet->coordIndex.set1Value(7, 3);
-            lineSet->coordIndex.set1Value(8, -1);
-            lineSet->materialIndex.setNum(3);
-            lineSet->materialIndex.set1Value(0,1);
-            lineSet->materialIndex.set1Value(1,2);
-            lineSet->materialIndex.set1Value(2,3);
-            getShapeRoot ()->addChild(lineSet);
-
-            getShapeRoot ()->addChild(font);
-            font->size = axis.Length()/10.;
-            getShapeRoot ()->addChild(transX);
-            transX->translation.setValue(SbVec3f(x.x,x.y,x.z));
-            SoAsciiText* t = new SoAsciiText();
-            t->string = "X";
-            getShapeRoot ()->addChild(t);
-            getShapeRoot ()->addChild(transY);
-            transY->translation.setValue(SbVec3f(-x.x + y.x, x.y + y.y, -x.z + y.z));
-            t = new SoAsciiText();
-            t->string = "Y";
-            getShapeRoot ()->addChild(t);
-            getShapeRoot ()->addChild(transZ);
-            auto* rot = new SoRotation();
-            rot->rotation = SbRotation(SbVec3f(0,1,0), M_PI/2);
-            getShapeRoot ()->addChild(rot);
-            transZ->translation.setValue(SbVec3f(-y.x + z.x, -y.y + z.y, -y.z + z.z));
-            t = new SoAsciiText();
-            t->string = "Z";
-            getShapeRoot ()->addChild(t);
-
-        } else {
-            coord = static_cast<SoCoordinate3*>(getShapeRoot ()->getChild(2));
-            coord->point.set1Value(0, base.x, base.y, base.z);
-            coord->point.set1Value(1, x.x, x.y, x.z);
-            coord->point.set1Value(2, y.x, y.y, y.z);
-            coord->point.set1Value(3, z.x, z.y, z.z);
-
-            x = 9./10.*x;
-            y = 9./10.*y;
-            font->size = axis.Length()/10.;
-            transX->translation.setValue(SbVec3f(x.x,x.y,x.z));
-            transY->translation.setValue(SbVec3f(-x.x + y.x, x.y + y.y, -x.z + y.z));
-            transZ->translation.setValue(SbVec3f(-y.x + z.x, -y.y + z.y, -y.z + z.z));
-        }
+    // offset 1 pixel
+    axisLabelXTrans->translation.setValue ( SbVec3f( labelPos, labelOffset, 0) );
+    axisLabelXToYTrans->translation.setValue ( SbVec3f( -labelPos + labelOffset, labelPos - labelOffset, 0) );
+    axisLabelYToZTrans->translation.setValue ( SbVec3f( -labelOffset, -labelPos + labelOffset, labelPos) );
 }
-
-void ViewProviderDatumCoordinateSystem::getPointForDirection(Base::Vector3d dir, const Base::BoundBox3d& in_bbox, Base::Vector3d& p) {
-
-    // Gets called whenever a property of the attached object changes
-    PartDesign::CoordinateSystem* pcDatum = static_cast<PartDesign::CoordinateSystem*>(this->getObject());
-    Base::Placement plm = pcDatum->Placement.getValue();
-    plm.invert();
-
-    Base::Vector3d base(0,0,0);
-    // Get limits of the line from bounding box of the body
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
-    if (body == NULL)
-        return;
-    Base::BoundBox3d bbox = in_bbox;
-    bbox = bbox.Transformed(plm.toMatrix());
-    bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
-    if (bbox.IsInBox(base)) {
-        bbox.IntersectionPoint(base, dir, p, Precision::Confusion());
-    } else {
-        Base::Vector3d p2;
-        if(!bbox.IntersectWithLine(base, dir, p, p2)) {
-            p = dir*bbox.CalcDiagonalLength();
-        }
-    }
-}
-
