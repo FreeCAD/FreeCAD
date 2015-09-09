@@ -47,11 +47,6 @@ OriginFeature::OriginFeature()
 OriginFeature::~OriginFeature()
 { }
 
-// Base::BoundBox3d OriginFeature::getBoundBox()
-// {
-//     return Base::BoundBox3d(-10, -10, -10, 10, 10, 10);
-// }
-
 Origin * OriginFeature::getOrigin () {
     App::Document *doc = getDocument();
     auto origins = doc->getObjectsOfType ( App::Origin::getClassTypeId() );
