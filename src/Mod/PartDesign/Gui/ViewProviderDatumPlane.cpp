@@ -55,11 +55,6 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPlane,PartDesignGui::ViewProvide
 ViewProviderDatumPlane::ViewProviderDatumPlane()
 {
     sPixmap = "PartDesign_Plane.svg";
-    // TODO Use general material object (2015-09-07, Fat-Zer)
-    SoMaterial* material = new SoMaterial();
-    material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
-    material->transparency.setValue(0.5f);
-    pShapeSep->addChild(material);
 }
 
 ViewProviderDatumPlane::~ViewProviderDatumPlane()
@@ -193,7 +188,7 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
         PartGui::SoBrepFaceSet* faceSet;
         SoIndexedLineSet* lineSet;
 
-        if (pShapeSep->getNumChildren() == 1) {
+        if (getShapeRoot ()->getNumChildren() == 0) {
             // The polygon must be split up into triangles because the SoBRepFaceSet only handles those
             if (points.size() < 3)
                 return;
@@ -201,7 +196,7 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
             coord->point.setNum(points.size());
             for (unsigned int p = 0; p < points.size(); p++)
                 coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
-            pShapeSep->addChild(coord);
+            getShapeRoot ()->addChild(coord);
 
             faceSet = new PartGui::SoBrepFaceSet();            
             faceSet->partIndex.setNum(1); // One face
@@ -219,7 +214,7 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 3, SO_END_FACE_INDEX);
             }
-            pShapeSep->addChild(faceSet);
+            getShapeRoot ()->addChild(faceSet);
 
             lineSet = new SoIndexedLineSet();
             lineSet->coordIndex.setNum(points.size()+2);
@@ -227,13 +222,13 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
                 lineSet->coordIndex.set1Value(p, p);
             lineSet->coordIndex.set1Value(points.size(), 0);
             lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);
-            pShapeSep->addChild(lineSet);
+            getShapeRoot ()->addChild(lineSet);
         } else {
-            coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
+            coord = static_cast<SoCoordinate3*>(getShapeRoot ()->getChild(0));
             coord->point.setNum(points.size());
             for (unsigned int p = 0; p < points.size(); p++)
                 coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
-            faceSet = static_cast<PartGui::SoBrepFaceSet*>(pShapeSep->getChild(2));
+            faceSet = static_cast<PartGui::SoBrepFaceSet*>(getShapeRoot ()->getChild(1));
             faceSet->partIndex.setNum(1); // One face
             faceSet->partIndex.set1Value(0, points.size()-3 + 1); // with this many triangles
             faceSet->coordIndex.setNum(4 + 4*(points.size()-3));
@@ -249,7 +244,7 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 3, SO_END_FACE_INDEX);
             }
-            lineSet = static_cast<SoIndexedLineSet*>(pShapeSep->getChild(3));
+            lineSet = static_cast<SoIndexedLineSet*>(getShapeRoot ()->getChild(2));
             lineSet->coordIndex.setNum(points.size()+2);
             for (unsigned int p = 0; p < points.size(); p++)
                 lineSet->coordIndex.set1Value(p, p);

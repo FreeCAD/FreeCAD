@@ -24,8 +24,9 @@
 #ifndef PARTGUI_ViewProviderDatumLine_H
 #define PARTGUI_ViewProviderDatumLine_H
 
-#include "Gui/ViewProviderGeometryObject.h"
 #include "ViewProviderDatum.h"
+
+class SoCoordinate3;
 
 namespace PartDesignGui {
 
@@ -38,9 +39,13 @@ public:
     ViewProviderDatumLine();
     virtual ~ViewProviderDatumLine();
 
+    virtual void attach ( App::DocumentObject *obj );
     virtual void updateData(const App::Property*);
 
     virtual void setExtents (Base::BoundBox3d bbox);
+
+private:
+    SoCoordinate3 *pCoords;
 };
 
 } // namespace PartDesignGui

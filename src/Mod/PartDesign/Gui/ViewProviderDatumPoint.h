@@ -38,9 +38,12 @@ public:
     ViewProviderDatumPoint();
     virtual ~ViewProviderDatumPoint();
 
-    virtual void updateData(const App::Property*);
+    virtual void attach ( App::DocumentObject *obj );
 
     // Note: don't overload setExtents () here because point doesn't really depends on it
+
+protected:
+    virtual void onChanged(const App::Property* prop);
 };
 
 } // namespace PartDesignGui
