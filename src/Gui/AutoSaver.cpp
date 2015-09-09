@@ -40,6 +40,7 @@
 
 #include "WaitCursor.h"
 #include "Widgets.h"
+#include "MainWindow.h"
 
 using namespace Gui;
 
@@ -108,8 +109,8 @@ void AutoSaver::saveDocument(const std::string& name)
             str << "<?xml version='1.0' encoding='utf-8'?>" << endl
                 << "<AutoRecovery SchemaVersion=\"1\">" << endl;
             str << "  <Status>Created</Status>" << endl;
-            str << "  <Label>" << doc->Label.getValue() << "</Label>" << endl; // store the document's current label
-            str << "  <FileName>" << doc->FileName.getValue() << "</FileName>" << endl; // store the document's current filename
+            str << "  <Label>" << QString::fromUtf8(doc->Label.getValue()) << "</Label>" << endl; // store the document's current label
+            str << "  <FileName>" << QString::fromUtf8(doc->FileName.getValue()) << "</FileName>" << endl; // store the document's current filename
             str << "</AutoRecovery>" << endl;
             file.close();
         }
@@ -125,9 +126,10 @@ void AutoSaver::saveDocument(const std::string& name)
         bool save = hGrp->GetBool("SaveThumbnail",false);
         hGrp->SetBool("SaveThumbnail",false);
 
-        Gui::StatusWidget* sw = new Gui::StatusWidget(qApp->activeWindow());
-        sw->setStatusText(tr("Please wait until the AutoRecovery file has been saved..."));
-        sw->show();
+        //Gui::StatusWidget* sw = new Gui::StatusWidget(qApp->activeWindow());
+        //sw->setStatusText(tr("Please wait until the AutoRecovery file has been saved..."));
+        //sw->show();
+        getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
         qApp->processEvents();
 
         // open extra scope to close ZipWriter properly
@@ -152,8 +154,8 @@ void AutoSaver::saveDocument(const std::string& name)
             }
         }
 
-        sw->hide();
-        sw->deleteLater();
+        //sw->hide();
+        //sw->deleteLater();
 
         std::string str = watch.toString(watch.elapsed());
         Base::Console().Log("Save AutoRecovery file: %s\n", str.c_str());
