@@ -58,8 +58,7 @@ class inp_writer:
             self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
-        self.base_name = self.mesh_object.Name
-        self.file_name = self.dir_name + '/' + self.base_name + '.inp'
+        self.file_name = self.dir_name + '/' + self.mesh_object.Name + '.inp'
         self.fc_ver = FreeCAD.Version()
         self.ccx_eall = 'Eall'
         self.ccx_elsets = []
