@@ -30,6 +30,8 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QCloseEvent>
+# include <QDateTime>
+# include <QDebug>
 # include <QDir>
 # include <QFile>
 # include <QHeaderView>
@@ -68,8 +70,9 @@ public:
     enum Status {
         Unknown = 0, /*!< The file is not available */
         Created = 1, /*!< The file was created but not processed so far*/
-        Success = 2, /*!< The file could be recovered */
-        Failure = 3, /*!< The file could not be recovered */
+        Overage = 2, /*!< The recovery file is older than the actual project file */
+        Success = 3, /*!< The file could be recovered */
+        Failure = 4, /*!< The file could not be recovered */
     };
     struct Info {
         QString projectFile;
@@ -84,7 +87,7 @@ public:
     QList<Info> recoveryInfo;
 
     Info getRecoveryInfo(const QFileInfo&) const;
-    void writeRecoveryInfo(const Info&);
+    void writeRecoveryInfo(const Info&) const;
     XmlConfig readXmlFile(const QString& fn) const;
 };
 
@@ -211,7 +214,7 @@ void DocumentRecovery::accept()
     }
 }
 
-void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::Info& info)
+void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::Info& info) const
 {
     // Write recovery meta file
     QFile file(info.xmlFile);
@@ -223,6 +226,9 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
         switch (info.status) {
         case Created:
             str << "  <Status>Created</Status>" << endl;
+            break;
+        case Overage:
+            str << "  <Status>Deprecated</Status>" << endl;
             break;
         case Success:
             str << "  <Status>Success</Status>" << endl;
@@ -269,10 +275,27 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
 
             if (cfg.contains(QString::fromLatin1("Status"))) {
                 QString status = cfg[QString::fromLatin1("Status")];
-                if (status == QLatin1String("Success"))
+                if (status == QLatin1String("Deprecated"))
+                    info.status = DocumentRecoveryPrivate::Overage;
+                else if (status == QLatin1String("Success"))
                     info.status = DocumentRecoveryPrivate::Success;
                 else if (status == QLatin1String("Failure"))
                     info.status = DocumentRecoveryPrivate::Failure;
+            }
+
+            if (info.status == DocumentRecoveryPrivate::Created) {
+                // compare the modification dates
+                QFileInfo fileInfo(info.fileName);
+                if (!info.fileName.isEmpty() && fileInfo.exists()) {
+                    QDateTime dateRecv = QFileInfo(file).lastModified();
+                    QDateTime dateProj = fileInfo.lastModified();
+                    if (dateRecv < dateProj) {
+                        info.status = DocumentRecoveryPrivate::Overage;
+                        writeRecoveryInfo(info);
+                        qWarning() << "Ignore recovery file " << file.toUtf8()
+                            << " because it is older than the project file" << info.fileName.toUtf8() << "\n";
+                    }
+                }
             }
         }
     }
