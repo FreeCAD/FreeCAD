@@ -38,9 +38,13 @@ public:
     ViewProviderDatumPlane();
     virtual ~ViewProviderDatumPlane();
 
+    virtual void attach ( App::DocumentObject *obj );
     virtual void updateData(const App::Property*);
 
     void setExtents (Base::BoundBox3d bbox);
+
+private:
+    SoCoordinate3 *pCoords;
 };
 
 } // namespace PartDesignGui

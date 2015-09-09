@@ -25,28 +25,14 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_IntCS.hxx>
 #endif
 
-#include "ViewProviderDatumPlane.h"
-#include "TaskDatumParameters.h"
-#include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/Part/Gui/SoBrepPointSet.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
+
+#include "ViewProviderDatumPlane.h"
 
 using namespace PartDesignGui;
 
@@ -55,11 +41,49 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPlane,PartDesignGui::ViewProvide
 ViewProviderDatumPlane::ViewProviderDatumPlane()
 {
     sPixmap = "PartDesign_Plane.svg";
+
+    pCoords = new SoCoordinate3();
+    pCoords->ref ();
 }
 
 ViewProviderDatumPlane::~ViewProviderDatumPlane()
 {
+    pCoords->unref ();
+}
 
+void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
+
+    ViewProviderDatum::attach ( obj );
+
+    ViewProviderDatum::setExtents ( defaultBoundBox () );
+    getShapeRoot ()->addChild(pCoords);
+
+    PartGui::SoBrepEdgeSet* lineSet = new PartGui::SoBrepEdgeSet();
+    lineSet->coordIndex.setNum(6);
+    lineSet->coordIndex.set1Value(0, 0);
+    lineSet->coordIndex.set1Value(1, 1);
+    lineSet->coordIndex.set1Value(2, 2);
+    lineSet->coordIndex.set1Value(3, 3);
+    lineSet->coordIndex.set1Value(4, 0);
+    lineSet->coordIndex.set1Value(5, SO_END_LINE_INDEX);
+    getShapeRoot ()->addChild(lineSet);
+
+    PartGui::SoBrepFaceSet *faceSet = new PartGui::SoBrepFaceSet();
+    // SoBrepFaceSet supports only triangles (otherwice we recive incorrect highlighting
+    faceSet->partIndex.set1Value(0, 2); // One face, two triangles
+    faceSet->coordIndex.setNum(8);
+    // first triangle
+    faceSet->coordIndex.set1Value(0, 0);
+    faceSet->coordIndex.set1Value(1, 1);
+    faceSet->coordIndex.set1Value(2, 2);
+    faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
+    // second triangle
+    faceSet->coordIndex.set1Value(4, 2);
+    faceSet->coordIndex.set1Value(5, 3);
+    faceSet->coordIndex.set1Value(6, 0);
+    faceSet->coordIndex.set1Value(7, SO_END_FACE_INDEX);
+
+    getShapeRoot ()->addChild(faceSet);
 }
 
 void ViewProviderDatumPlane::updateData(const App::Property* prop)
@@ -78,178 +102,21 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
 void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
     PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
 
-        Base::Placement plm = pcDatum->Placement.getValue();
+    Base::Placement plm = pcDatum->Placement.getValue ().inverse ();
 
-        plm.invert();
-        Base::Vector3d base(0,0,0);
-        Base::Vector3d normal(0,0,1);
+    // Transform the box to the line's coordinates, the result line will be larger than the bbox
+    bbox = bbox.Transformed ( plm.toMatrix() );
+    // Add origin of the plane to the box if it's not
+    bbox.Add ( Base::Vector3d (0, 0, 0) );
 
-        // Get limits of the plane from bounding box of the body
-        bbox = bbox.Transformed(plm.toMatrix());
-        double dlength = bbox.CalcDiagonalLength();
-        if (dlength < Precision::Confusion())
-            return;
-        bbox.Enlarge(0.1 * dlength);
+    double marging = sqrt(bbox.LengthX ()*bbox.LengthY ()) * margingFactor ();
 
-        // Calculate intersection of plane with bounding box edges
-        // TODO: This can be a lot more efficient if we do the maths ourselves, e.g.
-        // http://cococubed.asu.edu/code_pages/raybox.shtml
-        // http://www.fho-emden.de/~hoffmann/cubeplane12112006.pdf
-        Handle_Geom_Plane plane = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
-        std::vector<Base::Vector3d> points;
+    // Change the coordinates of the line
+    pCoords->point.setNum (4);
+    pCoords->point.set1Value(0, bbox.MaxX + marging, bbox.MaxY + marging, 0 );
+    pCoords->point.set1Value(1, bbox.MinX - marging, bbox.MaxY + marging, 0 );
+    pCoords->point.set1Value(2, bbox.MinX - marging, bbox.MinY - marging, 0 );
+    pCoords->point.set1Value(3, bbox.MaxX + marging, bbox.MinY - marging, 0 );
 
-        for (int i = 0; i < 12; i++) {
-            // Get the edge of the bounding box
-            Base::Vector3d p1, p2;
-            bbox.CalcEdge(i, p1, p2);
-            Base::Vector3d ldir = p2 - p1;
-            Handle_Geom_Line line = new Geom_Line(gp_Pnt(p1.x, p1.y, p1.z), gp_Dir(ldir.x, ldir.y, ldir.z));
-            GeomAPI_IntCS intersector(line, plane);
-            if (!intersector.IsDone() || (intersector.NbPoints() == 0))
-                continue;
-            gp_Pnt pnt = intersector.Point(1);
-            Base::Vector3d point(pnt.X(), pnt.Y(), pnt.Z());
-
-            // Check whether intersection is on the bbox edge (bbox.IsInside() always tests false)
-            double edgeLength = (p1 - p2).Length();
-            double l1 = (p1 - point).Length();
-            double l2 = (p2 - point).Length();
-            if (fabs(edgeLength - l1 - l2) > 0.001)
-                continue;
-
-            // Check for duplicates
-            bool duplicate = false;
-            for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
-                if ((point - *p).Sqr() < Precision::Confusion()) {
-                    duplicate = true;
-                    break;
-                }
-            }
-            if (!duplicate)
-                points.push_back(point);
-        }
-
-        if (points.size() < 3)
-            return;
-
-        // Sort the points to get a proper polygon, see http://www.fho-emden.de/~hoffmann/cubeplane12112006.pdf p.5
-        if (points.size() > 3) {
-            // Longest component of normal vector
-            int longest;
-            if (normal.x > normal.y)
-                if (normal.x > normal.z)
-                    longest = 0; // x is longest
-                else
-                    longest = 2; // z is longest
-            else
-                if (normal.y > normal.z)
-                    longest = 1; // y is longest
-                else
-                    longest = 2; // z is longest
-
-            // mean value for intersection points
-            Base::Vector3d m;
-            for (std::vector<Base::Vector3d>::iterator p = points.begin(); p != points.end(); p++)
-                m += *p;
-            m /= points.size();
-
-            // Sort by angles
-            std::vector<double> a(points.size());
-            for (unsigned int i = 0; i < points.size() - 1; i++) {
-                if (longest == 0)
-                    a[i] = atan2(points[i].z - m.z, points[i].y - m.y);
-                else if (longest == 1)
-                    a[i] = atan2(points[i].z - m.z, points[i].x - m.x);
-                else
-                    a[i] = atan2(points[i].y - m.y, points[i].x - m.x);
-
-                for (unsigned int k = i+1; k < points.size(); k++) {
-                    if (longest == 0)
-                        a[k] = atan2(points[k].z - m.z, points[k].y - m.y);
-                    else if (longest == 1)
-                        a[k] = atan2(points[k].z - m.z, points[k].x - m.x);
-                    else
-                        a[k] = atan2(points[k].y - m.y, points[k].x - m.x);
-
-                    if (a[k] < a[i]) {
-                        Base::Vector3d temp = points[i];
-                        points[i] = points[k];
-                        points[k] = temp;
-                        a[i] = a[k];
-                    }
-                }
-            }
-        }
-
-        // Display the plane
-        // Note: To achieve different colours on the two sides of the plane, see:
-        // http://doc.coin3d.org/Coin/classSoIndexedFaceSet.html
-        SoCoordinate3* coord;
-        PartGui::SoBrepFaceSet* faceSet;
-        SoIndexedLineSet* lineSet;
-
-        if (getShapeRoot ()->getNumChildren() == 0) {
-            // The polygon must be split up into triangles because the SoBRepFaceSet only handles those
-            if (points.size() < 3)
-                return;
-            coord = new SoCoordinate3();
-            coord->point.setNum(points.size());
-            for (unsigned int p = 0; p < points.size(); p++)
-                coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
-            getShapeRoot ()->addChild(coord);
-
-            faceSet = new PartGui::SoBrepFaceSet();            
-            faceSet->partIndex.setNum(1); // One face
-            faceSet->partIndex.set1Value(0, points.size()-3 + 1); // with this many triangles
-            faceSet->coordIndex.setNum(4 + 4*(points.size()-3));
-            // The first triangle
-            faceSet->coordIndex.set1Value(0, 0);
-            faceSet->coordIndex.set1Value(1, 1);
-            faceSet->coordIndex.set1Value(2, 2);
-            faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
-            // One more triangle for every extra polygon point
-            for (unsigned int p = 3; p < points.size(); p++) {
-                faceSet->coordIndex.set1Value(4 + 4*(p-3), 0);
-                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 1, p-1);
-                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
-                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 3, SO_END_FACE_INDEX);
-            }
-            getShapeRoot ()->addChild(faceSet);
-
-            lineSet = new SoIndexedLineSet();
-            lineSet->coordIndex.setNum(points.size()+2);
-            for (unsigned int p = 0; p < points.size(); p++)
-                lineSet->coordIndex.set1Value(p, p);
-            lineSet->coordIndex.set1Value(points.size(), 0);
-            lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);
-            getShapeRoot ()->addChild(lineSet);
-        } else {
-            coord = static_cast<SoCoordinate3*>(getShapeRoot ()->getChild(0));
-            coord->point.setNum(points.size());
-            for (unsigned int p = 0; p < points.size(); p++)
-                coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
-            faceSet = static_cast<PartGui::SoBrepFaceSet*>(getShapeRoot ()->getChild(1));
-            faceSet->partIndex.setNum(1); // One face
-            faceSet->partIndex.set1Value(0, points.size()-3 + 1); // with this many triangles
-            faceSet->coordIndex.setNum(4 + 4*(points.size()-3));
-            // The first triangle
-            faceSet->coordIndex.set1Value(0, 0);
-            faceSet->coordIndex.set1Value(1, 1);
-            faceSet->coordIndex.set1Value(2, 2);
-            faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
-            // One more triangle for every extra polygon point
-            for (unsigned int p = 3; p < points.size(); p++) {
-                faceSet->coordIndex.set1Value(4 + 4*(p-3), 0);
-                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 1, p-1);
-                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
-                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 3, SO_END_FACE_INDEX);
-            }
-            lineSet = static_cast<SoIndexedLineSet*>(getShapeRoot ()->getChild(2));
-            lineSet->coordIndex.setNum(points.size()+2);
-            for (unsigned int p = 0; p < points.size(); p++)
-                lineSet->coordIndex.set1Value(p, p);
-            lineSet->coordIndex.set1Value(points.size(), 0);
-            lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);
-        }
 }
 
