@@ -75,8 +75,8 @@ public:
     SbBox3f getBoundBox ();
 
 protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
+    void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
+    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );
 
 private:
     /// group used to store children collected by claimChildren3D() in the through (edit) mode.

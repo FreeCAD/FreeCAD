@@ -98,10 +98,10 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
     assert ( gdoc );
 
     connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, _1) );
+            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, _1, _2) );
 
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, _1) );
+            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, _1, _2) );
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -268,24 +268,42 @@ void ViewProviderBody::updateData(const App::Property* prop)
 }
 
 
-void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj ) {
+void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
+    if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ) { // we are intrested only in Part::Features
+        return;
+    }
+
+    const Part::Feature *feat = static_cast <const Part::Feature *>(&obj);
+
+    if ( &feat->Shape != &prop && &feat->Placement != &prop) { // react only on changes in shapes and placement
+        return;
+    }
+
     PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
     if ( body && body->hasFeature (&obj ) ) {
         updateOriginDatumSize ();
     }
 }
 
-void ViewProviderBody::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp ) {
+void ViewProviderBody::slotChangedObjectGui (
+        const Gui::ViewProviderDocumentObject& vp, const App::Property& prop )
+{
+    if (&vp.Visibility != &prop) { // react only on visability changes
+        return;
+    }
+
     if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
          !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
         // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
         //          but may happen in documents designed in old versions of assembly branch )
-        PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-        App::DocumentObject *obj = vp.getObject ();
+        return;
+    }
 
-        if ( body && obj && body->hasFeature ( obj ) ) {
-            updateOriginDatumSize ();
-        }
+    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
+    App::DocumentObject *obj = vp.getObject ();
+
+    if ( body && obj && body->hasFeature ( obj ) ) {
+        updateOriginDatumSize ();
     }
 }
 
