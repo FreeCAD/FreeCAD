@@ -622,7 +622,7 @@ class _ResultControlTaskPanel:
             if FreeCAD.FEM_dialog["show_disp"]:
                 factor = self.form.hsb_displacement_factor.value()
             else:
-                factor = 0
+                factor = 0.0
         self.MeshObject.ViewObject.applyDisplacement(factor)
 
     def show_displacement(self, checked):
@@ -630,7 +630,7 @@ class _ResultControlTaskPanel:
         FreeCAD.FEM_dialog["show_disp"] = checked
         if "result_object" in FreeCAD.FEM_dialog:
             if FreeCAD.FEM_dialog["result_object"] != self.result_object:
-                self.update_displacement(reset=True)
+                self.update_displacement()
         FreeCAD.FEM_dialog["result_object"] = self.result_object
         self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
         self.update_displacement()
