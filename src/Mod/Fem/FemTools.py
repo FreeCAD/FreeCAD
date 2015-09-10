@@ -243,8 +243,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import ccxFrdReader
         import os
         self.results_present = False
-        result_file = self.base_name + ".frd"
-        if os.path.isfile(self.base_name + ".frd"):
+        result_file = self.working_dir + '/' + self.base_name + ".frd"
+        if os.path.isfile(result_file):
             ccxFrdReader.importFrd(result_file, self.analysis)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
