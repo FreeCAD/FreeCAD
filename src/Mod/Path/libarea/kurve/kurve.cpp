@@ -1345,7 +1345,7 @@ return;
 		return m_nVertices - kReduced.m_nVertices;
 
 #else 
-		int dir1, dir2;
+		int dir1 = 0, dir2 = 0;
 		Point p0, p1, p2, pc0, pc1, pc2;
 		int vertex = 0;
 		int dir0 = Get(vertex++, p0, pc0);		// first vertex
