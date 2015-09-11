@@ -25,7 +25,7 @@ namespace KDL
 {
     ChainIkSolverPos_NR::ChainIkSolverPos_NR(const Chain& _chain,ChainFkSolverPos& _fksolver,ChainIkSolverVel& _iksolver,
                                              unsigned int _maxiter, double _eps):
-        chain(_chain),fksolver(_fksolver),iksolver(_iksolver),delta_q(_chain.getNrOfJoints()),
+        chain(_chain),iksolver(_iksolver),fksolver(_fksolver),delta_q(_chain.getNrOfJoints()),
         maxiter(_maxiter),eps(_eps)
     {
     }

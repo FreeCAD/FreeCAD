@@ -30,7 +30,7 @@ namespace KDL{
     const static bool mhi=true;
 
     RigidBodyInertia::RigidBodyInertia(double m_,const Vector& h_,const RotationalInertia& I_,bool mhi):
-        m(m_),h(h_),I(I_)
+        m(m_),I(I_),h(h_)
     {
     }
     

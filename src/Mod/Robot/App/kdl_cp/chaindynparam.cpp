@@ -27,16 +27,16 @@ namespace KDL {
 
     ChainDynParam::ChainDynParam(const Chain& _chain, Vector _grav):
         chain(_chain),
-	grav(_grav),
-	chainidsolver_coriolis( chain, Vector::Zero()),
-	chainidsolver_gravity( chain, grav),
 	nj(chain.getNrOfJoints()),
 	ns(chain.getNrOfSegments()),
+	grav(_grav),
 	jntarraynull(nj),
+	chainidsolver_coriolis( chain, Vector::Zero()),
+	chainidsolver_gravity( chain, grav),
 	wrenchnull(ns,Wrench::Zero()),
-	Ic(ns),
 	X(ns),
-	S(ns)
+	S(ns),
+	Ic(ns)
     {
 	ag=-Twist(grav,Vector::Zero());
     }
