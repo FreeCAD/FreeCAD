@@ -71,6 +71,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool newObj, Q
             this, SLOT(onRuled(bool)));
     connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
             this, SLOT(onClosed(bool)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -78,12 +80,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool newObj, Q
     for(QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(true);
 
- 
-
     // activate and de-activate dialog elements as appropriate
     for(QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
-    
+
     updateUI(0);
 }
 
@@ -106,12 +106,12 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             else if (selectionMode == refRemove) {
                 QString objn = QString::fromStdString(msg.pObjectName);
                 if(!objn.isEmpty())
-                    removeFromListWidget(ui->listWidgetReferences, objn);               
+                    removeFromListWidget(ui->listWidgetReferences, objn);
             }
             clearButtons();
             //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
-        } 
+        }
         clearButtons();
         exitSelectionMode();
     }
@@ -120,7 +120,6 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) const {
 
-    
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
                 (selectionMode == refAdd) || (selectionMode == refRemove))) {
 
@@ -128,14 +127,14 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();        
+        const char* fname = vp->getObject()->getNameInDocument();
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
-       
-        //every selection needs to be a profile in itself, hence currently only full objects are 
+
+        //every selection needs to be a profile in itself, hence currently only full objects are
         //supported, not individual edges of a part
-        
-        //change the references 
+
+        //change the references
         std::vector<App::DocumentObject*> refs = static_cast<PartDesign::Loft*>(vp->getObject())->Sections.getValues();
         App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
         std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
@@ -150,7 +149,7 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
                 refs.erase(f);
             else
                 return false;
-        }        
+        }
 
         static_cast<PartDesign::Loft*>(vp->getObject())->Sections.setValues(refs);
         return true;
@@ -239,7 +238,7 @@ void TaskLoftParameters::onRuled(bool val) {
 
 void TaskLoftParameters::onRefButtonAdd(bool checked) {
     if (checked) {
-        Gui::Selection().clearSelection();        
+        Gui::Selection().clearSelection();
         selectionMode = refAdd;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
@@ -248,11 +247,12 @@ void TaskLoftParameters::onRefButtonAdd(bool checked) {
 void TaskLoftParameters::onRefButtonRemvove(bool checked) {
 
     if (checked) {
-        Gui::Selection().clearSelection();        
+        Gui::Selection().clearSelection();
         selectionMode = refRemove;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
+
 
 
 //**************************************************************************
@@ -271,60 +271,17 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool new
 
 TaskDlgLoftParameters::~TaskDlgLoftParameters()
 {
-
 }
-
-//==== calls from the TaskView ===============================================================
 
 
 bool TaskDlgLoftParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
+    // TODO Fill this with commands (2015-09-11, Fat-Zer)
 
-    try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!vp->getObject()->isValid())
-            throw Base::Exception(vp->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromUtf8(e.what()));
-        return false;
-    }
-
-    return true;
+    return TaskDlgSketchBasedParameters::accept ();
 }
 
-//bool TaskDlgLoftParameters::reject()
-//{
-//    // get the support and Sketch
-//    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(LoftView->getObject()); 
-//    Sketcher::SketchObject *pcSketch = 0;
-//    App::DocumentObject    *pcSupport = 0;
-//    if (pcLoft->Sketch.getValue()) {
-//        pcSketch = static_cast<Sketcher::SketchObject*>(pcLoft->Sketch.getValue()); 
-//        pcSupport = pcSketch->Support.getValue();
-//    }
-//
-//    // roll back the done things
-//    Gui::Command::abortCommand();
-//    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-//    
-//    // if abort command deleted the object the support is visible again
-//    if (!Gui::Application::Instance->getViewProvider(pcLoft)) {
-//        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-//            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-//        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-//            Gui::Application::Instance->getViewProvider(pcSupport)->show();
-//    }
-//
-//    //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-//    //Gui::Command::commitCommand();
-//
-//    return true;
-//}
-
+//==== calls from the TaskView ===============================================================
 
 
 #include "moc_TaskLoftParameters.cpp"
