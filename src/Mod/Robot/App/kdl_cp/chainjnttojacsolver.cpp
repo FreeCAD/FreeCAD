@@ -48,7 +48,7 @@ namespace KDL
 
     int ChainJntToJacSolver::JntToJac(const JntArray& q_in,Jacobian& jac)
     {
-        if(q_in.rows()!=chain.getNrOfJoints()||nr_of_unlocked_joints_!=jac.columns())
+        if(q_in.rows()!=chain.getNrOfJoints()||nr_of_unlocked_joints_!=static_cast<int>(jac.columns()))
             return -1;
         T_tmp = Frame::Identity();
         SetToZero(t_tmp);
