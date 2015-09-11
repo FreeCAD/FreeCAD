@@ -30,7 +30,7 @@ namespace KDL {
                                                  TreeFkSolverPos& _fksolver, TreeIkSolverVel& _iksolver,
                                                  unsigned int _maxiter, double _eps) :
         tree(_tree), q_min(tree.getNrOfJoints()), q_max(tree.getNrOfJoints()),
-        fksolver(_fksolver), iksolver(_iksolver), delta_q(tree.getNrOfJoints()),
+        iksolver(_iksolver), fksolver(_fksolver), delta_q(tree.getNrOfJoints()),
         endpoints(_endpoints), maxiter(_maxiter), eps(_eps) {
         
         q_min = _q_min;

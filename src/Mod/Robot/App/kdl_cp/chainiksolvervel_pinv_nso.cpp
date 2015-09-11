@@ -36,8 +36,8 @@ namespace KDL
         eps(_eps),
         maxiter(_maxiter),
         alpha(_alpha),
-        opt_pos(_opt_pos),
-        weights(_weights)
+        weights(_weights),
+        opt_pos(_opt_pos)
     {
     }
 
