@@ -42,8 +42,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
-
+namespace PartDesignGui {
 
 
 class TaskLoftParameters : public TaskSketchBasedParameters
@@ -59,7 +58,7 @@ private Q_SLOTS:
     void onRefButtonRemvove(bool);
     void onClosed(bool);
     void onRuled(bool);
-    
+
 protected:
     void changeEvent(QEvent *e);
 
@@ -74,7 +73,7 @@ private:
 private:
     QWidget* proxy;
     Ui_TaskLoftParameters* ui;
-    
+
     enum selectionModes { none, refAdd, refRemove };
     selectionModes selectionMode = none;
 };
@@ -91,11 +90,8 @@ public:
     ViewProviderLoft* getLoftView() const
     { return static_cast<ViewProviderLoft*>(vp); }
 
-
-public:
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
 
 protected:
     TaskLoftParameters  *parameter;
