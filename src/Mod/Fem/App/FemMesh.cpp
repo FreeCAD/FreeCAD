@@ -430,7 +430,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
                 std::back_insert_iterator<std::vector<int> >(element_face_nodes));
 
             // For curved faces it is possible that a volume contributes more than one face
-            if (element_face_nodes.size() == numNodes) {
+            if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
                 result.push_back(std::make_pair(vol->GetID(), face->GetID()));
             }
         }
@@ -498,7 +498,7 @@ std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face &face) const
              Face 2: 1-4-2, missing point 3 means it's face P2
              Face 3: 2-4-3, missing point 1 means it's face P3
              Face 4: 3-4-1, missing point 2 means it's face P4 */
-            int face_ccx;
+            int face_ccx = 0;
             switch (missing_node) {
             case 1:
                 face_ccx = 3;
