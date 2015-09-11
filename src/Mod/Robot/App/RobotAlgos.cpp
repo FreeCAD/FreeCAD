@@ -95,7 +95,8 @@ void RobotAlgos::Test(void)
     for(unsigned int i=0;i<nj;i++){
         float myinput;
         printf ("Enter the position of joint %i: ",i);
-        scanf ("%e",&myinput);
+        int result = scanf ("%e",&myinput);
+	(void)result;
         jointpositions(i)=(double)myinput;
     }
  
