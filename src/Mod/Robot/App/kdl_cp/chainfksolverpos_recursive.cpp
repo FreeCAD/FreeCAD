@@ -39,11 +39,11 @@ namespace KDL {
 
         if(q_in.rows()!=chain.getNrOfJoints())
             return -1;
-        else if(segmentNr>chain.getNrOfSegments())
+        else if(segmentNr>static_cast<int>(chain.getNrOfSegments()))
             return -1;
         else{
             int j=0;
-            for(unsigned int i=0;i<segmentNr;i++){
+            for(int i=0;i<segmentNr;i++){
                 if(chain.getSegment(i).getJoint().getType()!=Joint::None){
                     p_out = p_out*chain.getSegment(i).pose(q_in(j));
                     j++;

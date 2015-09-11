@@ -57,8 +57,8 @@ namespace KDL
         for(unsigned int i=0;i<6;i++)
             v_in_eigen(i)=v_in(i);
 
-        for(unsigned int i=0;i<m;i++){
-            for(unsigned int j=0;j<n;j++)
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++)
                 if(transpose)
                     jac_eigen(i,j)=jac(j,i);
                 else
@@ -72,7 +72,7 @@ namespace KDL
         else
             UY = (U.transpose() * v_in_eigen).lazy();
 
-        for (unsigned int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++){
             double wi = UY(i);
             double alpha = S(i);
             
