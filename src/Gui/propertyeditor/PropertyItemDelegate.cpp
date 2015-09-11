@@ -47,7 +47,7 @@ PropertyItemDelegate::~PropertyItemDelegate()
 QSize PropertyItemDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
     QSize size = QItemDelegate::sizeHint(option, index);
-    size.setHeight(20);
+    size += QSize(0, 5);
     return size;
 }
 
