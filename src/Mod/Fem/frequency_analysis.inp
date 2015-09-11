@@ -391,7 +391,7 @@
 ***********************************************************
 ** Element sets for materials
 ** written by write_material_element_sets function
-*ELSET,ELSET=MechanicalMaterial
+*ELSET,ELSET=MaterialSolidElements
 Eall
 
 ***********************************************************
@@ -455,7 +455,7 @@ Eall
 0.360
 *DENSITY 
 1.000e-09, 
-*SOLID SECTION, ELSET=MechanicalMaterial, MATERIAL=Test Material
+*SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=Test Material
 
 ***********************************************************
 ** One step is needed to calculate the mechanical analysis of FreeCAD

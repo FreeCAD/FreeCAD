@@ -55,15 +55,12 @@ class inp_writer:
         f.write('** Element sets for materials\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for m in self.material_objects:
-            mat_obj = m['Object']
-            mat_obj_name = mat_obj.Name[:80]
-
-            f.write('*ELSET,ELSET=' + mat_obj_name + '\n')
             if len(self.material_objects) == 1:
+                f.write('*ELSET,ELSET=MaterialSolidElements\n')
                 f.write('Eall\n')
             else:
-                if mat_obj_name == 'MechanicalMaterial':
-                    f.write('Eall\n')
+                print 'material object count: ', len(self.material_objects)
+                FreeCAD.Console.PrintError('Multiple materials are not yet supported!\n')
 
     def write_fixed_node_sets(self, f):
         f.write('\n***********************************************************\n')
@@ -142,10 +139,11 @@ class inp_writer:
             f.write('{0:.3e}, \n'.format(density_in_tone_per_mm3))
             # write element properties
             if len(self.material_objects) == 1:
-                f.write('*SOLID SECTION, ELSET=' + mat_obj_name + ', MATERIAL=' + mat_name + '\n')
+                f.write('*SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=' + mat_name + '\n')
             else:
                 if mat_obj_name == 'MechanicalMaterial':
-                    f.write('*SOLID SECTION, ELSET=' + mat_obj_name + ', MATERIAL=' + mat_name + '\n')
+                    f.write('*SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=' + mat_name + '\n')
+
 
     def write_step_begin(self, f):
         f.write('\n***********************************************************\n')
