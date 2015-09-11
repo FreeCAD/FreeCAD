@@ -81,6 +81,7 @@ namespace KDL {
         
         // Compute the SVD of the weighted jacobian
         int ret = svd_eigen_HH(Wy_J_Wq, U, S, V, tmp);
+        (void)ret;
         
         //Pre-multiply U and V by the task space and joint space weighting matrix respectively
         Wy_t = (Wy * t).lazy();
