@@ -81,7 +81,7 @@ private:
                 Base::Vector3d m1 = arc->getCenter();
               //Base::Vector3d a3 = arc->getStartPoint();
                 Base::Vector3d a3 = arc->getEndPoint(true);
-                Base::Vector3d l1 = seg->getStartPoint();
+              //Base::Vector3d l1 = seg->getStartPoint();
                 Base::Vector3d l2 = seg->getEndPoint();
 #if 0
                 Py::Module pd("FilletArc");

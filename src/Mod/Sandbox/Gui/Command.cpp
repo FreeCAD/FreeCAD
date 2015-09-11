@@ -192,6 +192,7 @@ void CmdSandboxDocThreadWithSeq::activated(int iMsg)
         }
         seq.next(true);
     }
+    (void)val;
 }
 
 // -------------------------------------------------------------------------------
@@ -228,6 +229,7 @@ void CmdSandboxDocThreadBusy::activated(int iMsg)
             val = sin(0.12345);
         }
     }
+    (void)val;
 }
 
 // -------------------------------------------------------------------------------
@@ -252,10 +254,12 @@ void CmdSandboxDocumentNoThread::activated(int iMsg)
     App::Document* doc = App::GetApplication().getActiveDocument();
     Sandbox::DocumentProtector dp(doc);
     App::DocumentObject* obj = dp.addObject("Mesh::Cube", "MyCube");
+    (void)obj;
     dp.recompute();
     App::GetApplication().closeDocument("Thread");
     // this forces an exception
     App::DocumentObject* obj2 = dp.addObject("Mesh::Cube", "MyCube");
+    (void)obj2;
     dp.recompute();
 }
 
@@ -1075,7 +1079,7 @@ void CmdTestImageNode::activated(int iMsg)
     roundRectPath.closeSubpath();
 
 
-    QLabel* l = new QLabel();
+    //QLabel* l = new QLabel();
     //l.setText(QLatin1String("Distance: 2.784mm"));
     //QPixmap p = QPixmap::grabWidget(&l, 0,0,100,100);
     //l.show();
