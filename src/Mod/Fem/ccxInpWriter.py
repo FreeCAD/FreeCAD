@@ -168,6 +168,9 @@ class inp_writer:
         f.write('\n***********************************************************\n')
         f.write('** Node loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        if is_shell_mesh(self.mesh_object.FemMesh) or (is_solid_mesh(self.mesh_object.FemMesh) and has_no_face_data(self.mesh_object.FemMesh)):
+            if not hasattr(self,'fem_element_table'):
+                self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
         for fobj in self.force_objects:
             frc_obj = fobj['Object']
             if 'NodeLoad' in fobj:
@@ -205,10 +208,30 @@ class inp_writer:
                     f.write('*CLOAD\n')
                     f.write('** node loads on element face: ' + o.Name + '.' + elem + '\n')
 
-                    volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)
                     face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
-                    for mv, mf in volume_faces:
-                        face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
+                    if is_solid_mesh(self.mesh_object.FemMesh):
+                        if has_no_face_data(self.mesh_object.FemMesh):
+                            ref_face_volume_elements = self.mesh_object.FemMesh.getccxVolumesByFace(ref_face)  # list of tupels
+                            ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
+                            # print ref_face_nodes
+                            # print ref_face_volume_elements
+                            for ve in ref_face_volume_elements:
+                                veID = ve[0]
+                                ve_ref_face_nodes = []
+                                for nodeID in self.fem_element_table[veID]:
+                                    if nodeID in ref_face_nodes:
+                                        ve_ref_face_nodes.append(nodeID)
+                                face_table[veID] = ve_ref_face_nodes  #  { volumeID : ( facenodeID, ... , facenodeID ) }
+                                # print veID, ' --> ', face_table[veID]
+                        else:
+                            volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)   # (mv, mf)
+                            for mv, mf in volume_faces:
+                                face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
+                    elif is_shell_mesh(self.mesh_object.FemMesh):
+                        ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
+                        ref_face_elements = getFemElementsByNodes(self.fem_element_table, ref_face_nodes)
+                        for mf in ref_face_elements:
+                            face_table[mf] = self.fem_element_table[mf]
 
                     # calulate the appropriate node_areas for every node of every mesh face (mf)
                     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
@@ -238,7 +261,10 @@ class inp_writer:
                             node_area_table.append((face_table[mf][1], corner_node_area))
                             node_area_table.append((face_table[mf][2], corner_node_area))
 
-                        if len(face_table[mf]) == 6:  # 6 node mesh face triangle
+                        elif len(face_table[mf]) == 4:  # 4 node mesh face quad
+                            FreeCAD.Console.PrintError('Face load on 4 node quad faces are not supported\n')
+
+                        elif len(face_table[mf]) == 6:  # 6 node mesh face triangle
                             # corner_node_area = 0
                             # middle_node_area = mesh_face_area / 3.0
                             #         P3
@@ -270,6 +296,9 @@ class inp_writer:
                             node_area_table.append((face_table[mf][3], middle_node_area))
                             node_area_table.append((face_table[mf][4], middle_node_area))
                             node_area_table.append((face_table[mf][5], middle_node_area))
+
+                        elif len(face_table[mf]) == 8:  # 8 node mesh face quad
+                            FreeCAD.Console.PrintError('Face load on 8 node quad faces are not supported\n')
 
                     # node_sumarea_table
                     for n, A in node_area_table:
@@ -371,9 +400,65 @@ class inp_writer:
         f.write('**\n')
 
 
+
 # Helpers
 def getTriangleArea(P1, P2, P3):
     vec1 = P2 - P1
     vec2 = P3 - P1
     vec3 = vec1.cross(vec2)
     return 0.5 * vec3.Length
+
+
+def getFemElementTable(fem_mesh):
+    """ getFemElementTable(fem_mesh): { elementid : [ nodeid, nodeid, ... , nodeid ] }"""
+    fem_element_table = {}
+    if is_solid_mesh(fem_mesh):
+        for i in fem_mesh.Volumes:
+            fem_element_table[i] = fem_mesh.getElementNodes(i)
+    elif is_shell_mesh(fem_mesh):
+        for i in fem_mesh.Faces:
+            fem_element_table[i] = fem_mesh.getElementNodes(i)
+    elif is_beam_mesh(fem_mesh):
+        for i in fem_mesh.Edges:
+            fem_element_table[i] = fem_mesh.getElementNodes(i)
+    else:
+        print 'Neither solid nor shell nor beam mesh!'
+    # print len(fem_element_table), ' elements in fem_element_table'
+    return fem_element_table
+
+
+def getFemElementsByNodes(fem_element_table, node_list):
+    '''if all nodes of an fem_element are in node_list,
+    the fem_element is added to the list which is returned
+    e: elementlist
+    nodes: nodelist '''
+    e = []  # elementlist
+    for elementID in sorted(fem_element_table):
+          nodecount  = 0
+          for nodeID in fem_element_table[elementID]:
+            if nodeID in node_list:
+              nodecount = nodecount + 1
+          if nodecount == len(fem_element_table[elementID]):   # all nodes of the element are in the node_list!
+            e.append(elementID)
+    return e
+
+
+def is_solid_mesh(fem_mesh):
+    if fem_mesh.VolumeCount > 0: # solid mesh
+        print 'solid mesh'
+        return True
+
+def has_no_face_data(fem_mesh):
+    if fem_mesh.FaceCount == 0 :   # mesh has no face data, could be a beam mesh or a solid mesh without face data
+        print 'mesh without face data'
+        return True
+
+def is_shell_mesh(fem_mesh):
+    if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount > 0 : # shell mesh
+        print 'shell mesh'
+        return True
+
+def is_beam_mesh(fem_mesh):
+    if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount == 0 and fem_mesh.EdgeCount > 0 : # beam mesh
+        print 'beam mesh'
+        return True
