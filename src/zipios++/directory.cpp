@@ -117,8 +117,8 @@ struct boost::filesystem::dir_it::representation
 		if (((get_stat().st_mode & m) == 0) == nv)
 			chmod((m_directory + m_current).c_str(), get_stat().st_mode ^ m);
 	}
-	void change_owner(uid_t uid) { chown((m_directory + m_current).c_str(), uid, get_stat().st_gid); }
-	void change_group(gid_t gid) { chown((m_directory + m_current).c_str(), get_stat().st_uid, gid); }
+	void change_owner(uid_t uid) { int c = chown((m_directory + m_current).c_str(), uid, get_stat().st_gid); (void)c; }
+	void change_group(gid_t gid) { int c = chown((m_directory + m_current).c_str(), get_stat().st_uid, gid); (void)c; }
 
 private:
 	DIR         *m_handle;
