@@ -1231,6 +1231,7 @@ static const char *cursor_createcopy[]={
         DrawSketchHandlerCopy(string geoidlist, int origingeoid, Sketcher::PointPos originpos, int nelements, bool clone)
         : Mode(STATUS_SEEK_First)
         , geoIdList(geoidlist)
+        , Origin()
         , OriginGeoId(origingeoid)
         , OriginPos(originpos)
         , nElements(nelements)
