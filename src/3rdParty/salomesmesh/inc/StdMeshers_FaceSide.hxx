@@ -245,7 +245,7 @@ inline double StdMeshers_FaceSide::Parameter(double U, TopoDS_Edge & edge) const
 
 inline TopoDS_Vertex StdMeshers_FaceSide::FirstVertex(int i) const
 {
-  return i < myEdge.size() ? TopExp::FirstVertex( myEdge[i], 1 ) : TopoDS_Vertex();
+  return i < static_cast<int>(myEdge.size()) ? TopExp::FirstVertex( myEdge[i], 1 ) : TopoDS_Vertex();
 }
 
 //================================================================================
@@ -256,7 +256,7 @@ inline TopoDS_Vertex StdMeshers_FaceSide::FirstVertex(int i) const
 
 inline TopoDS_Vertex StdMeshers_FaceSide::LastVertex(int i) const
 {
-  return i<0 ? TopExp::LastVertex( myEdge.back(), 1) : i<myEdge.size() ? TopExp::LastVertex( myEdge[i], 1 ) : TopoDS_Vertex();
+  return i<0 ? TopExp::LastVertex( myEdge.back(), 1) : i<static_cast<int>(myEdge.size()) ? TopExp::LastVertex( myEdge[i], 1 ) : TopoDS_Vertex();
 }
 
 //================================================================================
@@ -267,7 +267,7 @@ inline TopoDS_Vertex StdMeshers_FaceSide::LastVertex(int i) const
 
 inline double StdMeshers_FaceSide::FirstParameter(int i) const
 {
-  return i==0 ? 0. : i<myNormPar.size() ? myNormPar[i-1] : 1.;
+  return i==0 ? 0. : i<static_cast<int>(myNormPar.size()) ? myNormPar[i-1] : 1.;
 }
 
 //================================================================================
@@ -278,7 +278,7 @@ inline double StdMeshers_FaceSide::FirstParameter(int i) const
 
 inline double StdMeshers_FaceSide::LastParameter(int i) const
 {
-  return i<myNormPar.size() ? myNormPar[i] : 1;
+  return i<static_cast<int>(myNormPar.size()) ? myNormPar[i] : 1;
 }
 
 #endif

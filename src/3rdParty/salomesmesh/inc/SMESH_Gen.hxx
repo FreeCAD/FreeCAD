@@ -104,7 +104,7 @@ class SMESH_EXPORT  SMESH_Gen
     int                 _algoDim;
     bool                _isGlobalAlgo;
 
-    TAlgoStateError(): _algoDim(0),_algo(0),_name(SMESH_Hypothesis::HYP_OK) {}
+    TAlgoStateError(): _name(SMESH_Hypothesis::HYP_OK),_algo(0),_algoDim(0) {}
     void Set(TAlgoStateErrorName name, const SMESH_Algo* algo, bool isGlobal)
     { _name = name; _algo = algo; _algoDim = algo->GetDim(); _isGlobalAlgo = isGlobal; }
     void Set(TAlgoStateErrorName name, const int algoDim,      bool isGlobal)
