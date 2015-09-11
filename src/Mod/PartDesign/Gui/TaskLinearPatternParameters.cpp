@@ -158,11 +158,9 @@ void TaskLinearPatternParameters::setupUI()
     
     dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
-    if (!sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        sketch = 0;
-    this->fillAxisCombo(dirLinks,static_cast<Part::Part2DObject*>(sketch));
-
-    updateUI();
+    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        this->fillAxisCombo(dirLinks,static_cast<Part::Part2DObject*>(sketch));
+    }
 
     //show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject());
@@ -176,6 +174,8 @@ void TaskLinearPatternParameters::setupUI()
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
+
+    updateUI();
 }
 
 void TaskLinearPatternParameters::updateUI()

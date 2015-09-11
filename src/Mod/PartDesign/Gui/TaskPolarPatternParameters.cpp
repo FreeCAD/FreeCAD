@@ -151,12 +151,11 @@ void TaskPolarPatternParameters::setupUI()
     ui->polarAngle->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
 
-    App::DocumentObject* sketch = getSketchObject();
-    if (!(sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
-        sketch = 0;
     this->axesLinks.setCombo(*(ui->comboAxis));
-    this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
-    updateUI();
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
+    }
 
     //show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
@@ -170,7 +169,9 @@ void TaskPolarPatternParameters::setupUI()
         } catch (const Base::Exception &ex) {
             Base::Console().Error ("%s\n", ex.what () );
         }
-     }
+    }
+
+    updateUI();
 }
 
 void TaskPolarPatternParameters::updateUI()

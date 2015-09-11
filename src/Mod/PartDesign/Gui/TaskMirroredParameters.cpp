@@ -133,11 +133,9 @@ void TaskMirroredParameters::setupUI()
     ui->comboPlane->setEnabled(true);
 
     App::DocumentObject* sketch = getSketchObject();
-    if (!sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        sketch = 0;
-    this->fillPlanesCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
-
-    updateUI();
+    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        this->fillAxisCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
+    }
 
     //show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
@@ -151,6 +149,8 @@ void TaskMirroredParameters::setupUI()
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
+
+    updateUI();
 }
 
 void TaskMirroredParameters::updateUI()
