@@ -52,8 +52,8 @@ if gui:
     import FreeCADGui
     try:
         draftui = FreeCADGui.draftToolBar
-    except AttributeError:
-        pass
+    except (AttributeError,NameError):
+        draftui = None
 
 def errorDXFLib(gui):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
