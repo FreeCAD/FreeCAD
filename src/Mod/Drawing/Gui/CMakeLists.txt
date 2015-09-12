@@ -101,7 +101,7 @@ SET(DrawingGuiIcon_SVG
 
 fc_copy_sources(DrawingGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing" ${DrawingGuiIcon_SVG})
 
-INSTALL(FILES ${DrawingGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons/actions")
+INSTALL(FILES ${DrawingGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Drawing/Resources/icons/actions")
 
 
 SET_BIN_DIR(DrawingGui DrawingGui /Mod/Drawing)
