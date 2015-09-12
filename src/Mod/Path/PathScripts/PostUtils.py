@@ -27,8 +27,11 @@ These are a common functions and classes for creating custom post processors.
 '''
 
 from PySide import QtCore, QtGui
-import FreeCADGui
 import FreeCAD
+
+FreeCADGui = None
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 class OldHighlighter(QtGui.QSyntaxHighlighter):
     def highlightBlock(self, text):
@@ -76,7 +79,9 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class GCodeEditorDialog(QtGui.QDialog):
-    def __init__(self, parent = FreeCADGui.getMainWindow()):
+    def __init__(self, parent = None):
+        if parent is None:
+            parent = FreeCADGui.getMainWindow()
         QtGui.QDialog.__init__(self,parent)
 
         layout = QtGui.QVBoxLayout(self)

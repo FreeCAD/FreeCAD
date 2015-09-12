@@ -22,9 +22,13 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,Path
 from PySide import QtCore,QtGui
 from PathScripts import PathUtils,PathSelection,PathProject
+
+FreeCADGui = None
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 """Path Drilling object and FreeCAD command"""
 

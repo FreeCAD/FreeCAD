@@ -2318,17 +2318,17 @@ def circleFrom2PointsRadius(p1, p2, radius):
     dist_p1p2 = DraftVecUtils.dist(p1, p1)
     mid = findMidpoint(p1_p2)
     if dist_p1p2 == 2*radius:
-        circle = Part.Circle(mid, norm, radius)
+        circle = Part.Circle(mid, NORM, radius)
         if circle: return [circle]
         else: return None
     dir = vec(p1_p2); dir.normalize()
-    perpDir = dir.cross(Vector(0,0,1)); perpDir.normailze()
+    perpDir = dir.cross(Vector(0,0,1)); perpDir.normalize()
     dist = math.sqrt(radius**2 - (dist_p1p2 / 2.0)**2)
     cen1 = Vector.add(mid, Vector(perpDir).multiply(dist))
     cen2 = Vector.add(mid, Vector(perpDir).multiply(-dist))
     circles = []
-    if cen1: circles.append(Part.Circle(cen1, norm, radius))
-    if cen2: circles.append(Part.Circle(cen2, norm, radius))
+    if cen1: circles.append(Part.Circle(cen1, NORM, radius))
+    if cen2: circles.append(Part.Circle(cen2, NORM, radius))
     if circles: return circles
     else: return None
 
