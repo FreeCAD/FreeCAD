@@ -22,9 +22,13 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,Path
 from PySide import QtCore,QtGui
 from PathScripts import PathUtils
+
+FreeCADGui = None
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 """Path Pocket object and FreeCAD command"""
 

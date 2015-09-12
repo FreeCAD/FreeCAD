@@ -22,8 +22,12 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,Path
 from PySide import QtCore,QtGui
+
+FreeCADGui = None
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 """Path Project object and FreeCAD command"""
 
