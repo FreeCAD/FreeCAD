@@ -853,7 +853,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                   << "Sketcher_External"
                                   << "Sketcher_ToggleConstruction"
                                 /*<< "Sketcher_CreateText"*/
-                                /*<< "Sketcher_CreateDraftLine"*/;
+                                /*<< "Sketcher_CreateDraftLine"*/
+                                  << "Separator";
 
                             Gui::Application::Instance->setupContextMenu("View", geom);
                             //Create the Context Menu using the Main View Qt Widget
