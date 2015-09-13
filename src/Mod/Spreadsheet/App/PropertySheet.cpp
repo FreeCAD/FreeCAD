@@ -49,7 +49,7 @@ class ResolveExpressionVisitor : public ExpressionVisitor {
 public:
 
     void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+        VariableExpression *expr = Spreadsheet::freecad_dynamic_cast<VariableExpression>(node);
 
         if (expr)
             expr->resolve();
@@ -66,7 +66,7 @@ public:
     }
 
     void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+        VariableExpression *expr = Spreadsheet::freecad_dynamic_cast<VariableExpression>(node);
 
         if (expr)
             expr->renameDocumentObject(oldName, newName);
@@ -87,12 +87,12 @@ public:
     }
 
     void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+        VariableExpression *expr = Spreadsheet::freecad_dynamic_cast<VariableExpression>(node);
 
         if (expr) {
             try {
                 const App::Property * prop = expr->getProperty();
-                App::DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+                App::DocumentObject * docObj = Spreadsheet::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
 
                 if (docObj)
                     docDeps.insert(docObj);
@@ -117,7 +117,7 @@ public:
     }
 
     void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+        VariableExpression *expr = Spreadsheet::freecad_dynamic_cast<VariableExpression>(node);
 
         if (expr)
             expr->renameDocument(oldName, newName);
@@ -555,8 +555,8 @@ public:
     bool changed() const { return mChanged; }
 
     void visit(Expression * node) {
-        VariableExpression *varExpr = freecad_dynamic_cast<VariableExpression>(node);
-        RangeExpression *rangeExpr = freecad_dynamic_cast<RangeExpression>(node);
+        VariableExpression *varExpr = Spreadsheet::freecad_dynamic_cast<VariableExpression>(node);
+        RangeExpression *rangeExpr = Spreadsheet::freecad_dynamic_cast<RangeExpression>(node);
 
 
         if (varExpr) {
@@ -890,7 +890,7 @@ void PropertySheet::addDependencies(CellAddress key)
         if (!prop)
             cell->setResolveException("Unresolved dependency");
         else {
-            DocumentObject * docObject = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+            DocumentObject * docObject = Spreadsheet::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
 
             documentObjectName[docObject] = docObject->Label.getValue();
             documentName[docObject->getDocument()] = docObject->getDocument()->Label.getValue();
@@ -986,7 +986,7 @@ void PropertySheet::removeDependencies(CellAddress key)
 
 void PropertySheet::recomputeDependants(const Property *prop)
 {
-    DocumentObject * owner = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+    DocumentObject * owner = Spreadsheet::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
     const char * name = owner->getPropertyName(prop);
 
     assert(name != 0);

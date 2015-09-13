@@ -183,7 +183,7 @@ const Expression *Cell::getExpression() const
 bool Cell::getStringContent(std::string & s) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<StringExpression>(expression)) {
+        if (Spreadsheet::freecad_dynamic_cast<StringExpression>(expression)) {
             s = static_cast<StringExpression*>(expression)->getText();
             char * end;
             errno = 0;
@@ -192,9 +192,9 @@ bool Cell::getStringContent(std::string & s) const
             if (!*end && errno == 0)
                 s = "'" + s;
         }
-        else if (freecad_dynamic_cast<ConstantExpression>(expression))
+        else if (Spreadsheet::freecad_dynamic_cast<ConstantExpression>(expression))
             s = "=" + expression->toString();
-        else if (freecad_dynamic_cast<NumberExpression>(expression))
+        else if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(expression))
             s = expression->toString();
         else
             s = "=" + expression->toString();
