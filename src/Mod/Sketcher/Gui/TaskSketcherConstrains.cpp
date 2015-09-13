@@ -192,6 +192,7 @@ void ConstraintView::modifyCurrentItem()
 
 void ConstraintView::renameCurrentItem()
 {
+    // See also TaskSketcherConstrains::on_listWidgetConstraints_itemChanged
     QListWidgetItem* item = currentItem();
     if (item)
         editItem(item);

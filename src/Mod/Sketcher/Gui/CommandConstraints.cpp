@@ -65,13 +65,16 @@ ConstraintCreationMode constraintCreationMode=Driving;
 
 bool isCreateConstraintActive(Gui::Document *doc)
 {
-    if (doc)
+    if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId()))
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
-                ->getSketchMode() == ViewProviderSketch::STATUS_NONE)
+                ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
                 if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
                     return true;
+            }
+        }
+    }
     return false;
 }
 
