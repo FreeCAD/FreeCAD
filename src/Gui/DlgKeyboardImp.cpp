@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QAction>
 # include <QHeaderView>
 # include <QMessageBox>
 #endif
@@ -307,19 +308,27 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         std::vector<Command*> cmds = cCmdMgr.getAllCommands();
         for (std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it) {
-            if ((*it)->getAction() && (*it)->getAction()->shortcut() == ks) {
-                ++countAmbiguous;
-                ambiguousCommand = QString::fromAscii((*it)->getName()); // store the last one
-                ambiguousMenu = qApp->translate((*it)->className(), (*it)->getMenuText());
+            QList<QAction*> acts;
+            if ((*it)->getAction()) {
+                // A command may have several QAction's. So, check all of them if one of them matches (See bug #0002160)
+                QList<QAction*> acts = (*it)->getAction()->findChildren<QAction*>();
+                for (QList<QAction*>::iterator jt = acts.begin(); jt != acts.end(); ++jt) {
+                    if ((*jt)->shortcut() == ks) {
+                        ++countAmbiguous;
+                        ambiguousCommand = QString::fromAscii((*it)->getName()); // store the last one
+                        ambiguousMenu = qApp->translate((*it)->className(), (*it)->getMenuText());
 
-                QTreeWidgetItem* item = new QTreeWidgetItem(assignedTreeWidget);
-                item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
-                item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
-                item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
-                item->setSizeHint(0, QSize(32, 32));
-                item->setBackgroundColor(0, Qt::lightGray);
-                if ((*it)->getPixmap())
-                    item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+                        QTreeWidgetItem* item = new QTreeWidgetItem(assignedTreeWidget);
+                        item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
+                        item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
+                        item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
+                        item->setSizeHint(0, QSize(32, 32));
+                        item->setBackgroundColor(0, Qt::lightGray);
+                        if ((*it)->getPixmap())
+                            item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+                        break;
+                    }
+                }
             }
         }
 
