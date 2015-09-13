@@ -69,6 +69,21 @@ void FileDialog::onSelectedFilter(const QString& filter)
     }
 }
 
+bool FileDialog::hasSuffix(const QString& ext) const
+{
+    QRegExp rx(QString::fromLatin1("\\*.(%1)\\W").arg(ext));
+    rx.setCaseSensitivity(Qt::CaseInsensitive);
+    QStringList filters = nameFilters();
+    for (QStringList::iterator it = filters.begin(); it != filters.end(); ++it) {
+        QString str = *it;
+        if (rx.indexIn(str) != -1) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void FileDialog::accept()
 {
     // When saving to a file make sure that the entered filename ends with the selected
@@ -78,8 +93,10 @@ void FileDialog::accept()
         if (!files.isEmpty()) {
             QString ext = this->defaultSuffix();
             QString file = files.front();
-            QFileInfo fi(file);
-            if (!ext.isEmpty() && fi.suffix().isEmpty()) {
+            QString suffix = QFileInfo(file).suffix();
+            // #0001928: do not add a suffix if a file with suffix is entered
+            // #0002209: make sure that the entered suffix is part of one of the filters
+            if (!ext.isEmpty() && (suffix.isEmpty() || !hasSuffix(suffix))) {
                 file = QString::fromLatin1("%1.%2").arg(file).arg(ext);
                 // That's the built-in line edit
                 QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));

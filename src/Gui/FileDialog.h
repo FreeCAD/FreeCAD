@@ -62,6 +62,9 @@ public:
 
     void accept();
 
+private:
+    bool hasSuffix(const QString&) const;
+
 private Q_SLOTS:
     void onSelectedFilter(const QString&);
 };
