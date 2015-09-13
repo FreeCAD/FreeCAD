@@ -261,4 +261,40 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     reset();
 }
 
+void PropertyModel::updateProperty(const App::Property& prop)
+{
+    int column = 1;
+    int numChild = rootItem->childCount();
+    for (int row=0; row<numChild; row++) {
+        PropertyItem* child = rootItem->child(row);
+        if (child->hasProperty(&prop)) {
+            QModelIndex data = this->index(row, column, QModelIndex());
+            if (data.isValid()) {
+                dataChanged(data, data);
+                updateChildren(child, column, data);
+            }
+            break;
+        }
+    }
+}
+
+void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelIndex& parent)
+{
+    int numChild = item->childCount();
+    if (numChild > 0) {
+        QModelIndex topLeft = this->index(0, column, parent);
+        QModelIndex bottomRight = this->index(numChild, column, parent);
+        dataChanged(topLeft, bottomRight);
+#if 0 // It seems we don't have to inform grand children
+        for (int row=0; row<numChild; row++) {
+            PropertyItem* child = item->child(row);
+            QModelIndex data = this->index(row, column, parent);
+            if (data.isValid()) {
+                updateChildren(child, column, data);
+            }
+        }
+#endif
+    }
+}
+
 #include "moc_PropertyModel.cpp"

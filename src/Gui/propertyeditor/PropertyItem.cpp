@@ -97,6 +97,15 @@ const std::vector<App::Property*>& PropertyItem::getPropertyData() const
     return propertyItems;
 }
 
+bool PropertyItem::hasProperty(const App::Property* prop) const
+{
+    std::vector<App::Property*>::const_iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
+    if (it != propertyItems.end())
+        return true;
+    else
+        return false;
+}
+
 App::Property* PropertyItem::getFirstProperty()
 {
     if (propertyItems.empty())

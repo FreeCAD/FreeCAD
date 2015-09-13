@@ -28,6 +28,8 @@
 # include <QEvent>
 #endif
 
+#include <boost/bind.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Parameter.h>
 #include <App/PropertyStandard.h>
@@ -90,10 +92,29 @@ PropertyView::PropertyView(QWidget *parent)
 
     // connect after adding all tabs, so adding doesn't thrash the parameter
     connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+
+    this->connectPropData =
+    App::GetApplication().signalChangedObject.connect(boost::bind
+        (&PropertyView::slotChangePropertyData, this, _1, _2));
+    this->connectPropView =
+    Gui::Application::Instance->signalChangedObject.connect(boost::bind
+        (&PropertyView::slotChangePropertyView, this, _1, _2));
 }
 
 PropertyView::~PropertyView()
 {
+    this->connectPropData.disconnect();
+    this->connectPropView.disconnect();
+}
+
+void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
+{
+    propertyEditorData->updateProperty(prop);
+}
+
+void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
+{
+    propertyEditorView->updateProperty(prop);
 }
 
 struct PropertyView::PropInfo
