@@ -178,7 +178,7 @@ std::string Path::getPythonAccessor() const
     if (!prop)
         throw Exception(std::string("Property '") + getPropertyName() + std::string("' not found."));
 
-    const DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+    const DocumentObject * docObj = Spreadsheet::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
 
     if (!docObj)
         throw Exception("Document object not found");
@@ -483,8 +483,8 @@ Expression * OperatorExpression::eval() const
     NumberExpression * v2;
     NumberExpression * output = 0;
 
-    v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
-    v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
+    v1 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e1.get());
+    v2 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e2.get());
 
     if (v1 == 0 || v2 == 0)
         throw Exception("Invalid expression");
@@ -567,7 +567,7 @@ Expression *OperatorExpression::simplify() const
     Expression * v2 = right->simplify();
 
     // Both arguments reduced to numerics? Then evaluate and return answer
-    if (freecad_dynamic_cast<NumberExpression>(v1) && freecad_dynamic_cast<NumberExpression>(v2)) {
+    if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(v1) && Spreadsheet::freecad_dynamic_cast<NumberExpression>(v2)) {
         delete v1;
         delete v2;
         return eval();
@@ -785,7 +785,7 @@ Expression * FunctionExpression::eval() const
     case MIN:
     case MAX:
     {
-        RangeExpression * v = freecad_dynamic_cast<RangeExpression>(args[0]);
+        RangeExpression * v = Spreadsheet::freecad_dynamic_cast<RangeExpression>(args[0]);
         Quantity q;
         Quantity mean;
         Quantity M2;
@@ -807,9 +807,9 @@ Expression * FunctionExpression::eval() const
             if (!p)
                 continue;
 
-            if ( (qp = freecad_dynamic_cast<PropertyQuantity>(p)) )
+            if ( (qp = Spreadsheet::freecad_dynamic_cast<PropertyQuantity>(p)) )
                 value = qp->getQuantityValue();
-            else if ( (fp = freecad_dynamic_cast<PropertyFloat>(p)) )
+            else if ( (fp = Spreadsheet::freecad_dynamic_cast<PropertyFloat>(p)) )
                 value = fp->getValue();
             else
                 throw Exception("Invalid property type for aggregate");
@@ -875,8 +875,8 @@ Expression * FunctionExpression::eval() const
 
     std::auto_ptr<Expression> e1(args[0]->eval());
     std::auto_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
-    NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
-    NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
+    NumberExpression * v1 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e1.get());
+    NumberExpression * v2 = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e2.get());
     double output = 0;
     Unit unit;
     double scaler = 1;
@@ -1055,7 +1055,7 @@ Expression *FunctionExpression::simplify() const
     Expression * v1 = args[0]->simplify();
 
     // Argument simplified to numeric expression? Then return evaluate and return
-    if (freecad_dynamic_cast<NumberExpression>(v1)) {
+    if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(v1)) {
         switch (f) {
         case ATAN2:
         case MOD:
@@ -1063,7 +1063,7 @@ Expression *FunctionExpression::simplify() const
         {
             Expression * v2 = args[1]->simplify();
 
-            if (freecad_dynamic_cast<NumberExpression>(v2)) {
+            if (Spreadsheet::freecad_dynamic_cast<NumberExpression>(v2)) {
                 delete v1;
                 delete v2;
                 return eval();
@@ -1586,7 +1586,7 @@ bool ConditionalExpression::isTouched() const
 Expression *ConditionalExpression::eval() const
 {
     std::auto_ptr<Expression> e(condition->eval());
-    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
+    NumberExpression * v = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
         throw Exception("Invalid expression");
@@ -1600,7 +1600,7 @@ Expression *ConditionalExpression::eval() const
 Expression *ConditionalExpression::simplify() const
 {
     std::auto_ptr<Expression> e(condition->simplify());
-    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
+    NumberExpression * v = Spreadsheet::freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
@@ -1895,13 +1895,13 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     delete ScanResult;
 
     if (unitExpression) {
-        NumberExpression * num = freecad_dynamic_cast<NumberExpression>(simplified);
+        NumberExpression * num = Spreadsheet::freecad_dynamic_cast<NumberExpression>(simplified);
 
         if (num) {
            simplified = new UnitExpression(num->getOwner(), num->getQuantity());
             delete num;
         }
-        return freecad_dynamic_cast<UnitExpression>(simplified);
+        return Spreadsheet::freecad_dynamic_cast<UnitExpression>(simplified);
     }
     else {
         delete simplified;
