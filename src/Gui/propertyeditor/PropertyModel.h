@@ -57,8 +57,12 @@ public:
     QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole);
     void buildUp(const PropertyList& props);
+    void updateProperty(const App::Property&);
     QStringList propertyPathFromIndex(const QModelIndex&) const;
     QModelIndex propertyIndexFromPath(const QStringList&) const;
+
+private:
+    void updateChildren(PropertyItem* item, int column, const QModelIndex& parent);
 
 private:
     PropertyItem *rootItem;

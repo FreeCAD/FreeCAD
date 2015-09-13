@@ -51,6 +51,7 @@ public:
 
     /** Builds up the list view with the properties. */
     void buildUp(const PropertyModel::PropertyList& props);
+    void updateProperty(const App::Property&);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
 

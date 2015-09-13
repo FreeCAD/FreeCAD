@@ -28,12 +28,15 @@
 
 #include "DockWindow.h"
 #include "Selection.h"
+#include <boost/signals.hpp>
 
 class QPixmap;
 class QTabWidget;
 
 namespace App {
+  class Property;
   class PropertyContainer;
+  class DocumentObject;
 }
 
 namespace Gui {
@@ -47,7 +50,7 @@ class PropertyEditor;
 } // namespace Gui
 
 namespace Gui {
-
+class ViewProvider;
 
 /** The property view class.
  */
@@ -71,10 +74,15 @@ protected:
 
 private:
     void onSelectionChanged(const SelectionChanges& msg);
+    void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
+    void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
 
 private:
     struct PropInfo;
     struct PropFind;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectPropData;
+    Connection connectPropView;
     QTabWidget* tabs;
 };
 
