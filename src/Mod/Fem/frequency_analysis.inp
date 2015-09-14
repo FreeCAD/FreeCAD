@@ -389,14 +389,14 @@
 
 
 ***********************************************************
-** Element sets for materials
-** written by write_material_element_sets function
+** Element sets for materials and FEM element type (solid, shell, beam)
+** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MaterialSolidElements
 Eall
 
 ***********************************************************
 ** Node set for fixed constraint
-** written by write_fixed_node_sets function
+** written by write_node_sets_constraints_fixed function
 *NSET,NSET=FemConstraintFixed
 1,
 2,
@@ -442,7 +442,7 @@ Eall
 
 ***********************************************************
 ** Node sets for loads
-** written by write_load_node_sets function
+** written by write_node_sets_constraints_force function
 *NSET,NSET=FemConstraintForce
 
 ***********************************************************
@@ -499,8 +499,8 @@ S
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
-**   written by    --> FreeCAD 0.16.5477 (Git)
-**   written on    --> Wed Sep  9 12:42:24 2015
+**   written by    --> FreeCAD 0.16.5527 (Git)
+**   written on    --> Mon Sep 14 08:41:37 2015
 **   file name     --> 
 **   analysis name --> MechanicalAnalysis
 **

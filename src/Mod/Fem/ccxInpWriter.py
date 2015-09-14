@@ -33,15 +33,15 @@ class inp_writer:
         # reopen file with "append" and add the analysis definition
         inpfile = open(self.file_name, 'a')
         inpfile.write('\n\n')
-        self.write_material_element_sets(inpfile)
-        self.write_fixed_node_sets(inpfile)
-        self.write_load_node_sets(inpfile)
+        self.write_element_sets_material_and_femelement_type(inpfile)
+        self.write_node_sets_constraints_fixed(inpfile)
+        self.write_node_sets_constraints_force(inpfile)
         self.write_materials(inpfile)
         self.write_step_begin(inpfile)
         self.write_constraints_fixed(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
             self.write_constraints_force(inpfile)
-            self.write_face_load(inpfile)
+            self.write_constraints_pressure(inpfile)
         elif self.analysis_type == "frequency":
             self.write_frequency(inpfile)
         self.write_outputs_types(inpfile)
@@ -50,9 +50,9 @@ class inp_writer:
         inpfile.close()
         return self.base_name
 
-    def write_material_element_sets(self, f):
+    def write_element_sets_material_and_femelement_type(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** Element sets for materials\n')
+        f.write('** Element sets for materials and FEM element type (solid, shell, beam)\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for m in self.material_objects:
             if len(self.material_objects) == 1:
@@ -62,7 +62,7 @@ class inp_writer:
                 print 'material object count: ', len(self.material_objects)
                 FreeCAD.Console.PrintError('Multiple materials are not yet supported!\n')
 
-    def write_fixed_node_sets(self, f):
+    def write_node_sets_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Node set for fixed constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
@@ -81,7 +81,7 @@ class inp_writer:
                 for i in n:
                     f.write(str(i) + ',\n')
 
-    def write_load_node_sets(self, f):
+    def write_node_sets_constraints_force(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Node sets for loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
@@ -318,7 +318,7 @@ class inp_writer:
                 f.write('\n')
             f.write('\n')
 
-    def write_face_load(self, f):
+    def write_constraints_pressure(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Element + CalculiX face + load in [MPa]\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
