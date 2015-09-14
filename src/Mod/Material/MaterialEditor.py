@@ -93,10 +93,10 @@ class MaterialEditor(QtGui.QDialog):
 
     def updateCards(self):
         "updates the contents of the materials combo with existing material cards"
-        # look for cards in both resources dir and user folder. 
+        # look for cards in both resources dir and a Materials sub-folder in the user folder.
         # User cards with same name will override system cards
         paths = [FreeCAD.getResourceDir() + os.sep + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
-        paths.append(FreeCAD.ConfigGet("UserAppData"))
+        paths.append(FreeCAD.ConfigGet("UserAppData") + os.sep + "Materials")
         self.cards = {}
         for p in paths:
             for f in os.listdir(p):
