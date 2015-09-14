@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 # file structure - this affects how files are saved
 FileStructure = [
     [ "Meta",            ["CardName","AuthorAndLicense","Source"] ],
-    [ "General",         ["Name","Father","Description","SpecificWeight","Vendor","ProductURL","SpecificPrice"] ],
+    [ "General",         ["Name","Father","Description","Density","Vendor","ProductURL","SpecificPrice"] ],
     [ "Mechanical",      ["YoungsModulus","UltimateTensileStrength","CompressiveStrength","Elasticity","FractureToughness"] ],
     [ "FEM",             ["PoissonRatio"] ],
     [ "Architectural",   ["Model","ExecutionInstructions","FireResistanceClass","StandardCode","ThermalConductivity","SoundTransmissionClass","Color","Finish","UnitsPerQuantity","EnvironmentalEfficiencyClass"] ],
