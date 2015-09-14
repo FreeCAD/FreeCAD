@@ -40,6 +40,7 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include "View3DInventorViewer.h"
+#include <list>
 
 class SoFullPath;
 class SoPickedPoint;
@@ -187,10 +188,14 @@ class GuiExport SoVRMLAction : public SoAction
 public:
     SoVRMLAction();
     ~SoVRMLAction();
+    void setOverrideMode(SbBool);
+    SbBool isOverrideMode() const;
 
     static void initClass();
 
 private:
+    SbBool overrideMode;
+    std::list<int> bindList;
     static void callDoAction(SoAction *action,SoNode *node);
 
 };
