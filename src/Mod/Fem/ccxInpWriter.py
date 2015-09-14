@@ -167,13 +167,6 @@ class inp_writer:
             f.write(fix_obj_name + ',3\n\n')
 
     def write_constraints_force(self, f):
-
-        def getTriangleArea(P1, P2, P3):
-            vec1 = P2 - P1
-            vec2 = P3 - P1
-            vec3 = vec1.cross(vec2)
-            return 0.5 * vec3.Length
-
         f.write('\n***********************************************************\n')
         f.write('** Node loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
@@ -378,3 +371,11 @@ class inp_writer:
         f.write("**   Materials (Young's modulus) --> N/mm2 = MPa\n")
         f.write('**   Loads (nodal loads)         --> N\n')
         f.write('**\n')
+
+
+# Helpers
+def getTriangleArea(P1, P2, P3):
+    vec1 = P2 - P1
+    vec2 = P3 - P1
+    vec3 = vec1.cross(vec2)
+    return 0.5 * vec3.Length
