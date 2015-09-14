@@ -206,6 +206,40 @@ void DlgPreferencesImp::on_buttonBox_clicked(QAbstractButton* btn)
 {
     if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply)
         applyChanges();
+    else if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Reset)
+        restoreDefaults();
+}
+
+void DlgPreferencesImp::restoreDefaults()
+{
+    QMessageBox box(this);
+    box.setIcon(QMessageBox::Question);
+    box.setWindowTitle(tr("Clear user settings"));
+    box.setText(tr("Do you want to clear all your user settings?"));
+    box.setInformativeText(tr("If you agree all your settings will be cleared."));
+    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    box.setDefaultButton(QMessageBox::No);
+
+    if (box.exec() == QMessageBox::Yes) {
+        // keep this parameter
+        bool saveParameter = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                              GetBool("SaveUserParameter", true);
+
+        ParameterManager* mgr = App::GetApplication().GetParameterSet("User parameter");
+        mgr->Clear();
+
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                              SetBool("SaveUserParameter", saveParameter);
+
+#if 0
+        QList<PreferencePage*> pages = this->findChildren<PreferencePage*>();
+        for (QList<PreferencePage*>::iterator it = pages.begin(); it != pages.end(); ++it) {
+            (*it)->loadSettings();
+        }
+#else
+        reject();
+#endif
+    }
 }
 
 void DlgPreferencesImp::applyChanges()
