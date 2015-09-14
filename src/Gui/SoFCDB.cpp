@@ -211,6 +211,7 @@ const std::string& Gui::SoFCDB::writeNodesToString(SoNode * root)
 bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
 {
     SoVRMLAction vrml2;
+    vrml2.setOverrideMode(true);
     vrml2.apply(node);
     SoToVRML2Action tovrml2;
     tovrml2.apply(node);
@@ -218,6 +219,10 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
     vrmlRoot->ref();
     std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
     vrmlRoot->unref(); // release the memory as soon as possible
+
+    // restore old settings
+    vrml2.setOverrideMode(false);
+    vrml2.apply(node);
 
     Base::FileInfo fi(filename);
     if (binary) {

@@ -61,6 +61,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
 
@@ -704,13 +705,14 @@ void SoVRMLAction::initClass()
     SO_ACTION_ADD_METHOD(SoCoordinate3,callDoAction);
     SO_ACTION_ADD_METHOD(SoMaterialBinding,callDoAction);
     SO_ACTION_ADD_METHOD(SoMaterial,callDoAction);
+    SO_ACTION_ADD_METHOD(SoNormalBinding,callDoAction);
     SO_ACTION_ADD_METHOD(SoGroup,callDoAction);
     SO_ACTION_ADD_METHOD(SoIndexedLineSet,callDoAction);
     SO_ACTION_ADD_METHOD(SoIndexedFaceSet,callDoAction);
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoVRMLAction::SoVRMLAction()
+SoVRMLAction::SoVRMLAction() : overrideMode(true)
 {
     SO_ACTION_CONSTRUCTOR(SoVRMLAction);
 }
@@ -719,7 +721,33 @@ SoVRMLAction::~SoVRMLAction()
 {
 }
 
-void SoVRMLAction::callDoAction(SoAction *action,SoNode *node)
+void SoVRMLAction::setOverrideMode(SbBool on)
 {
+    overrideMode = on;
+}
+
+SbBool SoVRMLAction::isOverrideMode() const
+{
+    return overrideMode;
+}
+
+void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
+{
+    if (node->getTypeId().isDerivedFrom(SoNormalBinding::getClassTypeId()) && action->isOfType(SoVRMLAction::getClassTypeId())) {
+        SoVRMLAction* vrmlAction = static_cast<SoVRMLAction*>(action);
+        if (vrmlAction->overrideMode) {
+            SoNormalBinding* bind = static_cast<SoNormalBinding*>(node);
+            vrmlAction->bindList.push_back(bind->value.getValue());
+            // this normal binding causes some problems for the part view provider
+            // See also #0002222: Number of normals in exported VRML is wrong
+            if (bind->value.getValue() == static_cast<int>(SoNormalBinding::PER_VERTEX_INDEXED))
+                bind->value = SoNormalBinding::OVERALL;
+        }
+        else if (!vrmlAction->bindList.empty()) {
+            static_cast<SoNormalBinding*>(node)->value = static_cast<SoNormalBinding::Binding>(vrmlAction->bindList.front());
+            vrmlAction->bindList.pop_front();
+        }
+    }
+
     node->doAction(action);
 }
