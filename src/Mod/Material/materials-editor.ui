@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MaterialEditor</class>
  <widget class="QDialog" name="MaterialEditor">
@@ -319,10 +319,10 @@
           </item>
           <item>
            <property name="text">
-            <string>Specific Weight</string>
+            <string>Density</string>
            </property>
            <property name="toolTip">
-            <string>Specific weight of this material, in kg/mm³. For ex. 7800.0e-12</string>
+            <string>Density of this material, in kg/m³. For ex. 7800 </string>
            </property>
            <property name="text">
             <string/>
