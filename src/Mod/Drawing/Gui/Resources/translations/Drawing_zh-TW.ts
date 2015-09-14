@@ -369,7 +369,17 @@ Do you want to continue?</translation>
         <translation type="unfinished">Spacing dx / dy   </translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+45"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source> Axis out and right</source>
         <translation type="unfinished"> Axis out and right</translation>
     </message>
@@ -562,17 +572,15 @@ Do you want to continue?</translation>
         <translation type="obsolete">二階dx / dy</translation>
     </message>
     <message>
-        <location line="+125"/>
         <source>Show hidden</source>
-        <translation>顯示被隱藏</translation>
+        <translation type="obsolete">顯示被隱藏</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Show smooth</source>
-        <translation>平滑顯示</translation>
+        <translation type="obsolete">平滑顯示</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+143"/>
         <source>Axonometric</source>
         <translation>軸測圖</translation>
     </message>
@@ -580,7 +588,7 @@ Do you want to continue?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+49"/>
+        <location filename="../../TaskDialog.cpp" line="+50"/>
         <source>Visible sharp edges</source>
         <translation>顯示銳利邊緣</translation>
     </message>
@@ -808,7 +816,7 @@ Do you want to continue?</translation>
         <translation>匯出頁面</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+157"/>
+        <location filename="../../ViewProviderPage.cpp" line="+155"/>
         <source>Show drawing</source>
         <translation>顯示工程圖</translation>
     </message>
@@ -837,7 +845,7 @@ Do you want to continue?</translation>
         <translation type="obsolete">底部</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+45"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">Make axonometric...</translation>

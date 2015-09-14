@@ -367,7 +367,17 @@ Do you want to continue?</source>
         <translation type="unfinished">間隔 dx/dy</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+45"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source> Axis out and right</source>
         <translation type="unfinished"> 座標軸を外側右部へ</translation>
     </message>
@@ -560,17 +570,15 @@ Do you want to continue?</source>
         <translation type="obsolete">セカンダリ dx / dy</translation>
     </message>
     <message>
-        <location line="+125"/>
         <source>Show hidden</source>
-        <translation>非表示</translation>
+        <translation type="obsolete">非表示</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Show smooth</source>
-        <translation>滑らかに表示</translation>
+        <translation type="obsolete">滑らかに表示</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+143"/>
         <source>Axonometric</source>
         <translation>不等角投影</translation>
     </message>
@@ -578,7 +586,7 @@ Do you want to continue?</source>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+49"/>
+        <location filename="../../TaskDialog.cpp" line="+50"/>
         <source>Visible sharp edges</source>
         <translation>鋭角エッジ表示</translation>
     </message>
@@ -807,7 +815,7 @@ Do you want to continue?</source>
         <translation>ページをエクスポート</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+157"/>
+        <location filename="../../ViewProviderPage.cpp" line="+155"/>
         <source>Show drawing</source>
         <translation>図面を表示します</translation>
     </message>
@@ -836,7 +844,7 @@ Do you want to continue?</source>
         <translation type="obsolete">底面</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+45"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">不等角投影図を作成...</translation>

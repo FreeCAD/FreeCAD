@@ -57,6 +57,17 @@
     </message>
 </context>
 <context>
+    <name>CmdTestConsoleOutput</name>
+    <message>
+        <source>Standard-Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test console output</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
@@ -206,6 +217,28 @@
     <message>
         <source>Fixed object</source>
         <translation type="unfinished">Objet fixe</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Assistant</name>
+    <message>
+        <source>%1 Help</source>
+        <translation type="unfinished">% 1 Aide</translation>
+    </message>
+    <message>
+        <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to launch Qt Assistant (%1)</source>
+        <translation type="unfinished">Impossible de charger l&apos;assistant Qt (%1)</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::AutoSaver</name>
+    <message>
+        <source>Please wait until the AutoRecovery file has been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1654,6 +1687,10 @@ Veuillez spécifier un autre répertoire.</translation>
         <source>Redirect internal Python output to report view</source>
         <translation type="unfinished">Rediriger les messages interne Python vers la Vue rapport</translation>
     </message>
+    <message>
+        <source>Python interpreter</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -1806,6 +1843,14 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
         <source>%1 navigation</source>
         <translation type="unfinished">%1 de navigation</translation>
+    </message>
+    <message>
+        <source>Anti-aliasing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2052,11 +2097,19 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished">http://fr.wikipedia.org/wiki/Copyright</translation>
+        <translation type="obsolete">http://fr.wikipedia.org/wiki/Copyright</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
         <translation type="unfinished">La société par défaut à utiliser pour les nouveaux fichiers</translation>
+    </message>
+    <message>
+        <source>Run AutoRecovery at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save AutoRecovery information every</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2502,10 +2555,122 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgWorkbenches</name>
+    <message>
+        <source>Workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enabled workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation type="unfinished">Déplacer vers le bas</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move left</source>
+        <translation type="unfinished">Déplacer vers la gauche</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move right</source>
+        <translation type="unfinished">Déplacer vers la droite</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort enabled workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move up</source>
+        <translation type="unfinished">Déplacer vers le haut</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add all to enabled workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
         <source>Placement</source>
         <translation type="unfinished">Placement</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DocumentRecovery</name>
+    <message>
+        <source>Document Recovery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status of recovered documents:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Recovery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not yet recovered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown problem occurred</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to recover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Successfully recovered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finish</source>
+        <translation type="unfinished">Terminer</translation>
     </message>
 </context>
 <context>
@@ -2894,7 +3059,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
         <source>Euler angles</source>
-        <translation type="unfinished">Angles d&apos;Euler</translation>
+        <translation type="obsolete">Angles d&apos;Euler</translation>
     </message>
     <message>
         <source>Apply placement changes immediately</source>
@@ -2923,6 +3088,10 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
         <translation type="unfinished">Il y a des champs de saisie avec une entrée incorrecte, veuillez vous assurer que les valeurs de positionnement soient valide !</translation>
+    </message>
+    <message>
+        <source>Euler angles (XY&apos;Z&apos;&apos;)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3204,12 +3373,20 @@ Veuillez spécifier un autre répertoire.</translation>
         <source>Selects and locates this object in the tree view</source>
         <translation type="unfinished">Sélectionne et localise cet objet dans l&apos;arborescence</translation>
     </message>
+    <message>
+        <source>To python console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reveals this object and its subelements in the python console.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::DockWnd::TaskPanelView</name>
     <message>
         <source>Task View</source>
-        <translation type="unfinished">Afficher les tâches</translation>
+        <translation type="obsolete">Afficher les tâches</translation>
     </message>
 </context>
 <context>
@@ -3392,6 +3569,25 @@ Voulez enregistrer les modifications ?</translation>
     </message>
 </context>
 <context>
+    <name>Gui::GestureNavigationStyle</name>
+    <message>
+        <source>Tap. Or click left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag screen with two fingers. Or press right mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
@@ -3543,6 +3739,18 @@ Voulez enregistrer les modifications ?</translation>
 Do you want to copy them, too?</source>
         <translation type="unfinished">Les objets sélectionnés ont une dépendance à des objets non sélectionnés.  Voulez-vous les copier aussi?</translation>
     </message>
+    <message>
+        <source>There is a rendering issue on MacOS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don&apos;t show again</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::ManualAlignment</name>
@@ -3637,6 +3845,25 @@ How do you want to proceed?</source>
 </source>
         <translation type="unfinished">Téléchargement commencé...
 </translation>
+    </message>
+</context>
+<context>
+    <name>Gui::OpenCascadeNavigationStyle</name>
+    <message>
+        <source>Press left mouse button</source>
+        <translation type="unfinished">Appuyez sur le bouton gauche de la souris</translation>
+    </message>
+    <message>
+        <source>Press CTRL and middle mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press CTRL and right mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press CTRL and left mouse button</source>
+        <translation type="unfinished">Appuyez sur CTRL et le bouton gauche de la souris</translation>
     </message>
 </context>
 <context>
@@ -4192,7 +4419,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Task View</source>
-        <translation type="unfinished">Afficher les tâches</translation>
+        <translation type="obsolete">Afficher les tâches</translation>
     </message>
     <message>
         <source>Combo View</source>
@@ -4243,7 +4470,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Unable to launch Qt Assistant (%1)</source>
-        <translation type="unfinished">Impossible de charger l&apos;assistant Qt (%1)</translation>
+        <translation type="obsolete">Impossible de charger l&apos;assistant Qt (%1)</translation>
     </message>
     <message>
         <source>Exception</source>
@@ -4513,7 +4740,7 @@ In order to load it Qt 4.4 or higher is required.</source>
     </message>
     <message>
         <source>%1 Help</source>
-        <translation type="unfinished">% 1 Aide</translation>
+        <translation type="obsolete">% 1 Aide</translation>
     </message>
     <message>
         <source>Exporting PDF...</source>
@@ -4570,6 +4797,10 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished">Si vous n&apos;enregistrez pas, vos modifications seront perdues.</translation>
+    </message>
+    <message>
+        <source>Save a copy of the document under new filename...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5550,6 +5781,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdRevert</name>
+    <message>
+        <source>File</source>
+        <translation type="unfinished">Fichier</translation>
+    </message>
+    <message>
+        <source>Revert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reverts to the saved version of this file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdSave</name>
     <message>
         <source>File</source>
@@ -5577,6 +5823,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
         <source>Save the active document under a new file name</source>
         <translation type="unfinished">Enregistrer le document actif sous un nouveau nom</translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdSaveCopy</name>
+    <message>
+        <source>File</source>
+        <translation type="unfinished">Fichier</translation>
+    </message>
+    <message>
+        <source>Save a &amp;Copy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save a copy of the active document under a new file name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5898,11 +6159,19 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Axometric</source>
-        <translation type="unfinished">Axonométrique</translation>
+        <translation type="obsolete">Axonométrique</translation>
     </message>
     <message>
         <source>Set to axometric view</source>
-        <translation type="unfinished">Passer en vue axonométrique</translation>
+        <translation type="obsolete">Passer en vue axonométrique</translation>
+    </message>
+    <message>
+        <source>Axonometric</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set to axonometric view</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6462,6 +6731,17 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     <message>
         <source>Graphviz failed to create an image file</source>
         <translation type="unfinished">Graphviz n&apos;a pas pu créer un fichier d&apos;image</translation>
+    </message>
+</context>
+<context>
+    <name>Std_Revert</name>
+    <message>
+        <source>This will discard all the changes since last file save.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

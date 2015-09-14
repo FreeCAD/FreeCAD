@@ -12,7 +12,7 @@
         <translation type="obsolete">Abschrägung ...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+642"/>
+        <location filename="../../Command.cpp" line="+654"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -138,7 +138,7 @@
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1047"/>
+        <location line="-1059"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -156,7 +156,7 @@
 <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+78"/>
+        <location line="+84"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -174,7 +174,7 @@
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+808"/>
+        <location line="+814"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -192,7 +192,7 @@
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-740"/>
+        <location line="-746"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -210,7 +210,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+819"/>
+        <location line="+825"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -415,7 +415,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
 <context>
     <name>PartDesignGui::TaskDlgDraftParameters</name>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+400"/>
+        <location filename="../../TaskDraftParameters.cpp" line="+401"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
@@ -1307,22 +1307,22 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation type="obsolete">Wählen Sie eine Kante, eine Fläche oder einen Körper. Nur ein Körper ist erlaubt.</translation>
     </message>
     <message>
-        <location line="-651"/>
-        <location line="+80"/>
-        <location line="+72"/>
-        <location line="+80"/>
+        <location line="-661"/>
+        <location line="+84"/>
+        <location line="+74"/>
+        <location line="+84"/>
         <source>No valid sketches in this document</source>
         <translation>Keine passenden Skizzen in diesem Dokument</translation>
     </message>
     <message>
-        <location line="-231"/>
-        <location line="+152"/>
+        <location line="-241"/>
+        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
         <translation>Bitte zuerst eine Skizze oder ein 2D-Objekt erstellen</translation>
     </message>
     <message>
-        <location line="-72"/>
-        <location line="+152"/>
+        <location line="-74"/>
+        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
         <translation>Bitte erstellen Sie zuerst eine Skizze oder ein 2D-Objekt. Es muss auf eine Fläche eines Körpers gezeichnet werden</translation>
     </message>
@@ -1366,7 +1366,23 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Ausgewählter Körper ist leer</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="-481"/>
+        <location line="+158"/>
+        <source>No valid sketches selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-157"/>
+        <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+158"/>
+        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+393"/>
         <source>No chamfer possible on selected faces/edges</source>
         <translation>Fase auf ausgewählten Flächen/Kanten nicht möglich</translation>
     </message>
@@ -1419,29 +1435,29 @@ Erstelle die Skizze auf der Fläche.</translation>
     </message>
     <message>
         <location filename="../../TaskPadParameters.cpp" line="+55"/>
-        <location filename="../../ViewProviderPad.cpp" line="+61"/>
+        <location filename="../../ViewProviderPad.cpp" line="+64"/>
         <source>Edit pad</source>
         <translation>Block bearbeiten</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPocket.cpp" line="+62"/>
+        <location filename="../../ViewProviderPocket.cpp" line="+65"/>
         <source>Edit pocket</source>
         <translation>Tasche bearbeiten</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderChamfer.cpp" line="+55"/>
+        <location filename="../../ViewProviderChamfer.cpp" line="+58"/>
         <source>Edit chamfer</source>
         <translation>Fase bearbeiten</translation>
     </message>
     <message>
         <location line="+17"/>
-        <location filename="../../ViewProviderDraft.cpp" line="+72"/>
-        <location filename="../../ViewProviderFillet.cpp" line="+72"/>
-        <location filename="../../ViewProviderGroove.cpp" line="+89"/>
+        <location filename="../../ViewProviderDraft.cpp" line="+75"/>
+        <location filename="../../ViewProviderFillet.cpp" line="+75"/>
+        <location filename="../../ViewProviderGroove.cpp" line="+92"/>
         <location filename="../../ViewProviderPad.cpp" line="+23"/>
         <location filename="../../ViewProviderPocket.cpp" line="+17"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+89"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="+175"/>
+        <location filename="../../ViewProviderRevolution.cpp" line="+92"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="+179"/>
         <source>A dialog is already open in the task panel</source>
         <translation>Es ist bereits ein Dialog in der Aufgabenleiste geöffnet</translation>
     </message>

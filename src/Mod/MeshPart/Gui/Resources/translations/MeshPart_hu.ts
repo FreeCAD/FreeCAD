@@ -135,7 +135,7 @@
         <translation type="obsolete">Max. él hossz:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Válassza ki a formát kapcsolás előtt.</translation>
     </message>

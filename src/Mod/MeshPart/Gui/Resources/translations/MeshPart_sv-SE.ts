@@ -135,7 +135,7 @@
         <translation type="obsolete">Max. kantlängd:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Markera en form för nät, först.</translation>
     </message>

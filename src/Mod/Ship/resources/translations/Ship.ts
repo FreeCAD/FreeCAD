@@ -116,32 +116,32 @@
 <context>
     <name>ship_areas</name>
     <message>
-        <location filename="TaskPanel.py" line="219"/>
+        <location filename="TaskPanel.py" line="221"/>
         <source>Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="225"/>
+        <location filename="TaskPanel.py" line="227"/>
         <source>Trim</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="329"/>
+        <location filename="TaskPanel.py" line="335"/>
         <source>Displacement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="353"/>
+        <location filename="TaskPanel.py" line="361"/>
         <source>Areas curve tool draft selected [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="214"/>
+        <location filename="TaskPanel.py" line="216"/>
         <source>Plot the transversal areas curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="369"/>
+        <location filename="TaskPanel.py" line="377"/>
         <source>Areas curve tool trim selected [deg]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -182,12 +182,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="95"/>
+        <location filename="TaskPanel.py" line="98"/>
         <source>Computing hydrostatics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="496"/>
+        <location filename="TaskPanel.py" line="503"/>
         <source>Computing external faces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -207,17 +207,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="199"/>
+        <location filename="TaskPanel.py" line="202"/>
         <source>A ship instance must be selected before using this tool (no objects selected)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="216"/>
+        <location filename="TaskPanel.py" line="219"/>
         <source>More than one ship have been selected (the extra ships will be ignored)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="227"/>
+        <location filename="TaskPanel.py" line="230"/>
         <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -247,7 +247,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="86"/>
+        <location filename="TaskPanel.py" line="89"/>
         <source>Failure detecting external faces from the ship object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -318,47 +318,47 @@
 <context>
     <name>ship_hydrostatic</name>
     <message>
-        <location filename="TaskPanel.py" line="279"/>
+        <location filename="TaskPanel.py" line="282"/>
         <source>Plot hydrostatics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="284"/>
+        <location filename="TaskPanel.py" line="287"/>
         <source>Trim</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="290"/>
+        <location filename="TaskPanel.py" line="293"/>
         <source>Minimum draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="296"/>
+        <location filename="TaskPanel.py" line="299"/>
         <source>Maximum draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="302"/>
+        <location filename="TaskPanel.py" line="305"/>
         <source>Number of points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="416"/>
+        <location filename="TaskPanel.py" line="423"/>
         <source>Hydrostatics tool trim selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="430"/>
+        <location filename="TaskPanel.py" line="437"/>
         <source>Hydrostatics tool minimum draft selected [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="444"/>
+        <location filename="TaskPanel.py" line="451"/>
         <source>Hydrostatics tool maximum draft selected [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="458"/>
+        <location filename="TaskPanel.py" line="465"/>
         <source>Hydrostatics tool number of points selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -505,52 +505,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="136"/>
+        <location filename="TaskPanel.py" line="137"/>
         <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="150"/>
+        <location filename="TaskPanel.py" line="151"/>
         <source>No geometrical shapes found in the selected objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="187"/>
+        <location filename="TaskPanel.py" line="188"/>
         <source>Unknow object shapes selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="205"/>
+        <location filename="TaskPanel.py" line="206"/>
         <source>There are not ship objects to create weights into them</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="240"/>
+        <location filename="TaskPanel.py" line="241"/>
         <source>Create a new weight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="245"/>
+        <location filename="TaskPanel.py" line="246"/>
         <source>Ship</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="252"/>
+        <location filename="TaskPanel.py" line="253"/>
         <source>Mass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="259"/>
+        <location filename="TaskPanel.py" line="260"/>
         <source>Linear density</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="266"/>
+        <location filename="TaskPanel.py" line="267"/>
         <source>Area density</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="273"/>
+        <location filename="TaskPanel.py" line="274"/>
         <source>Density</source>
         <translation type="unfinished"></translation>
     </message>

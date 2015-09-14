@@ -367,7 +367,17 @@ Do you want to continue?</source>
         <translation type="unfinished">Espacement dx / dy   </translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+45"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source> Axis out and right</source>
         <translation type="unfinished"> Sens de l&apos;axe vers la droite</translation>
     </message>
@@ -560,17 +570,15 @@ Do you want to continue?</source>
         <translation type="obsolete">dx et dy secondaires</translation>
     </message>
     <message>
-        <location line="+125"/>
         <source>Show hidden</source>
-        <translation>Monter les bords cachés</translation>
+        <translation type="obsolete">Monter les bords cachés</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Show smooth</source>
-        <translation>Montrer les bords lissés</translation>
+        <translation type="obsolete">Montrer les bords lissés</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+143"/>
         <source>Axonometric</source>
         <translation>Axonométrique</translation>
     </message>
@@ -578,7 +586,7 @@ Do you want to continue?</source>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+49"/>
+        <location filename="../../TaskDialog.cpp" line="+50"/>
         <source>Visible sharp edges</source>
         <translation>Arêtes vives visibles</translation>
     </message>
@@ -806,7 +814,7 @@ Do you want to continue?</source>
         <translation>Exporter la page</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+157"/>
+        <location filename="../../ViewProviderPage.cpp" line="+155"/>
         <source>Show drawing</source>
         <translation>Afficher la mise en plan</translation>
     </message>
@@ -835,7 +843,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Dessous</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+45"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">Rendre axonométrique...</translation>

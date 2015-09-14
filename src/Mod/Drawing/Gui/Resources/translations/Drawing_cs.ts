@@ -369,7 +369,17 @@ Chcete pokračovat?</translation>
         <translation type="unfinished">Odsazení dx / dy   </translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+45"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source> Axis out and right</source>
         <translation type="unfinished"> Osa ven a doprava</translation>
     </message>
@@ -562,17 +572,15 @@ Chcete pokračovat?</translation>
         <translation type="obsolete">Sekundární dx / dy</translation>
     </message>
     <message>
-        <location line="+125"/>
         <source>Show hidden</source>
-        <translation>Zobrazit skryté</translation>
+        <translation type="obsolete">Zobrazit skryté</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Show smooth</source>
-        <translation>Zobrazit hladké</translation>
+        <translation type="obsolete">Zobrazit hladké</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+143"/>
         <source>Axonometric</source>
         <translation>Axonometrický</translation>
     </message>
@@ -580,7 +588,7 @@ Chcete pokračovat?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+49"/>
+        <location filename="../../TaskDialog.cpp" line="+50"/>
         <source>Visible sharp edges</source>
         <translation>Viditelné ostré hrany</translation>
     </message>
@@ -808,7 +816,7 @@ Chcete pokračovat?</translation>
         <translation>Exportovat stránku</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+157"/>
+        <location filename="../../ViewProviderPage.cpp" line="+155"/>
         <source>Show drawing</source>
         <translation>Zobrazit výkres</translation>
     </message>
@@ -837,7 +845,7 @@ Chcete pokračovat?</translation>
         <translation type="obsolete">Dole</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+45"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">Změnit na axonometrický</translation>

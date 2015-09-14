@@ -135,7 +135,7 @@
         <translation type="obsolete">Maks kantlengte:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Kies eers &apos;n vorm om te omskep in &apos;n maas.</translation>
     </message>

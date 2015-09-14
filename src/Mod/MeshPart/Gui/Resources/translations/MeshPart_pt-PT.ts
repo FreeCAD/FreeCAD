@@ -135,7 +135,7 @@
         <translation type="obsolete">Comp. máx. da margem:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Selecione primeiro, uma forma para a malha.</translation>
     </message>

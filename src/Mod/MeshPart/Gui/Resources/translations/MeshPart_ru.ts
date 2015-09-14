@@ -135,7 +135,7 @@
         <translation type="obsolete">Макс. длина ребра:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Сначала выберите форму для слияния.</translation>
     </message>

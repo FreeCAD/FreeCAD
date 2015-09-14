@@ -135,7 +135,7 @@
         <translation type="obsolete">Max. délka hrany:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Nejprve vyber tvar pro síťování.</translation>
     </message>
