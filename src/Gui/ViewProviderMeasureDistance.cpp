@@ -270,12 +270,13 @@ void PointMarker::customEvent(QEvent* e)
     const SbVec3f& pt2 = vp->pCoords->point[1];
     md->P1.setValue(Base::Vector3d(pt1[0],pt1[1],pt1[2]));
     md->P2.setValue(Base::Vector3d(pt2[0],pt2[1],pt2[2]));
-    std::stringstream s;
-    s.precision(3);
-    s.setf(std::ios::fixed | std::ios::showpoint);
-    s << "Distance: " << md->Distance.getValue();
-    md->Label.setValue(s.str());
+
+    QString str = QString::fromLatin1("Distance: %1")
+        .arg(Base::Quantity(md->Distance.getValue(), Base::Unit::Length).getUserString());
+    md->Label.setValue(str.toUtf8().constData());
     doc->commitCommand();
+
+    this->deleteLater();
 }
 
 PROPERTY_SOURCE(Gui::ViewProviderPointMarker, Gui::ViewProviderDocumentObject)
@@ -327,7 +328,6 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
             // leave mode
             view->setEditing(false);
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
-            pm->deleteLater();
         }
     }
     else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
