@@ -64,7 +64,10 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/Ship",
                'pylupdate `find ./ -name "*.py"` -ts resources/translations/Ship.ts'],
               ["src/Mod/Plot",
-               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Plot.ts']]
+               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Plot.ts'],
+              ["src/Mod/Path",
+               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Path.ts'],
+               ]
 
 # add python folders to exclude list
 for c in PyCommands:
