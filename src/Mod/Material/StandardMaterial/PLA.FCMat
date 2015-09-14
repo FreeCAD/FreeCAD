@@ -7,7 +7,6 @@
 Name = PLA
 Description = Polylactic acid or polylactide (PLA, Poly) is a biodegradable thermoplastic aliphatic polyester derived from renewable resources, such as corn starch, tapioca roots, chips, starch or sugarcane.
 Father = Thermoplast
-SpecificWeight = 1.27E-006
 ProductURL = http://en.wikipedia.org/wiki/Polylactic_acid
 SpecificPrice = 4
 YoungsModulus = 3640 MPa

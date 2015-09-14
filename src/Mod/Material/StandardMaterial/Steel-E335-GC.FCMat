@@ -1,4 +1,4 @@
-; E335 GC - 1.0543 - EN 10025
+﻿; E335 GC - 1.0543 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = E335 GC
 NameDE = St60-2K
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 690
 PoissonRatio = 0.3

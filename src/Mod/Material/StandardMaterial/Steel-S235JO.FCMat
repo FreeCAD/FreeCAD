@@ -1,4 +1,4 @@
-; S235JO - 1.0114 - EN 10025
+﻿; S235JO - 1.0114 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = S235JO
 NameDE = St37-3U
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 360
 PoissonRatio = 0.3

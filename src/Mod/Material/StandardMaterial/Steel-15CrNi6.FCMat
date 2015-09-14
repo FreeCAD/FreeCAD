@@ -1,4 +1,4 @@
-; 15CrNi6 - 1.5919 - EN 10084
+﻿; 15CrNi6 - 1.5919 - EN 10084
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,7 +9,6 @@ Description = High-strength carbon steel
 DescriptionDE = höchste Beanspruchung, Achsen, Wellen, Ritzel, Nocken, Kegelräder
 DescriptionPL = Wysokowytrzymała stal węglowa
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 1000
 PoissonRatio = 0.3

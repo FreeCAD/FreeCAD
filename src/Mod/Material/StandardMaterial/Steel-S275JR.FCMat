@@ -1,4 +1,4 @@
-; S275JR - 1.0044 - EN 10025
+﻿; S275JR - 1.0044 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = S275JR
 NameDE = St44-2
 DescriptionDE = Wellen, Achsen, gut bearbeitbar, gut schweißbar
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 430
 PoissonRatio = 0.3

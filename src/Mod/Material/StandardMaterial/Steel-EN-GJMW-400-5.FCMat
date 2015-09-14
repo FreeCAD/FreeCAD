@@ -1,4 +1,4 @@
-; EN-GJMW-400-5 - 0.8040 - EN 1562
+﻿; EN-GJMW-400-5 - 0.8040 - EN 1562
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = EN-GJMW-400-5
 NameDE = GTW 40-05
 DescriptionDE = gut schweißbar, Auspuffkrümmer, Schraubzwingen
 Father = Metal
-SpecificWeight = 7200
 YoungsModulus = 175000 MPa
 UltimateTensileStrength = 400
 PoissonRatio = 0.3

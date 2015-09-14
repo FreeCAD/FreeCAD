@@ -1,4 +1,4 @@
-; E360 GC - 1.0633 - EN 10025
+﻿; E360 GC - 1.0633 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = E360 GC
 NameDE = St70-2K
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 780
 PoissonRatio = 0.3

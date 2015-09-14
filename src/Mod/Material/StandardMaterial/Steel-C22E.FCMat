@@ -1,4 +1,4 @@
-; C22E - 1.1151 - EN 10083-1
+﻿; C22E - 1.1151 - EN 10083-1
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = C22E
 NameDE = Ck22
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 500
 PoissonRatio = 0.3

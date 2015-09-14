@@ -1,4 +1,4 @@
-; X2CrNiMoN17-13-3 - 1.4429 - EN 10088
+﻿; X2CrNiMoN17-13-3 - 1.4429 - EN 10088
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = X2CrNiMoN17-13-3
 NameDE = X2CrNiMoN 17 13 3
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Achsen, Wellen, Wärmetauscher
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 200000 MPa
 UltimateTensileStrength = 580
 PoissonRatio = 0.3

@@ -1,4 +1,4 @@
-; G20Mn5 - 1.1120 - DIN 1681
+﻿; G20Mn5 - 1.1120 - DIN 1681
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = G20Mn5
 NameDE = GS-20Mn5v
 DescriptionDE = Gehäuse, Zahnräder, Bremsscheiben
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 500
 PoissonRatio = 0.3

@@ -1,4 +1,4 @@
-; 17CrNiMo6 - 1.6587 - EN 10084
+﻿; 17CrNiMo6 - 1.6587 - EN 10084
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = 17CrNiMo6
 NameDE = 17CrNiMo6
 DescriptionDE = höchste Beanspruchung, Wellen, Zahnräder
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 1150
 PoissonRatio = 0.3

@@ -1,4 +1,4 @@
-; C40E - 1.1186 - EN 10083-1
+﻿; C40E - 1.1186 - EN 10083-1
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = C40E
 NameDE = Ck40
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 650
 PoissonRatio = 0.3

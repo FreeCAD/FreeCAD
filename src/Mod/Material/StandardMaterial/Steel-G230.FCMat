@@ -1,4 +1,4 @@
-; G230 - 1.0446 - DIN 1681
+﻿; G230 - 1.0446 - DIN 1681
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = G230
 NameDE = GS 45
 DescriptionDE = mittlere dynamische und stoßartige Belastung, gut schweißbar
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 450
 PoissonRatio = 0.3

@@ -1,4 +1,4 @@
-; EN-GJS-700-2 - 0.7070 - EN 1563
+﻿; EN-GJS-700-2 - 0.7070 - EN 1563
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = EN-GJS-700-2
 NameDE = GGG-70
 DescriptionDE = Kurbelwellen, Zahnräder, Turbinenschaufeln
 Father = Metal
-SpecificWeight = 7200
 YoungsModulus = 180000 MPa
 UltimateTensileStrength = 700
 PoissonRatio = 0.3

@@ -7,7 +7,6 @@
 Name = Steel
 Description = This is a blend Steel material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised steel cards.
 Father = Metal
-SpecificWeight = 7.80E-009
 ProductURL = http://en.wikipedia.org/wiki/Steel
 SpecificPrice = 1.5 Euro/Kg
 YoungsModulus = 200000 MPa
