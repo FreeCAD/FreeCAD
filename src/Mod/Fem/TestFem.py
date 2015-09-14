@@ -78,7 +78,7 @@ class FemTest(unittest.TestCase):
     def create_new_material(self):
         self.new_material_object = self.active_doc.addObject("App::MaterialObjectPython", 'MechanicalMaterial')
         mat = self.new_material_object.Material
-        mat['Name'] = "Test Material"
+        mat['Name'] = "TestMaterial"
         mat['YoungsModulus'] = "20000 MPa"
         mat['PoissonRatio'] = "0.36"
         mat['Density'] = "1000 kg/m^3"
