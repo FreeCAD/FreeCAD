@@ -40,7 +40,7 @@
 <context>
     <name>CmdRobotCreateTrajectory</name>
     <message>
-        <location filename="../../CommandTrajectory.cpp" line="+61"/>
+        <location filename="../../CommandTrajectory.cpp" line="+62"/>
         <source>Robot</source>
         <translation>Robot</translation>
     </message>
@@ -346,7 +346,7 @@
 <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+52"/>
+        <location filename="../../Workbench.cpp" line="+53"/>
         <source>Trajectory tools</source>
         <translation>Dráhy nástroja</translation>
     </message>

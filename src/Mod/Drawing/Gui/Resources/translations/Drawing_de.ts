@@ -578,7 +578,7 @@ Do you want to continue?</source>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+49"/>
+        <location filename="../../TaskDialog.cpp" line="+50"/>
         <source>Visible sharp edges</source>
         <translation>Sichtbare scharfe Kanten</translation>
     </message>
@@ -806,7 +806,7 @@ Do you want to continue?</source>
         <translation>Seite exportieren</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+157"/>
+        <location filename="../../ViewProviderPage.cpp" line="+155"/>
         <source>Show drawing</source>
         <translation>Zeichnung anzeigen</translation>
     </message>
@@ -835,7 +835,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Unten</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+45"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">Axonometrisch machen...</translation>

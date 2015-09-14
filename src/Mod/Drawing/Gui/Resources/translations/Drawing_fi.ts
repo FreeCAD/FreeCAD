@@ -369,7 +369,17 @@ Haluatko jatkaa?</translation>
         <translation type="unfinished">Välit dx / dy   </translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+45"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source> Axis out and right</source>
         <translation type="unfinished"> Akseli ulos oikealle</translation>
     </message>
@@ -562,17 +572,15 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Toissijainen dx / dy</translation>
     </message>
     <message>
-        <location line="+125"/>
         <source>Show hidden</source>
-        <translation>Näytä piilotetut</translation>
+        <translation type="obsolete">Näytä piilotetut</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Show smooth</source>
-        <translation>Näytä sileä</translation>
+        <translation type="obsolete">Näytä sileä</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+143"/>
         <source>Axonometric</source>
         <translation>Aksonometrisiä</translation>
     </message>
@@ -580,7 +588,7 @@ Haluatko jatkaa?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+49"/>
+        <location filename="../../TaskDialog.cpp" line="+50"/>
         <source>Visible sharp edges</source>
         <translation>Näkyvät terävät reunat</translation>
     </message>
@@ -808,7 +816,7 @@ Haluatko jatkaa?</translation>
         <translation>Vie sivu</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+157"/>
+        <location filename="../../ViewProviderPage.cpp" line="+155"/>
         <source>Show drawing</source>
         <translation>Näytä piirustus</translation>
     </message>
@@ -837,7 +845,7 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Pohja</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+45"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">Tee aksonometrisenä...</translation>

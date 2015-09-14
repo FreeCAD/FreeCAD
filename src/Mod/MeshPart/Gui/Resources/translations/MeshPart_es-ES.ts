@@ -135,7 +135,7 @@
         <translation type="obsolete">Longitud máx. de la arista:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Seleccione primero una forma para el mallado.</translation>
     </message>

@@ -135,7 +135,7 @@
         <translation type="obsolete">最大边长:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>请先选择需要网格化的形状.</translation>
     </message>

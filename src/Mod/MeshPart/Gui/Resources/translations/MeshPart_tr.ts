@@ -135,7 +135,7 @@
         <translation type="obsolete">Kenar uzunluğunun en büyük değeri:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Önce parçacık haline getirmek için bir şekil seçiniz.</translation>
     </message>

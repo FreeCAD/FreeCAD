@@ -135,7 +135,7 @@
         <translation type="obsolete">Max. randlengte:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Selecteer eerst een vorm voor rasteren</translation>
     </message>

@@ -12,7 +12,7 @@
         <translation type="obsolete">Chamfer...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+642"/>
+        <location filename="../../Command.cpp" line="+654"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -138,7 +138,7 @@
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1047"/>
+        <location line="-1059"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -156,7 +156,7 @@
 <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+78"/>
+        <location line="+84"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -174,7 +174,7 @@
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+808"/>
+        <location line="+814"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -192,7 +192,7 @@
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-740"/>
+        <location line="-746"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -210,7 +210,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+819"/>
+        <location line="+825"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -415,7 +415,7 @@ Please check one or more edge entities first.</translation>
 <context>
     <name>PartDesignGui::TaskDlgDraftParameters</name>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+400"/>
+        <location filename="../../TaskDraftParameters.cpp" line="+401"/>
         <source>Input error</source>
         <translation>輸入錯誤</translation>
     </message>
@@ -1307,22 +1307,22 @@ Please check one or more edge entities first.</translation>
         <translation type="obsolete">所選物件之造型非為線</translation>
     </message>
     <message>
-        <location line="-651"/>
-        <location line="+80"/>
-        <location line="+72"/>
-        <location line="+80"/>
+        <location line="-661"/>
+        <location line="+84"/>
+        <location line="+74"/>
+        <location line="+84"/>
         <source>No valid sketches in this document</source>
         <translation>檔案中無有效素描</translation>
     </message>
     <message>
-        <location line="-231"/>
-        <location line="+152"/>
+        <location line="-241"/>
+        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
         <translation>請先建立一個素描或2D物件</translation>
     </message>
     <message>
-        <location line="-72"/>
-        <location line="+152"/>
+        <location line="-74"/>
+        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
         <translation>請先建立一個素描或2D物件,其必須於實體上有一基礎面</translation>
     </message>
@@ -1366,7 +1366,23 @@ Please check one or more edge entities first.</translation>
         <translation>所選零件無造型</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="-481"/>
+        <location line="+158"/>
+        <source>No valid sketches selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-157"/>
+        <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+158"/>
+        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+393"/>
         <source>No chamfer possible on selected faces/edges</source>
         <translation>所選之面/邊緣無法產生倒角</translation>
     </message>
@@ -1418,29 +1434,29 @@ Create the sketch on a face.</source>
     </message>
     <message>
         <location filename="../../TaskPadParameters.cpp" line="+55"/>
-        <location filename="../../ViewProviderPad.cpp" line="+61"/>
+        <location filename="../../ViewProviderPad.cpp" line="+64"/>
         <source>Edit pad</source>
         <translation>編輯填充</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPocket.cpp" line="+62"/>
+        <location filename="../../ViewProviderPocket.cpp" line="+65"/>
         <source>Edit pocket</source>
         <translation>編輯凹陷</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderChamfer.cpp" line="+55"/>
+        <location filename="../../ViewProviderChamfer.cpp" line="+58"/>
         <source>Edit chamfer</source>
         <translation>編輯倒角</translation>
     </message>
     <message>
         <location line="+17"/>
-        <location filename="../../ViewProviderDraft.cpp" line="+72"/>
-        <location filename="../../ViewProviderFillet.cpp" line="+72"/>
-        <location filename="../../ViewProviderGroove.cpp" line="+89"/>
+        <location filename="../../ViewProviderDraft.cpp" line="+75"/>
+        <location filename="../../ViewProviderFillet.cpp" line="+75"/>
+        <location filename="../../ViewProviderGroove.cpp" line="+92"/>
         <location filename="../../ViewProviderPad.cpp" line="+23"/>
         <location filename="../../ViewProviderPocket.cpp" line="+17"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+89"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="+175"/>
+        <location filename="../../ViewProviderRevolution.cpp" line="+92"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="+179"/>
         <source>A dialog is already open in the task panel</source>
         <translation>於工作面板已開啟對話窗</translation>
     </message>

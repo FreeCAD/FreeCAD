@@ -126,12 +126,12 @@
 <context>
     <name>OpenSCAD</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="127"/>
+        <location filename="OpenSCADCommands.py" line="141"/>
         <source>Convert Edges to Faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="206"/>
+        <location filename="OpenSCADCommands.py" line="220"/>
         <source>Please select 3 objects first</source>
         <translation type="unfinished"></translation>
     </message>
@@ -146,32 +146,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="250"/>
+        <location filename="OpenSCADCommands.py" line="264"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="251"/>
+        <location filename="OpenSCADCommands.py" line="265"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="252"/>
+        <location filename="OpenSCADCommands.py" line="266"/>
         <source>as Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="253"/>
+        <location filename="OpenSCADCommands.py" line="267"/>
         <source>Add OpenSCAD Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="326"/>
+        <location filename="OpenSCADCommands.py" line="340"/>
         <source>Perform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="327"/>
+        <location filename="OpenSCADCommands.py" line="341"/>
         <source>Mesh Boolean</source>
         <translation type="unfinished"></translation>
     </message>
@@ -181,7 +181,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="77"/>
+        <location filename="OpenSCADCommands.py" line="91"/>
         <source>Unable to explode %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,12 +189,12 @@
 <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="368"/>
+        <location filename="OpenSCADCommands.py" line="382"/>
         <source>Add OpenSCAD Element...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="370"/>
+        <location filename="OpenSCADCommands.py" line="384"/>
         <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
         <translation type="unfinished"></translation>
     </message>
@@ -202,12 +202,12 @@
 <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="104"/>
+        <location filename="OpenSCADCommands.py" line="118"/>
         <source>Color Shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="106"/>
+        <location filename="OpenSCADCommands.py" line="120"/>
         <source>Color Shapes by validity and type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -215,7 +215,7 @@
 <context>
     <name>OpenSCAD_Edgestofaces</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="125"/>
+        <location filename="OpenSCADCommands.py" line="139"/>
         <source>Convert Edges To Faces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -223,12 +223,12 @@
 <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="186"/>
+        <location filename="OpenSCADCommands.py" line="200"/>
         <source>Expand Placements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="188"/>
+        <location filename="OpenSCADCommands.py" line="202"/>
         <source>Expand all placements downwards the FeatureTree</source>
         <translation type="unfinished"></translation>
     </message>
@@ -236,12 +236,12 @@
 <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="86"/>
+        <location filename="OpenSCADCommands.py" line="100"/>
         <source>Explode Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="88"/>
+        <location filename="OpenSCADCommands.py" line="102"/>
         <source>remove fusion, apply placement to children and color randomly</source>
         <translation type="unfinished"></translation>
     </message>
@@ -249,12 +249,12 @@
 <context>
     <name>OpenSCAD_Hull</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="403"/>
+        <location filename="OpenSCADCommands.py" line="417"/>
         <source>Hull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="405"/>
+        <location filename="OpenSCADCommands.py" line="419"/>
         <source>Perform Hull</source>
         <translation type="unfinished"></translation>
     </message>
@@ -262,12 +262,12 @@
 <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="167"/>
+        <location filename="OpenSCADCommands.py" line="181"/>
         <source>Increase Tolerance Feature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="169"/>
+        <location filename="OpenSCADCommands.py" line="183"/>
         <source>Create Feature that allows to increase the tolerance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -275,12 +275,12 @@
 <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="382"/>
+        <location filename="OpenSCADCommands.py" line="396"/>
         <source>Mesh Boolean...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="384"/>
+        <location filename="OpenSCADCommands.py" line="398"/>
         <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -288,12 +288,12 @@
 <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="424"/>
+        <location filename="OpenSCADCommands.py" line="438"/>
         <source>Minkowski</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="426"/>
+        <location filename="OpenSCADCommands.py" line="440"/>
         <source>Perform Minkowski</source>
         <translation type="unfinished"></translation>
     </message>
@@ -301,12 +301,12 @@
 <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="146"/>
+        <location filename="OpenSCADCommands.py" line="160"/>
         <source>Refine Shape Feature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="148"/>
+        <location filename="OpenSCADCommands.py" line="162"/>
         <source>Create Refine Shape Feature</source>
         <translation type="unfinished"></translation>
     </message>
@@ -314,12 +314,12 @@
 <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="225"/>
+        <location filename="OpenSCADCommands.py" line="239"/>
         <source>Remove Objects and their Children</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="227"/>
+        <location filename="OpenSCADCommands.py" line="241"/>
         <source>Removes the selected objects and all children that are not referenced from other objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -327,12 +327,12 @@
 <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="210"/>
+        <location filename="OpenSCADCommands.py" line="224"/>
         <source>Replace Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="212"/>
+        <location filename="OpenSCADCommands.py" line="226"/>
         <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
         <translation type="unfinished"></translation>
     </message>

@@ -135,7 +135,7 @@
         <translation type="obsolete">Lungime maxima pentru margini:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Selectati mai intai o forma pentru crearea retelei.</translation>
     </message>

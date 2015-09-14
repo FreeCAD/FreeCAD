@@ -135,7 +135,7 @@
         <translation type="obsolete">Massima lunghezza del bordo:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Selezionare prima una forma per il meshing.</translation>
     </message>

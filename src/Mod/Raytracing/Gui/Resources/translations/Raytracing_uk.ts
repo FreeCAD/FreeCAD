@@ -4,7 +4,7 @@
 <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-        <location filename="../../Command.cpp" line="+491"/>
+        <location filename="../../Command.cpp" line="+503"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
@@ -41,7 +41,7 @@
         <translation type="unfinished">Вставити новий проект Luxrender в документ</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+45"/>
         <source>No template</source>
         <translation type="unfinished">Шаблон відсутній</translation>
     </message>
@@ -54,7 +54,7 @@
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-332"/>
+        <location line="-338"/>
         <source>Raytracing</source>
         <translation>Трасування променів</translation>
     </message>
@@ -76,7 +76,7 @@
 <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-        <location line="-101"/>
+        <location line="-107"/>
         <source>Raytracing</source>
         <translation>Трасування променів</translation>
     </message>
@@ -99,7 +99,7 @@
         <translation type="unfinished">Insert new POV-Ray project into the document</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+45"/>
         <source>No template</source>
         <translation type="unfinished">Шаблон відсутній</translation>
     </message>
@@ -130,7 +130,7 @@
 <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-        <location line="+243"/>
+        <location line="+249"/>
         <source>Raytracing</source>
         <translation type="unfinished">Трасування променів</translation>
     </message>
@@ -148,7 +148,7 @@
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-716"/>
+        <location line="-734"/>
         <source>Raytracing</source>
         <translation>Трасування променів</translation>
     </message>
@@ -202,22 +202,22 @@
     <message>
         <location line="-79"/>
         <location line="+139"/>
-        <location line="+87"/>
-        <location line="+389"/>
+        <location line="+93"/>
+        <location line="+395"/>
         <source>No perspective camera</source>
         <translation>Немає перегляду перспективи</translation>
     </message>
     <message>
-        <location line="-614"/>
+        <location line="-626"/>
         <location line="+139"/>
-        <location line="+87"/>
+        <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
         <translation type="unfinished">The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</translation>
     </message>
     <message>
-        <location line="-103"/>
+        <location line="-109"/>
         <source>Export view to POV-Ray...</source>
         <translation type="unfinished">Export view to POV-Ray...</translation>
     </message>
@@ -245,7 +245,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Записати активний 3D-вид з камери, і весь її вміст в Povray файл</translation>
     </message>
     <message>
-        <location line="+493"/>
+        <location line="+505"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
         <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
@@ -259,7 +259,7 @@ Do you want to continue?</translation>
         <translation type="obsolete">Povray(*.pov)</translation>
     </message>
     <message>
-        <location line="-579"/>
+        <location line="-591"/>
         <location line="+51"/>
         <source>POV-Ray (*.pov)</source>
         <translation type="unfinished">POV-Ray (*.pov)</translation>
@@ -268,34 +268,34 @@ Do you want to continue?</translation>
         <location line="-50"/>
         <location line="+51"/>
         <location line="+62"/>
-        <location line="+269"/>
+        <location line="+281"/>
         <location line="+109"/>
         <source>All Files (*.*)</source>
         <translation>Всі файли (*.*)</translation>
     </message>
     <message>
-        <location line="-490"/>
+        <location line="-502"/>
         <location line="+51"/>
         <location line="+63"/>
-        <location line="+269"/>
+        <location line="+281"/>
         <source>Export page</source>
         <translation>Експорт сторінки</translation>
     </message>
     <message>
-        <location line="-272"/>
+        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
         <translation type="unfinished">POV-Ray(*.pov)</translation>
     </message>
     <message>
-        <location line="+171"/>
+        <location line="+183"/>
         <location line="+87"/>
         <location line="+61"/>
-        <location line="+244"/>
+        <location line="+249"/>
         <source>Wrong selection</source>
         <translation>Невірний вибір</translation>
     </message>
     <message>
-        <location line="-391"/>
+        <location line="-396"/>
         <source>Select a Part object.</source>
         <translation>Виберіть частину об&apos;єкта.</translation>
     </message>
@@ -318,12 +318,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+64"/>
         <location line="+61"/>
-        <location line="+244"/>
+        <location line="+249"/>
         <source>Select one Raytracing project object.</source>
         <translation type="unfinished">Select one Raytracing project object.</translation>
     </message>
     <message>
-        <location line="-229"/>
+        <location line="-234"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
         <translation type="unfinished">POV-Ray not found</translation>
@@ -339,7 +339,12 @@ Do you want to continue?</translation>
         <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+33"/>
+        <source>Rendered image (*.bmp *.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
         <source>Lux project file missing</source>
         <translation type="unfinished">Lux project file missing</translation>
     </message>
@@ -375,12 +380,11 @@ Do you want to continue?</translation>
         <translation type="unfinished">The POV-Ray project file doesn&apos;t exist.</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Rendered image (*.bmp)</source>
-        <translation type="unfinished">Rendered image (*.bmp)</translation>
+        <translation type="obsolete">Rendered image (*.bmp)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+8"/>
         <source>Rendered image (*.png)</source>
         <translation type="unfinished">Зображення після візуалізації (*.png)</translation>
     </message>

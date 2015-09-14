@@ -369,7 +369,17 @@ Do you want to continue?</source>
         <translation type="unfinished">Размак dx / dy   </translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+45"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source> Axis out and right</source>
         <translation type="unfinished"> Axis out and right</translation>
     </message>
@@ -562,17 +572,15 @@ Do you want to continue?</source>
         <translation type="obsolete">Secondary dx / dy</translation>
     </message>
     <message>
-        <location line="+125"/>
         <source>Show hidden</source>
-        <translation>Прикажи сакривено</translation>
+        <translation type="obsolete">Прикажи сакривено</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Show smooth</source>
-        <translation>Прикажи глатко</translation>
+        <translation type="obsolete">Прикажи глатко</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+143"/>
         <source>Axonometric</source>
         <translation>Axonometric</translation>
     </message>
@@ -580,7 +588,7 @@ Do you want to continue?</source>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+49"/>
+        <location filename="../../TaskDialog.cpp" line="+50"/>
         <source>Visible sharp edges</source>
         <translation>Видљиви оштри рубови</translation>
     </message>
@@ -808,7 +816,7 @@ Do you want to continue?</source>
         <translation>Извоз странице</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+157"/>
+        <location filename="../../ViewProviderPage.cpp" line="+155"/>
         <source>Show drawing</source>
         <translation>Прикажи цртеж</translation>
     </message>
@@ -837,7 +845,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Доле</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+45"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">Make axonometric...</translation>

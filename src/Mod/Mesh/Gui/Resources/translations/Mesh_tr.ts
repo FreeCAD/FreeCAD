@@ -278,6 +278,21 @@
     </message>
 </context>
 <context>
+    <name>CmdMeshMerge</name>
+    <message>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <source>Merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merges selected meshes into one</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshPolyCut</name>
     <message>
         <source>Mesh</source>

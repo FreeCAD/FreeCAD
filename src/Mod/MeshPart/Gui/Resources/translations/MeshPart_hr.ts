@@ -135,7 +135,7 @@
         <translation type="obsolete">Max. duljina ruba:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+221"/>
+        <location filename="../../Tessellation.cpp" line="+222"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Prvo daberite oblik za umrežavanje.</translation>
     </message>

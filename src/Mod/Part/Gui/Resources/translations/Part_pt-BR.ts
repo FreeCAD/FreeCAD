@@ -131,7 +131,7 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1501"/>
+        <location filename="../../Command.cpp" line="+1597"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -297,7 +297,7 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-753"/>
+        <location filename="../../Command.cpp" line="-848"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -333,7 +333,7 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+912"/>
+        <location line="+1007"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -369,7 +369,7 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-653"/>
+        <location line="-748"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -385,9 +385,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartCompJoinFeatures</name>
+    <message>
+        <location line="+163"/>
+        <source>Part</source>
+        <translation type="unfinished">Part</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Join objects...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Join walled objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartCompound</name>
     <message>
-        <location line="+162"/>
+        <location line="+92"/>
         <source>Part</source>
         <translation type="unfinished">Part</translation>
     </message>
@@ -443,7 +461,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-784"/>
+        <location line="-879"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -481,7 +499,7 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+393"/>
+        <location filename="../../Command.cpp" line="+488"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -535,7 +553,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-544"/>
+        <location line="-639"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -553,7 +571,7 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+175"/>
+        <location line="+270"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -665,7 +683,7 @@
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1086"/>
+        <location line="-1181"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -719,7 +737,7 @@
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+615"/>
+        <location filename="../../Command.cpp" line="+710"/>
         <source>Part</source>
         <translation>Part</translation>
     </message>
@@ -1417,11 +1435,25 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+8"/>
-        <source>Enable B-REP mode</source>
-        <translation type="unfinished">Ativar o modo B-REP</translation>
+        <source>Write solids and shells as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Groups of Trimmed Surfaces (type 144)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
+        <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable B-REP mode</source>
+        <translation type="obsolete">Ativar o modo B-REP</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Import</source>
         <translation type="unfinished">Importação</translation>
     </message>
@@ -2221,6 +2253,16 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Paginação</translation>
     </message>
     <message>
+        <location line="+61"/>
+        <source>Maximum angular deflection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location line="+7"/>
+        <source> °</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Flat shading usa normais definidas por vertex, dando uma aparência não realística das curvas, enquanto phong shading da uma aparência melhor &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Se esta opção estiver marcada, o flat shading será usado, senão será usado o phong shading.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -2229,7 +2271,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">Não definir normais por vertex</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-20"/>
         <source>Defines the deviation of tessellation to the actual surface</source>
         <translation>Define o desvio de mosaico em relação a superfície real</translation>
     </message>
@@ -2252,7 +2294,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Desvio máximo dependendo da caixa de volume</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-34"/>
         <source> %</source>
         <translation> %</translation>
     </message>
@@ -2394,6 +2436,16 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+7"/>
         <source>The color of bounding boxes in the 3D view</source>
         <translation type="unfinished">A cor das caixas delimitadoras na vista 3D</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Annotations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Default text color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2543,7 +2595,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::ResultModel</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="+330"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+338"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
@@ -3144,23 +3196,23 @@ in the 3D view for the sweep path.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-974"/>
+        <location filename="../../Command.cpp" line="-1069"/>
         <location line="+77"/>
         <location line="+82"/>
-        <location line="+81"/>
+        <location line="+176"/>
         <location line="+50"/>
         <location line="+908"/>
         <source>Wrong selection</source>
         <translation>Seleção errada</translation>
     </message>
     <message>
-        <location line="-1197"/>
-        <location line="+290"/>
+        <location line="-1292"/>
+        <location line="+385"/>
         <source>Select two shapes please.</source>
         <translation>Selecione duas formas, por favor.</translation>
     </message>
     <message>
-        <location line="-280"/>
+        <location line="-375"/>
         <location line="+82"/>
         <location line="+82"/>
         <source>Non-solids selected</source>
@@ -3175,7 +3227,12 @@ Do you want to continue?</source>
         <translation type="unfinished">O uso de não-sólidos para operações booleanas pode levar a resultados inesperados. Deseja continuar?</translation>
     </message>
     <message>
-        <location line="+264"/>
+        <location line="+160"/>
+        <source>Select one shape or more, please.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+199"/>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
         <translation>Todos os arquivos CAD (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
     </message>
@@ -3234,7 +3291,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Transformar</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+161"/>
+        <location filename="../../AppPartGui.cpp" line="+160"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Design de partes</translation>
@@ -3251,14 +3308,13 @@ Do you want to continue?</source>
         <translation type="unfinished">Tela</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-366"/>
+        <location filename="../../Command.cpp" line="-461"/>
         <location line="+82"/>
-        <location line="+81"/>
         <source>Select two shapes or more, please.</source>
         <translation>Selecione dois ou mais formas, por favor.</translation>
     </message>
     <message>
-        <location line="+958"/>
+        <location line="+1134"/>
         <source>You have to select either two edges or two wires.</source>
         <translation>Você deve selecionar duas arestas ou dois cabos.</translation>
     </message>
@@ -3268,7 +3324,7 @@ Do you want to continue?</source>
         <translation>Modificar arestas filetadas</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+687"/>
+        <location filename="../../ViewProviderExt.cpp" line="+697"/>
         <source>Set colors...</source>
         <translation>Definir cores...</translation>
     </message>
@@ -3559,7 +3615,7 @@ Do you want to continue?</source>
         <translation>Inválido</translation>
     </message>
     <message>
-        <location filename="../../TaskDimension.cpp" line="+546"/>
+        <location filename="../../TaskDimension.cpp" line="+552"/>
         <location line="+1040"/>
         <source>Selections</source>
         <translation type="unfinished">Seleções</translation>
