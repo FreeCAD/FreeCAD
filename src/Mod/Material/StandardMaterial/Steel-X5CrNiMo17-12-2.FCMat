@@ -1,4 +1,4 @@
-; X5CrNiMo17-12-2 - 1.4401 - EN 10088
+﻿; X5CrNiMo17-12-2 - 1.4401 - EN 10088
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = X5CrNiMo17-12-2
 NameDE = X5CrNiMo 17 12 2
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Lebensmitteltechnik
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 180000 MPa
 UltimateTensileStrength = 520
 PoissonRatio = 0.3

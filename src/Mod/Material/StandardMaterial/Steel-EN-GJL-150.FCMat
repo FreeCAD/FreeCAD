@@ -1,4 +1,4 @@
-; EN-GJL-150 - 0.6015 - EN 1561
+﻿; EN-GJL-150 - 0.6015 - EN 1561
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = EN-GJL-150
 NameDE = GG-15
 DescriptionDE = für dünnwandige Teile wie Gehäuse, Ständer
 Father = Metal
-SpecificWeight = 7200
 YoungsModulus = 95000 MPa
 UltimateTensileStrength = 150
 PoissonRatio = 0.3

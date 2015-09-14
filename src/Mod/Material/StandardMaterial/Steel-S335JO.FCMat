@@ -1,4 +1,4 @@
-; S335JO - 1.0553 - EN 10025
+﻿; S335JO - 1.0553 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = S335JO
 NameDE = St60-2U
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 510
 PoissonRatio = 0.3

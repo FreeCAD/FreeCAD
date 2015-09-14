@@ -1,4 +1,4 @@
-; S550MC - 1.0986 - SEW 092
+﻿; S550MC - 1.0986 - SEW 092
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = S550MC
 NameDE = QStE550 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 680
 PoissonRatio = 0.3

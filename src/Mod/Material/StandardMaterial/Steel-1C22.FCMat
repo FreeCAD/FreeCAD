@@ -1,4 +1,4 @@
-; 1C22 - 1.0402 - EN 10083-1
+﻿; 1C22 - 1.0402 - EN 10083-1
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -10,7 +10,6 @@ Description = Case hardened alloy steel
 DescriptionDE = kleiner Vergütungsdurchmesser, gut schweißbar
 DescriptionPL = Stal stopowa do nawęglania
 Father = Metal
-SpecificWeight = 7.80E-009
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 400
 PoissonRatio = 0.3

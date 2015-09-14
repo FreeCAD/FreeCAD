@@ -1,4 +1,4 @@
-; X6CrNiTi18-10 - 1.4541 - EN 10088
+﻿; X6CrNiTi18-10 - 1.4541 - EN 10088
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = X6CrNiTi18-10
 NameDE = X10CrNiTi 18 9
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Schienenfahrzeugbau
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 200000 MPa
 UltimateTensileStrength = 500
 PoissonRatio = 0.3

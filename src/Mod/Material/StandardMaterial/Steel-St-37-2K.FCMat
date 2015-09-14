@@ -1,4 +1,4 @@
-; St 37-2K - 1.0161 - EN 10025
+﻿; St 37-2K - 1.0161 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = [DE]St 37-2K
 NameDE = St 37-2K
 DescriptionDE = mäßige Beanspruchung
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 460
 PoissonRatio = 0.3

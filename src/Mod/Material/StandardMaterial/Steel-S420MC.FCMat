@@ -1,4 +1,4 @@
-; S420MC - 1.0980 - EN 10149
+﻿; S420MC - 1.0980 - EN 10149
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = S420MC
 NameDE = QStE420 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 550
 PoissonRatio = 0.3

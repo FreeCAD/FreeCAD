@@ -1,4 +1,4 @@
-; St E 500 - 1.8907 - DIN 17102
+﻿; St E 500 - 1.8907 - DIN 17102
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = [DE]St E 500
 NameDE = St E 500
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 610
 PoissonRatio = 0.3

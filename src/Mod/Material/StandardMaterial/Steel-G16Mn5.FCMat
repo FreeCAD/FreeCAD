@@ -1,4 +1,4 @@
-; G16Mn5 - 1.1131 - DIN 1681
+﻿; G16Mn5 - 1.1131 - DIN 1681
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = G16Mn5
 NameDE = GS-16Mn5N
 DescriptionDE = Gehäuse, Zahnräder, Bremsscheiben
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 430
 PoissonRatio = 0.3

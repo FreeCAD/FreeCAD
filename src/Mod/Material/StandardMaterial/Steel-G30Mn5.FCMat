@@ -1,4 +1,4 @@
-; G30Mn5 - 1.1165 - DIN 17205
+﻿; G30Mn5 - 1.1165 - DIN 17205
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = G30Mn5
 NameDE = GS-30Mn5
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 520
 PoissonRatio = 0.3

@@ -1,4 +1,4 @@
-; EN-GJS-400-15 - 0.7040 - EN 1563
+﻿; EN-GJS-400-15 - 0.7040 - EN 1563
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = EN-GJS-400-15
 NameDE = GGG-40
 DescriptionDE = Pumpen-, Getriebegehäuse
 Father = Metal
-SpecificWeight = 7200
 YoungsModulus = 167000 MPa
 UltimateTensileStrength = 400
 PoissonRatio = 0.3

@@ -1,4 +1,4 @@
-; EN-GJS-600-3 - 0.7060 - EN 1563
+﻿; EN-GJS-600-3 - 0.7060 - EN 1563
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = EN-GJS-600-3
 NameDE = GGG-60
 DescriptionDE = Kurbelwellen, Stangen
 Father = Metal
-SpecificWeight = 7200
 YoungsModulus = 177000 MPa
 UltimateTensileStrength = 600
 PoissonRatio = 0.3

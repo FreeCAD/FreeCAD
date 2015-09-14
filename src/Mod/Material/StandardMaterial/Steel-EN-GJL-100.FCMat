@@ -1,4 +1,4 @@
-; EN-GJL-100 - 0.6010 - EN 1561
+﻿; EN-GJL-100 - 0.6010 - EN 1561
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = EN-GJL-100
 NameDE = GG-10
 DescriptionDE = für gering beanspruchte Teile
 Father = Metal
-SpecificWeight = 7200
 YoungsModulus = 88000 MPa
 UltimateTensileStrength = 100
 PoissonRatio = 0.3

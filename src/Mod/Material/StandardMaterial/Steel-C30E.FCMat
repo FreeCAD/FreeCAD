@@ -1,4 +1,4 @@
-; C30E - 1.1178 - EN 10083-1
+﻿; C30E - 1.1178 - EN 10083-1
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = C30E
 NameDE = Ck30
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 600
 PoissonRatio = 0.3

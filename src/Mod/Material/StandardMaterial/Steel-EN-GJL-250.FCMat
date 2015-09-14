@@ -1,4 +1,4 @@
-; EN-GJL-250 - 0.6025 - EN 1561
+﻿; EN-GJL-250 - 0.6025 - EN 1561
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -7,7 +7,6 @@
 Name = EN-GJL-250
 NameDE = GG-25
 Father = Metal
-SpecificWeight = 7200
 YoungsModulus = 115000 MPa
 UltimateTensileStrength = 250
 PoissonRatio = 0.3

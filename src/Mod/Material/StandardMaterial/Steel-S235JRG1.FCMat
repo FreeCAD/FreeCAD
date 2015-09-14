@@ -1,4 +1,4 @@
-; S235JRG1 - 1.0036 - EN 10025
+﻿; S235JRG1 - 1.0036 - EN 10025
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,7 +8,6 @@ Name = S235JRG1
 NameDE = USt37-2
 DescriptionDE = üblich für mäßige Beanspruchung
 Father = Metal
-SpecificWeight = 7800
 YoungsModulus = 210000 MPa
 UltimateTensileStrength = 360
 PoissonRatio = 0.3

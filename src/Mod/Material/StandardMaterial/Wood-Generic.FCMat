@@ -7,7 +7,6 @@
 Name = Wood
 Description = A standard construction wood
 Father = Aggregate
-SpecificWeight = 500
 ProductURL = http://en.wikipedia.org/wiki/Wood
 YoungsModulus = 12000 MPa
 PoissonRatio = 0.05
