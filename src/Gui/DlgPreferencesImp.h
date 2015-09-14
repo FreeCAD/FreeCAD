@@ -133,6 +133,7 @@ private:
     //@{
     void setupPages();
     void applyChanges();
+    void restoreDefaults();
     //@}
 
 private:
