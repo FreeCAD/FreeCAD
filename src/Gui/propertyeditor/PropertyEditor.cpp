@@ -148,7 +148,7 @@ void PropertyEditor::buildUp(const PropertyModel::PropertyList& props)
 void PropertyEditor::updateProperty(const App::Property& prop)
 {
     // forward this to the model if the property is changed from outside
-    //if (!committing)
+    if (!committing)
         propertyModel->updateProperty(prop);
 }
 
