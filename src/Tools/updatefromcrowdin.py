@@ -26,11 +26,11 @@
 '''
 Usage:
 
-    updateTranslations.py [options] [LANGCODE] [LANGCODE LANGCODE...]
+    updatefromcrowdin.py [options] [LANGCODE] [LANGCODE LANGCODE...]
 
 Example:
 
-    ./updateTranslations.py [-d <directory>] fr nl pt_BR
+    ./updatefromcrowdin.py [-d <directory>] fr nl pt_BR
 
 Options:
 
@@ -88,9 +88,11 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["Ship","../Mod/Ship/resources/translations","../Mod/Ship/resources/Ship.qrc"],
              ["Plot","../Mod/Plot/resources/translations","../Mod/Plot/resources/Plot.qrc"],
              ["Web","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"],
-             ["Spreadsheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"]]
+             ["Spreadsheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"],
+             ["Path","../Mod/Path/Gui/Resources/translations","../Mod/Path/Gui/Resources/Path.qrc"],
+             ]
              
-default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR"
+default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR el sk tr"
 
 def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
