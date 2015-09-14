@@ -78,7 +78,7 @@ class _CommandMechanicalMaterial:
 class _MechanicalMaterial:
     "The Material object"
     def __init__(self, obj):
-        self.Type = "MechanicaltMaterial"
+        self.Type = "MechanicalMaterial"
         obj.Proxy = self
         # obj.Material = StartMat
 
