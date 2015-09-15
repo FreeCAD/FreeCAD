@@ -156,7 +156,6 @@ class _MechanicalMaterialTaskPanel:
     def reject(self):
         self.obj.Material = self.previous_material
         print "Reverting to material:"
-        self.print_mat_data(self.previous_material)
         FreeCADGui.ActiveDocument.resetEdit()
 
     def goMatWeb(self):
@@ -199,7 +198,6 @@ class _MechanicalMaterialTaskPanel:
         if 'Description' in self.obj.Material:
             gen_mat_desc = self.obj.Material['Description']
         self.form.l_mat_description.setText(gen_mat_desc)
-        self.print_mat_data(self.obj.Material)
 
     def get_material_name(self, material):
         if 'Name' in self.previous_material:
@@ -213,16 +211,6 @@ class _MechanicalMaterialTaskPanel:
             if len(unmatched_items) == 0:
                 return a_mat
         return ""
-
-    def print_mat_data(self, matmap):
-        print 'Material data:'
-        print ' Name = {}'.format(self.get_material_name(matmap))
-        if 'YoungsModulus' in matmap:
-            print ' YM = ', matmap['YoungsModulus']
-        if 'PoissonRatio' in matmap:
-            print ' PR = ', matmap['PoissonRatio']
-        if 'Density' in matmap:
-            print ' RO = ', matmap['Density']
 
     def set_mat_params_in_combo_box(self, matmap):
         if 'YoungsModulus' in matmap:
