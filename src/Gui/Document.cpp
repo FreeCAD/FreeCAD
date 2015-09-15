@@ -1262,16 +1262,40 @@ MDIView* Document::getActiveView(void) const
 
 Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
 {
-    std::list<MDIView*> mdis = getMDIViews();
+    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
     for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
-            View3DInventor* view = static_cast<View3DInventor*>(*it);
-            if (view->getViewer()->hasViewProvider(vp))
-                return *it;
-        }
+        View3DInventor* view = static_cast<View3DInventor*>(*it);
+        if (view->getViewer()->hasViewProvider(vp))
+            return *it;
     }
 
     return 0;
+}
+
+Gui::MDIView* Document::getFirstViewOfViewProvider(Gui::ViewProvider* vp) const
+{
+    // first try the active view
+    Gui::MDIView* view = getActiveView();
+    if (view && view->isDerivedFrom(View3DInventor::getClassTypeId())) {
+        View3DInventor* view3d = static_cast<View3DInventor*>(view);
+        if (view3d->getViewer()->hasViewProvider(vp))
+            return view;
+    }
+
+    return getViewOfViewProvider(vp);
+}
+
+std::list<MDIView*> Document::getViewsOfViewProvider(Gui::ViewProvider* vp) const
+{
+    std::list<MDIView*> views;
+    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
+    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
+        View3DInventor* view = static_cast<View3DInventor*>(*it);
+        if (view->getViewer()->hasViewProvider(vp))
+            views.push_back(*it);
+    }
+
+    return views;
 }
 
 //--------------------------------------------------------------------------

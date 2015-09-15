@@ -51,10 +51,12 @@ protected:
 
 Q_SIGNALS:
     void onUpdateDrivingStatus(QListWidgetItem *item, bool status);
+    void emitCenterSelectedItems();
 
 protected Q_SLOTS:
     void modifyCurrentItem();
     void renameCurrentItem();
+    void centerSelectedItems();
     void deleteSelectedItems();
     void doSelectConstraints();
     void updateDrivingStatus();
@@ -76,10 +78,11 @@ private:
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
-    void on_listWidgetConstraints_itemSelectionChanged(void); 
+    void on_listWidgetConstraints_itemSelectionChanged(void);
     void on_listWidgetConstraints_itemActivated(QListWidgetItem *item);
     void on_listWidgetConstraints_itemChanged(QListWidgetItem * item);
     void on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status);
+    void on_listWidgetConstraints_emitCenterSelectedItems(void);
 
 protected:
     void changeEvent(QEvent *e);

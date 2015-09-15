@@ -165,6 +165,9 @@ public:
                                            const Gui::View3DInventorViewer *viewer,
                                            const SbVec2s &cursorPos);
 
+    /*! Look at the center of the bounding of all selected items */
+    void centerSelection();
+
     /// box selection method
     void doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
                         const Gui::View3DInventorViewer *viewer);

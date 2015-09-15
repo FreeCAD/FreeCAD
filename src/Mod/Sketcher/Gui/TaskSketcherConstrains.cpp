@@ -166,6 +166,9 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
         );
     rename->setEnabled(item != 0);
 
+    QAction* center = menu.addAction(tr("Center sketch"), this, SLOT(centerSelectedItems()));
+    center->setEnabled(item != 0);
+
     QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
         QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
@@ -196,6 +199,11 @@ void ConstraintView::renameCurrentItem()
     QListWidgetItem* item = currentItem();
     if (item)
         editItem(item);
+}
+
+void ConstraintView::centerSelectedItems()
+{
+    Q_EMIT emitCenterSelectedItems();
 }
 
 void ConstraintView::deleteSelectedItems()
@@ -244,6 +252,10 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
     QObject::connect(
         ui->listWidgetConstraints, SIGNAL(itemChanged(QListWidgetItem *)),
         this                     , SLOT  (on_listWidgetConstraints_itemChanged(QListWidgetItem *))
+       );
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(emitCenterSelectedItems()),
+        this                     , SLOT  (on_listWidgetConstraints_emitCenterSelectedItems())
        );
     QObject::connect(
         ui->listWidgetConstraints, SIGNAL(onUpdateDrivingStatus(QListWidgetItem *, bool)),
@@ -310,6 +322,11 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
 void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int)
 {
     slotConstraintsChanged();
+}
+
+void TaskSketcherConstrains::on_listWidgetConstraints_emitCenterSelectedItems()
+{
+    sketchView->centerSelection();
 }
 
 void TaskSketcherConstrains::on_listWidgetConstraints_itemSelectionChanged(void)

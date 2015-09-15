@@ -148,8 +148,10 @@ public:
     //@{
     /// Getter for the active view
     Gui::MDIView* getActiveView(void) const;
+    Gui::MDIView* getFirstViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
-    /// Creat a new view
+    std::list<MDIView*> getViewsOfViewProvider(Gui::ViewProvider*) const;
+    /// Create a new view
     void createView(const Base::Type& typeId);
     /** send messages to the active view 
      * Send a specific massage to the active view and is able to recive a
