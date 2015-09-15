@@ -1272,17 +1272,18 @@ Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
     return 0;
 }
 
-Gui::MDIView* Document::getFirstViewOfViewProvider(Gui::ViewProvider* vp) const
+Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) const
 {
-    // first try the active view
-    Gui::MDIView* view = getActiveView();
-    if (view && view->isDerivedFrom(View3DInventor::getClassTypeId())) {
-        View3DInventor* view3d = static_cast<View3DInventor*>(view);
-        if (view3d->getViewer()->hasViewProvider(vp))
-            return view;
+    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
+    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
+        View3DInventor* view = static_cast<View3DInventor*>(*it);
+        View3DInventorViewer* viewer = view->getViewer();
+        // there is only one 3d view which is in edit mode
+        if (viewer->hasViewProvider(vp) && viewer->isEditingViewProvider())
+            return *it;
     }
 
-    return getViewOfViewProvider(vp);
+    return 0;
 }
 
 std::list<MDIView*> Document::getViewsOfViewProvider(Gui::ViewProvider* vp) const

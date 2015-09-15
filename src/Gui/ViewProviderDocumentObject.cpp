@@ -163,6 +163,13 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
     return pGuiDoc->getActiveView();
 }
 
+Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
+    return pGuiDoc->getEditingViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
+}
+
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
 {
     // first get the document this object is part of and get its GUI counterpart
