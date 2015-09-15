@@ -42,6 +42,7 @@
 #include "Command.h"
 #include "Document.h"
 #include "MainWindow.h"
+#include "Macro.h"
 #include "EditorView.h"
 #include "PythonEditor.h"
 #include "SoFCDB.h"
@@ -885,26 +886,46 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject 
     }
 }
 
-PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
-    char *pstr=0;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception
-    Command::doCommand(Command::Doc,pstr);
+    char *sCmd=0;
+    if (!PyArg_ParseTuple(args, "s", &sCmd))
+        return NULL;
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
+
+    PyObject *module, *dict;
+
+    Base::PyGILStateLocker locker;
+    module = PyImport_AddModule("__main__");
+    if (module == NULL)
+        return 0;
+    dict = PyModule_GetDict(module);
+    if (dict == NULL)
+        return 0;
+
+    return PyRun_String(sCmd, Py_file_input, dict, dict);
 }
 
-PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
-    char *pstr=0;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
-    Command::runCommand(Command::Gui,pstr);
+    char *sCmd=0;
+    if (!PyArg_ParseTuple(args, "s", &sCmd))
+        return NULL;
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
+
+    PyObject *module, *dict;
+
+    Base::PyGILStateLocker locker;
+    module = PyImport_AddModule("__main__");
+    if (module == NULL)
+        return 0;
+    dict = PyModule_GetDict(module);
+    if (dict == NULL)
+        return 0;
+
+    return PyRun_String(sCmd, Py_file_input, dict, dict);
 }
 
 PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
