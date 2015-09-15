@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,7 +29,9 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
+#include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
+#include <Base/Exception.h>
 
 using namespace App;
 
@@ -81,6 +83,26 @@ void Property::setContainer(PropertyContainer *Father)
     father = Father;
 }
 
+void Property::setValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    path.setValue(value);
+}
+
+const boost::any Property::getValue(const ObjectIdentifier &path) const
+{
+    return path.getValue();
+}
+
+void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
+{
+    paths.push_back(App::ObjectIdentifier(getContainer(), getName()));
+}
+
+const ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
+{
+    return p;
+}
+
 void Property::touch()
 {
     if (father)
@@ -99,6 +121,16 @@ void Property::aboutToSetValue(void)
 {
     if (father)
         father->onBeforeChange(this);
+}
+
+void Property::verifyPath(const ObjectIdentifier &p) const
+{
+    if (p.numSubComponents() != 1)
+        throw Base::Exception("Invalid property path: single component expected");
+    if (!p.getPropertyComponent(0).isSimple())
+        throw Base::Exception("Invalid property path: simple component expected");
+    if (p.getPropertyComponent(0).getName() != getName())
+        throw Base::Exception("Invalid property path: name mismatch");
 }
 
 Property *Property::Copy(void) const 

@@ -62,6 +62,7 @@ SET(Document_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
+    Expression.cpp
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
@@ -83,6 +84,7 @@ SET(Document_HPP_SRCS
     DocumentObjectGroup.h
     DocumentObserver.h
     DocumentObserverPython.h
+    Expression.h
     FeaturePython.h
     FeaturePythonPyImp.h
     FeaturePythonPyImp.inl
@@ -106,6 +108,7 @@ SOURCE_GROUP("Document" FILES ${Document_SRCS})
 # The property stuff
 SET(Properties_CPP_SRCS
     DynamicProperty.cpp
+    ObjectIdentifier.cpp
     Property.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
@@ -118,6 +121,7 @@ SET(Properties_CPP_SRCS
 )
 SET(Properties_HPP_SRCS
     DynamicProperty.h
+    ObjectIdentifier.h
     Property.h
     PropertyContainer.h
     PropertyFile.h
