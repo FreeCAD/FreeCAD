@@ -92,6 +92,8 @@ public:
 protected:
     /// Get the active mdi view of a view provider
     Gui::MDIView* getActiveView() const;
+    /// Get the editing mdi view of a view provider in edit mode
+    Gui::MDIView* getEditingView() const;
     /// Gets called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
     /** Searches in all view providers that are attached to an object that

@@ -148,7 +148,7 @@ public:
     //@{
     /// Getter for the active view
     Gui::MDIView* getActiveView(void) const;
-    Gui::MDIView* getFirstViewOfViewProvider(Gui::ViewProvider*) const;
+    Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
     std::list<MDIView*> getViewsOfViewProvider(Gui::ViewProvider*) const;
     /// Create a new view

@@ -832,11 +832,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         } else if (edit->PreselectConstraintSet.empty() != true) {
                             return true;
                         } else {
-                            //Get Viewer
-                            Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                            Gui::View3DInventorViewer *viewer;
-                            viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
                             Gui::MenuItem *geom = new Gui::MenuItem();
                             geom->setCommand("Sketcher geoms");
                             *geom << "Sketcher_CreatePoint"
@@ -869,11 +864,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     break;
                 case STATUS_SELECT_Edge:
                     {
-                        //Get Viewer
-                        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                        Gui::View3DInventorViewer *viewer ;
-                        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
                         Gui::MenuItem *geom = new Gui::MenuItem();
                         geom->setCommand("Sketcher constraints");
                         *geom << "Sketcher_ConstrainVertical"
@@ -1337,8 +1327,9 @@ Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &
                                                           const SoNode *constraint)
 {
     assert(edit);
-    Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+    Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
+    Gui::View3DInventorViewer *viewer = mdi->getViewer();
+
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
 
     float scaled_step = step * getScaleFactor();
@@ -1823,8 +1814,7 @@ SbVec3s ViewProviderSketch::getDisplayedSize(const SoImage *iconPtr) const
 
 void ViewProviderSketch::centerSelection()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(getObject()->getDocument());
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(doc->getFirstViewOfViewProvider(this));
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
     if (!view || !edit)
         return;
 
@@ -1845,7 +1835,6 @@ void ViewProviderSketch::centerSelection()
 
     SbBox3f box = action.getBoundingBox();
     if (!box.isEmpty()) {
-        // get cirumscribing sphere
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         SbVec3f direction;
         camera->orientation.getValue().multVec(SbVec3f(0, 0, 1), direction);
@@ -2561,9 +2550,9 @@ void ViewProviderSketch::drawConstraintIcons()
             double x0,y0,x1,y1;
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
-            
-            Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-            Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+            Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
+            Gui::View3DInventorViewer *viewer = mdi->getViewer();
             SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
             if (!pCam) return;
 
@@ -2929,11 +2918,12 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
 
 float ViewProviderSketch::getScaleFactor()
 {
-    Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+    Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
+    if (mdi) {
+        Gui::View3DInventorViewer *viewer = mdi->getViewer();
         return viewer->getSoRenderManager()->getCamera()->getViewVolume(viewer->getSoRenderManager()->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
-    } else {
+    }
+    else {
         return 1.f;
     }
 }
@@ -2941,9 +2931,6 @@ float ViewProviderSketch::getScaleFactor()
 void ViewProviderSketch::draw(bool temp)
 {
     assert(edit);
-
-    // Get Bounding box dimensions for Datum text
-    Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
 
     // Render Geometry ===================================================
     std::vector<Base::Vector3d> Coords;
@@ -3920,12 +3907,17 @@ Restart:
     this->updateColor();
 
     // delete the cloned objects
-    if (temp)
-        for (std::vector<Part::Geometry *>::iterator it=tempGeo.begin(); it != tempGeo.end(); ++it)
-            if (*it) delete *it;
+    if (temp) {
+        for (std::vector<Part::Geometry *>::iterator it=tempGeo.begin(); it != tempGeo.end(); ++it) {
+            if (*it)
+                delete *it;
+        }
+    }
 
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) { 
-        static_cast<Gui::View3DInventor *>(mdi)->getViewer()->redraw();
+    // Get Bounding box dimensions for Datum text
+    Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
+    if (mdi) {
+        mdi->getViewer()->redraw();
     }
 }
 
