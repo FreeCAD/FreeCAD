@@ -102,9 +102,9 @@ class inp_writer:
             # calculate node load
             if NbrForceNodes != 0:
                 fobj['NodeLoad'] = (frc_obj.Force) / NbrForceNodes
-                #  FIXME this method is incorrect, but we don't have anything else right now
-                #  Please refer to thread "CLOAD and DLOAD for the detailed description
-                #  http://forum.freecadweb.org/viewtopic.php?f=18&t=10692
+                #  FIXME for loads on edges the node count is used to distribute the load on the edges. 
+                #  In case of a not uniform fem mesh this could result in wrong force distribution 
+                #  and thus in wrong analysis results. see  def write_constraints_force()
                 f.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
                 f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
             if frc_obj.Force == 0:
@@ -223,6 +223,9 @@ class inp_writer:
 
                     # calulate the appropriate node_areas for every node of every mesh face (mf)
                     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
+                    # FIXME only gives exact results in case of a real triangle. If for S6 or C3D10 elements
+                    # the midnodes are not on the line between the end nodes the area will not be a triangle
+                    # see http://forum.freecadweb.org/viewtopic.php?f=18&t=10939&start=40#p91355  and ff
 
                     #  [ (nodeID,Area), ... , (nodeID,Area) ]  some nodes will have more than one entry
                     node_area_table = []
