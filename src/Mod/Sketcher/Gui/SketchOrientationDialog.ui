@@ -83,9 +83,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="Offset_doubleSpinBox">
-       <property name="decimals">
-        <number>2</number>
+      <widget class="Gui::QuantitySpinBox" name="Offset_doubleSpinBox">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
        </property>
        <property name="minimum">
         <double>-999999999.000000000000000</double>
@@ -112,6 +112,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
