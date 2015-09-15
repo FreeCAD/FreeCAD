@@ -1821,6 +1821,40 @@ SbVec3s ViewProviderSketch::getDisplayedSize(const SoImage *iconPtr) const
     return iconSize;
 }
 
+void ViewProviderSketch::centerSelection()
+{
+    Gui::Document* doc = Gui::Application::Instance->getDocument(getObject()->getDocument());
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(doc->getFirstViewOfViewProvider(this));
+    if (!view || !edit)
+        return;
+
+    SoGroup* group = new SoGroup();
+    group->ref();
+
+    for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
+        if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
+            SoSeparator *sep = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
+            group->addChild(sep);
+        }
+    }
+
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+    SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
+    action.apply(group);
+    group->unref();
+
+    SbBox3f box = action.getBoundingBox();
+    if (!box.isEmpty()) {
+        // get cirumscribing sphere
+        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+        SbVec3f direction;
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, 1), direction);
+        SbVec3f box_cnt = box.getCenter();
+        SbVec3f cam_pos = box_cnt + camera->focalDistance.getValue() * direction;
+        camera->position.setValue(cam_pos);
+    }
+}
+
 void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
                                         const Gui::View3DInventorViewer *viewer)
 {
