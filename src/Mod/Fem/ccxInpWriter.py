@@ -139,7 +139,6 @@ class inp_writer:
                 if mat_obj_name == 'MechanicalMaterial':
                     f.write('*SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=' + mat_name + '\n')
 
-
     def write_step_begin(self, f):
         f.write('\n***********************************************************\n')
         f.write('** One step is needed to calculate the mechanical analysis of FreeCAD\n')
@@ -164,7 +163,7 @@ class inp_writer:
         f.write('** Node loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         if is_shell_mesh(self.mesh_object.FemMesh) or (is_solid_mesh(self.mesh_object.FemMesh) and has_no_face_data(self.mesh_object.FemMesh)):
-            if not hasattr(self,'fem_element_table'):
+            if not hasattr(self, 'fem_element_table'):
                 self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
         for fobj in self.force_objects:
             frc_obj = fobj['Object']
@@ -211,7 +210,7 @@ class inp_writer:
                                 for nodeID in self.fem_element_table[veID]:
                                     if nodeID in ref_face_nodes:
                                         ve_ref_face_nodes.append(nodeID)
-                                face_table[veID] = ve_ref_face_nodes  #  { volumeID : ( facenodeID, ... , facenodeID ) }
+                                face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) }
                         else:
                             volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)   # (mv, mf)
                             for mv, mf in volume_faces:
@@ -379,7 +378,6 @@ class inp_writer:
         f.write('**\n')
 
 
-
 # Helpers
 def getTriangleArea(P1, P2, P3):
     vec1 = P2 - P1
@@ -412,27 +410,27 @@ def getFemElementsByNodes(fem_element_table, node_list):
     nodes: nodelist '''
     e = []  # elementlist
     for elementID in sorted(fem_element_table):
-          nodecount  = 0
-          for nodeID in fem_element_table[elementID]:
+        nodecount = 0
+        for nodeID in fem_element_table[elementID]:
             if nodeID in node_list:
-              nodecount = nodecount + 1
-          if nodecount == len(fem_element_table[elementID]):   # all nodes of the element are in the node_list!
+                nodecount = nodecount + 1
+        if nodecount == len(fem_element_table[elementID]):   # all nodes of the element are in the node_list!
             e.append(elementID)
     return e
 
 
 def is_solid_mesh(fem_mesh):
-    if fem_mesh.VolumeCount > 0: # solid mesh
+    if fem_mesh.VolumeCount > 0:  # solid mesh
         return True
 
 def has_no_face_data(fem_mesh):
-    if fem_mesh.FaceCount == 0 :   # mesh has no face data, could be a beam mesh or a solid mesh without face data
+    if fem_mesh.FaceCount == 0:   # mesh has no face data, could be a beam mesh or a solid mesh without face data
         return True
 
 def is_shell_mesh(fem_mesh):
-    if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount > 0 : # shell mesh
+    if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount > 0:  # shell mesh
         return True
 
 def is_beam_mesh(fem_mesh):
-    if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount == 0 and fem_mesh.EdgeCount > 0 : # beam mesh
+    if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount == 0 and fem_mesh.EdgeCount > 0:  # beam mesh
         return True
