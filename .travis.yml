@@ -44,6 +44,8 @@ before_install:
     - sudo apt-get install -y swig
 #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
     - sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
 
 install:
     - mkdir build && cd build && cmake ../
@@ -52,4 +54,12 @@ script:
     - make -j2
     - PYTHONPATH=$(pwd)/lib/ python -c "import sys, unittest, FreeCAD, TestApp; sys.exit(0 if unittest.TextTestRunner().run(TestApp.All()).wasSuccessful() else 1)"
     - sudo make install
+    - bin/FreeCAD --log-file /tmp/FreeCAD.log &
+    - sleep 10 && pkill FreeCAD
+    - cat /tmp/FreeCAD.log
+    - grep --file=../.log_errors /tmp/FreeCAD.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from build directory" || ( echo "Error from .log_errors found!" && false )
+    - /usr/local/bin/FreeCAD --log-file /tmp/FreeCAD_installed.log &
+    - sleep 10 && pkill FreeCAD
+    - cat /tmp/FreeCAD_installed.log
+    - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
 
