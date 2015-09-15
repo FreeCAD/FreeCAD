@@ -189,6 +189,7 @@ PyObject* PathPy::setFromGCode(PyObject * args)
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         getToolpathPtr()->setFromGCode(gcode);
+        Py_INCREF(Py_None);
         return Py_None;
     }
     throw Py::Exception("Argument must be a string");

@@ -167,6 +167,7 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         getCommandPtr()->setFromGCode(gcode);
+        Py_INCREF(Py_None);
         return Py_None;
     }
     throw Py::Exception("Argument must be a string");
@@ -211,6 +212,7 @@ PyObject *CommandPy::getCustomAttributes(const char* attr) const
             if (getCommandPtr()->Parameters.count(satt)) {
                 return PyFloat_FromDouble(getCommandPtr()->Parameters[satt]);
             }
+            Py_INCREF(Py_None);
             return Py_None;
         }
     }

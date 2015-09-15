@@ -891,6 +891,8 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject *
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
         return NULL;                             // NULL triggers exception
     Command::doCommand(Command::Doc,pstr);
+
+    Py_INCREF(Py_None);
     return Py_None;
 }
 
@@ -900,6 +902,8 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args,PyObjec
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
     Command::runCommand(Command::Gui,pstr);
+
+    Py_INCREF(Py_None);
     return Py_None;
 }
 
@@ -909,6 +913,8 @@ PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args,PyObject *
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
     Command::addModule(Command::Doc,pstr);
+
+    Py_INCREF(Py_None);
     return Py_None;
 }
 
@@ -917,5 +923,7 @@ PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args,PyObje
     if (!PyArg_ParseTuple(args, ""))             // convert args: Python->C 
         return NULL;                             // NULL triggers exception 
     Gui::Dialog::DownloadManager::getInstance();
+
+    Py_INCREF(Py_None);
     return Py_None;
 }
