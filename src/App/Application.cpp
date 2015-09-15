@@ -95,6 +95,7 @@
 #include "Placement.h"
 #include "Plane.h"
 #include "MaterialObject.h"
+#include "Expression.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -1116,6 +1117,18 @@ void Application::initTypes(void)
     App ::MaterialObjectPython      ::init();
     App ::Placement                 ::init();
     App ::Plane                     ::init();
+
+    // Expression classes
+    App ::Expression                ::init();
+    App ::UnitExpression            ::init();
+    App ::NumberExpression          ::init();
+    App ::ConstantExpression        ::init();
+    App ::OperatorExpression        ::init();
+    App ::VariableExpression        ::init();
+    App ::ConditionalExpression     ::init();
+    App ::StringExpression          ::init();
+    App ::FunctionExpression        ::init();
+
 }
 
 void Application::initConfig(int argc, char ** argv)
