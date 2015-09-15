@@ -87,25 +87,20 @@ class inp_writer:
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.force_objects:
             frc_obj = fobj['Object']
-            print frc_obj.Name
             f.write('*NSET,NSET=' + frc_obj.Name + '\n')
             NbrForceNodes = 0
             for o, elem in frc_obj.References:
                 fo = o.Shape.getElement(elem)
                 n = []
                 if fo.ShapeType == 'Edge':
-                    print '  Line Load (edge load) on: ', elem
                     n = self.mesh_object.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
-                    print '  Point Load (vertex load) on: ', elem
                     n = self.mesh_object.FemMesh.getNodesByVertex(fo)
                 for i in n:
                     f.write(str(i) + ',\n')
                     NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from force_object
             # calculate node load
-            if NbrForceNodes == 0:
-                print 'No Line Loads or Point Loads in the model'
-            else:
+            if NbrForceNodes != 0:
                 fobj['NodeLoad'] = (frc_obj.Force) / NbrForceNodes
                 #  FIXME this method is incorrect, but we don't have anything else right now
                 #  Please refer to thread "CLOAD and DLOAD for the detailed description
@@ -173,7 +168,7 @@ class inp_writer:
                 self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
         for fobj in self.force_objects:
             frc_obj = fobj['Object']
-            if 'NodeLoad' in fobj:
+            if 'NodeLoad' in fobj:   # load on edges or vertieces
                 node_load = fobj['NodeLoad']
                 frc_obj_name = frc_obj.Name
                 vec = frc_obj.DirectionVector
@@ -186,7 +181,7 @@ class inp_writer:
                 f.write(frc_obj_name + ',2,' + v2 + '\n')
                 f.write(frc_obj_name + ',3,' + v3 + '\n\n')
 
-            # area load on faces of volume elements --> CLOAD is used
+            # area load on faces
             sum_ref_face_area = 0
             sum_ref_face_node_area = 0
             sum_node_load = 0
@@ -195,15 +190,12 @@ class inp_writer:
                 if elem_o.ShapeType == 'Face':
                     sum_ref_face_area += elem_o.Area
             if sum_ref_face_area != 0:
-                print frc_obj.Name, ', AreaLoad on faces, CLOAD is used'
                 force_per_sum_ref_face_area = frc_obj.Force / sum_ref_face_area
-                print '  force_per_sum_ref_face_area: ', force_per_sum_ref_face_area
 
             for o, elem in frc_obj.References:
                 elem_o = o.Shape.getElement(elem)
                 if elem_o.ShapeType == 'Face':
                     ref_face = elem_o
-                    print '  ', o.Name, '.', elem,
                     f.write('** ' + frc_obj.Name + '\n')
                     f.write('*CLOAD\n')
                     f.write('** node loads on element face: ' + o.Name + '.' + elem + '\n')
@@ -213,8 +205,6 @@ class inp_writer:
                         if has_no_face_data(self.mesh_object.FemMesh):
                             ref_face_volume_elements = self.mesh_object.FemMesh.getccxVolumesByFace(ref_face)  # list of tupels
                             ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
-                            # print ref_face_nodes
-                            # print ref_face_volume_elements
                             for ve in ref_face_volume_elements:
                                 veID = ve[0]
                                 ve_ref_face_nodes = []
@@ -222,7 +212,6 @@ class inp_writer:
                                     if nodeID in ref_face_nodes:
                                         ve_ref_face_nodes.append(nodeID)
                                 face_table[veID] = ve_ref_face_nodes  #  { volumeID : ( facenodeID, ... , facenodeID ) }
-                                # print veID, ' --> ', face_table[veID]
                         else:
                             volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)   # (mv, mf)
                             for mv, mf in volume_faces:
@@ -242,7 +231,6 @@ class inp_writer:
                     node_sumarea_table = {}
                     mesh_face_area = 0
                     for mf in face_table:
-                        # print '    ', mf, ' --> ', face_table[mf]
                         if len(face_table[mf]) == 3:  # 3 node mesh face triangle
                             # corner_node_area = mesh_face_area / 3.0
                             #      P3
@@ -310,9 +298,7 @@ class inp_writer:
 
                     sum_node_areas = 0
                     for n in node_sumarea_table:
-                        # print n, ' --> ', node_sumarea_table[n]
                         sum_node_areas = sum_node_areas + node_sumarea_table[n]
-                    print '    sum_node_areas ', sum_node_areas, ' ref_face.Area: ', ref_face.Area
                     sum_ref_face_node_area += sum_node_areas
 
                     # write CLOAD lines to CalculiX file
@@ -320,7 +306,6 @@ class inp_writer:
                     for n in sorted(node_sumarea_table):
                         node_load = node_sumarea_table[n] * force_per_sum_ref_face_area
                         sum_node_load += node_load
-                        #print '    nodeID: ', n, '  nodeload: ', node_load
                         if (vec.x != 0.0):
                             v1 = "{:.13E}".format(vec.x * node_load)
                             f.write(str(n) + ',1,' + v1 + '\n')
@@ -331,12 +316,6 @@ class inp_writer:
                             v3 = "{:.13E}".format(vec.z * node_load)
                             f.write(str(n) + ',3,' + v3 + '\n')
                 f.write('\n')
-
-            # print '  sum_ref_face_node_area: ', sum_ref_face_node_area
-            # print '  sum_ref_face_area     : ', sum_ref_face_area
-            # print '  sum_ref_face_node_area * force_per_sum_ref_face_area: ', sum_ref_face_node_area * force_per_sum_ref_face_area
-            # print '  sum_node_load:                                        ', sum_node_load
-            # print '  frc_obj.Force:                                        ', frc_obj.Force
             f.write('\n')
 
     def write_face_load(self, f):
@@ -422,8 +401,7 @@ def getFemElementTable(fem_mesh):
         for i in fem_mesh.Edges:
             fem_element_table[i] = fem_mesh.getElementNodes(i)
     else:
-        print 'Neither solid nor shell nor beam mesh!'
-    # print len(fem_element_table), ' elements in fem_element_table'
+        FreeCAD.Console.PrintError('Neither solid nor shell nor beam mesh!\n')
     return fem_element_table
 
 
@@ -445,20 +423,16 @@ def getFemElementsByNodes(fem_element_table, node_list):
 
 def is_solid_mesh(fem_mesh):
     if fem_mesh.VolumeCount > 0: # solid mesh
-        print 'solid mesh'
         return True
 
 def has_no_face_data(fem_mesh):
     if fem_mesh.FaceCount == 0 :   # mesh has no face data, could be a beam mesh or a solid mesh without face data
-        print 'mesh without face data'
         return True
 
 def is_shell_mesh(fem_mesh):
     if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount > 0 : # shell mesh
-        print 'shell mesh'
         return True
 
 def is_beam_mesh(fem_mesh):
     if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount == 0 and fem_mesh.EdgeCount > 0 : # beam mesh
-        print 'beam mesh'
         return True
