@@ -226,11 +226,10 @@ class _CommandMechanicalShowResult:
 
 
 class _FemAnalysis:
-    "The Material object"
+    "The FemAnalysis container object"
     def __init__(self, obj):
         self.Type = "FemAnalysis"
         obj.Proxy = self
-        #obj.Material = StartMat
         obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
 
     def execute(self, obj):
@@ -249,7 +248,7 @@ class _FemAnalysis:
 
 
 class _ViewProviderFemAnalysis:
-    "A View Provider for the Material object"
+    "A View Provider for the FemAnalysis container object"
 
     def __init__(self):
         #vobj.addProperty("App::PropertyLength", "BubbleSize", "Base", str(translate("Fem", "The size of the axis bubbles")))
