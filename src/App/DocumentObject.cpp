@@ -182,6 +182,12 @@ void DocumentObject::setDocument(App::Document* doc)
 
 void DocumentObject::onBeforeChange(const Property* prop)
 {
+
+    // Store current name in oldLabel, to be able to easily retrieve old name of document object later
+    // when renaming expressions.
+    if (prop == &Label)
+        oldLabel = static_cast<PropertyString*>(&Label)->getStrValue();
+
     if (_pDoc)
         _pDoc->onBeforeChangeProperty(this,prop);
 }
@@ -191,6 +197,10 @@ void DocumentObject::onChanged(const Property* prop)
 {
     if (_pDoc)
         _pDoc->onChangedProperty(this,prop);
+
+    if (prop == &Label && _pDoc)
+        _pDoc->signalRenamedObject(*this);
+
     if (prop->getType() & Prop_Output)
         return;
     // set object touched

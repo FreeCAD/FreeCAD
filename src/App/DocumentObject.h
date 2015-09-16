@@ -160,6 +160,8 @@ public:
 
     virtual void Save (Base::Writer &writer) const;
 
+    const std::string & getOldLabel() const { return oldLabel; }
+
 protected:
     /** get called by the document to recompute this feature
       * Normaly this method get called in the processing of
@@ -204,6 +206,9 @@ protected: // attributes
     Py::Object PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
+
+    /// Old label; used for renaming expressions
+    std::string oldLabel;
 
     // pointer to the document name string (for performance)
     const std::string *pcNameInDocument;
