@@ -28,6 +28,7 @@
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
 #include "DocumentObjectPy.h"
 #include "DocumentObjectPy.cpp"
+#include "Expression.h"
 
 using namespace App;
 
@@ -151,6 +152,31 @@ Py::List DocumentObjectPy::getOutList(void) const
 
     return ret;
 }
+
+PyObject*  DocumentObjectPy::setExpression(PyObject * args)
+{
+    char * path = NULL;
+    PyObject * expr;
+    char * comment = 0;
+
+    if (!PyArg_ParseTuple(args, "sO|s", &path, &expr, &comment))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
+
+    if (Py::Object(expr).isNone())
+        getDocumentObjectPtr()->setExpression(p, boost::shared_ptr<Expression>());
+    else if (PyString_Check(expr)) {
+        const char * exprStr = PyString_AsString(expr);
+        boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr));
+
+        getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+    }
+    else
+        throw Py::TypeError("String or None expected.");
+    Py_Return;
+}
+
 
 PyObject *DocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
