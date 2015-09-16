@@ -667,7 +667,6 @@ void View3DInventorViewer::resetEditingViewProvider()
 {
     if (this->editViewProvider) {
         this->editViewProvider->unsetEditViewer(this);
-        this->editViewProvider->finishEditing();
         removeEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
         this->editViewProvider = 0;
     }
