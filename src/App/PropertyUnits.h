@@ -65,6 +65,12 @@ public:
     void setUnit(const Base::Unit &u) {_Unit = u;}
     const Base::Unit &getUnit(void) const {return _Unit;}
 
+    void setValue(double lValue) { PropertyFloat::setValue(lValue); }
+    double getValue(void) const { return PropertyFloat::getValue(); }
+
+    virtual void setValue(const App::ObjectIdentifier &path, const boost::any &value);
+    virtual const boost::any getValue(const App::ObjectIdentifier &path) const;
+
 protected:
     Base::Quantity createQuantityFromPy(PyObject *value);
     Base::Unit _Unit;

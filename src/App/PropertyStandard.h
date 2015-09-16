@@ -77,6 +77,9 @@ public:
 
     virtual unsigned int getMemSize (void) const{return sizeof(long);}
 
+    virtual void setValue(const App::ObjectIdentifier & path, const boost::any & value);
+    virtual const boost::any getValue(const App::ObjectIdentifier & path) const { return _lValue; }
+
 protected:
     long _lValue;
 };
@@ -194,6 +197,9 @@ public:
 
     virtual Property * Copy(void) const;
     virtual void Paste(const Property &from);
+
+    virtual void setValue(const App::ObjectIdentifier & path, const boost::any & value);
+    virtual const boost::any getValue(const App::ObjectIdentifier & path) const { return _enum; }
 
 private:
     Enumeration _enum;
@@ -453,6 +459,9 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(double);}
     
+    void setValue(const App::ObjectIdentifier &path, const boost::any &value);
+    const boost::any getValue(const App::ObjectIdentifier &path) const;
+
 protected:
     double _dValue;
 };
@@ -605,6 +614,9 @@ public:
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
+    void setValue(const App::ObjectIdentifier &path, const boost::any &value);
+    const boost::any getValue(const App::ObjectIdentifier &path) const;
+
 private:
     std::string _cValue;
 };
@@ -756,6 +768,9 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(bool);}
     
+    void setValue(const App::ObjectIdentifier &path, const boost::any &value);
+    const boost::any getValue(const App::ObjectIdentifier &path) const;
+
 private:
     bool _lValue;
 };

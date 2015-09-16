@@ -259,6 +259,10 @@ public:
     /** This method returns a string representation of the property
      */
     const Base::Placement &getValue(void) const;
+
+    /// Get valid paths for this property; used by auto completer
+    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }
