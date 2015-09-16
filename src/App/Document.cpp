@@ -1191,6 +1191,7 @@ void Document::restore (void)
     
     // reset all touched
     for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
+        It->second->connectRelabelSignals();
         It->second->onDocumentRestored();
         It->second->purgeTouched();
     }
@@ -1360,6 +1361,29 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
     for (std::set<Vertex>::iterator it = out.begin(); it != out.end(); ++it)
         ary.push_back(VertexMap[*it]);
     return ary;
+}
+
+/**
+ * @brief Signal that object identifiers, typically a property or document object has been renamed.
+ *
+ * This function iterates through all document object in the document, and calls its
+ * renameObjectIdentifiers functions.
+ *
+ * @param paths Map with current and new names
+ */
+
+void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
+{
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
+
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier>::const_iterator it = paths.begin();
+    while (it != paths.end()) {
+        extendedPaths[it->first.canonicalPath()] = it->second.canonicalPath();
+        ++it;
+    }
+
+    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
+        (*it)->renameObjectIdentifiers(extendedPaths);
 }
 
 void Document::_rebuildDependencyList(void)

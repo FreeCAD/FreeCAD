@@ -279,6 +279,9 @@ public:
     //void setChanged(DocumentObject* change);
     //@}
 
+    /// Function called to signal that an object identifier has been renamed
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
+
     virtual PyObject *getPyObject(void);
 
     friend class Application;
