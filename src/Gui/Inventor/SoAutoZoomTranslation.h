@@ -38,7 +38,6 @@ public:
     static void initClass();
     SoAutoZoomTranslation();
     //SoSFVec3f abPos;
-    float getScaleFactor();
 
 protected:
     virtual ~SoAutoZoomTranslation() {};
@@ -49,9 +48,9 @@ protected:
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
     virtual void callback(SoCallbackAction * action);
     virtual void pick(SoPickAction * action);
+    float getScaleFactor(SoAction*) const;
 
 private:
-    float scale;
     //void setAutoScale(void);
 };
 
