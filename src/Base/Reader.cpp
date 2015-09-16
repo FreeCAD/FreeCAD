@@ -319,7 +319,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
         // no file name for the current entry in the zip was registered.
         if (jt != FileList.end()) {
             try {
-                Base::Reader reader(zipstream,DocumentSchema);
+                Base::Reader reader(zipstream, jt->FileName, DocumentSchema);
                 jt->Object->RestoreDocFile(reader);
             }
             catch(...) {
@@ -506,9 +506,14 @@ void Base::XMLReader::resetErrors()
 
 // ----------------------------------------------------------
 
-Base::Reader::Reader(std::istream& str, int version)
-  : std::istream(str.rdbuf()), _str(str), fileVersion(version)
+Base::Reader::Reader(std::istream& str, const std::string& name, int version)
+  : std::istream(str.rdbuf()), _str(str), _name(name), fileVersion(version)
 {
+}
+
+std::string Base::Reader::getFileName() const
+{
+    return this->_name;
 }
 
 int Base::Reader::getFileVersion() const

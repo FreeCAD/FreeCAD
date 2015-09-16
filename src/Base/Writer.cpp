@@ -108,6 +108,24 @@ int Writer::getFileVersion() const
     return fileVersion;
 }
 
+void Writer::setMode(const std::string& mode)
+{
+    Modes.insert(mode);
+}
+
+bool Writer::getMode(const std::string& mode) const
+{
+    std::set<std::string>::const_iterator it = Modes.find(mode);
+    return (it != Modes.end());
+}
+
+void Writer::clearMode(const std::string& mode)
+{
+    std::set<std::string>::iterator it = Modes.find(mode);
+    if (it != Modes.end())
+        Modes.erase(it);
+}
+
 std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
 {
     // always check isForceXML() before requesting a file!

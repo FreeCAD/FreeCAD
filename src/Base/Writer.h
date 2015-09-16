@@ -24,6 +24,7 @@
 #define BASE_WRITER_H
 
 
+#include <set>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -80,6 +81,12 @@ public:
     virtual void writeFiles(void)=0;
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
+    /// Set mode
+    void setMode(const std::string& mode);
+    /// Get mode
+    bool getMode(const std::string& mode) const;
+    /// Clear mode
+    void clearMode(const std::string& mode);
     //@}
 
     /** @name pretty formating for XML */
@@ -105,6 +112,7 @@ protected:
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
+    std::set<std::string> Modes;
 
     short indent;
     char indBuf[1024];
