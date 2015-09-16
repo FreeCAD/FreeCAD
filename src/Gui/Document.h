@@ -150,7 +150,6 @@ public:
     Gui::MDIView* getActiveView(void) const;
     Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
-    std::list<MDIView*> getViewsOfViewProvider(Gui::ViewProvider*) const;
     /// Create a new view
     void createView(const Base::Type& typeId);
     /** send messages to the active view 

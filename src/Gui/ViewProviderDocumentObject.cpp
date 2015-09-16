@@ -161,20 +161,7 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
-
-    MDIView* active = getMainWindow()->activeWindow();
-    std::list<MDIView*> views = pGuiDoc->getViewsOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
-
-    // is the active window a 3d view and does it contain this view provider
-    std::list<MDIView*>::iterator it = std::find(views.begin(), views.end(), active);
-    if (it != views.end())
-        return *it;
-    // if there is a 3d view containing this view provider return the first one
-    else if (!views.empty())
-        return views.front();
-    // no 3d view found containing this view provider
-    else
-        return 0;
+    return pGuiDoc->getActiveView();
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
@@ -182,6 +169,19 @@ Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getEditingViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
+}
+
+Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
+
+    Gui::MDIView* mdi = pGuiDoc->getEditingViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
+    if (!mdi) {
+        mdi = pGuiDoc->getViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
+    }
+
+    return mdi;
 }
 
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
