@@ -60,25 +60,19 @@ void SoZoomTranslation::initClass()
     SO_NODE_INIT_CLASS(SoZoomTranslation, SoTranslation, "Translation");
 }
 
-float SoZoomTranslation::getScaleFactor()
+float SoZoomTranslation::getScaleFactor(SoAction* action) const
 {
     // Dividing by 5 seems to work well
-
-    Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-        this->scale = viewer->getSoRenderManager()->getCamera()->getViewVolume(viewer->getSoRenderManager()->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 5;
-        return this->scale;
-    } else {
-        return this->scale;
-    }
+    SbViewVolume vv = SoViewVolumeElement::get(action->getState());
+    float aspectRatio = SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
+    float scale = vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
+    return scale;
 }
 
 SoZoomTranslation::SoZoomTranslation()
 {
     SO_NODE_CONSTRUCTOR(SoZoomTranslation);
     SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f,0.f,0.f)));
-    this->scale = -1;
 }
 
 void SoZoomTranslation::GLRender(SoGLRenderAction * action)
@@ -96,7 +90,7 @@ void SoZoomTranslation::doAction(SoAction * action)
         SbVec3f absVtr = this->abPos.getValue();
         SbVec3f relVtr = this->translation.getValue();
 
-        float sf = this->getScaleFactor();
+        float sf = this->getScaleFactor(action);
         // For Sketcher Keep Z value the same
         relVtr[0] = (relVtr[0] != 0) ? sf * relVtr[0] : 0;
         relVtr[1] = (relVtr[1] != 0) ? sf * relVtr[1] : 0;
@@ -116,7 +110,7 @@ void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
         SbVec3f absVtr = this->abPos.getValue();
         SbVec3f relVtr = this->translation.getValue();
 
-        float sf = this->getScaleFactor();
+        float sf = this->getScaleFactor(action);
         // For Sketcher Keep Z value the same
         relVtr[0] = (relVtr[0] != 0) ? sf  * relVtr[0] : 0;
         relVtr[1] = (relVtr[1] != 0) ? sf  * relVtr[1] : 0;
