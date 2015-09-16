@@ -139,6 +139,8 @@ void AutoSaver::saveDocument(const std::string& name)
             Base::ofstream file(tmp, std::ios::out | std::ios::binary);
             if (file.is_open()) {
                 Base::ZipWriter writer(file);
+                if (hGrp->GetBool("SaveBinaryBrep", true))
+                    writer.setMode("BinaryBrep");
 
                 writer.setComment("AutoRecovery file");
                 writer.setLevel(1); // apparently the fastest compression
