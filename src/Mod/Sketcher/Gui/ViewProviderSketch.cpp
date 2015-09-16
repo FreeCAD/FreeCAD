@@ -1327,8 +1327,10 @@ Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &
                                                           const SoNode *constraint)
 {
     assert(edit);
-    Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
-    Gui::View3DInventorViewer *viewer = mdi->getViewer();
+    Gui::MDIView *mdi = this->getEditingView();
+    if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+        return Base::Vector3d(0, 0, 0);
+    Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
 
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
 
@@ -1814,7 +1816,8 @@ SbVec3s ViewProviderSketch::getDisplayedSize(const SoImage *iconPtr) const
 
 void ViewProviderSketch::centerSelection()
 {
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
+    Gui::MDIView *mdi = this->getActiveView();
+    Gui::View3DInventor *view = qobject_cast<Gui::View3DInventor*>(mdi);
     if (!view || !edit)
         return;
 
@@ -2551,10 +2554,13 @@ void ViewProviderSketch::drawConstraintIcons()
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
 
-            Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
-            Gui::View3DInventorViewer *viewer = mdi->getViewer();
+            Gui::MDIView *mdi = this->getEditingView();
+            if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+                return;
+            Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
             SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
-            if (!pCam) return;
+            if (!pCam)
+                return;
 
             try {
                 SbViewVolume vol = pCam->getViewVolume();
@@ -2918,9 +2924,9 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
 
 float ViewProviderSketch::getScaleFactor()
 {
-    Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
-    if (mdi) {
-        Gui::View3DInventorViewer *viewer = mdi->getViewer();
+    Gui::MDIView *mdi = this->getEditingView();
+    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
         return viewer->getSoRenderManager()->getCamera()->getViewVolume(viewer->getSoRenderManager()->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
     }
     else {
@@ -3914,10 +3920,9 @@ Restart:
         }
     }
 
-    // Get Bounding box dimensions for Datum text
-    Gui::View3DInventor* mdi = qobject_cast<Gui::View3DInventor*>(this->getEditingView());
-    if (mdi) {
-        mdi->getViewer()->redraw();
+    Gui::MDIView *mdi = this->getActiveView();
+    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) { 
+        static_cast<Gui::View3DInventor *>(mdi)->getViewer()->redraw();
     }
 }
 
@@ -4117,18 +4122,17 @@ void ViewProviderSketch::updateData(const App::Property *prop)
         // Because a solve is mandatory to any addition (at least to update the DoF of the solver),
         // only when the solver geometry is the same in number than the sketch geometry an update
         // should trigger a redraw. This reduces even more the number of redraws per insertion of geometry
-	
-	// solver information is also updated when no matching geometry, so that if a solving fails
-	// this failed solving info is presented to the user
-	UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
-	
+
+        // solver information is also updated when no matching geometry, so that if a solving fails
+        // this failed solving info is presented to the user
+        UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
+
         if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 == 
             getSketchObject()->getSolvedSketch().getGeometrySize()) {
             draw(false);
             
             signalConstraintsChanged();
             signalElementsChanged();
-        
         }
     }
 }

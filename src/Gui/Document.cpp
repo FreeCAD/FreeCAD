@@ -1287,19 +1287,6 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
     return 0;
 }
 
-std::list<MDIView*> Document::getViewsOfViewProvider(Gui::ViewProvider* vp) const
-{
-    std::list<MDIView*> views;
-    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
-    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        View3DInventor* view = static_cast<View3DInventor*>(*it);
-        if (view->getViewer()->hasViewProvider(vp))
-            views.push_back(*it);
-    }
-
-    return views;
-}
-
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling  
 //--------------------------------------------------------------------------
