@@ -92,6 +92,9 @@ public:
     unsigned int getMemSize (void) const;
     //@}
 
+    /// Get valid paths for this property; used by auto completer
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+
 private:
     TopoShape _Shape;
 };

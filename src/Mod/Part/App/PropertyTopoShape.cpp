@@ -53,6 +53,7 @@
 #include <Base/Stream.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <App/ObjectIdentifier.h>
 
 #include "PropertyTopoShape.h"
 #include "TopoShapePy.h"
@@ -227,6 +228,20 @@ void PropertyPartShape::Paste(const App::Property &from)
 unsigned int PropertyPartShape::getMemSize (void) const
 {
     return _Shape.getMemSize();
+}
+
+void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier> &paths) const
+{
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ShapeType")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Orientation")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Length")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Area")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Volume")));
 }
 
 void PropertyPartShape::Save (Base::Writer &writer) const
