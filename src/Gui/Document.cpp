@@ -73,7 +73,7 @@ struct DocumentP
     int        _iDocId;
     bool       _isClosing;
     bool       _isModified;
-    ViewProvider*   _pcInEdit;
+    ViewProvider*   _editViewProvider;
     Application*    _pcAppWnd;
     // the doc/Document
     App::Document*  _pcDocument;
@@ -118,7 +118,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_isModified = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
-    d->_pcInEdit = 0;
+    d->_editViewProvider = 0;
 
     // Setup the connections
     d->connectNewObject = pcDocument->signalNewObject.connect
@@ -207,7 +207,7 @@ Document::~Document()
 
 bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
 {
-    if (d->_pcInEdit)
+    if (d->_editViewProvider)
         resetEdit();
     // is it really a ViewProvider of this document?
     if (d->_ViewProviderMap.find(dynamic_cast<ViewProviderDocumentObject*>(p)->getObject()) == d->_ViewProviderMap.end())
@@ -222,12 +222,12 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
     }
 
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
-        d->_pcInEdit = p;
+        d->_editViewProvider = p;
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         if (dlg)
             dlg->setDocumentName(this->getDocument()->getName());
-        if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
+        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+            signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
     }
     else {
         return false;
@@ -239,26 +239,27 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
 void Document::resetEdit(void)
 {
     std::list<Gui::BaseView*>::iterator it;
-    if (d->_pcInEdit) {
+    if (d->_editViewProvider) {
         for (it = d->baseViews.begin();it != d->baseViews.end();++it) {
             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*it);
             if (activeView)
                 activeView->getViewer()->resetEditingViewProvider();
         }
 
-        if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
-        d->_pcInEdit = 0;
+        d->_editViewProvider->finishEditing();
+        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
+        d->_editViewProvider = 0;
     }
 }
 
 ViewProvider *Document::getInEdit(void) const
 {
-    if (d->_pcInEdit) {
+    if (d->_editViewProvider) {
         // there is only one 3d view which is in edit mode
         View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
         if (activeView && activeView->getViewer()->isEditingViewProvider())
-            return d->_pcInEdit;
+            return d->_editViewProvider;
     }
 
     return 0;
@@ -455,7 +456,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
             if (activeView) {
-                if (d->_pcInEdit == viewProvider)
+                if (d->_editViewProvider == viewProvider)
                     resetEdit();
                 activeView->getViewer()->removeViewProvider(viewProvider);
             }
@@ -491,7 +492,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
         }
 
         // check for children 
-        if(viewProvider->getChildRoot()) {
+        if (viewProvider->getChildRoot()) {
             std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
             SoGroup* childGroup =  viewProvider->getChildRoot();
 
@@ -510,7 +511,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                         for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
                             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
                             if (activeView && viewProvider) {
-                                if (d->_pcInEdit == ChildViewProvider)
+                                if (d->_editViewProvider == ChildViewProvider)
                                     resetEdit();
                                 activeView->getViewer()->removeViewProvider(ChildViewProvider);
                             }
