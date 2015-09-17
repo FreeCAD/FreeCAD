@@ -6,6 +6,8 @@ SET(SMESH_VERSION_MINOR 1)
 SET(SMESH_VERSION_PATCH 2)
 SET(SMESH_VERSION_TWEAK 2)
 
+set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment")
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 include_directories(

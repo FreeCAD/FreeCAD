@@ -585,8 +585,6 @@ void Sheet::updateAlias(CellAddress key)
 
 void Sheet::updateProperty(CellAddress key)
 {
-    const Property * prop;
-
     Cell * cell = getCell(key);
 
     if (cell != 0) {
@@ -609,12 +607,12 @@ void Sheet::updateProperty(CellAddress key)
         if (freecad_dynamic_cast<NumberExpression>(output)) {
             NumberExpression * number = static_cast<NumberExpression*>(output);
             if (number->getUnit().isEmpty())
-                prop = setFloatProperty(key, number->getValue());
+                setFloatProperty(key, number->getValue());
             else
-                prop = setQuantityProperty(key, number->getValue(), number->getUnit());
+                setQuantityProperty(key, number->getValue(), number->getUnit());
         }
         else
-            prop = setStringProperty(key, freecad_dynamic_cast<StringExpression>(output)->getText().c_str());
+            setStringProperty(key, freecad_dynamic_cast<StringExpression>(output)->getText().c_str());
 
         delete output;
     }
@@ -622,7 +620,6 @@ void Sheet::updateProperty(CellAddress key)
         clear(key);
 
     cellUpdated(key);
-    (void)prop;
 }
 
 /**
