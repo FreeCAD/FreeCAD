@@ -118,11 +118,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
         # [{'Object':force_constraints, 'NodeLoad':value}, {}, ...
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
         self.mesh = None
         self.material = []
         self.fixed_constraints = []
         self.force_constraints = []
         self.pressure_constraints = []
+        self.beam_sections = []
+        self.shell_thicknesses = []
 
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemMeshObject"):
@@ -143,6 +147,14 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == 'FemBeamSection':
+                beam_section_dict = {}
+                beam_section_dict['Object'] = m
+                self.beam_sections.append(beam_section_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == 'FemShellThickness':
+                shell_thickness_dict = {}
+                shell_thickness_dict['Object'] = m
+                self.shell_thicknesses.append(shell_thickness_dict)
 
     def check_prerequisites(self):
         message = ""
@@ -159,6 +171,20 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints):
                 message += "No force-constraint or pressure-constraint defined in the Analysis\n"
+        if self.beam_sections:
+            has_no_references = False
+            for b in self.beam_sections:
+                if len(b['Object'].References) == 0:
+                    if has_no_references is True:
+                        message += "More than one BeamSection has empty References list (Only one empty References list is allowed!).\n"
+                    has_no_references = True
+        if self.shell_thicknesses:
+            has_no_references = False
+            for s in self.shell_thicknesses:
+                if len(s['Object'].References) == 0:
+                    if has_no_references is True:
+                        message += "More than one ShellThickness has empty References list (Only one empty References list is allowed!).\n"
+                    has_no_references = True
         return message
 
     def write_inp_file(self):
@@ -167,9 +193,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.inp_file_name = ""
         try:
             inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
-                                       self.fixed_constraints, self.force_constraints,
-                                       self.pressure_constraints, self.analysis_type,
-                                       self.eigenmode_parameters, self.working_dir)
+                                       self.fixed_constraints,
+                                       self.force_constraints, self.pressure_constraints,
+                                       self.beam_sections, self.shell_thicknesses,
+                                       self.analysis_type, self.eigenmode_parameters,
+                                       self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]

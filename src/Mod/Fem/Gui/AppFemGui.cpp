@@ -104,6 +104,8 @@ void FemGuiExport initFemGui()
 
     Base::Interpreter().loadModule("MechanicalAnalysis");
     Base::Interpreter().loadModule("MechanicalMaterial");
+    Base::Interpreter().loadModule("FemBeamSection");
+    Base::Interpreter().loadModule("FemShellThickness");
 
     // register preferences pages
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemImp> ("FEM");
