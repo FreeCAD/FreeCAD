@@ -72,6 +72,10 @@ SET(FemScripts_SRCS
     ccxFrdReader.py
     ccxInpWriter.py
     TestFem.py
+    FemShellThickness.py
+    FemShellThickness.ui
+    FemBeamSection.py
+    FemBeamSection.ui
     FemTools.py
     MechanicalAnalysis.ui
     MechanicalAnalysis.py

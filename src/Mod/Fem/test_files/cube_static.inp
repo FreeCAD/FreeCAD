@@ -479,6 +479,10 @@ Eall
 0.300
 *DENSITY 
 7.900e-09, 
+
+***********************************************************
+** Sections
+** written by write_femelementsets function
 *SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=Steel
 
 ***********************************************************
@@ -589,8 +593,8 @@ S
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
-**   written by    --> FreeCAD 0.16.5561 (Git)
-**   written on    --> Thu Sep 17 14:52:57 2015
+**   written by    --> FreeCAD 0.16.5604 (Git)
+**   written on    --> Mon Sep 21 16:46:15 2015
 **   file name     --> 
 **   analysis name --> MechanicalAnalysis
 **

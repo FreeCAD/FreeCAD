@@ -14,7 +14,11 @@ INSTALL(
         ccxInpWriter.py
         FemTools.py
         TestFem.py
+        FemBeamSection.py
+        FemBeamSection.ui
         FemExample.py
+        FemShellThickness.py 
+        FemShellThickness.ui 
         MechanicalAnalysis.py
         MechanicalMaterial.py
         MechanicalMaterial.ui

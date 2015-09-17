@@ -590,7 +590,8 @@ class _ResultControlTaskPanel:
     def vm_stress_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "Sabs"
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.StressValues)
+        if self.suitable_results:
+            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.StressValues)
         (minm, avg, maxm) = self.get_result_stats("Sabs")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -598,12 +599,14 @@ class _ResultControlTaskPanel:
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if disp_type == "Uabs":
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.DisplacementLengths)
+            if self.suitable_results:
+                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.DisplacementLengths)
         else:
             match = {"U1": 0, "U2": 1, "U3": 2}
             d = zip(*self.result_object.DisplacementVectors)
             displacements = list(d[match[disp_type]])
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, displacements)
+            if self.suitable_results:
+                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, displacements)
         (minm, avg, maxm) = self.get_result_stats(disp_type)
         self.set_result_stats("mm", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -631,7 +634,8 @@ class _ResultControlTaskPanel:
             if FreeCAD.FEM_dialog["result_object"] != self.result_object:
                 self.update_displacement()
         FreeCAD.FEM_dialog["result_object"] = self.result_object
-        self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
+        if self.suitable_results:
+            self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
         self.update_displacement()
         QtGui.qApp.restoreOverrideCursor()
 
@@ -655,6 +659,15 @@ class _ResultControlTaskPanel:
             if i.isDerivedFrom("Fem::FemMeshObject"):
                 self.MeshObject = i
                 break
+
+        if self.MeshObject.FemMesh.NodeCount == len(self.result_object.ElementNumbers):
+            self.suitable_results = True
+        else:
+            self.suitable_results = False
+            if not self.MeshObject.FemMesh.VolumeCount:
+                FreeCAD.Console.PrintError('Graphical output for beam or shell FEM Meshes not yet supported!\n')
+            else:
+                FreeCAD.Console.PrintError('Result node numbers are not equal to FEM Mesh NodeCount!\n')
 
     def accept(self):
         FreeCADGui.Control.closeDialog()
