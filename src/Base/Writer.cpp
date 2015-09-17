@@ -202,6 +202,8 @@ void Writer::decInd(void)
     indBuf[indent] = '\0';
 }
 
+// ----------------------------------------------------------------------------
+
 ZipWriter::ZipWriter(const char* FileName) 
   : ZipStream(FileName)
 {
@@ -244,4 +246,54 @@ void ZipWriter::writeFiles(void)
 ZipWriter::~ZipWriter()
 {
     ZipStream.close();
+}
+
+// ----------------------------------------------------------------------------
+
+FileWriter::FileWriter(const char* DirName) : DirName(DirName)
+{
+}
+
+FileWriter::~FileWriter()
+{
+}
+
+void FileWriter::putNextEntry(const char* file)
+{
+    std::string fileName = DirName + "/" + file;
+    this->FileStream.open(fileName.c_str(), std::ios::out);
+}
+
+bool FileWriter::shouldWrite(const Base::Persistence *) const
+{
+    return true;
+}
+
+void FileWriter::writeFiles(void)
+{
+    // use a while loop because it is possible that while
+    // processing the files new ones can be added
+    size_t index = 0;
+    this->FileStream.close();
+    while (index < FileList.size()) {
+        FileEntry entry = FileList.begin()[index];
+
+        if (shouldWrite(entry.Object)) {
+            std::string filePath = entry.FileName;
+            std::string::size_type pos = 0;
+            while ((pos = filePath.find("/", pos)) != std::string::npos) {
+                std::string dirName = DirName + "/" + filePath.substr(0, pos);
+                pos++;
+                Base::FileInfo fi(dirName);
+                fi.createDirectory();
+            }
+
+            std::string fileName = DirName + "/" + entry.FileName;
+            this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+            entry.Object->SaveDocFile(*this);
+            this->FileStream.close();
+        }
+
+        index++;
+    }
 }
