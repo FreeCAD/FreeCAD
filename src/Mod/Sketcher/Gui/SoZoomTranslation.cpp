@@ -58,6 +58,23 @@ SO_NODE_SOURCE(SoZoomTranslation);
 void SoZoomTranslation::initClass()
 {
     SO_NODE_INIT_CLASS(SoZoomTranslation, SoTranslation, "Translation");
+
+    // Enable elements for SoGetMatrixAction (#0002268)
+    // SoCamera::initClass() enables the SoViewVolumeElement for
+    // * SoGLRenderAction
+    // * SoGetBoundingBoxAction
+    // * SoRayPickAction
+    // * SoCallbackAction
+    // * SoGetPrimitiveCountAction
+    // The element SoViewportRegionElement is enabled by the
+    // above listed actions.
+    // Addionally, SoViewVolumeElement is enabled for
+    // * SoAudioRenderAction
+    // * SoHandleEventAction
+    // And SoViewportRegionElement is enabled for
+    // * SoHandleEventAction
+    // * SoGetMatrixAction
+    SO_ENABLE(SoGetMatrixAction, SoViewVolumeElement);
 }
 
 float SoZoomTranslation::getScaleFactor(SoAction* action) const
@@ -76,7 +93,7 @@ SoZoomTranslation::SoZoomTranslation()
 }
 
 void SoZoomTranslation::GLRender(SoGLRenderAction * action)
-{   
+{
     SoZoomTranslation::doAction((SoAction *)action);
 }
 
@@ -84,7 +101,7 @@ void SoZoomTranslation::GLRender(SoGLRenderAction * action)
 void SoZoomTranslation::doAction(SoAction * action)
 {
     SbVec3f v;
-    if(this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
+    if (this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
         return;
     } else {
         SbVec3f absVtr = this->abPos.getValue();
@@ -97,14 +114,14 @@ void SoZoomTranslation::doAction(SoAction * action)
 
         v = absVtr + relVtr;
     }
-    
+
     SoModelMatrixElement::translateBy(action->getState(), this, v);
 }
 
 void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 {
     SbVec3f v;
-    if(this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
+    if (this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
         return;
     } else {
         SbVec3f absVtr = this->abPos.getValue();
@@ -117,32 +134,31 @@ void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 
         v = absVtr + relVtr;
     }
-    
+
     SbMatrix m;
     m.setTranslate(v);
     action->getMatrix().multLeft(m);
     m.setTranslate(-v);
     action->getInverse().multRight(m);
-  
 }
 
 void SoZoomTranslation::callback(SoCallbackAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction *)action);
 }
 
 void SoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction *)action);
 }
 
 void SoZoomTranslation::pick(SoPickAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction *)action);
 }
 
 // Doc in superclass.
 void SoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction *)action);
 }
