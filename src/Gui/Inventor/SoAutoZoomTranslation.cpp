@@ -60,6 +60,23 @@ SO_NODE_SOURCE(SoAutoZoomTranslation);
 void SoAutoZoomTranslation::initClass()
 {
     SO_NODE_INIT_CLASS(SoAutoZoomTranslation, SoTransformation, "AutoZoom");
+
+    // Enable elements for SoGetMatrixAction (#0002268)
+    // SoCamera::initClass() enables the SoViewVolumeElement for
+    // * SoGLRenderAction
+    // * SoGetBoundingBoxAction
+    // * SoRayPickAction
+    // * SoCallbackAction
+    // * SoGetPrimitiveCountAction
+    // The element SoViewportRegionElement is enabled by the
+    // above listed actions.
+    // Addionally, SoViewVolumeElement is enabled for
+    // * SoAudioRenderAction
+    // * SoHandleEventAction
+    // And SoViewportRegionElement is enabled for
+    // * SoHandleEventAction
+    // * SoGetMatrixAction
+    SO_ENABLE(SoGetMatrixAction, SoViewVolumeElement);
 }
 
 float SoAutoZoomTranslation::getScaleFactor(SoAction* action) const
