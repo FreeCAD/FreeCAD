@@ -28,6 +28,7 @@
 # include <QFile>
 # include <QTextStream>
 # include <boost/bind.hpp>
+# include <sstream>
 #endif
 
 #include "AutoSaver.h"
@@ -38,9 +39,11 @@
 #include <App/Application.h>
 #include <App/Document.h>
 
+#include "Document.h"
 #include "WaitCursor.h"
 #include "Widgets.h"
 #include "MainWindow.h"
+#include "ViewProvider.h"
 
 using namespace Gui;
 
@@ -69,11 +72,11 @@ void AutoSaver::setTimeout(int ms)
     timeout = Base::clamp<int>(ms, 0, 3600000); // between 0 and 60 min
 
     // go through the attached documents and apply the new timeout
-    for (std::map<std::string, int>::iterator it = timerMap.begin(); it != timerMap.end(); ++it) {
-        if (it->second > 0)
-            killTimer(it->second);
+    for (std::map<std::string, AutoSaveProperty*>::iterator it = saverMap.begin(); it != saverMap.end(); ++it) {
+        if (it->second->timerId > 0)
+            killTimer(it->second->timerId);
         int id = timeout > 0 ? startTimer(timeout) : 0;
-        it->second = id;
+        it->second->timerId = id;
     }
 }
 
@@ -81,21 +84,24 @@ void AutoSaver::slotCreateDocument(const App::Document& Doc)
 {
     std::string name = Doc.getName();
     int id = timeout > 0 ? startTimer(timeout) : 0;
-    timerMap[name] = id;
+    AutoSaveProperty* as = new AutoSaveProperty(&Doc);
+    as->timerId = id;
+    saverMap.insert(std::make_pair(name, as));
 }
 
 void AutoSaver::slotDeleteDocument(const App::Document& Doc)
 {
     std::string name = Doc.getName();
-    std::map<std::string, int>::iterator it = timerMap.find(name);
-    if (it != timerMap.end()) {
-        if (it->second > 0)
-            killTimer(it->second);
-        timerMap.erase(it);
+    std::map<std::string, AutoSaveProperty*>::iterator it = saverMap.find(name);
+    if (it != saverMap.end()) {
+        if (it->second->timerId > 0)
+            killTimer(it->second->timerId);
+        delete it->second;
+        saverMap.erase(it);
     }
 }
 
-void AutoSaver::saveDocument(const std::string& name)
+void AutoSaver::saveDocument(const std::string& name, const std::set<std::string>& data)
 {
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
@@ -168,10 +174,11 @@ void AutoSaver::saveDocument(const std::string& name)
 void AutoSaver::timerEvent(QTimerEvent * event)
 {
     int id = event->timerId();
-    for (std::map<std::string, int>::iterator it = timerMap.begin(); it != timerMap.end(); ++it) {
-        if (it->second == id) {
+    for (std::map<std::string, AutoSaveProperty*>::iterator it = saverMap.begin(); it != saverMap.end(); ++it) {
+        if (it->second->timerId == id) {
             try {
-                saveDocument(it->first);
+                saveDocument(it->first, it->second->objects);
+                it->second->objects.clear();
                 break;
             }
             catch (...) {
@@ -180,5 +187,66 @@ void AutoSaver::timerEvent(QTimerEvent * event)
         }
     }
 }
+
+// ----------------------------------------------------------------------------
+
+AutoSaveProperty::AutoSaveProperty(const App::Document* doc) : timerId(-1)
+{
+    document = const_cast<App::Document*>(doc)->signalChangedObject.connect
+        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, _2));
+}
+
+AutoSaveProperty::~AutoSaveProperty()
+{
+    document.disconnect();
+}
+
+void AutoSaveProperty::slotChangePropertyData(const App::Property& prop)
+{
+    std::stringstream str;
+    str << static_cast<const void *>(&prop) << std::ends;
+    std::string address = str.str();
+    this->objects.insert(address);
+}
+
+// ----------------------------------------------------------------------------
+
+RecoveryWriter::RecoveryWriter(const char* DirName)
+  : Base::FileWriter(DirName)
+{
+}
+
+RecoveryWriter::~RecoveryWriter()
+{
+}
+
+void RecoveryWriter::setModifiedData(const std::set<std::string>& m)
+{
+    data = m;
+}
+
+bool RecoveryWriter::shouldWrite(const Base::Persistence *object) const
+{
+    // Property files of a view provider can always be written because
+    // these are rather small files.
+    if (object->isDerivedFrom(App::Property::getClassTypeId())) {
+        const App::Property* prop = static_cast<const App::Property*>(object);
+        const App::PropertyContainer* parent = prop->getContainer();
+        if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId()))
+            return true;
+    }
+    else if (object->isDerivedFrom(Gui::Document::getClassTypeId())) {
+        return true;
+    }
+
+    // These are the addresses of touched properties of a document object.
+    std::stringstream str;
+    str << static_cast<const void *>(object) << std::ends;
+    std::string address = str.str();
+
+    std::set<std::string>::const_iterator it = data.find(address);
+    return (it != data.end());
+}
+
 
 #include "moc_AutoSaver.cpp"

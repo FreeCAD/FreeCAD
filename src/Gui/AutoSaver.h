@@ -25,14 +25,33 @@
 #define GUI_AUTOSAVER_H
 
 #include <QObject>
+#include <Base/Writer.h>
 #include <map>
+#include <set>
 #include <string>
+#include <boost/signals.hpp>
 
 namespace App {
 class Document;
+class Property;
 }
 
 namespace Gui {
+class ViewProvider;
+
+class AutoSaveProperty
+{
+public:
+    AutoSaveProperty(const App::Document* doc);
+    ~AutoSaveProperty();
+    int timerId;
+    std::set<std::string> objects;
+
+private:
+    void slotChangePropertyData(const App::Property&);
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection document;
+};
 
 /*!
  The class AutoSaver is used to automatically save a document to a temporary file.
@@ -58,11 +77,29 @@ protected:
     void slotCreateDocument(const App::Document& Doc);
     void slotDeleteDocument(const App::Document& Doc);
     void timerEvent(QTimerEvent * event);
-    void saveDocument(const std::string&);
+    void saveDocument(const std::string&, const std::set<std::string>&);
 
 private:
     int timeout; /*!< Timeout in milliseconds */
-    std::map<std::string, int> timerMap;
+    std::map<std::string, AutoSaveProperty*> saverMap;
+};
+
+class RecoveryWriter : public Base::FileWriter
+{
+public:
+    RecoveryWriter(const char* DirName);
+    virtual ~RecoveryWriter();
+    void setModifiedData(const std::set<std::string> &);
+
+    /*!
+     This method can be re-implemented in sub-classes to avoid
+     to write out certain objects. The default implementation
+     always returns true.
+     */
+    virtual bool shouldWrite(const Base::Persistence *) const;
+
+private:
+    std::set<std::string> data;
 };
 
 } //namespace Gui

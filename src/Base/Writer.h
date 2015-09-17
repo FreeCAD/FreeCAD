@@ -130,11 +130,10 @@ protected:
  */
 class BaseExport ZipWriter : public Writer
 {
-
 public:
     ZipWriter(const char* FileName);
     ZipWriter(std::ostream&);
-    ~ZipWriter();
+    virtual ~ZipWriter();
 
     virtual void writeFiles(void);
 
@@ -159,11 +158,38 @@ class BaseExport StringWriter : public Writer
 
 public:
     virtual std::ostream &Stream(void){return StrStream;}
-    std::string getString(void){return StrStream.str();}
-    virtual void writeFiles(void){assert(0);}
+    std::string getString(void) const {return StrStream.str();}
+    virtual void writeFiles(void){}
 
 private:
     std::stringstream StrStream;
+};
+
+/*! The FileWriter class 
+  This class writes out the data into files into a given directory name.
+  \see Base::Persistence
+  \author Werner Mayer
+ */
+class BaseExport FileWriter : public Writer
+{
+public:
+    FileWriter(const char* DirName);
+    virtual ~FileWriter();
+
+    void putNextEntry(const char* file);
+    virtual void writeFiles(void);
+
+    virtual std::ostream &Stream(void){return FileStream;}
+    /*!
+     This method can be re-implemented in sub-classes to avoid
+     to write out certain objects. The default implementation
+     always returns true.
+     */
+    virtual bool shouldWrite(const Base::Persistence *Object) const;
+
+private:
+    std::string DirName;
+    std::ofstream FileStream;
 };
 
 
