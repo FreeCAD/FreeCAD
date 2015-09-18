@@ -264,7 +264,7 @@ void FileWriter::putNextEntry(const char* file)
     this->FileStream.open(fileName.c_str(), std::ios::out);
 }
 
-bool FileWriter::shouldWrite(const Base::Persistence *) const
+bool FileWriter::shouldWrite(const std::string& , const Base::Persistence *) const
 {
     return true;
 }
@@ -278,7 +278,7 @@ void FileWriter::writeFiles(void)
     while (index < FileList.size()) {
         FileEntry entry = FileList.begin()[index];
 
-        if (shouldWrite(entry.Object)) {
+        if (shouldWrite(entry.FileName, entry.Object)) {
             std::string filePath = entry.FileName;
             std::string::size_type pos = 0;
             while ((pos = filePath.find("/", pos)) != std::string::npos) {

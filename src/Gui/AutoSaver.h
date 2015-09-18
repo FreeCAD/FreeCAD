@@ -33,6 +33,7 @@
 
 namespace App {
 class Document;
+class DocumentObject;
 class Property;
 }
 
@@ -45,12 +46,16 @@ public:
     AutoSaveProperty(const App::Document* doc);
     ~AutoSaveProperty();
     int timerId;
-    std::set<std::string> objects;
+    std::set<std::string> touched;
+    std::string dirName;
+    std::map<std::string, std::string> fileMap;
 
 private:
+    void slotNewObject(const App::DocumentObject&);
     void slotChangePropertyData(const App::Property&);
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
-    Connection document;
+    Connection documentNew;
+    Connection documentMod;
 };
 
 /*!
@@ -77,7 +82,7 @@ protected:
     void slotCreateDocument(const App::Document& Doc);
     void slotDeleteDocument(const App::Document& Doc);
     void timerEvent(QTimerEvent * event);
-    void saveDocument(const std::string&, const std::set<std::string>&);
+    void saveDocument(const std::string&, AutoSaveProperty&);
 
 private:
     int timeout; /*!< Timeout in milliseconds */
@@ -87,19 +92,21 @@ private:
 class RecoveryWriter : public Base::FileWriter
 {
 public:
-    RecoveryWriter(const char* DirName);
+    RecoveryWriter(AutoSaveProperty&);
     virtual ~RecoveryWriter();
-    void setModifiedData(const std::set<std::string> &);
+
+    void setLevel(int);
+    void setComment(const char*);
 
     /*!
      This method can be re-implemented in sub-classes to avoid
      to write out certain objects. The default implementation
      always returns true.
      */
-    virtual bool shouldWrite(const Base::Persistence *) const;
+    virtual bool shouldWrite(const std::string&, const Base::Persistence *) const;
 
 private:
-    std::set<std::string> data;
+    AutoSaveProperty& saver;
 };
 
 } //namespace Gui

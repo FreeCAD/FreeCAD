@@ -165,7 +165,7 @@ private:
     std::stringstream StrStream;
 };
 
-/*! The FileWriter class 
+/*! The FileWriter class
   This class writes out the data into files into a given directory name.
   \see Base::Persistence
   \author Werner Mayer
@@ -185,7 +185,7 @@ public:
      to write out certain objects. The default implementation
      always returns true.
      */
-    virtual bool shouldWrite(const Base::Persistence *Object) const;
+    virtual bool shouldWrite(const std::string& name, const Base::Persistence *Object) const;
 
 private:
     std::string DirName;
