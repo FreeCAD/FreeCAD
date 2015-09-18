@@ -33,11 +33,13 @@
 
 #include "AutoSaver.h"
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 
 #include "Document.h"
 #include "WaitCursor.h"
@@ -86,6 +88,11 @@ void AutoSaver::slotCreateDocument(const App::Document& Doc)
     int id = timeout > 0 ? startTimer(timeout) : 0;
     AutoSaveProperty* as = new AutoSaveProperty(&Doc);
     as->timerId = id;
+    std::string dirName = Doc.TransientDir.getValue();
+    dirName += "/fc_recovery_files";
+    Base::FileInfo fi(dirName);
+    fi.createDirectory();
+    as->dirName = dirName;
     saverMap.insert(std::make_pair(name, as));
 }
 
@@ -101,7 +108,7 @@ void AutoSaver::slotDeleteDocument(const App::Document& Doc)
     }
 }
 
-void AutoSaver::saveDocument(const std::string& name, const std::set<std::string>& data)
+void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
 {
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
@@ -145,6 +152,7 @@ void AutoSaver::saveDocument(const std::string& name, const std::set<std::string
             Base::ofstream file(tmp, std::ios::out | std::ios::binary);
             if (file.is_open()) {
                 Base::ZipWriter writer(file);
+                //RecoveryWriter writer(saver);
                 if (hGrp->GetBool("SaveBinaryBrep", true))
                     writer.setMode("BinaryBrep");
 
@@ -177,8 +185,8 @@ void AutoSaver::timerEvent(QTimerEvent * event)
     for (std::map<std::string, AutoSaveProperty*>::iterator it = saverMap.begin(); it != saverMap.end(); ++it) {
         if (it->second->timerId == id) {
             try {
-                saveDocument(it->first, it->second->objects);
-                it->second->objects.clear();
+                saveDocument(it->first, *it->second);
+                it->second->touched.clear();
                 break;
             }
             catch (...) {
@@ -192,13 +200,28 @@ void AutoSaver::timerEvent(QTimerEvent * event)
 
 AutoSaveProperty::AutoSaveProperty(const App::Document* doc) : timerId(-1)
 {
-    document = const_cast<App::Document*>(doc)->signalChangedObject.connect
+    documentNew = const_cast<App::Document*>(doc)->signalNewObject.connect
+        (boost::bind(&AutoSaveProperty::slotNewObject, this, _1));
+    documentMod = const_cast<App::Document*>(doc)->signalChangedObject.connect
         (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, _2));
 }
 
 AutoSaveProperty::~AutoSaveProperty()
 {
-    document.disconnect();
+    documentNew.disconnect();
+    documentMod.disconnect();
+}
+
+void AutoSaveProperty::slotNewObject(const App::DocumentObject& obj)
+{
+    std::vector<App::Property*> props;
+    obj.getPropertyList(props);
+
+    // if an object was deleted and then restored by an undo then add all properties
+    // because this might be the data files which we may want to re-write
+    for (std::vector<App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
+        slotChangePropertyData(*(*it));
+    }
 }
 
 void AutoSaveProperty::slotChangePropertyData(const App::Property& prop)
@@ -206,13 +229,13 @@ void AutoSaveProperty::slotChangePropertyData(const App::Property& prop)
     std::stringstream str;
     str << static_cast<const void *>(&prop) << std::ends;
     std::string address = str.str();
-    this->objects.insert(address);
+    this->touched.insert(address);
 }
 
 // ----------------------------------------------------------------------------
 
-RecoveryWriter::RecoveryWriter(const char* DirName)
-  : Base::FileWriter(DirName)
+RecoveryWriter::RecoveryWriter(AutoSaveProperty& saver)
+  : Base::FileWriter(saver.dirName.c_str()), saver(saver)
 {
 }
 
@@ -220,12 +243,17 @@ RecoveryWriter::~RecoveryWriter()
 {
 }
 
-void RecoveryWriter::setModifiedData(const std::set<std::string>& m)
+void RecoveryWriter::setLevel(int)
 {
-    data = m;
+    // not implemented
 }
 
-bool RecoveryWriter::shouldWrite(const Base::Persistence *object) const
+void RecoveryWriter::setComment(const char*)
+{
+    // not implemented
+}
+
+bool RecoveryWriter::shouldWrite(const std::string& name, const Base::Persistence *object) const
 {
     // Property files of a view provider can always be written because
     // these are rather small files.
@@ -244,8 +272,16 @@ bool RecoveryWriter::shouldWrite(const Base::Persistence *object) const
     str << static_cast<const void *>(object) << std::ends;
     std::string address = str.str();
 
-    std::set<std::string>::const_iterator it = data.find(address);
-    return (it != data.end());
+    // Check if the property will be exported to the same file. If the file has changed or if the property hasn't been
+    // yet exported then (re-)write the file.
+    std::map<std::string, std::string>::iterator it = saver.fileMap.find(address);
+    if (it == saver.fileMap.end() || it->second != name) {
+        saver.fileMap[address] = name;
+        return true;
+    }
+
+    std::set<std::string>::const_iterator jt = saver.touched.find(address);
+    return (jt != saver.touched.end());
 }
 
 
