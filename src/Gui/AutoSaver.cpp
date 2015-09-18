@@ -52,7 +52,7 @@ using namespace Gui;
 AutoSaver* AutoSaver::self = 0;
 
 AutoSaver::AutoSaver(QObject* parent)
-  : QObject(parent), timeout(900000)
+  : QObject(parent), timeout(900000), compressed(false)
 {
     App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, _1));
     App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, _1));
@@ -82,17 +82,25 @@ void AutoSaver::setTimeout(int ms)
     }
 }
 
+void AutoSaver::setCompressed(bool on)
+{
+    this->compressed = on;
+}
+
 void AutoSaver::slotCreateDocument(const App::Document& Doc)
 {
     std::string name = Doc.getName();
     int id = timeout > 0 ? startTimer(timeout) : 0;
     AutoSaveProperty* as = new AutoSaveProperty(&Doc);
     as->timerId = id;
-    std::string dirName = Doc.TransientDir.getValue();
-    dirName += "/fc_recovery_files";
-    Base::FileInfo fi(dirName);
-    fi.createDirectory();
-    as->dirName = dirName;
+
+    if (!this->compressed) {
+        std::string dirName = Doc.TransientDir.getValue();
+        dirName += "/fc_recovery_files";
+        Base::FileInfo fi(dirName);
+        fi.createDirectory();
+        as->dirName = dirName;
+    }
     saverMap.insert(std::make_pair(name, as));
 }
 
@@ -113,6 +121,11 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
     if (doc) {
+        // Set the document's current transient directory
+        std::string dirName = doc->TransientDir.getValue();
+        dirName += "/fc_recovery_files";
+        saver.dirName = dirName;
+
         // Write recovery meta file
         QFile file(QString::fromLatin1("%1/fc_recovery_file.xml")
             .arg(QString::fromUtf8(doc->TransientDir.getValue())));
@@ -128,10 +141,6 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             file.close();
         }
 
-        std::string fn = doc->TransientDir.getValue();
-        fn += "/fc_recovery_file.fcstd";
-        Base::FileInfo tmp(fn);
-
         // make sure to tmp. disable saving thumbnails because this causes trouble if the
         // associated 3d view is not active
         Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetParameterGroupByPath
@@ -139,25 +148,18 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         bool save = hGrp->GetBool("SaveThumbnail",false);
         hGrp->SetBool("SaveThumbnail",false);
 
-        //Gui::StatusWidget* sw = new Gui::StatusWidget(qApp->activeWindow());
-        //sw->setStatusText(tr("Please wait until the AutoRecovery file has been saved..."));
-        //sw->show();
         getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
-        qApp->processEvents();
+        //qApp->processEvents();
 
         // open extra scope to close ZipWriter properly
         Base::StopWatch watch;
         watch.start();
         {
-            Base::ofstream file(tmp, std::ios::out | std::ios::binary);
-            if (file.is_open()) {
-                Base::ZipWriter writer(file);
-                //RecoveryWriter writer(saver);
+            if (!this->compressed) {
+                RecoveryWriter writer(saver);
                 if (hGrp->GetBool("SaveBinaryBrep", true))
                     writer.setMode("BinaryBrep");
 
-                writer.setComment("AutoRecovery file");
-                writer.setLevel(1); // apparently the fastest compression
                 writer.putNextEntry("Document.xml");
 
                 doc->Save(writer);
@@ -168,10 +170,31 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
                 // write additional files
                 writer.writeFiles();
             }
-        }
+            else {
+                std::string fn = doc->TransientDir.getValue();
+                fn += "/fc_recovery_file.fcstd";
+                Base::FileInfo tmp(fn);
+                Base::ofstream file(tmp, std::ios::out | std::ios::binary);
+                if (file.is_open())
+                {
+                    Base::ZipWriter writer(file);
+                    if (hGrp->GetBool("SaveBinaryBrep", true))
+                        writer.setMode("BinaryBrep");
 
-        //sw->hide();
-        //sw->deleteLater();
+                    writer.setComment("AutoRecovery file");
+                    writer.setLevel(1); // apparently the fastest compression
+                    writer.putNextEntry("Document.xml");
+
+                    doc->Save(writer);
+
+                    // Special handling for Gui document.
+                    doc->signalSaveDocument(writer);
+
+                    // write additional files
+                    writer.writeFiles();
+                }
+            }
+        }
 
         std::string str = watch.toString(watch.elapsed());
         Base::Console().Log("Save AutoRecovery file: %s\n", str.c_str());
@@ -241,16 +264,6 @@ RecoveryWriter::RecoveryWriter(AutoSaveProperty& saver)
 
 RecoveryWriter::~RecoveryWriter()
 {
-}
-
-void RecoveryWriter::setLevel(int)
-{
-    // not implemented
-}
-
-void RecoveryWriter::setComment(const char*)
-{
-    // not implemented
 }
 
 bool RecoveryWriter::shouldWrite(const std::string& name, const Base::Persistence *object) const

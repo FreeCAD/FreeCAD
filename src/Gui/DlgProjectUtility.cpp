@@ -37,7 +37,7 @@
 using namespace Gui::Dialog;
 
 // taken from the script doctools.py
-const char* doctools = 
+std::string DlgProjectUtility::doctools =
 "import os,sys,string\n"
 "import xml.sax\n"
 "import xml.sax.handler\n"

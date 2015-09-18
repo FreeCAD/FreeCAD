@@ -28,6 +28,7 @@
 #include <QScopedPointer>
 #include <QList>
 #include <QFileInfo>
+#include <string>
 
 namespace Gui { namespace Dialog {
 
@@ -49,8 +50,10 @@ public:
 
 protected:
     void closeEvent(QCloseEvent*);
+    QString createProjectFile(const QString&);
 
 private:
+    static std::string doctools;
     QScopedPointer<DocumentRecoveryPrivate> d_ptr;
     Q_DISABLE_COPY(DocumentRecovery)
     Q_DECLARE_PRIVATE(DocumentRecovery)

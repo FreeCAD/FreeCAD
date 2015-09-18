@@ -34,6 +34,7 @@
 # include <QDebug>
 # include <QDir>
 # include <QFile>
+# include <QFileInfo>
 # include <QHeaderView>
 # include <QPushButton>
 # include <QTextStream>
@@ -41,6 +42,7 @@
 # include <QMap>
 # include <QList>
 # include <QVector>
+# include <sstream>
 #endif
 
 #include "DocumentRecovery.h"
@@ -59,6 +61,74 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
+
+// taken from the script doctools.py
+std::string DocumentRecovery::doctools =
+"import os,sys,string\n"
+"import xml.sax\n"
+"import xml.sax.handler\n"
+"import xml.sax.xmlreader\n"
+"import zipfile\n"
+"\n"
+"# SAX handler to parse the Document.xml\n"
+"class DocumentHandler(xml.sax.handler.ContentHandler):\n"
+"	def __init__(self, dirname):\n"
+"		self.files = []\n"
+"		self.dirname = dirname\n"
+"\n"
+"	def startElement(self, name, attributes):\n"
+"		item=attributes.get(\"file\")\n"
+"		if item != None:\n"
+"			self.files.append(os.path.join(self.dirname,str(item)))\n"
+"\n"
+"	def characters(self, data):\n"
+"		return\n"
+"\n"
+"	def endElement(self, name):\n"
+"		return\n"
+"\n"
+"def extractDocument(filename, outpath):\n"
+"	zfile=zipfile.ZipFile(filename)\n"
+"	files=zfile.namelist()\n"
+"\n"
+"	for i in files:\n"
+"		data=zfile.read(i)\n"
+"		dirs=i.split(\"/\")\n"
+"		if len(dirs) > 1:\n"
+"			dirs.pop()\n"
+"			curpath=outpath\n"
+"			for j in dirs:\n"
+"				curpath=curpath+\"/\"+j\n"
+"				os.mkdir(curpath)\n"
+"		output=open(outpath+\"/\"+i,\'wb\')\n"
+"		output.write(data)\n"
+"		output.close()\n"
+"\n"
+"def createDocument(filename, outpath):\n"
+"	files=getFilesList(filename)\n"
+"	dirname=os.path.dirname(filename)\n"
+"	guixml=os.path.join(dirname,\"GuiDocument.xml\")\n"
+"	if os.path.exists(guixml):\n"
+"		files.extend(getFilesList(guixml))\n"
+"	compress=zipfile.ZipFile(outpath,\'w\',zipfile.ZIP_DEFLATED)\n"
+"	for i in files:\n"
+"		dirs=os.path.split(i)\n"
+"		#print i, dirs[-1]\n"
+"		compress.write(i,dirs[-1],zipfile.ZIP_DEFLATED)\n"
+"	compress.close()\n"
+"\n"
+"def getFilesList(filename):\n"
+"	dirname=os.path.dirname(filename)\n"
+"	handler=DocumentHandler(dirname)\n"
+"	parser=xml.sax.make_parser()\n"
+"	parser.setContentHandler(handler)\n"
+"	parser.parse(filename)\n"
+"\n"
+"	files=[]\n"
+"	files.append(filename)\n"
+"	files.extend(iter(handler.files))\n"
+"	return files\n"
+;
 
 
 namespace Gui { namespace Dialog {
@@ -113,6 +183,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
             item->setText(0, info.label);
             item->setToolTip(0, info.tooltip);
             item->setText(1, tr("Not yet recovered"));
+            item->setToolTip(1, info.projectFile);
             d_ptr->ui.treeWidget->addTopLevelItem(item);
         }
     }
@@ -126,6 +197,21 @@ bool DocumentRecovery::foundDocuments() const
 {
     Q_D(const DocumentRecovery);
     return (!d->recoveryInfo.isEmpty());
+}
+
+QString DocumentRecovery::createProjectFile(const QString& documentXml)
+{
+    QString source = documentXml;
+    QFileInfo fi(source);
+    QString dest = fi.dir().absoluteFilePath(QString::fromLatin1("fc_recovery_file.fcstd"));
+
+    std::stringstream str;
+    str << doctools << "\n";
+    str << "createDocument(\"" << (const char*)source.toUtf8()
+        << "\", \"" << (const char*)dest.toUtf8() << "\")";
+    Application::Instance->runPythonCode(str.str().c_str());
+
+    return dest;
 }
 
 void DocumentRecovery::closeEvent(QCloseEvent* e)
@@ -151,6 +237,9 @@ void DocumentRecovery::accept()
 
             try {
                 QString file = it->projectFile;
+                QFileInfo fi(file);
+                if (fi.fileName() == QLatin1String("Document.xml"))
+                    file = createProjectFile(it->projectFile);
                 App::Document* document = App::GetApplication().newDocument();
                 documentName = document->getName();
                 document->FileName.setValue(file.toUtf8().constData());
@@ -253,48 +342,57 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
     info.status = DocumentRecoveryPrivate::Unknown;
     info.label = qApp->translate("StdCmdNew","Unnamed");
 
+    QString file;
     QDir doc_dir(fi.absoluteFilePath());
+    QDir rec_dir(doc_dir.absoluteFilePath(QLatin1String("fc_recovery_files")));
+
+    // compressed recovery file
     if (doc_dir.exists(QLatin1String("fc_recovery_file.fcstd"))) {
-        info.status = DocumentRecoveryPrivate::Created;
-        QString file = doc_dir.absoluteFilePath(QLatin1String("fc_recovery_file.fcstd"));
-        info.projectFile = file;
-        info.tooltip = fi.fileName();
+        file = doc_dir.absoluteFilePath(QLatin1String("fc_recovery_file.fcstd"));
+    }
+    // separate files for recovery
+    else if (rec_dir.exists(QLatin1String("Document.xml"))) {
+        file = rec_dir.absoluteFilePath(QLatin1String("Document.xml"));
+    }
 
-        // when the Xml meta exists get some relevant information
-        info.xmlFile = doc_dir.absoluteFilePath(QLatin1String("fc_recovery_file.xml"));
-        if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
-            XmlConfig cfg = readXmlFile(info.xmlFile);
+    info.status = DocumentRecoveryPrivate::Created;
+    info.projectFile = file;
+    info.tooltip = fi.fileName();
 
-            if (cfg.contains(QString::fromLatin1("Label"))) {
-                info.label = cfg[QString::fromLatin1("Label")];
-            }
+    // when the Xml meta exists get some relevant information
+    info.xmlFile = doc_dir.absoluteFilePath(QLatin1String("fc_recovery_file.xml"));
+    if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
+        XmlConfig cfg = readXmlFile(info.xmlFile);
 
-            if (cfg.contains(QString::fromLatin1("FileName"))) {
-                info.fileName = cfg[QString::fromLatin1("FileName")];
-            }
+        if (cfg.contains(QString::fromLatin1("Label"))) {
+            info.label = cfg[QString::fromLatin1("Label")];
+        }
 
-            if (cfg.contains(QString::fromLatin1("Status"))) {
-                QString status = cfg[QString::fromLatin1("Status")];
-                if (status == QLatin1String("Deprecated"))
+        if (cfg.contains(QString::fromLatin1("FileName"))) {
+            info.fileName = cfg[QString::fromLatin1("FileName")];
+        }
+
+        if (cfg.contains(QString::fromLatin1("Status"))) {
+            QString status = cfg[QString::fromLatin1("Status")];
+            if (status == QLatin1String("Deprecated"))
+                info.status = DocumentRecoveryPrivate::Overage;
+            else if (status == QLatin1String("Success"))
+                info.status = DocumentRecoveryPrivate::Success;
+            else if (status == QLatin1String("Failure"))
+                info.status = DocumentRecoveryPrivate::Failure;
+        }
+
+        if (info.status == DocumentRecoveryPrivate::Created) {
+            // compare the modification dates
+            QFileInfo fileInfo(info.fileName);
+            if (!info.fileName.isEmpty() && fileInfo.exists()) {
+                QDateTime dateRecv = QFileInfo(file).lastModified();
+                QDateTime dateProj = fileInfo.lastModified();
+                if (dateRecv < dateProj) {
                     info.status = DocumentRecoveryPrivate::Overage;
-                else if (status == QLatin1String("Success"))
-                    info.status = DocumentRecoveryPrivate::Success;
-                else if (status == QLatin1String("Failure"))
-                    info.status = DocumentRecoveryPrivate::Failure;
-            }
-
-            if (info.status == DocumentRecoveryPrivate::Created) {
-                // compare the modification dates
-                QFileInfo fileInfo(info.fileName);
-                if (!info.fileName.isEmpty() && fileInfo.exists()) {
-                    QDateTime dateRecv = QFileInfo(file).lastModified();
-                    QDateTime dateProj = fileInfo.lastModified();
-                    if (dateRecv < dateProj) {
-                        info.status = DocumentRecoveryPrivate::Overage;
-                        writeRecoveryInfo(info);
-                        qWarning() << "Ignore recovery file " << file.toUtf8()
-                            << " because it is older than the project file" << info.fileName.toUtf8() << "\n";
-                    }
+                    writeRecoveryInfo(info);
+                    qWarning() << "Ignore recovery file " << file.toUtf8()
+                        << " because it is older than the project file" << info.fileName.toUtf8() << "\n";
                 }
             }
         }
