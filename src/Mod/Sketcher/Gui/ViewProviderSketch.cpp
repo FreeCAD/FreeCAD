@@ -4756,24 +4756,30 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         edit->PreselectCross = -1;
         edit->PreselectConstraintSet.clear();
 
-        std::set<int> delGeometries, delCoincidents, delConstraints;
+        std::set<int> delInternalGeometries, delExternalGeometries, delCoincidents, delConstraints;
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-                delGeometries.insert(GeoId);
+                if( GeoId >= 0 )
+                    delInternalGeometries.insert(GeoId);
+                else
+                    delExternalGeometries.insert(-3-GeoId);
             } else if (it->size() > 12 && it->substr(0,12) == "ExternalEdge") {
                 int GeoId = std::atoi(it->substr(12,4000).c_str()) - 1;
-                GeoId = -GeoId - 3;
-                delGeometries.insert(GeoId);
+                delExternalGeometries.insert(GeoId);
             } else if (it->size() > 6 && it->substr(0,6) == "Vertex") {
                 int VtId = std::atoi(it->substr(6,4000).c_str()) - 1;
                 int GeoId;
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(VtId, GeoId, PosId);
                 if (getSketchObject()->getGeometry(GeoId)->getTypeId()
-                    == Part::GeomPoint::getClassTypeId())
-                    delGeometries.insert(GeoId);
+                    == Part::GeomPoint::getClassTypeId()) {
+                    if(GeoId>=0)
+                        delInternalGeometries.insert(GeoId);
+                    else
+                        delExternalGeometries.insert(-3-GeoId);
+                }
                 else
                     delCoincidents.insert(VtId);
             } else if (*it == "RootPoint") {
@@ -4805,14 +4811,20 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        for (rit = delGeometries.rbegin(); rit != delGeometries.rend(); rit++) {
+        for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); rit++) {
             try {
-                if (*rit >= 0)
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delGeometry(%i)"
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delGeometry(%i)"
                                            ,getObject()->getNameInDocument(), *rit);
-                else if (*rit < -2) // external geometry
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delExternal(%i)"
-                                           ,getObject()->getNameInDocument(), -3-*rit);
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+            }
+        }
+
+        for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); rit++) {
+            try {
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delExternal(%i)"
+                    ,getObject()->getNameInDocument(), *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
