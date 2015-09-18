@@ -1702,6 +1702,7 @@ void Application::runApplication(void)
     if (!hDocGrp->GetBool("AutoSaveEnabled", true))
         timeout = 0;
     AutoSaver::instance()->setTimeout(timeout * 60000);
+    AutoSaver::instance()->setCompressed(hDocGrp->GetBool("AutoSaveCompressed", false));
 
     // set toolbar icon size
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
@@ -1915,7 +1916,7 @@ void Application::checkForPreviousCrashes()
                                 countDeletedDocs++;
                         }
                         // search for the existance of a recovery file
-                        else if (doc_dir.exists(QLatin1String("fc_recovery_file.fcstd"))) {
+                        else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
                             // store the transient directory in case it's not empty
                             restoreDocFiles << *it;
                         }

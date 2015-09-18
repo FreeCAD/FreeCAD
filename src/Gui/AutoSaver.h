@@ -77,6 +77,10 @@ public:
      Sets the timeout in milliseconds. A value of 0 means that no timer is used.
      */
     void setTimeout(int ms);
+    /*!
+     Enables or disables to create compreesed recovery files.
+     */
+    void setCompressed(bool on);
 
 protected:
     void slotCreateDocument(const App::Document& Doc);
@@ -86,6 +90,7 @@ protected:
 
 private:
     int timeout; /*!< Timeout in milliseconds */
+    bool compressed;
     std::map<std::string, AutoSaveProperty*> saverMap;
 };
 
@@ -94,9 +99,6 @@ class RecoveryWriter : public Base::FileWriter
 public:
     RecoveryWriter(AutoSaveProperty&);
     virtual ~RecoveryWriter();
-
-    void setLevel(int);
-    void setComment(const char*);
 
     /*!
      This method can be re-implemented in sub-classes to avoid
