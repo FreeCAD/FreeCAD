@@ -35,12 +35,15 @@ class XMLReader;
 class Writer;
 }
 
+namespace App {
+class Expression;
+class ExpressionVisitor;
+}
+
 namespace Spreadsheet {
 
 class PropertySheet;
-class Expression;
 class DisplayUnit;
-class ExpressionVisitor;
 
 class SpreadsheetExport Cell {
 
@@ -54,7 +57,7 @@ public:
 
     ~Cell();
 
-    const Expression * getExpression() const;
+    const App::Expression * getExpression() const;
 
     bool getStringContent(std::string & s) const;
 
@@ -114,7 +117,7 @@ public:
 
     bool spansChanged() const { return isUsed(SPANS_UPDATED); }
 
-    void visit(ExpressionVisitor & v);
+    void visit(App::ExpressionVisitor & v);
 
     CellAddress getAddress() const { return address; }
 
@@ -143,7 +146,7 @@ private:
 
     //void setExpression(const Expression * expr);
 
-    void setExpression(Expression *expr);
+    void setExpression(App::Expression *expr);
 
     void setUsed(int mask, bool state = true);
 
@@ -173,7 +176,7 @@ private:
     PropertySheet * owner;
 
     int used;
-    Expression * expression;
+    App::Expression * expression;
     int alignment;
     std::set<std::string> style;
     App::Color foregroundColor;

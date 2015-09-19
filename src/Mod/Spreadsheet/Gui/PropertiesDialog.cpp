@@ -27,6 +27,7 @@
 #include <Gui/Command.h>
 #include "ui_PropertiesDialog.h"
 
+using namespace App;
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
 
@@ -182,7 +183,7 @@ void PropertiesDialog::displayUnitChanged(const QString & text)
 
     QPalette palette = ui->displayUnit->palette();
     try {
-        std::auto_ptr<UnitExpression> e(ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
+        std::auto_ptr<UnitExpression> e(Spreadsheet::ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
 
         displayUnit = DisplayUnit(text.toUtf8().constData(), e->getUnit(), e->getScaler());
         palette.setColor(QPalette::Text, Qt::black);

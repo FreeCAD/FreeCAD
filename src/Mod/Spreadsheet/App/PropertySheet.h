@@ -167,11 +167,11 @@ private:
 
     friend class Cell;
 
-    /*! Cell data in this property */
-    std::map<CellAddress, Cell*> data;
-
     /*! Set of cells that have been marked dirty */
     std::set<CellAddress> dirty;
+
+    /*! Cell data in this property */
+    std::map<CellAddress, Cell*> data;
 
     /*! Merged cells; cell -> anchor cell */
     std::map<CellAddress, CellAddress> mergedCells;

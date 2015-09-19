@@ -12,7 +12,7 @@
 #define strdup _strdup
 #endif
 
-extern std::stack<FunctionExpression::Function> functions;                /**< Function identifier */
+extern std::stack<App::FunctionExpression::Function> functions;                /**< Function identifier */
 
 %}
 
@@ -239,9 +239,9 @@ EXPO     [eE][-+]?[0-9]+
 "rad"                        yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = yytext; return UNIT; // radian
 "gon"                        yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = yytext; return UNIT; // gon
 
-{DIGIT}*"."{DIGIT}+{EXPO}?   yylval.fvalue = num_change(yytext,'.',',');       return NUM;
-{DIGIT}*","{DIGIT}+{EXPO}?    yylval.fvalue = num_change(yytext,',','.');       return NUM;
-{DIGIT}+                     yylval.ivalue = strtoll( yytext, NULL, 0 );       return INTEGER;
+{DIGIT}*"."{DIGIT}+{EXPO}?   yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
+{DIGIT}*","{DIGIT}+{EXPO}?   yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
+{DIGIT}+                     yylval.ivalue = strtoll( yytext, NULL, 0 ); if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
 
 "pi"                         yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 "e"                          yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
@@ -256,7 +256,7 @@ $[A-Za-z]{1,2}{DIGIT}+       yylval.string = yytext; return CELLADDRESS;
                             while (isspace(s[i]))
                               --i;
                             s.erase(i + 1);
-                            std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
+                            std::map<std::string, App::FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
                             if (j != registered_functions.end())
                               yylval.func = j->second;
                             else

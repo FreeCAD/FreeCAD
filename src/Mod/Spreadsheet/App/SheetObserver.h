@@ -41,7 +41,7 @@ public:
     App::Document* getDocument() const { return App::DocumentObserver::getDocument(); }
 private:
     std::set<std::string> isUpdating;
-    int refCount;
+    unsigned int refCount;
     PropertySheet * sheet;
 };
 

@@ -147,7 +147,7 @@ Cell::~Cell()
   *
   */
 
-void Cell::setExpression(Expression *expr)
+void Cell::setExpression(App::Expression *expr)
 {
     PropertySheet::Signaller signaller(*owner);
 
@@ -170,7 +170,7 @@ void Cell::setExpression(Expression *expr)
   *
   */
 
-const Expression *Cell::getExpression() const
+const App::Expression *Cell::getExpression() const
 {
     return expression;
 }
@@ -183,8 +183,8 @@ const Expression *Cell::getExpression() const
 bool Cell::getStringContent(std::string & s) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<StringExpression>(expression)) {
-            s = static_cast<StringExpression*>(expression)->getText();
+        if (freecad_dynamic_cast<App::StringExpression>(expression)) {
+            s = static_cast<App::StringExpression*>(expression)->getText();
             char * end;
             errno = 0;
             double d = strtod(s.c_str(), &end);
@@ -192,9 +192,9 @@ bool Cell::getStringContent(std::string & s) const
             if (!*end && errno == 0)
                 s = "'" + s;
         }
-        else if (freecad_dynamic_cast<ConstantExpression>(expression))
+        else if (freecad_dynamic_cast<App::ConstantExpression>(expression))
             s = "=" + expression->toString();
-        else if (freecad_dynamic_cast<NumberExpression>(expression))
+        else if (freecad_dynamic_cast<App::NumberExpression>(expression))
             s = expression->toString();
         else
             s = "=" + expression->toString();
@@ -210,28 +210,28 @@ bool Cell::getStringContent(std::string & s) const
 void Cell::setContent(const char * value)
 {
     PropertySheet::Signaller signaller(*owner);
-    Expression * expr = 0;
+    App::Expression * expr = 0;
 
     setUsed(PARSE_EXCEPTION_SET, false);
     if (value != 0) {
         if (*value == '=') {
             try {
-                expr = ExpressionParser::parse(owner->sheet(), value + 1);
+                expr = Spreadsheet::ExpressionParser::parse(owner->sheet(), value + 1);
             }
             catch (Base::Exception & e) {
                 QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
-                expr = new StringExpression(owner->sheet(), value);
+                expr = new App::StringExpression(owner->sheet(), value);
                 setUsed(PARSE_EXCEPTION_SET);
             }
         }
         else if (*value == '\'')
-            expr = new StringExpression(owner->sheet(), value + 1);
+            expr = new App::StringExpression(owner->sheet(), value + 1);
         else if (*value != '\0') {
             char * end;
             errno = 0;
             double float_value = strtod(value, &end);
             if (!*end && errno == 0)
-                expr = new NumberExpression(owner->sheet(), float_value);
+                expr = new App::NumberExpression(owner->sheet(), float_value);
             else {
                 try {
                     expr = ExpressionParser::parse(owner->sheet(), value);
@@ -239,7 +239,7 @@ void Cell::setContent(const char * value)
                         delete expr->eval();
                 }
                 catch (Base::Exception &) {
-                    expr = new StringExpression(owner->sheet(), value);
+                    expr = new App::StringExpression(owner->sheet(), value);
                 }
             }
         }
@@ -365,7 +365,7 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        std::auto_ptr<UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
+        std::auto_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
         newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
     }
@@ -673,7 +673,7 @@ bool Cell::isUsed() const
     return used != 0;
 }
 
-void Cell::visit(ExpressionVisitor &v)
+void Cell::visit(App::ExpressionVisitor &v)
 {
     if (expression)
         expression->visit(v);
