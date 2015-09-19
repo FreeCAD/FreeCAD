@@ -958,6 +958,14 @@ void MainWindow::closeEvent (QCloseEvent * e)
         delete d->assistant;
         d->assistant = 0;
 
+        // See createMimeDataFromSelection
+        QVariant prop = this->property("x-documentobject-file");
+        if (!prop.isNull()) {
+            Base::FileInfo fi((const char*)prop.toByteArray());
+            if (fi.exists())
+                fi.deleteFile();
+        }
+
         /*emit*/ mainWindowClosed();
         qApp->quit(); // stop the event loop
     }
@@ -1342,6 +1350,10 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
         doc->exportObjects(sel, str);
         str.close();
         res = fi.filePath().c_str();
+
+        // store the path name as a custom property and
+        // delete this file when closing the application
+        const_cast<MainWindow*>(this)->setProperty("x-documentobject-file", res);
     }
 
     QMimeData *mimeData = new QMimeData();
