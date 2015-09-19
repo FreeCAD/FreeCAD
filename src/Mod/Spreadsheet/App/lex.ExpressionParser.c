@@ -5607,7 +5607,7 @@ char *ExpressionParsertext;
 #define strdup _strdup
 #endif
 
-extern std::stack<FunctionExpression::Function> functions;                /**< Function identifier */
+extern std::stack<App::FunctionExpression::Function> functions;                /**< Function identifier */
 
 /*** Flex Declarations and Options ***/
 /* change the name of the scanner class. */
@@ -6280,17 +6280,17 @@ yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr
 case 80:
 YY_RULE_SETUP
 #line 242 "ExpressionParser.l"
-yylval.fvalue = num_change(ExpressionParsertext,'.',',');       return NUM;
+yylval.fvalue = num_change(ExpressionParsertext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
 #line 243 "ExpressionParser.l"
-yylval.fvalue = num_change(ExpressionParsertext,',','.');       return NUM;
+yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
 #line 244 "ExpressionParser.l"
-yylval.ivalue = strtoll( ExpressionParsertext, NULL, 0 );       return INTEGER;
+yylval.ivalue = strtoll( ExpressionParsertext, NULL, 0 ); if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
@@ -6326,7 +6326,7 @@ YY_RULE_SETUP
                             while (isspace(s[i]))
                               --i;
                             s.erase(i + 1);
-                            std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
+                            std::map<std::string, App::FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
                             if (j != registered_functions.end())
                               yylval.func = j->second;
                             else

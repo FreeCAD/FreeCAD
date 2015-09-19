@@ -42,21 +42,11 @@
 #include "Utils.h"
 #include <PropertySheetPy.h>
 
+using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
 namespace Spreadsheet {
-
-class ResolveExpressionVisitor : public ExpressionVisitor {
-public:
-
-    void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr)
-            expr->resolve();
-    }
-};
 
 class RelabelDocumentObjectExpressionVisitor : public ExpressionVisitor {
 public:
@@ -872,16 +862,12 @@ void PropertySheet::addDependencies(CellAddress key)
     if (expression == 0)
         return;
 
-    std::set<Path> expressionDeps;
-
-    // Resolve expression, if any
-    ResolveExpressionVisitor v;
-    cell->visit(v);
+    std::set<ObjectIdentifier> expressionDeps;
 
     // Get dependencies from expression
     expression->getDeps(expressionDeps);
 
-    std::set<Path>::const_iterator i = expressionDeps.begin();
+    std::set<ObjectIdentifier>::const_iterator i = expressionDeps.begin();
     while (i != expressionDeps.end()) {
         const Property * prop = i->getProperty();
         const App::DocumentObject * docObj = i->getDocumentObject();

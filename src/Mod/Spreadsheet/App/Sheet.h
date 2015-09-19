@@ -48,7 +48,6 @@ namespace Spreadsheet
 
 class Sheet;
 class Cell;
-class Expression;
 class Range;
 class SheetObserver;
 

@@ -6,29 +6,7 @@
 
 %{
 
-class semantic_type {
-public:
-  struct  {
-    Quantity scaler;
-    std::string unitStr;
-  } quantity;
-  Expression * expr;
-  Path path;
-  std::deque<Path::Component> components;
-  int ivalue;
-  double fvalue;
-  struct {
-    std::string name;
-    double fvalue;
-  } constant;
-  std::vector<Expression*> arguments;
-  std::string string;
-  FunctionExpression::Function func;
-  Path::String string_or_identifier;
-  semantic_type() {}
-};
-
-#define YYSTYPE semantic_type
+#define YYSTYPE App::ExpressionParser::semantic_type
 
 std::stack<FunctionExpression::Function> functions;                /**< Function identifier */
 
@@ -39,6 +17,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
 
      /* Bison declarations.  */
      %token FUNC
+     %token ONE
      %token NUM
      %token IDENTIFIER
      %token UNIT
@@ -55,15 +34,19 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %type <string> STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
      %type <string> PROPERTY_REF
+     %type <fvalue> ONE
      %type <fvalue> NUM
      %type <constant> CONSTANT
      %type <expr> num
+     %type <expr> basic_num
      %type <expr> range
      %type <path> identifier
-     %type <components> path
+     %type <components> path subpath
      %type <func> FUNC
      %type <string_or_identifier> document
      %type <string_or_identifier> object
+     %type <ivalue> integer
+     %left ONE
      %left NUM
      %left INTEGER
      %left CONSTANT
@@ -98,15 +81,18 @@ exp:      num                			{ $$ = $1;                                      
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '^' exp %prec EXPONENT            { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | '(' exp ')'     			{ $$ = $2;                                                                        }
-        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1, $2);                            }
+        | FUNC  args ')'  		        { $$ = new AggregateFunctionExpression(DocumentObject, $1, $2);                   }
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
         ;
 
-num: NUM                                        { $$ = new NumberExpression(DocumentObject, $1);                                  }
-   | INTEGER                                    { $$ = new NumberExpression(DocumentObject, (double)$1);                          }
-   | CONSTANT                                   { $$ = new ConstantExpression(DocumentObject, $1.name, $1.fvalue);                }
-   | NUM unit_exp %prec EXPONENT                { $$ = new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, $1), OperatorExpression::UNIT, $2);                    }
-   | INTEGER unit_exp                           { $$ = new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, (double)$1), OperatorExpression::UNIT, $2);            }
+basic_num: ONE                                  { $$ = new NumberExpression(DocumentObject, $1);                            }
+         | NUM                                  { $$ = new NumberExpression(DocumentObject, $1);                            }
+         | INTEGER                              { $$ = new NumberExpression(DocumentObject, (double)$1);                    }
+         ;
+
+num: basic_num                                  { $$ = $1; }
+   | CONSTANT                                   { $$ = new ConstantExpression(DocumentObject, $1.name, $1.fvalue);          }
+   | basic_num unit_exp %prec EXPONENT          { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);                    }
    | CONSTANT unit_exp                          { $$ = new OperatorExpression(DocumentObject, new ConstantExpression(DocumentObject, $1.name, $1.fvalue), OperatorExpression::UNIT, $2);  }
    ;
 
@@ -130,52 +116,71 @@ cond: exp EQ exp                                { $$ = new OperatorExpression(Do
     | exp LTE exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LTE, $3);   }
     ;
 
-unit_exp: UNIT                                          { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
-        | unit_exp '/' unit_exp                         { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
-        | unit_exp '*' unit_exp                         { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
-        | unit_exp '^' exp %prec EXPONENT               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
-        | '(' unit_exp ')'                              { $$ = $2;                                                                        }
+unit_exp: UNIT                                       { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+        | ONE '/' unit_exp                           { $$ = new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, $1), OperatorExpression::DIV, $3);   }
+        | unit_exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
+        | unit_exp '*' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
+        | unit_exp '^' basic_num %prec EXPONENT      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
+        | unit_exp '^' MINUSSIGN basic_num %prec EXPONENT { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new OperatorExpression(DocumentObject, $4, OperatorExpression::NEG, new NumberExpression(DocumentObject, -1)));   }
+        | '(' unit_exp ')'                           { $$ = $2;                                                                        }
         ;
 
 identifier: path                                { /* Path to property within document object */
-                                                  $$ = Path(DocumentObject);
+                                                  $$ = ObjectIdentifier(DocumentObject);
                                                   $$.addComponents($1);
                                                 }
           | object '.' path                     { /* Path to property within document object */
-                                                  $$ = Path(DocumentObject);
+                                                  $$ = ObjectIdentifier(DocumentObject);
                                                   $$.setDocumentObjectName($1, true);
                                                   $$.addComponents($3);
                                                 }
           | document '#' path                   { /* Path to property from an external document, within a named document object */
-                                                  $$ = Path(DocumentObject);
+                                                  $$ = ObjectIdentifier(DocumentObject);
                                                   $$.setDocumentName($1, true);
                                                   $$.addComponents($3);
                                                 }
           | document '#' object '.' path        { /* Path to property from an external document, within a named document object */
-                                                  $$ = Path(DocumentObject);
+                                                  $$ = ObjectIdentifier(DocumentObject);
                                                   $$.setDocumentName($1, true);
                                                   $$.setDocumentObjectName($3, true);
                                                   $$.addComponents($5);
                                                 }
      ;
 
-path: IDENTIFIER                                       { $$.push_front(Path::Component::SimpleComponent($1));                         }
-    | CELLADDRESS                                      { $$.push_front(Path::Component::SimpleComponent($1));                         }
-    | IDENTIFIER '[' INTEGER ']'                       { $$.push_front(Path::Component::ArrayComponent($1, $3));                      }
-    | IDENTIFIER '[' INTEGER ']' '.' path              { $6.push_front(Path::Component::ArrayComponent($1, $3)); $$ = $6;             }
-    | IDENTIFIER '[' STRING ']'                        { $$.push_front(Path::Component::MapComponent($1, Path::String($3, true)));          }
-    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(Path::Component::MapComponent($1, $3));                        }
-    | IDENTIFIER '[' STRING ']' '.' path               { $6.push_front(Path::Component::MapComponent($1, Path::String($3, true))); $$ = $6; }
-    | IDENTIFIER '[' IDENTIFIER ']' '.' path           { $6.push_front(Path::Component::MapComponent($1, $3)); $$ = $6;               }
-    | IDENTIFIER '.' path                              { $3.push_front(Path::Component::SimpleComponent($1)); $$ = $3;                }
+integer: INTEGER { $$ = $1; }
+       | ONE { $$ = $1; }
+       ;
+
+
+path: IDENTIFIER                                       { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
+    | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
+    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3));                      }
+    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3)); $$ = $6;             }
+    | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true)));          }
+    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::Component::MapComponent($1, $3));                        }
+    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true))); $$ = $6; }
+    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::Component::MapComponent($1, $3)); $$ = $6;               }
+    | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::Component::SimpleComponent($1)); $$ = $3;                }
     ;
 
-document: STRING                                       { $$ = Path::String($1, true); }
-        | IDENTIFIER                                   { $$ = Path::String($1);       }
+subpath: IDENTIFIER                                       { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
+    | STRING                                              { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
+    | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
+    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3));                      }
+    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3)); $$ = $6;             }
+    | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true)));          }
+    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::Component::MapComponent($1, $3));                        }
+    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true))); $$ = $6; }
+    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::Component::MapComponent($1, $3)); $$ = $6;               }
+    | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::Component::SimpleComponent($1)); $$ = $3;                }
+    ;
+
+document: STRING                                       { $$ = ObjectIdentifier::String($1, true); }
+        | IDENTIFIER                                   { $$ = ObjectIdentifier::String($1);       }
         ;
 
-object: STRING                                         { $$ = Path::String($1, true); }
-      | CELLADDRESS                                    { $$ = Path::String($1, true); }
+object: STRING                                         { $$ = ObjectIdentifier::String($1, true); }
+      | CELLADDRESS                                    { $$ = ObjectIdentifier::String($1, true); }
       ;
 
 %%
