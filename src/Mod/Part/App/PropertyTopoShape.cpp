@@ -51,6 +51,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
+#include <App/Application.h>
 #include <App/DocumentObject.h>
 
 #include "PropertyTopoShape.h"
@@ -277,7 +278,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
         // create a temporary file and copy the content to the zip stream
         // once the tmp. filename is known use always the same because otherwise
         // we may run into some problems on the Linux platform
-        static Base::FileInfo fi(Base::FileInfo::getTempFileName());
+        static Base::FileInfo fi(App::Application::getTempFileName());
 
         if (!BRepTools::Write(myShape,(const Standard_CString)fi.filePath().c_str())) {
             // Note: Do NOT throw an exception here because if the tmp. file could
@@ -330,7 +331,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
         BRep_Builder builder;
 
         // create a temporary file and copy the content from the zip stream
-        Base::FileInfo fi(Base::FileInfo::getTempFileName());
+        Base::FileInfo fi(App::Application::getTempFileName());
 
         // read in the ASCII file and write back to the file stream
         Base::ofstream file(fi, std::ios::out | std::ios::binary);

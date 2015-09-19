@@ -1841,7 +1841,7 @@ void Application::runApplication(void)
 
     try {
         std::stringstream s;
-        s << Base::FileInfo::getTempPath() << App::GetApplication().getExecutableName()
+        s << App::Application::getTempPath() << App::GetApplication().getExecutableName()
           << "_" << QCoreApplication::applicationPid() << ".lock";
         // open a lock file with the PID
         Base::FileInfo fi(s.str());
@@ -1875,7 +1875,7 @@ void Application::runApplication(void)
 
 void Application::checkForPreviousCrashes()
 {
-    QDir tmp = QDir::temp();
+    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
     tmp.setNameFilters(QStringList() << QString::fromAscii("*.lock"));
     tmp.setFilter(QDir::Files);
 

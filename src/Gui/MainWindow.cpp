@@ -1334,7 +1334,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     }
     else {
         mime = QLatin1String("application/x-documentobject-file");
-        static Base::FileInfo fi(Base::FileInfo::getTempFileName());
+        static Base::FileInfo fi(App::Application::getTempFileName());
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
         // need this instance to call MergeDocuments::Save()
         App::Document* doc = sel.front()->getDocument();
