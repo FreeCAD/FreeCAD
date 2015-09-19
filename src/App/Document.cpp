@@ -1075,6 +1075,10 @@ bool Document::save (void)
             // write additional files
             writer.writeFiles();
 
+            if (writer.hasErrors()) {
+                throw Base::FileException("Failed to write all data to file", tmp);
+            }
+
             GetApplication().signalSaveDocument(*this);
         }
 
