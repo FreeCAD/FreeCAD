@@ -294,6 +294,10 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             else {
                 Base::Console().Error("Cannot save BRep file '%s'\n", fi.filePath().c_str());
             }
+
+            std::stringstream ss;
+            ss << "Cannot save BRep file '" << fi.filePath() << "'";
+            writer.addError(ss.str());
         }
 
         Base::ifstream file(fi, std::ios::in | std::ios::binary);

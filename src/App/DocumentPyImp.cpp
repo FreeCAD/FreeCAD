@@ -52,11 +52,22 @@ std::string DocumentPy::representation(void) const
 
 PyObject*  DocumentPy::save(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
-    if (!getDocumentPtr()->save()) {
-        PyErr_Format(PyExc_ValueError, "Object attribute 'FileName' is not set");
-        return NULL;
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    try {
+        if (!getDocumentPtr()->save()) {
+            PyErr_SetString(PyExc_ValueError, "Object attribute 'FileName' is not set");
+            return NULL;
+        }
+    }
+    catch (const Base::FileException& e) {
+        PyErr_SetString(PyExc_IOError, e.what());
+        return 0;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
     }
 
     const char* filename = getDocumentPtr()->FileName.getValue();
@@ -72,11 +83,22 @@ PyObject*  DocumentPy::save(PyObject * args)
 PyObject*  DocumentPy::saveAs(PyObject * args)
 {
     char* fn;
-    if (!PyArg_ParseTuple(args, "s", &fn))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
-    if (!getDocumentPtr()->saveAs(fn)) {
-        PyErr_Format(PyExc_ValueError, "Object attribute 'FileName' is not set");
-        return NULL;
+    if (!PyArg_ParseTuple(args, "s", &fn))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    try {
+        if (!getDocumentPtr()->saveAs(fn)) {
+            PyErr_SetString(PyExc_ValueError, "Object attribute 'FileName' is not set");
+            return NULL;
+        }
+    }
+    catch (const Base::FileException& e) {
+        PyErr_SetString(PyExc_IOError, e.what());
+        return 0;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
     }
 
     Base::FileInfo fi(fn);

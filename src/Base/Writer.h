@@ -95,6 +95,14 @@ public:
     void clearModes();
     //@}
 
+    /** @name Error handling */
+    //@{
+    void addError(const std::string&);
+    bool hasErrors() const;
+    void clearErrors();
+    std::vector<std::string> getErrors() const;
+    //@}
+
     /** @name pretty formating for XML */
     //@{
     /// get the current indentation
@@ -118,6 +126,7 @@ protected:
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
+    std::vector<std::string> Errors;
     std::set<std::string> Modes;
 
     short indent;

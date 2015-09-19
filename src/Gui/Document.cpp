@@ -605,10 +605,16 @@ App::Document* Document::getDocument(void) const
 bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
-        Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
-                                       ,d->_pcDocument->getName());
-        setModified(false);
+        try {
+            Gui::WaitCursor wc;
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
+                                           ,d->_pcDocument->getName());
+            setModified(false);
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
+                QString::fromLatin1(e.what()));
+        }
         return true;
     }
     else {
@@ -631,12 +637,17 @@ bool Document::saveAs(void)
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
 
         // save as new file name
-        Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(\"%s\")"
-                                       , DocName, (const char*)fn.toUtf8());
-        setModified(false);
-
-        getMainWindow()->appendRecentFile(fi.filePath());
+        try {
+            Gui::WaitCursor wc;
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(\"%s\")"
+                                           , DocName, (const char*)fn.toUtf8());
+            setModified(false);
+            getMainWindow()->appendRecentFile(fi.filePath());
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
+                QString::fromLatin1(e.what()));
+        }
         return true;
     }
     else {

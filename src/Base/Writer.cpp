@@ -141,6 +141,26 @@ void Writer::clearModes()
     Modes.clear();
 }
 
+void Writer::addError(const std::string& msg)
+{
+    Errors.push_back(msg);
+}
+
+bool Writer::hasErrors() const
+{
+    return (!Errors.empty());
+}
+
+void Writer::clearErrors()
+{
+    Errors.clear();
+}
+
+std::vector<std::string> Writer::getErrors() const
+{
+    return Errors;
+}
+
 std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
 {
     // always check isForceXML() before requesting a file!
