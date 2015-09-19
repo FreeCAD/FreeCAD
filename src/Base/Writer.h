@@ -83,10 +83,16 @@ public:
     const std::vector<std::string>& getFilenames() const;
     /// Set mode
     void setMode(const std::string& mode);
+    /// Set modes
+    void setModes(const std::set<std::string>& modes);
     /// Get mode
     bool getMode(const std::string& mode) const;
+    /// Get modes
+    std::set<std::string> getModes() const;
     /// Clear mode
     void clearMode(const std::string& mode);
+    /// Clear modes
+    void clearModes();
     //@}
 
     /** @name pretty formating for XML */
@@ -187,7 +193,7 @@ public:
      */
     virtual bool shouldWrite(const std::string& name, const Base::Persistence *Object) const;
 
-private:
+protected:
     std::string DirName;
     std::ofstream FileStream;
 };

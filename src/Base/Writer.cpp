@@ -113,10 +113,20 @@ void Writer::setMode(const std::string& mode)
     Modes.insert(mode);
 }
 
+void Writer::setModes(const std::set<std::string>& modes)
+{
+    Modes = modes;
+}
+
 bool Writer::getMode(const std::string& mode) const
 {
     std::set<std::string>::const_iterator it = Modes.find(mode);
     return (it != Modes.end());
+}
+
+std::set<std::string> Writer::getModes() const
+{
+    return Modes;
 }
 
 void Writer::clearMode(const std::string& mode)
@@ -124,6 +134,11 @@ void Writer::clearMode(const std::string& mode)
     std::set<std::string>::iterator it = Modes.find(mode);
     if (it != Modes.end())
         Modes.erase(it);
+}
+
+void Writer::clearModes()
+{
+    Modes.clear();
 }
 
 std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
@@ -261,7 +276,7 @@ FileWriter::~FileWriter()
 void FileWriter::putNextEntry(const char* file)
 {
     std::string fileName = DirName + "/" + file;
-    this->FileStream.open(fileName.c_str(), std::ios::out);
+    this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
 }
 
 bool FileWriter::shouldWrite(const std::string& , const Base::Persistence *) const

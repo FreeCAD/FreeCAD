@@ -26,7 +26,9 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QFile>
+# include <QRunnable>
 # include <QTextStream>
+# include <QThreadPool>
 # include <boost/bind.hpp>
 # include <sstream>
 #endif
@@ -52,7 +54,7 @@ using namespace Gui;
 AutoSaver* AutoSaver::self = 0;
 
 AutoSaver::AutoSaver(QObject* parent)
-  : QObject(parent), timeout(900000), compressed(false)
+  : QObject(parent), timeout(900000), compressed(true)
 {
     App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, _1));
     App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, _1));
@@ -170,7 +172,8 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
                 // write additional files
                 writer.writeFiles();
             }
-            else {
+            // only create the file if something has changed
+            else if (!saver.touched.empty()) {
                 std::string fn = doc->TransientDir.getValue();
                 fn += "/fc_recovery_file.fcstd";
                 Base::FileInfo tmp(fn);
@@ -295,6 +298,74 @@ bool RecoveryWriter::shouldWrite(const std::string& name, const Base::Persistenc
 
     std::set<std::string>::const_iterator jt = saver.touched.find(address);
     return (jt != saver.touched.end());
+}
+
+namespace Gui {
+
+class RecoveryRunnable : public QRunnable
+{
+public:
+    RecoveryRunnable(const std::set<std::string>& modes, const char* dir, const char* file, const App::Property* p)
+        : prop(p->Copy())
+        , writer(dir)
+    {
+        writer.setModes(modes);
+        writer.putNextEntry(file);
+    }
+    virtual ~RecoveryRunnable()
+    {
+        delete prop;
+    }
+    virtual void run()
+    {
+        prop->SaveDocFile(writer);
+    }
+
+private:
+    App::Property* prop;
+    Base::FileWriter writer;
+};
+
+}
+
+void RecoveryWriter::writeFiles(void)
+{
+#if 0
+    FileWriter::writeFiles();
+#else
+    // use a while loop because it is possible that while
+    // processing the files new ones can be added
+    size_t index = 0;
+    this->FileStream.close();
+    while (index < FileList.size()) {
+        FileEntry entry = FileList.begin()[index];
+
+        if (shouldWrite(entry.FileName, entry.Object)) {
+            std::string filePath = entry.FileName;
+            std::string::size_type pos = 0;
+            while ((pos = filePath.find("/", pos)) != std::string::npos) {
+                std::string dirName = DirName + "/" + filePath.substr(0, pos);
+                pos++;
+                Base::FileInfo fi(dirName);
+                fi.createDirectory();
+            }
+
+            // For properties a copy can be created and then this can be written to disk in a thread
+            if (entry.Object->isDerivedFrom(App::Property::getClassTypeId())) {
+                const App::Property* prop = static_cast<const App::Property*>(entry.Object);
+                QThreadPool::globalInstance()->start(new RecoveryRunnable(getModes(), DirName.c_str(), entry.FileName.c_str(), prop));
+            }
+            else {
+                std::string fileName = DirName + "/" + entry.FileName;
+                this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+                entry.Object->SaveDocFile(*this);
+                this->FileStream.close();
+            }
+        }
+
+        index++;
+    }
+#endif
 }
 
 
