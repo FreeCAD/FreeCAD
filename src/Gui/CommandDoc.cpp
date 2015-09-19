@@ -925,7 +925,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     if (objs.empty())
         return;
 
-    Base::FileInfo fi(Base::FileInfo::getTempFileName());
+    Base::FileInfo fi(App::Application::getTempFileName());
     {
         std::vector<App::DocumentObject*> sel; // selected
         std::vector<App::DocumentObject*> all; // object sub-graph

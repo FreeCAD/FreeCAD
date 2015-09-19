@@ -223,11 +223,20 @@ public:
     static char** GetARGV(void){return _argv;}
     //@}
 
+    /** @name Application directories */
+    //@{
     const char* getHomePath(void) const;
     const char* getExecutableName(void) const;
+    /*!
+     Returns the temporary directory. By default, this is set to the
+     system's temporary directory but can be customized by the user.
+     */
+    static std::string getTempPath();
+    static std::string getTempFileName(const char* FileName=0);
     static std::string getUserAppDataDir();
     static std::string getResourceDir();
     static std::string getHelpDir();
+    //@}
 
     friend class App::Document;
 

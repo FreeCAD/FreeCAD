@@ -43,6 +43,7 @@
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
+#include <App/Application.h>
 
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
@@ -1125,7 +1126,7 @@ void FemMesh::Restore(Base::XMLReader &reader)
 void FemMesh::SaveDocFile (Base::Writer &writer) const
 {
     // create a temporary file and copy the content to the zip stream
-    Base::FileInfo fi(Base::FileInfo::getTempFileName().c_str());
+    Base::FileInfo fi(App::Application::getTempFileName().c_str());
 
     myMesh->ExportUNV(fi.filePath().c_str());
  
@@ -1154,7 +1155,7 @@ void FemMesh::SaveDocFile (Base::Writer &writer) const
 void FemMesh::RestoreDocFile(Base::Reader &reader)
 {
     // create a temporary file and copy the content from the zip stream
-    Base::FileInfo fi(Base::FileInfo::getTempFileName().c_str());
+    Base::FileInfo fi(App::Application::getTempFileName().c_str());
 
     // read in the ASCII file and write back to the file stream
     Base::ofstream file(fi, std::ios::out | std::ios::binary);
