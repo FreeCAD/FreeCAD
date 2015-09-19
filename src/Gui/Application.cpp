@@ -1702,7 +1702,7 @@ void Application::runApplication(void)
     if (!hDocGrp->GetBool("AutoSaveEnabled", true))
         timeout = 0;
     AutoSaver::instance()->setTimeout(timeout * 60000);
-    AutoSaver::instance()->setCompressed(hDocGrp->GetBool("AutoSaveCompressed", false));
+    AutoSaver::instance()->setCompressed(hDocGrp->GetBool("AutoSaveCompressed", true));
 
     // set toolbar icon size
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
