@@ -312,7 +312,7 @@ public:
         writer.setModes(modes);
         // always force binary format because ASCII
         // is not reentrant. See PropertyPartShape::SaveDocFile
-        write.setMode("BinaryBrep");
+        writer.setMode("BinaryBrep");
         writer.putNextEntry(file);
     }
     virtual ~RecoveryRunnable()
