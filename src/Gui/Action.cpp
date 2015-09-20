@@ -266,6 +266,11 @@ void ActionGroup::setExclusive (bool b)
     _group->setExclusive(b);
 }
 
+bool ActionGroup::isExclusive() const
+{
+    return _group->isExclusive();
+}
+
 void ActionGroup::setVisible( bool b )
 {
     Action::setVisible(b);

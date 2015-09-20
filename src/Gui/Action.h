@@ -100,6 +100,7 @@ public:
     void setEnabled (bool);
     void setDisabled (bool);
     void setExclusive (bool);
+    bool isExclusive() const;
     void setVisible (bool);
 
     void setDropDownMenu(bool b) { _dropDown = b; }
