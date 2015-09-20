@@ -93,10 +93,13 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
         QString text = qApp->translate(it->second->className(), it->second->getGroupName());
         GroupMap::iterator jt;
         jt = std::find_if(groupMap.begin(), groupMap.end(), GroupMap_find(group));
-        if (jt != groupMap.end())
-            jt->second = text;
-        else
+        if (jt != groupMap.end()) {
+            if (jt->second.isEmpty())
+                jt->second = text;
+        }
+        else {
             groupMap.push_back(std::make_pair(group, text));
+        }
     }
 
     int index = 0;
