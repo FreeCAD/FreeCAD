@@ -69,11 +69,12 @@ void CreateTestCommands(void);
  */
 class GuiExport CommandBase 
 {
-public:
+protected:
     CommandBase(const char* sMenu, const char* sToolTip=0, const char* sWhat=0, 
                 const char* sStatus=0, const char* sPixmap=0, const char* sAccel=0);
     virtual ~CommandBase();
 
+public:
     /**
      * Returns the Action object of this command, or 0 if it doesn't exist.
      */
@@ -148,7 +149,7 @@ protected:
  */
 class GuiExport Command : public CommandBase
 {
-public:
+protected:
     Command(const char* name);
     virtual ~Command();
 
@@ -323,7 +324,7 @@ class PythonCommand: public Command
 {
 public:
     PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString);
-    virtual ~PythonCommand() {}
+    virtual ~PythonCommand();
 
 protected:
     /** @name Methods reimplemented for Command Framework */
@@ -429,7 +430,7 @@ class MacroCommand: public Command
 {
 public:
     MacroCommand(const char* name);
-    virtual ~MacroCommand() {}
+    virtual ~MacroCommand();
 
 protected:
     /** @name methods reimplemented for Command Framework */
