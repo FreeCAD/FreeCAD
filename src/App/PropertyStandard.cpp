@@ -30,6 +30,7 @@
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <boost/math/special_functions/round.hpp>
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -139,9 +140,9 @@ void PropertyInteger::setValue(const ObjectIdentifier &path, const boost::any &v
     if (value.type() == typeid(long))
         setValue(boost::any_cast<long>(value));
     else if (value.type() == typeid(double))
-        setValue(round(boost::any_cast<double>(value)));
+        setValue(boost::math::round(boost::any_cast<double>(value)));
     else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
-        setValue(round(boost::any_cast<Quantity>(value).getValue()));
+        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
     else if (value.type() == typeid(int))
         setValue(boost::any_cast<int>(value));
     else
@@ -1914,7 +1915,7 @@ void PropertyBool::setValue(const ObjectIdentifier &path, const boost::any &valu
     else if (value.type() == typeid(int))
         setValue(boost::any_cast<int>(value) != 0);
     else if (value.type() == typeid(double))
-        setValue(round(boost::any_cast<double>(value)));
+        setValue(boost::math::round(boost::any_cast<double>(value)));
     else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
         setValue(boost::any_cast<Quantity>(value).getValue() != 0);
     else

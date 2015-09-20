@@ -28,6 +28,8 @@
 # include <QTimer>
 #endif
 
+#include <boost/math/special_functions/round.hpp>
+
 #include "ui_TaskLinearPatternParameters.h"
 #include "TaskLinearPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -278,7 +280,7 @@ void TaskLinearPatternParameters::onOccurrences(const double n) {
     if (blockUpdate)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Occurrences.setValue(round(n));
+    pcLinearPattern->Occurrences.setValue(boost::math::round(n));
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -380,7 +382,7 @@ const double TaskLinearPatternParameters::getLength(void) const
 
 const unsigned TaskLinearPatternParameters::getOccurrences(void) const
 {
-    return round(ui->spinOccurrences->value().getValue());
+    return boost::math::round(ui->spinOccurrences->value().getValue());
 }
 
 

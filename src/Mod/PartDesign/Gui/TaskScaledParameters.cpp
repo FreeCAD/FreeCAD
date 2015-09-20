@@ -27,6 +27,8 @@
 # include <QMessageBox>
 #endif
 
+#include <boost/math/special_functions/round.hpp>
+
 #include "ui_TaskScaledParameters.h"
 #include "TaskScaledParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -160,7 +162,7 @@ void TaskScaledParameters::onOccurrences(const double n)
     if (blockUpdate)
         return;
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
-    pcScaled->Occurrences.setValue(round(n));
+    pcScaled->Occurrences.setValue(boost::math::round(n));
     recomputeFeature();
 }
 
@@ -183,7 +185,7 @@ const double TaskScaledParameters::getFactor(void) const
 
 const unsigned TaskScaledParameters::getOccurrences(void) const
 {
-    return round(ui->spinOccurrences->value().getValue());
+    return boost::math::round(ui->spinOccurrences->value().getValue());
 }
 
 TaskScaledParameters::~TaskScaledParameters()
