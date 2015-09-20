@@ -694,6 +694,12 @@ MacroCommand::MacroCommand(const char* name)
     eType  = 0;
 }
 
+MacroCommand::~MacroCommand()
+{
+    free(const_cast<char*>(sName));
+    sName = 0;
+}
+
 void MacroCommand::activated(int iMsg)
 {
     std::string cMacroPath = App::GetApplication().GetParameterGroupByPath
@@ -795,7 +801,12 @@ void MacroCommand::save()
 //===========================================================================
 
 PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString)
-  : Command(name),_pcPyCommand(pcPyCommand)
+#if defined (_MSC_VER)
+  : Command( _strdup(name) )
+#else
+  : Command( strdup(name) )
+#endif
+  ,_pcPyCommand(pcPyCommand)
 {
     if (pActivationString)
         Activation = pActivationString;
@@ -826,6 +837,14 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
             type += int(ForEdit);
         eType = type;
     }
+}
+
+PythonCommand::~PythonCommand()
+{
+    Base::PyGILStateLocker lock;
+    Py_DECREF(_pcPyCommand);
+    free(const_cast<char*>(sName));
+    sName = 0;
 }
 
 const char* PythonCommand::getResource(const char* sName) const
@@ -998,7 +1017,12 @@ bool PythonCommand::isChecked() const
 //===========================================================================
 
 PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
-  : Command(name),_pcPyCommand(pcPyCommand)
+#if defined (_MSC_VER)
+  : Command( _strdup(name) )
+#else
+  : Command( strdup(name) )
+#endif
+  ,_pcPyCommand(pcPyCommand)
 {
     sGroup = "Python";
 
@@ -1032,6 +1056,8 @@ PythonGroupCommand::~PythonGroupCommand()
 {
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcPyCommand);
+    free(const_cast<char*>(sName));
+    sName = 0;
 }
 
 void PythonGroupCommand::activated(int iMsg)
