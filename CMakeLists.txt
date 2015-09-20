@@ -507,6 +507,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         MESSAGE(FATAL_ERROR "=================================\n"
                             "Python not found, install Python!\n"
                             "=================================\n")
+    ELSE(NOT PYTHONLIBS_FOUND)
+        # prevent python3 lower than 3.3 (not enough utf8<->unicode tools)
+        IF(PYTHON_VERSION_MAJOR GREATER 3)
+            IF(PYTHON_VERSION_MINOR LESS 3)
+                MESSAGE(FATAL_ERROR "To build FreeCAD with Python3, you need at least version 3.3\n")
+            ENDIF(PYTHON_VERSION_MINOR LESS 3)
+        ENDIF(PYTHON_VERSION_MAJOR GREATER 3)
     ENDIF(NOT PYTHONLIBS_FOUND)
 
 # -------------------------------- pcl ----------------------------------

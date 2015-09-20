@@ -67,9 +67,9 @@ Py::String BaseClassPy::getTypeId(void) const
     return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
 }
 
-Py::Int BaseClassPy::getModule(void) const
+Py::Long BaseClassPy::getModule(void) const
 {
-    return Py::Int();
+    return Py::Long();
 }
 
 PyObject *BaseClassPy::getCustomAttributes(const char* attr) const

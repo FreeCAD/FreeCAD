@@ -2183,7 +2183,7 @@ namespace Py
         {
             set( PyTuple_New( size ), true );
             validate();
-            for( sequence_index_type i=0; i < size; i++ )
+            for( sequence_index_type i=0; i < (sequence_index_type)size; i++ )
             {
                 if( PyTuple_SetItem( ptr(), i, new_reference_to( Py::_None() ) ) == -1 )
                 {
@@ -2366,7 +2366,7 @@ namespace Py
         {
             set( PyList_New( size ), true );
             validate();
-            for( sequence_index_type i=0; i < size; i++ )
+            for( sequence_index_type i=0; i < (sequence_index_type)size; i++ )
             {
                 if( PyList_SetItem( ptr(), i, new_reference_to( Py::_None() ) ) == -1 )
                 {
@@ -2382,7 +2382,7 @@ namespace Py
             int n =( int )s.length();
             set( PyList_New( n ), true );
             validate();
-            for( sequence_index_type i=0; i < n; i++ )
+            for( sequence_index_type i=0; i < (sequence_index_type)n; i++ )
             {
                 if( PyList_SetItem( ptr(), i, new_reference_to( s[i] ) ) == -1 )
                 {

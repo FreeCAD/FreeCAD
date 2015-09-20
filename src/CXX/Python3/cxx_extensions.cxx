@@ -222,7 +222,7 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
-    static int print_handler( PyObject *, FILE *, int );
+    //static int print_handler( PyObject *, FILE *, int );
     static PyObject *getattr_handler( PyObject *, char * );
     static int setattr_handler( PyObject *, char *, PyObject * );
     static PyObject *getattro_handler( PyObject *, PyObject * );

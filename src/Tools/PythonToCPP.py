@@ -25,11 +25,11 @@ out.write("const char " + fn[:-3] + "[] =")
 
 for line in lines:
     # remove new line
-    line2 = string.rstrip(line)
+    line2 = line.rstrip()
     # replace special chars
-    line2 = string.replace(line2,'\\','\\\\')
-    line2 = string.replace(line2,'\"','\\\"')
-    line2 = string.replace(line2,"\'","\\\'")
+    line2 = line2.replace('\\','\\\\')
+    line2 = line2.replace('\"','\\\"')
+    line2 = line2.replace("\'","\\\'")
 
 
     # output

@@ -2,15 +2,17 @@
 # -*- coding: utf-8 -*-
 # (c) 2007 Jürgen Riegel 
 
+from __future__ import print_function # this allows py2 to print(str1,str2) correctly
+
 import os, errno
 
 
-def ensureDir(path,mode=0777):
+def ensureDir(path,mode=0o777):
 	try: 
 		os.makedirs(path,mode)
-	except OSError, err:
+	except OSError(err):
 		#  raise an error unless it's about a alredy existing directory
-		print "Dir Exist"
+		print("Dir Exist")
 		#if errno != 17 or not os.path.isdir(path):
 		#	raise
 			
@@ -43,7 +45,7 @@ class copier:
         "Main copy method: process lines [i,last) of block"
         def repl(match, self=self):
             "return the eval of a found expression, for replacement"
-            # uncomment for debug: print '!!! replacing',match.group(1)
+            # uncomment for debug: print ('!!! replacing',match.group(1))
             expr = self.preproc(match.group(1), 'eval')
             try: return str(eval(expr, self.globals, self.locals))
             except: return str(self.handle(expr))
@@ -74,11 +76,11 @@ class copier:
                     j=j+1
                 stat = self.preproc(stat, 'exec')
                 stat = '%s _cb(%s,%s)' % (stat,i+1,j)
-                # for debugging, uncomment...: print "-> Executing: {"+stat+"}"
-                exec stat in self.globals,self.locals
+                # for debugging, uncomment...: print("-> Executing: {"+stat+"}")
+                exec(stat, self.globals, self.locals)
                 i=j+1
             else:       # normal line, just copy with substitution
-                self.ouf.write(self.regex.sub(repl,line))
+                self.ouf.write(self.regex.sub(repl,line).encode("utf8"))
                 i=i+1
     def __init__(self, regex=_never, dict={},
             restat=_never, restend=_never, recont=_never, 
@@ -136,8 +138,8 @@ After all, @x@ is rather small!
   Also, @i@ times @x@ is @i*x@.
 -
 One last, plain line at the end.""".split('\n')]
-    print "*** input:"
-    print ''.join(lines_block)
-    print "*** output:"
+    print("*** input:")
+    print(''.join(lines_block))
+    print("*** output:")
     cop.copy(lines_block)
 

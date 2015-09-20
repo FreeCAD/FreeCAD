@@ -204,7 +204,11 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     PyObject* repr = PyObject_Repr(presult);
     Py_DECREF(presult);
     if (repr) {
+#if PY_MAJOR_VERSION >= 3
+        std::string ret(PyUnicode_AsUTF8(repr));
+#else
         std::string ret(PyString_AsString(repr));
+#endif
         Py_DECREF(repr);
         return ret;
     }
@@ -245,12 +249,18 @@ void InterpreterSingleton::systemExit(void)
     int exitcode = 0;
 
     PyErr_Fetch(&exception, &value, &tb);
+#if PY_MAJOR_VERSION < 3
     if (Py_FlushLine())
+#endif
         PyErr_Clear();
     fflush(stdout);
     if (value == NULL || value == Py_None)
         goto done;
+#if PY_MAJOR_VERSION >= 3
+    if (PyObject_HasAttrString(value, (char *) "code")) { // PyInstance_Check removed in py3
+#else
     if (PyInstance_Check(value)) {
+#endif
         /* The error code should be in the `code' attribute. */
         PyObject *code = PyObject_GetAttrString(value, "code");
         if (code) {
@@ -262,8 +272,8 @@ void InterpreterSingleton::systemExit(void)
         /* If we failed to dig out the 'code' attribute,
            just let the else clause below print the error. */
     }
-    if (PyInt_Check(value))
-        exitcode = (int)PyInt_AsLong(value);
+    if (PyLong_Check(value))
+        exitcode = (int)PyLong_AsLong(value);
     else {
         PyObject_Print(value, stderr, Py_PRINT_RAW);
         PySys_WriteStderr("\n");
@@ -304,8 +314,13 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
 
         Exception exc; // do not use PyException since this clears the error indicator
+#if PY_MAJOR_VERSION >= 3
+        if (PyUnicode_Check(errdata))
+            exc.setMessage(PyUnicode_AsUTF8(errdata));
+#else
         if (PyString_Check(errdata))
             exc.setMessage(PyString_AsString(errdata));
+#endif
         PyErr_Restore(errobj, errdata, errtraceback);
         if (PyErr_Occurred())
             PyErr_Print();
@@ -339,7 +354,11 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
         }
 
         if (PyDict_GetItemString(dict, "__file__") == NULL) {
+#if PY_MAJOR_VERSION >= 3
+            PyObject *f = PyUnicode_FromString(pxFileName);
+#else
             PyObject *f = PyString_FromString(pxFileName);
+#endif
             if (f == NULL) {
                 fclose(fp);
                 Py_DECREF(dict);
@@ -407,7 +426,11 @@ void InterpreterSingleton::addPythonPath(const char* Path)
 {
     PyGILStateLocker locker;
     PyObject *list = PySys_GetObject("path");
+#if PY_MAJOR_VERSION >= 3
+    PyObject *path = PyUnicode_FromString(Path);
+#else
     PyObject *path = PyString_FromString(Path);
+#endif
     PyList_Append(list, path);
     Py_DECREF(path);
     PySys_SetObject("path", list);
@@ -416,15 +439,33 @@ void InterpreterSingleton::addPythonPath(const char* Path)
 const char* InterpreterSingleton::init(int argc,char *argv[])
 {
     if (!Py_IsInitialized()) {
-        Py_SetProgramName(argv[0]);
+#if PY_MAJOR_VERSION >= 3
+        size_t size = argc;
+        wchar_t **_argv = new wchar_t*[size];
+        for (int i = 0; i < argc; i++) {
+            _argv[i] = new wchar_t[strlen(argv[i]) + 1];
+            mbstowcs(_argv[i], argv[i], strlen(argv[i]) + 1);
+        }
+        wchar_t *_progname = _argv[0];
+#else
+        char **_argv = argv;
+        char *_progname = argv[0];
+#endif
+        Py_SetProgramName(_progname);
         PyEval_InitThreads();
         Py_Initialize();
-        PySys_SetArgv(argc, argv);
+        PySys_SetArgv(argc, _argv);
         PythonStdOutput::init_type();
         this->_global = PyEval_SaveThread();
     }
-
+#if PY_MAJOR_VERSION >= 3
+    const wchar_t *path = Py_GetPath();
+    char *buffer = 0;
+    wcstombs(buffer, path, 1024);
+    return buffer;
+#else
     return Py_GetPath();
+#endif
 }
 
 void InterpreterSingleton::replaceStdOutput()

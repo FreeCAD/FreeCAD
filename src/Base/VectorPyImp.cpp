@@ -136,9 +136,9 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
         double b = PyFloat_AsDouble(other);
         return new VectorPy(a * b);
     }
-    else if (PyInt_Check(other)) {
+    else if (PyLong_Check(other)) {
         Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
-        long b = PyInt_AsLong(other);
+        long b = PyLong_AsLong(other);
         return new VectorPy(a * (double)b);
     }
     else {
@@ -566,11 +566,13 @@ int VectorPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
+#if PY_MAJOR_VERSION < 3
 PyObject * VectorPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
+#endif
 
 PyObject * VectorPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
@@ -649,10 +651,12 @@ PyObject * VectorPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
     return 0;
 }
 
+#if PY_MAJOR_VERSION < 3
 int VectorPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
 {
     return 1;
 }
+#endif
 
 PyObject * VectorPy::number_int_handler (PyObject* /*self*/)
 {
@@ -660,11 +664,13 @@ PyObject * VectorPy::number_int_handler (PyObject* /*self*/)
     return 0;
 }
 
+#if PY_MAJOR_VERSION < 3
 PyObject * VectorPy::number_long_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
+#endif
 
 PyObject * VectorPy::number_float_handler (PyObject* /*self*/)
 {
@@ -672,6 +678,7 @@ PyObject * VectorPy::number_float_handler (PyObject* /*self*/)
     return 0;
 }
 
+#if PY_MAJOR_VERSION < 3
 PyObject * VectorPy::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
@@ -683,3 +690,4 @@ PyObject * VectorPy::number_hex_handler (PyObject* /*self*/)
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
+#endif
