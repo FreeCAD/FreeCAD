@@ -362,7 +362,11 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
         return QPixmap();
     }
     frame->setContent(contents, QString::fromAscii("image/svg+xml"));
-    qApp->processEvents();
+    // Important to exclude user events here because otherwise
+    // it may happen that an item the icon is created for gets
+    // deleted in the meantime. This happens e.g. dragging over
+    // the categories in the commands panel very quickly.
+    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     webPage.setViewportSize(webPage.mainFrame()->contentsSize());
 
     double ww = webPage.viewportSize().width();
