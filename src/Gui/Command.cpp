@@ -1151,6 +1151,19 @@ Action * PythonGroupCommand::createAction(void)
             Py::Int def(call2.apply(args));
             defaultId = static_cast<int>(def);
         }
+
+        // if the command is 'exclusive' then activate the default action
+        if (pcAction->isExclusive()) {
+            QList<QAction*> a = pcAction->actions();
+            if (defaultId >= 0 && defaultId < a.size()) {
+                QAction* qtAction = a[defaultId];
+                if (qtAction->isCheckable()) {
+                    qtAction->blockSignals(true);
+                    qtAction->setChecked(true);
+                    qtAction->blockSignals(false);
+                }
+            }
+        }
     }
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
