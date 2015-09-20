@@ -46,6 +46,7 @@
 #include <App/PropertyUnits.h>
 #include <App/ObjectIdentifier.h>
 #include <boost/math/special_functions/round.hpp>
+#include <boost/math/special_functions/trunc.hpp>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -770,10 +771,10 @@ Expression * FunctionExpression::eval() const
         break;
     }
     case ROUND:
-        output = round(value);
+        output = boost::math::round(value);
         break;
     case TRUNC:
-        output = trunc(value);
+        output = boost::math::trunc(value);
         break;
     case CEIL:
         output = ceil(value);

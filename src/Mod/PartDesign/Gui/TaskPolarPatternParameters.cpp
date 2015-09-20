@@ -28,6 +28,8 @@
 # include <QTimer>
 #endif
 
+#include <boost/math/special_functions/round.hpp>
+
 #include "ui_TaskPolarPatternParameters.h"
 #include "TaskPolarPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -251,7 +253,7 @@ void TaskPolarPatternParameters::onOccurrences(const double n) {
     if (blockUpdate)
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    pcPolarPattern->Occurrences.setValue(round(n));
+    pcPolarPattern->Occurrences.setValue(boost::math::round(n));
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -326,7 +328,7 @@ const double TaskPolarPatternParameters::getAngle(void) const
 
 const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 {
-    return round(ui->spinOccurrences->value().getValue());
+    return boost::math::round(ui->spinOccurrences->value().getValue());
 }
 
 
