@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -102,7 +102,7 @@ class Ui_DlgPreferences;
  * new PrefPageProducer<MyPrefPageImp> (QT_TR_NOOP("My category"));
  *
  * \see PrefWidget
- * \author Werner Mayer, Jürgen Riegel
+ * \author Werner Mayer, JÃ¼rgen Riegel
  */
 class GuiExport DlgPreferencesImp : public QDialog
 {

@@ -240,9 +240,9 @@ private:
     CuttingToolsSettings m_set;
 
     /** @brief iterator for the master-curves*/
-    std::vector<Handle_Geom_BSplineCurve>::iterator m_it1;   /* iterator über inner-paths */
+    std::vector<Handle_Geom_BSplineCurve>::iterator m_it1;   /* iterator Ã¼ber inner-paths */
     /** @brief iterator for the slave-curves*/
-    std::vector<Handle_Geom_BSplineCurve>::iterator m_it2;   /* iterator über outer-paths */
+    std::vector<Handle_Geom_BSplineCurve>::iterator m_it2;   /* iterator Ã¼ber outer-paths */
     /** @brief sheet-thickness */
     double m_blech;
     /** @brief spring-pretension*/

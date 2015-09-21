@@ -659,7 +659,7 @@ bool MeshFixDeformedFacets::Fixup()
         fCosAngles[i] = fCosAngle;
       }
 
-      // first check for angle > 120°: in this case we swap with the opposite edge
+      // first check for angle > 120Â°: in this case we swap with the opposite edge
       for (int i=0; i<3; i++)
       {
         float fCosAngle = fCosAngles[i];
@@ -678,7 +678,7 @@ bool MeshFixDeformedFacets::Fixup()
       if (done)
         continue;
 
-      // now check for angle < 30°: in this case we swap with one of the edges the corner is part of
+      // now check for angle < 30Â°: in this case we swap with one of the edges the corner is part of
       for (int j=0; j<3; j++)
       {
         float fCosAngle = fCosAngles[j];

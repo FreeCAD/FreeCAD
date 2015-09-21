@@ -41,7 +41,7 @@ class Document;
  * @see TreeView
  * @see Gui::Document
  * @see Application
- * @author Jürgen Riegel, Werner Mayer
+ * @author JÃ¼rgen Riegel, Werner Mayer
  */
 class GuiExport MDIView : public QMainWindow, public BaseView
 {

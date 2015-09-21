@@ -146,7 +146,7 @@ int BSplineBasis::FindSpan(double fParam)
 
   int low = _iOrder-1;
   int high = n+1;
-  int mid = (low+high)/2; //Binärsuche
+  int mid = (low+high)/2; //BinÃ¤rsuche
 
   while (fParam < _vKnotVector(mid) || fParam>= _vKnotVector(mid+1))
   {
@@ -261,7 +261,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
   math_Matrix N(0,p,0,p);
   double saved;
 
-  // falls Wert außerhalb Intervall, dann Funktionswert und alle Ableitungen gleich Null
+  // falls Wert auÃŸerhalb Intervall, dann Funktionswert und alle Ableitungen gleich Null
   if (fParam < _vKnotVector(iIndex) || fParam >= _vKnotVector(iIndex+p+1))
   {
     for (int k=0; k<=iMax; k++)
@@ -365,7 +365,7 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
   math_Matrix N(0,p,0,p);
   double saved;
 
-  // falls Wert außerhalb Intervall, dann Funktionswert und Ableitungen gleich Null
+  // falls Wert auÃŸerhalb Intervall, dann Funktionswert und Ableitungen gleich Null
   if (fParam < _vKnotVector(iIndex) || fParam >= _vKnotVector(iIndex+p+1))
   {
     return 0.0f;
@@ -819,7 +819,7 @@ void BSplineParameterCorrection::Init()
   unsigned short usUMax = _usUCtrlpoints-_usUOrder+1;
   unsigned short usVMax = _usVCtrlpoints-_usVOrder+1;
 
-  // Knotenvektor für die CAS.CADE-Klasse
+  // Knotenvektor fÃ¼r die CAS.CADE-Klasse
   // u-Richtung
   for (int i=0;i<=usUMax; i++)
   {
@@ -849,7 +849,7 @@ void BSplineParameterCorrection::SetUKnots(const std::vector<double>& afKnots)
 
   unsigned short usUMax = _usUCtrlpoints-_usUOrder+1;
 
-  // Knotenvektor für die CAS.CADE-Klasse
+  // Knotenvektor fÃ¼r die CAS.CADE-Klasse
   // u-Richtung
   for (int i=1;i<usUMax; i++)
   {
@@ -868,7 +868,7 @@ void BSplineParameterCorrection::SetVKnots(const std::vector<double>& afKnots)
 
   unsigned short usVMax = _usVCtrlpoints-_usVOrder+1;
 
-  // Knotenvektor für die CAS.CADE-Klasse
+  // Knotenvektor fÃ¼r die CAS.CADE-Klasse
   // v-Richtung
   for (int i=1; i<usVMax; i++)
   {
@@ -917,7 +917,7 @@ void BSplineParameterCorrection::DoParameterCorrection(unsigned short usIter)
       // Berechne Xu x Xv die Normale in X(u,v)
       gp_Dir clNormal = Xu ^ Xv;
 
-      //Prüfe, ob X = P
+      //PrÃ¼fe, ob X = P
       if (!(X.IsEqual(P,0.001,0.001)))
       {
         ErrorVec.Normalize();
@@ -971,7 +971,7 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
   math_Vector by (0, ulSize-1);
   math_Vector bz (0, ulSize-1);
 
-  //Bestimmung der Koeffizientenmatrix des überbestimmten LGS
+  //Bestimmung der Koeffizientenmatrix des Ã¼berbestimmten LGS
   for (unsigned long i=0; i<ulSize; i++)
   {
     double fU = (*_pvcUVParam)(i).X();
@@ -994,13 +994,13 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
     bx(ii) = (*_pvcPoints)(ii).X(); by(ii) = (*_pvcPoints)(ii).Y(); bz(ii) = (*_pvcPoints)(ii).Z();
   }
 
-  // Löse das überbest. LGS mit der Householder-Transformation
+  // LÃ¶se das Ã¼berbest. LGS mit der Householder-Transformation
   math_Householder hhX(M,bx);
   math_Householder hhY(M,by);
   math_Householder hhZ(M,bz);
 
   if (!(hhX.IsDone() && hhY.IsDone() && hhZ.IsDone()))
-    //LGS konnte nicht gelöst werden
+    //LGS konnte nicht gelÃ¶st werden
     return false;
   Xx = hhX.AllValues();
   Xy = hhY.AllValues();
@@ -1036,7 +1036,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
   math_Vector Mby(0, _usUCtrlpoints*_usVCtrlpoints-1);
   math_Vector Mbz(0, _usUCtrlpoints*_usVCtrlpoints-1);
 
-  //Bestimmung der Koeffizientenmatrix des überbestimmten LGS
+  //Bestimmung der Koeffizientenmatrix des Ã¼berbestimmten LGS
   for (unsigned long i=0; i<ulSize; i++)
   {
     double fU = (*_pvcUVParam)(i).X();
@@ -1073,7 +1073,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     Mbz(i) = M.Col(i) * bz;
   }
 
-  // Löse das LGS mit der LU-Zerlegung
+  // LÃ¶se das LGS mit der LU-Zerlegung
   math_Gauss mgGaussX(MTM+fWeight*_clSmoothMatrix);
   math_Gauss mgGaussY(MTM+fWeight*_clSmoothMatrix);
   math_Gauss mgGaussZ(MTM+fWeight*_clSmoothMatrix);

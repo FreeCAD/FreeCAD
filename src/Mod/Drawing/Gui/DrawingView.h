@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2007 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is Drawing of the FreeCAD CAx development system.           *
  *                                                                         *

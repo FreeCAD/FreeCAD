@@ -5,7 +5,7 @@
  *   published by the Free Software Foundation; either version 2 of the    *
  *   License, or (at your option) any later version.                       *
  *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2002                                                    *
+ *   JÃ¼rgen Riegel 2002                                                    *
  *   Eivind Kvedalen 2015                                                  *
  *                                                                         *
  ***************************************************************************/

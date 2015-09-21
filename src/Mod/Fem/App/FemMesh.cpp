@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2009     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -776,8 +776,8 @@ void FemMesh::readNastran(const std::string &Filename)
 
 	for(unsigned int i=0;i<all_elements.size();i++)
 	{
-		//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
-		//Ansonsten ist eine konsistente Datenstruktur nicht möglich
+		//Die Reihenfolge wie hier die Elemente hinzugefÃ¼gt werden ist sehr wichtig. 
+		//Ansonsten ist eine konsistente Datenstruktur nicht mÃ¶glich
 		//meshds->AddVolumeWithID
 		//(
 		//	meshds->FindNode(all_elements[i][0]),
@@ -1262,8 +1262,8 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
 }
 //		for(unsigned int i=0;i<all_elements.size();i++)
 //		{
-//			//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
-//			//Ansonsten ist eine konsistente Datenstruktur nicht möglich
+//			//Die Reihenfolge wie hier die Elemente hinzugefÃ¼gt werden ist sehr wichtig. 
+//			//Ansonsten ist eine konsistente Datenstruktur nicht mÃ¶glich
 //			meshds->AddVolumeWithID(
 //				meshds->FindNode(all_elements[i][0]),
 //				meshds->FindNode(all_elements[i][2]),

@@ -196,7 +196,7 @@ SoAxisCrossKit::createAxes()
    setPart("yAxis.shape", shape);
    setPart("zAxis.shape", shape);
 
-   // Place the axes ând heads
+   // Place the axes Ã¢nd heads
    set("yAxis.transform", "rotation 0 0 1 1.5707999");
    set("zAxis.transform", "rotation 0 1 0 -1.5707999");
 

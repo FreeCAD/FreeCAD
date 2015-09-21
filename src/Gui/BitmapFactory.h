@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,7 +38,7 @@ namespace Gui {
   * the main purpose is to collect all build in Bitmaps and
   * hold all paths for the extern bitmaps (files) to serve
   * as a single point of accessing bitmaps in FreeCAD
-  * \author Werner Mayer, Jürgen Riegel
+  * \author Werner Mayer, JÃ¼rgen Riegel
   */
 class BitmapFactoryInstP;
 class GuiExport BitmapFactoryInst : public Base::Factory

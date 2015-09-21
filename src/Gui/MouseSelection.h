@@ -50,7 +50,7 @@ class View3DInventorViewer;
  * In derived classes you must implement the methods @ref initialize() and @ref terminate()
  * For all drawing stuff you just have to reimplement the @ref draw() method.
  * In general you need not to do anything else.
- * \author Werner Mayer and Jürgen Riegel
+ * \author Werner Mayer and JÃ¼rgen Riegel
  */
 class GuiExport AbstractMouseSelection
 {
@@ -106,7 +106,7 @@ protected:
 
 /**
  * The standard mouse selection class
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class GuiExport BaseMouseSelection : public AbstractMouseSelection
 {

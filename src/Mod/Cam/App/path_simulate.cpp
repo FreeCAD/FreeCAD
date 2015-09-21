@@ -31,8 +31,8 @@
 #include <GCPnts_AbscissaPoint.hxx>
 #include <Geom_BSplineCurve.hxx>
 
-#define curvTOL  30.0  // gibt maximalen Krümmungsradius an ab welchem eine Unterteilung der Kurve erfolgt
-#define TolDist  1.0   // entspricht der Samplingschrittweite der Kurvenpunkte für den Roboter-Output 
+#define curvTOL  30.0  // gibt maximalen KrÃ¼mmungsradius an ab welchem eine Unterteilung der Kurve erfolgt
+#define TolDist  1.0   // entspricht der Samplingschrittweite der Kurvenpunkte fÃ¼r den Roboter-Output 
 
 /* Konstruktor mit zwei Bahnfolgen (master tool & supporting die) als Input */
 path_simulate::path_simulate(const std::vector<Handle_Geom_BSplineCurve> &BSplineTop,
@@ -49,7 +49,7 @@ path_simulate::path_simulate(const std::vector<Handle_Geom_BSplineCurve> &BSplin
     
 	m_single = false;
    
-	if(m_pretension > 0) beam = true;  // flag für "write_output_***" generierung
+	if(m_pretension > 0) beam = true;  // flag fÃ¼r "write_output_***" generierung
 	else           		 beam = false;
 
     //Initialize the Iterators
@@ -130,7 +130,7 @@ double path_simulate::GetLength(GeomAdaptor_Curve& curve, const Standard_Real st
     }
 
 
-    return GCPnts_AbscissaPoint::Length(curve,sParam,eParam);   // genauigkeitssteuerung über parameter TOL nach eParam 
+    return GCPnts_AbscissaPoint::Length(curve,sParam,eParam);   // genauigkeitssteuerung Ã¼ber parameter TOL nach eParam 
 }
 */
 
@@ -154,7 +154,7 @@ double path_simulate::FindParamAt(GeomAdaptor_Curve& curve, double dist, double 
 /* Hier wird die absolute Geschwindigkeitsfunktion definiert und liefert die Geschwindigkeit zur Zeiteingabe <t>. 
 Die Funktion gliedert sich in drei Abschnitte mit den Parametergrenzen <m_t0>, <m_t1>, <m_t2>, <m_T> welche z.B.
 mittels path_simulate::ParameterCalculation() ermittelt werden kann. 
-Die Start- und Endgeschwindigkeit müssen vorher in <m_v[0]> und <m_v[2]> bestimmt werden.
+Die Start- und Endgeschwindigkeit mÃ¼ssen vorher in <m_v[0]> und <m_v[2]> bestimmt werden.
 Die maximale Geschwindigkeit welche zwischen <m_t1> und <m_t2> erreicht werden soll, entspricht hier <m_v[1]> */
 double path_simulate::GetVelocity(double t)
 {
@@ -197,7 +197,7 @@ double path_simulate::GetVelocity(double t)
     return vel;
 }
 
-/* Diese Funktion liefert den zurückgelegten Weg zur Zeiteingabe <t> und entspricht 
+/* Diese Funktion liefert den zurÃ¼ckgelegten Weg zur Zeiteingabe <t> und entspricht 
 dem Integral der Funktion GetVelocity(t)*/
 double path_simulate::GetDistance(double t)
 {
@@ -258,7 +258,7 @@ double path_simulate::GetWireLength(TopoDS_Wire &aWire)
 }
 */
 
-/*Parameterberechnung der Geschwindigkeitsfunktion für eine gerade Strecke der Länge <S1>*/
+/*Parameterberechnung der Geschwindigkeitsfunktion fÃ¼r eine gerade Strecke der LÃ¤nge <S1>*/
 bool path_simulate::ParameterCalculation_Line(double S1)
 {
     if (S1 == 0.0)  // hier gibts nichts zu tun
@@ -273,7 +273,7 @@ bool path_simulate::ParameterCalculation_Line(double S1)
 	m_v[1] = sqrt(m_a*S1/2.0);     // Geschwindigkeit die notwendig ist damit der Weg <S1> zur Zeit <m_T> erreicht wird
 	m_v[2] = 0.0;                  // Endgeschwindigkeit wird auf Null gesetzt
 
-	while(m_v[1] > m_vmax)         // maximale Geschwindigkeit darf nicht überschritten werden
+	while(m_v[1] > m_vmax)         // maximale Geschwindigkeit darf nicht Ã¼berschritten werden
 	{
 		m_a /= 2;                  // Versuchs erneut mit halber Beschleunigung
 		m_v[1] = sqrt(m_a*S1/2.0); // Geschwindigkeit die notwendig ist damit der Weg <S1> zur Zeit <m_T> erreicht wird
@@ -288,7 +288,7 @@ bool path_simulate::ParameterCalculation_Line(double S1)
 }
 
 /*Parameterberechnung der Geschwindigkeitsfunktion (definiert in path_simulate::GetVelocity())
-für einen Kurvenabschnitt der Länge <S1>. Aufruf muss stets vor der Funktion path_simulate::GetVelocity() erfolgen*/
+fÃ¼r einen Kurvenabschnitt der LÃ¤nge <S1>. Aufruf muss stets vor der Funktion path_simulate::GetVelocity() erfolgen*/
 bool path_simulate::ParameterCalculation_Curve(double S1)
 {
 	// Berechnung der Zeitgrenzen
@@ -297,7 +297,7 @@ bool path_simulate::ParameterCalculation_Curve(double S1)
     m_T  = m_t1 + 2*(abs(m_v[1]-m_v[2]))/m_a;
 
     double tmp, v_tmp;
-    tmp = GetDistance(m_T);  // liefert den Weg zurück, der unter den gegebenen Parametereinstellungen,
+    tmp = GetDistance(m_T);  // liefert den Weg zurÃ¼ck, der unter den gegebenen Parametereinstellungen,
 	                         // zum hoch- und runterbeschleunigen, midestens notwendig ist 
 
     if (tmp <= S1) // d.h. der Weg reicht aus
@@ -333,7 +333,7 @@ bool path_simulate::ParameterCalculation_Curve(double S1)
 				v_tmp = (m_vmax - std::min(m_v[1],m_v[2]))/2.0;
 				
 				while(tmp > S1) // hier wird die Geschwindigkeit <m_v[1]> solange in Richtung <m_v[2]> vekleinert bis
-					            // der Weg schließlich ausreicht
+					            // der Weg schlieÃŸlich ausreicht
 				{
 					m_v[1] = std::min(m_v[1],m_v[2]) + v_tmp;
 			
@@ -349,12 +349,12 @@ bool path_simulate::ParameterCalculation_Curve(double S1)
 		}
     }
 
-    m_T = m_t2 + 2*(abs(m_v[1]-m_v[2]))/m_a;  // Endzeit lässt sich jetzt berechnen
+    m_T = m_t2 + 2*(abs(m_v[1]-m_v[2]))/m_a;  // Endzeit lÃ¤sst sich jetzt berechnen
 
     return true;
 }
 
-/* setzt die Outputvektoren und den Beschleunigungsparameter <m_a> zurück. Die Startzeit <m_t0> wird aktualisiert*/
+/* setzt die Outputvektoren und den Beschleunigungsparameter <m_a> zurÃ¼ck. Die Startzeit <m_t0> wird aktualisiert*/
 bool path_simulate::UpdateParam()
 {
     m_Output.clear();
@@ -368,7 +368,7 @@ bool path_simulate::UpdateParam()
     return true;
 }
 
-/* Hilfsfunktion für die Zustellung. Rückgabewert legt fest ob zuerst in z- oder in xy-Richtung zugestellt wird*/
+/* Hilfsfunktion fÃ¼r die Zustellung. RÃ¼ckgabewert legt fest ob zuerst in z- oder in xy-Richtung zugestellt wird*/
 bool path_simulate::CheckConnect()
 {
     gp_Pnt tmp;
@@ -379,7 +379,7 @@ bool path_simulate::CheckConnect()
         m_StartPnts1.clear(); 
         m_StartPnts2.clear(); 
 
-        // Berechne neue Verbindungspunkte für die Zustellung - MASTER -
+        // Berechne neue Verbindungspunkte fÃ¼r die Zustellung - MASTER -
 		m_it1--;
 
 		(*m_it1)->D0((*m_it1)->LastParameter(),tmp);  // Speichert Endpunkt der vorigen Master-Kurve in <tmp>      		
@@ -390,9 +390,9 @@ bool path_simulate::CheckConnect()
 		(*m_it1)->D0((*m_it1)->FirstParameter(),tmp); // Speichert Startpunkt der vorigen Master-Kurve in <tmp>        
 		m_StartPnts1.push_back(tmp);                  // Pushe Startpunkt der aktuellen Master-Kurve
 		               
-        if (m_single == false) // Falls beidseitig gefahren wird, mache dasselbe, wie für den Slave (s.o.)
+        if (m_single == false) // Falls beidseitig gefahren wird, mache dasselbe, wie fÃ¼r den Slave (s.o.)
         {
-            // Berechne neue Verbindungspunkte für die Zustellung - SLAVE -
+            // Berechne neue Verbindungspunkte fÃ¼r die Zustellung - SLAVE -
             m_it2--; 
 			
 			(*m_it2)->D0((*m_it2)->LastParameter(),tmp); // Speichert Startpunkt der vorigen Slave-Kurve in <tmp> 
@@ -413,7 +413,7 @@ bool path_simulate::CheckConnect()
     else                                                  return false; // Zustellung in positiver z-Richtung
 }
 
-/* Hilfsfunktion für die Zustellung. Rückgabewert legt fest ob zuerst in z- oder in xy-Richtung zugestellt wird*/
+/* Hilfsfunktion fÃ¼r die Zustellung. RÃ¼ckgabewert legt fest ob zuerst in z- oder in xy-Richtung zugestellt wird*/
 bool path_simulate::CheckConnect(bool tool)
 {
     gp_Pnt tmp;
@@ -421,7 +421,7 @@ bool path_simulate::CheckConnect(bool tool)
     // ab dem 2. lauf
     if (m_it1 != m_BSplineTop.begin() || m_it2 != m_BSplineBottom.begin())
     {
-        if (m_Feat == true)  // Für den Feature-Basierten Fall werden die Zustellungen von Master und Slave seperat behandelt	
+        if (m_Feat == true)  // FÃ¼r den Feature-Basierten Fall werden die Zustellungen von Master und Slave seperat behandelt	
 		{
 			 if (!tool)
 			 {
@@ -457,11 +457,11 @@ bool path_simulate::CheckConnect(bool tool)
 			}
 		}
 
-		// Ab hier: Berechnung der Zustellungsvektoren für die synchrone Zustellung von Master und Slave
+		// Ab hier: Berechnung der Zustellungsvektoren fÃ¼r die synchrone Zustellung von Master und Slave
 		m_StartPnts1.clear();
 		m_StartPnts2.clear();
 
-		// Berechne neue Verbindungspunkte für die Zustellung - MASTER
+		// Berechne neue Verbindungspunkte fÃ¼r die Zustellung - MASTER
 		m_it1--;
 		
 		(*m_it1)->D0((*m_it1)->LastParameter(),tmp);
@@ -474,7 +474,7 @@ bool path_simulate::CheckConnect(bool tool)
 
 		if (m_single == false)
 		{
-			// Berechne neue Verbindungspunkte für die Zustellung - SLAVE
+			// Berechne neue Verbindungspunkte fÃ¼r die Zustellung - SLAVE
 			m_it2--;
 			
 			(*m_it2)->D0((*m_it2)->LastParameter(),tmp);
@@ -495,7 +495,7 @@ bool path_simulate::CheckConnect(bool tool)
     else                                                  return false;
 }
 
-/* Füllt die Outputvektoren für die erste Zustellung. Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
+/* FÃ¼llt die Outputvektoren fÃ¼r die erste Zustellung. Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
 bool path_simulate::ConnectPaths_xy(bool brob)
 {
     int N;
@@ -612,11 +612,11 @@ bool path_simulate::ConnectPaths_xy(bool brob)
             m_Output.push_back(tmp2);
             m_Output2.push_back(tmp2);
         }
-        else  // Roboter Output für den beidseitigen Fall
+        else  // Roboter Output fÃ¼r den beidseitigen Fall
         {
             bool con = false;
 
-            // hier wird die Anzahl <N> der Punkte für die Diskretisierung der Zustellungslinie berechnet
+            // hier wird die Anzahl <N> der Punkte fÃ¼r die Diskretisierung der Zustellungslinie berechnet
             if (vec_11.Magnitude() > vec_21.Magnitude()) N = std::max(2, int(ceil(vec_21.Magnitude()/TolDist)));
             else     				                     N = std::max(2, int(ceil(vec_11.Magnitude()/TolDist)));
 
@@ -738,7 +738,7 @@ bool path_simulate::ConnectPaths_xy(bool brob)
 	return true;
 }
 
-/* Füllt die Outputvektoren für die zweite Zustellung. Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
+/* FÃ¼llt die Outputvektoren fÃ¼r die zweite Zustellung. Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
 bool path_simulate::ConnectPaths_z(bool brob)
 {
     int N;
@@ -860,7 +860,7 @@ bool path_simulate::ConnectPaths_z(bool brob)
             {
 				/*MASTER*/
 
-				// Erzeuge Outputvektor für die Zustellung in Z-Richtung
+				// Erzeuge Outputvektor fÃ¼r die Zustellung in Z-Richtung
                 tmp.x = m_StartPnts1[m_conn].X();
                 tmp.y = m_StartPnts1[m_conn].Y();
                 tmp.z = m_StartPnts1[0].Z() + (double(i)*vec_11.Y())/double(N-1);
@@ -874,14 +874,14 @@ bool path_simulate::ConnectPaths_z(bool brob)
 
                 if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())
                 {   
-					// Erzeuge Outputvektor für die Zustellung in Z-Richtung (nur im allerersten Schritt)
+					// Erzeuge Outputvektor fÃ¼r die Zustellung in Z-Richtung (nur im allerersten Schritt)
                     tmp.x = m_StartPnts2[1].X();
                     tmp.y = m_StartPnts2[1].Y();
                     tmp.z = m_StartPnts2[0].Z() + (double(i)*vec_12.Y())/double(N-1);
                 }
                 else
                 {
-					// Erzeuge Outputvektor für die Zustellung in XY-Richtung
+					// Erzeuge Outputvektor fÃ¼r die Zustellung in XY-Richtung
                     tmp.x = m_StartPnts2[0].X() + (double(i)*vec_12.X())/double(N-1);
                     tmp.y = m_StartPnts2[0].Y() + (double(i)*vec_12.Y())/double(N-1);
                     tmp.z = m_StartPnts2[m_conn].Z();
@@ -945,7 +945,7 @@ bool path_simulate::ConnectPaths_z(bool brob)
 
             for (int i=0; i<N; ++i)
             {
-				// Erzeuge Outputvektor für die Zustellung in XY-Richtung
+				// Erzeuge Outputvektor fÃ¼r die Zustellung in XY-Richtung
                 tmp.x = m_StartPnts1[0].X() + (i*vec_12.X())/N;
                 tmp.y = m_StartPnts1[0].Y() + (i*vec_12.Y())/N;
                 tmp.z = m_StartPnts1[0].Z();
@@ -958,7 +958,7 @@ bool path_simulate::ConnectPaths_z(bool brob)
     return true;
 }
 
-/* Füllt die Outputvektoren für die Zustellung für den Feature-Basierten Fall. 
+/* FÃ¼llt die Outputvektoren fÃ¼r die Zustellung fÃ¼r den Feature-Basierten Fall. 
 Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
 bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Slave)
                                       bool brob,  // Ausgabetyp     (Roboter, Simulation)
@@ -1080,7 +1080,7 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
 				else      m_Output_robo2.push_back(tmp);  // Slave
 			}
 
-			ConnPnts[0].SetCoord(tmp.x , tmp.y, tmp.z); // Setze Startpunkt = Endpunkt für die nächste Iteration
+			ConnPnts[0].SetCoord(tmp.x , tmp.y, tmp.z); // Setze Startpunkt = Endpunkt fÃ¼r die nÃ¤chste Iteration
 		}
 
 		return true;
@@ -1108,7 +1108,7 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
             tmp.z = vec[i].Z()*vel;
 
             tmp2.push_back(tmp);
-            Out.push_back(tmp2);  // Fülle temporären Output-Vektor (wird weiter unten zugewiesen)
+            Out.push_back(tmp2);  // FÃ¼lle temporÃ¤ren Output-Vektor (wird weiter unten zugewiesen)
 
             t += m_del_t;
 			tmp2.clear();
@@ -1141,12 +1141,12 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
     return true;  
 }
 
-/* Hier wird unter Berücksichtigung der Krümmungstoleranz <curvTOL> eine Unterteilung der Kurve vorgenommen.
-Die Bereichsgrenzen werden im Rückgabevektor zurückgeliefert. Der Ausgabevektor ist leer wenn die maximale Krümmung
-den Toleranzwert nicht überschreitet und somit auch keine Unterteilung notwendig ist */ 
+/* Hier wird unter BerÃ¼cksichtigung der KrÃ¼mmungstoleranz <curvTOL> eine Unterteilung der Kurve vorgenommen.
+Die Bereichsgrenzen werden im RÃ¼ckgabevektor zurÃ¼ckgeliefert. Der Ausgabevektor ist leer wenn die maximale KrÃ¼mmung
+den Toleranzwert nicht Ã¼berschreitet und somit auch keine Unterteilung notwendig ist */ 
 std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vector<double> knots)
 {
-	m_curMax = 0.0; // setze maximale Krümmung initial auf Null	
+	m_curMax = 0.0; // setze maximale KrÃ¼mmung initial auf Null	
 	double cr_bound = 1/curvTOL;
 	double cr_last;
 	gp_Vec dtmp1, dtmp2;
@@ -1162,19 +1162,19 @@ std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vecto
 
     double fParam = curve.FirstParameter(), // Erster Kurvenparameter
            lParam = curve.LastParameter(),  // Letzter Kurvenparameter
-     	   period = lParam - fParam;        // Länge des Parameterbereichs
+     	   period = lParam - fParam;        // LÃ¤nge des Parameterbereichs
  
 
-	int n  = knots.size();  // Länge des Knotenvektors
+	int n  = knots.size();  // LÃ¤nge des Knotenvektors
 	bool b = false;
 
-	// Hier erfolgt die Berechnung der maximalen Krümmung <m_curMax>
-	// Die Parameter der Bereichsgrenzen an denen die Kurvenkrümmung dem Toleranzwert <cr_bound> 
-	// entspricht werden in den Vektor <bounds> für die weitere Nachbearbeitung gefüllt
+	// Hier erfolgt die Berechnung der maximalen KrÃ¼mmung <m_curMax>
+	// Die Parameter der Bereichsgrenzen an denen die KurvenkrÃ¼mmung dem Toleranzwert <cr_bound> 
+	// entspricht werden in den Vektor <bounds> fÃ¼r die weitere Nachbearbeitung gefÃ¼llt
     for (int i=0; i<n; ++i)
     {
 		curve.D2(knots[i], dtmp0, dtmp1, dtmp2); // Da es sich um eine kubische B-Spline Kurve handelt,
-		                                         // kann die maximale Krümmung nur an den Knotenpunkten angenomen werden
+		                                         // kann die maximale KrÃ¼mmung nur an den Knotenpunkten angenomen werden
 		if(dtmp2.Magnitude() >= cr_bound && !b)
 		{
 			if(knots[i] >= m_boundTol && knots[i] < lParam - m_boundTol)
@@ -1209,18 +1209,18 @@ std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vecto
 			b = false;
 		}
 		
-		cr_last = dtmp2.Magnitude(); // Krümmung entspricht hier dem Betrag der zweiten Ableitung
+		cr_last = dtmp2.Magnitude(); // KrÃ¼mmung entspricht hier dem Betrag der zweiten Ableitung
 			
-		if(m_curMax < cr_last)  // Speichert maximale Krümmung
+		if(m_curMax < cr_last)  // Speichert maximale KrÃ¼mmung
 			m_curMax = cr_last;
 	}
 
 	if(period < 2*m_boundTol || bounds.size() == 0)
 		return CriticalBounds;
 
-	if(b) bounds.push_back(lParam - m_boundTol);  // Hier muss evtl. noch die letzte Grenze eingefügt werden
+	if(b) bounds.push_back(lParam - m_boundTol);  // Hier muss evtl. noch die letzte Grenze eingefÃ¼gt werden
 
-	n = (int) bounds.size()/2;  // <bounds> hat stets gerade Länge
+	n = (int) bounds.size()/2;  // <bounds> hat stets gerade LÃ¤nge
 	for(int i=0; i<n; i++)      // Fasse Bereiche welche einen geringeren Abstand als <m_boundTol> haben zusammen
 	{
 		single_bound.push_back(bounds[2*i]);
@@ -1236,14 +1236,14 @@ std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vecto
     return CriticalBounds;
 }
 
-/* Hier wird die Vorarbeit für die Funktion Gen_Path() geleistet.
-Die Vektoren <m_length>, <m_velocity>, <m_accel> werden für die aktuelle Kurve gefüllt.*/ 
+/* Hier wird die Vorarbeit fÃ¼r die Funktion Gen_Path() geleistet.
+Die Vektoren <m_length>, <m_velocity>, <m_accel> werden fÃ¼r die aktuelle Kurve gefÃ¼llt.*/ 
 bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
                                         // tool = 1  -> Slave
 {
 	m_boundTol = pow(m_vmax, 2.0)/m_amax; // Toleranzbereich vor kritischen Bereichen (notwendig zum Hochbeschleunigen)
 	
-	double cur     = 1.0/curvTOL,         // Krümmungstoleranz für die Kurvenunterteilung
+	double cur     = 1.0/curvTOL,         // KrÃ¼mmungstoleranz fÃ¼r die Kurvenunterteilung
 	       pos     = 0.0, 
 	       cur_tmp = 0.0;
 
@@ -1268,11 +1268,11 @@ bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
 	double d2, velo, tetha, 
 		   len, len_1;
    
-	double t0 = m_t0; // Übergibt aktuelle Startzeit
+	double t0 = m_t0; // Ãœbergibt aktuelle Startzeit
 
 	int num = Detect_FeatCurve(tool);  // Liefert Anzahl der zu fahrenden Kurven (i.d.R. num = 1) 
 	
-	for(int a=0; a<num; a++)  // Schleife über die zusammenhängenden Kurven
+	for(int a=0; a<num; a++)  // Schleife Ã¼ber die zusammenhÃ¤ngenden Kurven
 	{
 		// lade aktuelle kurven
 	    if (!tool)  curve.Load(*m_it1);
@@ -1283,7 +1283,7 @@ bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
 		lParam = curve.LastParameter();
 		period = lParam - fParam;
 
-		// übergibt Starparameter der aktuellen Kurve
+		// Ã¼bergibt Starparameter der aktuellen Kurve
 		m_StartParam[tool] = fParam;
 		start = m_StartParam[tool];
 		
@@ -1311,17 +1311,17 @@ bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
 		std::vector<std::vector<double> > CriticalBounds = 
 			                                CompBounds(tool, knot_vec); // Berechnet auf Basis der aktuellen Kurve, 
 																	    // die kritischen Bereiche im Parameterraum und 
-																	    // berechnet gleichzeitig die maximale Kurvenkrümmung <m_curMax>
+																	    // berechnet gleichzeitig die maximale KurvenkrÃ¼mmung <m_curMax>
 		
 		m_vmid = std::min(m_vmax,sqrt(m_amax/m_curMax)); // Legt Geschwindigkeit fest mit der allen kritischen Bereiche     
 		                                            // abgefahren werden
 
-Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer Versuch mit halbem <m_vmid> gestartet
+Newtry: // Falls die generierten WeglÃ¤ngen nicht ausreichen, dann wird ein neuer Versuch mit halbem <m_vmid> gestartet
 		
 		v[0] = 0.0;  // starte jede Kurve mit v = 0
 		int m = 0;
 
-		for (unsigned int i=0; i<CriticalBounds.size(); ++i)  // Schleife über einzelne Unterteilungsbereiche
+		for (unsigned int i=0; i<CriticalBounds.size(); ++i)  // Schleife Ã¼ber einzelne Unterteilungsbereiche
 		{
 			d2 = 0.0;
 			pos = m_Knots->Value(m);
@@ -1334,13 +1334,13 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 			
 			/*------------------- Gerader Bereich ---------------------*/
 			
-			while(pos < CriticalBounds[i][0]) // Berechnung der maximalen Krümmung dieses geraden Bereichs
+			while(pos < CriticalBounds[i][0]) // Berechnung der maximalen KrÃ¼mmung dieses geraden Bereichs
 			{
 				curve.D2(pos, pnt0, pnt1, pnt2);
-				cur_tmp = pnt2.Magnitude();   // Krümmung am aktuellen Punkt
+				cur_tmp = pnt2.Magnitude();   // KrÃ¼mmung am aktuellen Punkt
 				
 				if(d2 < cur_tmp) 
-					d2 = cur_tmp;             // Speichert maximale Krümmung dieses geraden Bereichs
+					d2 = cur_tmp;             // Speichert maximale KrÃ¼mmung dieses geraden Bereichs
 
 				m++;
 				pos = m_Knots->Value(m);
@@ -1348,7 +1348,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 
 			tetha = 0.6 + 0.25*sqrt(d2/m_curMax);         // Setzt tetha-parameter -> (0.6 < tetha < 0.85)
 			velo = std::min(m_vmax, tetha*(sqrt(m_amax/d2)));  // Setzt maximale Geschwindigkeit <velo>
-			m_a = m_amax - d2*velo*velo;                  // wenn <velo> zu groß gewählt wurde, kann <m_a> evtl. negativ werden
+			m_a = m_amax - d2*velo*velo;                  // wenn <velo> zu groÃŸ gewÃ¤hlt wurde, kann <m_a> evtl. negativ werden
 
 			// Korrektur
 			while(m_a <= 0.0)
@@ -1364,16 +1364,16 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 
 			/*-------------- Korrektur der Geschwindigkeiten (falls der Weg zu lang) -------------*/
 
-			len = CriticalBounds[i][0] - m_StartParam[tool];              // Länge des i. geraden Abschnitts
-			len_1 = (pow(v[1] - v[0],2.0) + pow(v[1] - m_vmid,2.0))/m_a;  // notwendige Länge
+			len = CriticalBounds[i][0] - m_StartParam[tool];              // LÃ¤nge des i. geraden Abschnitts
+			len_1 = (pow(v[1] - v[0],2.0) + pow(v[1] - m_vmid,2.0))/m_a;  // notwendige LÃ¤nge
 
-			if(len < pow(v[0] - m_vmid,2.0)/m_a)  // für diesen Fall ist keine Korrektur möglich
+			if(len < pow(v[0] - m_vmid,2.0)/m_a)  // fÃ¼r diesen Fall ist keine Korrektur mÃ¶glich
 			{
 				l_vec.clear();
 				v_vec.clear();
 				a_vec.clear();
 
-				m_StartParam[tool] = start; // setze Startparameter zurück
+				m_StartParam[tool] = start; // setze Startparameter zurÃ¼ck
 			    m_vmid = m_vmid/2;          // halbiere kritische Durchlaufgeschwindigkeit
 				goto Newtry;
 			}
@@ -1388,16 +1388,16 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 
 			/*---Korrekturende---*/	
 
-			// Fülle Vektoren
-			l_vec.push_back(len);  // Länge
+			// FÃ¼lle Vektoren
+			l_vec.push_back(len);  // LÃ¤nge
 			v_vec.push_back(v);    // Geschwindigkeiten
 			a_vec.push_back(m_a);  // Beschleunigung
 	        
 			m_StartParam[tool] += len;   // setzt Startparameter neu
 
-			/*------------------------ gekrümmter Bereich ------------------------*/
+			/*------------------------ gekrÃ¼mmter Bereich ------------------------*/
 
-			len = CriticalBounds[i][1] - CriticalBounds[i][0];  // Bogenlänge des gekrümmten Bereichs
+			len = CriticalBounds[i][1] - CriticalBounds[i][0];  // BogenlÃ¤nge des gekrÃ¼mmten Bereichs
 			m_StartParam[tool] += len;                          // setzt Startparameter neu
 			v[0] = v[2];                                        // Endgeschwindigkeit wird zur Startgeschwindigkeit
 			
@@ -1415,7 +1415,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 
 		pos = m_Knots->Value(m);
 	    
-		// Berechnung der maximalen Krümmung für den letzten Abschnitt
+		// Berechnung der maximalen KrÃ¼mmung fÃ¼r den letzten Abschnitt
 		while(pos < lParam)
 		{		
 			curve.D2(pos, pnt0, pnt1, pnt2);
@@ -1435,7 +1435,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 			
 		v[1] = velo;
 		v[2] = 0.0;
-		m_a = m_amax - d2*velo*velo; // wenn velo zu groß gewählt wurde, kann m_a negativ werden
+		m_a = m_amax - d2*velo*velo; // wenn velo zu groÃŸ gewÃ¤hlt wurde, kann m_a negativ werden
 
 		// Korrektur
 		while(m_a <= 0.0)
@@ -1447,16 +1447,16 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 
 		d2 = 0;
 
-		len = lParam - m_StartParam[tool] + start;          // Länge des letzten geraden Abschnitts
-		len_1 = (pow(v[1] - v[0],2.0) + pow(v[1],2.0))/m_a; // notwendige Länge
+		len = lParam - m_StartParam[tool] + start;          // LÃ¤nge des letzten geraden Abschnitts
+		len_1 = (pow(v[1] - v[0],2.0) + pow(v[1],2.0))/m_a; // notwendige LÃ¤nge
 
-		if(len < pow(v[0],2.0)/m_a) // hier keine Korrektur möglich
+		if(len < pow(v[0],2.0)/m_a) // hier keine Korrektur mÃ¶glich
 		{
 			l_vec.clear();
 			v_vec.clear();
 			a_vec.clear();
 
-			m_StartParam[tool] = start; // setze Startparameter zurück
+			m_StartParam[tool] = start; // setze Startparameter zurÃ¼ck
 			m_vmid = m_vmid/2;          // halbiere kritische Durchlaufgeschwindigkeit und versuchs erneut
 			goto Newtry;
 		}
@@ -1467,12 +1467,12 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 			len_1 = (pow(v[1] - v[0],2.0) + pow(v[1],2.0))/m_a; 
 		}
 
-		// Fülle Vektoren
-		l_vec.push_back(len);  // Länge
+		// FÃ¼lle Vektoren
+		l_vec.push_back(len);  // LÃ¤nge
 		v_vec.push_back(v);    // Geschwindigkeiten
 		a_vec.push_back(m_a);  // Beschleunignung
 		
-		// Fülle hier erst die Ausgabevektoren (einmal pro Kurve)
+		// FÃ¼lle hier erst die Ausgabevektoren (einmal pro Kurve)
 		if(tool)
 		{	
 			m_length_sl.push_back(l_vec);
@@ -1500,7 +1500,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 		CriticalBounds.clear();
 	}
 
-	// Setze Iterator und Startparameter wieder zurück
+	// Setze Iterator und Startparameter wieder zurÃ¼ck
 	if (!tool)
 	{ 
 		for(int i=0; i<num; i++){m_it1--;}
@@ -1517,7 +1517,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 }
 
 /* Integriert erst nach der Trapezregel die Outputwerte nach der Zeit und liefert den Fehlervektor als Verbindung von Start- und Endpunkt.
-Abschließend erfolgt die Korrektur der Outputvektoren um eben diesen Fehlervektor */
+AbschlieÃŸend erfolgt die Korrektur der Outputvektoren um eben diesen Fehlervektor */
 bool path_simulate::Correction(bool tool)
 {
     int N;
@@ -1601,8 +1601,8 @@ bool path_simulate::Correction(bool tool)
 
         tmp2.push_back(tmp);
 
-        if(tool==false)  m_Output.push_back(tmp2);  // füllt Master-Output
-        else             m_Output2.push_back(tmp2); // füllt Slave-Output
+        if(tool==false)  m_Output.push_back(tmp2);  // fÃ¼llt Master-Output
+        else             m_Output2.push_back(tmp2); // fÃ¼llt Slave-Output
 
         tmp2.clear();
 
@@ -1652,7 +1652,7 @@ bool path_simulate::Correction(bool tool)
     
 	tmp2.push_back(tmp);
 	
-	// Übergebe Nullvektor zur Endzeit <m_T>
+	// Ãœbergebe Nullvektor zur Endzeit <m_T>
 	if (tool==false) 
 	{
 		m_Output.push_back(tmp2);
@@ -1666,7 +1666,7 @@ bool path_simulate::Correction(bool tool)
 
     return true;
 }
-// Hier wird der eigentliche Output für den Simulationsprozess generiert unter der Berücksichtigung 
+// Hier wird der eigentliche Output fÃ¼r den Simulationsprozess generiert unter der BerÃ¼cksichtigung 
 // der in CompPath() berechneten Vektoren m_velocity, m_accel, m_length
 bool path_simulate::Gen_Path()
 {
@@ -1680,13 +1680,13 @@ bool path_simulate::Gen_Path()
 	{
 		m_StartPnts2[0] = (*m_it2)->StartPoint();
 
-/*------------------------------ Berechne Durchlaufzeit für das Master-Tool --------------------------------*/
+/*------------------------------ Berechne Durchlaufzeit fÃ¼r das Master-Tool --------------------------------*/
 
 		n = m_velocity_ma.size();
-		for(int i=0; i<n; i++)                    // Schleife über die (zusammenhängenden) Kurven 
+		for(int i=0; i<n; i++)                    // Schleife Ã¼ber die (zusammenhÃ¤ngenden) Kurven 
 		{
 			m = m_velocity_ma[i].size();       
-			for(int j=0; j<m; j++)                // Schleife über die einzelnen Unterteilungsgebiete 
+			for(int j=0; j<m; j++)                // Schleife Ã¼ber die einzelnen Unterteilungsgebiete 
 			{
 				m_v[0] = m_velocity_ma[i][j][0];  // Startgeschwindigkeit des i-ten Abschnitts
 				m_v[1] = m_velocity_ma[i][j][1];  // maximale Geschwindigkeit des i-ten Abschnitts
@@ -1694,13 +1694,13 @@ bool path_simulate::Gen_Path()
 
 				m_a = m_accel_ma[i][j];
 
-				length = m_length_ma[i][2*j];      // Länge des unkritischen Abschnitts 
+				length = m_length_ma[i][2*j];      // LÃ¤nge des unkritischen Abschnitts 
 												   // Bem: Jede Kurve beginnt und endet in einem unkritischen Abschnitt
 				ParameterCalculation_Curve(length);   // Hier wird die Endzeit m_T berechnet
 
 				if(j != m-1)
 				{
-					length = m_length_ma[i][2*j+1];// Länge des kritischen Abschnitts 
+					length = m_length_ma[i][2*j+1];// LÃ¤nge des kritischen Abschnitts 
 					m_T = m_T + length/m_v[2];     // Berechnet neue Endzeit (kritische Abschnitte werden mit konstanter
 												   // Geschwindigkeit m_v[2] durchlaufen)
 				}
@@ -1709,16 +1709,16 @@ bool path_simulate::Gen_Path()
 			}
 		}
 
-		t_ma = m_T - t_start;                  // Entspricht Durchlaufzeit für den Master
-		m_t0 = t_start;                        // Setzt Startzeit zurück
+		t_ma = m_T - t_start;                  // Entspricht Durchlaufzeit fÃ¼r den Master
+		m_t0 = t_start;                        // Setzt Startzeit zurÃ¼ck
 
-/*-------------------------- Berechnung der Durchlaufzeit für das Slave-Tool -------------------------------*/
+/*-------------------------- Berechnung der Durchlaufzeit fÃ¼r das Slave-Tool -------------------------------*/
 
 		n = m_velocity_sl.size();
-		for(int i=0; i<n; i++)                    // Schleife über die (zusammenhängenden) Kurven 
+		for(int i=0; i<n; i++)                    // Schleife Ã¼ber die (zusammenhÃ¤ngenden) Kurven 
 		{
 			m = m_velocity_sl[i].size();       
-			for(int j=0; j<m; j++)                // Schleife über die einzelnen Unterteilungsgebiete 
+			for(int j=0; j<m; j++)                // Schleife Ã¼ber die einzelnen Unterteilungsgebiete 
 			{
 				m_v[0] = m_velocity_sl[i][j][0];  // Startgeschwindigkeit des i-ten Abschnitts
 				m_v[1] = m_velocity_sl[i][j][1];  // maximale Geschwindigkeit des i-ten Abschnitts
@@ -1726,13 +1726,13 @@ bool path_simulate::Gen_Path()
 
 				m_a = m_accel_sl[i][j];
 
-				length = m_length_sl[i][2*j];      // Länge des unkritischen Abschnitts 
+				length = m_length_sl[i][2*j];      // LÃ¤nge des unkritischen Abschnitts 
 												   // Bem: Jede Kurve beginnt und endet in einem unkritischen Abschnitt
 				ParameterCalculation_Curve(length);// Hier wird u.a. die Endzeit <m_T> berechnet
 
 				if(j != m-1)
 				{
-					length = m_length_sl[i][2*j+1];// Länge des kritischen Abschnitts 
+					length = m_length_sl[i][2*j+1];// LÃ¤nge des kritischen Abschnitts 
 					m_T = m_T + length/m_v[2];     // Berechnet neue Endzeit (kritische Abschnitte werden mit der konstanten
 												   // Geschwindigkeit <m_v[2]> durchlaufen)
 				}
@@ -1741,22 +1741,22 @@ bool path_simulate::Gen_Path()
 			}
 		}
 									   										   
-		t_sl = m_T - t_start;				   // Entspricht Durchlaufzeit für den Slave
-		m_t0 = t_start;						   // Setzt Startzeit zurück
+		t_sl = m_T - t_start;				   // Entspricht Durchlaufzeit fÃ¼r den Slave
+		m_t0 = t_start;						   // Setzt Startzeit zurÃ¼ck
 						
 /*----------------------- Synchronisierung von Master und Slave -----------------------------*/
 
-// Idee: Skaliere die Geschwindigkeiten und Beschleunigungen derjenigen Bahn mit der kürzeren Durchlaufzeit,
-// so dass die Durchlaufzeiten für Master und Slave übereinstimmen
+// Idee: Skaliere die Geschwindigkeiten und Beschleunigungen derjenigen Bahn mit der kÃ¼rzeren Durchlaufzeit,
+// so dass die Durchlaufzeiten fÃ¼r Master und Slave Ã¼bereinstimmen
 
 		
 		if(t_ma <= t_sl)					   
 		{
-			// Ab hier: Korrektur für den Master
+			// Ab hier: Korrektur fÃ¼r den Master
 
 			lam = t_ma/t_sl;  // Skalierungsfaktor 0 < lam <= 1
 			
-			// Zunächst werden alle Geschwindigkeiten runterskaliert
+			// ZunÃ¤chst werden alle Geschwindigkeiten runterskaliert
 			n = m_velocity_ma.size();
 			for(int i=0; i<n; i++)
 			{
@@ -1776,16 +1776,16 @@ bool path_simulate::Gen_Path()
 			{
 				m = m_accel_ma[i].size();
 				for(int j=0; j<m; j++)
-					m_accel_ma[i][j] = lam*lam*m_accel_ma[i][j];  // Die Beschleunigungen müssen mit dem Quadrat des Skalierungsfaktors
-			}                                                     // multipliziert werden (quadratische Abhängigkeit zur Durchlaufzeit)
+					m_accel_ma[i][j] = lam*lam*m_accel_ma[i][j];  // Die Beschleunigungen mÃ¼ssen mit dem Quadrat des Skalierungsfaktors
+			}                                                     // multipliziert werden (quadratische AbhÃ¤ngigkeit zur Durchlaufzeit)
 		}
 		else
 		{
-			// Ab hier: Korrektur für den Slave
+			// Ab hier: Korrektur fÃ¼r den Slave
 
 			lam = t_sl/t_ma;  // Skalierungsfaktor 0 < lam <= 1
 			
-			// Zunächst werden alle Geschwindigkeiten runterskaliert
+			// ZunÃ¤chst werden alle Geschwindigkeiten runterskaliert
 			n = m_velocity_sl.size();
 			for(int i=0; i<n; i++)
 			{
@@ -1805,7 +1805,7 @@ bool path_simulate::Gen_Path()
 			{
 				m = m_accel_sl[i].size();
 				for(int j=0; j<m; j++)
-					m_accel_sl[i][j] = lam*lam*m_accel_sl[i][j];  // Die Beschleunigungen müssen mit dem Quadrat des Skalierungsfaktors
+					m_accel_sl[i][j] = lam*lam*m_accel_sl[i][j];  // Die Beschleunigungen mÃ¼ssen mit dem Quadrat des Skalierungsfaktors
 			}                                                     // multipliziert werden
 		}
 	}
@@ -1818,7 +1818,7 @@ bool path_simulate::Gen_Path()
 	int  q,p;
 
 	n = m_length_ma.size();
-	for(int i=0; i<n; i++)  // Schleife geht über die Anzahl der zu fahrenden Kurven, vgl. path_simulate::CompPath()
+	for(int i=0; i<n; i++)  // Schleife geht Ã¼ber die Anzahl der zu fahrenden Kurven, vgl. path_simulate::CompPath()
 	{
 		if(i!=0)
 			m_it1++;
@@ -1890,7 +1890,7 @@ bool path_simulate::Gen_Path()
 					q++;
 				}
 
-				MakePathSingle(0,m_length_sl[i][j],l,1);  // hier wird der output für den slave generiert
+				MakePathSingle(0,m_length_sl[i][j],l,1);  // hier wird der output fÃ¼r den slave generiert
 				m_StartParam[1] += m_length_sl[i][j];
 				m_t0 = m_T;
 				l = !l;
@@ -1905,14 +1905,14 @@ bool path_simulate::Gen_Path()
 	
 	t_tmp = m_t0;
 
-	m_StartPnts1[1] = (*m_it1)->EndPoint(); // Setzt Endpunkt, notwendig für die folgende Wegkorrektur
-	Correction(0);                          // Wegkorrektur für den Master
+	m_StartPnts1[1] = (*m_it1)->EndPoint(); // Setzt Endpunkt, notwendig fÃ¼r die folgende Wegkorrektur
+	Correction(0);                          // Wegkorrektur fÃ¼r den Master
 
 	if(m_single == false)
 	{
 		m_t0 = t_tmp;
-		m_StartPnts2[1] = (*m_it2)->EndPoint(); // Setzt Endpunkt, notwendig für die folgende Wegkorrektur
-		Correction(1);                          // Wegkorrektur für den Slave
+		m_StartPnts2[1] = (*m_it2)->EndPoint(); // Setzt Endpunkt, notwendig fÃ¼r die folgende Wegkorrektur
+		Correction(1);                          // Wegkorrektur fÃ¼r den Slave
 	}
 
 	m_t0 = t_start;
@@ -1930,9 +1930,9 @@ bool path_simulate::Gen_Path()
 	return true;
 }
 
-/* Hier werden die Simulations-Outputvektoren für die jeweiligen Kurvenabschnitte erzeugt */
+/* Hier werden die Simulations-Outputvektoren fÃ¼r die jeweiligen Kurvenabschnitte erzeugt */
 bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Roboter, Simulation) 
-								   double length, // Bogenlänge des betrachteten Abschnitts
+								   double length, // BogenlÃ¤nge des betrachteten Abschnitts
 								   bool   part,   // Gibt an ob wir einen kritischen Abschnitt betrachten
 								   bool   tool)   // Tool (Master, Slave)
 {
@@ -2012,7 +2012,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 	N = std::max(2, (int)((m_T-m_t0)/m_step));
 
     if (N>=100000) 
-        N = 99999;  // maximale Anzahl möglicher Outputwerte
+        N = 99999;  // maximale Anzahl mÃ¶glicher Outputwerte
 
 	m_del_t = (m_T-m_t0)/double(N);
 
@@ -2032,8 +2032,8 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
             else       m_Output_time2.push_back(t);
 
             d = m_v[2]*(t-m_t0);
-			param = m_StartParam[tool] + d; // Kurvenparameter entspricht zurückgelegtem Weg 
-			                                // für den Fall einer Bogenlängenparametrisierung.			
+			param = m_StartParam[tool] + d; // Kurvenparameter entspricht zurÃ¼ckgelegtem Weg 
+			                                // fÃ¼r den Fall einer BogenlÃ¤ngenparametrisierung.			
 			                                // Bei beliebiger Parametrisierung: 
 			                                // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
 
@@ -2058,7 +2058,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 			tmp3.clear();
 			
 			/*
-			if (tool == false)  // zeichnet den tatsächlichen Weg nach
+			if (tool == false)  // zeichnet den tatsÃ¤chlichen Weg nach
 			{
 				pnt1 = pnt2;
 				
@@ -2085,8 +2085,8 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
         else       m_Output_time2.push_back(t);
         
 		d = GetDistance(t);
-		param = m_StartParam[tool] + d;     // Kurvenparameter entspricht zurückgelegtem Weg 
-			                                // für den Fall einer Bogenlängenparametrisierung.			
+		param = m_StartParam[tool] + d;     // Kurvenparameter entspricht zurÃ¼ckgelegtem Weg 
+			                                // fÃ¼r den Fall einer BogenlÃ¤ngenparametrisierung.			
 			                                // Bei beliebiger Parametrisierung: 
 			                                // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
 
@@ -2111,7 +2111,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 		tmp3.clear();
 		
 		/*
-		if (tool == false)  // zeichnet den tatsächlichen Weg nach
+		if (tool == false)  // zeichnet den tatsÃ¤chlichen Weg nach
 		{
 			pnt1 = pnt2;
 			
@@ -2135,7 +2135,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 	return true;
 }
 
-/* Hauptroutine zur Generierung des Roboteroutputs für den normalen beidseitigen Fall */
+/* Hauptroutine zur Generierung des Roboteroutputs fÃ¼r den normalen beidseitigen Fall */
 bool path_simulate::MakePathRobot()
 {
     ofstream anOutputFile;
@@ -2154,7 +2154,7 @@ bool path_simulate::MakePathRobot()
 		anOutputFile2 << "none" << std::endl;
     }
 
-	// Outputgenerierung über alle Kurven
+	// Outputgenerierung Ã¼ber alle Kurven
     for (m_it1 = m_BSplineTop.begin(); m_it1 != m_BSplineTop.end(); ++m_it1)
     {
         m_StartParam[0] = ((*m_it1)->FirstParameter());
@@ -2211,7 +2211,7 @@ bool path_simulate::MakePathRobot()
 }
 
 /* Wird nur zu Beginn der Ausschreibung in path_simulate::WriteOurputDouble() aufgerufen und passt die Ausgabevektoren
-<m_Output_time>, <m_Output_time2> so aneinander an, dass die Endzeiten übereinstimmen*/ 
+<m_Output_time>, <m_Output_time2> so aneinander an, dass die Endzeiten Ã¼bereinstimmen*/ 
 bool path_simulate::TimeCorrection()
 {
 	int N;
@@ -2220,9 +2220,9 @@ bool path_simulate::TimeCorrection()
 	
 	vecc.push_back(vec);
     
-    if (m_single == false)  // Eine Zeitkorrektur macht nur für diesen Fall auch Sinn
+    if (m_single == false)  // Eine Zeitkorrektur macht nur fÃ¼r diesen Fall auch Sinn
     {
-        if(m_Output_time.size() == 0 || m_Output_time2.size() == 0)  // Sonderbehandlung für diesen Fall
+        if(m_Output_time.size() == 0 || m_Output_time2.size() == 0)  // Sonderbehandlung fÃ¼r diesen Fall
 		{
 			if(m_Output_time.size() > m_Output_time2.size())
 			{
@@ -2230,7 +2230,7 @@ bool path_simulate::TimeCorrection()
 				N = m_Output_time2.size();
 				m_Output2.resize(N);
 				
-				for (int i=0; i<N; ++i) // Füllt leeren Output mit Nullvektoren (Werkzeug hat zu warten)
+				for (int i=0; i<N; ++i) // FÃ¼llt leeren Output mit Nullvektoren (Werkzeug hat zu warten)
 				{
 					m_Output2[i] = vecc; 
 				}
@@ -2243,7 +2243,7 @@ bool path_simulate::TimeCorrection()
 				N = m_Output_time.size();
 				m_Output.resize(N);
 				
-				for (int i=0; i<N; ++i) // Füllt leeren Output mit Nullvektoren (-> Werkzeug hat zu warten)
+				for (int i=0; i<N; ++i) // FÃ¼llt leeren Output mit Nullvektoren (-> Werkzeug hat zu warten)
 				{
 					m_Output[i] = vecc;
 				}
@@ -2251,7 +2251,7 @@ bool path_simulate::TimeCorrection()
 				return true;
 			}
 
-			return true;  //gibt true zurück wenn beide Outputvektoren <m_Output_time> und <m_Output_time2> leer sein sollten
+			return true;  //gibt true zurÃ¼ck wenn beide Outputvektoren <m_Output_time> und <m_Output_time2> leer sein sollten
 		}
 
         if (m_Output_time[m_Output_time.size()-1] < m_Output_time2[m_Output_time2.size()-1])
@@ -2303,7 +2303,7 @@ bool path_simulate::TimeCorrection()
     return true;
 }
 
-/* Hauptroutine zur Generierung des Simulationsoutputs für den feature-basierten und spiral-basierten beidseitigen Fall */
+/* Hauptroutine zur Generierung des Simulationsoutputs fÃ¼r den feature-basierten und spiral-basierten beidseitigen Fall */
 bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, bool spiral)
 {
     m_Feat = true;
@@ -2379,41 +2379,41 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
             if (*it_1 != (*curves_1).end()-1)
             {
 				/* ------ Kurve ------*/
-                CompPath(0); 														 // Berechne Parameter für den Master
-				CompPath(1); 														 // Berechne Parameter für den Slave
-				Gen_Path();  														 // Erzeuge Output für aktuelle Kurve
+                CompPath(0); 														 // Berechne Parameter fÃ¼r den Master
+				CompPath(1); 														 // Berechne Parameter fÃ¼r den Slave
+				Gen_Path();  														 // Erzeuge Output fÃ¼r aktuelle Kurve
 				WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
                 UpdateParam();
 
 				/*------ Zustellung ------*/
-                (*it_1)++;                     										 // Gehe zur nächsten Kurve
-                ConnectPaths_Feat(tool, 0, 1); 										 // Erzeuge Output für Zustellung
+                (*it_1)++;                     										 // Gehe zur nÃ¤chsten Kurve
+                ConnectPaths_Feat(tool, 0, 1); 										 // Erzeuge Output fÃ¼r Zustellung
 				WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
                 UpdateParam();
 
                 if (*it_1 == (*curves_1).end()-1 && *it_2 == (*curves_2).end()-1)    // Letzter Schritt
                 {
 					/* ------ Kurve ------*/
-					CompPath(0);  // Berechne Parameter für den Master
-					CompPath(1);  // Berechne Parameter für den Slave
-					Gen_Path();	  // Erzeuge Output für aktuelle Kurve
+					CompPath(0);  // Berechne Parameter fÃ¼r den Master
+					CompPath(1);  // Berechne Parameter fÃ¼r den Slave
+					Gen_Path();	  // Erzeuge Output fÃ¼r aktuelle Kurve
 					WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
 					UpdateParam();
                     break;
                 }
 
-                (**it_1)->D0((**it_1)->FirstParameter(),pnt0); // übergebe aktuellen Startpunkt
+                (**it_1)->D0((**it_1)->FirstParameter(),pnt0); // Ã¼bergebe aktuellen Startpunkt
 
                 
-                if ((pnt0.Z() > (flatAreas[i+1] + rad[tool] - 1e-1)) &&  // Erreicht der MASTER den nächsten ebenen 
+                if ((pnt0.Z() > (flatAreas[i+1] + rad[tool] - 1e-1)) &&  // Erreicht der MASTER den nÃ¤chsten ebenen 
                     (pnt0.Z() < (flatAreas[i+1] + rad[tool] + 1e-1)))    // Bereich, muss auf den SLAVE gewartet werden
                 {
 					if(!spiral)  // Bei Spiralbahnen erfolgt die Zustellung sofort
 					{
 						/* ------ Kurve ------*/
-						CompPath(0);  // Berechne Parameter für den Master
-						CompPath(1);  // Berechne Parameter für den Slave
-						Gen_Path();	  // Erzeuge Output für aktuelle Kurve
+						CompPath(0);  // Berechne Parameter fÃ¼r den Master
+						CompPath(1);  // Berechne Parameter fÃ¼r den Slave
+						Gen_Path();	  // Erzeuge Output fÃ¼r aktuelle Kurve
 						WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
 						UpdateParam();
 					}
@@ -2425,9 +2425,9 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
                 if (*it_2 == (*curves_2).end()-1)  // letzter Schritt
                 {
 					/* ------ Kurve ------*/
-                    CompPath(0);  // Berechne Parameter für den Master
-					CompPath(1);  // Berechne Parameter für den Slave
-					Gen_Path();	  // Erzeuge Output für aktuelle Kurve
+                    CompPath(0);  // Berechne Parameter fÃ¼r den Master
+					CompPath(1);  // Berechne Parameter fÃ¼r den Slave
+					Gen_Path();	  // Erzeuge Output fÃ¼r aktuelle Kurve
 					WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
 					UpdateParam();
                     break;
@@ -2442,12 +2442,12 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
 		/* ------ Zustellung ------*/
 		if(!spiral) 
 		{
-			(*it_1)++;						// gehe zur nächsten Kurve
-			ConnectPaths_Feat(tool, 0, 1);	// Erzeuge Output für die Master-Zustellung
+			(*it_1)++;						// gehe zur nÃ¤chsten Kurve
+			ConnectPaths_Feat(tool, 0, 1);	// Erzeuge Output fÃ¼r die Master-Zustellung
 		}
 		
-		(*it_2)++;															 // gehe zur nächsten Kurve										 
-		ConnectPaths_Feat(!tool, 0, 0);								         // Erzeuge Output für die Slave-Zustellung
+		(*it_2)++;															 // gehe zur nÃ¤chsten Kurve										 
+		ConnectPaths_Feat(!tool, 0, 0);								         // Erzeuge Output fÃ¼r die Slave-Zustellung
 		WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
 		UpdateParam();
         
@@ -2464,7 +2464,7 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
     return true;
 }
 
-/* Hauptroutine zur Generierung des Roboteroutputs für den feature-basierten und spiral-basierten beidseitigen Fall */
+/* Hauptroutine zur Generierung des Roboteroutputs fÃ¼r den feature-basierten und spiral-basierten beidseitigen Fall */
 bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
 {
     m_Feat = true;
@@ -2492,7 +2492,7 @@ bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
     {
         tool = StartingTool();  // Bestimmt welches tool warten muss
 
-        // Setze Startparameter (in unserem Fall unnötig da immer 0)
+        // Setze Startparameter (in unserem Fall unnÃ¶tig da immer 0)
         m_StartParam[0] = ((*m_it1)->FirstParameter());
         if (m_single == false) m_StartParam[1] = ((*m_it2)->FirstParameter());
 
@@ -2521,7 +2521,7 @@ bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
         // Hauptschleife
         while (true)
         {
-            MakePathSingle(1,0,0,tool);  // Bahngenerierung des kontinuierlich fahrenden tools für aktuelle kurve
+            MakePathSingle(1,0,0,tool);  // Bahngenerierung des kontinuierlich fahrenden tools fÃ¼r aktuelle kurve
 
             // MASTER
             if (*it_1 != (*curves_1).end()-1)
@@ -2627,8 +2627,8 @@ bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
     return true;
 }
 
-// Hilfsfunktion für den Featurebasierten Teil:
-// Bestimmt welches Tool wartet, während das andere läuft
+// Hilfsfunktion fÃ¼r den Featurebasierten Teil:
+// Bestimmt welches Tool wartet, wÃ¤hrend das andere lÃ¤uft
 bool path_simulate::StartingTool()
 {
     double z0,z1;
@@ -2636,7 +2636,7 @@ bool path_simulate::StartingTool()
 
     if(m_it1 != m_BSplineTop.end()-1)
     {
-        // z-Abstand zur nächsten Bahn - MASTER
+        // z-Abstand zur nÃ¤chsten Bahn - MASTER
         (*m_it1)->D0((*m_it1)->FirstParameter(),pnt0); m_it1++;
         (*m_it1)->D0((*m_it1)->FirstParameter(),pnt1); m_it1--;
        
@@ -2648,7 +2648,7 @@ bool path_simulate::StartingTool()
 
     if(m_it2 != m_BSplineBottom.end()-1)
     {
-        // z-Abstand zur nächsten Bahn - SLAVE
+        // z-Abstand zur nÃ¤chsten Bahn - SLAVE
         (*m_it2)->D0((*m_it2)->FirstParameter(),pnt0); m_it2++;
         (*m_it2)->D0((*m_it2)->FirstParameter(),pnt1); m_it2--;
         
@@ -2660,8 +2660,8 @@ bool path_simulate::StartingTool()
     else       return true;   // Master muss warten
 }
 
-/* Hier wird geschaut, ob es sich um eine geschlossene Kurve handelt bzw. wieviele Kurven abgefahren werden müssen
-um wieder am Anfangspunkt der Kurve anzukommen. Die Anzahl der zu fahrenden Kurven wird als integer zurückgegeben */
+/* Hier wird geschaut, ob es sich um eine geschlossene Kurve handelt bzw. wieviele Kurven abgefahren werden mÃ¼ssen
+um wieder am Anfangspunkt der Kurve anzukommen. Die Anzahl der zu fahrenden Kurven wird als integer zurÃ¼ckgegeben */
 int path_simulate::Detect_FeatCurve(bool tool)
 {
     gp_Pnt pt0,pt1;
@@ -2680,7 +2680,7 @@ int path_simulate::Detect_FeatCurve(bool tool)
 					m_it1--;
 
 				num = 1;
-				pt1 = pt0; // Damit die äußere while-Schleife verlassen wird
+				pt1 = pt0; // Damit die Ã¤uÃŸere while-Schleife verlassen wird
 			}
 			else
 			{
@@ -2690,7 +2690,7 @@ int path_simulate::Detect_FeatCurve(bool tool)
 			}
 		}
 
-		// Zurück zum Status quo
+		// ZurÃ¼ck zum Status quo
 		for(int i=1; i<num; i++)
 			m_it1--;
 	}
@@ -2717,7 +2717,7 @@ int path_simulate::Detect_FeatCurve(bool tool)
 			}
 		}
 
-		// Zurück zum Status quo
+		// ZurÃ¼ck zum Status quo
 		for(int i=1; i<num; i++)
 			m_it2--;
 	}
@@ -2725,7 +2725,7 @@ int path_simulate::Detect_FeatCurve(bool tool)
 	return num;
 }
 
-/* Hauptroutine zur Generierung des Simulationsoutputs für den normalen beidseitigen Fall */
+/* Hauptroutine zur Generierung des Simulationsoutputs fÃ¼r den normalen beidseitigen Fall */
 bool path_simulate::MakePathSimulate()
 {
     int c1 = 1, 
@@ -2742,7 +2742,7 @@ bool path_simulate::MakePathSimulate()
         anOutputFile2.precision(7);
     }
 
-    for (m_it1 = m_BSplineTop.begin(); m_it1 < m_BSplineTop.end(); ++m_it1)  // Schleife über alle Kurven 
+    for (m_it1 = m_BSplineTop.begin(); m_it1 < m_BSplineTop.end(); ++m_it1)  // Schleife Ã¼ber alle Kurven 
     {
         m_StartParam[0] = ((*m_it1)->FirstParameter());     // speichert Startparameterwert der aktuellen Master-Kurve
        
@@ -2752,8 +2752,8 @@ bool path_simulate::MakePathSimulate()
 
 		/*Zustellung Start*/
 
-        m_conn = CheckConnect(); // Rückgabewert = 1 bei negativer z-Richtungszustellung
-                         		 // Rückgabewert = 0 bei positiver z-Richtungszustellung 
+        m_conn = CheckConnect(); // RÃ¼ckgabewert = 1 bei negativer z-Richtungszustellung
+                         		 // RÃ¼ckgabewert = 0 bei positiver z-Richtungszustellung 
        
 		//  negative z-Richtung: 1. XY --> 2. Z              
 		//  positive z-Richtung: 1. Z  --> 2. XY    
@@ -2782,10 +2782,10 @@ bool path_simulate::MakePathSimulate()
 		
 		/*Kurve Start*/
 
-        CompPath(0); // Berechnung der Parameter für den Master
+        CompPath(0); // Berechnung der Parameter fÃ¼r den Master
         
 		if (m_single == false)
-			CompPath(1); // Berechnung der Parameter für den Slave
+			CompPath(1); // Berechnung der Parameter fÃ¼r den Slave
 
 		Gen_Path();  // Erzeugung der Outputvektoren
 
@@ -2828,7 +2828,7 @@ bool path_simulate::MakePathSimulate()
     return true;
 }
 
-/* Schreibt den Output für den feature- und spiral-basierten beidseitigen Fall */
+/* Schreibt den Output fÃ¼r den feature- und spiral-basierten beidseitigen Fall */
 bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputFile2, int &c, bool brob)
 {
     if (m_single == false)
@@ -3013,7 +3013,7 @@ bool path_simulate::WriteTimes()
 }
 */
 
-/* Schreibt Output für den normalen einseitigen Fall */
+/* Schreibt Output fÃ¼r den normalen einseitigen Fall */
 bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob, bool tool, bool beamfl)
 {
     std::vector< std::vector<Base::Vector3d> > Out_val;
@@ -3060,7 +3060,7 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
     n = Out_val.size();
 
     if (n != Out_time.size())
-        throw Base::Exception("Outputlängen passen nicht zusammen");
+        throw Base::Exception("OutputlÃ¤ngen passen nicht zusammen");
 
     if (n>1)
     {
@@ -3153,7 +3153,7 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
     return true;
 }
 
-/* Schreibt Output für den normalen beidseitigen Fall */
+/* Schreibt Output fÃ¼r den normalen beidseitigen Fall */
 bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutputFile2, int &c1, int &c2, bool brob, bool beamfl)
 {
     std::pair<float,float> times;
@@ -3187,7 +3187,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 
             times.first  = (float) m_Output_time[0];
             times.second = (float) m_Output_time[n-1];
-            m_PathTimes_Master.push_back(times);       // fülle vektor für curve-times
+            m_PathTimes_Master.push_back(times);       // fÃ¼lle vektor fÃ¼r curve-times
 
             
 			
@@ -3198,7 +3198,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile2 << pid2 << ",1,0," << c2 <<  ",1.000000, ," << m_Output_time2[n2-1] << ","  << m_Output_time2[0] << std::endl;
 			
-			if (beamfl) // wenn auf true, dann füge neuen part mit ein
+			if (beamfl) // wenn auf true, dann fÃ¼ge neuen part mit ein
             {
                 anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
                 anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
@@ -3249,7 +3249,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile2 << pid2 << ",2,0," << c2+1 <<  ",1.000000, ," << m_Output_time2[n2-1] << ","  << m_Output_time2[0] << std::endl;
             
-			if (beamfl) // wenn auf true, dann füge neuen part mit ein
+			if (beamfl) // wenn auf true, dann fÃ¼ge neuen part mit ein
             {
                 anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
                 anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;

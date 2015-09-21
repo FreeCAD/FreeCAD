@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2007                                                    *
  *   Joachim Zettler <Joachim.Zettler@gmx.de>                              *
- *   Jürgen Riegel <Juergen.Riegel@web.de                                  *
+ *   JÃ¼rgen Riegel <Juergen.Riegel@web.de                                  *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -167,7 +167,7 @@ static PyObject * tesselateShape(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "O!f", &(TopoShapePy::Type), &pcObj, &aDeflection))    // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //Surface oder Step-File wird übergeben
+    TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //Surface oder Step-File wird Ã¼bergeben
 
 
     Base::Builder3D aBuild;
@@ -251,7 +251,7 @@ static PyObject * best_fit_coarse(PyObject *self, PyObject *args)
     PY_TRY
     {
 
-        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Shape wird übergeben
+        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Shape wird Ã¼bergeben
         TopoDS_Shape cad           = pcShape->getTopoShapePtr()->_Shape;  // Input CAD
 
 
@@ -287,7 +287,7 @@ static PyObject * best_fit_coarse(PyObject *self, PyObject *args)
 //    if (!PyArg_ParseTuple(args, "O!", &(TopoShapePyOld::Type), &pcObj))    // convert args: Python->C
 //        return NULL;                             // NULL triggers exception
 //
-//    TopoShapePyOld *pcShape = static_cast<TopoShapePyOld*>(pcObj); //Surface wird übergeben
+//    TopoShapePyOld *pcShape = static_cast<TopoShapePyOld*>(pcObj); //Surface wird Ã¼bergeben
 //// TopoShapePyOld *pcShape2 = static_cast<TopoShapePyOld*>(pcObj2); //Cut-Curve
 //    PY_TRY
 //    {
@@ -365,7 +365,7 @@ static PyObject * offset(PyObject *self,PyObject *args)
     if (!PyArg_ParseTuple(args, "O!d",&(TopoShapePy::Type), &pcObj,&offset ))
         return NULL;
 
-    TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //Original-Shape wird hier übergeben
+    TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //Original-Shape wird hier Ã¼bergeben
 
     PY_TRY
     {
@@ -385,7 +385,7 @@ static PyObject * cut(PyObject *self, PyObject *args)
 {
  PyObject *pcObj;
  double z_pitch;
- //double rGap = 1000.0; //Rand um die Bounding Box für ein sauberes Ergebnis
+ //double rGap = 1000.0; //Rand um die Bounding Box fÃ¼r ein sauberes Ergebnis
  if (!PyArg_ParseTuple(args, "O!d", &(TopoShapePyOld::Type), &pcObj,&z_pitch))     // convert args: Python->C
   return NULL;                             // NULL triggers exception
 
@@ -405,10 +405,10 @@ static PyObject * cut(PyObject *self, PyObject *args)
 
    Jetzt die eigentlichen Schnitte erzeugen:
    1. Wenn die oberste Ebene ein flacher Bereich ist, werden von dort die Bounding Wires genommen
-    Ermittlung über die Bounding Box
-   2. Anschließend über die Differenz von zwei Flat-Bereichen die Anzahl von Schnitten ermitteln mit gegebenem Abstand
-   3. Die Edges bzw. Wires in B-Spline Kurven wandeln und anschließend evaluieren
-   4. Abfahrreihenfolge festlegen und Output für die Simulation bzw. Versuch vorbereiten
+    Ermittlung Ã¼ber die Bounding Box
+   2. AnschlieÃŸend Ã¼ber die Differenz von zwei Flat-Bereichen die Anzahl von Schnitten ermitteln mit gegebenem Abstand
+   3. Die Edges bzw. Wires in B-Spline Kurven wandeln und anschlieÃŸend evaluieren
+   4. Abfahrreihenfolge festlegen und Output fÃ¼r die Simulation bzw. Versuch vorbereiten
 
 
 
@@ -3334,7 +3334,7 @@ static PyObject * offset_mesh(PyObject *self, PyObject *args)
             normal.Set(0.0,0.0,0.0);
 
 
-            // Iteriere über die Dreiecke zu jedem Punkt
+            // Iteriere Ã¼ber die Dreiecke zu jedem Punkt
             for (std::set<unsigned long>::const_iterator it = faceSet.begin(); it != faceSet.end(); ++it)
             {
                 // Einmal derefernzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
@@ -3402,7 +3402,7 @@ static PyObject * offset_mesh(PyObject *self, PyObject *args)
 //  return NULL;                             // NULL triggers exception
 //
 //
-// TopoShapePyOld *pcShape = static_cast<TopoShapePyOld*>(pcObj); //Surface wird übergeben
+// TopoShapePyOld *pcShape = static_cast<TopoShapePyOld*>(pcObj); //Surface wird Ã¼bergeben
 //
 // TopExp_Explorer Ex;
 // Ex.Init(pcShape->getShape(),TopAbs_FACE);  // initialisiere cad-geometrie (trimmed surface)
@@ -3445,7 +3445,7 @@ static PyObject * offset_mesh(PyObject *self, PyObject *args)
 //
 //    for (;Ex.More();Ex.Next())
 //    {
-//  // übergebe die einzelnen patches
+//  // Ã¼bergebe die einzelnen patches
 //  atopo_surface = TopoDS::Face (Ex.Current());
 //  adaptor_surface.Initialize(atopo_surface);
 //
@@ -3649,7 +3649,7 @@ static PyObject * best_fit_complete(PyObject *self, PyObject *args)
         gp_Pnt orig;
 
         pcObject  = (MeshPy*)pcObj;
-        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Shape wird übergeben
+        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Shape wird Ã¼bergeben
         TopoDS_Shape cad           = pcShape->getTopoShapePtr()->_Shape;  // Input CAD
         MeshCore::MeshKernel mesh  = pcObject->getMeshObjectPtr()->getKernel();  // Input Mesh
 
@@ -3682,7 +3682,7 @@ static PyObject * best_fit_test(PyObject *self, PyObject *args)
     PY_TRY
     {
 
-        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //Shape wird übergeben
+        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //Shape wird Ã¼bergeben
         TopoDS_Shape aShape = pcShape->getTopoShapePtr()->_Shape;
         TopExp_Explorer anExplorer;
         TopExp_Explorer aFaceExplorer;
@@ -3755,7 +3755,7 @@ static PyObject * best_fit_test(PyObject *self, PyObject *args)
         }
         GeomAPI_PointsToBSplineSurface *Approx_Surface = new GeomAPI_PointsToBSplineSurface(Input, 3, 8, GeomAbs_C1,0.1);
         Handle(Geom_BSplineSurface) Final_Approx = Approx_Surface->Surface () ;
-        //Jetzt die Wires vom ursprünglichen Face offsettieren.
+        //Jetzt die Wires vom ursprÃ¼nglichen Face offsettieren.
         TopExp_Explorer asecondFaceExplorer;
         TopoDS_Wire aFaceWire;
         for (asecondFaceExplorer.Init(first,TopAbs_WIRE);asecondFaceExplorer.More();asecondFaceExplorer.Next())
@@ -3860,7 +3860,7 @@ static PyObject * shape2orig(PyObject *self, PyObject *args)
         GProp_PrincipalProps pprop;
         gp_Pnt orig;
 
-        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //shape wird übergeben
+        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //shape wird Ã¼bergeben
         TopoDS_Shape cad           = pcShape->getTopoShapePtr()->_Shape;  // Input CAD
 
 //        best_fit befi(cad);
@@ -3892,7 +3892,7 @@ static PyObject * spring_back(PyObject *self, PyObject *args)
         gp_Pnt orig;
 
         pcObject  = (MeshPy*)pcObj;
-        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Shape wird übergeben
+        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Shape wird Ã¼bergeben
         TopoDS_Shape cad              = pcShape->getTopoShapePtr()->_Shape;            // Input CAD
         MeshObject* anObject          = pcObject->getMeshObjectPtr();            // Input Mesh
         MeshCore::MeshKernel mesh     = anObject->getKernel();
@@ -3934,7 +3934,7 @@ static PyObject * tess_shape(PyObject *self, PyObject *args)
     PY_TRY
     {
 
-        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //shape wird übergeben
+        TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj); //shape wird Ã¼bergeben
         TopoDS_Shape cad        = pcShape->getTopoShapePtr()->_Shape;  // Input CAD
 
         //best_fit befi(cad);
@@ -4033,7 +4033,7 @@ static PyObject * fit_iter(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "O!O!; Need exatly one Mesh object", &(MeshPy::Type), &pcObj, &(TopoShapePy::Type), &pcObj2))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Surface wird übergeben
+    TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Surface wird Ã¼bergeben
     TopoDS_Shape cad = pcShape->getTopoShapePtr()->_Shape;
 
     TopExp_Explorer Ex;
@@ -4090,7 +4090,7 @@ static PyObject * fit_iter(PyObject *self, PyObject *args)
                 normal.Set(0.0,0.0,0.0);
 
 
-                // Iteriere über die Dreiecke zu jedem Punkt
+                // Iteriere Ã¼ber die Dreiecke zu jedem Punkt
                 for (std::set<unsigned long>::const_iterator it = faceSet.begin(); it != faceSet.end(); ++it)
                 {
                     // Einmal derefernzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert

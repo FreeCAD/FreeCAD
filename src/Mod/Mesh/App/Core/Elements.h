@@ -361,8 +361,8 @@ public:
   bool IsDegenerated() const;
   /**
    * Checks whether the triangle is deformed. The definition of a deformed triangles is not as strong
-   * as the definition of a degenerated triangle. A triangle is deformed if the maximum angle exceeds 120°
-   * or the minimum angle falls below 30°.
+   * as the definition of a degenerated triangle. A triangle is deformed if the maximum angle exceeds 120Â°
+   * or the minimum angle falls below 30Â°.
    * A degenerated triangle is also a deformed triangle.
    */
   bool IsDeformed() const;

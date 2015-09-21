@@ -857,7 +857,7 @@ void ManualAlignment::finish()
 }
 
 /**
- * Cancels the process and clöses the windows without performing an alignment.
+ * Cancels the process and clÃ¶ses the windows without performing an alignment.
  */
 void ManualAlignment::cancel()
 {

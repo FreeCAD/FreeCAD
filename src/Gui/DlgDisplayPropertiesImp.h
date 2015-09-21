@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,7 +47,7 @@ typedef boost::signals::connection DlgDisplayPropertiesImp_Connection;
 /**
  * The DlgDisplayPropertiesImp class implements a dialog containing all available document
  * templates to create a new document.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class DlgDisplayPropertiesImp : public QDialog, public Ui_DlgDisplayProperties,
                                 public Gui::SelectionSingleton::ObserverType

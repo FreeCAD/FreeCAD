@@ -260,35 +260,35 @@ public:
      */
     virtual ~QuadraticFit(){};
     /**
-     * Übertragen der Quadric-Koeffizienten
+     * Ãœbertragen der Quadric-Koeffizienten
      * @param ulIndex Nummer des Koeffizienten (0..9)
      * @return double Wert des Koeffizienten
      */
     double GetCoeff(unsigned long ulIndex) const;
     /**
-     * Übertragen der Koeffizientan als Referenz
+     * Ãœbertragen der Koeffizientan als Referenz
      * auf das interne Array
      * @return const double& Referenz auf das double-Array
      */
     const double& GetCoeffArray() const;
     /**
      * Aufruf des Fit-Algorithmus
-     * @return float Qualität des Fits.
+     * @return float QualitÃ¤t des Fits.
      */
     float Fit();
 
     void CalcZValues(double x, double y, double &dZ1, double &dZ2) const;
     /**
-     * Berechnen der Krümmungswerte der Quadric in einem bestimmten Punkt.
+     * Berechnen der KrÃ¼mmungswerte der Quadric in einem bestimmten Punkt.
      * @param x X-Koordinate
      * @param y Y-Koordinate
      * @param z Z-Koordinate
-     * @param rfCurv0 1. Hauptkrümmung
-     * @param rfCurv1 2. Hauptkrümmung
-     * @param rkDir0  Richtung der 1. Hauptkrümmung
-     * @param rkDir1  Richtung der 2. Hauptkrümmung
+     * @param rfCurv0 1. HauptkrÃ¼mmung
+     * @param rfCurv1 2. HauptkrÃ¼mmung
+     * @param rkDir0  Richtung der 1. HauptkrÃ¼mmung
+     * @param rkDir1  Richtung der 2. HauptkrÃ¼mmung
      * @param dDistance
-     * @return bool Fehlerfreie Ausfürhung = true, ansonsten false
+     * @return bool Fehlerfreie AusfÃ¼rhung = true, ansonsten false
      */
     bool GetCurvatureInfo(double x, double y, double z,
                           double &rfCurv0, double &rfCurv1,
@@ -315,13 +315,13 @@ protected:
 // -------------------------------------------------------------------------------
 
 /**
- * Dies ist ein 2,5D-Ansatz, bei dem zunächst die Ausgleichsebene der Punktmenge (P_i = (x,y,z), i=1,...,n) 
+ * Dies ist ein 2,5D-Ansatz, bei dem zunÃ¤chst die Ausgleichsebene der Punktmenge (P_i = (x,y,z), i=1,...,n) 
  * bestimmt wird. Danach wird eine Parametrisierung der Datenpunkte errechnet. Die Datenpunkte 
  * werden somit bzgl. des lokalen Systems der Ebene dargestellt (P_i = (u,v,w)). 
  * Durch diese transformierten Punkte wird nun eine quadratische Funktion
  *      w = f(u,v) = a*u^2 + b*v^2 + c*u*v + d*u + e*v + f
  * berechnet.
- * Dieser Ansatz wurde als Alternative für den 3D-Ansatz mit Quadriken entwickelt, da bei
+ * Dieser Ansatz wurde als Alternative fÃ¼r den 3D-Ansatz mit Quadriken entwickelt, da bei
  * Quadriken in (vor allem) ebenen Bereichen recht seltsame Artefakte auftreten.
  */
 class MeshExport SurfaceFit : public PlaneFit
@@ -350,7 +350,7 @@ protected:
 // -------------------------------------------------------------------------------
 
 /**
- * Hilfs-Klasse für den Quadric-Fit. Beinhaltet die 
+ * Hilfs-Klasse fÃ¼r den Quadric-Fit. Beinhaltet die 
  * partiellen Ableitungen der Quadric und dient zur
  * Berechnung der Quadrik-Eigenschaften.
  */
@@ -374,7 +374,7 @@ public:
         pImplSurf = new Wm4::QuadricSurface<double>( dKoeff );
     }
     /**
-     * Übernehmen der Quadric-Parameter
+     * Ãœbernehmen der Quadric-Parameter
      * @param pKoef Zeiger auf die Quadric-Parameter
      *        (double [10])
      */
@@ -384,7 +384,7 @@ public:
             dKoeff[ ct ] = pKoef[ ct ];
     }
     /**
-     * Destruktor. Löscht die ImpicitSurface Klasse
+     * Destruktor. LÃ¶scht die ImpicitSurface Klasse
      * der MGC-Bibliothek wieder
      */
     ~FunctionContainer(){ delete pImplSurf; }
@@ -396,16 +396,16 @@ public:
     double& operator[](int idx){ return dKoeff[ idx ]; }
     /**
      * Redirector auf eine Methode der MGC Bibliothek. Ermittelt
-     * die Hauptkrümmungen und ihre Richtungen im angegebenen Punkt.
+     * die HauptkrÃ¼mmungen und ihre Richtungen im angegebenen Punkt.
      * @param x X-Koordinate
      * @param y Y-Koordinate
      * @param z Z-Koordinate
-     * @param rfCurv0 1. Hauptkrümmung
-     * @param rfCurv1 2. Hauptkrümmung
-     * @param rkDir0  Richtung der 1. Hauptkrümmung
-     * @param rkDir1  Richtung der 2. Hauptkrümmung
+     * @param rfCurv0 1. HauptkrÃ¼mmung
+     * @param rfCurv1 2. HauptkrÃ¼mmung
+     * @param rkDir0  Richtung der 1. HauptkrÃ¼mmung
+     * @param rkDir1  Richtung der 2. HauptkrÃ¼mmung
      * @param dDistance Ergebnis das die Entfernung des Punktes von der Quadrik angibt.
-     * @return bool Fehlerfreie Ausfürhung = true, ansonsten false
+     * @return bool Fehlerfreie AusfÃ¼rhung = true, ansonsten false
      */
     bool CurvatureInfo(double x, double y, double z, 
                        double &rfCurv0, double &rfCurv1,
