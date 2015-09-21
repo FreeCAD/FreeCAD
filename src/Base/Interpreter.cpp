@@ -251,16 +251,12 @@ void InterpreterSingleton::systemExit(void)
     PyErr_Fetch(&exception, &value, &tb);
 #if PY_MAJOR_VERSION < 3
     if (Py_FlushLine())
-#endif
         PyErr_Clear();
+#endif
     fflush(stdout);
     if (value == NULL || value == Py_None)
         goto done;
-#if PY_MAJOR_VERSION >= 3
-    if (PyObject_HasAttrString(value, (char *) "code")) { // PyInstance_Check removed in py3
-#else
-    if (PyInstance_Check(value)) {
-#endif
+    if (PyExceptionInstance_Check(value)) {
         /* The error code should be in the `code' attribute. */
         PyObject *code = PyObject_GetAttrString(value, "code");
         if (code) {
