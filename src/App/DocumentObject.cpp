@@ -194,7 +194,7 @@ void DocumentObject::onBeforeChange(const Property* prop)
     // Store current name in oldLabel, to be able to easily retrieve old name of document object later
     // when renaming expressions.
     if (prop == &Label)
-        oldLabel = static_cast<PropertyString*>(&Label)->getStrValue();
+        oldLabel = Label.getStrValue();
 
     if (_pDoc)
         _pDoc->onBeforeChangeProperty(this,prop);
