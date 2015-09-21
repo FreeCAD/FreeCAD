@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@ namespace Dialog {
 
 /**
  * 
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal 
 { 

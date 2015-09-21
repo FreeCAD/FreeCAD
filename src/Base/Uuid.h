@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2008                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@ namespace Base
 {
 
 /** Creates a Uuid
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class BaseExport Uuid
 {

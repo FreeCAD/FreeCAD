@@ -200,9 +200,9 @@ static bool findIJ (const SMDS_MeshNode* node, const FaceQuadStruct * quad, int&
  * -0.  - shape and face mesh verification
  * -1.  - identify faces and vertices of the "cube"
  * -2.  - Algorithm from:
- * "Application de l'interpolation transfinie à la création de maillages
+ * "Application de l'interpolation transfinie Ã  la crÃ©ation de maillages
  *  C0 ou G1 continus sur des triangles, quadrangles, tetraedres, pentaedres
- *  et hexaedres déformés."
+ *  et hexaedres dÃ©formÃ©s."
  * Alain PERONNET - 8 janvier 1999
  */
 //=============================================================================

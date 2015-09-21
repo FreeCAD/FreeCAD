@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2005 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,7 +41,7 @@ class SelectionChanges;
 /**
  * The SoFCSelectionAction class is used to inform an SoFCSelection node
  * whether an object gets selected. 
- * @author Jürgen Riegel
+ * @author JÃ¼rgen Riegel
  */
 class GuiExport SoFCSelectionAction : public SoAction
 {

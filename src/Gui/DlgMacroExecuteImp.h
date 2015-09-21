@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,7 +33,7 @@ namespace Dialog {
 /**
  * The DlgMacroExecuteImp class implements a dialog to execute or edit a
  * recorded macro. 
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class DlgMacroExecuteImp : public QDialog, public Ui_DlgMacroExecute, public Gui::WindowParameter
 { 

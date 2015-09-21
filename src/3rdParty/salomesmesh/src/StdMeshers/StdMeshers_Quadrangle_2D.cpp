@@ -812,10 +812,10 @@ bool StdMeshers_Quadrangle_2D::SetNormalizedGrid (SMESH_Mesh & aMesh,
                                                   const TopoDS_Shape& aShape,
                                                   FaceQuadStruct* & quad) //throw (SMESH_Exception)
 {
-  // Algorithme décrit dans "Génération automatique de maillages"
-  // P.L. GEORGE, MASSON, § 6.4.1 p. 84-85
-  // traitement dans le domaine paramétrique 2d u,v
-  // transport - projection sur le carré unité
+  // Algorithme dÃ©crit dans "GÃ©nÃ©ration automatique de maillages"
+  // P.L. GEORGE, MASSON, Â§ 6.4.1 p. 84-85
+  // traitement dans le domaine paramÃ©trique 2d u,v
+  // transport - projection sur le carrÃ© unitÃ©
 
 //  MESSAGE("StdMeshers_Quadrangle_2D::SetNormalizedGrid");
 //  const TopoDS_Face& F = TopoDS::Face(aShape);

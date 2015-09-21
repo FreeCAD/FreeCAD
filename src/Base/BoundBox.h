@@ -71,7 +71,7 @@ public:
   /// Assignment operator 
   inline  BoundBox3<_Precision>& operator = (const BoundBox3<_Precision> &rcBound);
  
-  /** Methods for intersection, cuttíng and union of bounding boxes */
+  /** Methods for intersection, cuttÃ­ng and union of bounding boxes */
   //@{
   /** Checks for intersection. */
   inline bool operator && (const BoundBox3<_Precision> &rcBB) const;

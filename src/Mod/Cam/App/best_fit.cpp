@@ -98,7 +98,7 @@ double best_fit::ANN()
 
     int a_dim = 3;
     int a_nbPnts =(int) m_pntCloud_2.size();        // Size vom eingescanntem Netz
-    int a_nbNear = 1;                               // anzahl der rückgabewerte
+    int a_nbNear = 1;                               // anzahl der rÃ¼ckgabewerte
     queryPt = annAllocPt(a_dim);                    // allocate query point storage
     dataPts = annAllocPts(a_nbPnts, a_dim);         // allocate data points storage
     nnIdx = new ANNidx[a_nbNear];                   // allocate near neigh indices
@@ -184,7 +184,7 @@ bool best_fit::Perform()
 	Runtime_BestFit << "Tesselate Shape: " << sec2 - sec1 << " sec" << std::endl;  
 
 	sec1 = time(NULL);
-      Comp_Weights(); // m_pntCloud_1, m_weights, m_normals des/r Cad-Meshs/Punktewolke werden hier gefüllt
+      Comp_Weights(); // m_pntCloud_1, m_weights, m_normals des/r Cad-Meshs/Punktewolke werden hier gefÃ¼llt
     sec2 = time(NULL);
 
 	Runtime_BestFit << "Compute Weights: " << sec2 - sec1 << " sec" << std::endl;  
@@ -445,8 +445,8 @@ bool best_fit::Coarse_correction()
 bool best_fit::LSM()
 {
     double TOL  = 0.05;          // Abbruchkriterium des Newton-Verfahren
-    int maxIter = 100;            // maximale Anzahl von Iterationen für den Fall,
-							     // dass das Abbruchkriterium nicht erfüllt wird
+    int maxIter = 100;            // maximale Anzahl von Iterationen fÃ¼r den Fall,
+							     // dass das Abbruchkriterium nicht erfÃ¼llt wird
 
    int mult = 2;                 // zur Halbierung der Schrittweite bei Misserfolg des Newton Verfahrens
 
@@ -464,9 +464,9 @@ bool best_fit::LSM()
     std::vector<double> del_x(3,0.0);
     std::vector<double>     x(3,0.0); // Startparameter entspricht Nullvektor
 
-    Base::Vector3f centr_l,centr_r, cent;  // Schwerpunkte der Punktesätze
+    Base::Vector3f centr_l,centr_r, cent;  // Schwerpunkte der PunktesÃ¤tze
 
-    // Newton Verfahren: 1. Löse  H*del_x = -J
+    // Newton Verfahren: 1. LÃ¶se  H*del_x = -J
     //                   2. Setze x = x + del_x
 
     std::vector<double> Jac(3);           // 1.Ableitung der Fehlerfunktion (Jacobi-Matrix)
@@ -482,25 +482,25 @@ bool best_fit::LSM()
         //m_Mesh = m_MeshWork;
         
 		// Fehlerberechnung vom CAD -> Mesh
-        //tmp = CompError_GetPnts(m_pnts, m_normals);      // hier: - Berechnung der LS-Punktesätze
-        //      CompTotalError()                           //       - Berechnung der zugehörigen Gewichtungen
+        //tmp = CompError_GetPnts(m_pnts, m_normals);      // hier: - Berechnung der LS-PunktesÃ¤tze
+        //      CompTotalError()                           //       - Berechnung der zugehÃ¶rigen Gewichtungen
 
 		delta = delta_tmp;
         delta_tmp = ANN();          // gibt durchschnittlichen absoluten Fehler aus
 		delta = delta - delta_tmp ; // hier wird die Fehlerverbesserung zum vorigen Iterationsschritt gespeichert
 
 		if (c==maxIter || delta < ERR_TOL && c>1) break; // Abbruchkriterium (falls maximale Iterationsschrite erreicht
-										                 //                   oder falls Fehleränderung unsignifikant gering)
+										                 //                   oder falls FehlerÃ¤nderung unsignifikant gering)
 
         seconds2 = time(NULL);
 		anOutputFile << c << ", " << delta_tmp << ", " << delta << "    -    Time: " << seconds2 - seconds1 << " sec" << endl;
 		seconds1 = time(NULL);
 
 		sec1 = time(NULL);
-        for (unsigned int i=0; i<x.size(); ++i) x[i] = 0.0; // setzt startwerte für newton auf null
+        for (unsigned int i=0; i<x.size(); ++i) x[i] = 0.0; // setzt startwerte fÃ¼r newton auf null
 
 
-        // Berechne gewichtete Schwerpunkte und verschiebe die Punktesätze entsprechend:
+        // Berechne gewichtete Schwerpunkte und verschiebe die PunktesÃ¤tze entsprechend:
         centr_l.Scale(0.0,0.0,0.0);
         centr_r.Scale(0.0,0.0,0.0);
 
@@ -545,7 +545,7 @@ bool best_fit::LSM()
         TransMat(Ty,centr_r.y,2); // Berechnung der Translationsmatrix in y-Richtung
         TransMat(Tz,centr_r.z,3); // Berechnung der Translationsmatrix in z-Richtung
 
-        M = Tx*Ty*Tz;                  // Zusammenfügen zu einer Gesamttranslationsmatrix
+        M = Tx*Ty*Tz;                  // ZusammenfÃ¼gen zu einer Gesamttranslationsmatrix
         PointTransform(m_LSPnts[1],M); // Anwendung der Translation auf m_LSPnts
         PointTransform(m_pntCloud_1,M);
 		//PointNormalTransform(m_pnts, m_normals, M); // Anwendung der Translation auf m_pnts
@@ -587,8 +587,8 @@ bool best_fit::LSM()
 
             tmp = val;
 
-            del_x = Routines::NewtonStep(Jac,H);      // löst Gl.system:          H*del_x = -J
-            for (unsigned int i=0; i<x.size(); ++i)   // nächster Iterationswert: x = x + del_x
+            del_x = Routines::NewtonStep(Jac,H);      // lÃ¶st Gl.system:          H*del_x = -J
+            for (unsigned int i=0; i<x.size(); ++i)   // nÃ¤chster Iterationswert: x = x + del_x
             {
                 x[i] += del_x[i];
             }
@@ -597,7 +597,7 @@ bool best_fit::LSM()
 		sec2 = time(NULL);
 		anOutputFile << c+1 << " - Newton: " << seconds2 - seconds1 << " sec" << endl;
         sec1 = time(NULL);
-        // Rotiere und verschiebe zurück zum Ursprung der !!! CAD-Geometrie !!!
+        // Rotiere und verschiebe zurÃ¼ck zum Ursprung der !!! CAD-Geometrie !!!
         RotMat  (Rx,(x[0]*180.0/PI),1);
         RotMat  (Ry,(x[1]*180.0/PI),2);
         RotMat  (Rz,(x[2]*180.0/PI),3);
@@ -630,7 +630,7 @@ bool best_fit::LSM()
    		sec2 = time(NULL);
 		
 		anOutputFile << c+1 << " - Trafo: " << seconds2 - seconds1 << " sec" << endl;
-        ++c;  //Erhöhe Laufvariable 
+        ++c;  //ErhÃ¶he Laufvariable 
     }
 
 	anOutputFile.close();
@@ -852,7 +852,7 @@ bool best_fit::Comp_Weights()
 bool best_fit::RotMat(Base::Matrix4D &M, double degree, int axis)
 {
     M.setToUnity();
-    degree = 2*PI*degree/360;  // trafo bogenmaß
+    degree = 2*PI*degree/360;  // trafo bogenmaÃŸ
 
     switch (axis)
     {
@@ -1089,7 +1089,7 @@ bool best_fit::PointCloud_Coarse()
 
 	Base::Matrix4D T5, T1;
 
-	// Füllt Matrix T5 
+	// FÃ¼llt Matrix T5 
 	T5[0][0] = DirA_1.x;
 	T5[1][0] = DirA_1.y;
 	T5[2][0] = DirA_1.z;
@@ -1123,7 +1123,7 @@ bool best_fit::PointCloud_Coarse()
 	T5[2][3] = Grav_1.z;*/
 
 
-	// Füllt Matrix T1
+	// FÃ¼llt Matrix T1
 	T1[0][0] = DirA_2.x;
 	T1[1][0] = DirA_2.y;
 	T1[2][0] = DirA_2.z;
@@ -1318,7 +1318,7 @@ bool best_fit::ShapeFit_Coarse()
     SurfProp.SurfaceProperties(m_Cad, prop);
     orig  = prop.CentreOfMass();
 
-    // CAD-Mesh -> zurück zum Ursprung
+    // CAD-Mesh -> zurÃ¼ck zum Ursprung
     m_cad2orig.SetX(-orig.X());
     m_cad2orig.SetY(-orig.Y());
     m_cad2orig.SetZ(-orig.Z());
@@ -1522,7 +1522,7 @@ std::vector<Base::Vector3f> best_fit::Comp_Normals(MeshCore::MeshKernel &M)
         fArea = 0.0;
         normal.Set(0.0,0.0,0.0);
 
-        // Iteriere über die Dreiecke zu jedem Punkt
+        // Iteriere Ã¼ber die Dreiecke zu jedem Punkt
         for (std::set<unsigned long>::const_iterator it = faceSet.begin(); it != faceSet.end(); ++it)
         {
             // Zweimal derefernzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert

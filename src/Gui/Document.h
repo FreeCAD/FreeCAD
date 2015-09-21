@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ class DocumentPy;
  *  All handled views on the document must inherit from MDIView
  *  @see App::Document 
  *  @see MDIView
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 class GuiExport Document : public Base::Persistence
 {

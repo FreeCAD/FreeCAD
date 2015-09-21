@@ -42,7 +42,7 @@ class Application;
  *  @see TreeView
  *  @see Gui::Document
  *  @see Application
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 class GuiExport DockWindow : public QWidget, public BaseView
 {

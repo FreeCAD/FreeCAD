@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -133,7 +133,7 @@ private:
 /** The link between the tree and a document.
  * Every document in the application gets its associated DocumentItem which controls 
  * the visibility and the functions of the document.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class DocumentItem : public QTreeWidgetItem
 {

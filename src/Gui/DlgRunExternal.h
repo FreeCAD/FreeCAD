@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,7 +34,7 @@ class Ui_DlgRunExternal;
 /**
  * The DlgRunExternal class implements a dialog to start and control external
  * programms to edit FreeCAD controled content.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class GuiExport DlgRunExternal : public QDialog
 { 

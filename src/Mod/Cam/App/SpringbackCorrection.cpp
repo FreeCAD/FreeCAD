@@ -198,7 +198,7 @@ bool SpringbackCorrection::CalcCurv()
     m_MeshStruct.resize(m_CadMesh.CountPoints());
     MeanVec.resize(m_CadMesh.CountPoints(), 0);
 
-    // Fülle Map mit Punkten (Key) und deren, zur Basistriangulierung korrespondierenden, Indizes
+    // FÃ¼lle Map mit Punkten (Key) und deren, zur Basistriangulierung korrespondierenden, Indizes
     MeshPnts = m_CadMesh.GetPoints();
 	MeshPntsCop = MeshPnts;
 	MeshFacets2 = m_CadMesh.GetFacets();
@@ -409,7 +409,7 @@ bool SpringbackCorrection::CalcCurv()
     char text[10];
     int w;
 
-    // übergebe krümmungswerte an m_MeshStruct
+    // Ã¼bergebe krÃ¼mmungswerte an m_MeshStruct
     for (meshIt = MeshMap.begin(); meshIt != MeshMap.end(); ++meshIt)
     {
         w = meshIt->second.index;
@@ -429,7 +429,7 @@ bool SpringbackCorrection::CalcCurv()
         if (MeanVec[w] == 1)
             log3d.addSinglePoint(m_MeshStruct[w].pnt,4,0,0,0); // innere punkte - > schwarz
         else if (MeanVec[w] == 2)
-            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,1,1,1); // edge-punkte   - > weiß
+            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,1,1,1); // edge-punkte   - > weiÃŸ
         else
             log3d.addSinglePoint(m_MeshStruct[w].pnt,4,1,0,0); // eck-punkte    - > rot
 
@@ -774,7 +774,7 @@ MeshCore::MeshKernel SpringbackCorrection::BuildMesh(Handle_Poly_Triangulation a
 int SpringbackCorrection::GetBoundary(const MeshCore::MeshKernel &mesh, MeshCore::MeshPointArray &meshPnts)
 {
     // get mesh-boundary
-    // zweck: nur für die inneren punkte wird der curvature wert über die edge abstände berechnet
+    // zweck: nur fÃ¼r die inneren punkte wird der curvature wert Ã¼ber die edge abstÃ¤nde berechnet
     std::list< std::vector <unsigned long> >  BoundariesIndex;
     std::list< std::vector <unsigned long> >::iterator bInd;
 
@@ -1235,10 +1235,10 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     //GetFaceAng(m_CadMesh, deg_Tol+1);
     //cout << "Init" << endl;
     //Init();      // tesseliere shape -> Basistriangulierung CAD-Mesh
-    // EdgeMap wird hier gefüllt
+    // EdgeMap wird hier gefÃ¼llt
 
 	Base::Vector3f nullvec(0.0,0.0,0.0);
-	m_dist_vec.resize(m_CadMesh.CountPoints(), nullvec); // fülle mit Nullvektoren
+	m_dist_vec.resize(m_CadMesh.CountPoints(), nullvec); // fÃ¼lle mit Nullvektoren
 
     cout << "SetFixEdges" << endl;
     
@@ -1251,10 +1251,10 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     if (!CalcCurv())	
 	   return false;
 	
-	// berechne Krümmungswerte über Edgekrümmungen
-    // MeshMap wird hier gefüllt
+	// berechne KrÃ¼mmungswerte Ã¼ber EdgekrÃ¼mmungen
+    // MeshMap wird hier gefÃ¼llt
 
-    const MeshCore::MeshKernel RefMesh = m_CadMesh;  // übegebe CAD-Mesh vor der Verformung
+    const MeshCore::MeshKernel RefMesh = m_CadMesh;  // Ã¼begebe CAD-Mesh vor der Verformung
 
     /*Base::Builder3D log;
     Base::Vector3f gpnt, normal;
@@ -1290,7 +1290,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     //logo.saveToFile("c:/normals.iv");
 
-    // übergebe Normalen und CAD-Mesh für Fehlerberechnng
+    // Ã¼bergebe Normalen und CAD-Mesh fÃ¼r Fehlerberechnng
     best_fit befi;
     befi.m_normals = m_normals;
     befi.m_CadMesh = m_CadMesh;
@@ -1346,7 +1346,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 		 m_dist_vec[i] = m_normals[i];
 	}
 
-	if(out==true) //hier werden die Outputvektoren für Catia geschrieben
+	if(out==true) //hier werden die Outputvektoren fÃ¼r Catia geschrieben
 	{
 		MeshCore::MeshPointArray mpts = RefMesh23.GetPoints();
 
@@ -1435,7 +1435,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     MeshCore::MeshPointArray mPoints = m_CadMesh.GetPoints();
     int num = mFacets.size();
 
-    for (int i=0; i<num; ++i) mFacets[i].ResetFlag(MeshCore::MeshFacet::VISIT);   // lösche alle VISIT-Flags
+    for (int i=0; i<num; ++i) mFacets[i].ResetFlag(MeshCore::MeshFacet::VISIT);   // lÃ¶sche alle VISIT-Flags
 
     m_RingCurrent = 0;
     std::vector<unsigned long> aRegion;
@@ -1723,8 +1723,8 @@ std::vector< std::pair<unsigned long, double> > SpringbackCorrection::RegionEval
     std::vector< std::pair<double, unsigned long> >  dists;
     std::vector< std::pair< unsigned long, double> > skals;
 
-    MeshCore::MeshAlgorithm algo(mesh);  // übergebe mesh
-    algo.GetFacetBorders(RegionFacets, Borders); // speichert ränder der region in Borders
+    MeshCore::MeshAlgorithm algo(mesh);  // Ã¼bergebe mesh
+    algo.GetFacetBorders(RegionFacets, Borders); // speichert rÃ¤nder der region in Borders
 
     MeshCore::MeshFacetArray facets = mesh.GetFacets();
     MeshCore::MeshPointArray points = mesh.GetPoints();
@@ -1742,7 +1742,7 @@ std::vector< std::pair<unsigned long, double> > SpringbackCorrection::RegionEval
 		
     }
 
-    // berechne distanzen der regionenpunkte zu den rändern
+    // berechne distanzen der regionenpunkte zu den rÃ¤ndern
 
     Base::Vector3f distVec;   // speichert abstandsvektor
     double distVal;     // speichert maximalen abstandswert zum rand
@@ -1821,7 +1821,7 @@ bool SpringbackCorrection::FacetRegionGrowing(MeshCore::MeshKernel &mesh,
 // Base::Builder3D log;
 // Base::Vector3f  p1,p2;
 // double curv;
-// // Triangulate Shape (vorläufig)
+// // Triangulate Shape (vorlÃ¤ufig)
 // best_fit::Tesselate_Shape(m_Shape, m_Mesh, 1);
 //
 // MeshCurvature(m_Mesh);
@@ -1877,10 +1877,10 @@ bool SpringbackCorrection::GetCurvature(TopoDS_Face aFace)
         GeomAPI_ProjectPointOnSurf aProjection(proPnt,geom_surface);
         aProjection.LowerDistanceParameters(u_par,v_par);
 
-        // Berechne Krümmung
+        // Berechne KrÃ¼mmung
         geom_surface->D2(u_par,v_par,proPnt,D1U,D1V,D2U,D2V,D2UV);
 
-        // erste & zweite Hauptkrümmung
+        // erste & zweite HauptkrÃ¼mmung
         k1 = D1U.CrossMagnitude(D2U) / D1U.Magnitude();
         k2 = D1V.CrossMagnitude(D2V) / D1V.Magnitude();
 
@@ -1987,7 +1987,7 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
     gp_Pnt2d par;
     gp_Pnt P;
     gp_Vec D1U, D1V, D2U, D2V, D2UV, nor, xvv, xuv, xuu;
-	double H,K;   // Gaußsche- und mittlere Krümmung
+	double H,K;   // GauÃŸsche- und mittlere KrÃ¼mmung
 
 	std::vector<double> aMaxCurve, aMinCurve;
 	std::vector<double> curv(2);
@@ -2080,7 +2080,7 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
 
 	
 	
-	//Krümmung auf Netzbasis
+	//KrÃ¼mmung auf Netzbasis
 	
 	for(int i=0; i<n; ++i)
 	{
@@ -2270,11 +2270,11 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
 
             nei.clear();
 
-            // falls boundary-point tue nichts bzw. gehe zum nächsten punkt
+            // falls boundary-point tue nichts bzw. gehe zum nÃ¤chsten punkt
             if (FacetNei.size() != PntNei.size())
             {
                 PointArray[ind[j]]._ucFlag = 5;
-                m_CurvMax[ind[j]] = abs(error[ind[j]]);   // vorübergehend
+                m_CurvMax[ind[j]] = abs(error[ind[j]]);   // vorÃ¼bergehend
                 continue;
             }
 
@@ -2621,7 +2621,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
         for (unsigned int i=0; i<NeiLoc.size(); ++i)
             NorLoc.push_back(v[s]);
 
-        // gewichtung (im verhältnis 1:2)
+        // gewichtung (im verhÃ¤ltnis 1:2)
         w = float(1.0) /(float(NeiLoc.size()) + float(PntNei.size()) - float(1.0));
         bvec.Scale(w,w,w);
 
@@ -2686,7 +2686,7 @@ double SpringbackCorrection::LocalCorrection(std::vector<Base::Vector3f> Neib ,
     ublas::matrix<double> A(3, 3);
     ublas::matrix<double> b(1, 3);
 
-    // 2. Spalte bleibt unverändert
+    // 2. Spalte bleibt unverÃ¤ndert
     A(0,2) = -Normal[0].x;
     A(1,2) = -Normal[0].y;
     A(2,2) = -Normal[0].z;
@@ -2917,7 +2917,7 @@ double SpringbackCorrection::GlobalCorrection(std::vector<Base::Vector3f> NeiLoc
 
     std::vector<Base::Vector3f> ConvComb = FillConvex(NeiLoc,NorLoc,20);
 
-    // füge schwerpunkte der umgebenden faces hinzu
+    // fÃ¼ge schwerpunkte der umgebenden faces hinzu
     std::set<MeshCore::MeshFacetArray::_TConstIterator> FacetNei;
     std::set<MeshCore::MeshFacetArray::_TConstIterator>::iterator face_it;
     MeshCore::MeshFacetIterator    f_it (MeshRef);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,7 +46,7 @@ class ViewProvider;
 
 /** The Applcation main class
  * This is the central class of the GUI 
- * @author Jürgen Riegel, Werner Mayer
+ * @author JÃ¼rgen Riegel, Werner Mayer
  */
 class GuiExport Application 
 {
