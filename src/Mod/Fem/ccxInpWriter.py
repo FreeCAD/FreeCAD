@@ -102,8 +102,8 @@ class inp_writer:
             # calculate node load
             if NbrForceNodes != 0:
                 fobj['NodeLoad'] = (frc_obj.Force) / NbrForceNodes
-                #  FIXME for loads on edges the node count is used to distribute the load on the edges. 
-                #  In case of a not uniform fem mesh this could result in wrong force distribution 
+                #  FIXME for loads on edges the node count is used to distribute the load on the edges.
+                #  In case of a not uniform fem mesh this could result in wrong force distribution
                 #  and thus in wrong analysis results. see  def write_constraints_force()
                 f.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
                 f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
@@ -426,13 +426,16 @@ def is_solid_mesh(fem_mesh):
     if fem_mesh.VolumeCount > 0:  # solid mesh
         return True
 
+
 def has_no_face_data(fem_mesh):
     if fem_mesh.FaceCount == 0:   # mesh has no face data, could be a beam mesh or a solid mesh without face data
         return True
 
+
 def is_shell_mesh(fem_mesh):
     if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount > 0:  # shell mesh
         return True
+
 
 def is_beam_mesh(fem_mesh):
     if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount == 0 and fem_mesh.EdgeCount > 0:  # beam mesh
