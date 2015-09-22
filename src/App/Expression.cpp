@@ -372,6 +372,7 @@ Expression * OperatorExpression::eval() const
         output = new NumberExpression(owner, v1->getQuantity() );
         break;
     default:
+        output = 0;
         assert(0);
     }
 
@@ -783,6 +784,7 @@ Expression * FunctionExpression::eval() const
         output = floor(value);
         break;
     default:
+        output = 0;
         assert(0);
     }
 
