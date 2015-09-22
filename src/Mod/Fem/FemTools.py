@@ -164,13 +164,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     def write_inp_file(self):
         import ccxInpWriter as iw
         import sys
-        self.base_name = ""
+        self.inp_file_name = ""
         try:
             inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
                                        self.fixed_constraints, self.force_constraints,
                                        self.pressure_constraints, self.analysis_type,
                                        self.eigenmode_parameters, self.working_dir)
-            self.base_name = inp_writer.write_calculix_input_file()
+            self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
             raise
@@ -179,7 +179,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import multiprocessing
         import os
         import subprocess
-        if self.base_name != "":
+        if self.inp_file_name != "":
             ont_backup = os.environ.get('OMP_NUM_THREADS')
             if not ont_backup:
                 ont_backup = ""
@@ -187,7 +187,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             # change cwd because ccx may crash if directory has no write permission
             # there is also a limit of the length of file names so jump to the document directory
             cwd = QtCore.QDir.currentPath()
-            f = QtCore.QFileInfo(self.base_name)
+            f = QtCore.QFileInfo(self.inp_file_name)
             QtCore.QDir.setCurrent(f.path())
             p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -211,6 +211,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.base_name = ""
         else:
             self.base_name = base_name
+
+    ## sets inp file name that is used to determine location and name of frd result file.
+    # Normally inp file name is set set by write_inp_file
+    # Can be used to read mock calculations file
+    def set_inp_file_name(self, inp_file_name=None):
+        if inp_file_name is not None:
+            self.inp_file_name = inp_file_name
+        else:
+            self.inp_file_name = self.working_dir + '/' + self.base_name + '.inp'
 
     def set_analysis_type(self, analysis_type=None):
         if analysis_type is None:
@@ -243,16 +252,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import ccxFrdReader
         import os
         self.results_present = False
-        result_file = self.working_dir + '/' + self.base_name + ".frd"
-        if os.path.isfile(result_file):
-            ccxFrdReader.importFrd(result_file, self.analysis)
+        frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
+        if os.path.isfile(frd_result_file):
+            ccxFrdReader.importFrd(frd_result_file, self.analysis)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.result_object = m
             if self.result_object is not None:
                 self.results_present = True
         else:
-            raise Exception('FEM: No results found at {}!'.format(result_file))
+            raise Exception('FEM: No results found at {}!'.format(frd_result_file))
 
     def use_results(self, results_name=None):
         for m in self.analysis.Member:

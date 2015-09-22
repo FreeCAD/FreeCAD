@@ -460,17 +460,16 @@ class _JobControlTaskPanel:
             self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
-        filename = self.base_name + '.inp'
-        print 'editCalculixInputFile {}'.format(filename)
+        print 'editCalculixInputFile {}'.format(self.inp_file_name)
         if self.fem_prefs.GetBool("UseInternalEditor", True):
-            FemGui.open(filename)
+            FemGui.open(self.inp_file_name)
         else:
             ext_editor_path = self.fem_prefs.GetString("ExternalEditorPath", "")
             if ext_editor_path:
-                self.start_ext_editor(ext_editor_path, filename)
+                self.start_ext_editor(ext_editor_path, self.inp_file_name)
             else:
                 print "External editor is not defined in FEM preferences. Falling back to internal editor"
-                FemGui.open(filename)
+                FemGui.open(self.inp_file_name)
 
     def runCalculix(self):
         print 'runCalculix'
