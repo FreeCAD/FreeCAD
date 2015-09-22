@@ -62,7 +62,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintFixed */
 
 TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent)
-    : TaskFemConstraint(ConstraintView, parent, "Fem_ConstraintFixed")
+    : TaskFemConstraint(ConstraintView, parent, "fem-constraint-fixed")
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
