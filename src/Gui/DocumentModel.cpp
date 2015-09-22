@@ -377,7 +377,7 @@ void DocumentModel::slotNewDocument(const Gui::Document& Doc)
     Doc.signalNewObject.connect(boost::bind(&DocumentModel::slotNewObject, this, _1));
     Doc.signalDeletedObject.connect(boost::bind(&DocumentModel::slotDeleteObject, this, _1));
     Doc.signalChangedObject.connect(boost::bind(&DocumentModel::slotChangeObject, this, _1, _2));
-    Doc.signalRenamedObject.connect(boost::bind(&DocumentModel::slotRenameObject, this, _1));
+    Doc.signalRelabelObject.connect(boost::bind(&DocumentModel::slotRenameObject, this, _1));
     Doc.signalActivatedObject.connect(boost::bind(&DocumentModel::slotActiveObject, this, _1));
     Doc.signalInEdit.connect(boost::bind(&DocumentModel::slotInEdit, this, _1));
     Doc.signalResetEdit.connect(boost::bind(&DocumentModel::slotResetEdit, this, _1));

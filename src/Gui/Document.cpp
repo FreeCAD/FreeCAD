@@ -127,8 +127,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotDeletedObject, this, _1));
     d->connectCngObject = pcDocument->signalChangedObject.connect
         (boost::bind(&Gui::Document::slotChangedObject, this, _1, _2));
-    d->connectRenObject = pcDocument->signalRenamedObject.connect
-        (boost::bind(&Gui::Document::slotRenamedObject, this, _1));
+    d->connectRenObject = pcDocument->signalRelabelObject.connect
+        (boost::bind(&Gui::Document::slotRelabelObject, this, _1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
         (boost::bind(&Gui::Document::slotActivatedObject, this, _1));
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
@@ -529,11 +529,11 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     setModified(true);
 }
 
-void Document::slotRenamedObject(const App::DocumentObject& Obj)
+void Document::slotRelabelObject(const App::DocumentObject& Obj)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-        signalRenamedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        signalRelabelObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
 }
 

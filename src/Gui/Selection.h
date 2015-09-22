@@ -325,7 +325,6 @@ protected:
     virtual ~SelectionSingleton();
 
     /// Observer message from the App doc
-    void slotRenamedObject(const App::DocumentObject&);
     void slotDeletedObject(const App::DocumentObject&);
 
     /// helper to retrieve document by name

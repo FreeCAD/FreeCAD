@@ -207,7 +207,7 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->onChangedProperty(this,prop);
 
     if (prop == &Label && _pDoc)
-        _pDoc->signalRenamedObject(*this);
+        _pDoc->signalRelabelObject(*this);
 
     if (prop->getType() & Prop_Output)
         return;
@@ -303,7 +303,7 @@ void DocumentObject::connectRelabelSignals()
 
         // Not already connected?
         if (!onRelabledObjectConnection.connected())
-            onRelabledObjectConnection = getDocument()->signalRenamedObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed, &ExpressionEngine, _1));
+            onRelabledObjectConnection = getDocument()->signalRelabelObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed, &ExpressionEngine, _1));
 
         try {
             // Crude method to resolve all expression dependencies
