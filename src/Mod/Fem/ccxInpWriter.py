@@ -23,8 +23,8 @@ class inp_writer:
             self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
-        self.base_name = self.dir_name + '/' + self.mesh_object.Name
-        self.file_name = self.base_name + '.inp'
+        self.base_name = self.mesh_object.Name
+        self.file_name = self.dir_name + '/' + self.base_name + '.inp'
         self.fc_ver = FreeCAD.Version()
 
     def write_calculix_input_file(self):
@@ -48,7 +48,7 @@ class inp_writer:
         self.write_step_end(inpfile)
         self.write_footer(inpfile)
         inpfile.close()
-        return self.base_name
+        return self.file_name
 
     def write_element_sets_material_and_femelement_type(self, f):
         f.write('\n***********************************************************\n')

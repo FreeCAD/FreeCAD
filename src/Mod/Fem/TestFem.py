@@ -208,6 +208,11 @@ class FemTest(unittest.TestCase):
         self.assertTrue(True if fea.base_name == static_base_name else False,
                         "Setting base name to {} failed".format(static_base_name))
 
+        fcc_print('Setting inp file name to read test {}.frd file...'.format('cube_static'))
+        fea.set_inp_file_name()
+        self.assertTrue(True if fea.inp_file_name == static_analysis_inp_file else False,
+                        "Setting inp file name to {} failed".format(static_analysis_inp_file))
+
         fcc_print('Checking FEM frd file read from static analysis...')
         fea.load_results()
         fcc_print('Result object created as \"{}\"'.format(fea.result_object.Name))
@@ -243,6 +248,11 @@ class FemTest(unittest.TestCase):
         fea.set_base_name(frequency_base_name)
         self.assertTrue(True if fea.base_name == frequency_base_name else False,
                         "Setting base name to {} failed".format(frequency_base_name))
+
+        fcc_print('Setting inp file name to read test {}.frd file...'.format('cube_frequency'))
+        fea.set_inp_file_name()
+        self.assertTrue(True if fea.inp_file_name == frequency_analysis_inp_file else False,
+                        "Setting inp file name to {} failed".format(frequency_analysis_inp_file))
 
         fcc_print('Checking FEM frd file read from frequency analysis...')
         fea.load_results()
