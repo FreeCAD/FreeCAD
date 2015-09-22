@@ -391,9 +391,10 @@ class _JobControlTaskPanel:
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
         fea.reset_all()
-        if os.path.isfile(self.base_name + '.frd'):
+        frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
+        if os.path.isfile(frd_result_file):
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            ccxFrdReader.importFrd(self.base_name + '.frd', FemGui.getActiveAnalysis())
+            ccxFrdReader.importFrd(frd_result_file, FemGui.getActiveAnalysis())
             QApplication.restoreOverrideCursor()
             self.femConsoleMessage("Loading results done!", "#00AA00")
         else:
@@ -427,12 +428,12 @@ class _JobControlTaskPanel:
         QApplication.restoreOverrideCursor()
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            self.base_name = ""
+            self.inp_file_name = ""
             fea = FemTools()
             fea.update_objects()
             fea.write_inp_file()
-            if fea.base_name != "":
-                self.base_name = fea.base_name
+            if fea.inp_file_name != "":
+                self.inp_file_name = fea.inp_file_name
                 self.femConsoleMessage("Write completed.")
                 self.form.pushButton_edit.setEnabled(True)
                 self.form.pushButton_generate.setEnabled(True)
@@ -479,11 +480,11 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("Run Calculix...")
 
         # run Calculix
-        print 'run Calculix at: ', self.CalculixBinary, '  with: ', self.base_name
+        print 'run Calculix at: ', self.CalculixBinary, ' with: ', os.path.splitext(self.inp_file_name)[0]
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
-        fi = QtCore.QFileInfo(self.base_name)
+        fi = QtCore.QFileInfo(self.inp_file_name)
         QtCore.QDir.setCurrent(fi.path())
         self.Calculix.start(self.CalculixBinary, ['-i', fi.baseName()])
 
