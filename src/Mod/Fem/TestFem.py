@@ -181,7 +181,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(self.pressure_constraint, "FemTest of new pressure constraint failed")
         self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
 
-        fea = FemTools.FemTools(self.analysis)
+        fea = FemTools.FemTools(self.analysis, test_mode=True)
         fcc_print('Checking FEM inp file prerequisites...')
         error = fea.check_prerequisites()
         self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
