@@ -31,9 +31,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## The constructor
     #  @param analysis - analysis object to be used as the core object.
+    #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
-    def __init__(self, analysis=None):
+    def __init__(self, analysis=None, test_mode=False):
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
 
@@ -58,7 +59,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
             self.setup_working_dir()
-            self.setup_ccx()
+            if test_mode:
+                self.ccx_binary_present = True
+            else:
+                self.ccx_binary_present = False
+                self.setup_ccx()
         else:
             raise Exception('FEM: No active analysis found!')
 
@@ -241,7 +246,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import multiprocessing
         import os
         import subprocess
-        if self.inp_file_name != "":
+        if self.inp_file_name != "" and self.ccx_binary_present:
             ont_backup = os.environ.get('OMP_NUM_THREADS')
             if not ont_backup:
                 ont_backup = ""
@@ -313,7 +318,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # Update inp file name
         self.set_inp_file_name()
 
-    def setup_ccx(self, ccx_binary=None):
+    ## Sets CalculiX ccx binary path and velidates if the binary can be executed
+    #  @param self The python object self
+    #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
+    #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
+    def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
         if not ccx_binary:
             self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
             ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
@@ -326,6 +335,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             else:
                 ccx_binary = "ccx"
         self.ccx_binary = ccx_binary
+        import subprocess
+        try:
+            p = subprocess.Popen([self.ccx_binary], stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, shell=False)
+            ccx_stdout, ccx_stderr = p.communicate()
+            if ccx_binary_sig in ccx_stdout:
+                self.ccx_binary_present = True
+        except:
+            raise Exception("FEM: CalculiX ccx {} output {} doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer".
+                            format(ccx_binary, ccx_stdout, ccx_binary_sig))
 
     ## Load results of ccx calculations from .frd file.
     #  @param self The python object self
