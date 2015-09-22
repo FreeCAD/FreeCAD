@@ -229,6 +229,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         else:
             self.analysis_type = analysis_type
 
+    ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir for FEM preferences
+    #  @param self The python object self
+    #  @working_dir directory to be used for .inp file and ccx execution
     def setup_working_dir(self, working_dir=None):
         if working_dir is None:
             self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
@@ -252,6 +255,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 ccx_binary = "ccx"
         self.ccx_binary = ccx_binary
 
+    ## Load results of ccx calculiations from .frd file.
+    #  @param self The python object self
     def load_results(self):
         import ccxFrdReader
         import os
