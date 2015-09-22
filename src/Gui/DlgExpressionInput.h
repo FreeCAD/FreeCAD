@@ -62,6 +62,8 @@ public:
 
     QPoint tip() const;
 
+    void setGeometry(int x, int y, int w, int h);
+
 private Q_SLOTS:
     void textChanged(const QString & text);
     void setDiscarded();
@@ -74,7 +76,7 @@ private:
     const Base::Unit impliedUnit;
 
     static const int h;
-    static const int l;
+    int l;
     static const int r;
     static const int d;
 };

@@ -35,7 +35,6 @@ using namespace App;
 using namespace Gui::Dialog;
 
 const int DlgExpressionInput::h = 15;
-const int DlgExpressionInput::l = 30;
 const int DlgExpressionInput::r = 30;
 const int DlgExpressionInput::d = 7;
 
@@ -45,7 +44,8 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boos
     expression(_expression ? _expression->copy() : 0),
     path(_path),
     discarded(false),
-    impliedUnit(_impliedUnit)
+    impliedUnit(_impliedUnit),
+    l(30)
 {
     assert(path.getDocumentObject() != 0);
 
@@ -89,6 +89,19 @@ DlgExpressionInput::~DlgExpressionInput()
 QPoint DlgExpressionInput::tip() const
 {
     return QPoint(l - d, 0);
+}
+
+void DlgExpressionInput::setGeometry(int x, int y, int w, int h)
+{
+    QDesktopWidget widget;
+    int screenWidth = widget.availableGeometry(widget.primaryScreen()).width();
+
+    if (x + w > screenWidth) {
+        l = l + (x + w - screenWidth);
+        x = screenWidth - w - 10;
+    }
+
+    QWidget::setGeometry(x, y, w, h);
 }
 
 void DlgExpressionInput::paintEvent(QPaintEvent * event) {
