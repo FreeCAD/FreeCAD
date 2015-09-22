@@ -369,7 +369,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 self.result_object = m
                 break
         if not self.result_object:
-            raise ("{} doesn't exist".format(results_name))
+            raise Exception("{} doesn't exist".format(results_name))
 
     def run(self):
         ret_code = 0
