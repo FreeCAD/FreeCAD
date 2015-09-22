@@ -650,7 +650,7 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalNewObject.connect(boost::bind(&Gui::Application::slotNewObject, this, _1));
     pDoc->signalDeletedObject.connect(boost::bind(&Gui::Application::slotDeletedObject, this, _1));
     pDoc->signalChangedObject.connect(boost::bind(&Gui::Application::slotChangedObject, this, _1, _2));
-    pDoc->signalRenamedObject.connect(boost::bind(&Gui::Application::slotRenamedObject, this, _1));
+    pDoc->signalRelabelObject.connect(boost::bind(&Gui::Application::slotRelabelObject, this, _1));
     pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
 
 
@@ -725,9 +725,9 @@ void Application::slotChangedObject(const ViewProvider& vp, const App::Property&
     this->signalChangedObject(vp,prop);
 }
 
-void Application::slotRenamedObject(const ViewProvider& vp)
+void Application::slotRelabelObject(const ViewProvider& vp)
 {
-    this->signalRenamedObject(vp);
+    this->signalRelabelObject(vp);
 }
 
 void Application::slotActivatedObject(const ViewProvider& vp)

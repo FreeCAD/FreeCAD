@@ -104,7 +104,7 @@ public:
     /// signal on changed object property
     boost::signal<void (const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object
-    boost::signal<void (const Gui::ViewProvider&)> signalRenamedObject;
+    boost::signal<void (const Gui::ViewProvider&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
@@ -129,7 +129,7 @@ protected:
     void slotNewObject(const ViewProvider&);
     void slotDeletedObject(const ViewProvider&);
     void slotChangedObject(const ViewProvider&, const App::Property& Prop);
-    void slotRenamedObject(const ViewProvider&);
+    void slotRelabelObject(const ViewProvider&);
     void slotActivatedObject(const ViewProvider&);
 
 public:

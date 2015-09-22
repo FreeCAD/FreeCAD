@@ -838,7 +838,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
     connectDelObject = doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1));
     connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1));
-    connectRenObject = doc->signalRenamedObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
+    connectRenObject = doc->signalRelabelObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
     connectActObject = doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
@@ -995,18 +995,7 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
 
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    for (std::map<std::string,DocumentObjectItem*>::iterator it = ObjectMap.begin(); it != ObjectMap.end(); ++it) {
-        if (it->second->object() == &obj) {
-            DocumentObjectItem* item = it->second;
-            ObjectMap.erase(it);
-            std::string objectName = obj.getObject()->getNameInDocument();
-            ObjectMap[objectName] = item;
-            return;
-        }
-    }
-
-    // no such object found
-    Base::Console().Warning("DocumentItem::slotRenamedObject: Cannot rename unknown object.\n");
+    // Do nothing here because the Label is set in slotChangeObject
 }
 
 void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
