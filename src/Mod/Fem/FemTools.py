@@ -211,6 +211,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.base_name = ""
         else:
             self.base_name = base_name
+        # Update inp file name
+        self.set_inp_file_name()
 
     ## sets inp file name that is used to determine location and name of frd result file.
     # Normally inp file name is set set by write_inp_file
@@ -233,6 +235,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.working_dir = self.fem_prefs.GetString("WorkingDir", "/tmp")
         else:
             self.working_dir = working_dir
+        # Update inp file name
+        self.set_inp_file_name()
 
     def setup_ccx(self, ccx_binary=None):
         if not ccx_binary:
