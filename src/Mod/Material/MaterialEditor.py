@@ -239,7 +239,7 @@ class MaterialEditor(QtGui.QDialog):
         if filename:
             self.clearEditor()
             import importFCMat
-            d = importFCMat.read(filename)
+            d = importFCMat.read(filename[0])
             if d:
                 self.updateContents(d)
                 
