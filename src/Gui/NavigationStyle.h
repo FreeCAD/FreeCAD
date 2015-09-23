@@ -309,6 +309,30 @@ private:
     SbBool lockButton1;
 };
 
+class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    MayaGestureNavigationStyle();
+    ~MayaGestureNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+    SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
+    short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
+    bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
+    int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
+    SoMouseButtonEvent mousedownConsumedEvent[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
+    bool testMoveThreshold(const SbVec2s currentPos) const;
+
+    bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
+    bool inGesture; //a flag that is used to filter out mouse events during gestures.
+};
+
 class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
