@@ -394,7 +394,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
 void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Equal && isBound())
+    if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
     else {
         if (!hasExpression())
