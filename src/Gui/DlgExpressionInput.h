@@ -58,9 +58,8 @@ public:
 
     bool discardedFormula() const { return discarded; }
 
-    void paintEvent(QPaintEvent *event);
-
-    QPoint tip() const;
+    QPoint expressionPosition() const;
+    void   setExpressionInputSize(int width, int height);
 
     void setGeometry(int x, int y, int w, int h);
 
@@ -75,10 +74,7 @@ private:
     bool discarded;
     const Base::Unit impliedUnit;
 
-    static const int h;
-    int l;
-    static const int r;
-    static const int d;
+    int minimumWidth;
 };
 
 }
