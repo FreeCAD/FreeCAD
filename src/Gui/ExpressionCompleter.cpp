@@ -13,6 +13,7 @@
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
 #include "ExpressionCompleter.h"
+#include <App/PropertyLinks.h>
 
 Q_DECLARE_METATYPE(App::ObjectIdentifier);
 
@@ -125,6 +126,14 @@ void ExpressionCompleter::createModelForDocumentObject(const DocumentObject * do
 
     std::vector<App::Property*>::const_iterator pi = props.begin();
     while (pi != props.end()) {
+
+        // Skip all types of links
+        if ((*pi)->isDerivedFrom(App::PropertyLink::getClassTypeId()) ||
+                (*pi)->isDerivedFrom(App::PropertyLinkSub::getClassTypeId())) {
+            ++pi;
+            continue;
+        }
+
         createModelForPaths(*pi, parent);
         ++pi;
     }
