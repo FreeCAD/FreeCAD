@@ -34,10 +34,6 @@
 using namespace App;
 using namespace Gui::Dialog;
 
-const int DlgExpressionInput::h = 15;
-const int DlgExpressionInput::r = 30;
-const int DlgExpressionInput::d = 7;
-
 DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boost::shared_ptr<const Expression> _expression, const Base::Unit & _impliedUnit, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DlgExpressionInput),
@@ -45,7 +41,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boos
     path(_path),
     discarded(false),
     impliedUnit(_impliedUnit),
-    l(30)
+    minimumWidth(300)
 {
     assert(path.getDocumentObject() != 0);
 
@@ -70,15 +66,9 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boos
     setAttribute(Qt::WA_TranslucentBackground, true);
     setParent(0);
 
+    setWindowFlags(Qt::Popup);
+    setModal(true);
     ui->expression->setFocus();
-
-    QDesktopWidget widget;
-    setMinimumWidth(widget.availableGeometry(widget.primaryScreen()).width()/2);
-
-#ifndef FC_DEBUG
-    ui->parsedExpr->setVisible(false);
-#endif
-
 }
 
 DlgExpressionInput::~DlgExpressionInput()
@@ -86,54 +76,27 @@ DlgExpressionInput::~DlgExpressionInput()
     delete ui;
 }
 
-QPoint DlgExpressionInput::tip() const
+QPoint DlgExpressionInput::expressionPosition() const
 {
-    return QPoint(l - d, 0);
-}
-
-void DlgExpressionInput::setGeometry(int x, int y, int w, int h)
-{
-    QDesktopWidget widget;
-    int screenWidth = widget.availableGeometry(widget.primaryScreen()).width();
-
-    if (x + w > screenWidth) {
-        l = l + (x + w - screenWidth);
-        x = screenWidth - w - 10;
-    }
-
-    QWidget::setGeometry(x, y, w, h);
-}
-
-void DlgExpressionInput::paintEvent(QPaintEvent * event) {
-    QPainter painter(this);
-    QPainterPath path;
-
-    path.moveTo(0, h + r / 2);
-    path.arcTo(QRect(0, h, r, r), 180, -90);
-    path.lineTo(l, h);
-    path.lineTo(l - d, 0);
-    path.lineTo(l + d, h);
-    path.lineTo(width() - r - 1, h);
-    path.arcTo(QRect(width() - r - 1, h, r, r), 90, -90);
-    path.lineTo(width() - 1, height() - r);
-    path.arcTo(QRect(width() - r - 1, height() - r - 1, r, r), 0, -90);
-    path.lineTo(r, height() - 1);
-    path.arcTo(QRect(0, height() - r - 1, r, r), -90, -90);
-    path.lineTo(0, h + r/2);
-
-    QPen pen(Qt::black);
-    QBrush brush(QColor(250, 250, 180));
-    pen.setWidthF(2.0);
-    painter.setBrush(brush);
-    painter.setPen(pen);
-
-    painter.fillPath(path, brush);
-    painter.drawPath(path);
+    return QPoint(0, ui->ctrlArea->height()+3);
 }
 
 void DlgExpressionInput::textChanged(const QString &text)
 {
     try {
+        
+        //resize the input field according to text size
+        QFontMetrics fm(ui->expression->font());
+        int width = fm.width(text) + 15;
+        if(width < minimumWidth)
+            ui->expression->setMinimumWidth(minimumWidth);
+        else
+            ui->expression->setMinimumWidth(width);                
+        
+        if(this->width() < ui->expression->minimumWidth())
+            setMinimumWidth(ui->expression->minimumWidth());
+        
+        //now handle expression
         boost::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
         if (expr) {
@@ -142,15 +105,11 @@ void DlgExpressionInput::textChanged(const QString &text)
             if (error.size() > 0)
                 throw Base::Exception(error.c_str());
 
-#ifdef FC_DEBUG
-            ui->parsedExpr->setText(Base::Tools::fromStdString(expr->toString()));
-#endif
-
             std::auto_ptr<Expression> result(expr->eval());
 
             expression = expr;
             ui->okBtn->setEnabled(true);
-            ui->errorMsg->setText(QString::fromUtf8(""));
+            ui->msg->setText(QString::fromUtf8(""));
 
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
@@ -161,19 +120,21 @@ void DlgExpressionInput::textChanged(const QString &text)
 
                 value.setUnit(impliedUnit);
 
-                ui->result->setText(value.getUserString());
+                ui->msg->setText(value.getUserString());
             }
             else
-                ui->result->setText(Base::Tools::fromStdString(result->toString()));
+                ui->msg->setText(Base::Tools::fromStdString(result->toString()));
+            
+            //set default palette as we may have read text right now
+            ui->msg->setPalette(ui->okBtn->palette());
         }
     }
     catch (Base::Exception & e) {
-        ui->errorMsg->setText(QString::fromUtf8(e.what()));
-        QPalette p(ui->errorMsg->palette());
+        ui->msg->setText(QString::fromUtf8(e.what()));
+        QPalette p(ui->msg->palette());
         p.setColor(QPalette::WindowText, Qt::red);
-        ui->errorMsg->setPalette(p);
+        ui->msg->setPalette(p);
         ui->okBtn->setDisabled(true);
-        ui->result->setText(QString::fromAscii("--"));
     }
 }
 
@@ -182,5 +143,17 @@ void DlgExpressionInput::setDiscarded()
     discarded = true;
     reject();
 }
+
+void DlgExpressionInput::setExpressionInputSize(int width, int height) {
+
+    if(ui->expression->minimumHeight() < height)
+        ui->expression->setMinimumHeight(height);
+    
+    if(ui->expression->minimumWidth() < width)
+        ui->expression->setMinimumWidth(width);
+    
+    minimumWidth = width;
+}
+
 
 #include "moc_DlgExpressionInput.cpp"

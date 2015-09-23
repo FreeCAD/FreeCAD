@@ -496,8 +496,10 @@ void QuantitySpinBox::openFormulaDialog()
     Q_D(const QuantitySpinBox);
     Gui::Dialog::DlgExpressionInput box(getPath(), getExpression(), d->unit, this);
 
-    QPoint pos = mapToGlobal(QPoint(width() / 2, height() / 2));
-    box.setGeometry(pos.x() - box.tip().x(), pos.y() - box.tip().y(), box.width(), box.height());
+    QPoint pos = mapToGlobal(QPoint(0,0));
+    box.move(pos-box.expressionPosition());
+    box.setExpressionInputSize(width(), height());
+
     if (box.exec() == QDialog::Accepted)
         setExpression(box.getExpression());
     else if (box.discardedFormula())
