@@ -120,6 +120,10 @@ public:
 
     void slotObjectRenamed(const App::DocumentObject & obj);
 
+    /* Python interface */
+    PyObject *getPyObject(void);
+    void setPyObject(PyObject *);
+
 private:
 
     typedef boost::adjacency_list< boost::listS, boost::vecS, boost::directedS > DiGraph;
