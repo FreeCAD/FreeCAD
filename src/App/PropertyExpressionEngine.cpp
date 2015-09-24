@@ -739,3 +739,13 @@ std::set<ObjectIdentifier> PropertyExpressionEngine::getPaths() const
 
     return result;
 }
+
+PyObject *PropertyExpressionEngine::getPyObject(void)
+{
+    Py_Return;
+}
+
+void PropertyExpressionEngine::setPyObject(PyObject *)
+{
+    throw Base::RuntimeError("Property is read-only");
+}
