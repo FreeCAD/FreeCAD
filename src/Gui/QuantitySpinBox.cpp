@@ -229,6 +229,7 @@ end:
     double singleStep;
     QPalette defaultPalette;
     QLabel* iconLabel;
+    int iconHeight;
 };
 }
 
@@ -244,14 +245,16 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     d_ptr->defaultPalette = lineEdit()->palette();
 
     /* Icon for f(x) */
+    QFontMetrics fm(lineEdit()->font());
+    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    d_ptr->iconHeight = fm.height() - frameWidth;
     d_ptr->iconLabel = new ExpressionLabel(lineEdit());
     d_ptr->iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(lineEdit()->sizeHint().height(), lineEdit()->sizeHint().height()));
+    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
     d_ptr->iconLabel->setPixmap(pixmap);
-    d_ptr->iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; }"));
+    d_ptr->iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(d_ptr->iconHeight).arg(frameWidth/2));
     d_ptr->iconLabel->hide();
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(d_ptr->iconLabel->sizeHint().width() + frameWidth + 1));
+    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(d_ptr->iconHeight+frameWidth));
 
     QObject::connect(d_ptr->iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -304,6 +307,8 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
 
                 lineEdit()->setText(value->getQuantity().getUserString());
                 setReadOnly(true);
+                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
+                d_ptr->iconLabel->setPixmap(pixmap);
 
                 QPalette p(lineEdit()->palette());
                 p.setColor(QPalette::Text, Qt::lightGray);
@@ -313,6 +318,8 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
         }
         else {
             setReadOnly(false);
+            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
+            d_ptr->iconLabel->setPixmap(pixmap);
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, d->defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
@@ -352,12 +359,8 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
 
-    QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(lineEdit()->rect().height() - frameWidth * 2,
-                                                                   lineEdit()->rect().height() - frameWidth * 2));
-    d->iconLabel->setPixmap(pixmap);
     QSize sz = d->iconLabel->sizeHint();
-    d->iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(),
-                       lineEdit()->rect().top() - frameWidth);
+    d->iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
 
     try {
         if (isBound() && getExpression()) {
@@ -366,6 +369,8 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
             if (value) {
                 setReadOnly(true);
+                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
+                d->iconLabel->setPixmap(pixmap);
 
                 QPalette p(lineEdit()->palette());
                 p.setColor(QPalette::Text, Qt::lightGray);
@@ -375,6 +380,9 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
         }
         else {
             setReadOnly(false);
+            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
+            d->iconLabel->setPixmap(pixmap);
+    
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, d->defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
