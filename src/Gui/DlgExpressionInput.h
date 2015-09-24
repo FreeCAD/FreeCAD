@@ -66,6 +66,7 @@ public:
 private Q_SLOTS:
     void textChanged(const QString & text);
     void setDiscarded();
+    void mousePressEvent(QMouseEvent*);
 
 private:
     ::Ui::DlgExpressionInput *ui;

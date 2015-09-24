@@ -28,6 +28,7 @@
 #include "ui_DlgExpressionInput.h"
 #include "ExpressionCompleter.h"
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <App/Expression.h>
 #include <App/DocumentObject.h>
 
@@ -41,7 +42,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boos
     path(_path),
     discarded(false),
     impliedUnit(_impliedUnit),
-    minimumWidth(300)
+    minimumWidth(10)
 {
     assert(path.getDocumentObject() != 0);
 
@@ -64,10 +65,8 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boos
     setWindowFlags(Qt::Widget | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_NoSystemBackground, true);
     setAttribute(Qt::WA_TranslucentBackground, true);
-    setParent(0);
-
     setWindowFlags(Qt::Popup);
-    setModal(true);
+
     ui->expression->setFocus();
 }
 
@@ -153,6 +152,14 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height) {
         ui->expression->setMinimumWidth(width);
     
     minimumWidth = width;
+}
+
+void DlgExpressionInput::mousePressEvent(QMouseEvent*) {
+    
+    
+    //we need to reject the dialog when clicked on the background. As the background is transparent 
+    //this is the expected behaviour for the user 
+    this->reject();
 }
 
 
