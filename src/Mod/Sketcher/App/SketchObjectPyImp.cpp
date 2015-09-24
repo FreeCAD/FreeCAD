@@ -318,9 +318,12 @@ PyObject* SketchObjectPy::delConstraint(PyObject *args)
 PyObject* SketchObjectPy::renameConstraint(PyObject *args)
 {
     int Index;
-    char* Name;
-    if (!PyArg_ParseTuple(args, "is", &Index, &Name))
+    char* utf8Name;
+    if (!PyArg_ParseTuple(args, "iet", &Index, "utf-8", &utf8Name))
         return 0;
+
+    std::string Name = utf8Name;
+    PyMem_Free(utf8Name);
 
     if (this->getSketchObjectPtr()->Constraints.getSize() <= Index) {
         std::stringstream str;
@@ -329,7 +332,7 @@ PyObject* SketchObjectPy::renameConstraint(PyObject *args)
         return 0;
     }
 
-    if (strcmp(Name, "") != 0) {
+    if (!Name.empty()) {
 
         if (!Sketcher::PropertyConstraintList::validConstraintName(Name)) {
             std::stringstream str;
