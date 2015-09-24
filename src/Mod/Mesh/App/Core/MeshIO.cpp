@@ -496,15 +496,21 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 }
 
 namespace MeshCore {
-    struct MeshPly_Property  : public std::binary_function<std::pair<std::string, int>,
-                                                           std::string, bool>
-    {
-        bool operator()(const std::pair<std::string, int>& x,
-                        const std::string& y) const
+    namespace Ply {
+        enum Number {
+            int8, uint8, int16, uint16, int32, uint32, float32, float64
+        };
+        struct Property : public std::binary_function<std::pair<std::string, Number>,
+                                                      std::string, bool>
         {
-            return x.first == y;
-        }
-    };
+            bool operator()(const std::pair<std::string, int>& x,
+                            const std::string& y) const
+            {
+                return x.first == y;
+            }
+        };
+    }
+    using namespace Ply;
 }
 
 bool MeshInput::LoadPLY (std::istream &inp)
@@ -515,12 +521,8 @@ bool MeshInput::LoadPLY (std::istream &inp)
     MeshFacetArray meshFacets;
 
     enum {
-        ascii, binary_little_endian, binary_big_endian
-    } format;
-
-    enum Number {
-        int8, uint8, int16, uint16, int32, uint32, float32, float64
-    };
+        unknown, ascii, binary_little_endian, binary_big_endian
+    } format = unknown;
 
     if (!inp || inp.bad() == true)
         return false;
@@ -538,8 +540,8 @@ bool MeshInput::LoadPLY (std::istream &inp)
     if ((ply[0] != 'p') || (ply[1] != 'l') || (ply[2] != 'y'))
         return false; // wrong header
 
-    std::vector<std::pair<std::string, Number> > vertex_props;
-    std::vector<Number> face_props;
+    std::vector<std::pair<std::string, Ply::Number> > vertex_props;
+    std::vector<Ply::Number> face_props;
     std::string line, element;
 
     MeshIO::Binding rgb_value = MeshIO::OVERALL;
@@ -613,7 +615,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 str >> space >> std::ws
                     >> type >> space >> std::ws >> name >> std::ws;
 
-                Number number;
+                Ply::Number number;
                 if (type == "char" || type == "int8") {
                     number = int8;
                 }
@@ -701,7 +703,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
     }
 
     // check if valid 3d points
-    MeshPly_Property property;
+    Property property;
     std::size_t num_x = std::count_if(vertex_props.begin(), vertex_props.end(), 
                     std::bind2nd(property, "x"));
     if (num_x != 1)
