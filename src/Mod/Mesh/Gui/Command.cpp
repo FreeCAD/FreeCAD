@@ -47,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -402,10 +403,11 @@ void CmdMeshImport::activated(int iMsg)
         QFileInfo fi;
         fi.setFile(*it);
 
+        std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8((*it).toUtf8().data());
         openCommand("Import Mesh");
         doCommand(Doc,"import Mesh");
-        doCommand(Doc,"Mesh.insert(\"%s\")",
-                 (const char*)(*it).toUtf8());
+        doCommand(Doc,"Mesh.insert(u\"%s\")",
+                  unicodepath.c_str());
         commitCommand();
         updateActive();
     }
