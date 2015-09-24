@@ -385,6 +385,12 @@ PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) co
         if (Base::streq(attr, "__dict__")){
             // Return the default dict
             PyTypeObject *tp = this->ob_type;
+            // register type if needed
+            if (tp->tp_dict == NULL) {
+                if (PyType_Ready(tp) < 0)
+                    return 0;
+            }
+
             PyObject* dict = PyDict_Copy(tp->tp_dict);
             std::map<std::string,App::Property*> Map;
             FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
