@@ -175,7 +175,7 @@ void EditDatumDialog::exec(bool atCursor)
                     QString constraintName = ui_ins_datum.name->text().trimmed();
                     if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
                                                 sketch->getNameInDocument(),
                                                 ConstrNbr, escapedstr.c_str());
                     }

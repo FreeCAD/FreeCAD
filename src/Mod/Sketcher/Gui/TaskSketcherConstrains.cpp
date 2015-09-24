@@ -477,13 +477,13 @@ void ConstraintView::swapNamedOfSelectedItems()
     std::string tmpname = ss.str();
 
     Gui::Command::openCommand("Swap constraint names");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
                             item1->sketch->getNameInDocument(),
                             item1->ConstraintNbr, tmpname.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
                             item2->sketch->getNameInDocument(),
                             item2->ConstraintNbr, escapedstr1.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
                             item1->sketch->getNameInDocument(),
                             item1->ConstraintNbr, escapedstr2.c_str());
     Gui::Command::commitCommand();
@@ -660,7 +660,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
 
         Gui::Command::openCommand("Rename sketch constraint");
         try {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
                                     sketch->getNameInDocument(),
                                     it->ConstraintNbr, escapedstr.c_str());
             Gui::Command::commitCommand();
