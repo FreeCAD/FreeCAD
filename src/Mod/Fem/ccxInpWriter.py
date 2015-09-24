@@ -61,6 +61,8 @@ class inp_writer:
         self.base_name = self.mesh_object.Name
         self.file_name = self.dir_name + '/' + self.base_name + '.inp'
         self.fc_ver = FreeCAD.Version()
+        self.ccx_eall = 'Eall'
+        self.ccx_elsets = []
 
     def write_calculix_input_file(self):
         self.mesh_object.FemMesh.writeABAQUS(self.file_name)
@@ -87,116 +89,39 @@ class inp_writer:
         return self.file_name
 
     def write_element_sets_material_and_femelement_type(self, f):
+        if len(self.material_objects) == 1:
+            if self.beamsection_objects and len(self.beamsection_objects) == 1:          # single mat, single beam
+                self.get_ccx_elsets_single_mat_single_beam()
+            elif self.beamsection_objects and len(self.beamsection_objects) > 1:         # single mat, multiple beams
+                self.get_ccx_elsets_single_mat_multiple_beam()
+            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:  # single mat, single shell
+                self.get_ccx_elsets_single_mat_single_shell()
+            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:   # single mat, multiple shells
+                self.get_ccx_elsets_single_mat_multiple_shell()
+            else:                                                                        # single mat, solid
+                self.get_ccx_elsets_single_mat_solid()
+        else:
+            if self.beamsection_objects and len(self.beamsection_objects) == 1:         # multiple mats, single beam
+                self.get_ccx_elsets_multiple_mat_single_beam()
+            elif self.beamsection_objects and len(self.beamsection_objects) > 1:        # multiple mats, multiple beams
+                self.get_ccx_elsets_multiple_mat_multiple_beam()
+            if self.shellthickness_objects and len(self.shellthickness_objects) == 1:   # multiple mats, single shell
+                self.get_ccx_elsets_multiple_mat_single_shell()
+            elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:  # multiple mats, multiple shells
+                self.get_ccx_elsets_multiple_mat_multiple_shell()
+            else:                                                                       # multiple mats, solid
+                self.get_ccx_elsets_multiple_mat_solid()
         f.write('\n***********************************************************\n')
         f.write('** Element sets for materials and FEM element type (solid, shell, beam)\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        if len(self.material_objects) > 1:
-            FreeCAD.Console.PrintError('Multiple materials defined, this could result in a broken CalculiX input file!\n')
-        if len(self.shellthickness_objects) > 1 or len(self.beamsection_objects) > 1:
-            if not hasattr(self, 'fem_element_table'):
-                self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
-        for mi, m in enumerate(self.material_objects):
-            mat_obj = m['Object']
-            if self.beamsection_objects:  # all fem_elements are beamsection_obj --> beam mesh
-                remaining_material_beam_elementset_line = None
-                e_count = 0
-                e_referenced = []
-                e_not_referenced = []
-                for bi, b in enumerate(self.beamsection_objects):
-                    beamsection_obj = b['Object']
-                    material_elementset_name = mat_obj.Name + beamsection_obj.Name
-                    # max identifier length in CalculiX for beam sections see http://forum.freecadweb.org/viewtopic.php?f=18&t=12509
-                    if len(material_elementset_name) > 20:
-                        material_elementset_name = 'Mat' + str(mi) + 'Beam' + str(bi)
-                    b['MaterialElementsetName'] = material_elementset_name    # the last material is taken in def write_femelementsets()
-                    material_elementset_line = '*ELSET,ELSET=' + material_elementset_name + '\n'
-                    if not beamsection_obj.References:
-                        if len(self.beamsection_objects) == 1:   # all beam elements have the section of this beamsection_obj
-                            f.write(material_elementset_line)
-                            f.write('Eall\n')
-                        else:   # remaining beam elements have the beamsection_obj of this beamsection_obj
-                            remaining_material_beam_elementset_line = material_elementset_line
-                    else:  # use reference shapes for the beamsection_obj of this beamsection_obj
-                        f.write(material_elementset_line)
-                        for ref in beamsection_obj.References:
-                            no = []
-                            el = []
-                            r = ref[0].Shape.getElement(ref[1])
-                            if r.ShapeType == 'Edge':
-                                # print '  BeamSectionReferenceEdge : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1]
-                                no = self.mesh_object.FemMesh.getNodesByEdge(r)
-                                el = getFemElementsByNodes(self.fem_element_table, no)
-                            else:
-                                print '  No Edge, but BeamSection needs Edges as reference shapes!'
-                            for e in sorted(el):
-                                f.write(str(e) + ',\n')
-                            e_count += len(el)
-                            e_referenced += el
-                # write remaining beamsection elements
-                if remaining_material_beam_elementset_line:
-                    f.write(remaining_material_beam_elementset_line)
-                    f.write('**remaining elements\n')
-                    for e in self.fem_element_table:
-                        if e not in e_referenced:
-                            e_not_referenced.append(e)
-                    for e in sorted(e_not_referenced):
-                        f.write(str(e) + ',\n')
-                    e_count += len(e_not_referenced)
-                f.write('\n')
-            elif self.shellthickness_objects:  # all fem_elements are shells --> shell mesh
-                remaining_material_shellthicknes_elementset_line = None
-                e_count = 0
-                e_referenced = []
-                e_not_referenced = []
-                for si, s in enumerate(self.shellthickness_objects):
-                    shellthickness_obj = s['Object']
-                    material_elementset_name = mat_obj.Name + shellthickness_obj.Name
-                    if len(material_elementset_name) > 80:   # standard max identifier lenght in CalculiX
-                        material_elementset_name = 'Mat' + str(mi) + 'Shell' + str(si)
-                    s['MaterialElementsetName'] = material_elementset_name    # the last material is taken in def write_femelementsets()
-                    material_elementset_line = '*ELSET,ELSET=' + material_elementset_name + '\n'
-                    if not shellthickness_obj.References:
-                        if len(self.shellthickness_objects) == 1:   # all shell elements have the thickness of this shellthickness_obj
-                            f.write(material_elementset_line)
-                            f.write('Eall\n')
-                        else:   # remaining shell elements have the thickness of this shellthickness_obj
-                            remaining_material_shellthicknes_elementset_line = material_elementset_line
-                    else:  # use reference shapes for the thickness of this shellthickness_obj
-                        f.write(material_elementset_line)
-                        for ref in shellthickness_obj.References:
-                            no = []
-                            el = []
-                            r = ref[0].Shape.getElement(ref[1])
-                            if r.ShapeType == 'Face':
-                                # print '  ShellThicknessReferenceFace : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1]
-                                no = self.mesh_object.FemMesh.getNodesByFace(r)
-                                el = getFemElementsByNodes(self.fem_element_table, no)
-                            else:
-                                print '  No Face, but ShellThickness needs Faces as reference shapes!'
-                            for e in sorted(el):
-                                f.write(str(e) + ',\n')
-                            e_count += len(el)
-                            e_referenced += el
-                # write remaining shellthickness elements
-                if remaining_material_shellthicknes_elementset_line:
-                    f.write(remaining_material_shellthicknes_elementset_line)
-                    f.write('**remaining elements\n')
-                    for e in self.fem_element_table:
-                        if e not in e_referenced:
-                            e_not_referenced.append(e)
-                    for e in sorted(e_not_referenced):
-                        f.write(str(e) + ',\n')
-                    e_count += len(e_not_referenced)
-                f.write('\n')
-            else:  # all fem_elements are solids --> volume mesh
-                material_elementset_name = 'MechanicalMaterialSolid'
-                f.write('*ELSET,ELSET=' + material_elementset_name + '\n')
-                f.write('Eall\n')
-        if hasattr(self, 'fem_element_table'):
-            if e_count != len(self.fem_element_table):
-                print 'ERROR: self.fem_element_table != e_count'
-                print 'Elements written to CalculiX file: ', e_count
-                print 'Elements of the FreeCAD FEM Mesh:  ', len(self.fem_element_table)
+        for ccx_elset in self.ccx_elsets:
+            # print(ccx_elset)
+            f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
+            if ccx_elset['ccx_elset'] == self.ccx_eall:
+                f.write(self.ccx_eall + '\n')
+            else:
+                for elid in ccx_elset['ccx_elset']:
+                    f.write(str(elid) + ',\n')
 
     def write_node_sets_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
@@ -272,34 +197,28 @@ class inp_writer:
         f.write('\n***********************************************************\n')
         f.write('** Sections\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for m in self.material_objects:
-            mat_obj = m['Object']
-            mat_name = mat_obj.Material['Name'][:80]
-            if self.beamsection_objects:   # all fem_elements are beams
-                for b in self.beamsection_objects:
-                    beamsection_obj = b['Object']
-                    material_elementset_name = b['MaterialElementsetName']
-                    el_set = 'ELSET=' + material_elementset_name + ', '
-                    material = 'MATERIAL=' + mat_name
-                    el_prop = '*BEAM SECTION, ' + el_set + material + ', SECTION=RECT\n'
-                    sc_prop = str(beamsection_obj.Hight.getValueAs('mm')) + ', ' + str(beamsection_obj.Width.getValueAs('mm')) + '\n'
-                    f.write(el_prop)
-                    f.write(sc_prop)
-            elif self.shellthickness_objects:   # all fem_elements are shells
-                for s in self.shellthickness_objects:
-                    shellthickness_obj = s['Object']
-                    material_elementset_name = s['MaterialElementsetName']
-                    el_set = 'ELSET=' + material_elementset_name + ', '
-                    material = 'MATERIAL=' + mat_name
-                    el_prop = '*SHELL SECTION, ' + el_set + material + '\n'
-                    sc_prop = str(shellthickness_obj.Thickness.getValueAs('mm')) + '\n'
-                    f.write(el_prop)
-                    f.write(sc_prop)
-            else:  # all fem_elements are solids
-                el_set = 'ELSET=' + 'MechanicalMaterialSolid' + ', '
-                material = 'MATERIAL=' + mat_name
-                el_prop = '*SOLID SECTION, ' + el_set + material + '\n'
-                f.write(el_prop)
+        for ccx_elset in self.ccx_elsets:
+            if 'beamsection_obj'in ccx_elset:  # beam mesh
+                beamsec_obj = ccx_elset['beamsection_obj']
+                elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
+                material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
+                setion_def = '*BEAM SECTION, ' + elsetdef + material + ', SECTION=RECT\n'
+                setion_geo = str(beamsec_obj.Hight.getValueAs('mm')) + ', ' + str(beamsec_obj.Width.getValueAs('mm')) + '\n'
+                f.write(setion_def)
+                f.write(setion_geo)
+            elif 'shellthickness_obj'in ccx_elset:  # shell mesh
+                shellth_obj = ccx_elset['shellthickness_obj']
+                elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
+                material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
+                setion_def = '*SHELL SECTION, ' + elsetdef + material + '\n'
+                setion_geo = str(shellth_obj.Thickness.getValueAs('mm')) + '\n'
+                f.write(setion_def)
+                f.write(setion_geo)
+            else:  # solid mesh
+                elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
+                material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
+                setion_def = '*SOLID SECTION, ' + elsetdef + material + '\n'
+                f.write(setion_def)
 
     def write_step_begin(self, f):
         f.write('\n***********************************************************\n')
@@ -550,6 +469,244 @@ class inp_writer:
         f.write('**   Loads (nodal loads)         --> N\n')
         f.write('**\n')
 
+    # self.ccx_elsets = [ {
+    #                        'beamsection_obj' : 'beamsection_obj'       if exists
+    #                        'shellthickness_obj' : shellthickness_obj'  if exists
+    #                        'ccx_elset' : [e1, e2, e3, ... , en] or string self.ccx_eall
+    #                        'ccx_elset_name' : 'ccx_identifier_elset'
+    #                        'mat_obj_name' : 'mat_obj.Name'
+    #                        'ccx_mat_name' : 'mat_obj.Material['Name'][:80]'   !!! not unique !!!
+    #                     },
+    #                     {}, ... , {} ]
+    def get_ccx_elsets_single_mat_single_beam(self):
+        mat_obj = self.material_objects[0]['Object']
+        beamsec_obj = self.beamsection_objects[0]['Object']
+        ccx_elset = {}
+        ccx_elset['beamsection_obj'] = beamsec_obj
+        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset_name'] = get_ccx_elset_beam_name(mat_obj.Name, beamsec_obj.Name)
+        ccx_elset['mat_obj_name'] = mat_obj.Name
+        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+        self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_single_mat_single_shell(self):
+        mat_obj = self.material_objects[0]['Object']
+        shellth_obj = self.shellthickness_objects[0]['Object']
+        ccx_elset = {}
+        ccx_elset['shellthickness_obj'] = shellth_obj
+        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset_name'] = get_ccx_elset_shell_name(mat_obj.Name, shellth_obj.Name)
+        ccx_elset['mat_obj_name'] = mat_obj.Name
+        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+        self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_single_mat_solid(self):
+        mat_obj = self.material_objects[0]['Object']
+        ccx_elset = {}
+        ccx_elset['ccx_elset'] = self.ccx_eall
+        ccx_elset['ccx_elset_name'] = get_ccx_elset_solid_name(mat_obj.Name)
+        ccx_elset['mat_obj_name'] = mat_obj.Name
+        ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+        self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_single_mat_multiple_beam(self):
+        mat_obj = self.material_objects[0]['Object']
+        self.get_beamsection_element_sets()
+        for beamsec_data in self.beamsection_objects:
+            beamsec_obj = beamsec_data['Object']
+            ccx_elset = {}
+            ccx_elset['beamsection_obj'] = beamsec_obj
+            ccx_elset['ccx_elset'] = beamsec_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_beam_name(mat_obj.Name, beamsec_obj.Name, None, beamsec_data['ShortName'])
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+            self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_single_mat_multiple_shell(self):
+        mat_obj = self.material_objects[0]['Object']
+        self.get_shellthickness_element_sets()
+        for shellth_data in self.shellthickness_objects:
+            shellth_obj = shellth_data['Object']
+            ccx_elset = {}
+            ccx_elset['shellthickness_obj'] = shellth_obj
+            ccx_elset['ccx_elset'] = shellth_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_shell_name(mat_obj.Name, shellth_obj.Name, None, shellth_data['ShortName'])
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+            self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_single_beam(self):
+        beamsec_obj = self.beamsection_objects[0]['Object']
+        self.get_material_element_sets()
+        for mat_data in self.material_objects:
+            mat_obj = mat_data['Object']
+            ccx_elset = {}
+            ccx_elset['beamsection_obj'] = beamsec_obj
+            ccx_elset['ccx_elset'] = mat_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_beam_name(mat_obj.Name, beamsec_obj.Name, mat_data['ShortName'])
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+            self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_single_shell(self):
+        shellth_obj = self.shellthickness_objects[0]['Object']
+        self.get_material_element_sets()
+        for mat_data in self.material_objects:
+            mat_obj = mat_data['Object']
+            ccx_elset = {}
+            ccx_elset['shellthickness_obj'] = shellth_obj
+            ccx_elset['ccx_elset'] = mat_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_shell_name(mat_obj.Name, shellth_obj.Name, mat_data['ShortName'])
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+            self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_solid(self):
+        self.get_material_element_sets()
+        for mat_data in self.material_objects:
+            mat_obj = mat_data['Object']
+            ccx_elset = {}
+            ccx_elset['ccx_elset'] = mat_data['FEMElements']
+            ccx_elset['ccx_elset_name'] = get_ccx_elset_solid_name(mat_obj.Name, None, mat_data['ShortName'])
+            ccx_elset['mat_obj_name'] = mat_obj.Name
+            ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+            self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_multiple_beam(self):
+        self.get_beamsection_element_sets()
+        self.get_material_element_sets()
+        for beamsec_data in self.beamsection_objects:
+            beamsec_obj = beamsec_data['Object']
+            for mat_data in self.material_objects:
+                mat_obj = mat_data['Object']
+                ccx_elset = {}
+                ccx_elset['beamsection_obj'] = beamsec_obj
+                elemids = []
+                for elemid in beamsec_data['FEMElements']:
+                    if elemid in mat_data['FEMElements']:
+                        elemids.append(elemid)
+                ccx_elset['ccx_elset'] = elemids
+                ccx_elset['ccx_elset_name'] = get_ccx_elset_beam_name(mat_obj.Name, beamsec_obj.Name, mat_data['ShortName'], beamsec_data['ShortName'])
+                ccx_elset['mat_obj_name'] = mat_obj.Name
+                ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+                self.ccx_elsets.append(ccx_elset)
+
+    def get_ccx_elsets_multiple_mat_multiple_shell(self):
+        self.get_shellthickness_element_sets()
+        self.get_material_element_sets()
+        for shellth_data in self.shellthickness_objects:
+            shellth_obj = shellth_data['Object']
+            for mat_data in self.material_objects:
+                mat_obj = mat_data['Object']
+                ccx_elset = {}
+                ccx_elset['shellthickness_obj'] = shellth_obj
+                elemids = []
+                for elemid in shellth_data['FEMElements']:
+                    if elemid in mat_data['FEMElements']:
+                        elemids.append(elemid)
+                ccx_elset['ccx_elset'] = elemids
+                ccx_elset['ccx_elset_name'] = get_ccx_elset_shell_name(mat_obj.Name, shellth_obj.Name, mat_data['ShortName'], shellth_data['ShortName'])
+                ccx_elset['mat_obj_name'] = mat_obj.Name
+                ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
+                self.ccx_elsets.append(ccx_elset)
+
+    def get_material_element_sets(self):
+        # get femelements for reference shapes of each material_obj
+        FreeCAD.Console.PrintError('Multiple materials defined, this could result in a broken CalculiX input file!\n')
+        # TODO get the elset nodeids and write them to mat_data['FEMElements']
+        # if not hasattr(self, 'fem_element_table'):
+        #     self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
+        for mat_data_i, mat_data in enumerate(self.material_objects):
+            mat_data['ShortName'] = 'Mat' + str(mat_data_i)  # unique short ccx_identifier
+            # mat_obj = mat_data['Object']
+            mat_data['FEMElements'] = self.ccx_eall
+
+    def get_beamsection_element_sets(self):
+        # get femelements for reference shapes of each beamsec_obj
+        if not hasattr(self, 'fem_element_table'):
+            self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
+        count_femelements_beamsection = 0
+        referenced_femelements_beamsection = []
+        has_remaining_femelements_beamsection = None
+        for beamsec_data_i, beamsec_data in enumerate(self.beamsection_objects):
+            beamsec_data['ShortName'] = 'Beam' + str(beamsec_data_i)  # unique short ccx_identifier
+            beamsec_obj = beamsec_data['Object']
+            if beamsec_obj.References:
+                ref_shape_femelements = []
+                for ref in beamsec_obj.References:
+                    nodeids = []
+                    elemids = []
+                    r = ref[0].Shape.getElement(ref[1])
+                    if r.ShapeType == 'Edge':
+                        # print('  BeamSectionReferenceEdge : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
+                        nodeids = self.mesh_object.FemMesh.getNodesByEdge(r)
+                        elemids = getFemElementsByNodes(self.fem_element_table, nodeids)
+                    else:
+                        print('  No Edge, but BeamSection needs Edges as reference shapes!')
+                    ref_shape_femelements += elemids
+                    referenced_femelements_beamsection += elemids
+                    count_femelements_beamsection += len(elemids)
+                beamsec_data['FEMElements'] = ref_shape_femelements
+            else:
+                has_remaining_femelements_beamsection = beamsec_obj.Name
+        # get remaining femelements for the beamsection objects
+        if has_remaining_femelements_beamsection:
+            remaining_femelements_beamsection = []
+            for elemid in self.fem_element_table:
+                if elemid not in referenced_femelements_beamsection:
+                    remaining_femelements_beamsection.append(elemid)
+            count_femelements_beamsection += len(remaining_femelements_beamsection)
+            for beamsec_data in self.beamsection_objects:
+                beamsec_obj = beamsec_data['Object']
+                if beamsec_obj.Name == has_remaining_femelements_beamsection:
+                    beamsec_data['FEMElements'] = sorted(remaining_femelements_beamsection)
+        # check if all worked out well
+        if not femelements_count_ok(self.fem_element_table, count_femelements_beamsection):
+            FreeCAD.Console.PrintError('Error in BeamSection -- > femelements_count_ok failed!\n')
+
+    def get_shellthickness_element_sets(self):
+        # get femelements for reference shapes of each shellth_obj
+        if not hasattr(self, 'fem_element_table'):
+            self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
+        count_femelements_shellthickness = 0
+        referenced_femelements_shellthickness = []
+        has_remaining_femelements_shellthickness = None
+        for shellth_data_i, shellth_data in enumerate(self.shellthickness_objects):
+            shellth_data['ShortName'] = 'Shell' + str(shellth_data_i)  # unique short ccx_identifier
+            shellth_obj = shellth_data['Object']
+            if shellth_obj.References:
+                ref_shape_femelements = []
+                for ref in shellth_obj.References:
+                    nodeids = []
+                    elemids = []
+                    r = ref[0].Shape.getElement(ref[1])
+                    if r.ShapeType == 'Face':
+                        # print ('  ShellThicknessReferenceFace : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
+                        nodeids = self.mesh_object.FemMesh.getNodesByFace(r)
+                        elemids = getFemElementsByNodes(self.fem_element_table, nodeids)
+                    else:
+                        print('  No Face, but ShellThickness needs Faces as reference shapes!')
+                    ref_shape_femelements += elemids
+                    referenced_femelements_shellthickness += elemids
+                    count_femelements_shellthickness += len(elemids)
+                shellth_data['FEMElements'] = ref_shape_femelements
+            else:
+                has_remaining_femelements_shellthickness = shellth_obj.Name
+        # get remaining femelements for the shellthickness objects
+        if has_remaining_femelements_shellthickness:
+            remaining_femelements_shellthickness = []
+            for elemid in self.fem_element_table:
+                if elemid not in referenced_femelements_shellthickness:
+                    remaining_femelements_shellthickness.append(elemid)
+            count_femelements_shellthickness += len(remaining_femelements_shellthickness)
+            for shellth_data in self.shellthickness_objects:
+                shellth_obj = shellth_data['Object']
+                if shellth_obj.Name == has_remaining_femelements_shellthickness:
+                    shellth_data['FEMElements'] = sorted(remaining_femelements_shellthickness)
+        # check if all worked out well
+        if not femelements_count_ok(self.fem_element_table, count_femelements_shellthickness):
+            FreeCAD.Console.PrintError('Error in ShellThickness -- > femelements_count_ok failed!\n')
+
 
 # Helpers
 def getTriangleArea(P1, P2, P3):
@@ -610,3 +767,48 @@ def is_shell_mesh(fem_mesh):
 def is_beam_mesh(fem_mesh):
     if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount == 0 and fem_mesh.EdgeCount > 0:  # beam mesh
         return True
+
+
+def femelements_count_ok(fem_element_table, count_femelements):
+    if count_femelements == len(fem_element_table):
+        # print('Count Elements written to CalculiX file: ', count_femelements)
+        # print('Count Elements of the FreeCAD FEM Mesh:  ', len(fem_element_table))
+        return True
+    else:
+        print('ERROR: self.fem_element_table != count_femelements')
+        print('Count Elements written to CalculiX file: ', count_femelements)
+        print('Count Elements of the FreeCAD FEM Mesh:  ', len(fem_element_table))
+        return False
+
+
+def get_ccx_elset_beam_name(mat_name, beamsec_name, mat_short_name=None, beamsec_short_name=None):
+    if not mat_short_name:
+        mat_short_name = 'Mat0'
+    if not beamsec_short_name:
+        beamsec_short_name = 'Beam0'
+    if len(mat_name + beamsec_name) > 20:   # max identifier lenght in CalculiX for beam elsets
+        return mat_short_name + beamsec_short_name
+    else:
+        return mat_name + beamsec_name
+
+
+def get_ccx_elset_shell_name(mat_name, shellth_name, mat_short_name=None, shellth_short_name=None):
+    if not mat_short_name:
+        mat_short_name = 'Mat0'
+    if not shellth_short_name:
+        shellth_short_name = 'Shell0'
+    if len(mat_name + shellth_name) > 80:   # standard max identifier lenght in CalculiX
+        return mat_short_name + shellth_short_name
+    else:
+        return mat_name + shellth_name
+
+
+def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
+    if not solid_name:
+        solid_name = 'Solid'
+    if not mat_short_name:
+        mat_short_name = 'Mat0'
+    if len(mat_name + solid_name) > 80:   # standard max identifier lenght in CalculiX
+        return mat_short_name + solid_name
+    else:
+        return mat_name + solid_name
