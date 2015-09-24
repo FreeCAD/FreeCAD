@@ -253,18 +253,30 @@ PyObject *PropertyFileIncluded::getPyObject(void)
 
 void PropertyFileIncluded::setPyObject(PyObject *value)
 {
+#if PY_MAJOR_VERSION >= 3
+    extern PyTypeObject PyIOBase_Type;
+#endif
     std::string string;
     if (PyUnicode_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+        string = PyUnicode_AsUTF8(value);
+#else
         PyObject* unicode = PyUnicode_AsUTF8String(value);
         string = PyString_AsString(unicode);
         Py_DECREF(unicode);
     }
     else if (PyString_Check(value)) {
         string = PyString_AsString(value);
+#endif
     }
+#if PY_MAJOR_VERSION >= 3
+    else if(PyObject_IsInstance(value, (PyObject *)&PyIOBase_Type) == 1) {
+        string = 
+#else
     else if (PyFile_Check(value)) {
         PyObject* FileName = PyFile_Name(value);
         string = PyString_AsString(FileName);
+#endif
     }
     else if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) != 2)
@@ -274,6 +286,10 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
 
         // decoding file
         std::string fileStr;
+#if PY_MAJOR_VERSION >= 3
+        if(PyObject_IsInstance(file, (PyObject *)&PyIOBase_Type) == 1) {
+            fileStr = PyUnicode_AsUTF8(file);
+#else
         if (PyUnicode_Check(file)) {
             PyObject* unicode = PyUnicode_AsUTF8String(file);
             fileStr = PyString_AsString(unicode);
@@ -281,6 +297,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         }
         else if (PyString_Check(file)) {
             fileStr = PyString_AsString(file);
+#endif
         }
         else if (PyFile_Check(file)) {
             PyObject* FileName = PyFile_Name(file);

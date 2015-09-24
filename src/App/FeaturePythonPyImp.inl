@@ -27,16 +27,15 @@ namespace App
 /// Type structure of FeaturePythonPyT
 template<class FeaturePyT>
 PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
-    PyObject_HEAD_INIT(&PyType_Type)
-    0,                                                /*ob_size*/
+    PyVarObject_HEAD_INIT(&PyType_Type,0)
     "FeaturePython",                                  /*tp_name*/
     sizeof(FeaturePythonPyT),                         /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
     /* methods */
     FeaturePyT::PyDestructor,                         /*tp_dealloc*/
     0,                                                /*tp_print*/
-    FeaturePyT::__getattr,                            /*tp_getattr*/
-    __setattr,                                        /*tp_setattr*/
+    0,                                                /*tp_getattr*/
+    0,                                                /*tp_setattr*/
     0,                                                /*tp_compare*/
     0,                                                /*tp_repr*/
     0,                                                /*tp_as_number*/
@@ -45,12 +44,16 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_hash*/
     0,                                                /*tp_call */
     0,                                                /*tp_str  */
-    0,                                                /*tp_getattro*/
-    0,                                                /*tp_setattro*/
+    FeaturePyT::__getattro,                           /*tp_getattro*/
+    __setattro,                                       /*tp_setattro*/
     /* --- Functions to access object as input/output buffer ---------*/
     0,                                                /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
+#if PY_MAJOR_VERSION >= 3
+    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,           /*tp_flags */
+#else
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS,        /*tp_flags */
+#endif
     "This is the father of all Feature classes",      /*tp_doc */
     0,                                                /*tp_traverse */
     0,                                                /*tp_clear */
@@ -221,14 +224,20 @@ FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 }
 
 template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::__setattr(PyObject *obj, char *attr, PyObject *value)
+int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
+    char *attr;
+#if PY_MAJOR_VERSION >= 3
+    attr = PyUnicode_AsUTF8(attro);
+#else
+    attr = PyString_AsString(attro);
+#endif
     if (!static_cast<Base::PyObjectBase*>(obj)->isValid()){
         PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
         return -1;
     }
 
-    int ret = static_cast<Base::PyObjectBase*>(obj)->_setattr(attr, value);
+    int ret = static_cast<Base::PyObjectBase*>(obj)->_setattro(attro, value);
     if (ret == 0) {
         static_cast<Base::PyObjectBase*>(obj)->startNotify();
     }
@@ -236,8 +245,14 @@ int FeaturePythonPyT<FeaturePyT>::__setattr(PyObject *obj, char *attr, PyObject 
 }
 
 template<class FeaturePyT>
-PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
+PyObject *FeaturePythonPyT<FeaturePyT>::_getattro(PyObject *attro)
 {
+    char *attr;
+#if PY_MAJOR_VERSION >= 3
+    attr = PyUnicode_AsUTF8(attro);
+#else
+    attr = PyString_AsString(attro);
+#endif
     try {
         // getter method for special Attributes (e.g. dynamic ones)
         PyObject *r = getCustomAttributes(attr);
@@ -257,7 +272,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
         return NULL;
     }
 
-    PyObject *rvalue = Py_FindMethod(Methods, this, attr);
+    PyObject *rvalue = PyObject_GenericGetAttr(this, attro);
     if (rvalue == NULL) {
         std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
         if (it != dyn_methods.end()) {
@@ -268,7 +283,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
     }
     if (rvalue == NULL) {
         PyErr_Clear();
-        return FeaturePyT::_getattr(attr);
+        return FeaturePyT::_getattro(attro);
     }
     else {
         return rvalue;
@@ -276,8 +291,14 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
 }
 
 template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
+int FeaturePythonPyT<FeaturePyT>::_setattro(PyObject *attro, PyObject *value)
 {
+    char *attr;
+#if PY_MAJOR_VERSION >= 3
+    attr = PyUnicode_AsUTF8(attro);
+#else
+    attr = PyString_AsString(attro);
+#endif
     try {
         // setter for  special Attributes (e.g. dynamic ones)
         int r = setCustomAttributes(attr, value);
@@ -297,7 +318,7 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
         return -1;
     }
 
-    int returnValue = FeaturePyT::_setattr(attr, value);
+    int returnValue = FeaturePyT::_setattro(attro, value);
     if (returnValue == -1) {
         if (value) {
             if (PyFunction_Check(value)) {
@@ -305,7 +326,11 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
                 if (it != dyn_methods.end()) {
                     Py_XDECREF(it->second);
                 }
+#if PY_MAJOR_VERSION >= 3
+                dyn_methods[attr] = PyMethod_New(value, this);
+#else
                 dyn_methods[attr] = PyMethod_New(value, this, 0);
+#endif
                 returnValue = 0;
                 PyErr_Clear();
             }
@@ -402,9 +427,17 @@ PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) co
             std::map<std::string,App::Property*> Map;
             FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
             for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
+#if PY_MAJOR_VERSION >= 3
+                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
+#else
                 PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+#endif
             for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
+#if PY_MAJOR_VERSION >= 3
+                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
+#else
                 PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+#endif
             if (PyErr_Occurred()) {
                 Py_DECREF(dict);
                 dict = 0;

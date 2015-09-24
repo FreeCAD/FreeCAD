@@ -211,7 +211,11 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
     else {
         std::stringstream str;
         getDocumentPtr()->exportGraphviz(str);
+#if PY_MAJOR_VERSION >= 3
+        return PyUnicode_FromString(str.str().c_str());
+#else
         return PyString_FromString(str.str().c_str());
+#endif
     }
 }
 
@@ -245,7 +249,7 @@ PyObject*  DocumentPy::addObject(PyObject *args)
                 if (view)
                     pyvp = Py::Object(view);
                 if (pyvp.isNone())
-                    pyvp = Py::Int(1);
+                    pyvp = Py::Long(1);
                 // 'pyvp' is the python class with the implementation for ViewProvider
                 if (pyvp.hasAttr("__vobject__")) {
                     pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
@@ -490,29 +494,29 @@ Py::List DocumentPy::getObjects(void) const
     return res;
 }
 
-Py::Int DocumentPy::getUndoMode(void) const
+Py::Long DocumentPy::getUndoMode(void) const
 {
-    return Py::Int(getDocumentPtr()->getUndoMode());
+    return Py::Long(getDocumentPtr()->getUndoMode());
 }
 
-void  DocumentPy::setUndoMode(Py::Int arg)
+void  DocumentPy::setUndoMode(Py::Long arg)
 {
     getDocumentPtr()->setUndoMode(arg); 
 }
 
-Py::Int DocumentPy::getUndoRedoMemSize(void) const
+Py::Long DocumentPy::getUndoRedoMemSize(void) const
 {
-    return Py::Int((long)getDocumentPtr()->getUndoMemSize());
+    return Py::Long((long)getDocumentPtr()->getUndoMemSize());
 }
 
-Py::Int DocumentPy::getUndoCount(void) const
+Py::Long DocumentPy::getUndoCount(void) const
 {
-    return Py::Int((long)getDocumentPtr()->getAvailableUndos());
+    return Py::Long((long)getDocumentPtr()->getAvailableUndos());
 }
 
-Py::Int DocumentPy::getRedoCount(void) const
+Py::Long DocumentPy::getRedoCount(void) const
 {
-    return Py::Int((long)getDocumentPtr()->getAvailableRedos());
+    return Py::Long((long)getDocumentPtr()->getAvailableRedos());
 }
 
 Py::List DocumentPy::getUndoNames(void) const
@@ -557,12 +561,16 @@ PyObject* DocumentPy::getTempFileName(PyObject *args)
 
     std::string string;
     if (PyUnicode_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+        string = PyUnicode_AsUTF8(value);
+#else
         PyObject* unicode = PyUnicode_AsUTF8String(value);
         string = PyString_AsString(unicode);
         Py_DECREF(unicode);
     }
     else if (PyString_Check(value)) {
         string = PyString_AsString(value);
+#endif
     }
     else {
         std::string error = std::string("type must be a string!");

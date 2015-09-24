@@ -166,8 +166,13 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 
     if (Py::Object(expr).isNone())
         getDocumentObjectPtr()->setExpression(p, boost::shared_ptr<Expression>());
+#if PY_MAJOR_VERSION >= 3
+    else if (PyUnicode_Check(expr)) {
+        const char * exprStr = PyUnicode_AsUTF8(expr);
+#else
     else if (PyString_Check(expr)) {
         const char * exprStr = PyString_AsString(expr);
+#endif
         boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr));
 
         getDocumentObjectPtr()->setExpression(p, shared_expr, comment);

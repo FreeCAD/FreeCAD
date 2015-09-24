@@ -47,7 +47,7 @@ public:
 
     /** @name callbacks and implementers for the python object methods */
     //@{
-    static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
+    static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
     /// callback for the addProperty() method
     static PyObject * staticCallback_addProperty (PyObject *self, PyObject *args);
     /// implementer for the addProperty() method
@@ -66,8 +66,8 @@ public:
     PyObject *getCustomAttributes(const char* attr) const;
     /// setter for special attributes (e.g. dynamic ones)
     int setCustomAttributes(const char* attr, PyObject *obj);
-    PyObject *_getattr(char *attr);              // __getattr__ function
-    int _setattr(char *attr, PyObject *value);        // __setattr__ function
+    PyObject *_getattro(PyObject *attr);              // __getattr__ function
+    int _setattro(PyObject *attro, PyObject *value);        // __setattr__ function
 
 protected:
     std::map<std::string, PyObject*> dyn_methods;
