@@ -235,9 +235,9 @@ class _Equipment(ArchComponent.Component):
     "The Equipment object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("Part::PropertyPartShape","TopView","Arch",translate("Arch","an optional 2D shape representing a top view of this equipment"))
-        obj.addProperty("Part::PropertyPartShape","FrontView","Arch",translate("Arch","an optional 2D shape representing a front view of this equipment"))
-        obj.addProperty("Part::PropertyPartShape","SideView","Arch",translate("Arch","an optional 2D shape representing a side view of this equipment"))
+        #obj.addProperty("Part::PropertyPartShape","TopView","Arch",translate("Arch","an optional 2D shape representing a top view of this equipment"))
+        #obj.addProperty("Part::PropertyPartShape","FrontView","Arch",translate("Arch","an optional 2D shape representing a front view of this equipment"))
+        #obj.addProperty("Part::PropertyPartShape","SideView","Arch",translate("Arch","an optional 2D shape representing a side view of this equipment"))
         obj.addProperty("App::PropertyString","Model","Arch",translate("Arch","The model description of this equipment"))
         obj.addProperty("App::PropertyString","Url","Arch",translate("Arch","The url of the product page of this equipment"))
         self.Type = "Equipment"
@@ -248,10 +248,10 @@ class _Equipment(ArchComponent.Component):
         self.hideSubobjects(obj,prop)
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
-        
+
         pl = obj.Placement
         if obj.Base:
             if obj.isDerivedFrom("Mesh::Feature"):
