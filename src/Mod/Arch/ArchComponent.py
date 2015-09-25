@@ -709,7 +709,7 @@ class ViewProviderComponent:
                             vobj.update()
         elif prop == "ShapeColor":
             # restore DiffuseColor after overridden by ShapeColor
-            if hasattr(vobj.Object,"DiffuseColor"):
+            if hasattr(vobj,"DiffuseColor"):
                 if len(vobj.DiffuseColor) > 1:
                     d = vobj.DiffuseColor
                     vobj.DiffuseColor = d
