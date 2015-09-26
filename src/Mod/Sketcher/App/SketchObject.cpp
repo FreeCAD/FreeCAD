@@ -2737,6 +2737,48 @@ int SketchObject::delExternal(int ExtGeoId)
     return 0;
 }
 
+int SketchObject::delAllExternal()
+{
+    // get the actual lists of the externals
+    std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
+    std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+        
+    const std::vector<DocumentObject*> originalObjects = Objects;
+    const std::vector<std::string>     originalSubElements = SubElements;
+       
+    Objects.clear();
+    
+    SubElements.clear();    
+        
+    const std::vector< Constraint * > &constraints = Constraints.getValues();
+    std::vector< Constraint * > newConstraints(0);
+
+    for (std::vector<Constraint *>::const_iterator it = constraints.begin(); it != constraints.end(); ++it) {
+        if ((*it)->First > -3 && (*it)->Second > -3 && (*it)->Third > -3) {
+            Constraint *copiedConstr = (*it)->clone();
+            
+            newConstraints.push_back(copiedConstr);
+        }
+    }
+         
+    ExternalGeometry.setValues(Objects,SubElements);
+    try {
+        rebuildExternalGeometry();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        // revert to original values
+        ExternalGeometry.setValues(originalObjects,originalSubElements);
+        return -1;
+    }
+    
+    solverNeedsUpdate=true;
+    Constraints.setValues(newConstraints);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    return 0;
+}
+
 int SketchObject::delConstraintsToExternal()
 {
     const std::vector< Constraint * > &constraints = Constraints.getValuesForce();

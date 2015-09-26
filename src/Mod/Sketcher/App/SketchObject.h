@@ -97,6 +97,9 @@ public:
      *  external geometry
      */
     int delExternal(int ExtGeoId);
+    
+    /** deletes all external geometry */
+    int delAllExternal();
 
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
