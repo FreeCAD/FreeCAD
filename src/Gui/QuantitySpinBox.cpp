@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QDebug>
 # include <QLineEdit>
 # include <QFocusEvent>
 # include <QHBoxLayout>
@@ -502,16 +503,29 @@ void QuantitySpinBox::openFormulaDialog()
     Q_ASSERT(isBound());
 
     Q_D(const QuantitySpinBox);
-    Gui::Dialog::DlgExpressionInput box(getPath(), getExpression(), d->unit, this);
+    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
+    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
+    box->show();
 
     QPoint pos = mapToGlobal(QPoint(0,0));
-    box.move(pos-box.expressionPosition());
-    box.setExpressionInputSize(width(), height());
+    box->move(pos-box->expressionPosition());
+    box->setExpressionInputSize(width(), height());
+}
 
-    if (box.exec() == QDialog::Accepted)
-        setExpression(box.getExpression());
-    else if (box.discardedFormula())
+void QuantitySpinBox::finishFormulaDialog()
+{
+    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
+    if (!box) {
+        qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
+        return;
+    }
+
+    if (box->result() == QDialog::Accepted)
+        setExpression(box->getExpression());
+    else if (box->discardedFormula())
         setExpression(boost::shared_ptr<Expression>());
+
+    box->deleteLater();
 }
 
 Base::Unit QuantitySpinBox::unit() const

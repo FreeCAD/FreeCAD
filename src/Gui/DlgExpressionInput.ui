@@ -226,17 +226,8 @@
   </layout>
   <zorder>label</zorder>
   <zorder>expression</zorder>
-  <zorder>result</zorder>
-  <zorder>horizontalSpacer_2</zorder>
   <zorder>widget</zorder>
-  <zorder></zorder>
   <zorder>ctrlArea</zorder>
-  <zorder></zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>horizontalSpacer_2</zorder>
-  <zorder></zorder>
-  <zorder>horizontalSpacer_3</zorder>
  </widget>
  <customwidgets>
   <customwidget>

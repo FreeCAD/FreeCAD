@@ -61,7 +61,7 @@ public:
     QPoint expressionPosition() const;
     void   setExpressionInputSize(int width, int height);
 
-    void setGeometry(int x, int y, int w, int h);
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private Q_SLOTS:
     void textChanged(const QString & text);
