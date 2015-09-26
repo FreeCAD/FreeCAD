@@ -112,8 +112,6 @@ public:
 
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
-    std::set<App::ObjectIdentifier> getPaths() const;
-
     const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const;
 
     size_t numExpressions() const;
