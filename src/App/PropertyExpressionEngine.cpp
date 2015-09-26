@@ -722,24 +722,6 @@ void PropertyExpressionEngine::renameObjectIdentifiers(const std::map<ObjectIden
     }
 }
 
-/**
- * @brief Get set of registered object identifiers.
- * @return Set of object identifiers.
- */
-
-std::set<ObjectIdentifier> PropertyExpressionEngine::getPaths() const
-{
-    ExpressionMap::const_iterator i = expressions.begin();
-    std::set<ObjectIdentifier> result;
-
-    while (i != expressions.end()) {
-        result.insert(i->first);
-        ++i;
-    }
-
-    return result;
-}
-
 PyObject *PropertyExpressionEngine::getPyObject(void)
 {
     Py_Return;
