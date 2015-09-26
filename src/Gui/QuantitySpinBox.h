@@ -112,6 +112,7 @@ public Q_SLOTS:
 protected Q_SLOTS:
     void userInput(const QString & text);
     void openFormulaDialog();
+    void finishFormulaDialog();
 
 protected:
     virtual StepEnabled stepEnabled() const;

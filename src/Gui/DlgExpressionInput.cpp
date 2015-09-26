@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include <QPainter>
 #include <QDesktopWidget>
+#include <QMouseEvent>
 
 #include "DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
@@ -35,14 +36,16 @@
 using namespace App;
 using namespace Gui::Dialog;
 
-DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boost::shared_ptr<const Expression> _expression, const Base::Unit & _impliedUnit, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::DlgExpressionInput),
-    expression(_expression ? _expression->copy() : 0),
-    path(_path),
-    discarded(false),
-    impliedUnit(_impliedUnit),
-    minimumWidth(10)
+DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
+                                       boost::shared_ptr<const Expression> _expression,
+                                       const Base::Unit & _impliedUnit, QWidget *parent)
+  : QDialog(parent)
+  , ui(new Ui::DlgExpressionInput)
+  , expression(_expression ? _expression->copy() : 0)
+  , path(_path)
+  , discarded(false)
+  , impliedUnit(_impliedUnit)
+  , minimumWidth(10)
 {
     assert(path.getDocumentObject() != 0);
 
@@ -62,39 +65,39 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path, boos
     DocumentObject * docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
 
-    setWindowFlags(Qt::Widget | Qt::FramelessWindowHint);
+    setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_NoSystemBackground, true);
     setAttribute(Qt::WA_TranslucentBackground, true);
-    setWindowFlags(Qt::Popup);
 
     ui->expression->setFocus();
+    qApp->installEventFilter(this);
 }
 
 DlgExpressionInput::~DlgExpressionInput()
 {
+    qApp->removeEventFilter(this);
     delete ui;
 }
 
 QPoint DlgExpressionInput::expressionPosition() const
 {
-    return QPoint(0, ui->ctrlArea->height()+3);
+    return ui->expression->pos();
 }
 
 void DlgExpressionInput::textChanged(const QString &text)
 {
     try {
-        
         //resize the input field according to text size
         QFontMetrics fm(ui->expression->font());
         int width = fm.width(text) + 15;
-        if(width < minimumWidth)
+        if (width < minimumWidth)
             ui->expression->setMinimumWidth(minimumWidth);
         else
-            ui->expression->setMinimumWidth(width);                
+            ui->expression->setMinimumWidth(width);
         
         if(this->width() < ui->expression->minimumWidth())
             setMinimumWidth(ui->expression->minimumWidth());
-        
+
         //now handle expression
         boost::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
@@ -108,7 +111,7 @@ void DlgExpressionInput::textChanged(const QString &text)
 
             expression = expr;
             ui->okBtn->setEnabled(true);
-            ui->msg->setText(QString::fromUtf8(""));
+            ui->msg->clear();
 
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
@@ -123,7 +126,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             }
             else
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
-            
+
             //set default palette as we may have read text right now
             ui->msg->setPalette(ui->okBtn->palette());
         }
@@ -143,23 +146,42 @@ void DlgExpressionInput::setDiscarded()
     reject();
 }
 
-void DlgExpressionInput::setExpressionInputSize(int width, int height) {
-
-    if(ui->expression->minimumHeight() < height)
+void DlgExpressionInput::setExpressionInputSize(int width, int height)
+{
+    if (ui->expression->minimumHeight() < height)
         ui->expression->setMinimumHeight(height);
-    
-    if(ui->expression->minimumWidth() < width)
+
+    if (ui->expression->minimumWidth() < width)
         ui->expression->setMinimumWidth(width);
-    
+
     minimumWidth = width;
 }
 
-void DlgExpressionInput::mousePressEvent(QMouseEvent*) {
-    
-    
-    //we need to reject the dialog when clicked on the background. As the background is transparent 
-    //this is the expected behaviour for the user 
+void DlgExpressionInput::mousePressEvent(QMouseEvent*)
+{
+    //we need to reject the dialog when clicked on the background. As the background is transparent
+    //this is the expected behaviour for the user
     this->reject();
+}
+
+bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
+{
+    // if the user clicks on a widget different to this
+    if (ev->type() == QEvent::MouseButtonPress && obj != this) {
+        QMouseEvent* me = static_cast<QMouseEvent*>(ev);
+        // Here we must get the global position of the mouse press event
+        // and compute it relative to this widget.
+        // If the position is inside the rectange of this widget we ignore
+        // it because the user could have clicked inside a sub-widget.
+        // If the user clicked outside this widget will be rejected.
+        // See also mousePressEvent().
+        QPoint pos = this->mapFromGlobal(me->globalPos());
+        if (!this->rect().contains(pos)) {
+            this->reject();
+        }
+    }
+
+    return false;
 }
 
 
