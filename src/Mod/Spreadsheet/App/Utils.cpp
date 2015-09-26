@@ -110,7 +110,7 @@ int Spreadsheet::decodeColumn(const std::string &colstr)
         if ((colstr[0] >= 'A' && colstr[0] <= 'Z'))
             col = colstr[0] - 'A';
         else
-            col = colstr[0] - 'a';
+            throw Base::Exception("Invalid column specification");
     }
     else {
         col = 0;
@@ -119,8 +119,6 @@ int Spreadsheet::decodeColumn(const std::string &colstr)
 
             if ((*i >= 'A' && *i <= 'Z'))
                 v = *i - 'A';
-            else if ((*i >= 'a' && *i <= 'z'))
-                v = *i - 'a';
             else
                 throw Base::Exception("Invalid column specification");
 
@@ -145,7 +143,7 @@ int Spreadsheet::decodeColumn(const std::string &colstr)
 
 Spreadsheet::CellAddress Spreadsheet::stringToAddress(const char * strAddress)
 {
-    static const boost::regex e("\\${0,1}([A-Za-z]+)\\${0,1}([0-9]+)");
+    static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
     boost::cmatch cm;
 
     Q_ASSERT(strAddress != 0);
