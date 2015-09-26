@@ -10,6 +10,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment")
 endif()
 
+if(CMAKE_COMPILER_IS_CLANGXX)
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-self-assign -Wno-reorder -Wno-switch-enum -Wno-unknown-pragmas -Wno-logical-op-parentheses -Wno-unused-variable -Wno-unused-function -Wno-overloaded-virtual")
+endif()
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 include_directories(
