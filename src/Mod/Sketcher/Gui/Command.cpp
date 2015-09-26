@@ -277,6 +277,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
         if (ret == QMessageBox::No)
             return;
         sketch->Support.setValue(0);
+        sketch->delAllExternal();
     }
 
     // ask user for orientation
