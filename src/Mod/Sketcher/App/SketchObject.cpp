@@ -3727,6 +3727,9 @@ void SketchObject::onDocumentRestored()
             validateExternalLinks();
             rebuildExternalGeometry();            
         }
+        else {
+            rebuildVertexIndex();
+        }
         Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (...) {
