@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <QApplication>
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QMouseEvent>
@@ -157,27 +158,86 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height)
     minimumWidth = width;
 }
 
-void DlgExpressionInput::mousePressEvent(QMouseEvent*)
+void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 {
+#if 0//defined(Q_WS_WIN)
+    if (QWidget::mouseGrabber() == this) {
+        QList<QWidget*> childs = this->findChildren<QWidget*>();
+        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
+            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
+            if ((*it)->rect().contains(pos)) {
+                // Create new mouse event with the correct local position
+                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
+                QObject* obj = *it;
+                obj->event(&me);
+                if (me.isAccepted()) {
+                    break;
+                }
+            }
+        }
+    }
+#else
+    Q_UNUSED(ev);
+#endif
+}
+
+void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
+{
+#if 0//defined(Q_WS_WIN)
+    bool handled = false;
+    if (QWidget::mouseGrabber() == this) {
+        QList<QWidget*> childs = this->findChildren<QWidget*>();
+        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
+            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
+            if ((*it)->rect().contains(pos)) {
+                // Create new mouse event with the correct local position
+                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
+                QObject* obj = *it;
+                obj->event(&me);
+                if (me.isAccepted()) {
+                    handled = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (handled)
+        return;
+#else
+    Q_UNUSED(ev);
+#endif
     //we need to reject the dialog when clicked on the background. As the background is transparent
     //this is the expected behaviour for the user
     this->reject();
+}
+
+void DlgExpressionInput::showEvent(QShowEvent* ev)
+{
+    QDialog::showEvent(ev);
+
+#if 0//defined(Q_WS_WIN)
+    // This way we can fetch click events outside modal dialogs
+    QWidget* widget = QApplication::activeModalWidget();
+    if (widget) {
+        QList<QWidget*> childs = widget->findChildren<QWidget*>();
+        if (childs.contains(this)) {
+            this->grabMouse();
+        }
+    }
+#endif
 }
 
 bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
 {
     // if the user clicks on a widget different to this
     if (ev->type() == QEvent::MouseButtonPress && obj != this) {
-        QMouseEvent* me = static_cast<QMouseEvent*>(ev);
-        // Here we must get the global position of the mouse press event
-        // and compute it relative to this widget.
-        // If the position is inside the rectange of this widget we ignore
-        // it because the user could have clicked inside a sub-widget.
-        // If the user clicked outside this widget will be rejected.
-        // See also mousePressEvent().
-        QPoint pos = this->mapFromGlobal(me->globalPos());
-        if (!this->rect().contains(pos)) {
-            this->reject();
+        // Since the widget has a transparent background we cannot rely
+        // on the size of the widget. Instead, it must be checked if the
+        // cursor is on this or an underlying widget or outside.
+        if (!underMouse()) {
+            qApp->removeEventFilter(this);
+            reject();
         }
     }
 

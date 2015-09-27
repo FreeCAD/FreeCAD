@@ -63,10 +63,14 @@ public:
 
     bool eventFilter(QObject *obj, QEvent *event);
 
+protected:
+    void showEvent(QShowEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+    void mousePressEvent(QMouseEvent*);
+
 private Q_SLOTS:
     void textChanged(const QString & text);
     void setDiscarded();
-    void mousePressEvent(QMouseEvent*);
 
 private:
     ::Ui::DlgExpressionInput *ui;
