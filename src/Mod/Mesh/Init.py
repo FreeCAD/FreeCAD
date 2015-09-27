@@ -2,13 +2,13 @@
 # (c) 2004 Werner Mayer LGPL
 
 # Append the open handler
-FreeCAD.addImportType("STL Mesh (*.stl *ast)", "Mesh")
+FreeCAD.addImportType("STL Mesh (*.stl *.ast)", "Mesh")
 FreeCAD.addImportType("Binary Mesh (*.bms)","Mesh")
 FreeCAD.addImportType("Alias Mesh (*.obj)","Mesh")
 FreeCAD.addImportType("Object File Format Mesh (*.off)","Mesh")
 FreeCAD.addImportType("Stanford Triangle Mesh (*.ply)","Mesh")
 
-FreeCAD.addExportType("STL Mesh (*.stl *ast)", "Mesh")
+FreeCAD.addExportType("STL Mesh (*.stl *.ast)", "Mesh")
 FreeCAD.addExportType("Binary Mesh (*.bms)","Mesh")
 FreeCAD.addExportType("Alias Mesh (*.obj)","Mesh")
 FreeCAD.addExportType("Object File Format Mesh (*.off)","Mesh")
