@@ -611,8 +611,9 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
         std::stringstream str;
         str << "'Document' object attribute '" << attr 
             << "' must not be set this way" << std::ends;
-        throw Py::AttributeError(str.str());
+        PyErr_SetString(PyExc_RuntimeError, str.str().c_str());
+        return -1;
     }
-    
+
     return 0;
 }

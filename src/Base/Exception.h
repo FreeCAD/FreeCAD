@@ -286,6 +286,39 @@ public:
   virtual ~DivisionByZeroError() throw() {}
 };
 
+/**
+ * The ExpressionError can be used to indicate erroneous.input
+ * to the expression engine.
+ * @author Werner Mayer
+ */
+class BaseExport ExpressionError : public Exception
+{
+public:
+  /// Construction
+  ExpressionError(const char * sMessage);
+  ExpressionError(const std::string& sMessage);
+  /// Construction
+  ExpressionError(const ExpressionError &inst);
+  /// Destruction
+  virtual ~ExpressionError() throw() {}
+};
+
+/**
+ * The ParserError can be used to indicate the parsing error.
+ * @author Werner Mayer
+ */
+class BaseExport ParserError : public Exception
+{
+public:
+  /// Construction
+  ParserError(const char * sMessage);
+  ParserError(const std::string& sMessage);
+  /// Construction
+  ParserError(const ParserError &inst);
+  /// Destruction
+  virtual ~ParserError() throw() {}
+};
+
 
 inline void Exception::setMessage(const char * sMessage)
 {
