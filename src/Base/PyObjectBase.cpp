@@ -132,11 +132,6 @@ PyMethodDef PyObjectBase::Methods[] = {
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
-/*------------------------------
- * PyObjectBase Parents		-- Every class, even the abstract one should have parents
-------------------------------*/
-PyParentObject PyObjectBase::Parents[] = {&PyObjectBase::Type, NULL};
-
 PyObject* PyObjectBase::__getattr(PyObject * obj, char *attr)
 {
     // This should be the entry in Type

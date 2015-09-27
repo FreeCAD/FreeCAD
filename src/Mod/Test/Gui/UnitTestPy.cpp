@@ -272,11 +272,6 @@ PyMethodDef TestGui::UnitTestPy::Methods[] = {
 };
 
 //--------------------------------------------------------------------------
-// Parents structure
-//--------------------------------------------------------------------------
-PyParentObject TestGui::UnitTestPy::Parents[] = {&PyObjectBase::Type, NULL};
-
-//--------------------------------------------------------------------------
 // Constructor
 //--------------------------------------------------------------------------
 TestGui::UnitTestPy::UnitTestPy(PyTypeObject *T)

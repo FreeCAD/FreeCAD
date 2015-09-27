@@ -143,9 +143,7 @@ typedef PyTypeObject * PyParentObject;
 public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
-    static PyParentObject Parents[];                        \
-    virtual PyTypeObject *GetType(void) {return &Type;}     \
-    virtual PyParentObject *GetParents(void) {return Parents;}
+    virtual PyTypeObject *GetType(void) {return &Type;}
 
 /** This defines the _getattr_up macro
  *  which allows attribute and method calls
@@ -484,9 +482,6 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
     }
 
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
-
-/// Root definition of the inheritance tree of the FreeCAD python objects
-#define PARENTSBasePyObjectBase &Base::PyObjectBase::Type,NULL
 
 /** Python helper class 
  *  This class encapsulate the Decoding of UTF8 to a python object.

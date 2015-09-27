@@ -224,11 +224,6 @@ PyMethodDef ParameterGrpPy::Methods[] = {
 };
 
 //--------------------------------------------------------------------------
-// Parents structure
-//--------------------------------------------------------------------------
-PyParentObject ParameterGrpPy::Parents[] = {&PyObjectBase::Type,&ParameterGrpPy::Type, NULL};     
-
-//--------------------------------------------------------------------------
 // constructor
 //--------------------------------------------------------------------------
 ParameterGrpPy::ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp, PyTypeObject *T ) 
