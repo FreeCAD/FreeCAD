@@ -312,17 +312,17 @@ Expression * OperatorExpression::eval() const
     v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
 
     if (v1 == 0 || v2 == 0)
-        throw Exception("Invalid expression");
+        throw ExpressionError("Invalid expression");
 
     switch (op) {
     case ADD:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for + operator");
+            throw ExpressionError("Incompatible units for + operator");
         output = new NumberExpression(owner, v1->getQuantity() + v2->getQuantity());
         break;
     case SUB:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for - operator");
+            throw ExpressionError("Incompatible units for - operator");
         output = new NumberExpression(owner, v1->getQuantity()- v2->getQuantity());
         break;
     case MUL:
@@ -337,32 +337,32 @@ Expression * OperatorExpression::eval() const
         break;
     case EQ:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for + operator");
+            throw ExpressionError("Incompatible units for + operator");
         output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) < 1e-7));
         break;
     case NEQ:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for + operator");
+            throw ExpressionError("Incompatible units for + operator");
         output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) > 1e-7));
         break;
     case LT:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for + operator");
+            throw ExpressionError("Incompatible units for + operator");
         output = new NumberExpression(owner, Quantity(v1->getValue() < v2->getValue()));
         break;
     case GT:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for + operator");
+            throw ExpressionError("Incompatible units for + operator");
         output = new NumberExpression(owner, Quantity(v1->getValue() > v2->getValue()));
         break;
     case LTE:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for + operator");
+            throw ExpressionError("Incompatible units for + operator");
         output = new NumberExpression(owner, Quantity(v1->getValue() - v2->getValue() < 1e-7));
         break;
     case GTE:
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Incompatible units for + operator");
+            throw ExpressionError("Incompatible units for + operator");
         output = new NumberExpression(owner, Quantity(v2->getValue() - v1->getValue()) < 1e-7);
         break;
     case NEG:
@@ -551,16 +551,16 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
 {
     switch (f) {
     case NONE:
-        throw Exception("Unknown function");
+        throw ExpressionError("Unknown function");
     case MOD:
     case ATAN2:
     case POW:
         if (args.size() != 2)
-            throw Exception("Invalid number of arguments.");
+            throw ExpressionError("Invalid number of arguments.");
         break;
     default:
         if (args.size() != 1)
-            throw Exception("Invalid number of arguments.");
+            throw ExpressionError("Invalid number of arguments.");
         break;
     }
 }
@@ -596,7 +596,7 @@ bool FunctionExpression::isTouched() const
 
 /**
   * Evaluate function. Returns a NumberExpression if evaluation is successfuly.
-  * Throws an exception if something fails.
+  * Throws an ExpressionError exception if something fails.
   *
   * @returns A NumberExpression with the result.
   */
@@ -612,7 +612,7 @@ Expression * FunctionExpression::eval() const
     double scaler = 1;
 
     if (v1 == 0)
-        throw Exception("Invalid argument.");
+        throw ExpressionError("Invalid argument.");
 
     double value = v1->getValue();
 
@@ -622,7 +622,7 @@ Expression * FunctionExpression::eval() const
     case SIN:
     case TAN:
         if (!(v1->getUnit() == Unit::Angle || v1->getUnit().isEmpty()))
-            throw Exception("Unit must be either empty or an angle.");
+            throw ExpressionError("Unit must be either empty or an angle.");
 
         // Convert value to radians
         value *= M_PI / 180.0;
@@ -632,7 +632,7 @@ Expression * FunctionExpression::eval() const
     case ASIN:
     case ATAN:
         if (!v1->getUnit().isEmpty())
-            throw Exception("Unit must be empty.");
+            throw ExpressionError("Unit must be empty.");
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
@@ -643,7 +643,7 @@ Expression * FunctionExpression::eval() const
     case TANH:
     case COSH:
         if (!v1->getUnit().isEmpty())
-            throw Exception("Unit must be empty.");
+            throw ExpressionError("Unit must be empty.");
         unit = Unit();
         break;
     case ROUND:
@@ -666,7 +666,7 @@ Expression * FunctionExpression::eval() const
               ((s.AmountOfSubstance % 2) == 0) &&
               ((s.LuminoseIntensity % 2) == 0) &&
               ((s.Angle % 2) == 0))
-            throw Exception("All dimensions must be even to compute the square root.");
+            throw ExpressionError("All dimensions must be even to compute the square root.");
 
         unit = Unit(s.Length /2,
                     s.Mass / 2,
@@ -680,26 +680,26 @@ Expression * FunctionExpression::eval() const
     }
     case ATAN2:
         if (v2 == 0)
-            throw Exception("Invalid second argument.");
+            throw ExpressionError("Invalid second argument.");
 
         if (v1->getUnit() != v2->getUnit())
-            throw Exception("Units must be equal");
+            throw ExpressionError("Units must be equal");
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
     case MOD:
         if (v2 == 0)
-            throw Exception("Invalid second argument.");
+            throw ExpressionError("Invalid second argument.");
         if (!v2->getUnit().isEmpty())
-            throw Exception("Second argument must have empty unit.");
+            throw ExpressionError("Second argument must have empty unit.");
         unit = v1->getUnit();
         break;
     case POW: {
         if (v2 == 0)
-            throw Exception("Invalid second argument.");
+            throw ExpressionError("Invalid second argument.");
 
         if (!v2->getUnit().isEmpty())
-            throw Exception("Exponent is not allowed to have a unit.");
+            throw ExpressionError("Exponent is not allowed to have a unit.");
 
         // Compute new unit for exponentation
         double exponent = v2->getValue();
@@ -707,7 +707,7 @@ Expression * FunctionExpression::eval() const
             if (exponent - boost::math::round(exponent) < 1e-9)
                 unit = v1->getUnit().pow(exponent);
             else
-                throw Exception("Exponent must be an integer when used with a unit");
+                throw ExpressionError("Exponent must be an integer when used with a unit");
         }
         break;
     }
@@ -987,7 +987,7 @@ const Property * VariableExpression::getProperty() const
     if (prop)
         return prop;
     else
-        throw Base::Exception(std::string("Property '") + var.getPropertyName() + std::string("' not found."));
+        throw ExpressionError(std::string("Property '") + var.getPropertyName() + std::string("' not found."));
 }
 
 /**
@@ -1005,7 +1005,7 @@ Expression * VariableExpression::eval() const
     PropertyContainer * parent = prop->getContainer();
 
     if (!parent->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        throw Base::Exception("Property must belong to a document object.");
+        throw ExpressionError("Property must belong to a document object.");
 
     boost::any value = prop->getValue(var);
 
@@ -1045,7 +1045,7 @@ Expression * VariableExpression::eval() const
         return new StringExpression(owner, svalue);
     }
 
-    throw Base::Exception("Property is of invalid type.");
+    throw ExpressionError("Property is of invalid type.");
 }
 
 /**
@@ -1170,7 +1170,7 @@ Expression *ConditionalExpression::eval() const
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
-        throw Exception("Invalid expression");
+        throw ExpressionError("Invalid expression");
 
     if (fabs(v->getValue()) > 0.5)
         return trueExpr->eval();
@@ -1384,10 +1384,10 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     ExpressionParser::ExpressionParser_delete_buffer (my_string_buffer);
 
     if (result != 0)
-        throw Base::Exception("Failed to parse expression.");
+        throw ParserError("Failed to parse expression.");
 
     if (ScanResult == 0)
-        throw Base::Exception("Unknown error in expression");
+        throw ParserError("Unknown error in expression");
 
     if (valueExpression)
         return ScanResult;
@@ -1412,10 +1412,10 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     ExpressionParser::ExpressionParser_delete_buffer (my_string_buffer);
 
     if (result != 0)
-        throw Base::Exception("Failed to parse expression.");
+        throw ParserError("Failed to parse expression.");
 
     if (ScanResult == 0)
-        throw Base::Exception("Unknown error in expression");
+        throw ParserError("Unknown error in expression");
 
     // Simplify expression
     Expression * simplified = ScanResult->simplify();

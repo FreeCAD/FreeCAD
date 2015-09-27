@@ -321,6 +321,40 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 
 // ---------------------------------------------------------
 
+ExpressionError::ExpressionError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ExpressionError::ExpressionError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ExpressionError::ExpressionError(const ExpressionError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+ParserError::ParserError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ParserError::ParserError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ParserError::ParserError(const ParserError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
 #include <stdexcept>
 #include <iostream>
