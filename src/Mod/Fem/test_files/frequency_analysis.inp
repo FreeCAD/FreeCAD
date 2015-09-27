@@ -391,7 +391,7 @@
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam)
 ** written by write_element_sets_material_and_femelement_type function
-*ELSET,ELSET=MaterialSolidElements
+*ELSET,ELSET=MechanicalMaterialSolid
 Eall
 
 ***********************************************************
@@ -459,7 +459,7 @@ Eall
 ***********************************************************
 ** Sections
 ** written by write_femelementsets function
-*SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=TestMaterial
+*SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=TestMaterial
 
 ***********************************************************
 ** One step is needed to calculate the mechanical analysis of FreeCAD
