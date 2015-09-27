@@ -48,7 +48,7 @@ SubSystem::~SubSystem()
 
 void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
 {
-    csize = clist.size();
+    csize = static_cast<int>(clist.size());
 
     // tmpplist will contain the subset of parameters from params that are
     // relevant for the constraints listed in clist
@@ -95,7 +95,7 @@ void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
     else
         plist = tmpplist;
 
-    psize = plist.size();
+    psize = static_cast<int>(plist.size());
     pvals.resize(psize);
     pmap.clear();
     for (int j=0; j < psize; j++) {
