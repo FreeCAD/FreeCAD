@@ -189,7 +189,7 @@ class inp_writer:
                     e_count += len(e_not_referenced)
                 f.write('\n')
             else:  # all fem_elements are solids --> volume mesh
-                material_elementset_name = 'MaterialSolidElements'
+                material_elementset_name = 'MechanicalMaterialSolid'
                 f.write('*ELSET,ELSET=' + material_elementset_name + '\n')
                 f.write('Eall\n')
         if hasattr(self, 'fem_element_table'):
@@ -296,7 +296,7 @@ class inp_writer:
                     f.write(el_prop)
                     f.write(sc_prop)
             else:  # all fem_elements are solids
-                el_set = 'ELSET=' + 'MaterialSolidElements' + ', '
+                el_set = 'ELSET=' + 'MechanicalMaterialSolid' + ', '
                 material = 'MATERIAL=' + mat_name
                 el_prop = '*SOLID SECTION, ' + el_set + material + '\n'
                 f.write(el_prop)
