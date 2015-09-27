@@ -89,10 +89,10 @@ int Constraint::findParamInPvec(double *param)
     int ret = -1;
     for( std::size_t i=0 ; i<pvec.size() ; i++ ){
         if ( param == pvec[i] ) {
-            ret = i;
+            ret = static_cast<int>(i);
             break;
-        };
-    };
+        }
+    }
     return ret;
 }
 
