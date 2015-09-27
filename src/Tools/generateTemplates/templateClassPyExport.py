@@ -60,9 +60,7 @@ public:
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
 -
     static PyGetSetDef    GetterSetter[];
-    static PyParentObject Parents[];
     virtual PyTypeObject *GetType(void) {return &Type;};
-    virtual PyParentObject *GetParents(void) {return Parents;}
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
@@ -201,6 +199,7 @@ public:
     /// getter method for special attributes (e.g. dynamic ones)
     PyObject *getCustomAttributes(const char* attr) const;
     /// setter for special attributes (e.g. dynamic ones)
+    /// Output: Success=1, Failure=-1, Ignore=0
     int setCustomAttributes(const char* attr, PyObject *obj);
     PyObject *_getattr(char *attr);              // __getattr__ function
     int _setattr(char *attr, PyObject *value);        // __setattr__ function
@@ -216,8 +215,6 @@ public:
     //@}
 -
 };
-
-#define PARENTS@self.export.Namespace@@self.export.Name@ &@self.export.Name@::Type,PARENTS@self.export.FatherNamespace@@self.export.Father@
 
 }  //namespace @self.export.Namespace@
 
@@ -439,14 +436,14 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 -
 {
     // test if twin object not allready deleted
-    if (!((PyObjectBase*) self)->isValid()){
+    if (!static_cast<PyObjectBase*>(self)->isValid()) {
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return NULL;
     }
 
 +   if (not i.Const):
     // test if object is set Const
-    if (((PyObjectBase*) self)->isConst()){
+    if (static_cast<PyObjectBase*>(self)->isConst()) {
         PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
         return NULL;
     }
@@ -454,13 +451,13 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 
     try { // catches all exceptions coming up from c++ and generate a python exception
 + if i.Keyword:
-        PyObject* ret = ((@self.export.Name@*)self)->@i.Name@(args, kwd);
+        PyObject* ret = static_cast<@self.export.Name@*>(self)->@i.Name@(args, kwd);
 = else:
-        PyObject* ret = ((@self.export.Name@*)self)->@i.Name@(args);
+        PyObject* ret = static_cast<@self.export.Name@*>(self)->@i.Name@(args);
 -
 +   if (not i.Const):
         if (ret != 0)
-            ((@self.export.Name@*)self)->startNotify();
+            static_cast<@self.export.Name@*>(self)->startNotify();
 -
         return ret;
     }
@@ -524,13 +521,13 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 // has to be implemented in @self.export.Name@Imp.cpp
 PyObject * @self.export.Name@::staticCallback_get@i.Name@ (PyObject *self, void * /*closure*/)
 {
-    if (!((PyObjectBase*) self)->isValid()){
+    if (!static_cast<PyObjectBase*>(self)->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return NULL;
     }
 
     try {
-        return Py::new_reference_to(((@self.export.Name@*)self)->get@i.Name@());
+        return Py::new_reference_to(static_cast<@self.export.Name@*>(self)->get@i.Name@());
     } catch (const Py::Exception&) {
         // The exception text is already set
         return NULL;
@@ -543,7 +540,7 @@ PyObject * @self.export.Name@::staticCallback_get@i.Name@ (PyObject *self, void 
 + if (i.ReadOnly):
 int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject * /*value*/, void * /*closure*/)
 {
-    if (!((PyObjectBase*) self)->isValid()){
+    if (!static_cast<PyObjectBase*>(self)->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return -1;
     }
@@ -553,21 +550,21 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject * /
 }
 = else:
 int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *value, void * /*closure*/)
-{    
-    if (!((PyObjectBase*) self)->isValid()){
+{
+    if (!static_cast<PyObjectBase*>(self)->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return -1;
     }
-    if (((PyObjectBase*) self)->isConst()){
+    if (static_cast<PyObjectBase*>(self)->isConst()){
         PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a method");
         return -1;
     }
 
     try {
 + if (i.Parameter.Type == "Float"):
-        ((@self.export.Name@*)self)->set@i.Name@(Py::@i.Parameter.Type@(PyNumber_Float(value),true));
+        static_cast<@self.export.Name@*>(self)->set@i.Name@(Py::@i.Parameter.Type@(PyNumber_Float(value),true));
 = else:
-        ((@self.export.Name@*)self)->set@i.Name@(Py::@i.Parameter.Type@(value,false));
+        static_cast<@self.export.Name@*>(self)->set@i.Name@(Py::@i.Parameter.Type@(value,false));
 -
         return 0;
     } catch (const Py::Exception&) {
@@ -583,16 +580,12 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
 -
 
 
-//--------------------------------------------------------------------------
-// Parents structure
-//--------------------------------------------------------------------------
-PyParentObject @self.export.Name@::Parents[] = { PARENTS@self.export.Namespace@@self.export.Name@ };
 
 //--------------------------------------------------------------------------
 // Constructor
 //--------------------------------------------------------------------------
 @self.export.Name@::@self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T)
-    : @self.export.Father@(reinterpret_cast<@self.export.Father@::PointerType>(pcObject), T)
+    : @self.export.Father@(static_cast<@self.export.Father@::PointerType>(pcObject), T)
 {
 + if (self.export.Reference):
     pcObject->ref();
@@ -624,7 +617,7 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 -
 + if (self.export.Delete):
     // delete the handled object when the PyObject dies
-    @self.export.Name@::PointerType ptr = reinterpret_cast<@self.export.Name@::PointerType>(_pcTwinPointer);
+    @self.export.Name@::PointerType ptr = static_cast<@self.export.Name@::PointerType>(_pcTwinPointer);
     delete ptr;
 -
 }
@@ -709,12 +702,18 @@ PyObject *@self.export.Name@::_getattr(char *attr)				// __getattr__ function: n
     }
 }
 
-int @self.export.Name@::_setattr(char *attr, PyObject *value) 	// __setattr__ function: note only need to handle new state
+int @self.export.Name@::_setattr(char *attr, PyObject *value) // __setattr__ function: note only need to handle new state
 {
     try {
         // setter for  special Attributes (e.g. dynamic ones)
         int r = setCustomAttributes(attr, value);
-        if(r==1) return 0;
+        // r = 1: handled
+        // r = -1: error
+        // r = 0: ignore
+        if (r == 1)
+            return 0;
+        else if (r == -1)
+            return -1;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS 
     catch(const Base::Exception& e) // catch the FreeCAD exceptions
