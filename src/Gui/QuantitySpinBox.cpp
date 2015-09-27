@@ -303,9 +303,6 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
             if (value) {
-                std::stringstream s;
-                s << value->getValue();
-
                 lineEdit()->setText(value->getQuantity().getUserString());
                 setReadOnly(true);
                 QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
