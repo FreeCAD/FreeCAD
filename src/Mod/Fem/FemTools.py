@@ -29,6 +29,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     finished = QtCore.Signal(int)
 
+    ## The constructor
+    #  @param analysis - analysis object to be used as the core object.
+    #  "__init__" tries to use current active analysis in analysis is left empty.
+    #  Rises exception if analysis is not set and there is no active analysis
     def __init__(self, analysis=None):
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
@@ -36,6 +40,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.known_analysis_types = ["static", "frequency"]
 
         if analysis:
+            ## @var analysis
+            #  FEM analysis - the core object. Has to be present.
+            #  It's set to analysis passed in "__init__" or set to current active analysis by default if nothing has been passed to "__init__".
             self.analysis = analysis
         else:
             import FemGui
@@ -44,7 +51,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.update_objects()
             self.set_analysis_type()
             self.set_eigenmode_parameters()
+            ## @var base_name
+            #  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
             self.base_name = ""
+            ## @var results_present
+            #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
             self.setup_working_dir()
             self.setup_ccx()
@@ -80,6 +91,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.reset_mesh_color()
         self.reset_mesh_deformation()
 
+    ## Sets mesh color using selected type of results (Sabs by default)
+    #  @param self The python object self
+    #  @param result_type Type of FEM result, allowed are:
+    #  - U1, U2, U3 - deformation
+    #  - Uabs - absolute deformation
+    #  - Sabs - Von Mises stress
+    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
     def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":
@@ -96,6 +114,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 values = list(d[match[result_type]])
             self.show_color_by_scalar_with_cutoff(values, limit)
 
+    ## Sets mesh color using list of values. Internally used by show_result function.
+    #  @param self The python object self
+    #  @param values list of values
+    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
     def show_color_by_scalar_with_cutoff(self, values, limit=None):
         if limit:
             filtered_values = []
@@ -120,10 +142,22 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
+
+        ## @var mesh
+        #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
         self.material = []
+        ## @var fixed_constraints
+        #  set of fixed constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintFixed" type
         self.fixed_constraints = []
+        ## @var force_constraints
+        #  set of force constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintForce" type
         self.force_constraints = []
+        ## @var pressure_constraints
+        #  set of pressure constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintPressure" type
         self.pressure_constraints = []
         self.beam_sections = []
         self.shell_thicknesses = []
@@ -226,7 +260,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             return p.returncode
         return -1
 
-    ## sets eigenmode parameters for CalculiX frequency analysis
+    ## Sets eigenmode parameters for CalculiX frequency analysis
     #  @param self The python object self
     #  @param number number of eigenmodes that wll be calculated, default 10
     #  @param limit_low lower value of requested eigenfrequency range, default 0.0
@@ -234,6 +268,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     def set_eigenmode_parameters(self, number=10, limit_low=0.0, limit_high=1000000.0):
         self.eigenmode_parameters = (number, limit_low, limit_high)
 
+    ## Sets base_name
+    #  @param self The python object self
+    #  @param base_name  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
     def set_base_name(self, base_name=None):
         if base_name is None:
             self.base_name = ""
@@ -242,24 +279,31 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # Update inp file name
         self.set_inp_file_name()
 
-    ## sets inp file name that is used to determine location and name of frd result file.
+    ## Sets inp file name that is used to determine location and name of frd result file.
     # Normally inp file name is set set by write_inp_file
     # Can be used to read mock calculations file
+    #  @param self The python object self
+    #  @inp_file_name .inp file name. If empty the .inp file path is constructed from working_dir, base_name and string ".inp"
     def set_inp_file_name(self, inp_file_name=None):
         if inp_file_name is not None:
             self.inp_file_name = inp_file_name
         else:
             self.inp_file_name = self.working_dir + '/' + self.base_name + '.inp'
 
+    ## Sets analysis type.
+    #  @param self The python object self
+    #  @param analysis_type type of the analysis. Allowed values are:
+    #  - static
+    #  - frequency
     def set_analysis_type(self, analysis_type=None):
         if analysis_type is None:
             self.analysis_type = "static"
         else:
             self.analysis_type = analysis_type
 
-    ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir for FEM preferences
+    ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir from FEM preferences
     #  @param self The python object self
-    #  @working_dir directory to be used for .inp file and ccx execution
+    #  @working_dir directory to be used for writing .inp file and executing CalculiX ccx
     def setup_working_dir(self, working_dir=None):
         if working_dir is None:
             self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
@@ -283,7 +327,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 ccx_binary = "ccx"
         self.ccx_binary = ccx_binary
 
-    ## Load results of ccx calculiations from .frd file.
+    ## Load results of ccx calculations from .frd file.
     #  @param self The python object self
     def load_results(self):
         import ccxFrdReader
@@ -330,9 +374,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             print self.ccx_stdout
             print "--------end of stdout---------"
 
-    ## returns minimum, average and maximum value for provided result type
+    ## Returns minimum, average and maximum value for provided result type
     #  @param self The python object self
-    #  @result_type Type of FEM result, allowed U1, U2, U3, Uabs, Sabs and None
+    #  @param result_type Type of FEM result, allowed are:
+    #  - U1, U2, U3 - deformation
+    #  - Uabs - absolute deformation
+    #  - Sabs - Von Mises stress
+    #  - None - always return (0.0, 0.0, 0.0)
     def get_stats(self, result_type):
         stats = (0.0, 0.0, 0.0)
         for m in self.analysis.Member:
