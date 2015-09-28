@@ -60,7 +60,7 @@ public:
 
 private Q_SLOTS:
     void onFactor(const double f);
-    void onOccurrences(const double n);
+    void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
 
 protected:

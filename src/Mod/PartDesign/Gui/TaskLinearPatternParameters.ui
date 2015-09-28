@@ -96,7 +96,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinOccurrences" native="true"/>
+      <widget class="Gui::UIntSpinBox" name="spinOccurrences" native="true"/>
      </item>
     </layout>
    </item>
@@ -141,6 +141,12 @@
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::UIntSpinBox</class>
+   <extends>QWidget</extends>
+   <header location="global">Gui/SpinBox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
