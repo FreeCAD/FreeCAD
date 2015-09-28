@@ -568,9 +568,11 @@ class DraftToolBar:
         self.facecolorPix = QtGui.QPixmap(16,16)
         self.facecolorPix.fill(self.facecolor)
         self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
-        self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(50,22))
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        bsize = p.GetInt("ToolbarIconSize",24)+2
+        self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(bsize * 2,bsize))
         self.widthButton.setSuffix("px")
-        self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(65,22))
+        self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 3,bsize))
         self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
