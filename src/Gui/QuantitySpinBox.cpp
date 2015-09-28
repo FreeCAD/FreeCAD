@@ -44,6 +44,7 @@
 #include <Base/Exception.h>
 #include <App/Expression.h>
 #include <sstream>
+#include <boost/math/special_functions/round.hpp>
 
 using namespace Gui;
 using namespace App;
@@ -228,9 +229,6 @@ end:
     double maximum;
     double minimum;
     double singleStep;
-    QPalette defaultPalette;
-    QLabel* iconLabel;
-    int iconHeight;
 };
 }
 
@@ -243,56 +241,37 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
     QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
                      this, SLOT(userInput(QString)));
-    d_ptr->defaultPalette = lineEdit()->palette();
+
+    defaultPalette = lineEdit()->palette();
 
     /* Icon for f(x) */
     QFontMetrics fm(lineEdit()->font());
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    d_ptr->iconHeight = fm.height() - frameWidth;
-    d_ptr->iconLabel = new ExpressionLabel(lineEdit());
-    d_ptr->iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
-    d_ptr->iconLabel->setPixmap(pixmap);
-    d_ptr->iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(d_ptr->iconHeight).arg(frameWidth/2));
-    d_ptr->iconLabel->hide();
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(d_ptr->iconHeight+frameWidth));
+    iconHeight = fm.height() - frameWidth;
+    iconLabel = new ExpressionLabel(lineEdit());
+    iconLabel->setCursor(Qt::ArrowCursor);
+    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+    iconLabel->setPixmap(pixmap);
+    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->hide();
+    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
-    QObject::connect(d_ptr->iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
 
 QuantitySpinBox::~QuantitySpinBox()
 {
 }
 
-QPixmap QuantitySpinBox::getIcon(const char* name, const QSize& size) const
-{
-    QString key = QString::fromAscii("%1_%2x%3")
-        .arg(QString::fromAscii(name))
-        .arg(size.width())
-        .arg(size.height());
-    QPixmap icon;
-    if (QPixmapCache::find(key, icon))
-        return icon;
-
-    icon = BitmapFactory().pixmapFromSvg(name, size);
-    if (!icon.isNull())
-        QPixmapCache::insert(key, icon);
-    return icon;
-}
-
 void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
 {
-    Q_D(QuantitySpinBox);
-
     ExpressionBinding::bind(_path);
 
-    d->iconLabel->show();
+    iconLabel->show();
 }
 
 void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
 {
-    Q_D(QuantitySpinBox);
-
     Q_ASSERT(isBound());
 
     try {
@@ -303,10 +282,9 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
             if (value) {
-                lineEdit()->setText(value->getQuantity().getUserString());
+                updateText(value->getQuantity());
                 setReadOnly(true);
-                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
-                d_ptr->iconLabel->setPixmap(pixmap);
+                iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
                 QPalette p(lineEdit()->palette());
                 p.setColor(QPalette::Text, Qt::lightGray);
@@ -316,21 +294,20 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
         }
         else {
             setReadOnly(false);
-            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
-            d_ptr->iconLabel->setPixmap(pixmap);
+            iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
             QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, d->defaultPalette.color(QPalette::Text));
+            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
 
         }
-        d->iconLabel->setToolTip(QString());
+        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        d->iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromAscii(e.what()));
     }
 }
 
@@ -351,14 +328,12 @@ bool QuantitySpinBox::apply()
 
 void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 {
-    Q_D(const QuantitySpinBox);
-
     QAbstractSpinBox::resizeEvent(event);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
 
-    QSize sz = d->iconLabel->sizeHint();
-    d->iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
+    QSize sz = iconLabel->sizeHint();
+    iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
 
     try {
         if (isBound() && getExpression()) {
@@ -367,8 +342,8 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
             if (value) {
                 setReadOnly(true);
-                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
-                d->iconLabel->setPixmap(pixmap);
+                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
+                iconLabel->setPixmap(pixmap);
 
                 QPalette p(lineEdit()->palette());
                 p.setColor(QPalette::Text, Qt::lightGray);
@@ -378,22 +353,22 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
         }
         else {
             setReadOnly(false);
-            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(d_ptr->iconHeight, d_ptr->iconHeight));
-            d->iconLabel->setPixmap(pixmap);
-    
+            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+            iconLabel->setPixmap(pixmap);
+
             QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, d->defaultPalette.color(QPalette::Text));
+            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
 
         }
-        d->iconLabel->setToolTip(QString());
+        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        d->iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromAscii(e.what()));
     }
 
 }

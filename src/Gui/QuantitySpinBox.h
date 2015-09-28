@@ -124,7 +124,6 @@ protected:
 
 private:
 
-    QPixmap getIcon(const char *name, const QSize &size) const;
     void updateText(const Base::Quantity&);
 
 Q_SIGNALS:

@@ -26,6 +26,7 @@
 #include <string>
 #include <App/ObjectIdentifier.h>
 #include <boost/shared_ptr.hpp>
+#include <QLabel>
 
 namespace App {
 class Expression;
@@ -46,6 +47,8 @@ public:
     virtual bool apply();
     bool hasExpression() const;
 
+    QPixmap getIcon(const char *name, const QSize &size) const;
+
 protected:
     const App::ObjectIdentifier & getPath() const { return path; }
     boost::shared_ptr<App::Expression> getExpression() const;
@@ -55,7 +58,10 @@ protected:
 
 private:
     App::ObjectIdentifier path;
-    //boost::shared_ptr<const App::Expression> expression;
+protected:
+    QLabel* iconLabel;
+    QPalette defaultPalette;
+    int iconHeight;
 };
 
 }
