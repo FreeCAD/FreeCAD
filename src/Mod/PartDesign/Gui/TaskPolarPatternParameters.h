@@ -63,7 +63,7 @@ private Q_SLOTS:
     void onAxisChanged(int num);
     void onCheckReverse(const bool on);
     void onAngle(const double a);
-    void onOccurrences(const double n);
+    void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
 
 protected:

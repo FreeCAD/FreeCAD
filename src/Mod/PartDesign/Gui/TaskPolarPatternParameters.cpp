@@ -28,8 +28,6 @@
 # include <QTimer>
 #endif
 
-#include <boost/math/special_functions/round.hpp>
-
 #include "ui_TaskPolarPatternParameters.h"
 #include "TaskPolarPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -109,8 +107,8 @@ void TaskPolarPatternParameters::setupUI()
             this, SLOT(onCheckReverse(bool)));
     connect(ui->polarAngle, SIGNAL(valueChanged(double)),
             this, SLOT(onAngle(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(double)),
-            this, SLOT(onOccurrences(double)));
+    connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
+            this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
@@ -249,11 +247,11 @@ void TaskPolarPatternParameters::onAngle(const double a) {
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onOccurrences(const double n) {
+void TaskPolarPatternParameters::onOccurrences(const uint n) {
     if (blockUpdate)
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    pcPolarPattern->Occurrences.setValue(boost::math::round(n));
+    pcPolarPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -328,7 +326,7 @@ const double TaskPolarPatternParameters::getAngle(void) const
 
 const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 {
-    return boost::math::round(ui->spinOccurrences->value().getValue());
+    return ui->spinOccurrences->value();
 }
 
 
