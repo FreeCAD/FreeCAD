@@ -206,7 +206,7 @@ void TaskScaledParameters::apply()
     std::string name = TransformedView->getObject()->getNameInDocument();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(), getFactor());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(), getOccurrences());
+    ui->spinOccurrences->apply();
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     if (!TransformedView->getObject()->isValid())
         throw Base::Exception(TransformedView->getObject()->getStatusString());
