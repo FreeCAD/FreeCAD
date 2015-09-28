@@ -26,6 +26,7 @@
 
 #include <QValidator>
 #include <QSpinBox>
+#include "ExpressionBinding.h"
 
 namespace Gui {
 
@@ -64,7 +65,7 @@ class UIntSpinBoxPrivate;
  * This allows to use numbers in the range of [0, UINT_MAX]
  * @author Werner Mayer
  */
-class GuiExport UIntSpinBox : public QSpinBox
+class GuiExport UIntSpinBox : public QSpinBox, public ExpressionBinding
 {
     Q_OBJECT
     Q_OVERRIDE( uint maximum READ maximum WRITE setMaximum )
@@ -83,6 +84,13 @@ public:
     uint maximum() const;
     void setMaximum( uint value );
 
+    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void bind(const App::ObjectIdentifier &_path);
+    bool apply(const std::string &propName);
+    bool apply();
+
+    void keyPressEvent(QKeyEvent *event);
+    void resizeEvent(QResizeEvent *event);
 Q_SIGNALS:
     void valueChanged( uint value );
 
@@ -91,6 +99,8 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void valueChange( int value );
+    void finishFormulaDialog();
+    void openFormulaDialog();
 
 protected:
     virtual QString textFromValue ( int v ) const;
