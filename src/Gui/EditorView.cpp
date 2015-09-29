@@ -555,6 +555,9 @@ bool PythonEditorView::onHasMsg(const char* pMsg) const
  */
 void PythonEditorView::executeScript()
 {
+    // always save the macro when it is modified
+    if (EditorView::onHasMsg("Save"))
+        EditorView::onMsg("Save", 0);
     Application::Instance->macroManager()->run(Gui::MacroManager::File,fileName().toUtf8());
 }
 
