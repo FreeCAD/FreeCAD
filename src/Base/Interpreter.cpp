@@ -436,29 +436,27 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
 {
     if (!Py_IsInitialized()) {
 #if PY_MAJOR_VERSION >= 3
+        Py_SetProgramName(Py_DecodeLocale(argv[0],NULL));
+#else
+        Py_SetProgramName(argv[0]);
+#endif
+        PyEval_InitThreads();
+        Py_Initialize();
+#if PY_MAJOR_VERSION >= 3
         size_t size = argc;
         wchar_t **_argv = new wchar_t*[size];
         for (int i = 0; i < argc; i++) {
-            _argv[i] = new wchar_t[strlen(argv[i]) + 1];
-            mbstowcs(_argv[i], argv[i], strlen(argv[i]) + 1);
+            _argv[i] = Py_DecodeLocale(argv[i],NULL);
         }
-        wchar_t *_progname = _argv[0];
-#else
-        char **_argv = argv;
-        char *_progname = argv[0];
-#endif
-        Py_SetProgramName(_progname);
-        PyEval_InitThreads();
-        Py_Initialize();
         PySys_SetArgv(argc, _argv);
+#else
+        PySys_SetArgv(argc, argv);
+#endif
         PythonStdOutput::init_type();
         this->_global = PyEval_SaveThread();
     }
 #if PY_MAJOR_VERSION >= 3
-    const wchar_t *path = Py_GetPath();
-    char *buffer = 0;
-    wcstombs(buffer, path, 1024);
-    return buffer;
+    return Py_EncodeLocale(Py_GetPath(),NULL);
 #else
     return Py_GetPath();
 #endif
