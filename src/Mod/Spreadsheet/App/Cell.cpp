@@ -85,7 +85,7 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     , alignment(ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER)
     , style()
     , foregroundColor(0, 0, 0, 1)
-    , backgroundColor(1, 1, 1, 1)
+    , backgroundColor(1, 1, 1, 0)
     , displayUnit()
     , computedUnit()
     , rowSpan(1)
@@ -339,7 +339,7 @@ void Cell::setBackground(const App::Color &color)
         PropertySheet::Signaller signaller(*owner);
 
         backgroundColor = color;
-        setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 1));
+        setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
     }
 }
 
