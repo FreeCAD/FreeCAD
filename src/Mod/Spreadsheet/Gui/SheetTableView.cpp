@@ -67,8 +67,9 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(removeColumns, SIGNAL(triggered()), this, SLOT(removeColumns()));
 
     QAction * cellProperties = new QAction(tr("Properties..."), this);
-    setContextMenuPolicy(Qt::ActionsContextMenu);
     addAction(cellProperties);
+
+    setContextMenuPolicy(Qt::ActionsContextMenu);
 
     connect(cellProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
 }

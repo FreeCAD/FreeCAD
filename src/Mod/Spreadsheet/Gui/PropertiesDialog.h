@@ -42,6 +42,7 @@ public:
     ~PropertiesDialog();
     
     void apply();
+    void selectAlias();
 
 private Q_SLOTS:
     void foregroundColorChanged(const QColor &color);

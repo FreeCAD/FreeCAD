@@ -224,6 +224,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Spreadsheet_StyleItalic"
           << "Spreadsheet_StyleUnderline"
           << "Separator"
+          << "Spreadsheet_SetAlias"
+          << "Separator"
              ;
 
     return root;

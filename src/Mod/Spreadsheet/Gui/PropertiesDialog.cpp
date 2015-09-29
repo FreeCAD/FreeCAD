@@ -295,4 +295,10 @@ void PropertiesDialog::apply()
     }
 }
 
+void PropertiesDialog::selectAlias()
+{
+    ui->tabWidget->setCurrentIndex(4);
+    ui->alias->setFocus();
+}
+
 #include "moc_PropertiesDialog.cpp"
