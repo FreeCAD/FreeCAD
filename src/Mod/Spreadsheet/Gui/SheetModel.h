@@ -53,6 +53,7 @@ private:
 
     boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellUpdatedConnection;
     Spreadsheet::Sheet * sheet;
+    QColor aliasBgColor;
 };
 
 }

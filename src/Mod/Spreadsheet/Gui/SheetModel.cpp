@@ -28,6 +28,7 @@
 # include <QMessageBox>
 #endif
 
+#include <Gui/Application.h>
 #include "SheetModel.h"
 #include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
 #include <Mod/Spreadsheet/App/Utils.h>
@@ -46,6 +47,9 @@ SheetModel::SheetModel(Sheet *_sheet, QObject *parent)
     , sheet(_sheet)
 {
     cellUpdatedConnection = sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, _1));
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+    aliasBgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));
 }
 
 SheetModel::~SheetModel()
@@ -167,6 +171,13 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         }
         return QVariant(v);
     }
+#else
+    if (role == Qt::ToolTipRole) {
+        std::string alias;
+        if (cell->getAlias(alias))
+            return QVariant(Base::Tools::fromStdString(alias));
+        return QVariant();
+    }
 #endif
 
     if (cell->hasException()) {
@@ -214,8 +225,14 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     if (role == Qt::BackgroundRole) {
         if (cell->getBackground(color))
             return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
-        else
-            return QVariant();
+        else {
+            std::string alias;
+            if (cell->getAlias(alias)) {
+                return QVariant::fromValue(aliasBgColor);
+            }
+            else
+                return QVariant();
+        }
     }
 
     int qtAlignment = 0;
