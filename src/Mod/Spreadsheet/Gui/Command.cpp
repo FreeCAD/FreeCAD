@@ -39,6 +39,7 @@
 #include "../App/Sheet.h"
 #include "../App/Range.h"
 #include "ViewProviderSpreadsheet.h"
+#include "PropertiesDialog.h"
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -762,7 +763,69 @@ bool CmdSpreadsheetStyleUnderline::isActive()
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow))
             return true;
+    }
+    return false;
+}
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+DEF_STD_CMD_A(CmdSpreadsheetSetAlias);
+
+CmdSpreadsheetSetAlias::CmdSpreadsheetSetAlias()
+  : Command("Spreadsheet_SetAlias")
+{
+    sAppModule      = "Spreadsheet";
+    sGroup          = QT_TR_NOOP("Spreadsheet");
+    sMenuText       = QT_TR_NOOP("Set alias");
+    sToolTipText    = QT_TR_NOOP("Set alias for selected cell");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sAccel          = "Ctrl+Shift+A";
+    sPixmap         = "SpreadsheetAlias";
+}
+
+void CmdSpreadsheetSetAlias::activated(int iMsg)
+{
+    if (getActiveGuiDocument()) {
+        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
+        SpreadsheetGui::SheetView * sheetView = freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+
+        if (sheetView) {
+            Sheet * sheet = sheetView->getSheet();
+            QModelIndexList selection = sheetView->selectedIndexes();
+
+            if (selection.size() == 1) {
+                std::vector<Spreadsheet::Range> range;
+
+                range.push_back(Range(selection[0].row(), selection[0].column(),
+                                      selection[0].row(), selection[0].column()));
+
+                std::auto_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, range, sheetView));
+
+                dialog->selectAlias();
+
+                if (dialog->exec() == QDialog::Accepted)
+                    dialog->apply();
+            }
+        }
+    }
+}
+
+bool CmdSpreadsheetSetAlias::isActive()
+{
+    if (getActiveGuiDocument()) {
+        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
+
+        if (activeWindow) {
+            SpreadsheetGui::SheetView * sheetView = freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+
+            if (sheetView) {
+                QModelIndexList selection = sheetView->selectedIndexes();
+
+                if (selection.size() == 1)
+                    return true;
+            }
+        }
     }
     return false;
 }
@@ -822,5 +885,7 @@ void CreateSpreadsheetCommands(void)
     rcCmdMgr.addCommand(new CmdSpreadsheetStyleBold());
     rcCmdMgr.addCommand(new CmdSpreadsheetStyleItalic());
     rcCmdMgr.addCommand(new CmdSpreadsheetStyleUnderline());
+
+    rcCmdMgr.addCommand(new CmdSpreadsheetSetAlias());
 }
 
