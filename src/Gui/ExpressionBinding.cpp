@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QPixmapCache>
-# include <BitmapFactory.h>
 #endif
 #include "ExpressionBinding.h"
+#include "BitmapFactory.h"
 #include "Command.h"
 #include <App/Expression.h>
 #include <App/DocumentObject.h>
