@@ -53,11 +53,12 @@ install:
 script:
     - make -j2
     - PYTHONPATH=$(pwd)/lib/ python -c "import sys, unittest, FreeCAD, TestApp; sys.exit(0 if unittest.TextTestRunner().run(TestApp.All()).wasSuccessful() else 1)"
-    - sudo make install
     - bin/FreeCAD --log-file /tmp/FreeCAD.log &
     - sleep 10 && pkill FreeCAD
     - cat /tmp/FreeCAD.log
     - grep --file=../.log_errors /tmp/FreeCAD.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from build directory" || ( echo "Error from .log_errors found!" && false )
+    - sudo make install
+    - /usr/local/bin/FreeCAD --run-test 0
     - /usr/local/bin/FreeCAD --log-file /tmp/FreeCAD_installed.log &
     - sleep 10 && pkill FreeCAD
     - cat /tmp/FreeCAD_installed.log
