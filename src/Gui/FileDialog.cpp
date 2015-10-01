@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QButtonGroup>
+# include <QCompleter>
 # include <QComboBox>
 # include <QDesktopServices>
 # include <QGridLayout>
@@ -521,7 +522,14 @@ FileChooser::FileChooser ( QWidget * parent )
     layout->setMargin( 0 );
     layout->setSpacing( 6 );
 
-    lineEdit = new QLineEdit( this );
+    lineEdit = new QLineEdit ( this );
+    completer = new QCompleter ( this );
+    completer->setMaxVisibleItems( 12 );
+    fs_model = new QFileSystemModel( completer );
+    fs_model->setRootPath(QString::fromUtf8(""));
+    completer->setModel( fs_model );
+    lineEdit->setCompleter( completer );
+
     layout->addWidget( lineEdit );
 
     connect(lineEdit, SIGNAL(textChanged(const QString &)),
