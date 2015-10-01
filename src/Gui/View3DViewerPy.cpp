@@ -236,8 +236,8 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
             _viewer->seekToPoint(hitpoint);
         }
         else {
-            Py::Int x(tuple[0]);
-            Py::Int y(tuple[1]);
+            Py::Long x(tuple[0]);
+            Py::Long y(tuple[1]);
             
             SbVec2s hitpoint ((long)x,(long)y);
             _viewer->seekToPoint(hitpoint);

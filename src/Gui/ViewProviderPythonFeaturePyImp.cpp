@@ -127,7 +127,11 @@ PyObject *ViewProviderPythonFeaturePy::getCustomAttributes(const char* attr) con
             if (dict){
                 std::vector<std::string> Props = getViewProviderPythonFeaturePtr()->getDynamicPropertyNames();
                 for (std::vector<std::string>::const_iterator it = Props.begin(); it != Props.end(); ++it)
+#if PY_MAJOR_VERSION >= 3
+                    PyDict_SetItem(dict, PyUnicode_FromString(it->c_str()), PyUnicode_FromString(""));
+#else
                     PyDict_SetItem(dict, PyString_FromString(it->c_str()), PyString_FromString(""));
+#endif
             }
             return dict;
         }

@@ -344,7 +344,7 @@ void TaskDialogPython::clicked(int i)
         if (dlg.hasAttr(std::string("clicked"))) {
             Py::Callable method(dlg.getAttr(std::string("clicked")));
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(i));
+            args.setItem(0, Py::Long(i));
             method.apply(args);
         }
     }
@@ -415,7 +415,7 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons(void) con
         if (dlg.hasAttr(std::string("getStandardButtons"))) {
             Py::Callable method(dlg.getAttr(std::string("getStandardButtons")));
             Py::Tuple args;
-            Py::Int ret(method.apply(args));
+            Py::Long ret(method.apply(args));
             int value = (int)ret;
             return QDialogButtonBox::StandardButtons(value);
         }

@@ -437,7 +437,11 @@ void PythonDebugger::runFile(const QString& fn)
         dict = PyModule_GetDict(module);
         dict = PyDict_Copy(dict);
         if (PyDict_GetItemString(dict, "__file__") == NULL) {
+#if PY_MAJOR_VERSION >= 3
+            PyObject *f = PyUnicode_FromString((const char*)pxFileName);
+#else
             PyObject *f = PyString_FromString((const char*)pxFileName);
+#endif
             if (f == NULL) {
                 fclose(fp);
                 return;
@@ -573,10 +577,15 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
         PyErr_SetInterrupt();
     QCoreApplication::processEvents();
     //int no;
+<<<<<<< 91b0e4ba4d4b6bcc2732c80c9c7c83eb6b7dea74
 
     //no = frame->f_tstate->recursion_depth;
     //std::string funcname = PyString_AsString(frame->f_code->co_name);
+#if PY_MAJOR_VERSION >= 3
+    QString file = QString::fromUtf8(PyUnicode_AsUTF8(frame->f_code->co_filename));
+#else
     QString file = QString::fromUtf8(PyString_AsString(frame->f_code->co_filename));
+#endif
     switch (what) {
     case PyTrace_CALL:
         self->depth++;

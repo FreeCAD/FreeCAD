@@ -424,7 +424,7 @@ bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("setEdit")));
                     Py::Tuple args(1);
-                    args.setItem(0, Py::Int(ModNum));
+                    args.setItem(0, Py::Long(ModNum));
                     Py::Boolean ok(method.apply(args));
                     return (bool)ok;
                 }
@@ -432,7 +432,7 @@ bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
                     Py::Callable method(vp.getAttr(std::string("setEdit")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, Py::Int(ModNum));
+                    args.setItem(1, Py::Long(ModNum));
                     Py::Boolean ok(method.apply(args));
                     return (bool)ok;
                 }
@@ -459,7 +459,7 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("unsetEdit")));
                     Py::Tuple args(1);
-                    args.setItem(0, Py::Int(ModNum));
+                    args.setItem(0, Py::Long(ModNum));
                     Py::Boolean ok(method.apply(args));
                     return (bool)ok;
                 }
@@ -467,7 +467,7 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
                     Py::Callable method(vp.getAttr(std::string("unsetEdit")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, Py::Int(ModNum));
+                    args.setItem(1, Py::Long(ModNum));
                     Py::Boolean ok(method.apply(args));
                     return (bool)ok;
                 }
@@ -494,7 +494,7 @@ bool ViewProviderPythonFeatureImp::doubleClicked(void)
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("doubleClicked")));
                     Py::Tuple args;
-                    //args.setItem(0, Py::Int(ModNum));
+                    //args.setItem(0, Py::Long(ModNum));
                     Py::Boolean ok(method.apply(args));
                     return (bool)ok;
                 }
@@ -665,7 +665,7 @@ void ViewProviderPythonFeatureImp::finishRestoring()
         Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
         if (vp.ptr() == Py::_None()) {
             object->show();
-            static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
+            static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Long(1));
         }
     }
 }

@@ -1148,8 +1148,8 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
     try {
         QPoint pos = _view->mapFromGlobal(QCursor::pos());
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(pos.x()));
-        tuple.setItem(1, Py::Int(_view->height()-pos.y()-1));
+        tuple.setItem(0, Py::Long(pos.x()));
+        tuple.setItem(1, Py::Long(_view->height()-pos.y()-1));
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1165,13 +1165,13 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
-        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
+        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Long' requested
         //We should report this problem to the PyCXX project as in the documentation an 
         //example without the 'const' keyword is used.
-        //Or we can also write Py::Int x(tuple[0]);
+        //Or we can also write Py::Long x(tuple[0]);
         const Py::Tuple tuple(object);
-        Py::Int x(tuple[0]);
-        Py::Int y(tuple[1]);
+        Py::Long x(tuple[0]);
+        Py::Long y(tuple[1]);
 
         // As this method could be called during a SoHandleEventAction scene
         // graph traversal we must not use a second SoHandleEventAction as
@@ -1234,13 +1234,13 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
-        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
+        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Long' requested
         //We should report this problem to the PyCXX project as in the documentation an 
         //example without the 'const' keyword is used.
-        //Or we can also write Py::Int x(tuple[0]);
+        //Or we can also write Py::Long x(tuple[0]);
         const Py::Tuple tuple(object);
-        Py::Int x(tuple[0]);
-        Py::Int y(tuple[1]);
+        Py::Long x(tuple[0]);
+        Py::Long y(tuple[1]);
 
         // As this method could be called during a SoHandleEventAction scene
         // graph traversal we must not use a second SoHandleEventAction as
@@ -1309,8 +1309,8 @@ Py::Object View3DInventorPy::getSize(const Py::Tuple& args)
     try {
         SbVec2s size = _view->getViewer()->getSoRenderManager()->getSize();
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(size[0]));
-        tuple.setItem(1, Py::Int(size[1]));
+        tuple.setItem(0, Py::Long(size[0]));
+        tuple.setItem(1, Py::Long(size[1]));
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1324,8 +1324,8 @@ Py::Object View3DInventorPy::getPoint(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
-        x = (int)Py::Int(t[0]);
-        y = (int)Py::Int(t[1]);
+        x = (int)Py::Long(t[0]);
+        y = (int)Py::Long(t[1]);
     }
     try {
         SbVec3f pt = _view->getViewer()->getPointOnScreen(SbVec2s(x,y));
@@ -1376,8 +1376,8 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
         int x = pt[0] * sp[0];
         int y = pt[1] * sp[1];
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(x));
-        tuple.setItem(1, Py::Int(y));
+        tuple.setItem(0, Py::Long(x));
+        tuple.setItem(1, Py::Long(y));
 
         return tuple;
     }
@@ -1429,8 +1429,8 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
         dict.setItem("Time", Py::String(std::string(e->getTime().formatDate().getString())));
         SbVec2s p = n->getEvent()->getPosition();
         Py::Tuple pos(2);
-        pos.setItem(0, Py::Int(p[0]));
-        pos.setItem(1, Py::Int(p[1]));
+        pos.setItem(0, Py::Long(p[0]));
+        pos.setItem(1, Py::Long(p[1]));
         // Position
         dict.setItem("Position", pos);
         // Shift, Ctrl, Alt down
