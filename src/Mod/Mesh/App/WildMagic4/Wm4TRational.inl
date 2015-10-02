@@ -705,7 +705,7 @@ void TRational<N>::ConvertTo (double& rdValue) const
         return;
     }
 
-    unsigned int auiResult[2], uiSave = 0;
+    unsigned int auiResult[2];
 
     // compute the sign of the number
     int iS0 = m_kNumer.GetSign(), iS1 = m_kDenom.GetSign();
