@@ -133,7 +133,7 @@ void PropertyInteger::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyInteger::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     verifyPath(path);
 
@@ -481,7 +481,7 @@ void PropertyEnumeration::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyEnumeration::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     verifyPath(path);
 
@@ -959,7 +959,7 @@ void PropertyFloat::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyFloat::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     verifyPath(path);
 
@@ -971,7 +971,7 @@ void PropertyFloat::setValue(const ObjectIdentifier &path, const boost::any &val
         throw bad_cast();
 }
 
-const boost::any PropertyFloat::getValue(const ObjectIdentifier &path) const
+const boost::any PropertyFloat::getPathValue(const ObjectIdentifier &path) const
 {
     verifyPath(path);
     return _dValue;
@@ -1347,12 +1347,12 @@ unsigned int PropertyString::getMemSize (void) const
     return static_cast<unsigned int>(_cValue.size());
 }
 
-void PropertyString::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     verifyPath(path);
 }
 
-const boost::any PropertyString::getValue(const ObjectIdentifier &path) const
+const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) const
 {
     verifyPath(path);
     return _cValue;
@@ -1906,7 +1906,7 @@ void PropertyBool::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyBool::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyBool::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     verifyPath(path);
 
@@ -1922,7 +1922,7 @@ void PropertyBool::setValue(const ObjectIdentifier &path, const boost::any &valu
         throw bad_cast();
 }
 
-const boost::any PropertyBool::getValue(const ObjectIdentifier &path) const
+const boost::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
 {
     verifyPath(path);
 

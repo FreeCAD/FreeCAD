@@ -272,7 +272,7 @@ void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_p
 
 const PropertyExpressionEngine::ExpressionInfo DocumentObject::getExpression(const ObjectIdentifier &path) const
 {
-    boost::any value = ExpressionEngine.getValue(path);
+    boost::any value = ExpressionEngine.getPathValue(path);
 
     if (value.type() == typeid(PropertyExpressionEngine::ExpressionInfo))
         return boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(value);
