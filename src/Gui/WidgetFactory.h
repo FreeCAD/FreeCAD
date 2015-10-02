@@ -445,7 +445,7 @@ class SignalConnect : public QObject
     Q_OBJECT
 
 public:
-    SignalConnect( Base::PyObjectBase* res, PyObject* cb, QObject* sender);
+    SignalConnect(Base::PyObjectBase* res, PyObject* cb);
     ~SignalConnect();
 
 public Q_SLOTS:
@@ -454,7 +454,6 @@ public Q_SLOTS:
 private:
     PyObject* myResource;
     PyObject* myCallback;
-    QObject*  mySender;
 };
 
 // ----------------------------------------------------

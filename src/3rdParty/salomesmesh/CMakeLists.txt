@@ -8,6 +8,8 @@ SET(SMESH_VERSION_TWEAK 2)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment")
+elseif(CMAKE_COMPILER_IS_CLANGXX)
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-private-field -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment")
 endif()
 
 if(CMAKE_COMPILER_IS_CLANGXX)
