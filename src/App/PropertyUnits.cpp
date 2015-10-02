@@ -118,7 +118,7 @@ void PropertyQuantity::setPyObject(PyObject *value)
     PropertyFloat::setValue(quant.getValue());
 }
 
-void PropertyQuantity::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyQuantity::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     if (value.type() == typeid(double))
         setValue(boost::any_cast<double>(value));
@@ -128,7 +128,7 @@ void PropertyQuantity::setValue(const ObjectIdentifier &path, const boost::any &
         throw bad_cast();
 }
 
-const boost::any PropertyQuantity::getValue(const ObjectIdentifier &path) const
+const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier &path) const
 {
     return Quantity(_dValue, _Unit);
 }

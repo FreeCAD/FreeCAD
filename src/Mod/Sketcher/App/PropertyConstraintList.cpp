@@ -408,7 +408,7 @@ int PropertyConstraintList::getIndexFromConstraintName(const string &name)
     return std::atoi(name.substr(10,4000).c_str()) - 1;
 }
 
-void PropertyConstraintList::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     const ObjectIdentifier::Component & c0 = path.getPropertyComponent(0);
     double dvalue;
@@ -464,7 +464,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
     throw Base::Exception("Invalid constraint");
 }
 
-const boost::any PropertyConstraintList::getValue(const ObjectIdentifier &path) const
+const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) const
 {
     return boost::any(getConstraint(path)->getValue());
 }

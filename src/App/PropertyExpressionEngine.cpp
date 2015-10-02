@@ -284,7 +284,7 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
  * @return Expression for \a path, or empty boost::any if not found.
  */
 
-const boost::any PropertyExpressionEngine::getValue(const App::ObjectIdentifier & path) const
+const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentifier & path) const
 {
     // Get a canonical path
     ObjectIdentifier usePath(canonicalPath(path));
@@ -310,7 +310,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
     const Property * prop = usePath.getProperty();
 
     // Try to access value; it should trigger an exception if it is not supported, or if the path is invalid
-    prop->getValue(usePath);
+    prop->getPathValue(usePath);
 
     if (expr) {
         std::string error = validateExpression(usePath, expr);
@@ -486,7 +486,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
 #endif
 
         /* Set value of property */
-        prop->setValue(*it, e->getValueAsAny());
+        prop->setPathValue(*it, e->getValueAsAny());
 
         ++it;
     }

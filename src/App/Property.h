@@ -88,10 +88,10 @@ public:
     PropertyContainer *getContainer(void) const {return father;}
 
     /// Set value of property
-    virtual void setValue(const App::ObjectIdentifier & path, const boost::any & value);
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
 
     /// Get value of property
-    virtual const boost::any getValue(const App::ObjectIdentifier & path) const;
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const;
 
     /// Convert p to a canonical representation of it
     virtual const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
