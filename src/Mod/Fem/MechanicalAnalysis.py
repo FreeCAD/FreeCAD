@@ -665,7 +665,7 @@ class _ResultControlTaskPanel:
         else:
             self.suitable_results = False
             if not self.MeshObject.FemMesh.VolumeCount:
-                FreeCAD.Console.PrintError('Graphical output for beam or shell FEM Meshes not yet supported!\n')
+                FreeCAD.Console.PrintError('Graphical bending stress output for beam or shell FEM Meshes not yet supported!\n')
             else:
                 FreeCAD.Console.PrintError('Result node numbers are not equal to FEM Mesh NodeCount!\n')
 

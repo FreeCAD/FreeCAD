@@ -485,7 +485,10 @@ class inp_writer:
         f.write('\n***********************************************************\n')
         f.write('** Outputs --> frd file\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        f.write('*NODE FILE\n')
+        if self.beamsection_objects or self.shellthickness_objects:
+            f.write('*NODE FILE, OUTPUT=2d\n')
+        else:
+            f.write('*NODE FILE\n')
         f.write('U\n')
         f.write('*EL FILE\n')
         f.write('S, E\n')
