@@ -1,10 +1,10 @@
 
-add_subdirectory(App)
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-endif(BUILD_GUI)
+#add_subdirectory(App)
+#if(BUILD_GUI)
+#    add_subdirectory(Gui)
+#endif(BUILD_GUI)
 
-
+#update this by ls *.py/ls *.ui
 INSTALL(
     FILES
         Init.py
@@ -12,20 +12,23 @@ INSTALL(
         convert2TetGen.py
         ccxFrdReader.py
         ccxInpWriter.py
-        FemTools.py
+        CaeAnalysis.py
+	CaeSolver.py
+	FemCommands.py
+	FemResultControlTaskPanel.py
         TestFem.py
-        FemBeamSection.py
-        FemBeamSection.ui
-        FemExample.py
-        FemShellThickness.py 
-        FemShellThickness.ui 
-        MechanicalAnalysis.py
+        #FemExample.py
         MechanicalMaterial.py
+	FemShellThickness.py
+	FemBeamSection.py
         MechanicalMaterial.ui
         MechanicalAnalysis.ui
         ShowDisplacement.ui
+	FemShellThickness.ui
+	FemBeamSection.ui
+	Preimport.py
     DESTINATION
-        Mod/Fem
+        Mod/Cae
 )
 
 INSTALL(

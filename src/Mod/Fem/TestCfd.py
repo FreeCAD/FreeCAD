@@ -1,7 +1,9 @@
-# Unit test for the FEM module
+# Unit test for the CFD module without Gui
 
 #***************************************************************************
 #*   Copyright (c) 2015 - FreeCAD Developers                               *
+#*   Author: Qingfeng Xia<QingfengdotXia@iesensor.com>  
+#*   Adapted from TestFem.py of 
 #*   Author: Przemo Firszt <przemo@firszt.eu>                              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
@@ -25,9 +27,9 @@
 #***************************************************************************/
 
 import Fem
-#import FemGui
+import foamSolver
 import FreeCAD
-import CaeAnalysis  #NameChanged
+import CaeAnalysis
 import csv
 import tempfile
 import unittest
@@ -36,16 +38,14 @@ mesh_name = 'Mesh'
 
 home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir()
-test_file_dir = home_path + 'Mod/Fem/test_files'  #Name may need to be changed
+test_file_dir = home_path + 'Mod/Cfd/test_files'
 
 static_base_name = 'cube_static'
-frequency_base_name = 'cube_frequency'
-static_analysis_dir = temp_dir + '/FEM_static'
-frequency_analysis_dir = temp_dir + '/FEM_frequency'
-static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
+static_analysis_dir = temp_dir + '/cfd_static'
+
+static_analysis_case_file = test_file_dir + '/' + static_base_name 
 static_expected_values = test_file_dir + "/cube_static_expected_values"
-frequency_analysis_inp_file = test_file_dir + '/' + frequency_base_name + '.inp'
-frequency_expected_values = test_file_dir + "/cube_frequency_expected_values"
+#
 mesh_points_file = test_file_dir + '/mesh_points.csv'
 mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
 
@@ -68,7 +68,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_analysis(self):
-        self.analysis = CaeAnalysis.makeCaeAnalysis('MechanicalAnalysis')  # Name changed
+        self.analysis = CaeAnalysis.makeMechanicalAnalysis('MechanicalAnalysis') ##<need modify>
         self.active_doc.recompute()
 
     def create_new_mesh(self):
