@@ -133,8 +133,9 @@ class Solver(CaeSolver):
                                        self.fixed_constraints, self.force_constraints,
                                        self.pressure_constraints, self.analysis_type,
                                        self.eigenmode_parameters, self.working_dir)
-            FreeCAD.Console.PrintMessage("built inp_writer, to call write")
+            FreeCAD.Console.PrintMessage("Debuginfo: built inp_writer, to call write")
             self.base_name = inp_writer.write_calculix_input_file()
+            FreeCAD.Console.PrintMessage("Debuginfo: write_calculix_input_file() return")
         except:
             FreeCAD.Console.PrintMessage("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise

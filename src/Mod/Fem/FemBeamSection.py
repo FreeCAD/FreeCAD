@@ -225,4 +225,3 @@ class ReferenceShapeSelectionObserver:
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_BeamSection', _CommandFemBeamSection())
-    FreeCAD.Console.PrintMessage("femCommands.py is called") #debug print

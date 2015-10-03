@@ -1,16 +1,52 @@
+### Aims of this pull request:
+
+- genralization of CAE solver, sharing mesh and analysis class infra-strcture
+- simplification of work for new solvers: A new solver will need only case-runner, case-writer, resultp-reader
+- decoupling analysis and solver. 
+
+### Achieved refactoring work
+
+1. FemTools.py -> CaeSolver (general class to start external solver process) + ccxFemSolver (specific solver)
+Significant refactoring(mainly renaming) work happends here, code logic is remain identical. 
+
+2. MechanicalAnalysis -> CaeAnalysis (general class) + JobControlTaskView (general class) + FemResultTaskView + FemCommands.py
+Just split a big class into several class, thereby, half code is reusable. 
 
 ### Read this post first on forum, design object and roadmap
 
 [From FreeCAD's Fem workbench towards a full-fledged CAE workbench](http://forum.freecadweb.org/viewtopic.php?f=18&t=12654)
+
+Mod/Cae files are now moved to Mod/Fem
+
+https://github.com/qingfengxia/FreeCAD/tree/master/src/Mod/Fem
+
+
+### CaeWorkbench to-do
+
+1. catogory of solver dict, where is the best place to register?
+when a new analysis is created, catogory and solver are selected in GUI dialog, then instantiated.
+
+2. renaming Fem->Cae may be a huge job, just forget it
+
+3. Currently, material, mesh, are members of CaeSolver
+update_objects() extract tehm from AnalysisObject.
+CaeAnalysis should be the object contains {solver, mesh, material, constraint}, so   ccxInpWriter.write_case_file() API can be simplified.
+
+4. Fem should work in nonGui mode, i.e. key classes like, CaeSolver, CaeAnalysis, should work in both cmd and gui mode
+
+
+**************************************************
 
 ### installation without compiling C++
 Test python code, before these codes are merged into FemWorkbench
 
 since the C++ is untouched, it is possible to just replace the python code with CAE version. 
 
+it is conflicted with the current Fem module's python code
+```
 sudo mv /usr/lib/freecad/Mod/Fem /opt/Fem_backup
-#it is conflicted with the current Fem module's python code
 sudo ln -s /opt/FreeCAD/src/Mod/Cae /usr/lib/freecad/Mod/Fem
+```
 
 Error "No module named: MechanicalAnalysis" when do comand
 `Gui.activateWorkbench("FemWorkbench")`
@@ -18,9 +54,7 @@ Error "No module named: MechanicalAnalysis" when do comand
 However, python code does not reference it, not sure about C++ code?
 `find ./ -type f -exec grep -H 'MechanicalAnalysis' {} \;`
 
-Temporal solutin, activate this workbench for the second time : Gui.activateWorkbench("FemWorkbench")
-
-Once edit py file, do remember to "rm *.pyc" and restart Freecad from terminal!
+Temporal solution, activate this workbench for the second time : Gui.activateWorkbench("FemWorkbench")
 
 ### test with C++ compilation (merge with the existent Fem module)
 
@@ -28,8 +62,13 @@ replacesing all files under src/ModFem/*.* with new files under Mod/Cae, but lea
 
 ### test it by paste to python console of Gui
 
-[step by step tutorial of Fem module]()
+[step by step tutorial of Fem module](http://www.freecadweb.org/wiki/index.php?title=FEM_tutorial)
+
+Once edit py file, do remember to "rm *.pyc" and restart Freecad from terminal!
+
 This module can not load saved file and reload analysis, but macro is fine to quickly test GUI functions. 
+
+Material selection is lost after replay the following commands
 
 ```
 FreeCAD.newDocument("FemTest")
@@ -82,17 +121,6 @@ Gui.activeDocument().resetEdit()
 #
 ```
 
-### Achieved refraction
-
-1. FemTools.py -> CaeSolver (general class to start external solver process) + ccxFemSolver
-
-2. MechanicalAnalysis -> CaeAnalysis + JobControlTaskView (general class) + FemResultTaskView + FemCommands.py
-
-3. Currently, material, mesh, are members of CaeSolver
-update_objects() extract tehm from AnalysisObject.
-CaeAnalysis should be the object contains {solver, mesh, material, constraint}, so   ccxInpWriter.write_case_file() API can be simplified.
-
-4. Fem should work in nonGui mode
 
 ### bug found
 
@@ -106,9 +134,11 @@ Traceback (most recent call last):
     FreeCADGui.Control.showDialog(taskd)
 <type 'exceptions.RuntimeError'>: Active task dialog found
 
-2.
+2. The code is tested until write_abaqus_file(), which does not return! 
+
+
 ************************************************
-## To-do
+## CFD To-do
 
 ### CaeAnalysis class should operate on diff category of solvers
 
@@ -166,6 +196,7 @@ http://www.cfd-online.com/Forums/openfoam-meshing-open/151980-mesh-conversion-op
 You need to decompose the polyhedral cells into shapes your software can understand. Paraview converter/module has a similar problem, so you can find code snippets there.
 
 
+****************************************
 
 ## FSI 
 

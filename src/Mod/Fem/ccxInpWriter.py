@@ -3,10 +3,14 @@ import os
 import sys
 import time
 
-#analysis_obj has been removed from this class and __init__, in order to run withou GUI
+
 class inp_writer:
-    def __init__(self,  analysis_obj, mesh_obj, mat_obj, fixed_obj, force_obj,
-                 pressure_obj, analysis_type=None, eigenmode_parameters=None, dir_name=None):
+    def __init__(self, analysis_obj, mesh_obj, mat_obj,
+                 fixed_obj,
+                 force_obj, pressure_obj,
+                 beamsection_obj, shellthickness_obj,
+                 analysis_type=None, eigenmode_parameters=None,
+                 dir_name=None):
         self.dir_name = dir_name
         self.analysis = analysis_obj
         self.mesh_object = mesh_obj
@@ -19,16 +23,18 @@ class inp_writer:
             self.eigenfrequeny_range_low = eigenmode_parameters[1]
             self.eigenfrequeny_range_high = eigenmode_parameters[2]
         self.analysis_type = analysis_type
+        self.beamsection_objects = beamsection_obj
+        self.shellthickness_objects = shellthickness_obj
         if not dir_name:
             self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
-        self.base_name = self.dir_name + '/' + self.mesh_object.Name
-        self.file_name = self.base_name + '.inp'
+        self.base_name = self.mesh_object.Name
+        self.file_name = self.dir_name + '/' + self.base_name + '.inp'
         self.fc_ver = FreeCAD.Version()
 
     def write_calculix_input_file(self):
-        self.mesh_object.FemMesh.writeABAQUS(self.file_name) #
+        self.mesh_object.FemMesh.writeABAQUS(self.file_name)
 
         # reopen file with "append" and add the analysis definition
         inpfile = open(self.file_name, 'a')
@@ -37,6 +43,7 @@ class inp_writer:
         self.write_node_sets_constraints_fixed(inpfile)
         self.write_node_sets_constraints_force(inpfile)
         self.write_materials(inpfile)
+        self.write_femelementsets(inpfile)
         self.write_step_begin(inpfile)
         self.write_constraints_fixed(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
@@ -48,19 +55,119 @@ class inp_writer:
         self.write_step_end(inpfile)
         self.write_footer(inpfile)
         inpfile.close()
-        return self.base_name
+        return self.file_name
 
     def write_element_sets_material_and_femelement_type(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Element sets for materials and FEM element type (solid, shell, beam)\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for m in self.material_objects:
-            if len(self.material_objects) == 1:
-                f.write('*ELSET,ELSET=MaterialSolidElements\n')
+        if len(self.material_objects) > 1:
+            FreeCAD.Console.PrintError('Multiple materials defined, this could result in a broken CalculiX input file!\n')
+        if len(self.shellthickness_objects) > 1 or len(self.beamsection_objects) > 1:
+            if not hasattr(self, 'fem_element_table'):
+                self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
+        for mi, m in enumerate(self.material_objects):
+            mat_obj = m['Object']
+            if self.beamsection_objects:  # all fem_elements are beamsection_obj --> beam mesh
+                remaining_material_beam_elementset_line = None
+                e_count = 0
+                e_referenced = []
+                e_not_referenced = []
+                for bi, b in enumerate(self.beamsection_objects):
+                    beamsection_obj = b['Object']
+                    material_elementset_name = mat_obj.Name + beamsection_obj.Name
+                    # max identifier length in CalculiX for beam sections see http://forum.freecadweb.org/viewtopic.php?f=18&t=12509
+                    if len(material_elementset_name) > 20:
+                        material_elementset_name = 'Mat' + str(mi) + 'Beam' + str(bi)
+                    b['MaterialElementsetName'] = material_elementset_name    # the last material is taken in def write_femelementsets()
+                    material_elementset_line = '*ELSET,ELSET=' + material_elementset_name + '\n'
+                    if not beamsection_obj.References:
+                        if len(self.beamsection_objects) == 1:   # all beam elements have the section of this beamsection_obj
+                            f.write(material_elementset_line)
+                            f.write('Eall\n')
+                        else:   # remaining beam elements have the beamsection_obj of this beamsection_obj
+                            remaining_material_beam_elementset_line = material_elementset_line
+                    else:  # use reference shapes for the beamsection_obj of this beamsection_obj
+                        f.write(material_elementset_line)
+                        for ref in beamsection_obj.References:
+                            no = []
+                            el = []
+                            r = ref[0].Shape.getElement(ref[1])
+                            if r.ShapeType == 'Edge':
+                                # print '  BeamSectionReferenceEdge : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1]
+                                no = self.mesh_object.FemMesh.getNodesByEdge(r)
+                                el = getFemElementsByNodes(self.fem_element_table, no)
+                            else:
+                                print '  No Edge, but BeamSection needs Edges as reference shapes!'
+                            for e in sorted(el):
+                                f.write(str(e) + ',\n')
+                            e_count += len(el)
+                            e_referenced += el
+                # write remaining beamsection elements
+                if remaining_material_beam_elementset_line:
+                    f.write(remaining_material_beam_elementset_line)
+                    f.write('**remaining elements\n')
+                    for e in self.fem_element_table:
+                        if e not in e_referenced:
+                            e_not_referenced.append(e)
+                    for e in sorted(e_not_referenced):
+                        f.write(str(e) + ',\n')
+                    e_count += len(e_not_referenced)
+                f.write('\n')
+            elif self.shellthickness_objects:  # all fem_elements are shells --> shell mesh
+                remaining_material_shellthicknes_elementset_line = None
+                e_count = 0
+                e_referenced = []
+                e_not_referenced = []
+                for si, s in enumerate(self.shellthickness_objects):
+                    shellthickness_obj = s['Object']
+                    material_elementset_name = mat_obj.Name + shellthickness_obj.Name
+                    if len(material_elementset_name) > 80:   # standard max identifier lenght in CalculiX
+                        material_elementset_name = 'Mat' + str(mi) + 'Shell' + str(si)
+                    s['MaterialElementsetName'] = material_elementset_name    # the last material is taken in def write_femelementsets()
+                    material_elementset_line = '*ELSET,ELSET=' + material_elementset_name + '\n'
+                    if not shellthickness_obj.References:
+                        if len(self.shellthickness_objects) == 1:   # all shell elements have the thickness of this shellthickness_obj
+                            f.write(material_elementset_line)
+                            f.write('Eall\n')
+                        else:   # remaining shell elements have the thickness of this shellthickness_obj
+                            remaining_material_shellthicknes_elementset_line = material_elementset_line
+                    else:  # use reference shapes for the thickness of this shellthickness_obj
+                        f.write(material_elementset_line)
+                        for ref in shellthickness_obj.References:
+                            no = []
+                            el = []
+                            r = ref[0].Shape.getElement(ref[1])
+                            if r.ShapeType == 'Face':
+                                # print '  ShellThicknessReferenceFace : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1]
+                                no = self.mesh_object.FemMesh.getNodesByFace(r)
+                                el = getFemElementsByNodes(self.fem_element_table, no)
+                            else:
+                                print '  No Face, but ShellThickness needs Faces as reference shapes!'
+                            for e in sorted(el):
+                                f.write(str(e) + ',\n')
+                            e_count += len(el)
+                            e_referenced += el
+                # write remaining shellthickness elements
+                if remaining_material_shellthicknes_elementset_line:
+                    f.write(remaining_material_shellthicknes_elementset_line)
+                    f.write('**remaining elements\n')
+                    for e in self.fem_element_table:
+                        if e not in e_referenced:
+                            e_not_referenced.append(e)
+                    for e in sorted(e_not_referenced):
+                        f.write(str(e) + ',\n')
+                    e_count += len(e_not_referenced)
+                f.write('\n')
+            else:  # all fem_elements are solids --> volume mesh
+                material_elementset_name = 'MaterialSolidElements'
+                f.write('*ELSET,ELSET=' + material_elementset_name + '\n')
                 f.write('Eall\n')
-            else:
-                print 'material object count: ', len(self.material_objects)
-                FreeCAD.Console.PrintError('Multiple materials are not yet supported!\n')
+        if hasattr(self, 'fem_element_table'):
+            if e_count != len(self.fem_element_table):
+                print 'ERROR: self.fem_element_table != e_count'
+                print 'Elements written to CalculiX file: ', e_count
+                print 'Elements of the FreeCAD FEM Mesh:  ', len(self.fem_element_table)
 
     def write_node_sets_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
@@ -102,8 +209,8 @@ class inp_writer:
             # calculate node load
             if NbrForceNodes != 0:
                 fobj['NodeLoad'] = (frc_obj.Force) / NbrForceNodes
-                #  FIXME for loads on edges the node count is used to distribute the load on the edges. 
-                #  In case of a not uniform fem mesh this could result in wrong force distribution 
+                #  FIXME for loads on edges the node count is used to distribute the load on the edges.
+                #  In case of a not uniform fem mesh this could result in wrong force distribution
                 #  and thus in wrong analysis results. see  def write_constraints_force()
                 f.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
                 f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
@@ -121,7 +228,6 @@ class inp_writer:
             YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
             YM_in_MPa = YM.getValueAs('MPa')
             PR = float(mat_obj.Material['PoissonRatio'])
-            mat_obj_name = mat_obj.Name
             mat_name = mat_obj.Material['Name'][:80]
             # write material properties
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
@@ -132,12 +238,39 @@ class inp_writer:
             density_in_tone_per_mm3 = float(density.getValueAs('t/mm^3'))
             f.write('*DENSITY \n')
             f.write('{0:.3e}, \n'.format(density_in_tone_per_mm3))
-            # write element properties
-            if len(self.material_objects) == 1:
-                f.write('*SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=' + mat_name + '\n')
-            else:
-                if mat_obj_name == 'MechanicalMaterial':
-                    f.write('*SOLID SECTION, ELSET=MaterialSolidElements, MATERIAL=' + mat_name + '\n')
+
+    def write_femelementsets(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Sections\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for m in self.material_objects:
+            mat_obj = m['Object']
+            mat_name = mat_obj.Material['Name'][:80]
+            if self.beamsection_objects:   # all fem_elements are beams
+                for b in self.beamsection_objects:
+                    beamsection_obj = b['Object']
+                    material_elementset_name = b['MaterialElementsetName']
+                    el_set = 'ELSET=' + material_elementset_name + ', '
+                    material = 'MATERIAL=' + mat_name
+                    el_prop = '*BEAM SECTION, ' + el_set + material + ', SECTION=RECT\n'
+                    sc_prop = str(beamsection_obj.Hight.getValueAs('mm')) + ', ' + str(beamsection_obj.Width.getValueAs('mm')) + '\n'
+                    f.write(el_prop)
+                    f.write(sc_prop)
+            elif self.shellthickness_objects:   # all fem_elements are shells
+                for s in self.shellthickness_objects:
+                    shellthickness_obj = s['Object']
+                    material_elementset_name = s['MaterialElementsetName']
+                    el_set = 'ELSET=' + material_elementset_name + ', '
+                    material = 'MATERIAL=' + mat_name
+                    el_prop = '*SHELL SECTION, ' + el_set + material + '\n'
+                    sc_prop = str(shellthickness_obj.Thickness.getValueAs('mm')) + '\n'
+                    f.write(el_prop)
+                    f.write(sc_prop)
+            else:  # all fem_elements are solids
+                el_set = 'ELSET=' + 'MaterialSolidElements' + ', '
+                material = 'MATERIAL=' + mat_name
+                el_prop = '*SOLID SECTION, ' + el_set + material + '\n'
+                f.write(el_prop)
 
     def write_step_begin(self, f):
         f.write('\n***********************************************************\n')
@@ -156,7 +289,12 @@ class inp_writer:
             f.write('*BOUNDARY\n')
             f.write(fix_obj_name + ',1\n')
             f.write(fix_obj_name + ',2\n')
-            f.write(fix_obj_name + ',3\n\n')
+            f.write(fix_obj_name + ',3\n')
+            if self.beamsection_objects or self.shellthickness_objects:
+                f.write(fix_obj_name + ',4\n')
+                f.write(fix_obj_name + ',5\n')
+                f.write(fix_obj_name + ',6\n')
+            f.write('\n')
 
     def write_constraints_force(self, f):
         f.write('\n***********************************************************\n')
@@ -369,7 +507,7 @@ class inp_writer:
         f.write('**   written by    --> FreeCAD ' + self.fc_ver[0] + '.' + self.fc_ver[1] + '.' + self.fc_ver[2] + '\n')
         f.write('**   written on    --> ' + time.ctime() + '\n')
         f.write('**   file name     --> ' + os.path.basename(FreeCAD.ActiveDocument.FileName) + '\n')
-        #f.write('**   analysis name --> ' + self.analysis.Name + '\n')
+        f.write('**   analysis name --> ' + self.analysis.Name + '\n')
         f.write('**\n')
         f.write('**\n')
         f.write('**\n')
@@ -426,13 +564,16 @@ def is_solid_mesh(fem_mesh):
     if fem_mesh.VolumeCount > 0:  # solid mesh
         return True
 
+
 def has_no_face_data(fem_mesh):
     if fem_mesh.FaceCount == 0:   # mesh has no face data, could be a beam mesh or a solid mesh without face data
         return True
 
+
 def is_shell_mesh(fem_mesh):
     if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount > 0:  # shell mesh
         return True
+
 
 def is_beam_mesh(fem_mesh):
     if fem_mesh.VolumeCount == 0 and fem_mesh.FaceCount == 0 and fem_mesh.EdgeCount > 0:  # beam mesh

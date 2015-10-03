@@ -1,10 +1,10 @@
 
-#add_subdirectory(App)
-#if(BUILD_GUI)
-#    add_subdirectory(Gui)
-#endif(BUILD_GUI)
+add_subdirectory(App)
+if(BUILD_GUI)
+    add_subdirectory(Gui)
+endif(BUILD_GUI)
 
-#update this by ls *.py/ls *.ui
+
 INSTALL(
     FILES
         Init.py
@@ -28,7 +28,7 @@ INSTALL(
 	FemBeamSection.ui
 	Preimport.py
     DESTINATION
-        Mod/Cae
+        Mod/Fem
 )
 
 INSTALL(
