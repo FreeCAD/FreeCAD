@@ -119,8 +119,8 @@ class FemTest(unittest.TestCase):
         file2 = open(file_name2, 'r')
         f1 = file1.readlines()
         f2 = file2.readlines()
-        lf1 = [l for l in f1 if not l.startswith('**')]
-        lf2 = [l for l in f2 if not l.startswith('**')]
+        lf1 = [l for l in f1 if not l.startswith('**   written ')]
+        lf2 = [l for l in f2 if not l.startswith('**   written ')]
         import difflib
         diff = difflib.unified_diff(lf1, lf2, n=0)
         result = ''
