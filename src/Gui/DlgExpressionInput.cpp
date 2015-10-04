@@ -66,7 +66,11 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     DocumentObject * docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
 
+#if defined(Q_OS_MAC)
+    setWindowFlags(Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
+#else
     setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
+#endif
     setAttribute(Qt::WA_NoSystemBackground, true);
     setAttribute(Qt::WA_TranslucentBackground, true);
 
