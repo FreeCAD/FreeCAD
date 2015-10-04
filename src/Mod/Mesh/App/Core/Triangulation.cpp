@@ -653,6 +653,8 @@ void FlatTriangulator::PostProcessing(const std::vector<Base::Vector3f>&)
 ConstraintDelaunayTriangulator::ConstraintDelaunayTriangulator(float area)
   : fMaxArea(area)
 {
+    // silent warning: -Wunused-private-field
+    (void)fMaxArea;
 }
 
 ConstraintDelaunayTriangulator::~ConstraintDelaunayTriangulator()
