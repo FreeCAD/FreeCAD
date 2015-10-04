@@ -421,7 +421,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
         throw std::bad_cast();
 
     if (c0.isArray() && path.numSubComponents() == 1) {
-        if (c0.getIndex() < 0 || c0.getIndex() >= _lValueList.size())
+        if (c0.getIndex() >= _lValueList.size())
             throw Base::Exception("Array out of bounds");
         aboutToSetValue();
         _lValueList[c0.getIndex()]->setValue(dvalue);
@@ -448,7 +448,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
     const ObjectIdentifier::Component & c0 = path.getPropertyComponent(0);
 
     if (c0.isArray() && path.numSubComponents() == 1) {
-        if (c0.getIndex() < 0 || c0.getIndex() >= _lValueList.size())
+        if (c0.getIndex() >= _lValueList.size())
             throw Base::Exception("Array out of bounds");
 
         return _lValueList[c0.getIndex()];
@@ -474,7 +474,7 @@ const ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentif
     const ObjectIdentifier::Component & c0 = p.getPropertyComponent(0);
 
     if (c0.isArray() && p.numSubComponents() == 1) {
-        if (c0.getIndex() >= 0 && c0.getIndex() < _lValueList.size() && _lValueList[c0.getIndex()]->Name.size() > 0)
+        if (c0.getIndex() < _lValueList.size() && _lValueList[c0.getIndex()]->Name.size() > 0)
             return ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
                                         << ObjectIdentifier::Component::SimpleComponent(_lValueList[c0.getIndex()]->Name);
         return p;
