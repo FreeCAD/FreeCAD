@@ -466,7 +466,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
 
 const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) const
 {
-    return boost::any(getConstraint(path)->getValue());
+    return boost::any(getConstraint(path)->getPresentationValue());
 }
 
 const ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p) const

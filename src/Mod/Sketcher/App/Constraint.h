@@ -83,6 +83,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     void setValue(double newValue);
+    double getPresentationValue() const;
     double getValue() const;
 
     friend class Sketch;
@@ -103,6 +104,7 @@ public:
     float LabelDistance;
     float LabelPosition;
     bool isDriving;
+
 protected:
     boost::uuids::uuid tag;
 };
