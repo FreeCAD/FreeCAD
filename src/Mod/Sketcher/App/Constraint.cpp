@@ -109,6 +109,11 @@ void Constraint::setValue(double newValue)
 
 double Constraint::getValue() const
 {
+    return Value;
+}
+
+double Constraint::getPresentationValue() const
+{
     switch (Type) {
     case Distance:
     case Radius:
