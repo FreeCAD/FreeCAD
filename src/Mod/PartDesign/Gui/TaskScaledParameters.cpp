@@ -113,6 +113,7 @@ void TaskScaledParameters::setupUI()
     // ---------------------
 
     ui->spinFactor->bind(pcScaled->Factor);
+    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcScaled->Occurrences);
     ui->spinFactor->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
