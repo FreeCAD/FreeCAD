@@ -128,6 +128,7 @@ void TaskLinearPatternParameters::setupUI()
     // ---------------------
 
     ui->spinLength->bind(pcLinearPattern->Length);
+    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcLinearPattern->Occurrences);
 
     ui->comboDirection->setEnabled(true);

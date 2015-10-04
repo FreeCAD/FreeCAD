@@ -128,6 +128,7 @@ void TaskPolarPatternParameters::setupUI()
     // ---------------------
 
     ui->polarAngle->bind(pcPolarPattern->Angle);
+    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcPolarPattern->Occurrences);
 
     ui->comboAxis->setEnabled(true);
