@@ -51,6 +51,9 @@ sudo ln -s /opt/FreeCAD/src/Mod/Cae /usr/lib/freecad/Mod/Fem
 Error "No module named: MechanicalAnalysis" when do comand
 `Gui.activateWorkbench("FemWorkbench")`
 
+Gui/AppFemGui.cpp:    Base::Interpreter().loadModule("MechanicalAnalysis");
+
+
 However, python code does not reference it, not sure about C++ code?
 `find ./ -type f -exec grep -H 'MechanicalAnalysis' {} \;`
 
@@ -135,6 +138,25 @@ Traceback (most recent call last):
 <type 'exceptions.RuntimeError'>: Active task dialog found
 
 2. The code is tested until write_abaqus_file(), which does not return! 
+
+3. Ubuntu 14.04.2 bug
+
+qingfeng@qingfeng-ubuntu:/opt/FreeCAD/src/Mod/Fem$ freecad
+FreeCAD 0.16, Libs: 0.16R5639 (Git)
+© Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2015
+  #####                 ####  ###   ####  
+  #                    #      # #   #   # 
+  #     ##  #### ####  #     #   #  #   # 
+  ####  # # #  # #  #  #     #####  #   # 
+  #     #   #### ####  #    #     # #   # 
+  #     #   #    #     #    #     # #   #  ##  ##  ##
+  #     #   #### ####   ### #     # ####   ##  ##  ##
+
+Traceback (most recent call last):
+  File "/usr/lib/freecad/Mod/Fem/MechanicalMaterial.py", line 111, in setEdit
+    FreeCADGui.Control.showDialog(taskd)
+<type 'exceptions.RuntimeError'>: Active task dialog found
+sh: 1: SMDS_MemoryLimit: not found
 
 
 ************************************************

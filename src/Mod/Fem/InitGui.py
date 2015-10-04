@@ -35,7 +35,7 @@ class FemWorkbench ( Workbench ):
     """Cae workbench object"""
     def __init__(self):
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Fem/Resources/icons/preferences-fem.svg"
-        self.__class__.MenuText = "Cae"
+        self.__class__.MenuText = "Fem"
         self.__class__.ToolTip = "CAE(FEM+CFD) workbench"
     def Initialize(self):
         # load the c++ module
@@ -45,7 +45,7 @@ class FemWorkbench ( Workbench ):
         import CaeAnalysis
         import FemShellThickness
         import FemBeamSection
-        import MechanicalMaterial
+        #import MechanicalMaterial
         import FemCommands
         #setup ccx path code has been moved into makeCaeSolver() and specific solver init section 
         

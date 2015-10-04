@@ -1,6 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>                 *
+#*   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>  
+#*   Copyright (c) 2015 - Qingfeng Xia <qingfeng.xia@  eng.ox.ac.uk> *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -70,7 +71,21 @@ class Solver(CaeSolver):
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints):
                 message += "No force-constraint or pressure-constraint defined in the Analysis\n"
-        
+        if self.beam_sections:
+            has_no_references = False
+            for b in self.beam_sections:
+                if len(b['Object'].References) == 0:
+                    if has_no_references is True:
+                        message += "More than one BeamSection has empty References list (Only one empty References list is allowed!).\n"
+                    has_no_references = True
+        if self.shell_thicknesses:
+            has_no_references = False
+            for s in self.shell_thicknesses:
+                if len(s['Object'].References) == 0:
+                    if has_no_references is True:
+                        message += "More than one ShellThickness has empty References list (Only one empty References list is allowed!).\n"
+                    has_no_references = True
+                    
         return message
         
     def set_analysis_type(self, analysis_type=None):
@@ -91,10 +106,10 @@ class Solver(CaeSolver):
         """ if not specify, setup binary solver name from prefs a default one
         """
         if not solver_name:
-            solver_name= self.prefs.GetString("solverBinaryPath",'ccx') #<FemToCae>
+            solver_name= self.prefs.GetString("solverBinaryPath",'ccx') #<FemToCae> need to  be changed later
             from platform import system
             if system() == "Windows":
-                solver_binary = FreeCAD.getHomePath() + "bin\\"+solver_name+".exe"
+                solver_binary = FreeCAD.getHomePath() + "\\bin\\"+solver_name+".exe"
             else: #"Linux" or  "MACOSX" 
                 solver_binary = solver_name
         else:
@@ -122,52 +137,54 @@ class Solver(CaeSolver):
         """ analysis should be an object contains {solver, mesh, material, constraint}
         ccxInpWriter, API needs simplification
         """
-        self.update_objects() # self.mesh is set
-        msg=self.check_prerequisites() #if not None showMessage
+        self.update_objects() # where self.mesh is set
+        message=self.check_prerequisites() #if not None showMessage
+        if message:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            return
         
         import ccxInpWriter as iw
         import sys
-        self.base_name = "" #why result, it is folder name? case file name?
+        self.case_file_name = "" 
         try:
             inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
-                                       self.fixed_constraints, self.force_constraints,
-                                       self.pressure_constraints, self.analysis_type,
-                                       self.eigenmode_parameters, self.working_dir)
+                                       self.fixed_constraints,
+                                       self.force_constraints, self.pressure_constraints,
+                                       self.beam_sections, self.shell_thicknesses,
+                                       self.analysis_type, self.eigenmode_parameters,
+                                       self.working_dir)
             FreeCAD.Console.PrintMessage("Debuginfo: built inp_writer, to call write")
-            self.base_name = inp_writer.write_calculix_input_file()
+            self.case_file_name = inp_writer.write_calculix_input_file()
             FreeCAD.Console.PrintMessage("Debuginfo: write_calculix_input_file() return")
         except:
             FreeCAD.Console.PrintMessage("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise
-
+            
     def start_ext_editor(self, ext_editor_path, filename):
         if not hasattr(self, "ext_editor_process"):
             self.ext_editor_process = QtCore.QProcess()
         if self.ext_editor_process.state() != QtCore.QProcess.Running:
             self.ext_editor_process.start(ext_editor_path, [filename])
-    
-    #
+
     def editSolverInputFile(self):
-        """ FEM Calculix or Abaqus specific input file editing
-        """
-        filename = self.base_name + '.inp'
-        print 'editSolverInputFile {}'.format(filename)
+        print 'editCalculixInputFile {}'.format(self.case_file_name)
         if self.prefs.GetBool("UseInternalEditor", True):
-            FemGui.open(filename)
+            FemGui.open(self.case_file_name)
         else:
             ext_editor_path = self.prefs.GetString("ExternalEditorPath", "")
             if ext_editor_path:
-                self.start_ext_editor(ext_editor_path, filename)
+                self.start_ext_editor(ext_editor_path, self.case_file_name)
             else:
                 print "External editor is not defined in FEM preferences. Falling back to internal editor"
-                FemGui.open(filename)
+                FemGui.open(self.case_file_name) #got grammer highlighter for inp file
+    #
 
     ##########################################################
     def load_results(self):
-        import Reader #
-        #import os
+        import ccxFrdReader #
+        import os
         self.results_present = False
-        result_file = self.working_dir + '/' + self.base_name + ".frd"
+        result_file=os.path.splitext(self.case_file_name)[0] + '.frd'
         if os.path.isfile(result_file):
             ccxFrdReader.importFrd(result_file, self.analysis)
             for m in self.analysis.Member:
@@ -291,10 +308,11 @@ class Solver(CaeSolver):
     # Removes all result objects,  define only one API  reset_all() to clean analysis
     #  @param self The python object self
     def purge_results(self):
-        for m in self.analysis.Member:
-            if (m.isDerivedFrom('Fem::FemResultObject')):  # this CFD module still using FEM object to render 
-                FreeCAD.ActiveDocument.removeObject(m.Name)
-        self.results_present = False
+        if self.results_present:
+            for m in self.analysis.Member:
+                if (m.isDerivedFrom('Fem::FemResultObject')):  # this CFD module still using FEM object to render 
+                    FreeCAD.ActiveDocument.removeObject(m.Name)
+            self.results_present = False
     
     ## Resets mesh deformation, 
     #  @param self The python object self

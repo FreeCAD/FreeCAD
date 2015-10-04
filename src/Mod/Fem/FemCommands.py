@@ -20,10 +20,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import ccxFrdReader
+#import ccxFrdReader
 
 from CaeSolver import makeCaeSolver 
-from CaeAnalysis import     CaeAnalysis
+#from CaeAnalysis import     CaeAnalysis  #loaded in FreeCADGui.addModule()
 #could be dynamic load in function
 from JobControlTaskPanel import  JobControlTaskPanel
 from FemResultControlTaskPanel import  ResultControlTaskPanel
@@ -215,7 +215,7 @@ def run_solver(analysis_type):
         if ret_code == 0:
             solver.load_results()
         else:
-            print "CalculiX failed ccx finished with error {}".format(ret_code)
+            FreeCAD.Console.PrintMessage("CalculiX failed ccx finished with error {}".format(ret_code))
 
     #solver.setup_solver()
     solver.reset_all()
@@ -239,5 +239,3 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_Frequency_Analysis', _CommandFrequencyAnalysis())
     FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
     FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
-    
-    #FreeCAD.Console.PrintMessage("femCommands.py is called") #debug print

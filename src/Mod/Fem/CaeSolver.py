@@ -60,6 +60,7 @@ def makeCaeSolver(solverName):
 
 class CaeSolver(QtCore.QRunnable, QtCore.QObject):
     """base for CFD and FEM solver, it must have a run() method as a Runnable derived
+    It also has the QProcess as member to run the external solver
     """
     started = QtCore.Signal()  
     finished = QtCore.Signal(int)  #why declare here?
@@ -75,6 +76,7 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
         self.base_name = "" #
         self.results_present = False
         
+        #self.process_object=QtCore.QProcess()
         self.catogory="Fem"
         self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/"+self.catogory)
         #
@@ -108,13 +110,13 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
             
             
     ################# property set and get ################    
-    def set_base_name(self, base_name=None):
+    def set_case_file_name(self, case_file_name=None):
         """this is case name for solver to identify setup, could be folder name
         """
-        if base_name is None:
-            self.base_name = ""
+        if case_file_name is None:
+            self.case_file_name = ""
         else:
-            self.base_name = base_name
+            self.case_file_name = case_file_name
 
     def setup_working_dir(self, working_dir=None):
         if working_dir is None:
@@ -136,7 +138,8 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
             QtCore.QDir.setCurrent(f.path())
             
             self.set_solver_env(True)
-            
+            #is that possible to replace Popen with QProcess()
+            FreeCAD.Console.PrintMessage(self.solver_command_string)
             p = subprocess.Popen(self.solver_command_string,
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                  shell=False, env=self._env)
@@ -151,6 +154,8 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
             return -1
  
     def run(self):
+        """ QRunnable, should work without GUI
+        """
         ret_code = 0
         message = self.check_prerequisites()
         if not message:

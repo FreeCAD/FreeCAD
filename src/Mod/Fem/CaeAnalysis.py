@@ -44,13 +44,12 @@ class  CaeAnalysis:
         self.Type = "FemAnalysis"  #<FemToCae>this is related with C++ code? if not change this type! 
         obj.Proxy = self #link between App::DocumentObject to  this object
         obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
-        #default sover name and category, late show a dialog/TaskView to show, set it
+        #default solver name and category, late show a dialog/TaskView to show, set it
         self.category="FEM"
         self.solverName="Calculix"
         obj.addProperty("App::PropertyString", "category", "Base", "desc")
         obj.addProperty("App::PropertyString", "solverName", "Base", "desc of this property")
         #
-        #self.solver=makeCaeSolver(self)  # Solver property needs to be added to obj FemAnalysis C++ object 
     """
     def setSolver(self, category, solverName):
         #should check available and show error!
