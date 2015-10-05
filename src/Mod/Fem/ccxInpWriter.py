@@ -169,7 +169,7 @@ class inp_writer:
                 f.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
                 f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
             if frc_obj.Force == 0:
-                print '  Warning --> Force = 0'
+                print('  Warning --> Force = 0')
 
     def write_materials(self, f):
         f.write('\n***********************************************************\n')
@@ -378,7 +378,7 @@ class inp_writer:
 
                     # node_sumarea_table
                     for n, A in node_area_table:
-                        # print n, ' --> ', A
+                        # print(n, ' --> ', A)
                         if n in node_sumarea_table:
                             node_sumarea_table[n] = node_sumarea_table[n] + A
                         else:
@@ -681,7 +681,7 @@ class inp_writer:
                     elemids = []
                     r = ref[0].Shape.getElement(ref[1])
                     if r.ShapeType == 'Face':
-                        # print ('  ShellThicknessReferenceFace : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
+                        # print('  ShellThicknessReferenceFace : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
                         nodeids = self.mesh_object.FemMesh.getNodesByFace(r)
                         elemids = getFemElementsByNodes(self.fem_element_table, nodeids)
                     else:
