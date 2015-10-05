@@ -60,7 +60,10 @@ class _CommandFemShellThickness:
         FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
 
     def IsActive(self):
-        True if FemGui.getActiveAnalysis() else False
+        if FemGui.getActiveAnalysis():
+            return True
+        else:
+            return False
 
 
 class _FemShellThickness:
