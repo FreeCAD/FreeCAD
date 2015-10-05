@@ -339,7 +339,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
   // --------------------
 
   double edgeLength = 0;
-  if (_hypLengthFromEdges || !_hypLengthFromEdges && !_hypMaxElementArea)
+  if (_hypLengthFromEdges || (!_hypLengthFromEdges && !_hypMaxElementArea))
   {
     int nbSegments = 0;
     for ( int iW = 0; iW < nbWires; ++iW )
@@ -368,7 +368,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
   // Generate surface mesh
   // -------------------------
 
-  char *optstr;
+  char *optstr = 0;
   int startWith = MESHCONST_MESHSURFACE;
   int endWith   = MESHCONST_OPTSURFACE;
   int err = 1;
