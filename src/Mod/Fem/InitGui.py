@@ -1,3 +1,10 @@
+# Fem gui init module
+# (c) 2009 Juergen Riegel
+#
+# Gathering all the information to start FreeCAD
+# This is the second one of three init scripts, the third one
+# runs when the gui is up
+
 #***************************************************************************
 #*   (c) Juergen Riegel (juergen.riegel@web.de) 2009                       *
 #*                                                                         *
@@ -22,11 +29,6 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-# Fem gui init module
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one  runs when the gui is up
-
-
 class FemWorkbench ( Workbench ):
     """Cae workbench object"""
     def __init__(self):
@@ -38,12 +40,13 @@ class FemWorkbench ( Workbench ):
         import Fem
         import FemGui
         
+        #setup ccx path code has been moved into makeCaeSolver() and specific solver init section 
+        
         import FemShellThickness
         import FemBeamSection
         import MechanicalMaterial
         #import CaeAnalysis  #FreeCADGui.addModule() 
         #import FemCommands  #MechanicalAnalysis  is loaded from C++, but it is not a good name
-        #setup ccx path code has been moved into makeCaeSolver() and specific solver init section 
         
     def GetClassName(self):
         return "FemGui::Workbench"  # <FemToCae> change name later if C++ code got renamed
