@@ -1,4 +1,3 @@
-
 """ This is an adapter, before FemTools is fully moved to CaeSolver
 InspectionGui reference to this file
 """

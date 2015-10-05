@@ -37,7 +37,15 @@ import time
 
 from PreImport import *
 
-
+############CaeAnalysis class should move out as another py file#################
+def makeCaeAnalysis(name):  #<FemToCae> name changed!
+    '''makeCaeAnalysis(name): makes a Fem Analysis object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
+    CaeAnalysis(obj)  #
+    if FreeCAD.GuiUp:
+        ViewProviderCaeAnalysis()
+    #FreeCAD.ActiveDocument.recompute()
+    return obj
 
 class _CommandNewMechanicalAnalysis:
     "the Fem Analysis command definition"
@@ -195,25 +203,6 @@ class _CommandMechanicalShowResult:
 
 ###########################################################
 
-def results_present():
-    results = False
-    analysis_members = FemGui.getActiveAnalysis().Member
-    for o in analysis_members:
-        if o.isDerivedFrom('Fem::FemResultObject'):
-            results = True
-    return results
-
-
-def get_results_object(sel):
-    if (len(sel) == 1):
-        if sel[0].isDerivedFrom("Fem::FemResultObject"):
-            return sel[0]
-
-    for i in FemGui.getActiveAnalysis().Member:
-        if(i.isDerivedFrom("Fem::FemResultObject")):
-            return i
-    return None
-
 def run_solver(analysis_type):
     def load_results(ret_code):
         if ret_code == 0:
@@ -235,18 +224,8 @@ def run_solver(analysis_type):
     QtCore.QThreadPool.globalInstance().start(solver) #start exteranal program in a new Thread
     
 
-    
-    
-################## appending other files #########################
 
-def makeCaeAnalysis(name):  #<FemToCae> name changed!
-    '''makeCaeAnalysis(name): makes a Fem Analysis object'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
-    CaeAnalysis(obj)  #
-    if FreeCAD.GuiUp:
-        ViewProviderCaeAnalysis()
-    #FreeCAD.ActiveDocument.recompute()
-    return obj
+################## appending other files #########################
 
 class  CaeAnalysis:
     """The CaeAnalysis container object, serve CFD ,FEM, etc
@@ -362,11 +341,10 @@ class _JobControlTaskPanel:
         #rename: self.form.pushButton_generate -> self.form.pushButton_run ?
         QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runSolver)
 
-        
         QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("started()"), self.solverStarted)
-        QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("finished(int)"), self.solverFinished)
         QtCore.QObject.connect(self.process_object , QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.solverStateChanged)
-        QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("hasError(QProcess::ProcessError)"), self.solverError)
+        QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("error(QProcess::ProcessError)"), self.solverError)
+        QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("finished(int)"), self.solverFinished)
         
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
 
@@ -488,7 +466,6 @@ class _JobControlTaskPanel:
 
         # run Solver in QProcess
         self.process_object.start(self.solver_object.solver_binary, [' -i ', fi.baseName()])
-        QApplication.restoreOverrideCursor()
         #in the future, should call, self.solver_object.run()
         #self.solver_object.run() # currently, using Popen for the moment
 
@@ -613,7 +590,8 @@ class _ResultControlTaskPanel:
     def vm_stress_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "Sabs"
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.StressValues)
+        if self.suitable_results:
+            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.StressValues)
         (minm, avg, maxm) = self.get_result_stats("Sabs")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -621,12 +599,14 @@ class _ResultControlTaskPanel:
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if disp_type == "Uabs":
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.DisplacementLengths)
+            if self.suitable_results:
+                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.DisplacementLengths)
         else:
             match = {"U1": 0, "U2": 1, "U3": 2}
             d = zip(*self.result_object.DisplacementVectors)
             displacements = list(d[match[disp_type]])
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, displacements)
+            if self.suitable_results:
+                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, displacements)
         (minm, avg, maxm) = self.get_result_stats(disp_type)
         self.set_result_stats("mm", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -654,20 +634,10 @@ class _ResultControlTaskPanel:
             if FreeCAD.FEM_dialog["result_object"] != self.result_object:
                 self.update_displacement()
         FreeCAD.FEM_dialog["result_object"] = self.result_object
-        self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
+        if self.suitable_results:
+            self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
         self.update_displacement()
         QtGui.qApp.restoreOverrideCursor()
-        
-########################################################
-#should moved to InitGui.py, load module there
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
-    FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
-    FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
-    FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
-    FreeCADGui.addCommand('Fem_Frequency_Analysis', _CommandFrequencyAnalysis())
-    FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
-    FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
 
     def hsb_disp_factor_changed(self, value):
         self.form.sb_displacement_factor.setValue(value)
@@ -690,8 +660,6 @@ if FreeCAD.GuiUp:
                 self.MeshObject = i
                 break
 
-<<<<<<< HEAD
-=======
         if self.MeshObject.FemMesh.NodeCount == len(self.result_object.ElementNumbers):
             self.suitable_results = True
         else:
@@ -701,7 +669,6 @@ if FreeCAD.GuiUp:
             else:
                 FreeCAD.Console.PrintError('Result node numbers are not equal to FEM Mesh NodeCount!\n')
 
->>>>>>> 24a3b2715044eac2960992fee3140bf2e92a98be
     def accept(self):
         FreeCADGui.Control.closeDialog()
 
@@ -709,3 +676,35 @@ if FreeCAD.GuiUp:
         FreeCADGui.Control.closeDialog()
 
 # Helpers
+
+def results_present():
+    results = False
+    analysis_members = FemGui.getActiveAnalysis().Member
+    for o in analysis_members:
+        if o.isDerivedFrom('Fem::FemResultObject'):
+            results = True
+    return results
+
+
+def get_results_object(sel):
+    if (len(sel) == 1):
+        if sel[0].isDerivedFrom("Fem::FemResultObject"):
+            return sel[0]
+
+    for i in FemGui.getActiveAnalysis().Member:
+        if(i.isDerivedFrom("Fem::FemResultObject")):
+            return i
+    return None
+
+        
+########################################################
+#should moved to FemCommands.py, load commands ui there
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
+    FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
+    FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
+    FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
+    FreeCADGui.addCommand('Fem_Frequency_Analysis', _CommandFrequencyAnalysis())
+    FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
+    FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
+

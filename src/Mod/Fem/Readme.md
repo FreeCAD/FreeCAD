@@ -73,56 +73,8 @@ This module can not load saved file and reload analysis, but macro is fine to qu
 
 Material selection is lost after replay the following commands
 
-```
-FreeCAD.newDocument("FemTest")
-FreeCAD.setActiveDocument("FemTest")
-active_doc = FreeCAD.ActiveDocument
-box = active_doc.addObject("Part::Box", "Box")
-active_doc.recompute()
-#
-Gui.activateWorkbench("FemWorkbench")
-Gui.activateWorkbench("FemWorkbench")
-import FemGui
-import CaeAnalysis
-App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', 'Box_Mesh')
-App.activeDocument().ActiveObject.Shape = App.activeDocument().Box
-Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)
-Gui.activeDocument().resetEdit()
-#
-FemGui.setActiveAnalysis(CaeAnalysis.makeCaeAnalysis('MechanicalAnalysis'))
-App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument().Box_Mesh]
-import MechanicalMaterial
-MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
-App.activeDocument().MechanicalAnalysis.Member = App.activeDocument().MechanicalAnalysis.Member + [App.ActiveDocument.ActiveObject]
-Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)
-#set material index
-App.ActiveDocument.recompute()
-Gui.activeDocument().resetEdit()
-#
-Gui.getDocument("FemTest").getObject("Box_Mesh").Visibility=False
-Gui.getDocument("FemTest").getObject("Box").Visibility=True
-#
-App.activeDocument().addObject("Fem::ConstraintFixed","FemConstraintFixed")
-App.activeDocument().MechanicalAnalysis.Member = App.activeDocument().MechanicalAnalysis.Member + [App.activeDocument().FemConstraintFixed]
-App.ActiveDocument.recompute()
-Gui.activeDocument().setEdit('FemConstraintFixed')
-App.ActiveDocument.FemConstraintFixed.References = [(App.ActiveDocument.Box,"Face1")]
-App.ActiveDocument.recompute()
-Gui.activeDocument().resetEdit()
-#
-App.activeDocument().addObject("Fem::ConstraintForce","FemConstraintForce")
-App.activeDocument().FemConstraintForce.Force = 0.0
-App.activeDocument().MechanicalAnalysis.Member = App.activeDocument().MechanicalAnalysis.Member + [App.activeDocument().FemConstraintForce]
-App.ActiveDocument.recompute()
-Gui.activeDocument().setEdit('FemConstraintForce')
-App.ActiveDocument.FemConstraintForce.Force = 500.0
-App.ActiveDocument.FemConstraintForce.Direction = None
-App.ActiveDocument.FemConstraintForce.Reversed = False
-App.ActiveDocument.FemConstraintForce.References = [(App.ActiveDocument.Box,"Face5")]
-App.ActiveDocument.recompute()
-Gui.activeDocument().resetEdit()
-#
-```
+Test commands are located in FemExample.py
+
 
 
 ### bug found

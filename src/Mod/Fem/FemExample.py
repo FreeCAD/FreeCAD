@@ -46,6 +46,7 @@ App.ActiveDocument.FemConstraintForce.Reversed = False
 App.ActiveDocument.FemConstraintForce.References = [(App.ActiveDocument.Box,"Face4")]
 App.ActiveDocument.recompute()
 Gui.activeDocument().resetEdit()
+
 #
 #need to select material, and refine mesh before testing
 #

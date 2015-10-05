@@ -27,7 +27,8 @@
 import Fem
 #import FemGui
 import FreeCAD
-import CaeAnalysis  #NameChanged
+#import CaeAnalysis  #NameChanged
+import MechanicalAnalysis 
 import csv
 import tempfile
 import unittest
