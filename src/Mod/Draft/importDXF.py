@@ -1801,12 +1801,17 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                                         # 1 wire + lone edges -> block
                                         block = getBlock(sh,ob,lwPoly)
                                         dxf.blocks.append(block)
-                                        dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
+                                        dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
+                                                                     color=getACI(ob),
+                                                                     layer=getGroup(ob)))
                                 else:
                                     # all other cases: block
                                     block = getBlock(sh,ob,lwPoly)
                                     dxf.blocks.append(block)
-                                    dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
+                                    dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
+                                                                      color=getACI(ob),
+                                                                      layer=getGroup(ob)))
+
                             else:
                                 writeShape(sh,ob,dxf,nospline,lwPoly)
 

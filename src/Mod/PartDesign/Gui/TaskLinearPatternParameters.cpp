@@ -28,8 +28,6 @@
 # include <QTimer>
 #endif
 
-#include <boost/math/special_functions/round.hpp>
-
 #include "ui_TaskLinearPatternParameters.h"
 #include "TaskLinearPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -109,8 +107,8 @@ void TaskLinearPatternParameters::setupUI()
             this, SLOT(onCheckReverse(bool)));
     connect(ui->spinLength, SIGNAL(valueChanged(double)),
             this, SLOT(onLength(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(double)),
-            this, SLOT(onOccurrences(double)));
+    connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
+            this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
@@ -130,6 +128,7 @@ void TaskLinearPatternParameters::setupUI()
     // ---------------------
 
     ui->spinLength->bind(pcLinearPattern->Length);
+    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcLinearPattern->Occurrences);
 
     ui->comboDirection->setEnabled(true);
@@ -276,11 +275,11 @@ void TaskLinearPatternParameters::onLength(const double l) {
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onOccurrences(const double n) {
+void TaskLinearPatternParameters::onOccurrences(const uint n) {
     if (blockUpdate)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Occurrences.setValue(boost::math::round(n));
+    pcLinearPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -382,7 +381,7 @@ const double TaskLinearPatternParameters::getLength(void) const
 
 const unsigned TaskLinearPatternParameters::getOccurrences(void) const
 {
-    return boost::math::round(ui->spinOccurrences->value().getValue());
+    return ui->spinOccurrences->value();
 }
 
 

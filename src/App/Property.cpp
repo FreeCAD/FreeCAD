@@ -83,12 +83,12 @@ void Property::setContainer(PropertyContainer *Father)
     father = Father;
 }
 
-void Property::setValue(const ObjectIdentifier &path, const boost::any &value)
+void Property::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     path.setValue(value);
 }
 
-const boost::any Property::getValue(const ObjectIdentifier &path) const
+const boost::any Property::getPathValue(const ObjectIdentifier &path) const
 {
     return path.getValue();
 }

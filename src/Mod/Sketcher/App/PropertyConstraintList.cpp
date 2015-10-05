@@ -408,7 +408,7 @@ int PropertyConstraintList::getIndexFromConstraintName(const string &name)
     return std::atoi(name.substr(10,4000).c_str()) - 1;
 }
 
-void PropertyConstraintList::setValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
     const ObjectIdentifier::Component & c0 = path.getPropertyComponent(0);
     double dvalue;
@@ -421,7 +421,7 @@ void PropertyConstraintList::setValue(const ObjectIdentifier &path, const boost:
         throw std::bad_cast();
 
     if (c0.isArray() && path.numSubComponents() == 1) {
-        if (c0.getIndex() < 0 || c0.getIndex() >= _lValueList.size())
+        if (c0.getIndex() >= _lValueList.size())
             throw Base::Exception("Array out of bounds");
         aboutToSetValue();
         _lValueList[c0.getIndex()]->setValue(dvalue);
@@ -448,7 +448,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
     const ObjectIdentifier::Component & c0 = path.getPropertyComponent(0);
 
     if (c0.isArray() && path.numSubComponents() == 1) {
-        if (c0.getIndex() < 0 || c0.getIndex() >= _lValueList.size())
+        if (c0.getIndex() >= _lValueList.size())
             throw Base::Exception("Array out of bounds");
 
         return _lValueList[c0.getIndex()];
@@ -464,7 +464,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
     throw Base::Exception("Invalid constraint");
 }
 
-const boost::any PropertyConstraintList::getValue(const ObjectIdentifier &path) const
+const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) const
 {
     return boost::any(getConstraint(path)->getValue());
 }
@@ -474,7 +474,7 @@ const ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentif
     const ObjectIdentifier::Component & c0 = p.getPropertyComponent(0);
 
     if (c0.isArray() && p.numSubComponents() == 1) {
-        if (c0.getIndex() >= 0 && c0.getIndex() < _lValueList.size() && _lValueList[c0.getIndex()]->Name.size() > 0)
+        if (c0.getIndex() < _lValueList.size() && _lValueList[c0.getIndex()]->Name.size() > 0)
             return ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
                                         << ObjectIdentifier::Component::SimpleComponent(_lValueList[c0.getIndex()]->Name);
         return p;

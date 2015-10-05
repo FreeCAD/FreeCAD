@@ -22,8 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QPixmapCache>
 #endif
 #include "ExpressionBinding.h"
+#include "BitmapFactory.h"
 #include "Command.h"
 #include <App/Expression.h>
 #include <App/DocumentObject.h>
@@ -35,6 +37,8 @@ using namespace Gui;
 using namespace App;
 
 ExpressionBinding::ExpressionBinding()
+    : iconLabel(0)
+    , iconHeight(-1)
 {
 }
 
@@ -102,6 +106,22 @@ std::string ExpressionBinding::getExpressionString() const
 std::string ExpressionBinding::getEscapedExpressionString() const
 {
     return Base::Tools::escapedUnicodeFromUtf8(getExpressionString().c_str());
+}
+
+QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
+{
+    QString key = QString::fromAscii("%1_%2x%3")
+        .arg(QString::fromAscii(name))
+        .arg(size.width())
+        .arg(size.height());
+    QPixmap icon;
+    if (QPixmapCache::find(key, icon))
+        return icon;
+
+    icon = BitmapFactory().pixmapFromSvg(name, size);
+    if (!icon.isNull())
+        QPixmapCache::insert(key, icon);
+    return icon;
 }
 
 bool ExpressionBinding::apply(const std::string & propName)

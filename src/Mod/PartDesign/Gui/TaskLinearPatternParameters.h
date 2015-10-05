@@ -64,7 +64,7 @@ private Q_SLOTS:
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);
     void onLength(const double l);
-    void onOccurrences(const double n);
+    void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
 
 protected:

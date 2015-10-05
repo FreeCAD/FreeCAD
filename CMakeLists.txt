@@ -327,13 +327,17 @@ if(BUILD_JTREADER)
   set(BUILD_MESH ON)
 endif(BUILD_JTREADER)
 
+#a runtime dependency
+if(BUILD_START)
+  set(BUILD_WEB ON)
+endif(BUILD_START)
+
 #leaving test module for someone else.
 #image has none. as far as I can tell.
 #mesh has none. as far as I can tell.
 #part has none. as far as I can tell.
 #material has none. as far as I can tell.
 #web has none. as far as I can tell.
-#start has none. as far as I can tell.
 #assembly has none. as far as I can tell.
 #plot has none. as far as I can tell.
 #points has none. as far as I can tell

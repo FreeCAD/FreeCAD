@@ -60,7 +60,10 @@ class _CommandFemShellThickness:
         FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
 
     def IsActive(self):
-        True if FemGui.getActiveAnalysis() else False
+        if FemGui.getActiveAnalysis():
+            return True
+        else:
+            return False
 
 
 class _FemShellThickness:
@@ -217,7 +220,7 @@ class ReferenceShapeSelectionObserver:
     def addSelection(self, docName, objName, sub, pos):
         selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
         self.added_obj = (selected_object, sub)
-        if lsub:         # on doubleClick the solid is selected and sub will be empty
+        if sub:         # on doubleClick the solid is selected and sub will be empty
             self.parseSelectionFunction(self.added_obj)
 
 

@@ -93,7 +93,7 @@ public:
 
     void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
 
-    const boost::any getValue(const App::ObjectIdentifier & path) const;
+    const boost::any getPathValue(const App::ObjectIdentifier & path) const;
 
     DocumentObjectExecReturn * execute();
 
@@ -111,8 +111,6 @@ public:
     void renameExpressions(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths);
 
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
-
-    std::set<App::ObjectIdentifier> getPaths() const;
 
     const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const;
 

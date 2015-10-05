@@ -27,8 +27,6 @@
 # include <QMessageBox>
 #endif
 
-#include <boost/math/special_functions/round.hpp>
-
 #include "ui_TaskScaledParameters.h"
 #include "TaskScaledParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -94,8 +92,8 @@ void TaskScaledParameters::setupUI()
 {
     connect(ui->spinFactor, SIGNAL(valueChanged(double)),
             this, SLOT(onFactor(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(double)),
-            this, SLOT(onOccurrences(double)));
+    connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
+            this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
@@ -115,6 +113,7 @@ void TaskScaledParameters::setupUI()
     // ---------------------
 
     ui->spinFactor->bind(pcScaled->Factor);
+    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcScaled->Occurrences);
     ui->spinFactor->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
@@ -157,12 +156,12 @@ void TaskScaledParameters::onFactor(const double f)
     recomputeFeature();
 }
 
-void TaskScaledParameters::onOccurrences(const double n)
+void TaskScaledParameters::onOccurrences(const uint n)
 {
     if (blockUpdate)
         return;
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
-    pcScaled->Occurrences.setValue(boost::math::round(n));
+    pcScaled->Occurrences.setValue(n);
     recomputeFeature();
 }
 
@@ -185,7 +184,7 @@ const double TaskScaledParameters::getFactor(void) const
 
 const unsigned TaskScaledParameters::getOccurrences(void) const
 {
-    return boost::math::round(ui->spinOccurrences->value().getValue());
+    return ui->spinOccurrences->value();
 }
 
 TaskScaledParameters::~TaskScaledParameters()
@@ -208,7 +207,7 @@ void TaskScaledParameters::apply()
     std::string name = TransformedView->getObject()->getNameInDocument();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(), getFactor());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(), getOccurrences());
+    ui->spinOccurrences->apply();
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     if (!TransformedView->getObject()->isValid())
         throw Base::Exception(TransformedView->getObject()->getStatusString());

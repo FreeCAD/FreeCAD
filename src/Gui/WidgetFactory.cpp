@@ -1053,7 +1053,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     }
 
     if (objS) {
-        SignalConnect* sc = new SignalConnect(this, cb, objS);
+        SignalConnect* sc = new SignalConnect(this, cb);
         mySingals.push_back(sc);
         return QObject::connect(objS, sigStr.toAscii(), sc, SLOT ( onExecute() )  );
     }
@@ -1267,8 +1267,8 @@ PyObject *PyResource::setValue(PyObject *args)
 
 // ----------------------------------------------------
 
-SignalConnect::SignalConnect( Base::PyObjectBase* res, PyObject* cb, QObject* sender)
-  : myResource(res), myCallback(cb), mySender(sender)
+SignalConnect::SignalConnect(Base::PyObjectBase* res, PyObject* cb)
+  : myResource(res), myCallback(cb)
 {
 }
 
