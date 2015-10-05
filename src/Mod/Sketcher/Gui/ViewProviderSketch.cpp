@@ -4374,10 +4374,10 @@ void ViewProviderSketch::UpdateSolverInformation()
                     signalSetUp(tr("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
             }
             
-            signalSolved(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime()));
+            signalSolved(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
         }
         else {
-            signalSolved(tr("Unsolved (%1 sec)").arg(getSketchObject()->getLastSolveTime()));
+            signalSolved(QString::fromLatin1("<font color='red'>%1</font>").arg(tr("Unsolved (%1 sec)").arg(getSketchObject()->getLastSolveTime())));
         }
     }
 }

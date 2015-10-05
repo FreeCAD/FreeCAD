@@ -141,6 +141,9 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     lastConflicting=solvedSketch.getConflicting();
     lastRedundant=solvedSketch.getRedundant();
     
+    lastSolveTime=0.0;
+    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
+    
     solverNeedsUpdate=false;
     
     if (lastDoF < 0) { // over-constrained sketch
@@ -211,8 +214,14 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         err = -3;
     else {
         lastSolverStatus=solvedSketch.solve();
-        if (lastSolverStatus != 0) // solving
+        if (lastSolverStatus != 0){ // solving
             err = -2;
+            // if solver failed, geometry was never updated, but invalid constraints were likely added before
+            // solving (see solve in addConstraint), so solver information is definitely invalid.
+            this->Constraints.touch();
+            
+        }
+            
     }
     
     lastHasRedundancies = solvedSketch.hasRedundancies();
