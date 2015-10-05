@@ -142,7 +142,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.mesh.ViewObject.applyDisplacement(displacement_factor)
 
     def update_objects(self):
-        # [{'Object':material}, {}, ...]
+        # [{'Object':materials}, {}, ...]
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
         # [{'Object':force_constraints, 'NodeLoad':value}, {}, ...
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
@@ -152,7 +152,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
-        self.material = []
+        self.materials = []
         ## @var fixed_constraints
         #  set of fixed constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintFixed" type
@@ -174,7 +174,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_dict = {}
                 material_dict['Object'] = m
-                self.material.append(material_dict)
+                self.materials.append(material_dict)
             elif m.isDerivedFrom("Fem::ConstraintFixed"):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
@@ -209,8 +209,14 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         if not self.mesh:
             message += "No mesh object in the Analysis\n"
-        if not self.material:
+        if not self.materials:
             message += "No material object in the Analysis\n"
+        has_no_references = False
+        for m in self.materials:
+            if len(m['Object'].References) == 0:
+                if has_no_references is True:
+                    message += "More than one Material has empty References list (Only one empty References list is allowed!).\n"
+                has_no_references = True
         if not self.fixed_constraints:
             message += "No fixed-constraint nodes defined in the Analysis\n"
         if self.analysis_type == "static":
@@ -237,7 +243,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
+            inp_writer = iw.inp_writer(self.analysis, self.mesh, self.materials,
                                        self.fixed_constraints,
                                        self.force_constraints, self.pressure_constraints,
                                        self.beam_sections, self.shell_thicknesses,
