@@ -57,33 +57,22 @@ class _CommandMechanicalMaterial(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        MatObj = None
-        for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("App::MaterialObject"):
-                    MatObj = i
-
-        if (not MatObj):
-            femDoc = FemGui.getActiveAnalysis().Document
-            if FreeCAD.ActiveDocument is not femDoc:
-                FreeCADGui.setActiveDocument(femDoc)
-            FreeCAD.ActiveDocument.openTransaction("Create Material")
-            FreeCADGui.addModule("MechanicalMaterial")
-            FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
-            FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
-            FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
-            # FreeCADGui.doCommand("Fem.makeMaterial()")
-        else:
-            if FreeCAD.ActiveDocument is not MatObj.Document:
-                FreeCADGui.setActiveDocument(MatObj.Document)
-            FreeCADGui.doCommand("Gui.activeDocument().setEdit('" + MatObj.Name + "',0)")
+        femDoc = FemGui.getActiveAnalysis().Document
+        if FreeCAD.ActiveDocument is not femDoc:
+            FreeCADGui.setActiveDocument(femDoc)
+        FreeCAD.ActiveDocument.openTransaction("Create MechanicalMaterial")
+        FreeCADGui.addModule("MechanicalMaterial")
+        FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
+        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
 
 class _MechanicalMaterial:
     "The Material object"
     def __init__(self, obj):
-        self.Type = "MechanicalMaterial"
+        obj.addProperty("App::PropertyLinkSubList", "References", "Material", "List of material shapes")
         obj.Proxy = self
-        # obj.Material = StartMat
+        self.Type = "MechanicalMaterial"
 
     def execute(self, obj):
         return
