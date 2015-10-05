@@ -217,7 +217,7 @@ class ReferenceShapeSelectionObserver:
     def addSelection(self, docName, objName, sub, pos):
         selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
         self.added_obj = (selected_object, sub)
-        if lsub:         # on doubleClick the solid is selected and sub will be empty
+        if sub:         # on doubleClick the solid is selected and sub will be empty
             self.parseSelectionFunction(self.added_obj)
 
 
