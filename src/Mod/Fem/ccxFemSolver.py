@@ -20,10 +20,10 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-      
-import os
 
-from Preimport import *
+from PreImport import *
+   
+import os.path
 from CaeSolver import CaeSolver
 
 class Solver(CaeSolver):
@@ -47,7 +47,7 @@ class Solver(CaeSolver):
         self.module="Fem" #python module name
         self.category="Fem" 
         self.name="CalculiX"
-        self.version=(6,3,0) #???
+        self.minVersion=(2,0,0) #
         self.known_analysis_types = ["static", "frequency"] #specific solver type
         
         self.parallel=False
@@ -56,7 +56,7 @@ class Solver(CaeSolver):
         self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/"+self.catogory) #set in tool->parameter editor
         
             
-        self.setup_solver() #base class method
+        super(self.__class__, self).setup_solver() #
         #solver specific setup following the general setup
         self.set_analysis_type()
         self.set_eigenmode_parameters()
@@ -102,6 +102,55 @@ class Solver(CaeSolver):
     def set_eigenmode_parameters(self, number=10, limit_low=0.0, limit_high=1000000.0):
         self.eigenmode_parameters = (number, limit_low, limit_high)
 
+
+    #####################################################
+    def write_case_file(self):
+        """ analysis should be an object contains {solver, mesh, material, constraint}
+        ccxInpWriter, API needs simplification
+        """
+        self.update_objects() # where self.mesh is set
+        message=self.check_prerequisites() #if not None showMessage
+        if message:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            return
+        
+        import ccxInpWriter as iw
+        import sys
+        self.case_file_name = "" 
+        try:
+            inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
+                                       self.fixed_constraints,
+                                       self.force_constraints, self.pressure_constraints,
+                                       self.beam_sections, self.shell_thicknesses,
+                                       self.analysis_type, self.eigenmode_parameters,
+                                       self.working_dir)
+            #FreeCAD.Console.PrintMessage("Debuginfo: built inp_writer, to call write")
+            self.case_file_name = inp_writer.write_calculix_input_file()
+            #FreeCAD.Console.PrintMessage("Debuginfo: write_calculix_input_file() return")
+            self.solver_command_string=self.solver_binary +' -i '+os.path.basename(self.case_file_name)
+        except:
+            FreeCAD.Console.PrintMessage("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
+            raise
+            
+    def start_ext_editor(self, ext_editor_path, filename):
+        if not hasattr(self, "ext_editor_process"):
+            self.ext_editor_process = QtCore.QProcess()
+        if self.ext_editor_process.state() != QtCore.QProcess.Running:
+            self.ext_editor_process.start(ext_editor_path, [filename])
+
+    def editSolverInputFile(self):
+        print 'editCalculixInputFile {}'.format(self.case_file_name)
+        if self.prefs.GetBool("UseInternalEditor", True):
+            FemGui.open(self.case_file_name)
+        else:
+            ext_editor_path = self.prefs.GetString("ExternalEditorPath", "")
+            if ext_editor_path:
+                self.start_ext_editor(ext_editor_path, self.case_file_name)
+            else:
+                print "External editor is not defined in FEM preferences. Falling back to internal editor"
+                FemGui.open(self.case_file_name) #got grammer highlighter for inp file
+                
+    #####################################################
     def setup_solver_binary_path(self, solver_name=None):
         """ if not specify, setup binary solver name from prefs a default one
         """
@@ -131,53 +180,6 @@ class Solver(CaeSolver):
     def unset_solver_env(self):
         if self.parallel:
             os.putenv('OMP_NUM_THREADS', self._ont_backup)
-
-    #####################################################
-    def write_case_file(self):
-        """ analysis should be an object contains {solver, mesh, material, constraint}
-        ccxInpWriter, API needs simplification
-        """
-        self.update_objects() # where self.mesh is set
-        message=self.check_prerequisites() #if not None showMessage
-        if message:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-            return
-        
-        import ccxInpWriter as iw
-        import sys
-        self.case_file_name = "" 
-        try:
-            inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
-                                       self.fixed_constraints,
-                                       self.force_constraints, self.pressure_constraints,
-                                       self.beam_sections, self.shell_thicknesses,
-                                       self.analysis_type, self.eigenmode_parameters,
-                                       self.working_dir)
-            FreeCAD.Console.PrintMessage("Debuginfo: built inp_writer, to call write")
-            self.case_file_name = inp_writer.write_calculix_input_file()
-            FreeCAD.Console.PrintMessage("Debuginfo: write_calculix_input_file() return")
-        except:
-            FreeCAD.Console.PrintMessage("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
-            raise
-            
-    def start_ext_editor(self, ext_editor_path, filename):
-        if not hasattr(self, "ext_editor_process"):
-            self.ext_editor_process = QtCore.QProcess()
-        if self.ext_editor_process.state() != QtCore.QProcess.Running:
-            self.ext_editor_process.start(ext_editor_path, [filename])
-
-    def editSolverInputFile(self):
-        print 'editCalculixInputFile {}'.format(self.case_file_name)
-        if self.prefs.GetBool("UseInternalEditor", True):
-            FemGui.open(self.case_file_name)
-        else:
-            ext_editor_path = self.prefs.GetString("ExternalEditorPath", "")
-            if ext_editor_path:
-                self.start_ext_editor(ext_editor_path, self.case_file_name)
-            else:
-                print "External editor is not defined in FEM preferences. Falling back to internal editor"
-                FemGui.open(self.case_file_name) #got grammer highlighter for inp file
-    #
 
     ##########################################################
     def load_results(self):

@@ -1,3 +1,4 @@
+import os
 #
 import FreeCAD
 from PySide import QtCore

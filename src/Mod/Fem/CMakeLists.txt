@@ -12,12 +12,16 @@ INSTALL(
         convert2TetGen.py
         ccxFrdReader.py
         ccxInpWriter.py
-        CaeAnalysis.py
+	PreImport.py
 	CaeSolver.py
-	FemCommands.py
-	FemResultControlTaskPanel.py
+	ccxCaeSolver.py
+	MechanicalAnalysis.py
+        #CaeAnalysis.py
+	#FemCommands.py
+	#FemResultControlTaskPanel.py
+	#JobControlTaskPanel
         TestFem.py
-        #FemExample.py
+        FemExample.py
         MechanicalMaterial.py
 	FemShellThickness.py
 	FemBeamSection.py
@@ -26,7 +30,7 @@ INSTALL(
         ShowDisplacement.ui
 	FemShellThickness.ui
 	FemBeamSection.ui
-	Preimport.py
+	
     DESTINATION
         Mod/Fem
 )

@@ -42,11 +42,12 @@ class FemWorkbench ( Workbench ):
         import Fem
         import FemGui
         
-        import CaeAnalysis
+        
         import FemShellThickness
         import FemBeamSection
         #import MechanicalMaterial
-        import FemCommands
+        #import CaeAnalysis  #FreeCADGui.addModule() 
+        #import FemCommands  #MechanicalAnalysis  is loaded from C++, but it is not a good name
         #setup ccx path code has been moved into makeCaeSolver() and specific solver init section 
         
     def GetClassName(self):

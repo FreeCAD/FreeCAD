@@ -137,6 +137,10 @@ Traceback (most recent call last):
     FreeCADGui.Control.showDialog(taskd)
 <type 'exceptions.RuntimeError'>: Active task dialog found
 
+>>> Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)
+Previously used material cannot be found in material directories. Using transient material.
+
+
 2. The code is tested until write_abaqus_file(), which does not return! 
 
 3. Ubuntu 14.04.2 bug

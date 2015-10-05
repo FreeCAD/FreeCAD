@@ -24,7 +24,7 @@
 
 import os
 
-from Preimport import *
+from PreImport import *
 
 #could be gen by python code by check subfolders
 registered_solvers={
@@ -73,7 +73,7 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
         
         self.name="BaseCaeSolver"
         self.minVersion=()
-        self.base_name = "" #
+        self.case_file_name = "" #
         self.results_present = False
         
         #self.process_object=QtCore.QProcess()
@@ -130,16 +130,16 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
         IPC could be improved if there is better IPC standard
         """
         import subprocess
-        if self.base_name != "":  #base case name, it is a dir for OpenFOAM
+        if self.case_file_name != "":  #base case name, it is a dir for OpenFOAM
             # change cwd because ccx may crash if directory has no write permission
             # there is also a limit of the length of file names so jump to the document directory
             cwd = QtCore.QDir.currentPath()
-            f = QtCore.QFileInfo(self.base_name)
+            f = QtCore.QFileInfo(self.case_file_name)
             QtCore.QDir.setCurrent(f.path())
             
-            self.set_solver_env(True)
+            self.set_solver_env(self.parallel)
             #is that possible to replace Popen with QProcess()
-            FreeCAD.Console.PrintMessage(self.solver_command_string)
+            FreeCAD.Console.PrintMessage("Debug info: start Popen: {} \n".format(self.solver_command_string))
             p = subprocess.Popen(self.solver_command_string,
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                  shell=False, env=self._env)
@@ -150,7 +150,7 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
             
             return p.returncode
         else:
-            #print to FreeCAD.Console.Message();  
+            FreeCAD.Console.PrintMessage("Error: solver's case file name does not exist!");  
             return -1
  
     def run(self):
@@ -161,8 +161,8 @@ class CaeSolver(QtCore.QRunnable, QtCore.QObject):
         if not message:
             self.write_case_file()
             from FreeCAD import Base
-            progress_bar = Base.ProgressIndicator()
-            progress_bar.start("Running Solver "+self.name, 0)
+            progress_bar = Base.ProgressIndicator() # Does this work in both cmd and gui mode?
+            progress_bar.start("Running Solver "+self.case_file_name, 0)
             
             self.started.emit()
             ret_code = self.start_solver() #
