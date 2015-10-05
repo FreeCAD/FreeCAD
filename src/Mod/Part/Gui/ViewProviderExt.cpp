@@ -731,10 +731,16 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
 void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
 {
     // Clear selection
-    Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::None);
-    action.apply(this->faceset);
-    action.apply(this->lineset);
-    action.apply(this->nodeset);
+    Gui::SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
+    saction.apply(this->faceset);
+    saction.apply(this->lineset);
+    saction.apply(this->nodeset);
+
+    // Clear highlighting
+    Gui::SoHighlightElementAction haction;
+    haction.apply(this->faceset);
+    haction.apply(this->lineset);
+    haction.apply(this->nodeset);
 
     TopoDS_Shape cShape(inputShape);
     if (cShape.IsNull()) {
