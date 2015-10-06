@@ -28,6 +28,7 @@ import Fem
 import FemTools
 import FreeCAD
 import MechanicalAnalysis
+import MechanicalMaterial
 import csv
 import tempfile
 import unittest
@@ -89,7 +90,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_material(self):
-        self.new_material_object = self.active_doc.addObject("App::MaterialObjectPython", 'MechanicalMaterial')
+        self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
         mat = self.new_material_object.Material
         mat['Name'] = "Steel"
         mat['YoungsModulus'] = "200000 MPa"
