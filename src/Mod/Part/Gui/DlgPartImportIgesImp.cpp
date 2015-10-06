@@ -42,8 +42,8 @@ using namespace PartGui;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-DlgPartImportIgesImp::DlgPartImportIgesImp( QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl )
+DlgPartImportIgesImp::DlgPartImportIgesImp(QWidget* parent, Qt::WFlags fl)
+    : QDialog(parent, fl)
 {
     this->setupUi(this);
 }
@@ -66,9 +66,11 @@ void DlgPartImportIgesImp::OnApply()
 
 void DlgPartImportIgesImp::onChooseFileName()
 {
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString::null, QString::null, tr("IGES (*.igs *.iges);;All Files (*.*)"));
-    if (! fn.isEmpty() )
-    {
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString::null, QString::null,
+        QString::fromLatin1("%1 (*.igs *.iges);;%2 (*.*)"))
+        .arg(tr("IGES"))
+        .arg(tr("All Files"));
+    if (!fn.isEmpty()) {
         FileName->setText(fn);
     }
 }

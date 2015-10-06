@@ -391,7 +391,8 @@ void EditorView::print(QPrinter* printer)
  */
 void EditorView::printPdf()
 {
-    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), tr("PDF file (*.pdf)"));
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);

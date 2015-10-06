@@ -85,17 +85,14 @@ void CmdRobotExportKukaCompact::activated(int iMsg)
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
-    filter << QObject::tr("KRL file(*.src)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export program"), QString(), filter.join(QLatin1String(";;")));
-    if (fn.isEmpty()) 
+    if (fn.isEmpty())
         return;
-
 
     doCommand(Doc,"from KukaExporter import ExportCompactSub");
     doCommand(Doc,"ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
-     
-      
 }
 
 bool CmdRobotExportKukaCompact::isActive(void)
@@ -150,17 +147,14 @@ void CmdRobotExportKukaFull::activated(int iMsg)
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
-    filter << QObject::tr("KRL file(*.src)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export program"), QString(), filter.join(QLatin1String(";;")));
-    if (fn.isEmpty()) 
+    if (fn.isEmpty())
         return;
- 
+
     doCommand(Doc,"from KukaExporter import ExportFullSub");
     doCommand(Doc,"ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
-     
-      
-      
 }
 
 bool CmdRobotExportKukaFull::isActive(void)

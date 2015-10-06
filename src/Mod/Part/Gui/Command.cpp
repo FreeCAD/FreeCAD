@@ -806,11 +806,13 @@ CmdPartImportCurveNet::CmdPartImportCurveNet()
 void CmdPartImportCurveNet::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)");
-    filter << QObject::tr("STEP (*.stp *.step)");
-    filter << QObject::tr("IGES (*.igs *.iges)");
-    filter << QObject::tr("BREP (*.brp *.brep)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.stp *.step *.igs *.iges *.brp *.brep)")
+                 .arg(QObject::tr("All CAD Files"));
+    filter << QString::fromLatin1("STEP (*.stp *.step)");
+    filter << QString::fromLatin1("IGES (*.igs *.iges)");
+    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QString::fromLatin1("%1 (*.*)")
+                 .arg(QObject::tr("All Files"));
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
