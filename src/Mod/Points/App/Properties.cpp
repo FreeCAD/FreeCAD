@@ -212,7 +212,7 @@ void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIn
         else if (index != *pos)
             remainValue.push_back( *it );
         else 
-            pos++;
+            ++pos;
     }
 
     setValues(remainValue);
@@ -415,7 +415,7 @@ void PropertyNormalList::removeIndices( const std::vector<unsigned long>& uIndic
         else if (index != *pos)
             remainValue.push_back( *it );
         else 
-            pos++;
+            ++pos;
     }
 
     setValues(remainValue);
@@ -541,7 +541,7 @@ void PropertyCurvatureList::removeIndices( const std::vector<unsigned long>& uIn
         else if (index != *pos)
             remainValue.push_back( *it );
         else 
-            pos++;
+            ++pos;
     }
 
     setValues(remainValue);

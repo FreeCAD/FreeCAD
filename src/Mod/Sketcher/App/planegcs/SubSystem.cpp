@@ -72,7 +72,7 @@ void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
         int i=0;
         MAP_pD_I pindex;
         for (VEC_pD::const_iterator itt=tmpplist.begin();
-             itt != tmpplist.end(); itt++) {
+             itt != tmpplist.end(); ++itt) {
             MAP_pD_pD::const_iterator itr = reductionmap.find(*itt);
             if (itr != reductionmap.end()) {
                 MAP_pD_I::const_iterator itp = pindex.find(itr->second);

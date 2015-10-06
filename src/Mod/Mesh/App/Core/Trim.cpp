@@ -83,7 +83,7 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
 
         Base::SequencerLauncher seq("Check facets for intersection...", aulAllElements.size());
 
-        for (it = aulAllElements.begin(); it != aulAllElements.end(); it++) {
+        for (it = aulAllElements.begin(); it != aulAllElements.end(); ++it) {
             MeshGeomFacet clFacet = myMesh.GetFacet(*it);
             if (HasIntersection(clFacet))
                 raulFacets.push_back(*it);
@@ -723,7 +723,7 @@ void MeshTrimming::TrimFacets(const std::vector<unsigned long>& raulFacets, std:
     int iSide;
 
     Base::SequencerLauncher seq("trimming facets...", raulFacets.size());
-    for (std::vector<unsigned long>::const_iterator it=raulFacets.begin(); it!=raulFacets.end(); it++) {
+    for (std::vector<unsigned long>::const_iterator it=raulFacets.begin(); it!=raulFacets.end(); ++it) {
         clIntsct.clear();
         if (IsPolygonPointInFacet(*it, clP) == false) {
             // facet must be trimmed

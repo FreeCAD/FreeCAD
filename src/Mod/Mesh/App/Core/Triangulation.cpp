@@ -406,7 +406,7 @@ bool QuasiDelaunayTriangulator::Triangulate()
     // For each internal edge get the adjacent facets. When doing an edge swap we must update
     // this structure.
     std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> > aEdge2Face;
-    for (std::vector<MeshFacet>::iterator pI = _facets.begin(); pI != _facets.end(); pI++) {
+    for (std::vector<MeshFacet>::iterator pI = _facets.begin(); pI != _facets.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             unsigned long ulPt0 = std::min<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
             unsigned long ulPt1 = std::max<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
@@ -567,7 +567,7 @@ bool DelaunayTriangulator::Triangulate()
 
     std::vector<Wm4::Vector2d> akVertex;
     akVertex.reserve(_points.size());
-    for (std::vector<Base::Vector3f>::iterator it = _points.begin(); it != _points.end(); it++) {
+    for (std::vector<Base::Vector3f>::iterator it = _points.begin(); it != _points.end(); ++it) {
         akVertex.push_back(Wm4::Vector2d(it->x, it->y));
     }
 

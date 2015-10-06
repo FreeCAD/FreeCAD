@@ -297,7 +297,7 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    BRepBuilderAPI_Transform BRepScale(xForm);
    bool bCopy = true;                                                           // no effect?
 
-   for(std::vector<TopoDS_Wire>::iterator iWire=ctx.Wires.begin();iWire != ctx.Wires.end();iWire++) {
+   for(std::vector<TopoDS_Wire>::iterator iWire=ctx.Wires.begin();iWire != ctx.Wires.end();++iWire) {
        BRepScale.Perform(*iWire,bCopy);
        if (!BRepScale.IsDone())  {
           ErrorMsg << "FT2FC OCC BRepScale failed \n";

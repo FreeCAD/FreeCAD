@@ -204,9 +204,9 @@ SbBool SoSFMeshObject::readValue(SoInput *in)
     for (std::vector<float>::iterator it = verts.begin();
         it != verts.end();) {
             Base::Vector3f p;
-            p.x = *it; it++;
-            p.y = *it; it++;
-            p.z = *it; it++;
+            p.x = *it; ++it;
+            p.y = *it; ++it;
+            p.z = *it; ++it;
             rPoints.push_back(p);
     }
 
@@ -220,9 +220,9 @@ SbBool SoSFMeshObject::readValue(SoInput *in)
     for (std::vector<int32_t>::iterator it = faces.begin();
         it != faces.end();) {
             MeshCore::MeshFacet f;
-            f._aulPoints[0] = *it; it++;
-            f._aulPoints[1] = *it; it++;
-            f._aulPoints[2] = *it; it++;
+            f._aulPoints[0] = *it; ++it;
+            f._aulPoints[1] = *it; ++it;
+            f._aulPoints[2] = *it; ++it;
             rFacets.push_back(f);
     }
 
