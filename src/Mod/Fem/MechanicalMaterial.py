@@ -59,12 +59,12 @@ class _CommandMechanicalMaterial:
                     MatObj = i
 
         if (not MatObj):
-            FreeCAD.ActiveDocument.openTransaction("Create Material")
+            FreeCAD.ActiveDocument.openTransaction("Create Material") #where Transaction is closed???
             FreeCADGui.addModule("MechanicalMaterial")
             FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
             FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
             FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
-            # FreeCADGui.doCommand("Fem.makeMaterial()")
+            #
         else:
             FreeCADGui.doCommand("Gui.activeDocument().setEdit('" + MatObj.Name + "',0)")
 
