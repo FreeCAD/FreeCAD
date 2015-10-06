@@ -20,32 +20,38 @@
 #*                                                                         *
 #***************************************************************************
 
+""" Refactoring warning: 
+This class is under refactoring, this file may be split into several
+MechanicalAnalysis  will be renamed to CaeAnalysis
+"""
+
+import ccxFrdReader
+
+import FreeCAD
+from FemTools import FemTools
+import os
+import time
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    import FemGui
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import Qt
+    from PySide.QtGui import QApplication
+
 __title__ = "Mechanical Analysis managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-#makeCaeSolver is equal to Femtools
-from CaeSolver import makeCaeSolver #could be loaded in FreeCADGui.addModule(), to suport macro
 
-#following code should equal to put all these modules into one file as "MechanicaAnalysis"
-#from CaeAnalysis import     CaeAnalysis  #loaded in FreeCADGui.addModule()
-#from FemResultControlTaskPanel import  ResultControlTaskPanel
-#from JobControlTaskPanel import  _JobControlTaskPanel
-
-import os
-import time
-
-from PreImport import *
-
-############CaeAnalysis class should move out as another py file#################
-def makeCaeAnalysis(name):  #<FemToCae> name changed!
-    '''makeCaeAnalysis(name): makes a Fem Analysis object'''
+def makeMechanicalAnalysis(name):
+    '''makeFemAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
-    CaeAnalysis(obj)  #
-    if FreeCAD.GuiUp:
-        ViewProviderCaeAnalysis()
+    _FemAnalysis(obj)
+    _ViewProviderFemAnalysis()
     #FreeCAD.ActiveDocument.recompute()
     return obj
+
 
 class _CommandNewMechanicalAnalysis:
     "the Fem Analysis command definition"
@@ -58,13 +64,10 @@ class _CommandNewMechanicalAnalysis:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
-        
-        #FreeCADGui.doCommand("FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)") 
-        #FreeCADGui.addModule("CaeAnalysis") #<FemToCae> rename done
-        #FreeCADGui.doCommand("FemGui.setActiveAnalysis(CaeAnalysis.makeCaeAnalysis('MechanicalAnalysis'))") #<FemToCae> rename done
-        FreeCADGui.addModule("MechanicalAnalysis") 
-        FreeCADGui.doCommand("FemGui.setActiveAnalysis(MechanicalAnalysis.makeCaeAnalysis('MechanicalAnalysis'))")
-        
+        FreeCADGui.addModule("MechanicalAnalysis")
+        #FreeCADGui.doCommand("FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)")
+        FreeCADGui.doCommand("MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')")
+        FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
@@ -94,7 +97,7 @@ class _CommandFemFromShape:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
         FreeCADGui.addModule("FemGui")
-        #FreeCADGui.addModule("CaeAnalysis")  #<FemToCae> Name changed
+        FreeCADGui.addModule("MechanicalAnalysis")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Part::Feature")):
@@ -111,7 +114,7 @@ class _CommandFemFromShape:
         return False
 
 
-class _CommandMechanicalJobControl:  #consider name change from   _CommandMechanicalJobControl to _CommandAnalysisJobControl
+class _CommandMechanicalJobControl:
     "the Fem JobControl command definition"
     def GetResources(self):
         return {'Pixmap': 'fem-new-analysis',
@@ -120,9 +123,7 @@ class _CommandMechanicalJobControl:  #consider name change from   _CommandMechan
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
 
     def Activated(self):
-        #FreeCADGui.addModule("JobControlTaskPanel")
-        #FreeCADGui.doCommand("from JobControlTaskPanel import  _JobControlTaskPanel")
-        taskd = _JobControlTaskPanel(FemGui.getActiveAnalysis())  #avoid same module name and class name?!
+        taskd = _JobControlTaskPanel(FemGui.getActiveAnalysis())
         #taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
@@ -139,7 +140,8 @@ class _CommandPurgeFemResults:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results from an analysis")}
 
     def Activated(self):
-        makeCaeSolver('Calculix').reset_all()  # <FemToCae>   refactoring work needed here, => getActiveAnalysis().solver
+        fea = FemTools()
+        fea.reset_all()
 
     def IsActive(self):
         return FreeCADGui.ActiveDocument is not None and results_present()
@@ -153,7 +155,22 @@ class _CommandQuickAnalysis:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
 
     def Activated(self):
-        run_solver('static')
+        def load_results(ret_code):
+            if ret_code == 0:
+                self.fea.load_results()
+                self.show_results_on_mesh()
+            else:
+                FreeCAD.Console.PrintError("CalculiX failed ccx finished with error {}\n".format(ret_code))
+
+        self.fea = FemTools()
+        self.fea.reset_all()
+        message = self.fea.check_prerequisites()
+        if message:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            return
+        self.fea.finished.connect(load_results)
+        FreeCAD.Console.PrintMessage("It is about to start the solver in new thread\n")
+        QtCore.QThreadPool.globalInstance().start(self.fea, 0) #parameter
 
     def show_results_on_mesh(self):
         #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
@@ -173,7 +190,21 @@ class _CommandFrequencyAnalysis:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Frequency_Analysis", "Write .inp file and run frequency analysis with CalculiX ccx")}
 
     def Activated(self):
-        run_solver('frequency')
+        def load_results(ret_code):
+            if ret_code == 0:
+                self.fea.load_results()
+            else:
+                print "CalculiX failed ccx finished with error {}".format(ret_code)
+
+        self.fea = FemTools()
+        self.fea.reset_all()
+        self.fea.set_analysis_type('frequency')
+        message = self.fea.check_prerequisites()
+        if message:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            return
+        self.fea.finished.connect(load_results)
+        QtCore.QThreadPool.globalInstance().start(self.fea)
 
     def IsActive(self):
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
@@ -193,7 +224,7 @@ class _CommandMechanicalShowResult:
         if not self.result_object:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
             return
-            
+
         taskd = _ResultControlTaskPanel()
         FreeCADGui.Control.showDialog(taskd)
 
@@ -201,59 +232,13 @@ class _CommandMechanicalShowResult:
         return FreeCADGui.ActiveDocument is not None and results_present()
 
 
-###########################################################
-
-def run_solver(analysis_type):
-    def load_results(ret_code):
-        if ret_code == 0:
-            solver.load_results()
-        else:
-            FreeCAD.Console.PrintMessage("CalculiX failed ccx finished with error {}".format(ret_code))
-
-    solver = makeCaeSolver('Calculix') #<FemToCae>  done
-    #solver.setup_solver()
-    solver.reset_all()
-    solver.set_analysis_type(analysis_type)
-    message = solver.check_prerequisites()
-    if message:
-        QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-        return
-
-    solver.write_case_file()
-    solver.finished.connect(load_results)
-    QtCore.QThreadPool.globalInstance().start(solver) #start exteranal program in a new Thread
-    
-
-
-################## appending other files #########################
-
-class  CaeAnalysis:
-    """The CaeAnalysis container object, serve CFD ,FEM, etc
-    to-do: Gui dialog is needed to select category and solver
-    """
+class _FemAnalysis:
+    "The FemAnalysis container object"
     def __init__(self, obj):
-        self.Type = "FemAnalysis"  #<FemToCae>this is related with C++ code! C++ code refactoring needed
-        obj.Proxy = self #link between App::DocumentObject to  this object
+        self.Type = "FemAnalysis"
+        obj.Proxy = self
         obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
-        #default solver name and category, late show a dialog/TaskView to show and set it
-        self.category="FEM"
-        self.solverName="Calculix"
-        obj.addProperty("App::PropertyString", "category", "Base", "desc")
-        obj.addProperty("App::PropertyString", "solverName", "Base", "desc of this property")
-        #
-    """
-    def setSolver(self, category, solverName):
-        #should check available and show error!
-        self.category=category
-        self.solverName=solverName
-        #
-        self.solver=makeCaeSolver(self)
-    """    
-    def getMesh(self):
-        for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemMeshObject"):
-                return i
-        
+
     def execute(self, obj):
         return
 
@@ -269,20 +254,15 @@ class  CaeAnalysis:
             self.Type = state
 
 
-class ViewProviderCaeAnalysis:
-    """A View Provider for the CaeAnalysis container object
-    doubleClicked() is 
-    """
+class _ViewProviderFemAnalysis:
+    "A View Provider for the FemAnalysis container object"
 
     def __init__(self):
         #vobj.addProperty("App::PropertyLength", "BubbleSize", "Base", str(translate("Fem", "The size of the axis bubbles")))
-        self.icon=":/icons/fem-analysis.svg"
+        pass
 
     def getIcon(self):
-        return self.icon
-        
-    def setIcon(self,icon):
-        self.icon=icon
+        return ":/icons/fem-analysis.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -297,12 +277,12 @@ class ViewProviderCaeAnalysis:
 
     def doubleClicked(self, vobj):
         if not FemGui.getActiveAnalysis() == self.Object:
-            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench': #<FemToCae> 
-                FreeCADGui.activateWorkbench("FemWorkbench")  #<FemToCae> 
+            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
+                FreeCADGui.activateWorkbench("FemWorkbench")
             FemGui.setActiveAnalysis(self.Object)
             return True
         else:
-            taskd = _JobControlTaskPanel(self.Object)   #can not been imported/constructed twice?
+            taskd = _JobControlTaskPanel(self.Object)
             FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -314,38 +294,42 @@ class ViewProviderCaeAnalysis:
 
 
 class _JobControlTaskPanel:
-    """
-    """
     def __init__(self, analysis_object):
-        """
-        """
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui") #<FemToCae> 
-        #self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-    
-        self.analysis_object = analysis_object 
-        import CaeSolver
-        self.solver_object = CaeSolver.makeCaeSolver('Calculix')
-        self.process_object=QtCore.QProcess() # Ideally, process_object is belonged to solver_object!
-        #Femgui.getActiveAnalysis().Proxy.solver  # can not get solver_object from, CaeAnalysis instance has no attribute  error!
-        
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
+        if ccx_binary:
+            self.CalculixBinary = ccx_binary
+            print "Using ccx binary path from FEM preferences: {}".format(ccx_binary)
+        else:
+            from platform import system
+            if system() == 'Linux':
+                self.CalculixBinary = 'ccx'
+            elif system() == 'Windows':
+                self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
+            else:
+                self.CalculixBinary = 'ccx'
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.working_dir = self.fem_prefs.GetString("WorkingDir", '/tmp')
+
+        self.analysis_object = analysis_object
+        self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
-        self.Timer.start(300)  #time out 
+        self.Timer.start(300)
 
         self.fem_console_message = ''
 
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
         QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
-        #editSolverInputFile() method has been moved into the concrete solver class
-        QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.solver_object.editSolverInputFile) # slot name changed
-        #rename: self.form.pushButton_generate -> self.form.pushButton_run ?
-        QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runSolver)
+        QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
+        QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
 
-        QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("started()"), self.solverStarted)
-        QtCore.QObject.connect(self.process_object , QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.solverStateChanged)
-        QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("error(QProcess::ProcessError)"), self.solverError)
-        QtCore.QObject.connect(self.process_object, QtCore.SIGNAL("finished(int)"), self.solverFinished)
-        
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("error(QProcess::ProcessError)"), self.calculixError)
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
+
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
 
         self.update()
@@ -356,10 +340,10 @@ class _JobControlTaskPanel:
         self.form.textEdit_Output.setText(self.fem_console_message)
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
-    def printSolverStdout(self):
-        out = self.process_object.readAllStandardOutput()
+    def printCalculiXstdout(self):
+        out = self.Calculix.readAllStandardOutput()
         if out.isEmpty():
-            self.femConsoleMessage("Solver stdout is empty", "#FF0000")
+            self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
         else:
             try:
                 out = unicode(out, 'utf-8', 'replace')
@@ -373,35 +357,63 @@ class _JobControlTaskPanel:
                 out = os.linesep.join([s for s in out.splitlines() if s])
                 self.femConsoleMessage(out.replace('\n', '<br>'))
             except UnicodeDecodeError:
-                self.femConsoleMessage("Error converting stdout from Solver", "#FF0000")
+                self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
 
-    def UpdateText(self): # name should begin with lower case word!
-        if(self.process_object.state() == QtCore.QProcess.ProcessState.Running):
+    def UpdateText(self):
+        if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
             self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
-    def solverError(self, error):
+    def calculixError(self, error):
         print "Error()", error
-        self.femConsoleMessage("Solver execute error: {}".format(error), "#FF0000")
+        self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
 
-    def solverStarted(self):
-        print "SolverStarted()"
-        print self.process_object.state()
-        self.form.pushButton_generate.setText("Break Solver")
+    def calculixStarted(self):
+        print "calculixStarted()"
+        print self.Calculix.state()
+        self.form.pushButton_generate.setText("Break Calculix")
 
-    def solverStateChanged(self, newState):
+    def calculixStateChanged(self, newState):
         if (newState == QtCore.QProcess.ProcessState.Starting):
-                self.femConsoleMessage("Starting Solver...")
+                self.femConsoleMessage("Starting CalculiX...")
         if (newState == QtCore.QProcess.ProcessState.Running):
-                self.femConsoleMessage("Solver is running...")
+                self.femConsoleMessage("CalculiX is running...")
         if (newState == QtCore.QProcess.ProcessState.NotRunning):
-                self.femConsoleMessage("Solver stopped.")
+                self.femConsoleMessage("CalculiX stopped.")
+
+    def calculixFinished(self, exitCode):
+        print "calculixFinished()", exitCode
+        print self.Calculix.state()
+
+        # Restore previous cwd
+        QtCore.QDir.setCurrent(self.cwd)
+
+        self.printCalculiXstdout()
+        self.Timer.stop()
+
+        self.femConsoleMessage("Calculix done!", "#00AA00")
+
+        self.form.pushButton_generate.setText("Re-run Calculix")
+        print "Loading results...."
+        self.femConsoleMessage("Loading result sets...")
+        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        fea = FemTools()
+        fea.reset_all()
+        frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
+        if os.path.isfile(frd_result_file):
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+            ccxFrdReader.importFrd(frd_result_file, FemGui.getActiveAnalysis())
+            QApplication.restoreOverrideCursor()
+            self.femConsoleMessage("Loading results done!", "#00AA00")
+        else:
+            self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
+        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
 
     def update(self):
         'fills the widgets'
-        self.form.le_working_dir.setText(self.solver_object.working_dir)
+        self.form.le_working_dir.setText(self.working_dir)
         return
 
     def accept(self):
@@ -411,86 +423,83 @@ class _JobControlTaskPanel:
         FreeCADGui.Control.closeDialog()
 
     def choose_working_dir(self):
-        self.solver_object.working_dir = QtGui.QFileDialog.getExistingDirectory(None,
-                                                                  'Choose Solver working directory',
-                                                                  self.solver_object.prefs.GetString("WorkingDir", '/tmp'))
-        if self.solver_object.working_dir:
-            self.solver_object.prefs.SetString("WorkingDir", str(self.solver_object.working_dir))
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.working_dir = QtGui.QFileDialog.getExistingDirectory(None,
+                                                                  'Choose CalculiX working directory',
+                                                                  self.fem_prefs.GetString("WorkingDir", '/tmp'))
+        if self.working_dir:
+            self.fem_prefs.SetString("WorkingDir", str(self.working_dir))
             self.form.le_working_dir.setText(self.working_dir)
 
+    def write_input_file_handler(self):
+        QApplication.restoreOverrideCursor()
+        if self.check_prerequisites_helper():
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+            self.inp_file_name = ""
+            fea = FemTools()
+            fea.update_objects()
+            fea.write_case_file() #changed
+            if fea.case_file_name != "": #name changed
+                self.inp_file_name = fea.case_file_name #changed
+                self.femConsoleMessage("Write completed.")
+                self.form.pushButton_edit.setEnabled(True)
+                self.form.pushButton_generate.setEnabled(True)
+            else:
+                self.femConsoleMessage("Write .inp file failed!", "#FF0000")
+            QApplication.restoreOverrideCursor()
 
     def check_prerequisites_helper(self):
-        self.femConsoleMessage("Check dependencies...")
         self.Start = time.time()
+        self.femConsoleMessage("Check dependencies...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        
-        #self.solver_object.update_objects()  is called inside check_prerequisites() 
-        message = self.solver_object.check_prerequisites() 
-        FreeCAD.Console.PrintMessage('check_prerequisites'+message)
+
+        fea = FemTools()
+        self.femConsoleMessage("Create a new solver")
+        fea.update_objects()
+        self.femConsoleMessage("Update object in solver")
+        message = fea.check_prerequisites()
         if message != "":
             QtGui.QMessageBox.critical(None, "Missing prerequisit(s)", message)
             return False
         return True
 
-    def write_input_file_handler(self):
-        #self.femConsoleMessage('write_input_file_handler is fired') # this line does not update ui 
-        print 'Debuginfo: write_input_file_handler is fired\n'
-        QApplication.restoreOverrideCursor()
-        if self.check_prerequisites_helper():
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            self.case_file_name = "" #
+    def start_ext_editor(self, ext_editor_path, filename):
+        if not hasattr(self, "ext_editor_process"):
+            self.ext_editor_process = QtCore.QProcess()
+        if self.ext_editor_process.state() != QtCore.QProcess.Running:
+            self.ext_editor_process.start(ext_editor_path, [filename])
 
-            self.solver_object.write_case_file()# #check and update_objects() is called inside this function
-            FreeCAD.Console.PrintMessage('input case file has been written\n') #debug info to remove soon later
-            if self.solver_object.case_file_name  != "":
-                self.case_file_name  = self.solver_object.case_file_name 
-                self.femConsoleMessage("Write completed "+self.solver_object.case_file_name )
-                self.form.pushButton_edit.setEnabled(True)
-                self.form.pushButton_generate.setEnabled(True)
+    def editCalculixInputFile(self):
+        print 'editCalculixInputFile {}'.format(self.inp_file_name)
+        if self.fem_prefs.GetBool("UseInternalEditor", True):
+            FemGui.open(self.inp_file_name)
+        else:
+            ext_editor_path = self.fem_prefs.GetString("ExternalEditorPath", "")
+            if ext_editor_path:
+                self.start_ext_editor(ext_editor_path, self.inp_file_name)
             else:
-                self.femConsoleMessage("Write input case file failed!", "#FF0000")
-            QApplication.restoreOverrideCursor()
+                print "External editor is not defined in FEM preferences. Falling back to internal editor"
+                FemGui.open(self.inp_file_name)
 
-    def runSolver(self):
-        # run Calculix
+    def runCalculix(self):
+        print 'runCalculix'
         self.Start = time.time()
 
-        self.femConsoleMessage("Solver binary: {} with case file: {}".format(self.solver_object.solver_binary,os.path.splitext(self.case_file_name)[0] ))
-        self.femConsoleMessage("Run Solver...")
+        self.femConsoleMessage("CalculiX binary: {}".format(self.CalculixBinary))
+        self.femConsoleMessage("Run Calculix...")
 
+        # run Calculix
+        print 'run Calculix at: ', self.CalculixBinary, ' with: ', os.path.splitext(self.inp_file_name)[0]
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
-        fi = QtCore.QFileInfo(self.solver_object.case_file_name)
+        fi = QtCore.QFileInfo(self.inp_file_name)
         QtCore.QDir.setCurrent(fi.path())
-
-        # run Solver in QProcess
-        self.process_object.start(self.solver_object.solver_binary, [' -i ', fi.baseName()])
-        #in the future, should call, self.solver_object.run()
-        #self.solver_object.run() # currently, using Popen for the moment
+        self.Calculix.start(self.CalculixBinary, ['-i', fi.baseName()])
 
         QApplication.restoreOverrideCursor()
-        
-    def solverFinished(self, exitCode):
-        print "SolverFinished()", exitCode
-        print self.process_object.state()
 
-        self.printSolverstdout()
-        self.Timer.stop()
 
-        self.femConsoleMessage("Solver done!", "#00AA00")
-
-        self.form.pushButton_generate.setText("Re-run Solver")
-        #print "Loading results...."
-        self.femConsoleMessage("Loading result sets...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        
-        self.solver_object.reset_all()
-        self.solver_object.load_results()
-        
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-
-##This file should be moved out into FemResultControlTaskPanel, split and shared with CFD code
 class _ResultControlTaskPanel:
     '''The control for the displacement post-processing'''
     def __init__(self):
@@ -677,6 +686,7 @@ class _ResultControlTaskPanel:
 
 # Helpers
 
+
 def results_present():
     results = False
     analysis_members = FemGui.getActiveAnalysis().Member
@@ -696,9 +706,6 @@ def get_results_object(sel):
             return i
     return None
 
-        
-########################################################
-#should moved to FemCommands.py, load commands ui there
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
     FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
@@ -707,4 +714,3 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_Frequency_Analysis', _CommandFrequencyAnalysis())
     FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
     FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
-

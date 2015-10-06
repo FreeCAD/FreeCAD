@@ -14,8 +14,9 @@ Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)
 Gui.activeDocument().resetEdit()
 #change should be made here, once FemCommands and CaeAnalysis are split
 #import CaeAnalysis
+#FemGui.setActiveAnalysis(MechanicalAnalysis.makeCaeAnalysis('MechanicalAnalysis'))
 import MechanicalAnalysis
-FemGui.setActiveAnalysis(MechanicalAnalysis.makeCaeAnalysis('MechanicalAnalysis'))
+FemGui.setActiveAnalysis(MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis'))
 App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument().Box_Mesh]
 import MechanicalMaterial
 MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')

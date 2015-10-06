@@ -1,7 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>  
-#*   Copyright (c) 2015 - Qingfeng Xia <qingfeng.xia@  eng.ox.ac.uk> *
+#*   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,17 +21,21 @@
 #***************************************************************************
 
 from PreImport import *
-   
 import os.path
-from CaeSolver import CaeSolver
 
-class Solver(CaeSolver):
-    """ Using OpenFoam solver derived from base class:  CaeSolver
-    This class focus on mesh and boundary condition setup for FEM
+class Solver(QtCore.QRunnable, QtCore.QObject):
+    """base for CFD and FEM solver, it must have a run() method as a Runnable derived
     """
+    #started = QtCore.Signal()  
+    finished = QtCore.Signal(int)  #why declare here?
+    #stateChanged=QtCore.Signal(QtCore.QProcess.ProcessState)
+    #hasError= QtCore.Signal(QtCore.QProcess.ProcessError) 
     
-    def __init__(self,analysis):
-        #
+    def __init__(self,analysis=None):
+        QtCore.QRunnable.__init__(self)
+        QtCore.QObject.__init__(self)
+        #self.process_object=QtCore.QProcess()
+        
         if analysis==None:
             if FreeCAD.GuiUp:
                 self.analysis=FemGui.getActiveAnalysis()
@@ -40,9 +43,10 @@ class Solver(CaeSolver):
                 self.analysis=None # can  be set later
         else:
             self.analysis=analysis
-        print "type of FemGui.getActiveAnalysis() = ",type(self.analysis)#debug
         
-        super(self.__class__, self).__init__()  #
+        #super(self.__class__, self).__init__()  #
+        self.case_file_name = "" #
+        self.results_present = False
         
         self.module="Fem" #python module name
         self.category="Fem" 
@@ -53,18 +57,120 @@ class Solver(CaeSolver):
         self.parallel=False
         #self.writer: write case  and convert mesh and boundary condition to native solver's format
         #self.reader: convert the native result to FreeCAD supported for rendering,
-        self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/"+self.catogory) #set in tool->parameter editor
+        self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/"+self.category) #set in tool->parameter editor
         
-            
-        super(self.__class__, self).setup_solver() #
+        #super(self.__class__, self).setup_solver() #
+        self.setup_solver()
+        
         #solver specific setup following the general setup
         self.set_analysis_type()
         self.set_eigenmode_parameters()
         
+    def check_prerequisites_cae(self):
+        message = ""
+        if not self.analysis:
+            message += "No active Analysis\n"
+        if not self.mesh:
+            message += "No mesh object in the Analysis\n"
+        if not self.material:  #material for fluid is not done yet
+            message += "No material object in the Analysis\n"
+        
+        #boundary condition or constraint is solver specific 
+        return message
+        
+    def setup_solver(self):
+        """ call in derived class after all parameters are set, followed by solver specific setup
+        #this class need not know about analysis, so it work in nonGui mode
+        """
+        self.setup_working_dir()
+        self.setup_solver_binary_path()
+        self.update_objects() #implemented in derived class, this should be call before write_case_file, need to reset_all()
+            
+    #################start and run solver################    
+    def set_case_file_name(self, case_file_name=None):
+        """this is case name for solver to identify setup, could be folder name
+        """
+        if case_file_name is None:
+            self.case_file_name = ""
+        else:
+            self.case_file_name = case_file_name
+
+    def setup_working_dir(self, working_dir=None):
+        if working_dir is None:
+            self.working_dir = self.prefs.GetString("WorkingDir", "/tmp")
+        else:
+            #should give more testing here, especially for nonGui mode
+            self.working_dir = working_dir
+            
+    def start_solver(self):
+        """ p.communicate(), p.returncode  are main IPC methods.
+        IPC could be improved if there is better IPC standard
+        """
+        import subprocess
+        if self.case_file_name != "":  #base case name, it is a dir for OpenFOAM
+            # change cwd because ccx may crash if directory has no write permission
+            # there is also a limit of the length of file names so jump to the document directory
+            cwd = QtCore.QDir.currentPath()
+            f = QtCore.QFileInfo(self.case_file_name)
+            QtCore.QDir.setCurrent(f.path())
+            
+            FreeCAD.Console.PrintMessage("Debug info: ready to solve {} at dir: {}\n".format(self.case_file_name, f.path()))
+            #self.set_solver_env()
+            #is that possible to replace Popen with QProcess()
+            FreeCAD.Console.PrintMessage("Debug info: start Popen: {} \n".format(self.solver_command_string))
+            p = subprocess.Popen([self.solver_binary, "-i ", f.baseName()], #self.solver_command_string,
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 shell=False, env=self._env)
+            self.solver_stdout, self.solver_stderr = p.communicate() #
+            FreeCAD.Console.PrintMessage("Finished external solver\n")
+            
+            #self.unset_solver_env()
+            QtCore.QDir.setCurrent(cwd) # change back curent working dir
+            
+            return p.returncode
+        else:
+            FreeCAD.Console.PrintMessage("Error: solver's case file name does not exist!");  
+            return -1
+ 
+    def run(self):
+        """ QRunnable, should work without GUI
+        """
+        ret_code = 0
+        message = self.check_prerequisites()
+        if not message:
+            self.write_case_file()
+            from FreeCAD import Base
+            progress_bar = Base.ProgressIndicator() # Does this work in both cmd and gui mode?
+            progress_bar.start("Running Solver "+self.case_file_name, 0)
+            
+            #self.started.emit() # newly added
+            ret_code = self.start_solver() #
+            self.finished.emit(ret_code)
+            
+            progress_bar.stop()
+        else:
+            print "Running analysis failed! " + message
+        if ret_code or self.solver_stderr:
+            print "Analysis failed with exit code {}".format(ret_code)
+            print "--------start of stderr-------"
+            print self.solver_stderr
+            print "--------end of stderr---------"
+            print "--------start of stdout-------"
+            print self.solver_stdout
+            print "--------end of stdout---------"           
+    
+    ## Resets mesh color, deformation and removes all result objects
+    def reset_all(self):
+        self.purge_results()
+        self.reset_mesh_color()
+        self.reset_mesh_deformation()      
+       
+    ##################solver specific code######################
         
     def check_prerequisites(self):
         """analysis and solver check"""
-        message = super(self.__class__, self).check_prerequisites()
+        #message = super(self.__class__, self).check_prerequisites()
+        message =  self.check_prerequisites_cae()
         
         if not self.fixed_constraints:
             message += "No fixed-constraint nodes defined in the Analysis\n"
@@ -102,7 +208,37 @@ class Solver(CaeSolver):
     def set_eigenmode_parameters(self, number=10, limit_low=0.0, limit_high=1000000.0):
         self.eigenmode_parameters = (number, limit_low, limit_high)
 
-
+    #####################################################
+    def setup_solver_binary_path(self, solver_name=None):
+        """ if not specify, setup binary solver name from prefs a default one
+        """
+        if not solver_name:
+            solver_name= self.prefs.GetString("solverBinaryPath",'ccx') #<FemToCae> need to  be changed later
+            from platform import system
+            if system() == "Windows":
+                solver_binary = FreeCAD.getHomePath() + "/bin/"+solver_name+".exe"
+            else: #"Linux" or  "MACOSX" 
+                solver_binary = solver_name
+        else:
+            solver_binary = solver_name
+        self.solver_binary = solver_binary
+        
+    def set_solver_env(self):
+        """solver specific env variable setup, this 
+        """           
+        if self.parallel:
+            import multiprocessing
+            self._ont_backup = os.environ.get('OMP_NUM_THREADS') #OPEM-MPI
+            if not self._ont_backup:
+                self._ont_backup = "" #why?
+            self._env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
+        else:
+            self._env=None #
+        
+    def unset_solver_env(self):
+        if self.parallel:
+            os.putenv('OMP_NUM_THREADS', self._ont_backup)
+            
     #####################################################
     def write_case_file(self):
         """ analysis should be an object contains {solver, mesh, material, constraint}
@@ -127,7 +263,9 @@ class Solver(CaeSolver):
             #FreeCAD.Console.PrintMessage("Debuginfo: built inp_writer, to call write")
             self.case_file_name = inp_writer.write_calculix_input_file()
             #FreeCAD.Console.PrintMessage("Debuginfo: write_calculix_input_file() return")
-            self.solver_command_string=self.solver_binary +' -i '+os.path.basename(self.case_file_name)
+            base_name=os.path.basename(self.case_file_name)[:-4] # strip '.inp'
+            
+            self.solver_command_string=self.solver_binary +' -i '+ base_name
         except:
             FreeCAD.Console.PrintMessage("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise
@@ -150,36 +288,6 @@ class Solver(CaeSolver):
                 print "External editor is not defined in FEM preferences. Falling back to internal editor"
                 FemGui.open(self.case_file_name) #got grammer highlighter for inp file
                 
-    #####################################################
-    def setup_solver_binary_path(self, solver_name=None):
-        """ if not specify, setup binary solver name from prefs a default one
-        """
-        if not solver_name:
-            solver_name= self.prefs.GetString("solverBinaryPath",'ccx') #<FemToCae> need to  be changed later
-            from platform import system
-            if system() == "Windows":
-                solver_binary = FreeCAD.getHomePath() + "\\bin\\"+solver_name+".exe"
-            else: #"Linux" or  "MACOSX" 
-                solver_binary = solver_name
-        else:
-            solver_binary = solver_name
-        self.solver_binary = solver_binary
-        
-    def set_solver_env(self):
-        """solver specific env variable setup, this 
-        """           
-        if self.parallel:
-            import multiprocessing
-            self._ont_backup = os.environ.get('OMP_NUM_THREADS') #OPEM-MPI
-            if not self._ont_backup:
-                self.ont_backup = ""
-            self._env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
-        else:
-            self._env=None #
-        
-    def unset_solver_env(self):
-        if self.parallel:
-            os.putenv('OMP_NUM_THREADS', self._ont_backup)
 
     ##########################################################
     def load_results(self):
@@ -332,5 +440,39 @@ class Solver(CaeSolver):
 
 
 
+        
+class ViewProviderCaeSolver:
+    """A View Provider for the CaeSolver object, base class for all derived solver
+    derived solver should implement  a specific TaskPanel and set up solver and override setEdit()"""
 
-    
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        return ":/icons/fem-material.svg"
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def setEdit(self, vobj, mode):
+        #taskd = _MechanicalMaterialTaskPanel(self.Object) #Todo
+        #taskd.obj = vobj.Object
+        #FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode):
+        #FreeCADGui.Control.closeDialog() #Todo
+        return
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
