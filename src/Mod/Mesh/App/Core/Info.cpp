@@ -131,7 +131,7 @@ std::ostream& MeshInfo::DetailedEdgeInfo (std::ostream& rclStream) const
               << "  P (" << std::setw(8) << rP1.x << ", "
                          << std::setw(8) << rP1.y << ", "
                          << std::setw(8) << rP1.z << "),  B: " << (ct == 2 ? "n" : "y") << std::endl;
-    pEIter++;
+    ++pEIter;
   }
 
   return rclStream;
