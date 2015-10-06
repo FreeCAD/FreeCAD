@@ -511,7 +511,7 @@ class inp_writer:
 
     def get_ccx_elsets_single_mat_multiple_beam(self):
         mat_obj = self.material_objects[0]['Object']
-        self.get_beamsection_element_sets()
+        self.get_femelement_sets(self.beamsection_objects)
         for beamsec_data in self.beamsection_objects:
             beamsec_obj = beamsec_data['Object']
             ccx_elset = {}
@@ -524,7 +524,7 @@ class inp_writer:
 
     def get_ccx_elsets_single_mat_multiple_shell(self):
         mat_obj = self.material_objects[0]['Object']
-        self.get_shellthickness_element_sets()
+        self.get_femelement_sets(self.shellthickness_objects)
         for shellth_data in self.shellthickness_objects:
             shellth_obj = shellth_data['Object']
             ccx_elset = {}
@@ -537,7 +537,7 @@ class inp_writer:
 
     def get_ccx_elsets_multiple_mat_single_beam(self):
         beamsec_obj = self.beamsection_objects[0]['Object']
-        self.get_material_element_sets()
+        self.get_femelement_sets(self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -550,7 +550,7 @@ class inp_writer:
 
     def get_ccx_elsets_multiple_mat_single_shell(self):
         shellth_obj = self.shellthickness_objects[0]['Object']
-        self.get_material_element_sets()
+        self.get_femelement_sets(self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -562,7 +562,7 @@ class inp_writer:
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_solid(self):
-        self.get_material_element_sets()
+        self.get_femelement_sets(self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -573,8 +573,8 @@ class inp_writer:
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_beam(self):
-        self.get_beamsection_element_sets()
-        self.get_material_element_sets()
+        self.get_femelement_sets(self.beamsection_objects)
+        self.get_femelement_sets(self.material_objects)
         for beamsec_data in self.beamsection_objects:
             beamsec_obj = beamsec_data['Object']
             for mat_data in self.material_objects:
@@ -592,8 +592,8 @@ class inp_writer:
                 self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_multiple_shell(self):
-        self.get_shellthickness_element_sets()
-        self.get_material_element_sets()
+        self.get_femelement_sets(self.shellthickness_objects)
+        self.get_femelement_sets(self.material_objects)
         for shellth_data in self.shellthickness_objects:
             shellth_obj = shellth_data['Object']
             for mat_data in self.material_objects:
@@ -610,102 +610,55 @@ class inp_writer:
                 ccx_elset['ccx_mat_name'] = mat_obj.Material['Name'][:80]
                 self.ccx_elsets.append(ccx_elset)
 
-    def get_material_element_sets(self):
-        # get femelements for reference shapes of each material_obj
-        FreeCAD.Console.PrintError('Multiple materials defined, this could result in a broken CalculiX input file!\n')
-        # TODO get the elset nodeids and write them to mat_data['FEMElements']
-        # if not hasattr(self, 'fem_element_table'):
-        #     self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
-        for mat_data_i, mat_data in enumerate(self.material_objects):
-            mat_data['ShortName'] = 'Mat' + str(mat_data_i)  # unique short ccx_identifier
-            # mat_obj = mat_data['Object']
-            mat_data['FEMElements'] = self.ccx_eall
-
-    def get_beamsection_element_sets(self):
-        # get femelements for reference shapes of each beamsec_obj
+    def get_femelement_sets(self, fem_objects):
+        # get femelements for reference shapes of each obj.References
         if not hasattr(self, 'fem_element_table'):
             self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
-        count_femelements_beamsection = 0
-        referenced_femelements_beamsection = []
-        has_remaining_femelements_beamsection = None
-        for beamsec_data_i, beamsec_data in enumerate(self.beamsection_objects):
-            beamsec_data['ShortName'] = 'Beam' + str(beamsec_data_i)  # unique short ccx_identifier
-            beamsec_obj = beamsec_data['Object']
-            if beamsec_obj.References:
+        count_femelements = 0
+        referenced_femelements = []
+        has_remaining_femelements = None
+        for fem_object_i, fem_object in enumerate(fem_objects):
+            obj = fem_object['Object']
+            fem_object['ShortName'] = get_ccx_elset_short_name(obj, fem_object_i)  # unique short ccx_identifier
+            if obj.References:
                 ref_shape_femelements = []
-                for ref in beamsec_obj.References:
-                    nodeids = []
-                    elemids = []
+                for ref in obj.References:
+                    femnodes = []
+                    femelements = []
                     r = ref[0].Shape.getElement(ref[1])
+                    print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
                     if r.ShapeType == 'Edge':
-                        # print('  BeamSectionReferenceEdge : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
-                        nodeids = self.mesh_object.FemMesh.getNodesByEdge(r)
-                        elemids = getFemElementsByNodes(self.fem_element_table, nodeids)
+                        femnodes = self.mesh_object.FemMesh.getNodesByEdge(r)
+                    elif r.ShapeType == 'Face':
+                        femnodes = self.mesh_object.FemMesh.getNodesByFace(r)
+                    elif r.ShapeType == 'Solid':
+                        # femnodes = self.mesh_object.FemMesh.getNodesBySolid(r)  -->  TODO
+                        FreeCAD.Console.PrintError('Solid Reference Shapes, CalculiX input file may be broken!\n')
+                        fem_object['FEMElements'] = self.ccx_eall
+                        return
                     else:
-                        print('  No Edge, but BeamSection needs Edges as reference shapes!')
-                    ref_shape_femelements += elemids
-                    referenced_femelements_beamsection += elemids
-                    count_femelements_beamsection += len(elemids)
-                beamsec_data['FEMElements'] = ref_shape_femelements
+                        print('  No Edge, Face or Solid as reference shapes!')
+                    femelements = getFemElementsByNodes(self.fem_element_table, femnodes)
+                    ref_shape_femelements += femelements
+                    referenced_femelements += femelements
+                    count_femelements += len(femelements)
+                fem_object['FEMElements'] = ref_shape_femelements
             else:
-                has_remaining_femelements_beamsection = beamsec_obj.Name
-        # get remaining femelements for the beamsection objects
-        if has_remaining_femelements_beamsection:
-            remaining_femelements_beamsection = []
+                has_remaining_femelements = obj.Name
+        # get remaining femelements for the fem_objects
+        if has_remaining_femelements:
+            remaining_femelements = []
             for elemid in self.fem_element_table:
-                if elemid not in referenced_femelements_beamsection:
-                    remaining_femelements_beamsection.append(elemid)
-            count_femelements_beamsection += len(remaining_femelements_beamsection)
-            for beamsec_data in self.beamsection_objects:
-                beamsec_obj = beamsec_data['Object']
-                if beamsec_obj.Name == has_remaining_femelements_beamsection:
-                    beamsec_data['FEMElements'] = sorted(remaining_femelements_beamsection)
+                if elemid not in referenced_femelements:
+                    remaining_femelements.append(elemid)
+            count_femelements += len(remaining_femelements)
+            for fem_object in fem_objects:
+                obj = fem_object['Object']
+                if obj.Name == has_remaining_femelements:
+                    fem_object['FEMElements'] = sorted(remaining_femelements)
         # check if all worked out well
-        if not femelements_count_ok(self.fem_element_table, count_femelements_beamsection):
-            FreeCAD.Console.PrintError('Error in BeamSection -- > femelements_count_ok failed!\n')
-
-    def get_shellthickness_element_sets(self):
-        # get femelements for reference shapes of each shellth_obj
-        if not hasattr(self, 'fem_element_table'):
-            self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
-        count_femelements_shellthickness = 0
-        referenced_femelements_shellthickness = []
-        has_remaining_femelements_shellthickness = None
-        for shellth_data_i, shellth_data in enumerate(self.shellthickness_objects):
-            shellth_data['ShortName'] = 'Shell' + str(shellth_data_i)  # unique short ccx_identifier
-            shellth_obj = shellth_data['Object']
-            if shellth_obj.References:
-                ref_shape_femelements = []
-                for ref in shellth_obj.References:
-                    nodeids = []
-                    elemids = []
-                    r = ref[0].Shape.getElement(ref[1])
-                    if r.ShapeType == 'Face':
-                        # print('  ShellThicknessReferenceFace : ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
-                        nodeids = self.mesh_object.FemMesh.getNodesByFace(r)
-                        elemids = getFemElementsByNodes(self.fem_element_table, nodeids)
-                    else:
-                        print('  No Face, but ShellThickness needs Faces as reference shapes!')
-                    ref_shape_femelements += elemids
-                    referenced_femelements_shellthickness += elemids
-                    count_femelements_shellthickness += len(elemids)
-                shellth_data['FEMElements'] = ref_shape_femelements
-            else:
-                has_remaining_femelements_shellthickness = shellth_obj.Name
-        # get remaining femelements for the shellthickness objects
-        if has_remaining_femelements_shellthickness:
-            remaining_femelements_shellthickness = []
-            for elemid in self.fem_element_table:
-                if elemid not in referenced_femelements_shellthickness:
-                    remaining_femelements_shellthickness.append(elemid)
-            count_femelements_shellthickness += len(remaining_femelements_shellthickness)
-            for shellth_data in self.shellthickness_objects:
-                shellth_obj = shellth_data['Object']
-                if shellth_obj.Name == has_remaining_femelements_shellthickness:
-                    shellth_data['FEMElements'] = sorted(remaining_femelements_shellthickness)
-        # check if all worked out well
-        if not femelements_count_ok(self.fem_element_table, count_femelements_shellthickness):
-            FreeCAD.Console.PrintError('Error in ShellThickness -- > femelements_count_ok failed!\n')
+        if not femelements_count_ok(self.fem_element_table, count_femelements):
+            FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok failed!\n')
 
 
 # Helpers
@@ -812,3 +765,14 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
         return mat_short_name + solid_name
     else:
         return mat_name + solid_name
+
+
+def get_ccx_elset_short_name(obj, i):
+    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'MechanicalMaterial':
+        return 'Mat' + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemBeamSection':
+        return 'Beam' + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemShellThickness':
+        return 'Shell' + str(i)
+    else:
+        print 'Error: ', obj.Name, ' --> ', obj.Proxy.Type
