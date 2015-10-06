@@ -269,7 +269,7 @@ void EditorView::setDisplayName(EditorView::DisplayName type)
 bool EditorView::saveAs(void)
 {
     QString fn = FileDialog::getSaveFileName(this, QObject::tr("Save Macro"),
-        QString::null, tr("FreeCAD macro (*.FCMacro);;Python (*.py)"));
+        QString::null, QString::fromLatin1("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
     if (fn.isEmpty())
         return false;
     setCurrentFileName(fn);

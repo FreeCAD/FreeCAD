@@ -433,7 +433,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
 void ReportOutput::onSaveAs()
 {
-    QString fn = QFileDialog::getSaveFileName(this, tr("Save Report Output"), QString(), tr("Plain Text Files (*.txt *.log)"));
+    QString fn = QFileDialog::getSaveFileName(this, tr("Save Report Output"), QString(),
+        QString::fromLatin1("%1 (*.txt *.log)").arg(tr("Plain Text Files")));
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
         if (fi.completeSuffix().isEmpty())

@@ -432,7 +432,7 @@ bool MeshGeomFacet::IsDeformed() const
 
     fCosAngle = u * v;
 
-    // x < 30° => cos(x) > sqrt(3)/2 or x > 120° => cos(x) < -0.5
+    // x < 30 deg => cos(x) > sqrt(3)/2 or x > 120 deg => cos(x) < -0.5
     if (fCosAngle > 0.86f || fCosAngle < -0.5f)
       return true;
   }
@@ -748,7 +748,7 @@ void MeshGeomFacet::SubSample (float fStep, std::vector<Base::Vector3f> &rclPoin
 }
 
 /**
- * Fast Triangle-Triangle Intersection Test by Tomas Möller
+ * Fast Triangle-Triangle Intersection Test by Tomas Moeller
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */
@@ -771,7 +771,7 @@ bool MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet &rclFacet) const
 }
 
 /**
- * Fast Triangle-Triangle Intersection Test by Tomas Möller
+ * Fast Triangle-Triangle Intersection Test by Tomas Moeller
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */

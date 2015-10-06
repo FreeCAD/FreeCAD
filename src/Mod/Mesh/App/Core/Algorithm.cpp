@@ -532,13 +532,14 @@ void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>
     {
         // find adjacent edge
         std::list<std::pair<unsigned long, unsigned long> >::iterator pEI;
-        for (pEI = openEdges.begin(); pEI != openEdges.end(); pEI++)
+        for (pEI = openEdges.begin(); pEI != openEdges.end(); ++pEI)
         {
             if (pEI->first == ulLast)
             {
                 ulLast = pEI->second;
                 rBorder.push_back(ulLast);
                 openEdges.erase(pEI);
+                pEI = openEdges.begin();
                 break;
             }
             else if (pEI->second == ulFirst)
@@ -546,6 +547,7 @@ void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>
                 ulFirst = pEI->first;
                 rBorder.push_front(ulFirst);
                 openEdges.erase(pEI);
+                pEI = openEdges.begin();
                 break;
             }
         }
@@ -1454,125 +1456,117 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
 bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vector3f> > &rclLines,
                                   std::list<std::vector<Base::Vector3f> > &rclPolylines, float fMinEps) const
 {
-  typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
+    typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
 
-  // square search radius
-  // const float fMinEps = 1.0e-2f; // := 10 mirometer distance
-  fMinEps = fMinEps * fMinEps;  
+    // square search radius
+    // const float fMinEps = 1.0e-2f; // := 10 mirometer distance
+    fMinEps = fMinEps * fMinEps;
 
-  // remove all lines which distance is smaller than epsilon
-  std::list<TCIter> _clToDelete;
-  float fToDelDist = fMinEps / 10.0f;
-  for (TCIter pF = rclLines.begin(); pF != rclLines.end(); pF++)
-  {
+    // remove all lines whose distance is smaller than epsilon
+    std::list<TCIter> _clToDelete;
+    float fToDelDist = fMinEps / 10.0f;
+    for (TCIter pF = rclLines.begin(); pF != rclLines.end(); ++pF) {
     if (Base::DistanceP2(pF->first, pF->second) < fToDelDist)
-      _clToDelete.push_back(pF);
-  }
-  for (std::list<TCIter>::iterator pI = _clToDelete.begin(); pI != _clToDelete.end(); pI++)
-    rclLines.erase(*pI);
-
-
-  while (rclLines.size() > 0)
-  {
-    TCIter pF;
-    
-    // new polyline
-    std::list<Base::Vector3f> clPoly;
-
-    // add first line and delete from the list
-    Base::Vector3f clFront = rclLines.begin()->first;  // current start point of the polyline
-    Base::Vector3f clEnd   = rclLines.begin()->second; // current end point of the polyline
-    clPoly.push_back(clFront);
-    clPoly.push_back(clEnd);
-    rclLines.erase(rclLines.begin());
-
-    // search for the next line on the begin/end of the polyline and add it
-    TCIter pFront, pEnd;
-    do
-    {
-      float  fFrontMin = fMinEps, fEndMin = fMinEps;
-      bool   bFrontFirst=false, bEndFirst=false;
-
-      pFront = rclLines.end();
-      pEnd   = rclLines.end();
-      for (pF = rclLines.begin(); pF != rclLines.end(); pF++)
-      {
-        if (Base::DistanceP2(clFront, pF->first) < fFrontMin) 
-        {
-          fFrontMin   = Base::DistanceP2(clFront, pF->first);
-          pFront      = pF;
-          bFrontFirst = true;
-        }
-        else if (Base::DistanceP2(clEnd, pF->first) < fEndMin)
-        {
-          fEndMin     = Base::DistanceP2(clEnd, pF->first);
-          pEnd        = pF;
-          bEndFirst   = true;
-        }
-        else if (Base::DistanceP2(clFront, pF->second) < fFrontMin)
-        {
-          fFrontMin   = Base::DistanceP2(clFront, pF->second);
-          pFront      = pF;
-          bFrontFirst = false;
-        }
-        else if (Base::DistanceP2(clEnd, pF->second) < fEndMin)
-        {
-          fEndMin     = Base::DistanceP2(clEnd, pF->second);
-          pEnd        = pF;
-          bEndFirst   = false;
-        }        
-      }
-
-      if (pFront != rclLines.end())
-      {
-        if (bFrontFirst == true)
-        {
-          clPoly.push_front(pFront->second);
-          clFront = pFront->second;
-        }
-        else
-        {
-          clPoly.push_front(pFront->first);
-          clFront = pFront->first;
-        }
-        rclLines.erase(pFront);
-      }
-
-      if (pEnd != rclLines.end())
-      {
-        if (bEndFirst == true)
-        {
-          clPoly.push_back(pEnd->second);
-          clEnd = pEnd->second;
-        }
-        else
-        {
-          clPoly.push_back(pEnd->first);
-          clEnd = pEnd->first;
-        }
-        rclLines.erase(pEnd);
-      }
+        _clToDelete.push_back(pF);
     }
-    while ((pFront != rclLines.end()) || (pEnd != rclLines.end()));
 
-    rclPolylines.push_back(std::vector<Base::Vector3f>(clPoly.begin(), clPoly.end()));
-  }  
-  
-  // remove all polylines with too few length
-  typedef std::list<std::vector<Base::Vector3f> >::iterator TPIter;
-  std::list<TPIter> _clPolyToDelete;
-  for (TPIter pJ = rclPolylines.begin(); pJ != rclPolylines.end(); pJ++)
-  {
-    if (pJ->size() == 2) // only one line segment
-    {
-      if (Base::DistanceP2(*pJ->begin(), *(pJ->begin() + 1)) <= fMinEps)
-        _clPolyToDelete.push_back(pJ);
+    for (std::list<TCIter>::iterator pI = _clToDelete.begin(); pI != _clToDelete.end(); ++pI)
+        rclLines.erase(*pI);
+
+    while (!rclLines.empty()) {
+        TCIter pF;
+
+        // new polyline
+        std::list<Base::Vector3f> clPoly;
+
+        // add first line and delete from the list
+        Base::Vector3f clFront = rclLines.begin()->first;  // current start point of the polyline
+        Base::Vector3f clEnd   = rclLines.begin()->second; // current end point of the polyline
+        clPoly.push_back(clFront);
+        clPoly.push_back(clEnd);
+        rclLines.erase(rclLines.begin());
+
+        // search for the next line on the begin/end of the polyline and add it
+        TCIter pFront, pEnd;
+        bool bFoundLine;
+        do {
+            float  fFrontMin = fMinEps, fEndMin = fMinEps;
+            bool   bFrontFirst=false, bEndFirst=false;
+
+            pFront = rclLines.end();
+            pEnd   = rclLines.end();
+            bFoundLine = false;
+
+            for (pF = rclLines.begin(); pF != rclLines.end(); ++pF) {
+                if (Base::DistanceP2(clFront, pF->first) < fFrontMin) {
+                    fFrontMin   = Base::DistanceP2(clFront, pF->first);
+                    pFront      = pF;
+                    bFrontFirst = true;
+                }
+                else if (Base::DistanceP2(clEnd, pF->first) < fEndMin) {
+                    fEndMin     = Base::DistanceP2(clEnd, pF->first);
+                    pEnd        = pF;
+                    bEndFirst   = true;
+                }
+                else if (Base::DistanceP2(clFront, pF->second) < fFrontMin) {
+                    fFrontMin   = Base::DistanceP2(clFront, pF->second);
+                    pFront      = pF;
+                    bFrontFirst = false;
+                }
+                else if (Base::DistanceP2(clEnd, pF->second) < fEndMin) {
+                    fEndMin     = Base::DistanceP2(clEnd, pF->second);
+                    pEnd        = pF;
+                    bEndFirst   = false;
+                }
+            }
+
+            if (pFront != rclLines.end()) {
+                bFoundLine = true;
+                if (bFrontFirst) {
+                    clPoly.push_front(pFront->second);
+                    clFront = pFront->second;
+                }
+                else {
+                    clPoly.push_front(pFront->first);
+                    clFront = pFront->first;
+                }
+
+                rclLines.erase(pFront);
+            }
+
+            if (pEnd != rclLines.end()) {
+                bFoundLine = true;
+                if (bEndFirst) {
+                    clPoly.push_back(pEnd->second);
+                    clEnd = pEnd->second;
+                }
+                else {
+                    clPoly.push_back(pEnd->first);
+                    clEnd = pEnd->first;
+                }
+
+                rclLines.erase(pEnd);
+            }
+        }
+        while (bFoundLine);
+
+        rclPolylines.push_back(std::vector<Base::Vector3f>(clPoly.begin(), clPoly.end()));
     }
-  }
-  for (std::list<TPIter>::iterator pK = _clPolyToDelete.begin(); pK != _clPolyToDelete.end(); pK++)
-    rclPolylines.erase(*pK);
 
-  return true;
+    // remove all polylines with too few length
+    typedef std::list<std::vector<Base::Vector3f> >::iterator TPIter;
+    std::list<TPIter> _clPolyToDelete;
+    for (TPIter pJ = rclPolylines.begin(); pJ != rclPolylines.end(); ++pJ) {
+        if (pJ->size() == 2) { // only one line segment
+            if (Base::DistanceP2(*pJ->begin(), *(pJ->begin() + 1)) <= fMinEps)
+                _clPolyToDelete.push_back(pJ);
+        }
+    }
+
+    for (std::list<TPIter>::iterator pK = _clPolyToDelete.begin(); pK != _clPolyToDelete.end(); ++pK)
+        rclPolylines.erase(*pK);
+
+    return true;
 }
 
 bool MeshAlgorithm::ConnectPolygons(std::list<std::vector<Base::Vector3f> > &clPolyList,
