@@ -385,16 +385,16 @@ void CmdMeshImport::activated(int iMsg)
 {
     // use current path as default
     QStringList filter;
-    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)");
-    filter << QObject::tr("Binary STL (*.stl)");
-    filter << QObject::tr("ASCII STL (*.ast)");
-    filter << QObject::tr("Binary Mesh (*.bms)");
-    filter << QObject::tr("Alias Mesh (*.obj)");
-    filter << QObject::tr("Object File Format (*.off)");
-    filter << QObject::tr("Inventor V2.1 ascii (*.iv)");
-    filter << QObject::tr("Stanford Polygon (*.ply)");
+    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.ply)").arg(QObject::tr("All Mesh Files"));
+    filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
+    filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
+    filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
+    filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
+    filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
+    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii"));
+    filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
     //filter << "Nastran (*.nas *.bdf)";
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
@@ -445,20 +445,20 @@ void CmdMeshExport::activated(int iMsg)
 
     QString dir = QString::fromUtf8(docObj->Label.getValue());
     QList<QPair<QString, QByteArray> > ext;
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Binary STL (*.stl)"), "STL");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("ASCII STL (*.stl)"), "AST");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("ASCII STL (*.ast)"), "AST");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Binary Mesh (*.bms)"), "BMS");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Alias Mesh (*.obj)"), "OBJ");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Object File Format (*.off)"), "OFF");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Inventor V2.1 ascii (*.iv)"), "IV");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("X3D Extensible 3D (*.x3d)"), "X3D");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Stanford Polygon (*.ply)"), "PLY");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("VRML V2.0 (*.wrl *.vrml)"), "VRML");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Compressed VRML 2.0 (*.wrz)"), "WRZ");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Nastran (*.nas *.bdf)"), "NAS");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Python module def (*.py)"), "PY");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("All Files (*.*)"), ""); // Undefined
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     QStringList filter;
     for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it)
         filter << it->first;

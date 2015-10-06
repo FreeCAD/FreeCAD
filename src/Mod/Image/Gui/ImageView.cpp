@@ -38,7 +38,7 @@ using namespace ImageGui;
 /* TRANSLATOR ImageGui::ImageView */
 
 ImageView::ImageView(QWidget* parent)
-  : MDIView(0, parent)
+  : MDIView(0, parent), _ignoreCloseEvent(false)
 {
   // enable mouse tracking when moving even if no buttons are pressed
   setMouseTracking(true);
@@ -47,7 +47,7 @@ ImageView::ImageView(QWidget* parent)
   _mouseEventsEnabled = true; 
 
   // Create the default status bar for displaying messages
-  EnableStatusBar(true);
+  enableStatusBar(true);
 
   // Create an OpenGL widget for displaying images
   _pGLImageBox = new GLImageBox(this);
@@ -96,8 +96,13 @@ void ImageView::createActions()
   _pStdToolBar->addAction(_pOneToOneAct);
 }
 
+QSize ImageView::minimumSizeHint () const
+{
+	return QSize(40, 40);
+}
+
 // Enable or disable the status bar
-void ImageView::EnableStatusBar(bool Enable)
+void ImageView::enableStatusBar(bool Enable)
 {
   if (Enable == true)
   {
@@ -116,27 +121,27 @@ void ImageView::EnableStatusBar(bool Enable)
 }
 
 // Enable or disable the toolbar
-void ImageView::EnableToolBar(bool Enable)
+void ImageView::enableToolBar(bool Enable)
 {
   _pStdToolBar->setShown(Enable);
 }
 
 // Enable or disable the mouse events
-void ImageView::EnableMouseEvents(bool Enable)
+void ImageView::enableMouseEvents(bool Enable)
 {
-	_mouseEventsEnabled = Enable;
+  _mouseEventsEnabled = Enable;
 }
 
 // Enable (show) or disable (hide) the '1:1' action
 // Current state (zoom, position) is left unchanged
-void ImageView::EnableOneToOneAction(bool Enable)
+void ImageView::enableOneToOneAction(bool Enable)
 {
   _pOneToOneAct->setVisible(Enable);
 }
 
 // Enable (show) or disable (hide) the 'fit image' action
 // Current state (zoom, position) is left unchanged
-void ImageView::EnableFitImageAction(bool Enable)
+void ImageView::enableFitImageAction(bool Enable)
 {
   _pFitAct->setVisible(Enable);
 }
@@ -243,7 +248,7 @@ void ImageView::clearImage()
 {
     _pGLImageBox->clearImage();
     _pGLImageBox->redraw(); // clears view
-	updateStatusBar();
+    updateStatusBar();
 }
 
 // Load image by copying the pixel data
@@ -262,7 +267,7 @@ int ImageView::createImageCopy(void* pSrcPixelData, unsigned long width, unsigne
 {
     int ret = _pGLImageBox->createImageCopy(pSrcPixelData, width, height, format, numSigBitsPerSample, displayMode);
     showOriginalColors();
-	updateStatusBar();
+    updateStatusBar();
     return ret;
 }
 
@@ -286,8 +291,23 @@ int ImageView::pointImageTo(void* pSrcPixelData, unsigned long width, unsigned l
 {
     int ret = _pGLImageBox->pointImageTo(pSrcPixelData, width, height, format, numSigBitsPerSample, takeOwnership, displayMode);
     showOriginalColors();
-	updateStatusBar();
+    updateStatusBar();
     return ret;
+}
+
+// called when user presses X
+void ImageView::closeEvent(QCloseEvent *e)
+{
+    if (_ignoreCloseEvent == true)
+    {
+        // ignore the close event
+        e->ignore();
+        closeEventIgnored();	// and emit a signal that we ignored it
+    }
+    else
+    {
+        Gui::MDIView::closeEvent(e); // if called the window will be closed anyway
+    }
 }
 
 // Mouse press event
@@ -346,7 +366,7 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
            //int pixY = (int)floor(icY + 0.5);
            _pGLImageBox->setZoomFactor(_pGLImageBox->getZoomFactor(), true, (int)floor(icX + 0.5), (int)floor(icY + 0.5));
            _pGLImageBox->redraw();
-		   updateStatusBar();
+           updateStatusBar();
        }
    }
 }
@@ -446,13 +466,13 @@ void ImageView::showEvent (QShowEvent * e)
 void ImageView::updateStatusBar()
 {
     if (_statusBarEnabled == true)
-	{
+    {
         // Create the text string to display in the status bar
         QString txt = createStatusBarText();
 
         // Update status bar with new text
         statusBar()->showMessage(txt);
-	}
+    }
 }
 
 // Create the text to display in the status bar.

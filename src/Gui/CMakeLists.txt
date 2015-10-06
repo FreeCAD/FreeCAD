@@ -14,7 +14,7 @@ if (FREECAD_USE_3DCONNEXION)
         set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
         set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers )
     endif(APPLE)
- endif(FREECAD_USE_3DCONNEXION)
+endif(FREECAD_USE_3DCONNEXION)
 
 if (BUILD_VR)
     add_definitions(-DBUILD_VR )

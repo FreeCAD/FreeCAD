@@ -442,7 +442,7 @@ void ParameterGroup::onCreateSubgroup()
 void ParameterGroup::onExportToFile()
 {
     QString file = FileDialog::getSaveFileName( this, tr("Export parameter to file"),
-        QString::null, tr("XML (*.FCParam)"));
+        QString::null, QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
@@ -458,7 +458,7 @@ void ParameterGroup::onExportToFile()
 void ParameterGroup::onImportFromFile()
 {
     QString file = FileDialog::getOpenFileName( this, tr("Import parameter from file"),
-        QString::null, tr("XML (*.FCParam)"));
+        QString::null, QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QFileInfo fi(file);

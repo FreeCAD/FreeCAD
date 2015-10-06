@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QDir>
+# include <QFileInfo>
 # include <QLibraryInfo>
 # include <QMessageBox>
 # include <QProcess>
@@ -33,7 +34,6 @@
 
 #include "Assistant.h"
 #include <Base/Console.h>
-#include <Base/FileInfo.h>
 #include <App/Application.h>
 
 using namespace Gui;
@@ -100,7 +100,7 @@ bool Assistant::startAssistant()
         QString doc = QString::fromUtf8(App::Application::getHelpDir().c_str());
         QString qhc = doc + exe.toLower() + QLatin1String(".qhc");
 
-        Base::FileInfo fi ( (const char*)qhc.toUtf8() );
+        QFileInfo fi(qhc);
         if (!fi.isReadable()) {
             QMessageBox::critical(0, tr("%1 Help").arg(exe),
                 tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe).arg(qhc));
