@@ -67,8 +67,8 @@ CmdDrawingOpen::CmdDrawingOpen()
 void CmdDrawingOpen::activated(int iMsg)
 {
     // Reading an image
-    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null, 
-                                           QObject::tr("Scalable Vector Graphics (*.svg *.svgz)"));
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null,
+        QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
     if (!filename.isEmpty())
     {
         // load the file with the module
@@ -586,8 +586,8 @@ void CmdDrawingSymbol::activated(int iMsg)
         }
     }
     // Reading an image
-    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null, 
-                                           QObject::tr("Scalable Vector Graphics (*.svg *.svgz)"));
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null,
+        QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
     if (!filename.isEmpty())
     {
         std::string PageName = pages.front()->getNameInDocument();
@@ -639,8 +639,8 @@ void CmdDrawingExportPage::activated(int iMsg)
     }
 
     QStringList filter;
-    filter << QObject::tr("SVG (*.svg)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.svg)").arg(QObject::tr("Scalable Vector Graphic"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {

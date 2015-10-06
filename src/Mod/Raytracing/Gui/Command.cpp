@@ -132,8 +132,8 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
         float Dist = Cam->focalDistance.getValue();
 
         QStringList filter;
-        filter << QObject::tr("POV-Ray (*.pov)");
-        filter << QObject::tr("All Files (*.*)");
+        filter << QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
+        filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
         if (fn.isEmpty()) 
             return;
@@ -183,8 +183,8 @@ CmdRaytracingWritePart::CmdRaytracingWritePart()
 void CmdRaytracingWritePart::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("POV-Ray (*.pov)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) 
         return;
@@ -245,8 +245,8 @@ void CmdRaytracingWriteView::activated(int iMsg)
     }
 
     QStringList filter;
-    filter << QObject::tr("POV-Ray(*.pov)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
         QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) 
@@ -510,7 +510,7 @@ CmdRaytracingExportProject::CmdRaytracingExportProject()
 
 void CmdRaytracingExportProject::activated(int iMsg)
 {
-    const char *filterLabel;
+    QString filterLabel;
     unsigned int n = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
     if (n != 1) {
         n = getSelection().countObjectsOfType(Raytracing::LuxProject::getClassTypeId());
@@ -518,16 +518,18 @@ void CmdRaytracingExportProject::activated(int iMsg)
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select one Raytracing project object."));
             return;
-        } else {
-            filterLabel = "Luxrender Scene (*.lxs)";
         }
-    } else {
-        filterLabel = "POV-Ray Scene (*.pov)";
+        else {
+            filterLabel =  QString::fromLatin1("%1 (*.lxs)").arg(QObject::tr("Luxrender"));
+        }
+    }
+    else {
+        filterLabel = QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
     }
 
     QStringList filter;
-    filter << QObject::tr(filterLabel);
-    filter << QObject::tr("All Files (*.*)");
+    filter << filterLabel;
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
@@ -632,11 +634,11 @@ void CmdRaytracingRender::activated(int iMsg)
 
         QStringList filter;
 #ifdef FC_OS_WIN32
-        filter << QObject::tr("Rendered image (*.bmp *.png)");
+        filter << QString::fromLatin1("%1 (*.bmp *.png)").arg(QObject::tr("Rendered image"));
 #else
-        filter << QObject::tr("Rendered image (*.png)");
+        filter << QString::fromLatin1("%1 (*.png)").arg(QObject::tr("Rendered image"));
 #endif
-        filter << QObject::tr("All Files (*.*)");
+        filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Rendered image"), QString(), filter.join(QLatin1String(";;")));
         if (!fn.isEmpty()) {
             fn = QDir::toNativeSeparators(fn);
