@@ -276,31 +276,6 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
 
     try {
         ExpressionBinding::setExpression(expr);
-
-        if (getExpression()) {
-            std::auto_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-            if (value) {
-                updateText(value->getQuantity());
-                setReadOnly(true);
-                iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
-
-                QPalette p(lineEdit()->palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                lineEdit()->setPalette(p);
-            }
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
-        }
-        else {
-            setReadOnly(false);
-            iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-            lineEdit()->setPalette(p);
-
-        }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
@@ -310,6 +285,46 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
         iconLabel->setToolTip(QString::fromAscii(e.what()));
     }
 }
+
+void Gui::QuantitySpinBox::onChange() {
+    
+    Q_ASSERT(isBound());
+    
+    if (getExpression()) {
+        std::auto_ptr<Expression> result(getExpression()->eval());
+        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+
+        if (value) {
+            std::stringstream s;
+            s << value->getValue();
+
+            lineEdit()->setText(value->getQuantity().getUserString());
+            setReadOnly(true);
+            QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
+            iconLabel->setPixmap(pixmap);
+
+            QPalette p(lineEdit()->palette());
+            p.setColor(QPalette::Text, Qt::lightGray);
+            lineEdit()->setPalette(p);
+        }
+        iconLabel->setToolTip(QString());
+        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+    }
+    else {
+        setReadOnly(false);
+        QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+        iconLabel->setPixmap(pixmap);
+        QPalette p(lineEdit()->palette());
+        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
+        lineEdit()->setPalette(p);
+<<<<<<< 175351b02ea3a586e1dbe0dc5e993966714ea236
+=======
+        iconLabel->setToolTip(QString());
+>>>>>>> further expression integration for property editor
+    }
+    iconLabel->setToolTip(QString());
+}
+
 
 bool QuantitySpinBox::apply(const std::string & propName)
 {

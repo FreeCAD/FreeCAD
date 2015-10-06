@@ -37,6 +37,7 @@
 #include <Base/UnitsApi.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Widgets.h>
+#include <Gui/ExpressionBinding.h>
 
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
@@ -49,7 +50,7 @@ namespace Gui {
 namespace Dialog { class TaskPlacement; }
 namespace PropertyEditor {
 
-class GuiExport PropertyItem : virtual public QObject, public Base::BaseClass
+class GuiExport PropertyItem : virtual public QObject, public Base::BaseClass, public ExpressionBinding
 {
     Q_OBJECT
 
@@ -73,6 +74,12 @@ public:
     virtual QVariant editorData(QWidget *editor) const;
     virtual bool isSeparator() const { return false; }
 
+    /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
+       childs which like to be informed of a binding*/
+    virtual void bind(const App::Property& prop);
+    virtual void bind(const App::ObjectIdentifier& _path);
+    virtual void propertyBound()  {};
+       
     void setParent(PropertyItem* parent);
     PropertyItem *parent() const;
     void appendChild(PropertyItem *child);
@@ -114,6 +121,7 @@ private:
     QList<PropertyItem*> childItems;
     bool readonly;
     int precision;
+    bool cleared;
 };
 
 /**
@@ -351,6 +359,7 @@ protected:
 
 protected:
     PropertyVectorItem();
+    virtual void propertyBound();   
 
 private:
     PropertyFloatItem* m_x;
@@ -374,6 +383,8 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
 
     Base::Quantity x() const;
     void setX(Base::Quantity x);
@@ -516,6 +527,8 @@ class GuiExport PropertyPlacementItem: public PropertyItem
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
 
     Base::Quantity getAngle() const;
     void setAngle(Base::Quantity);

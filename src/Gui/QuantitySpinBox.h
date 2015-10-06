@@ -114,6 +114,9 @@ protected Q_SLOTS:
     void userInput(const QString & text);
     void openFormulaDialog();
     void finishFormulaDialog();
+    
+    //get notified on expression change
+    virtual void onChange();
 
 protected:
     virtual StepEnabled stepEnabled() const;
