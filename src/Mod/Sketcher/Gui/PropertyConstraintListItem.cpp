@@ -60,8 +60,8 @@ QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
 
 void PropertyConstraintListItem::initialize()
 {
-    const Sketcher::PropertyConstraintList* item = static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
-    const std::vector< Sketcher::Constraint * > &vals = item->getValues();
+    const Sketcher::PropertyConstraintList* list = static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
+    const std::vector< Sketcher::Constraint * > &vals = list->getValues();
 
     int id = 1;
     int iNamed = 0;
@@ -101,6 +101,9 @@ void PropertyConstraintListItem::initialize()
                 item->setObjectName(internalName);
                 this->appendChild(item);
             }
+            
+            item->bind(list->createPath(id-1));
+            item->setAutoApply(true);
         }
     }
 

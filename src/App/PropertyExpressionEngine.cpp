@@ -122,8 +122,10 @@ void PropertyExpressionEngine::Paste(const Property &from)
     aboutToSetValue();
     expressions.clear();
 
-    for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it)
+    for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it) {
         expressions[it->first] = ExpressionInfo(it->second);
+        expressionChanged(it->first);
+    }
 
     validator = fromee->validator;
 
@@ -272,8 +274,10 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
 
     aboutToSetValue();
 
-    for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it)
+    for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
         it->second.expression->visit(v);
+        expressionChanged(it->first);
+    }
 
     hasSetValue();
 }
@@ -312,6 +316,10 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
     // Try to access value; it should trigger an exception if it is not supported, or if the path is invalid
     prop->getPathValue(usePath);
 
+    // Check if the current expression equals the new one and do nothing if so to reduce unneeded computations
+    if(expressions.find(usePath) != expressions.end() && expr == expressions[usePath].expression)
+        return;
+    
     if (expr) {
         std::string error = validateExpression(usePath, expr);
 
@@ -320,11 +328,13 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
 
         aboutToSetValue();
         expressions[usePath] = ExpressionInfo(expr, comment);
+        expressionChanged(usePath);
         hasSetValue();
     }
     else {
         aboutToSetValue();
         expressions.erase(usePath);
+        expressionChanged(usePath);
         hasSetValue();
     }
 }
@@ -669,6 +679,9 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
 
     aboutToSetValue();
     expressions = newExpressions;
+    for (ExpressionMap::const_iterator i = expressions.begin(); i != expressions.end(); ++i) 
+        expressionChanged(i->first);
+    
     hasSetValue();
 }
 

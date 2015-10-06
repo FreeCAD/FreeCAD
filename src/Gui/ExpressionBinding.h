@@ -27,6 +27,7 @@
 #include <App/ObjectIdentifier.h>
 #include <boost/shared_ptr.hpp>
 #include <QLabel>
+#include <boost/signals.hpp>
 
 namespace App {
 class Expression;
@@ -48,21 +49,34 @@ public:
     bool hasExpression() const;
 
     QPixmap getIcon(const char *name, const QSize &size) const;
-
+   
+    //auto apply means that the python code is issues not only on aplly() but 
+    //also on setExpression
+    bool autoApply() {return m_autoApply;};
+    void setAutoApply(bool value) {m_autoApply = value;};
+    
 protected:
     const App::ObjectIdentifier & getPath() const { return path; }
     boost::shared_ptr<App::Expression> getExpression() const;
     std::string getExpressionString() const;
     std::string getEscapedExpressionString() const;
     virtual void setExpression(boost::shared_ptr<App::Expression> expr);
+    
+    //gets called when the bound expression is changed, either by this binding or any external action
+    virtual void onChange() {};
 
 private:
     App::ObjectIdentifier path;
     boost::shared_ptr<App::Expression> lastExpression;
+
 protected:
     QLabel* iconLabel;
     QPalette defaultPalette;
     int iconHeight;
+
+    void expressionChange(const App::ObjectIdentifier& id);
+    boost::signals::scoped_connection connection;
+    bool m_autoApply;
 };
 
 }

@@ -25,6 +25,7 @@
 
 #include <boost/unordered/unordered_map.hpp>
 #include <boost/function.hpp>
+#include <boost/signals.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <App/Property.h>
@@ -49,7 +50,7 @@ class AppExport PropertyExpressionEngine : public App::Property
 public:
 
     typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
-
+    
     /**
      * @brief The ExpressionInfo struct encapsulates an expression and a comment.
      */
@@ -117,6 +118,9 @@ public:
     size_t numExpressions() const;
 
     void slotObjectRenamed(const App::DocumentObject & obj);
+    
+    ///signal called when a expression was changed 
+    boost::signal<void (const App::ObjectIdentifier &)> expressionChanged; 
 
     /* Python interface */
     PyObject *getPyObject(void);
