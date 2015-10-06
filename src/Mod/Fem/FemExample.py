@@ -49,5 +49,5 @@ App.ActiveDocument.recompute()
 Gui.activeDocument().resetEdit()
 
 #
-#need to select material, and refine mesh before testing
+#need to select material, and refine mesh before solve, or you will got ERROR!!!
 #
