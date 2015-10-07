@@ -401,7 +401,16 @@ UINT Gui::GUIApplicationNativeEventAware::GetRawInputBuffer(PRAWINPUT pData, PUI
 	return ::GetRawInputBuffer(pData, pcbSize, cbSizeHeader);
 #else
 	BOOL bIsWow64 = FALSE;
-	::IsWow64Process(GetCurrentProcess(), &bIsWow64);
+	// 0002287: Entry Point Not Found IsWow64Process for Windows 2000
+	//::IsWow64Process(GetCurrentProcess(), &bIsWow64);
+	typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+
+	LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
+		GetModuleHandle("kernel32"), "IsWow64Process");
+
+	if (NULL != fnIsWow64Process) {
+		fnIsWow64Process(GetCurrentProcess(), &bIsWow64);
+	}
 	if (!bIsWow64 || pData==NULL) {
 		return ::GetRawInputBuffer(pData, pcbSize, cbSizeHeader);
 	} else {
