@@ -108,7 +108,7 @@ class _ViewProviderMechanicalMaterial:
     def setEdit(self, vobj, mode):
         taskd = _MechanicalMaterialTaskPanel(self.Object)
         taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
+        FreeCADGui.Control.showDialog(taskd) #  I got error this line, after play back python command history
         return True
 
     def unsetEdit(self, vobj, mode):
@@ -191,7 +191,7 @@ class _MechanicalMaterialTaskPanel:
         if index < 0:
             return
         mat_file_path = self.form.cb_materials.itemData(index)
-        self.obj.Material = self.materials[mat_file_path]
+        self.obj.Material = self.materials[mat_file_path] #should we call it in doCommand() to get recorded?
         self.form.cb_materials.setCurrentIndex(index)
         self.set_mat_params_in_combo_box(self.obj.Material)
         gen_mat_desc = ""
