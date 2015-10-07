@@ -765,7 +765,7 @@ inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> *pclVect, uns
   MaxX(-FLOAT_MAX), MaxY(-FLOAT_MAX), MaxZ(-FLOAT_MAX)
 {
   const Vector3<_Precision>  *pI, *pEnd = pclVect + ulCt;
-  for (pI = pclVect; pI < pEnd; pI++)
+  for (pI = pclVect; pI < pEnd; ++pI)
   {
     MinX = std::min<_Precision>(MinX, pI->x);
     MinY = std::min<_Precision>(MinY, pI->y);

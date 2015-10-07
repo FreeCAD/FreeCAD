@@ -1406,7 +1406,7 @@ void Application::logStatus()
     time(&now);
     Console().Log("Time = %s", ctime(&now));
 
-    for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();It++) {
+    for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
         Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
     }
 }

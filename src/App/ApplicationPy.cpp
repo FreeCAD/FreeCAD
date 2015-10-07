@@ -360,7 +360,7 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args,PyObject 
 
     PyObject *dict = PyDict_New();
     for (std::map<std::string,std::string>::iterator It= GetApplication()._mConfig.begin();
-         It!=GetApplication()._mConfig.end();It++) {
+         It!=GetApplication()._mConfig.end();++It) {
         PyDict_SetItemString(dict,It->first.c_str(), PyString_FromString(It->second.c_str()));
     }
     return dict;
