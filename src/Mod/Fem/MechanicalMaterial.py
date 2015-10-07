@@ -134,14 +134,14 @@ class _MechanicalMaterialTaskPanel:
         QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
         QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
         QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
-        self.previous_material = self.obj.Material
+        self.material = self.obj.Material
         self.import_materials()
-        previous_mat_path = self.get_material_path(self.previous_material)
+        previous_mat_path = self.get_material_path(self.material)
         if not previous_mat_path:
             print "Previously used material cannot be found in material directories. Using transient material."
-            material_name = self.get_material_name(self.previous_material)
+            material_name = self.get_material_name(self.material)
             if material_name != 'None':
-                self.add_transient_material(self.previous_material)
+                self.add_transient_material(self.material)
                 index = self.form.cb_materials.findData(material_name)
             else:
                 index = self.form.cb_materials.findText(material_name)
@@ -151,11 +151,11 @@ class _MechanicalMaterialTaskPanel:
             self.choose_material(index)
 
     def accept(self):
+        self.obj.Material = self.material
         FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
-        self.obj.Material = self.previous_material
-        print "Reverting to material:"
         FreeCADGui.ActiveDocument.resetEdit()
 
     def goMatWeb(self):
@@ -164,44 +164,44 @@ class _MechanicalMaterialTaskPanel:
 
     def ym_changed(self, value):
         import Units
-        old_ym = Units.Quantity(self.obj.Material['YoungsModulus'])
+        old_ym = Units.Quantity(self.material['YoungsModulus'])
         if old_ym != value:
-            material = self.obj.Material
+            material = self.material
             # FreeCAD uses kPa internall for Stress
             material['YoungsModulus'] = unicode(value) + " kPa"
-            self.obj.Material = material
+            self.material = material
 
     def density_changed(self, value):
         import Units
-        old_density = Units.Quantity(self.obj.Material['Density'])
+        old_density = Units.Quantity(self.material['Density'])
         if old_density != value:
-            material = self.obj.Material
+            material = self.material
             material['Density'] = unicode(value) + " kg/mm^3"
-            self.obj.Material = material
+            self.material = material
 
     def pr_changed(self, value):
         import Units
-        old_pr = Units.Quantity(self.obj.Material['PoissonRatio'])
+        old_pr = Units.Quantity(self.material['PoissonRatio'])
         if old_pr != value:
-            material = self.obj.Material
+            material = self.material
             material['PoissonRatio'] = unicode(value)
-            self.obj.Material = material
+            self.material = material
 
     def choose_material(self, index):
         if index < 0:
             return
         mat_file_path = self.form.cb_materials.itemData(index)
-        self.obj.Material = self.materials[mat_file_path]
+        self.material = self.materials[mat_file_path]
         self.form.cb_materials.setCurrentIndex(index)
-        self.set_mat_params_in_combo_box(self.obj.Material)
+        self.set_mat_params_in_combo_box(self.material)
         gen_mat_desc = ""
-        if 'Description' in self.obj.Material:
-            gen_mat_desc = self.obj.Material['Description']
+        if 'Description' in self.material:
+            gen_mat_desc = self.material['Description']
         self.form.l_mat_description.setText(gen_mat_desc)
 
     def get_material_name(self, material):
-        if 'Name' in self.previous_material:
-            return self.previous_material['Name']
+        if 'Name' in self.material:
+            return self.material['Name']
         else:
             return 'None'
 
