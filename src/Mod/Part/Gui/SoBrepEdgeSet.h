@@ -33,6 +33,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
 
+class SoCoordinateElement;
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
@@ -66,6 +67,7 @@ private:
                      int num_vertexindices);
     void renderHighlight(SoGLRenderAction *action);
     void renderSelection(SoGLRenderAction *action);
+    bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
 
 private:
     std::vector<int32_t> hl, sl;
