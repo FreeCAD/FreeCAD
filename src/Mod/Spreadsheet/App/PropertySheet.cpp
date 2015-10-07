@@ -449,6 +449,15 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
         owner->aliasRemoved(address, oldAlias);
 
     cell->setAlias(alias);
+
+    if (oldAlias.size() > 0) {
+        std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
+
+        m[App::ObjectIdentifier(owner, oldAlias)] = App::ObjectIdentifier(owner, alias);
+
+        owner->getDocument()->renameObjectIdentifiers(m);
+    }
+
 }
 
 void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
