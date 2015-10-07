@@ -95,7 +95,7 @@ public:
 
     bool isDirty() const { return dirty.size() > 0; }
 
-    void moveCell(CellAddress currPos, CellAddress newPos);
+    void moveCell(CellAddress currPos, CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renames);
 
     void insertRows(int row, int count);
 
