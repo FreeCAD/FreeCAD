@@ -671,7 +671,7 @@ void StdCmdDrawStyle::activated(int iMsg)
     std::list<MDIView*> views = doc->getMDIViews();
     std::list<MDIView*>::iterator viewIt;
     bool oneChangedSignal(false);
-    for (viewIt = views.begin(); viewIt != views.end(); viewIt++)
+    for (viewIt = views.begin(); viewIt != views.end(); ++viewIt)
     {
         View3DInventor* view = qobject_cast<View3DInventor*>(*viewIt);
         if (view)
@@ -737,7 +737,7 @@ void StdCmdToggleVisibility::activated(int iMsg)
 
         // in case a group object and an object of the group is selected then ignore the group object
         std::vector<App::DocumentObject*> ignore;
-        for (std::vector<App::DocumentObject*>::iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for (std::vector<App::DocumentObject*>::iterator ft=sel.begin();ft!=sel.end();++ft) {
             if ((*ft)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
                 App::DocumentObjectGroup* grp = static_cast<App::DocumentObjectGroup*>(*ft);
                 std::vector<App::DocumentObject*> sub = grp->Group.getValues();
@@ -759,7 +759,7 @@ void StdCmdToggleVisibility::activated(int iMsg)
             sel = diff;
         }
 
-        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             if (pcDoc && pcDoc->isShow((*ft)->getNameInDocument()))
                 doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
                              , (*it)->getName(), (*ft)->getNameInDocument());
@@ -802,7 +802,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
             (App::DocumentObject::getClassTypeId(), (*it)->getName());
 
  
-        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
             if(pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
                     if (dynamic_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
@@ -844,7 +844,7 @@ void StdCmdShowSelection::activated(int iMsg)
     for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
         const std::vector<App::DocumentObject*> sel = Selection().getObjectsOfType
             (App::DocumentObject::getClassTypeId(), (*it)->getName());
-        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
                          , (*it)->getName(), (*ft)->getNameInDocument());
         }
@@ -879,7 +879,7 @@ void StdCmdHideSelection::activated(int iMsg)
     for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
         const std::vector<App::DocumentObject*> sel = Selection().getObjectsOfType
             (App::DocumentObject::getClassTypeId(), (*it)->getName());
-        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
                          , (*it)->getName(), (*ft)->getNameInDocument());
         }

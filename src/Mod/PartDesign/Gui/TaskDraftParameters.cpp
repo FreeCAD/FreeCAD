@@ -89,7 +89,7 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDraft *DraftView,QWidget *p
     ui->checkReverse->setChecked(r);
 
     std::vector<std::string> strings = pcDraft->Base.getSubValues();
-    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
+    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); ++i)
     {
         ui->listWidgetFaces->insertItem(0, QString::fromStdString(*i));
     }
@@ -151,7 +151,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 pcDraft->Base.setValue(base, faces);
                 QList<QListWidgetItem*> items = ui->listWidgetFaces->findItems(QString::fromStdString(subName), Qt::MatchExactly);
                 if (!items.empty()) {
-                    for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+                    for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); ++i) {
                         QListWidgetItem* it = ui->listWidgetFaces->takeItem(ui->listWidgetFaces->row(*i));
                         delete it;
                     }

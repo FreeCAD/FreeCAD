@@ -47,7 +47,7 @@ DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string> &scriptnames)
 {
     ui->setupUi(this);
     ui->comboBox->addItem(tr("None"));
-    for (std::vector<std::string>::const_iterator it = scriptnames.begin(); it != scriptnames.end(); it++)
+    for (std::vector<std::string>::const_iterator it = scriptnames.begin(); it != scriptnames.end(); ++it)
         ui->comboBox->addItem(QString::fromUtf8((*it).c_str()));
     QMetaObject::connectSlotsByName(this);
 }

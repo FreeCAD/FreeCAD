@@ -67,7 +67,7 @@ void CmdPathCompound::activated(int iMsg)
         std::ostringstream cmd;
         cmd << "[";
         Path::Feature *pcPathObject;
-        for (std::vector<Gui::SelectionSingleton::SelObj>::const_iterator it=Sel.begin();it!=Sel.end();it++) {
+        for (std::vector<Gui::SelectionSingleton::SelObj>::const_iterator it=Sel.begin();it!=Sel.end();++it) {
             if ((*it).pObject->getTypeId().isDerivedFrom(Path::Feature::getClassTypeId())) {
                 pcPathObject = dynamic_cast<Path::Feature*>((*it).pObject);
                 cmd << "FreeCAD.activeDocument()." << pcPathObject->getNameInDocument() << ",";

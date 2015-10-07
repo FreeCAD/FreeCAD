@@ -309,12 +309,12 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd, 
 
   // alle Facets markieren die in der Indizie-Liste vorkommen
   ResetFacetFlag(MeshFacet::VISIT);
-  for (std::vector<unsigned long>::const_iterator pIter = raulInd.begin(); pIter != raulInd.end(); pIter++)
+  for (std::vector<unsigned long>::const_iterator pIter = raulInd.begin(); pIter != raulInd.end(); ++pIter)
     rclFAry[*pIter].SetFlag(MeshFacet::VISIT);
 
   std::list<std::pair<unsigned long, unsigned long> >  aclEdges;
   // alle Randkanten suchen und ablegen (unsortiert)
-  for (std::vector<unsigned long>::const_iterator pIter2 = raulInd.begin(); pIter2 != raulInd.end(); pIter2++)
+  for (std::vector<unsigned long>::const_iterator pIter2 = raulInd.begin(); pIter2 != raulInd.end(); ++pIter2)
   {
     const MeshFacet  &rclFacet = rclFAry[*pIter2];
     for (int i = 0; i < 3; i++)
@@ -348,7 +348,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd, 
   {
     // naechste anliegende Kante suchen
     std::list<std::pair<unsigned long, unsigned long> >::iterator pEI;
-    for (pEI = aclEdges.begin(); pEI != aclEdges.end(); pEI++)
+    for (pEI = aclEdges.begin(); pEI != aclEdges.end(); ++pEI)
     {
       if (pEI->first == ulLast)
       {

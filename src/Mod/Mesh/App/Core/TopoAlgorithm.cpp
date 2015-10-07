@@ -146,7 +146,7 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
   // For each internal edge get the adjacent facets. When doing an edge swap we must update
   // this structure.
   std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> > aEdge2Face;
-  for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); pI++)
+  for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); ++pI)
   {
     for (int i = 0; i < 3; i++)
     {
@@ -338,7 +338,7 @@ void MeshTopoAlgorithm::DelaunayFlip(float fMaxAngle)
     // For each internal edge get the adjacent facets.
     std::set<std::pair<unsigned long, unsigned long> > aEdge2Face;
     unsigned long index = 0;
-    for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); pI++, index++) {
+    for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); ++pI, index++) {
         for (int i = 0; i < 3; i++) {
             // ignore open edges
             if (pI->_aulNeighbours[i] != ULONG_MAX) {
@@ -1386,7 +1386,7 @@ void MeshTopoAlgorithm::HarmonizeNormals (void)
 
 void MeshTopoAlgorithm::FlipNormals (void)
 {
-  for (MeshFacetArray::_TIterator i = _rclMesh._aclFacetArray.begin(); i < _rclMesh._aclFacetArray.end(); i++)
+  for (MeshFacetArray::_TIterator i = _rclMesh._aclFacetArray.begin(); i < _rclMesh._aclFacetArray.end(); ++i)
     i->FlipNormal();
 }
 

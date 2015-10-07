@@ -532,7 +532,7 @@ bool Command::isActiveObjectValid(void)
 void Command::updateAll(std::list<Gui::Document*> cList)
 {
     if (cList.size()>0) {
-        for (std::list<Gui::Document*>::iterator It= cList.begin();It!=cList.end();It++)
+        for (std::list<Gui::Document*>::iterator It= cList.begin();It!=cList.end();++It)
             (*It)->onUpdate();
     }
     else {
@@ -1363,7 +1363,7 @@ std::vector <Command*> CommandManager::getModuleCommands(const char *sModName) c
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         if ( strcmp(It->second->getAppModuleName(),sModName) == 0)
             vCmds.push_back(It->second);
     }
@@ -1375,7 +1375,7 @@ std::vector <Command*> CommandManager::getAllCommands(void) const
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         vCmds.push_back(It->second);
     }
 
@@ -1386,7 +1386,7 @@ std::vector <Command*> CommandManager::getGroupCommands(const char *sGrpName) co
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         if ( strcmp(It->second->getGroupName(),sGrpName) == 0)
             vCmds.push_back(It->second);
     }
@@ -1410,7 +1410,7 @@ void CommandManager::runCommandByName (const char* sName) const
 
 void CommandManager::testActive(void)
 {
-    for ( std::map<std::string, Command*>::iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         It->second->testActive();
     }
 }
