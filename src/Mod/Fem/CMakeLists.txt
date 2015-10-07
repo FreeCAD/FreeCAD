@@ -15,14 +15,14 @@ INSTALL(
 	FemTools.py
 	PreImport.py
 	CaeSolver.py
-	ccxCaeSolver.py
+	ccxFemSolver.py
 	MechanicalAnalysis.py
 	MechanicalAnalysis.ui
-	ShowDisplacement.ui
         #CaeAnalysis.py
 	#FemCommands.py
-	#FemResultControlTaskPanel.py
-	#JobControlTaskPanel
+	FemResultControlTaskPanel.py
+	ShowDisplacement.ui
+	JobControlTaskPanel.py
         TestFem.py
         FemExample.py
         MechanicalMaterial.py
@@ -32,7 +32,6 @@ INSTALL(
 	FemBeamSection.py
 	FemBeamSection.ui
         
-	
     DESTINATION
         Mod/Fem
 )
