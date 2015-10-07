@@ -122,6 +122,11 @@ public:
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
+    /** 
+     * sets the geometry of sketchObject as the solvedsketch geometry
+     * returns the DoF of such a geometry.
+     */
+    int setUpSketch();
 
     /** solves the sketch and updates the geometry, but not all the dependent features (does not recompute)
         When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
