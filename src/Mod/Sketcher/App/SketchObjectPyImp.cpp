@@ -264,7 +264,12 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
         //
         // N.B.: However, the solve itself may be inhibited in cases where groups of geometry/constraints
         //      are added together, because in that case undoing will also make the geometry disappear.
-        this->getSketchObjectPtr()->solve(); 
+        this->getSketchObjectPtr()->solve();
+        // if the geometry moved during the solve, then the initial solution is invalid
+        // at this point, so a point movement may not work in cases where redundant constraints exist.
+        // this forces recalculation of the initial solution (not a full solve)
+        if(this->getSketchObjectPtr()->noRecomputes)
+            this->getSketchObjectPtr()->setUpSketch(); 
         return Py::new_reference_to(Py::Int(ret));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||

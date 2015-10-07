@@ -372,6 +372,12 @@ int SketchObject::toggleDriving(int ConstrId)
     return 0;
 }
 
+int SketchObject::setUpSketch()
+{
+    return solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                             getExternalGeometryCount());
+}
+
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeoBeforeMoving)
 {
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
