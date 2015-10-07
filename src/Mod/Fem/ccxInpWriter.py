@@ -661,17 +661,17 @@ class inp_writer:
                 for ref in obj.References:
                     femnodes = []
                     femelements = []
-                    r = ref[0].Shape.getElement(ref[1])
+                    if ref[1]:
+                        r = ref[0].Shape.getElement(ref[1])
+                    else:
+                        r = ref[0].Shape
                     # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
                     if r.ShapeType == 'Edge':
                         femnodes = self.mesh_object.FemMesh.getNodesByEdge(r)
                     elif r.ShapeType == 'Face':
                         femnodes = self.mesh_object.FemMesh.getNodesByFace(r)
                     elif r.ShapeType == 'Solid':
-                        # femnodes = self.mesh_object.FemMesh.getNodesBySolid(r)  -->  TODO
-                        FreeCAD.Console.PrintError('Solid Reference Shapes, CalculiX input file may be broken!\n')
-                        fem_object['FEMElements'] = self.ccx_eall
-                        return
+                        femnodes = self.mesh_object.FemMesh.getNodesBySolid(r)
                     else:
                         print('  No Edge, Face or Solid as reference shapes!')
                     femelements = getFemElementsByNodes(self.fem_element_table, femnodes)
