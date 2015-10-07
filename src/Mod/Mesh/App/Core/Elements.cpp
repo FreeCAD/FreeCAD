@@ -64,22 +64,22 @@ unsigned long MeshPointArray::GetOrAddIndex (const MeshPoint &rclPoint)
 
 void MeshPointArray::SetFlag (MeshPoint::TFlagType tF) const
 {
-  for (MeshPointArray::_TConstIterator i = begin(); i < end(); i++) i->SetFlag(tF);
+  for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) i->SetFlag(tF);
 }
 
 void MeshPointArray::ResetFlag (MeshPoint::TFlagType tF) const
 {
-  for (MeshPointArray::_TConstIterator i = begin(); i < end(); i++) i->ResetFlag(tF);
+  for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) i->ResetFlag(tF);
 }
 
 void MeshPointArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pP = begin(); pP != end(); pP++) pP->SetProperty(ulVal);
+  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->SetProperty(ulVal);
 }
 
 void MeshPointArray::ResetInvalid (void) const
 {
-  for (_TConstIterator pP = begin(); pP != end(); pP++) pP->ResetInvalid();
+  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->ResetInvalid();
 }
 
 MeshPointArray& MeshPointArray::operator = (const MeshPointArray &rclPAry)
@@ -134,22 +134,22 @@ void MeshFacetArray::DecrementIndices (unsigned long ulIndex)
 
 void MeshFacetArray::SetFlag (MeshFacet::TFlagType tF) const
 {
-  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); i++) i->SetFlag(tF);
+  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) i->SetFlag(tF);
 }
 
 void MeshFacetArray::ResetFlag (MeshFacet::TFlagType tF) const
 {
-  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); i++) i->ResetFlag(tF);
+  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) i->ResetFlag(tF);
 }
 
 void MeshFacetArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pF = begin(); pF != end(); pF++) pF->SetProperty(ulVal);
+  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->SetProperty(ulVal);
 }
 
 void MeshFacetArray::ResetInvalid (void) const
 {
-  for (_TConstIterator pF = begin(); pF != end(); pF++) pF->ResetInvalid();
+  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->ResetInvalid();
 }
 
 MeshFacetArray& MeshFacetArray::operator = (const MeshFacetArray &rclFAry)

@@ -1031,14 +1031,14 @@ void MeshKernel::GetEdges (std::vector<MeshGeomEdge>& edges) const
 {
     std::set<MeshBuilder::Edge> tmp;
 
-    for (MeshFacetArray::_TConstIterator it = _aclFacetArray.begin(); it != _aclFacetArray.end(); it++) {
+    for (MeshFacetArray::_TConstIterator it = _aclFacetArray.begin(); it != _aclFacetArray.end(); ++it) {
         for (int i = 0; i < 3; i++) {
             tmp.insert(MeshBuilder::Edge(it->_aulPoints[i], it->_aulPoints[(i+1)%3], it->_aulNeighbours[i]));
         }
     }
 
     edges.reserve(tmp.size());
-    for (std::set<MeshBuilder::Edge>::iterator it2 = tmp.begin(); it2 != tmp.end(); it2++) {
+    for (std::set<MeshBuilder::Edge>::iterator it2 = tmp.begin(); it2 != tmp.end(); ++it2) {
         MeshGeomEdge edge;
         edge._aclPoints[0] = this->_aclPointArray[it2->pt1];
         edge._aclPoints[1] = this->_aclPointArray[it2->pt2];
@@ -1052,7 +1052,7 @@ unsigned long MeshKernel::CountEdges (void) const
 {
     unsigned long openEdges = 0, closedEdges = 0;
 
-    for (MeshFacetArray::_TConstIterator it = _aclFacetArray.begin(); it != _aclFacetArray.end(); it++) {
+    for (MeshFacetArray::_TConstIterator it = _aclFacetArray.begin(); it != _aclFacetArray.end(); ++it) {
         for (int i = 0; i < 3; i++) {
             if (it->_aulNeighbours[i] == ULONG_MAX)
                 openEdges++;

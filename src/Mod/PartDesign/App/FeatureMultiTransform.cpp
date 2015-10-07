@@ -55,7 +55,7 @@ void MultiTransform::positionBySupport(void)
     PartDesign::Transformed::positionBySupport();
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator f = transFeatures.begin();
-         f != transFeatures.end(); f++) {
+         f != transFeatures.end(); ++f) {
         if (!((*f)->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId())))
             throw Base::Exception("Transformation features must be subclasses of Transformed");
         PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(*f);
@@ -95,7 +95,7 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
     std::list<gp_Pnt> cogs;
     std::vector<App::DocumentObject*>::const_iterator f;
 
-    for (f = transFeatures.begin(); f != transFeatures.end(); f++) {
+    for (f = transFeatures.begin(); f != transFeatures.end(); ++f) {
         if (!((*f)->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId())))
             throw Base::Exception("Transformation features must be subclasses of Transformed");
         PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(*f);
@@ -104,7 +104,7 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
         if (result.empty()) {
             // First transformation Feature
             result = newTransformations;
-            for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin(); nt != newTransformations.end(); nt++) {
+            for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin(); nt != newTransformations.end(); ++nt) {
                 cogs.push_back(cog.Transformed(*nt));
             }
         } else {
@@ -132,7 +132,7 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
                 std::list<gp_Trsf>::const_iterator ot = oldTransformations.begin();
                 std::list<gp_Pnt>::const_iterator oc = oldCogs.begin();
 
-                for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin(); nt != newTransformations.end(); nt++) {
+                for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin(); nt != newTransformations.end(); ++nt) {
                     for (unsigned s = 0; s < sliceLength; s++) {
                         gp_Trsf trans;
                         double factor = nt->ScaleFactor(); // extract scale factor
@@ -146,8 +146,8 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
                             cogs.push_back(oc->Transformed(*nt));
                         }
                         result.push_back(trans);
-                        ot++;
-                        oc++;
+                        ++ot;
+                        ++oc;
                     }
                 }
             } else {
@@ -157,13 +157,13 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
                 // a11 a12         b1    a11*b1 a12*b1 a11*b2 a12*b2 a11*b3 a12*b3
                 // a21 a22   mul   b2  = a21*b1 a22*b1 a21*b2 a22*b2 a21*b3 a22*b3
                 //                 b3
-                for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin(); nt != newTransformations.end(); nt++) {
+                for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin(); nt != newTransformations.end(); ++nt) {
                     std::list<gp_Pnt>::const_iterator oc = oldCogs.begin();
 
-                    for (std::list<gp_Trsf>::const_iterator ot = oldTransformations.begin(); ot != oldTransformations.end(); ot++) {
+                    for (std::list<gp_Trsf>::const_iterator ot = oldTransformations.begin(); ot != oldTransformations.end(); ++ot) {
                         result.push_back((*nt) * (*ot));
                         cogs.push_back(oc->Transformed(*nt));
-                        oc++;
+                        ++oc;
                     }
                 }
             }

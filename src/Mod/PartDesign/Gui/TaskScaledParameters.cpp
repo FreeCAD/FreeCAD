@@ -103,7 +103,7 @@ void TaskScaledParameters::setupUI()
 
     // Fill data into dialog elements
     ui->lineOriginal->setEnabled(false);
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
+    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL) { // find the first valid original
             ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));

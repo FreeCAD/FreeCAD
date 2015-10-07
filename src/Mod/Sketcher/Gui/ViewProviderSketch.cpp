@@ -4791,7 +4791,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         }
 
         std::set<int>::const_reverse_iterator rit;
-        for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); rit++) {
+        for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
                                        ,getObject()->getNameInDocument(), *rit);
@@ -4801,7 +4801,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); rit++) {
+        for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); ++rit) {
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i)"
                                        ,getObject()->getNameInDocument(), *rit);
@@ -4811,7 +4811,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); rit++) {
+        for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); ++rit) {
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delGeometry(%i)"
                                            ,getObject()->getNameInDocument(), *rit);
@@ -4821,7 +4821,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); rit++) {
+        for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delExternal(%i)"
                     ,getObject()->getNameInDocument(), *rit);

@@ -1394,7 +1394,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
         index = 0;
     else
         index = mTria.rbegin()->first + 1;
-    for (std::map <int, QUAD>::iterator QI=mQuad.begin(); QI!=mQuad.end(); QI++) {
+    for (std::map <int, QUAD>::iterator QI=mQuad.begin(); QI!=mQuad.end(); ++QI) {
         for (int i = 0; i < 2; i++) {
             float fDx = mNode[(*QI).second.iV[i+2]].x - mNode[(*QI).second.iV[i]].x;
             float fDy = mNode[(*QI).second.iV[i+2]].y - mNode[(*QI).second.iV[i]].y;
@@ -1425,13 +1425,13 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
     // Applying the nodes
     vVertices.reserve(mNode.size());
-    for (std::map<int, NODE>::iterator MI=mNode.begin(); MI!=mNode.end(); MI++) {
+    for (std::map<int, NODE>::iterator MI=mNode.begin(); MI!=mNode.end(); ++MI) {
         vVertices.push_back(Base::Vector3f(MI->second.x, MI->second.y, MI->second.z));
     }
 
     // Converting data to Mesh. Negative conversion for right orientation of normal-vectors.
     vTriangle.reserve(mTria.size());
-    for (std::map<int, TRIA>::iterator MI=mTria.begin(); MI!=mTria.end(); MI++) {
+    for (std::map<int, TRIA>::iterator MI=mTria.begin(); MI!=mTria.end(); ++MI) {
         clMeshFacet._aulPoints[0] = (*MI).second.iV[1];
         clMeshFacet._aulPoints[1] = (*MI).second.iV[0];
         clMeshFacet._aulPoints[2] = (*MI).second.iV[2];
@@ -2022,7 +2022,7 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
     writer.incInd();
     if (this->apply_transform) {
         Base::Vector3f pt;
-        for (MeshPointArray::_TConstIterator itp = rPoints.begin(); itp != rPoints.end(); itp++) {
+        for (MeshPointArray::_TConstIterator itp = rPoints.begin(); itp != rPoints.end(); ++itp) {
             pt = this->_transform * *itp;
             writer.Stream() <<  writer.ind() << "<P "
                             << "x=\"" <<  pt.x << "\" "
@@ -2032,7 +2032,7 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
         }
     }
     else {
-        for (MeshPointArray::_TConstIterator itp = rPoints.begin(); itp != rPoints.end(); itp++) {
+        for (MeshPointArray::_TConstIterator itp = rPoints.begin(); itp != rPoints.end(); ++itp) {
             writer.Stream() <<  writer.ind() << "<P "
                             << "x=\"" <<  itp->x << "\" "
                             << "y=\"" <<  itp->y << "\" "
@@ -2047,7 +2047,7 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Faces Count=\"" << _rclMesh.CountFacets() << "\">" << std::endl;
 
     writer.incInd();
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); it++) {
+    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
         writer.Stream() << writer.ind() << "<F "
                         << "p0=\"" <<  it->_aulPoints[0] << "\" "
                         << "p1=\"" <<  it->_aulPoints[1] << "\" "

@@ -55,9 +55,8 @@ ConsoleSingleton::ConsoleSingleton(void)
 
 ConsoleSingleton::~ConsoleSingleton()
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++)
-        delete (*Iter);   
-
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter)
+        delete (*Iter);
 }
 
 
@@ -313,7 +312,7 @@ void ConsoleSingleton::DetachObserver(ConsoleObserver *pcObserver)
 
 void ConsoleSingleton::NotifyMessage(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if((*Iter)->bMsg)
             (*Iter)->Message(sMsg);   // send string to the listener
     }
@@ -321,7 +320,7 @@ void ConsoleSingleton::NotifyMessage(const char *sMsg)
 
 void ConsoleSingleton::NotifyWarning(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if((*Iter)->bWrn)
             (*Iter)->Warning(sMsg);   // send string to the listener
     }
@@ -329,7 +328,7 @@ void ConsoleSingleton::NotifyWarning(const char *sMsg)
 
 void ConsoleSingleton::NotifyError(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if((*Iter)->bErr)
             (*Iter)->Error(sMsg);   // send string to the listener
     }
@@ -337,7 +336,7 @@ void ConsoleSingleton::NotifyError(const char *sMsg)
 
 void ConsoleSingleton::NotifyLog(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if((*Iter)->bLog)
             (*Iter)->Log(sMsg);   // send string to the listener
     }
@@ -346,7 +345,7 @@ void ConsoleSingleton::NotifyLog(const char *sMsg)
 ConsoleObserver *ConsoleSingleton::Get(const char *Name) const
 {
     const char* OName;
-    for(std::set<ConsoleObserver * >::const_iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
+    for(std::set<ConsoleObserver * >::const_iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         OName = (*Iter)->Name();   // get the name
         if(OName && strcmp(OName,Name) == 0)
             return *Iter;

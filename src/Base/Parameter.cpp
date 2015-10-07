@@ -851,7 +851,7 @@ void ParameterGrp::Clear(void)
 
     // checking on references
     std::map <std::string ,Base::Reference<ParameterGrp> >::iterator It1;
-    for (It1 = _GroupMap.begin();It1!=_GroupMap.end();It1++)
+    for (It1 = _GroupMap.begin();It1!=_GroupMap.end();++It1)
         if (It1->second.getRefCount() > 1)
             Console().Warning("ParameterGrp::Clear(): Group clear with active references");
     // remove group handles
@@ -933,27 +933,27 @@ void ParameterGrp::NotifyAll()
 {
     // get all ints and notify
     std::vector<std::pair<std::string,long> > IntMap = GetIntMap();
-    for (std::vector<std::pair<std::string,long> >::iterator It1= IntMap.begin(); It1 != IntMap.end(); It1++)
+    for (std::vector<std::pair<std::string,long> >::iterator It1= IntMap.begin(); It1 != IntMap.end(); ++It1)
         Notify(It1->first.c_str());
 
     // get all booleans and notify
     std::vector<std::pair<std::string,bool> > BoolMap = GetBoolMap();
-    for (std::vector<std::pair<std::string,bool> >::iterator It2= BoolMap.begin(); It2 != BoolMap.end(); It2++)
+    for (std::vector<std::pair<std::string,bool> >::iterator It2= BoolMap.begin(); It2 != BoolMap.end(); ++It2)
         Notify(It2->first.c_str());
 
     // get all Floats and notify
     std::vector<std::pair<std::string,double> > FloatMap  = GetFloatMap();
-    for (std::vector<std::pair<std::string,double> >::iterator It3= FloatMap.begin(); It3 != FloatMap.end(); It3++)
+    for (std::vector<std::pair<std::string,double> >::iterator It3= FloatMap.begin(); It3 != FloatMap.end(); ++It3)
         Notify(It3->first.c_str());
 
     // get all strings and notify
     std::vector<std::pair<std::string,std::string> > StringMap = GetASCIIMap();
-    for (std::vector<std::pair<std::string,std::string> >::iterator It4= StringMap.begin(); It4 != StringMap.end(); It4++)
+    for (std::vector<std::pair<std::string,std::string> >::iterator It4= StringMap.begin(); It4 != StringMap.end(); ++It4)
         Notify(It4->first.c_str());
 
     // get all uints and notify
     std::vector<std::pair<std::string,unsigned long> > UIntMap = GetUnsignedMap();
-    for (std::vector<std::pair<std::string,unsigned long> >::iterator It5= UIntMap.begin(); It5 != UIntMap.end(); It5++)
+    for (std::vector<std::pair<std::string,unsigned long> >::iterator It5= UIntMap.begin(); It5 != UIntMap.end(); ++It5)
         Notify(It5->first.c_str());
 }
 

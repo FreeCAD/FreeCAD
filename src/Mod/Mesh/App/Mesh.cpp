@@ -697,7 +697,7 @@ void MeshObject::offset(float fSize)
 
     unsigned int i = 0;
     // go through all the vertex normals
-    for (std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();It++,i++)
+    for (std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();++It,i++)
         // and move each mesh point in the normal direction
         _kernel.MovePoint(i,It->Normalize() * fSize);
     _kernel.RecalcBoundBox();
@@ -717,7 +717,7 @@ void MeshObject::offsetSpecial2(float fSize)
     unsigned int i = 0;
 
     // go through all the vertex normals
-    for (std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();It++,i++){
+    for (std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++){
         builder.addSingleLine(_kernel.GetPoint(i),_kernel.GetPoint(i)+It->Normalize() * fSize);
         // and move each mesh point in the normal direction
         _kernel.MovePoint(i,It->Normalize() * fSize);
@@ -763,7 +763,7 @@ void MeshObject::offsetSpecial(float fSize, float zmax, float zmin)
 
     unsigned int i = 0;
     // go through all the vertex normals
-    for (std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();It++,i++) {
+    for (std::vector<Base::Vector3f>::iterator It= normals.begin();It != normals.end();++It,i++) {
         Base::Vector3f Pnt = _kernel.GetPoint(i);
         if (Pnt.z < zmax && Pnt.z > zmin) {
             Pnt.z = 0;

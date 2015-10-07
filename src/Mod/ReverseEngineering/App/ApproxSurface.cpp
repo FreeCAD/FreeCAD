@@ -695,18 +695,20 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
   // Berechne die u,v-Parameter mit u,v aus [0,1]
   _pvcUVParam->Init(gp_Pnt2d(0.0f, 0.0f));
   int ii=0;
-  if (clBBox.fMaxX - clBBox.fMinX >= clBBox.fMaxY - clBBox.fMinY)
-      for (std::vector<Base::Vector2D>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); It2++)
+  if (clBBox.fMaxX - clBBox.fMinX >= clBBox.fMaxY - clBBox.fMinY) {
+      for (std::vector<Base::Vector2D>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2)
     {
       (*_pvcUVParam)(ii) = gp_Pnt2d((It2->fX-tx)/fDeltaX, (It2->fY-ty)/fDeltaY);
       ii++;
     }
-  else
-      for (std::vector<Base::Vector2D>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); It2++)
+  }
+  else {
+      for (std::vector<Base::Vector2D>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2)
     {
       (*_pvcUVParam)(ii) = gp_Pnt2d((It2->fY-ty)/fDeltaY, (It2->fX-tx)/fDeltaX);
       ii++;
     }
+  }
 
   return true;
 }
