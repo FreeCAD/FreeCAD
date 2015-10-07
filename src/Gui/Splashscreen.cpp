@@ -309,9 +309,6 @@ static QString getOperatingSystem()
 #endif
 }
 
-#if defined(Q_OS_WIN32) || defined(Q_OS_WIN64)
-typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
-#endif
 static int getWordSizeOfOS()
 {
 #if defined(Q_OS_WIN64)
@@ -323,6 +320,7 @@ static int getWordSizeOfOS()
     // default bIsWow64 to FALSE for 32-bit process on 32-bit windows
 
     BOOL bIsWow64 = FALSE; // must default to FALSE
+    typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
 
     LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
         GetModuleHandle("kernel32"), "IsWow64Process");
