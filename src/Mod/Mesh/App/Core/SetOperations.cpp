@@ -305,7 +305,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
 {
   // Triangulate Mesh 
   std::map<unsigned long, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
-  for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); it1++)
+  for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
   {
     std::vector<Vector3f> points;
     std::set<MeshPoint>   pointsSet;
@@ -327,7 +327,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     
     // triangulated facets
     std::list<std::set<MeshPoint>::iterator>::iterator it2;
-    for (it2 = it1->second.begin(); it2 != it1->second.end(); it2++)
+    for (it2 = it1->second.begin(); it2 != it1->second.end(); ++it2)
     {
       if (pointsSet.find(*(*it2)) == pointsSet.end())
       {
@@ -464,7 +464,7 @@ void SetOperations::CollectFacets (int side, float mult)
   // search for facet not visited
   MeshFacetArray::_TConstIterator itf;
   const MeshFacetArray& rFacets = mesh.GetFacets();
-  for (itf = rFacets.begin(); itf != rFacets.end(); itf++)
+  for (itf = rFacets.begin(); itf != rFacets.end(); ++itf)
   {
     if (!itf->IsFlag(MeshFacet::VISIT))
     { // Facet found, visit neighbours
@@ -481,7 +481,7 @@ void SetOperations::CollectFacets (int side, float mult)
   }
 
   // add all facets to the result vector
-  for (itf = rFacets.begin(); itf != rFacets.end(); itf++)
+  for (itf = rFacets.begin(); itf != rFacets.end(); ++itf)
   {
     if (itf->IsFlag(MeshFacet::TMP0))
     {
