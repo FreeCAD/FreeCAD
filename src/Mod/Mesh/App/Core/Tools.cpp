@@ -313,7 +313,7 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (unsigned long ulFa
     }
 
     // reset marked facets, points
-    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); pF++)
+    for (std::vector<MeshFacetArray::_TConstIterator>::iterator pF = aclTestedFacet.begin(); pF != aclTestedFacet.end(); ++pF)
         (*pF)->ResetFlag(MeshFacet::MARKED);
     for (std::set<unsigned long>::iterator pR = _aclResult.begin(); pR != _aclResult.end(); ++pR)
         _rclPAry[*pR].ResetFlag(MeshPoint::MARKED);

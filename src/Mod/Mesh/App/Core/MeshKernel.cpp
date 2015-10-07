@@ -199,7 +199,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
 
     // Check for the above edges in the current facet array
     k=0;
-    for (MeshFacetArray::_TIterator pF = _aclFacetArray.begin(); pF != _aclFacetArray.end(); pF++, k++) {
+    for (MeshFacetArray::_TIterator pF = _aclFacetArray.begin(); pF != _aclFacetArray.end(); ++pF, k++) {
         // if none of the points references one of the edges ignore the facet
         if (!this->_aclPointArray[pF->_aulPoints[0]].IsFlag(MeshPoint::INVALID) &&
             !this->_aclPointArray[pF->_aulPoints[1]].IsFlag(MeshPoint::INVALID) &&
@@ -613,7 +613,7 @@ void MeshKernel::RemoveInvalids ()
     pDIter = aulDecrements.begin();
     ulDec  = 0;
     pPEnd  = _aclPointArray.end();
-    for (pPIter = _aclPointArray.begin(); pPIter != pPEnd; pPIter++) {
+    for (pPIter = _aclPointArray.begin(); pPIter != pPEnd; ++pPIter) {
         *pDIter++ = ulDec;
         if (pPIter->IsValid() == false)
             ulDec++;
@@ -621,7 +621,7 @@ void MeshKernel::RemoveInvalids ()
 
     // correct point indices of the facets
     pFEnd  = _aclFacetArray.end();
-    for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; pFIter++) {
+    for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; ++pFIter) {
         if (pFIter->IsValid() == true) {
             pFIter->_aulPoints[0] -= aulDecrements[pFIter->_aulPoints[0]];
             pFIter->_aulPoints[1] -= aulDecrements[pFIter->_aulPoints[1]];
@@ -636,7 +636,7 @@ void MeshKernel::RemoveInvalids ()
     MeshPointArray  aclTempPt(ulNewPts);
     MeshPointArray::_TIterator pPTemp = aclTempPt.begin();
     pPEnd = _aclPointArray.end();
-    for (pPIter = _aclPointArray.begin(); pPIter != pPEnd; pPIter++) {
+    for (pPIter = _aclPointArray.begin(); pPIter != pPEnd; ++pPIter) {
         if (pPIter->IsValid() == true)
             *pPTemp++ = *pPIter;
     }
@@ -660,7 +660,7 @@ void MeshKernel::RemoveInvalids ()
 
     // correct neighbour indices of the facets
     pFEnd = _aclFacetArray.end();
-    for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; pFIter++) {
+    for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; ++pFIter) {
         if (pFIter->IsValid() == true) {
             for (i = 0; i < 3; i++) {
                 k = pFIter->_aulNeighbours[i];
@@ -680,7 +680,7 @@ void MeshKernel::RemoveInvalids ()
     MeshFacetArray aclFArray(ulDelFacets);
     MeshFacetArray::_TIterator pFTemp = aclFArray.begin();  
     pFEnd  = _aclFacetArray.end();
-    for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; pFIter++) {
+    for (pFIter = _aclFacetArray.begin(); pFIter != pFEnd; ++pFIter) {
         if (pFIter->IsValid() == true)
             *pFTemp++ = *pFIter;
     }
