@@ -244,8 +244,6 @@ protected:
 
     App::Property *setQuantityProperty(CellAddress key, double value, const Base::Unit &unit);
 
-    void moveCell(CellAddress currPos, CellAddress newPos);
-
     void renamedDocumentObject(const App::DocumentObject * docObj);
 
     void aliasRemoved(CellAddress address, const std::string &alias);
