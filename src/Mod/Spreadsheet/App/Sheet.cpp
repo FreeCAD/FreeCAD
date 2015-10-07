@@ -1168,17 +1168,6 @@ void Sheet::setSpans(CellAddress address, int rows, int columns)
 }
 
 /**
-  * Move a cell from \a currPos to \a newPos. If the cell at new position
-  * contains data, it is overwritten by the move.
-  *
-  */
-
-void Sheet::moveCell(CellAddress currPos, CellAddress newPos)
-{
-    cells.moveCell(currPos, newPos);
-}
-
-/**
  * @brief Called when a document object is renamed.
  * @param docObj Renamed document object.
  */
