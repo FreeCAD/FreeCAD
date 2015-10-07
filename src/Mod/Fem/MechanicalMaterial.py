@@ -107,6 +107,15 @@ class _ViewProviderMechanicalMaterial:
         FreeCADGui.Control.closeDialog()
         return
 
+    # overwrite the doubleClicked to make sure no other Material taskd (and thus no selection observer) is still active
+    def doubleClicked(self, vobj):  
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('There is an active ViewProvider in EditMode! Please close this one!\n')
+        return True
+
     def __getstate__(self):
         return None
 
@@ -150,8 +159,7 @@ class _MechanicalMaterialTaskPanel:
         self.rebuild_list_References()
 
     def accept(self):
-        if self.sel_server:
-            FreeCADGui.Selection.removeObserver(self.sel_server)
+        self.remove_active_sel_server()
         self.obj.Material = self.material
         self.obj.References = self.references
         doc = FreeCADGui.getDocument(self.obj.Document)
@@ -159,10 +167,13 @@ class _MechanicalMaterialTaskPanel:
         doc.Document.recompute()
 
     def reject(self):
-        if self.sel_server:
-            FreeCADGui.Selection.removeObserver(self.sel_server)
+        self.remove_active_sel_server()
         doc = FreeCADGui.getDocument(self.obj.Document)
         doc.resetEdit()
+
+    def remove_active_sel_server(self):
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
 
     def goMatWeb(self):
         import webbrowser
@@ -289,7 +300,10 @@ class _MechanicalMaterialTaskPanel:
             return
         currentItemName = str(self.form.list_References.currentItem().text())
         for ref in self.references:
-            refname_to_compare_listentry = ref[0].Name + '-->' + ref[1]
+            if ref[1]:
+                refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
+            else:
+                refname_to_compare_listentry = ref[0].Name
             if refname_to_compare_listentry == currentItemName:
                 self.references.remove(ref)
         self.rebuild_list_References()
@@ -305,23 +319,29 @@ class _MechanicalMaterialTaskPanel:
     def selectionParser(self, selection):
         print 'selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1]
         if hasattr(selection[0], "Shape"):
-            elt = selection[0].Shape.getElement(selection[1])
-            if elt.ShapeType == 'Edge' or elt.ShapeType == 'Face':
+            if selection[1]:
+                elt = selection[0].Shape.getElement(selection[1])
+            else:
+                elt = selection[0].Shape
+            if elt.ShapeType == 'Edge' or elt.ShapeType == 'Face' or elt.ShapeType == 'Solid':
                 if selection not in self.references:
                     self.references.append(selection)
                     self.rebuild_list_References()
                 else:
                     print selection[0].Name, '-->', selection[1], ' is already in reference list!'
             else:
-                print 'Select Edge or Face!'
+                print 'Select  Edge, Face or Solid!'
         else:
             print 'Selection has no shape!'
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
         items = []
-        for i in self.references:
-            item_name = i[0].Name + '-->' + i[1]
+        for ref in self.references:
+            if ref[1]:
+                item_name = ref[0].Name + ':' + ref[1]
+            else:
+                item_name = ref[0].Name
             items.append(item_name)
         for listItemName in sorted(items):
             listItem = QtGui.QListWidgetItem(listItemName, self.form.list_References)  # listItem =   is needed
@@ -333,13 +353,14 @@ class ReferenceShapeSelectionObserver:
     def __init__(self, parseSelectionFunction):
         self.parseSelectionFunction = parseSelectionFunction
         FreeCADGui.Selection.addObserver(self)
-        FreeCAD.Console.PrintMessage("Select Edges or Faces!\n")
+        FreeCAD.Console.PrintMessage("Select Edges and Faces by single click on them or Solids by double click on a Vertex!\n")
+        # TODO add a ToolTip if mouse pointer is over addReference button
 
     def addSelection(self, docName, objName, sub, pos):
         selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
         self.added_obj = (selected_object, sub)
-        if sub:         # on doubleClick the solid is selected and sub will be empty
-            self.parseSelectionFunction(self.added_obj)
+        # on double click on a vertex of a solid sub is None and obj is the solid
+        self.parseSelectionFunction(self.added_obj)
 
 
 if FreeCAD.GuiUp:
