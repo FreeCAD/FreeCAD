@@ -1,3 +1,4 @@
+#This file can be pasted into FemWorkbench's python console for testing, Material and Mesh need redo in GUI to work!
 execfile('/usr/share/freecad/Mod/Start/StartPage/PartDesign.py')
 App.setActiveDocument("Unnamed")
 App.ActiveDocument=App.getDocument("Unnamed")
