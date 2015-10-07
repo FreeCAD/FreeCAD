@@ -117,16 +117,22 @@ class _ViewProviderMechanicalMaterial:
 class _MechanicalMaterialTaskPanel:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
     def __init__(self, obj):
+        FreeCADGui.Selection.clearSelection()
+        self.sel_server = None
         self.obj = obj
+        self.material = self.obj.Material
+        self.references = self.obj.References
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
-
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
         QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
         QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
-        self.material = self.obj.Material
+        QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
+        self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
+
         self.import_materials()
         previous_mat_path = self.get_material_path(self.material)
         if not previous_mat_path:
@@ -141,14 +147,20 @@ class _MechanicalMaterialTaskPanel:
         else:
             index = self.form.cb_materials.findData(previous_mat_path)
             self.choose_material(index)
+        self.rebuild_list_References()
 
     def accept(self):
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
         self.obj.Material = self.material
+        self.obj.References = self.references
         doc = FreeCADGui.getDocument(self.obj.Document)
         doc.resetEdit()
         doc.Document.recompute()
 
     def reject(self):
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
         doc = FreeCADGui.getDocument(self.obj.Document)
         doc.resetEdit()
 
@@ -261,6 +273,73 @@ class _MechanicalMaterialTaskPanel:
         if use_mat_from_custom_dir:
             custom_mat_dir = self.fem_preferences.GetString("CustomMaterialsDir", "")
             self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
+
+    def references_list_right_clicked(self, QPos):
+        self.form.contextMenu = QtGui.QMenu()
+        menu_item = self.form.contextMenu.addAction("Remove Reference")
+        if not self.references:
+            menu_item.setDisabled(True)
+        self.form.connect(menu_item, QtCore.SIGNAL("triggered()"), self.remove_reference)
+        parentPosition = self.form.list_References.mapToGlobal(QtCore.QPoint(0, 0))
+        self.form.contextMenu.move(parentPosition + QPos)
+        self.form.contextMenu.show()
+
+    def remove_reference(self):
+        if not self.references:
+            return
+        currentItemName = str(self.form.list_References.currentItem().text())
+        for ref in self.references:
+            refname_to_compare_listentry = ref[0].Name + '-->' + ref[1]
+            if refname_to_compare_listentry == currentItemName:
+                self.references.remove(ref)
+        self.rebuild_list_References()
+
+    def add_references(self):
+        '''Called if Button add_reference is triggered'''
+        # in constraints EditTaskPanel the selection is active as soon as the taskpanel is open
+        # here the addReference button EditTaskPanel has to be triggered to start selection mode
+        FreeCADGui.Selection.clearSelection()
+        # start SelectionObserver and parse the function to add the References to the widget
+        self.sel_server = ReferenceShapeSelectionObserver(self.selectionParser)
+
+    def selectionParser(self, selection):
+        print 'selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1]
+        if hasattr(selection[0], "Shape"):
+            elt = selection[0].Shape.getElement(selection[1])
+            if elt.ShapeType == 'Edge' or elt.ShapeType == 'Face':
+                if selection not in self.references:
+                    self.references.append(selection)
+                    self.rebuild_list_References()
+                else:
+                    print selection[0].Name, '-->', selection[1], ' is already in reference list!'
+            else:
+                print 'Select Edge or Face!'
+        else:
+            print 'Selection has no shape!'
+
+    def rebuild_list_References(self):
+        self.form.list_References.clear()
+        items = []
+        for i in self.references:
+            item_name = i[0].Name + '-->' + i[1]
+            items.append(item_name)
+        for listItemName in sorted(items):
+            listItem = QtGui.QListWidgetItem(listItemName, self.form.list_References)  # listItem =   is needed
+
+
+class ReferenceShapeSelectionObserver:
+    '''ReferenceShapeSelectionObserver
+       started on click  button addReference'''
+    def __init__(self, parseSelectionFunction):
+        self.parseSelectionFunction = parseSelectionFunction
+        FreeCADGui.Selection.addObserver(self)
+        FreeCAD.Console.PrintMessage("Select Edges or Faces!\n")
+
+    def addSelection(self, docName, objName, sub, pos):
+        selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
+        self.added_obj = (selected_object, sub)
+        if sub:         # on doubleClick the solid is selected and sub will be empty
+            self.parseSelectionFunction(self.added_obj)
 
 
 if FreeCAD.GuiUp:
