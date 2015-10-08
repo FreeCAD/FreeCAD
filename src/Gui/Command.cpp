@@ -708,10 +708,17 @@ void MacroCommand::activated(int iMsg)
 
     QDir d(QString::fromUtf8(cMacroPath.c_str()));
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
-    Application::Instance->macroManager()->run(MacroManager::File, fi.filePath().toUtf8());
-    // after macro run recalculate the document
-    if (Application::Instance->activeDocument())
-        Application::Instance->activeDocument()->getDocument()->recompute();
+    if (!fi.exists()) {
+        QMessageBox::critical(Gui::getMainWindow(),
+            qApp->translate("Gui::MacroCommand", "Macro file doesn't exist"),
+            qApp->translate("Gui::MacroCommand", "No such macro file: '%1'").arg(fi.absoluteFilePath()));
+    }
+    else {
+        Application::Instance->macroManager()->run(MacroManager::File, fi.filePath().toUtf8());
+        // after macro run recalculate the document
+        if (Application::Instance->activeDocument())
+            Application::Instance->activeDocument()->getDocument()->recompute();
+    }
 }
 
 Action * MacroCommand::createAction(void)

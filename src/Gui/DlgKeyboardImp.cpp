@@ -178,14 +178,28 @@ void DlgCustomKeyboardImp::on_categoryBox_activated(int index)
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::vector<Command*> aCmds = cCmdMgr.getGroupCommands( group.toAscii() );
-    for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
-        item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
-        item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
-        item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
-        item->setSizeHint(0, QSize(32, 32));
-        if ((*it)->getPixmap())
-            item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+
+    if (group == QLatin1String("Macros")) {
+        for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            item->setText(1, QString::fromUtf8((*it)->getMenuText()));
+            item->setToolTip(1, QString::fromUtf8((*it)->getToolTipText()));
+            item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
+            item->setSizeHint(0, QSize(32, 32));
+            if ((*it)->getPixmap())
+                item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+        }
+    }
+    else {
+        for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
+            item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
+            item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
+            item->setSizeHint(0, QSize(32, 32));
+            if ((*it)->getPixmap())
+                item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+        }
     }
 }
 
@@ -326,7 +340,6 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
                         item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
                         item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
                         item->setSizeHint(0, QSize(32, 32));
-                        item->setBackgroundColor(0, Qt::lightGray);
                         if ((*it)->getPixmap())
                             item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
                         break;
@@ -372,7 +385,6 @@ void DlgCustomKeyboardImp::onAddMacroAction(const QByteArray& macro)
         item->setToolTip(1, QString::fromUtf8(pCmd->getToolTipText()));
         item->setData(1, Qt::UserRole, macro);
         item->setSizeHint(0, QSize(32, 32));
-        item->setBackgroundColor(0, Qt::lightGray);
         if (pCmd->getPixmap())
             item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
     }
@@ -412,7 +424,6 @@ void DlgCustomKeyboardImp::onModifyMacroAction(const QByteArray& macro)
                 item->setToolTip(1, QString::fromUtf8(pCmd->getToolTipText()));
                 item->setData(1, Qt::UserRole, macro);
                 item->setSizeHint(0, QSize(32, 32));
-                item->setBackgroundColor(0, Qt::lightGray);
                 if (pCmd->getPixmap())
                     item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                 if (commandTreeWidget->isItemSelected(item))

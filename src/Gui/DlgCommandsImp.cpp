@@ -138,7 +138,7 @@ void DlgCustomCommandsImp::onDescription(QTreeWidgetItem *item)
 /** Shows all commands of this category */
 void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
 {
-    if (!item) 
+    if (!item)
         return;
 
     QVariant data = item->data(0, Qt::UserRole);
@@ -147,14 +147,27 @@ void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(group.toAscii());
-    for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
-        item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
-        item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
-        item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
-        item->setSizeHint(0, QSize(32, 32));
-        if ((*it)->getPixmap())
-            item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+    if (group == QLatin1String("Macros")) {
+        for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            item->setText(1, QString::fromUtf8((*it)->getMenuText()));
+            item->setToolTip(1, QString::fromUtf8((*it)->getToolTipText()));
+            item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
+            item->setSizeHint(0, QSize(32, 32));
+            if ((*it)->getPixmap())
+                item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+        }
+    }
+    else {
+        for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
+            item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
+            item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
+            item->setSizeHint(0, QSize(32, 32));
+            if ((*it)->getPixmap())
+                item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+        }
     }
 
     textLabel->setText(QString());
@@ -178,7 +191,6 @@ void DlgCustomCommandsImp::onAddMacroAction(const QByteArray& macro)
         item->setToolTip(1, QString::fromUtf8(pCmd->getToolTipText()));
         item->setData(1, Qt::UserRole, macro);
         item->setSizeHint(0, QSize(32, 32));
-        item->setBackgroundColor(0, Qt::lightGray);
         if (pCmd->getPixmap())
             item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
     }
@@ -226,7 +238,6 @@ void DlgCustomCommandsImp::onModifyMacroAction(const QByteArray& macro)
                 item->setToolTip(1, QString::fromUtf8(pCmd->getToolTipText()));
                 item->setData(1, Qt::UserRole, macro);
                 item->setSizeHint(0, QSize(32, 32));
-                item->setBackgroundColor(0, Qt::lightGray);
                 if (pCmd->getPixmap())
                     item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                 if (commandTreeWidget->isItemSelected(item))
