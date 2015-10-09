@@ -32,6 +32,7 @@ INSTALL(
         _CommandFrequencyAnalysis.py
         _CommandQuickAnalysis.py
         _CommandPurgeFemResults.py
+        _CommandMechanicalJobControl.py
     DESTINATION
         Mod/Fem
 )
