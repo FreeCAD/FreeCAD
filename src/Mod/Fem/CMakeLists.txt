@@ -29,6 +29,7 @@ INSTALL(
         _ViewProviderFemAnalysis.py
         _FemAnalysis.py
         _CommandMechanicalShowResult.py
+        _CommandFrequencyAnalysis.py
     DESTINATION
         Mod/Fem
 )

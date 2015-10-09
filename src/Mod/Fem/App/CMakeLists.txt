@@ -87,6 +87,7 @@ SET(FemScripts_SRCS
     _ViewProviderFemAnalysis.py
     _FemAnalysis.py
     _CommandMechanicalShowResult.py
+    _CommandFrequencyAnalysis.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
