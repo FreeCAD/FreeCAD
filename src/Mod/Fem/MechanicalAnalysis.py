@@ -202,29 +202,6 @@ class _CommandFrequencyAnalysis:
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
-class _CommandMechanicalShowResult:
-    "the Fem JobControl command definition"
-    def GetResources(self):
-        return {'Pixmap': 'fem-result',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result"),
-                'Accel': "S, R",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result information of an analysis")}
-
-    def Activated(self):
-        self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
-
-        if not self.result_object:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
-            return
-
-        import _ResultControlTaskPanel
-        taskd = _ResultControlTaskPanel._ResultControlTaskPanel()
-        FreeCADGui.Control.showDialog(taskd)
-
-    def IsActive(self):
-        return FreeCADGui.ActiveDocument is not None and results_present()
-
-
 # Helpers
 
 
@@ -254,4 +231,3 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
     FreeCADGui.addCommand('Fem_Frequency_Analysis', _CommandFrequencyAnalysis())
     FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
-    FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())

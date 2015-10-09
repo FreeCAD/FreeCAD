@@ -86,7 +86,7 @@ SET(FemScripts_SRCS
     _JobControlTaskPanel.py
     _ViewProviderFemAnalysis.py
     _FemAnalysis.py
-
+    _CommandMechanicalShowResult.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
