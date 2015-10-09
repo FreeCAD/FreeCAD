@@ -25,6 +25,7 @@ INSTALL(
         MechanicalAnalysis.ui
         ShowDisplacement.ui
         _ResultControlTaskPanel.py
+        _JobControlTaskPanel.py
     DESTINATION
         Mod/Fem
 )
