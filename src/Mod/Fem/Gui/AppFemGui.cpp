@@ -104,6 +104,7 @@ void FemGuiExport initFemGui()
 
     Base::Interpreter().loadModule("_CommandMechanicalShowResult");
     Base::Interpreter().loadModule("_CommandFrequencyAnalysis");
+    Base::Interpreter().loadModule("_CommandQuickAnalysis");
     Base::Interpreter().loadModule("MechanicalAnalysis");
     Base::Interpreter().loadModule("MechanicalMaterial");
     Base::Interpreter().loadModule("FemBeamSection");
