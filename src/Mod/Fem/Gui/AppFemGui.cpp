@@ -103,6 +103,7 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderResultPython           ::init();
 
     Base::Interpreter().loadModule("_CommandMechanicalShowResult");
+    Base::Interpreter().loadModule("_CommandFrequencyAnalysis");
     Base::Interpreter().loadModule("MechanicalAnalysis");
     Base::Interpreter().loadModule("MechanicalMaterial");
     Base::Interpreter().loadModule("FemBeamSection");
