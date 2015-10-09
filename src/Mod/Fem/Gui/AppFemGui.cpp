@@ -107,6 +107,7 @@ void FemGuiExport initFemGui()
     Base::Interpreter().loadModule("_CommandQuickAnalysis");
     Base::Interpreter().loadModule("_CommandPurgeFemResults");
     Base::Interpreter().loadModule("_CommandMechanicalJobControl");
+    Base::Interpreter().loadModule("_CommandFemFromShape");
     Base::Interpreter().loadModule("MechanicalAnalysis");
     Base::Interpreter().loadModule("MechanicalMaterial");
     Base::Interpreter().loadModule("FemBeamSection");
