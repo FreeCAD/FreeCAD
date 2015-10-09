@@ -92,6 +92,7 @@ SET(FemScripts_SRCS
     _CommandPurgeFemResults.py
     _CommandMechanicalJobControl.py
     _CommandFemFromShape.py
+    _CommandNewMechanicalAnalysis.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
