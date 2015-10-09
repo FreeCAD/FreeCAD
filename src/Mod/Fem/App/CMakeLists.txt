@@ -82,6 +82,7 @@ SET(FemScripts_SRCS
     MechanicalMaterial.ui
     MechanicalMaterial.py
     ShowDisplacement.ui
+    _ResultControlTaskPanel.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
