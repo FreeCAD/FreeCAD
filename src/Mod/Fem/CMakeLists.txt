@@ -26,6 +26,7 @@ INSTALL(
         ShowDisplacement.ui
         _ResultControlTaskPanel.py
         _JobControlTaskPanel.py
+        _ViewProviderFemAnalysis.py
     DESTINATION
         Mod/Fem
 )
