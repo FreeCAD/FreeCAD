@@ -27,6 +27,7 @@ INSTALL(
         _ResultControlTaskPanel.py
         _JobControlTaskPanel.py
         _ViewProviderFemAnalysis.py
+        _FemAnalysis.py
     DESTINATION
         Mod/Fem
 )
