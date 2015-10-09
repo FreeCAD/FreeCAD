@@ -186,16 +186,6 @@ def results_present():
     return results
 
 
-def get_results_object(sel):
-    if (len(sel) == 1):
-        if sel[0].isDerivedFrom("Fem::FemResultObject"):
-            return sel[0]
-
-    for i in FemGui.getActiveAnalysis().Member:
-        if(i.isDerivedFrom("Fem::FemResultObject")):
-            return i
-    return None
-
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
     FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
