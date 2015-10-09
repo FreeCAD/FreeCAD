@@ -34,6 +34,7 @@ INSTALL(
         _CommandPurgeFemResults.py
         _CommandMechanicalJobControl.py
         _CommandFemFromShape.py
+        _CommandNewMechanicalAnalysis.py
     DESTINATION
         Mod/Fem
 )
