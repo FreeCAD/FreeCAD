@@ -90,6 +90,7 @@ SET(FemScripts_SRCS
     _CommandFrequencyAnalysis.py
     _CommandQuickAnalysis.py
     _CommandPurgeFemResults.py
+    _CommandMechanicalJobControl.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
