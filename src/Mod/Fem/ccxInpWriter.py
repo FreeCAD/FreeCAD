@@ -203,7 +203,7 @@ class inp_writer:
                 elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
                 material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
                 setion_def = '*BEAM SECTION, ' + elsetdef + material + ', SECTION=RECT\n'
-                setion_geo = str(beamsec_obj.Hight.getValueAs('mm')) + ', ' + str(beamsec_obj.Width.getValueAs('mm')) + '\n'
+                setion_geo = str(beamsec_obj.Height.getValueAs('mm')) + ', ' + str(beamsec_obj.Width.getValueAs('mm')) + '\n'
                 f.write(setion_def)
                 f.write(setion_geo)
             elif 'shellthickness_obj'in ccx_elset:  # shell mesh
