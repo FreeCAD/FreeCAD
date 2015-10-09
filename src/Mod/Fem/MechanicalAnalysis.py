@@ -36,7 +36,8 @@ __url__ = "http://www.freecadweb.org"
 def makeMechanicalAnalysis(name):
     '''makeFemAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
-    _FemAnalysis(obj)
+    import _FemAnalysis
+    _FemAnalysis._FemAnalysis(obj)
     import _ViewProviderFemAnalysis
     _ViewProviderFemAnalysis._ViewProviderFemAnalysis()
     #FreeCAD.ActiveDocument.recompute()
@@ -223,27 +224,6 @@ class _CommandMechanicalShowResult:
     def IsActive(self):
         return FreeCADGui.ActiveDocument is not None and results_present()
 
-
-class _FemAnalysis:
-    "The FemAnalysis container object"
-    def __init__(self, obj):
-        self.Type = "FemAnalysis"
-        obj.Proxy = self
-        obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
-
-    def execute(self, obj):
-        return
-
-    def onChanged(self, obj, prop):
-        if prop in ["MaterialName"]:
-            return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
 
 # Helpers
 
