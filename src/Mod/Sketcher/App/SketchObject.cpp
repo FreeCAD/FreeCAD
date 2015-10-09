@@ -3001,30 +3001,6 @@ bool SketchObject::evaluateSupport(void)
     Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
     if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return false;
-    
-    const std::vector<std::string> &sub = Support.getSubValues();
-    assert(sub.size()==1);
-    // get the selected sub shape (a Face)
-    const Part::TopoShape &shape = part->Shape.getShape();
-    
-    if (shape._Shape.IsNull())
-        return false;
-    
-    TopoDS_Shape sh;
-    try {
-        sh = shape.getSubShape(sub[0].c_str());
-    }
-    catch (Standard_Failure) {
-        return false;
-    }
-    const TopoDS_Face &face = TopoDS::Face(sh);
-    if (face.IsNull())
-        return false;
-    
-    BRepAdaptor_Surface adapt(face);
-    if (adapt.GetType() != GeomAbs_Plane)
-        return false; // No planar face
-    
     return true;
 }
 
@@ -3994,13 +3970,8 @@ void SketchObject::onChanged(const App::Property* prop)
 void SketchObject::onDocumentRestored()
 {
     try {
-        if(Support.getValue()) {
-            validateExternalLinks();
-            rebuildExternalGeometry();            
-        }
-        else {
-            rebuildVertexIndex();
-        }
+        validateExternalLinks();
+        rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (...) {
