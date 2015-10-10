@@ -46,13 +46,13 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>Reference</string>
+      <string>References</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="l_label_text_1">
         <property name="text">
-         <string>Leave reference blank </string>
+         <string>Leave references blank </string>
         </property>
        </widget>
       </item>
