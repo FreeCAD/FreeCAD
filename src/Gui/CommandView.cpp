@@ -2182,7 +2182,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                     App::PropertyGeometry* prop = static_cast<App::PropertyGeometry*>(*jt);
                     Base::BoundBox3d bbox = prop->getBoundingBox();
                     Base::Vector3d pt2d;
-                    pt2d = proj(bbox.CalcCenter());
+                    pt2d = proj(bbox.GetCenter());
                     if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
                         Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
                     }

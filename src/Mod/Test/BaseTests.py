@@ -170,6 +170,16 @@ class ParameterTestCase(unittest.TestCase):
         self.failUnless(m2==m3*m4    ,"Wrong multiplication order")
         self.failUnless(not m2==m4*m3,"Wrong multiplication order")
 
+    def testBounding(self):
+        b=FreeCAD.BoundBox()
+        b.setVoid()
+        self.failUnless(not b.isValid(),"Bbox is not invalid")
+        b.add(0,0,0)
+        self.failUnless(b.isValid(),"Bbox is invalid")
+        self.failUnless(b.XLength==0,"X length > 0")
+        self.failUnless(b.YLength==0,"Y length > 0")
+        self.failUnless(b.ZLength==0,"Z length > 0")
+
     def testNesting(self):
         # Parameter testing
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")

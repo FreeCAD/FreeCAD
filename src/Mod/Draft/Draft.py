@@ -4624,7 +4624,7 @@ class _Shape2DView(_DraftObject):
                             if cutv:
                                 if sh.Volume < 0:
                                     sh.reverse()
-                                #if cutv.BoundBox.isIntersection(sh.BoundBox):
+                                #if cutv.BoundBox.intersect(sh.BoundBox):
                                 #    c = sh.cut(cutv)
                                 #else:
                                 #    c = sh.copy()

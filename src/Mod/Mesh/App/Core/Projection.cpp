@@ -287,7 +287,7 @@ bool MeshProjection::bboxInsideRectangle(const Base::BoundBox3f& bbox,
 
     if (bbox.IsCutPlane(base, normal)) {
         dir.Normalize();
-        Base::Vector3f cnt(bbox.CalcCenter());
+        Base::Vector3f cnt(bbox.GetCenter());
 
         return (fabs(cnt.DistanceToPlane(p1, dir)) +  fabs(cnt.DistanceToPlane(p2, dir))) <=
                (bbox.CalcDiagonalLength() + (p2 - p1).Length());

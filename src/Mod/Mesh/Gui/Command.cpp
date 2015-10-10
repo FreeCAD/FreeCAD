@@ -973,7 +973,7 @@ void CmdMeshTrimByPlane::activated(int iMsg)
         Base::BoundBox3d bbox = mesh->getBoundBox();
         double len = bbox.CalcDiagonalLength();
         // project center of bbox onto plane and use this as base point
-        Base::Vector3d cnt = bbox.CalcCenter();
+        Base::Vector3d cnt = bbox.GetCenter();
         double dist = (cnt-base)*normal;
         base = cnt - normal * dist;
 

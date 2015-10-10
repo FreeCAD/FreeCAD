@@ -204,7 +204,7 @@ bool MeshGeomEdge::IntersectBoundingBox (const Base::BoundBox3f &rclBB) const
 
   Segment3<float> akSeg(p, n, 0.5f*len);
 
-  Base::Vector3f clCenter  = rclBB.CalcCenter();
+  Base::Vector3f clCenter  = rclBB.GetCenter();
   Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
   Vector3<float> axis0(1.0f, 0.0f, 0.0f);
   Vector3<float> axis1(0.0f, 1.0f, 0.0f);
@@ -473,7 +473,7 @@ bool MeshGeomFacet::IntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
   Segment3<float> akSeg2(p2, d2, len2/2.0f);
 
   // Build up the box
-  Base::Vector3f clCenter  = rclBB.CalcCenter();
+  Base::Vector3f clCenter  = rclBB.GetCenter();
   Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
   Vector3<float> axis0(1.0f, 0.0f, 0.0f);
   Vector3<float> axis1(0.0f, 1.0f, 0.0f);

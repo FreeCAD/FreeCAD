@@ -49,7 +49,7 @@ using namespace MeshCore;
 MeshKernel::MeshKernel (void)
 : _bValid(true)
 {
-    _clBoundBox.Flush();
+    _clBoundBox.SetVoid();
 }
 
 MeshKernel::MeshKernel (const MeshKernel &rclMesh)
@@ -119,7 +119,7 @@ void MeshKernel::AddFacet(const MeshGeomFacet &rclSFacet)
 
     // set corner points
     for (i = 0; i < 3; i++) {
-        _clBoundBox &= rclSFacet._aclPoints[i];
+        _clBoundBox.Add(rclSFacet._aclPoints[i]);
         clFacet._aulPoints[i] = _aclPointArray.GetOrAddIndex(rclSFacet._aclPoints[i]);
     }
 
@@ -318,7 +318,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
 unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry, const std::vector<Base::Vector3f>& rclPAry)
 {
     for (std::vector<Base::Vector3f>::const_iterator it = rclPAry.begin(); it != rclPAry.end(); ++it)
-        _clBoundBox &= *it;
+        _clBoundBox.Add(*it);
     this->_aclPointArray.insert(this->_aclPointArray.end(), rclPAry.begin(), rclPAry.end());
     return this->AddFacets(rclFAry);
 }
@@ -367,7 +367,7 @@ void MeshKernel::Merge(const MeshPointArray& rPoints, const MeshFacetArray& rFac
             *it = index++;
             const MeshPoint& rPt = rPoints[it-increments.begin()];
             this->_aclPointArray.push_back(rPt);
-            _clBoundBox &= rPt;
+            _clBoundBox.Add(rPt);
         }
     }
 
@@ -394,7 +394,7 @@ void MeshKernel::Clear (void)
     MeshPointArray().swap(_aclPointArray);
     MeshFacetArray().swap(_aclFacetArray);
 
-    _clBoundBox.Flush();
+    _clBoundBox.SetVoid();
 }
 
 bool MeshKernel::DeleteFacet (const MeshFacetIterator &rclIter)
@@ -908,10 +908,10 @@ void MeshKernel::Transform (const Base::Matrix4D &rclMat)
     MeshPointArray::_TIterator  clPIter = _aclPointArray.begin(), clPEIter = _aclPointArray.end();
     Base::Matrix4D clMatrix(rclMat);
 
-    _clBoundBox.Flush();
+    _clBoundBox.SetVoid();
     while (clPIter < clPEIter) {
         *clPIter *= clMatrix;
-        _clBoundBox &= *clPIter;
+        _clBoundBox.Add(*clPIter);
         clPIter++;
     }
 }
@@ -923,9 +923,9 @@ void MeshKernel::Smooth(int iterations, float stepsize)
 
 void MeshKernel::RecalcBoundBox (void)
 {
-    _clBoundBox.Flush();
+    _clBoundBox.SetVoid();
     for (MeshPointArray::_TConstIterator pI = _aclPointArray.begin(); pI != _aclPointArray.end(); pI++)
-        _clBoundBox &= *pI;
+        _clBoundBox.Add(*pI);
 }
 
 std::vector<Base::Vector3f> MeshKernel::CalcVertexNormals() const
