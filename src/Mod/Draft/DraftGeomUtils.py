@@ -284,7 +284,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
     # First, try to use distToShape if possible
     if dts and isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) \
             and (not infinite1) and (not infinite2) and \
-            edge1.BoundBox.isIntersection(edge2.BoundBox):
+            edge1.BoundBox.intersect(edge2.BoundBox):
         dist, pts, geom = edge1.distToShape(edge2)
         sol = []
         for p in pts:

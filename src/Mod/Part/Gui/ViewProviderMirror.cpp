@@ -88,7 +88,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
         float len = (float)bbox.CalcDiagonalLength();
         Base::Vector3d base = mf->Base.getValue();
         Base::Vector3d norm = mf->Normal.getValue();
-        Base::Vector3d cent = bbox.CalcCenter();
+        Base::Vector3d cent = bbox.GetCenter();
         base = cent.ProjToPlane(base, norm);
 
         // setup the graph for editing the mirror plane

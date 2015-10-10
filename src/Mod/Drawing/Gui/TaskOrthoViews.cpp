@@ -142,9 +142,9 @@ orthoview::orthoview(App::Document * parent, App::DocumentObject * part, App::Do
     parent_doc = parent;
     myname = parent_doc->getUniqueObjectName("Ortho");
 
-    cx = partbox->CalcCenter().x;
-    cy = partbox->CalcCenter().y;
-    cz = partbox->CalcCenter().z;
+    cx = partbox->GetCenter().x;
+    cy = partbox->GetCenter().y;
+    cz = partbox->GetCenter().z;
 
     this_view = static_cast<Drawing::FeatureViewPart *> (parent_doc->addObject("Drawing::FeatureViewPart", myname.c_str()));
     static_cast<App::DocumentObjectGroup *>(page)->addObject(this_view);

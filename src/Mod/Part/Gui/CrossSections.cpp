@@ -129,7 +129,7 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WF
     ui->distance->setDecimals(Base::UnitsApi::getDecimals());
     vp = new ViewProviderCrossSections();
 
-    Base::Vector3d c = bbox.CalcCenter();
+    Base::Vector3d c = bbox.GetCenter();
     calcPlane(CrossSections::XY, c.z);
     ui->position->setValue(c.z);
 
@@ -269,7 +269,7 @@ void CrossSections::apply()
 
 void CrossSections::on_xyPlane_clicked()
 {
-    Base::Vector3d c = bbox.CalcCenter();
+    Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.z);
     if (!ui->sectionsBox->isChecked()) {
         calcPlane(CrossSections::XY, c.z);
@@ -285,7 +285,7 @@ void CrossSections::on_xyPlane_clicked()
 
 void CrossSections::on_xzPlane_clicked()
 {
-    Base::Vector3d c = bbox.CalcCenter();
+    Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.y);
     if (!ui->sectionsBox->isChecked()) {
         calcPlane(CrossSections::XZ, c.y);
@@ -301,7 +301,7 @@ void CrossSections::on_xzPlane_clicked()
 
 void CrossSections::on_yzPlane_clicked()
 {
-    Base::Vector3d c = bbox.CalcCenter();
+    Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.x);
     if (!ui->sectionsBox->isChecked()) {
         calcPlane(CrossSections::YZ, c.x);
@@ -332,7 +332,7 @@ void CrossSections::on_sectionsBox_toggled(bool b)
     }
     else {
         CrossSections::Plane type = plane();
-        Base::Vector3d c = bbox.CalcCenter();
+        Base::Vector3d c = bbox.GetCenter();
         double value = 0;
         switch (type) {
             case CrossSections::XY:

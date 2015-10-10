@@ -27,6 +27,7 @@
 # include <OpenGL/gl.h>
 # else
 # ifdef FC_OS_WIN32
+#  define NOMINMAX
 #  include <windows.h>
 # endif
 # include <GL/gl.h>

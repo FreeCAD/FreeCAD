@@ -81,7 +81,7 @@ PointsGrid::PointsGrid (const PointKernel &rclM, double fGridLen)
 {
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
   for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts &= (*it);
+    clBBPts.Add(*it);
   Rebuild(std::max<unsigned long>((unsigned long)(clBBPts.LengthX() / fGridLen), 1),
           std::max<unsigned long>((unsigned long)(clBBPts.LengthY() / fGridLen), 1),
           std::max<unsigned long>((unsigned long)(clBBPts.LengthZ() / fGridLen), 1));
@@ -138,7 +138,7 @@ void PointsGrid::InitGrid (void)
   {
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
   for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts &= (*it);
+    clBBPts.Add(*it);
 
   double fLengthX = clBBPts.LengthX(); 
   double fLengthY = clBBPts.LengthY();
@@ -222,7 +222,7 @@ unsigned long PointsGrid::InSide (const Base::BoundBox3d &rclBB, std::vector<uns
     {
       for (k = ulMinZ; k <= ulMaxZ; k++)
       {
-        if (Base::DistanceP2(GetBoundBox(i, j, k).CalcCenter(), rclOrg) < fMinDistP2)
+        if (Base::DistanceP2(GetBoundBox(i, j, k).GetCenter(), rclOrg) < fMinDistP2)
           raulElements.insert(raulElements.end(), _aulGrid[i][j][k].begin(), _aulGrid[i][j][k].end());
       }
     }
@@ -287,7 +287,7 @@ void PointsGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMa
   // bzw. max Grids sollten 10000 nicht ueberschreiten
   Base::BoundBox3d clBBPtsEnlarged;// = _pclPoints->GetBoundBox();
   for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPtsEnlarged &= (*it);
+    clBBPtsEnlarged.Add(*it);
   double fVolElem;
 
   if (_ulCtElements > (ulMaxGrids * ulCtGrid))
@@ -316,7 +316,7 @@ void PointsGrid::CalculateGridLength (int iCtGridPerAxis)
   // bzw. max Grids sollten 10000 nicht ueberschreiten
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
   for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts &= (*it);
+    clBBPts.Add(*it);
 
   double fLenghtX = clBBPts.LengthX();
   double fLenghtY = clBBPts.LengthY();
@@ -464,7 +464,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
   }
   else
   { // Punkt ausserhalb
-    Base::BoundBox3d::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.CalcCenter() - rclPt);
+    Base::BoundBox3d::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
       case Base::BoundBox3d::RIGHT:

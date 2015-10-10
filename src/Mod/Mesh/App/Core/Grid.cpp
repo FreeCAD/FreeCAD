@@ -189,7 +189,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<unsig
     {
       for (k = ulMinZ; k <= ulMaxZ; k++)
       {
-        if (Base::DistanceP2(GetBoundBox(i, j, k).CalcCenter(), rclOrg) < fMinDistP2)
+        if (Base::DistanceP2(GetBoundBox(i, j, k).GetCenter(), rclOrg) < fMinDistP2)
           raulElements.insert(raulElements.end(), _aulGrid[i][j][k].begin(), _aulGrid[i][j][k].end());
       }
     }
@@ -440,7 +440,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
   }
   else
   { // Punkt ausserhalb
-    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.CalcCenter() - rclPt);
+    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
       case Base::BoundBox3f::RIGHT:
@@ -742,7 +742,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
   }
   else
   { // Punkt ausserhalb
-    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.CalcCenter() - rclPt);
+    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
       case Base::BoundBox3f::RIGHT:

@@ -1324,7 +1324,7 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
     // insert new points and faces into the mesh structure
     _rclMesh._aclPointArray.insert(_rclMesh._aclPointArray.end(), newPoints.begin(), newPoints.end());
     for (MeshPointArray::_TIterator it = newPoints.begin(); it != newPoints.end(); ++it)
-        _rclMesh._clBoundBox &= *it;
+        _rclMesh._clBoundBox.Add(*it);
     if (!newFacets.empty()) {
         // Do some checks for invalid point indices
         MeshFacetArray addFacets;

@@ -54,6 +54,7 @@
 #include <Python.h>
 
 #elif defined(FC_OS_WIN32)
+#define NOMINMAX
 #include <windows.h>
 #endif // _PreComp_
 #endif

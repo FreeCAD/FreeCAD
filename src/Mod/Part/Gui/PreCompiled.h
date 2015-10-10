@@ -35,6 +35,11 @@
 # define PartGuiExport
 #endif
 
+#ifdef FC_OS_WIN32
+# define NOMINMAX
+#endif
+
+
 #ifdef _PreComp_
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
@@ -42,9 +47,6 @@
 # pragma warning( disable : 4503 )
 # pragma warning( disable : 4786 )  // specifier longer then 255 chars
 #endif
-
-
-
 
 // standard
 #include <iostream>

@@ -1237,7 +1237,7 @@ void MeshAlgorithm::SearchFacetsFromPolyline (const std::vector<Base::Vector3f> 
    
     // BB eines Polyline-Segments
     BoundBox3f clSegmBB(rclP0.x, rclP0.y, rclP0.z, rclP0.x, rclP0.y, rclP0.z);
-    clSegmBB &= rclP1;
+    clSegmBB.Add(rclP1);
     clSegmBB.Enlarge(fRadius);  // BB um Suchradius vergroessern
 
     std::vector<unsigned long> aclBBFacets;
@@ -1663,9 +1663,9 @@ bool MeshAlgorithm::Distance (const Base::Vector3f &rclPt, unsigned long ulFacet
   const unsigned long *pulIdx = rclFAry[ulFacetIdx]._aulPoints;
 
   BoundBox3f clBB;
-  clBB &= rclPAry[*(pulIdx++)];
-  clBB &= rclPAry[*(pulIdx++)];
-  clBB &= rclPAry[*pulIdx];
+  clBB.Add(rclPAry[*(pulIdx++)]);
+  clBB.Add(rclPAry[*(pulIdx++)]);
+  clBB.Add(rclPAry[*pulIdx]);
   clBB.Enlarge(fMaxDistance);
 
   if (clBB.IsInBox(rclPt) == false)

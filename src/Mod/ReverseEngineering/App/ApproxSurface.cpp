@@ -682,7 +682,7 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
           (*_pvcPoints)(ii).Y(),
           (*_pvcPoints)(ii).Z()));
       vcProjPts.push_back(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
-    clBBox &= (Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
+    clBBox.Add(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
   }
 
   if ((clBBox.fMaxX == clBBox.fMinX) || (clBBox.fMaxY == clBBox.fMinY))

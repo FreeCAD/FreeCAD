@@ -122,7 +122,7 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject *pcFeat)
   calcNormalVector();
   calcMaterialIndex(SbRotation());
   // geting center point
-  center = dynamic_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().CalcCenter();
+  center = dynamic_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
 
   //SoGetBoundingBoxAction  boxAction;
   //pcHighlight->getBoundingBox(&boxAction);

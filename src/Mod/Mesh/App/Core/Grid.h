@@ -472,9 +472,9 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned lon
 
   Base::BoundBox3f clBB;
 
-  clBB &= rclFacet._aclPoints[0];
-  clBB &= rclFacet._aclPoints[1];
-  clBB &= rclFacet._aclPoints[2];
+  clBB.Add(rclFacet._aclPoints[0]);
+  clBB.Add(rclFacet._aclPoints[1]);
+  clBB.Add(rclFacet._aclPoints[2]);
 
   //float fDiagonalLength = clBB.CalcDiagonalLength();
 
