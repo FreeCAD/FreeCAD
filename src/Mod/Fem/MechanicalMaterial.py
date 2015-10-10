@@ -39,7 +39,8 @@ def makeMechanicalMaterial(name):
     name there fore is a material name or an file name for a FCMat file'''
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
     _MechanicalMaterial(obj)
-    _ViewProviderMechanicalMaterial(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderMechanicalMaterial(obj.ViewObject)
     # FreeCAD.ActiveDocument.recompute()
     return obj
 
