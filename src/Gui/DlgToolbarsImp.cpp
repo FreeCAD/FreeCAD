@@ -748,7 +748,7 @@ void DlgCustomToolbarsImp::addCustomCommand(const QString& name, const QByteArra
         else {
             CommandManager& mgr = Application::Instance->commandManager();
             if (mgr.addTo(cmd, bars.front())) {
-                QAction* action = action = bars.front()->actions().last();
+                QAction* action = bars.front()->actions().last();
                 // See ToolBarManager::setup(ToolBarItem* , QToolBar* )
                 // We have to add the user data in order to identify the command in
                 // removeCustomCommand(), moveUpCustomCommand() or moveDownCustomCommand()
