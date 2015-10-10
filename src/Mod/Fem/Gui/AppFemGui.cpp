@@ -102,6 +102,8 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderResult                 ::init();
     FemGui::ViewProviderResultPython           ::init();
 
+    Base::Interpreter().loadModule("FemCommands");
+
     Base::Interpreter().loadModule("_CommandMechanicalShowResult");
     Base::Interpreter().loadModule("_CommandFrequencyAnalysis");
     Base::Interpreter().loadModule("_CommandQuickAnalysis");

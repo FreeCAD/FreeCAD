@@ -1,6 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+#*   Copyright (c) 2015 - FreeCAD Developers                               *
+#*   Author (c) 2015 - Przemo Fiszt < przemo@firszt.eu>                    *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,45 +21,35 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Command Frequency Analysis"
-__author__ = "Juergen Riegel"
+__title__ = "Fem Commands"
+__author__ = "Przemo Firszt"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
-from FemCommands import FemCommands
-from FemTools import FemTools
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    import FemGui
+    from PySide import QtCore
 
 
-class _CommandFrequencyAnalysis(FemCommands):
-    def __init__(self):
-        super(_CommandFrequencyAnalysis, self).__init__()
-        self.resources = {'Pixmap': 'fem-frequency-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Frequency_Analysis", "Run frequency analysis with CalculiX ccx"),
-                          'Accel': "R, F",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Frequency_Analysis", "Write .inp file and run frequency analysis with CalculiX ccx")}
-        self.is_active = 'with_analysis'
+class FemCommands(object):
+        def __init__(self):
+            self.resources = {'Pixmap': 'fem-frequency-analysis',
+                              'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
+                              'Accel': "",
+                              'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}
+            #FIXME add option description
+            self.is_active = None
 
-    def Activated(self):
-        def load_results(ret_code):
-            if ret_code == 0:
-                self.fea.load_results()
-            else:
-                print "CalculiX failed ccx finished with error {}".format(ret_code)
+        def GetResources(self):
+            return self.resources
 
-        self.fea = FemTools()
-        self.fea.reset_all()
-        self.fea.set_analysis_type('frequency')
-        message = self.fea.check_prerequisites()
-        if message:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-            return
-        self.fea.finished.connect(load_results)
-        QtCore.QThreadPool.globalInstance().start(self.fea)
-
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_Frequency_Analysis', _CommandFrequencyAnalysis())
+        def IsActive(self):
+            if not self.is_active:
+                active = False
+            elif self.is_active == 'with_document':
+                active = FreeCADGui.ActiveDocument is not None
+            elif self.is_active == 'with_analysis':
+                active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
+            return active
