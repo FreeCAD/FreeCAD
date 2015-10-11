@@ -163,6 +163,7 @@ QVector<QString> buildBOPCheckResultVector()
   results.push_back(QObject::tr("BOPAlgo IncompatibilityOfFace"));      //BOPAlgo_IncompatibilityOfFace
   results.push_back(QObject::tr("BOPAlgo OperationAborted"));           //BOPAlgo_OperationAborted
   results.push_back(QObject::tr("BOPAlgo GeomAbs_C0"));                 //BOPAlgo_GeomAbs_C0
+  results.push_back(QObject::tr("BOPAlgo_InvalidCurveOnSurface"));      //BOPAlgo_InvalidCurveOnSurface
   results.push_back(QObject::tr("BOPAlgo NotValid"));                   //BOPAlgo_NotValid
   
   return results;
@@ -173,7 +174,7 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 {
   static QVector<QString> strings = buildBOPCheckResultVector();
   int index = static_cast<int>(status);
-  if (index < 0 || index > 10)
+  if (index < 0 || index > strings.size())
     index = 0;
   return strings.at(index);
 }
@@ -591,6 +592,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
+//   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
   BOPCheck.ArgumentTypeMode() = true;
@@ -600,7 +602,21 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #if OCC_VERSION_HEX >= 0x060700
   BOPCheck.ContinuityMode() = true;
 #endif
+#if OCC_VERSION_HEX >= 0x060900
+  BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
+  BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
+  BOPCheck.MergeVertexMode() = true;
+  BOPCheck.CurveOnSurfaceMode() = true;
+  BOPCheck.MergeEdgeMode() = true;
+#endif
+  
+  Base::TimeInfo start_time;
   BOPCheck.Perform();
+  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+#ifdef FC_DEBUG
+  std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
+#endif
+  
   if (!BOPCheck.HasFaulty())
       return 0;
 
