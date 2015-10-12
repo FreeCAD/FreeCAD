@@ -272,13 +272,13 @@ PyTypeObject @self.export.Name@::Type = {
     0,                                                /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
 + if (self.export.RichCompare and self.export.NumberProtocol):
-    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS|Py_TPFLAGS_HAVE_RICHCOMPARE|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
+    Py_TPFLAGS_HAVE_CLASS|Py_TPFLAGS_HAVE_RICHCOMPARE|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
 = elif (self.export.RichCompare):
-    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS|Py_TPFLAGS_HAVE_RICHCOMPARE,        /*tp_flags */
+    Py_TPFLAGS_HAVE_CLASS|Py_TPFLAGS_HAVE_RICHCOMPARE,        /*tp_flags */
 = elif (self.export.NumberProtocol):
-    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
+    Py_TPFLAGS_HAVE_CLASS|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
 = else:
-    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS,        /*tp_flags */
+    Py_TPFLAGS_HAVE_CLASS,        /*tp_flags */
 -
     "@self.export.Documentation.UserDocu.replace('\\n','\\\\n\\"\\n    \\"')@",           /*tp_doc */
     0,                                                /*tp_traverse */
