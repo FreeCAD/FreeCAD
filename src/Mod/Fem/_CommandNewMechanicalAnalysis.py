@@ -25,20 +25,22 @@ __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import FemGui
     from PySide import QtCore
 
 
-class _CommandNewMechanicalAnalysis:
+class _CommandNewMechanicalAnalysis(FemCommands):
     "the Fem Analysis command definition"
-    def GetResources(self):
-        return {'Pixmap': 'fem-analysis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "New mechanical analysis"),
-                'Accel': "N, A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new mechanical analysis")}
+    def __init__(self):
+        super(_CommandNewMechanicalAnalysis, self).__init__()
+        self.resources = {'Pixmap': 'fem-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "New mechanical analysis"),
+                          'Accel': "N, A",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new mechanical analysis")}
+        self.is_active = 'with_document'
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
@@ -62,10 +64,6 @@ class _CommandNewMechanicalAnalysis:
 
         #FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
-
-    def IsActive(self):
-        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is None
-
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
