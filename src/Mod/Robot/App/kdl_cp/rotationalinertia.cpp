@@ -43,19 +43,19 @@ namespace KDL
 	Vector RotationalInertia::operator*(const Vector& omega) const {
 		// Complexity : 9M+6A
         Vector result;
-        Map<Vector3d>(result.data)=Map<Matrix3d>(this->data)*Map<Vector3d>(omega.data);
+        Map<Vector3d>(result.data)=Map<const Matrix3d>(this->data)*Map<const Vector3d>(omega.data);
         return result;
  	}
 
     RotationalInertia operator*(double a, const RotationalInertia& I){
         RotationalInertia result;
-        Map<Matrix3d>(result.data)=a*Map<Matrix3d>(I.data);
+        Map<Matrix3d>(result.data)=a*Map<const Matrix3d>(I.data);
         return result;
     }
     
     RotationalInertia operator+(const RotationalInertia& Ia, const RotationalInertia& Ib){
         RotationalInertia result;
-        Map<Matrix3d>(result.data)=Map<Matrix3d>(Ia.data)+Map<Matrix3d>(Ib.data);
+        Map<Matrix3d>(result.data)=Map<const Matrix3d>(Ia.data)+Map<const Matrix3d>(Ib.data);
         return result;
     }
 }

@@ -11,6 +11,7 @@
 #include "tree.hpp"
 #include "jntarray.hpp"
 #include "frames.hpp"
+#include <map>
 
 namespace KDL {
 

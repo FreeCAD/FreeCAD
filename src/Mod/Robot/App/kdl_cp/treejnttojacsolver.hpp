@@ -16,7 +16,7 @@ namespace KDL {
 
 class TreeJntToJacSolver {
 public:
-    TreeJntToJacSolver(const Tree& tree);
+    explicit TreeJntToJacSolver(const Tree& tree);
 
     virtual ~TreeJntToJacSolver();
 

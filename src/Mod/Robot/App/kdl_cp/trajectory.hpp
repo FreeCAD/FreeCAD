@@ -78,12 +78,6 @@ namespace KDL {
 	class Trajectory
 	{
 	public:
-        virtual Path*      GetPath() = 0;
-        // The underlying Path
-
-        virtual VelocityProfile* GetProfile() = 0;
-        // The velocity profile
-
 		virtual double Duration() const = 0;
 		// The duration of the trajectory
 

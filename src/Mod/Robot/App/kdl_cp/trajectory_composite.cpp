@@ -23,7 +23,6 @@ namespace KDL {
 
     Trajectory_Composite::Trajectory_Composite():duration(0.0)
     {
-        path = new Path_Composite();
     }
 
     double Trajectory_Composite::Duration() const{
@@ -72,7 +71,7 @@ namespace KDL {
 
     Twist Trajectory_Composite::Acc(double time) const {
         // not optimal, could be done in log(#elem)
-	unsigned int i;
+    	unsigned int i;
         Trajectory* traj;
         double previoustime;
         if (time < 0) {
@@ -93,7 +92,6 @@ namespace KDL {
         vt.insert(vt.end(),elem);
         duration += elem->Duration();
         vd.insert(vd.end(),duration);
-        path->Add(elem->GetPath(),false);
     }
 
     void Trajectory_Composite::Destroy() {
@@ -103,8 +101,6 @@ namespace KDL {
         }
         vt.erase(vt.begin(),vt.end());
         vd.erase(vd.begin(),vd.end());
-
-        delete path;
     }
 
     Trajectory_Composite::~Trajectory_Composite() {
@@ -127,16 +123,6 @@ namespace KDL {
             comp->Add(vt[i]->Clone());
         }
         return comp;
-    }
-
-    Path* Trajectory_Composite::GetPath()
-    {
-        return path;
-    }
-
-    VelocityProfile* Trajectory_Composite::GetProfile()
-    {
-        return 0;
     }
 
 }

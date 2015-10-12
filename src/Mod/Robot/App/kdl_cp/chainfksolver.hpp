@@ -28,6 +28,7 @@
 #include "jntarray.hpp"
 #include "jntarrayvel.hpp"
 #include "jntarrayacc.hpp"
+#include "solveri.hpp"
 
 namespace KDL {
 
@@ -39,7 +40,7 @@ namespace KDL {
      */
 
     //Forward definition
-    class ChainFkSolverPos {
+    class ChainFkSolverPos : public KDL::SolverI {
     public:
         /**
          * Calculate forward position kinematics for a KDL::Chain,
@@ -47,7 +48,6 @@ namespace KDL {
          *
          * @param q_in input joint coordinates
          * @param p_out reference to output cartesian pose
-         * @param segmentNr default to -1
          *
          * @return if < 0 something went wrong
          */
@@ -61,7 +61,7 @@ namespace KDL {
      *
      * @ingroup KinematicFamily
      */
-    class ChainFkSolverVel {
+    class ChainFkSolverVel : public KDL::SolverI {
     public:
         /**
          * Calculate forward position and velocity kinematics, from
@@ -69,7 +69,6 @@ namespace KDL {
          *
          * @param q_in input joint coordinates (position and velocity)
          * @param out output cartesian coordinates (position and velocity)
-         * @param segmentNr default to -1
          *
          * @return if < 0 something went wrong
          */
@@ -85,7 +84,7 @@ namespace KDL {
      * @ingroup KinematicFamily
      */
 
-    class ChainFkSolverAcc {
+    class ChainFkSolverAcc : public KDL::SolverI {
     public:
         /**
          * Calculate forward position, velocity and accelaration
@@ -93,9 +92,8 @@ namespace KDL {
          *
          * @param q_in input joint coordinates (position, velocity and
          * acceleration
-         * @param out output cartesian coordinates (position, velocity
+         @param out output cartesian coordinates (position, velocity
          * and acceleration
-         * @param segmentNr default to -1
          *
          * @return if < 0 something went wrong
          */

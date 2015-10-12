@@ -23,7 +23,7 @@
 
 namespace KDL
 {
-    USING_PART_OF_NAMESPACE_EIGEN
+    using namespace Eigen;
 
     JntArray::JntArray()
     {
@@ -101,7 +101,7 @@ namespace KDL
 
     void MultiplyJacobian(const Jacobian& jac, const JntArray& src, Twist& dest)
     {
-        Eigen::Matrix<double,6,1> t=(jac.data*src.data).lazy();
+        Eigen::Matrix<double,6,1> t=jac.data.lazyProduct(src.data);
         dest=Twist(Vector(t(0),t(1),t(2)),Vector(t(3),t(4),t(5)));
     }
     

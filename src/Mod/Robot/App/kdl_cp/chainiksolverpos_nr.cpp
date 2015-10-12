@@ -38,20 +38,27 @@ namespace KDL
             for(i=0;i<maxiter;i++){
                 fksolver.JntToCart(q_out,f);
                 delta_twist = diff(f,p_in);
-                iksolver.CartToJnt(q_out,delta_twist,delta_q);
+                const int rc = iksolver.CartToJnt(q_out,delta_twist,delta_q);
+                if (E_NOERROR > rc)
+                    return (error = E_IKSOLVER_FAILED);
+                // we chose to continue if the child solver returned a positive
+                // "error", which may simply indicate a degraded solution
                 Add(q_out,delta_q,q_out);
                 if(Equal(delta_twist,Twist::Zero(),eps))
-                    break;
+                    // converged, but possibly with a degraded solution
+                    return (rc > E_NOERROR ? E_DEGRADED : E_NOERROR);
             }
-            if(i!=maxiter)
-                return 0;
-            else
-                return -3;
+            return (error = E_NO_CONVERGE);        // failed to converge
     }
 
     ChainIkSolverPos_NR::~ChainIkSolverPos_NR()
     {
     }
 
+    const char* ChainIkSolverPos_NR::strError(const int error) const
+    {
+        if (E_IKSOLVER_FAILED == error) return "Child IK solver failed";
+        else return SolverI::strError(error);
+    }
 }
 

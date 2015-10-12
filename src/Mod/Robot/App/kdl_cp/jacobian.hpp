@@ -27,12 +27,19 @@
 
 namespace KDL
 {
+    // Equal is friend function, but default arguments for friends are forbidden (§8.3.6.4)
+    class Jacobian;
+    bool Equal(const Jacobian& a,const Jacobian& b,double eps=epsilon);
+
+
     class Jacobian
     {
     public:
+
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         Eigen::Matrix<double,6,Eigen::Dynamic> data;
         Jacobian();
-        Jacobian(unsigned int nr_of_columns);
+        explicit Jacobian(unsigned int nr_of_columns);
         Jacobian(const Jacobian& arg);
 
         ///Allocates memory for new size (can break realtime behavior)

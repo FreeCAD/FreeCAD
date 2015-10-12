@@ -24,7 +24,8 @@
 
 namespace KDL {
 std::ostream& operator <<(std::ostream& os, const Joint& joint) {
-	return os << joint.getTypeName();
+	return os << joint.getName()<<":["<<joint.getTypeName()
+              <<", axis: "<<joint.JointAxis() << ", origin"<<joint.JointOrigin()<<"]";
 }
 
 std::istream& operator >>(std::istream& is, Joint& joint) {
@@ -32,7 +33,7 @@ std::istream& operator >>(std::istream& is, Joint& joint) {
 }
 
 std::ostream& operator <<(std::ostream& os, const Segment& segment) {
-	os << "[" << segment.getJoint() << ",\n" << segment.getFrameToTip() << "]";
+	os << segment.getName()<<":[" << segment.getJoint() << ",\n tip: \n" << segment.getFrameToTip() << "]";
 	return os;
 }
 
@@ -53,15 +54,15 @@ std::istream& operator >>(std::istream& is, Chain& chain) {
 }
 
 std::ostream& operator <<(std::ostream& os, const Tree& tree) {
-	SegmentMap::const_iterator root = tree.getSegment("root");
+	SegmentMap::const_iterator root = tree.getRootSegment();
 	return os << root;
 }
 
 std::ostream& operator <<(std::ostream& os, SegmentMap::const_iterator root) {
 	//os<<root->first<<": "<<root->second.segment<<"\n";
-	os << root->first<<"(q_nr: "<<root->second.q_nr<<")"<<"\n \t";
-	for (unsigned int i = 0; i < root->second.children.size(); i++) {
-		os <<(root->second.children[i])<<"\t";
+    os << root->first<<"(q_nr: "<< GetTreeElementQNr(root->second) << ")" << "\n \t";
+    for (unsigned int i = 0; i < GetTreeElementChildren(root->second).size(); i++) {
+        os << ( GetTreeElementChildren(root->second)[i] ) << "\t";
 	}
 	return os << "\n";
 }
