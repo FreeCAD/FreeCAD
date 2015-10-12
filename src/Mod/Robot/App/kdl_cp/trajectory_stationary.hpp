@@ -45,6 +45,10 @@ namespace KDL {
 			return Twist::Zero();
 		}
 		virtual void Write(std::ostream& os) const;
+
+		virtual Trajectory* Clone() const {
+			return new Trajectory_Stationary(duration,pos);
+		}
 		virtual ~Trajectory_Stationary() {}
 	};
 

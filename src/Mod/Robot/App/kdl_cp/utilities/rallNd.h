@@ -10,8 +10,7 @@
  * generalized to the Nth derivative !
  * The efficiency is not very good for high derivatives.
  * This could be improved by also using Rall2d 
- */
-/*
+ *
 template <int N>
 class RallNd :
 	public Rall1d< RallNd<N-1>, RallNd<N-1>, double >
@@ -46,8 +45,8 @@ public:
  * Als je tot 3de orde een efficiente berekening kan doen,
  * dan kan je tot een willekeurige orde alles efficient berekenen
  * 0 1 2 3
- * ==\> 1 2 3 4
- * ==\> 3 4 5 6    
+ * ==> 1 2 3 4
+ * ==> 3 4 5 6    
  * 4 5 6 7
  *
  * de aangeduide berekeningen zijn niet noodzakelijk, en er is dan niets
@@ -76,7 +75,7 @@ public:
 template <>
 class RallNd<2> : public Rall2d<double>  {
 public:
-	RallNd() {} /* (dwz. met evenveel numerieke operaties als een */
+	RallNd() {}* (dwz. met evenveel numerieke operaties als een 
 	RallNd(const Rall2d<double>& arg) :
 		Rall2d<double>(arg) {}
 	RallNd(double value,double d[]) {

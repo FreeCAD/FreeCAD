@@ -22,6 +22,7 @@
 #ifndef KDL_CHAINJNTTOJACSOLVER_HPP
 #define KDL_CHAINJNTTOJACSOLVER_HPP
 
+#include "solveri.hpp"
 #include "frames.hpp"
 #include "jacobian.hpp"
 #include "jntarray.hpp"
@@ -37,11 +38,13 @@ namespace KDL
      *
      */
 
-    class ChainJntToJacSolver
+    class ChainJntToJacSolver : public SolverI
     {
     public:
-        ChainJntToJacSolver(const Chain& chain);
-        ~ChainJntToJacSolver();
+        static const int E_JAC_FAILED = -100; //! Jac solver failed
+
+        explicit ChainJntToJacSolver(const Chain& chain);
+        virtual ~ChainJntToJacSolver();
         /**
          * Calculate the jacobian expressed in the base frame of the
          * chain, with reference point at the end effector of the
@@ -53,15 +56,19 @@ namespace KDL
          *
          * @return always returns 0
          */
-        int JntToJac(const JntArray& q_in,Jacobian& jac);
+        virtual int JntToJac(const JntArray& q_in, Jacobian& jac, int segmentNR=-1);
         
         int setLockedJoints(const std::vector<bool> locked_joints);
+
+        /// @copydoc KDL::SolverI::strError()
+        virtual const char* strError(const int error) const;
+
     private:
         const Chain chain;
         Twist t_tmp;
         Frame T_tmp;
         std::vector<bool> locked_joints_;
-        int nr_of_unlocked_joints_;
+        unsigned int nr_of_unlocked_joints_;
     };
 }
 #endif

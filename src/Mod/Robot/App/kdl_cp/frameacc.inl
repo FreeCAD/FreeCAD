@@ -17,7 +17,6 @@
  ****************************************************************************/
 
 
-namespace KDL {
 
 
 /////////////////// VectorAcc /////////////////////////////////////
@@ -431,6 +430,7 @@ Twist FrameAcc::GetAccTwist() const {
 
 
 
+
 TwistAcc TwistAcc::Zero()
 {
     return TwistAcc(VectorAcc::Zero(),VectorAcc::Zero());
@@ -596,4 +596,3 @@ bool Equal(const TwistAcc& a,const Twist& b,double eps) {
                 Equal(a.vel,b.vel,eps)  );
 }
 
-}

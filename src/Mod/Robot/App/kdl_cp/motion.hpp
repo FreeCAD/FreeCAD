@@ -21,7 +21,6 @@
 
 /**
  * @defgroup Motion Motion
- * \ingroup KDL
  * @brief All classes related to the non-instantaneous motion of rigid
  * bodies and kinematic structures, e.g., path and trajecory definitions
  * and their building blocks.

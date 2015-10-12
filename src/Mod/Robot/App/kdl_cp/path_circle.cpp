@@ -65,14 +65,12 @@ Path_Circle::Path_Circle(const Frame& F_base_start,
 
 					Vector x(F_base_start.p - F_base_center.p);
 					radius = x.Normalize();
-					if (radius < epsilon) 
-                        throw Error_MotionPlanning_Circle_ToSmall();
+					if (radius < epsilon) throw Error_MotionPlanning_Circle_ToSmall();
 					Vector tmpv(V_base_p-F_base_center.p);
 					tmpv.Normalize();
 					Vector z( x * tmpv);
                     double n = z.Normalize();
-				    if (n < epsilon) 
-                        throw Error_MotionPlanning_Circle_No_Plane();
+				    if (n < epsilon) throw Error_MotionPlanning_Circle_No_Plane();
 					F_base_center.M = Rotation(x,z*x,z);
 					double dist = alpha*radius;
 					// See what has the slowest eq. motion, and adapt

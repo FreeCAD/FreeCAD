@@ -8,7 +8,7 @@
 
 #include <Eigen/Core>
 
-USING_PART_OF_NAMESPACE_EIGEN;
+using namespace Eigen;
 
 namespace KDL
 {
@@ -29,9 +29,13 @@ namespace KDL
          *
          * @param chain the chain to calculate the inverse velocity
          * kinematics for
+         * @param eps if a singular value is below this value, its
+         * inverse is set to zero, default: 0.00001
+         * @param maxiter maximum iterations for the svd calculation,
+         * default: 150
          *
          */
-        ChainIkSolverVel_pinv_givens(const Chain& chain);
+        explicit ChainIkSolverVel_pinv_givens(const Chain& chain);
         ~ChainIkSolverVel_pinv_givens();
 
         virtual int CartToJnt(const JntArray& q_in, const Twist& v_in, JntArray& qdot_out);
@@ -45,7 +49,7 @@ namespace KDL
         ChainJntToJacSolver jnt2jac;
         Jacobian jac;
         bool transpose,toggle;
-        int m,n;
+        unsigned int m,n;
         MatrixXd jac_eigen,U,V,B;
         VectorXd S,tempi,tempj,UY,SUY,qdot_eigen,v_in_eigen;
     };

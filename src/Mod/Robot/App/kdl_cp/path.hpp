@@ -58,7 +58,14 @@ namespace KDL {
 class Path
 	{
 	public:
-
+		enum IdentifierType {
+			ID_LINE=1,
+			ID_CIRCLE=2,
+			ID_COMPOSITE=3,
+			ID_ROUNDED_COMPOSITE=4,
+			ID_POINT=5,
+			ID_CYCLIC_CLOSED=6
+		};
 		/**
 		 * LengthToS() converts a physical length along the trajectory
 		 * to the parameter s used in Pos, Vel and Acc.  This is used because
@@ -114,6 +121,11 @@ class Path
 		 * Returns a deep copy of this Path Object
 		 */
 		virtual Path* Clone() = 0;
+
+		/**
+		 * gets an identifier indicating the type of this Path object
+		 */
+		virtual IdentifierType getIdentifier() const=0;
 
 		virtual ~Path() {}
 	};
