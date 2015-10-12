@@ -30,7 +30,6 @@
 # include <QLayout>
 # include <QLocale>
 # include <QPixmap>
-# include <QSpinBox>
 # include <QTextStream>
 # include <QTimer>
 #endif
@@ -555,10 +554,16 @@ void PropertyIntegerItem::setValue(const QVariant& value)
 
 QWidget* PropertyIntegerItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    QSpinBox *sb = new QSpinBox(parent);
+    Gui::IntSpinBox *sb = new Gui::IntSpinBox(parent);
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
+    
+    if(isBound()) {
+        sb->bind(getPath());
+        sb->setAutoApply(true);
+    }
+    
     return sb;
 }
 
@@ -574,6 +579,16 @@ QVariant PropertyIntegerItem::editorData(QWidget *editor) const
     QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
     return QVariant(sb->value());
 }
+
+QVariant PropertyIntegerItem::toString(const QVariant& v) const {
+    QString string(PropertyItem::toString(v).toString());
+    
+    if(hasExpression())
+        string += QString::fromAscii("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    
+    return QVariant(string);
+}
+
 
 // --------------------------------------------------------------------
 
@@ -602,10 +617,16 @@ void PropertyIntegerConstraintItem::setValue(const QVariant& value)
 
 QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    QSpinBox *sb = new QSpinBox(parent);
+    Gui::IntSpinBox *sb = new Gui::IntSpinBox(parent);
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
+    
+    if(isBound()) {
+        sb->bind(getPath());
+        sb->setAutoApply(true);
+    }
+    
     return sb;
 }
 
@@ -633,6 +654,17 @@ QVariant PropertyIntegerConstraintItem::editorData(QWidget *editor) const
     QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
     return QVariant(sb->value());
 }
+
+QVariant PropertyIntegerConstraintItem::toString(const QVariant& v) const {
+    
+    QString string(PropertyItem::toString(v).toString());
+    
+    if(hasExpression())
+        string += QString::fromAscii("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    
+    return QVariant(string);
+}
+
 
 // --------------------------------------------------------------------
 
@@ -682,8 +714,7 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receive
         sb->bind(getPath());
         sb->setAutoApply(true);
     }
-    
-    
+        
     return sb;
 }
 
