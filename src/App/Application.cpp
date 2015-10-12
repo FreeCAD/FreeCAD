@@ -187,6 +187,15 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
 
     // introducing additional classes
 
+    // 0001368: Subclassing Matrix silently fails
+    // Remove the Py_TPFLAGS_BASETYPE flag to disallow subclasses
+    Base::VectorPy::Type.tp_flags &= ~Py_TPFLAGS_BASETYPE;
+    Base::MatrixPy::Type.tp_flags &= ~Py_TPFLAGS_BASETYPE;
+    Base::BoundBoxPy::Type.tp_flags &= ~Py_TPFLAGS_BASETYPE;
+    Base::PlacementPy::Type.tp_flags &= ~Py_TPFLAGS_BASETYPE;
+    Base::RotationPy::Type.tp_flags &= ~Py_TPFLAGS_BASETYPE;
+    Base::AxisPy::Type.tp_flags &= ~Py_TPFLAGS_BASETYPE;
+
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
