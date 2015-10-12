@@ -112,7 +112,32 @@ private:
     UIntSpinBoxPrivate * d;
 };
 
-class DoubleSpinBoxPrivate;
+
+/**
+ * The IntSpinBox class does exactly the same as Qt's QSpinBox but has expression support
+ * @author Stefan Tröger
+ */
+class GuiExport IntSpinBox : public QSpinBox, public ExpressionBinding
+{
+    Q_OBJECT
+
+public:
+    IntSpinBox ( QWidget* parent=0 );
+    virtual ~IntSpinBox();
+
+    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void bind(const App::ObjectIdentifier &_path);
+    bool apply(const std::string &propName);
+
+    void keyPressEvent(QKeyEvent *event);
+    void resizeEvent(QResizeEvent *event);
+
+private Q_SLOTS:
+    void finishFormulaDialog();
+    void openFormulaDialog();
+    virtual void onChange();
+};
+
 /**
  * The DoubleSpinBox class does exactly the same as Qt's QDoubleSpinBox but has expression 
  * support

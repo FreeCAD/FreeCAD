@@ -406,6 +406,182 @@ void UIntSpinBox::keyPressEvent(QKeyEvent *event)
     }
 }
 
+
+IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent) {
+
+    defaultPalette = lineEdit()->palette();
+
+    /* Icon for f(x) */
+    QFontMetrics fm(lineEdit()->font());
+    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    iconHeight = fm.height() - frameWidth;
+    iconLabel = new ExpressionLabel(lineEdit());
+    iconLabel->setCursor(Qt::ArrowCursor);
+    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+    iconLabel->setPixmap(pixmap);
+    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->hide();
+    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+
+    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+}
+
+IntSpinBox::~IntSpinBox() {
+
+}
+
+
+bool IntSpinBox::apply(const std::string& propName) {
+    
+    if (!ExpressionBinding::apply(propName)) {
+        Gui::Command::doCommand(Gui::Command::Doc, "%s = %u", propName.c_str(), value());
+        return true;
+    }
+    else
+        return false;
+}
+
+void IntSpinBox::bind(const ObjectIdentifier& _path) {
+    
+    ExpressionBinding::bind(_path);
+
+    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+
+    iconLabel->show();
+}
+
+void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+{
+    Q_ASSERT(isBound());
+
+    try {
+        ExpressionBinding::setExpression(expr);
+    }
+    catch (const Base::Exception & e) {
+        setReadOnly(true);
+        QPalette p(lineEdit()->palette());
+        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
+        lineEdit()->setPalette(p);
+        iconLabel->setToolTip(QString::fromAscii(e.what()));
+    }
+}
+
+void IntSpinBox::onChange() {
+    
+    if (getExpression()) {
+        std::auto_ptr<Expression> result(getExpression()->eval());
+        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+
+        if (value) {
+            setValue(boost::math::round(value->getValue()));
+            setReadOnly(true);
+            iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
+
+            QPalette p(lineEdit()->palette());
+            p.setColor(QPalette::Text, Qt::lightGray);
+            lineEdit()->setPalette(p);
+        }
+        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+    }
+    else {
+        setReadOnly(false);
+        iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
+        QPalette p(lineEdit()->palette());
+        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
+        lineEdit()->setPalette(p);
+
+    }
+    iconLabel->setToolTip(QString());
+}
+
+void IntSpinBox::resizeEvent(QResizeEvent * event)
+{
+    QAbstractSpinBox::resizeEvent(event);
+
+    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+
+    QSize sz = iconLabel->sizeHint();
+    iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
+
+    try {
+        if (isBound() && getExpression()) {
+            std::auto_ptr<Expression> result(getExpression()->eval());
+            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+
+            if (value) {
+                setReadOnly(true);
+                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
+                iconLabel->setPixmap(pixmap);
+
+                QPalette p(lineEdit()->palette());
+                p.setColor(QPalette::Text, Qt::lightGray);
+                lineEdit()->setPalette(p);
+            }
+            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        }
+        else {
+            setReadOnly(false);
+            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+            iconLabel->setPixmap(pixmap);
+
+            QPalette p(lineEdit()->palette());
+            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
+            lineEdit()->setPalette(p);
+
+        }
+        iconLabel->setToolTip(QString());
+    }
+    catch (const Base::Exception & e) {
+        setReadOnly(true);
+        QPalette p(lineEdit()->palette());
+        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
+        lineEdit()->setPalette(p);
+        iconLabel->setToolTip(QString::fromAscii(e.what()));
+    }
+
+}
+
+void IntSpinBox::openFormulaDialog()
+{
+    Q_ASSERT(isBound());
+
+    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), Unit(), this);
+    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
+    box->show();
+
+    QPoint pos = mapToGlobal(QPoint(0,0));
+    box->move(pos-box->expressionPosition());
+    box->setExpressionInputSize(width(), height());
+}
+
+void IntSpinBox::finishFormulaDialog()
+{
+    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
+    if (!box) {
+        qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
+        return;
+    }
+
+    if (box->result() == QDialog::Accepted)
+        setExpression(box->getExpression());
+    else if (box->discardedFormula())
+        setExpression(boost::shared_ptr<Expression>());
+
+    box->deleteLater();
+}
+
+void IntSpinBox::keyPressEvent(QKeyEvent *event)
+{
+    if (event->text() == QString::fromUtf8("=") && isBound())
+        openFormulaDialog();
+    else {
+        if (!hasExpression())
+            QAbstractSpinBox::keyPressEvent(event);
+    }
+}
+
+
 DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent) {
 
     defaultPalette = lineEdit()->palette();
