@@ -317,7 +317,7 @@ class _MechanicalMaterialTaskPanel:
         self.sel_server = ReferenceShapeSelectionObserver(self.selectionParser)
 
     def selectionParser(self, selection):
-        print 'selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1]
+        # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
         if hasattr(selection[0], "Shape"):
             if selection[1]:
                 elt = selection[0].Shape.getElement(selection[1])
@@ -328,11 +328,11 @@ class _MechanicalMaterialTaskPanel:
                     self.references.append(selection)
                     self.rebuild_list_References()
                 else:
-                    print selection[0].Name, '-->', selection[1], ' is already in reference list!'
+                    print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
             else:
-                print 'Select  Edge, Face or Solid!'
+                print('Select  Edge, Face or Solid!')
         else:
-            print 'Selection has no shape!'
+            print('Selection has no shape!')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
