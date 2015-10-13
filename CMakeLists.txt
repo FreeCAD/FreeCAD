@@ -292,7 +292,7 @@ endif(BUILD_ROBOT)
 #path module dependencies.
 if(BUILD_PATH)
   set(BUILD_PART ON)
-  set(BUILD_ROBOT ON)
+  #set(BUILD_ROBOT ON) reenable this when using KDL
 endif(BUILD_PATH)
 
 #inferred from cmakelists.txt. appears to be working.
