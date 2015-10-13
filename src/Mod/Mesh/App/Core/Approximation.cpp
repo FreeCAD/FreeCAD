@@ -38,28 +38,22 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
 
 //#define FC_USE_EIGEN
-//#define FC_USE_BOOST
-#if defined(FC_USE_BOOST)
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/numeric/bindings/traits/ublas_matrix.hpp>
-#include <boost/numeric/bindings/traits/ublas_vector.hpp>
-
-#define BOOST_NUMERIC_BINDINGS_USE_CLAPACK
-#include <boost/numeric/bindings/lapack/syev.hpp>
-#include <boost/numeric/bindings/lapack/heev.hpp>
-#include <boost/numeric/bindings/lapack/gesv.hpp> 
-
-namespace ublas = boost::numeric::ublas; 
-extern "C" void LAPACK_DGESV (int const* n, int const* nrhs, 
-                     double* a, int const* lda, int* ipiv, 
-                     double* b, int const* ldb, int* info);
-
+#include <Eigen/QR>
+#ifdef FC_USE_EIGEN
+#include <Eigen/Eigenvalues>
 #endif
-
-# include <Eigen/LeastSquares>
 
 using namespace MeshCore;
 
+Approximation::Approximation()
+  : _bIsFitted(false), _fLastResult(FLOAT_MAX)
+{
+}
+
+Approximation::~Approximation()
+{
+    Clear();
+}
 
 void Approximation::Convert( const Wm4::Vector3<double>& Wm4, Base::Vector3f& pt)
 {
@@ -142,6 +136,18 @@ bool Approximation::Done() const
 
 // -------------------------------------------------------------------------------
 
+PlaneFit::PlaneFit()
+  : _vBase(0,0,0)
+  , _vDirU(1,0,0)
+  , _vDirV(0,1,0)
+  , _vDirW(0,0,1)
+{
+}
+
+PlaneFit::~PlaneFit()
+{
+}
+
 float PlaneFit::Fit()
 {
     _bIsFitted = true;
@@ -166,21 +172,7 @@ float PlaneFit::Fit()
     syz = syz - my*mz/((double)nSize);
     szz = szz - mz*mz/((double)nSize);
 
-#if defined(FC_USE_BOOST)
-    ublas::matrix<double> A(3,3);
-    A(0,0) = sxx;
-    A(1,1) = syy;
-    A(2,2) = szz;
-    A(0,1) = sxy; A(1,0) = sxy;
-    A(0,2) = sxz; A(2,0) = sxz;
-    A(1,2) = syz; A(2,1) = syz;
-    namespace lapack= boost::numeric::bindings::lapack;
-    ublas::vector<double> eigenval(3);
-    int r = lapack::syev('V','U',A,eigenval,lapack::optimal_workspace());
-    if (r) {
-    }
-    float sigma = 0;
-#elif defined(FC_USE_EIGEN)
+#if defined(FC_USE_EIGEN)
     Eigen::Matrix3d covMat = Eigen::Matrix3d::Zero();
     covMat(0,0) = sxx;
     covMat(1,1) = syy;
@@ -398,6 +390,26 @@ void PlaneFit::Dimension(float& length, float& width) const
     width = bbox.MaxY - bbox.MinY;
 }
 
+std::vector<Base::Vector3f> PlaneFit::GetLocalPoints() const
+{
+    std::vector<Base::Vector3f> localPoints;
+    if (_bIsFitted && _fLastResult < FLOAT_MAX) {
+        Base::Vector3d bs(this->_vBase.x,this->_vBase.y,this->_vBase.z);
+        Base::Vector3d ex(this->_vDirU.x,this->_vDirU.y,this->_vDirU.z);
+        Base::Vector3d ey(this->_vDirV.x,this->_vDirV.y,this->_vDirV.z);
+        Base::Vector3d ez(this->_vDirW.x,this->_vDirW.y,this->_vDirW.z);
+
+        localPoints.insert(localPoints.begin(), _vPoints.begin(), _vPoints.end());
+        for (std::vector<Base::Vector3f>::iterator it = localPoints.begin(); it != localPoints.end(); ++it) {
+            Base::Vector3d clPoint(it->x,it->y,it->z);
+            clPoint.TransformToCoordinateSystem(bs, ex, ey);
+            it->Set(static_cast<float>(clPoint.x), static_cast<float>(clPoint.y), static_cast<float>(clPoint.z));
+        }
+    }
+
+    return localPoints;
+}
+
 // -------------------------------------------------------------------------------
 
 bool QuadraticFit::GetCurvatureInfo(double x, double y, double z,
@@ -608,24 +620,34 @@ double SurfaceFit::PolynomFit()
     Base::Vector3d ey(this->_vDirV.x,this->_vDirV.y,this->_vDirV.z);
     Base::Vector3d ez(this->_vDirW.x,this->_vDirW.y,this->_vDirW.z);
 
-#if defined(FC_USE_BOOST)
-    ublas::matrix<double> A(6,6);
-    ublas::vector<double> b(6);
-    for (int i=0; i<6; i++) {
-        for (int j=0; j<6; j++) {
-            A(i,j) = 0.0;
-        }
-        b(i) = 0.0;
-    }
-#else
+    // A*x = b
+    // See also www.cs.jhu.edu/~misha/Fall05/10.23.05.pdf
+    // z = f(x,y) = a*x^2 + b*y^2 + c*x*y + d*x + e*y + f
+    // z = P * Vi with Vi=(xi^2,yi^2,xiyi,xi,yi,1) and P=(a,b,c,d,e,f)
+    // To get the best-fit values the sum needs to be minimized:
+    // S = sum[(z-zi)^2} -> min with zi=z coordinates of the given points
+    // <=> S = sum[z^2 - 2*z*zi + zi^2] -> min
+    // <=> S(P) = sum[(P*Vi)^2 - 2*(P*Vi)*zi + zi^2] -> min
+    // To get the optimum the gradient of the expression must be the null vector
+    // Note: grad F(P) = (P*Vi)^2 = 2*(P*Vi)*Vi
+    //       grad G(P) = -2*(P*Vi)*zi = -2*Vi*zi
+    //       grad H(P) = zi^2 = 0
+    //  => grad S(P) = sum[2*(P*Vi)*Vi - 2*Vi*zi] = 0
+    // <=> sum[(P*Vi)*Vi] = sum[Vi*zi]
+    // <=> sum[(Vi*Vi^t)*P] = sum[Vi*zi] where (Vi*Vi^t) is a symmetric matrix
+    // <=> sum[(Vi*Vi^t)]*P = sum[Vi*zi]
     Eigen::Matrix<double,6,6> A = Eigen::Matrix<double,6,6>::Zero();
     Eigen::Matrix<double,6,1> b = Eigen::Matrix<double,6,1>::Zero();
     Eigen::Matrix<double,6,1> x = Eigen::Matrix<double,6,1>::Zero();
-#endif
 
+    std::vector<Base::Vector3d> transform;
+    transform.reserve(_vPoints.size());
+
+    double dW2 = 0;
     for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
         Base::Vector3d clPoint(it->x,it->y,it->z);
         clPoint.TransformToCoordinateSystem(bs, ex, ey);
+        transform.push_back(clPoint);
         double dU = clPoint.x;
         double dV = clPoint.y;
         double dW = clPoint.z;
@@ -633,6 +655,8 @@ double SurfaceFit::PolynomFit()
         double dU2 = dU*dU;
         double dV2 = dV*dV;
         double dUV = dU*dV;
+
+        dW2 += dW*dW;
 
         A(0,0) = A(0,0) + dU2*dU2;
         A(0,1) = A(0,1) + dU2*dV2;
@@ -690,42 +714,82 @@ double SurfaceFit::PolynomFit()
 
     A(5,4) = A(4,5);
 
-#if defined(FC_USE_BOOST)
-    namespace lapack= boost::numeric::bindings::lapack;
-    //std::clog << A << std::endl;
-    //std::clog << b << std::endl;
-    //lapack::gesv(A,b);
-    ublas::vector<double> x(6);
-    x = b;
-    //std::clog << b << std::endl;
-#else
-    // A.llt().solve(b,&x); // not sure if always positive definite
-    A.qr().solve(b,&x);
-#endif
+    Eigen::HouseholderQR< Eigen::Matrix<double,6,6> > qr(A);
+    x = qr.solve(b);
 
-    _fCoeff[0] = (float)(-x(5));
-    _fCoeff[1] = (float)(-x(3));
-    _fCoeff[2] = (float)(-x(4));
-    _fCoeff[3] = 1.0f;
-    _fCoeff[4] = (float)(-x(0));
-    _fCoeff[5] = (float)(-x(1));
-    _fCoeff[6] = 0.0f;
-    _fCoeff[7] = (float)(-x(2));
-    _fCoeff[8] = 0.0f;
-    _fCoeff[9] = 0.0f;
+    // FunctionContainer gets an implicit function F(x,y,z) = 0 of this form
+    // _fCoeff[0] +
+    // _fCoeff[1]*x   + _fCoeff[2]*y   + _fCoeff[3]*z   +
+    // _fCoeff[4]*x^2 + _fCoeff[5]*y^2 + _fCoeff[6]*z^2 +
+    // _fCoeff[7]*x*y + _fCoeff[8]*x*z + _fCoeff[9]*y*z
+    //
+    // The bivariate polynomial surface we get here is of the form
+    // z = f(x,y) = a*x^2 + b*y^2 + c*x*y + d*x + e*y + f
+    // Writing it as implicit surface F(x,y,z) = 0 gives this form
+    // F(x,y,z) = f(x,y) - z = a*x^2 + b*y^2 + c*x*y + d*x + e*y - z + f
+    // Thus:
+    // _fCoeff[0] = f
+    // _fCoeff[1] = d
+    // _fCoeff[2] = e
+    // _fCoeff[3] = -1
+    // _fCoeff[4] = a
+    // _fCoeff[5] = b
+    // _fCoeff[6] = 0
+    // _fCoeff[7] = c
+    // _fCoeff[8] = 0
+    // _fCoeff[9] = 0
 
-    return 0.0f;
+    _fCoeff[0] = x(5);
+    _fCoeff[1] = x(3);
+    _fCoeff[2] = x(4);
+    _fCoeff[3] = -1.0;
+    _fCoeff[4] = x(0);
+    _fCoeff[5] = x(1);
+    _fCoeff[6] =  0.0;
+    _fCoeff[7] = x(2);
+    _fCoeff[8] =  0.0;
+    _fCoeff[9] =  0.0;
+
+    // Get S(P) = sum[(P*Vi)^2 - 2*(P*Vi)*zi + zi^2]
+    double sigma = 0;
+    FunctionContainer clFuncCont(_fCoeff);
+    for (std::vector<Base::Vector3d>::const_iterator it = transform.begin(); it != transform.end(); ++it) {
+        double u = it->x;
+        double v = it->y;
+        double z = clFuncCont.F(u, v, 0.0);
+        sigma += z*z;
+    }
+
+    sigma += dW2 - 2 * x.dot(b);
+    // This must be caused by some round-off errors. Theoretically it's impossible
+    // that 'sigma' becomes negative.
+    if (sigma < 0)
+        sigma = 0;
+    sigma = sqrt(sigma/_vPoints.size());
+
+    _fLastResult = static_cast<float>(sigma);
+    return _fLastResult;
 }
 
 double SurfaceFit::Value(double x, double y) const
 {
-    float z = 0.0f;
+    double z = 0.0;
     if (_bIsFitted) {
         FunctionContainer clFuncCont(_fCoeff);
-        z = (float) clFuncCont.F(x, y, 0.0f);
+        z = clFuncCont.F(x, y, 0.0);
     }
 
     return z;
+}
+
+void SurfaceFit::GetCoefficients(double& a,double& b,double& c,double& d,double& e,double& f) const
+{
+    a = _fCoeff[4];
+    b = _fCoeff[5];
+    c = _fCoeff[7];
+    d = _fCoeff[1];
+    e = _fCoeff[2];
+    f = _fCoeff[0];
 }
 
 // -----------------------------------------------------------------------------
@@ -773,7 +837,7 @@ float PolynomialFit::Value(float x, float y) const
     _fCoeff[3]         * y       +
     _fCoeff[4] * x     * y       +
     _fCoeff[5] * x * x * y       +
-    _fCoeff[6]         * y * y   +      
+    _fCoeff[6]         * y * y   +
     _fCoeff[7] * x     * y * y   +
     _fCoeff[8] * x * x * y * y;
     return fValue;
