@@ -62,6 +62,7 @@ TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyItem, Base::BaseClass);
 PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false)
 {
     precision = Base::UnitsApi::getDecimals();
+    setAutoApply(true);
 }
 
 PropertyItem::~PropertyItem()
@@ -86,19 +87,21 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
     
         const App::Property& p = *items.front();
         
-        if(!(p.getContainer()->getPropertyType(&p) & App::Prop_ReadOnly)) {
-            
-            App::ObjectIdentifier id(p);
-            std::vector<App::ObjectIdentifier> paths;
-            p.getPaths(paths);
-            
-            //there may be no paths available in this property (for example an empty constraint list)
-            if(id.getProperty() && !paths.empty())
-                bind(id);
-            
+        try {
+            if(!(p.getContainer()->isReadOnly(&p))) {
+                
+                App::ObjectIdentifier id(p);
+                std::vector<App::ObjectIdentifier> paths;
+                p.getPaths(paths);
+                
+                //there may be no paths available in this property (for example an empty constraint list)
+                if(id.getProperty() && !paths.empty())
+                    bind(id);
+                
+            }
         }
-        else 
-            setReadOnly(true);
+        //it may happen that setting properties is not possible
+        catch(...) {}; 
     }
     
     propertyItems = items;
@@ -247,26 +250,26 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
     if (parent->getTypeId() == App::Document::getClassTypeId()) {
         App::Document* doc = static_cast<App::Document*>(parent);
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
-        QString propName = QString::fromAscii(parent->getPropertyName(prop));
-        return QString::fromAscii("FreeCAD.getDocument(\"%1\").%2").arg(docName).arg(propName);
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
+        return QString::fromAscii("FreeCAD.getDocument(\"%1\").%2").arg(docName).arg(propName);
     }
     if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromAscii(obj->getNameInDocument());
-        QString propName = QString::fromAscii(parent->getPropertyName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%3")
-            .arg(docName).arg(objName).arg(propName);
+            .arg(docName).arg(objName).arg(propName);
     }
     if (parent->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
         App::DocumentObject* obj = static_cast<Gui::ViewProviderDocumentObject*>(parent)->getObject();
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromAscii(obj->getNameInDocument());
-        QString propName = QString::fromAscii(parent->getPropertyName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCADGui.getDocument(\"%1\").getObject(\"%2\").%3")
-            .arg(docName).arg(objName).arg(propName);
+            .arg(docName).arg(objName).arg(propName);
     }
     return QString();
 }
@@ -366,12 +369,7 @@ QVariant PropertyItem::data(int column, int role) const
 }
 
 bool PropertyItem::setData (const QVariant& value)
-{
-    //check if we have an expression set. If so we do nothing, as than the editor is responsible
-    //for issuing the relevant python code
-    if(hasExpression())
-        return true;
-    
+{   
     cleared = false;
     
     // This is the basic mechanism to set the value to
@@ -545,11 +543,14 @@ QVariant PropertyIntegerItem::value(const App::Property* prop) const
 
 void PropertyIntegerItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert(QVariant::Int))
-        return;
-    int val = value.toInt();
-    QString data = QString::fromAscii("%1").arg(val);
-    setPropertyValue(data);
+    //if the item has an expression it issues the python code
+    if(!hasExpression())  {
+        if (!value.canConvert(QVariant::Int))
+            return;
+        int val = value.toInt();
+        QString data = QString::fromAscii("%1").arg(val);
+        setPropertyValue(data);
+    }
 }
 
 QWidget* PropertyIntegerItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
@@ -561,8 +562,9 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent, const QObject* recei
     
     if(isBound()) {
         sb->bind(getPath());
-        sb->setAutoApply(true);
+        sb->setAutoApply(autoApply());
     }
+
     
     return sb;
 }
@@ -608,11 +610,14 @@ QVariant PropertyIntegerConstraintItem::value(const App::Property* prop) const
 
 void PropertyIntegerConstraintItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert(QVariant::Int))
-        return;
-    int val = value.toInt();
-    QString data = QString::fromAscii("%1").arg(val);
-    setPropertyValue(data);
+    //if the item has an expression it issues the python code
+    if(!hasExpression())  {
+        if (!value.canConvert(QVariant::Int))
+            return;
+        int val = value.toInt();
+        QString data = QString::fromAscii("%1").arg(val);
+        setPropertyValue(data);
+    }
 }
 
 QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
@@ -624,8 +629,8 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObj
     
     if(isBound()) {
         sb->bind(getPath());
-        sb->setAutoApply(true);
-    }
+        sb->setAutoApply(autoApply());
+    }  
     
     return sb;
 }
@@ -695,11 +700,14 @@ QVariant PropertyFloatItem::value(const App::Property* prop) const
 
 void PropertyFloatItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert(QVariant::Double))
-        return;
-    double val = value.toDouble();
-    QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
-    setPropertyValue(data);
+    //if the item has an expression it issues the python code
+    if(!hasExpression())  {
+        if (!value.canConvert(QVariant::Double))
+            return;
+        double val = value.toDouble();
+        QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
+        setPropertyValue(data);
+    }
 }
 
 QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
@@ -712,7 +720,7 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receive
     
     if(isBound()) {
         sb->bind(getPath());
-        sb->setAutoApply(true);
+        sb->setAutoApply(autoApply());
     }
         
     return sb;
@@ -760,12 +768,15 @@ QVariant PropertyUnitItem::value(const App::Property* prop) const
 
 void PropertyUnitItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert<Base::Quantity>())
-        return;
-    const Base::Quantity& val = value.value<Base::Quantity>();
+    //if the item has an expression it handles the python code
+    if(!hasExpression()) {
+        if (!value.canConvert<Base::Quantity>())
+            return;
+        const Base::Quantity& val = value.value<Base::Quantity>();
 
-    QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString()); 
-    setPropertyValue(unit);
+        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString()); 
+        setPropertyValue(unit);
+    }
 }
 
 QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
@@ -778,8 +789,9 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver
     //if we are bound to an expression we need to bind it to the input field
     if(isBound()) {
         infield->bind(getPath());
-        infield->setAutoApply(true);
+        infield->setAutoApply(autoApply());
     }
+
     
     QObject::connect(infield, SIGNAL(valueChanged(double)), receiver, method);
     return infield;
@@ -860,11 +872,14 @@ QVariant PropertyFloatConstraintItem::value(const App::Property* prop) const
 
 void PropertyFloatConstraintItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert(QVariant::Double))
-        return;
-    double val = value.toDouble();
-    QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
-    setPropertyValue(data);
+    //if the item has an expression it issues the python code
+    if(!hasExpression())  {
+        if (!value.canConvert(QVariant::Double))
+            return;
+        double val = value.toDouble();
+        QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
+        setPropertyValue(data);
+    }
 }
 
 QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
@@ -877,8 +892,9 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObjec
     
     if(isBound()) {
         sb->bind(getPath());
-        sb->setAutoApply(true);
+        sb->setAutoApply(autoApply());
     }
+
     
     return sb;
 }

@@ -317,7 +317,8 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
     prop->getPathValue(usePath);
 
     // Check if the current expression equals the new one and do nothing if so to reduce unneeded computations
-    if(expressions.find(usePath) != expressions.end() && expr == expressions[usePath].expression)
+    ExpressionMap::iterator it = expressions.find(usePath);
+    if(it != expressions.end() && expr == it->second.expression)
         return;
     
     if (expr) {
