@@ -30,7 +30,6 @@ INSTALL(
         _ViewProviderFemAnalysis.py
         _FemAnalysis.py
         _CommandMechanicalShowResult.py
-        _CommandFrequencyAnalysis.py
         _CommandQuickAnalysis.py
         _CommandPurgeFemResults.py
         _CommandMechanicalJobControl.py
