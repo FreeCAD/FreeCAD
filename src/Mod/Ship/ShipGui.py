@@ -170,6 +170,23 @@ class TankCapacity:
                 'ToolTip': ToolTip}
 
 
+class GZ:
+    def Activated(self):
+        import shipGZ
+        shipGZ.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_gz',
+            'GZ curve computation')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_gz',
+            'Plot the GZ curve')
+        return {'Pixmap': 'Ship_GZ',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
@@ -178,3 +195,4 @@ FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
 FreeCADGui.addCommand('Ship_Weight', CreateWeight())
 FreeCADGui.addCommand('Ship_Tank', CreateTank())
 FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
+FreeCADGui.addCommand('Ship_GZ', GZ())

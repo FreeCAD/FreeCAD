@@ -80,6 +80,14 @@ SET(ShipCapacityCurve_SRCS
 )
 SOURCE_GROUP("shipcapacitycurve" FILES ${ShipCapacityCurve_SRCS})
 
+SET(ShipGZ_SRCS
+	shipGZ/__init__.py
+	shipGZ/PlotAux.py
+	shipGZ/TaskPanel.py
+	shipGZ/TaskPanel.ui
+)
+SOURCE_GROUP("shipgz" FILES ${ShipGZ_SRCS})
+
 SET(ShipUtils_SRCS
 	shipUtils/__init__.py
 	shipUtils/Locale.py
@@ -89,7 +97,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipGZ_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files} ${Ship_QRC_SRCS}
@@ -155,6 +163,12 @@ INSTALL(
         ${ShipCapacityCurve_SRCS}
     DESTINATION
         Mod/Ship/shipCapacityCurve
+)
+INSTALL(
+    FILES
+        ${ShipGZ_SRCS}
+    DESTINATION
+        Mod/Ship/shipGZ
 )
 INSTALL(
     FILES
