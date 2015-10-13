@@ -25,6 +25,7 @@ __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -32,13 +33,15 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
 
 
-class _CommandMechanicalJobControl:
+class _CommandMechanicalJobControl(FemCommands):
     "the Fem JobControl command definition"
-    def GetResources(self):
-        return {'Pixmap': 'fem-new-analysis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Start calculation"),
-                'Accel': "S, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
+    def __init__(self):
+        super(_CommandMechanicalJobControl, self).__init__()
+        self.resources = {'Pixmap': 'fem-new-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Start calculation"),
+                          'Accel': "S, C",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         import _JobControlTaskPanel
@@ -46,9 +49,6 @@ class _CommandMechanicalJobControl:
         #taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
-
-    def IsActive(self):
-        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
 if FreeCAD.GuiUp:
