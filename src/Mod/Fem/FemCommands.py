@@ -52,4 +52,14 @@ class FemCommands(object):
                 active = FreeCADGui.ActiveDocument is not None
             elif self.is_active == 'with_analysis':
                 active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
+            elif self.is_active == 'with_results':
+                active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None and self.results_present()
             return active
+
+        def results_present(self):
+            results = False
+            analysis_members = FemGui.getActiveAnalysis().Member
+            for o in analysis_members:
+                if o.isDerivedFrom('Fem::FemResultObject'):
+                    results = True
+            return results
