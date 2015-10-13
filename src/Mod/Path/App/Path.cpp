@@ -34,10 +34,11 @@
 #include <Base/Stream.h>
 #include <Base/Exception.h>
 
-#include "Mod/Robot/App/kdl_cp/path_line.hpp"
-#include "Mod/Robot/App/kdl_cp/path_circle.hpp"
-#include "Mod/Robot/App/kdl_cp/rotational_interpolation_sa.hpp"
-#include "Mod/Robot/App/kdl_cp/utilities/error.h"
+// KDL stuff - at the moment, not used
+//#include "Mod/Robot/App/kdl_cp/path_line.hpp"
+//#include "Mod/Robot/App/kdl_cp/path_circle.hpp"
+//#include "Mod/Robot/App/kdl_cp/rotational_interpolation_sa.hpp"
+//#include "Mod/Robot/App/kdl_cp/utilities/error.h"
 
 #include "Path.h"
 
