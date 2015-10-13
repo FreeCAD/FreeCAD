@@ -52,12 +52,9 @@ class ShipWorkbench(Workbench):
                     "Ship_Hydrostatics"]
         weightslist = ["Ship_Weight",
                        "Ship_Tank",
-                       "Ship_Capacity"]
-        """
-        weightslist = ["Ship_Weights",
-                       "Ship_CreateTank",
+                       "Ship_Capacity",
                        "Ship_GZ"]
-        """
+
         self.appendToolbar(
             str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship design")),
             shiplist)
