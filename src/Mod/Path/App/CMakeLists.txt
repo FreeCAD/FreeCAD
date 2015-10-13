@@ -21,7 +21,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Path_LIBS
-    Robot
+#   Robot
     Part
     ${QT_QTCORE_LIBRARY}
     FreeCADApp
