@@ -317,10 +317,7 @@ void Gui::QuantitySpinBox::onChange() {
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-<<<<<<< 175351b02ea3a586e1dbe0dc5e993966714ea236
-=======
         iconLabel->setToolTip(QString());
->>>>>>> further expression integration for property editor
     }
     iconLabel->setToolTip(QString());
 }

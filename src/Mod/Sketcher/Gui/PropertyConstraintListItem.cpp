@@ -103,7 +103,7 @@ void PropertyConstraintListItem::initialize()
             }
             
             item->bind(list->createPath(id-1));
-            item->setAutoApply(true);
+            item->setAutoApply(false);
         }
     }
 

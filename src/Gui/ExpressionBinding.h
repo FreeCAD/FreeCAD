@@ -52,7 +52,7 @@ public:
    
     //auto apply means that the python code is issues not only on aplly() but 
     //also on setExpression
-    bool autoApply() {return m_autoApply;};
+    bool autoApply() const {return m_autoApply;};
     void setAutoApply(bool value) {m_autoApply = value;};
     
 protected:

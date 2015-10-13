@@ -180,7 +180,7 @@ bool ExpressionBinding::apply()
 
     std::string name = docObj->getNameInDocument();
 
-    return apply("App.ActiveDocument." + name + "." + std::string(prop->getName()));
+    return apply("App.ActiveDocument." + name + "." + getPath().toEscapedString());
 }
 
 void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {
