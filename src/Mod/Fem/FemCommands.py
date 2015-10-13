@@ -54,6 +54,8 @@ class FemCommands(object):
                 active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
             elif self.is_active == 'with_results':
                 active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None and self.results_present()
+            elif self.is_active == 'with_part_feature':
+                active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None and self.part_feature_selected()
             return active
 
         def results_present(self):
@@ -63,3 +65,10 @@ class FemCommands(object):
                 if o.isDerivedFrom('Fem::FemResultObject'):
                     results = True
             return results
+
+        def part_feature_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and sel[0].isDerivedFrom("Part::Feature"):
+                return True
+            else:
+                return False
