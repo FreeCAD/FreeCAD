@@ -131,6 +131,7 @@ class _MechanicalMaterialTaskPanel:
         self.obj = obj
         self.material = self.obj.Material
         self.references = self.obj.References
+        self.references_shape_type = None
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
@@ -156,15 +157,17 @@ class _MechanicalMaterialTaskPanel:
         else:
             index = self.form.cb_materials.findData(previous_mat_path)
             self.choose_material(index)
+        self.has_equal_references_shape_types()
         self.rebuild_list_References()
 
     def accept(self):
         self.remove_active_sel_server()
-        self.obj.Material = self.material
-        self.obj.References = self.references
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.resetEdit()
-        doc.Document.recompute()
+        if self.has_equal_references_shape_types():
+            self.obj.Material = self.material
+            self.obj.References = self.references
+            doc = FreeCADGui.getDocument(self.obj.Document)
+            doc.resetEdit()
+            doc.Document.recompute()
 
     def reject(self):
         self.remove_active_sel_server()
@@ -174,6 +177,22 @@ class _MechanicalMaterialTaskPanel:
     def remove_active_sel_server(self):
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
+
+    def has_equal_references_shape_types(self):
+        if not self.references:
+            self.references_shape_type = None
+        for ref in self.references:
+            if ref[1]:
+                r = ref[0].Shape.getElement(ref[1])
+            else:
+                r = ref[0].Shape
+            # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
+            if self.references_shape_type is None:
+                self.references_shape_type = r.ShapeType
+            if r.ShapeType != self.references_shape_type:
+                FreeCAD.Console.PrintError('Different ShapeTypes in Reference List not allowed\n')
+                return False
+        return True
 
     def goMatWeb(self):
         import webbrowser
@@ -324,11 +343,16 @@ class _MechanicalMaterialTaskPanel:
             else:
                 elt = selection[0].Shape
             if elt.ShapeType == 'Edge' or elt.ShapeType == 'Face' or elt.ShapeType == 'Solid':
-                if selection not in self.references:
-                    self.references.append(selection)
-                    self.rebuild_list_References()
+                if not self.references:
+                    self.references_shape_type = elt.ShapeType
+                if elt.ShapeType == self.references_shape_type:
+                    if selection not in self.references:
+                        self.references.append(selection)
+                        self.rebuild_list_References()
+                    else:
+                        print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
                 else:
-                    print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
+                    print(elt.ShapeType, ' selected, but List has allready ', self.references_shape_type, 's!')
             else:
                 print('Select  Edge, Face or Solid!')
         else:
