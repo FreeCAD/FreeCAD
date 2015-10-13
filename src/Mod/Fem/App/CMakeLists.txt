@@ -82,6 +82,7 @@ SET(FemScripts_SRCS
     MechanicalMaterial.ui
     MechanicalMaterial.py
     ShowDisplacement.ui
+    FemCommands.py
     _ResultControlTaskPanel.py
     _JobControlTaskPanel.py
     _ViewProviderFemAnalysis.py

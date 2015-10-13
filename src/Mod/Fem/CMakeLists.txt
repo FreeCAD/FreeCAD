@@ -24,6 +24,7 @@ INSTALL(
         MechanicalMaterial.ui
         MechanicalAnalysis.ui
         ShowDisplacement.ui
+        FemCommands.py
         _ResultControlTaskPanel.py
         _JobControlTaskPanel.py
         _ViewProviderFemAnalysis.py

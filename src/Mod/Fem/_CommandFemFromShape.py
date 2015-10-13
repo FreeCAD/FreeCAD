@@ -25,17 +25,20 @@ __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
 
 
-class _CommandFemFromShape:
-    def GetResources(self):
-        return {'Pixmap': 'fem-fem-mesh-from-shape',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh from shape")}
+class _CommandFemFromShape(FemCommands):
+    def __init__(self):
+        super(_CommandFemFromShape, self).__init__()
+        self.resources = {'Pixmap': 'fem-fem-mesh-from-shape',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh from shape")}
+        self.is_active = 'with_part_feature'
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
@@ -50,11 +53,6 @@ class _CommandFemFromShape:
 
         FreeCADGui.Selection.clearSelection()
 
-    def IsActive(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1:
-            return sel[0].isDerivedFrom("Part::Feature")
-        return False
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
