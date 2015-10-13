@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -2754,7 +2754,9 @@ int SketchObject::delAllExternal()
     std::vector< Constraint * > newConstraints(0);
 
     for (std::vector<Constraint *>::const_iterator it = constraints.begin(); it != constraints.end(); ++it) {
-        if ((*it)->First > -3 && (*it)->Second > -3 && (*it)->Third > -3) {
+        if ((*it)->First > -3 && 
+            ((*it)->Second > -3 || (*it)->Second == Constraint::GeoUndef ) && 
+            ((*it)->Third > -3 || (*it)->Third == Constraint::GeoUndef) ) {
             Constraint *copiedConstr = (*it)->clone();
             
             newConstraints.push_back(copiedConstr);
