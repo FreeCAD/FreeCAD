@@ -17,7 +17,7 @@
  ****************************************************************************/
 
 
-
+namespace KDL {
 
 /////////////////// VectorAcc /////////////////////////////////////
 
@@ -596,3 +596,4 @@ bool Equal(const TwistAcc& a,const Twist& b,double eps) {
                 Equal(a.vel,b.vel,eps)  );
 }
 
+}

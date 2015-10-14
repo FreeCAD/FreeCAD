@@ -139,6 +139,18 @@ class MyTask : public RTT::TaskContext
         friend void Subtract(const JntArray& src1,const JntArray& src2,JntArray& dest);
         friend void Multiply(const JntArray& src,const double& factor,JntArray& dest);
         friend void Divide(const JntArray& src,const double& factor,JntArray& dest);
+        /**
+        * Function to multiply a KDL::Jacobian with a KDL::JntArray
+        * to get a KDL::Twist, it should not be used to calculate the
+        * forward velocity kinematics, the solver classes are built
+        * for this purpose.
+        * J*q = t
+        *
+        * @param jac J
+        * @param src q
+        * @param dest t
+        * @post dest == (KDL::Twist::)Zero() if 0 == src.rows() (ie src is empty)
+        */
         friend void MultiplyJacobian(const Jacobian& jac, const JntArray& src, Twist& dest);
         friend void SetToZero(JntArray& array);
         friend bool Equal(const JntArray& src1,const JntArray& src2,double eps);

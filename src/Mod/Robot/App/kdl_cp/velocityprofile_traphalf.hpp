@@ -82,9 +82,9 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 	public:
 
 		/**
-		 * \param maxvel maximal velocity of the motion profile (positive)
-		 * \param maxacc maximal acceleration of the motion profile (positive)
-		 * \param starting this value is true when initial velocity is zero
+		 * \param _maxvel maximal velocity of the motion profile (positive)
+		 * \param _maxacc maximal acceleration of the motion profile (positive)
+		 * \param _starting this value is true when initial velocity is zero
 		 *        and ending velocity is maxvel, is false for the reverse
 		 */
 		VelocityProfile_TrapHalf(double _maxvel=0,double _maxacc=0,bool _starting=true);

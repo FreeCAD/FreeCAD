@@ -21,6 +21,7 @@
 
 /**
  * @defgroup KinematicFamily Kinematic Families
+ * \ingroup KDL
  * @brief All classes to support kinematic families.
  *
  * The Kinematic Families classes range from the basic building blocks

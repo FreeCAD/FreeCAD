@@ -52,7 +52,7 @@ IMETHOD void posrandom(doubleVel& F) {
 	posrandom(F.grad);
 }
 
-}
+} //namespace KDL
 
 template <>
 struct Traits<KDL::doubleVel> {
@@ -383,11 +383,11 @@ IMETHOD void posrandom(FrameVel& F) {
 	posrandom(F.p);
 }
 
+} // namespace KDL
+
 #ifdef KDL_INLINE
 #include "framevel.inl"
 #endif
-
-} // namespace
 
 #endif
 

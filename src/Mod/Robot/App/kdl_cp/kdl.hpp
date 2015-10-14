@@ -21,7 +21,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 /**
- * \mainpage KDL
+ * \defgroup KDL Kinematics and Dynamics Library
+ * \ingroup ROBOT
  *
  * This is the API reference of the
  * <a href="http://www.orocos.org/kdl">Kinematics and Dynamics
@@ -32,7 +33,6 @@
  * - \subpage geomprim
  * - \ref KinematicFamily : functionality to build kinematic chains and access their kinematic and dynamic properties, such as e.g. Forward and Inverse kinematics and dynamics.
  * - \ref Motion : functionality to specify motion trajectories of frames and kinematic chains, such as e.g. Trapezoidal Velocity profiles.
- * - \ref KDLTK : the interface code to integrate KDL into the Orocos <a href="http://www.orocos.org/rtt/">Real-Time Toolkit</a> (RTT).
  *
  *
 **/
@@ -125,5 +125,7 @@
  *      Typically we use the standard S.I. units:  N, m, sec. 
  *
  */
+ 
+/* This code doesn't seems to be integrated with freecad - \ref KDLTK : the interface code to integrate KDL into the Orocos <a href="http://www.orocos.org/rtt/">Real-Time Toolkit</a> (RTT). */
 
 

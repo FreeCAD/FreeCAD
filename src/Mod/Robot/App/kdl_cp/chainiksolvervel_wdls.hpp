@@ -108,8 +108,9 @@ namespace KDL
         /**
          * Set the joint space weighting matrix
          *
-         * @param weight_js joint space weighting symetric matrix,
-         * default : identity.  M_q : This matrix being used as a
+         * weight_js joint space weighting symetric matrix,
+         * default : identity. 
+         * @param Mq : This matrix being used as a
          * weight for the norm of the joint space speed it HAS TO BE
          * symmetric and positive definite. We can actually deal with
          * matrices containing a symmetric and positive definite block
@@ -132,8 +133,9 @@ namespace KDL
         /**
          * Set the task space weighting matrix
          *
-         * @param weight_ts task space weighting symetric matrix,
-         * default: identity M_x : This matrix being used as a weight
+         * weight_ts task space weighting symetric matrix,
+         * default: identity 
+         * @param Mx : This matrix being used as a weight
          * for the norm of the error (in terms of task space speed) it
          * HAS TO BE symmetric and positive definite. We can actually
          * deal with matrices containing a symmetric and positive

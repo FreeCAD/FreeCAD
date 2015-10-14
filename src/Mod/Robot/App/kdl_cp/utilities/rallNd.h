@@ -10,7 +10,8 @@
  * generalized to the Nth derivative !
  * The efficiency is not very good for high derivatives.
  * This could be improved by also using Rall2d 
- *
+ */
+/*
 template <int N>
 class RallNd :
 	public Rall1d< RallNd<N-1>, RallNd<N-1>, double >
@@ -45,15 +46,15 @@ public:
  * Als je tot 3de orde een efficiente berekening kan doen,
  * dan kan je tot een willekeurige orde alles efficient berekenen
  * 0 1 2 3
- * ==> 1 2 3 4
- * ==> 3 4 5 6    
+ * ==\> 1 2 3 4
+ * ==\> 3 4 5 6    
  * 4 5 6 7
  *
  * de aangeduide berekeningen zijn niet noodzakelijk, en er is dan niets
  * verniet berekend in de recursieve implementatie.  
  * of met 2de orde over 1ste order : kan ook efficient :
  * 0 1
- * ==>1 2
+ * ==\>1 2
  * 2 3
  */
 // N>2:

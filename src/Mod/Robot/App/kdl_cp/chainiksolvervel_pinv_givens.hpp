@@ -29,10 +29,6 @@ namespace KDL
          *
          * @param chain the chain to calculate the inverse velocity
          * kinematics for
-         * @param eps if a singular value is below this value, its
-         * inverse is set to zero, default: 0.00001
-         * @param maxiter maximum iterations for the svd calculation,
-         * default: 150
          *
          */
         explicit ChainIkSolverVel_pinv_givens(const Chain& chain);
