@@ -89,9 +89,9 @@ public:
   // operators
   inline BoundBox2D& operator= (const BoundBox2D& rclBB);
   inline bool operator== (const BoundBox2D& rclBB) const;
-  bool operator|| (const Line2D &rclLine) const;
-  bool operator|| (const BoundBox2D &rclBB) const;
-  bool operator|| (const Polygon2D &rclPoly) const;
+  bool Intersect(const Line2D &rclLine) const;
+  bool Intersect(const BoundBox2D &rclBB) const;
+  bool Intersect(const Polygon2D &rclPoly) const;
   inline void Add(const Vector2D &rclVct);
 
   void SetVoid (void) { fMinX = fMinY = DOUBLE_MAX; fMaxX = fMaxY = -DOUBLE_MAX; }
