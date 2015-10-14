@@ -480,9 +480,9 @@ FemConstraintFixed,3
 ***********************************************************
 ** Node loads
 ** written by write_constraints_force function
-** FemConstraintForce
 *CLOAD
-** node loads on element face: Box.Face3
+** FemConstraintForce
+** node loads on element Face: Box:Face3
 1,1,-0.0000000000000E+00
 2,1,-0.0000000000000E+00
 5,1,-0.0000000000000E+00
