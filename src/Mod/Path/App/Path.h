@@ -25,8 +25,8 @@
 #define PATH_Path_H
 
 #include "Command.h"
-#include "Mod/Robot/App/kdl_cp/path_composite.hpp"
-#include "Mod/Robot/App/kdl_cp/frames_io.hpp"
+//#include "Mod/Robot/App/kdl_cp/path_composite.hpp"
+//#include "Mod/Robot/App/kdl_cp/frames_io.hpp"
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -70,8 +70,9 @@ namespace Path
         
         protected:
             std::vector<Command*> vpcCommands;
-            KDL::Path_Composite *pcPath;
+            //KDL::Path_Composite *pcPath;
             
+        /*
         inline  KDL::Frame toFrame(const Base::Placement &To){
             return KDL::Frame(KDL::Rotation::Quaternion(To.getRotation()[0],
                                                         To.getRotation()[1],
@@ -85,7 +86,7 @@ namespace Path
             double x,y,z,w;
             To.M.GetQuaternion(x,y,z,w);
             return Base::Placement(Base::Vector3d(To.p[0],To.p[1],To.p[2]),Base::Rotation(x,y,z,w));
-        }
+        } */
     };
 
 } //namespace Path
