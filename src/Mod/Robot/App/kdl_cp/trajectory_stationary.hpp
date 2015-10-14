@@ -29,9 +29,22 @@ namespace KDL {
 	  {
 		double duration;
 		Frame pos;
+		VelocityProfile* prof; // FreeCAD change
+		Path*      path; // FreeCAD change
 	public:
 		Trajectory_Stationary(double _duration,const Frame& _pos):
 		  duration(_duration),pos(_pos) {}
+          
+        // FreeCAD change
+	    virtual Path* GetPath() {
+            return path; 
+        }
+
+        // FreeCAD change
+	    virtual VelocityProfile* GetProfile() {
+            return prof;
+        }
+          
 		virtual double Duration() const {
 			return duration;
 		}
@@ -49,6 +62,7 @@ namespace KDL {
 		virtual Trajectory* Clone() const {
 			return new Trajectory_Stationary(duration,pos);
 		}
+
 		virtual ~Trajectory_Stationary() {}
 	};
 
