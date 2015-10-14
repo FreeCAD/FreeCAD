@@ -268,8 +268,8 @@ class inp_writer:
 
             # area load on faces
             sum_ref_face_area = 0
-            sum_ref_face_node_area = 0
-            sum_node_load = 0
+            sum_ref_face_node_area = 0  # for debugging
+            sum_node_load = 0  # for debugging
             for o, elem in frc_obj.References:
                 elem_o = o.Shape.getElement(elem)
                 if elem_o.ShapeType == 'Face':
@@ -285,115 +285,28 @@ class inp_writer:
                     f.write('*CLOAD\n')
                     f.write('** node loads on element face: ' + o.Name + '.' + elem + '\n')
 
-                    face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
-                    if is_solid_mesh(self.mesh_object.FemMesh):
-                        if has_no_face_data(self.mesh_object.FemMesh):
-                            ref_face_volume_elements = self.mesh_object.FemMesh.getccxVolumesByFace(ref_face)  # list of tupels
-                            ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
-                            for ve in ref_face_volume_elements:
-                                veID = ve[0]
-                                ve_ref_face_nodes = []
-                                for nodeID in self.fem_element_table[veID]:
-                                    if nodeID in ref_face_nodes:
-                                        ve_ref_face_nodes.append(nodeID)
-                                face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) }
-                        else:
-                            volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)   # (mv, mf)
-                            for mv, mf in volume_faces:
-                                face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
-                    elif is_shell_mesh(self.mesh_object.FemMesh):
-                        ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
-                        ref_face_elements = getFemElementsByNodes(self.fem_element_table, ref_face_nodes)
-                        for mf in ref_face_elements:
-                            face_table[mf] = self.fem_element_table[mf]
+                    # face_table = { meshfaceID : ( nodeID, ... , nodeID ) }
+                    face_table = self.get_ref_face_node_table(ref_face)
 
-                    # calulate the appropriate node_areas for every node of every mesh face (mf)
-                    # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
-                    # FIXME only gives exact results in case of a real triangle. If for S6 or C3D10 elements
-                    # the midnodes are not on the line between the end nodes the area will not be a triangle
-                    # see http://forum.freecadweb.org/viewtopic.php?f=18&t=10939&start=40#p91355  and ff
+                    # node_area_table = [ (nodeID, Area), ... , (nodeID, Area) ]  some nodes will have more than one entry
+                    node_area_table = self.get_ref_face_node_areas(face_table)
 
-                    #  [ (nodeID,Area), ... , (nodeID,Area) ]  some nodes will have more than one entry
-                    node_area_table = []
-                    #  { nodeID : Area, ... , nodeID:Area }  AreaSum for each node, one entry for each node
-                    node_sumarea_table = {}
-                    mesh_face_area = 0
-                    for mf in face_table:
-                        if len(face_table[mf]) == 3:  # 3 node mesh face triangle
-                            # corner_node_area = mesh_face_area / 3.0
-                            #      P3
-                            #      /\
-                            #     /  \
-                            #    /____\
-                            #  P1      P2
-                            P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
-                            P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
-                            P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
+                    # node_sum_area_table = { nodeID : Area, ... , nodeID : Area }  AreaSum for each node, one entry for each node
+                    node_sum_area_table = self.get_ref_shape_node_sum_geom_table(node_area_table)
 
-                            mesh_face_area = getTriangleArea(P1, P2, P3)
-                            corner_node_area = mesh_face_area / 3.0
-
-                            node_area_table.append((face_table[mf][0], corner_node_area))
-                            node_area_table.append((face_table[mf][1], corner_node_area))
-                            node_area_table.append((face_table[mf][2], corner_node_area))
-
-                        elif len(face_table[mf]) == 4:  # 4 node mesh face quad
-                            FreeCAD.Console.PrintError('Face load on 4 node quad faces are not supported\n')
-
-                        elif len(face_table[mf]) == 6:  # 6 node mesh face triangle
-                            # corner_node_area = 0
-                            # middle_node_area = mesh_face_area / 3.0
-                            #         P3
-                            #         /\
-                            #        /t3\
-                            #       /    \
-                            #     P6------P5
-                            #     / \ t4 / \
-                            #    /t1 \  /t2 \
-                            #   /_____\/_____\
-                            # P1      P4      P2
-                            P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
-                            P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
-                            P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
-                            P4 = self.mesh_object.FemMesh.Nodes[face_table[mf][3]]
-                            P5 = self.mesh_object.FemMesh.Nodes[face_table[mf][4]]
-                            P6 = self.mesh_object.FemMesh.Nodes[face_table[mf][5]]
-
-                            mesh_face_t1_area = getTriangleArea(P1, P4, P6)
-                            mesh_face_t2_area = getTriangleArea(P2, P5, P4)
-                            mesh_face_t3_area = getTriangleArea(P3, P6, P5)
-                            mesh_face_t4_area = getTriangleArea(P4, P5, P6)
-                            mesh_face_area = mesh_face_t1_area + mesh_face_t2_area + mesh_face_t3_area + mesh_face_t4_area
-                            middle_node_area = mesh_face_area / 3.0
-
-                            node_area_table.append((face_table[mf][0], 0))
-                            node_area_table.append((face_table[mf][1], 0))
-                            node_area_table.append((face_table[mf][2], 0))
-                            node_area_table.append((face_table[mf][3], middle_node_area))
-                            node_area_table.append((face_table[mf][4], middle_node_area))
-                            node_area_table.append((face_table[mf][5], middle_node_area))
-
-                        elif len(face_table[mf]) == 8:  # 8 node mesh face quad
-                            FreeCAD.Console.PrintError('Face load on 8 node quad faces are not supported\n')
-
-                    # node_sumarea_table
-                    for n, A in node_area_table:
-                        # print(n, ' --> ', A)
-                        if n in node_sumarea_table:
-                            node_sumarea_table[n] = node_sumarea_table[n] + A
-                        else:
-                            node_sumarea_table[n] = A
-
-                    sum_node_areas = 0
-                    for n in node_sumarea_table:
-                        sum_node_areas = sum_node_areas + node_sumarea_table[n]
+                    # node_load_table = { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
+                    node_load_table = {}
+                    sum_node_areas = 0  # for debugging
+                    for node in node_sum_area_table:
+                        sum_node_areas += node_sum_area_table[node]  # for debugging
+                        node_load_table[node] = node_sum_area_table[node] * force_per_sum_ref_face_area
                     sum_ref_face_node_area += sum_node_areas
 
-                    # write CLOAD lines to CalculiX file
+                    # for each ref_shape: write CLOAD lines to CalculiX file
                     vec = frc_obj.DirectionVector
-                    for n in sorted(node_sumarea_table):
-                        node_load = node_sumarea_table[n] * force_per_sum_ref_face_area
-                        sum_node_load += node_load
+                    for n in sorted(node_load_table):
+                        node_load = node_load_table[n]
+                        sum_node_load += node_load  # for debugging
                         if (vec.x != 0.0):
                             v1 = "{:.13E}".format(vec.x * node_load)
                             f.write(str(n) + ',1,' + v1 + '\n')
@@ -626,7 +539,7 @@ class inp_writer:
                     femnodes = []
                     femelements = []
                     r = ref[0].Shape.getElement(ref[1])
-                    print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
+                    # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
                     if r.ShapeType == 'Edge':
                         femnodes = self.mesh_object.FemMesh.getNodesByEdge(r)
                     elif r.ShapeType == 'Face':
@@ -659,6 +572,111 @@ class inp_writer:
         # check if all worked out well
         if not femelements_count_ok(self.fem_element_table, count_femelements):
             FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok failed!\n')
+
+    def get_ref_face_node_table(self, ref_face):
+        face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
+        if is_solid_mesh(self.mesh_object.FemMesh):
+            if has_no_face_data(self.mesh_object.FemMesh):
+                ref_face_volume_elements = self.mesh_object.FemMesh.getccxVolumesByFace(ref_face)  # list of tupels
+                ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
+                for ve in ref_face_volume_elements:
+                    veID = ve[0]
+                    ve_ref_face_nodes = []
+                    for nodeID in self.fem_element_table[veID]:
+                        if nodeID in ref_face_nodes:
+                            ve_ref_face_nodes.append(nodeID)
+                    face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) }
+            else:
+                volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)   # (mv, mf)
+                for mv, mf in volume_faces:
+                    face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
+        elif is_shell_mesh(self.mesh_object.FemMesh):
+            ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
+            ref_face_elements = getFemElementsByNodes(self.fem_element_table, ref_face_nodes)
+            for mf in ref_face_elements:
+                face_table[mf] = self.fem_element_table[mf]
+        return face_table
+
+    def get_ref_face_node_areas(self, face_table):
+        # calulate the appropriate node_areas for every node of every mesh face (mf)
+        # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
+        # FIXME only gives exact results in case of a real triangle. If for S6 or C3D10 elements
+        # the midnodes are not on the line between the end nodes the area will not be a triangle
+        # see http://forum.freecadweb.org/viewtopic.php?f=18&t=10939&start=40#p91355  and ff
+
+        #  [ (nodeID,Area), ... , (nodeID,Area) ]  some nodes will have more than one entry
+        node_area_table = []
+        mesh_face_area = 0
+        for mf in face_table:
+            if len(face_table[mf]) == 3:  # 3 node mesh face triangle
+                # corner_node_area = mesh_face_area / 3.0
+                #      P3
+                #      /\
+                #     /  \
+                #    /____\
+                #  P1      P2
+                P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
+                P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
+                P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
+
+                mesh_face_area = getTriangleArea(P1, P2, P3)
+                corner_node_area = mesh_face_area / 3.0
+
+                node_area_table.append((face_table[mf][0], corner_node_area))
+                node_area_table.append((face_table[mf][1], corner_node_area))
+                node_area_table.append((face_table[mf][2], corner_node_area))
+
+            elif len(face_table[mf]) == 4:  # 4 node mesh face quad
+                FreeCAD.Console.PrintError('Face load on 4 node quad faces are not supported\n')
+
+            elif len(face_table[mf]) == 6:  # 6 node mesh face triangle
+                # corner_node_area = 0
+                # middle_node_area = mesh_face_area / 3.0
+                #         P3
+                #         /\
+                #        /t3\
+                #       /    \
+                #     P6------P5
+                #     / \ t4 / \
+                #    /t1 \  /t2 \
+                #   /_____\/_____\
+                # P1      P4      P2
+                P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
+                P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
+                P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
+                P4 = self.mesh_object.FemMesh.Nodes[face_table[mf][3]]
+                P5 = self.mesh_object.FemMesh.Nodes[face_table[mf][4]]
+                P6 = self.mesh_object.FemMesh.Nodes[face_table[mf][5]]
+
+                mesh_face_t1_area = getTriangleArea(P1, P4, P6)
+                mesh_face_t2_area = getTriangleArea(P2, P5, P4)
+                mesh_face_t3_area = getTriangleArea(P3, P6, P5)
+                mesh_face_t4_area = getTriangleArea(P4, P5, P6)
+                mesh_face_area = mesh_face_t1_area + mesh_face_t2_area + mesh_face_t3_area + mesh_face_t4_area
+                middle_node_area = mesh_face_area / 3.0
+
+                node_area_table.append((face_table[mf][0], 0))
+                node_area_table.append((face_table[mf][1], 0))
+                node_area_table.append((face_table[mf][2], 0))
+                node_area_table.append((face_table[mf][3], middle_node_area))
+                node_area_table.append((face_table[mf][4], middle_node_area))
+                node_area_table.append((face_table[mf][5], middle_node_area))
+
+            elif len(face_table[mf]) == 8:  # 8 node mesh face quad
+                FreeCAD.Console.PrintError('Face load on 8 node quad faces are not supported\n')
+        return node_area_table
+
+    def get_ref_shape_node_sum_geom_table(self, node_geom_table):
+        # shape could be Edge or Face, geom could be lenght or area
+        # summ of legth or area for each node of the ref_shape
+        node_sum_geom_table = {}
+        for n, A in node_geom_table:
+            # print(n, ' --> ', A)
+            if n in node_sum_geom_table:
+                node_sum_geom_table[n] = node_sum_geom_table[n] + A
+            else:
+                node_sum_geom_table[n] = A
+        return node_sum_geom_table
 
 
 # Helpers
