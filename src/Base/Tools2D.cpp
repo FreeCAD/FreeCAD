@@ -67,7 +67,7 @@ void Vector2D::ProjToLine (const Vector2D &rclPt, const Vector2D &rclLine)
 /********************************************************/
 /** BOUNDBOX2D ********************************************/
 
-bool BoundBox2D::operator|| (const Line2D &rclLine) const
+bool BoundBox2D::Intersect(const Line2D &rclLine) const
 {
   Line2D clThisLine;
   Vector2D clVct;
@@ -104,7 +104,7 @@ bool BoundBox2D::operator|| (const Line2D &rclLine) const
   return false;
 }
 
-bool BoundBox2D::operator|| (const BoundBox2D &rclBB) const
+bool BoundBox2D::Intersect(const BoundBox2D &rclBB) const
 {
 //// compare bb2-points to this
 //if (Contains (Vector2D (rclBB.fMinX, rclBB.fMinY))) return TRUE;
@@ -127,7 +127,7 @@ bool BoundBox2D::operator|| (const BoundBox2D &rclBB) const
       return false;
 }
 
-bool BoundBox2D::operator|| (const Polygon2D &rclPoly) const
+bool BoundBox2D::Intersect(const Polygon2D &rclPoly) const
 {
   unsigned long i;
   Line2D clLine;
@@ -158,7 +158,7 @@ bool BoundBox2D::operator|| (const Polygon2D &rclPoly) const
       clLine.clV1 = rclPoly[i];
       clLine.clV2 = rclPoly[i + 1];
     }
-    if (*this || clLine) 
+    if (Intersect(clLine))
       return true;    /***** RETURN INTERSECTION *********/
   }
   // no intersection
