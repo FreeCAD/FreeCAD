@@ -260,14 +260,14 @@ public:
 
 
 
-
+}
 
 
 #ifdef KDL_INLINE
 #include "frameacc.inl"
 #endif
 
-}
+
 
 
 

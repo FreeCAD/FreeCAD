@@ -41,7 +41,7 @@ namespace KDL{
         *this = RigidBodyInertia(m,c,Ic);
     }
 
-  ArticulatedBodyInertia::ArticulatedBodyInertia(const Matrix3d& M, const Matrix3d& H, const Matrix3d& I)
+  ArticulatedBodyInertia::ArticulatedBodyInertia(const Eigen::Matrix3d& M, const Eigen::Matrix3d& H, const Eigen::Matrix3d& I)
     {
         this->M=M;
         this->I=I;

@@ -80,15 +80,16 @@ namespace KDL {
          * Constructor of a joint.
          *
          * @param name of the joint
-         * @param origin the origin of the joint
-         * @param axis the axis of the joint
-         * @param scale scale between joint input and actual geometric
+         * @param _origin the origin of the joint
+         * @param _axis the axis of the joint
+         * @param type type of the joint
+         * @param _scale scale between joint input and actual geometric
          * movement, default: 1
-         * @param offset offset between joint input and actual
+         * @param _offset offset between joint input and actual
          * geometric input, default: 0
-         * @param inertia 1D inertia along the joint axis, default: 0
-         * @param damping 1D damping along the joint axis, default: 0
-         * @param stiffness 1D stiffness along the joint axis,
+         * @param _inertia 1D inertia along the joint axis, default: 0
+         * @param _damping 1D damping along the joint axis, default: 0
+         * @param _stiffness 1D stiffness along the joint axis,
          * default: 0
          */
         Joint(const std::string& name, const Vector& _origin, const Vector& _axis, const JointType& type, const double& _scale=1, const double& _offset=0,
@@ -96,15 +97,16 @@ namespace KDL {
         /**
          * Constructor of a joint.
          *
-         * @param origin the origin of the joint
-         * @param axis the axis of the joint
-         * @param scale scale between joint input and actual geometric
+         * @param _origin the origin of the joint
+         * @param _axis the axis of the joint
+         * @param type type of the joint
+         * @param _scale scale between joint input and actual geometric
          * movement, default: 1
-         * @param offset offset between joint input and actual
+         * @param _offset offset between joint input and actual
          * geometric input, default: 0
-         * @param inertia 1D inertia along the joint axis, default: 0
-         * @param damping 1D damping along the joint axis, default: 0
-         * @param stiffness 1D stiffness along the joint axis,
+         * @param _inertia 1D inertia along the joint axis, default: 0
+         * @param _damping 1D damping along the joint axis, default: 0
+         * @param _stiffness 1D stiffness along the joint axis,
          * default: 0
          */
         Joint(const Vector& _origin, const Vector& _axis, const JointType& type, const double& _scale=1, const double& _offset=0,

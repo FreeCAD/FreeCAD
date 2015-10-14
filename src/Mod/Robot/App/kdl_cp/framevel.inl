@@ -16,6 +16,7 @@
  *      $Name:  $ 
  ****************************************************************************/
 
+namespace KDL {
 
 // Methods and operators related to FrameVelVel
 // They all delegate most of the work to RotationVelVel and VectorVelVel
@@ -532,3 +533,5 @@ Twist TwistVel::GetTwist() const {
 Twist TwistVel::GetTwistDot() const {
     return Twist(vel.v,rot.v);
 }
+
+} // namespace KDL

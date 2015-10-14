@@ -54,11 +54,11 @@ namespace KDL
     {
     }
     
-    void ChainIkSolverVel_wdls::setWeightJS(const MatrixXd& Mq){
+    void ChainIkSolverVel_wdls::setWeightJS(const Eigen::MatrixXd& Mq){
         weight_js = Mq;
     }
     
-    void ChainIkSolverVel_wdls::setWeightTS(const MatrixXd& Mx){
+    void ChainIkSolverVel_wdls::setWeightTS(const Eigen::MatrixXd& Mx){
         weight_ts = Mx;
     }
 

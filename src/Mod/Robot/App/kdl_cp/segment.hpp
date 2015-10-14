@@ -60,7 +60,7 @@ namespace KDL {
          * Joint(Joint::None)
          * @param f_tip frame from the end of the joint to the tip of
          * the segment, default: Frame::Identity()
-         * @param M rigid body inertia of the segment, default: Inertia::Zero()
+         * @param I rigid body inertia of the segment, default: Inertia::Zero()
          */
         explicit Segment(const std::string& name, const Joint& joint=Joint(Joint::None), const Frame& f_tip=Frame::Identity(),const RigidBodyInertia& I = RigidBodyInertia::Zero());
         /**
@@ -70,7 +70,7 @@ namespace KDL {
          * Joint(Joint::None)
          * @param f_tip frame from the end of the joint to the tip of
          * the segment, default: Frame::Identity()
-         * @param M rigid body inertia of the segment, default: Inertia::Zero()
+         * @param I rigid body inertia of the segment, default: Inertia::Zero()
          */
         explicit Segment(const Joint& joint=Joint(Joint::None), const Frame& f_tip=Frame::Identity(),const RigidBodyInertia& I = RigidBodyInertia::Zero());
         Segment(const Segment& in);

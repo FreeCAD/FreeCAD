@@ -63,7 +63,7 @@ class MyTask : public RTT::TaskContext
    ** use j here
    }
 };
-/endcode
+\endcode
 
      */
 
@@ -199,9 +199,9 @@ class MyTask : public RTT::TaskContext
      * for this purpose.
      * J*q = t
      *
-     * @param jac J
-     * @param src q
-     * @param dest t
+     * @param src J: Inertia Matrix (6x6)
+     * @param vec q: Jacobian (6x1)
+     * @param dest t: Twist (6x1)
      * @post dest==Twist::Zero() if 0==src.rows() (ie src is empty)
      */
     void Multiply(const JntSpaceInertiaMatrix& src, const JntArray& vec, JntArray& dest);
@@ -209,9 +209,9 @@ class MyTask : public RTT::TaskContext
     /**
      * Function to set all the values of the array to 0
      *
-     * @param array
+     * @param mat
      */
-    void SetToZero(JntSpaceInertiaMatrix& matrix);
+    void SetToZero(JntSpaceInertiaMatrix& mat);
 
     /**
      * Function to check if two matrices are the same with a

@@ -31,7 +31,7 @@
  *
  */
 
-
+namespace KDL {
 
 IMETHOD Vector::Vector(const Vector & arg)
 {
@@ -1334,3 +1334,4 @@ IMETHOD bool operator!=(const Vector2& a,const Vector2& b) {
     return !operator==(a,b);
 }
 
+} // namespace KDL
