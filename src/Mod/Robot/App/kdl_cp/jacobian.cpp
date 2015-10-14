@@ -126,12 +126,12 @@ namespace KDL
 
     bool Jacobian::operator ==(const Jacobian& arg)const
     {
-        return Equal((*this),arg);
+        return Equal((*this),arg,epsilon);
     }
     
     bool Jacobian::operator!=(const Jacobian& arg)const
     {
-        return !Equal((*this),arg);
+        return !Equal((*this),arg,epsilon);
     }
     
     bool Equal(const Jacobian& a,const Jacobian& b,double eps)

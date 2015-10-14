@@ -132,13 +132,13 @@ int Path_Composite::GetNrOfSegments() {
 
 Path* Path_Composite::GetSegment(int i) {
 	assert(i>=0);
-	assert(i<dv.size());
+	assert(i<static_cast<int>(dv.size()));
 	return gv[i].first;
 }
 
 double Path_Composite::GetLengthToEndOfSegment(int i) {
 	assert(i>=0);
-	assert(i<dv.size());
+	assert(i<static_cast<int>(dv.size()));
 	return dv[i];
 }
 

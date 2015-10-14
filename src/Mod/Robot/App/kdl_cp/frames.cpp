@@ -387,7 +387,7 @@ double Rotation::GetRotAngle(Vector& axis,double eps) const {
 
 bool operator==(const Rotation& a,const Rotation& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b);
+    return Equal(a,b,epsilon);
 #else
     return ( a.data[0]==b.data[0] &&
              a.data[1]==b.data[1] &&

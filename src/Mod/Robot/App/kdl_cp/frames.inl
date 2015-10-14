@@ -1267,7 +1267,7 @@ IMETHOD void posrandom(Frame& F) {
 
 IMETHOD bool operator==(const Frame& a,const Frame& b ) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b);
+    return Equal(a,b,epsilon);
 #else
         return (a.p == b.p &&
                 a.M == b.M );
@@ -1280,7 +1280,7 @@ IMETHOD bool operator!=(const Frame& a,const Frame& b) {
 
 IMETHOD bool operator==(const Vector& a,const Vector& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b);
+    return Equal(a,b,epsilon);
 #else
         return (a.data[0]==b.data[0]&&
                 a.data[1]==b.data[1]&&
@@ -1294,7 +1294,7 @@ IMETHOD bool operator!=(const Vector& a,const Vector& b) {
 
 IMETHOD bool operator==(const Twist& a,const Twist& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b);
+    return Equal(a,b,epsilon);
 #else
         return (a.rot==b.rot &&
                 a.vel==b.vel  );
@@ -1307,7 +1307,7 @@ IMETHOD bool operator!=(const Twist& a,const Twist& b) {
 
 IMETHOD bool operator==(const Wrench& a,const Wrench& b ) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b);
+    return Equal(a,b,epsilon);
 #else
     return (a.force==b.force &&
             a.torque==b.torque );
@@ -1323,7 +1323,7 @@ IMETHOD bool operator!=(const Rotation& a,const Rotation& b) {
 
 IMETHOD bool operator==(const Vector2& a,const Vector2& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b);
+    return Equal(a,b,epsilon);
 #else
         return (a.data[0]==b.data[0]&&
                 a.data[1]==b.data[1] );
