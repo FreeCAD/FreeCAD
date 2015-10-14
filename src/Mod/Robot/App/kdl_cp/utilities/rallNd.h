@@ -76,7 +76,7 @@ public:
 template <>
 class RallNd<2> : public Rall2d<double>  {
 public:
-	RallNd() {}* (dwz. met evenveel numerieke operaties als een 
+	RallNd() {} /* (dwz. met evenveel numerieke operaties als een  */
 	RallNd(const Rall2d<double>& arg) :
 		Rall2d<double>(arg) {}
 	RallNd(double value,double d[]) {

@@ -23,6 +23,15 @@
 
 #include "chainiksolverpos_nr_jl.hpp"
 
+// FreeCAD change
+#ifndef M_PI
+    #define M_PI    3.14159265358979323846 /* pi */
+#endif
+
+#ifndef M_PI_2
+    #define M_PI_2  1.57079632679489661923 /* pi/2 */
+#endif
+
 namespace KDL
 {
     ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, const JntArray& _q_min, const JntArray& _q_max, ChainFkSolverPos& _fksolver,ChainIkSolverVel& _iksolver,
@@ -50,13 +59,15 @@ namespace KDL
 
                 for(unsigned int j=0; j<q_min.rows(); j++) {
                   if(q_out(j) < q_min(j))
-                    q_out(j) = q_min(j);
+                    //q_out(j) = q_min(j); // FreeCAD change
+                    q_out(j) = q_out(j) + M_PI *2;
                 }
 
 
                 for(unsigned int j=0; j<q_max.rows(); j++) {
                     if(q_out(j) > q_max(j))
-                      q_out(j) = q_max(j);
+                      //q_out(j) = q_max(j); // FreeCAD change
+                      q_out(j) = q_out(j) - M_PI *2;
                 }
             }
 

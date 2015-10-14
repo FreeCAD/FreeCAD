@@ -23,6 +23,7 @@ namespace KDL {
 
     Trajectory_Composite::Trajectory_Composite():duration(0.0)
     {
+        path = new Path_Composite(); // FreeCAD change
     }
 
     double Trajectory_Composite::Duration() const{
@@ -92,6 +93,7 @@ namespace KDL {
         vt.insert(vt.end(),elem);
         duration += elem->Duration();
         vd.insert(vd.end(),duration);
+        path->Add(elem->GetPath(),false); // FreeCAD change
     }
 
     void Trajectory_Composite::Destroy() {
@@ -101,6 +103,8 @@ namespace KDL {
         }
         vt.erase(vt.begin(),vt.end());
         vd.erase(vd.begin(),vd.end());
+        
+        delete path; // FreeCAD change
     }
 
     Trajectory_Composite::~Trajectory_Composite() {
@@ -124,7 +128,17 @@ namespace KDL {
         }
         return comp;
     }
+    
+    // FreeCAD change
+    Path* Trajectory_Composite::GetPath()
+    {
+        return path;
+    }
 
+    VelocityProfile* Trajectory_Composite::GetProfile()
+    {
+        return 0;
+    }
 }
 
 
