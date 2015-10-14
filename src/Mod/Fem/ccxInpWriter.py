@@ -72,7 +72,8 @@ class inp_writer:
         inpfile.write('\n\n')
         self.write_element_sets_material_and_femelement_type(inpfile)
         self.write_node_sets_constraints_fixed(inpfile)
-        self.write_node_sets_constraints_force(inpfile)
+        if self.analysis_type is None or self.analysis_type == "static":
+            self.write_node_sets_constraints_force(inpfile)
         self.write_materials(inpfile)
         self.write_femelementsets(inpfile)
         self.write_step_begin(inpfile)
@@ -143,6 +144,25 @@ class inp_writer:
                     f.write(str(i) + ',\n')
 
     def write_node_sets_constraints_force(self, f):
+        for fobj in self.force_objects:
+            frc_obj = fobj['Object']
+            # in GUI defined frc_obj all ref_shape have the same shape type
+            # TODO in FemTools: check if all RefShapes really have the same type an write type to dictionary
+            fobj['RefShapeType'] = ''
+            if frc_obj.References:
+                first_ref_obj = frc_obj.References[0]
+                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1])
+                fobj['RefShapeType'] = first_ref_shape.ShapeType
+            else:
+                # frc_obj.References could be empty ! # TODO in FemTools: check
+                FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
+            if fobj['RefShapeType'] == 'Vertex':
+                pass  # point load on vertices --> the FemElementTable is not needed for node load calculation
+            elif fobj['RefShapeType'] == 'Face' and is_solid_mesh(self.mesh_object.FemMesh) and not has_no_face_data(self.mesh_object.FemMesh):
+                pass  # solid_mesh with face data --> the FemElementTable is not needed for node load calculation
+            else:
+                if not hasattr(self, 'fem_element_table'):
+                    self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
         f.write('\n***********************************************************\n')
         f.write('** Node sets for loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
@@ -153,10 +173,10 @@ class inp_writer:
             for o, elem in frc_obj.References:
                 fo = o.Shape.getElement(elem)
                 n = []
-                if fo.ShapeType == 'Edge':
-                    n = self.mesh_object.FemMesh.getNodesByEdge(fo)
-                elif fo.ShapeType == 'Vertex':
+                if fobj['RefShapeType'] == 'Vertex':
                     n = self.mesh_object.FemMesh.getNodesByVertex(fo)
+                elif fobj['RefShapeType'] == 'Edge':
+                    n = self.mesh_object.FemMesh.getNodesByEdge(fo)
                 for i in n:
                     f.write(str(i) + ',\n')
                     NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from force_object
@@ -168,8 +188,6 @@ class inp_writer:
                 #  and thus in wrong analysis results. see  def write_constraints_force()
                 f.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
                 f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
-            if frc_obj.Force == 0:
-                print('  Warning --> Force = 0')
 
     def write_materials(self, f):
         f.write('\n***********************************************************\n')
@@ -248,42 +266,37 @@ class inp_writer:
         f.write('\n***********************************************************\n')
         f.write('** Node loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        if is_shell_mesh(self.mesh_object.FemMesh) or (is_solid_mesh(self.mesh_object.FemMesh) and has_no_face_data(self.mesh_object.FemMesh)):
-            if not hasattr(self, 'fem_element_table'):
-                self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
+        f.write('*CLOAD\n')
         for fobj in self.force_objects:
             frc_obj = fobj['Object']
-            if 'NodeLoad' in fobj:   # load on edges or vertieces
+            f.write('** ' + frc_obj.Name + '\n')
+            direction_vec = frc_obj.DirectionVector
+            if frc_obj.Force == 0:
+                print('  Warning --> Force = 0')
+
+            if fobj['RefShapeType'] == 'Vertex' or fobj['RefShapeType'] == 'Edge':  # load on edges or vertieces
                 node_load = fobj['NodeLoad']
                 frc_obj_name = frc_obj.Name
-                vec = frc_obj.DirectionVector
-                f.write('*CLOAD\n')
-                f.write('** force: ' + str(node_load) + ' N,  direction: ' + str(vec) + '\n')
-                v1 = "{:.13E}".format(vec.x * node_load)
-                v2 = "{:.13E}".format(vec.y * node_load)
-                v3 = "{:.13E}".format(vec.z * node_load)
+                f.write('** force: ' + str(node_load) + ' N,  direction: ' + str(direction_vec) + '\n')
+                v1 = "{:.13E}".format(direction_vec.x * node_load)
+                v2 = "{:.13E}".format(direction_vec.y * node_load)
+                v3 = "{:.13E}".format(direction_vec.z * node_load)
                 f.write(frc_obj_name + ',1,' + v1 + '\n')
                 f.write(frc_obj_name + ',2,' + v2 + '\n')
                 f.write(frc_obj_name + ',3,' + v3 + '\n\n')
 
-            # area load on faces
-            sum_ref_face_area = 0
-            sum_ref_face_node_area = 0  # for debugging
-            sum_node_load = 0  # for debugging
-            for o, elem in frc_obj.References:
-                elem_o = o.Shape.getElement(elem)
-                if elem_o.ShapeType == 'Face':
+            elif fobj['RefShapeType'] == 'Face':  # area load on faces
+                sum_ref_face_area = 0
+                sum_ref_face_node_area = 0  # for debugging
+                sum_node_load = 0  # for debugging
+                for o, elem in frc_obj.References:
+                    elem_o = o.Shape.getElement(elem)
                     sum_ref_face_area += elem_o.Area
-            if sum_ref_face_area != 0:
-                force_per_sum_ref_face_area = frc_obj.Force / sum_ref_face_area
-
-            for o, elem in frc_obj.References:
-                elem_o = o.Shape.getElement(elem)
-                if elem_o.ShapeType == 'Face':
+                if sum_ref_face_area != 0:
+                    force_per_sum_ref_face_area = frc_obj.Force / sum_ref_face_area
+                for o, elem in frc_obj.References:
+                    elem_o = o.Shape.getElement(elem)
                     ref_face = elem_o
-                    f.write('** ' + frc_obj.Name + '\n')
-                    f.write('*CLOAD\n')
-                    f.write('** node loads on element face: ' + o.Name + '.' + elem + '\n')
 
                     # face_table = { meshfaceID : ( nodeID, ... , nodeID ) }
                     face_table = self.get_ref_face_node_table(ref_face)
@@ -302,22 +315,30 @@ class inp_writer:
                         node_load_table[node] = node_sum_area_table[node] * force_per_sum_ref_face_area
                     sum_ref_face_node_area += sum_node_areas
 
-                    # for each ref_shape: write CLOAD lines to CalculiX file
-                    vec = frc_obj.DirectionVector
+                    f.write('** node loads on element ' + fobj['RefShapeType'] + ': ' + o.Name + ':' + elem + '\n')
                     for n in sorted(node_load_table):
                         node_load = node_load_table[n]
                         sum_node_load += node_load  # for debugging
-                        if (vec.x != 0.0):
-                            v1 = "{:.13E}".format(vec.x * node_load)
+                        if (direction_vec.x != 0.0):
+                            v1 = "{:.13E}".format(direction_vec.x * node_load)
                             f.write(str(n) + ',1,' + v1 + '\n')
-                        if (vec.y != 0.0):
-                            v2 = "{:.13E}".format(vec.y * node_load)
+                        if (direction_vec.y != 0.0):
+                            v2 = "{:.13E}".format(direction_vec.y * node_load)
                             f.write(str(n) + ',2,' + v2 + '\n')
-                        if (vec.z != 0.0):
-                            v3 = "{:.13E}".format(vec.z * node_load)
+                        if (direction_vec.z != 0.0):
+                            v3 = "{:.13E}".format(direction_vec.z * node_load)
                             f.write(str(n) + ',3,' + v3 + '\n')
+                    f.write('\n')
                 f.write('\n')
-            f.write('\n')
+                ratio = sum_node_load / frc_obj.Force
+                if ratio < 0.99 or ratio > 1.01:
+                    print('Deviation  sum_node_load to frc_obj.Force is more than 1% :  ', ratio)
+                    print('  sum_ref_face_node_area: ', sum_ref_face_node_area)
+                    print('  sum_ref_face_area:      ', sum_ref_face_area)
+                    print('  sum_node_load:          ', sum_node_load)
+                    print('  frc_obj.Force:          ', frc_obj.Force)
+                    print('  the reason could be simply a circle area --> see method get_ref_face_node_areas')
+                    print('  the reason could also be an problem in retrieving the ref_face_node_area')
 
     def write_constraints_pressure(self, f):
         f.write('\n***********************************************************\n')
@@ -577,7 +598,8 @@ class inp_writer:
         face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
         if is_solid_mesh(self.mesh_object.FemMesh):
             if has_no_face_data(self.mesh_object.FemMesh):
-                ref_face_volume_elements = self.mesh_object.FemMesh.getccxVolumesByFace(ref_face)  # list of tupels
+                # there is no face data, the volumeID is used as key { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+                ref_face_volume_elements = self.mesh_object.FemMesh.getccxVolumesByFace(ref_face)  # list of tupels (mv, ccx_face_nr)
                 ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
                 for ve in ref_face_volume_elements:
                     veID = ve[0]
@@ -585,8 +607,8 @@ class inp_writer:
                     for nodeID in self.fem_element_table[veID]:
                         if nodeID in ref_face_nodes:
                             ve_ref_face_nodes.append(nodeID)
-                    face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) }
-            else:
+                    face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+            else:  # the femmesh has face_data
                 volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)   # (mv, mf)
                 for mv, mf in volume_faces:
                     face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
@@ -705,7 +727,8 @@ def getFemElementTable(fem_mesh):
 
 
 def getFemElementsByNodes(fem_element_table, node_list):
-    '''if all nodes of an fem_element are in node_list,
+    '''for every fem_element of fem_element_table
+    if all nodes of the fem_element are in node_list,
     the fem_element is added to the list which is returned
     e: elementlist
     nodes: nodelist '''
@@ -793,4 +816,4 @@ def get_ccx_elset_short_name(obj, i):
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemShellThickness':
         return 'Shell' + str(i)
     else:
-        print 'Error: ', obj.Name, ' --> ', obj.Proxy.Type
+        print('Error: ', obj.Name, ' --> ', obj.Proxy.Type)
