@@ -28,6 +28,10 @@
 
 namespace KDL
 {
+    
+    // FIXME: seems this class is unused/unmaintained/unfinished for several years
+    //        it supposed to be either fixer or removed
+
     /**
      * Implementation of a inverse velocity kinematics algorithm based
      * on the generalize pseudo inverse to calculate the velocity
@@ -60,6 +64,8 @@ namespace KDL
          * @param alpha the null-space velocity gain
          *
          */
+        
+        // FIXME: alpha is int but is initialized with a float value.
         ChainIkSolverVel_pinv_nso(const Chain& chain, JntArray opt_pos, JntArray weights, double eps=0.00001,int maxiter=150, double alpha = 0.25);
         explicit ChainIkSolverVel_pinv_nso(const Chain& chain, double eps=0.00001,int maxiter=150, double alpha = 0.25);
         ~ChainIkSolverVel_pinv_nso();

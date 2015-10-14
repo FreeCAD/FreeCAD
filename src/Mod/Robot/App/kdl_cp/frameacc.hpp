@@ -45,18 +45,18 @@ class FrameAcc;
 class RotationAcc;
 class VectorAcc;
 
-IMETHOD bool Equal(const FrameAcc& r1,const FrameAcc& r2,double eps=epsilon);
-IMETHOD bool Equal(const Frame& r1,const FrameAcc& r2,double eps=epsilon);
-IMETHOD bool Equal(const FrameAcc& r1,const Frame& r2,double eps=epsilon);
-IMETHOD bool Equal(const RotationAcc& r1,const RotationAcc& r2,double eps=epsilon);
-IMETHOD bool Equal(const Rotation& r1,const RotationAcc& r2,double eps=epsilon);
-IMETHOD bool Equal(const RotationAcc& r1,const Rotation& r2,double eps=epsilon);
-IMETHOD bool Equal(const TwistAcc& a,const TwistAcc& b,double eps=epsilon);
-IMETHOD bool Equal(const Twist& a,const TwistAcc& b,double eps=epsilon);
-IMETHOD bool Equal(const TwistAcc& a,const Twist& b,double eps=epsilon);
-IMETHOD bool Equal(const VectorAcc& r1,const VectorAcc& r2,double eps=epsilon);
-IMETHOD bool Equal(const Vector& r1,const VectorAcc& r2,double eps=epsilon);
-IMETHOD bool Equal(const VectorAcc& r1,const Vector& r2,double eps=epsilon);
+IMETHOD bool Equal(const FrameAcc& r1,const FrameAcc& r2,double eps);
+IMETHOD bool Equal(const Frame& r1,const FrameAcc& r2,double eps);
+IMETHOD bool Equal(const FrameAcc& r1,const Frame& r2,double eps);
+IMETHOD bool Equal(const RotationAcc& r1,const RotationAcc& r2,double eps);
+IMETHOD bool Equal(const Rotation& r1,const RotationAcc& r2,double eps);
+IMETHOD bool Equal(const RotationAcc& r1,const Rotation& r2,double eps);
+IMETHOD bool Equal(const TwistAcc& a,const TwistAcc& b,double eps);
+IMETHOD bool Equal(const Twist& a,const TwistAcc& b,double eps);
+IMETHOD bool Equal(const TwistAcc& a,const Twist& b,double eps);
+IMETHOD bool Equal(const VectorAcc& r1,const VectorAcc& r2,double eps);
+IMETHOD bool Equal(const Vector& r1,const VectorAcc& r2,double eps);
+IMETHOD bool Equal(const VectorAcc& r1,const Vector& r2,double eps);
 
 class VectorAcc
 {

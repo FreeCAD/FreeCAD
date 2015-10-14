@@ -29,7 +29,7 @@ namespace KDL
 {
     // Equal is friend function, but default arguments for friends are forbidden (§8.3.6.4)
     class Jacobian;
-    bool Equal(const Jacobian& a,const Jacobian& b,double eps=epsilon);
+    bool Equal(const Jacobian& a,const Jacobian& b,double eps);
 
 
     class Jacobian

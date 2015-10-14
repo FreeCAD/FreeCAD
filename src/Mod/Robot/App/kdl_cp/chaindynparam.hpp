@@ -57,7 +57,7 @@ namespace KDL {
         const Chain chain;
 	int nr;
 	unsigned int nj;
-        unsigned int ns;	
+        unsigned int ns;
 	Vector grav;
 	Vector vectornull;
 	JntArray jntarraynull;
