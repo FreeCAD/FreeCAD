@@ -58,6 +58,13 @@ class _JobControlTaskPanel:
         self.working_dir = self.fem_prefs.GetString("WorkingDir", '/tmp')
 
         self.analysis_object = analysis_object
+        try:
+            self.analysis_type = FreeCAD.FEM_analysis["type"]
+        except:
+            analysis_type = self.fem_prefs.GetInt("AnalysisType", 0)
+            self.analysis_type = FemTools.known_analysis_types[analysis_type]
+            FreeCAD.FEM_analysis = {"type": self.analysis_type}
+
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
@@ -69,6 +76,8 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
         QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
         QtCore.QObject.connect(self.form.pb_run_ccx, QtCore.SIGNAL("clicked()"), self.runCalculix)
+        QtCore.QObject.connect(self.form.rb_static_analysis, QtCore.SIGNAL("clicked()"), self.select_static_analysis)
+        QtCore.QObject.connect(self.form.rb_frequency_analysis, QtCore.SIGNAL("clicked()"), self.select_frequency_analysis)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
@@ -158,6 +167,10 @@ class _JobControlTaskPanel:
     def update(self):
         'fills the widgets'
         self.form.le_working_dir.setText(self.working_dir)
+        if self.analysis_type == 'static':
+            self.form.rb_static_analysis.setChecked(True)
+        elif self.analysis_type == 'frequency':
+            self.form.rb_frequency_analysis.setChecked(True)
         return
 
     def accept(self):
@@ -182,6 +195,7 @@ class _JobControlTaskPanel:
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
             fea = FemTools()
+            fea.set_analysis_type(self.analysis_type)
             fea.update_objects()
             fea.write_inp_file()
             if fea.inp_file_name != "":
@@ -241,6 +255,20 @@ class _JobControlTaskPanel:
         self.Calculix.start(self.CalculixBinary, ['-i', fi.baseName()])
 
         QApplication.restoreOverrideCursor()
+
+    def store_analysis_type(self, analysis_type):
+        if self.analysis_type != analysis_type:
+            self.analysis_type = analysis_type
+            FreeCAD.FEM_analysis["type"] = analysis_type
+            self.form.pb_edit_inp.setEnabled(False)
+            self.form.pb_run_ccx.setEnabled(False)
+
+    def select_static_analysis(self):
+        self.store_analysis_type('static')
+
+    def select_frequency_analysis(self):
+        self.change_analysis_type('frequency')
+
 
 #Code duplication!!!!
 def get_working_dir():
