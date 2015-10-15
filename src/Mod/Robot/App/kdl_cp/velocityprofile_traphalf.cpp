@@ -41,6 +41,7 @@
 
 
 //#include "error.h"
+#include <algorithm>
 #include "velocityprofile_traphalf.hpp"
 
 namespace KDL {
