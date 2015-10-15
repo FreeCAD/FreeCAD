@@ -45,7 +45,7 @@ class _JobControlTaskPanel:
         ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:
             self.CalculixBinary = ccx_binary
-            print "Using ccx binary path from FEM preferences: {}".format(ccx_binary)
+            print ("Using ccx binary path from FEM preferences: {}".format(ccx_binary))
         else:
             from platform import system
             if system() == 'Linux':
@@ -109,13 +109,13 @@ class _JobControlTaskPanel:
             self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def calculixError(self, error):
-        print "Error()", error
+        print ("Error() {}".format(error))
         self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
 
     def calculixStarted(self):
-        print "calculixStarted()"
-        print self.Calculix.state()
         self.form.pushButton_generate.setText("Break Calculix")
+        print ("calculixStarted()")
+        print (self.Calculix.state())
 
     def calculixStateChanged(self, newState):
         if (newState == QtCore.QProcess.ProcessState.Starting):
@@ -126,8 +126,8 @@ class _JobControlTaskPanel:
                 self.femConsoleMessage("CalculiX stopped.")
 
     def calculixFinished(self, exitCode):
-        print "calculixFinished()", exitCode
-        print self.Calculix.state()
+        print ("calculixFinished() {}".format(exitCode))
+        print (self.Calculix.state())
 
         # Restore previous cwd
         QtCore.QDir.setCurrent(self.cwd)
@@ -138,7 +138,6 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("Calculix done!", "#00AA00")
 
         self.form.pushButton_generate.setText("Re-run Calculix")
-        print "Loading results...."
         self.femConsoleMessage("Loading result sets...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
@@ -213,7 +212,7 @@ class _JobControlTaskPanel:
             self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
-        print 'editCalculixInputFile {}'.format(self.inp_file_name)
+        print ('editCalculixInputFile {}'.format(self.inp_file_name))
         if self.fem_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.inp_file_name)
         else:
@@ -221,18 +220,18 @@ class _JobControlTaskPanel:
             if ext_editor_path:
                 self.start_ext_editor(ext_editor_path, self.inp_file_name)
             else:
-                print "External editor is not defined in FEM preferences. Falling back to internal editor"
+                print ("External editor is not defined in FEM preferences. Falling back to internal editor")
                 FemGui.open(self.inp_file_name)
 
     def runCalculix(self):
-        print 'runCalculix'
+        print ('runCalculix')
         self.Start = time.time()
 
         self.femConsoleMessage("CalculiX binary: {}".format(self.CalculixBinary))
         self.femConsoleMessage("Run Calculix...")
 
         # run Calculix
-        print 'run Calculix at: ', self.CalculixBinary, ' with: ', os.path.splitext(self.inp_file_name)[0]
+        print ('run Calculix at: {} with: {}'.format(self.CalculixBinary, os.path.splitext(self.inp_file_name)[0]))
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
