@@ -908,6 +908,11 @@ void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
             item->setIcon(0, obj.getIcon());
             item->setText(0, QString::fromUtf8(displayName.c_str()));
             ObjectMap[objectName] = item;
+
+            // it may be possible that the new object claims already existing objects. If this is the 
+            // case we need to make sure this is shown by the tree
+            if(!obj.claimChildren().empty())
+                slotChangeObject(obj);
         }else {
             Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
         }
