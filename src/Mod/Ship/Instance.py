@@ -131,6 +131,91 @@ class Ship:
         if prop == "Length" or prop == "Breadth" or prop == "Draft":
             pass
 
+    def cleanWeights(self, fp):
+        """Reanalyse the weights list looking for duplicated opbjects, or
+        removed ones.
+        """
+        if not len(fp.Weights):
+            return
+        # Filter out the duplicated elements
+        filtered_list = []
+        [filtered_list.append(x) for x in fp.Weights if x not in filtered_list]
+        if cmp(fp.Weights, filtered_list):
+            fp.Weights = filtered_list
+        # Filter out the removed/non-valid objects
+        object_names = []
+        for obj in fp.Document.Objects:
+            object_names.append(obj.Name)
+        filtered_list = []
+        for obj_name in fp.Weights:
+            if obj_name in object_names:
+                for obj in fp.Document.Objects:
+                    if obj.Name == obj_name:
+                        try:
+                            if obj.IsWeight: filtered_list.append(obj_name)
+                        except:
+                            pass
+                        break
+        if cmp(fp.Weights, filtered_list):
+            fp.Weights = filtered_list
+
+    def cleanTanks(self, fp):
+        """Reanalyse the weights list looking for duplicated opbjects, or
+        removed ones.
+        """
+        if not len(fp.Tanks):
+            return
+        # Filter out the duplicated elements
+        filtered_list = []
+        [filtered_list.append(x) for x in fp.Tanks if x not in filtered_list]
+        if cmp(fp.Tanks, filtered_list):
+            fp.Tanks = filtered_list
+        # Filter out the removed/non-valid objects
+        object_names = []
+        for obj in fp.Document.Objects:
+            object_names.append(obj.Name)
+        filtered_list = []
+        for obj_name in fp.Tanks:
+            if obj_name in object_names:
+                for obj in fp.Document.Objects:
+                    if obj.Name == obj_name:
+                        try:
+                            if obj.IsTank: filtered_list.append(obj_name)
+                        except:
+                            pass
+                        break
+        if cmp(fp.Tanks, filtered_list):
+            fp.Tanks = filtered_list
+
+    def cleanLoadConditions(self, fp):
+        """Reanalyse the weights list looking for duplicated opbjects, or
+        removed ones.
+        """
+        if not len(fp.LoadConditions):
+            return
+        # Filter out the duplicated elements
+        filtered_list = []
+        [filtered_list.append(x) for x in fp.LoadConditions if x not in filtered_list]
+        if cmp(fp.LoadConditions, filtered_list):
+            fp.LoadConditions = filtered_list
+        # Filter out the removed/non-valid objects
+        object_names = []
+        for obj in fp.Document.Objects:
+            object_names.append(obj.Name)
+        filtered_list = []
+        for obj_name in fp.LoadConditions:
+            if obj_name in object_names:
+                for obj in fp.Document.Objects:
+                    if obj.Name == obj_name:
+                        try:
+                            if obj.TypeId == 'Spreadsheet::Sheet':
+                                filtered_list.append(obj_name)
+                        except:
+                            pass
+                        break
+        if cmp(fp.LoadConditions, filtered_list):
+            fp.LoadConditions = filtered_list
+
     def execute(self, fp):
         """Detects the entity recomputations.
 
