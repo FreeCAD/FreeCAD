@@ -160,7 +160,7 @@ Driver_Mesh::Status DriverSTL_R_SMDS_Mesh::Perform()
 static Standard_Real readFloat(OSD_File& theFile)
 {
   union {
-    Standard_Boolean i; 
+    Standard_Integer i;
     Standard_ShortReal f;
   }u;
 

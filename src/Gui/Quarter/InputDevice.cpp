@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4267)
+#endif
+
 #include <Quarter/devices/InputDevice.h>
 #include <QtGui/QInputEvent>
 #include <Inventor/events/SoEvents.h>
