@@ -129,6 +129,8 @@ class FemTest(unittest.TestCase):
         result = ''
         for l in diff:
             result += l
+        if result:
+            result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
         return result
 
     def compare_stats(self, fea, stat_file=None):
