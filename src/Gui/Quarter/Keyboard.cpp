@@ -38,6 +38,10 @@
 */
 
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4267)
+#endif
+
 #include <Quarter/devices/Keyboard.h>
 
 #include <QtCore/QEvent>

@@ -63,6 +63,8 @@
 
 #if defined(_MSC_VER)
 #define strtoll _strtoi64
+#pragma warning(disable : 4003)
+#pragma warning(disable : 4065)
 #endif
 
 using namespace Base;

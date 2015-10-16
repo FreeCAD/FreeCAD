@@ -59,6 +59,9 @@
 /*
   Netgen include files
 */
+#ifdef _MSC_VER
+#pragma warning(disable : 4067)
+#endif
 
 namespace nglib {
 #include <nglib.h>
