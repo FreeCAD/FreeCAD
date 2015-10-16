@@ -85,6 +85,10 @@ def load():
     s.set("B3", ship.Name)
     s.setForeground('A1:B3', (0.5,0.5,0.5))
 
+    # Clean the Ship instance before generating the load condition
+    ship.Proxy.cleanWeights(ship)
+    ship.Proxy.cleanTanks(ship)
+
     # Add the weights data
     s.mergeCells('A4:D4')
     s.setAlignment('A4:A4', 'center', 'keep')
@@ -125,8 +129,6 @@ def load():
     lcs = ship.LoadConditions[:]
     lcs.append(s.Name)
     ship.LoadConditions = lcs
-    ship.Proxy.cleanWeights(ship)
-    ship.Proxy.cleanTanks(ship)
     ship.Proxy.cleanLoadConditions(ship)
 
     # Recompute to take the changes
