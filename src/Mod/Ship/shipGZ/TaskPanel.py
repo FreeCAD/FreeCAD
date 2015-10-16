@@ -127,12 +127,29 @@ class TaskPanel:
                 "Variable draft",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
+        self.widget(QtGui.QCheckBox, "VariableDraft").setTooltip(
+            QtGui.QApplication.translate(
+                "ship_gz",
+                "The ship will be moved to the equilibrium draft for each" + \
+                " roll angle. It will significantly increase the required" + \
+                " computing time",
+                None,
+                QtGui.QApplication.UnicodeUTF8))
         self.widget(QtGui.QCheckBox, "VariableTrim").setText(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "Variable trim",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
+        self.widget(QtGui.QCheckBox, "VariableTrim").setTooltip(
+            QtGui.QApplication.translate(
+                "ship_gz",
+                "The ship will be rotated to the equilibrium trim angle for" + \
+                " each roll angle. It will significantly increase the" + \
+                " required computing time",
+                None,
+                QtGui.QApplication.UnicodeUTF8))
+
 
 
 def createTask():
