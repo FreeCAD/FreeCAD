@@ -167,27 +167,24 @@ class inp_writer:
         f.write('** Node sets for loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.force_objects:
-            frc_obj = fobj['Object']
-            f.write('*NSET,NSET=' + frc_obj.Name + '\n')
-            NbrForceNodes = 0
-            for o, elem in frc_obj.References:
-                fo = o.Shape.getElement(elem)
-                n = []
-                if fobj['RefShapeType'] == 'Vertex':
+            if fobj['RefShapeType'] == 'Vertex':
+                frc_obj = fobj['Object']
+                f.write('*NSET,NSET=' + frc_obj.Name + '\n')
+                NbrForceNodes = 0
+                for o, elem in frc_obj.References:
+                    fo = o.Shape.getElement(elem)
+                    n = []
                     n = self.mesh_object.FemMesh.getNodesByVertex(fo)
-                elif fobj['RefShapeType'] == 'Edge':
-                    n = self.mesh_object.FemMesh.getNodesByEdge(fo)
-                for i in n:
-                    f.write(str(i) + ',\n')
-                    NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from force_object
-            # calculate node load
-            if NbrForceNodes != 0:
-                fobj['NodeLoad'] = (frc_obj.Force) / NbrForceNodes
-                #  FIXME for loads on edges the node count is used to distribute the load on the edges.
-                #  In case of a not uniform fem mesh this could result in wrong force distribution
-                #  and thus in wrong analysis results. see  def write_constraints_force()
-                f.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
-                f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
+                    for i in n:
+                        f.write(str(i) + ',\n')
+                        NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from force_object
+                # calculate node load
+                if NbrForceNodes != 0:
+                    fobj['NodeLoad'] = (frc_obj.Force) / NbrForceNodes
+                    f.write('** concentrated load [N] distributed on all mesh nodes of the given vertieces\n')
+                    f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
+            else:
+                f.write('** no point load on vertices --> no set for node loads\n')
 
     def write_materials(self, f):
         f.write('\n***********************************************************\n')
@@ -274,7 +271,7 @@ class inp_writer:
             if frc_obj.Force == 0:
                 print('  Warning --> Force = 0')
 
-            if fobj['RefShapeType'] == 'Vertex' or fobj['RefShapeType'] == 'Edge':  # load on edges or vertieces
+            if fobj['RefShapeType'] == 'Vertex':  # point load on vertieces
                 node_load = fobj['NodeLoad']
                 frc_obj_name = frc_obj.Name
                 f.write('** force: ' + str(node_load) + ' N,  direction: ' + str(direction_vec) + '\n')
@@ -284,6 +281,61 @@ class inp_writer:
                 f.write(frc_obj_name + ',1,' + v1 + '\n')
                 f.write(frc_obj_name + ',2,' + v2 + '\n')
                 f.write(frc_obj_name + ',3,' + v3 + '\n\n')
+
+            elif fobj['RefShapeType'] == 'Edge':  # line load on edges
+                sum_ref_edge_length = 0
+                sum_ref_edge_node_length = 0  # for debugging
+                sum_node_load = 0  # for debugging
+                for o, elem in frc_obj.References:
+                    elem_o = o.Shape.getElement(elem)
+                    sum_ref_edge_length += elem_o.Length
+                if sum_ref_edge_length != 0:
+                    force_per_sum_ref_edge_length = frc_obj.Force / sum_ref_edge_length
+                for o, elem in frc_obj.References:
+                    elem_o = o.Shape.getElement(elem)
+                    ref_edge = elem_o
+
+                    # edge_table = { meshedgeID : ( nodeID, ... , nodeID ) }
+                    edge_table = self.get_refedge_node_table(ref_edge)
+
+                    # node_length_table = [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
+                    node_length_table = self.get_refedge_node_lengths(edge_table)
+
+                    # node_sum_length_table = { nodeID : Length, ... , nodeID : Length }  LengthSum for each node, one entry for each node
+                    node_sum_length_table = self.get_ref_shape_node_sum_geom_table(node_length_table)
+
+                    # node_load_table = { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
+                    node_load_table = {}
+                    sum_node_lengths = 0  # for debugging
+                    for node in node_sum_length_table:
+                        sum_node_lengths += node_sum_length_table[node]  # for debugging
+                        node_load_table[node] = node_sum_length_table[node] * force_per_sum_ref_edge_length
+                    sum_ref_edge_node_length += sum_node_lengths
+
+                    f.write('** node loads on element ' + fobj['RefShapeType'] + ': ' + o.Name + ':' + elem + '\n')
+                    for n in sorted(node_load_table):
+                        node_load = node_load_table[n]
+                        sum_node_load += node_load  # for debugging
+                        if (direction_vec.x != 0.0):
+                            v1 = "{:.13E}".format(direction_vec.x * node_load)
+                            f.write(str(n) + ',1,' + v1 + '\n')
+                        if (direction_vec.y != 0.0):
+                            v2 = "{:.13E}".format(direction_vec.y * node_load)
+                            f.write(str(n) + ',2,' + v2 + '\n')
+                        if (direction_vec.z != 0.0):
+                            v3 = "{:.13E}".format(direction_vec.z * node_load)
+                            f.write(str(n) + ',3,' + v3 + '\n')
+                    f.write('\n')
+                f.write('\n')
+                ratio = sum_node_load / frc_obj.Force
+                if ratio < 0.99 or ratio > 1.01:
+                    print('Deviation  sum_node_load to frc_obj.Force is more than 1% :  ', ratio)
+                    print('  sum_ref_edge_node_length: ', sum_ref_edge_node_length)
+                    print('  sum_ref_edge_length:      ', sum_ref_edge_length)
+                    print('  sum_node_load:          ', sum_node_load)
+                    print('  frc_obj.Force:          ', frc_obj.Force)
+                    print('  the reason could be simply a circle length --> see method get_ref_edge_node_lengths')
+                    print('  the reason could also be an problem in retrieving the ref_edge_node_length')
 
             elif fobj['RefShapeType'] == 'Face':  # area load on faces
                 sum_ref_face_area = 0
@@ -594,6 +646,49 @@ class inp_writer:
         if not femelements_count_ok(self.fem_element_table, count_femelements):
             FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok failed!\n')
 
+    def get_refedge_node_table(self, refedge):
+        edge_table = {}  # { meshedgeID : ( nodeID, ... , nodeID ) }
+        refedge_nodes = self.mesh_object.FemMesh.getNodesByEdge(refedge)
+        if is_solid_mesh(self.mesh_object.FemMesh):
+            refedge_fem_volumeelements = []
+            # if at least two nodes of a femvolumeelement are in refedge_nodes the volume is added to refedge_fem_volumeelements
+            for elem in self.fem_element_table:
+                nodecount = 0
+                for node in self.fem_element_table[elem]:
+                    if node in refedge_nodes:
+                        nodecount += 1
+                if nodecount > 1:
+                    refedge_fem_volumeelements.append(elem)
+            # for every refedge_fem_volumeelement look which of his nodes is in refedge_nodes --> add all these nodes to edge_table
+            for elem in refedge_fem_volumeelements:
+                fe_refedge_nodes = []
+                for node in self.fem_element_table[elem]:
+                    if node in refedge_nodes:
+                        fe_refedge_nodes.append(node)
+                    edge_table[elem] = fe_refedge_nodes  # { volumeID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
+        elif is_shell_mesh(self.mesh_object.FemMesh):
+            refedge_fem_faceelements = []
+            # if at least two nodes of a femfaceelement are in refedge_nodes the volume is added to refedge_fem_volumeelements
+            for elem in self.fem_element_table:
+                nodecount = 0
+                for node in self.fem_element_table[elem]:
+                    if node in refedge_nodes:
+                        nodecount += 1
+                if nodecount > 1:
+                    refedge_fem_faceelements.append(elem)
+            # for every refedge_fem_faceelement look which of his nodes is in refedge_nodes --> add all these nodes to edge_table
+            for elem in refedge_fem_faceelements:
+                fe_refedge_nodes = []
+                for node in self.fem_element_table[elem]:
+                    if node in refedge_nodes:
+                        fe_refedge_nodes.append(node)
+                    edge_table[elem] = fe_refedge_nodes  # { faceID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
+        elif is_beam_mesh(self.mesh_object.FemMesh):
+            refedge_fem_edgeelements = getFemElementsByNodes(self.fem_element_table, refedge_nodes)
+            for elem in refedge_fem_edgeelements:
+                edge_table[elem] = self.fem_element_table[elem]  # { edgeID : ( nodeID, ... , nodeID  )} # all nodes off this femedgeelement
+        return edge_table
+
     def get_ref_face_node_table(self, ref_face):
         face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
         if is_solid_mesh(self.mesh_object.FemMesh):
@@ -618,6 +713,47 @@ class inp_writer:
             for mf in ref_face_elements:
                 face_table[mf] = self.fem_element_table[mf]
         return face_table
+
+    def get_refedge_node_lengths(self, edge_table):
+        # calulate the appropriate node_length for every node of every mesh edge (me)
+        # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
+
+        #  [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
+        node_length_table = []
+        mesh_edge_length = 0
+        # print len(edge_table)
+        for me in edge_table:
+            if len(edge_table[me]) == 2:  # 2 node mesh edge
+                # end_node_length = mesh_edge_length / 2
+                #    ______
+                #  P1      P2
+                P1 = self.mesh_object.FemMesh.Nodes[edge_table[me][0]]
+                P2 = self.mesh_object.FemMesh.Nodes[edge_table[me][1]]
+                edge_vec = P2 - P1
+                mesh_edge_length = edge_vec.Length
+                # print(mesh_edge_length)
+                end_node_length = mesh_edge_length / 2.0
+                node_length_table.append((edge_table[me][0], end_node_length))
+                node_length_table.append((edge_table[me][1], end_node_length))
+
+            elif len(edge_table[me]) == 3:  # 3 node mesh edge
+                # end_node_length = mesh_edge_length / 6
+                # middle_node_length = mesh_face_area * 2 / 3
+                #   _______ _______
+                # P1       P3      P2
+                P1 = self.mesh_object.FemMesh.Nodes[edge_table[me][0]]
+                P2 = self.mesh_object.FemMesh.Nodes[edge_table[me][1]]
+                P3 = self.mesh_object.FemMesh.Nodes[edge_table[me][2]]
+                edge_vec1 = P3 - P1
+                edge_vec2 = P2 - P3
+                mesh_edge_length = edge_vec1.Length + edge_vec2.Length
+                # print(me, ' --> ', mesh_edge_length)
+                end_node_length = mesh_edge_length / 6.0
+                middle_node_length = mesh_edge_length * 2.0 / 3.0
+                node_length_table.append((edge_table[me][0], end_node_length))
+                node_length_table.append((edge_table[me][1], end_node_length))
+                node_length_table.append((edge_table[me][2], middle_node_length))
+        return node_length_table
 
     def get_ref_face_node_areas(self, face_table):
         # calulate the appropriate node_areas for every node of every mesh face (mf)
