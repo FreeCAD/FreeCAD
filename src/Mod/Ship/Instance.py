@@ -109,6 +109,15 @@ class Ship:
                         "Tanks",
                         "Ship",
                         tooltip).Tanks = []
+        tooltip = str(QtGui.QApplication.translate(
+            "Ship",
+            "Set of load conditions",
+            None,
+            QtGui.QApplication.UnicodeUTF8))
+        obj.addProperty("App::PropertyStringList",
+                        "LoadConditions",
+                        "Ship",
+                        tooltip).LoadConditions = []
 
         obj.Proxy = self
 

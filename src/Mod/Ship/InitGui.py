@@ -53,6 +53,7 @@ class ShipWorkbench(Workbench):
         weightslist = ["Ship_Weight",
                        "Ship_Tank",
                        "Ship_Capacity",
+                       "Ship_LoadCondition",
                        "Ship_GZ"]
 
         self.appendToolbar(
