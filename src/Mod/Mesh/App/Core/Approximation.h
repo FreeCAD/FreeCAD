@@ -103,11 +103,11 @@ public:
     /**
      * Construction
      */
-    Approximation() : _bIsFitted(false) { }
+    Approximation();
     /**
      * Destroys the object and frees any allocated resources.
      */
-    virtual ~Approximation(){ Clear(); }
+    virtual ~Approximation();
     /**
      * Add point for the fit algorithm.
      */
@@ -188,11 +188,11 @@ public:
     /**
      * Construction
      */
-    PlaneFit(){};
+    PlaneFit();
     /**
      * Destruction
      */
-    virtual ~PlaneFit(){};
+    virtual ~PlaneFit();
     Base::Vector3f GetBase() const;
     Base::Vector3f GetDirU() const;
     Base::Vector3f GetDirV() const;
@@ -229,6 +229,12 @@ public:
      * Get the dimension of the fitted plane.
      */
     void Dimension(float& length, float& width) const;
+    /**
+     * Returns an array of the transformed points relative to the coordinate system
+     * of the plane. If this method is called before the plane is computed an empty
+     * array is returned.
+     */
+    std::vector<Base::Vector3f> GetLocalPoints() const;
 
 protected:
     Base::Vector3f _vBase; /**< Base vector of the plane. */
@@ -319,7 +325,7 @@ protected:
  * to get a parametrisation of the points afterwards. The coordinates of the points with respect to the local
  * coordinate system of the plane are determined and then a quadratic polynomial function of the form:
  *      w = f(u,v) = a*u^2 + b*v^2 + c*u*v + d*u + e*v + f
- * is deermined.
+ * is determined.
  * This approach was developed as an alternative for the 3D approach with quadrics because
  * the latter suffers from strange artifacts in planar areas.
  */
@@ -340,6 +346,7 @@ public:
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfcurv1);
     float Fit();
     double Value(double x, double y) const;
+    void GetCoefficients(double& a,double& b,double& c,double& d,double& e,double& f) const;
 
 protected:
     double PolynomFit();

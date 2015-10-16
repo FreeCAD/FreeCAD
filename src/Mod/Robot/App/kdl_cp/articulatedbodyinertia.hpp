@@ -57,7 +57,7 @@ namespace KDL {
          * 	This constructor creates a cartesian space inertia matrix,
          * 	the arguments are the mass, the vector from the reference point to cog and the rotational inertia in the cog.
          */
-        ArticulatedBodyInertia(double m, const Vector& oc=Vector::Zero(), const RotationalInertia& Ic=RotationalInertia::Zero());
+        explicit ArticulatedBodyInertia(double m, const Vector& oc=Vector::Zero(), const RotationalInertia& Ic=RotationalInertia::Zero());
         
         /**
          * Creates an inertia with zero mass, and zero RotationalInertia
@@ -69,34 +69,13 @@ namespace KDL {
         
         ~ArticulatedBodyInertia(){};
         
-        /**
-         * Scalar product: I_new = double * I_old
-         */
         friend ArticulatedBodyInertia operator*(double a,const ArticulatedBodyInertia& I);
-        /**
-         * addition I: I_new = I_old1 + I_old2, make sure that I_old1
-         * and I_old2 are expressed in the same reference frame/point,
-         * otherwise the result is worth nothing
-         */
         friend ArticulatedBodyInertia operator+(const ArticulatedBodyInertia& Ia,const ArticulatedBodyInertia& Ib);
         friend ArticulatedBodyInertia operator+(const ArticulatedBodyInertia& Ia,const RigidBodyInertia& Ib);
         friend ArticulatedBodyInertia operator-(const ArticulatedBodyInertia& Ia,const ArticulatedBodyInertia& Ib);
         friend ArticulatedBodyInertia operator-(const ArticulatedBodyInertia& Ia,const RigidBodyInertia& Ib);
-
-        /**
-         * calculate spatial momentum: h = I*v
-         * make sure that the twist v and the inertia are expressed in the same reference frame/point
-         */
         friend Wrench operator*(const ArticulatedBodyInertia& I,const Twist& t);
-
-        /**
-         * Coordinate system transform Ia = T_a_b*Ib with T_a_b the frame from a to b.
-         */
         friend ArticulatedBodyInertia operator*(const Frame& T,const ArticulatedBodyInertia& I);
-        /**
-         * Reference frame orientation change Ia = R_a_b*Ib with R_a_b
-         * the rotation of b expressed in a
-         */
         friend ArticulatedBodyInertia operator*(const Rotation& R,const ArticulatedBodyInertia& I);
 
         /**
@@ -111,7 +90,36 @@ namespace KDL {
         Eigen::Matrix3d H;
         Eigen::Matrix3d I;
     };
-}//namespace
 
+    /**
+     * Scalar product: I_new = double * I_old
+     */
+    ArticulatedBodyInertia operator*(double a,const ArticulatedBodyInertia& I);
+    /**
+     * addition I: I_new = I_old1 + I_old2, make sure that I_old1
+     * and I_old2 are expressed in the same reference frame/point,
+     * otherwise the result is worth nothing
+     */
+    ArticulatedBodyInertia operator+(const ArticulatedBodyInertia& Ia,const ArticulatedBodyInertia& Ib);
+    ArticulatedBodyInertia operator+(const ArticulatedBodyInertia& Ia,const RigidBodyInertia& Ib);
+    ArticulatedBodyInertia operator-(const ArticulatedBodyInertia& Ia,const ArticulatedBodyInertia& Ib);
+    ArticulatedBodyInertia operator-(const ArticulatedBodyInertia& Ia,const RigidBodyInertia& Ib);
 
+    /**
+     * calculate spatial momentum: h = I*v
+     * make sure that the twist v and the inertia are expressed in the same reference frame/point
+     */
+    Wrench operator*(const ArticulatedBodyInertia& I,const Twist& t);
+
+    /**
+     * Coordinate system transform Ia = T_a_b*Ib with T_a_b the frame from a to b.
+     */
+    ArticulatedBodyInertia operator*(const Frame& T,const ArticulatedBodyInertia& I);
+    /**
+     * Reference frame orientation change Ia = R_a_b*Ib with R_a_b
+     * the rotation of b expressed in a
+     */
+    ArticulatedBodyInertia operator*(const Rotation& R,const ArticulatedBodyInertia& I);
+
+}
 #endif

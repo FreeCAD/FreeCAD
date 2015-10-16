@@ -34,8 +34,8 @@ namespace KDL {
      */
     class Chain {
     private:
-        int nrOfJoints;
-        int nrOfSegments;
+        unsigned int nrOfJoints;
+        unsigned int nrOfSegments;
     public:
         std::vector<Segment> segments;
         /**

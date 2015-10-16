@@ -29,12 +29,12 @@
 // Exporting of App classes
 #ifdef FC_OS_WIN32
 # define PathExport  __declspec(dllexport)
-# define RobotExport __declspec(dllexport)
+//# define RobotExport __declspec(dllexport) uncomment this to use KDL
 # define PartExport __declspec(dllexport)
 # define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define PathExport
-# define RobotExport
+//# define RobotExport uncomment this to use KDL
 # define PartExport
 # define BaseExport
 #endif

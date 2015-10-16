@@ -20,7 +20,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 /**
- * @defgroup KinFam Kinematic Families
+ * @defgroup KinematicFamily Kinematic Families
  * \ingroup KDL
  * @brief All classes to support kinematic families.
  *

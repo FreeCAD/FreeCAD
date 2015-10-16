@@ -83,6 +83,18 @@ class VelocityProfile_Trap : public VelocityProfile
 			double pos1,double pos2,double newduration
 		);
 
+		/** Compute trapezoidal profile at a given fraction of max velocity
+			@param pos1 Position to start from
+			@param pos2 Position to end at
+			@param newvelocity Fraction of max velocity to use during the
+			non-ramp, flat-velocity part of the profile.
+			@param KDL::epsilon <= newvelocity <= 1.0 (forcibly clamped to
+			this range internally)
+		*/
+		virtual void SetProfileVelocity(
+			double pos1,double pos2,double newvelocity
+		);
+
         virtual void SetMax(double _maxvel,double _maxacc);
 		virtual double Duration() const;
 		virtual double Pos(double time) const;

@@ -59,15 +59,6 @@ Trajectory_Segment::Trajectory_Segment(Path* _geom, VelocityProfile* _motprof, d
     motprof->SetProfileDuration(0, geom->PathLength(), _duration);
 }
 
-Path* Trajectory_Segment::GetPath()
-{
-    return geom;
-}
-
-VelocityProfile* Trajectory_Segment::GetProfile()
-{
-    return motprof;
-}
 
 double Trajectory_Segment::Duration() const
 {
@@ -106,5 +97,13 @@ Trajectory_Segment::~Trajectory_Segment()
             delete geom;
         }
 }
+Path* Trajectory_Segment::GetPath() {
+	return geom;
+}
+
+VelocityProfile* Trajectory_Segment::GetProfile() {
+	return motprof;
+}
+
 
 }

@@ -33,21 +33,23 @@ namespace KDL
     {
     }
 
-    int ChainFkSolverVel_recursive::JntToCart(const JntArrayVel& in,FrameVel& out,int segmentNr)
+    int ChainFkSolverVel_recursive::JntToCart(const JntArrayVel& in,FrameVel& out,int seg_nr)
     {
-
-        if(segmentNr<0)
-             segmentNr=chain.getNrOfSegments();
+        unsigned int segmentNr;
+        if(seg_nr<0)
+            segmentNr=chain.getNrOfSegments();
+        else
+            segmentNr = seg_nr;
 
         out=FrameVel::Identity();
 
         if(!(in.q.rows()==chain.getNrOfJoints()&&in.qdot.rows()==chain.getNrOfJoints()))
             return -1;
-        else if(segmentNr>static_cast<int>(chain.getNrOfSegments()))
+        else if(segmentNr>chain.getNrOfSegments())
             return -1;
         else{
             int j=0;
-            for (int i=0;i<segmentNr;i++) {
+            for (unsigned int i=0;i<segmentNr;i++) {
                 //Calculate new Frame_base_ee
                 if(chain.getSegment(i).getJoint().getType()!=Joint::None){
                     out=out*FrameVel(chain.getSegment(i).pose(in.q(j)),

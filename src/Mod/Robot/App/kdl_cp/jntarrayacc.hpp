@@ -29,6 +29,23 @@
 
 namespace KDL
 {
+    // Equal is friend function, but default arguments for friends are forbidden (§8.3.6.4)
+    class JntArrayAcc;
+    bool Equal(const JntArrayAcc& src1,const JntArrayAcc& src2,double eps=epsilon);
+    void Add(const JntArrayAcc& src1,const JntArrayAcc& src2,JntArrayAcc& dest);
+    void Add(const JntArrayAcc& src1,const JntArrayVel& src2,JntArrayAcc& dest);
+    void Add(const JntArrayAcc& src1,const JntArray& src2,JntArrayAcc& dest);
+    void Subtract(const JntArrayAcc& src1,const JntArrayAcc& src2,JntArrayAcc& dest);
+    void Subtract(const JntArrayAcc& src1,const JntArrayVel& src2,JntArrayAcc& dest);
+    void Subtract(const JntArrayAcc& src1,const JntArray& src2,JntArrayAcc& dest);
+    void Multiply(const JntArrayAcc& src,const double& factor,JntArrayAcc& dest);
+    void Multiply(const JntArrayAcc& src,const doubleVel& factor,JntArrayAcc& dest);
+    void Multiply(const JntArrayAcc& src,const doubleAcc& factor,JntArrayAcc& dest);
+    void Divide(const JntArrayAcc& src,const double& factor,JntArrayAcc& dest);
+    void Divide(const JntArrayAcc& src,const doubleVel& factor,JntArrayAcc& dest);
+    void Divide(const JntArrayAcc& src,const doubleAcc& factor,JntArrayAcc& dest);
+    void SetToZero(JntArrayAcc& array);
+
     class JntArrayAcc
     {
     public:
@@ -37,10 +54,10 @@ namespace KDL
         JntArray qdotdot;
     public:
       JntArrayAcc(){};
-        JntArrayAcc(unsigned int size);
+        explicit JntArrayAcc(unsigned int size);
         JntArrayAcc(const JntArray& q,const JntArray& qdot,const JntArray& qdotdot);
         JntArrayAcc(const JntArray& q,const JntArray& qdot);
-        JntArrayAcc(const JntArray& q);
+        explicit JntArrayAcc(const JntArray& q);
 
         void resize(unsigned int newSize);
 
@@ -64,6 +81,7 @@ namespace KDL
         friend bool Equal(const JntArrayAcc& src1,const JntArrayAcc& src2,double eps);
 
     };
+
 }
 
 #endif

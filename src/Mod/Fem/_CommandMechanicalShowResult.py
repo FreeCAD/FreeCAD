@@ -25,19 +25,22 @@ __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
 
 
-class _CommandMechanicalShowResult:
+class _CommandMechanicalShowResult(FemCommands):
     "the Fem JobControl command definition"
-    def GetResources(self):
-        return {'Pixmap': 'fem-result',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result"),
-                'Accel': "S, R",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result information of an analysis")}
+    def __init__(self):
+        super(_CommandMechanicalShowResult, self).__init__()
+        self.resources = {'Pixmap': 'fem-result',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result"),
+                          'Accel': "S, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result information of an analysis")}
+        self.is_active = 'with_results'
 
     def Activated(self):
         self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
@@ -49,20 +52,6 @@ class _CommandMechanicalShowResult:
         import _ResultControlTaskPanel
         taskd = _ResultControlTaskPanel._ResultControlTaskPanel()
         FreeCADGui.Control.showDialog(taskd)
-
-    def IsActive(self):
-        return FreeCADGui.ActiveDocument is not None and results_present()
-
-
-#Code duplidation - to be removed after migration to FemTools
-def results_present():
-    import FemGui
-    results = False
-    analysis_members = FemGui.getActiveAnalysis().Member
-    for o in analysis_members:
-        if o.isDerivedFrom('Fem::FemResultObject'):
-            results = True
-    return results
 
 
 #Code duplidation - to be removed after migration to FemTools

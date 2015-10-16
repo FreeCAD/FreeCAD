@@ -26,19 +26,21 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 from FemTools import FemTools
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import FemGui
     from PySide import QtCore, QtGui
 
 
-class _CommandQuickAnalysis:
-    def GetResources(self):
-        return {'Pixmap': 'fem-quick-analysis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
-                'Accel': "R, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
+class _CommandQuickAnalysis(FemCommands):
+    def __init__(self):
+        super(_CommandQuickAnalysis, self).__init__()
+        self.resources = {'Pixmap': 'fem-quick-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
+                          'Accel': "R, C",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         def load_results(ret_code):
@@ -63,9 +65,6 @@ class _CommandQuickAnalysis:
         import _ResultControlTaskPanel
         tp = _ResultControlTaskPanel._ResultControlTaskPanel()
         tp.restore_result_dialog()
-
-    def IsActive(self):
-        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
 if FreeCAD.GuiUp:
