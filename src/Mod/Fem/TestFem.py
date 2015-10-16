@@ -188,6 +188,10 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file write...')
 
+        fcc_print('Setting analysis type to \'static\"')
+        fea.set_analysis_type("static")
+        self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting anlysis type to \'static\' failed")
+
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
