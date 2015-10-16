@@ -50,10 +50,12 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.num = self.widget(QtGui.QSpinBox, "Num")
         draft = Units.Quantity(Locale.fromString(
             form.draft.text())).getValueAs('m').Value
         trim = Units.Quantity(Locale.fromString(
             form.trim.text())).getValueAs('deg').Value
+        num = form.num.value()
         data = Hydrostatics.displacement(self.ship,
                                          draft,
                                          0.0,
@@ -63,7 +65,9 @@ class TaskPanel:
         data = Hydrostatics.areas(self.ship,
                                   draft,
                                   0.0,
-                                  trim)
+                                  trim,
+                                  0.0,
+                                  num)
         x = []
         y = []
         for i in range(0, len(data)):
@@ -104,6 +108,7 @@ class TaskPanel:
 
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.num = self.widget(QtGui.QSpinBox, "Num")
         form.output = self.widget(QtGui.QTextEdit, "OutputData")
         form.doc = QtGui.QTextDocument(form.output)
         self.form = form
@@ -183,6 +188,7 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.num = self.widget(QtGui.QSpinBox, "Num")
         form.draft.setText(Locale.toString(length_format.format(
             self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
         form.trim.setText(Locale.toString(angle_format.format(0.0)))
@@ -200,6 +206,11 @@ class TaskPanel:
             form.trim.setText(Locale.toString(angle_format.format(
                 self.ship.AreaCurveTrim.getValueAs(
                     USys.getAngleUnits()).Value)))
+        except ValueError:
+            pass
+        try:
+            props.index("AreaCurveNum")
+            form.num.setValue(self.ship.AreaCurveNum)
         except ValueError:
             pass
         # Update GUI
@@ -227,7 +238,13 @@ class TaskPanel:
         self.widget(QtGui.QLabel, "TrimLabel").setText(
             QtGui.QApplication.translate(
                 "ship_areas",
-                "Trim",
+                "Trim angle",
+                None,
+                QtGui.QApplication.UnicodeUTF8))
+        self.widget(QtGui.QLabel, "NumLabel").setText(
+            QtGui.QApplication.translate(
+                "ship_areas",
+                "Number of points",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
 
@@ -347,11 +364,13 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.num = self.widget(QtGui.QSpinBox, "Num")
 
         draft = Units.Quantity(Locale.fromString(
             form.draft.text())).getValueAs('m').Value
         trim = Units.Quantity(Locale.fromString(
             form.trim.text())).getValueAs('deg').Value
+        num = form.num.value()
 
         props = self.ship.PropertiesList
         try:
@@ -386,6 +405,22 @@ class TaskPanel:
                                   "Ship",
                                   tooltip)
         self.ship.AreaCurveTrim = '{} deg'.format(trim)
+        try:
+            props.index("AreaCurveNum")
+        except ValueError:
+            try:
+                tooltip = str(QtGui.QApplication.translate(
+                    "ship_areas",
+                    "Areas curve tool number of points",
+                    None,
+                    QtGui.QApplication.UnicodeUTF8))
+            except:
+                tooltip = "Areas curve tool number of points"
+            self.ship.addProperty("App::PropertyInteger",
+                                  "AreaCurveNum",
+                                  "Ship",
+                                  tooltip)
+        self.ship.AreaCurveNum = num
 
 
 def createTask():
