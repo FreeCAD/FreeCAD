@@ -69,6 +69,9 @@ class TaskPanel:
         weights = ship.Weights[:]
         weights.append(obj.Name)
         ship.Weights = weights
+        ship.Proxy.cleanWeights(ship)
+        ship.Proxy.cleanTanks(ship)
+        ship.Proxy.cleanLoadConditions(ship)
 
         App.ActiveDocument.recompute()
         return True

@@ -125,6 +125,9 @@ def load():
     lcs = ship.LoadConditions[:]
     lcs.append(s.Name)
     ship.LoadConditions = lcs
+    ship.Proxy.cleanWeights(ship)
+    ship.Proxy.cleanTanks(ship)
+    ship.Proxy.cleanLoadConditions(ship)
 
     # Recompute to take the changes
     App.activeDocument().recompute()
