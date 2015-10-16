@@ -75,9 +75,9 @@ def load():
 
     # Add a reference to the owner ship
     s.mergeCells('A1:D1')
-    s.setAlignment('A1:A1', 'center', 'keep')
-    s.setStyle('A1:A1', 'bold', 'add')
-    s.setStyle('A1:A1', 'underline', 'add')
+    s.setAlignment('A1:B2', 'center', 'keep')
+    s.setStyle('A1:B2', 'bold', 'add')
+    s.setStyle('A1:B2', 'underline', 'add')
     s.set("A1", "SHIP DATA")
     s.set("A2", "ship")
     s.set("A3", ship.Label)
@@ -91,9 +91,9 @@ def load():
 
     # Add the weights data
     s.mergeCells('A4:D4')
-    s.setAlignment('A4:A4', 'center', 'keep')
-    s.setStyle('A4:A4', 'bold', 'add')
-    s.setStyle('A4:A4', 'underline', 'add')
+    s.setAlignment('A4:B5', 'center', 'keep')
+    s.setStyle('A4:B5', 'bold', 'add')
+    s.setStyle('A4:B5', 'underline', 'add')
     s.set("A4", "WEIGHTS DATA")
     s.set("A5", "weight")
     s.set("B5", "internal ref")
@@ -106,8 +106,11 @@ def load():
     # Add the tanks data
     s.mergeCells('A{0}:D{0}'.format(6 + len(ship.Weights)))
     s.setAlignment('A{0}:A{0}'.format(6 + len(ship.Weights)), 'center', 'keep')
+    s.setAlignment('A{0}:D{0}'.format(7 + len(ship.Weights)), 'center', 'keep')
     s.setStyle('A{0}:A{0}'.format(6 + len(ship.Weights)), 'bold', 'add')
+    s.setStyle('A{0}:D{0}'.format(7 + len(ship.Weights)), 'bold', 'add')
     s.setStyle('A{0}:A{0}'.format(6 + len(ship.Weights)), 'underline', 'add')
+    s.setStyle('A{0}:D{0}'.format(7 + len(ship.Weights)), 'underline', 'add')
     s.set("A{}".format(6 + len(ship.Weights)), "TANKS DATA")
     s.set("A{}".format(7 + len(ship.Weights)), "tank")
     s.set("B{}".format(7 + len(ship.Weights)), "internal ref")
