@@ -170,6 +170,23 @@ class TankCapacity:
                 'ToolTip': ToolTip}
 
 
+class LoadCondition:
+    def Activated(self):
+        import shipCreateLoadCondition
+        shipCreateLoadCondition.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_loadcondition',
+            'Create a new loading condition')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_loadcondition',
+            'Create a new load condition spreadsheet')
+        return {'Pixmap': 'Ship_LoadCondition',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
 class GZ:
     def Activated(self):
         import shipGZ
@@ -195,4 +212,5 @@ FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
 FreeCADGui.addCommand('Ship_Weight', CreateWeight())
 FreeCADGui.addCommand('Ship_Tank', CreateTank())
 FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
+FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
 FreeCADGui.addCommand('Ship_GZ', GZ())
