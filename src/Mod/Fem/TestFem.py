@@ -117,9 +117,11 @@ class FemTest(unittest.TestCase):
 
     def compare_inp_files(self, file_name1, file_name2):
         file1 = open(file_name1, 'r')
-        file2 = open(file_name2, 'r')
         f1 = file1.readlines()
+        file1.close()
+        file2 = open(file_name2, 'r')
         f2 = file2.readlines()
+        file2.close()
         lf1 = [l for l in f1 if not l.startswith('**   written ')]
         lf2 = [l for l in f2 if not l.startswith('**   written ')]
         import difflib
@@ -127,8 +129,6 @@ class FemTest(unittest.TestCase):
         result = ''
         for l in diff:
             result += l
-        file1.close()
-        file2.close()
         return result
 
     def compare_stats(self, fea, stat_file=None):
