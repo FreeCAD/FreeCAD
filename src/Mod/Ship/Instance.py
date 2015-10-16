@@ -336,6 +336,16 @@ class ViewProviderShip:
                 del obj.Tanks[i - bad_linked]
                 bad_linked += 1
 
+        # Claim the loading conditions
+        bad_linked = 0
+        for i, t in enumerate(obj.LoadConditions):
+            try:
+                t_obj = FreeCAD.ActiveDocument.getObject(t)
+                objs.append(t_obj)
+            except:
+                del obj.LoadConditions[i - bad_linked]
+                bad_linked += 1
+
         return objs
 
     def getIcon(self):
