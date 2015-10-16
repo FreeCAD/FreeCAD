@@ -22,7 +22,8 @@ namespace KDL {
         Wy_U(J.rows(),J.rows()),Wq_V(J.cols(),J.cols()),
         t(VectorXd::Zero(J.rows())), Wy_t(VectorXd::Zero(J.rows())),
         qdot(VectorXd::Zero(J.cols())),
-        tmp(VectorXd::Zero(J.cols())),S(VectorXd::Zero(J.cols()))
+        tmp(VectorXd::Zero(J.cols())),S(VectorXd::Zero(J.cols())),
+        lambda(0)
     {
         
         for (size_t i = 0; i < endpoints.size(); ++i) {
@@ -68,30 +69,30 @@ namespace KDL {
                 //lets put the jacobian in the big matrix and put the twist in the big t:
                 J.block(6*k,0, 6,tree.getNrOfJoints()) = jac_it->second.data;
                 const Twist& twist=v_in.find(jac_it->first)->second;
-                t.segment(6*k,3)   = Eigen::Map<Eigen::Vector3d>(twist.vel.data);
-                t.segment(6*k+3,3) = Eigen::Map<Eigen::Vector3d>(twist.rot.data);
+                t.segment(6*k,3)   = Eigen::Map<const Eigen::Vector3d>(twist.vel.data);
+                t.segment(6*k+3,3) = Eigen::Map<const Eigen::Vector3d>(twist.rot.data);
             }
             ++k;
         }
         
         //Lets use the wdls algorithm to find the qdot:
         // Create the Weighted jacobian
-        J_Wq = (J * Wq).lazy();
-        Wy_J_Wq = (Wy * J_Wq).lazy();
+        J_Wq.noalias() = J * Wq;
+        Wy_J_Wq.noalias() = Wy * J_Wq;
         
         // Compute the SVD of the weighted jacobian
         int ret = svd_eigen_HH(Wy_J_Wq, U, S, V, tmp);
-        (void)ret;
-        
+        if (ret < 0 )
+            return E_SVD_FAILED;
         //Pre-multiply U and V by the task space and joint space weighting matrix respectively
-        Wy_t = (Wy * t).lazy();
-        Wq_V = (Wq * V).lazy();
+        Wy_t.noalias() = Wy * t;
+        Wq_V.noalias() = Wq * V;
         
         // tmp = (Si*Wy*U'*y),
         for (unsigned int i = 0; i < J.cols(); i++) {
             double sum = 0.0;
             for (unsigned int j = 0; j < J.rows(); j++) {
-                if (i < Wy_t.size())
+                if (i < Wy_t.rows())
                     sum += U(j, i) * Wy_t(j);
                 else
                     sum += 0.0;
@@ -100,7 +101,7 @@ namespace KDL {
         }
         
         // x = Lx^-1*V*tmp + x
-        qdot_out.data = (Wq_V * tmp).lazy();
+        qdot_out.data.noalias() = Wq_V * tmp;
         
         return Wy_t.norm();
     }

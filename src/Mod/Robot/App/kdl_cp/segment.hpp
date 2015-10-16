@@ -62,7 +62,7 @@ namespace KDL {
          * the segment, default: Frame::Identity()
          * @param I rigid body inertia of the segment, default: Inertia::Zero()
          */
-        Segment(const std::string& name, const Joint& joint=Joint(Joint::None), const Frame& f_tip=Frame::Identity(),const RigidBodyInertia& I = RigidBodyInertia::Zero());
+        explicit Segment(const std::string& name, const Joint& joint=Joint(Joint::None), const Frame& f_tip=Frame::Identity(),const RigidBodyInertia& I = RigidBodyInertia::Zero());
         /**
          * Constructor of the segment
          *
@@ -72,7 +72,7 @@ namespace KDL {
          * the segment, default: Frame::Identity()
          * @param I rigid body inertia of the segment, default: Inertia::Zero()
          */
-        Segment(const Joint& joint=Joint(Joint::None), const Frame& f_tip=Frame::Identity(),const RigidBodyInertia& I = RigidBodyInertia::Zero());
+        explicit Segment(const Joint& joint=Joint(Joint::None), const Frame& f_tip=Frame::Identity(),const RigidBodyInertia& I = RigidBodyInertia::Zero());
         Segment(const Segment& in);
         Segment& operator=(const Segment& arg);
 
@@ -144,11 +144,12 @@ namespace KDL {
          * Request the pose from the joint end to the tip of the
          *segment.
          *
-         * @return const reference to the joint end - segment tip pose.
+         * @return the original parent end - segment end pose.
          */
-        const Frame& getFrameToTip()const
+        Frame getFrameToTip()const
         {
-            return f_tip;
+            
+            return joint.pose(0)*f_tip;
         }
 
     };

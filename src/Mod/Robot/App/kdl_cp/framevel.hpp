@@ -67,6 +67,20 @@ class VectorVel;
 class FrameVel;
 class RotationVel;
 
+// Equal is friend function, but default arguments for friends are forbidden (§8.3.6.4)
+IMETHOD bool Equal(const VectorVel& r1,const VectorVel& r2,double eps=epsilon);
+IMETHOD bool Equal(const Vector& r1,const VectorVel& r2,double eps=epsilon);
+IMETHOD bool Equal(const VectorVel& r1,const Vector& r2,double eps=epsilon);
+IMETHOD bool Equal(const RotationVel& r1,const RotationVel& r2,double eps=epsilon);
+IMETHOD bool Equal(const Rotation& r1,const RotationVel& r2,double eps=epsilon);
+IMETHOD bool Equal(const RotationVel& r1,const Rotation& r2,double eps=epsilon);
+IMETHOD bool Equal(const FrameVel& r1,const FrameVel& r2,double eps=epsilon);
+IMETHOD bool Equal(const Frame& r1,const FrameVel& r2,double eps=epsilon);
+IMETHOD bool Equal(const FrameVel& r1,const Frame& r2,double eps=epsilon);
+IMETHOD bool Equal(const TwistVel& a,const TwistVel& b,double eps=epsilon);
+IMETHOD bool Equal(const Twist& a,const TwistVel& b,double eps=epsilon);
+IMETHOD bool Equal(const TwistVel& a,const Twist& b,double eps=epsilon);
+
 class VectorVel
 // = TITLE
 //     An VectorVel is a Vector and its first derivative

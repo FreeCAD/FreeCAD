@@ -71,7 +71,7 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
         for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
             clBBox3d = clGridIter.GetBoundBox();
             clViewBBox = clBBox3d.ProjectBox(myProj);
-            if (clViewBBox || clPolyBBox) {
+            if (clViewBBox.Intersect(clPolyBBox)) {
                 // save all elements in AllElements 
                 clGridIter.GetElements(aulAllElements);
             }

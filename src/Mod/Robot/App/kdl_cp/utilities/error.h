@@ -46,8 +46,8 @@
 #define ERROR_H_84822
 
 #include "utility.h"
+#include <string.h>
 #include <string>
-
 namespace KDL {
 
 /** 
@@ -180,9 +180,13 @@ public:
 };
 
 class Error_MotionPlanning_Not_Feasible: public Error_MotionPlanning {
+	int reason;
 public:
-    virtual const char* Description() const { return "Motion Profile with requested parameters is not feasible";}
-    virtual int GetType() const {return 3004;}
+	Error_MotionPlanning_Not_Feasible(int _reason):reason(_reason) {}
+    virtual const char* Description() const {
+    	return "Motion Profile with requested parameters is not feasible";
+    }
+    virtual int GetType() const {return 3100+reason;}
 };
 
 class Error_MotionPlanning_Not_Applicable: public Error_MotionPlanning {

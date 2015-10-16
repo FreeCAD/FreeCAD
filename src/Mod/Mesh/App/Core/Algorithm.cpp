@@ -1103,7 +1103,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
         {
             clBBox3d = clGridIter.GetBoundBox();
             clViewBBox = clBBox3d.ProjectBox(pclProj);
-            if (clViewBBox || clPolyBBox)
+            if (clViewBBox.Intersect(clPolyBBox))
             {
                 // alle Elemente in AllElements sammeln
                 clGridIter.GetElements(aulAllElements);

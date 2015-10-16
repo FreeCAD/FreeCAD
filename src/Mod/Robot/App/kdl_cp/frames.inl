@@ -25,8 +25,13 @@
  *                                                                         *
  ***************************************************************************/
 
-namespace KDL {
+/**
+ * \file frames.inl
+ * Inlined member functions and global functions that relate to the classes in frames.cpp
+ *
+ */
 
+namespace KDL {
 
 IMETHOD Vector::Vector(const Vector & arg)
 {
@@ -1114,47 +1119,15 @@ IMETHOD Rotation Rot(const Vector& axis_a_b) {
         ct            +  vt*rotvec(2)*rotvec(2)
         );
     }
-
 IMETHOD Vector diff(const Vector& a,const Vector& b,double dt) {
 	return (b-a)/dt;
 }
-
-/**
- * \brief diff operator for displacement rotational velocity.
- *
- * The Vector arguments here represent a displacement rotational velocity.  i.e. a rotation
- * around a fixed axis for a certain angle.  For this representation you cannot use diff() but
- * have to use diff_displ().
- *
- * \todo represent a displacement twist and displacement rotational velocity
- *       with another class, instead of Vector and Twist.
- * \warning do not confuse displacement rotational velocities and velocities
- * \warning do not confuse displacement twist and twist.
- *
-IMETHOD Vector diff_displ(const Vector& a,const Vector& b,double dt) {
-	return diff(Rot(a),Rot(b),dt);
-}*/
-
-/**
- * \brief diff operator for displacement twist.
- *
- * The Twist arguments here represent a displacement twist.  i.e. a rotation
- * around a fixed axis for a certain angle.  For this representation you cannot use diff() but
- * have to use diff_displ().
- *
- * \warning do not confuse displacement rotational velocities and velocities
- * \warning do not confuse displacement twist and twist.
- *
-
-IMETHOD Twist diff_displ(const Twist& a,const Twist& b,double dt) {
-	return Twist(diff(a.vel,b.vel,dt),diff(Rot(a.rot),Rot(b.rot),dt));
-}
-*/
 
 IMETHOD Vector diff(const Rotation& R_a_b1,const Rotation& R_a_b2,double dt) {
 	Rotation R_b1_b2(R_a_b1.Inverse()*R_a_b2);
 	return R_a_b1 * R_b1_b2.GetRot() / dt;
 }
+
 IMETHOD Twist diff(const Frame& F_a_b1,const Frame& F_a_b2,double dt) {
 	return Twist(
 			diff(F_a_b1.p,F_a_b2.p,dt),
@@ -1194,7 +1167,7 @@ IMETHOD Wrench addDelta(const Wrench& a,const Wrench&da,double dt) {
 }
 
 
-/* Commented code section
+/**
  * \brief addDelta operator for displacement rotational velocity.
  *
  * The Vector arguments here represent a displacement rotational velocity.  i.e. a rotation
@@ -1212,7 +1185,7 @@ IMETHOD Vector addDelta_displ(const Vector& a,const Vector&da,double dt) {
     return getRot(addDelta(Rot(a),da,dt)); 
 }*/
 
-/* Commented code section
+/**
  * \brief addDelta operator for displacement twist.
  *
  * The Vector arguments here represent a displacement rotational velocity.  i.e. a rotation
@@ -1362,5 +1335,3 @@ IMETHOD bool operator!=(const Vector2& a,const Vector2& b) {
 }
 
 } // namespace KDL
-
-

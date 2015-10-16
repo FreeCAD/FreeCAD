@@ -40,6 +40,7 @@
 #include "Core/MeshIO.h"
 #include "Core/Evaluation.h"
 #include "Core/Iterator.h"
+#include "Core/Approximation.h"
 
 #include "MeshPy.h"
 #include "Mesh.h"
@@ -387,7 +388,7 @@ createBox(PyObject *self, PyObject *args)
     } PY_CATCH;
 }
 
-static PyObject * 
+static PyObject *
 calculateEigenTransform(PyObject *self, PyObject *args)
 {
     PyObject *input;
@@ -395,8 +396,8 @@ calculateEigenTransform(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "O",&input))
         return NULL;
 
-    if(! PySequence_Check(input) ){
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Input have to be a sequence of Base.Vector()");
+    if (!PySequence_Check(input)) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Input has to be a sequence of Base.Vector()");
         return NULL;
     }
 
@@ -416,25 +417,84 @@ calculateEigenTransform(PyObject *self, PyObject *args)
                 Base::Vector3d* val = pcObject->getVectorPtr();
 
 
-			    current_node.Set(float(val->x),float(val->y),float(val->z));
-			    vertices.push_back(current_node);
+                current_node.Set(float(val->x),float(val->y),float(val->z));
+                vertices.push_back(current_node);
             }
-		}
+        }
 
-		MeshCore::MeshFacet aFacet;
-		aFacet._aulPoints[0] = 0;aFacet._aulPoints[1] = 1;aFacet._aulPoints[2] = 2;
-		faces.push_back(aFacet);
-		//Fill the Kernel with the temp smesh structure and delete the current containers
-		aMesh.Adopt(vertices,faces);
-		MeshCore::MeshEigensystem pca(aMesh);
-		pca.Evaluate();
-		Base::Matrix4D Trafo = pca.Transform();
+        MeshCore::MeshFacet aFacet;
+        aFacet._aulPoints[0] = 0;aFacet._aulPoints[1] = 1;aFacet._aulPoints[2] = 2;
+        faces.push_back(aFacet);
+        //Fill the Kernel with the temp mesh structure and delete the current containers
+        aMesh.Adopt(vertices,faces);
+        MeshCore::MeshEigensystem pca(aMesh);
+        pca.Evaluate();
+        Base::Matrix4D Trafo = pca.Transform();
 
         return new Base::PlacementPy(new Base::Placement(Trafo) );
 
-	} PY_CATCH;
+    } PY_CATCH;
 
-	Py_Return;
+    Py_Return;
+}
+
+static PyObject *
+polynomialFit(PyObject *self, PyObject *args)
+{
+    PyObject *input;
+
+    if (!PyArg_ParseTuple(args, "O",&input))
+        return NULL;
+
+    if (!PySequence_Check(input)) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Input has to be a sequence of Base.Vector()");
+        return NULL;
+    }
+
+    PY_TRY {
+        MeshCore::SurfaceFit polyFit;
+
+        Base::Vector3f point;
+        Py::Sequence list(input);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* value = (*it).ptr();
+            if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
+                Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+                Base::Vector3d* val = pcObject->getVectorPtr();
+                point.Set(float(val->x),float(val->y),float(val->z));
+                polyFit.AddPoint(point);
+            }
+        }
+
+        // fit quality
+        float fit = polyFit.Fit();
+        Py::Dict dict;
+        dict.setItem(Py::String("Sigma"), Py::Float(fit));
+
+        // coefficients
+        double a,b,c,d,e,f;
+        polyFit.GetCoefficients(a,b,c,d,e,f);
+        Py::Tuple p(6);
+        p.setItem(0, Py::Float(a));
+        p.setItem(1, Py::Float(b));
+        p.setItem(2, Py::Float(c));
+        p.setItem(3, Py::Float(d));
+        p.setItem(4, Py::Float(e));
+        p.setItem(5, Py::Float(f));
+        dict.setItem(Py::String("Coefficients"), p);
+
+        // residuals
+        std::vector<Base::Vector3f> local = polyFit.GetLocalPoints();
+        Py::Tuple r(local.size());
+        for (std::vector<Base::Vector3f>::iterator it = local.begin(); it != local.end(); ++it) {
+            double z = polyFit.Value(it->x, it->y);
+            double d = it->z - z;
+            r.setItem(it-local.begin(), Py::Float(d));
+        }
+        dict.setItem(Py::String("Residuals"), r);
+
+        return Py::new_reference_to(dict);
+    } PY_CATCH;
 }
 
 
@@ -455,6 +515,10 @@ PyDoc_STRVAR(calculateEigenTransform_doc,
 "The local coordinate system is right-handed.\n"
 );
 
+PyDoc_STRVAR(polynomialFit_doc,
+"polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit.\n"
+);
+
 /* List of functions defined in the module */
 
 struct PyMethodDef Mesh_Import_methods[] = { 
@@ -471,5 +535,6 @@ struct PyMethodDef Mesh_Import_methods[] = {
     {"createCone",createCone, Py_NEWARGS,   "Create a tessellated cone"},
     {"createTorus",createTorus, Py_NEWARGS,   "Create a tessellated torus"},
     {"calculateEigenTransform",calculateEigenTransform, METH_VARARGS,   calculateEigenTransform_doc},
+    {"polynomialFit",polynomialFit, METH_VARARGS,   polynomialFit_doc},
     {NULL, NULL}  /* sentinel */
 };

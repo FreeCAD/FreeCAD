@@ -19,16 +19,16 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAIN_IKSOLVERVEL_PINV_HPP
-#define KDL_CHAIN_IKSOLVERVEL_PINV_HPP
+#ifndef KDL_CHAIN_IKSOLVERVEL_PINV_NSO_HPP
+#define KDL_CHAIN_IKSOLVERVEL_PINV_NSO_HPP
 
 #include "chainiksolver.hpp"
 #include "chainjnttojacsolver.hpp"
-#include "utilities/svd_HH.hpp"
+#include <Eigen/Core>
 
 namespace KDL
 {
-
+    
     // FIXME: seems this class is unused/unmaintained/unfinished for several years
     //        it supposed to be either fixer or removed
 
@@ -64,10 +64,10 @@ namespace KDL
          * @param alpha the null-space velocity gain
          *
          */
-
+        
         // FIXME: alpha is int but is initialized with a float value.
-        ChainIkSolverVel_pinv_nso(const Chain& chain, JntArray opt_pos, JntArray weights, double eps=0.00001,int maxiter=150, int alpha = 0.25);
-        ChainIkSolverVel_pinv_nso(const Chain& chain, double eps=0.00001,int maxiter=150, int alpha = 0.25);
+        ChainIkSolverVel_pinv_nso(const Chain& chain, JntArray opt_pos, JntArray weights, double eps=0.00001,int maxiter=150, double alpha = 0.25);
+        explicit ChainIkSolverVel_pinv_nso(const Chain& chain, double eps=0.00001,int maxiter=150, double alpha = 0.25);
         ~ChainIkSolverVel_pinv_nso();
 
         virtual int CartToJnt(const JntArray& q_in, const Twist& v_in, JntArray& qdot_out);
@@ -76,7 +76,6 @@ namespace KDL
          *
          */
         virtual int CartToJnt(const JntArray& q_init, const FrameVel& v_in, JntArrayVel& q_out){return -1;};
-
 
         /**
          *Set joint weights for optimization criterion
@@ -100,25 +99,25 @@ namespace KDL
          *@param alpha NUllspace velocity cgain
          *
          */
-        virtual int setAlpha(const int alpha);
+        virtual int setAlpha(const double alpha);
 
     private:
         const Chain chain;
         ChainJntToJacSolver jnt2jac;
+        unsigned int nj;
         Jacobian jac;
-        SVD_HH svd;
-        std::vector<JntArray> U;
-        JntArray S;
-        std::vector<JntArray> V;
-        JntArray tmp;
-        JntArray tmp2;
+        Eigen::MatrixXd U;
+        Eigen::VectorXd S;
+        Eigen::VectorXd Sinv;
+        Eigen::MatrixXd V;
+        Eigen::VectorXd tmp;
+        Eigen::VectorXd tmp2;
         double eps;
         int maxiter;
 
-        int alpha;
+        double alpha;
         JntArray weights;
         JntArray opt_pos;
-
     };
 }
 #endif

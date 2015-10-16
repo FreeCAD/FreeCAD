@@ -30,13 +30,16 @@
 // NOTE: In CMakeList.txt -DEIGEN_NO_DEBUG is set (it does not work with a define here), to solve this:
 // this is needed to fix this SparseQR crash http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146, 
 // until Eigen library fixes its own problem with the assertion (definitely not solved in 3.2.0 branch)
+// NOTE2: solved in eigen3.3
 
 #define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
                                + EIGEN_MAJOR_VERSION * 100 \
                                + EIGEN_MINOR_VERSION)
 
 #if EIGEN_VERSION >= 30202                              
+#if EIGEN_VERSION < 30290 // this is eigen3.3. Bad numbering? This should be safe anyway.
 #define EIGEN_SPARSEQR_COMPATIBLE
+#endif
 #endif
 
 //#undef EIGEN_SPARSEQR_COMPATIBLE

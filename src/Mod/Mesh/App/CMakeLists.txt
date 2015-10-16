@@ -1,7 +1,5 @@
 if(WIN32)
-    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT -DEIGEN2_SUPPORT)
-else (Win32)
-    add_definitions(-DEIGEN2_SUPPORT)
+    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
 endif(WIN32)
 
 include_directories(

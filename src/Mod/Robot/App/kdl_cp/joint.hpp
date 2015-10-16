@@ -59,7 +59,7 @@ namespace KDL {
          * @param stiffness 1D stiffness along the joint axis,
          * default: 0
          */
-         Joint(const std::string& name, const JointType& type=None,const double& scale=1,const double& offset=0,
+        explicit Joint(const std::string& name, const JointType& type=None,const double& scale=1,const double& offset=0,
               const double& inertia=0,const double& damping=0,const double& stiffness=0);
         /**
          * Constructor of a joint.
@@ -74,7 +74,7 @@ namespace KDL {
          * @param stiffness 1D stiffness along the joint axis,
          * default: 0
          */
-         Joint(const JointType& type=None,const double& scale=1,const double& offset=0,
+        explicit Joint(const JointType& type=None,const double& scale=1,const double& offset=0,
                const double& inertia=0,const double& damping=0,const double& stiffness=0);
         /**
          * Constructor of a joint.
@@ -205,7 +205,7 @@ namespace KDL {
         double damping;
         double stiffness;
 
-        // varibles for RotAxis joint
+        // variables for RotAxis joint
         Vector axis, origin;
         mutable Frame  joint_pose;
         mutable double q_previous;

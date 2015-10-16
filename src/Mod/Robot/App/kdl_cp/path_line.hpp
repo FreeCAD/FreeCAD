@@ -121,6 +121,13 @@ class Path_Line : public Path
 		virtual Twist Acc(double s,double sd,double sdd) const;
 		virtual void Write(std::ostream& os);
 		virtual Path* Clone();
+
+		/**
+		 * gets an identifier indicating the type of this Path object
+		 */
+		virtual IdentifierType getIdentifier() const {
+			return ID_LINE;
+		}
 		virtual ~Path_Line();
 	};
 
