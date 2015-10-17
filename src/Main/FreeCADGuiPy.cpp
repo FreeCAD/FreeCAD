@@ -319,15 +319,25 @@ QWidget* setupMainWindow()
     return Gui::getMainWindow();
 }
 
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC PyInit_FreeCADGui()
+#else
 PyMODINIT_FUNC initFreeCADGui()
+#endif
 {
+    PyObject* module;
     try {
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
         App::Application::Config()["SplashScreen"] = "freecadsplash";
         App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2015\n";
-        Gui::Application::initApplication();
-        Py_InitModule("FreeCADGui", FreeCADGui_methods);
+        Gui::Application::initApplication();        
+#if PY_MAJOR_VERSION >= 3
+        static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", "FreeCAD GUI module\n", -1, FreeCADGui_methods};
+        module = PyModule_Create(&FreeCADGuiModuleDef);
+#else
+        module = Py_InitModule3("FreeCADGui", FreeCADGui_methods, "FreeCAD GUI module\n");
+#endif
     }
     catch (const Base::Exception& e) {
         PyErr_Format(PyExc_ImportError, "%s\n", e.what());
@@ -335,5 +345,8 @@ PyMODINIT_FUNC initFreeCADGui()
     catch (...) {
         PyErr_SetString(PyExc_ImportError, "Unknown runtime error occurred");
     }
+#if PY_MAJOR_VERSION >= 3
+    return module;
+#endif
 }
 

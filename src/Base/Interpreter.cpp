@@ -717,17 +717,20 @@ int getSWIGVersionFromModule(const std::string& module)
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
 #endif
+#if PY_MAJOR_VERSION < 3
 namespace Swig_1_3_25 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
 namespace Swig_1_3_33 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
 namespace Swig_1_3_36 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
 namespace Swig_1_3_38 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
 namespace Swig_1_3_40 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
+#endif
 
 PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own)
 {
     int result = 0;
     PyObject* proxy=0;
     PyGILStateLocker locker;
+#if PY_MAJOR_VERSION < 3
     int version = getSWIGVersionFromModule(Module);
     switch (version)
     {
@@ -747,12 +750,15 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
         result = Swig_1_3_40::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
     default:
+#endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
 #else
     result = -1; // indicates error
 #endif
+#if PY_MAJOR_VERSION < 3
     }
+#endif
 
     if (result == 0)
         return proxy;
@@ -764,16 +770,19 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
 #endif
+#if PY_MAJOR_VERSION < 3
 namespace Swig_1_3_25 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
 namespace Swig_1_3_33 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
 namespace Swig_1_3_36 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
 namespace Swig_1_3_38 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
 namespace Swig_1_3_40 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
+#endif
 
 bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char* TypeName, PyObject* obj, void** ptr, int flags)
 {
     int result = 0;
     PyGILStateLocker locker;
+#if PY_MAJOR_VERSION < 3
     int version = getSWIGVersionFromModule(Module);
     switch (version)
     {
@@ -793,12 +802,15 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
         result = Swig_1_3_40::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
     default:
+#endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
         result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
 #else
         result = -1; // indicates error
 #endif
+#if PY_MAJOR_VERSION < 3
     }
+#endif
 
     if (result == 0)
         return true;
@@ -810,11 +822,13 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern void cleanupSWIG_T(const char* TypeName); }
 #endif
+#if PY_MAJOR_VERSION < 3
 namespace Swig_1_3_25 { extern void cleanupSWIG_T(const char* TypeName); }
 namespace Swig_1_3_33 { extern void cleanupSWIG_T(const char* TypeName); }
 namespace Swig_1_3_36 { extern void cleanupSWIG_T(const char* TypeName); }
 namespace Swig_1_3_38 { extern void cleanupSWIG_T(const char* TypeName); }
 namespace Swig_1_3_40 { extern void cleanupSWIG_T(const char* TypeName); }
+#endif
 
 void InterpreterSingleton::cleanupSWIG(const char* TypeName)
 {
@@ -822,9 +836,11 @@ void InterpreterSingleton::cleanupSWIG(const char* TypeName)
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     Swig_python::cleanupSWIG_T(TypeName);
 #endif
+#if PY_MAJOR_VERSION < 3
     Swig_1_3_25::cleanupSWIG_T(TypeName);
     Swig_1_3_33::cleanupSWIG_T(TypeName);
     Swig_1_3_36::cleanupSWIG_T(TypeName);
     Swig_1_3_38::cleanupSWIG_T(TypeName);
     Swig_1_3_40::cleanupSWIG_T(TypeName);
+#endif
 }

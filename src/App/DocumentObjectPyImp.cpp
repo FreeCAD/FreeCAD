@@ -178,6 +178,9 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
         getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
     }
     else if (PyUnicode_Check(expr)) {
+#if PY_MAJOR_VERSION >= 3
+        std::string exprStr = PyUnicode_AsUTF8(expr);
+#else
         PyObject* unicode = PyUnicode_AsEncodedString(expr, "utf-8", 0);
         if (unicode) {
             std::string exprStr = PyString_AsString(unicode);
@@ -190,6 +193,7 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
             // utf-8 encoding failed
             return 0;
         }
+#endif
     }
     else
         throw Py::TypeError("String or None expected.");
