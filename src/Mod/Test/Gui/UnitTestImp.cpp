@@ -117,7 +117,22 @@ void UnitTestDialog::setProgressColor(const QColor& col)
  */
 void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item, int column)
 {
-    QMessageBox::information(this, item->text(0), item->data(0, Qt::UserRole).toString());
+    QString text = item->data(0, Qt::UserRole).toString();
+
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowTitle(item->text(0));
+    msgBox.setDetailedText(text);
+
+    // truncate the visible text when it's too long
+    if (text.count(QLatin1Char('\n')) > 20) {
+        QStringList lines = text.split(QLatin1Char('\n'));
+        lines.erase(lines.begin()+20, lines.end());
+        text = lines.join(QLatin1String("\n"));
+    }
+
+    msgBox.setText(text);
+    msgBox.exec();
 }
 
 /**
