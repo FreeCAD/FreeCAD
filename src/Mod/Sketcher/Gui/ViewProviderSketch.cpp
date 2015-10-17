@@ -107,6 +107,7 @@
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
 #include "TaskDlgEditSketch.h"
+#include "TaskSketcherValidation.h"
 
 // The first is used to point at a SoDatumLabel for some
 // constraints, and at a SoMaterial for others...
@@ -4178,8 +4179,21 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     Sketcher::SketchObject* sketch = getSketchObject();
     if (!sketch->evaluateConstraints()) {
-        QMessageBox::critical(Gui::getMainWindow(), tr("Invalid sketch"),
-            tr("The sketch is invalid and cannot be edited.\nUse the sketch validation tool."));
+        QMessageBox box(Gui::getMainWindow());
+        box.setIcon(QMessageBox::Critical);
+        box.setWindowTitle(tr("Invalid sketch"));
+        box.setText(tr("Do you want to open the sketch validation tool?"));
+        box.setInformativeText(tr("The sketch is invalid and cannot be edited."));
+        box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        box.setDefaultButton(QMessageBox::Yes);
+        switch (box.exec())
+        {
+        case QMessageBox::Yes:
+            Gui::Control().showDialog(new TaskSketcherValidation(getSketchObject()));
+            break;
+        default:
+            break;
+        }
         return false;
     }
 
