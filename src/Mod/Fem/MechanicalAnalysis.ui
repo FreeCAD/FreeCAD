@@ -73,7 +73,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_Time">
+    <widget class="QLabel" name="l_time">
      <property name="font">
       <font>
        <pointsize>12</pointsize>

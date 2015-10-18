@@ -106,7 +106,7 @@ class _JobControlTaskPanel:
 
     def UpdateText(self):
         if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
-            self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def calculixError(self, error):
         print ("Error() {}".format(error))
@@ -139,7 +139,7 @@ class _JobControlTaskPanel:
 
         self.form.pushButton_generate.setText("Re-run Calculix")
         self.femConsoleMessage("Loading result sets...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
         fea.reset_all()
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
@@ -150,7 +150,7 @@ class _JobControlTaskPanel:
             self.femConsoleMessage("Loading results done!", "#00AA00")
         else:
             self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -195,7 +195,7 @@ class _JobControlTaskPanel:
     def check_prerequisites_helper(self):
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
         fea = FemTools()
         fea.update_objects()
