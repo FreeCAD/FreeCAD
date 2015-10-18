@@ -246,6 +246,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import multiprocessing
         import os
         import subprocess
+        self.ccx_stdout = ""
+        self.ccx_stderr = ""
         if self.inp_file_name != "" and self.ccx_binary_present:
             ont_backup = os.environ.get('OMP_NUM_THREADS')
             if not ont_backup:
@@ -342,8 +344,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             ccx_stdout, ccx_stderr = p.communicate()
             if ccx_binary_sig in ccx_stdout:
                 self.ccx_binary_present = True
-        except:
-            raise Exception("FEM: CalculiX ccx {} output {} doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer".
+        except OSError, e:
+            FreeCAD.Console.PrintError(e.message)
+            if e.errno == 2:
+                raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.".format(ccx_binary))
+        except Exception as e:
+            FreeCAD.Console.PrintError(e.message)
+            raise Exception("FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer".
                             format(ccx_binary, ccx_stdout, ccx_binary_sig))
 
     ## Load results of ccx calculations from .frd file.
