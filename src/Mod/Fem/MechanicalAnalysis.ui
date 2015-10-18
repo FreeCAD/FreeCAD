@@ -46,7 +46,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_edit">
+    <widget class="QPushButton" name="pb_edit_inp">
      <property name="enabled">
       <bool>false</bool>
      </property>
