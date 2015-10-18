@@ -30,7 +30,6 @@ class _FemAnalysis:
     def __init__(self, obj):
         self.Type = "FemAnalysis"
         obj.Proxy = self
-        obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
 
     def execute(self, obj):
         return
