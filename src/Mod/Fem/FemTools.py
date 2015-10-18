@@ -29,6 +29,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     finished = QtCore.Signal(int)
 
+    known_analysis_types = ["static", "frequency"]
+
     ## The constructor
     #  @param analysis - analysis object to be used as the core object.
     #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
@@ -37,8 +39,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     def __init__(self, analysis=None, test_mode=False):
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
-
-        self.known_analysis_types = ["static", "frequency"]
 
         if analysis:
             ## @var analysis
