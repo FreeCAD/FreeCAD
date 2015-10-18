@@ -39,7 +39,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_write">
+    <widget class="QPushButton" name="pb_write_inp">
      <property name="text">
       <string>Write Calculix Input File</string>
      </property>
