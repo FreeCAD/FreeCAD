@@ -182,7 +182,12 @@ class FemTest(unittest.TestCase):
         self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
 
         fea = FemTools.FemTools(self.analysis, test_mode=True)
-        fcc_print('Checking FEM inp file prerequisites...')
+        fcc_print('Setting up working directory {}'.format(static_analysis_dir))
+        fea.setup_working_dir(static_analysis_dir)
+        self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
+                        "Setting working directory {} failed".format(static_analysis_dir))
+
+        fcc_print('Checking FEM inp file prerequisites for static analysis...')
         error = fea.check_prerequisites()
         self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
 
@@ -191,11 +196,6 @@ class FemTest(unittest.TestCase):
         fcc_print('Setting analysis type to \'static\"')
         fea.set_analysis_type("static")
         self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting anlysis type to \'static\' failed")
-
-        fcc_print('Setting up working directory {}'.format(static_analysis_dir))
-        fea.setup_working_dir(static_analysis_dir)
-        self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
-                        "Setting working directory {} failed".format(static_analysis_dir))
 
         fcc_print('Writing {}/{}.inp for static analysis'.format(static_analysis_dir, mesh_name))
         error = fea.write_inp_file()
@@ -237,6 +237,10 @@ class FemTest(unittest.TestCase):
         fea.setup_working_dir(frequency_analysis_dir)
         self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
+
+        fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
+        error = fea.check_prerequisites()
+        self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, mesh_name))
         error = fea.write_inp_file()

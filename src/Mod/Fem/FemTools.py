@@ -201,6 +201,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             message += "No active Analysis\n"
         if self.analysis_type not in self.known_analysis_types:
             message += "Unknown analysis type: {}\n".format(self.analysis_type)
+        if not self.working_dir:
+            message += "Working directory not set\n"
+        import os
+        if not (os.path.isdir(self.working_dir)):
+                message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         if not self.mesh:
             message += "No mesh object in the Analysis\n"
         if not self.material:
@@ -312,11 +317,20 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  @param self The python object self
     #  @working_dir directory to be used for writing .inp file and executing CalculiX ccx
     def setup_working_dir(self, working_dir=None):
-        if working_dir is None:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-            self.working_dir = self.fem_prefs.GetString("WorkingDir", "/tmp")
-        else:
+        import os
+        if working_dir is not None:
             self.working_dir = working_dir
+        else:
+            self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+
+        if not (os.path.isdir(self.working_dir)):
+            try:
+                os.makedirs(self.working_dir)
+            except:
+                print ("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
+                import tempfile
+                self.working_dir = tempfile.gettempdir()
+                print ("Dir \'{}\' will be used instead.".format(self.working_dir))
         # Update inp file name
         self.set_inp_file_name()
 
