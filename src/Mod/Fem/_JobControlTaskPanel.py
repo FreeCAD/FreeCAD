@@ -113,9 +113,9 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
 
     def calculixStarted(self):
-        self.form.pb_run_ccx.setText("Break Calculix")
         print ("calculixStarted()")
         print (self.Calculix.state())
+        self.form.pb_run_ccx.setText("Break CalculiX")
 
     def calculixStateChanged(self, newState):
         if (newState == QtCore.QProcess.ProcessState.Starting):
@@ -137,7 +137,7 @@ class _JobControlTaskPanel:
 
         self.femConsoleMessage("Calculix done!", "#00AA00")
 
-        self.form.pb_run_ccx.setText("Re-run Calculix")
+        self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
