@@ -56,7 +56,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_generate">
+    <widget class="QPushButton" name="pb_run_ccx">
      <property name="enabled">
       <bool>false</bool>
      </property>
