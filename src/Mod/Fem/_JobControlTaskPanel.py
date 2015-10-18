@@ -67,7 +67,7 @@ class _JobControlTaskPanel:
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
         QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
-        QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
+        QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
         QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
@@ -186,7 +186,7 @@ class _JobControlTaskPanel:
             if fea.inp_file_name != "":
                 self.inp_file_name = fea.inp_file_name
                 self.femConsoleMessage("Write completed.")
-                self.form.pushButton_edit.setEnabled(True)
+                self.form.pb_edit_inp.setEnabled(True)
                 self.form.pushButton_generate.setEnabled(True)
             else:
                 self.femConsoleMessage("Write .inp file failed!", "#FF0000")
