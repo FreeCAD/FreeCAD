@@ -68,7 +68,7 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
         QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
         QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
-        QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
+        QtCore.QObject.connect(self.form.pb_run_ccx, QtCore.SIGNAL("clicked()"), self.runCalculix)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
@@ -113,7 +113,7 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
 
     def calculixStarted(self):
-        self.form.pushButton_generate.setText("Break Calculix")
+        self.form.pb_run_ccx.setText("Break Calculix")
         print ("calculixStarted()")
         print (self.Calculix.state())
 
@@ -137,7 +137,7 @@ class _JobControlTaskPanel:
 
         self.femConsoleMessage("Calculix done!", "#00AA00")
 
-        self.form.pushButton_generate.setText("Re-run Calculix")
+        self.form.pb_run_ccx.setText("Re-run Calculix")
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
@@ -187,7 +187,7 @@ class _JobControlTaskPanel:
                 self.inp_file_name = fea.inp_file_name
                 self.femConsoleMessage("Write completed.")
                 self.form.pb_edit_inp.setEnabled(True)
-                self.form.pushButton_generate.setEnabled(True)
+                self.form.pb_run_ccx.setEnabled(True)
             else:
                 self.femConsoleMessage("Write .inp file failed!", "#FF0000")
             QApplication.restoreOverrideCursor()
