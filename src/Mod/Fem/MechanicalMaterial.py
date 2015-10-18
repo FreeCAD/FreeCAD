@@ -60,6 +60,9 @@ class _CommandMechanicalMaterial:
                     MatObj = i
 
         if (not MatObj):
+            femDoc = FemGui.getActiveAnalysis().Document
+            if FreeCAD.ActiveDocument is not femDoc:
+                FreeCADGui.setActiveDocument(femDoc)
             FreeCAD.ActiveDocument.openTransaction("Create Material")
             FreeCADGui.addModule("MechanicalMaterial")
             FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
@@ -67,6 +70,8 @@ class _CommandMechanicalMaterial:
             FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
             # FreeCADGui.doCommand("Fem.makeMaterial()")
         else:
+            if FreeCAD.ActiveDocument is not MatObj.Document:
+                FreeCADGui.setActiveDocument(MatObj.Document)
             FreeCADGui.doCommand("Gui.activeDocument().setEdit('" + MatObj.Name + "',0)")
 
     def IsActive(self):
@@ -153,11 +158,13 @@ class _MechanicalMaterialTaskPanel:
 
     def accept(self):
         self.obj.Material = self.material
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCAD.ActiveDocument.recompute()
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.resetEdit()
+        doc.Document.recompute()
 
     def reject(self):
-        FreeCADGui.ActiveDocument.resetEdit()
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.resetEdit()
 
     def goMatWeb(self):
         import webbrowser
