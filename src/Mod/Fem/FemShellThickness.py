@@ -37,7 +37,7 @@ __url__ = "http://www.freecadweb.org"
 
 def makeFemShellThickness(thickness=20.0, name="ShellThickness"):
     '''makeFemShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("App::FeaturePython", name)
+    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
     _FemShellThickness(obj)
     obj.Thickness = thickness
     if FreeCAD.GuiUp:

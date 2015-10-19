@@ -37,7 +37,7 @@ __url__ = "http://www.freecadweb.org"
 
 def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
     '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("App::FeaturePython", name)
+    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
     _FemBeamSection(obj)
     obj.Width = width
     obj.Height = height

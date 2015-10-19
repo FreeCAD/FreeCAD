@@ -175,6 +175,8 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
         return true;
     else if (obj->getTypeId().isDerivedFrom(Fem::FemSetObject::getClassTypeId()))
         return true;
+    else if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FeaturePython")))
+        return true;
     else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId()))
         return true;
     else
