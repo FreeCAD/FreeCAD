@@ -70,7 +70,8 @@ def Test(s):
 
 
 def testAll():
-    TestText(All())
+    r = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
+    r.run(All())
 
 
 def testUnit():
