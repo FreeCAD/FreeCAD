@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -45,13 +46,15 @@ def makeMechanicalMaterial(name):
     return obj
 
 
-class _CommandMechanicalMaterial:
+class _CommandMechanicalMaterial(FemCommands):
     "the Fem Material command definition"
-    def GetResources(self):
-        return {'Pixmap': 'fem-material',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Mechanical material..."),
-                'Accel': "M, M",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates or edit the mechanical material definition.")}
+    def __init__(self):
+        super(_CommandMechanicalMaterial, self).__init__()
+        self.resources = {'Pixmap': 'fem-material',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Mechanical material..."),
+                          'Accel': "M, M",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates or edit the mechanical material definition.")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         MatObj = None
@@ -73,12 +76,6 @@ class _CommandMechanicalMaterial:
             if FreeCAD.ActiveDocument is not MatObj.Document:
                 FreeCADGui.setActiveDocument(MatObj.Document)
             FreeCADGui.doCommand("Gui.activeDocument().setEdit('" + MatObj.Name + "',0)")
-
-    def IsActive(self):
-        if FemGui.getActiveAnalysis():
-            return True
-        else:
-            return False
 
 
 class _MechanicalMaterial:
