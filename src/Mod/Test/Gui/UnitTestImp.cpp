@@ -245,6 +245,14 @@ void UnitTestDialog::setUnitTest(const QString& unit)
 }
 
 /**
+ * Clears the unit tests.
+ */
+void UnitTestDialog::clearUnitTests()
+{
+    this->comboTests->clear();
+}
+
+/**
  * Returns the unit test.
  */
 QString UnitTestDialog::getUnitTest() const
