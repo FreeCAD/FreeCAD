@@ -310,6 +310,12 @@ class inp_writer:
                     for node in node_sum_length_table:
                         sum_node_lengths += node_sum_length_table[node]  # for debugging
                         node_load_table[node] = node_sum_length_table[node] * force_per_sum_ref_edge_length
+                    ratio_refedge_lengths = sum_node_lengths / elem_o.Length
+                    if ratio_refedge_lengths < 0.99 or ratio_refedge_lengths > 1.01:
+                        FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
+                        print('  sum_node_lengths:', sum_node_lengths)
+                        print('  refedge_length:  ', elem_o.Length)
+                        bad_refedge = elem_o
                     sum_ref_edge_node_length += sum_node_lengths
 
                     f.write('** node loads on element ' + fobj['RefShapeType'] + ': ' + o.Name + ':' + elem + '\n')
@@ -336,6 +342,43 @@ class inp_writer:
                     print('  frc_obj.Force:          ', frc_obj.Force)
                     print('  the reason could be simply a circle length --> see method get_ref_edge_node_lengths')
                     print('  the reason could also be an problem in retrieving the ref_edge_node_length')
+
+                    # try debugging of the last bad refedge
+                    print('DEBUGGING')
+                    print(bad_refedge)
+
+                    print('bad_refedge_nodes')
+                    bad_refedge_nodes = self.mesh_object.FemMesh.getNodesByEdge(bad_refedge)
+                    print len(bad_refedge_nodes)
+                    print bad_refedge_nodes
+                    # import FreeCADGui
+                    # FreeCADGui.ActiveDocument.Compound_Mesh.HighlightedNodes = bad_refedge_nodes
+
+                    print('bad_edge_table')
+                    # bad_edge_table = { meshedgeID : ( nodeID, ... , nodeID ) }
+                    bad_edge_table = self.get_refedge_node_table(bad_refedge)
+                    print(len(bad_edge_table))
+                    bad_edge_table_nodes = []
+                    for elem in bad_edge_table:
+                        print(elem, ' --> ', bad_edge_table[elem])
+                        for node in bad_edge_table[elem]:
+                            if node not in bad_edge_table_nodes:
+                                bad_edge_table_nodes.append(node)
+                    print('sorted(bad_edge_table_nodes)')
+                    print(sorted(bad_edge_table_nodes))   # should be == bad_refedge_nodes
+                    # import FreeCADGui
+                    # FreeCADGui.ActiveDocument.Compound_Mesh.HighlightedNodes = bad_edge_table_nodes
+                    # bad_node_length_table = [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
+
+                    print('good_edge_table')
+                    good_edge_table = delete_duplicate_mesh_elements(bad_edge_table)
+                    for elem in good_edge_table:
+                        print(elem, ' --> ', bad_edge_table[elem])
+
+                    print('bad_node_length_table')
+                    bad_node_length_table = self.get_refedge_node_lengths(bad_edge_table)
+                    for n, l in bad_node_length_table:
+                        print(n, ' --> ', l)
 
             elif fobj['RefShapeType'] == 'Face':  # area load on faces
                 sum_ref_face_area = 0
@@ -365,6 +408,11 @@ class inp_writer:
                     for node in node_sum_area_table:
                         sum_node_areas += node_sum_area_table[node]  # for debugging
                         node_load_table[node] = node_sum_area_table[node] * force_per_sum_ref_face_area
+                    ratio_refface_areas = sum_node_areas / elem_o.Area
+                    if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
+                        FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
+                        print('  sum_node_lengths:', sum_node_areas)
+                        print('  refedge_length:  ', elem_o.Area)
                     sum_ref_face_node_area += sum_node_areas
 
                     f.write('** node loads on element ' + fobj['RefShapeType'] + ': ' + o.Name + ':' + elem + '\n')
@@ -666,6 +714,8 @@ class inp_writer:
                     if node in refedge_nodes:
                         fe_refedge_nodes.append(node)
                     edge_table[elem] = fe_refedge_nodes  # { volumeID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
+            #  FIXME duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
+            edge_table = delete_duplicate_mesh_elements(edge_table)
         elif is_shell_mesh(self.mesh_object.FemMesh):
             refedge_fem_faceelements = []
             # if at least two nodes of a femfaceelement are in refedge_nodes the volume is added to refedge_fem_volumeelements
@@ -683,6 +733,8 @@ class inp_writer:
                     if node in refedge_nodes:
                         fe_refedge_nodes.append(node)
                     edge_table[elem] = fe_refedge_nodes  # { faceID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
+            #  FIXME duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
+            edge_table = delete_duplicate_mesh_elements(edge_table)
         elif is_beam_mesh(self.mesh_object.FemMesh):
             refedge_fem_edgeelements = getFemElementsByNodes(self.fem_element_table, refedge_nodes)
             for elem in refedge_fem_edgeelements:
@@ -909,6 +961,21 @@ def femelements_count_ok(fem_element_table, count_femelements):
         print('Count Elements written to CalculiX file: ', count_femelements)
         print('Count Elements of the FreeCAD FEM Mesh:  ', len(fem_element_table))
         return False
+
+
+def delete_duplicate_mesh_elements(refelement_table):
+    new_refelement_table = {}  # duplicates deleted
+    for elem, nodes in refelement_table.items():
+        if sorted(nodes) not in sortlistoflistvalues(new_refelement_table.values()):
+            new_refelement_table[elem] = nodes
+    return new_refelement_table
+
+
+def sortlistoflistvalues(listoflists):
+    new_list = []
+    for l in listoflists:
+        new_list.append(sorted(l))
+    return new_list
 
 
 def get_ccx_elset_beam_name(mat_name, beamsec_name, mat_short_name=None, beamsec_short_name=None):
