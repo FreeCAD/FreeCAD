@@ -51,6 +51,11 @@ class _FemAnalysis:
         ell = fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
         obj.EigenmodeLowLimit = (ell, 0.0, 1000000.0, 10000.0)
 
+        obj.addProperty("App::PropertyFloatConstraint", "EigenmodeHighLimit", "Fem", "High frequency limit for eigenmode calculations")
+        #Not yet in prefs, so it will always default to 1000000.0
+        ehl = fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
+        obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 100000)
+
     def execute(self, obj):
         return
 
