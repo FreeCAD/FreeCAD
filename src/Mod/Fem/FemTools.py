@@ -311,8 +311,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if analysis_type is not None:
             self.analysis_type = analysis_type
         else:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-            self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
+            try:
+                self.analysis_type = self.analysis.AnalysisType
+            except:
+                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+                self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
 
     ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir from FEM preferences
     #  @param self The python object self
