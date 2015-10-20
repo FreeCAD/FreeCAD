@@ -911,7 +911,12 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
 
     std::ofstream anABAQUS_Output;
     anABAQUS_Output.open(Filename.c_str());
+
+    // add nodes
+    //
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
+    typedef std::map<int, Base::Vector3d> VertexMap;
+    VertexMap vertexMap;
 
     //Extract Nodes and Elements of the current SMESH datastructure
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
@@ -921,10 +926,16 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
         const SMDS_MeshNode* aNode = aNodeIter->next();
         current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
         current_node = _Mtrx * current_node;
-        anABAQUS_Output << aNode->GetID() << ", "
-            << current_node.x << ", "
-            << current_node.y << ", "
-            << current_node.z << std::endl;
+        vertexMap[aNode->GetID()] = current_node;
+    }
+
+    // This way we get sorted output.
+    // See http://forum.freecadweb.org/viewtopic.php?f=18&t=12646&start=40#p103004
+    for (VertexMap::iterator it = vertexMap.begin(); it != vertexMap.end(); ++it) {
+        anABAQUS_Output << it->first << ", "
+            << it->second.x << ", "
+            << it->second.y << ", "
+            << it->second.z << std::endl;
     }
 
     typedef std::map<int, std::vector<int> > NodesMap;

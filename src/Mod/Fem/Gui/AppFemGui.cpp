@@ -105,7 +105,6 @@ void FemGuiExport initFemGui()
     Base::Interpreter().loadModule("FemCommands");
 
     Base::Interpreter().loadModule("_CommandMechanicalShowResult");
-    Base::Interpreter().loadModule("_CommandFrequencyAnalysis");
     Base::Interpreter().loadModule("_CommandQuickAnalysis");
     Base::Interpreter().loadModule("_CommandPurgeFemResults");
     Base::Interpreter().loadModule("_CommandMechanicalJobControl");

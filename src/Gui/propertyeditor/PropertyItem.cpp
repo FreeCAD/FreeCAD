@@ -2151,6 +2151,7 @@ QVariant PropertyPathItem::toolTip(const App::Property* prop) const
 QWidget* PropertyPathItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
     Gui::FileChooser *fc = new Gui::FileChooser(parent);
+    fc->setMode(FileChooser::Directory);
     fc->setAutoFillBackground(true);
     QObject::connect(fc, SIGNAL(fileNameSelected(const QString&)), receiver, method);
     return fc;

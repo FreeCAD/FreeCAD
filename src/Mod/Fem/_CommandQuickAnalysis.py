@@ -48,7 +48,7 @@ class _CommandQuickAnalysis(FemCommands):
                 self.fea.load_results()
                 self.show_results_on_mesh()
             else:
-                print "CalculiX failed ccx finished with error {}".format(ret_code)
+                print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
         self.fea = FemTools()
         self.fea.reset_all()

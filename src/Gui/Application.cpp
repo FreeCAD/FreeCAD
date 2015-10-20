@@ -706,8 +706,23 @@ void Application::slotActiveDocument(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
     // this can happen when closing a document with two views opened
-    if (doc != d->documents.end())
+    if (doc != d->documents.end()) {
+        // this can happen when calling App.setActiveDocument directly from Python
+        // because no MDI view will be activated
+        if (d->activeDocument != doc->second) {
+            d->activeDocument = doc->second;
+            if (d->activeDocument) {
+                Base::PyGILStateLocker lock;
+                Py::Object active(d->activeDocument->getPyObject(), true);
+                Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),active);
+            }
+            else {
+                Base::PyGILStateLocker lock;
+                Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),Py::None());
+            }
+        }
         signalActiveDocument(*doc->second);
+    }
 }
 
 void Application::slotNewObject(const ViewProvider& vp)

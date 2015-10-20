@@ -34,6 +34,10 @@
 #include <Quarter/QuarterWidget.h>
 #include <Quarter/eventhandlers/EventFilter.h>
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4267)
+#endif
+
 #include <QtGui/QApplication>
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>

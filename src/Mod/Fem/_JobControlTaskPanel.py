@@ -45,7 +45,7 @@ class _JobControlTaskPanel:
         ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:
             self.CalculixBinary = ccx_binary
-            print "Using ccx binary path from FEM preferences: {}".format(ccx_binary)
+            print ("Using ccx binary path from FEM preferences: {}".format(ccx_binary))
         else:
             from platform import system
             if system() == 'Linux':
@@ -58,6 +58,7 @@ class _JobControlTaskPanel:
         self.working_dir = self.fem_prefs.GetString("WorkingDir", '/tmp')
 
         self.analysis_object = analysis_object
+
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
@@ -66,9 +67,11 @@ class _JobControlTaskPanel:
 
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
-        QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
-        QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
-        QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
+        QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
+        QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
+        QtCore.QObject.connect(self.form.pb_run_ccx, QtCore.SIGNAL("clicked()"), self.runCalculix)
+        QtCore.QObject.connect(self.form.rb_static_analysis, QtCore.SIGNAL("clicked()"), self.select_static_analysis)
+        QtCore.QObject.connect(self.form.rb_frequency_analysis, QtCore.SIGNAL("clicked()"), self.select_frequency_analysis)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
@@ -106,16 +109,16 @@ class _JobControlTaskPanel:
 
     def UpdateText(self):
         if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
-            self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def calculixError(self, error):
-        print "Error()", error
+        print ("Error() {}".format(error))
         self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
 
     def calculixStarted(self):
-        print "calculixStarted()"
-        print self.Calculix.state()
-        self.form.pushButton_generate.setText("Break Calculix")
+        print ("calculixStarted()")
+        print (self.Calculix.state())
+        self.form.pb_run_ccx.setText("Break CalculiX")
 
     def calculixStateChanged(self, newState):
         if (newState == QtCore.QProcess.ProcessState.Starting):
@@ -126,8 +129,8 @@ class _JobControlTaskPanel:
                 self.femConsoleMessage("CalculiX stopped.")
 
     def calculixFinished(self, exitCode):
-        print "calculixFinished()", exitCode
-        print self.Calculix.state()
+        print ("calculixFinished() {}".format(exitCode))
+        print (self.Calculix.state())
 
         # Restore previous cwd
         QtCore.QDir.setCurrent(self.cwd)
@@ -137,10 +140,9 @@ class _JobControlTaskPanel:
 
         self.femConsoleMessage("Calculix done!", "#00AA00")
 
-        self.form.pushButton_generate.setText("Re-run Calculix")
-        print "Loading results...."
+        self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
         fea.reset_all()
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
@@ -151,7 +153,7 @@ class _JobControlTaskPanel:
             self.femConsoleMessage("Loading results done!", "#00AA00")
         else:
             self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -159,6 +161,10 @@ class _JobControlTaskPanel:
     def update(self):
         'fills the widgets'
         self.form.le_working_dir.setText(self.working_dir)
+        if self.analysis_object.AnalysisType == 'static':
+            self.form.rb_static_analysis.setChecked(True)
+        elif self.analysis_object.AnalysisType == 'frequency':
+            self.form.rb_frequency_analysis.setChecked(True)
         return
 
     def accept(self):
@@ -168,13 +174,14 @@ class _JobControlTaskPanel:
         FreeCADGui.Control.closeDialog()
 
     def choose_working_dir(self):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self.working_dir = QtGui.QFileDialog.getExistingDirectory(None,
-                                                                  'Choose CalculiX working directory',
-                                                                  self.fem_prefs.GetString("WorkingDir", '/tmp'))
-        if self.working_dir:
-            self.fem_prefs.SetString("WorkingDir", str(self.working_dir))
-            self.form.le_working_dir.setText(self.working_dir)
+        current_wd = get_working_dir()
+        wd = QtGui.QFileDialog.getExistingDirectory(None, 'Choose CalculiX working directory',
+                                                    current_wd)
+        if wd:
+            self.analysis_object.WorkingDir = wd
+        else:
+            self.analysis_object.WorkingDir = current_wd
+        self.form.le_working_dir.setText(self.analysis_object.WorkingDir)
 
     def write_input_file_handler(self):
         QApplication.restoreOverrideCursor()
@@ -182,13 +189,14 @@ class _JobControlTaskPanel:
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
             fea = FemTools()
+            fea.set_analysis_type(self.analysis_object.AnalysisType)
             fea.update_objects()
             fea.write_inp_file()
             if fea.inp_file_name != "":
                 self.inp_file_name = fea.inp_file_name
                 self.femConsoleMessage("Write completed.")
-                self.form.pushButton_edit.setEnabled(True)
-                self.form.pushButton_generate.setEnabled(True)
+                self.form.pb_edit_inp.setEnabled(True)
+                self.form.pb_run_ccx.setEnabled(True)
             else:
                 self.femConsoleMessage("Write .inp file failed!", "#FF0000")
             QApplication.restoreOverrideCursor()
@@ -196,7 +204,7 @@ class _JobControlTaskPanel:
     def check_prerequisites_helper(self):
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
         fea = FemTools()
         fea.update_objects()
@@ -213,7 +221,7 @@ class _JobControlTaskPanel:
             self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
-        print 'editCalculixInputFile {}'.format(self.inp_file_name)
+        print ('editCalculixInputFile {}'.format(self.inp_file_name))
         if self.fem_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.inp_file_name)
         else:
@@ -221,18 +229,18 @@ class _JobControlTaskPanel:
             if ext_editor_path:
                 self.start_ext_editor(ext_editor_path, self.inp_file_name)
             else:
-                print "External editor is not defined in FEM preferences. Falling back to internal editor"
+                print ("External editor is not defined in FEM preferences. Falling back to internal editor")
                 FemGui.open(self.inp_file_name)
 
     def runCalculix(self):
-        print 'runCalculix'
+        print ('runCalculix')
         self.Start = time.time()
 
         self.femConsoleMessage("CalculiX binary: {}".format(self.CalculixBinary))
         self.femConsoleMessage("Run Calculix...")
 
         # run Calculix
-        print 'run Calculix at: ', self.CalculixBinary, ' with: ', os.path.splitext(self.inp_file_name)[0]
+        print ('run Calculix at: {} with: {}'.format(self.CalculixBinary, os.path.splitext(self.inp_file_name)[0]))
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
@@ -241,3 +249,30 @@ class _JobControlTaskPanel:
         self.Calculix.start(self.CalculixBinary, ['-i', fi.baseName()])
 
         QApplication.restoreOverrideCursor()
+
+    def select_analysis_type(self, analysis_type):
+        if self.analysis_object.AnalysisType != analysis_type:
+            self.analysis_object.AnalysisType = analysis_type
+            self.form.pb_edit_inp.setEnabled(False)
+            self.form.pb_run_ccx.setEnabled(False)
+
+    def select_static_analysis(self):
+        self.select_analysis_type('static')
+
+    def select_frequency_analysis(self):
+        self.select_analysis_type('frequency')
+
+
+#Code duplication!!!!
+def get_working_dir():
+    fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+    working_dir = fem_prefs.GetString("WorkingDir", "")
+    if not (os.path.isdir(working_dir)):
+        try:
+            os.path.makedirs(working_dir)
+        except:
+            print ("Dir \'{}\' from FEM preferences doesn't exist and cannot be created.".format(working_dir))
+            import tempfile
+            working_dir = tempfile.gettempdir()
+            print ("Dir \'{}\' will be used instead.".format(working_dir))
+    return working_dir
