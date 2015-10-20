@@ -184,7 +184,7 @@ class ViewProviderTank:
     def getDefaultDisplayMode(self):
         """Return the name of the default display mode. It must be defined in
         getDisplayModes."""
-        return "Shaded"
+        return "Flat Lines"
 
     def setDisplayMode(self, mode):
         """Map the display mode defined in attach with those defined in
