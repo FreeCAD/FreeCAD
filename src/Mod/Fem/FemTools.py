@@ -274,11 +274,23 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## Sets eigenmode parameters for CalculiX frequency analysis
     #  @param self The python object self
-    #  @param number number of eigenmodes that wll be calculated, default 10
+    #  @param number number of eigenmodes that wll be calculated, default read for FEM prefs or 10 if not set in the FEM prefs
     #  @param limit_low lower value of requested eigenfrequency range, default 0.0
     #  @param limit_high higher value of requested eigenfrequency range, default 1000000.0
-    def set_eigenmode_parameters(self, number=10, limit_low=0.0, limit_high=1000000.0):
-        self.eigenmode_parameters = (number, limit_low, limit_high)
+    def set_eigenmode_parameters(self, number=None, limit_low=0.0, limit_high=1000000.0):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        if number is not None:
+            _number = number
+        else:
+            try:
+                _number = self.analysis.NumberOfEigenmodes
+            except:
+                #Not yet in prefs, so it will always default to 10
+                _number = self.fem_prefs.GetString("NumberOfEigenmodes", 10)
+        if _number < 1:
+            _number = 1
+
+        self.eigenmode_parameters = (_number, limit_low, limit_high)
 
     ## Sets base_name
     #  @param self The python object self
