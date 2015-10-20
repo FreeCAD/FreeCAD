@@ -41,6 +41,11 @@ class _FemAnalysis:
         obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations")
         obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
 
+        obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
+        #Not yet in prefs, so it will always default to 10
+        noe = fem_prefs.GetInt("NumberOfEigenmodes", 10)
+        obj.NumberOfEigenmodes = (noe, 1, 100, 1)
+
     def execute(self, obj):
         return
 
