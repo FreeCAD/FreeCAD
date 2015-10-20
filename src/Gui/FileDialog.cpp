@@ -535,6 +535,8 @@ FileChooser::FileChooser ( QWidget * parent )
     connect(lineEdit, SIGNAL(textChanged(const QString &)),
             this, SIGNAL(fileNameChanged(const QString &)));
 
+    connect(lineEdit, SIGNAL(editingFinished()), this, SLOT(editingFinished()));
+
     button = new QPushButton(QLatin1String("..."), this);
     button->setFixedWidth(2*button->fontMetrics().width(QLatin1String(" ... ")));
     layout->addWidget(button);
@@ -559,6 +561,15 @@ FileChooser::~FileChooser()
 QString FileChooser::fileName() const
 {
     return lineEdit->text();
+}
+
+void FileChooser::editingFinished()
+{
+    QString le_converted = lineEdit->text();
+    le_converted.replace(QString::fromStdString("\\"), QString::fromStdString("/"));
+    lineEdit->setText(le_converted);
+    FileDialog::setWorkingDirectory(le_converted);
+    fileNameSelected(le_converted);
 }
 
 /** 
