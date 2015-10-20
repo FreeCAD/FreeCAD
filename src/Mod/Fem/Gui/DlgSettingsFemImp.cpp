@@ -53,6 +53,9 @@ void DlgSettingsFemImp::saveSettings()
     fc_ext_editor->onSave();
     fc_ccx_binary->onSave();
     cb_analysis_type->onSave();
+    sb_eigenmode_number->onSave();
+    dsb_eigenmode_high_limit->onSave();
+    dsb_eigenmode_low_limit->onSave();
     cb_use_built_in_materials->onSave();
     cb_use_mat_from_config_dir->onSave();
     cb_use_mat_from_custom_dir->onSave();
@@ -66,6 +69,9 @@ void DlgSettingsFemImp::loadSettings()
     fc_ext_editor->onRestore();
     fc_ccx_binary->onRestore();
     cb_analysis_type->onRestore();
+    sb_eigenmode_number->onRestore();
+    dsb_eigenmode_high_limit->onRestore();
+    dsb_eigenmode_low_limit->onRestore();
     cb_use_built_in_materials->onRestore();
     cb_use_mat_from_config_dir->onRestore();
     cb_use_mat_from_custom_dir->onRestore();

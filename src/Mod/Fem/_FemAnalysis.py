@@ -42,7 +42,6 @@ class _FemAnalysis:
         obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
 
         obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
-        #Not yet in prefs, so it will always default to 10
         noe = fem_prefs.GetInt("NumberOfEigenmodes", 10)
         obj.NumberOfEigenmodes = (noe, 1, 100, 1)
 
@@ -52,9 +51,8 @@ class _FemAnalysis:
         obj.EigenmodeLowLimit = (ell, 0.0, 1000000.0, 10000.0)
 
         obj.addProperty("App::PropertyFloatConstraint", "EigenmodeHighLimit", "Fem", "High frequency limit for eigenmode calculations")
-        #Not yet in prefs, so it will always default to 1000000.0
         ehl = fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
-        obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 100000)
+        obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
     def execute(self, obj):
         return
