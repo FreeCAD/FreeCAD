@@ -38,6 +38,8 @@ class _FemAnalysis:
         obj.AnalysisType = FemTools.known_analysis_types
         analysis_type = fem_prefs.GetInt("AnalysisType", 0)
         obj.AnalysisType = FemTools.known_analysis_types[analysis_type]
+        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations")
+        obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
 
     def execute(self, obj):
         return
