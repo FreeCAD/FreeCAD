@@ -51,6 +51,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifdef __GNUG__
 #pragma implementation
 #endif
+#ifdef _MSC_VER
+#pragma warning(disable : 4244)
+#endif
 
 #include <boost/progress.hpp>
 #include <boost/timer.hpp>

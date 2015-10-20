@@ -989,7 +989,9 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, 1,
      "getSelection([string]) -- Return a list of selected objets\n"
      "Return a list of selected objects for a given document name. If no\n"
-     "document is given the complete selection is returned."},
+     "document name is given the selection for the active document is returned."},
+    {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, 1,
+     "getCompleteSelection() -- Return a list of selected objects of all documents."},
     {"getSelectionEx",         (PyCFunction) SelectionSingleton::sGetSelectionEx, 1,
      "getSelectionEx([string]) -- Return a list of SelectionObjects\n"
      "Return a list of SelectionObjects for a given document name. If no\n"
@@ -1107,10 +1109,27 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args,
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionSingleton::SelObj> sel;
-    if (documentName)
-        sel = Selection().getSelection(documentName);
-    else
-        sel = Selection().getCompleteSelection();
+    sel = Selection().getSelection(documentName);
+
+    try {
+        Py::List list;
+        for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
+            list.append(Py::asObject(it->pObject->getPyObject()));
+        }
+        return Py::new_reference_to(list);
+    }
+    catch (Py::Exception&) {
+        return 0;
+    }
+}
+
+PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception
+
+    std::vector<SelectionSingleton::SelObj> sel;
+    sel = Selection().getCompleteSelection();
 
     try {
         Py::List list;

@@ -118,6 +118,7 @@ void AppFemExport initFem()
  
     Fem::FemAnalysis                ::init();
     Fem::FemAnalysisPython          ::init();
+    Fem::FeaturePython              ::init();
     Fem::FemMesh                    ::init();
     Fem::FemMeshObject              ::init();
     Fem::FemMeshShapeObject         ::init();

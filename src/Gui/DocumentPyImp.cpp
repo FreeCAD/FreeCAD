@@ -111,12 +111,7 @@ PyObject* DocumentPy::setEdit(PyObject *args)
     }
     
     bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod);
-    if (!ok) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "Failed to set object '%s' in edit mode", psFeatStr);
-        return 0;
-    }
-
-    Py_Return;
+    return PyBool_FromLong(ok ? 1 : 0);
 }
 
 PyObject* DocumentPy::getInEdit(PyObject *args)

@@ -422,11 +422,12 @@ def formatObject(target,origin=None):
             for p in matchrep.PropertiesList:
                 if not p in ["DisplayMode","BoundingBox","Proxy","RootNode","Visibility"]:
                     if p in obrep.PropertiesList:
-                        if hasattr(getattr(matchrep,p),"Value"):
-                            val = getattr(matchrep,p).Value
-                        else:
-                            val = getattr(matchrep,p)
-                        setattr(obrep,p,val)
+                        if not obrep.getEditorMode(p):
+                            if hasattr(getattr(matchrep,p),"Value"):
+                                val = getattr(matchrep,p).Value
+                            else:
+                                val = getattr(matchrep,p)
+                            setattr(obrep,p,val)
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
             if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
@@ -998,13 +999,14 @@ def makeCopy(obj,force=None,reparent=False):
     for p in obj.PropertiesList:
         if not p in ["Proxy"]:
             if p in newobj.PropertiesList:
-                try:
-                    setattr(newobj,p,obj.getPropertyByName(p))
-                except AttributeError:
+                if not newobj.getEditorMode(p):
                     try:
-                        setattr(newobj,p,obj.getPropertyByName(p).Value)
+                        setattr(newobj,p,obj.getPropertyByName(p))
                     except AttributeError:
-                        pass
+                        try:
+                            setattr(newobj,p,obj.getPropertyByName(p).Value)
+                        except AttributeError:
+                            pass
     if reparent:
         parents = obj.InList
         if parents:

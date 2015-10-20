@@ -37,7 +37,7 @@ __url__ = "http://www.freecadweb.org"
 
 def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
     '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", name)
+    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
     _FemBeamSection(obj)
     obj.Width = width
     obj.Height = height
@@ -57,8 +57,7 @@ class _CommandFemBeamSection:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
         FreeCADGui.addModule("FemBeamSection")
-        FreeCADGui.doCommand("FemBeamSection.makeFemBeamSection()")
-        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemBeamSection.makeFemBeamSection()]")
 
     def IsActive(self):
         if FemGui.getActiveAnalysis():

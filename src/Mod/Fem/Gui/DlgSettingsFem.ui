@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>429</height>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -194,6 +194,73 @@
       </widget>
      </item>
      <item>
+      <widget class="QGroupBox" name="gb_analysis_params">
+       <property name="title">
+        <string>Default analysis type</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="Gui::PrefComboBox" name="cb_analysis_type">
+              <property name="minimumSize">
+               <size>
+                <width>148</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Default type on analysis</string>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>AnalysisType</cstring>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem</cstring>
+              </property>
+              <item>
+               <property name="text">
+                <string>Static</string>
+               </property>
+               <property name="icon">
+                <iconset resource="Resources/Fem.qrc">
+                 <normaloff>:/icons/fem-new-analysis.svg</normaloff>:/icons/fem-new-analysis.svg</iconset>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Frequency</string>
+               </property>
+               <property name="icon">
+                <iconset resource="Resources/Fem.qrc">
+                 <normaloff>:/icons/fem-frequency-analysis.svg</normaloff>:/icons/fem-frequency-analysis.svg</iconset>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QGroupBox" name="gb_materials">
        <property name="title">
         <string>Materials</string>
@@ -334,6 +401,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

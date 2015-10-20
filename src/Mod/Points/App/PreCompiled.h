@@ -30,18 +30,16 @@
 #ifdef FC_OS_WIN32
 # define PointsExport __declspec(dllexport)
 #else // for Linux
-# define PointsExport 
+# define PointsExport
 #endif
-
-#ifdef _PreComp_
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-# pragma warning( disable : 4251 )
-# pragma warning( disable : 4503 )
-# pragma warning( disable : 4275 )
-# pragma warning( disable : 4786 )  // specifier longer then 255 chars
+# pragma warning( disable : 4181 )
+# pragma warning( disable : 4305 )
 #endif
+
+#ifdef _PreComp_
 
 // standard
 #include <stdio.h>

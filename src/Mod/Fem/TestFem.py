@@ -117,9 +117,11 @@ class FemTest(unittest.TestCase):
 
     def compare_inp_files(self, file_name1, file_name2):
         file1 = open(file_name1, 'r')
-        file2 = open(file_name2, 'r')
         f1 = file1.readlines()
+        file1.close()
+        file2 = open(file_name2, 'r')
         f2 = file2.readlines()
+        file2.close()
         lf1 = [l for l in f1 if not l.startswith('**   written ')]
         lf2 = [l for l in f2 if not l.startswith('**   written ')]
         import difflib
@@ -127,8 +129,8 @@ class FemTest(unittest.TestCase):
         result = ''
         for l in diff:
             result += l
-        file1.close()
-        file2.close()
+        if result:
+            result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
         return result
 
     def compare_stats(self, fea, stat_file=None):
@@ -179,17 +181,21 @@ class FemTest(unittest.TestCase):
         self.assertTrue(self.pressure_constraint, "FemTest of new pressure constraint failed")
         self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
 
-        fea = FemTools.FemTools(self.analysis)
-        fcc_print('Checking FEM inp file prerequisites...')
+        fea = FemTools.FemTools(self.analysis, test_mode=True)
+        fcc_print('Setting up working directory {}'.format(static_analysis_dir))
+        fea.setup_working_dir(static_analysis_dir)
+        self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
+                        "Setting working directory {} failed".format(static_analysis_dir))
+
+        fcc_print('Checking FEM inp file prerequisites for static analysis...')
         error = fea.check_prerequisites()
         self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
 
-        fcc_print('Setting up working directory {}'.format(static_analysis_dir))
-        fea.setup_working_dir(static_analysis_dir)
-        self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
-                        "Setting working directory {} failed".format(static_analysis_dir))
+        fcc_print('Setting analysis type to \'static\"')
+        fea.set_analysis_type("static")
+        self.assertTrue(True if fea.analysis_type == 'static' else False, "Setting anlysis type to \'static\' failed")
 
         fcc_print('Writing {}/{}.inp for static analysis'.format(static_analysis_dir, mesh_name))
         error = fea.write_inp_file()
@@ -231,6 +237,10 @@ class FemTest(unittest.TestCase):
         fea.setup_working_dir(frequency_analysis_dir)
         self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
+
+        fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
+        error = fea.check_prerequisites()
+        self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, mesh_name))
         error = fea.write_inp_file()

@@ -25,6 +25,7 @@
 
 #include "PreCompiled.h"
 
+#include "Gui/Application.h"
 #include "DlgSettingsFemImp.h"
 #include <Gui/PrefWidgets.h>
 
@@ -43,10 +44,15 @@ DlgSettingsFemImp::~DlgSettingsFemImp()
 
 void DlgSettingsFemImp::saveSettings()
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Fem");
+    hGrp->SetInt("AnalysisType", cb_analysis_type->currentIndex());
+
     fc_ccx_working_directory->onSave();
     cb_int_editor->onSave();
     fc_ext_editor->onSave();
     fc_ccx_binary->onSave();
+    cb_analysis_type->onSave();
     cb_use_built_in_materials->onSave();
     cb_use_mat_from_config_dir->onSave();
     cb_use_mat_from_custom_dir->onSave();
@@ -59,10 +65,16 @@ void DlgSettingsFemImp::loadSettings()
     cb_int_editor->onRestore();
     fc_ext_editor->onRestore();
     fc_ccx_binary->onRestore();
+    cb_analysis_type->onRestore();
     cb_use_built_in_materials->onRestore();
     cb_use_mat_from_config_dir->onRestore();
     cb_use_mat_from_custom_dir->onRestore();
     fc_custom_mat_dir->onRestore();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Fem");
+    int index =  hGrp->GetInt("AnalysisType", 0);
+    if (index > -1) cb_analysis_type->setCurrentIndex(index);
 }
 
 /**
@@ -71,7 +83,9 @@ void DlgSettingsFemImp::loadSettings()
 void DlgSettingsFemImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        int c_index = cb_analysis_type->currentIndex();
         retranslateUi(this);
+        cb_analysis_type->setCurrentIndex(c_index);
     }
     else {
         QWidget::changeEvent(e);

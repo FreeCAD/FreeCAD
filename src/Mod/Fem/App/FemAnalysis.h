@@ -65,6 +65,7 @@ protected:
 };
 
 typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;
+typedef App::FeaturePythonT<App::DocumentObject> FeaturePython;
 
 
 } //namespace Fem

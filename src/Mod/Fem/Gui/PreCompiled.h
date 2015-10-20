@@ -62,6 +62,9 @@
 #include <queue>
 #include <bitset>
 
+// boost
+#include <boost/bind.hpp>
+
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
