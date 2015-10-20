@@ -49,6 +49,7 @@
 #include <boost/bind.hpp>
 
 #include <App/Document.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -4015,6 +4016,13 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Sketcher::SketchObjectPython, Sketcher::SketchObject)
 template<> const char* Sketcher::SketchObjectPython::getViewProviderName(void) const {
     return "SketcherGui::ViewProviderPython";
+}
+template<> PyObject* Sketcher::SketchObjectPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<SketchObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

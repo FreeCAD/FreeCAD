@@ -44,7 +44,11 @@ FeaturePythonImp::~FeaturePythonImp()
 {
 }
 
-DocumentObjectExecReturn *FeaturePythonImp::execute()
+/*!
+ Calls the execute() method of the Python feature class. If the Python feature class doesn't have an execute()
+ method or if it returns False this method also return false and true otherwise.
+ */
+bool FeaturePythonImp::execute()
 {
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -52,16 +56,24 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
         Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
-            if (feature.hasAttr("__object__")) {
-                Py::Callable method(feature.getAttr(std::string("execute")));
-                Py::Tuple args;
-                method.apply(args);
-            }
-            else {
-                Py::Callable method(feature.getAttr(std::string("execute")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::Object(object->getPyObject(), true));
-                method.apply(args);
+            if (feature.hasAttr(std::string("execute"))) {
+                if (feature.hasAttr("__object__")) {
+                    Py::Callable method(feature.getAttr(std::string("execute")));
+                    Py::Tuple args;
+                    Py::Object res = method.apply(args);
+                    if (res.isBoolean() && !res.isTrue())
+                        return false;
+                    return true;
+                }
+                else {
+                    Py::Callable method(feature.getAttr(std::string("execute")));
+                    Py::Tuple args(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    Py::Object res = method.apply(args);
+                    if (res.isBoolean() && !res.isTrue())
+                        return false;
+                    return true;
+                }
             }
         }
     }
@@ -70,10 +82,10 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
         e.ReportException();
         std::stringstream str;
         str << object->Label.getValue() << ": " << e.what();
-        return new App::DocumentObjectExecReturn(str.str());
+        throw Base::RuntimeError(str.str());
     }
 
-    return DocumentObject::StdReturn;
+    return false;
 }
 
 void FeaturePythonImp::onBeforeChange(const Property* prop)
@@ -175,5 +187,3 @@ template<> const char* App::GeometryPython::getViewProviderName(void) const {
 }
 // explicit template instantiation
 template class AppExport FeaturePythonT<GeoFeature>;}
-
-
