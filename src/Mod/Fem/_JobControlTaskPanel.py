@@ -55,7 +55,6 @@ class _JobControlTaskPanel:
             else:
                 self.CalculixBinary = 'ccx'
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self.working_dir = self.fem_prefs.GetString("WorkingDir", '/tmp')
 
         self.analysis_object = analysis_object
 
@@ -160,7 +159,7 @@ class _JobControlTaskPanel:
 
     def update(self):
         'fills the widgets'
-        self.form.le_working_dir.setText(self.working_dir)
+        self.form.le_working_dir.setText(self.analysis_object.WorkingDir)
         if self.analysis_object.AnalysisType == 'static':
             self.form.rb_static_analysis.setChecked(True)
         elif self.analysis_object.AnalysisType == 'frequency':
@@ -174,7 +173,7 @@ class _JobControlTaskPanel:
         FreeCADGui.Control.closeDialog()
 
     def choose_working_dir(self):
-        current_wd = get_working_dir()
+        current_wd = self.setup_working_dir()
         wd = QtGui.QFileDialog.getExistingDirectory(None, 'Choose CalculiX working directory',
                                                     current_wd)
         if wd:
@@ -262,17 +261,15 @@ class _JobControlTaskPanel:
     def select_frequency_analysis(self):
         self.select_analysis_type('frequency')
 
-
-#Code duplication!!!!
-def get_working_dir():
-    fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-    working_dir = fem_prefs.GetString("WorkingDir", "")
-    if not (os.path.isdir(working_dir)):
-        try:
-            os.path.makedirs(working_dir)
-        except:
-            print ("Dir \'{}\' from FEM preferences doesn't exist and cannot be created.".format(working_dir))
-            import tempfile
-            working_dir = tempfile.gettempdir()
-            print ("Dir \'{}\' will be used instead.".format(working_dir))
-    return working_dir
+    # That function overlaps with FemTools setup_working_dir and needs to be removed when we migrate fully to FemTools
+    def setup_working_dir(self):
+        wd = self.analysis_object.WorkingDir
+        if not (os.path.isdir(wd)):
+            try:
+                os.makedirs(wd)
+            except:
+                print ("Dir \'{}\' from FEM preferences doesn't exist and cannot be created.".format(wd))
+                import tempfile
+                wd = tempfile.gettempdir()
+                print ("Dir \'{}\' will be used instead.".format(wd))
+        return wd

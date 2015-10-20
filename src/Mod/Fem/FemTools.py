@@ -325,7 +325,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if working_dir is not None:
             self.working_dir = working_dir
         else:
-            self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+            try:
+                self.working_dir = self.analysis.WorkingDir
+            except:
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+                self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
 
         if not (os.path.isdir(self.working_dir)):
             try:
