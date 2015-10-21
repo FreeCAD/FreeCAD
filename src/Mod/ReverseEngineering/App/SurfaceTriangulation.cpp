@@ -59,7 +59,7 @@ SurfaceTriangulation::SurfaceTriangulation(const Points::PointKernel& pts, Mesh:
 {
 }
 
-void SurfaceTriangulation::perform()
+void SurfaceTriangulation::perform(double searchRadius, double mu)
 {
     PointCloud<PointXYZ>::Ptr cloud (new PointCloud<PointXYZ>);
     PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
@@ -96,8 +96,8 @@ void SurfaceTriangulation::perform()
     // Set parameters
     gp3.setInputCloud (cloud_with_normals);
     gp3.setSearchMethod (tree2);
-    gp3.setSearchRadius (2.025);
-    gp3.setMu (2.5);
+    gp3.setSearchRadius (searchRadius);
+    gp3.setMu (mu);
     gp3.setMaximumNearestNeighbors (100);
     gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
     gp3.setMinimumAngle(M_PI/18); // 10 degrees
