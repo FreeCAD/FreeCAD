@@ -251,11 +251,12 @@ PyObject *PropertyFileIncluded::getPyObject(void)
     return p;
 }
 
-void PropertyFileIncluded::setPyObject(PyObject *value)
-{
 #if PY_MAJOR_VERSION >= 3
     extern PyTypeObject PyFileIO_Type;
 #endif
+
+void PropertyFileIncluded::setPyObject(PyObject *value)
+{
     std::string string;
     if (PyUnicode_Check(value)) {
 #if PY_MAJOR_VERSION >= 3

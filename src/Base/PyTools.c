@@ -240,9 +240,15 @@ void PP_Fetch_Error_Text()
     pystring = NULL;
     if (errobj != NULL &&
        (pystring = PyObject_Str(errobj)) != NULL &&      /* str(errobj) */
+#if PY_MAJOR_VERSION >= 3
+       (PyUnicode_Check(pystring)) )                      /* str() increfs */
+    {
+        strncpy(PP_last_error_type, PyUnicode_AsUTF8(pystring), MAX); /*Py->C*/
+#else
        (PyString_Check(pystring)) )                      /* str() increfs */
     {
         strncpy(PP_last_error_type, PyString_AsString(pystring), MAX); /*Py->C*/
+#endif
         PP_last_error_type[MAX-1] = '\0';
     }
     else 
@@ -253,9 +259,15 @@ void PP_Fetch_Error_Text()
     pystring = NULL;
     if (errdata != NULL &&
        (pystring = PyObject_Str(errdata)) != NULL &&     /* str(): increfs */
+#if PY_MAJOR_VERSION >= 3
+       (PyUnicode_Check(pystring)) )
+    {
+        strncpy(PP_last_error_info, PyUnicode_AsUTF8(pystring), MAX); /*Py->C*/
+#else
        (PyString_Check(pystring)) )
     {
         strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); /*Py->C*/
+#endif
         PP_last_error_info[MAX-1] = '\0';
     }
     else 
@@ -559,7 +571,11 @@ PP_Run_Bytecode(PyObject *codeobj,           /* run compiled bytecode object */
     if (PP_DEBUG)
         presult = PP_Debug_Bytecode(codeobj, dict);        /* run in pdb */
     else
+#if PY_MAJOR_VERSION >= 3
+        presult = PyEval_EvalCode((PyObject*)codeobj, dict, dict);
+#else
         presult = PyEval_EvalCode((PyCodeObject *)codeobj, dict, dict);
+#endif
     return PP_Convert_Result(presult, resfmt, restarget);  /* expr val to C */
 }
 
