@@ -446,10 +446,11 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             throw Base::ValueError(out.str());
         }
 #else
-        const char* str = PyUnicode_AsString (value);
+        PyObject* unicode = PyUnicode_AsUTF8String(value);
+        const char* str = PyString_AsString (unicode);
         if (_enum.contains(str)) {
             aboutToSetValue();
-            _enum.setValue(PyUnicode_AsString (value));
+            _enum.setValue(PyString_AsString (unicode));
             hasSetValue();
         }
         else {
@@ -457,6 +458,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             out << "'" << str << "' is not part of the enumeration";
             throw Base::ValueError(out.str());
         }
+        Py_DECREF(unicode);
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);

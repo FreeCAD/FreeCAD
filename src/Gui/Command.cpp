@@ -1224,7 +1224,11 @@ Action * PythonGroupCommand::createAction(void)
         if (cmd.hasAttr("GetDefaultCommand")) {
             Py::Callable call2(cmd.getAttr("GetDefaultCommand"));
             Py::Long def(call2.apply(args));
+#if PY_MAJOR_VERSION >= 3
             defaultId = static_cast<int>(def);
+#else
+            defaultId = static_cast<int>(def.as_long());  // bug in pycxx
+#endif
         }
 
         // if the command is 'exclusive' then activate the default action

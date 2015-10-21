@@ -501,7 +501,11 @@ Py::Long DocumentPy::getUndoMode(void) const
 
 void  DocumentPy::setUndoMode(Py::Long arg)
 {
-    getDocumentPtr()->setUndoMode(arg); 
+#if PY_MAJOR_VERSION >= 3
+    getDocumentPtr()->setUndoMode(arg);
+#else
+    getDocumentPtr()->setUndoMode(static_cast<int>(arg.as_long())); // bug in pycxx
+#endif
 }
 
 Py::Long DocumentPy::getUndoRedoMemSize(void) const

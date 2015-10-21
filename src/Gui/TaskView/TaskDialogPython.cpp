@@ -416,7 +416,11 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons(void) con
             Py::Callable method(dlg.getAttr(std::string("getStandardButtons")));
             Py::Tuple args;
             Py::Long ret(method.apply(args));
+#if PY_MAJOR_VERSION >= 3
             int value = (int)ret;
+#else
+            int value = (int)ret.as_long(); // bug in pycxx
+#endif
             return QDialogButtonBox::StandardButtons(value);
         }
     }
