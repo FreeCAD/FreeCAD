@@ -84,7 +84,9 @@ static PyObject *
 triangulate(PyObject *self, PyObject *args)
 {
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(Points::PointsPy::Type), &pcObj))
+    double searchRadius;
+    double mu=2.5;
+    if (!PyArg_ParseTuple(args, "O!d|d", &(Points::PointsPy::Type), &pcObj, &searchRadius, &mu))
         return NULL;
         
     Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(pcObj);
@@ -92,7 +94,7 @@ triangulate(PyObject *self, PyObject *args)
     
     Mesh::MeshObject* mesh = new Mesh::MeshObject();
     SurfaceTriangulation tria(*points, *mesh);
-    tria.perform();
+    tria.perform(searchRadius, mu);
 
     return new Mesh::MeshPy(mesh);
 }
