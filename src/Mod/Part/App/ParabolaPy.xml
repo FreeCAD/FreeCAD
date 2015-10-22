@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="GeometryCurvePy" 
+		Name="ParabolaPy" 
+		Twin="GeomParabola" 
+		TwinPointer="GeomParabola" 
+		Include="Mod/Part/App/Geometry.h" 
+		Namespace="Part" 
+		FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes a parabola in 3D space</UserDocu>
+		</Documentation>
+		<Methode Name="compute">
+			<Documentation>
+				<UserDocu>
+					compute(p1,p2,p3)
+					The three points must lie on a plane parallel to xy plane and must not be collinear
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Eccentricity" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns 1. (which is the eccentricity of any parabola).</UserDocu>
+			</Documentation>
+			<Parameter Name="Eccentricity" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Focal" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The focal distance is the distance between
+the apex and the focus of the parabola.</UserDocu>
+			</Documentation>
+			<Parameter Name="Focal" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Focus" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The focus is on the positive side of the
+'X Axis' of the local coordinate system of the parabola.</UserDocu>
+			</Documentation>
+			<Parameter Name="Focus" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Parameter" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Compute the parameter of this parabola
+which is the distance between its focus
+and its directrix. This distance is twice the focal length.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="Parameter" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Location" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Location of the parabola</UserDocu>
+			</Documentation>
+			<Parameter Name="Location" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The axis direction of the parabola</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object"/>
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

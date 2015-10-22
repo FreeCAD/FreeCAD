@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="ComplexGeoDataPy"
+		Include="Mod/Mesh/App/Mesh.h"
+		Name="MeshPy" 
+		Twin="MeshObject"
+		TwinPointer="MeshObject" 
+		Namespace="Mesh" 
+		FatherInclude="App/ComplexGeoDataPy.h" 
+		FatherNamespace="Data"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+			<UserDocu>Mesh() -- Create an empty mesh object.
+
+This class allows one to manipulate the mesh object by adding new facets, deleting facets, importing from an STL file,
+transforming the mesh and much more.
+For a complete overview of what can be done see also the documentation of mesh.
+A mesh object cannot be added to an existing document directly. Therefore the document must create an object
+with a property class that supports meshes.
+Example:
+  m = Mesh.Mesh()
+  ... # Manipulate the mesh
+  d = FreeCAD.activeDocument() # Get a reference to the actie document
+  f = d.addObject(\"Mesh::Feature\", \"Mesh\") # Create a mesh feature
+  f.Mesh = m # Assign the mesh object to the internal property
+  d.recompute()</UserDocu>
+		</Documentation>
+		<Methode Name="read">
+			<Documentation>
+				<UserDocu>Read in a mesh object from file.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="write" Const="true">
+			<Documentation>
+				<UserDocu>Write the mesh object into file.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="writeInventor" Const="true">
+			<Documentation>
+				<UserDocu>Write the mesh in OpenInventor format to a string.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="copy" Const="true">
+			<Documentation>
+				<UserDocu>Create a copy of this mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="offset">
+			<Documentation>
+				<UserDocu>Move the point along their normals</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="offsetSpecial">
+			<Documentation>
+				<UserDocu>Move the point along their normals</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="crossSections" Const="true">
+			<Documentation>
+				<UserDocu>Get cross-sections of the mesh through several planes</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="unite" Const="true">
+			<Documentation>
+				<UserDocu>Union of this and the given mesh object.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="intersect" Const="true">
+			<Documentation>
+				<UserDocu>Intersection of this and the given mesh object.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="difference" Const="true">
+			<Documentation>
+				<UserDocu>Difference of this and the given mesh object.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="inner" Const="true">
+			<Documentation>
+				<UserDocu>Get the part inside of the intersection</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="outer" Const="true">
+			<Documentation>
+				<UserDocu>Get the part outside the intersection</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="coarsen">
+			<Documentation>
+				<UserDocu>Coarse the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="translate">
+			<Documentation>
+				<UserDocu>Apply a translation to the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="rotate">
+			<Documentation>
+				<UserDocu>Apply a rotation to the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="transform">
+			<Documentation>
+				<UserDocu>Apply a transformation to the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="transformToEigen">
+			<Documentation>
+				<UserDocu>Transform the mesh to its eigenbase</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getEigenSystem" Const="true">
+			<Documentation>
+				<UserDocu>Get Eigen base of the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addFacet">
+			<Documentation>
+				<UserDocu>Add a facet to the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addFacets">
+			<Documentation>
+				<UserDocu>Add a list of facets to the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeFacets">
+			<Documentation>
+				<UserDocu>Remove a list of facet indices from the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getInternalFacets" Const="true">
+			<Documentation>
+				<UserDocu>Builds a list of facet indices with triangles that are inside a volume mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="rebuildNeighbourHood">
+			<Documentation>
+				<UserDocu>Repairs the neighbourhood which might be broken</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addMesh">
+			<Documentation>
+				<UserDocu>Combine this mesh with another mesh.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setPoint">
+			<Documentation>
+				<UserDocu>
+					setPoint(int, Vector)
+					Sets the point at index.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPointNormals" Const="true">
+			<Documentation>
+				<UserDocu>
+					getPointNormals()
+					Get the normals of the points.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="countSegments" Const="true">
+			<Documentation>
+				<UserDocu>Get the number of segments which may also be 0</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getSegment" Const="true">
+			<Documentation>
+				<UserDocu>Get a list of facet indices that describes a segment</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getSeparateComponents" Const="true">
+			<Documentation>
+				<UserDocu>Returns a list containing the different
+components (separated areas) of the mesh as separate meshes
+
+import Mesh
+for c in mesh.getSeparatecomponents():
+	Mesh.show(c)
+
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getFacetSelection" Const="true">
+			<Documentation>
+				<UserDocu>Get a list of the indices of selected facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPointSelection" Const="true">
+			<Documentation>
+				<UserDocu>Get a list of the indices of selected points</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="meshFromSegment" Const="true">
+			<Documentation>
+				<UserDocu>Create a mesh from segment</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="clear">
+			<Documentation>
+				<UserDocu>Clear the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isSolid" Const="true">
+			<Documentation>
+				<UserDocu>Check if the mesh is a solid</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="hasNonManifolds" Const="true">
+			<Documentation>
+				<UserDocu>Check if the mesh has non-manifolds</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeNonManifolds">
+			<Documentation>
+				<UserDocu>Remove non-manifolds</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="hasSelfIntersections" Const="true">
+			<Documentation>
+				<UserDocu>Check if the mesh intersects itself</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="fixSelfIntersections">
+			<Documentation>
+				<UserDocu>Repair self-intersections</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeFoldsOnSurface">
+			<Documentation>
+				<UserDocu>Remove folds on surfaces</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="hasNonUniformOrientedFacets" Const="true">
+			<Documentation>
+				<UserDocu>Check if the mesh has facets with inconsistent orientation</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="countNonUniformOrientedFacets" Const="true">
+			<Documentation>
+				<UserDocu>Get the number of wrong oriented facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="hasInvalidPoints" Const="true">
+			<Documentation>
+				<UserDocu>Check if the mesh has points with invalid coordinates (NaN)</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeInvalidPoints">
+			<Documentation>
+				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="countComponents" Const="true">
+			<Documentation>
+				<UserDocu>Get the number of topologic independent areas</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeComponents">
+			<Documentation>
+				<UserDocu>Remove components with less or equal to number of given facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="fixIndices">
+			<Documentation>
+				<UserDocu>Repair any invalid indices</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="fixDeformations">
+			<Documentation>
+				<UserDocu>Repair deformed facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="fixDegenerations">
+			<Documentation>
+				<UserDocu>Remove degenerated facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeDuplicatedPoints">
+			<Documentation>
+				<UserDocu>Remove duplicated points</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeDuplicatedFacets">
+			<Documentation>
+				<UserDocu>Remove duplicated facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="refine">
+			<Documentation>
+				<UserDocu>Refine the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="splitEdges">
+			<Documentation>
+				<UserDocu>Split all edges</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="splitEdge">
+			<Documentation>
+				<UserDocu>Split edge</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="splitFacet">
+			<Documentation>
+				<UserDocu>Split facet</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="swapEdge">
+			<Documentation>
+				<UserDocu>Swap the common edge with the neighbour</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="collapseEdge">
+			<Documentation>
+				<UserDocu>Remove an edge and both facets that share this edge</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="collapseFacet">
+			<Documentation>
+				<UserDocu>Remove a facet</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="collapseFacets">
+			<Documentation>
+				<UserDocu>Remove a list of facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="insertVertex">
+			<Documentation>
+				<UserDocu>Insert a vertex into a facet</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="snapVertex">
+			<Documentation>
+				<UserDocu>Insert a new facet at the border</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="printInfo" Const="true">
+			<Documentation>
+				<UserDocu>Get detailed information about the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="foraminate" Const="true">
+			<Documentation>
+				<UserDocu>Get a list of facet indices and intersection points</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="cut">
+			<Documentation>
+				<UserDocu>Cuts the mesh with a given closed polygon
+cut(list, int) -> None
+The argument list is an array of points, a polygon
+The argument int is the mode: 0=inner, 1=outer
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="trim">
+			<Documentation>
+				<UserDocu>Trims the mesh with a given closed polygon
+trim(list, int) -> None
+The argument list is an array of points, a polygon
+The argument int is the mode: 0=inner, 1=outer
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<!-- The Const here is just a hack -->
+		<Methode Name="harmonizeNormals" Const="true">
+			<Documentation>
+				<UserDocu>Adjust wrong oriented facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="flipNormals" Const="true">
+			<Documentation>
+				<UserDocu>Flip the mesh normals</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="fillupHoles" Const="true">
+			<Documentation>
+				<UserDocu>Fillup holes</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="smooth" Const="true">
+			<Documentation>
+				<UserDocu>Smooth the mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="optimizeTopology" Const="true">
+			<Documentation>
+				<UserDocu>Optimize the edges to get nicer facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="optimizeEdges" Const="true">
+			<Documentation>
+				<UserDocu>Optimize the edges to get nicer facets</UserDocu>
+			</Documentation>
+		</Methode>
+		<!-- End of hack -->
+		<Methode Name="nearestFacetOnRay" Const="true">
+			<Documentation>
+				<UserDocu>nearestFacetOnRay(tuple, tuple) -> dict
+Get the index and intersection point of the nearest facet to a ray.
+The first parameter is a tuple of three floats the base point of the ray,
+the second parameter is ut uple of three floats for the direction.
+The result is a dictionary with an index and the intersection point or
+an empty dictionary if there is no intersection.
+</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPlanarSegments" Const="true">
+			<Documentation>
+				<UserDocu>getPlanarSegments(dev,[min faces=0]) -> list
+Get all planes of the mesh as segment.
+In the worst case each triangle can be regarded as single
+plane if none of its neighours is coplanar.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getSegmentsByCurvature" Const="true">
+			<Documentation>
+				<UserDocu>getSegmentsByCurvature(list) -> list
+The argument list gives a list if tuples where it defines the preferred maximum curvature,
+the preferred minumum curvature, the tolerances and the number of minimum faces for the segment.
+Example:
+c=(1.0, 0.0, 0.1, 0.1, 500) # search for a cylinder with radius 1.0
+p=(0.0, 0.0, 0.1, 0.1, 500) # search for a plane
+mesh.getSegmentsByCurvature([c,p])
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Points" ReadOnly="true">
+			<Documentation>
+				<UserDocu>A collection of the mesh points
+With this attribute it is possible to get access to the points of the mesh
+for p in mesh.Points:
+	print p.x, p.y, p.z</UserDocu>
+			</Documentation>
+			<Parameter Name="Points" Type="List" />
+		</Attribute>
+		<Attribute Name="CountPoints" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the number of vertices of the mesh object.</UserDocu>
+			</Documentation>
+			<Parameter Name="CountPoints" Type="Int" />
+		</Attribute>
+		<Attribute Name="CountEdges" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the number of edges of the mesh object.</UserDocu>
+			</Documentation>
+			<Parameter Name="CountEdges" Type="Int" />
+		</Attribute>
+		<Attribute Name="Facets" ReadOnly="true">
+			<Documentation>
+				<UserDocu>A collection of facets
+With this attribute it is possible to get access to the facets of the mesh
+for p in mesh.Facets:
+	print p</UserDocu>
+			</Documentation>
+			<Parameter Name="Facets" Type="List" />
+		</Attribute>
+		<Attribute Name="CountFacets" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the number of facets of the mesh object.</UserDocu>
+			</Documentation>
+			<Parameter Name="CountFacets" Type="Int" />
+		</Attribute>
+		<Attribute Name="Topology" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the points and face indices as tuple.</UserDocu>
+			</Documentation>
+			<Parameter Name="Topology" Type="Tuple" />
+		</Attribute>
+		<Attribute Name="Area" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the area of the mesh object.</UserDocu>
+			</Documentation>
+			<Parameter Name="Area" Type="Float" />
+		</Attribute>
+		<Attribute Name="Volume" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the volume of the mesh object.</UserDocu>
+			</Documentation>
+			<Parameter Name="Volume" Type="Float" />
+		</Attribute>
+		<ClassDeclarations>private:
+    friend class PropertyMeshKernel;
+    class PropertyMeshKernel* parentProperty;
+		</ClassDeclarations>
+	</PythonExport>
+</GenerateModel>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometryCurvePy"
+		Name="OffsetCurvePy"
+		Twin="GeomOffsetCurve"
+		TwinPointer="GeomOffsetCurve"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu></UserDocu>
+		</Documentation>
+		<Attribute Name="OffsetValue">
+			<Documentation>
+				<UserDocu>
+					Sets or gets the offset value to offset the underlying curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="OffsetValue" Type="Float"/>
+		</Attribute>
+		<Attribute Name="OffsetDirection">
+			<Documentation>
+				<UserDocu>
+					Sets or gets the offset direction to offset the underlying curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="OffsetDirection" Type="Object"/>
+		</Attribute>
+		<Attribute Name="BasisCurve">
+			<Documentation>
+				<UserDocu>
+					Sets or gets the basic curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="BasisCurve" Type="Object"/>
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

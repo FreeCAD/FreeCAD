@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="ComplexGeoDataPy" 
+      Name="TopoShapePy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+      Namespace="Part" 
+      FatherInclude="App/ComplexGeoDataPy.h" 
+      FatherNamespace="Data"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>TopoShape is the OpenCasCade topological shape wrapper.
+Sub-elements such as vertices, edges or faces are accessible as:
+* Vertex#, where # is in range(1, number of vertices)
+* Edge#, where # is in range(1, number of edges)
+* Face#, where # is in range(1, number of faces)</UserDocu>
+    </Documentation>
+    <Methode Name="__getstate__" Const="true">
+      <Documentation>
+        <UserDocu>Serialize the content of this shape to a string in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="__setstate__">
+      <Documentation>
+        <UserDocu>Deserialize the content of this shape from a string in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="read">
+      <Documentation>
+        <UserDocu>Read in an IGES, STEP or BREP file.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="writeInventor" Const="true">
+      <Documentation>
+        <UserDocu>Write the mesh in OpenInventor format to a string.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportIges" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape to an IGES file.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportStep" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape to an STEP file.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportBrep" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape to an BREP file. BREP is a CasCade native format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportBinary" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape in binary format to a file.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportBrepToString" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape to a string in BREP format. BREP is a CasCade native format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="dumpToString" Const="true">
+      <Documentation>
+        <UserDocu>Dump information about the shape to a string.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportStl" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape to an STL mesh file.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importBrep">
+      <Documentation>
+        <UserDocu>Load the shape from a file in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importBinary">
+      <Documentation>
+        <UserDocu>Import the content to this shape of a string in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importBrepFromString">
+      <Documentation>
+        <UserDocu>Load the shape from a string that keeps the content in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="extrude" Const="true">
+      <Documentation>
+        <UserDocu>Extrude the shape along a direction.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="revolve" Const="true">
+      <Documentation>
+        <UserDocu>Revolve the shape around an Axis to a given degree.
+Part.revolve(Vector(0,0,0),Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
+
+Hints: Sometimes you want to create a rotation body out of a closed edge or wire.
+Example:
+from FreeCAD import Base
+import Part
+V=Base.Vector
+
+e=Part.Ellipse()
+s=e.toShape()
+r=s.revolve(V(0,0,0),V(0,1,0), 360)
+Part.show(r)
+
+However, you may possibly realize some rendering artifacts or that the mesh
+creation seems to hang. This is because this way the surface is created twice.
+Since the curve is a full ellipse it is sufficient to do a rotation of 180 degree
+only, i.e. r=s.revolve(V(0,0,0),V(0,1,0), 180)
+
+Now when rendering this object you may still see some artifacts at the poles. Now the
+problem seems to be that the meshing algorithm doesn't like to rotate around a point
+where there is no vertex.
+
+The idea to fix this issue is that you create only half of the ellipse so that its shape
+representation has vertexes at its start and end point.
+
+from FreeCAD import Base
+import Part
+V=Base.Vector
+
+e=Part.Ellipse()
+s=e.toShape(e.LastParameter/4,3*e.LastParameter/4)
+r=s.revolve(V(0,0,0),V(0,1,0), 360)
+Part.show(r)
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="check" Const="true">
+      <Documentation>
+        <UserDocu>Checks the shape and report errors in the shape structure.
+This is a more detailed check as done in isValid().</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fuse" Const="true">
+      <Documentation>
+        <UserDocu>Union of this and a given topo shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="multiFuse" Const="true">
+      <Documentation>
+        <UserDocu>multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+Union of this and a given list of topo shapes.
+Beginning from OCCT 6.8.1 a tolerance value can be specified</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="oldFuse" Const="true">
+      <Documentation>
+        <UserDocu>Union of this and a given topo shape (old algorithm).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="common" Const="true">
+      <Documentation>
+        <UserDocu>Intersection of this and a given topo shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="section" Const="true">
+      <Documentation>
+        <UserDocu>Section of this with a given topo shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="slices" Const="true">
+      <Documentation>
+        <UserDocu>Make slices of this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="slice" Const="true">
+      <Documentation>
+        <UserDocu>Make single slice of this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="cut" Const="true">
+      <Documentation>
+        <UserDocu>Difference of this and a given topo shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="sewShape">
+      <Documentation>
+        <UserDocu>Sew the shape if there is a gap.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="childShapes" Const="true">
+      <Documentation>
+        <UserDocu>
+childShapes([cumOri=True, cumLoc=True]) -> list
+Return a list of sub-shapes that are direct children of this shape.
+ * If cumOri is true, the function composes all
+   sub-shapes with the orientation of this shape.
+ * If cumLoc is true, the function multiplies all
+   sub-shapes by the location of this shape, i.e. it applies to
+   each sub-shape the transformation that is associated with this shape.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeInternalWires">
+      <Documentation>
+        <UserDocu>Removes internal wires (also holes) from the shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mirror" Const="true">
+      <Documentation>
+        <UserDocu>Mirror this shape on a given plane.
+The plane is given with its base point and its normal direction.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transformGeometry" Const="true">
+      <Documentation>
+        <UserDocu>Apply geometric transformation on this or a copy the shape.
+This method returns a new shape.
+The transformation to be applied is defined as a 4x4 matrix.
+The underlying geometry of the following shapes may change:
+- a curve which supports an edge of the shape, or
+- a surface which supports a face of the shape;
+
+For example, a circle may be transformed into an ellipse when
+applying an affinity transformation. It may also happen that
+the circle then is represented as a b-spline curve.
+
+The transformation is applied to:
+- all the curves which support edges of the shape, and
+- all the surfaces which support faces of the shape.
+
+Note: If you want to transform a shape without changing the
+underlying geometry then use the methods translate or rotate.
+
+transformGeometry(Matrix) -> Shape
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transformShape">
+      <Documentation>
+        <UserDocu>Apply transformation on a shape without changing
+the underlying geometry.
+transformShape(Matrix,[boolean copy=False]) -> None</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="translate">
+      <Documentation>
+        <UserDocu>Apply the translation to the current location of this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="rotate">
+      <Documentation>
+        <UserDocu>
+          Apply the rotation (degree) to the current location of this shape
+          Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="scale">
+      <Documentation>
+        <UserDocu>Apply scaling with point and factor to this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeFillet" Const="true">
+      <Documentation>
+        <UserDocu>Make fillet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeChamfer" Const="true">
+      <Documentation>
+        <UserDocu>Make chamfer.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeThickness" Const="true">
+      <Documentation> 
+        <UserDocu>makeThickness(List of shapes, Offset (Float), Tolerance (Float)) -> Shape
+A hollowed solid is built from an initial solid and a set of faces on this solid,
+which are to be removed. The remaining faces of the solid become the walls of
+the hollowed solid, their thickness defined at the time of construction.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeOffsetShape" Const="true"  Keyword="true">
+      <Documentation> 
+        <UserDocu>Offset a given shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="reverse">
+      <Documentation>
+        <UserDocu>Reverses the orientation of this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="complement">
+      <Documentation>
+        <UserDocu>Computes the complement of the orientation of this shape,
+i.e. reverses the interior/exterior status of boundaries of this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="nullify">
+      <Documentation>
+        <UserDocu>Destroys the reference to the underlying shape stored in this shape.
+As a result, this shape becomes null.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isClosed" Const="true">
+      <Documentation>
+        <UserDocu>Checks if the shape is closed.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPartner" Const="true">
+      <Documentation>
+        <UserDocu>Checks if both shapes share the same geometry.
+        Placement and orientation may differ.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isSame" Const="true">
+      <Documentation>
+        <UserDocu>Checks if both shapes share the same geometry
+        and placement. Orientation may differ.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isEqual" Const="true">
+      <Documentation>
+        <UserDocu>Checks if both shapes are equal.
+        This means geometry, placement and orientation are equal.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isNull" Const="true">
+      <Documentation>
+        <UserDocu>Checks if the shape is null.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isValid" Const="true">
+      <Documentation>
+        <UserDocu>Checks if the shape is valid, i.e. neither null, nor empty nor corrupted.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fix">
+      <Documentation>
+        <UserDocu>Tries to fix a broken shape. True is returned if the operation succeeded, False otherwise.
+fix(working precision, minimum precision, maximum precision)
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hashCode" Const="true">
+      <Documentation>
+        <UserDocu>This value is computed from the value of the underlying shape reference and the location.
+Orientation is not taken into account.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="tessellate" Const="true">
+      <Documentation>
+        <UserDocu>Tessellate the the shape and return a list of vertices and face indices</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="project" Const="true">
+      <Documentation>
+        <UserDocu>Project a shape on this shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeParallelProjection" Const="true">
+      <Documentation>
+        <UserDocu>Parallel projection of an edge or wire on this shape
+makeParallelProjection(shape, dir)
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makePerspectiveProjection" Const="true">
+      <Documentation>
+        <UserDocu>Perspective projection of an edge or wire on this shape
+makePerspectiveProjection(shape, pnt)
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeShapeFromMesh">
+      <Documentation>
+        <UserDocu>Make a compund shape out of mesh data.
+Note: This should be used for rather small meshes only.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="toNurbs" Const="true">
+      <Documentation>
+        <UserDocu>Conversion of the complete geometry of a shape into NURBS geometry.
+For example, all curves supporting edges of the basis shape are converted
+into BSpline curves, and all surfaces supporting its faces are converted
+into BSpline surfaces.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="copy" Const="true">
+      <Documentation>
+        <UserDocu>Create a copy of this shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="cleaned" Const="true">
+      <Documentation>
+        <UserDocu>This creates a cleaned copy of the shape with the triangulation removed.
+This can be useful to reduce file size when exporting as a BRep file.
+Warning: Use the cleaned shape with care because certain algorithms may work incorrectly
+if the shape has no internal triangulation any more.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="replaceShape" Const="true">
+      <Documentation>
+        <UserDocu>Replace a sub-shape with a new shape and return a new shape.
+The parameter is in the form list of tuples with the two shapes.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeShape" Const="true">
+      <Documentation>
+        <UserDocu>Remove a sub-shape and return a new shape.
+The parameter is a list of shapes.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isInside" Const="true">
+      <Documentation>
+        <UserDocu>Checks whether a point is inside or outside the shape.
+isInside(App.Vector, float, Boolean) => Boolean
+The App.Vector is the point you want to check if it's inside or not
+float gives the tolerance
+Boolean indicates if the point lying directly on a face is considered to be inside or not 
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeSplitter" Const="true">
+      <Documentation>
+        <UserDocu>Removes redundant edges from the B-REP model</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="proximity" Const="true">
+      <Documentation>
+        <UserDocu>proximity(Shape s): Returns two lists of Face indexes for the Faces involved in the intersection.</UserDocu>
+      </Documentation>
+    </Methode>
+	<Methode Name="distToShape" Const="true">
+      <Documentation>
+		<UserDocu>Find the minimum distance to another shape.
+distToShape(Shape s):  Returns a list of minimum distance and solution point pairs - [mindist, (pointonthis,supporttype,
+pointons,supporttype),(...),...]</UserDocu>
+	  </Documentation>
+	</Methode>
+    <Methode Name="getElement" Const="true">
+      <Documentation>
+        <UserDocu>Returns a SubElement</UserDocu>
+      </Documentation>
+    </Methode>
+    <!--
+    <Attribute Name="Location" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Gets or sets the local coordinate system of this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Location" Type="Object"/>
+    </Attribute>
+-->
+    <Attribute Name="ShapeType" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the type of the shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="ShapeType" Type="String"/>
+    </Attribute>
+    <Attribute Name="Orientation" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns the orientation of the shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Orientation" Type="String"/>
+    </Attribute>
+    <Attribute Name="Faces" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of faces in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Faces" Type="List"/>
+    </Attribute>
+    <Attribute Name="Vertexes" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of vertexes in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Vertexes" Type="List"/>
+    </Attribute>
+	  <Attribute Name="Shells" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>List of subsequent shapes in this shape.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Shells" Type="List"/>
+	  </Attribute>
+	  <Attribute Name="Solids" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>List of subsequent shapes in this shape.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Solids" Type="List"/>
+	  </Attribute>
+	  <Attribute Name="CompSolids" ReadOnly="true">
+	  <Documentation>
+		  <UserDocu>List of subsequent shapes in this shape.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="CompSolids" Type="List"/>
+	</Attribute>
+	<Attribute Name="Edges" ReadOnly="true">
+      <Documentation>
+       <UserDocu>List of Edges in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Edges" Type="List"/>
+   </Attribute>
+    <Attribute Name="Wires" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of wires in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Wires" Type="List"/>
+    </Attribute>
+    <Attribute Name="Compounds" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of coumpounds in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Compounds" Type="List"/>
+    </Attribute>
+    <Attribute Name="Length" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Total length of the edges of the shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Length" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Area" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Total area of the faces of the shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Area" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Volume" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Total volume of the solids of the shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Volume" Type="Float"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

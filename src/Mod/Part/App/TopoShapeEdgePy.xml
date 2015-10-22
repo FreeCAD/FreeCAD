@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="TopoShapePy" 
+      Name="TopoShapeEdgePy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/TopoShapePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>TopoShapeEdge is the OpenCasCade topological edge wrapper</UserDocu>
+    </Documentation>
+		<Methode Name="getParameterByLength" Const="true">
+			<Documentation>
+				<UserDocu>float = getParameterByLength(float) - Return parameter [First,Last]. Input value must be of [0|Length]</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="tangentAt" Const="true">
+		  <Documentation>
+			  <UserDocu>Vector = tangentAt(pos) - Get the tangent at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="valueAt" Const="true">
+		  <Documentation>
+			  <UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+		<Methode Name="parameterAt" Const="true">
+			<Documentation>
+				<UserDocu>Float = parameterAt(Vertex) - Get the parameter at the given vertex if lying on the edge</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="normalAt" Const="true">
+		  <Documentation>
+			  <UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="derivative1At" Const="true">
+		  <Documentation>
+			  <UserDocu>Vector = d1At(pos) - Get the first derivative at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="derivative2At" Const="true">
+		  <Documentation>
+			  <UserDocu>Vector = d2At(pos) - Get the second derivative at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="derivative3At" Const="true">
+		  <Documentation>
+			  <UserDocu>Vector = d3At(pos) - Get the third derivative at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="curvatureAt" Const="true">
+		  <Documentation>
+			  <UserDocu>Float = curvatureAt(pos) - Get the curvature at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="centerOfCurvatureAt" Const="true">
+		  <Documentation>
+			  <UserDocu>Vector = centerOfCurvatureAt(float pos) - Get the center of curvature at the given parameter [First|Last] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+		<Methode Name="setTolerance">
+			<Documentation>
+				<UserDocu>Set the tolerance for the edge.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="discretize" Const="true" Keyword="true">
+			<Documentation>
+        <UserDocu>Discretizes the edge and returns a list of points.
+The function accepts keywords as argument:
+discretize(Number=n) => gives a list of 'n' equidistant points
+discretize(QuasiNumber=n) => gives a list of 'n' quasi equidistant points (is faster than the method above)
+discretize(Distance=d) => gives a list of equidistant points with distance 'd'
+discretize(Deflection=d) => gives a list of points with a maximum deflection 'd' to the edge
+discretize(QuasiDeflection=d) => gives a list of points with a maximum deflection 'd' to the edge (faster)
+discretize(Angular=a,Curvature=c,[Minimum=m]) => gives a list of points with an angular deflection of 'a'
+                                    and a curvature deflection of 'c'. Optionally a minimum number of points
+                                    can be set which by default is set to 2.
+
+Optionally you can set the keywords 'First' and 'Last' to define a sub-range of the parameter range
+of the edge.
+
+If no keyword is given then it depends on whether the argument is an int or float.
+If it's an int then the behaviour is as if using the keyword 'Number', if it's float
+then the behaviour is as if using the keyword 'Distance'.
+
+Example:
+
+import Part
+e=Part.makeCircle(5)
+p=e.discretize(Number=50,First=3.14)
+s=Part.Compound([Part.Vertex(i) for i in p])
+Part.show(s)
+
+
+p=e.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
+s=Part.Compound([Part.Vertex(i) for i in p])
+Part.show(s)
+</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="split">
+			<Documentation>
+				<UserDocu>Splits the edge at the given parameter values and builds a wire out of it</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Tolerance">
+			<Documentation>
+				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
+			</Documentation>
+			<Parameter Name="Tolerance" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Length" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns the length of the edge</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Length" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="ParameterRange" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns a 2 tuple with the parameter range</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ParameterRange" Type="Tuple"/>
+	  </Attribute>
+		<Attribute Name="FirstParameter" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the start value of the parameter range</UserDocu>
+			</Documentation>
+			<Parameter Name="FirstParameter" Type="Float"/>
+		</Attribute>
+		<Attribute Name="LastParameter" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the end value of the parameter range</UserDocu>
+			</Documentation>
+			<Parameter Name="LastParameter" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Curve" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns the 3D curve of the edge</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Curve" Type="Object"/>
+	  </Attribute>
+	<Attribute Name="Closed" ReadOnly="true">
+		<Documentation>
+			<UserDocu>Returns true of the edge is closed</UserDocu>
+		</Documentation>
+		<Parameter Name="Closed" Type="Boolean"/>
+	</Attribute>
+	  <Attribute Name="Degenerated" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns true of the edge is degenerated</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Degenerated" Type="Boolean"/>
+	  </Attribute>
+    <Attribute Name="Mass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the mass of the current system.</UserDocu>
+      </Documentation>
+      <Parameter Name="Mass" Type="Object"/>
+    </Attribute>
+    <Attribute Name="CenterOfMass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the center of mass of the current system.
+If the gravitational field is uniform, it is the center of gravity.
+The coordinates returned for the center of mass are expressed in the
+absolute Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="CenterOfMass" Type="Object"/>
+    </Attribute>
+    <Attribute Name="MatrixOfInertia" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the matrix of inertia. It is a symmetrical matrix. 
+The coefficients of the matrix are the quadratic moments of 
+inertia. 
+
+ | Ixx Ixy Ixz 0 | 
+ | Ixy Iyy Iyz 0 | 
+ | Ixz Iyz Izz 0 | 
+ | 0   0   0   1 | 
+
+The moments of inertia are denoted by Ixx, Iyy, Izz. 
+The products of inertia are denoted by Ixy, Ixz, Iyz. 
+The matrix of inertia is returned in the central coordinate 
+system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
+coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="MatrixOfInertia" Type="Object"/>
+    </Attribute>
+    <Attribute Name="StaticMoments" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the 
+ current system; i.e. the moments of inertia about the 
+ three axes of the Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="StaticMoments" Type="Object"/>
+    </Attribute>
+    <Attribute Name="PrincipalProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Computes the principal properties of inertia of the current system. 
+ There is always a set of axes for which the products 
+ of inertia of a geometric system are equal to 0; i.e. the 
+ matrix of inertia of the system is diagonal. These axes 
+ are the principal axes of inertia. Their origin is 
+ coincident with the center of mass of the system. The 
+ associated moments are called the principal moments of inertia. 
+ This function computes the eigen values and the 
+ eigen vectors of the matrix of inertia of the system.</UserDocu>
+      </Documentation>
+      <Parameter Name="PrincipalProperties" Type="Dict"/>
+    </Attribute>
+		<ClassDeclarations>
+		</ClassDeclarations>
+	</PythonExport>
+</GenerateModel>

@@ -1,0 +1,356 @@
+if(WIN32)
+    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT -DEIGEN2_SUPPORT)
+else (Win32)
+    add_definitions(-DEIGEN2_SUPPORT)
+endif(WIN32)
+
+include_directories(
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/3rdParty
+    ${Boost_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
+    ${QT_QTCORE_INCLUDE_DIR}
+    ${ZLIB_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
+)
+
+
+set(Mesh_LIBS
+    ${Boost_LIBRARIES}
+    ${QT_QTCORE_LIBRARY}
+    FreeCADBase
+    FreeCADApp
+)
+
+generate_from_xml(FacetPy)
+generate_from_xml(MeshFeaturePy)
+generate_from_xml(MeshPointPy)
+generate_from_xml(MeshPy)
+
+SET(Mesh_XML_SRCS
+    FacetPy.xml
+    MeshFeaturePy.xml
+    MeshPointPy.xml
+    MeshPy.xml
+)
+SOURCE_GROUP("XML" FILES ${Mesh_XML_SRCS})
+
+SET(Core_SRCS
+    Core/Algorithm.cpp
+    Core/Algorithm.h
+    Core/Approximation.cpp
+    Core/Approximation.h
+    Core/Builder.cpp
+    Core/Builder.h
+    Core/Curvature.cpp
+    Core/Curvature.h
+    Core/Definitions.cpp
+    Core/Definitions.h
+    Core/Degeneration.cpp
+    Core/Degeneration.h
+    Core/Elements.cpp
+    Core/Elements.h
+    Core/Evaluation.cpp
+    Core/Evaluation.h
+    Core/Grid.cpp
+    Core/Grid.h
+    Core/Helpers.h
+    Core/Info.cpp
+    Core/Info.h
+    Core/Iterator.h
+    Core/MeshIO.cpp
+    Core/MeshIO.h
+    Core/MeshKernel.cpp
+    Core/MeshKernel.h
+    Core/Projection.cpp
+    Core/Projection.h
+    Core/Segmentation.cpp
+    Core/Segmentation.h
+    Core/SetOperations.cpp
+    Core/SetOperations.h
+    Core/Smoothing.cpp
+    Core/Smoothing.h
+    Core/Tools.cpp
+    Core/Tools.h
+    Core/TopoAlgorithm.cpp
+    Core/TopoAlgorithm.h
+    Core/Triangulation.cpp
+    Core/Triangulation.h
+    Core/Trim.cpp
+    Core/Trim.h
+    Core/tritritest.h
+    Core/Visitor.cpp
+    Core/Visitor.h
+)
+SOURCE_GROUP("Core" FILES ${Core_SRCS})
+
+SET(WildMagic4_SRCS
+    WildMagic4/Wm4ApprCylinderFit3.cpp
+    WildMagic4/Wm4ApprCylinderFit3.h
+    WildMagic4/Wm4ApprLineFit3.cpp
+    WildMagic4/Wm4ApprLineFit3.h
+    WildMagic4/Wm4ApprPlaneFit3.cpp
+    WildMagic4/Wm4ApprPlaneFit3.h
+    WildMagic4/Wm4ApprPolyFit3.cpp
+    WildMagic4/Wm4ApprPolyFit3.h
+    WildMagic4/Wm4ApprQuadraticFit3.cpp
+    WildMagic4/Wm4ApprQuadraticFit3.h
+    WildMagic4/Wm4ApprSphereFit3.cpp
+    WildMagic4/Wm4ApprSphereFit3.h
+    WildMagic4/Wm4BandedMatrix.h
+    WildMagic4/Wm4BandedMatrix.inl
+    WildMagic4/Wm4Box3.h
+    WildMagic4/Wm4Box3.inl
+    WildMagic4/Wm4DelPolygonEdge.cpp
+    WildMagic4/Wm4DelPolygonEdge.h
+    WildMagic4/Wm4DelPolyhedronFace.cpp
+    WildMagic4/Wm4DelPolyhedronFace.h
+    WildMagic4/Wm4DelTetrahedron.cpp
+    WildMagic4/Wm4DelTetrahedron.h
+    WildMagic4/Wm4DelTriangle.cpp
+    WildMagic4/Wm4DelTriangle.h
+    WildMagic4/Wm4Delaunay.cpp
+    WildMagic4/Wm4Delaunay.h
+    WildMagic4/Wm4Delaunay1.cpp
+    WildMagic4/Wm4Delaunay1.h
+    WildMagic4/Wm4Delaunay2.cpp
+    WildMagic4/Wm4Delaunay2.h
+    WildMagic4/Wm4Delaunay3.cpp
+    WildMagic4/Wm4Delaunay3.h
+    WildMagic4/Wm4DistLine3Segment3.cpp
+    WildMagic4/Wm4DistLine3Segment3.h
+    WildMagic4/Wm4DistLine3Triangle3.cpp
+    WildMagic4/Wm4DistLine3Triangle3.h
+    WildMagic4/Wm4DistSegment3Segment3.cpp
+    WildMagic4/Wm4DistSegment3Segment3.h
+    WildMagic4/Wm4DistSegment3Triangle3.cpp
+    WildMagic4/Wm4DistSegment3Triangle3.h
+    WildMagic4/Wm4DistVector3Plane3.cpp
+    WildMagic4/Wm4DistVector3Plane3.h
+    WildMagic4/Wm4DistVector3Segment3.cpp
+    WildMagic4/Wm4DistVector3Segment3.h
+    WildMagic4/Wm4DistVector3Triangle3.cpp
+    WildMagic4/Wm4DistVector3Triangle3.h
+    WildMagic4/Wm4Distance.cpp
+    WildMagic4/Wm4Distance.h
+    WildMagic4/Wm4ETManifoldMesh.cpp
+    WildMagic4/Wm4ETManifoldMesh.h
+    WildMagic4/Wm4ETManifoldMesh.inl
+    WildMagic4/Wm4EdgeKey.h
+    WildMagic4/Wm4EdgeKey.inl
+    WildMagic4/Wm4Eigen.cpp
+    WildMagic4/Wm4Eigen.h
+    WildMagic4/Wm4Foundation.h
+    WildMagic4/Wm4FoundationLIB.h
+    WildMagic4/Wm4FoundationPCH.cpp
+    WildMagic4/Wm4FoundationPCH.h
+    WildMagic4/Wm4GMatrix.h
+    WildMagic4/Wm4GMatrix.inl
+    WildMagic4/Wm4GVector.h
+    WildMagic4/Wm4GVector.inl
+    WildMagic4/Wm4ImplicitSurface.cpp
+    WildMagic4/Wm4ImplicitSurface.h
+    WildMagic4/Wm4Intersector.cpp
+    WildMagic4/Wm4Intersector.h
+    WildMagic4/Wm4Intersector1.cpp
+    WildMagic4/Wm4Intersector1.h
+    WildMagic4/Wm4IntrLine3Box3.cpp
+    WildMagic4/Wm4IntrLine3Box3.h
+    WildMagic4/Wm4IntrLine3Plane3.cpp
+    WildMagic4/Wm4IntrLine3Plane3.h
+    WildMagic4/Wm4IntrSegment3Box3.cpp
+    WildMagic4/Wm4IntrSegment3Box3.h
+    WildMagic4/Wm4IntrSegment3Plane3.cpp
+    WildMagic4/Wm4IntrSegment3Plane3.h
+    WildMagic4/Wm4IntrTriangle2Triangle2.cpp
+    WildMagic4/Wm4IntrTriangle2Triangle2.h
+    WildMagic4/Wm4IntrTriangle3Triangle3.cpp
+    WildMagic4/Wm4IntrTriangle3Triangle3.h
+    WildMagic4/Wm4LinComp.h
+    WildMagic4/Wm4LinComp.inl
+    WildMagic4/Wm4Line3.h
+    WildMagic4/Wm4Line3.inl
+    WildMagic4/Wm4LinearSystem.cpp
+    WildMagic4/Wm4LinearSystem.h
+    WildMagic4/Wm4Mapper2.h
+    WildMagic4/Wm4Mapper2.inl
+    WildMagic4/Wm4Mapper3.h
+    WildMagic4/Wm4Mapper3.inl
+    WildMagic4/Wm4Math.cpp
+    WildMagic4/Wm4Math.h
+    WildMagic4/Wm4Math.inl
+    WildMagic4/Wm4MathMCR.h
+    WildMagic4/Wm4Matrix2.cpp
+    WildMagic4/Wm4Matrix2.h
+    WildMagic4/Wm4Matrix2.inl
+    WildMagic4/Wm4Matrix3.cpp
+    WildMagic4/Wm4Matrix3.h
+    WildMagic4/Wm4Matrix3.inl
+    WildMagic4/Wm4Matrix4.cpp
+    WildMagic4/Wm4Matrix4.h
+    WildMagic4/Wm4Matrix4.inl
+    WildMagic4/Wm4Memory.cpp
+    WildMagic4/Wm4Memory.h
+    WildMagic4/Wm4Memory.inl
+    WildMagic4/Wm4MeshCurvature.cpp
+    WildMagic4/Wm4MeshCurvature.h
+    WildMagic4/Wm4MeshSmoother.cpp
+    WildMagic4/Wm4MeshSmoother.h
+    WildMagic4/Wm4ParametricSurface.cpp
+    WildMagic4/Wm4ParametricSurface.h
+    WildMagic4/Wm4Plane3.h
+    WildMagic4/Wm4Plane3.inl
+    WildMagic4/Wm4Platforms.h
+    WildMagic4/Wm4PolynomialRoots.cpp
+    WildMagic4/Wm4PolynomialRoots.h
+    WildMagic4/Wm4Polynomial1.h
+    WildMagic4/Wm4Polynomial1.inl
+    WildMagic4/Wm4QuadricSurface.cpp
+    WildMagic4/Wm4QuadricSurface.h
+    WildMagic4/Wm4Query.h
+    WildMagic4/Wm4Query.inl
+    WildMagic4/Wm4Query2.h
+    WildMagic4/Wm4Query2.inl
+    WildMagic4/Wm4Query2Filtered.h
+    WildMagic4/Wm4Query2Filtered.inl
+    WildMagic4/Wm4Query2Int64.h
+    WildMagic4/Wm4Query2Int64.inl
+    WildMagic4/Wm4Query2TInteger.h
+    WildMagic4/Wm4Query2TInteger.inl
+    WildMagic4/Wm4Query2TRational.h
+    WildMagic4/Wm4Query2TRational.inl
+    WildMagic4/Wm4Query3.h
+    WildMagic4/Wm4Query3.inl
+    WildMagic4/Wm4Query3Filtered.h
+    WildMagic4/Wm4Query3Filtered.inl
+    WildMagic4/Wm4Query3Int64.h
+    WildMagic4/Wm4Query3Int64.inl
+    WildMagic4/Wm4Query3TInteger.h
+    WildMagic4/Wm4Query3TInteger.inl
+    WildMagic4/Wm4Query3TRational.h
+    WildMagic4/Wm4Query3TRational.inl
+    WildMagic4/Wm4RVector2.h
+    WildMagic4/Wm4RVector2.inl
+    WildMagic4/Wm4RVector3.h
+    WildMagic4/Wm4RVector3.inl
+    WildMagic4/Wm4Segment3.h
+    WildMagic4/Wm4Segment3.inl
+    WildMagic4/Wm4Sphere3.h
+    WildMagic4/Wm4Sphere3.inl
+    WildMagic4/Wm4Surface.cpp
+    WildMagic4/Wm4Surface.h
+    WildMagic4/Wm4System.cpp
+    WildMagic4/Wm4System.h
+    WildMagic4/Wm4System.inl
+    WildMagic4/Wm4THashSet.h
+    WildMagic4/Wm4THashSet.inl
+    WildMagic4/Wm4THashTable.h
+    WildMagic4/Wm4THashTable.inl
+    WildMagic4/Wm4TInteger.h
+    WildMagic4/Wm4TInteger.inl
+    WildMagic4/Wm4TMinHeap.h
+    WildMagic4/Wm4TMinHeap.inl
+    WildMagic4/Wm4TRVector.h
+    WildMagic4/Wm4TRVector.inl
+    WildMagic4/Wm4TRational.h
+    WildMagic4/Wm4TRational.inl
+    WildMagic4/Wm4TSmallUnorderedSet.h
+    WildMagic4/Wm4TSmallUnorderedSet.inl
+    WildMagic4/Wm4TStringHashTable.h
+    WildMagic4/Wm4TStringHashTable.inl
+    WildMagic4/Wm4TTuple.h
+    WildMagic4/Wm4TTuple.inl
+    WildMagic4/Wm4Triangle2.h
+    WildMagic4/Wm4Triangle2.inl
+    WildMagic4/Wm4Triangle3.h
+    WildMagic4/Wm4Triangle3.inl
+    WildMagic4/Wm4TriangleKey.h
+    WildMagic4/Wm4TriangleKey.inl
+    WildMagic4/Wm4TriangulateEC.cpp
+    WildMagic4/Wm4TriangulateEC.h
+    WildMagic4/Wm4UniqueVerticesTriangles.h
+    WildMagic4/Wm4UniqueVerticesTriangles.inl
+    WildMagic4/Wm4VEManifoldMesh.cpp
+    WildMagic4/Wm4VEManifoldMesh.h
+    WildMagic4/Wm4VEManifoldMesh.inl
+    WildMagic4/Wm4Vector2.cpp
+    WildMagic4/Wm4Vector2.h
+    WildMagic4/Wm4Vector2.inl
+    WildMagic4/Wm4Vector3.cpp
+    WildMagic4/Wm4Vector3.h
+    WildMagic4/Wm4Vector3.inl
+    WildMagic4/Wm4Vector4.cpp
+    WildMagic4/Wm4Vector4.h
+    WildMagic4/Wm4Vector4.inl
+)
+SOURCE_GROUP("WildMagic4" FILES ${WildMagic4_SRCS})
+
+SET(Mesh_SRCS
+    ${Mesh_XML_SRCS}
+    AppMesh.cpp
+    AppMeshPy.cpp
+    Facet.cpp
+    Facet.h
+    FacetPyImp.cpp
+    FeatureMeshCurvature.cpp
+    FeatureMeshCurvature.h
+    FeatureMeshDefects.cpp
+    FeatureMeshDefects.h
+    FeatureMeshExport.cpp
+    FeatureMeshExport.h
+    FeatureMeshImport.cpp
+    FeatureMeshImport.h
+    FeatureMeshSegmentByMesh.cpp
+    FeatureMeshSegmentByMesh.h
+    FeatureMeshSetOperations.cpp
+    FeatureMeshSetOperations.h
+    FeatureMeshSolid.cpp
+    FeatureMeshSolid.h
+    FeatureMeshTransform.cpp
+    FeatureMeshTransform.h
+    FeatureMeshTransformDemolding.cpp
+    FeatureMeshTransformDemolding.h
+#   GTSAlgos.cpp
+#   GTSAlgos.h
+    Mesh.cpp
+    Mesh.h
+    MeshFeature.cpp
+    MeshFeature.h
+    MeshFeaturePyImp.cpp
+    MeshPointPyImp.cpp
+    MeshPoint.h
+    MeshProperties.cpp
+    MeshProperties.h
+    MeshPyImp.cpp
+    PreCompiled.cpp
+    PreCompiled.h
+    Segment.cpp
+    Segment.h
+)
+
+if(MSVC)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(MSVC)
+
+add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
+target_link_libraries(Mesh ${Mesh_LIBS})
+
+
+fc_target_copy_resource(Mesh 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
+    ${CMAKE_BINARY_DIR}/Mod/Mesh
+    Init.py BuildRegularGeoms.py)
+
+fc_target_copy_resource(Mesh 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Mesh
+    MeshTestsApp.py)
+
+SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
+SET_PYTHON_PREFIX_SUFFIX(Mesh)
+
+INSTALL(TARGETS Mesh DESTINATION ${CMAKE_INSTALL_LIBDIR})

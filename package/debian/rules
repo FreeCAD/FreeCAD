@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+%:
+	dh $@ --buildsystem=cmake --parallel --with python2
+
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+extra_flags += \
+-DFREECAD_BUILD_DEBIAN=ON \
+-DBUILD_FEM_NETGEN=ON \
+-DCMAKE_CXX_FLAGS="-Wall -DHAVE_SWIG=1 -fpermissive $(shell dpkg-buildflags --get CXXFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)" \
+-DCMAKE_C_FLAGS="-Wall -fpermissive $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)" \
+-DCMAKE_SHARED_LINKER_FLAGS="$(shell dpkg-buildflags --get LDFLAGS)" \
+-DLIB_SUFFIX="" \
+-DOCC_INCLUDE_DIR="/usr/include/oce" \
+-DCMAKE_INSTALL_PREFIX="/usr/lib/freecad" \
+-DCMAKE_INSTALL_DATADIR="/usr/share/freecad"
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(extra_flags)
+	cp -f src/Build/Version.h obj-$(DEB_BUILD_GNU_TYPE)/src/Build/Version.h
+
+override_dh_compress:
+	dh_compress -X.qch -X.qhc
+
+override_dh_installchangelogs:
+	dh_installchangelogs ChangeLog.txt
+	
+override_dh_installmime:
+	dh_installmime
+	dh_install debian/mime/freecad-thumbnailer usr/bin
+	dh_install debian/mime/freecad.thumbnailer usr/share/thumbnailers
+	dh_install debian/mime/freecad.schemas etc/gconf/schemas
+
+override_dh_icons:
+	install -m 644 debian/freecad/usr/share/freecad/freecad-icon-16.png debian/freecad/usr/share/icons/hicolor/16x16/apps/freecad.png
+	install -m 644 debian/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/32x32/apps/freecad.png
+	install -m 644 debian/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/48x48/apps/freecad.png
+	install -m 644 debian/freecad/usr/share/freecad/freecad-icon-64.png debian/freecad/usr/share/icons/hicolor/64x64/apps/freecad.png
+	install -m 644 debian/freecad/usr/share/freecad/freecad.svg debian/freecad/usr/share/icons/hicolor/scalable/apps/freecad.svg
+	install -m 644 debian/freecad/usr/share/freecad/freecad-doc.png debian/freecad/usr/share/icons/hicolor/64x64/mimetypes/application-x-extension-fcstd.png
+

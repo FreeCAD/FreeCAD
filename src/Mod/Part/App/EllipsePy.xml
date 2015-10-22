@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometryCurvePy"
+		Name="EllipsePy"
+		Twin="GeomEllipse"
+		TwinPointer="GeomEllipse"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes an ellipse in 3D space
+				To create an ellipse there are several ways:
+				Part.Ellipse()
+					Creates an ellipse with major radius 2 and minor radius 1 with the
+					center in (0,0,0)
+
+				Part.Ellipse(Ellipse)
+					Create a copy of the given ellipse
+
+				Part.Ellipse(S1,S2,Center)
+					Creates an ellipse centered on the point Center, where
+					the plane of the ellipse is defined by Center, S1 and S2,
+					its major axis is defined by Center and S1,
+					its major radius is the distance between Center and S1, and
+					its minor radius is the distance between S2 and the major axis.
+
+				Part.Ellipse(Center,MajorRadius,MinorRadius)
+					Creates an ellipse with major and minor radii MajorRadius and
+					MinorRadius, and located in the plane defined by Center and
+					the normal (0,0,1)
+			</UserDocu>
+		</Documentation>
+		<Attribute Name="MajorRadius" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The major radius of the ellipse.</UserDocu>
+			</Documentation>
+			<Parameter Name="MajorRadius" Type="Float"/>
+		</Attribute>
+		<Attribute Name="MinorRadius" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The minor radius of the ellipse.</UserDocu>
+			</Documentation>
+			<Parameter Name="MinorRadius" Type="Float"/>
+		</Attribute>
+		<Attribute Name="AngleXU" ReadOnly="false">
+		  <Documentation>
+		    <UserDocu>The angle between the X axis and the major axis of the ellipse.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="AngleXU" Type="Float"/>
+		</Attribute>		
+		<Attribute Name="Eccentricity" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The eccentricity of the ellipse.</UserDocu>
+			</Documentation>
+			<Parameter Name="Eccentricity" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Focal" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The focal distance of the ellipse.</UserDocu>
+			</Documentation>
+			<Parameter Name="Focal" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Focus1" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The first focus is on the positive side of the major axis of the ellipse;
+the second focus is on the negative side.</UserDocu>
+			</Documentation>
+			<Parameter Name="Focus1" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Focus2" ReadOnly="true">
+			<Documentation>
+				<Documentation>
+					<UserDocu>The first focus is on the positive side of the major axis of the ellipse;
+the second focus is on the negative side.
+					</UserDocu>
+				</Documentation>
+			</Documentation>
+			<Parameter Name="Focus2" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Center" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Center of the ellipse.</UserDocu>
+			</Documentation>
+			<Parameter Name="Center" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The axis direction of the circle</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object"/>
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

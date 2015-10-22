@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="TopoShapePy"
+		Name="TopoShapeFacePy"
+		Twin="TopoShape"
+		TwinPointer="TopoShape"
+		Include="Mod/Part/App/TopoShape.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/TopoShapePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+			<UserDocu>TopoShapeFace is the OpenCasCade topological face wrapper</UserDocu>
+		</Documentation>
+		<Methode Name="makeOffset" Const="true">
+			<Documentation>
+				<UserDocu>Offset the shape by a given ammount</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="tangentAt" Const="true">
+			<Documentation>
+				<UserDocu>Get the tangent in u and v isoparametric at the given point if defined</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="valueAt" Const="true">
+			<Documentation>
+				<UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [0|Length] if defined</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="normalAt" Const="true">
+			<Documentation>
+				<UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [0|Length] if defined</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="derivative1At" Const="true">
+			<Documentation>
+				<UserDocu>Vector = d1At(pos) - Get the first derivative at the given parameter [0|Length] if defined</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="derivative2At" Const="true">
+			<Documentation>
+				<UserDocu>Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="curvatureAt" Const="true">
+			<Documentation>
+				<UserDocu>Float = curvatureAt(pos) - Get the curvature at the given parameter [0|Length] if defined</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isPartOfDomain" Const="true">
+			<Documentation>
+				<UserDocu>Check if a given (u,v) pair is inside the domain of a face</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="makeHalfSpace" Const="true">
+			<Documentation>
+				<UserDocu>Make a half-space solid by this face and a reference point.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="validate">
+			<Documentation>
+				<UserDocu>Validate the face.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setTolerance">
+			<Documentation>
+				<UserDocu>Set the tolerance for the face.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Tolerance">
+			<Documentation>
+				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
+			</Documentation>
+			<Parameter Name="Tolerance" Type="Float"/>
+		</Attribute>
+		<Attribute Name="ParameterRange" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns a 4 tuple with the parameter range</UserDocu>
+			</Documentation>
+			<Parameter Name="ParameterRange" Type="Tuple"/>
+		</Attribute>
+		<Attribute Name="Surface" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the geometric surface of the face</UserDocu>
+			</Documentation>
+			<Parameter Name="Surface" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Wire" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The outer wire of this face
+deprecated -- please use OuterWire</UserDocu>
+			</Documentation>
+			<Parameter Name="Wire" Type="Object"/>
+		</Attribute>
+		<Attribute Name="OuterWire" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The outer wire of this face</UserDocu>
+			</Documentation>
+			<Parameter Name="OuterWire" Type="Object"/>
+		</Attribute>
+    <Attribute Name="Mass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the mass of the current system.</UserDocu>
+      </Documentation>
+      <Parameter Name="Mass" Type="Object"/>
+    </Attribute>
+    <Attribute Name="CenterOfMass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the center of mass of the current system.
+If the gravitational field is uniform, it is the center of gravity.
+The coordinates returned for the center of mass are expressed in the
+absolute Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="CenterOfMass" Type="Object"/>
+    </Attribute>
+    <Attribute Name="MatrixOfInertia" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the matrix of inertia. It is a symmetrical matrix. 
+The coefficients of the matrix are the quadratic moments of 
+inertia. 
+
+ | Ixx Ixy Ixz 0 | 
+ | Ixy Iyy Iyz 0 | 
+ | Ixz Iyz Izz 0 | 
+ | 0   0   0   1 | 
+
+The moments of inertia are denoted by Ixx, Iyy, Izz. 
+The products of inertia are denoted by Ixy, Ixz, Iyz. 
+The matrix of inertia is returned in the central coordinate 
+system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
+coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="MatrixOfInertia" Type="Object"/>
+    </Attribute>
+    <Attribute Name="StaticMoments" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the 
+ current system; i.e. the moments of inertia about the 
+ three axes of the Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="StaticMoments" Type="Object"/>
+    </Attribute>
+    <Attribute Name="PrincipalProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Computes the principal properties of inertia of the current system. 
+ There is always a set of axes for which the products 
+ of inertia of a geometric system are equal to 0; i.e. the 
+ matrix of inertia of the system is diagonal. These axes 
+ are the principal axes of inertia. Their origin is 
+ coincident with the center of mass of the system. The 
+ associated moments are called the principal moments of inertia. 
+ This function computes the eigen values and the 
+ eigen vectors of the matrix of inertia of the system.</UserDocu>
+      </Documentation>
+      <Parameter Name="PrincipalProperties" Type="Dict"/>
+    </Attribute>
+	</PythonExport>
+</GenerateModel>

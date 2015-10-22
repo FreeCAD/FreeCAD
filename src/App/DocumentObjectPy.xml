@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="PropertyContainerPy" 
+		Name="DocumentObjectPy" 
+		Twin="DocumentObject" 
+		TwinPointer="DocumentObject" 
+		Include="App/DocumentObject.h" 
+		Namespace="App" 
+		FatherInclude="App/PropertyContainerPy.h" 
+		FatherNamespace="App">
+		<Documentation>
+			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+			<UserDocu>This is the father of all classes handled by the document</UserDocu>
+		</Documentation>
+		<Methode Name="touch">
+			<Documentation>
+				<UserDocu>Mark the object as changed (touched)</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="purgeTouched">
+			<Documentation>
+				<UserDocu>Mark the object as unchanged</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="setExpression">
+                        <Documentation>
+                                <UserDocu>Register an expression for a property</UserDocu>
+                        </Documentation>
+                </Methode>
+    <Attribute Name="OutList" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all objects this object links to.</UserDocu>
+      </Documentation>
+      <Parameter Name="OutList" Type="List"/>
+    </Attribute>
+    <Attribute Name="InList" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all objects which link to this object.</UserDocu>
+      </Documentation>
+      <Parameter Name="InList" Type="List"/>
+    </Attribute>
+    <Attribute Name="Name" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the internal name of this object</UserDocu>
+			</Documentation>
+			<Parameter Name="Name" Type="String"/>
+		</Attribute>
+                <Attribute Name="Document" ReadOnly="true">
+                        <Documentation>
+                                <UserDocu>Return the document this object is part of</UserDocu>
+                        </Documentation>
+                        <Parameter Name="Document" Type="Object"/>
+                </Attribute>
+                <Attribute Name="State" ReadOnly="true">
+			<Documentation>
+				<UserDocu>State of the object in the document</UserDocu>
+			</Documentation>
+			<Parameter Name="State" Type="List"/>
+		</Attribute>
+		<Attribute Name="ViewObject" ReadOnly="true">
+			<Documentation>
+				<UserDocu>If the GUI is loaded the associated view provider is returned
+or None if the GUI is not up</UserDocu>
+			</Documentation>
+			<Parameter Name="ViewObject" Type="Object"/>
+		</Attribute>
+		<CustomAttributes />
+	</PythonExport>
+</GenerateModel>

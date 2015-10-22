@@ -1,0 +1,156 @@
+<html>
+  <head>
+    <title>FreeCAD - Start page</title>
+    <script language="javascript">
+      function show(theText) {
+        ddiv = document.getElementById("description");
+        if (theText == "") theText = "&nbsp;";
+        ddiv.innerHTML = theText;
+      }
+    </script>
+    <style type="text/css">
+      body {
+        background: #171A2B url(Background.jpg);
+        color: white;
+        font-family: Arial, Helvetica, Sans;
+      }
+      a {
+        color: #0092E8;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 2px;
+      }
+      a:hover {
+        color: white;
+        background: #0092E8;
+        border-radius: 5px;
+      }
+      p {
+        text-align: justify;
+      }
+      h1 {
+        font-size: 3em;
+        letter-spacing: 2px;
+        padding: 20px 0 0 80px;
+      }
+      h2 {
+        padding-left: 40px;
+        font-size: 1.2em;
+      }
+      ul {
+        list-style-type: none;
+      }
+      .column {
+        width: 340px;
+        float: left;
+        margin-left: 10px;
+      }
+      .block {
+        background: rgba(30,31,33,0.6);;
+        border-radius: 5px;
+        padding: 8px;
+        margin-bottom: 10px;
+      }
+      .options {
+        clear: both;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>FreeCAD Start Center</h1>
+
+    <div class="column">
+
+      <div class="block">
+        <h2>Start a new project</h2>
+        <ul>    
+          <li><a onMouseover="show('<p>The <b>Part Design</b> workbench is designed \
+                              to create complex pieces based on constrained 2D sketches. \
+                              Use it to draw 2D shapes, constrain some of their elements \
+                              and extrude them to form 3D pieces.</p>')" 
+                 onMouseout="show('')" 
+                 href="PartDesign.py">Part Design</a></li>
+          <li><a onMouseover="show('<p>The <b>Architectural Design</b> workbench \
+                              is specially designed for working with architectural \
+                              elements such as walls or windows. Start by drawing \
+                              2D shapes, and use them as guides to build architecutral \
+                              objects.</p>')" 
+                 onMouseout="show('')"
+                 href="ArchDesign.py">Architectual Design</a></li>
+          <li><a onMouseover="show('<p>The <b>Mesh Workbench</b> is used to work with \
+                              Mesh objects. Meshes are simpler 3D objects than Part objects, \
+                              but they are often easier to import and export to/from other \
+                              applications.</p><p>FreeCAD offers you several tools to convert \
+                              between Mesh and Part objects.</p>')" 
+                 onMouseout="show('')" 
+                 href="Mesh.py">Work with Meshes</a></li>
+          <li><a onMouseover="show('<p>This is the <b>FreeCAD default workbench</b>, \
+                              populated with some of the most commonly used tools.</p>')" 
+                 onMouseout="show('')" 
+                 href="Complete.py">The Default Workbench</a></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h2>Recent Files</h2>
+      </div>
+
+      <div class="block">
+        <h2>Demos</h2>
+      </div>
+
+      <div class="block">
+        <h2>Tutorials</h2>
+      </div>
+
+    </div>
+
+    <div class="column">
+
+      <div class="block">
+        <h2>Homepage</h2>
+        <ul>
+          <li><a onMouseover="show('<p>This is the FreeCAD Homepage. Here you will be \
+                              able to find a lot of information about FreeCAD, tutorials, \
+                              examples and user documentation.</p>')" 
+                 onMouseout="show('')"
+                 href="http://www.freecadweb.org/">FreeCAD Homepage</a></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h2>Example projects</h2>
+        <ul>
+          <li><a href="LoadSchenkel.py">Schenkel STEP file</a></li>
+          <li><a href="LoadPartDesignExample.py">Load a PartDesign example</a></li>
+          <li><a href="LoadDrawingExample.py">Load a Drawing extraction</a></li>
+          <li><a href="LoadRobotExample.py">Load a Robot simulation example</a></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h2>Projects from the Web</h2>
+        <ul>
+          <li><a href="http://freecad-project.de/svn/ExampleData/FileFormates/Schenkel.stp">Schenkel STEP</a></li>
+          <li><a href="http://freecad-project.de/svn/ExampleData/Examples/CAD/Complex.FCStd">Complex Part</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="column" id="description">
+      &nbsp;
+    </div>
+
+    <form class="options">
+      <input type="checkbox" name="closeThisDialog">
+      Close this window after opening or creating a file<br/>
+      <input type="checkbox" name="dontShowAgain">
+      Don't show me this window again next time
+    </form>
+
+  </body>
+</html>
+

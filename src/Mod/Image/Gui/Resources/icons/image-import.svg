@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64px" height="64px" id="svg10944" sodipodi:version="0.32" inkscape:version="0.46" sodipodi:docname="import.svg" inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs id="defs10946">
+    <linearGradient inkscape:collect="always" id="linearGradient2788">
+      <stop style="stop-color: rgb(136, 138, 133); stop-opacity: 1;" offset="0" id="stop2790"/>
+      <stop style="stop-color: rgb(136, 138, 133); stop-opacity: 0;" offset="1" id="stop2792"/>
+    </linearGradient>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient2788" id="linearGradient22385" gradientUnits="userSpaceOnUse" gradientTransform="translate(0, -3)" x1="12.9375" y1="3.25" x2="11.6875" y2="1.25"/>
+    <linearGradient id="linearGradient2798">
+      <stop id="stop2800" offset="0" style="stop-color: white; stop-opacity: 1;"/>
+      <stop id="stop2802" offset="1" style="stop-color: rgb(211, 215, 207); stop-opacity: 0;"/>
+    </linearGradient>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient2798" id="linearGradient22383" gradientUnits="userSpaceOnUse" gradientTransform="translate(0, -3)" x1="13.5" y1="3.3125" x2="13.125" y2="1.75"/>
+    <linearGradient inkscape:collect="always" id="linearGradient2828">
+      <stop style="stop-color: black; stop-opacity: 1;" offset="0" id="stop2830"/>
+      <stop style="stop-color: black; stop-opacity: 0;" offset="1" id="stop2832"/>
+    </linearGradient>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient2828" id="linearGradient22381" gradientUnits="userSpaceOnUse" gradientTransform="translate(0, -3)" x1="14.40625" y1="5.078125" x2="13.828125" y2="6.453125"/>
+    <linearGradient inkscape:collect="always" id="linearGradient2874">
+      <stop style="stop-color: white; stop-opacity: 1;" offset="0" id="stop2876"/>
+      <stop style="stop-color: white; stop-opacity: 0;" offset="1" id="stop2878"/>
+    </linearGradient>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient2874" id="linearGradient22379" gradientUnits="userSpaceOnUse" gradientTransform="translate(-4, -3)" x1="9" y1="5.125" x2="18.625" y2="34.4375"/>
+    <linearGradient id="linearGradient2778">
+      <stop style="stop-color: rgb(238, 238, 236); stop-opacity: 1;" offset="0" id="stop2780"/>
+      <stop style="stop-color: rgb(211, 215, 207); stop-opacity: 1;" offset="1" id="stop2782"/>
+    </linearGradient>
+    <radialGradient inkscape:collect="always" xlink:href="#linearGradient2778" id="radialGradient22377" gradientUnits="userSpaceOnUse" gradientTransform="matrix(2.23185, 0, 0, 2.45668, -7.15925, -11.0169)" cx="4.8879852" cy="5.044178" fx="4.8879852" fy="5.044178" r="11"/>
+    <linearGradient id="linearGradient10735">
+      <stop style="stop-color: rgb(192, 192, 192); stop-opacity: 0;" offset="0" id="stop10737"/>
+      <stop style="stop-color: rgb(192, 192, 192); stop-opacity: 0;" offset="1" id="stop10739"/>
+    </linearGradient>
+    <radialGradient inkscape:collect="always" xlink:href="#linearGradient10735" id="radialGradient11007" gradientUnits="userSpaceOnUse" gradientTransform="translate(18, 73)" cx="391" cy="279" fx="391" fy="279" r="8"/>
+    <inkscape:perspective sodipodi:type="inkscape:persp3d" inkscape:vp_x="0 : 32 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_z="64 : 32 : 1" inkscape:persp3d-origin="32 : 21.333333 : 1" id="perspective10952"/>
+  </defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="5.5" inkscape:cx="32" inkscape:cy="32" inkscape:current-layer="layer1" showgrid="true" inkscape:document-units="px" inkscape:grid-bbox="true" inkscape:window-width="641" inkscape:window-height="716" inkscape:window-x="-4" inkscape:window-y="25"/>
+  <metadata id="metadata10949">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer">
+    <g style="display: inline;" id="file_import" transform="matrix(3.51136, 0, 0, 3.51136, 3.81818, 3.81818)" inkscape:label="#g8490">
+      <rect ry="0.065059662" rx="0.068212733" y="-5.8336281e-16" x="0" height="16" width="16" id="rect8488" style="overflow: visible; marker: none; opacity: 1; fill: url(#radialGradient11007) rgb(0, 0, 0); fill-opacity: 1; fill-rule: evenodd; stroke: none; stroke-width: 0.867886; stroke-linecap: square; stroke-linejoin: round; stroke-miterlimit: 0; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1; visibility: visible; display: inline;"/>
+      <path sodipodi:nodetypes="ccccccccccccccccc" id="rect1879" d="M 3.5,0.4999997 C 2.946,0.4999997 2.5,0.9459996 2.5,1.4999997 L 2.5,3.4999997 L 2.5,6.4999997 L 4.5,6.4999997 L 4.5,4.4999997 L 8.5,8.4999997 L 4.5,12.5 L 4.5,10.5 L 2.5,10.5 L 2.5,14.5 C 2.5,15.054 2.946,15.499999 3.5,15.5 L 12.5,15.5 C 13.054,15.5 13.5,15.053999 13.5,14.5 L 13.5,3.4999997 L 10.5,0.4999997 L 3.5,0.4999997 z" style="opacity: 1; fill: url(#radialGradient22377) rgb(0, 0, 0); fill-opacity: 1; stroke: rgb(136, 138, 133); stroke-width: 0.999999; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;"/>
+      <path sodipodi:nodetypes="ccccccccc" id="rect2922" d="M 7,4.9999997 L 7,6.3124997 L 8.84375,8.1562497 C 9.033571,8.3461087 9.033571,8.6538907 8.84375,8.8437497 L 7,10.6875 L 7,12 L 11,12 L 11,4.9999997 L 7,4.9999997 z" style="opacity: 0.6; fill: rgb(252, 233, 79); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;"/>
+      <path sodipodi:nodetypes="cccccsccsccscccccccc" id="path2870" d="M 3.5,1.4999997 L 3.5,3.4999997 L 3.5,5.4999997 L 3.5,5.4999997 L 3.5,4.4999997 C 3.490314,4.0882687 3.734019,3.7126997 4.113979,3.5538074 C 4.493938,3.3949151 4.932452,3.485193 5.21875,3.7812497 L 9.21875,7.7812497 C 9.413488,7.9696647 9.523438,8.2290337 9.523438,8.4999997 C 9.523438,8.7709657 9.413488,9.0303347 9.21875,9.2187497 L 5.21875,13.21875 C 4.932452,13.514807 4.493938,13.605085 4.113979,13.446192 C 3.734019,13.2873 3.490314,12.911731 3.5,12.5 L 3.5,11.5 L 3.5,11.5 L 3.5,14.5 L 12.5,14.5 L 12.5,3.9374997 L 10.0625,1.4999997 L 3.5,1.4999997 z" style="fill: none; fill-opacity: 1; stroke: url(#linearGradient22379) rgb(0, 0, 0); stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dashoffset: 0pt; stroke-opacity: 1;"/>
+      <g transform="translate(-2, 3)" id="g1927">
+        <path style="opacity: 0.3; fill: url(#linearGradient22381) rgb(0, 0, 0); fill-opacity: 1; fill-rule: evenodd; stroke: none; stroke-width: 2; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-opacity: 1;" d="M 11,1 L 11.265165,2.4033787 L 15,4.2626747 L 15,1.9501747 L 11,1 z" id="path2820" sodipodi:nodetypes="ccccc"/>
+        <path style="opacity: 1; fill: url(#linearGradient22383) rgb(0, 0, 0); fill-opacity: 1; stroke: url(#linearGradient22385) rgb(0, 0, 0); stroke-width: 0.999999; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" d="M 11.5,-1 L 11.5,1.5 L 15.5,1.5 L 15.5,0.5 L 12.5,-2.5" id="path2786" sodipodi:nodetypes="ccccc"/>
+      </g>
+      <g transform="translate(-5, -3)" style="fill: rgb(136, 138, 133);" id="g2937">
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2896" width="1" height="1" x="12" y="7"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2898" width="1" height="1" x="14" y="7"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2900" width="1" height="1" x="16" y="7"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2902" width="1" height="1" x="16" y="9.0441942"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2904" width="1" height="1" x="16" y="11.044194"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2906" width="1" height="1" x="16" y="13.044194"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2908" width="1" height="1" x="16" y="15.044194"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2910" width="1" height="1" x="14" y="15.044194"/>
+        <rect style="opacity: 1; fill: rgb(136, 138, 133); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;" id="rect2912" width="1" height="1" x="12" y="15.044194"/>
+      </g>
+      <rect y="11" x="3" height="1" width="1" id="rect2838" style="opacity: 1; fill: rgb(255, 255, 255); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;"/>
+      <rect y="5" x="3" height="1" width="1" id="rect2840" style="opacity: 1; fill: rgb(255, 255, 255); fill-opacity: 1; stroke: none; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0pt; stroke-opacity: 1;"/>
+    </g>
+  </g>
+</svg>

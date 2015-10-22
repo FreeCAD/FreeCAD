@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+    Father="PyObjectBase"
+    Name="MaterialPy"
+    TwinPointer="Material"
+    Twin="Material"
+    Include="App/Material.h"
+    Namespace="App"
+    FatherInclude="Base/PyObjectBase.h"
+    FatherNamespace="Base"
+		Delete="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>This is the Material class</UserDocu>
+		</Documentation>
+		<Methode Name="set">
+			<Documentation>
+				<UserDocu>
+Set(string) -- Set the material.
+
+The material must be one of the following values:
+Brass, Bronze, Copper, Gold, Pewter, Plaster, Plastic, Silver, Steel, Stone, Shiny plastic,
+Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or Emerald.
+			</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="AmbientColor" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Ambient color</UserDocu>
+			</Documentation>
+			<Parameter Name="AmbientColor" Type="Tuple"/>
+		</Attribute>
+		<Attribute Name="DiffuseColor" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Diffuse color</UserDocu>
+			</Documentation>
+			<Parameter Name="DiffuseColor" Type="Tuple"/>
+		</Attribute>
+		<Attribute Name="EmissiveColor" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Emissive color</UserDocu>
+			</Documentation>
+			<Parameter Name="EmissiveColor" Type="Tuple"/>
+		</Attribute>
+		<Attribute Name="SpecularColor" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Specular color</UserDocu>
+			</Documentation>
+			<Parameter Name="SpecularColor" Type="Tuple"/>
+		</Attribute>
+		<Attribute Name="Shininess" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Shininess</UserDocu>
+			</Documentation>
+			<Parameter Name="Shininess" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Transparency" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Transparency</UserDocu>
+			</Documentation>
+			<Parameter Name="Transparency" Type="Float"/>
+		</Attribute>
+		<CustomAttributes />
+	</PythonExport>
+</GenerateModel>

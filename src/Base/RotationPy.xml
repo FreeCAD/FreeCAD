@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		  Father="PyObjectBase"
+		  Name="RotationPy"
+		  Twin="Rotation"
+		  TwinPointer="Rotation"
+		  Include="Base/Rotation.h"
+		  FatherInclude="Base/PyObjectBase.h"
+		  Namespace="Base"
+		  Constructor="true"
+		  Delete="true"
+		  FatherNamespace="Base">
+		<Documentation>
+			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+			<DeveloperDocu>This is the Rotation export class</DeveloperDocu>
+			<UserDocu>
+				A Rotation using a quaternion.
+				The Rotation object can be created by:
+				-- an empty parameter list
+				-- a Rotation object
+				-- a Vector (axis) and a float (angle)
+				-- two Vectors (rotation from/to vector)
+				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
+				-- four floats (Quaternion) where the quaternion is specified as:
+				   q=xi+yj+zk+w, i.e. the last parameter is the real part
+			</UserDocu>
+		</Documentation>
+		<Methode Name="invert">
+			<Documentation>
+				<UserDocu>
+					move(Vector)
+					Move the matrix along the vector
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="multiply" Const="true">
+			<Documentation>
+				<UserDocu>
+					multiply(Rotation)
+					Multiply this quaternion with another quaternion
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="multVec" Const="true">
+			<Documentation>
+				<UserDocu>
+					multVec(Vector) -> Vector
+					Compute the transformed vector using the rotation
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="toEuler" Const="true">
+			<Documentation>
+				<UserDocu>
+					toEuler(Vector) -> list
+					Get the Euler angles of this rotation
+					as yaw-pitch-roll in XY'Z'' convention
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="isNull" Const="true">
+			<Documentation>
+				<UserDocu>
+					isNull() -> Bool
+					returns True if the rotation equals the unity matrix
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Q" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The rotation elements (as quaternion)</UserDocu>
+			</Documentation>
+			<Parameter Name="Q" Type="Tuple" />
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The rotation axis of the quaternion</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object" />
+		</Attribute>
+		<Attribute Name="Angle" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The rotation angle of the quaternion</UserDocu>
+			</Documentation>
+			<Parameter Name="Angle" Type="Float" />
+		</Attribute>
+		<ClassDeclarations>
+			public:
+			RotationPy(const Rotation &amp; mat, PyTypeObject *T = &amp;Type)
+			:PyObjectBase(new Rotation(mat),T){}
+			Rotation value() const
+			{ return *(getRotationPtr()); }
+		</ClassDeclarations>
+	</PythonExport>
+</GenerateModel>

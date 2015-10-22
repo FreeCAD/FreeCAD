@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="GeometrySurfacePy" 
+		Name="ToroidPy" 
+		Twin="GeomToroid" 
+		TwinPointer="GeomToroid" 
+		Include="Mod/Part/App/Geometry.h" 
+		Namespace="Part" 
+		FatherInclude="Mod/Part/App/GeometrySurfacePy.h" 
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes a toroid in 3D space</UserDocu>
+		</Documentation>
+		<Attribute Name="MajorRadius" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The major radius of the toroid.</UserDocu>
+			</Documentation>
+			<Parameter Name="MajorRadius" Type="Float"/>
+		</Attribute>
+		<Attribute Name="MinorRadius" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The minor radius of the toroid.</UserDocu>
+			</Documentation>
+			<Parameter Name="MinorRadius" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Center" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Center of the toroid.</UserDocu>
+			</Documentation>
+			<Parameter Name="Center" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The axis direction of the toroid</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Area" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Compute the area of the toroid.</UserDocu>
+			</Documentation>
+			<Parameter Name="Area" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Volume" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Compute the volume of the toroid.</UserDocu>
+			</Documentation>
+			<Parameter Name="Volume" Type="Float"/>
+		</Attribute>
+		<Methode Name="uIso">
+			<Documentation>
+				<UserDocu>Builds the U isoparametric circle of this toroid</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="vIso">
+			<Documentation>
+				<UserDocu>Builds the V isoparametric circle of this toroid</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

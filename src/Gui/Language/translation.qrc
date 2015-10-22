@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/translations"> 
+        <file>qt_de.qm</file>
+        <file>qt_es-ES.qm</file>
+        <file>qt_fr.qm</file>
+        <file>qt_it.qm</file>
+        <file>qt_jp.qm</file>
+        <file>qt_pl.qm</file>
+        <file>qt_pt-BR.qm</file>
+        <file>qt_ru.qm</file>
+        <file>qt_sv-SE.qm</file>
+        <file>qt_uk.qm</file>
+        <file>qt_zh-CN.qm</file>
+        <file>FreeCAD_af.qm</file>
+        <file>FreeCAD_de.qm</file>
+        <file>FreeCAD_fi.qm</file>
+        <file>FreeCAD_fr.qm</file>
+        <file>FreeCAD_hr.qm</file>
+        <file>FreeCAD_it.qm</file>
+        <file>FreeCAD_nl.qm</file>
+        <file>FreeCAD_no.qm</file>
+        <file>FreeCAD_pl.qm</file>
+        <file>FreeCAD_ru.qm</file>
+        <file>FreeCAD_uk.qm</file>
+        <file>FreeCAD_tr.qm</file>
+        <file>FreeCAD_sv-SE.qm</file>
+        <file>FreeCAD_zh-TW.qm</file>
+        <file>FreeCAD_pt-BR.qm</file>
+        <file>FreeCAD_cs.qm</file>
+        <file>FreeCAD_sk.qm</file>
+        <file>FreeCAD_es-ES.qm</file>
+        <file>FreeCAD_zh-CN.qm</file>
+        <file>FreeCAD_ja.qm</file>
+        <file>FreeCAD_ro.qm</file>
+        <file>FreeCAD_hu.qm</file>
+        <file>FreeCAD_pt-PT.qm</file>
+        <file>FreeCAD_sr.qm</file>
+    </qresource>
+</RCC> 

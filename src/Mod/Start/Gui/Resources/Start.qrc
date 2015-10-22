@@ -1,0 +1,28 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource> 
+        <file>translations/StartPage_af.qm</file>
+        <file>translations/StartPage_de.qm</file>
+        <file>translations/StartPage_fi.qm</file>
+        <file>translations/StartPage_fr.qm</file>
+        <file>translations/StartPage_it.qm</file>
+        <file>translations/StartPage_nl.qm</file>
+        <file>translations/StartPage_no.qm</file>
+        <file>translations/StartPage_ru.qm</file>
+        <file>translations/StartPage_uk.qm</file>
+        <file>translations/StartPage_pl.qm</file>
+        <file>translations/StartPage_hr.qm</file>
+        <file>translations/StartPage_ja.qm</file>
+        <file>translations/StartPage_hu.qm</file>
+        <file>translations/StartPage_tr.qm</file>
+        <file>translations/StartPage_sv-SE.qm</file>
+        <file>translations/StartPage_zh-TW.qm</file>
+        <file>translations/StartPage_pt-BR.qm</file>
+        <file>translations/StartPage_cs.qm</file>
+        <file>translations/StartPage_sk.qm</file>
+        <file>translations/StartPage_es-ES.qm</file>
+        <file>translations/StartPage_zh-CN.qm</file>
+        <file>translations/StartPage_ro.qm</file>
+        <file>translations/StartPage_pt-PT.qm</file>
+        <file>translations/StartPage_sr.qm</file>
+    </qresource>
+</RCC> 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometrySurfacePy"
+		Name="OffsetSurfacePy"
+		Twin="GeomOffsetSurface"
+		TwinPointer="GeomOffsetSurface"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu></UserDocu>
+		</Documentation>
+		<Methode Name="uIso">
+			<Documentation>
+				<UserDocu>Builds the U isoparametric line of this surface</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="vIso">
+			<Documentation>
+				<UserDocu>Builds the V isoparametric line of this surface</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="OffsetValue">
+			<Documentation>
+				<UserDocu>
+					Sets or gets the offset value to offset the underlying surface.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="OffsetValue" Type="Float"/>
+		</Attribute>
+		<Attribute Name="BasisSurface">
+			<Documentation>
+				<UserDocu>
+					Sets or gets the basic surface.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="BasisSurface" Type="Object"/>
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

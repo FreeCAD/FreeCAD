@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64"
+   height="64"
+   id="svg4025"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="edit-edit.svg">
+  <defs
+     id="defs4027">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 16 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="32 : 16 : 1"
+       inkscape:persp3d-origin="16 : 10.666667 : 1"
+       id="perspective4033" />
+    <inkscape:perspective
+       id="perspective4010"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4095"
+       id="linearGradient3999"
+       gradientUnits="userSpaceOnUse"
+       x1="901.1875"
+       y1="1190.875"
+       x2="1267.9062"
+       y2="1190.875"
+       gradientTransform="matrix(0.10456791,0,0,0.10456791,420.90006,31.02362)" />
+    <linearGradient
+       id="linearGradient4095">
+      <stop
+         style="stop-color:#0044be;stop-opacity:1;"
+         offset="0"
+         id="stop4097" />
+      <stop
+         style="stop-color:#2b90cc;stop-opacity:1;"
+         offset="1"
+         id="stop4099" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4095"
+       id="linearGradient2979"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.13878644,0,0,0.1266123,-121.41255,-154.04118)"
+       x1="901.1875"
+       y1="1190.875"
+       x2="1267.9062"
+       y2="1190.875" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.9795105"
+     inkscape:cx="-43.110306"
+     inkscape:cy="48.878745"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="1280"
+     inkscape:window-height="757"
+     inkscape:window-x="0"
+     inkscape:window-y="20"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4030">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(0,32)">
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000621;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 50.997977,1.1344967 3.432738,3.3992652 c 0,0 1.210331,6.8306391 1.815497,10.2459571 0.605165,3.415319 1.815494,10.245958 1.815494,10.245958 0,0 -7.757014,-1.057726 -11.316388,-1.815656 -3.559372,-0.757933 -10.039854,-2.731932 -10.039854,-2.731932 l -4.999305,-4.90932"
+       id="path3385-6"
+       sodipodi:nodetypes="cczczcc"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/draft.png"
+       inkscape:export-xdpi="6.2926431"
+       inkscape:export-ydpi="6.2926431"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:url(#linearGradient2979);fill-opacity:1;fill-rule:evenodd;stroke:#000621;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 22.71718,-26.934304 c 0,0 -6.207288,-0.559419 -12.046285,5.299332 -5.8389965,5.858751 -6.3169063,10.151334 -6.3169063,10.151334 L 36.600148,20.410791 c -0.276624,-0.52502 -0.429376,-1.105486 -0.429376,-1.717188 0,-2.329777 1.221359,-4.975527 3.968622,-4.975527 0.743862,0 1.44788,0.139443 2.081797,0.387739 l 0.299267,-0.253217 c -0.09276,-0.321979 -0.143125,-0.659396 -0.143125,-1.004974 0,-2.329801 2.47993,-4.4743223 5.227207,-4.4743223 0.422165,0 0.831524,0.046264 1.223062,0.1305676 l 1.040912,-0.8744134 c -0.05799,-0.256209 -0.09104,-0.5210491 -0.09104,-0.7913281 0,-1.8379317 3.033164,-1.5039843 4.968355,-2.082003 L 22.717225,-26.934304 z"
+       id="rect2390-8"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/draft.png"
+       inkscape:export-xdpi="6.2926431"
+       inkscape:export-ydpi="6.2926431"
+       sodipodi:nodetypes="czccssccssccsccc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000621;stroke-width:1.32559693;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 48.544883,7.6133709 15.050897,-24.733532"
+       id="path3373-7"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/draft.png"
+       inkscape:export-xdpi="6.2926431"
+       inkscape:export-ydpi="6.2926431"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000621;stroke-width:1.32559693;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 41.787708,13.237662 9.4859605,-19.489738"
+       id="path3375-9"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/draft.png"
+       inkscape:export-xdpi="6.2926431"
+       inkscape:export-ydpi="6.2926431"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#000621;fill-opacity:1;fill-rule:evenodd;stroke:#000621;stroke-width:0.13255970000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 56.215108,14.884285 c 0,0 -3.733918,2.191368 -5.205971,3.44903 -1.472051,1.257659 -3.626343,4.096932 -3.626343,4.096932 l 11.075451,2.557967 -2.243137,-10.103929 z"
+       id="path3387-0"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/draft.png"
+       inkscape:export-xdpi="6.2926431"
+       inkscape:export-ydpi="6.2926431"
+       sodipodi:nodetypes="czccc"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

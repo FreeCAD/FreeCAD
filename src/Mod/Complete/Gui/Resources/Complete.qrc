@@ -1,0 +1,28 @@
+<RCC>
+    <qresource> 
+        <file>translations/Complete_af.qm</file>
+        <file>translations/Complete_de.qm</file>
+        <file>translations/Complete_fi.qm</file>
+        <file>translations/Complete_fr.qm</file>
+        <file>translations/Complete_hr.qm</file>
+        <file>translations/Complete_it.qm</file>
+        <file>translations/Complete_nl.qm</file>
+        <file>translations/Complete_no.qm</file>
+        <file>translations/Complete_pl.qm</file>
+        <file>translations/Complete_ru.qm</file>
+        <file>translations/Complete_uk.qm</file>
+        <file>translations/Complete_tr.qm</file>
+        <file>translations/Complete_sv-SE.qm</file>
+        <file>translations/Complete_zh-TW.qm</file>
+        <file>translations/Complete_pt-BR.qm</file>
+        <file>translations/Complete_cs.qm</file>
+        <file>translations/Complete_sk.qm</file>
+        <file>translations/Complete_es-ES.qm</file>
+        <file>translations/Complete_zh-CN.qm</file>
+        <file>translations/Complete_ja.qm</file>
+        <file>translations/Complete_ro.qm</file>
+        <file>translations/Complete_hu.qm</file>
+        <file>translations/Complete_pt-PT.qm</file>
+        <file>translations/Complete_sr.qm</file>
+    </qresource>
+</RCC> 

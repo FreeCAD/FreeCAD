@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="Plot"> 
+        <file>icons/Axes.svg</file>
+        <file>icons/Grid.svg</file>
+        <file>icons/Icon.svg</file>
+        <file>icons/Labels.svg</file>
+        <file>icons/Legend.svg</file>
+        <file>icons/Positions.svg</file>
+        <file>icons/Save.svg</file>
+        <file>icons/Series.svg</file>
+        <file>translations/Plot_af.qm</file>
+        <file>translations/Plot_cs.qm</file>
+        <file>translations/Plot_de.qm</file>
+        <file>translations/Plot_es-ES.qm</file>
+        <file>translations/Plot_fi.qm</file>
+        <file>translations/Plot_fr.qm</file>
+        <file>translations/Plot_hr.qm</file>
+        <file>translations/Plot_hu.qm</file>
+        <file>translations/Plot_it.qm</file>
+        <file>translations/Plot_ja.qm</file>
+        <file>translations/Plot_nl.qm</file>
+        <file>translations/Plot_no.qm</file>
+        <file>translations/Plot_pl.qm</file>
+        <file>translations/Plot_pt-BR.qm</file>
+        <file>translations/Plot_ro.qm</file>
+        <file>translations/Plot_ru.qm</file>
+        <file>translations/Plot_sk.qm</file>
+        <file>translations/Plot_sv-SE.qm</file>
+        <file>translations/Plot_tr.qm</file>
+        <file>translations/Plot_uk.qm</file>
+        <file>translations/Plot_zh-CN.qm</file>
+        <file>translations/Plot_zh-TW.qm</file>
+        <file>translations/Plot_pt-PT.qm</file>
+        <file>translations/Plot_sr.qm</file>
+    </qresource>
+</RCC> 

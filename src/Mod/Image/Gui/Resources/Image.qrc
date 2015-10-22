@@ -1,0 +1,29 @@
+<RCC>
+    <qresource> 
+        <file>icons/image-import.svg</file>
+        <file>translations/Image_af.qm</file>
+        <file>translations/Image_de.qm</file>
+        <file>translations/Image_fi.qm</file>
+        <file>translations/Image_fr.qm</file>
+        <file>translations/Image_hr.qm</file>
+        <file>translations/Image_it.qm</file>
+        <file>translations/Image_nl.qm</file>
+        <file>translations/Image_no.qm</file>
+        <file>translations/Image_pl.qm</file>
+        <file>translations/Image_ru.qm</file>
+        <file>translations/Image_uk.qm</file>
+        <file>translations/Image_tr.qm</file>
+        <file>translations/Image_sv-SE.qm</file>
+        <file>translations/Image_zh-TW.qm</file>
+        <file>translations/Image_pt-BR.qm</file>
+        <file>translations/Image_cs.qm</file>
+        <file>translations/Image_sk.qm</file>
+        <file>translations/Image_es-ES.qm</file>
+        <file>translations/Image_zh-CN.qm</file>
+        <file>translations/Image_ja.qm</file>
+        <file>translations/Image_ro.qm</file>
+        <file>translations/Image_hu.qm</file>
+        <file>translations/Image_pt-PT.qm</file>
+        <file>translations/Image_sr.qm</file>
+    </qresource>
+</RCC> 

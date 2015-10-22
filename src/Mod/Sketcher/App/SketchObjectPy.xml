@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="Part2DObjectPy"
+    Name="SketchObjectPy"
+    Twin="SketchObject"
+    TwinPointer="SketchObject"
+    Include="Mod/Sketcher/App/SketchObject.h"
+    Namespace="Sketcher"
+    FatherInclude="Mod/Part/App/Part2DObjectPy.h"
+    FatherNamespace="Part">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>With this objects you can handle sketches</UserDocu>
+    </Documentation>
+    <Methode Name="solve">
+      <Documentation>
+        <UserDocu>solve the actual set of geometry and constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addGeometry">
+      <Documentation>
+        <UserDocu>add a geometric object to the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delGeometry">
+      <Documentation>
+        <UserDocu>delete a geometric object from the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="toggleConstruction">
+      <Documentation>
+        <UserDocu>switch a geometry to a construcion line</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setConstruction">
+      <Documentation>
+        <UserDocu>set construction mode of a geometry on or off</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addConstraint">
+      <Documentation>
+        <UserDocu>add a constraint to the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delConstraint">
+      <Documentation>
+        <UserDocu>delete a constraint from the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="renameConstraint">
+      <Documentation>
+        <UserDocu>Rename a constraint of the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addExternal">
+      <Documentation>
+        <UserDocu>add a link to an external geometry to use it in a constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delExternal">
+      <Documentation>
+        <UserDocu>delete a external geometry link from the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delConstraintOnPoint">
+      <Documentation>
+        <UserDocu>delete coincident constraints associated with a sketch point</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setDatum">
+      <Documentation>
+        <UserDocu>set the Datum of a Distance or Angle constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDatum">
+      <Documentation>
+        <UserDocu>Get the value of a datum constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setDriving">
+      <Documentation>
+        <UserDocu>set the Driving status of a datum constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDriving">
+      <Documentation>
+        <UserDocu>Get the Driving status of a datum constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="toggleDriving">
+      <Documentation>
+        <UserDocu>toggle the Driving status of a datum constraint</UserDocu>
+      </Documentation>
+    </Methode>    
+    <Methode Name="movePoint">
+      <Documentation>
+        <UserDocu>
+          movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+          to another location.
+          It moves the specified point (or curve) to the given location by adding some
+          temporary weak constraints and solve the sketch.
+          This method is mostly used to allow the user to drag some portions of the sketch
+          in real time by e.g. the mouse and it works only for underconstrained portions of
+          the sketch.
+          The argument 'relative', if present, states if the new location is given
+          relatively to the current one.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getPoint">
+      <Documentation>
+        <UserDocu>
+          getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAxis">
+      <Documentation>
+        <UserDocu>
+          return an axis based on the corresponding construction line
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fillet">
+      <Documentation>
+        <UserDocu>create fillet between two edges or at a point</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="trim">
+      <Documentation>
+        <UserDocu>trim a curve with a given id at a given reference point</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addSymmetric">
+      <Documentation>
+        <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
+      </Documentation>
+    </Methode> 
+    <Methode Name="addCopy">
+      <Documentation>
+        <UserDocu>add a copy of geometric objects to the sketch displaced by a vector3d</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addRectangularArray">
+      <Documentation>
+        <UserDocu>add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="ExposeInternalGeometry">
+      <Documentation>
+        <UserDocu>Exposes all internal geometry of an object supporting internal geometry</UserDocu>
+      </Documentation>    
+    </Methode>
+    <Methode Name="DeleteUnusedInternalGeometry">
+      <Documentation>
+        <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
+      </Documentation>    
+    </Methode>    
+    <Methode Name="calculateAngleViaPoint">
+      <Documentation>
+        <UserDocu>
+          calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
+          curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
+          on intersection of the curves, otherwise the result may be useless (except
+          line-to-line, where (0,0) is OK). Returned value is in radians.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPointOnCurve">
+      <Documentation>
+        <UserDocu>
+          isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
+          geometrically lies on a curve (e.g. ellipse). It treats lines as infinte,
+          arcs as full circles/ellipses/etc. Returns boolean value.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="calculateConstraintError">
+      <Documentation>
+        <UserDocu>
+          calculateConstraintError(index) - calculates the error function of the
+          constraint identified by its index and returns the signed error value.
+          The error value roughly corresponds to by how much the constraint is
+          violated. If the constraint internally has more than one error function,
+          the returned value is RMS of all errors (sign is lost in this case).
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="changeConstraintsLocking">
+      <Documentation>
+        <UserDocu>
+          changeConstraintsLocking(bLock) - locks or unlocks all tangent and
+          perpendicular constraints. (Constraint locking prevents it from
+          flipping to another valid configuration, when e.g. external geometry
+          is updated from outside.) The sketch solve is not triggered by the
+          function, but the SketchObject is touched (a recompute will be
+          necessary). The geometry should not be affected by the function.
+
+          The bLock argument specifies, what to do. If true, all constraints
+          are unlocked and locked again. If false, all tangent and perp.
+          constraints are unlocked.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
+    <Attribute Name="ConstraintCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of Constraints in this sketch</UserDocu>
+      </Documentation>
+      <Parameter Name="ConstraintCount" Type="Int"/>
+    </Attribute>
+    <Attribute Name="GeometryCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of geometric objects in this sketch</UserDocu>
+      </Documentation>
+      <Parameter Name="GeometryCount" Type="Int"/>
+    </Attribute>
+    <Attribute Name="AxisCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          return the the number of construction lines in the sketch which can be used as axes
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="AxisCount" Type="Int"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

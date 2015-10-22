@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+		Father="PyObjectBase"
+		Name="MatrixPy"
+		Twin="Matrix"
+		TwinPointer="Matrix4D"
+		Include="Base/Matrix.h"
+		FatherInclude="Base/PyObjectBase.h"
+		Namespace="Base"
+		Constructor="true"
+		Delete="true"
+		NumberProtocol="true"
+ 		RichCompare="true"
+		FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <DeveloperDocu>This is the Matrix export class</DeveloperDocu>
+      <UserDocu>A 4x4 Matrix</UserDocu>
+    </Documentation>
+    <Methode Name="move">
+      <Documentation>
+        <UserDocu>
+move(Vector)
+Move the matrix along the vector
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="scale">
+      <Documentation>
+        <UserDocu>
+scale(Vector)
+Scale the matrix with the vector
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="unity">
+      <Documentation>
+        <UserDocu>unity() - make this matrix to unity</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transform">
+      <Documentation>
+        <UserDocu>transform(Vector,Matrix) - return the dot product of the two vectors</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="rotateX">
+      <Documentation>
+        <UserDocu>rotateX(float) - rotate around X</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="rotateY">
+      <Documentation>
+        <UserDocu>rotateY(float) - rotate around Y</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="rotateZ">
+      <Documentation>
+        <UserDocu>rotateZ(float) - rotate around Z</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="multiply">
+      <Documentation>
+        <UserDocu>
+multiply(Matrix|Vector)
+Multiply a matrix or vector with this matrix
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="invert">
+      <Documentation>
+        <UserDocu>
+invert() -> None
+Compute the inverse matrix, if possible
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="inverse">
+      <Documentation>
+        <UserDocu>
+inverse() -> Matrix
+Compute the inverse matrix, if possible
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transpose">
+      <Documentation>
+        <UserDocu>
+transpose() -> None
+Transpose the matrix. 
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transposed" Const="true">
+      <Documentation>
+        <UserDocu>
+transposed() -> Matrix
+Returns a transposed copy of this matrix.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="determinant">
+      <Documentation>
+        <UserDocu>
+determinant() -> Float
+Compute the determinant of the matrix
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isOrthogonal">
+      <Documentation>
+        <UserDocu>
+isOrthogonal([Float]) -> Float
+Checks if the matrix is orthogonal, i.e. M * M^T = k*I and returns
+the multiple of the identity matrix. If it's not orthogonal 0 is returned.
+As argument you can set a tolerance which by default is 1.0e-6.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="submatrix">
+      <Documentation>
+        <UserDocu>
+submatrix(int) -> Matrix
+Get the sub-matrix. The parameter must be in the range [1,4].
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="analyze">
+      <Documentation>
+        <UserDocu>
+analyze() -> string
+Analyzes the type of transformation.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="A11" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A11" Type="Float" />
+    </Attribute>
+    <Attribute Name="A12" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A12" Type="Float" />
+    </Attribute>
+    <Attribute Name="A13" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A13" Type="Float" />
+    </Attribute>
+    <Attribute Name="A14" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A14" Type="Float" />
+    </Attribute>
+    <Attribute Name="A21" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A21" Type="Float" />
+    </Attribute>
+    <Attribute Name="A22" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A22" Type="Float" />
+    </Attribute>
+    <Attribute Name="A23" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A23" Type="Float" />
+    </Attribute>
+    <Attribute Name="A24" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A24" Type="Float" />
+    </Attribute>
+    <Attribute Name="A31" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A31" Type="Float" />
+    </Attribute>
+    <Attribute Name="A32" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A32" Type="Float" />
+    </Attribute>
+    <Attribute Name="A33" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A33" Type="Float" />
+    </Attribute>
+    <Attribute Name="A34" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A34" Type="Float" />
+    </Attribute>
+    <Attribute Name="A41" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A41" Type="Float" />
+    </Attribute>
+    <Attribute Name="A42" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A42" Type="Float" />
+    </Attribute>
+    <Attribute Name="A43" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A43" Type="Float" />
+    </Attribute>
+    <Attribute Name="A44" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A44" Type="Float" />
+    </Attribute>
+    <Attribute Name="A" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The matrix elements</UserDocu>
+      </Documentation>
+      <Parameter Name="A" Type="Sequence" />
+    </Attribute>
+    <ClassDeclarations>public:
+      MatrixPy(const Matrix4D &amp; mat, PyTypeObject *T = &amp;Type)
+      :PyObjectBase(new Matrix4D(mat),T){}
+      Matrix4D value() const
+      { return *(getMatrixPtr()); }
+    </ClassDeclarations>
+  </PythonExport>
+</GenerateModel>

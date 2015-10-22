@@ -1,0 +1,15 @@
+Document: freecad-development-documentation
+Title: FreeCAD development documentation
+Author: FreeCAD developers
+Abstract: FreeCAD is a general purpose Open Source 3D 
+ CAD/MCAD/CAx/CAE/PLM modeler, aimed directly at mechanical engineering 
+ and product design but also fits in a wider range of uses around 
+ engineering, such as architecture or other engineering specialties. 
+ It is a feature-based parametric modeler with a modular software 
+ architecture which makes it easy to provide additional functionality 
+ without modifying the core system.
+Section: Science/Engineering
+
+Format: HTML
+Index: /usr/share/doc/freecad-doc/Start_Page.html
+Files: /usr/share/doc/freecad-doc/*.q*

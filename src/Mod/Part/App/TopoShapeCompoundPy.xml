@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="TopoShapePy" 
+      Name="TopoShapeCompoundPy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/TopoShapePy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+	  <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>Create a compound out of a list of shapes</UserDocu>
+    </Documentation>
+    <Methode Name="add">
+      <Documentation>
+        <UserDocu>Add a shape to the compound.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="connectEdgesToWires" Const="true">
+      <Documentation>
+        <UserDocu>Build a compound of wires out of the edges of this compound.</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

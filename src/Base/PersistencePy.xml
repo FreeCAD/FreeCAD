@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="BaseClassPy" 
+      Name="PersistencePy" 
+      Twin="Persistence" 
+      TwinPointer="Persistence" 
+      Include="Base/Persistence.h" 
+      FatherInclude="Base/BaseClassPy.h" 
+      Namespace="Base" 
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <DeveloperDocu>This is the Persistence class</DeveloperDocu>
+      <UserDocu>This is a persistence class</UserDocu>
+    </Documentation>
+    <Attribute Name="Content" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Content of the object in XML representation</UserDocu>
+      </Documentation>
+      <Parameter Name="Content" Type="String" />
+    </Attribute>
+    <Attribute Name="MemSize" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Memory size of the object in byte</UserDocu>
+      </Documentation>
+      <Parameter Name="MemSize" Type="Int"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

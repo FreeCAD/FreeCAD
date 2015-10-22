@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PersistencePy" 
+    Name="DocumentPy" 
+    Twin="Document" 
+    TwinPointer="Document" 
+    Include="Gui/Document.h" 
+    Namespace="Gui" 
+    FatherInclude="Base/PersistencePy.h" 
+    FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This is a Document class</UserDocu>
+    </Documentation>
+    <Methode Name="show">
+      <Documentation>
+        <UserDocu>Show the object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hide">
+      <Documentation>
+        <UserDocu>Hide the object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setPos">
+      <Documentation>
+        <UserDocu>Set the position</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setEdit">
+      <Documentation>
+        <UserDocu>
+          setEdit([String:Name|ViewProvider|DocumentObjet]|,mod)
+          Set the given object in edit mode.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getInEdit">
+      <Documentation>
+        <UserDocu>
+          getInEdit()
+          Returns the current object in edit mode or None if there is no such object
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="resetEdit">
+      <Documentation>
+        <UserDocu>
+          Reset (end) the current editing.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addAnnotation">
+      <Documentation>
+        <UserDocu>Add an Inventor object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="update">
+      <Documentation>
+        <UserDocu>Update the view representations of all objects</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getObject">
+      <Documentation>
+        <UserDocu>Return the object with the given name</UserDocu>
+      </Documentation>
+    </Methode>
+	<Methode Name="activeObject">
+	  <Documentation>
+		  <UserDocu>deprecated -- use ActiveObject</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="activeView">
+      <Documentation>
+        <UserDocu>deprecated -- use ActiveView</UserDocu>
+      </Documentation>
+    </Methode>
+	  <Methode Name="mdiViewsOfType" Const="true">
+		  <Documentation>
+			<UserDocu>Return a list if mdi views of a given type</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="sendMsgToViews">
+		  <Documentation>
+			<UserDocu>Send a message to all views of the document</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="mergeProject">
+		  <Documentation>
+			  <UserDocu>Merges this document with another project file</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="toggleTreeItem">
+		  <Documentation>
+			  <UserDocu>toggleTreeItem(DocObject,int=0) - change TreeItem of a document object 0:Toggle,1:Collaps,2:Expand</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Attribute Name="ActiveObject" ReadOnly="false">
+	  <Documentation>
+		<UserDocu>The active object of the document</UserDocu>
+	  </Documentation>
+	  <Parameter Name="ActiveObject" Type="Object" />
+	</Attribute>
+	<Attribute Name="ActiveView" ReadOnly="false">
+	  <Documentation>
+		  <UserDocu>The active view of the document</UserDocu>
+	  </Documentation>
+	  <Parameter Name="ActiveView" Type="Object" />
+	</Attribute>
+	<Attribute Name="Document" ReadOnly="true">
+	  <Documentation>
+		  <UserDocu>The related App document to this Gui document</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Document" Type="Object" />
+	</Attribute>
+		<Attribute Name="Modified" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns True if the document is marked as modified, and False otherwse</UserDocu>
+			</Documentation>
+			<Parameter Name="Modified" Type="Boolean" />
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

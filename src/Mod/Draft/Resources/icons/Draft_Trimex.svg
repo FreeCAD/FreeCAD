@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg3111"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="trimex.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs3113">
+    <linearGradient
+       id="linearGradient3841">
+      <stop
+         style="stop-color:#0619c0;stop-opacity:1;"
+         offset="0"
+         id="stop3843" />
+      <stop
+         style="stop-color:#379cfb;stop-opacity:1;"
+         offset="1"
+         id="stop3845" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3841"
+       id="linearGradient6655"
+       x1="155.46875"
+       y1="2545.2188"
+       x2="713.0625"
+       y2="2545.2188"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(2,-2)" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 32 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="64 : 32 : 1"
+       inkscape:persp3d-origin="32 : 21.333333 : 1"
+       id="perspective3119" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.8890873"
+     inkscape:cx="16.765276"
+     inkscape:cy="47.135721"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="641"
+     inkscape:window-height="722"
+     inkscape:window-x="0"
+     inkscape:window-y="25" />
+  <metadata
+     id="metadata3116">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       id="g6658"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/extend.png"
+       inkscape:export-xdpi="4.8983116"
+       inkscape:export-ydpi="4.8983116"
+       transform="matrix(9.9502321e-2,0,0,9.9502321e-2,-12.291864,-221.09226)">
+      <path
+         id="path6647"
+         d="M 434.92644,2369.0285 L 434.92644,2766.1535 L 492.08269,2766.1535 L 492.08269,2369.0285 L 434.92644,2369.0285 z M 309.11394,2432.2473 L 181.83269,2567.6223 L 309.11394,2700.9661 L 309.11394,2599.9348 L 406.08269,2599.9348 L 406.08269,2535.2785 L 309.11394,2535.2785 L 309.11394,2432.2473 z M 612.14519,2434.2473 L 612.14519,2535.2785 L 515.17644,2535.2785 L 515.17644,2599.9348 L 612.14519,2599.9348 L 612.14519,2702.9661 L 739.42644,2567.5911 L 612.14519,2434.2473 z"
+         style="opacity:0.60553188;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <path
+         id="rect6635"
+         d="M 410.5625,2344.6562 L 410.5625,2741.7812 L 467.71875,2741.7812 L 467.71875,2344.6562 L 410.5625,2344.6562 z M 284.75,2407.875 L 157.46875,2543.25 L 284.75,2676.5938 L 284.75,2575.5625 L 381.71875,2575.5625 L 381.71875,2510.9062 L 284.75,2510.9062 L 284.75,2407.875 z M 587.78125,2409.875 L 587.78125,2510.9062 L 490.8125,2510.9062 L 490.8125,2575.5625 L 587.78125,2575.5625 L 587.78125,2678.5938 L 715.0625,2543.2188 L 587.78125,2409.875 z"
+         style="opacity:1;fill:url(#linearGradient6655);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    </g>
+  </g>
+</svg>

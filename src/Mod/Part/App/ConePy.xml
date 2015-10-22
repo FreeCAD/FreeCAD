@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="GeometrySurfacePy" 
+		Name="ConePy" 
+		Twin="GeomCone" 
+		TwinPointer="GeomCone" 
+		Include="Mod/Part/App/Geometry.h" 
+		Namespace="Part" 
+		FatherInclude="Mod/Part/App/GeometrySurfacePy.h" 
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes a cone in 3D space
+				To create a cone there are several ways:
+				Part.Cone()
+				    Creates a default cone with radius 1
+
+				Part.Cone(Cone)
+				    Creates a copy of the given cone
+
+				Part.Cone(Cone, Distance)
+				    Creates a cone parallel to given cone at a certain distance
+
+				Part.Cone(Point1,Point2,Radius1,Radius2)
+				    Creates a cone defined by two points and two radii
+				    The axis of the cone is the line passing through
+				    Point1 and Poin2.
+				    Radius1 is the radius of the section passing through
+				    Point1 and Radius2 the radius of the section passing
+				    through Point2.
+
+				Part.Cone(Point1,Point2,Point3,Point4)
+				    Creates a cone passing through three points Point1,
+				    Point2 and Point3.
+				    Its axis is defined by Point1 and Point2 and the radius of
+				    its base is the distance between Point3 and its axis.
+				    The distance between Point and the axis is the radius of
+				    the section passing through Point4.
+			</UserDocu>
+		</Documentation>
+		<Attribute Name="Apex" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Compute the apex of the cone.</UserDocu>
+			</Documentation>
+			<Parameter Name="Apex" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Radius" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The radius of the cone.</UserDocu>
+			</Documentation>
+			<Parameter Name="Radius" Type="Float"/>
+		</Attribute>
+		<Attribute Name="SemiAngle" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The semi-angle of the cone.</UserDocu>
+			</Documentation>
+			<Parameter Name="SemiAngle" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Center" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Center of the cone.</UserDocu>
+			</Documentation>
+			<Parameter Name="Center" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The axis direction of the cone</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object"/>
+		</Attribute>
+		<Methode Name="uIso">
+			<Documentation>
+				<UserDocu>Builds the U isoparametric circle of this cone</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="vIso">
+			<Documentation>
+				<UserDocu>Builds the V isoparametric circle of this cone</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

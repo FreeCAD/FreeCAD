@@ -1,0 +1,34 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource> 
+		<file>icons/actions/web-browser.svg</file>
+		<file>icons/actions/web-home.svg</file>
+		<file>icons/actions/web-next.svg</file>
+		<file>icons/actions/web-previous.svg</file>
+		<file>icons/actions/web-refresh.svg</file>
+		<file>icons/actions/web-stop.svg</file>
+		<file>icons/actions/web-zoom-in.svg</file>
+		<file>icons/actions/web-zoom-out.svg</file>
+        <file>translations/Web_de.qm</file>
+        <file>translations/Web_af.qm</file>
+        <file>translations/Web_zh-CN.qm</file>
+        <file>translations/Web_zh-TW.qm</file>
+        <file>translations/Web_hr.qm</file>
+        <file>translations/Web_cs.qm</file>
+        <file>translations/Web_nl.qm</file>
+        <file>translations/Web_fi.qm</file>
+        <file>translations/Web_fr.qm</file>
+        <file>translations/Web_hu.qm</file>
+        <file>translations/Web_ja.qm</file>
+        <file>translations/Web_no.qm</file>
+        <file>translations/Web_pl.qm</file>
+        <file>translations/Web_pt-PT.qm</file>
+        <file>translations/Web_ro.qm</file>
+        <file>translations/Web_ru.qm</file>
+        <file>translations/Web_sr.qm</file>
+        <file>translations/Web_es-ES.qm</file>
+        <file>translations/Web_sv-SE.qm</file>
+        <file>translations/Web_uk.qm</file>
+        <file>translations/Web_it.qm</file>
+        <file>translations/Web_pt-BR.qm</file>
+    </qresource>
+</RCC> 

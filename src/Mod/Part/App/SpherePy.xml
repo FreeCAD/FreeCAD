@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometrySurfacePy"
+		Name="SpherePy"
+		Twin="GeomSphere"
+		TwinPointer="GeomSphere"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes a sphere in 3D space</UserDocu>
+		</Documentation>
+		<Attribute Name="Radius" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The radius of the sphere.</UserDocu>
+			</Documentation>
+			<Parameter Name="Radius" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Area" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Compute the area of the sphere.</UserDocu>
+			</Documentation>
+			<Parameter Name="Area" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Volume" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Compute the volume of the sphere.</UserDocu>
+			</Documentation>
+			<Parameter Name="Volume" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Center" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Center of the sphere.</UserDocu>
+			</Documentation>
+			<Parameter Name="Center" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The axis direction of the circle</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object"/>
+		</Attribute>
+		<Methode Name="uIso">
+			<Documentation>
+				<UserDocu>
+					Builds the U isoparametric circle of this sphere
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="vIso">
+			<Documentation>
+				<UserDocu>Builds the V isoparametric circle of this sphere 
+where V must be in the range [-Pi/2,Pi/2]</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

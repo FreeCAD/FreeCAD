@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="TopoShapePy" 
+      Name="TopoShapeVertexPy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+  	  Constructor="true"
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/TopoShapePy.h" 
+      FatherNamespace="Part">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>TopoShapeVertex is the OpenCasCade topological vertex wrapper</UserDocu>
+    </Documentation>
+	  <Attribute Name="X" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>X component of this Vertex.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="X" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Y" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Y component of this Vertex.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Y" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Z" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Z component of this Vertex.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Z" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Point" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Position of this Vertex as a Vector</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Point" Type="Object"/>
+	  </Attribute>
+		<Attribute Name="Tolerance">
+			<Documentation>
+				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
+			</Documentation>
+			<Parameter Name="Tolerance" Type="Float"/>
+		</Attribute>
+		<Methode Name="setTolerance">
+			<Documentation>
+				<UserDocu>Set the tolerance for the vertex.</UserDocu>
+			</Documentation>
+		</Methode>
+
+	</PythonExport>
+</GenerateModel>

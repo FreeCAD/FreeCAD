@@ -1,0 +1,328 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>Gui::Dialog::DlgGeneral</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgGeneral" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>390</width>
+    <height>553</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>General</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QGroupBox" name="GroupBox5" >
+     <property name="title" >
+      <string>General</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="3" column="0" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>352</width>
+          <height>221</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QGroupBox" name="GroupBox10" >
+        <property name="title" >
+         <string>Start up</string>
+        </property>
+        <layout class="QGridLayout" >
+         <property name="margin" >
+          <number>11</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item row="1" column="0" >
+          <widget class="Gui::PrefCheckBox" name="SplashScreen" >
+           <property name="text" >
+            <string>Enable splash screen at start up</string>
+           </property>
+           <property name="checked" >
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0" >
+            <cstring>ShowSplasher</cstring>
+           </property>
+           <property name="prefPath" stdset="0" >
+            <cstring>General</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" >
+          <layout class="QGridLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="tabReportLabel" >
+             <property name="text" >
+              <string>Switch to tab of report window:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QComboBox" name="AutoloadModuleCombo" />
+           </item>
+           <item row="1" column="1" >
+            <widget class="Gui::PrefComboBox" name="AutoloadTabCombo" >
+             <property name="prefEntry" stdset="0" >
+              <cstring>AutoloadTab</cstring>
+             </property>
+             <property name="prefPath" stdset="0" >
+              <cstring>General</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="autoModuleLabel" >
+             <property name="text" >
+              <string>Auto load module after start up:</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QGroupBox" name="GroupBox7" >
+        <property name="title" >
+         <string>Language</string>
+        </property>
+        <layout class="QGridLayout" >
+         <property name="margin" >
+          <number>11</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item row="0" column="0" >
+          <layout class="QHBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="TextLabel1_4" >
+             <property name="text" >
+              <string>Change language:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="Languages" />
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QGroupBox" name="GroupBox3" >
+        <property name="title" >
+         <string>Main window</string>
+        </property>
+        <layout class="QVBoxLayout" >
+         <property name="margin" >
+          <number>11</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="recentFileListLabel" >
+             <property name="text" >
+              <string>Size of recent file list</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="Gui::PrefSpinBox" name="RecentFiles" >
+             <property name="value" >
+              <number>4</number>
+             </property>
+             <property name="prefEntry" stdset="0" >
+              <cstring>RecentFiles</cstring>
+             </property>
+             <property name="prefPath" stdset="0" >
+              <cstring>RecentFiles</cstring>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QCheckBox" name="tiledBackground" >
+             <property name="text" >
+              <string>Enable tiled background</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="styleSheetLabel" >
+             <property name="text" >
+              <string>Style sheet:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="StyleSheets" />
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="windowStyleLabel" >
+             <property name="text" >
+              <string>Window style:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="WindowStyle" />
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="iconSizeLabel" >
+             <property name="text" >
+              <string>Size of toolbar icons:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="toolbarIconSize" />
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>Languages</tabstop>
+  <tabstop>WindowStyle</tabstop>
+  <tabstop>RecentFiles</tabstop>
+  <tabstop>SplashScreen</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

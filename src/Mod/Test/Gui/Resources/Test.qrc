@@ -1,0 +1,28 @@
+<RCC>
+    <qresource>
+        <file>translations/Test_af.qm</file>
+        <file>translations/Test_de.qm</file>
+        <file>translations/Test_fi.qm</file>
+        <file>translations/Test_fr.qm</file>
+        <file>translations/Test_hr.qm</file>
+        <file>translations/Test_hu.qm</file>
+        <file>translations/Test_it.qm</file>
+        <file>translations/Test_ja.qm</file>
+        <file>translations/Test_nl.qm</file>
+        <file>translations/Test_no.qm</file>
+        <file>translations/Test_pl.qm</file>
+        <file>translations/Test_ru.qm</file>
+        <file>translations/Test_uk.qm</file>
+        <file>translations/Test_tr.qm</file>
+        <file>translations/Test_sv-SE.qm</file>
+        <file>translations/Test_zh-TW.qm</file>
+        <file>translations/Test_pt-BR.qm</file>
+        <file>translations/Test_cs.qm</file>
+        <file>translations/Test_sk.qm</file>
+        <file>translations/Test_es-ES.qm</file>
+        <file>translations/Test_zh-CN.qm</file>
+        <file>translations/Test_ro.qm</file>
+        <file>translations/Test_pt-PT.qm</file>
+        <file>translations/Test_sr.qm</file>
+    </qresource>
+</RCC>

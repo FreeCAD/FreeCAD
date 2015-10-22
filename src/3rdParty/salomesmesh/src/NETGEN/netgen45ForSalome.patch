@@ -1,0 +1,1274 @@
+diff -Naur netgen-4.5.old/libsrc/csg/meshsurf.cpp netgen-4.5.new/libsrc/csg/meshsurf.cpp
+--- netgen-4.5.old/libsrc/csg/meshsurf.cpp	2006-02-14 08:54:35.000000000 +0000
++++ netgen-4.5.new/libsrc/csg/meshsurf.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -77,11 +77,12 @@
+ }
+ 
+ 
+-void MeshOptimize2dSurfaces :: ProjectPoint (INDEX surfind, Point3d & p) const
++bool MeshOptimize2dSurfaces :: ProjectPoint (INDEX surfind, Point3d & p) const
+ {
+   Point<3> hp = p;
+   geometry.GetSurface(surfind)->Project (hp);
+   p = hp;
++  return true;
+ }
+ 
+ void MeshOptimize2dSurfaces :: ProjectPoint2 (INDEX surfind, INDEX surfind2, 
+diff -Naur netgen-4.5.old/libsrc/csg/meshsurf.hpp netgen-4.5.new/libsrc/csg/meshsurf.hpp
+--- netgen-4.5.old/libsrc/csg/meshsurf.hpp	2004-01-20 11:49:44.000000000 +0000
++++ netgen-4.5.new/libsrc/csg/meshsurf.hpp	2009-08-07 08:41:22.000000000 +0000
+@@ -45,7 +45,7 @@
+     MeshOptimize2dSurfaces (const CSGeometry & ageometry); 
+    
+     ///
+-    virtual void ProjectPoint (INDEX surfind, Point3d & p) const;
++    virtual bool ProjectPoint (INDEX surfind, Point3d & p) const;
+     ///
+     virtual void ProjectPoint2 (INDEX surfind, INDEX surfind2, Point3d & p) const;
+     ///
+diff -Naur netgen-4.5.old/libsrc/general/profiler.cpp netgen-4.5.new/libsrc/general/profiler.cpp
+--- netgen-4.5.old/libsrc/general/profiler.cpp	2006-01-11 10:05:59.000000000 +0000
++++ netgen-4.5.new/libsrc/general/profiler.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -34,8 +34,14 @@
+   {
+     StopTimer (total_timer);
+ 
+-    ofstream prof ("netgen.prof");
+-    Print (prof);
++    char* env;
++    if ((env = getenv("NETGEN_PROF")) && !strcmp(env, "1")) {
++      ofstream prof ("netgen.prof");
++      Print (prof);
++    }
++    else if ((env = getenv("NETGEN_PROF")) && !strcmp(env, "0")) {
++      Print (std::cout);
++    }
+   }
+ 
+ 
+diff -Naur netgen-4.5.old/libsrc/include/mystdlib.h netgen-4.5.new/libsrc/include/mystdlib.h
+--- netgen-4.5.old/libsrc/include/mystdlib.h	2006-01-16 14:16:56.000000000 +0000
++++ netgen-4.5.new/libsrc/include/mystdlib.h	2009-08-07 08:41:22.000000000 +0000
+@@ -25,6 +25,7 @@
+ #include <cmath>
+ #include <cctype>
+ #include <ctime>
++#include <cstring>
+ #endif
+ 
+ 
+diff -Naur netgen-4.5.old/libsrc/interface/Makefile netgen-4.5.new/libsrc/interface/Makefile
+--- netgen-4.5.old/libsrc/interface/Makefile	2005-08-09 14:14:59.000000000 +0000
++++ netgen-4.5.new/libsrc/interface/Makefile	2009-08-07 08:41:22.000000000 +0000
+@@ -1,4 +1,5 @@
+-src = nginterface.cpp writeuser.cpp writediffpack.cpp writeabaqus.cpp writefluent.cpp writepermas.cpp writetochnog.cpp writetecplot.cpp wuchemnitz.cpp writetochnog.cpp writefeap.cpp writeelmer.cpp  writegmsh.cpp writejcm.cpp readuser.cpp importsolution.cpp 
++#src = nginterface.cpp writeuser.cpp writediffpack.cpp writeabaqus.cpp writefluent.cpp writepermas.cpp writetochnog.cpp writetecplot.cpp wuchemnitz.cpp writetochnog.cpp writefeap.cpp writeelmer.cpp  writegmsh.cpp writejcm.cpp readuser.cpp importsolution.cpp
++src = writeuser.cpp writediffpack.cpp writeabaqus.cpp writefluent.cpp writepermas.cpp writetochnog.cpp writetecplot.cpp wuchemnitz.cpp writetochnog.cpp writefeap.cpp writeelmer.cpp  writegmsh.cpp writejcm.cpp readuser.cpp nglib.cpp ngnewdelete.cpp
+ #
+ lib = nginterface
+ libpath = libsrc/interface
+diff -Naur netgen-4.5.old/libsrc/interface/nglib.cpp netgen-4.5.new/libsrc/interface/nglib.cpp
+--- netgen-4.5.old/libsrc/interface/nglib.cpp	2005-10-18 13:53:18.000000000 +0000
++++ netgen-4.5.new/libsrc/interface/nglib.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -56,7 +56,8 @@
+ 
+ void Ng_Exit ()
+ {
+-  ;
++  delete testout;
++  testout = NULL;
+ }
+   
+ 
+diff -Naur netgen-4.5.old/libsrc/makefile.inc netgen-4.5.new/libsrc/makefile.inc
+--- netgen-4.5.old/libsrc/makefile.inc	2005-09-02 13:17:51.000000000 +0000
++++ netgen-4.5.new/libsrc/makefile.inc	2009-08-07 08:41:22.000000000 +0000
+@@ -8,17 +8,14 @@
+ LIBSRC_DIR=$(CPP_DIR)/libsrc
+ LIB_DIR=$(CPP_DIR)/lib/$(MACHINE)
+ 
+-#OCC_DIR=../../occ
+-#OCCINC_DIR=$(OCC_DIR)/inc
+-#OCCLIB_DIR=$(OCC_DIR)/lib
+-# OCC_DIR=/opt/OpenCASCADE5.2/ros
+-# OCC_DIR=/home/joachim/download/occ/Linux
+-# OCCINC_DIR=$(OCC_DIR)/inc  -I$(OCC_DIR)/ros/inc
+-# OCCLIB_DIR=$(OCC_DIR)/Linux/lib
++OCC_DIR=$(CASROOT)
++OCCINC_DIR=$(OCC_DIR)/inc
++OCCLIB_DIR=$(OCC_DIR)/Linux/lib
+ #
+ include $(LIBSRC_DIR)/makefile.mach.$(MACHINE)
+ #
+-CPLUSPLUSFLAGS1 = -c -I$(LIBSRC_DIR)/include -I$(OCCINC_DIR) 
++CPLUSPLUSFLAGS1 = -c -fPIC -I$(LIBSRC_DIR)/include -I$(OCCINC_DIR) \
++	-DOCCGEOMETRY -DOCC52 -DHAVE_IOSTREAM -DHAVE_LIMITS_H
+ #
+ ARFLAGS = r
+ #
+diff -Naur netgen-4.5.old/libsrc/makefile.mach.LINUX netgen-4.5.new/libsrc/makefile.mach.LINUX
+--- netgen-4.5.old/libsrc/makefile.mach.LINUX	2004-10-11 19:49:26.000000000 +0000
++++ netgen-4.5.new/libsrc/makefile.mach.LINUX	2009-08-07 08:41:22.000000000 +0000
+@@ -16,7 +16,7 @@
+ #
+ CFLAGS2 =
+ 
+-CPLUSPLUSFLAGS2 = -O2 -I/usr/include/GL3.5 -DLINUX -DOPENGL \
++CPLUSPLUSFLAGS2 = -O2 -I/usr/include/GL3.5 -DLINUX \
+ 	-ftemplate-depth-99 -finline-limit=10000 \
+ 	-Wdisabled-optimization  -funroll-loops  -DnoNGSOLVE
+ 
+diff -Naur netgen-4.5.old/libsrc/meshing/improve2.cpp netgen-4.5.new/libsrc/meshing/improve2.cpp
+--- netgen-4.5.old/libsrc/meshing/improve2.cpp	2006-01-11 16:08:19.000000000 +0000
++++ netgen-4.5.new/libsrc/meshing/improve2.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -4,7 +4,7 @@
+ #include <opti.hpp>
+ 
+ #ifndef SMALLLIB
+-#include <visual.hpp>
++//#include <visual.hpp>
+ #endif
+ 
+ namespace netgen
+diff -Naur netgen-4.5.old/libsrc/meshing/improve2.hpp netgen-4.5.new/libsrc/meshing/improve2.hpp
+--- netgen-4.5.old/libsrc/meshing/improve2.hpp	2004-10-12 19:22:55.000000000 +0000
++++ netgen-4.5.new/libsrc/meshing/improve2.hpp	2009-08-07 08:41:22.000000000 +0000
+@@ -32,17 +32,16 @@
+   ///
+   virtual void SelectSurfaceOfPoint (const Point3d & p,
+ 				     const PointGeomInfo & gi);
+-  ///
+-  virtual void ProjectPoint (INDEX /* surfind */, Point3d & /* p */) const { };
++
++  /// project point on surface, returns true if success
++  virtual bool ProjectPoint (INDEX /* surfind */, Point3d & /* p */) const { return false; }
++  /// fast project point on surface using point geom info of a neighboring point
++  /// if gi.trignum != 0,
++  /// returns true if success, gi is updated
++  virtual bool ProjectPoint (INDEX surfind, Point3d & p, PointGeomInfo& gi) const
++  { gi.trignum = 1; return ProjectPoint (surfind, p); }
+   ///
+   virtual void ProjectPoint2 (INDEX /* surfind */, INDEX /* surfind2 */, Point3d & /* p */) const { };
+-  /// liefert zu einem 3d-Punkt die geominfo (Dreieck) und liefert 1, wenn erfolgreich, 
+-  /// 0, wenn nicht (Punkt ausserhalb von chart)
+-  virtual int CalcPointGeomInfo(PointGeomInfo& gi, const Point3d& /*p3*/) const
+-    { gi.trignum = 1; return 1;};
+-
+-  virtual int CalcPointGeomInfo(int /* surfind */, PointGeomInfo& gi, const Point3d& p3) const
+-    { return CalcPointGeomInfo (gi, p3); }
+ 
+   ///
+   virtual void GetNormalVector(INDEX surfind, const Point3d & p, PointGeomInfo & gi, Vec3d & n) const;
+diff -Naur netgen-4.5.old/libsrc/meshing/meshtype.cpp netgen-4.5.new/libsrc/meshing/meshtype.cpp
+--- netgen-4.5.old/libsrc/meshing/meshtype.cpp	2006-02-10 10:11:08.000000000 +0000
++++ netgen-4.5.new/libsrc/meshing/meshtype.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -1,4 +1,5 @@
+ #include <mystdlib.h>
++#include <float.h>
+ 
+ #include "meshing.hpp"  
+ 
+@@ -774,7 +775,7 @@
+       frob /= 2;
+ 
+       double det = trans.Det();
+-      if (det <= 0)
++      if (det <= DBL_MIN)
+ 	err += 1e12;
+       else
+ 	err += frob * frob / det;
+diff -Naur netgen-4.5.old/libsrc/meshing/meshtype.hpp netgen-4.5.new/libsrc/meshing/meshtype.hpp
+--- netgen-4.5.old/libsrc/meshing/meshtype.hpp	2006-02-10 10:11:08.000000000 +0000
++++ netgen-4.5.new/libsrc/meshing/meshtype.hpp	2009-08-07 08:41:22.000000000 +0000
+@@ -13,7 +13,7 @@
+     Classes for NETGEN
+ */
+ 
+-
++class Mesh;
+ enum ELEMENT_TYPE { 
+   SEGMENT = 1, SEGMENT3 = 2,
+   TRIG = 10, QUAD=11, TRIG6 = 12, QUAD6 = 13, QUAD8 = 14,
+diff -Naur netgen-4.5.old/libsrc/meshing/smoothing2.cpp netgen-4.5.new/libsrc/meshing/smoothing2.cpp
+--- netgen-4.5.old/libsrc/meshing/smoothing2.cpp	2006-01-11 16:08:20.000000000 +0000
++++ netgen-4.5.new/libsrc/meshing/smoothing2.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -300,7 +300,7 @@
+   double Opti2SurfaceMinFunction :: 
+   FuncGrad (const Vector & x, Vector & grad) const
+   {
+-    Vec3d n, vgrad;
++    Vec3d vgrad;
+     Point3d pp1;
+     double g1x, g1y;
+     double badness, hbadness;
+@@ -308,8 +308,6 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
+-
+     pp1 = sp1;
+     pp1.Add2 (x.Get(1), t1, x.Get(2), t2);
+ 
+@@ -360,7 +358,7 @@
+   double Opti2SurfaceMinFunction :: 
+   FuncDeriv (const Vector & x, const Vector & dir, double & deriv) const
+   {
+-    Vec3d n, vgrad;
++    Vec3d vgrad;
+     Point3d pp1;
+     double g1x, g1y;
+     double badness, hbadness;
+@@ -368,8 +366,6 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
+-
+     pp1 = sp1;
+     pp1.Add2 (x.Get(1), t1, x.Get(2), t2);
+ 
+@@ -520,7 +516,7 @@
+     // from 2d:
+ 
+     int j, k, lpi, gpi;
+-    Vec3d n, vgrad;
++    Vec3d vgrad;
+     Point3d pp1;
+     Vec2d g1, vdir;
+     double badness, hbadness, hbad, hderiv;
+@@ -528,8 +524,6 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
+-
+     pp1 = sp1;
+     pp1.Add2 (x.Get(1), t1, x.Get(2), t2);
+ 
+@@ -593,7 +587,7 @@
+     // from 2d:
+ 
+     int j, k, lpi, gpi;
+-    Vec3d n, vgrad;
++    Vec3d vgrad;
+     Point3d pp1;
+     Vec2d g1, vdir;
+     double badness, hbadness, hbad, hderiv;
+@@ -601,8 +595,6 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
+-
+     pp1 = sp1;
+     pp1.Add2 (x.Get(1), t1, x.Get(2), t2);
+ 
+@@ -859,19 +851,21 @@
+ 	  locelements.SetSize(0);
+ 	  locrots.SetSize (0);
+ 	  lochs.SetSize (0);
++          ngi.trignum = 0;
+ 	
+ 	  for (j = 0; j < elementsonpoint[pi].Size(); j++)
+ 	    {
+ 	      sei = elementsonpoint[pi][j];
+ 	      const Element2d & bel = mesh[sei];
+ 	      surfi = mesh.GetFaceDescriptor(bel.GetIndex()).SurfNr();
+-	    
++
+ 	      locelements.Append (sei);
+ 	    
+ 	      for (k = 1; k <= bel.GetNP(); k++)
+ 		if (bel.PNum(k) == pi)
+ 		  {
+ 		    locrots.Append (k);
++                    ngi = bel.GeomInfoPi(k);
+ 		    break;
+ 		  }
+ 	      
+@@ -942,7 +936,7 @@
+ 	    }
+ 	  
+ 	  //optimizer loop (if not whole distance is not possible, move only a bit!!!!)
+-	  while (loci <= 5 && !moveisok)
++          while (loci <= 5 && !moveisok)
+ 	    {
+ 	      loci ++;
+ 	      mesh[pi].X() = origp.X() + (x.Get(1) * t1.X() + x.Get(2) * t2.X())*fact;
+@@ -951,11 +945,9 @@
+ 	      fact = fact/2.;
+ 
+ 
+-	      ProjectPoint (surfi, mesh[pi]);
++	      moveisok = ProjectPoint (surfi, mesh[pi], ngi);
+ 
+-	      moveisok = CalcPointGeomInfo(surfi, ngi, mesh[pi]); 
+-	      // point lies on same chart in stlsurface
+-	    
++              // point lies on same chart in stlsurface
+ 	      if (moveisok)
+ 		{
+ 		  for (j = 0; j < locelements.Size(); j++)
+diff -Naur netgen-4.5.old/libsrc/occ/Partition_Inter2d.cxx netgen-4.5.new/libsrc/occ/Partition_Inter2d.cxx
+--- netgen-4.5.old/libsrc/occ/Partition_Inter2d.cxx	2005-06-09 14:51:10.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/Partition_Inter2d.cxx	2009-08-07 08:41:22.000000000 +0000
+@@ -29,10 +29,10 @@
+ //  $Header$
+ 
+ //using namespace std;
+-#include "Partition_Inter2d.ixx"
+-
+ #include "utilities.h"
+ 
++#include "Partition_Inter2d.ixx"
++
+ #include <BRepAdaptor_Curve.hxx>
+ #include <BRepAlgo_AsDes.hxx>
+ #include <BRepLib_MakeVertex.hxx>
+diff -Naur netgen-4.5.old/libsrc/occ/Partition_Inter3d.cxx netgen-4.5.new/libsrc/occ/Partition_Inter3d.cxx
+--- netgen-4.5.old/libsrc/occ/Partition_Inter3d.cxx	2005-06-09 14:51:10.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/Partition_Inter3d.cxx	2009-08-07 08:41:22.000000000 +0000
+@@ -29,13 +29,17 @@
+ //  $Header$
+ 
+ //using namespace std;
++
++#include "utilities.h"
++
+ #include "Partition_Inter2d.hxx"
+ #include "Partition_Inter3d.ixx"
+-#include "utilities.h"
+ 
+ #include <BRepAlgo_AsDes.hxx>
+ #include <BRepAlgo_Image.hxx>
+ #include <BRepLib.hxx>
++//using namespace std;
++
+ #include <BRepOffset_Tool.hxx>
+ #include <BRep_Builder.hxx>
+ #include <BRep_Tool.hxx>
+diff -Naur netgen-4.5.old/libsrc/occ/Partition_Loop.cxx netgen-4.5.new/libsrc/occ/Partition_Loop.cxx
+--- netgen-4.5.old/libsrc/occ/Partition_Loop.cxx	2005-06-09 14:51:10.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/Partition_Loop.cxx	2009-08-07 08:41:22.000000000 +0000
+@@ -29,12 +29,14 @@
+ //  $Header$
+ 
+ //using namespace std;
+-#include <stdio.h>
+ 
+-#include "Partition_Loop.ixx"
+ 
+ #include "utilities.h"
+ 
++#include <stdio.h>
++
++#include "Partition_Loop.ixx"
++
+ #include <BRep_Builder.hxx>
+ #include <BRepAlgo_FaceRestrictor.hxx>
+ #include <BRep_Tool.hxx>
+diff -Naur netgen-4.5.old/libsrc/occ/Partition_Loop2d.cxx netgen-4.5.new/libsrc/occ/Partition_Loop2d.cxx
+--- netgen-4.5.old/libsrc/occ/Partition_Loop2d.cxx	2005-06-09 14:51:10.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/Partition_Loop2d.cxx	2009-08-07 08:41:22.000000000 +0000
+@@ -12,9 +12,11 @@
+ //  $Header$
+ 
+ //using namespace std;
+-#include "Partition_Loop2d.ixx"
++
+ 
+ #include "utilities.h"
++
++#include "Partition_Loop2d.ixx"
+ #include <stdio.h>
+ 
+ #include <BRepAdaptor_Curve2d.hxx>
+diff -Naur netgen-4.5.old/libsrc/occ/Partition_Loop3d.cxx netgen-4.5.new/libsrc/occ/Partition_Loop3d.cxx
+--- netgen-4.5.old/libsrc/occ/Partition_Loop3d.cxx	2005-06-09 14:51:10.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/Partition_Loop3d.cxx	2009-08-07 08:41:22.000000000 +0000
+@@ -10,6 +10,11 @@
+ //  Module : GEOM
+ 
+ //using namespace std;
++
++
++
++#include "utilities.h"
++
+ #include "Partition_Loop3d.ixx"
+ 
+ #include <TopExp_Explorer.hxx>
+diff -Naur netgen-4.5.old/libsrc/occ/Partition_Spliter.cxx netgen-4.5.new/libsrc/occ/Partition_Spliter.cxx
+--- netgen-4.5.old/libsrc/occ/Partition_Spliter.cxx	2005-07-11 06:33:27.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/Partition_Spliter.cxx	2009-08-07 08:41:22.000000000 +0000
+@@ -29,14 +29,15 @@
+ //  $Header$
+ 
+ //using namespace std;
++
++#include "utilities.h"
++
+ #include "Partition_Inter2d.hxx"
+ #include "Partition_Inter3d.hxx"
+ #include "Partition_Loop2d.hxx"
+ #include "Partition_Loop3d.hxx"
+ #include "Partition_Spliter.ixx"
+ 
+-#include "utilities.h"
+-
+ #include <Precision.hxx>
+ #include <TopAbs_Orientation.hxx>
+ #include <TopExp.hxx>
+diff -Naur netgen-4.5.old/libsrc/occ/occconstruction.cpp netgen-4.5.new/libsrc/occ/occconstruction.cpp
+--- netgen-4.5.old/libsrc/occ/occconstruction.cpp	2005-12-06 15:15:53.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/occconstruction.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -28,8 +28,8 @@
+ #include <BRepAlgoAPI_Common.hxx>
+ #include <BRepAlgoAPI_Fuse.hxx>
+ #include <BRepAlgoAPI_Section.hxx>
+-#include <BRepOffsetAPI_Sewing.hxx>
+-#include <BRepAlgo_Sewing.hxx>
++//#include <BRepOffsetAPI_Sewing.hxx>
++//#include <BRepAlgo_Sewing.hxx>
+ #include <BRepOffsetAPI_MakeOffsetShape.hxx>
+ #include <ShapeFix_Shape.hxx>
+ namespace netgen
+diff -Naur netgen-4.5.old/libsrc/occ/occgenmesh.cpp netgen-4.5.new/libsrc/occ/occgenmesh.cpp
+--- netgen-4.5.old/libsrc/occ/occgenmesh.cpp	2006-02-07 10:12:48.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/occgenmesh.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -28,7 +28,7 @@
+     return  Point<3> (p.X(), p.Y(), p.Z());
+   }
+  
+-  void DivideEdge (TopoDS_Edge & edge,
++  static void DivideEdge (TopoDS_Edge & edge,
+ 		   ARRAY<MeshPoint> & ps,
+ 		   ARRAY<double> & params,
+ 		   Mesh & mesh)
+@@ -49,23 +49,19 @@
+     hvalue[0] = 0;
+     pnt = c->Value(s0);
+ 
+-    double olddist = 0;
+-    double dist = 0;
+-
+-    for (int i = 1; i <= DIVIDEEDGESECTIONS; i++)
++    int i;
++    for (i = 1; i <= DIVIDEEDGESECTIONS; i++)
+       {
+ 	oldpnt = pnt;
+ 	pnt = c->Value(s0+(i/double(DIVIDEEDGESECTIONS))*(s1-s0));
++	double dist = pnt.Distance(oldpnt);
+ 	hvalue[i] = hvalue[i-1] +
+ 	  1.0/mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))*
+-	  pnt.Distance(oldpnt);
++	  dist;
+ 
+ 	//(*testout) << "mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z())) " << mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z())) 
+ 	//	   <<  " pnt.Distance(oldpnt) " << pnt.Distance(oldpnt) << endl;
+ 
+-
+-	olddist = dist;
+-	dist = pnt.Distance(oldpnt);
+       }
+ 
+     //  nsubedges = int(ceil(hvalue[DIVIDEEDGESECTIONS]));
+@@ -74,7 +70,7 @@
+     ps.SetSize(nsubedges-1);
+     params.SetSize(nsubedges+1);
+ 
+-    int i = 1;
++    i = 1;
+     int i1 = 0;
+     do
+       {
+@@ -112,7 +108,7 @@
+ 
+   static void FindEdges (OCCGeometry & geom, Mesh & mesh)
+   {
+-    char * savetask = multithread.task;
++    const char * savetask = multithread.task;
+     multithread.task = "Edge meshing";
+ 
+     (*testout) << "edge meshing" << endl;
+@@ -124,6 +120,7 @@
+     (*testout) << "nedges = " << nedges << endl;
+ 
+     double eps = 1e-6 * geom.GetBoundingBox().Diam();
++    double eps2 = eps * eps;
+ 
+     for (int i = 1; i <= nvertices; i++)
+       {
+@@ -133,7 +130,7 @@
+ 	bool exists = 0;
+ 	if (merge_solids)
+ 	  for (PointIndex pi = 1; pi <= mesh.GetNP(); pi++)
+-	    if ( Dist2 (mesh[pi], Point<3>(mp)) < eps*eps)
++	    if ( Dist2 (mesh[pi], Point<3>(mp)) < eps2)
+ 	      {
+ 		exists = 1;
+ 		break;
+@@ -163,6 +160,7 @@
+ 	  {
+ 	    TopoDS_Face face = TopoDS::Face(exp1.Current());
+ 	    int facenr = geom.fmap.FindIndex(face);
++            if ( facenr < 1 ) continue;
+ 
+ 	    if (face2solid[0][facenr-1] == 0)
+ 	      face2solid[0][facenr-1] = solidnr;
+@@ -184,6 +182,9 @@
+     int facenr = 0;
+     int edgenr = 0;
+     
++    // EAP, IMP [SALOME platform 0013410].
++    // take into account nb of already meshed edges
++    edgenr = mesh.GetNSeg();
+ 
+     (*testout) << "faces = " << geom.fmap.Extent() << endl;
+     int curr = 0;
+@@ -232,6 +233,11 @@
+ 		    continue;
+ 		  }
+ 
++                // EAP, IMP [SALOME platform 0013410].
++                // Do not divide already meshed edges
++                if ( geom.emap.FindIndex(edge) < 1 )
++                  continue;
++
+ 		if (geom.vmap.FindIndex(TopExp::FirstVertex (edge)) == 
+ 		    geom.vmap.FindIndex(TopExp::LastVertex (edge)))
+ 		  {
+@@ -276,8 +282,8 @@
+ 		    pnums.Last() = -1;
+ 		    for (PointIndex pi = 1; pi < first_ep; pi++)
+ 		      {
+-			if (Dist2 (mesh[pi], fp) < eps*eps) pnums[0] = pi;
+-			if (Dist2 (mesh[pi], lp) < eps*eps) pnums.Last() = pi;
++			if (Dist2 (mesh[pi], fp) < eps2) pnums[0] = pi;
++			if (Dist2 (mesh[pi], lp) < eps2) pnums.Last() = pi;
+ 		      }
+ 		  }
+ 		
+@@ -287,7 +293,7 @@
+ 		    bool exists = 0;
+ 		    int j;
+ 		    for (j = first_ep; j <= mesh.GetNP(); j++)
+-		      if ((mesh.Point(j)-Point<3>(mp[i-1])).Length() < eps) 
++		      if (Dist2(mesh.Point(j), Point<3>(mp[i-1])) < eps2)
+ 			{
+ 			  exists = 1;
+ 			  break;
+@@ -394,7 +400,7 @@
+     int i, j, k;
+     int changed;
+ 
+-    char * savetask = multithread.task;
++    const char * savetask = multithread.task;
+     multithread.task = "Surface meshing";
+   
+     geom.facemeshstatus = 0;
+@@ -751,7 +757,7 @@
+     multithread.task = savetask;
+   }
+ 
+-  double ComputeH (double kappa)
++  static double ComputeH (double kappa)
+   {
+     double hret;
+     kappa *= mparam.curvaturesafety;
+@@ -779,7 +785,7 @@
+       double nq = n*q;
+     
+       Point<3> p = p0 + 0.5*n;
+-      double lambda = (p-l.p0)*n / nq;
++      double lambda = (fabs(nq) > 1e-10 ? (p-l.p0)*n / nq : -1);
+ 
+       if (lambda >= 0 && lambda <= 1)
+ 	{
+@@ -799,55 +805,55 @@
+ 
+ 
+ 
+-  void RestrictHTriangle (gp_Pnt2d & par0, gp_Pnt2d & par1, gp_Pnt2d & par2,
+-			  BRepLProp_SLProps * prop, Mesh & mesh, const double maxside, int depth, double h = 0)
++  static void RestrictHTriangle (gp_Pnt2d & par0, gp_Pnt2d & par1, gp_Pnt2d & par2,
++			  BRepAdaptor_Surface& surf, Mesh & mesh, const double maxside, int depth, double h = 0)
+   {
+-
++    BRepLProp_SLProps prop(surf, 2, 1e-5);
+ 
+     gp_Pnt2d parmid;
+ 
+     parmid.SetX(0.3*(par0.X()+par1.X()+par2.X()));
+     parmid.SetY(0.3*(par0.Y()+par1.Y()+par2.Y()));
+     
+-    if (depth == 0)
++    //if (depth == 0)
+       {
+ 	double curvature = 0;
+ 
+-  	prop->SetParameters (parmid.X(), parmid.Y());
+-  	if (!prop->IsCurvatureDefined())
++  	prop.SetParameters (parmid.X(), parmid.Y());
++  	if (!prop.IsCurvatureDefined())
+   	  {
+   	    (*testout) << "curvature not defined!" << endl;
+   	    return;
+   	  }
+-  	curvature = max(fabs(prop->MinCurvature()),
+- 			fabs(prop->MaxCurvature()));
++  	curvature = max(fabs(prop.MinCurvature()),
++ 			fabs(prop.MaxCurvature()));
+ 
+-	prop->SetParameters (par0.X(), par0.Y());
+-	if (!prop->IsCurvatureDefined())
++	prop.SetParameters (par0.X(), par0.Y());
++	if (!prop.IsCurvatureDefined())
+ 	  {
+ 	    (*testout) << "curvature not defined!" << endl;
+ 	    return;
+ 	  }
+-	curvature = max(curvature,max(fabs(prop->MinCurvature()),
+-				      fabs(prop->MaxCurvature())));
++	curvature = max(curvature,max(fabs(prop.MinCurvature()),
++				      fabs(prop.MaxCurvature())));
+ 
+-	prop->SetParameters (par1.X(), par1.Y());
+-	if (!prop->IsCurvatureDefined())
++	prop.SetParameters (par1.X(), par1.Y());
++	if (!prop.IsCurvatureDefined())
+ 	  {
+ 	    (*testout) << "curvature not defined!" << endl;
+ 	    return;
+ 	  }
+-	curvature = max(curvature,max(fabs(prop->MinCurvature()),
+-				      fabs(prop->MaxCurvature())));
++	curvature = max(curvature,max(fabs(prop.MinCurvature()),
++				      fabs(prop.MaxCurvature())));
+ 
+-	prop->SetParameters (par2.X(), par2.Y());
+-	if (!prop->IsCurvatureDefined())
++	prop.SetParameters (par2.X(), par2.Y());
++	if (!prop.IsCurvatureDefined())
+ 	  {
+ 	    (*testout) << "curvature not defined!" << endl;
+ 	    return;
+ 	  }
+-	curvature = max(curvature,max(fabs(prop->MinCurvature()),
+-				      fabs(prop->MaxCurvature())));
++	curvature = max(curvature,max(fabs(prop.MinCurvature()),
++				      fabs(prop.MaxCurvature())));
+ 
+ 	//(*testout) << "curvature " << curvature << endl;
+ 
+@@ -886,51 +892,47 @@
+ 	pm1.SetX(0.5*(par0.X()+par2.X())); pm1.SetY(0.5*(par0.Y()+par2.Y()));
+ 	pm2.SetX(0.5*(par1.X()+par0.X())); pm2.SetY(0.5*(par1.Y()+par0.Y()));
+ 
+-	RestrictHTriangle (pm0, pm1, pm2, prop, mesh, 0.5*maxside, depth+1, h);
+-	RestrictHTriangle (par0, pm1, pm2, prop, mesh, 0.5*maxside, depth+1, h);
+-	RestrictHTriangle (par1, pm0, pm2, prop, mesh, 0.5*maxside, depth+1, h);
+-	RestrictHTriangle (par2, pm1, pm0, prop, mesh, 0.5*maxside, depth+1, h);
++	RestrictHTriangle (pm0, pm1, pm2, surf, mesh, 0.5*maxside, depth+1, h);
++	RestrictHTriangle (par0, pm1, pm2, surf, mesh, 0.5*maxside, depth+1, h);
++	RestrictHTriangle (par1, pm0, pm2, surf, mesh, 0.5*maxside, depth+1, h);
++	RestrictHTriangle (par2, pm1, pm0, surf, mesh, 0.5*maxside, depth+1, h);
+       }
+     else
+       {
+ 	gp_Pnt pnt;
+ 	Point3d p3d;
+ 
+-  	prop->SetParameters (parmid.X(), parmid.Y());
+-  	pnt = prop->Value();
++  	surf.D0(parmid.X(), parmid.Y(), pnt);
+   	p3d = Point3d(pnt.X(), pnt.Y(), pnt.Z());
+   	mesh.RestrictLocalH (p3d, h);
+ 
+ 	
+-	prop->SetParameters (par0.X(), par0.Y());
+-	pnt = prop->Value();
++	surf.D0(par0.X(), par0.Y(), pnt);
+ 	p3d = Point3d(pnt.X(), pnt.Y(), pnt.Z());
+ 	mesh.RestrictLocalH (p3d, h);
+ 
+-	prop->SetParameters (par1.X(), par1.Y());
+-	pnt = prop->Value();
++	surf.D0(par1.X(), par1.Y(), pnt);
+ 	p3d = Point3d(pnt.X(), pnt.Y(), pnt.Z());
+ 	mesh.RestrictLocalH (p3d, h);
+ 
+-	prop->SetParameters (par2.X(), par2.Y());
+-	pnt = prop->Value();
++	surf.D0(par2.X(), par2.Y(), pnt);
+ 	p3d = Point3d(pnt.X(), pnt.Y(), pnt.Z());
+ 	mesh.RestrictLocalH (p3d, h);
+ 
+-	(*testout) << "p = " << p3d << ", h = " << h << ", maxside = " << maxside << endl;
++	//(*testout) << "p = " << p3d << ", h = " << h << ", maxside = " << maxside << endl;
+ 	/*
+ 	  (*testout) << pnt.X() << " " << pnt.Y() << " " << pnt.Z() << endl;
+ 
+-	  prop->SetParameters (par0.X(), par0.Y());
+-	  pnt = prop->Value();
++	  prop.SetParameters (par0.X(), par0.Y());
++	  pnt = prop.Value();
+ 	  (*testout) << pnt.X() << " " << pnt.Y() << " " << pnt.Z() << endl;
+ 
+-	  prop->SetParameters (par1.X(), par1.Y());
+-	  pnt = prop->Value();
++	  prop.SetParameters (par1.X(), par1.Y());
++	  pnt = prop.Value();
+ 	  (*testout) << pnt.X() << " " << pnt.Y() << " " << pnt.Z() << endl;
+ 
+-	  prop->SetParameters (par2.X(), par2.Y());
+-	  pnt = prop->Value();
++	  prop.SetParameters (par2.X(), par2.Y());
++	  pnt = prop.Value();
+ 	  (*testout) << pnt.X() << " " << pnt.Y() << " " << pnt.Z() << endl;
+ 	*/
+       }
+@@ -970,7 +972,7 @@
+ 	if (mparam.uselocalh)
+ 	  {
+ 
+-	    char * savetask = multithread.task;
++	    const char * savetask = multithread.task;
+ 	    multithread.percent = 0;
+ 
+ 	    mesh->SetLocalH (bb.PMin(), bb.PMax(), mparam.grading);
+@@ -1075,7 +1077,6 @@
+ 		if (triangulation.IsNull()) continue;
+ 	      
+ 		BRepAdaptor_Surface sf(face, Standard_True);
+-		BRepLProp_SLProps prop(sf, 2, 1e-5);
+ 		
+ 		int ntriangles = triangulation -> NbTriangles();
+ 		for (int j = 1; j <= ntriangles; j++)
+@@ -1096,7 +1097,7 @@
+ 		    maxside = max (maxside, p[1].Distance(p[2]));
+ 		    //cout << "\rFace " << i << " pos11 ntriangles " << ntriangles << " maxside " << maxside << flush;
+ 
+-		    RestrictHTriangle (par[0], par[1], par[2], &prop, *mesh, maxside, 0);
++		    RestrictHTriangle (par[0], par[1], par[2], sf, *mesh, maxside, 0);
+ 		    //cout << "\rFace " << i << " pos12 ntriangles " << ntriangles << flush;
+ 		  }
+ 	      }
+diff -Naur netgen-4.5.old/libsrc/occ/occgeom.cpp netgen-4.5.new/libsrc/occ/occgeom.cpp
+--- netgen-4.5.old/libsrc/occ/occgeom.cpp	2006-01-25 13:35:50.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/occgeom.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -7,6 +7,8 @@
+ #include "ShapeAnalysis_ShapeContents.hxx"
+ #include "ShapeAnalysis_CheckSmallFace.hxx"
+ #include "ShapeAnalysis_DataMapOfShapeListOfReal.hxx"
++#include <ShapeAnalysis_Surface.hxx>
++#include <BRepTopAdaptor_FClass2d.hxx>
+ #include "BRepAlgoAPI_Fuse.hxx"
+ #include "BRepCheck_Analyzer.hxx"
+ #include "BRepLib.hxx"
+@@ -16,11 +18,19 @@
+ #include "Partition_Spliter.hxx"
+ //#include "VrmlAPI.hxx"
+ //#include "StlAPI.hxx"
++#include <TopAbs_State.hxx>
+ 
+ 
+ namespace netgen
+ {
+ 
++  OCCGeometry::~OCCGeometry()
++  {
++    NCollection_DataMap<int,BRepTopAdaptor_FClass2d*>::Iterator it(fclsmap);
++    for (; it.More(); it.Next())
++      delete it.Value();
++  }
++
+   void OCCGeometry :: PrintNrShapes ()
+   {
+     TopExp_Explorer e;
+@@ -947,13 +957,13 @@
+ 
+   void OCCGeometry :: BuildVisualizationMesh ()
+   {
+-
+-    cout << "Preparing visualization (deflection = " << vispar.occdeflection << ") ... " << flush;
++    double vispar_occdeflection = 0.01;
++    cout << "Preparing visualization (deflection = " << vispar_occdeflection << ") ... " << flush;
+ 
+ 
+     BRepTools::Clean (shape);
+     //WriteOCC_STL("test.stl");
+-    BRepMesh_IncrementalMesh::BRepMesh_IncrementalMesh (shape, vispar.occdeflection, true);
++    BRepMesh_IncrementalMesh::BRepMesh_IncrementalMesh (shape, vispar_occdeflection, true);
+     cout << "done" << endl;
+ 
+ 
+@@ -973,8 +983,27 @@
+   
+   }
+ 
++  void OCCGeometry::GetFaceTools(int surfi, Handle(ShapeAnalysis_Surface)& proj,
++                                 BRepTopAdaptor_FClass2d*& cls) const
++  {
++    //MSV: organize caching projector in the map
++    if (fprjmap.IsBound(surfi))
++    {
++      proj = fprjmap.Find(surfi);
++      cls = fclsmap.Find(surfi);
++    }
++    else
++    {
++      const TopoDS_Face& aFace = TopoDS::Face(fmap(surfi));
++      Handle(Geom_Surface) aSurf = BRep_Tool::Surface(aFace);
++      proj = new ShapeAnalysis_Surface(aSurf);
++      fprjmap.Bind(surfi, proj);
++      cls = new BRepTopAdaptor_FClass2d(aFace,Precision::Confusion());
++      fclsmap.Bind(surfi, cls);
++    }
++  }
+ 
+-  void OCCGeometry :: Project (int surfi, Point<3> & p) const
++  bool OCCGeometry :: Project (int surfi, Point<3> & p, double& u, double& v) const
+   {
+     static int cnt = 0;
+     if (++cnt % 1000 == 0) cout << "Project cnt = " << cnt << endl;
+@@ -983,18 +1012,22 @@
+ 
+     //(*testout) << "before " << pnt.X() << " "<< pnt.Y() << " "<< pnt.Z() << " " << endl;
+ 
+-    GeomAPI_ProjectPointOnSurf proj(pnt, BRep_Tool::Surface(TopoDS::Face(fmap(surfi))));
+-    if (proj.NbPoints() == 0)
+-      {
+-	cout << "Projection fails" << endl;
+-      }
+-    else
+-      {
+-	pnt = proj.NearestPoint();
+-	//(*testout) << "after " << pnt.X() << " "<< pnt.Y() << " "<< pnt.Z() << " " << endl;
++    Handle(ShapeAnalysis_Surface) proj;
++    BRepTopAdaptor_FClass2d *cls;
++    GetFaceTools(surfi, proj, cls);
+ 
+-	p = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
+-      }
++    gp_Pnt2d p2d = proj->ValueOfUV(pnt, Precision::Confusion());
++    if (cls->Perform(p2d) == TopAbs_OUT)
++    {
++      //cout << "Projection fails" << endl;
++      return false;
++    }
++    pnt = proj->Value(p2d);
++    p2d.Coord(u, v);
++    //(*testout) << "after " << pnt.X() << " "<< pnt.Y() << " "<< pnt.Z() << " " << endl;
++
++    p = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
++    return true;
+   }
+ 
+ 
+@@ -1002,54 +1035,20 @@
+   {
+     gp_Pnt p(ap(0), ap(1), ap(2));
+   
+-    Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
++    Handle(ShapeAnalysis_Surface) proj;
++    BRepTopAdaptor_FClass2d *cls;
++    GetFaceTools(surfi, proj, cls);
+   
+-    gp_Pnt x = surface->Value (u,v);
+-  
+-    if (p.SquareDistance(x) <= sqr(PROJECTION_TOLERANCE)) return true;
+-  
+-    gp_Vec du, dv;
+-  
+-    surface->D1(u,v,x,du,dv);
+-  
+-    int count = 0;
+-  
+-    gp_Pnt xold;
+-    gp_Vec n;
+-    double det, lambda, mu;
+-  
+-    do {
+-      count++;
+-  
+-      n = du^dv;
+-  
+-      det = Det3 (n.X(), du.X(), dv.X(),
+-		  n.Y(), du.Y(), dv.Y(),
+-		  n.Z(), du.Z(), dv.Z());
+-  
+-      if (det < 1e-15) return false; 
+-  
+-      lambda = Det3 (n.X(), p.X()-x.X(), dv.X(),
+-		     n.Y(), p.Y()-x.Y(), dv.Y(),
+-		     n.Z(), p.Z()-x.Z(), dv.Z())/det;
+-  
+-      mu     = Det3 (n.X(), du.X(), p.X()-x.X(),
+-		     n.Y(), du.Y(), p.Y()-x.Y(),
+-		     n.Z(), du.Z(), p.Z()-x.Z())/det;
+-    
+-      u += lambda;
+-      v += mu;
+-  
+-      xold = x;
+-      surface->D1(u,v,x,du,dv);
+-  
+-    } while (xold.SquareDistance(x) > sqr(PROJECTION_TOLERANCE) && count < 50);
+-
+-    //    (*testout) << "FastProject count: " << count << endl;
+-  
+-    if (count == 50) return false;
++    gp_Pnt2d p2d = proj->NextValueOfUV(gp_Pnt2d(u,v), p, Precision::Confusion());
++    if (cls->Perform(p2d) == TopAbs_OUT)
++    {
++      //cout << "Projection fails" << endl;
++      return false;
++    }
+   
+-    ap = Point<3> (x.X(), x.Y(), x.Z());
++    p = proj->Value(p2d);
++    p2d.Coord(u, v);
++    ap = Point<3> (p.X(), p.Y(), p.Z());
+   
+     return true;
+   }
+diff -Naur netgen-4.5.old/libsrc/occ/occgeom.hpp netgen-4.5.new/libsrc/occ/occgeom.hpp
+--- netgen-4.5.old/libsrc/occ/occgeom.hpp	2006-01-25 13:35:50.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/occgeom.hpp	2009-08-07 08:41:22.000000000 +0000
+@@ -15,8 +15,6 @@
+ #include "Geom_Curve.hxx"
+ #include "Geom2d_Curve.hxx"
+ #include "Geom_Surface.hxx"
+-#include "GeomAPI_ProjectPointOnSurf.hxx"
+-#include "GeomAPI_ProjectPointOnCurve.hxx"
+ #include "BRepTools.hxx"
+ #include "TopExp.hxx"
+ #include "BRepBuilderAPI_MakeVertex.hxx"
+@@ -41,8 +39,6 @@
+ #include "Geom_Curve.hxx"
+ #include "Geom2d_Curve.hxx"
+ #include "Geom_Surface.hxx"
+-#include "GeomAPI_ProjectPointOnSurf.hxx"
+-#include "GeomAPI_ProjectPointOnCurve.hxx"
+ #include "TopoDS_Wire.hxx"
+ #include "BRepTools_WireExplorer.hxx"
+ #include "BRepTools.hxx"
+@@ -69,7 +65,7 @@
+ #include "IGESToBRep_Reader.hxx"
+ #include "Interface_Static.hxx"
+ #include "GeomAPI_ExtremaCurveCurve.hxx"
+-#include "Standard_ErrorHandler.hxx"
++//#include "Standard_ErrorHandler.hxx"
+ #include "Standard_Failure.hxx"
+ #include "ShapeUpgrade_ShellSewing.hxx"
+ #include "ShapeFix_Shape.hxx"
+@@ -84,11 +80,15 @@
+ #include "STEPControl_Writer.hxx"
+ #include "StlAPI_Writer.hxx"
+ #include "STEPControl_StepModelType.hxx"
++#include <NCollection_DataMap.hxx>
++
++class Handle_ShapeAnalysis_Surface;
++class BRepTopAdaptor_FClass2d;
+ 
+ namespace netgen
+ {
+ 
+-#include "../visualization/vispar.hpp"
++  //#include "../visualization/vispar.hpp"
+   //  class VisualizationParameters;
+   //  extern VisualizationParameters vispar;
+ 
+@@ -159,6 +159,8 @@
+ class OCCGeometry
+ {
+   Point<3> center;
++  mutable NCollection_DataMap<int,Handle_ShapeAnalysis_Surface> fprjmap;
++  mutable NCollection_DataMap<int,BRepTopAdaptor_FClass2d*> fclsmap;
+ 
+ public:
+   TopoDS_Shape shape;
+@@ -189,6 +191,7 @@
+     vmap.Clear();
+   }
+ 
++  ~OCCGeometry();
+ 
+   void BuildFMap();
+ 
+@@ -204,10 +207,12 @@
+   Point<3> Center()
+   { return center; }
+ 
+-  void Project (int surfi, Point<3> & p) const;
++  bool Project (int surfi, Point<3> & p, double& u, double& v) const;
+   bool FastProject (int surfi, Point<3> & ap, double& u, double& v) const;
+ 
+- 
++  void GetFaceTools(int surfi, Handle(ShapeAnalysis_Surface)& proj,
++                    BRepTopAdaptor_FClass2d*& cls) const;
++
+   OCCSurface GetSurface (int surfi)
+   {
+     cout << "OCCGeometry::GetSurface using PLANESPACE" << endl;
+diff -Naur netgen-4.5.old/libsrc/occ/occmeshsurf.cpp netgen-4.5.new/libsrc/occ/occmeshsurf.cpp
+--- netgen-4.5.old/libsrc/occ/occmeshsurf.cpp	2006-01-25 13:36:26.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/occmeshsurf.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -5,6 +5,8 @@
+ #include <occgeom.hpp>
+ #include <meshing.hpp>
+ #include <GeomLProp_SLProps.hxx>
++#include <GeomAPI_ProjectPointOnSurf.hxx>
++#include <GeomAPI_ProjectPointOnCurve.hxx>
+ 
+ 
+ namespace netgen
+@@ -411,11 +413,16 @@
+   }
+ 
+ 
+-  void MeshOptimize2dOCCSurfaces :: ProjectPoint (INDEX surfind, Point3d & p) const
++  bool MeshOptimize2dOCCSurfaces :: ProjectPoint (INDEX surfind, Point3d & p, PointGeomInfo& gi) const
+   {
+     Point<3> hp = p;
+-    geometry.Project (surfind, hp);
++    bool ok;
++    if (gi.trignum > 0)
++      ok = geometry.FastProject (surfind, hp, gi.u, gi.v);
++    else
++      ok = geometry.Project (surfind, hp, gi.u, gi.v);
+     p = hp;
++    return ok;
+   }
+ 
+   void MeshOptimize2dOCCSurfaces :: ProjectPoint2 (INDEX surfind, INDEX surfind2, 
+@@ -506,38 +513,6 @@
+   }
+ 
+ 
+-  int MeshOptimize2dOCCSurfaces :: 
+-  CalcPointGeomInfo(int surfind, PointGeomInfo& gi, const Point3d& p) const
+-  {
+-    Standard_Real u,v;
+-
+-    gp_Pnt pnt(p.X(), p.Y(), p.Z());
+-
+-    Handle(Geom_Surface) occface;
+-    occface = BRep_Tool::Surface(TopoDS::Face(geometry.fmap(surfind)));
+-
+-    GeomAPI_ProjectPointOnSurf proj(pnt, occface);
+-
+-    if (proj.NbPoints() < 1)
+-      {
+-	cout << "ERROR: OCCSurface :: GetNormalVector: GeomAPI_ProjectPointOnSurf failed!"
+-	     << endl;
+-	cout << p << endl;
+-	return 0;
+-      }
+- 
+-    proj.LowerDistanceParameters (u, v);  
+-
+-    gi.u = u;
+-    gi.v = v;
+-    return 1;
+-  }
+-
+-
+-
+-
+-
+-
+   OCCRefinementSurfaces :: OCCRefinementSurfaces (const OCCGeometry & ageometry)
+     : Refinement(), geometry(ageometry)
+   {
+@@ -627,10 +602,11 @@
+ 	if (!geometry.FastProject (surfi, hnewp, u, v))
+ 	  {
+ 	    cout << "Fast projection to surface fails! Using OCC projection" << endl;
+-	    geometry.Project (surfi, hnewp);
++            double u, v;
++	    geometry.Project (surfi, hnewp, u, v);
+ 	  }
+ 
+-	newgi.trignum = 1;
++	newgi.trignum = surfi;
+       }
+   
+     newp = hnewp;
+@@ -653,14 +629,17 @@
+     hnewp = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
+     newp = hnewp;
+     newgi = ap1;
+-  };
++  }
+ 
+ 
+   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi)
+   {
+     if (surfi > 0)
+-      geometry.Project (surfi, p);
+-  };
++    {
++      double u, v;
++      geometry.Project (surfi, p, u, v);
++    }
++  }
+ 
+   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi, PointGeomInfo & gi)
+   {
+@@ -668,9 +647,10 @@
+       if (!geometry.FastProject (surfi, p, gi.u, gi.v))
+ 	{
+ 	  cout << "Fast projection to surface fails! Using OCC projection" << endl;
+-	  geometry.Project (surfi, p);
++          double u, v;
++	  geometry.Project (surfi, p, u, v);
+ 	}
+-  };
++  }
+ 
+ 
+ 
+diff -Naur netgen-4.5.old/libsrc/occ/occmeshsurf.hpp netgen-4.5.new/libsrc/occ/occmeshsurf.hpp
+--- netgen-4.5.old/libsrc/occ/occmeshsurf.hpp	2005-06-09 14:51:10.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/occmeshsurf.hpp	2009-08-07 08:41:22.000000000 +0000
+@@ -151,7 +151,7 @@
+     MeshOptimize2dOCCSurfaces (const OCCGeometry & ageometry); 
+    
+     ///
+-    virtual void ProjectPoint (INDEX surfind, Point3d & p) const;
++    virtual bool ProjectPoint (INDEX surfind, Point3d & p, PointGeomInfo& gi) const;
+     ///
+     virtual void ProjectPoint2 (INDEX surfind, INDEX surfind2, Point3d & p) const;
+     ///
+@@ -159,9 +159,6 @@
+     ///
+     virtual void GetNormalVector(INDEX surfind, const Point3d & p, PointGeomInfo & gi, Vec3d & n) const;
+ 
+-    
+-  virtual int CalcPointGeomInfo(int surfind, PointGeomInfo& gi, const Point3d& p3) const;
+-
+ };
+ 
+ 
+diff -Naur netgen-4.5.old/libsrc/occ/utilities.h netgen-4.5.new/libsrc/occ/utilities.h
+--- netgen-4.5.old/libsrc/occ/utilities.h	2005-02-11 11:35:43.000000000 +0000
++++ netgen-4.5.new/libsrc/occ/utilities.h	2009-08-07 08:41:22.000000000 +0000
+@@ -33,6 +33,7 @@
+ 
+ #include <string>
+ #include <iostream>
++#include <iomanip>
+ #include <cstdlib>
+ // #include "SALOME_Log.hxx"
+ 
+diff -Naur netgen-4.5.old/libsrc/stlgeom/meshstlsurface.cpp netgen-4.5.new/libsrc/stlgeom/meshstlsurface.cpp
+--- netgen-4.5.old/libsrc/stlgeom/meshstlsurface.cpp	2006-01-11 16:08:20.000000000 +0000
++++ netgen-4.5.new/libsrc/stlgeom/meshstlsurface.cpp	2009-08-07 08:41:22.000000000 +0000
+@@ -946,20 +946,23 @@
+ }
+ 
+ 
+-void MeshOptimizeSTLSurface :: ProjectPoint (INDEX surfind, Point3d & p) const
++bool MeshOptimizeSTLSurface :: ProjectPoint (INDEX surfind, Point3d & p, PointGeomInfo& gi) const
+ {
+   Point<3> hp = p;
+-  if (!geom.Project (hp))
++  if (gi.trignum > 0)
++    ((STLGeometry&)geom).SelectChartOfTriangle (gi.trignum);
++  if (!(gi.trignum = geom.Project (hp)))
+     {
+       PrintMessage(7,"project failed");
+       
+-      if (!geom.ProjectOnWholeSurface(hp)) 
++      if (!(gi.trignum = geom.ProjectOnWholeSurface(hp))) 
+ 	{
+ 	  PrintMessage(7, "project on whole surface failed");
+ 	}
+     }
+   p = hp;
+   //  geometry.GetSurface(surfind)->Project (p);
++  return gi.trignum > 0;
+ }
+ 
+ void MeshOptimizeSTLSurface :: ProjectPoint2 (INDEX surfind, INDEX surfind2, Point3d & p) const
+@@ -970,20 +973,6 @@
+   */
+ }
+ 
+-int  MeshOptimizeSTLSurface :: CalcPointGeomInfo(PointGeomInfo& gi, const Point3d& p3) const
+-{
+-  Point<3> hp = p3;
+-  gi.trignum = geom.Project (hp);
+-
+-  if (gi.trignum)
+-    {
+-      return 1;
+-    }
+-
+-  return 0;
+-  
+-}
+-
+ void MeshOptimizeSTLSurface :: GetNormalVector(INDEX surfind, const Point3d & p, Vec3d & n) const
+ {
+   n = geom.GetChartNormalVector();
+diff -Naur netgen-4.5.old/libsrc/stlgeom/meshstlsurface.hpp netgen-4.5.new/libsrc/stlgeom/meshstlsurface.hpp
+--- netgen-4.5.old/libsrc/stlgeom/meshstlsurface.hpp	2004-09-30 13:13:56.000000000 +0000
++++ netgen-4.5.new/libsrc/stlgeom/meshstlsurface.hpp	2009-08-07 08:41:22.000000000 +0000
+@@ -79,12 +79,10 @@
+     virtual void SelectSurfaceOfPoint (const Point3d & p,
+ 				       const PointGeomInfo & gi);
+     ///
+-    virtual void ProjectPoint (INDEX surfind, Point3d & p) const;
++    virtual bool ProjectPoint (INDEX surfind, Point3d & p, PointGeomInfo& gi) const;
+     ///
+     virtual void ProjectPoint2 (INDEX surfind, INDEX surfind2, Point3d & p) const;
+     ///
+-    virtual int CalcPointGeomInfo(PointGeomInfo& gi, const Point3d& p3) const;
+-    ///
+     virtual void GetNormalVector(INDEX surfind, const Point3d & p, Vec3d & n) const;
+ };
+ 
+diff -Naur netgen-4.5.old/makeForSalome.sh netgen-4.5.new/makeForSalome.sh
+--- netgen-4.5.old/makeForSalome.sh	1970-01-01 00:00:00.000000000 +0000
++++ netgen-4.5.new/makeForSalome.sh	2009-08-07 08:41:22.000000000 +0000
+@@ -0,0 +1,35 @@
++#! /bin/sh
++cp ngtcltk/ngnewdelete.* libsrc/interface/
++
++if test `uname -m` == "x86_64" ; then
++ MACHINE=LINUX64
++else
++ MACHINE=LINUX
++fi
++export MACHINE
++make -C libsrc/csg
++make -C libsrc/general
++make -C libsrc/geom2d
++make -C libsrc/gprim
++make -C libsrc/interface
++make -C libsrc/linalg
++make -C libsrc/meshing
++make -C libsrc/opti
++make -C libsrc/stlgeom
++make -C libsrc/occ
++
++if [ ! -d install ] ; then
++	mkdir install
++fi
++
++cp -r lib install/
++
++if [ ! -d install/include ] ; then
++	mkdir install/include
++fi
++
++cp libsrc/interface/nglib.h libsrc/general/*.hpp libsrc/csg/*.hpp libsrc/geom2d/*.hpp \
++    libsrc/gprim/*.hpp libsrc/linalg/*.hpp libsrc/meshing/*.hpp \
++    libsrc/occ/*.hpp libsrc/opti/*.hpp libsrc/include/mydefs.hpp \
++    libsrc/stlgeom/*.hpp libsrc/include/mystdlib.h \
++    install/include

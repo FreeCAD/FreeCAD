@@ -1,0 +1,73 @@
+#Inventor V2.0 ascii
+
+# Geometry resource file for the RotTransDragger
+
+# Geometry for the rotating parts.
+DEF rotTransRotatorRotator Separator {
+    Material { 
+       diffuseColor  .05 .18 .125
+       emissiveColor .05 .18 .125
+    }
+    DrawStyle { lineWidth 2 }
+    Cylinder {
+	       radius 1.85
+       	height .15
+	       parts SIDES
+    }
+}
+
+DEF rotTransRotatorRotatorActive Separator {
+    Material { 
+       	diffuseColor  .05 .2025 .18
+	       emissiveColor .05 .2025 .18
+    }
+    DrawStyle { lineWidth 2 }
+    Cylinder {
+	       radius 1.85
+	       height .15
+	       parts SIDES
+    }
+}
+
+# Do not display the axis feedback used
+# by the cylinder manips.
+DEF rotTransRotatorFeedback Separator { }
+DEF rotTransRotatorFeedbackActive Separator { }
+
+DEF rotTransTranslatorTranslator Separator {
+    Material { diffuseColor .6 .6 .6 }
+    DrawStyle { style LINES }
+    Sphere { radius 1.732 }
+}
+
+DEF rotTransTranslatorTranslatorActive Separator {
+    Material { diffuseColor .6 .6 0 }
+    DrawStyle { style LINES }
+    Sphere { radius 1.732 }
+}
+
+# Don't show anything for feedback during inactive state.
+DEF rotTransTranslatorFeedback Separator { }
+
+DEF rotTransTranslatorFeedbackActive Separator {
+    Material { diffuseColor .5  .9 .9 }
+    # An arrow aligned with the x-axis.
+    RotationXYZ {
+	       axis Z
+	       angle 1.57079
+    }
+    Separator {
+
+       	#stick
+       	Cylinder { height 4.0 radius 0.05 }
+
+       	#left arrowhead
+	       Translation { translation 0 2.2 0 }
+	       Cone { height 0.4 bottomRadius 0.2 }
+
+       	#right arrowhead
+       	Translation { translation 0 -4.4 0 }
+       	RotationXYZ { axis Z angle 3.14159 }
+	       Cone { height 0.4 bottomRadius 0.2 }
+   }
+}

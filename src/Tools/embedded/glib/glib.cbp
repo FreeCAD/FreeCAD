@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="glib" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/glib" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="/usr/include/python2.6" />
+					<Add directory="/usr/include/gtk-2.0/" />
+					<Add directory="/usr/include/glib-2.0" />
+					<Add directory="/usr/lib/glib-2.0/include" />
+					<Add directory="/usr/include/cairo/" />
+					<Add directory="/usr/include/pango-1.0/" />
+					<Add directory="/usr/lib/gtk-2.0/include/" />
+					<Add directory="/usr/include/gtk-2.0/gdk/" />
+					<Add directory="/usr/include/atk-1.0/" />
+				</Compiler>
+				<Linker>
+					<Add library="/usr/lib/libgtk-x11-2.0.so" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/glib" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="`pkg-config gtk+-2.0 --cflags`" />
+			<Add directory="/usr/include/python2.6" />
+		</Compiler>
+		<Linker>
+			<Add option="`pkg-config gtk+-2.0 --libs`" />
+			<Add library="python2.6" />
+			<Add directory="/usr/lib" />
+		</Linker>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,1107 @@
+Changelog you find now here:
+http://www.freecadweb.org/tracker/changelog_page.php
+
+Version: 0.14
+  * Python path messed up after installation
+  * Installing 0.14 breaks previous python installation
+  * Python function to retrive direct children of a shape using TopoDS_Iterator
+  * Update translations for 0.14
+  * FreeCAD crashes when changing placement of sketch.
+  * Sketcher 180-deg-constraints should not be allowed for lines without intersection point.
+  * Crash when opening Pad
+  * V0.14 - Add icons to its respectives operations in treeview
+  * FreeCAD crash on sweep/loft
+  * Option for new check in part check geometry
+  * Move from PyQt to PySide
+  * use transformShape for uniform scaling in Draft._Clone Feature
+  * Make FreeCAD buildable using QT Creator using windows the VC++ 9 compiler
+  * Part Revolve - add parameter "solid"
+  * emn import failure
+  * Allow Part Loft to create a closed solid i.e. have the Loft start and finish with the same profile
+  * crash when using "move" tool in part workbench
+  * STEP export fails under Windows
+  * OpenSCAD importer can't import more than one layer with the same name
+  * Standard view /Align view to selected face
+  * scale() operation makes face invalid
+  * Installation should set Python path
+  * No scroll bar on preferences dialog window.
+  * Ability to specify more decimal places of precision for fillets, etc.
+  * Starting FreeCAD Produces Blank Window with Granite Texture
+  * model refine corrupts solid with spherical edges.
+  * dump Shapes to python string
+  * Crash on fuse() of two simple extrusions
+  * Boolean operation fails for a mesh
+  * parse keyword args in Part::TopoShapePy::makeOffsetShape
+  * add shape contents in part check geometry task view
+  * entering Transform mode degrades the Placemens rotation to single precision
+  * DLL load failed
+  * Expose BRepExtrema_DistShapeShape to python
+  * Allow user to input simple mathematical expressions when setting values to constraints.
+  * closing Part::TaskCheckGeometry after closing document causes SIGSEGV
+  * exceptions thrown with python object.
+  * PartGui::TaskCheckGeometryResults fails to open
+  * SIGSEGV in Part::GeometryCurvePy::toBSpline
+  * Increase decimal precision
+  * Spin box locked to 1 mm
+  * Add a qt browser to the Parts library
+  * upload models for library
+  * Commit [bba876] causing new errors.
+  * Hide all objects in a group
+  * Part::TopoShape::getMemSize fails for Bezier Curves
+  * icons not showing in Part Loft and sweep dialogues
+  * Drawing SVG output makes ever knot symetrical.
+  * Part Common fails with two surface objects
+  * Teigha File Converter not found, DWG support will be disabled.
+  * recognize remote branches for Version.h in detached head state
+  * Sweeping along a helix causes exception
+  * Helix height cannot exceed 55.87mm
+  * RefineModel() does not mark edges/faces as modified
+  * PartDesign/modelrefine.cpp in FaceUniter::process() : United faces should all be marked as modified
+  * Zero width rectangle (i.e. 2 vertical points) odd behaviour + crash
+  * Planer image changes to number graphic when a part design constraint is made after the planar image
+  * Draft Dimensions due not observe Dimension Precision on FreeCAD Windows
+  * invalid DXF export
+  * Port wiki, phpbb and mantis to self-hosted
+  * Crash propably in MeshPart
+  * Part.BSplineCurve: allow to set degree and mutliplicites when calling constructor.
+  * FeaturePython objects should be able to define how POVray output is generated
+  * Loosing Snap when Object is getting more complex.
+  * PropertyLinkSubList causes crash
+  * BRepPrimAPI_MakeRevolution vs BRepPrimAPI_MakeRevol
+  * plane offset precision is limited to 0.1
+  * Add spiral tool in Part Module
+  * Missing / blank snap tool icons; perpendicular, ortho
+  * Add a Feature to delete a whole subtree of the FeatureTree
+  * OCC precision corruption from App::PropertyFloat
+  * Rotation constructor from vector/to vector not exposed in python
+  * FreeCAD crashed while creating a loft of two ellipses
+  * Robot file RobotExample, double-click PartToWork, crash
+  * No build possible with current CMake version 2.8.12
+  * Constraint datum dimension label shown as gray box vice number in transparent background.
+  * Wrong operator in DraftGeomUtils.getRotation
+  * Tracing over a background image in Sketcher: image is overwritten by first dimensional constraint text
+  * Raytracing export produces bad light definition
+  * Spreadsheet module
+  * Parametr "tolerance" in "Create Mesh from geometry" work strange.
+  * Order of operations for Matrix is nonintuitive, needs documentation
+  * \Raytracing\Templates\ install folder missing - file ProjectStd.pov missing - Povray error StdFinish undefined
+  * Tiny Tweak: v0.14 Shows Some Items as 0.13
+  * Cross section of Torus in Part Workbench fails or give wrong results
+  * Line tool (preview as you move) disappears after new file created
+  * Add a "render" button to the raytracing module
+  * Annoying messages at startup
+  * Touchpad navigation issue
+  * Part --> Geometric Primitives --> Regular Prism
+  * Online help line needs modifying
+  * FreeCAD crash with segfault Linux
+  * 'filemname' is not defined, typo? Can't import DWG
+  * crash at padding a sketch with 42 holes
+  * BuildInstaller.bat issue
+  * Problem exporting (Meshes) to STL & STEP.
+  * Wrong outline in pocket
+  * Vertex in Part Loft and Sweep profile list - error handling
+  * StdMeshers.so: cannot open shared object file: No such file or directory
+  * Meshing algorithm creates wrong shape
+  * Create Mesh from geometry / Export mesh.
+  * Shape.removeSplitter() loses Shape.Placements on some Shapes
+  * Incomplete slices when using Part.slice on a torus
+  * Add a function that can apply a Placement to a Shape like sh.transformGeometry(sh.Placement.toMatrix())
+  * Unable to Loft Sketches with Radiused Corners
+  * Create a test suite for Arch and Draft
+  * Change the Word "Radius" for Chamfering
+  * FreeCAD Compilation fails on Linux 32 bit
+  * Expose Standard_Boolean TopoDS_Shape::IsPartner(const TopoDS_Shape& other) const; to python
+  * Re-assign hot keys 0 thru 6 to line up with the icon placement.
+  * Draft Snap Toolbar Icons Crossed up
+  * Preserve names and colors on console mode export to STEP
+  * Placement Position Entry can be improved
+  * Patch to allow use of external PyCXX
+  * [Sketcher] Dragging + ESC
+  * Part WB extrude from ruled surface makes either two faces or a solid
+  * Split shape color setting from current preference page into a separate page
+  * Touchpad Navigation issue
+  * Can't change STEP/IGES export units through Python interface
+  * Part names are incorrect on import from STEP file
+  * Make Clipping-Plane-placement editable + support multiple planes
+  * Clipping plane should have more controls
+  * Edge chain selection
+  * Toolbar Customizer Move Buttons enabled but inactive
+  * Crash when quitting after using Windows > Tile
+  * Merged Project object being imported changes size when moved
+  * Cut mesh with plane
+  * Feature request - box selection for faces in set color mode
+  * Original color STEP model lost in import
+  * add directory to findCoin cmake
+  * wireframe mode should include vertices in display
+  * Can not export. No way to select file type.
+  * selftest errors
+  * Unable to export file to any file format
+  * File extensions missing from supported file descriptions in open/save dialgos
+  * [Sketcher] Small inconsistency with update
+  * Hide turntable dialog when in fullscreen mode
+  * Keep drop down menus open when changing to another part
+  * Skin remains when cutting rectangle
+  * Suppress CMake warning if OCE wasn't found but OCC was found
+  * add preferences option for bounding box colour
+  * Export to BREP does not work in Ubuntu
+  * Freecad sometimes 'forgets' the ability to handle stp files
+  * Snap Center Point at Center of Cylinder, Circle
+  * Boolean Cut Fails with Extruded Shapestring
+  * DeprecationWarning: Use 'TypeId' instead
+  * Abort on startup
+  * The output of __repr__() of Vector and Rotatio would create Objects with different Values do to inapropriate rounding
+  * Improvements for Brep Inventor nodes
+  * Crash on filleting
+  * Download manager
+  * Copy and Paste of a boolean operation moves children to new object
+  * Windows installer long standing issues [easy fix]
+  * IndentationError in Python Console
+  * Tooltips should include shortcuts keys in parentheses
+  * reading from the python console for using pdb
+  * Segfault when selecting a duplicate pad
+  * CMake stops with error "Circular ... <- ... dependency dropped." if source == build directory
+  * Inventor Navigation continues with released Mouse Button
+  * ver 0.13 rev 1828, drafting, measurement, angles
+  * Feature Request:: DXF Export in XY plane
+  * Add webGL exporter
+  * an improved Helix icon as suggested by raulshc
+  * DXF export of "large" Polyline Curves
+  * DWire Command Number Entry Improvement
+  * Bug in Draft Edit -> Add points
+  * Crash when executing script 3 times
+  * TimeInfo: diffTimeF(): added default arg
+  * TimeInfo: diffTimeF(): non-zero result for ident. time stamps
+  * Task Deadlock: Part Workbench disabled when closing Combo View with open Task
+  * Placement Panel not removed after Entity Deletion
+  * Wrong header define PART_GEOMETRY_H in ProgressIndicator.h
+  * Allow Draft tool to create Part Primitives
+  * Enclose isinstance(Edge.Curve,something) in try-except
+  * Crash occurs in version 0.13 when trying to use alignment tool
+  * addObject with four arguments does not return the DocumentObject
+  * Tree icons for Part Ruled surface, Part Export and some other fixes
+  * Draft tools referenced before assignment
+  * arc orientation sometimes becomes wrong when exporting to DXF
+  * Cannot add object to DocumentObjectGroupPython
+  * display tree icons for PartDesign workbench
+  * remove duplicate include files in PartFeature.h
+  * Sketcher Polyline tool "tool tip" "M key"
+  * use a face as a profile for Part Loft and sweep
+  * Tree icons for Part Vertex, Line, Edge, Circle, Ellipse and Helix
+  * New Start Page tab every time the Start WB is selected
+  * Duplicate code inside importDAE.py ?
+  * EngineBlock: unable to select bspline
+  * Crash on document recompute
+  * Objects imported by Drag-n-Drop end up in the wrong document
+  * Draft Working Plane Button ToolTip
+  * Draft Line - Start and End properties don't respect placement
+  * Stable PPA
+  * latest git version doesn't build on mint linux 2013-02-10
+
+Version: 
+  * Sketcher module added with constraint solver using SketchFlat
+  * Add Draft module to installer
+  * Fix many Python reference counting errors
+  * Implement edit mode for meshes and shapes
+  * Property editor for placements added
+  * Implement Python's number protocol for MatrixPy and VectorPy
+  * Implement import/export framework
+  * Workaround for offscreen renderer due to a huge memory leak in Coin 2.4.x
+  * Support of Qt 4.1.4 in Draft module
+  * Porting sources to Mac OS X Leopard
+  * Implement a progress indicator to run with OCC algorithm classes
+  * Binding for SWIG-generated pythonocc added 
+
+Version: 0.7.1779 Date: Sun 14 Dec 2008 +++++++++++++++++++++++++++++
+  * Implementation of uuid
+  * Support of transient directories for FreeCAD documents
+  * Basic support to create SVG files from scenegraph
+  * Python binding finished for all shape and geometry classes in Part module
+  * Move to PyCXX 5.4.2
+  * Class Writer can now insert ascii or bin data in xml stream
+  * Start porting to OpenCascade 6.3
+  * Use Tango icon set  
+
+Version: 0.7.1672 Date: Sat 25 Oct 2008 +++++++++++++++++++++++++++++
+  * Update of Windows installer
+
+Version: 0.7.1658 Date: Sat 11 Oct 2008 +++++++++++++++++++++++++++++
+  * Fix many license issues
+  * Define QT_NO_CAST_FROM_ASCII to avoid problems with UTF-8 encoded strings
+  * Support additional module paths in home directory
+  * Re-implement the "What's this" facility to start the help window with context-sensitive help
+  * Create Python commands from the user input in the property editor
+  * Support of groups in property editor
+  * Implement general export framework
+  * Implement graphical user-interface for creation of fillets and extrusions
+  * Add scene inspector for analyzing the OpenInventor scene graph  
+  * Rework online help, prepared for new framework in Qt4.4 
+
+Version: 0.7.1514 Date: Sun 03 Aug 2008 +++++++++++++++++++++++++++++
+  * Add more stuff to the copyright file
+  * control: add build-dep to python-central 
+  * Abstract interface for geometric data types
+  * Avoid flickering of cursor when cutting several meshes at once
+  * Update to the latest debian policy version 3.7.3
+  * Several bugs fixed with Python GIL
+  * Make TopoDS_Shape and Geom_Geometry classes accessible from Python
+  * Make Python interface for algorithms on shapes and geometries
+  * Support of mesh segments
+  * Add test/annotation object
+  * Add simple measurement facility
+  * Remove OpenCascade dependency in Mesh module
+  * Thumbnail facility added
+  * Start cMake support
+  * Compile with boost 1.35
+
+Version: 0.7.1344 Date: Wed 21 May 2008 +++++++++++++++++++++++++++++
+  * Write patch file to make builds with OpenCASCADE libs inside but with no
+    dependency to libopencascade6.2
+  * New debian package for Feisty
+  * New package with fixed self-dependency problem
+  * Embed required OpenCASCADE libs into this package as long as no official
+    Debian package is available  
+
+Version: 0.7.1342 Date: Mon 19 May 2008 +++++++++++++++++++++++++++++
+  * Switch to new versioning scheme of OpenCASCADE packages
+  * Re-license all FreeCAD source code to LGPL
+
+Version: 0.7.1316 Date: Sat 26 Apr 2008 +++++++++++++++++++++++++++++
+  * Support of pivy (Python binding for Coin/SoQt)
+  * Support of PyQt4
+  * General support of SWIG modules
+  * Cleanup code and fix of several race conditions or insecure code (flawfinder)
+  * UTF-8 support
+  * Optimize mesh evaluation/validation classes to be faster and using less memory
+  * Include Pivy -- the Python binding for Coin
+
+Version: 0.7.1031 Date: Fri 04 Jan 2008 +++++++++++++++++++++++++++++
+  * Qt4 port finished
+  * Support of Python binding for Qt4
+  * Support of Python binding for Coin
+  * Support of entirely in Python written modules
+  * Added support of model driven architecture for Python binding
+  * Use boost's signal/slot mechanism to update data
+
+Version: 0.6.645 Date: Tue 24 Jul 2007 ++++++++++++++++++++++++++++++
+  * Qt4 port started
+
+Version: 0.6.476 Date: Tue 27 Feb 2007 ++++++++++++++++++++++++++++++
+  * Use revision number in version naming scheme
+  * Initial Release of Debian/Ubuntu package
+
+Version: 0.5.285 Date: Thu 05 Oct 2006 ++++++++++++++++++++++++++++++
+  * Use revision number in version naming scheme
+  * Initial Release of Debian/Ubuntu package
+  * Optimizations for huge meshes implemented
+  * Export VRML97 from scenegraph
+  * Export mesh as compressed VRML
+  * have only one color bar per scene
+  * group classes supporting various mesh formats to two classes: MeshOutput and MeshInput
+
+Version: V0.5B8 Date: Tue Aug 01 2006 +++++++++++++++++++++++++++++++
+  * Write FreeCAD.log to AppData folder
+  * Use 'HOME' for Linux and 'HOMEDRIVE' for Windows only
+  * new type FCUInt introduced
+  * use same compressed color values as Coin3d
+  * Remove PYTHONPATH stuff
+  * port to OpenCascade 6.1
+  * Switch the installer to python23.zip type lib
+  * PropertyFile added and editor implemented
+  * Check whether a project file is already open and throw an exception
+  * Allow to open a project file even if not everything can be loaded e.g. if a module is missing
+  * Select name if a file instead of directory was given in FileDialog's getOpenFileName() or getSaveFileName() methods
+  * Bug fixed in harmonizing normals of a mesh
+  * speed up a lot several algorithms that searches for independant components of a mesh or searches for inhomogenous normals
+  * make MeshKernel::VisitNeighbourFacets() more robust against topologic errors in mesh
+  * Option added to do one- or two-side rendering of meshes
+  * Dialog to enter numbers higher than the maximum of int's, i.e numbers up to 4294967295
+  * Bug 1449428 (Crash when output to console too long) fixed by replacing vsprintf by vsnprint
+  * Bug 1558658 (A hidden view with a spinning part consumes CPU-Time) fixed
+  * Bug 1558622 (Version.h is not generated with a normal build) fixed
+  * Patches 1559380, 1559154 applied
+  * Bug 1564726 fixed (Does not compile with GCC 4.1.1)
+  * Bug 1566863 fixed (Float Property is has limited range [0..12])
+  * RFE 1566398 impl. (Property editor for App::PropertyEnumeration)
+
+Version: V0.5B7 Date: Thu May 18 2006 +++++++++++++++++++++++++++++++
+  * move to SVN version control
+  * added spins to edit line width and point size in display dialog
+  * Optimized SoFCMeshNode for handling of huge meshes
+  * Prepend SoCallback node to log all traversing actions (only for debugging)
+  * command for toggling clipping plane
+  * command for freezing view positions
+  * added new ViewProvider for meshes with more than 100.000 triangles using SoFCMeshNode for optimizations
+  * save/restore of view providers into/from a separate XML file in a project file
+  * check if project file exists when loading from command line
+  * using grid to speed up cutting algoritm for huge meshes
+  * calculate inverse color of mesh color for open edges 
+  * added project properties to App::Document
+  * added material property class
+  * allow to disable notification of property container when a property has changed its value
+  * added dialog to show and set project information
+  * start moving display relevant properties from DocumentObject (data) classes to the associated ViewProvider (view) classes
+  * reimplemented dialogs DlgDisplayPropertiesImp and DlgMaterialPropertiesImp
+  * added ViewProvider class for Python 
+  * separate data and view properties and show in different tabs in the editor
+  * new methods added to Gui::DocumentPy to get active object and object by name
+  * add only required Inventor nodes to all ViewProvider subclasses and removed from ViewProviderDocumentObject
+  * use an additional STL vector to preserve the creation order of objects
+  * added a group class for document objects and its view provider
+  * added PropertyPartShape to save/load shapes to/from a document
+  * rename document member in SoFCSelection after a document has been renamed
+  * Prepared for OCC 6.1: The modules 'AppMesh', 'AppPartGui', 'AppRaytracing' and 'AppRaytracingGui' need the module 'TKMesh.lib'
+  * Added a method to XMLReader to get unsigned long from a string
+  * Make several methods of BaseView const
+  * Bug fixed in TreeView
+  * Added new action classes for en/disabling selection and highlighting with their colors
+  * Bug fixed when opening a project with the same file name
+  * RFE 1450472 Clear selection of active document only
+  * SoFCMeshOpenEdge shape node added to render the open edges of a mesh
+  * print some information in Attach() and Detach() in Observer in debug mode
+  * delete command objects when application is exiting
+  * bug fixed in 'Refresh' command
+  * active view stuff fixed
+  * proper handling of double clicks with wheel button
+  * Random color implemented
+  * Box zoom implementation started
+
+=====================================================================
+  MOVE TO SUBVERSION
+=====================================================================
+
+Version: V0.5B6 Date: Sat Apr 15 2006 +++++++++++++++++++++++++++++++
+  * renamed Vector3D to Vector3f indicating the precision of float and Vector3d as double respectively
+  * updated the unittests in Test framework using new API
+  * Added some experimental properties to mesh viewprovider
+  * Allow to build up structured menus from within Python
+  * StdWorkbench::setupContextMenu() implemented
+  * PropertyStringList added
+  * Continued implementation of property editor
+  * Nullify reference to deleted object of dependent objects (Document::remObject)
+  * Check if the reference is valid in Mesh::Feature::getMesh() and subclasses
+  * Several bugs in Raytracing module fixed
+  * API changes in DocumentPy:
+    - Recompute -> recompute
+    - activeFeature -> activeDocument
+    - addFeature -> addObject
+    - getFeature -> getObject
+    - removeFeature -> removeObject
+    - listFeatures -> listObjects
+    - AddFeature removed
+    - GetFeature removed
+    - GetActiveFeature -> getActiveObject
+  * API changes in Property
+    - Save(Writer&) -> Save(Writer) const
+  * API changes in ViewProviderDocumentObject
+    - attach(App::AbstractFeature*) -> attach(App::DocumentObject*)
+  * Applied patch 1470733, SetOperation patch
+  * Applied patch 1470737, new module tritritest
+  * Fixed bug in ViewProviderDocumentObject::ViewProviderDocumentObject(): pcPointStyle->ref()
+  * Check for scheme version when loading a project file and handle the reading procedure differently
+  * RFE 1470745 implemented (material mode: Open Edges)
+  * show also members of DocumentObjects in Python (implemented in DocumentObjectPy::_getattr)
+  * show members in MaterialPy, DocumentPy and FeaturePy
+  * Fixed bugs with C++/Python framework 
+    (NOTE: All C++ classes returning an associated Python object with a reference to itself must NOT return always a new instances 
+           for each call but it must return the same instance, otherwise the Python objects cannot be notified when the C++ object
+           has been destroyed)
+  * Allow drag'n'drop for files coming from ZIP files
+  * More intuitive handling of property editor
+
+Version: V0.5B5 Date: Sat Feb 25 2006 +++++++++++++++++++++++++++++++
+  * Make use of AC_LIBTOOL_DLOPEN macro for Unix/Linux based systems to allow to create modules.
+  * Create a loader module (without 'lib' prefix ) for each shared library (with 'lib' prefix)
+  * The dirty hack to create symlinks during installation has been removed.
+  * Builder3D Visual debugging facility
+  * set default tabwidth in editor to 4 char, can be changed in user settings
+  * block comment/uncomment implemented
+  * Undo/Redo of block comment or uncomment implemented
+  * Bug in DocItem class fixed: allow only one item with the same name
+  * set the dirty flag after Gui::Document has been changed, remove after saving the document
+  * WildMagic dllexport define (patch 1441148)
+  * fix assert if missing feature (patch 1441146)
+  * new modules (patches 1441103, 1441082)
+  * Fixes for new modules (patch 1441145)
+  * Specify orthographic or perspective camera in user settings
+  * Ignore built files in Python script for creation of modules
+  * Fixing Bug 1442521,
+  * turn backface culling on/off (RFE 1443940). Seems to work properly with convex geometries only
+  * Enabled two-side rendering for meshes in case it is not a solid
+  * Return the edge list by reference in mesh kernel (to avoid memory leak)
+  * PropertyVectorList implemented
+  * Use PropertyVectorLists and PropertyFloatLists in Mesh::Curvature feature and its associated view provider
+  * PropertyColor(List) implemeted
+  * PropertyMeshKernel added
+  * move all Projects to NODEFAULTLIBS
+  * move all Projects to xcopy
+  * start implementing the link between FreeCAD property and property editor
+  * New methods in Builder3D (patch 1450695,1451028)
+  * Set operations (patch 1451026, 1451138, 1451141)
+  * start const Mesh and MeshProperty
+  * implement class to evaluate and validate meshes with corresponding feature classes
+  * dialog added to analyze and repair meshes
+  * special view providers to display defects of meshes
+  * delete features from the document
+  * bug fixed: remove features to be deleted from the selection
+  * bugs fixed in selection node
+  * restore original document file name after loading a project file
+  * start implementing an Inventor node rendering the mesh structure directly
+
+Version: V0.5B4 Date: Sat Feb 04 2006 +++++++++++++++++++++++++++++++
+  * use type system in selection class
+  * replace DataStream classes by i/ostream classes
+  * start standardization of API of exported Python classes
+  * implement standard factory in Base::Type
+  * remove Feature and ViewProvider Factory, use Standard
+  * using update instead of recompute after loading document
+  * using c++ name in addFeature()
+  * updating the installer files
+  * fixing the build Dist scripts
+  * implementing Comment for Save picture
+  * implement MIBA
+  * use type system in workbench classes
+  * VC8 Port
+  * Property Pre Callback
+  * Property Lists started
+  * FeatureTest
+  * Run script from editor
+
+Version: V0.5B3 Date: Mon Jan 30 2006 +++++++++++++++++++++++++++++++
+  * use the zipios++ library for reading from/writing into compressed archives
+  * update zipios++ sources to current CVS version
+  * mesh creation with less memory usag (patch from bgrupp)
+  * a fast algorithm to count edges (2 manifold) without additional memory (patch from bgrupp)
+  * resolve problems for running macros from file with Microsoft Visual Studio 8.0 (patch from bgrupp)
+  * I/O of points and meshes in document container file
+  * fixes memory exception in view provider for meshes
+  * fixes memory exception when rendering an Inventor node with huge amount of data
+  * more efficient loading of huge meshes
+
+Version: V0.5B2 Date: Sun Jan 15 2006 +++++++++++++++++++++++++++++++
+  * implementing Mesh save and restore
+  * implementing Points save and restore
+  * Save/Open of compressed XML documents
+  * Preference page for document
+  * Setting of document compression level
+  * set _STLP_USE_NEWALLOC to free memory allocated in associative containers
+  * implement Open/Save/SaveAs for use from Python
+  
+Version: V0.5B1 Date: Jan 15 2006 +++++++++++++++++++++++++++++++
+  * changes due Version in Installer
+  
+Version: V0.3B5 Date: Wed Nov 30 15:56:28 2005 +++++++++++++++++++++++++++++++
+  * redesign of Command framework finished
+  * download URL adjusted
+  * allow to download documentation from SourceForge into another directory
+  * store user settings under .FreeCAD on Linux platforms
+  * languageChange f?r CommandGroup and its items
+  * connect and implement Viewer Preferences and updates
+  * fixing Display Dialog
+  * increment reference count of root element before adding to the scenegraph (fixes also the bug with IV examples)
+    and decrement counter when viewer gets destructed
+  * bug fixed in destruction of viewer
+  * moved code from SoFCSelectionAction::callDoAction() to SoFCSelection::doAction() as the selection object must decide what to do, not the action
+  * Implementing save document (partially)
+
+Version: V0.3B1 Date: Thu Aug 11 06:20:13 2005 +++++++++++++++++++++++++++++++
+  * Begin Workbench framework redesign
+  * BUG 1216922 fixed (Bug with active document)
+
+Version: V0.1B120 Date: Tue Jul 26 17:09:13 2005 +++++++++++++++++++++++++++++++
+  * Move import shapes from Import to Part
+  * Reworking Feature Property handling
+  * Implementing Feature Linking
+  * Add Naming to Features (AddFeature() needs now a Type and a Name
+  * Moving Vector3D and Matrix4D in Base::
+  * Moving DataWithProperty in Base::
+  * Reworking Points
+  * Points load Ascii
+  * CurveNet Feature in Part
+  * Bug 1242877 fixed (Reference counting)
+
+Version: V0.1B119 Date: Wed Jun 29 12:57:43 2005 +++++++++++++++++++++++++++++++
+  * reworking recalculation of the document
+  * implementing Feature viewing modes and material
+    - Python binding for that all
+  * ViewProvider framework in Inventor viewer
+  * remove CasCade Viewer
+  * Interpreter::runString returns now a value
+  * Improving mouse interaktions
+    - fix and enable Spin rotation
+    - implement panTo middle mouse double click
+  * implementing selection
+  * using "right" transparency mode
+  * RFE 1187174 implemented (Calling "print" for internal Python objects)
+  * Several improvements:
+    - Command Std_ViewFullScreen switched to toggle command
+    - Use ESC or F to leave fullscreen mode (hard coded in MDIView)
+    - Ignore ContextEvents and accelerators while the progress bar is working
+    - Use double prescision for double in parameter editor
+    - Consider fullscreen windows in ApplicationWindow::activeView()
+  * Initial impl. of a simple color legend
+  * Show progressbar not from beginning but after a few seconds
+  * Using own event loop (QDialog not exception-safe)
+  * RFE 1149709	Missing waitcursor implemented (using Sequencer therefore)
+  * RFE 1211364	Clean up when closing App (using Python's Py_AtExit and Py_Finalize)
+  * BUG 1232848   Recursion in IsKind()
+
+Version: V0.1B118 Date: Tue Jun 07 15:32:43 2005 +++++++++++++++++++++++++++++++
+  * Bug 1165895 fixed (Bug in closing document)
+  * RFE 1223968 implemented (Pasting scripts in the python console)
+  * Bug 1224686 Action.h: command not found error during linux make
+    Check for QT_UIC and QT_MOC again after the Qt test
+
+Version: V0.1B117 Date: Sun Mar 20 14:06:55 2005 +++++++++++++++++++++++++++++++
+  * Mesh data structure added to Mesh module
+  * Feature import for STL files added
+  * Viewprovider for meshes added
+  * Integration of latest Image module source
+  * RFE 1159671 implemented (elements in alphabetic order)
+  * Finishing drag&drop multible files
+  * Finishing open from command line and droping on Programm icon
+  * solving load dependand modules
+  * more convenient Python console
+  * Bug 1149706 fixed (Cannot load CAD curves)
+  * RFE 1214187 implemented (Remove views from main window)
+
+Version: V0.1B116 Date: Wed Mar 16 23:19:23 2005 +++++++++++++++++++++++++++++++
+  * dummy build
+
+Version: V0.1B115 Date: Sun Feb 27 22:01:44 2005 +++++++++++++++++++++++++++++++
+  * dummy build
+
+Version: V0.1B114 Date: Sun Feb 13 17:07:39 2005 +++++++++++++++++++++++++++++++
+  * Encapsulation of 'wget' in NetworkRetriever
+  * RFE 1100311 Message if wget cannot be found
+  * Bug 1124689 fixed (Problems when all MDI windows closed)
+  * Heavy bug in View3DInventorEx fixed
+  * Check default parameter in FCParameterGrp::GetASCII() and use "" if it is 0
+  * enhanced NetworkRetriever
+  * loading/saving of user defined macros
+  * Logging into file is working under Linux now
+  * RFE 1149922 implemented (Autoscrolling at startup)
+
+Version: V0.1B113 Date: Fri Feb 11 00:47:38 2005 +++++++++++++++++++++++++++++++
+  * realize code guidelines in Gui
+  * Patch 1119485 inserted
+  * Method to class Tools added to convert between SbSFImage and QImage
+
+Version: V0.1B112 Date: Mon Jan 31 01:57:33 2005 +++++++++++++++++++++++++++++++
+  * redesign of PrefWidgets
+
+Version: V0.1B111 Date: Sun Jan 30 19:02:55 2005 +++++++++++++++++++++++++++++++
+  * reactivate Inventor viewer
+  * build in examples
+  * new view commands
+
+Version: V0.1B110 Date: Fri Jan 28 16:38:29 2005 +++++++++++++++++++++++++++++++
+  * fix 1110577
+  * finish macro module switching
+
+Version: V0.1B109 Date: Mon Jan 24 11:13:15 2005 +++++++++++++++++++++++++++++++
+  * plugin containing FreeCAD's specific widgets
+    Note: You have to build the sources under src/Tools/plugins/widgets and
+        copy the library to $QTDIR/plugins/designer to make use of them
+  * Changing logging
+    - -l option switch the file log on
+    - -lf to a special file
+    - SetStatus and GetStatus switch on or off the observer
+
+Version: V0.1B108 Date: Sat Jan 15 14:24:52 2005 +++++++++++++++++++++++++++++++
+  * Moved HtmlView to HelpView   * Reimplementaion
+  * Added class FileChooser ( line edit with button on its right side to browse)
+  * Merged pref. page "Help viewer" and "Online Help" to one page
+  * TextEdit class with completion
+
+Version: V0.1B107 Date: Tue Jan 11 11:16:46 2005 +++++++++++++++++++++++++++++++
+  * put Application and Document (and helper classes) in namespace App
+  * put exception handling into ParameterPy wrapper
+  * PIMPLE document in class and py class
+  * put the whole document python methodes with the macros and exceptions
+  * removing doctype and put Feature handling into the document
+  * Bug 1100780 fixed (no color in editor after first start)
+
+Version: V0.1B106 Date: Mon Jan 10 11:16:24 2005 +++++++++++++++++++++++++++++++
+  * fixed Bug 1099103 by fixing HasGroup in ParameterPy
+
+Version: V0.1B105 Date: Mon Jan 03 16:06:30 2005 +++++++++++++++++++++++++++++++
+  * RFE 1076842 implemented (overlong MDi tabs)
+  * Bug 1076836 fixed (Focus problem with MDI)
+  * Redesign of PrefWidget & WindowParameter
+  * ProgressBar shows remaining time
+  * Bug fixed in removing groups from parameters
+  * Update Commands tab in Customize dialog after creating any macro commands
+  * Allow to modify existing macro commands
+  * FileIconProvider class improved
+  * PyResource class improved
+  * updated README.Linux
+  * clear out Action.cpp/h
+  * use QCString instead of QString for all prefPath and prefEntry properties. This is because of i18n
+  * Translator class added
+  * .ts files updated
+  * Change language on the fly
+
+Version: V0.1B104 Date: Tue Dec 21 22:15:28 2004 +++++++++++++++++++++++++++++++
+  * Bug 1078371 fixed (crash of property editor)
+
+Version: V0.1B103 Date: Wed Dec 08 14:33:04 2004 +++++++++++++++++++++++++++++++
+  * RFE 1080561 (keeping standard toolbars) implemented
+  * RFE 1080558 (Return in Macro Dialog) implemented
+  * RFE 1078375 (Report view enhancement) implemented
+  * Import of STEP and IGES files
+
+Version: V0.1B102 Date: Mon Dec 06 02:15:33 2004 +++++++++++++++++++++++++++++++
+  * Redesign of undo/redo framework
+  * Redesign of the customize pages framework
+  * Simplified impl. of the General and Editor preference pages
+
+Version: V0.1B101 Date: Thu Dec 02 22:32:22 2004 +++++++++++++++++++++++++++++++
+  * First working experiments with associative parametric modeling
+
+Version: V0.1B100 Date: Mon Nov 29 19:40:56 2004 +++++++++++++++++++++++++++++++
+  * set up new exception handling for python call back
+  * implement std property acces in App::Feature
+
+Version: V0.1B99 Date: Fri Nov 26 22:40:56 2004 +++++++++++++++++++++++++++++++
+  * replace QextMDI by own impl. using QWorkspace and QDockWindow
+  * Tabbar added to the bottom of the workspace area
+
+Version: V0.1B98 Date: Fri Nov 12 18:31:46 2004 +++++++++++++++++++++++++++++++
+
+Version: V0.1B97 Date: Thu Nov 11 22:40:19 2004 +++++++++++++++++++++++++++++++
+
+Version: V0.1B96 Date: Tue Nov  9 00:29:38 2004 +++++++++++++++++++++++++++++++
+  * Impl. of a property editor as described in "Practical Qt"
+
+Version: V0.1B95 Date: Wed Nov 03 17:34:53 2004 +++++++++++++++++++++++++++++++
+  * Insert CutFeature
+  * Automatic Property validation
+
+Version: V0.1B94 Date: Sat Oct 23 18:58:52 2004 +++++++++++++++++++++++++++++++
+  * finished implementation of the Tip of the day
+  * splitted several big files in smaller ones
+  * namespace Gui::Kexi for property editor
+  * namespace Gui::Dialog   * documentation for most dialogs
+  * use QToolBox provided by Qt instead of StackBar
+  * removed most of unneeded includes (not in PCH) to speed up compilation
+  * use own code convention on several classes
+
+Version: V0.1B93 Date: Thu Oct 14 21:55:08 2004 +++++++++++++++++++++++++++++++
+  * features now inserted in the document and get called by a function
+
+Version: V0.1B92 Date: Sun Oct 03 17:55:31 2004 +++++++++++++++++++++++++++++++
+  * using namespaces in several modules in Gui now
+  * documentation
+
+Version: V0.1B91 Date: Tue Sep 21 15:34:55 2004 +++++++++++++++++++++++++++++++
+  * New organsiation of Build scripts in fcbt (FreeCADBuildTool)
+  * first experiments with namespaces With Console (FCConsole) and Interpreter
+  * DocTypePy object for document behavior implented
+
+Version: V0.1B90 Date: Tue Sep 07 19:25:03 2004 +++++++++++++++++++++++++++++++
+  * Clean up path finding
+  * port to OCC 5.2
+  - switch to new iostream (finaly!!!)
+
+Version: V0.1B89 Date: Fri Aug 20 19:03:18 2004 +++++++++++++++++++++++++++++++
+  * pimple App/Application and App/Document
+  * change python export
+
+Version: V0.1B87 Date: Thu Jun 03 23:47:13 2004 +++++++++++++++++++++++++++++++
+  * several minor bugs fixed
+  * load settings at startup made in preferences
+  * use Qt splashscreen
+
+Version: V0.1B86 Date: Thu May 06 21:15:32 2004 +++++++++++++++++++++++++++++++
+  * removed EnvPrints and put it in Config
+
+Version: V0.1B85 Date: Sun Apr 18 01:22:41 2004 +++++++++++++++++++++++++++++++
+  * Configure script finished, FreeCAD is now running under Linux :-)),
+   start linux port of the modules now
+
+Version: V0.1B84 Date: Wed Apr 07 15:59:56 2004 +++++++++++++++++++++++++++++++
+  * Completely rework init phase and main.cpp
+
+Version: V0.1B83 Date: Mon Apr  5 00:42:17 2004 +++++++++++++++++++++++++++++++
+  * using Qt's qmake tool to build FreeCAD
+  * FreeCAD now is running under Debian  in console mode :-)
+   but in GUI mode it    crashes after the splashscreen appeared :-(
+
+Version: V0.1B82 Date: Sat Mar 20 20:28:27 2004 +++++++++++++++++++++++++++++++
+  * working configure script producing shared libraries
+
+Version: V0.1B81 Date: Fri Jan 23 18:28:15 2004 +++++++++++++++++++++++++++++++
+  * connect Python callback functions to QWidget signals
+
+Version: V0.1B80 Date: Wed Jan 07 13:36:29 2004 +++++++++++++++++++++++++++++++
+  * initial Python binding using Qt's WidgetFactory framework
+  * Scintilla-Binding reimplemented
+  * Autowaitcursor improved
+  * a first version of python console added
+
+Version: V0.1B79 Date: Thu Dec 18 21:48:48 2003 +++++++++++++++++++++++++++++++
+  * included tkinter into libPack
+  * using PyUnit and unittestgui.py in test framework
+
+Version: V0.1B78 Date: Sun Nov 23 13:15:15 2003 +++++++++++++++++++++++++++++++
+  * some fixes for the installer
+    - using the right Mod dir in case of Installer
+    - Using absolute Doc path
+    - using Start/Program for Shortcuts
+
+Version: V0.1B77 Date: Fri Nov 14 14:56:14 2003 +++++++++++++++++++++++++++++++
+  * Finished Setup stuff
+  * Removed all relativ paths
+  * config HomePath is now not in bin anymore
+  * all config files one dir up
+  * FC runs now from every derectory
+  * remove Startup and Install script
+
+Version: V0.1B76 Date: Sat Nov 08 14:47:32 2003 +++++++++++++++++++++++++++++++
+  * spent own module for BitmapFactory
+  * make internationalization much more flexible and compile all the *.ts files
+  into the application (no need of *.qm files at runtime any more)
+  * new factory for scripts, widgets and languages
+  * change FreeCAD and Projects to run with first Version of LibPack
+
+Version: V0.1B75 Date: Sat Nov 01 18:38:15 2003 +++++++++++++++++++++++++++++++
+  * changes on the Env handling for the LibPack
+  - EnvMacros.h added
+  * Startup bat
+  * Tools to make Binary and Setup distributions
+  * Internationalization is now supported
+
+Version: V0.1B74 Date: Fri Oct 31 00:27:14 2003 +++++++++++++++++++++++++++++++
+  * add function RegisterIcon() in ApplicationWindow
+
+Version: V0.1B73 Date: Mon Sep 29 00:36:57 2003 +++++++++++++++++++++++++++++++
+  * dependencies from header files reduced to speed up compilation
+  * PIMPLed the ApplicationWindow class
+  * make the python methods in ApplicationWindow more robust
+  * improved the custom widget framework
+
+Version: V0.1B72 Date: Wed Sep 24 19:06:32 2003 +++++++++++++++++++++++++++++++
+  * make customizable widget framework much more flexible (from python)
+
+Version: V0.1B71 Date: Sun Sep 14 17:38:19 2003 +++++++++++++++++++++++++++++++
+  * make a template application; just run MakeApp.py with application name
+
+Version: V0.1B69 Date: Sun Jul 27 13:29:20 2003 +++++++++++++++++++++++++++++++
+  * several bugs fixed in property view
+  * new item types implemented
+  * make what() method of exception class to const
+   (because you should use const <exc. class>& in catch block)
+  * use the document provider classes for the whatsthis stuff
+
+Version: V0.1B68 Date: Wed Jul 23 19:46:41 2003 +++++++++++++++++++++++++++++++
+  * Add Feature Attribute
+  * Add Function driver
+  * Implement Test Command 2
+
+Version: V0.1B67 Date: Sun Jul 20 00:23:56 2003 +++++++++++++++++++++++++++++++
+  * Precompiled header stuff again
+  * improved the spin box
+  * Report output window added
+
+Version: V0.1B66 Date: Sun Jul 13 17:15:34 2003 +++++++++++++++++++++++++++++++
+  * draw transparent the additional area of resized pixmaps
+  * draw a pixmap over another pixmap
+  * a special spin box setting the value by mouse move
+  * reimplementation of the WhatsThis framework
+  * several commands
+  * improved drag and drop for the commandline
+
+Version: V0.1B65 Date: Sat Jul 12 11:44:20 2003 +++++++++++++++++++++++++++++++
+  * finssh doc framework for basic use
+
+Version: V0.1B64 Date: Sun Jun 15 01:20:15 2003 +++++++++++++++++++++++++++++++
+  * Recent file list (MRU)
+  * improvements in drawing dropdown button
+  * allow to disable drag of menu items
+  * bug fixed in load/save of window settings
+  * Inventor Test command
+  * Inventor BREP binding
+  * examiner viewer
+
+Version: V0.1B63 Date: Sun Jun 08 20:21:25 2003 +++++++++++++++++++++++++++++++
+  * Adding the OCC Browser
+  * Adding PropertyView
+  * Tree heading layout
+  * Settings dialog for Scintilla
+  * switch between several view by clicking CTRL+Tab
+  * Debug interface in FCInterpreter
+  * switch between several styles
+  * drop down button completely new reimplemented
+
+Version: V0.1B62 Date: Sat May 31 11:53:56 2003 +++++++++++++++++++++++++++++++
+  * redesign of Document view modell
+  * removing ViewContainer
+  * adding the OnHasMsg methodes
+  * switching some stdCommands to message stile to allow views with own document
+  * moving scintila to a passiv view modell
+  * updated to new version of Scintilla (1.53)
+
+Version: V0.1B61 Date: Sat May 24 17:35:52 2003 +++++++++++++++++++++++++++++++
+  * binding for scintilla
+  * switching the observer to templates
+  * adding SoQt to the source
+  * the template observer the M$ STL dont work any more
+
+Version: V0.1B60 Date: Wed May 21 21:18:53 2003 +++++++++++++++++++++++++++++++
+  * finishing close, save and update stuff
+
+Version: V0.1B59 Date: Sun May 18 11:03:48 2003 +++++++++++++++++++++++++++++++
+  * qextmdi added
+  * some changes in close flow, still not finished
+  * fix close stuff!
+
+Version: V0.1B59 Date: Thu May 17 15:40:24 2003 +++++++++++++++++++++++++++++++
+  * scintilla added
+  * pragmas set for windows only
+  * bug fixed in Buttongroug
+  * add string for CustomWidget where to store
+
+Version: V0.1B58 Date: Thu May 01 20:40:24 2003 +++++++++++++++++++++++++++++++
+  * patch from werner
+  * precompiled header (werner)
+
+Version: V0.1B57 Date: Fri Apr 25 16:18:12 2003 +++++++++++++++++++++++++++++++
+  * New modules for the ToptDS and Geometry wrapping
+  * Script command for macro customizing
+
+Version: V0.1B56 Date: Tue Apr 22 18:38:49 2003 +++++++++++++++++++++++++++++++
+  * finish Macro recording
+  * switching toggle commands
+  * View preferences page
+  * some bugfixing (werner)
+  * QT3 fixes (werner)
+  * DnD changes (werner)
+
+Version: V0.1B55 Date: Fri Apr 18 23:08:12 2003 +++++++++++++++++++++++++++++++
+  * add macro manager
+
+Version: V0.1B54 Date: Thu Apr 17 12:19:12 2003 +++++++++++++++++++++++++++++++
+  * commitin the patch from WErner
+- still problems with the TreeBar
+
+Version: V0.1B53 Date: Sun Apr 13 15:33:23 2003 +++++++++++++++++++++++++++++++
+  * patch from Werner about Linux
+  * rezising the tree and the Icons
+
+Version: V0.1B52 Date: Thu Apr 10 21:17:20 2003 +++++++++++++++++++++++++++++++
+  * insert the TreeDockBar
+
+Version: V0.1B51 Date: Sun Apr 06 21:27:35 2003 +++++++++++++++++++++++++++++++
+  * Realy big patch from Werner
+    - Fix a problem with the paning in MouseModel
+    - Fixing workbench binding for std. menus
+    - switch to QT_VER for easier changing QT Version
+    - fix cmd_name bug in CmdBar
+    - making command line dropabel (QT3)
+    - frame for 3Dview
+    - time in about dialog ;-)
+
+Version: V0.1B50 Date: Fri Apr 04 22:10:24 2003 +++++++++++++++++++++++++++++++
+  * Fix on the window rewrite
+  * some work on the Linux port
+
+Version: V0.1B49 Date: Thu Apr 03 22:45:35 2003 +++++++++++++++++++++++++++++++
+  * Master redisign of the window system, not yet full working
+
+Version: V0.1B48 Date: Sun Mar 30 15:06:23 2003 +++++++++++++++++++++++++++++++
+  * Big patch from Werner about:
+    - feeding toolbars and Commandbar and menus from the parameterts
+    - customizing works with positions in command bar and toolbar
+    - customizing by draging from menu into toolbar and commandbar
+
+Version: V0.1B47 Date: Fri Mar 28 18:24:36 2003 +++++++++++++++++++++++++++++++
+  * Import App Module added
+  * removing Part.py and PartGui.py
+
+Version: V0.1B46 Date: Wed Mar 26 18:02:11 2003 +++++++++++++++++++++++++++++++
+  * new methodes in ParameterGrp (IsEmpty(), HasGroup() )
+
+Version: V0.1B45 Date: Thu Mar 20 21:05:21 2003 +++++++++++++++++++++++++++++++
+  * Testframe for Parameter and removal
+
+Version: V0.1B44 Date: Wed Mar 19 21:41:52 2003 +++++++++++++++++++++++++++++++
+  * deletion of Parameter and Grps
+  * Observer delete notification
+
+Version: V0.1B43 Date: Sun Mar 16 22:32:35 2003 +++++++++++++++++++++++++++++++
+  * startet Undo Redo logic
+
+Version: V0.1B42 Date: Thu Mar 13 21:36:58 2003 +++++++++++++++++++++++++++++++
+  * changes in Customize Dialog
+
+Version: V0.1B41 Date: Sat Mar 08 19:16:05 2003 +++++++++++++++++++++++++++++++
+  * again new resource concept for commands
+  * python command object
+  * test application
+    - implemented some basic tests
+
+Version: V0.1B40 Date: Tue Mar 04 21:53:02 2003 +++++++++++++++++++++++++++++++
+  * Activiti update
+  * new resource concept in commands
+  * Command groups
+  * Command belonging to AppModules
+  * Checking on unsaved files in close()
+
+Version: V0.1B39 Date: Mon Mar 03 12:32:14 2003 +++++++++++++++++++++++++++++++
+  * include werners patch
+
+Version: V0.1B38 Date: Thu Feb 27 22:19:35 2003 +++++++++++++++++++++++++++++++
+  * fix of memory leack in CmdBar (werner)
+  * start rebulding FCCommand framework
+
+Version: V0.1B37 Date: Tue Feb 25 20:29:19 2003 +++++++++++++++++++++++++++++++
+  * massiv improved costomize dialog (werner)
+    - sorting position of toolbars
+
+Version: V0.1B36 Date: Sat Feb 22 18:12:19 2003 +++++++++++++++++++++++++++++++
+  * fix python problem (Py_INCREF(Py_None))!
+
+Version: V0.1B35 Date: Wed Feb 19 19:41:39 2003 +++++++++++++++++++++++++++++++
+  * new Linux patch (Vaclav)
+  * sequencer break windows only (werner)
+  * run methode in CommandLine (werner)
+
+Version: V0.1B34 Date: Sun Feb 16 11:55:21 2003 +++++++++++++++++++++++++++++++
+  * finish the Html-view prefernces dialog (werner)
+  * making unique defines for operating system in Config.h
+  * GetActiveWorkbench methode
+  * included VC7 projects (werner)
+
+Version: V0.1B33 Date: Fri Feb 14 19:58:58 2003 +++++++++++++++++++++++++++++++
+  * dynamic cinfiguration dialog (Werner)
+    - first preference dialog for the html view
+  * Full path parameter implemented
+  * some fixes in config registry
+
+Version: V0.1B32 Date: Sun Feb 09 22:16:10 2003 +++++++++++++++++++++++++++++++
+  * fix debug module loading
+  * implementing startup config registrie and access functions in App.
+  * implementing Doc Template logic and Part Template
+
+Version: V0.1B31 Date: Fri Feb 07 22:26:22 2003 +++++++++++++++++++++++++++++++
+  * ifdefs for QT 3 and 2.3 usage (werner)
+
+Version: V0.1B30 Date: Thu Feb 06 20:47:18 2003 +++++++++++++++++++++++++++++++
+  * fix for the CommandBar (Werner)
+  * fix for module loding
+
+Version: V0.1B29 Date: Wed Feb 05 09:22:38 2003 +++++++++++++++++++++++++++++++
+  * patch from Werner
+    - some small changes
+    - rewritten Command Bar
+  * some work on the Part module (now loading in release)
+
+Version: V0.1B28 Date: Fri Jan 31 17:58:13 2003 +++++++++++++++++++++++++++++++
+  * switching from Stlport IOSTREAM to VC6 iostream
+  * removing FC container wrapping
+  * starting serios work on module loading in part and sketcher
+
+Version: V0.1B27 Date: Sun Jan 26 21:25:59 2003 +++++++++++++++++++++++++++++++
+  * Lot of stuff from Werner
+    - New customize dialog
+    - lot of work on preferences
+
+Version: V0.1B26 Date: Tue Jan 21 05:59:01 2003 +++++++++++++++++++++++++++++++
+  * Preferences Widget Framework (Werner)
+    - New module WidgetFactory
+    - New modeul PrefWidget
+
+Version: V0.1B25 Date: Sun Jan 19 18:20:51 2003 +++++++++++++++++++++++++++++++
+  * Big Linux port patch from Vaclav
+    - some fixes on implicite type conversion (Vaclav)
+    - moving all .cxx to .cpp mainly in gui
+    - moving DlgCusomizeImpl to Imp
+    - and InitGui to GuiInit
+    - rmoving X() macro (trouble on Linux)
+    - Linux Gui console (Vaclav)
+    - Using new sstream on Linux (Vaclac)
+    - fixing some case stuff in include (Vaclav)
+  * some work on the main MouseModel (Werner)
+
+Version: V0.1B24 Date: Sun Jan 12 22:15:29 2003 +++++++++++++++++++++++++++++++
+  * switching workbenches
+
+Version: V0.1B23 Date: Fri Jan 10 17:43:13 2003 +++++++++++++++++++++++++++++++
+  * fix in part module
+
+Version: V0.1B22 Date: Thu Jan 09 22:16:02 2003 +++++++++++++++++++++++++++++++
+  * Add FCBmpFactory
+  * New Methodes in Gui. (python)
+
+Version: V0.1B21 Date: Mon Jan 06 20:53:48 2003 +++++++++++++++++++++++++++++++
+  * Building up Part Application
+  * starting Test Application
+  * Adding FCFactory in Base
+
+Version: V0.1B20 Date: Mon Jan 06 11:31:16 2003 +++++++++++++++++++++++++++++++
+  * Clean up Gui.dsp
+  * split up std commands
+
+Version: V0.1B19 Date: Sat Jan 04 12:23:49 2003 +++++++++++++++++++++++++++++++
+  * new DlgCustomize (Werner)
+
+Version: V0.1B18 Date: Fri Jan 03 19:26:56 2003 +++++++++++++++++++++++++++++++
+  * FirstPreferences Dialog
+  * First Macro Dialogs
+
+Version: V0.1B17 Date: Thu Jan 02 21:50:27 2003 +++++++++++++++++++++++++++++++
+  * First Version Parameter Dialog
+  * New Methodes on FCParameterGrp
+
+Version: V0.1B16 Date: Wed Jan 01 18:06:46 2003 +++++++++++++++++++++++++++++++
+  * Needed interface in CmdBar (Werner)
+  * fixes in Parameter
+
+Version: V0.1B15 Date: Wed Jan 01 17:09:53 2003 +++++++++++++++++++++++++++++++
+  * Changing the install prozess
+  * implementing the Python toolbar bindings
+  * Split Init.py in Init and Startup
+  * Finish verbose mode (-v)
+
+Version: V0.1B14 Date: Mon Dec 30 12:42:22 2002 +++++++++++++++++++++++++++++++
+  * coupling FCaction on FCCmdBar (Werner)
+  * New group functions in FCParameter (Juergen)
+  * Progress Bar (Werner)
+
+Version: V0.1B13 Date: Thu Dec 26 19:58:57 2002 +++++++++++++++++++++++++++++++
+  * View Commands
+  * switching StdViews from slots to Messages
+  * try fixing Dock windows
+
+Version: V0.1B12 Date: Thu Dec 26 14:54:54 2002 +++++++++++++++++++++++++++++++
+  * New Splasher from Werner
+  * clean up main (-v option)
+  * User Parameter
+  * New Background color
+  * Werner get the automatic wait cursor to work
+  * Dimension field in the status bar by Werner
+
+Version: V0.1B11 Date: Fri Dec 20 10:44:09 2002 +++++++++++++++++++++++++++++++
+  * First simple Implementation of Tree Raw
+
+Version: V0.1B10 Date: Wed Dec 18 21:44:21 2002 +++++++++++++++++++++++++++++++
+  * fix wrong document bug
+  * html_view cut off horizontal slider
+
+Version: V0.1B9 Date: Mon Dec 16 14:40:59 2002 +++++++++++++++++++++++++++++++
+  * First version of Werners waiting cursor
+  * Activ View finished
+  * Send Msg to view finished
+  * Test1 importing BREP
+
+Version: V0.1B8 Date: Mon Dec 09 20:51:27 2002 +++++++++++++++++++++++++++++++
+  * Fixes for button bar from Werner
+  * New Std Commands
+
+Version: V0.1B7 Date: Fri Dec 06 17:30:26 2002 +++++++++++++++++++++++++++++++
+  * insert new button bar from Werner
+  * Activated view methods and SendMsgToActiveView()
+
+Version: V0.1B6 Date: Thu Dec 05 20:59:11 2002 +++++++++++++++++++++++++++++++
+  * Clean Up GuiApplication
+  * Add GUI Console observer

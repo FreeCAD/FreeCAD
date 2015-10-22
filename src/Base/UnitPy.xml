@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="PyObjectBase"
+		Name="UnitPy"
+		Twin="Unit"
+		TwinPointer="Unit"
+		Include="Base/Unit.h"
+		FatherInclude="Base/PyObjectBase.h"
+		Namespace="Base"
+		NumberProtocol="true"
+		RichCompare="true"
+		Constructor="true"
+		Delete="true"
+		FatherNamespace="Base">
+	<Documentation>
+		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+		<UserDocu>
+ Unit
+ defines a unit type, calculate and compare.
+
+ The following constructors are supported:
+ Unit()                        -- empty constructor
+ Unit(i1,i2,i3,i4,i5,i6,i7,i8) -- unit signature
+ Unit(Quantity)                -- copy unit from Quantity
+ Unit(Unit)                    -- copy constructor
+ Unit(string)                  -- parse the string for units
+        </UserDocu>
+		<DeveloperDocu>Unit</DeveloperDocu>
+	</Documentation>
+		<Attribute Name="Type" ReadOnly="true">
+			<Documentation>
+				<UserDocu>holds the unit type as a string, e.g. 'Area'.</UserDocu>
+			</Documentation>
+			<Parameter Name="Type" Type="String" />
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

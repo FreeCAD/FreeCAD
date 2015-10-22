@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="PersistencePy"
+    Name="SketchPy"
+    Twin="Sketch"
+    TwinPointer="Sketch"
+    Include="Mod/Sketcher/App/Sketch.h"
+    Namespace="Sketcher"
+    FatherInclude="Base/PersistencePy.h"
+    FatherNamespace="Base"
+    Constructor="true">
+
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>With this objects you can handle constraint sketches</UserDocu>
+    </Documentation>
+    <Methode Name="solve">
+      <Documentation>
+        <UserDocu>solve the actual set of geometry and constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addGeometry">
+      <Documentation>
+        <UserDocu>add a geometric object to the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addConstraint">
+      <Documentation>
+        <UserDocu>add an constraint object to the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clear">
+      <Documentation>
+        <UserDocu>clear the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="movePoint">
+      <Documentation>
+        <UserDocu>
+          movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+          to another location.
+          It moves the specified point (or curve) to the given location by adding some
+          temporary weak constraints and solve the sketch.
+          This method is mostly used to allow the user to drag some portions of the sketch
+          in real time by e.g. the mouse and it works only for underconstrained portions of
+          the sketch.
+          The argument 'relative', if present, states if the new location is given
+          relatively to the current one.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Constraint" ReadOnly="true">
+      <Documentation>
+        <UserDocu>0: exactly constraint, -1 under-constraint, 1 over-constraint</UserDocu>
+      </Documentation>
+      <Parameter Name="Constraint" Type="Int"/>
+    </Attribute>
+    <Attribute Name="Constraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Tuple of all constrains in this sketch</UserDocu>
+      </Documentation>
+      <Parameter Name="Constraints" Type="Tuple"/>
+    </Attribute>
+    <Attribute Name="Geometries" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Tuple of all geometric elements in this sketch</UserDocu>
+      </Documentation>
+      <Parameter Name="Geometries" Type="Tuple"/>
+    </Attribute>
+    <Attribute Name="Shape" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Resulting shape from the sketch geometry</UserDocu>
+      </Documentation>
+      <Parameter Name="Shape" Type="Object"/>
+    </Attribute>
+
+  </PythonExport>
+</GenerateModel>

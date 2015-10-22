@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="GeometrySurfacePy" 
+		Name="CylinderPy" 
+		Twin="GeomCylinder" 
+		TwinPointer="GeomCylinder" 
+		Include="Mod/Part/App/Geometry.h" 
+		Namespace="Part" 
+		FatherInclude="Mod/Part/App/GeometrySurfacePy.h" 
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes a cylinder in 3D space
+				To create a cylinder there are several ways:
+				Part.Cylinder()
+					Creates a default cylinder with center (0,0,0) and radius 1
+
+				Part.Cylinder(Cylinder)
+					Creates a copy of the given cylinder
+
+				Part.Cylinder(Cylinder, Distance)
+					Creates a cylinder parallel to given cylinder at a certain distance
+
+				Part.Cylinder(Point1,Point2,Point2)
+					Creates a cylinder defined by three non-linear points
+
+				Part.Cylinder(Circle)
+					Creates a cylinder by a circular base
+			</UserDocu>
+		</Documentation>
+		<Attribute Name="Radius" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The radius of the cylinder.</UserDocu>
+			</Documentation>
+			<Parameter Name="Radius" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Center" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Center of the cylinder.</UserDocu>
+			</Documentation>
+			<Parameter Name="Center" Type="Object"/>
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The axis direction of the cylinder</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object"/>
+		</Attribute>
+		<Methode Name="uIso">
+			<Documentation>
+				<UserDocu>Builds the U isoparametric circle of this cylinder</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="vIso">
+			<Documentation>
+				<UserDocu>Builds the V isoparametric circle of this cylinder</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

@@ -1,0 +1,8 @@
+sphinx    export-ignore
+BuildDocDoxy.cfg.in    export-ignore
+BuildDocDoxyFull.cfg    export-ignore
+BuildSourceDoc.bat    export-ignore
+TiddlySaver.jar    export-ignore
+Document.mm    export-ignore
+FreeCAD.uml    export-ignore
+PythonClassModel.uml    export-ignore

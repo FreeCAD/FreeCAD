@@ -1,0 +1,22 @@
+; EN-GJMW-350-4 - 0.8035 - EN 1562
+; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
+; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = EN-GJMW-350-4
+NameDE = GTW 35-04
+DescriptionDE = dünnwandige Teile, Fittings, Beschläge, Förderketten
+Father = Metal
+YoungsModulus = 175000 MPa
+UltimateTensileStrength = 350
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.8035
+ModulusOfShare = 67000
+Norm = EN 1562
+ThermalExpansionCoefficient = 1.00E-005
+UltimateStrain = 4
+YieldStrength = 0

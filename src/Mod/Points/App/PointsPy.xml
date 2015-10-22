@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="ComplexGeoDataPy"
+		Include="Mod/Points/App/Points.h"
+		Name="PointsPy" 
+		Twin="PointKernel"
+		TwinPointer="PointKernel" 
+		Namespace="Points" 
+		FatherInclude="App/ComplexGeoDataPy.h" 
+		FatherNamespace="Data"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+			<UserDocu>Points() -- Create an empty points object.
+
+This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,
+transforming and much more.
+
+      </UserDocu>
+		</Documentation>
+		<Methode Name="copy" Const="true">
+			<Documentation>
+				<UserDocu>Create a copy of this points object</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="read">
+			<Documentation>
+				<UserDocu>Read in a points object from file.</UserDocu>
+			</Documentation>
+		</Methode>
+    <Methode Name="write" Const="true">
+      <Documentation>
+        <UserDocu>Write the points object into file.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="writeInventor" Const="true">
+      <Documentation>
+        <UserDocu>Write the points in OpenInventor format to a string.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addPoints" >
+      <Documentation>
+        <UserDocu>add one or more (list of) points to the object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="CountPoints" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the number of vertices of the points object.</UserDocu>
+			</Documentation>
+			<Parameter Name="CountPoints" Type="Int" />
+		</Attribute>
+		<Attribute Name="Points" ReadOnly="true">
+			<Documentation>
+				<UserDocu>A collection of points
+With this attribute it is possible to get access to the points of the object
+
+for p in pnt.Points:
+	print p
+
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="Points" Type="List" />
+		</Attribute>
+		<ClassDeclarations>
+		</ClassDeclarations>
+	</PythonExport>
+</GenerateModel>

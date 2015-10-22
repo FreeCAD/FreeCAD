@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="TopoShapePy" 
+      Name="TopoShapeWirePy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/TopoShapePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>TopoShapeWire is the OpenCasCade topological wire wrapper</UserDocu>
+    </Documentation>
+	  <Methode Name="makeOffset" Const="true">
+		  <Documentation>
+			  <UserDocu>Offset the shape by a given ammount</UserDocu>
+		  </Documentation>
+	  </Methode>
+		<Methode Name="add">
+			<Documentation>
+				<UserDocu>Add an edge to the wire</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="fixWire">
+			<Documentation>
+				<UserDocu>Fix wire</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="makeHomogenousWires" Const="true">
+        <Documentation>
+            <UserDocu>Make this and the given wire homogenous to have the same number of edges</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="makePipe" Const="true">
+      <Documentation>
+        <UserDocu>Make a pipe by sweeping along a wire.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makePipeShell" Const="true">
+      <Documentation>
+        <UserDocu>makePipeShell(shapeList,[isSolid,isFrenet,transition])
+Make a loft defined by a list of profiles along a wire. Transition can be
+0 (default), 1 (right corners) or 2 (rounded corners).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="approximate" Const="true">
+      <Documentation>
+        <UserDocu>Approximate B-Spline-curve from this wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="discretize" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Discretizes the wire and returns a list of points.
+The function accepts keywords as argument:
+discretize(Number=n) => gives a list of 'n' equidistant points
+discretize(QuasiNumber=n) => gives a list of 'n' quasi equidistant points (is faster than the method above)
+discretize(Distance=d) => gives a list of equidistant points with distance 'd'
+discretize(Deflection=d) => gives a list of points with a maximum deflection 'd' to the wire
+discretize(QuasiDeflection=d) => gives a list of points with a maximum deflection 'd' to the wire (faster)
+discretize(Angular=a,Curvature=c,[Minimum=m]) => gives a list of points with an angular deflection of 'a'
+                                    and a curvature deflection of 'c'. Optionally a minimum number of points
+                                    can be set which by default is set to 2.
+
+Optionally you can set the keywords 'First' and 'Last' to define a sub-range of the parameter range
+of the wire.
+
+If no keyword is given then it depends on whether the argument is an int or float.
+If it's an int then the behaviour is as if using the keyword 'Number', if it's float
+then the behaviour is as if using the keyword 'Distance'.
+
+Example:
+
+import Part
+V=App.Vector
+
+e1=Part.makeCircle(5,V(0,0,0),V(0,0,1),0,180)
+e2=Part.makeCircle(5,V(10,0,0),V(0,0,1),180,360)
+w=Part.Wire([e1,e2])
+
+p=w.discretize(Number=50)
+s=Part.Compound([Part.Vertex(i) for i in p])
+Part.show(s)
+
+
+p=w.discretize(Angular=0.09,Curvature=0.01,Minimum=100)
+s=Part.Compound([Part.Vertex(i) for i in p])
+Part.show(s)
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Mass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the mass of the current system.</UserDocu>
+      </Documentation>
+      <Parameter Name="Mass" Type="Object"/>
+    </Attribute>
+    <Attribute Name="CenterOfMass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the center of mass of the current system.
+If the gravitational field is uniform, it is the center of gravity.
+The coordinates returned for the center of mass are expressed in the
+absolute Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="CenterOfMass" Type="Object"/>
+    </Attribute>
+    <Attribute Name="MatrixOfInertia" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the matrix of inertia. It is a symmetrical matrix. 
+The coefficients of the matrix are the quadratic moments of 
+inertia. 
+
+ | Ixx Ixy Ixz 0 | 
+ | Ixy Iyy Iyz 0 | 
+ | Ixz Iyz Izz 0 | 
+ | 0   0   0   1 | 
+
+The moments of inertia are denoted by Ixx, Iyy, Izz. 
+The products of inertia are denoted by Ixy, Ixz, Iyz. 
+The matrix of inertia is returned in the central coordinate 
+system (G, Gx, Gy, Gz) where G is the centre of mass of the 
+system and Gx, Gy, Gz the directions parallel to the X(1,0,0) 
+Y(0,1,0) Z(0,0,1) directions of the absolute cartesian 
+coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="MatrixOfInertia" Type="Object"/>
+    </Attribute>
+    <Attribute Name="StaticMoments" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the 
+ current system; i.e. the moments of inertia about the 
+ three axes of the Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="StaticMoments" Type="Object"/>
+    </Attribute>
+    <Attribute Name="PrincipalProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Computes the principal properties of inertia of the current system. 
+ There is always a set of axes for which the products 
+ of inertia of a geometric system are equal to 0; i.e. the 
+ matrix of inertia of the system is diagonal. These axes 
+ are the principal axes of inertia. Their origin is 
+ coincident with the center of mass of the system. The 
+ associated moments are called the principal moments of inertia. 
+ This function computes the eigen values and the 
+ eigen vectors of the matrix of inertia of the system.</UserDocu>
+      </Documentation>
+      <Parameter Name="PrincipalProperties" Type="Dict"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

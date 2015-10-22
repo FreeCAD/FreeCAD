@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PropertyContainerPy" 
+    Name="DocumentPy" 
+    Twin="Document" 
+    TwinPointer="Document" 
+    Include="App/Document.h" 
+    Namespace="App" 
+    FatherInclude="App/PropertyContainerPy.h" 
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>This is a Document class</UserDocu>
+    </Documentation>
+    <Methode Name="save">
+      <Documentation>
+        <UserDocu>Save the document to disk</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="saveAs">
+      <Documentation>
+        <UserDocu>Save the document under a new name to disk</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="saveCopy">
+      <Documentation>
+        <UserDocu>Save a copy of the document under a new name to disk</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="load">
+      <Documentation>
+        <UserDocu>Load the document from the given path</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="restore">
+      <Documentation>
+        <UserDocu>Restore the document from disk</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mergeProject">
+      <Documentation>
+        <UserDocu>Merges this document with another project file</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportGraphviz">
+      <Documentation>
+        <UserDocu>Export the dependencies of the objects as graph</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="openTransaction">
+      <Documentation>
+        <UserDocu>Open a new Undo/Redo transaction.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="abortTransaction">
+      <Documentation>
+        <UserDocu>Abort an Undo/Redo transaction (rollback)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="commitTransaction">
+      <Documentation>
+        <UserDocu>Commit an Undo/Redo transaction</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addObject">
+      <Documentation>
+        <UserDocu>Add an object with given type and name to the document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeObject">
+      <Documentation>
+        <UserDocu>Remove an object from the document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="copyObject">
+      <Documentation>
+        <UserDocu>Copy an object from another document to this document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="moveObject">
+      <Documentation>
+        <UserDocu>Move an object from another document to this document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="undo">
+      <Documentation>
+        <UserDocu>Undo one transaction</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="redo">
+      <Documentation>
+        <UserDocu>Redo a previosly undid transaction</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearUndos">
+      <Documentation>
+        <UserDocu>Clear the undo stack of the document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="recompute">
+      <Documentation>
+        <UserDocu>Recompute the document</UserDocu>
+      </Documentation>
+    </Methode>
+	<Methode Name="getObject">
+		<Documentation>
+			<UserDocu>Return the object with the given name</UserDocu>
+		</Documentation>
+	</Methode>
+	<Methode Name="getObjectsByLabel">
+		<Documentation>
+			<UserDocu>Return the objects with the given label name.
+NOTE: It's possible that several objects have the same label name.</UserDocu>
+		</Documentation>
+	</Methode>
+	<Methode Name="findObjects">
+		<Documentation>
+			<UserDocu>findObjects([string (type)], [string (name)]) -&gt; list
+Return a list of objects that match the specified type and name.
+Both parameters are optional.</UserDocu>
+		</Documentation>
+	</Methode>
+	  <Methode Name="supportedTypes">
+		  <Documentation>
+			  <UserDocu>A list of supported types of objects</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="getTempFileName">
+		  <Documentation>
+			  <UserDocu>Returns a file name with path in the temp directory of the document.</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Attribute Name="DependencyGraph" ReadOnly="true">
+		<Documentation>
+			<UserDocu>The dependency graph as GraphViz text</UserDocu>
+		</Documentation>
+		<Parameter Name="DependencyGraph" Type="String" />
+	</Attribute>
+	  <Attribute Name="ActiveObject" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>The active object of the document</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ActiveObject" Type="Object" />
+	  </Attribute>
+	  <Attribute Name="Objects" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The list of object handled by this document</UserDocu>
+      </Documentation>
+      <Parameter Name="Objects" Type="List" />
+    </Attribute>
+    <Attribute Name="UndoMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The Undo mode of the Document (0 = no Undo, 1 = Undo/Redo)</UserDocu>
+      </Documentation>
+      <Parameter Name="UndoMode" Type="Int" />
+    </Attribute>
+    <Attribute Name="UndoRedoMemSize" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The size of the Undo stack in byte</UserDocu>
+      </Documentation>
+      <Parameter Name="UndoRedoMemSize" Type="Int" />
+    </Attribute>
+    <Attribute Name="UndoCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of possible Undos</UserDocu>
+      </Documentation>
+      <Parameter Name="UndoCount" Type="Int" />
+    </Attribute>
+    <Attribute Name="RedoCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of possible Redos</UserDocu>
+      </Documentation>
+      <Parameter Name="RedoCount" Type="Int"/>
+    </Attribute>
+    <Attribute Name="UndoNames" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of Undo names</UserDocu>
+      </Documentation>
+      <Parameter Name="UndoNames" Type="List"/>
+    </Attribute>
+    <Attribute Name="RedoNames" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A List of Redo names</UserDocu>
+      </Documentation>
+      <Parameter Name="RedoNames" Type="List"/>
+    </Attribute>
+    <Attribute Name="Name" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The internal name of the document</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String"/>
+    </Attribute>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

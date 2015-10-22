@@ -1,0 +1,82 @@
+/******************************************************************************
+ *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *                                                                            *
+ *   This file is part of the FreeCAD CAx development system.                 *
+ *                                                                            *
+ *   This library is free software; you can redistribute it and/or            *
+ *   modify it under the terms of the GNU Library General Public              *
+ *   License as published by the Free Software Foundation; either             *
+ *   version 2 of the License, or (at your option) any later version.         *
+ *                                                                            *
+ *   This library  is distributed in the hope that it will be useful,         *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Library General Public License for more details.                     *
+ *                                                                            *
+ *   You should have received a copy of the GNU Library General Public        *
+ *   License along with this library; see the file COPYING.LIB. If not,       *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,            *
+ *   Suite 330, Boston, MA  02111-1307, USA                                   *
+ *                                                                            *
+ ******************************************************************************/
+
+
+#ifndef PARTGUI_ViewProviderTransformed_H
+#define PARTGUI_ViewProviderTransformed_H
+
+#include "ViewProvider.h"
+
+class SoCoordinate3;
+class SoIndexedFaceSet;
+class SoMultipleCopy;
+class SoNormal;
+class SoSeparator;
+
+namespace PartDesignGui {
+
+class TaskDlgTransformedParameters;
+
+class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
+{
+    PROPERTY_HEADER(PartGui::ViewProviderTransformed);
+
+public:
+    /// constructor
+    ViewProviderTransformed()
+        : featureName("undefined") {}
+    /// destructor
+    virtual ~ViewProviderTransformed()
+        {}
+
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+    virtual bool onDelete(const std::vector<std::string> &);
+
+    /// signals if the transformation contains errors
+    boost::signal<void (QString msg)> signalDiagnosis;
+
+    // The feature name of the subclass
+    std::string featureName;
+
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+
+    const bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
+
+    // nodes for the representation of rejected repetitions
+    SoGroup           * pcRejectedRoot;
+    SoMultipleCopy    * rejectedTrfms;
+    SoCoordinate3     * rejectedCoords;
+    SoNormal          * rejectedNorms;
+    SoIndexedFaceSet  * rejectedFaceSet;
+
+public:
+    void recomputeFeature();
+};
+
+
+} // namespace PartDesignGui
+
+
+#endif // PARTGUI_ViewProviderTransformed_H

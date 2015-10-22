@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="PropertyContainerPy" 
+		Name="ViewProviderPy" 
+		Twin="ViewProvider" 
+		TwinPointer="ViewProvider" 
+		Include="Gui/ViewProvider.h" 
+		Namespace="Gui" 
+		FatherInclude="App/PropertyContainerPy.h"
+		FatherNamespace="App">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>This is the ViewProvider base class</UserDocu>
+		</Documentation>
+		<Methode Name="show">
+			<Documentation>
+				<UserDocu>Show the object</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="hide">
+			<Documentation>
+				<UserDocu>Hide the object</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isVisible">
+			<Documentation>
+				<UserDocu>Check if the object is visible</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="listDisplayModes">
+			<Documentation>
+				<UserDocu>Show a list of all display modes</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="toString">
+			<Documentation>
+				<UserDocu>Return a string representation of the Inventor node</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="startEditing">
+			<Documentation>
+				<UserDocu>Start the editing mode (default=0)</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="finishEditing">
+			<Documentation>
+				<UserDocu>Finish editing mode</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isEditing">
+			<Documentation>
+				<UserDocu>Returns True if the view provider is in editing mode, False otherwise</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setTransformation">
+			<Documentation>
+				<UserDocu>Set a transformation on the Inventor node</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Annotation" ReadOnly="false">
+			<Documentation>
+				<UserDocu>A pivy Separator to add a custom scene graph to this ViewProvider</UserDocu>
+			</Documentation>
+			<Parameter Name="Annotation" Type="Object" />
+		</Attribute>
+    <Attribute Name="Icon" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The icon of this ViewProvider</UserDocu>
+      </Documentation>
+      <Parameter Name="Icon" Type="Object" />
+    </Attribute>
+    <Attribute Name="RootNode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>A pivy Separator with the root of this ViewProvider</UserDocu>
+      </Documentation>
+      <Parameter Name="RootNode" Type="Object" />
+    </Attribute>
+    <Attribute Name="IV" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Represents the whole ViewProvider as an Inventor string.</UserDocu>
+      </Documentation>
+      <Parameter Name="IV" Type="String" />
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

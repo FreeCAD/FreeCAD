@@ -1,0 +1,29 @@
+<RCC>
+    <qresource> 
+        <file>icons/actions/FitSurface.svg</file>
+        <file>translations/ReverseEngineering_af.qm</file>
+        <file>translations/ReverseEngineering_de.qm</file>
+        <file>translations/ReverseEngineering_fi.qm</file>
+        <file>translations/ReverseEngineering_fr.qm</file>
+        <file>translations/ReverseEngineering_hr.qm</file>
+        <file>translations/ReverseEngineering_it.qm</file>
+        <file>translations/ReverseEngineering_nl.qm</file>
+        <file>translations/ReverseEngineering_no.qm</file>
+        <file>translations/ReverseEngineering_pl.qm</file>
+        <file>translations/ReverseEngineering_ru.qm</file>
+        <file>translations/ReverseEngineering_uk.qm</file>
+        <file>translations/ReverseEngineering_tr.qm</file>
+        <file>translations/ReverseEngineering_sv-SE.qm</file>
+        <file>translations/ReverseEngineering_zh-TW.qm</file>
+        <file>translations/ReverseEngineering_pt-BR.qm</file>
+        <file>translations/ReverseEngineering_cs.qm</file>
+        <file>translations/ReverseEngineering_sk.qm</file>
+        <file>translations/ReverseEngineering_es-ES.qm</file>
+        <file>translations/ReverseEngineering_zh-CN.qm</file>
+        <file>translations/ReverseEngineering_ja.qm</file>
+        <file>translations/ReverseEngineering_ro.qm</file>
+        <file>translations/ReverseEngineering_hu.qm</file>
+        <file>translations/ReverseEngineering_pt-PT.qm</file>
+        <file>translations/ReverseEngineering_sr.qm</file>
+    </qresource>
+</RCC> 

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeometrySurfacePy" 
+      Name="PlanePy" 
+      Twin="GeomPlane" 
+      TwinPointer="GeomPlane" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/GeometrySurfacePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Describes an infinite plane
+To create a plane there are several ways:
+Part.Plane()
+    Creates a default plane with base (0,0,0) and normal (0,0,1)
+
+Part.Plane(Plane)
+    Creates a copy of the given plane
+
+Part.Plane(Plane, Distance)
+    Creates a plane parallel to given plane at a certain distance
+
+Part.Plane(Location,Normal)
+    Creates a plane with a given location and normal
+
+Part.Plane(Point1,Point2,Point3)
+    Creates a plane defined by three non-linear points
+
+Part.Plane(A,B,C,D)
+    Creates a plane from its cartesian equation
+    Ax+By+Cz+D=0
+</UserDocu>
+    </Documentation>
+    <Attribute Name="Position" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns the position point of this plane.</UserDocu>
+      </Documentation>
+      <Parameter Name="Position" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Axis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns the axis of this plane.</UserDocu>
+      </Documentation>
+      <Parameter Name="Axis" Type="Object"/>
+    </Attribute>
+    <Methode Name="uIso">
+      <Documentation>
+        <UserDocu>Builds the U isoparametric line of this plane</UserDocu>
+       </Documentation>
+    </Methode>
+    <Methode Name="vIso">
+      <Documentation>
+        <UserDocu>Builds the V isoparametric line of this plane</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

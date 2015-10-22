@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16px"
+   height="16px"
+   id="svg1314"
+   sodipodi:version="0.32"
+   inkscape:version="0.42"
+   sodipodi:docbase="D:\Develop\Projekte\FreeCAD\FreeCAD_0.3\src\Mod\Part\Gui\Icons"
+   sodipodi:docname="PartFeature.svg"
+   inkscape:export-filename="D:\Develop\Projekte\FreeCAD\FreeCAD_0.3\src\Mod\Part\Gui\Icons\PartFeature.png"
+   inkscape:export-xdpi="90.000000"
+   inkscape:export-ydpi="90.000000">
+  <defs
+     id="defs1316" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="22.197802"
+     inkscape:cx="8.0000000"
+     inkscape:cy="8.4504951"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="769"
+     inkscape:window-height="510"
+     inkscape:window-x="208"
+     inkscape:window-y="94" />
+  <metadata
+     id="metadata1319">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <rect
+       style="fill:#00fe00;fill-opacity:1.0000000;stroke:#000000;stroke-width:1.0240000;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000"
+       id="rect1322"
+       width="8.0000000"
+       height="9.0000000"
+       x="1.5120001"
+       y="1.5120001" />
+    <rect
+       style="fill:#00fe00;fill-opacity:1.0000000;stroke:#000000;stroke-width:1.0240000;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000"
+       id="rect1324"
+       width="8.0000000"
+       height="9.0000000"
+       x="5.4879999"
+       y="5.4879999" />
+    <path
+       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+       d="M 2.0000000,2.0000000 C 5.4059406,5.5485148 5.4059406,5.5485148 5.4059406,5.5485148 L 5.4059406,5.5485148"
+       id="path1326" />
+    <path
+       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.1169040px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+       d="M 1.5674157,10.549630 C 5.4325843,14.450370 5.4325843,14.450370 5.4325843,14.450370 L 5.4325843,14.450370"
+       id="path1328" />
+    <path
+       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.1169040px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+       d="M 9.5674157,1.5496300 C 13.432584,5.4503700 13.432584,5.4503700 13.432584,5.4503700 L 13.432584,5.4503700"
+       id="path1330" />
+  </g>
+</svg>

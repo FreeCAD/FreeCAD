@@ -1,0 +1,21 @@
+; S355J2G3 - 1.0570 - EN 10025
+; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
+; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = S355J2G3
+NameDE = St52-3
+Father = Metal
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 510
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Mild steel
+KindOfMaterialDE = Baustahl
+MaterialNumber = 1.057
+ModulusOfShare = 81000
+Norm = EN 10025
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 22
+YieldStrength = 355

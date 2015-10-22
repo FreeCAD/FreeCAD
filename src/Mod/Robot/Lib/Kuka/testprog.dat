@@ -1,0 +1,7 @@
+&ACCESS RVP
+&REL 22
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\ExpertVorgabe
+&PARAM EDITMASK = *
+DEFDAT TestProg PUBLIC
+
+ENDDAT

@@ -1,0 +1,49 @@
+
+add_subdirectory(App)
+if(BUILD_GUI)
+    SET(StartPage_Scripts
+        StartPage.py
+        __init__.py
+    )
+
+    SET(StartPage_Resources
+        ArchDesign.py
+        DefaultWorkbench.py
+        LoadDrawingExample.py
+        LoadPartDesignExample.py
+        LoadRobotExample.py
+        LoadSchenkel.py
+        LoadMRU0.py
+        LoadMRU1.py
+        LoadMRU2.py
+        LoadArchExample.py
+        Mesh.py
+        PartDesign.py
+        Background.jpg
+        FreeCAD.png
+        PartDesign.png
+        ArchDesign.png
+        Mesh.png
+        Complete.png
+        PartDesignExample.png
+        ArchExample.png
+        web.png
+        blank.png
+        freecad-doc.png
+        complete.jpg
+        Ship.py
+        Ship.png
+        ShipExample.png
+    )
+
+    add_subdirectory(Gui)
+    add_subdirectory(StartPage)
+endif(BUILD_GUI)
+
+INSTALL(
+    FILES
+        Init.py
+        InitGui.py
+    DESTINATION
+        Mod/Start
+)

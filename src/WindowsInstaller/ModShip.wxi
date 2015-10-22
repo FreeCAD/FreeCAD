@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+   (c) Jose Luis Cercos Pita (jlcercos@gmail.com) 2012                       
+                                                                        
+   This file is part of the FreeCAD CAx development system.             
+                                                                        
+   This program is free software; you can redistribute it and/or modify 
+   it under the terms of the GNU Library General Public License (LGPL)  
+   as published by the Free Software Foundation; either version 2 of    
+   the License, or (at your option) any later version.                  
+   for detail see the LICENCE text file.                                
+                                                                        
+   FreeCAD is distributed in the hope that it will be useful,           
+   but WITHOUT ANY WARRANTY; without even the implied warranty of       
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        
+   GNU Library General Public License for more details.                 
+                                                                        
+   You should have received a copy of the GNU Library General Public    
+   License along with FreeCAD; if not, write to the Free Software       
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 
+   USA                                                                  
+                                                                        
+   Jose Luis Cercos Pita 2012
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Directory Id="ModShip" Name="Ship" FileSource="../../Mod/Ship">
+        <Component Id="CompModShip" Guid="4ddaaa92-1ccc-4462-ab58-606082aa277e" Win64='$(var.Win_64)' KeyPath="yes">
+            <File Id="ShipInitGuiPy" Name="InitGui.py" DiskId="1" />
+            <File Id="ShipInstance" Name="Instance.py" DiskId="1" />
+            <File Id="ShipGuiPy" Name="ShipGui.py" DiskId="1" />
+            <File Id="ShipResources" Name="Ship_rc.py" DiskId="1" />
+            <File Id="ShipTankInstance" Name="TankInstance.py" DiskId="1" />
+        </Component>
+		<Directory Id="ModShipResources" Name="resources" FileSource="../../Mod/Ship/resources" >
+			<Directory Id="ModShipExamples" Name="examples" FileSource="../../Mod/Ship/resources/examples" >
+				<Component Id="CompModShipExamples"  Guid="b5f1ae58-728b-4c0a-9b09-263cd63cdfd1" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="ShipExampleS60" Name="s60.fcstd"   />
+					<File Id="ShipExampleS60Katamaran" Name="s60_katamaran.fcstd"   />
+					<File Id="ShipExampleWigley" Name="wigley.fcstd"   />
+					<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
+				</Component>
+			</Directory>
+		</Directory>
+		<Directory Id="ModshipAreasCurve" Name="shipAreasCurve" FileSource="../../Mod/Ship/shipAreasCurve" >
+			<Component Id="CompModshipAreasCurve"  Guid="49b32e4c-d861-4968-9c5c-8191ce6fa6c4" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipAreasCurve01" Name="__init__.py"   />
+				<File Id="shipAreasCurve02" Name="PlotAux.py"   />
+				<File Id="shipAreasCurve03" Name="Preview.py"   />
+				<File Id="shipAreasCurve04" Name="TaskPanel.py"   />
+				<File Id="shipAreasCurve05" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipCreateShip" Name="shipCreateShip" FileSource="../../Mod/Ship/shipCreateShip" >
+			<Component Id="CompModshipCreateShip"  Guid="7492bfb5-96d8-4555-8cc0-682c79a779ac" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipCreateShip01" Name="__init__.py"   />
+				<File Id="shipCreateShip02" Name="Preview.py"   />
+				<File Id="shipCreateShip03" Name="TaskPanel.py"   />
+				<File Id="shipCreateShip04" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipHydrostatics" Name="shipHydrostatics" FileSource="../../Mod/Ship/shipHydrostatics" >
+			<Component Id="CompModshipHydrostatics"  Guid="c76a6ae1-8533-4382-950b-bde2733603a8" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipHydrostatics01" Name="__init__.py"   />
+				<File Id="shipHydrostatics02" Name="PlotAux.py"   />
+				<File Id="shipHydrostatics03" Name="TaskPanel.py"   />
+				<File Id="shipHydrostatics04" Name="TaskPanel.ui"   />
+				<File Id="shipHydrostatics05" Name="Tools.py"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipLoadExample" Name="shipLoadExample" FileSource="../../Mod/Ship/shipLoadExample" >
+			<Component Id="CompModshipLoadExample"  Guid="3c66c63a-7967-4fe7-8138-73ef98a1b233" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipLoadExample01" Name="__init__.py"   />
+				<File Id="shipLoadExample02" Name="TaskPanel.py"   />
+				<File Id="shipLoadExample03" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipOutlineDraw" Name="shipOutlineDraw" FileSource="../../Mod/Ship/shipOutlineDraw" >
+			<Component Id="CompModshipOutlineDraw"  Guid="a81ec2de-3620-4b33-beaa-2ef14ac642c5" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipOutlineDraw01" Name="__init__.py"   />
+				<File Id="shipOutlineDraw02" Name="Plot.py"   />
+				<File Id="shipOutlineDraw03" Name="Preview.py"   />
+				<File Id="shipOutlineDraw04" Name="TaskPanel.py"   />
+				<File Id="shipOutlineDraw05" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipUtils" Name="shipUtils" FileSource="../../Mod/Ship/shipUtils" >
+			<Component Id="CompModshipUtils"  Guid="7fca3f4d-861a-44fb-ab2e-cd256e3ba9b3" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipUtils01" Name="__init__.py"   />
+				<File Id="shipUtils02" Name="Math.py"   />
+				<File Id="shipUtils03" Name="Paths.py"   />
+				<File Id="shipUtils04" Name="Units.py"   />
+			</Component>
+		</Directory>
+	</Directory>
+</Include>

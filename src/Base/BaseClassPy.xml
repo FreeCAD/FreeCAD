@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PyObjectBase" 
+      Name="BaseClassPy" 
+      Twin="BaseClass" 
+      TwinPointer="BaseClass" 
+      Include="Base/BaseClass.h" 
+      FatherInclude="Base/PyObjectBase.h" 
+      Namespace="Base" 
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <DeveloperDocu>This is the BaseClass class</DeveloperDocu>
+      <UserDocu>This is the base class</UserDocu>
+    </Documentation>
+    <Methode Name="isDerivedFrom" Const="true">
+      <Documentation>
+        <UserDocu>Returns true if given type is a father</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAllDerivedFrom" Const="true">
+      <Documentation>
+        <UserDocu>Returns all descentences</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="TypeId" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Is the type of the FreeCAD object with module domain</UserDocu>
+      </Documentation>
+      <Parameter Name="TypeId" Type="String" />
+    </Attribute>
+    <Attribute Name="Module" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Module in which this class is defined</UserDocu>
+      </Documentation>
+      <Parameter Name="Module" Type="Int"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

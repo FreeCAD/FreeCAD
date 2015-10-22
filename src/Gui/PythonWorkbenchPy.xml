@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="WorkbenchPy" 
+    Name="PythonWorkbenchPy" 
+    Twin="PythonBaseWorkbench" 
+    TwinPointer="PythonBaseWorkbench" 
+    Include="Gui/Workbench.h" 
+    Namespace="Gui" 
+    FatherInclude="Gui/WorkbenchPy.h" 
+    FatherNamespace="Gui">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This class handles document objects in group</UserDocu>
+    </Documentation>
+    <Methode Name="appendMenu">
+      <Documentation>
+        <UserDocu>Append a new menu</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeMenu">
+      <Documentation>
+        <UserDocu>Remove a menu</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="listMenus">
+      <Documentation>
+        <UserDocu>Show a list of all menus</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="appendContextMenu">
+      <Documentation>
+        <UserDocu>Append a new context menu item</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeContextMenu">
+      <Documentation>
+        <UserDocu>Remove a context menu item</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="appendToolbar">
+      <Documentation>
+        <UserDocu>Append a new toolbar</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeToolbar">
+      <Documentation>
+        <UserDocu>Remove a toolbar</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="listToolbars">
+      <Documentation>
+        <UserDocu>Show a list of all toolbars</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="appendCommandbar">
+      <Documentation>
+        <UserDocu>Append a new command bar</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeCommandbar">
+      <Documentation>
+        <UserDocu>Remove a command bar</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="listCommandbars">
+      <Documentation>
+        <UserDocu>Show a list of all command bars</UserDocu>
+      </Documentation>
+    </Methode>
+	  <Methode Name="AppendMenu">
+		  <Documentation>
+			  <UserDocu>deprecated -- use appendMenu</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="RemoveMenu">
+		  <Documentation>
+			  <UserDocu>deprecated -- use removeMenu</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="ListMenus">
+		  <Documentation>
+			  <UserDocu>deprecated -- use listMenus</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="AppendContextMenu">
+		  <Documentation>
+			  <UserDocu>deprecated -- use appendContextMenu</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="RemoveContextMenu">
+		  <Documentation>
+			  <UserDocu>deprecated -- use removeContextMenu</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="AppendToolbar">
+		  <Documentation>
+			  <UserDocu>deprecated -- use appendToolbar</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="RemoveToolbar">
+		  <Documentation>
+			  <UserDocu>deprecated -- use removeToolbar</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="ListToolbars">
+		  <Documentation>
+			  <UserDocu>deprecated -- use listToolbars</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="AppendCommandbar">
+		  <Documentation>
+			  <UserDocu>deprecated -- use appendCommandBar</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="RemoveCommandbar">
+		  <Documentation>
+			  <UserDocu>deprecated -- use removeCommandBar</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="ListCommandbars">
+		  <Documentation>
+			  <UserDocu>deprecated -- use listCommandBars</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

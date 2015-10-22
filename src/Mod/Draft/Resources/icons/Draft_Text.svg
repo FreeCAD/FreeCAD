@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg4594"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="text.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4596">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 32 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="64 : 32 : 1"
+       inkscape:persp3d-origin="32 : 21.333333 : 1"
+       id="perspective4602" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.9445436"
+     inkscape:cx="20.833111"
+     inkscape:cy="7.2926147"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="641"
+     inkscape:window-height="722"
+     inkscape:window-x="0"
+     inkscape:window-y="25" />
+  <metadata
+     id="metadata4599">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       id="g3491"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/text.png"
+       inkscape:export-xdpi="7.820137"
+       inkscape:export-ydpi="7.820137"
+       transform="matrix(0.1649204,0,0,0.1649204,-643.71716,-232.01446)">
+      <path
+         id="path3489"
+         d="M 4176.0736,1682.8371 L 4054.9798,1682.8371 L 4029.3939,1720.3371 C 4025.8782,1725.5455 4023.86,1729.647 4023.3392,1732.6418 C 4022.1673,1738.371 4025.6829,1742.3423 4033.8861,1744.5558 L 4032.7142,1750.8058 L 3944.433,1750.8058 L 3945.6048,1744.5558 C 3951.0736,1743.5142 3955.4356,1741.6913 3958.6908,1739.0871 C 3961.946,1736.4829 3966.1126,1731.4048 3971.1908,1723.8527 L 4110.058,1518.9699 C 4114.4849,1512.4597 4117.089,1507.2514 4117.8705,1503.3449 C 4119.1724,1497.3556 4116.3078,1493.0587 4109.2767,1490.4543 L 4110.4486,1484.2043 L 4204.9798,1484.2043 L 4203.808,1490.4543 C 4195.6046,1492.6681 4190.9822,1496.5092 4189.9408,1501.9777 C 4189.1593,1505.754 4189.5499,1510.0509 4191.1127,1514.8683 L 4251.4642,1720.3371 C 4254.0681,1729.0611 4256.6722,1735.0507 4259.2767,1738.3058 C 4261.8806,1741.4309 4265.7868,1743.5142 4270.9955,1744.5558 L 4269.8236,1750.8058 L 4171.7767,1750.8058 L 4172.9486,1744.5558 C 4181.9327,1743.1236 4187.076,1739.0871 4188.3783,1732.4465 C 4188.8989,1729.7121 4188.378,1725.6757 4186.8158,1720.3371 L 4176.0736,1682.8371 M 4166.5033,1646.3137 L 4142.2845,1551.3918 L 4079.5892,1646.3137 L 4166.5033,1646.3137"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;opacity:0.62711864;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:Copperplate Gothic Bold;-inkscape-font-specification:'Copperplate Gothic Bold, Bold'" />
+      <path
+         id="text2714"
+         d="M 4155.865,1658.6792 L 4034.7712,1658.6792 L 4009.1853,1696.1792 C 4005.6696,1701.3876 4003.6514,1705.4891 4003.1306,1708.4839 C 4001.9587,1714.2131 4005.4743,1718.1844 4013.6775,1720.3979 L 4012.5056,1726.6479 L 3924.2244,1726.6479 L 3925.3962,1720.3979 C 3930.865,1719.3563 3935.227,1717.5334 3938.4822,1714.9292 C 3941.7374,1712.325 3945.904,1707.2469 3950.9822,1699.6948 L 4089.8494,1494.812 C 4094.2763,1488.3018 4096.8804,1483.0935 4097.6619,1479.187 C 4098.9638,1473.1977 4096.0992,1468.9008 4089.0681,1466.2964 L 4090.24,1460.0464 L 4184.7712,1460.0464 L 4183.5994,1466.2964 C 4175.396,1468.5102 4170.7736,1472.3513 4169.7322,1477.8198 C 4168.9507,1481.5961 4169.3413,1485.893 4170.9041,1490.7104 L 4231.2556,1696.1792 C 4233.8595,1704.9032 4236.4636,1710.8928 4239.0681,1714.1479 C 4241.672,1717.273 4245.5782,1719.3563 4250.7869,1720.3979 L 4249.615,1726.6479 L 4151.5681,1726.6479 L 4152.74,1720.3979 C 4161.7241,1718.9657 4166.8674,1714.9292 4168.1697,1708.2886 C 4168.6903,1705.5542 4168.1694,1701.5178 4166.6072,1696.1792 L 4155.865,1658.6792 M 4146.2947,1622.1558 L 4122.0759,1527.2339 L 4059.3806,1622.1558 L 4146.2947,1622.1558"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffda04;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:Copperplate Gothic Bold;-inkscape-font-specification:'Copperplate Gothic Bold, Bold'" />
+    </g>
+  </g>
+</svg>

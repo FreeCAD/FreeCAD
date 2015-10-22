@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometryPy"
+		Name="GeometrySurfacePy"
+		Twin="GeomSurface"
+		TwinPointer="GeomSurface"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometryPy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>
+				The abstract class GeometrySurface is the root class of all surface objects.
+			</UserDocu>
+		</Documentation>
+		<Methode Name="toShape" Const="true">
+			<Documentation>
+				<UserDocu>Return the shape for the geometry.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="value">
+			<Documentation>
+				<UserDocu>Computes the point of parameter (u,v) on this surface</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="tangent">
+			<Documentation>
+				<UserDocu>Computes the tangent of parameter (u,v) on this geometry</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="bounds">
+			<Documentation>
+				<UserDocu>
+					Returns the parametric bounds (U1, U2, V1, V2) of this trimmed surface.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Continuity" ReadOnly="true">
+			<Documentation>
+				<UserDocu>
+					Returns the global continuity of the surface.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="Continuity" Type="String"/>
+		</Attribute>
+		<Methode Name="isUPeriodic">
+			<Documentation>
+				<UserDocu>Returns true if this patch is periodic in the given parametric direction.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isVPeriodic">
+			<Documentation>
+				<UserDocu>Returns true if this patch is periodic in the given parametric direction.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isUClosed">
+			<Documentation>
+				<UserDocu>
+					Checks if this surface is closed in the u parametric direction.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isVClosed">
+			<Documentation>
+				<UserDocu>
+					Checks if this surface is closed in the v parametric direction.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="UPeriod">
+			<Documentation>
+				<UserDocu>
+					Returns the period of this patch in the u parametric direction.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="VPeriod">
+			<Documentation>
+				<UserDocu>
+					Returns the period of this patch in the v parametric direction.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="parameter">
+			<Documentation>
+				<UserDocu>Returns the parameter on the curve
+of the nearest orthogonal projection of the point.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="toBSpline">
+			<Documentation>
+				<UserDocu>
+					Returns a B-Spline representation of this surface. 
+The required arguments are:
+* tolerance
+* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN)
+* continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN)
+* maximum degree in u
+* maximum degree in v
+* maximum number of segments
+* precision code (optional, default=0)
+				</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

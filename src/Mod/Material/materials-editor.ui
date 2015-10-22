@@ -1,0 +1,992 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MaterialEditor</class>
+ <widget class="QDialog" name="MaterialEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>450</width>
+    <height>604</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Material Editor</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="ButtonURL">
+         <property name="maximumSize">
+          <size>
+           <width>22</width>
+           <height>22</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Opens the Product URL of this material in an external browser</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Material card:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="ComboMaterial">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Existing material cards</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ButtonOpen">
+         <property name="toolTip">
+          <string>Opens an existing material card</string>
+         </property>
+         <property name="text">
+          <string>Open...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ButtonSave">
+         <property name="toolTip">
+          <string>Saves this material as a card</string>
+         </property>
+         <property name="text">
+          <string>Save as...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>Preview</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QGraphicsView" name="PreviewRendered">
+          <property name="minimumSize">
+           <size>
+            <width>96</width>
+            <height>96</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>96</width>
+            <height>96</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGraphicsView" name="PreviewVector">
+          <property name="minimumSize">
+           <size>
+            <width>96</width>
+            <height>96</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>96</width>
+            <height>96</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMaximumSize</enum>
+       </property>
+       <item>
+        <widget class="QTreeWidget" name="Editor">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>300</height>
+          </size>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="columnCount">
+          <number>2</number>
+         </property>
+         <attribute name="headerVisible">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="headerDefaultSectionSize">
+          <number>150</number>
+         </attribute>
+         <attribute name="headerStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Property</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+         <item>
+          <property name="text">
+           <string>Meta information</string>
+          </property>
+          <property name="toolTip">
+           <string>Additional information that will be written in the material card.</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <item>
+           <property name="text">
+            <string>Card Name</string>
+           </property>
+           <property name="toolTip">
+            <string>This is a description of your material, for ex. &quot;Standard Steel Material&quot;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Author And License</string>
+           </property>
+           <property name="toolTip">
+            <string>Your name and license info, for ex. &quot;John Smith, CC-BY 3.0&quot;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Source</string>
+           </property>
+           <property name="toolTip">
+            <string>An optional description of where the informations included in this card come from</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>General</string>
+          </property>
+          <property name="toolTip">
+           <string>General properties of this material</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+           <property name="toolTip">
+            <string>A uniquely identificable name, for ex. &quot;Steel&quot;. This should match the name of the card.</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Father</string>
+           </property>
+           <property name="toolTip">
+            <string>An optional father material. Missing properties here will be taken from the father. For ex. &quot;Metal&quot;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Description</string>
+           </property>
+           <property name="toolTip">
+            <string>A longer and more precise description of your material</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Density</string>
+           </property>
+           <property name="toolTip">
+            <string>Density of this material, in kg/m³. For ex. 7800 </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Vendor</string>
+           </property>
+           <property name="toolTip">
+            <string>The name of the vendor of this material</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Product URL</string>
+           </property>
+           <property name="toolTip">
+            <string>A URL where information about this material can be found</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Specific Price</string>
+           </property>
+           <property name="toolTip">
+            <string>A price for this material, including the unit, for ex. 1.5 EUR/kg</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mechanical</string>
+          </property>
+          <property name="toolTip">
+           <string>Mechanical properties of this material</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <item>
+           <property name="text">
+            <string>Youngs Modulus</string>
+           </property>
+           <property name="toolTip">
+            <string>Also called tensile modulus or elastic modulus, a measure of the stiffness of a material, in kPa</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Ultimate Tensile Strength</string>
+           </property>
+           <property name="toolTip">
+            <string>The maximum stress that a material can withstand while being stretched or pulled before failing or breaking, in MPa</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Compressive Strength</string>
+           </property>
+           <property name="toolTip">
+            <string>The capacity of a material or structure to withstand loads tending to reduce size</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Elasticity</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Fracture Toughness</string>
+           </property>
+           <property name="toolTip">
+            <string>The ability of a material containing a crack to resist fracture</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>FEM</string>
+          </property>
+          <property name="toolTip">
+           <string>FEM-related properties</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <item>
+           <property name="text">
+            <string>Poisson Ratio</string>
+           </property>
+           <property name="toolTip">
+            <string>The Poisson ratio is the negative ratio of transverse to axial strain.</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Architectural</string>
+          </property>
+          <property name="toolTip">
+           <string>Architectural properties</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <item>
+           <property name="text">
+            <string>Model</string>
+           </property>
+           <property name="toolTip">
+            <string>The specific model of a certain product</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Execution Instructions</string>
+           </property>
+           <property name="toolTip">
+            <string>Specific execution or installation instructions</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Fire Resistance Class</string>
+           </property>
+           <property name="toolTip">
+            <string>Fire resistance standard and class, for ex. RF 1h or UL 350-2</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Standard Code</string>
+           </property>
+           <property name="toolTip">
+            <string>The standard and code this material is described in, for ex. MasterFormat 03-1113.310</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Thermal Conductivity</string>
+           </property>
+           <property name="toolTip">
+            <string>The property of a material to conduct heat, in W/mK.</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Sound Transmission Class</string>
+           </property>
+           <property name="toolTip">
+            <string>A standard and rating indicating how well a material attenuates airborne sound. For ex. STC 44</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Color</string>
+           </property>
+           <property name="toolTip">
+            <string>A specific color for this product</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Finish</string>
+           </property>
+           <property name="toolTip">
+            <string>A special finish specification for this product</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Units Per Quantity</string>
+           </property>
+           <property name="toolTip">
+            <string>In case this product is made of small units, this property describes how many units fit into a certain volume or area, for ex. 50 units/m³</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Environmental Efficiency Class</string>
+           </property>
+           <property name="toolTip">
+            <string>A standard and rating of this material regarding sustainability and environmental design</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Rendering</string>
+          </property>
+          <property name="toolTip">
+           <string>Properties used by the FreeCAD 3D view, but also by external renderers</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <property name="foreground">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>123</red>
+             <green>123</green>
+             <blue>123</blue>
+            </color>
+           </brush>
+          </property>
+          <item>
+           <property name="text">
+            <string>Diffuse Color</string>
+           </property>
+           <property name="toolTip">
+            <string>A diffuse color, expressed with 3 comma-separated float values, for ex. 0.5,0.5,0.5</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Ambient Color</string>
+           </property>
+           <property name="toolTip">
+            <string>An ambient color, expressed with 3 comma-separated float values, for ex. 0.5,0.5,0.5</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Specular Color</string>
+           </property>
+           <property name="toolTip">
+            <string>A specular color, expressed with 3 comma-separated float values, for ex. 0.5,0.5,0.5</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Shininess</string>
+           </property>
+           <property name="toolTip">
+            <string>An intensity value for shininess/specularity, expressed as a float value between 0 and 1.0</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Emissive Color</string>
+           </property>
+           <property name="toolTip">
+            <string>An emission color, expressed with 3 comma-separated float values, for ex. 0.5,0.5,0.5</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Transparency</string>
+           </property>
+           <property name="toolTip">
+            <string>A transparency value, expressed as a float value between 0 (opaque) and 1.0 (fully transparent)</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Vertex Shader</string>
+           </property>
+           <property name="toolTip">
+            <string>An optional vertex shader to be used by renderers that support it</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Fragment Shader</string>
+           </property>
+           <property name="toolTip">
+            <string>An optional fragment shader to be used by renderers that support it</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Texture Path</string>
+           </property>
+           <property name="toolTip">
+            <string>A path to a texture image, to be used by the renderers that support it</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Texture Scaling</string>
+           </property>
+           <property name="toolTip">
+            <string>A scaling value for the texture, might be used differently by different renderes</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Vector rendering</string>
+          </property>
+          <property name="toolTip">
+           <string>Properties applicable in vector renderings</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>200</red>
+             <green>200</green>
+             <blue>200</blue>
+            </color>
+           </brush>
+          </property>
+          <item>
+           <property name="text">
+            <string>View Color</string>
+           </property>
+           <property name="toolTip">
+            <string>A base color for viewed faces, expressed with 3 comma-separated float values, for ex. 0.5,0.5,0.5</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>View Fill Pattern</string>
+           </property>
+           <property name="toolTip">
+            <string>An SVG pattern to apply on viewed faces, expressed as either a name of an existing pattern (such as &quot;simple&quot;) or a complete &lt;pattern&gt;...&lt;/pattern&gt; SVG element</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>View Linewidth</string>
+           </property>
+           <property name="toolTip">
+            <string>An optional linewidth factor for viewed faces</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Section Color</string>
+           </property>
+           <property name="toolTip">
+            <string>A base color for sectionned faces, expressed with 3 comma-separated float values, for ex. 0.5,0.5,0.5</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Section Fill Pattern</string>
+           </property>
+           <property name="toolTip">
+            <string>An SVG pattern to apply on cut faces, expressed as either a name of an existing pattern (such as &quot;simple&quot;) or a complete &lt;pattern&gt;...&lt;/pattern&gt; SVG element</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Section Linewidth</string>
+           </property>
+           <property name="toolTip">
+            <string>An optional linewidth factor for cut faces</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>User defined</string>
+          </property>
+          <property name="toolTip">
+           <string>Additional properties defined by the user</string>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Add / Remove</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLineEdit" name="EditProperty"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="ButtonAddProperty">
+            <property name="text">
+             <string>Add property</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="ButtonDeleteProperty">
+            <property name="text">
+             <string>Delete property</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="standardButtons">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

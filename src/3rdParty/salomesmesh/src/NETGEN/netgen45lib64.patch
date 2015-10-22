@@ -1,0 +1,45 @@
+diff -ur netgen-4.5.old/libsrc/makefile.inc netgen-4.5.new/libsrc/makefile.inc
+--- netgen-4.5/libsrc/makefile.inc	2006-04-27 13:12:54.000000000 +0400
++++ netgen-4.5/libsrc/makefile.inc	2006-09-05 14:16:32.000000000 +0400
+@@ -14,7 +14,7 @@
+ #
+ include $(LIBSRC_DIR)/makefile.mach.$(MACHINE)
+ #
+-CPLUSPLUSFLAGS1 = -c -fPIC -I$(LIBSRC_DIR)/include -I$(OCCINC_DIR) \
++CPLUSPLUSFLAGS1 = -c -m64 -D_OCC64 -fPIC -I$(LIBSRC_DIR)/include -I$(OCCINC_DIR) \
+ 	-DOCCGEOMETRY -DOCC52 -DHAVE_IOSTREAM -DHAVE_LIMITS_H
+ #
+ ARFLAGS = r
+diff -ur netgen-4.5.old/libsrc/makefile.mach.LINUX64 netgen-4.5.new/libsrc/makefile.mach.LINUX64
+--- netgen-4.5/libsrc/makefile.mach.LINUX64	2006-03-29 15:09:32.000000000 +0400
++++ netgen-4.5/libsrc/makefile.mach.LINUX64	2006-09-07 15:48:39.000000000 +0400
+@@ -11,7 +11,7 @@
+ #
+ #
+ CFLAGS2 =
+-CPLUSPLUSFLAGS2 = -pg -march=nocona -O2 -DLINUX -DOPENGL \
++CPLUSPLUSFLAGS2 = -pg -march=nocona -O2 -DLINUX \
+ 	-ftemplate-depth-99 -finline-limit=100000 \
+ 	  -fforce-addr  -funroll-loops \
+ 	-DTRAFO  -DNGSOLVE -DnoADDON -DnoLAPACK -DnoFAST \
+@@ -23,7 +23,7 @@
+ # 
+ #  
+ 
+-LINKFLAGS2 = -pg -L/usr/openwin/lib64 -L/usr/X11R6/lib64 -L/usr/lib/GL3.5 -L/usr/lib64
++LINKFLAGS2 = -fPIC -pg -L/usr/openwin/lib64 -L/usr/X11R6/lib64 -L/usr/lib/GL3.5 -L/usr/lib64
+ 
+ 
+ SYSLIB2 =  -lstdc++ 
+diff -ur netgen-4.5.old/Makefile netgen-4.5.new/Makefile
+--- netgen-4.5/Makefile	2006-03-29 15:09:12.000000000 +0400
++++ netgen-4.5/Makefile	2006-09-07 15:46:07.000000000 +0400
+@@ -72,7 +72,7 @@
+ #
+ #CPLUSPLUSFLAGS1 = -c -I$(LIBSRC_DIR)/include  -DOPENGL
+ 
+-CPLUSPLUSFLAGS1 = -c -I$(LIBSRC_DIR)/include -I$(OCCINC_DIR)  -I./ngsolve/include -Ilibsrc/interface -DOPENGL -I$(METISINC)
++CPLUSPLUSFLAGS1 = -c -m64 -D_OCC64 -I$(LIBSRC_DIR)/include -I$(OCCINC_DIR)  -I./ngsolve/include -Ilibsrc/interface -I$(METISINC)
+ 
+ LINKFLAGS1 =   -lGL -lGLU -lX11 -lXext -lXmu 
+ #

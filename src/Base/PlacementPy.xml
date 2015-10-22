@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="PyObjectBase" 
+		Name="PlacementPy" 
+		Twin="Placement" 
+		TwinPointer="Placement" 
+		Include="Base/Placement.h" 
+		FatherInclude="Base/PyObjectBase.h" 
+		Namespace="Base" 
+		Constructor="true"
+		Delete="true" 
+		FatherNamespace="Base">
+	<Documentation>
+		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+		<UserDocu>Placement
+A placement defines an orientation (rotation) and a position (base) in 3D space.
+It is used when no scaling or other distortion is needed.
+
+The following constructors are supported:
+Placement() -- empty constructor
+Placement(Placement) -- copy constructor
+Placement(Matrix) -- 4D matrix consisting of rotation and translation
+Placement(Base, Rotation) -- define position and rotation
+Placement(Base, Rotation,Center) -- define position and rotation with center
+Placement(Base, Axis, Angle) -- define position and rotation
+		</UserDocu>
+		<DeveloperDocu>Placement</DeveloperDocu>
+	</Documentation>
+        <Methode Name="copy" Const="true">
+            <Documentation>
+                <UserDocu>
+                    copy()
+                    Returns a copy of this Placement
+                </UserDocu>
+            </Documentation>
+        </Methode>
+		<Methode Name="move">
+			<Documentation>
+				<UserDocu>
+					move(Vector) 
+					Move the placement along the vector
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="multiply" Const="true">
+			<Documentation>
+				<UserDocu>
+					multiply(Placement)
+					Multiply this placement with another placement
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="multVec" Const="true">
+			<Documentation>
+				<UserDocu>
+					multVector(Vector) -> Vector
+					Compute the transformed vector using the placement
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="toMatrix" Const="true">
+			<Documentation>
+				<UserDocu>
+					toMatrix()
+					convert the placement to a matrix representation
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="inverse" Const="true">
+			<Documentation>
+				<UserDocu>
+					inverse() -> Placement
+					compute the inverse placement
+				</UserDocu>
+			</Documentation>
+		</Methode>
+                <Methode Name="isNull" Const="true">
+			<Documentation>
+				<UserDocu>
+					isNull() -> Bool
+					returns True if the placement has no displacement and no rotation
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Base" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Vector to the Base Position of the Placement</UserDocu>
+			</Documentation>
+			<Parameter Name="Base" Type="Object" />
+		</Attribute>
+		<Attribute Name="Rotation" ReadOnly="false">
+			<Documentation>
+				<UserDocu>Orientation of the placement expressed as rotation</UserDocu>
+			</Documentation>
+			<Parameter Name="Rotation" Type="Object" />
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

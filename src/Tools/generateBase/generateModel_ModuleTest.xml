@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<Module Name="GenerateTestDummy">
+		<Content>
+			<Feature Name="Test1">
+				<Documentation><Author EMail="juergen.riegel@web.de" Name="Juergen Riegel"/></Documentation>
+				<Property Type="App::PropertyString" Name="Name"/>
+				<Property Type="App::PropertyInteger" Name="Count"/>
+				<Property Type="App::PropertyFloat" Name="Distance"/>
+				<ViewProvider>
+					<Property Type="App::PropertyInt" Name="VisMode"></Property>
+				</ViewProvider>
+			</Feature>
+	    </Content>
+	</Module>
+</GenerateModel>
