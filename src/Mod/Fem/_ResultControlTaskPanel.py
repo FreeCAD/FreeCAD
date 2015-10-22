@@ -205,14 +205,15 @@ class _ResultControlTaskPanel:
                 self.MeshObject = i
                 break
 
-        if self.MeshObject.FemMesh.NodeCount == len(self.result_object.ElementNumbers):
-            self.suitable_results = True
-        else:
-            self.suitable_results = False
-            if not self.MeshObject.FemMesh.VolumeCount:
-                FreeCAD.Console.PrintError('Graphical bending stress output for beam or shell FEM Meshes not yet supported!\n')
+        self.suitable_results = False
+        if self.result_object:
+            if self.MeshObject.FemMesh.NodeCount == len(self.result_object.ElementNumbers):
+                self.suitable_results = True
             else:
-                FreeCAD.Console.PrintError('Result node numbers are not equal to FEM Mesh NodeCount!\n')
+                if not self.MeshObject.FemMesh.VolumeCount:
+                    FreeCAD.Console.PrintError('Graphical bending stress output for beam or shell FEM Meshes not yet supported!\n')
+                else:
+                    FreeCAD.Console.PrintError('Result node numbers are not equal to FEM Mesh NodeCount!\n')
 
     def accept(self):
         FreeCADGui.Control.closeDialog()
