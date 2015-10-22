@@ -1,0 +1,17 @@
+; glass material
+; (c) 2015 xyz (CC-BY 3.0)
+; Information about the content of such cards you can find here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = Glass_E
+Description = Glass Fiber
+Father = Glass
+ProductURL = https://en.wikipedia.org/wiki/Glass_fiber
+Tensile Strength = 3445 (MPa)
+Compresive Strength = 1080 (MPa)
+Density = 2.58 g/cm^3
+ThermalExpansion = 5.4
+Softening T = 846
+Price = 1.76 Euro/kg
+
