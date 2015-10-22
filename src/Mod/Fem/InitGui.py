@@ -41,6 +41,19 @@ class FemWorkbench (Workbench):
         # load the module
         import Fem
         import FemGui
+
+        import _CommandMechanicalShowResult
+        import _CommandQuickAnalysis
+        import _CommandPurgeFemResults
+        import _CommandMechanicalJobControl
+        import _CommandFemFromShape
+        import _CommandNewMechanicalAnalysis
+
+        import MechanicalAnalysis
+        import MechanicalMaterial
+        import FemBeamSection
+        import FemShellThickness
+
         import subprocess
         from platform import system
         ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")
