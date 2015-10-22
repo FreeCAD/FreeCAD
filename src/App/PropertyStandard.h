@@ -469,7 +469,7 @@ protected:
 /** Constraint float properties
  * This property fullfill the need of constraint float. It holds basicly a 
  * state (float) and a struct of boundaries. If the boundaries
- * is not set it act basicly like a IntegerProperty and do no checking.
+ * is not set it act basicly like a FloatProperty and do no checking.
  * The constraints struct can be created on the heap or build in.
  */
 class AppExport PropertyFloatConstraint: public PropertyFloat
