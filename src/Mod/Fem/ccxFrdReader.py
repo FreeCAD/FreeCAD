@@ -152,7 +152,7 @@ def importFrd(filename, Analysis=None):
     m = readResult(filename)
     result_set_number = len(m['Results'])
     MeshObject = None
-    if(len(m) > 0):
+    if(len(m['Nodes']) > 0):
         import Fem
         if Analysis is None:
             AnalysisName = os.path.splitext(os.path.basename(filename))[0]
