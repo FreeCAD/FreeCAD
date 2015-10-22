@@ -64,6 +64,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             else:
                 self.ccx_binary_present = False
                 self.setup_ccx()
+            self.result_object = None
         else:
             raise Exception('FEM: No active analysis found!')
 
@@ -416,7 +417,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.result_object = m
-            if self.result_object is not None:
+            if self.result_object:
                 self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
