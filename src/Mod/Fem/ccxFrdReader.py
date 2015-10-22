@@ -261,8 +261,6 @@ def importFrd(filename, Analysis=None):
         if(FreeCAD.GuiUp):
             import FemGui
             import FreeCADGui
-            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
-                FreeCADGui.activateWorkbench("FemWorkbench")
             FemGui.setActiveAnalysis(AnalysisObject)
 
 
