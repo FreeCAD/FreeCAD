@@ -75,26 +75,6 @@ void FemGuiExport initFemGui()
         return;
     }
 
-    try {
-        Base::Interpreter().loadModule("FemCommands");
-
-        Base::Interpreter().loadModule("_CommandMechanicalShowResult");
-        Base::Interpreter().loadModule("_CommandQuickAnalysis");
-        Base::Interpreter().loadModule("_CommandPurgeFemResults");
-        Base::Interpreter().loadModule("_CommandMechanicalJobControl");
-        Base::Interpreter().loadModule("_CommandFemFromShape");
-        Base::Interpreter().loadModule("_CommandNewMechanicalAnalysis");
-
-        Base::Interpreter().loadModule("MechanicalAnalysis");
-        Base::Interpreter().loadModule("MechanicalMaterial");
-        Base::Interpreter().loadModule("FemBeamSection");
-        Base::Interpreter().loadModule("FemShellThickness");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        return;
-    }
-
     (void) Py_InitModule("FemGui", FemGui_Import_methods);   /* mod name, table ptr */
     Base::Console().Log("Loading GUI of Fem module... done\n");
 
