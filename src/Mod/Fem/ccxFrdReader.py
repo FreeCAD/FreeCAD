@@ -150,7 +150,6 @@ def calculate_von_mises(i):
 
 def importFrd(filename, Analysis=None):
     m = readResult(filename)
-    result_set_number = len(m['Results'])
     MeshObject = None
     if(len(m['Nodes']) > 0):
         import Fem
@@ -191,7 +190,7 @@ def importFrd(filename, Analysis=None):
 
         for result_set in m['Results']:
             eigenmode_number = result_set['number']
-            if result_set_number > 0:
+            if eigenmode_number > 0:
                 results_name = 'Mode_' + str(eigenmode_number) + '_results'
             else:
                 results_name = 'Results'
@@ -204,7 +203,7 @@ def importFrd(filename, Analysis=None):
                 displacement.append(v)
 
             x_max, y_max, z_max = map(max, zip(*displacement))
-            if result_set_number > 1:
+            if eigenmode_number > 0:
                 max_disp = max(x_max, y_max, z_max)
                 # Allow for max displacement to be 0.1% of the span
                 # FIXME - add to Preferences
@@ -224,7 +223,7 @@ def importFrd(filename, Analysis=None):
                 mstress = []
                 for i in stress.values():
                     mstress.append(calculate_von_mises(i))
-                if result_set_number > 1:
+                if eigenmode_number > 0:
                     results.StressValues = map((lambda x: x * scale), mstress)
                 else:
                     results.StressValues = mstress
