@@ -106,7 +106,7 @@ class inp_writer:
                 self.get_ccx_elsets_multiple_mat_single_beam()
             elif self.beamsection_objects and len(self.beamsection_objects) > 1:        # multiple mats, multiple beams
                 self.get_ccx_elsets_multiple_mat_multiple_beam()
-            if self.shellthickness_objects and len(self.shellthickness_objects) == 1:   # multiple mats, single shell
+            elif self.shellthickness_objects and len(self.shellthickness_objects) == 1:   # multiple mats, single shell
                 self.get_ccx_elsets_multiple_mat_single_shell()
             elif self.shellthickness_objects and len(self.shellthickness_objects) > 1:  # multiple mats, multiple shells
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
