@@ -682,7 +682,7 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
           (*_pvcPoints)(ii).Y(),
           (*_pvcPoints)(ii).Z()));
       vcProjPts.push_back(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
-    clBBox.Add(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
+      clBBox.Add(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
   }
 
   if ((clBBox.fMaxX == clBBox.fMinX) || (clBBox.fMaxY == clBBox.fMinY))
@@ -825,7 +825,7 @@ void BSplineParameterCorrection::Init()
   // u-Richtung
   for (int i=0;i<=usUMax; i++)
   {
-    _vUKnots(i) = i / usUMax;
+    _vUKnots(i) = static_cast<double>(i) / static_cast<double>(usUMax);
     _vUMults(i) = 1;
   }
   _vUMults(0) = _usUOrder;
@@ -833,7 +833,7 @@ void BSplineParameterCorrection::Init()
   // v-Richtung
   for (int i=0; i<=usVMax; i++)
   {
-    _vVKnots(i) = i / usVMax;
+    _vVKnots(i) = static_cast<double>(i) / static_cast<double>(usVMax);
     _vVMults(i) = 1;
   }
   _vVMults(0) = _usVOrder;
@@ -885,7 +885,7 @@ void BSplineParameterCorrection::SetVKnots(const std::vector<double>& afKnots)
 void BSplineParameterCorrection::DoParameterCorrection(unsigned short usIter)
 {
   int i=0;
-  float fMaxDiff=0.0f, fMaxScalar=1.0f;
+  double fMaxDiff=0.0, fMaxScalar=1.0;
   double fWeight = _fSmoothInfluence;
 
   Base::SequencerLauncher seq("Calc surface...", usIter*_pvcPoints->Length());
@@ -924,7 +924,7 @@ void BSplineParameterCorrection::DoParameterCorrection(unsigned short usIter)
       {
         ErrorVec.Normalize();
         if(fabs(clNormal*ErrorVec) < fMaxScalar)
-          fMaxScalar = (float)fabs(clNormal*ErrorVec);
+          fMaxScalar = fabs(clNormal*ErrorVec);
       }
 
       fDeltaU =  ( (P-X) * Xu ) / ( (P-X)*Xuu - Xu*Xu );
@@ -942,8 +942,8 @@ void BSplineParameterCorrection::DoParameterCorrection(unsigned short usIter)
       {
         (*_pvcUVParam)(ii).SetX(fU);
         (*_pvcUVParam)(ii).SetY(fV);
-        fMaxDiff = std::max<float>(float(fabs(fDeltaU)), fMaxDiff);
-        fMaxDiff = std::max<float>(float(fabs(fDeltaV)), fMaxDiff);
+        fMaxDiff = std::max<double>(fabs(fDeltaU), fMaxDiff);
+        fMaxDiff = std::max<double>(fabs(fDeltaV), fMaxDiff);
       }
 
       seq.next();
@@ -1214,7 +1214,7 @@ void BSplineParameterCorrection::CalcThirdSmoothMatrix(Base::SequencerLauncher& 
 
 void BSplineParameterCorrection::EnableSmoothing(bool bSmooth, double fSmoothInfl)
 {
-    EnableSmoothing(bSmooth, fSmoothInfl, 1.0f, 0.0f, 0.0f);
+    EnableSmoothing(bSmooth, fSmoothInfl, 1.0, 0.0, 0.0);
 }
 
 void BSplineParameterCorrection::EnableSmoothing(bool bSmooth, double fSmoothInfl,

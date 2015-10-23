@@ -319,13 +319,13 @@ protected:
   bool                    _bGetUVDir;        //! Stellt fest, ob u/v-Richtung vorgegeben wird
   bool                    _bSmoothing;       //! Glättung verwenden
   double                  _fSmoothInfluence; //! Einfluß der Glättung
-  unsigned short                 _usUOrder;         //! Ordnung in u-Richtung
-  unsigned short                 _usVOrder;         //! Ordnung in v-Richtung
-  unsigned short                 _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
-  unsigned short                 _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
-  Base::Vector3d               _clU;              //! u-Richtung
-  Base::Vector3d               _clV;              //! v-Richtung
-  Base::Vector3d               _clW;              //! w-Richtung (senkrecht zu u-und w-Richtung)
+  unsigned short          _usUOrder;         //! Ordnung in u-Richtung
+  unsigned short          _usVOrder;         //! Ordnung in v-Richtung
+  unsigned short          _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
+  unsigned short          _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
+  Base::Vector3d          _clU;              //! u-Richtung
+  Base::Vector3d          _clV;              //! v-Richtung
+  Base::Vector3d          _clW;              //! w-Richtung (senkrecht zu u-und w-Richtung)
   TColgp_Array1OfPnt*     _pvcPoints;        //! Punktliste der Rohdaten
   TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameterwerte zu den Punkten aus der Liste
   TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array von Kontrollpunkten
