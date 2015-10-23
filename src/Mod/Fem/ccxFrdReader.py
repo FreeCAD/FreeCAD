@@ -260,7 +260,6 @@ def importFrd(filename, Analysis=None):
 
         if(FreeCAD.GuiUp):
             import FemGui
-            import FreeCADGui
             FemGui.setActiveAnalysis(AnalysisObject)
 
 
