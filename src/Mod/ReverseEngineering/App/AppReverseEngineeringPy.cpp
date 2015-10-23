@@ -43,12 +43,32 @@ using namespace Reen;
 
 
 /* module functions */
-static PyObject * approxSurface(PyObject *self, PyObject *args)
+static PyObject * approxSurface(PyObject *self, PyObject *args, PyObject *kwds)
 {
     PyObject *o;
-    int orderU=4,orderV=4;
-    int pointsU=6,pointsV=6;
-    if (!PyArg_ParseTuple(args, "O|iiii",&o,&orderU,&orderV,&pointsU,&pointsV))
+    // spline parameters
+    int orderU = 4;
+    int orderV = 4;
+    int pointsU = 6;
+    int pointsV = 6;
+    // smoothing
+    PyObject* smooth = Py_True;
+    double weight = 0.1;
+    double first = 1.0;  //0.5
+    double second = 0.0; //0.2
+    double third = 0.0;  //0.3
+    // other parameters
+    int iteration = 5;
+    PyObject* correction = Py_True;
+    double factor = 1.0;
+
+    static char* kwds_approx[] = {"Points", "OrderU", "OrderV", "PolesU", "PolesV",
+                                  "Smooth", "Weight", "First", "Second", "Third",
+                                  "Iterations", "Correction", "PatchFactor", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|iiiiO!ddddiO!d",kwds_approx,
+                                    &o,&orderU,&orderV,&pointsU,&pointsV,
+                                    &PyBool_Type,&smooth,&weight,&first,&second,&third,
+                                    &iteration,&PyBool_Type,&correction,&factor))
         return NULL;
 
     PY_TRY {
@@ -68,8 +88,8 @@ static PyObject * approxSurface(PyObject *self, PyObject *args)
         Handle_Geom_BSplineSurface hSurf;
 
         //pc.EnableSmoothing(true, 0.1f, 0.5f, 0.2f, 0.3f);
-        pc.EnableSmoothing(true, 0.1f, 1.0f, 0.0f, 0.0f);
-        hSurf = pc.CreateSurface(clPoints, 5, true, 1.0);
+        pc.EnableSmoothing(PyObject_IsTrue(smooth) ? true : false, weight, first, second, third);
+        hSurf = pc.CreateSurface(clPoints, iteration, PyObject_IsTrue(correction) ? true : false, factor);
         if (!hSurf.IsNull()) {
             return new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf));
         }
@@ -102,9 +122,13 @@ triangulate(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef ReverseEngineering_methods[] = {
-    {"approxSurface"   , approxSurface,  1},
+    {"approxSurface", (PyCFunction)approxSurface, METH_VARARGS|METH_KEYWORDS,
+     "approxSurface(Points=,OrderU=4,OrderV=4,PolesU=6,PolesV=6,Smooth=True)\n"
+     "Weight=0.1,First=1.0,Second=0.0,Third=0.0,\n"
+     "Iterations=5,Correction=True,PatchFactor=1.0"
+    },
 #if defined(HAVE_PCL_SURFACE)
-    {"triangulate"     , triangulate,  1},
+    {"triangulate"     , triangulate,  METH_VARARGS},
 #endif
     {NULL, NULL}        /* end of table marker */
 };

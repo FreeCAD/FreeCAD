@@ -677,7 +677,7 @@ Base::Vector3d ParameterCorrection::GetGravityPoint() const
 }
 
 Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Array1OfPnt& points, 
-                                                               unsigned short usIter,
+                                                               int iIter,
                                                                bool  bParaCor,
                                                                double fSizeFactor)
 {
@@ -697,7 +697,7 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
         return NULL;
 
     if (bParaCor)
-        DoParameterCorrection(usIter);
+        DoParameterCorrection(iIter);
 
     return new Geom_BSplineSurface(_vCtrlPntsOfSurf, _vUKnots, _vVKnots,
                                    _vUMults, _vVMults, _usUOrder-1, _usVOrder-1);
@@ -803,13 +803,13 @@ void BSplineParameterCorrection::SetVKnots(const std::vector<double>& afKnots)
     _clVSpline.SetKnots(_vVKnots, _vVMults, _usVOrder);
 }
 
-void BSplineParameterCorrection::DoParameterCorrection(unsigned short usIter)
+void BSplineParameterCorrection::DoParameterCorrection(int iIter)
 {
     int i=0;
     double fMaxDiff=0.0, fMaxScalar=1.0;
     double fWeight = _fSmoothInfluence;
 
-    Base::SequencerLauncher seq("Calc surface...", usIter*_pvcPoints->Length());
+    Base::SequencerLauncher seq("Calc surface...", iIter*_pvcPoints->Length());
 
     do {
         fMaxScalar = 1.0;
@@ -869,7 +869,7 @@ void BSplineParameterCorrection::DoParameterCorrection(unsigned short usIter)
 
         i++;
     }
-    while(i<usIter && fMaxDiff > FLOAT_EPS && fMaxScalar < 0.99);
+    while(i<iIter && fMaxDiff > FLOAT_EPS && fMaxScalar < 0.99);
 }
 
 bool BSplineParameterCorrection::SolveWithoutSmoothing()

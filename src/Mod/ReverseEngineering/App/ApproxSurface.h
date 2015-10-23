@@ -265,7 +265,7 @@ protected:
     /**
      * Fuehrt eine Parameterkorrektur durch.
      */
-    virtual void DoParameterCorrection(unsigned short usIter)=0;
+    virtual void DoParameterCorrection(int iIter)=0;
 
     /**
      * Loest Gleichungssystem
@@ -282,7 +282,7 @@ public:
      * Berechnet eine B-Spline-Flaeche.aus den geg. Punkten
      */
     virtual Handle_Geom_BSplineSurface CreateSurface(const TColgp_Array1OfPnt& points,
-                                                     unsigned short usIter,
+                                                     int iIter,
                                                      bool bParaCor,
                                                      double fSizeFactor=0.0f);
     /**
@@ -356,7 +356,7 @@ protected:
     /**
      * Fuehrt eine Parameterkorrektur durch.
      */
-    virtual void DoParameterCorrection(unsigned short usIter);
+    virtual void DoParameterCorrection(int iIter);
 
     /**
      * Loest ein ueberbestimmtes LGS mit Hilfe der Householder-Transformation
