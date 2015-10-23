@@ -54,18 +54,18 @@ public:
     /**
      * Konstruktor
      * @param vKnots Knotenvektor
-     * @param iOrder
-     * \todo undocumented parameter iOrder
+     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
      */
     SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
      * Konstruktor
-     * @param vKnots Knotenvektor der Form (Wert,Vielfachheit)
-     * @param vMults
-     * @param iSize
-     * @param iOrder
-     * \todo undocumented parameters vMults, iSize, iOrder
+     * @param vKnots Knotenvektor der Form (Wert)
+     * @param vMults Knotenvektor der Form (Vielfachheit)
+     * @param iSize Laenge des Knotenvektors
+     * Die Arrays @a vKnots und @a vMults muessen die gleiche besitzen und die Summe der Werte in @a vMults
+     * muss identisch mit @a iSize sein.
+     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
      */
     SplineBasisfunction(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iSize, int iOrder=1);
 
@@ -87,11 +87,9 @@ public:
      * @param iIndex  Index
      * @param iMaxDer max. Ableitung
      * @param fParam  Parameterwert.
-     * @param Derivat
-     * @return Liste der Funktionswerte
+     * @return Derivat Liste der Funktionswerte
      *
-     *  Die Liste muß für iMaxDer+1 Elemente ausreichen.
-     * \todo undocumented parameter Derivat
+     *  Die Liste muss fuer iMaxDer+1 Elemente ausreichen.
      */
     virtual void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
                                             TColStd_Array1OfReal& Derivat)=0;
@@ -102,15 +100,15 @@ public:
     virtual double DerivativeOfBasisFunction(int iIndex, int k, double fParam)=0;
 
     /**
-     * Setzt den Knotenvektor und die Ordnung fest. Die Größe des Knotenvektors muß exakt so groß sein,
+     * Setzt den Knotenvektor und die Ordnung fest. Die Groesse des Knotenvektors muss exakt so gross sein,
      * wie im Konstruktor festgelegt.
      */
     virtual void SetKnots(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
-     * Setzt den Knotenvektor und die Ordnung fest. Übergeben wird der Knotenvektor der Form
+     * Setzt den Knotenvektor und die Ordnung fest. uebergeben wird der Knotenvektor der Form
      * (Wert, Vielfachheit). Intern wird dieser in einen Knotenvektor der Form (Wert,1) 
-     * umgerechnet. Die Größe dieses neuen Vektors muß exakt so groß sein, wie im Konstruktor 
+     * umgerechnet. Die Groesse dieses neuen Vektors muss exakt so gross sein, wie im Konstruktor 
      * festgelegt.
      */
     virtual void SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder=1);
@@ -129,25 +127,25 @@ public:
 
     /**
      * Konstruktor
-     * @param iSize Länge des Knotenvektors
+     * @param iSize Laenge des Knotenvektors
      */
     BSplineBasis(int iSize);
 
     /**
      * Konstruktor
      * @param vKnots Knotenvektor
-     * @param iOrder
-     * \todo undocumented parameter iOrder
+     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
      */
     BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
      * Konstruktor
-     * @param vKnots Knotenvektor der Form (Wert,Vielfachheit)
-     * @param vMults
-     * @param iSize
-     * @param iOrder
-     * \todo undocumented parameters
+     * @param vKnots Knotenvektor der Form (Wert)
+     * @param vMults Knotenvektor der Form (Vielfachheit)
+     * @param iSize Laenge des Knotenvektors
+     * Die Arrays @a vKnots und @a vMults muessen die gleiche besitzen und die Summe der Werte in @a vMults
+     * muss identisch mit @a iSize sein.
+     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
      */
     BSplineBasis(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iSize, int iOrder=1);
 
@@ -160,14 +158,12 @@ public:
 
     /**
      * Berechnet die Funktionswerte der an der Stelle fParam 
-     * nicht verschwindenden Basisfunktionen. Es muß darauf geachtet werden, daß
-     * die Liste für d(=Grad des B-Splines) Elemente (0,...,d-1) ausreicht.
+     * nicht verschwindenden Basisfunktionen. Es muss darauf geachtet werden, dass
+     * die Liste fuer d(=Grad des B-Splines) Elemente (0,...,d-1) ausreicht.
      * (aus: Piegl/Tiller 96 The NURBS-Book)
-     * @param fParam
-     * @param vFuncVals
+     * @param fParam Parameter
+     * @param vFuncVals Liste der Funktionswerte
      * Index, Parameterwert
-     * @return Liste der Funktionswerte
-     * \todo undocumented parameter
      */
     virtual void AllBasisFunctions(double fParam, TColStd_Array1OfReal& vFuncVals);
 
@@ -187,9 +183,8 @@ public:
      * @param iMaxDer max. Ableitung
      * @param fParam Parameterwert.
      * @param Derivat
-     * Die Liste muß für iMaxDer+1 Elemente ausreichen.
+     * Die Liste muss fuer iMaxDer+1 Elemente ausreichen.
      * @return Liste der Funktionswerte
-     * \todo undocumented parameter Derivat
      */
     virtual void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
                                             TColStd_Array1OfReal& Derivat);
@@ -201,8 +196,8 @@ public:
 
     /**
      * Berechnet das Integral des Produkts zweier B-Splines bzw. deren Ableitungen. 
-     * Der Integrationsbereich erstreckt sich über den ganzen Definitionsbereich.
-     * Berechnet wird das Integral mittels der Gaußschen Quadraturformeln.
+     * Der Integrationsbereich erstreckt sich ueber den ganzen Definitionsbereich.
+     * Berechnet wird das Integral mittels der Gauss'schen Quadraturformeln.
      */
     virtual double GetIntegralOfProductOfBSplines(int i, int j, int r, int s);
 
@@ -215,7 +210,7 @@ protected:
 
     /**
      * Berechnet die Nullstellen der Legendre-Polynome und die
-     * zugehörigen Gewichte
+     * zugehoerigen Gewichte
      */
     virtual void GenerateRootsAndWeights(TColStd_Array1OfReal& vAbscissas, TColStd_Array1OfReal& vWeights);
 
@@ -225,7 +220,7 @@ protected:
     virtual void FindIntegrationArea(int iIdx1, int iIdx2, int& iBegin, int& iEnd);
 
     /**
-     * Berechnet in Abhängigkeit vom Grad die Anzahl der zu verwendenden Nullstellen/Gewichte
+     * Berechnet in Abhaengigkeit vom Grad die Anzahl der zu verwendenden Nullstellen/Gewichte
      * der Legendre-Polynome
      */
     int CalcSize(int r, int s);
@@ -254,11 +249,11 @@ protected:
     virtual void CalcEigenvectors();
 
     /**
-     * Berechnet eine initiale Fläche zu Beginn des Algorithmus. Dazu wird die Ausgleichsebene zu der 
+     * Berechnet eine initiale Flaeche zu Beginn des Algorithmus. Dazu wird die Ausgleichsebene zu der 
      * Punktwolke berechnet.
      * Die Punkte werden bzgl. der Basis bestehend aus den Eigenvektoren der Kovarianzmatrix berechnet und 
      * auf die Ausgleichsebene projiziert. Von diesen Punkten wird die Boundingbox berechnet, dann werden 
-     * die u/v-Parameter für die Punkte berechnet.
+     * die u/v-Parameter fuer die Punkte berechnet.
      */
     virtual bool DoInitialParameterCorrection(double fSizeFactor=0.0f);
 
@@ -268,23 +263,23 @@ protected:
     virtual bool GetUVParameters(double fSizeFactor);
 
     /**
-     * Führt eine Parameterkorrektur durch.
+     * Fuehrt eine Parameterkorrektur durch.
      */
     virtual void DoParameterCorrection(unsigned short usIter)=0;
 
     /**
-     * Löst Gleichungssystem
+     * Loest Gleichungssystem
      */
     virtual bool SolveWithoutSmoothing()=0;
 
     /**
-     * Löst ein reguläres Gleichungssystem
+     * Loest ein regulaeres Gleichungssystem
      */
     virtual bool SolveWithSmoothing(double fWeight)=0;
 
 public:
     /**
-     * Berechnet eine B-Spline-Fläche.aus den geg. Punkten
+     * Berechnet eine B-Spline-Flaeche.aus den geg. Punkten
      */
     virtual Handle_Geom_BSplineSurface CreateSurface(const TColgp_Array1OfPnt& points,
                                                      unsigned short usIter,
@@ -292,12 +287,12 @@ public:
                                                      double fSizeFactor=0.0f);
     /**
      * Setzen der u/v-Richtungen
-     * Dritter Parameter gibt an, ob die Richtungen tatsächlich verwendet werden sollen.
+     * Dritter Parameter gibt an, ob die Richtungen tatsaechlich verwendet werden sollen.
      */
     virtual void SetUVW(const Base::Vector3d& clU, const Base::Vector3d& clV, const Base::Vector3d& clW, bool bUseDir=true);
 
     /**
-     * Gibt die u/v/w-Richtungen zurück
+     * Gibt die u/v/w-Richtungen zurueck
      */
     virtual void GetUVW(Base::Vector3d& clU, Base::Vector3d& clV, Base::Vector3d& clW) const;
 
@@ -307,14 +302,14 @@ public:
     virtual Base::Vector3d GetGravityPoint() const;
 
     /**
-     * Verwende Glättungsterme
+     * Verwende Glaettungsterme
      */
     virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
 
 protected:
     bool                    _bGetUVDir;        //! Stellt fest, ob u/v-Richtung vorgegeben wird
-    bool                    _bSmoothing;       //! Glättung verwenden
-    double                  _fSmoothInfluence; //! Einfluß der Glättung
+    bool                    _bSmoothing;       //! Glaettung verwenden
+    double                  _fSmoothInfluence; //! Einfluss der Glaettung
     unsigned short          _usUOrder;         //! Ordnung in u-Richtung
     unsigned short          _usVOrder;         //! Ordnung in v-Richtung
     unsigned short          _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
@@ -325,8 +320,8 @@ protected:
     TColgp_Array1OfPnt*     _pvcPoints;        //! Punktliste der Rohdaten
     TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameterwerte zu den Punkten aus der Liste
     TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array von Kontrollpunkten
-    TColStd_Array1OfReal    _vUKnots;          //! Knotenvektor der B-Spline-Fläche in u-Richtung
-    TColStd_Array1OfReal    _vVKnots;          //! Knotenvektor der B-Spline-Fläche in v-Richtung
+    TColStd_Array1OfReal    _vUKnots;          //! Knotenvektor der B-Spline-Flaeche in u-Richtung
+    TColStd_Array1OfReal    _vVKnots;          //! Knotenvektor der B-Spline-Flaeche in v-Richtung
     TColStd_Array1OfInteger _vUMults;          //! Vielfachheit der Knoten im Knotenvektor
     TColStd_Array1OfInteger _vVMults;          //! Vielfachheit der Knoten im Knotenvektor
 };
@@ -335,10 +330,10 @@ protected:
 
 /**
  * Diese Klasse berechnet auf einer beliebigen Punktwolke (auch scattered data) eine
- * B-Spline-Fläche. Die Fläche wird iterativ mit Hilfe einer Parameterkorrektur erzeugt.
+ * B-Spline-Flaeche. Die Flaeche wird iterativ mit Hilfe einer Parameterkorrektur erzeugt.
  * Siehe dazu Hoschek/Lasser 2. Auflage (1992).
- * Erweitert wird die Approximation um Glättungsterme, so daß glatte Flächen erzeugt werden
- * können.
+ * Erweitert wird die Approximation um Glaettungsterme, so dass glatte Flaechen erzeugt werden
+ * koennen.
  */
 
 class ReenExport BSplineParameterCorrection : public ParameterCorrection
@@ -359,18 +354,18 @@ protected:
     virtual void Init();
 
     /**
-     * Führt eine Parameterkorrektur durch.
+     * Fuehrt eine Parameterkorrektur durch.
      */
     virtual void DoParameterCorrection(unsigned short usIter);
 
     /**
-     * Löst ein überbestimmtes LGS mit Hilfe der Householder-Transformation
+     * Loest ein ueberbestimmtes LGS mit Hilfe der Householder-Transformation
      */
     virtual bool SolveWithoutSmoothing();
 
     /**
-     * Löst ein reguläres Gleichungssystem durch LU-Zerlegung. Es fließen je nach Gewichtung
-     * Glättungsterme mit ein
+     * Loest ein regulaeres Gleichungssystem durch LU-Zerlegung. Es fliessen je nach Gewichtung
+     * Glaettungsterme mit ein
      */
     virtual bool SolveWithSmoothing(double fWeight);
 
@@ -386,77 +381,77 @@ public:
     void SetVKnots(const std::vector<double>& afKnots);
 
     /**
-     * Gibt die erste Matrix der Glättungsterme zurück, falls berechnet
+     * Gibt die erste Matrix der Glaettungsterme zurueck, falls berechnet
      */
     virtual const math_Matrix& GetFirstSmoothMatrix() const;
 
     /**
-     * Gibt die zweite Matrix der Glättungsterme zurück, falls berechnet
+     * Gibt die zweite Matrix der Glaettungsterme zurueck, falls berechnet
      */
     virtual const math_Matrix& GetSecondSmoothMatrix() const;
 
     /**
-     * Gibt die dritte Matrix der Glättungsterme zurück, falls berechnet
+     * Gibt die dritte Matrix der Glaettungsterme zurueck, falls berechnet
      */
     virtual const math_Matrix& GetThirdSmoothMatrix() const;
 
     /**
-     * Setzt die erste Matrix der Glättungsterme 
+     * Setzt die erste Matrix der Glaettungsterme 
      */
     virtual void SetFirstSmoothMatrix(const math_Matrix& rclMat);
 
     /**
-     * Setzt die zweite Matrix der Glättungsterme
+     * Setzt die zweite Matrix der Glaettungsterme
      */
     virtual void SetSecondSmoothMatrix(const math_Matrix& rclMat);
 
     /**
-     * Setzt die dritte Matrix der Glättungsterme
+     * Setzt die dritte Matrix der Glaettungsterme
      */
     virtual void SetThirdSmoothMatrix(const math_Matrix& rclMat);
 
     /**
-     * Verwende Glättungsterme
+     * Verwende Glaettungsterme
      */
     virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
 
     /**
-     * Verwende Glättungsterme
+     * Verwende Glaettungsterme
      */
     virtual void EnableSmoothing(bool bSmooth, double fSmoothInfl,
                                  double fFirst, double fSec,  double fThird);
 
 protected:
     /**
-     * Berechnet die Matrix zu den Glättungstermen
+     * Berechnet die Matrix zu den Glaettungstermen
      * (siehe Dissertation U.Dietz)
      */
     virtual void CalcSmoothingTerms(bool bRecalc, double fFirst, double fSecond, double fThird);
 
     /**
-     * Berechnet die Matrix zum ersten Glättungsterm
+     * Berechnet die Matrix zum ersten Glaettungsterm
      * (siehe Diss. U.Dietz)
      */
     virtual void CalcFirstSmoothMatrix(Base::SequencerLauncher&);
 
     /**
-     * Berechnet die Matrix zum zweiten Glättunsterm
+     * Berechnet die Matrix zum zweiten Glaettunsterm
      * (siehe Diss. U.Dietz)
      */
     virtual void CalcSecondSmoothMatrix(Base::SequencerLauncher&);
 
     /**
-     * Berechnet die Matrix zum dritten Glättungsterm
+     * Berechnet die Matrix zum dritten Glaettungsterm
      */
     virtual void CalcThirdSmoothMatrix(Base::SequencerLauncher&);
 
 protected:
     BSplineBasis           _clUSpline;        //! B-Spline-Basisfunktion in u-Richtung
     BSplineBasis           _clVSpline;        //! B-Spline-Basisfunktion in v-Richtung
-    math_Matrix            _clSmoothMatrix;   //! Matrix der Glättungsfunktionale
-    math_Matrix            _clFirstMatrix;    //! Matrix der 1. Glättungsfunktionale
-    math_Matrix            _clSecondMatrix;   //! Matrix der 2. Glättungsfunktionale
-    math_Matrix            _clThirdMatrix;    //! Matrix der 3. Glättungsfunktionale
+    math_Matrix            _clSmoothMatrix;   //! Matrix der Glaettungsfunktionale
+    math_Matrix            _clFirstMatrix;    //! Matrix der 1. Glaettungsfunktionale
+    math_Matrix            _clSecondMatrix;   //! Matrix der 2. Glaettungsfunktionale
+    math_Matrix            _clThirdMatrix;    //! Matrix der 3. Glaettungsfunktionale
 };
 
 } // namespace Reen

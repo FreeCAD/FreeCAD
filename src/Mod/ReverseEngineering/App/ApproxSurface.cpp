@@ -41,8 +41,8 @@ SplineBasisfunction::SplineBasisfunction(int iSize)
 {
 }
 
-SplineBasisfunction::SplineBasisfunction(TColStd_Array1OfReal& vKnots, 
-                                         TColStd_Array1OfInteger& vMults, 
+SplineBasisfunction::SplineBasisfunction(TColStd_Array1OfReal& vKnots,
+                                         TColStd_Array1OfInteger& vMults,
                                          int iSize, int iOrder)
   : _vKnotVector(0,iSize-1)
 {
@@ -136,7 +136,7 @@ int BSplineBasis::FindSpan(double fParam)
 
     int low = _iOrder-1;
     int high = n+1;
-    int mid = (low+high)/2; //Binärsuche
+    int mid = (low+high)/2; //Binaersuche
 
     while (fParam < _vKnotVector(mid) || fParam>= _vKnotVector(mid+1)) {
         if (fParam < _vKnotVector(mid))
@@ -240,7 +240,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
     math_Matrix N(0,p,0,p);
     double saved;
 
-    // falls Wert außerhalb Intervall, dann Funktionswert und alle Ableitungen gleich Null
+    // falls Wert ausserhalb Intervall, dann Funktionswert und alle Ableitungen gleich Null
     if (fParam < _vKnotVector(iIndex) || fParam >= _vKnotVector(iIndex+p+1)) {
         for (int k=0; k<=iMax; k++)
             Derivat(k) = 0.0;
@@ -329,7 +329,7 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
     math_Matrix N(0,p,0,p);
     double saved;
 
-    // falls Wert außerhalb Intervall, dann Funktionswert und Ableitungen gleich Null
+    // falls Wert ausserhalb Intervall, dann Funktionswert und Ableitungen gleich Null
     if (fParam < _vKnotVector(iIndex) || fParam >= _vKnotVector(iIndex+p+1)) {
         return 0.0;
     }
@@ -743,7 +743,7 @@ void BSplineParameterCorrection::Init()
     unsigned short usUMax = _usUCtrlpoints-_usUOrder+1;
     unsigned short usVMax = _usVCtrlpoints-_usVOrder+1;
 
-    // Knotenvektor für die CAS.CADE-Klasse
+    // Knotenvektor fuer die CAS.CADE-Klasse
     // u-Richtung
     for (int i=0;i<=usUMax; i++) {
         _vUKnots(i) = static_cast<double>(i) / static_cast<double>(usUMax);
@@ -774,7 +774,7 @@ void BSplineParameterCorrection::SetUKnots(const std::vector<double>& afKnots)
 
     unsigned short usUMax = _usUCtrlpoints-_usUOrder+1;
 
-    // Knotenvektor für die CAS.CADE-Klasse
+    // Knotenvektor fuer die CAS.CADE-Klasse
     // u-Richtung
     for (int i=1;i<usUMax; i++) {
         _vUKnots(i) = afKnots[_usUOrder+i-1];
@@ -792,7 +792,7 @@ void BSplineParameterCorrection::SetVKnots(const std::vector<double>& afKnots)
 
     unsigned short usVMax = _usVCtrlpoints-_usVOrder+1;
 
-    // Knotenvektor für die CAS.CADE-Klasse
+    // Knotenvektor fuer die CAS.CADE-Klasse
     // v-Richtung
     for (int i=1; i<usVMax; i++) {
         _vVKnots(i) = afKnots[_usVOrder+i-1];
@@ -831,7 +831,7 @@ void BSplineParameterCorrection::DoParameterCorrection(unsigned short usIter)
             // Berechne Xu x Xv die Normale in X(u,v)
             gp_Dir clNormal = Xu ^ Xv;
 
-            //Prüfe, ob X = P
+            //Pruefe, ob X = P
             if (!(X.IsEqual(P,0.001,0.001))) {
                 ErrorVec.Normalize();
                 if (fabs(clNormal*ErrorVec) < fMaxScalar)
@@ -883,7 +883,7 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
     math_Vector by (0, ulSize-1);
     math_Vector bz (0, ulSize-1);
 
-    //Bestimmung der Koeffizientenmatrix des überbestimmten LGS
+    //Bestimmung der Koeffizientenmatrix des ueberbestimmten LGS
     for (unsigned long i=0; i<ulSize; i++) {
         double fU = (*_pvcUVParam)(i).X();
         double fV = (*_pvcUVParam)(i).Y();
@@ -902,13 +902,13 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
         bx(ii) = (*_pvcPoints)(ii).X(); by(ii) = (*_pvcPoints)(ii).Y(); bz(ii) = (*_pvcPoints)(ii).Z();
     }
 
-    // Löse das überbest. LGS mit der Householder-Transformation
+    // Loese das ueberbest. LGS mit der Householder-Transformation
     math_Householder hhX(M,bx);
     math_Householder hhY(M,by);
     math_Householder hhZ(M,bz);
 
     if (!(hhX.IsDone() && hhY.IsDone() && hhZ.IsDone()))
-        //LGS konnte nicht gelöst werden
+        //LGS konnte nicht geloest werden
         return false;
     Xx = hhX.AllValues();
     Xy = hhY.AllValues();
@@ -942,7 +942,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     math_Vector Mby(0, _usUCtrlpoints*_usVCtrlpoints-1);
     math_Vector Mbz(0, _usUCtrlpoints*_usVCtrlpoints-1);
 
-    //Bestimmung der Koeffizientenmatrix des überbestimmten LGS
+    //Bestimmung der Koeffizientenmatrix des ueberbestimmten LGS
     for (unsigned long i=0; i<ulSize; i++) {
         double fU = (*_pvcUVParam)(i).X();
         double fV = (*_pvcUVParam)(i).Y();
@@ -973,7 +973,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
         Mbz(i) = M.Col(i) * bz;
     }
 
-    // Löse das LGS mit der LU-Zerlegung
+    // Loese das LGS mit der LU-Zerlegung
     math_Gauss mgGaussX(MTM+fWeight*_clSmoothMatrix);
     math_Gauss mgGaussY(MTM+fWeight*_clSmoothMatrix);
     math_Gauss mgGaussZ(MTM+fWeight*_clSmoothMatrix);
