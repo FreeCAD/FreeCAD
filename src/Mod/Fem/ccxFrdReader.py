@@ -191,7 +191,7 @@ def importFrd(filename, Analysis=None):
 
         for result_set in m['Results']:
             eigenmode_number = result_set['number']
-            if result_set_number > 1:
+            if result_set_number > 0:
                 results_name = 'Mode_' + str(eigenmode_number) + '_results'
             else:
                 results_name = 'Results'
