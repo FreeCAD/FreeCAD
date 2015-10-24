@@ -27,6 +27,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <QCoreApplication>
 
 class SoCoordinate3;
 class SoDrawStyle;  
@@ -42,6 +43,7 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemAnalysis : public Gui::ViewProviderDocumentObject
 {
+    Q_DECLARE_TR_FUNCTIONS(FemGui::ViewProviderFemAnalysis)
     PROPERTY_HEADER(FemGui::ViewProviderAnalysis);
 
 public:

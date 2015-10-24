@@ -44,7 +44,7 @@ public:
     FeaturePythonImp(App::DocumentObject*);
     ~FeaturePythonImp();
 
-    DocumentObjectExecReturn *execute();
+    bool execute();
     void onBeforeChange(const Property* prop);
     void onChanged(const Property* prop);
     PyObject *getPyObject(void);
@@ -84,7 +84,15 @@ public:
     }
     /// recalculate the Feature
     virtual DocumentObjectExecReturn *execute(void) {
-        return imp->execute();
+        try {
+            bool handled = imp->execute();
+            if (!handled)
+                return FeatureT::execute();
+        }
+        catch (const Base::Exception& e) {
+            return new App::DocumentObjectExecReturn(e.what());
+        }
+        return DocumentObject::StdReturn;
     }
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {

@@ -33,7 +33,7 @@ class SurfaceTriangulation
 {
 public:
     SurfaceTriangulation(const Points::PointKernel&, Mesh::MeshObject&);
-    void perform();
+    void perform(double searchRadius, double mu);
     
 private:
     const Points::PointKernel& myPoints;

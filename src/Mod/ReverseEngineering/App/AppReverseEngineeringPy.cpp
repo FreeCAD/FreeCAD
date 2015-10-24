@@ -32,6 +32,7 @@
 #include <Base/Console.h>
 
 #include <Mod/Part/App/BSplineSurfacePy.h>
+#include <Mod/Part/App/OCCError.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/Points/App/PointsPy.h>
@@ -43,13 +44,58 @@ using namespace Reen;
 
 
 /* module functions */
-static PyObject * approxSurface(PyObject *self, PyObject *args)
+static PyObject * approxSurface(PyObject *self, PyObject *args, PyObject *kwds)
 {
     PyObject *o;
-    int orderU=4,orderV=4;
-    int pointsU=6,pointsV=6;
-    if (!PyArg_ParseTuple(args, "O|iiii",&o,&orderU,&orderV,&pointsU,&pointsV))
-        return NULL;
+    // spline parameters
+    int uDegree = 3;
+    int vDegree = 3;
+    int uPoles = 6;
+    int vPoles = 6;
+    // smoothing
+    PyObject* smooth = Py_True;
+    double weight = 0.1;
+    double grad = 1.0;  //0.5
+    double bend = 0.0; //0.2
+    // other parameters
+    int iteration = 5;
+    PyObject* correction = Py_True;
+    double factor = 1.0;
+
+    static char* kwds_approx[] = {"Points", "UDegree", "VDegree", "NbUPoles", "NbVPoles",
+                                  "Smooth", "Weight", "Grad", "Bend",
+                                  "Iterations", "Correction", "PatchFactor", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|iiiiO!dddiO!d",kwds_approx,
+                                    &o,&uDegree,&vDegree,&uPoles,&vPoles,
+                                    &PyBool_Type,&smooth,&weight,&grad,&bend,
+                                    &iteration,&PyBool_Type,&correction,&factor))
+        return 0;
+
+    double curvdiv = 1.0 - (grad + bend);
+    int uOrder = uDegree + 1;
+    int vOrder = vDegree + 1;
+
+    // error checking
+    if (grad < 0.0 || grad > 1.0) {
+        PyErr_SetString(PyExc_ValueError, "Value of Grad out of range [0,1]");
+        return 0;
+    }
+    if (bend < 0.0 || bend > 1.0) {
+        PyErr_SetString(PyExc_ValueError, "Value of Bend out of range [0,1]");
+        return 0;
+    }
+    if (curvdiv < 0.0 || curvdiv > 1.0) {
+        PyErr_SetString(PyExc_ValueError, "Sum of Grad and Bend out of range [0,1]");
+        return 0;
+    }
+    if (uDegree < 1 || uOrder > uPoles) {
+        PyErr_SetString(PyExc_ValueError, "Value of uDegree out of range [1,NbUPoles-1]");
+        return 0;
+    }
+    if (vDegree < 1 || vOrder > vPoles) {
+        PyErr_SetString(PyExc_ValueError, "Value of vDegree out of range [1,NbVPoles-1]");
+        return 0;
+    }
 
     PY_TRY {
         Py::Sequence l(o);
@@ -64,19 +110,18 @@ static PyObject * approxSurface(PyObject *self, PyObject *args)
                 (double)Py::Float(t.getItem(2)));
         }
 
-        Reen::BSplineParameterCorrection pc(orderU,orderV,pointsU,pointsV);
+        Reen::BSplineParameterCorrection pc(uOrder,vOrder,uPoles,vPoles);
         Handle_Geom_BSplineSurface hSurf;
 
-        //pc.EnableSmoothing(true, 0.1f, 0.5f, 0.2f, 0.3f);
-        pc.EnableSmoothing(true, 0.1f, 1.0f, 0.0f, 0.0f);
-        hSurf = pc.CreateSurface(clPoints, 5, true, 1.0);
+        pc.EnableSmoothing(PyObject_IsTrue(smooth) ? true : false, weight, grad, bend, curvdiv);
+        hSurf = pc.CreateSurface(clPoints, iteration, PyObject_IsTrue(correction) ? true : false, factor);
         if (!hSurf.IsNull()) {
             return new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf));
         }
 
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Computation of B-Spline surface failed");
         return 0;
-    } PY_CATCH;
+    } PY_CATCH_OCC;
 }
 
 #if defined(HAVE_PCL_SURFACE)
@@ -84,15 +129,17 @@ static PyObject *
 triangulate(PyObject *self, PyObject *args)
 {
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(Points::PointsPy::Type), &pcObj))
+    double searchRadius;
+    double mu=2.5;
+    if (!PyArg_ParseTuple(args, "O!d|d", &(Points::PointsPy::Type), &pcObj, &searchRadius, &mu))
         return NULL;
-        
+
     Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(pcObj);
     Points::PointKernel* points = pPoints->getPointKernelPtr();
     
     Mesh::MeshObject* mesh = new Mesh::MeshObject();
     SurfaceTriangulation tria(*points, *mesh);
-    tria.perform();
+    tria.perform(searchRadius, mu);
 
     return new Mesh::MeshPy(mesh);
 }
@@ -100,9 +147,13 @@ triangulate(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef ReverseEngineering_methods[] = {
-    {"approxSurface"   , approxSurface,  1},
+    {"approxSurface", (PyCFunction)approxSurface, METH_VARARGS|METH_KEYWORDS,
+     "approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True)\n"
+     "Weight=0.1,Grad=1.0,Bend=0.0,\n"
+     "Iterations=5,Correction=True,PatchFactor=1.0"
+    },
 #if defined(HAVE_PCL_SURFACE)
-    {"triangulate"     , triangulate,  1},
+    {"triangulate"     , triangulate,  METH_VARARGS},
 #endif
     {NULL, NULL}        /* end of table marker */
 };

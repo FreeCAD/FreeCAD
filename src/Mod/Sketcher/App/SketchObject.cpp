@@ -49,6 +49,7 @@
 #include <boost/bind.hpp>
 
 #include <App/Document.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -140,6 +141,9 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     lastConflicting=solvedSketch.getConflicting();
     lastRedundant=solvedSketch.getRedundant();
     
+    lastSolveTime=0.0;
+    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
+    
     solverNeedsUpdate=false;
     
     if (lastDoF < 0) { // over-constrained sketch
@@ -210,8 +214,14 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         err = -3;
     else {
         lastSolverStatus=solvedSketch.solve();
-        if (lastSolverStatus != 0) // solving
+        if (lastSolverStatus != 0){ // solving
             err = -2;
+            // if solver failed, geometry was never updated, but invalid constraints were likely added before
+            // solving (see solve in addConstraint), so solver information is definitely invalid.
+            this->Constraints.touch();
+            
+        }
+            
     }
     
     lastHasRedundancies = solvedSketch.hasRedundancies();
@@ -360,6 +370,12 @@ int SketchObject::toggleDriving(int ConstrId)
         solve();
 
     return 0;
+}
+
+int SketchObject::setUpSketch()
+{
+    return solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                             getExternalGeometryCount());
 }
 
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeoBeforeMoving)
@@ -4015,6 +4031,13 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Sketcher::SketchObjectPython, Sketcher::SketchObject)
 template<> const char* Sketcher::SketchObjectPython::getViewProviderName(void) const {
     return "SketcherGui::ViewProviderPython";
+}
+template<> PyObject* Sketcher::SketchObjectPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<SketchObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 
