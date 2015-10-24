@@ -36,7 +36,6 @@ set(Reen_LIBS
 
 SET(Reen_SRCS
     AppReverseEngineering.cpp
-    AppReverseEngineeringPy.cpp
     ApproxSurface.cpp
     ApproxSurface.h
     SurfaceTriangulation.cpp
