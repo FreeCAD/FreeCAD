@@ -245,7 +245,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                                        self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
-            print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
+            print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise
 
     def start_ccx(self):
@@ -365,10 +365,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             try:
                 os.makedirs(self.working_dir)
             except:
-                print ("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
+                print("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
                 import tempfile
                 self.working_dir = tempfile.gettempdir()
-                print ("Dir \'{}\' will be used instead.".format(self.working_dir))
+                print("Dir \'{}\' will be used instead.".format(self.working_dir))
         # Update inp file name
         self.set_inp_file_name()
 
@@ -442,15 +442,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.finished.emit(ret_code)
             progress_bar.stop()
         else:
-            print "Running analysis failed! " + message
+            print("Running analysis failed! {}".format(message))
         if ret_code or self.ccx_stderr:
-            print "Analysis failed with exit code {}".format(ret_code)
-            print "--------start of stderr-------"
-            print self.ccx_stderr
-            print "--------end of stderr---------"
-            print "--------start of stdout-------"
-            print self.ccx_stdout
-            print "--------end of stdout---------"
+            print("Analysis failed with exit code {}".format(ret_code))
+            print("--------start of stderr-------")
+            print(self.ccx_stderr)
+            print("--------end of stderr---------")
+            print("--------start of stdout-------")
+            print(self.ccx_stdout)
+            print("--------end of stdout---------")
 
     ## Returns minimum, average and maximum value for provided result type
     #  @param self The python object self
