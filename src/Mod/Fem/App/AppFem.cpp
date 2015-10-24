@@ -52,6 +52,7 @@
 #include "FemConstraintPulley.h"
 
 #include "FemResultObject.h"
+#include "FemSolverObject.h"
 
 extern struct PyMethodDef Fem_methods[];
 
@@ -140,6 +141,8 @@ void AppFemExport initFem()
 
     Fem::FemResultObject            ::init();
     Fem::FemResultObjectPython      ::init();
+    Fem::FemSolverObject            ::init();
+    Fem::FemSolverObjectPython      ::init();
 }
 
 } // extern "C"

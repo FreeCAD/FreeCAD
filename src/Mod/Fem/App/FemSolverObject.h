@@ -47,7 +47,9 @@ public:
     /// enum of analysis type
     App::PropertyString AnalysisType;
     /// Path of working dir for the solver
-    App::PropertyString WorkingDir;
+    App::PropertyPath WorkingDir;
+    /// run parallel
+    App::PropertyBool Parallel;
     /// name for the case file without suffix
     App::PropertyString CaseFileName;
     /// Path or program name for external case editor, e.g. gedit

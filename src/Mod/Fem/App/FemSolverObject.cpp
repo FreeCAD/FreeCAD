@@ -38,10 +38,11 @@ PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 FemSolverObject::FemSolverObject()
 {
     ADD_PROPERTY_TYPE(SolverName,("Calculix"), "Data",Prop_None,"Solver program name");
-    ADD_PROPERTY_TYPE(AnalysisType,("Static"), "Data",Prop_None,"Solver program name");
+    ADD_PROPERTY_TYPE(AnalysisType,("Static"), "Data",Prop_None,"Specific analysis type");
     ADD_PROPERTY_TYPE(WorkingDir,("./"), "Data",Prop_None,"Solver working director");
-    ADD_PROPERTY_TYPE(ExternalCaseEditor,(""), "Data",Prop_None,"Solver program name");
-    ADD_PROPERTY_TYPE(ExternalResultViewer,(""), "Data",Prop_None,"Solver program name");
+    ADD_PROPERTY_TYPE(Parallel,(false), "Data",Prop_None,"Run solver in parallel like MPI");
+    ADD_PROPERTY_TYPE(ExternalCaseEditor,(""), "Data",Prop_None,"External case editor programe");
+    ADD_PROPERTY_TYPE(ExternalResultViewer,(""), "Data",Prop_None,"External result viewer name");
 
 }
 
