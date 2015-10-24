@@ -238,6 +238,11 @@ class FemTest(unittest.TestCase):
         self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
 
+        fcc_print('Setting eigenmode calculation parameters')
+        fea.set_eigenmode_parameters(number=10, limit_low=0.0, limit_high=1000000.0)
+        self.assertTrue(True if fea.eigenmode_parameters == (10, 0.0, 1000000.0) else False,
+                        "Setting eigenmode calculation parameters failed")
+
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
         error = fea.check_prerequisites()
         self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
