@@ -109,6 +109,6 @@ template<> PyObject* Fem::FeaturePython::getPyObject(void) {
     return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<App::DocumentObject>;
+template class AppFemExport FeaturePythonT<Fem::DocumentObject>;
 /// @endcond
 }
