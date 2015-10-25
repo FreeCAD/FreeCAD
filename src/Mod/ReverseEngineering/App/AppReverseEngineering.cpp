@@ -118,6 +118,9 @@ private:
         try {
             Py::Sequence l(o);
             TColgp_Array1OfPnt clPoints(0, l.size()-1);
+            if (clPoints.Length() < uPoles * vPoles) {
+                throw Py::ValueError("Too less data points for the specified number of poles");
+            }
 
             int index=0;
             for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
