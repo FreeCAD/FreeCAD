@@ -1,9 +1,14 @@
 
+if(BUILD_FEM_VTK)
+    include(${VTK_USE_FILE})
+    add_definitions(-DFC_USE_VTK)
+endif(BUILD_FEM_VTK)
+
 add_subdirectory(App)
+
 if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
-
 
 INSTALL(
     FILES
