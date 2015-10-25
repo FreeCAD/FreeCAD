@@ -28,6 +28,7 @@
 # include <QCompleter>
 # include <QComboBox>
 # include <QDesktopServices>
+# include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
 # include <QLineEdit>
@@ -565,8 +566,7 @@ QString FileChooser::fileName() const
 
 void FileChooser::editingFinished()
 {
-    QString le_converted = lineEdit->text();
-    le_converted.replace(QString::fromStdString("\\"), QString::fromStdString("/"));
+    QString le_converted = QDir::fromNativeSeparators(lineEdit->text());
     lineEdit->setText(le_converted);
     FileDialog::setWorkingDirectory(le_converted);
     fileNameSelected(le_converted);
@@ -598,6 +598,7 @@ void FileChooser::chooseFile()
         fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory );
 
     if (!fn.isEmpty()) {
+        fn = QDir::fromNativeSeparators(fn);
         lineEdit->setText(fn);
         FileDialog::setWorkingDirectory(fn);
         fileNameSelected(fn);
