@@ -64,8 +64,13 @@ protected:
     virtual void onChanged (const App::Property* prop);
 };
 
+class AppFemExport DocumentObject : public App::DocumentObject
+{
+    PROPERTY_HEADER(Fem::DocumentObject);
+};
+
 typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;
-typedef App::FeaturePythonT<App::DocumentObject> FeaturePython;
+typedef App::FeaturePythonT<DocumentObject> FeaturePython;
 
 
 } //namespace Fem
