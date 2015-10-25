@@ -165,6 +165,7 @@ if(APPLE)
 endif(APPLE)
 
 OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
+OPTION(BUILD_FEM_VTK "Build the FreeCAD VTK Postprocessing support (need VTK 6 or higher)" ON)
 OPTION(BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(BUILD_ARCH "Build the FreeCAD Architecture module" ON)
@@ -196,7 +197,6 @@ OPTION(BUILD_START "Build the FreeCAD start module" ON)
 OPTION(BUILD_TEST "Build the FreeCAD test module" ON)
 OPTION(BUILD_WEB "Build the FreeCAD web module" ON)
 OPTION(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
-OPTION(BUILD_VTK "Build the FreeCAD VTK support (need VTK 6 or higher)" OFF)
 
 if(MSVC)
     OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
@@ -754,12 +754,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 #---------------------------------------------------
 
 # -------------------------------- VTK --------------------------------
-    if(BUILD_VTK)
-        find_package(VTK REQUIRED)
-        add_definitions(-DFC_USE_VTK)
-        
-        include(${VTK_USE_FILE})
-    endif(BUILD_VTK)
+    if(BUILD_FEM_VTK)
+        find_package(VTK REQUIRED)       
+    endif(BUILD_FEM_VTK)
         
     if(BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------

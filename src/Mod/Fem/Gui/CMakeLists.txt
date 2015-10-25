@@ -31,6 +31,13 @@ set(FemGui_LIBS
     FreeCADGui
 )
 
+if(BUILD_FEM_VTK)
+    set(FemGui_LIBS
+        ${FemGui_LIBS}
+        ${VTK_LIBRARIES}
+    )
+endif(BUILD_FEM_VTK)
+
 generate_from_xml(ViewProviderFemMeshPy)
 
 SET(Python_SRCS
@@ -202,6 +209,14 @@ SET(FemGui_SRCS_Module
 )
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
 
+if(BUILD_FEM_VTK) 
+    SET(FemGui_SRCS_Post
+        ViewProviderFemPostObject.h
+        ViewProviderFemPostObject.cpp
+        )
+    SOURCE_GROUP("PostObjects" FILES ${FemGui_SRCS_Post})
+endif(BUILD_FEM_VTK)
+
 SET(FemGui_SRCS
     ${Python_SRCS}
     ${FemGui_DLG_SRCS}
@@ -210,6 +225,7 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_TaskDlg}
     ${FemGui_SRCS_TaskBoxes}
     ${FemGui_SRCS_Module}
+    ${FemGui_SRCS_Post}
 )
 
 

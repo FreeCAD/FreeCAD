@@ -115,13 +115,6 @@ if(PYSIDE_INCLUDE_DIR)
     )
 endif(PYSIDE_INCLUDE_DIR)
 
-if(BUILD_VTK)
-    set(FreeCADGui_LIBS
-        ${FreeCADGui_LIBS}
-        ${VTK_LIBRARIES}
-    )
-endif(BUILD_VTK)
-
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
@@ -900,11 +893,10 @@ SET(Inventor_CPP_SRCS
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoTouchEvents.cpp
-<<<<<<< d7d347b2d62ec685840e7db1c35863e659148981
+<<<<<<< 09326bbbdaf756fe381d51d340e0db27fd8c452a
     SoFCCSysDragger.cpp
 =======
-    SoVTKActor.cpp
->>>>>>> proof of concept
+>>>>>>> Move post processing to fem objects
 )
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
@@ -928,11 +920,10 @@ SET(Inventor_SRCS
     SoAxisCrossKit.h
     SoTextLabel.h
     SoTouchEvents.h
-<<<<<<< d7d347b2d62ec685840e7db1c35863e659148981
+<<<<<<< 09326bbbdaf756fe381d51d340e0db27fd8c452a
     SoFCCSysDragger.h
 =======
-    SoVTKActor.h
->>>>>>> proof of concept
+>>>>>>> Move post processing to fem objects
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 

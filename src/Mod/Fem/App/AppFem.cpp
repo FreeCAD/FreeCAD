@@ -54,6 +54,8 @@
 
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
+#include "FemPostPipeline.h"
+#include "FemPostFilter.h"
 
 namespace Fem {
 extern PyObject* initModule();
@@ -142,7 +144,12 @@ PyMODINIT_FUNC initFem()
     Fem::ConstraintDisplacement     ::init();
 
     Fem::FemResultObject            ::init();
-    Fem::FemResultObjectPython      ::init();
     Fem::FemSolverObject            ::init();
     Fem::FemSolverObjectPython      ::init();
+    
+#ifdef FC_USE_VTK
+    Fem::FemPostObject              ::init();
+    Fem::FemPostPipeline            ::init();
+    Fem::FemPostFilter              ::init();
+#endif
 }
