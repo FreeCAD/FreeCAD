@@ -25,6 +25,7 @@
 #define PARTDESIGN_FEATUREFILLET_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "FeatureDressUp.h"
 
@@ -38,7 +39,7 @@ class PartDesignExport Fillet : public DressUp
 public:
     Fillet();
 
-    App::PropertyFloatConstraint Radius;
+    App::PropertyQuantityConstraint Radius;
 
     /** @name methods override feature */
     //@{
@@ -50,6 +51,10 @@ public:
         return "PartDesignGui::ViewProviderFillet";
     }
     //@}
+
+protected:
+    void Restore(Base::XMLReader &reader);
+
 };
 
 } //namespace Part
