@@ -115,13 +115,6 @@ if(PYSIDE_INCLUDE_DIR)
     )
 endif(PYSIDE_INCLUDE_DIR)
 
-if(BUILD_VTK)
-    set(FreeCADGui_LIBS
-        ${FreeCADGui_LIBS}
-        ${VTK_LIBRARIES}
-    )
-endif(BUILD_VTK)
-
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)

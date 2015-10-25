@@ -1,3 +1,4 @@
+<<<<<<< 5ad8d55fe07f22805dab9d61746caf74d0deda72
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
@@ -54,6 +55,11 @@
 #include "ViewProviderResult.h"
 #include "Workbench.h"
 
+#ifdef FC_USE_VTK
+#include "ViewProviderFemPostObject.h"
+#endif
+
+
 // use a different name to CreateCommand()
 void CreateFemCommands(void);
 
@@ -107,6 +113,11 @@ PyMODINIT_FUNC initFemGui()
     FemGui::ViewProviderResult                    ::init();
     FemGui::ViewProviderResultPython              ::init();
     FemGui::PropertyFemMeshItem                   ::init();
+    
+#ifdef FC_USE_VTK
+    FemGui::ViewProviderFemPostObject          ::init();
+#endif
+
 
     // register preferences pages
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemImp> ("FEM");
