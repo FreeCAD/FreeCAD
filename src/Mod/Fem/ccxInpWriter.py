@@ -349,8 +349,8 @@ class inp_writer:
 
                     print('bad_refedge_nodes')
                     bad_refedge_nodes = self.mesh_object.FemMesh.getNodesByEdge(bad_refedge)
-                    print len(bad_refedge_nodes)
-                    print bad_refedge_nodes
+                    print(len(bad_refedge_nodes))
+                    print(bad_refedge_nodes)
                     # import FreeCADGui
                     # FreeCADGui.ActiveDocument.Compound_Mesh.HighlightedNodes = bad_refedge_nodes
 
@@ -773,7 +773,7 @@ class inp_writer:
         #  [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
         node_length_table = []
         mesh_edge_length = 0
-        # print len(edge_table)
+        # print(len(edge_table))
         for me in edge_table:
             if len(edge_table[me]) == 2:  # 2 node mesh edge
                 # end_node_length = mesh_edge_length / 2
