@@ -465,11 +465,6 @@ Eall
 69,
 
 ***********************************************************
-** Node sets for loads
-** written by write_node_sets_constraints_force function
-*NSET,NSET=FemConstraintForce
-
-***********************************************************
 ** Materials
 ** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
@@ -527,8 +522,8 @@ S
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
-**   written by    --> FreeCAD 0.16.5604 (Git)
-**   written on    --> Mon Sep 21 16:49:37 2015
+**   written by    --> FreeCAD 0.16.5838 +1 (Git)
+**   written on    --> Mon Oct 26 18:34:01 2015
 **   file name     --> 
 **   analysis name --> MechanicalAnalysis
 **
