@@ -90,6 +90,9 @@ class inp_writer:
         return self.file_name
 
     def write_element_sets_material_and_femelement_type(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Element sets for materials and FEM element type (solid, shell, beam)\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         if len(self.material_objects) == 1:
             if self.beamsection_objects and len(self.beamsection_objects) == 1:          # single mat, single beam
                 self.get_ccx_elsets_single_mat_single_beam()
@@ -112,9 +115,6 @@ class inp_writer:
                 self.get_ccx_elsets_multiple_mat_multiple_shell()
             else:                                                                       # multiple mats, solid
                 self.get_ccx_elsets_multiple_mat_solid()
-        f.write('\n***********************************************************\n')
-        f.write('** Element sets for materials and FEM element type (solid, shell, beam)\n')
-        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for ccx_elset in self.ccx_elsets:
             # print(ccx_elset)
             f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
@@ -144,6 +144,9 @@ class inp_writer:
                     f.write(str(i) + ',\n')
 
     def write_node_sets_constraints_force(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Node sets for loads\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.force_objects:
             frc_obj = fobj['Object']
             # in GUI defined frc_obj all ref_shape have the same shape type
@@ -163,9 +166,6 @@ class inp_writer:
             else:
                 if not hasattr(self, 'fem_element_table'):
                     self.fem_element_table = getFemElementTable(self.mesh_object.FemMesh)
-        f.write('\n***********************************************************\n')
-        f.write('** Node sets for loads\n')
-        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.force_objects:
             if fobj['RefShapeType'] == 'Vertex':
                 frc_obj = fobj['Object']
