@@ -124,6 +124,8 @@ SET(FemBase_SRCS
     FemMesh.h
     FemResultObject.cpp
     FemResultObject.h
+    FemSolverObject.cpp
+    FemSolverObject.h
     FemConstraint.cpp
     FemConstraint.h
     FemMeshProperty.cpp

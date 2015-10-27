@@ -37,6 +37,7 @@
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderAnalysis.h"
+#include "ViewProviderSolver.h"
 #include "ViewProviderSetNodes.h"
 #include "ViewProviderSetElements.h"
 #include "ViewProviderSetFaces.h"
@@ -88,6 +89,8 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderFemMesh                ::init();
     FemGui::ViewProviderFemMeshShape           ::init();
     FemGui::ViewProviderFemMeshShapeNetgen     ::init();
+    FemGui::ViewProviderSolver                 ::init();
+    FemGui::ViewProviderSolverPython           ::init();
     FemGui::ViewProviderSetNodes               ::init();
     FemGui::ViewProviderSetElements            ::init();
     FemGui::ViewProviderSetFaces               ::init();
