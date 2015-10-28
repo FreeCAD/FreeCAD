@@ -1,5 +1,5 @@
-; Glass-S2-GlassFiber
-; (c) 2015 Kaur (CC-BY 3.0)
+; My new amazing material file
+; (c) 2015 Your Name (CC-BY 3.0)
 ; Information about the content of such cards you can find here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
@@ -8,9 +8,6 @@ Name = Glass_S-2
 Description = Glass Fiber
 Father = Glass
 ProductURL = https://en.wikipedia.org/wiki/Glass_fiber
-Tensile Strength = 4890 (MPa)
-Compresive Strength = 1600 (MPa)
-Density = 2.46 g/cm^3
-ThermalExpansion = 2.9
-Softening T = 1056
-Price = 17.6 Euro/kg
+UltimateTensileStrength = 4890 Mpa
+CompressiveStrength = 1600 Mpa
+Density = 2460 kg/m^3
