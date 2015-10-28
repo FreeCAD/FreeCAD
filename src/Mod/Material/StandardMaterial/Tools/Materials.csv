@@ -5,7 +5,7 @@ AlMgSi1F31|[DE]AlMgSi1F31|AlMgSi1F31||||Metal||||70000 MPa|310|0.3||||2700 kg/m^
 AlZn4-5Mg1F35|[DE]AlZn4,5Mg1F35|AlZn4,5Mg1F35||||Metal||||70000 MPa|350|0.3||||2700 kg/m^3|||||||||||Aluminium|Aluminium|3.4335.71||27000|DIN 1725||||||||||2.30E-005||10||||||290
 CalculiX|CalculiX||Standard material for CalculiX sample calculations|||Metal||||210000 MPa||0.3||||1000 kg/m^3||||||||||||||||||||||||||||||||||
 Concrete-Generic|Concrete||A standard C-25 construction concrete|||Aggregate||http://en.wikipedia.org/wiki/Concrete||32000 MPa||0.17|||25 MPa|2400 kg/m^3||||||||||||||||||||||Masterformat 03 33 13||||||||||||
-Glass-E-Glass|Glass_E||Glass Fiber|||Glass||https://en.wikipedia.org/wiki/Glass_fiber|||3445 Mpa||||1080 Mpa|2580 kg/m^3||||||||||||||||||||||||||||||||||
+Glass-E-GlassFibre|Glass_E||Glass Fiber|||Glass||https://en.wikipedia.org/wiki/Glass_fiber|||3445 Mpa||||1080 Mpa|2580 kg/m^3||||||||||||||||||||||||||||||||||
 Glass-Generic|Glass||Generic soda-lime glass|Normalglas|Szkło sodowe|Glass||https://en.wikipedia.org/wiki/Soda-lime_glass||72000 MPa||0.22||||2520 kg/m^3||||||||||||||||||||||||||0.000009||||||||
 Glass-S2-GlassFiber|Glass_S-2||Glass Fiber|||Glass||https://en.wikipedia.org/wiki/Glass_fiber|||4890 Mpa||||1600 Mpa|2460 kg/m^3||||||||||||||||||||||||||||||||||
 None|None||This is a not defined material|||None|||0|0 MPa|0 MPa|0||||0 kg/m^3||||||||||||||||||||||||||||||||||
