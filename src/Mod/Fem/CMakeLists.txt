@@ -19,7 +19,14 @@ INSTALL(
         FemExample.py
         FemShellThickness.py 
         FemShellThickness.ui 
-        MechanicalAnalysis.py
+        #MechanicalAnalysis.py
+        CaeAnalysis.py
+        CaeSolver.py
+        FoamCfdSolver.py
+        FoamCaseWriter.py
+        CfdExample.py
+        _SolverControlTaskPanel.ui
+        ccxFemSolver.py
         MechanicalMaterial.py
         MechanicalMaterial.ui
         MechanicalAnalysis.ui
@@ -27,17 +34,24 @@ INSTALL(
         FemCommands.py
         _ResultControlTaskPanel.py
         _JobControlTaskPanel.py
-        _ViewProviderFemAnalysis.py
-        _FemAnalysis.py
+        #_ViewProviderFemAnalysis.py
+        #_FemAnalysis.py
         _CommandMechanicalShowResult.py
         _CommandFrequencyAnalysis.py
         _CommandQuickAnalysis.py
         _CommandPurgeFemResults.py
         _CommandMechanicalJobControl.py
         _CommandFemFromShape.py
-        _CommandNewMechanicalAnalysis.py
+        #_CommandNewMechanicalAnalysis.py
     DESTINATION
         Mod/Fem
+)
+
+INSTALL(
+    FILES
+        cfd_files/Readme.md
+    DESTINATION
+        Mod/Fem/cfd_files
 )
 
 INSTALL(

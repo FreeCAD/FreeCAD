@@ -215,7 +215,7 @@ CmdFemCreateSolver::CmdFemCreateSolver()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Add a solver to the Analysis");
-    sToolTipText    = QT_TR_NOOP("Add a solverto the Analysis");
+    sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
     sWhatsThis      = "Fem_CreateSolver";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-solver";
@@ -688,7 +688,7 @@ void CreateFemCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     //rcCmdMgr.addCommand(new CmdFemCreateAnalysis());
     rcCmdMgr.addCommand(new CmdFemAddPart());
-    rcCmdMgr.addCommand(new CmdFemCreateSolver());
+    //rcCmdMgr.addCommand(new CmdFemCreateSolver()); // Solver will be extended and created in python
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());

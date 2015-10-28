@@ -28,6 +28,7 @@
 
 #include "FemAnalysis.h"
 #include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Placement.h>
 #include <Base/Uuid.h>
 

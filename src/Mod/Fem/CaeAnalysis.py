@@ -20,36 +20,33 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Command New CFD Analysis"
+__title__ = "Command and Classes for New CAE Analysis"
 __author__ = "Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 from FemCommands import FemCommands
 
-registered_solvers={
-"Calculix":{ "name":"Calculix", "catogory":"Fem", "module": "ccxFemSolver","version": (2,3,4), "reader":"","writer":""},
-"OpenFoam":{ "name":"OpenFoam", "catogory":"Cfd", "module": "","version": (2,1,0), "reader":"","writer":""}
-}
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
 
-def makeCaeAnalysis(name):  #<FemToCae> name changed!
+def makeCaeAnalysis(name):
     '''makeCaeAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
-    _CaeAnalysis(obj)
-    _ViewProviderCaeAnalysis()
+    CaeAnalysis(obj)
+    ViewProviderCaeAnalysis(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
     return obj
 
-class  _CaeAnalysis:
+class CaeAnalysis:
     """The CaeAnalysis container object, serve CFD ,FEM, etc
     to-do: Gui dialog is needed to select category and solver
     """
     def __init__(self, obj):
-        self.Type = "CaeAnalysis"  
+        self.Type = "CaeAnalysis"
+        self.Object=obj #keep a ref to the DocObj for nonGui usage
         obj.Proxy = self #link between App::DocumentObject to  this object
         obj.addProperty("App::PropertyString", "Category", "Analysis", "Cfd, Computional solid mechanics") #should be Enum
         obj.addProperty("App::PropertyString", "SolverName", "Analysis", "External solver unique name")
@@ -63,33 +60,32 @@ class  _CaeAnalysis:
         self.solver=makeCaeSolver(self)
     """    
     def getMesh(self):
-        if FreeCAD.GuiUp:
-            for i in FemGui.getActiveAnalysis().Member:
-                if i.isDerivedFrom("Fem::FemMeshObject"):
-                    return i
+        for i in self.Object.Member:
+            if i.isDerivedFrom("Fem::FemMeshObject"):
+                return i
         #python will return None by default
                 
     def getSolver(self):
-        if FreeCAD.GuiUp:
-            for i in FemGui.getActiveAnalysis().Member:
-                if i.isDerivedFrom("Fem::FemSolverObject"):
-                    return i
+        for i in self.Object.Member:
+            if i.isDerivedFrom("Fem::FemSolverObject"):
+                return i
             
     def getConstraintGroup(self):
         group=[]
-        if FreeCAD.GuiUp:
-            for i in FemGui.getActiveAnalysis().Member:
-                if i.isDerivedFrom("Fem::Constraint"):
-                    group.append(i)
+        for i in self.Object.Member:
+            if i.isDerivedFrom("Fem::Constraint"):
+                group.append(i)
         return group
         
+    #following are the standard methods
     def execute(self, obj):
+        """updated Part should lead to recompute of mesh, if result_present"""
         return
 
     def onChanged(self, obj, prop):
         """updated Part should lead to recompute of mesh"""
         if prop in ["MaterialName"]:
-            return
+            return #todo!
 
     def __getstate__(self):
         return self.Type
@@ -99,12 +95,13 @@ class  _CaeAnalysis:
             self.Type = state
 
 
-class _ViewProviderCaeAnalysis:
+class ViewProviderCaeAnalysis:
     """A View Provider for the CaeAnalysis container object
-    doubleClicked() should activate JobControlTaskView
+    doubleClicked() should activate AnalysisControlTaskView
     """
-    def __init__(self):
+    def __init__(self, vobj):
         self.icon=":/icons/fem-analysis.svg"
+        vobj.Proxy = self
 
     def getIcon(self):
         return self.icon
@@ -130,9 +127,9 @@ class _ViewProviderCaeAnalysis:
             FemGui.setActiveAnalysis(self.Object)
             return True
         else:
-            taskd = _JobControlTaskPanel(self.Object)  #to-do
+            import _AnalysisControlTaskPanel
+            taskd = _AnalysisControlTaskPanel._AnalysisControlTaskPanel(self.Object)
             FreeCADGui.Control.showDialog(taskd)
-            pass
         return True
 
     def __getstate__(self):
@@ -141,20 +138,21 @@ class _ViewProviderCaeAnalysis:
     def __setstate__(self, state):
         return None
 
-def _create_cae_analysis(solverName):
+def _CreateCaeAnalysis(solverName):
         FreeCAD.ActiveDocument.openTransaction("Create Cae Analysis")
         FreeCADGui.addModule("FemGui")
         FreeCADGui.addModule("CaeAnalysis")
+        FreeCADGui.addModule("CaeSolver")
 
-        FreeCADGui.doCommand("CaeAnalysis.makeCaeAnalysis('CaeAnalysis')")
+        FreeCADGui.doCommand("CaeAnalysis.makeCaeAnalysis('{}Analysis')".format(solverName))
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
         #create an solver and append into analysisObject
-        FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemSolverObject', 'Solver')")
+        FreeCADGui.doCommand("CaeSolver.makeCaeSolver('{}')".format(solverName))
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()." + sel[0].Name + "]")
+                FreeCADGui.doCommand("FreeCAD.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()." + sel[0].Name + "]")
             if(sel[0].isDerivedFrom("Part::Feature")):
                 FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
@@ -167,18 +165,55 @@ def _create_cae_analysis(solverName):
         #FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         
-class _CommandNewCaeAnalysis(FemCommands):
+class _CommandNewCfdAnalysis(FemCommands):
     "the Cfd Analysis command definition"
+    #self.__class__.Icon
     def __init__(self):
-        super(_CommandNewMechanicalAnalysis, self).__init__()
-        self.resources = {'Pixmap': 'fem-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "New computional fluid dynamics analysis"),
-                          'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new computional fluid dynamics analysis")}
+        super(_CommandNewCfdAnalysis, self).__init__()
+        self.resources = {'Pixmap': 'fem-cfd-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Cfd_Analysis", "New computional fluid dynamics analysis"),
+                          'Accel': "N, A", #conflict with mechanical analysis?
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Cfd_Analysis", "Create a new computional fluid dynamics analysis")}
         self.is_active = 'with_document'
 
     def Activated(self):
-        _create_cae_analysis('OpenFoam')
+        _CreateCaeAnalysis('OpenFOAM')
+        
+class _CommandNewMechanicalAnalysis(FemCommands):
+    "the Mechancial FEM Analysis command definition"
+    def __init__(self):
+        super(_CommandNewMechanicalAnalysis, self).__init__()
+        self.resources = {'Pixmap': 'fem-mech-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Mechanical FEM Analysis"),
+                          'Accel': "N, A", 
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new Mechanical FEM Analysis")}
+        self.is_active = 'with_document'
+
+    def Activated(self):
+        _CreateCaeAnalysis('Calculix')
+        
+        
+
+class _CommandAnalysisControl(FemCommands):
+    "the Fem Analysis Job Control command definition"
+    def __init__(self):
+        super(_CommandAnalysisControl, self).__init__()
+        self.resources = {'Pixmap': 'fem-new-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_AnalysisControl", "Start calculation"),
+                          'Accel': "S, C",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_AnalysisControl", "Dialog to start the calculation of the anlysis")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        import _AnalysisControlTaskPanel
+        taskd = _AnalysisControlTaskPanel._AnalysisControlTaskPanel(FemGui.getActiveAnalysis())
+        #taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)     
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_NewCaeAnalysis', _CommandNewCaeAnalysis())
+    FreeCADGui.addCommand('Fem_NewCfdAnalysis', _CommandNewCfdAnalysis())
+    # conflict with MechanicalAnalysis.py
+    FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
+    # conflict with _CommandMechanicalJobControl.py
+    FreeCADGui.addCommand('Fem_AnalysisControl', _CommandAnalysisControl())

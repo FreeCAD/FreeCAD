@@ -27,6 +27,7 @@
 #endif
 
 #include "FemSolverObject.h"
+#include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
 
 using namespace Fem;
@@ -39,11 +40,10 @@ FemSolverObject::FemSolverObject()
 {
     ADD_PROPERTY_TYPE(SolverName,("Calculix"), "Data",Prop_None,"Solver program name");
     ADD_PROPERTY_TYPE(AnalysisType,("Static"), "Data",Prop_None,"Specific analysis type");
-    ADD_PROPERTY_TYPE(WorkingDir,("./"), "Data",Prop_None,"Solver working director");
+    ADD_PROPERTY_TYPE(WorkingDir,("./"), "Data",Prop_None,"Solver working directory");
     ADD_PROPERTY_TYPE(Parallel,(false), "Data",Prop_None,"Run solver in parallel like MPI");
     ADD_PROPERTY_TYPE(ExternalCaseEditor,(""), "Data",Prop_None,"External case editor programe");
     ADD_PROPERTY_TYPE(ExternalResultViewer,(""), "Data",Prop_None,"External result viewer name");
-
 }
 
 FemSolverObject::~FemSolverObject()
@@ -72,7 +72,13 @@ PROPERTY_SOURCE_TEMPLATE(Fem::FemSolverObjectPython, Fem::FemSolverObject)
 template<> const char* Fem::FemSolverObjectPython::getViewProviderName(void) const {
     return "FemGui::ViewProviderSolverPython";
 }
-/// @endcond
+template<> PyObject* Fem::FemSolverObjectPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 
 // explicit template instantiation
 template class AppFemExport FeaturePythonT<Fem::FemSolverObject>;

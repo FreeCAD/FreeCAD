@@ -56,9 +56,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
     *fem << "Fem_NewMechanicalAnalysis"
+         << "Fem_NewCfdAnalysis"
+         //<< "Fem_CreateSolver"
          << "Fem_CreateFromShape"
          << "Fem_MechanicalMaterial"
-         << "Fem_CreateSolver"
          << "Fem_BeamSection"
          << "Fem_ShellThickness"
          << "Separator"
@@ -71,7 +72,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Fem_ConstraintGear"   
          << "Fem_ConstraintPulley"
          << "Separator"
-         << "Fem_MechanicalJobControl"
+         << "Fem_AnalysisControl"
          << "Fem_Quick_Analysis"
          << "Fem_Frequency_Analysis"
          << "Fem_PurgeResults"
@@ -87,9 +88,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, fem);
     fem->setCommand("&FEM");
     *fem << "Fem_NewMechanicalAnalysis"
+         << "Fem_NewCfdAnalysis"
+         //<< "Fem_CreateSolver"
          << "Fem_CreateFromShape"
          << "Fem_MechanicalMaterial"
-         << "Fem_CreateSolver"
          << "Fem_BeamSection"
          << "Fem_ShellThickness"
          << "Separator"
@@ -102,7 +104,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "Fem_ConstraintGear"   
          << "Fem_ConstraintPulley"
          << "Separator"
-         << "Fem_MechanicalJobControl"
+         << "Fem_AnalysisControl"
          << "Fem_Quick_Analysis"
          << "Fem_Frequency_Analysis"
          << "Fem_PurgeResults"

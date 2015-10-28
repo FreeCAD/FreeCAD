@@ -8,9 +8,9 @@ if FreeCAD.GuiUp:
 class _ViewProviderFemAnalysis:
     "A View Provider for the FemAnalysis container object"
 
-    def __init__(self):
+    def __init__(self, obj):
         #vobj.addProperty("App::PropertyLength", "BubbleSize", "Base", str(translate("Fem", "The size of the axis bubbles")))
-        pass
+        obj.Proxy = self
 
     def getIcon(self):
         return ":/icons/fem-analysis.svg"
@@ -34,7 +34,8 @@ class _ViewProviderFemAnalysis:
             return True
         else:
             import _JobControlTaskPanel
-            taskd = _JobControlTaskPanel(self.Object)
+            taskd = _JobControlTaskPanel._JobControlTaskPanel(FemGui.getActiveAnalysis())
+            taskd.update()
             FreeCADGui.Control.showDialog(taskd)
         return True
 

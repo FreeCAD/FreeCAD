@@ -41,6 +41,16 @@ class FemWorkbench (Workbench):
         # load the module
         import Fem
         import FemGui
+        
+        import CaeAnalysis
+        import CaeSolver
+        """# FemGui::Workbench  may needs some modification to add Toolbar from python
+        from PySide import QtCore
+        cmdlst = ["Fem_NewCfdAnalysis","Fem_NewMechanicalAnalysis"]
+        self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP("Fem", "Fem tools")), cmdlst)
+        self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP("Fem", "Fem")), cmdlst)
+        """
+        #The following code should be moved into SolverObject init function!
         import subprocess
         from platform import system
         ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")

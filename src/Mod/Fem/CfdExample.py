@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+#*   Copyright (c) 2015 - Qingfeng Xia @iesensor.com                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,19 +20,15 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
+App.newDocument("Unnamed")
+App.setActiveDocument("Unnamed")
+App.ActiveDocument=App.getDocument("Unnamed")
+Gui.ActiveDocument=Gui.getDocument("Unnamed")
+Gui.activateWorkbench("PartWorkbench")
+App.ActiveDocument.addObject("Part::Cylinder","Cylinder")
+App.ActiveDocument.ActiveObject.Label = "Cylinder"
+App.ActiveDocument.recompute()
+Gui.SendMsgToActiveView("ViewFit")
+Gui.activateWorkbench("FemWorkbench")
 
-__title__ = "Mechanical Analysis managment"
-__author__ = "Juergen Riegel"
-__url__ = "http://www.freecadweb.org"
 
-
-def makeMechanicalAnalysis(name):
-    '''makeFemAnalysis(name): makes a Fem Analysis object'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
-    import _FemAnalysis
-    _FemAnalysis._FemAnalysis(obj)
-    import _ViewProviderFemAnalysis
-    _ViewProviderFemAnalysis._ViewProviderFemAnalysis(obj.ViewObject)
-    #FreeCAD.ActiveDocument.recompute()
-    return obj
