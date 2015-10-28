@@ -1,0 +1,22 @@
+; 36CrNiMo4 - 1.6511 - EN 10083-1
+; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
+; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = 36CrNiMo4
+NameDE = 36CrNiMo4
+DescriptionDE = höchste Beanspruchung, Wellen, Zahnräder
+Father = Metal
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 1100
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Heat-treatable steel
+KindOfMaterialDE = Vergütungsstahl
+MaterialNumber = 1.6511
+ModulusOfShare = 81000
+Norm = EN 10083-1
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 10
+YieldStrength = 900
