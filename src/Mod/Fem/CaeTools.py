@@ -1,6 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+#*   Copyright (c) 2015 - FreeCAD Developers                               *
+#*   Author (c) 2015 - Qingfeng Xia <qingfeng xia eng.ox.ac.uk>                    *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,28 +21,35 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Fem Analysis"
-__author__ = "Juergen Riegel"
-__url__ = "http://www.freecadweb.org"
+"""
+This file provides utility functions, not belong to any python class
+Since python object will not be saved, reference to python object's instance will fail!
+"""
 
-
-class _FemAnalysis:
-    "The FemAnalysis container object"
-    def __init__(self, obj):
-        self.Type = "FemAnalysis"
-        obj.Proxy = self
-        obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
-
-    def execute(self, obj):
-        return
-
-    def onChanged(self, obj, prop):
-        if prop in ["MaterialName"]:
-            return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
+def getMesh(analysis_object):
+    for i in analysis_object.Member:
+        if i.isDerivedFrom("Fem::FemMeshObject"):
+            return i
+    #python will return None by default
+            
+def getSolver(analysis_object):
+    for i in analysis_object.Member:
+        if i.isDerivedFrom("Fem::FemSolverObject"):
+            return i
+    #print error if not found?
+        
+def getSolverPythonFromAnalysis(analysis_object):
+    solver = getSolver(analysis_object)
+    if solver != None:
+        if True: #to-do 
+            return solver.Proxy
+        else:
+            import CaeSolver
+            return CaeSolver.makeCaeSolver(analysis_object.SolverName)
+        
+def getConstraintGroup(analysis_object):
+    group = []
+    for i in analysis_object.Member:
+        if i.isDerivedFrom("Fem::Constraint"):
+            group.append(i)
+    return group

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>193</width>
+    <width>195</width>
     <height>384</height>
    </rect>
   </property>
@@ -41,7 +41,7 @@
    <item>
     <widget class="QPushButton" name="pushButton_write">
      <property name="text">
-      <string>Write Calculix Input File</string>
+      <string>Write Solver input File</string>
      </property>
     </widget>
    </item>
@@ -51,7 +51,7 @@
       <bool>false</bool>
      </property>
      <property name="text">
-      <string>Edit Calculix Input File</string>
+      <string>Edit solver input File</string>
      </property>
     </widget>
    </item>
@@ -61,7 +61,7 @@
       <bool>false</bool>
      </property>
      <property name="text">
-      <string>Run Calculix</string>
+      <string>Launch external solver</string>
      </property>
     </widget>
    </item>
