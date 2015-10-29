@@ -24,10 +24,12 @@
 """This file can be pasted into FemWorkbench's python console for testing
 Material and Mesh need redo in GUI to work, since GUI operation is not recorded fully
 """
+
 App.newDocument("Unnamed")
 App.setActiveDocument("Unnamed")
 App.ActiveDocument=App.getDocument("Unnamed")
 Gui.ActiveDocument=Gui.getDocument("Unnamed")
+# copy from this line, if you want to create both CFD and FEM analysise
 App.ActiveDocument.addObject("Part::Box","Box")
 App.ActiveDocument.ActiveObject.Label = "Cube"
 App.ActiveDocument.recompute()
@@ -50,7 +52,7 @@ FemGui.setActiveAnalysis(CaeAnalysis.makeCaeAnalysis('MechanicalAnalysis'))
 CaeSolver.makeCaeSolver('Calculix')
 #import MechanicalAnalysis
 #FemGui.setActiveAnalysis(MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis'))
-App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument().Box_Mesh]
+#App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument().Box_Mesh]
 
 import MechanicalMaterial
 MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')

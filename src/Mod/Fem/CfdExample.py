@@ -24,6 +24,7 @@ App.newDocument("Unnamed")
 App.setActiveDocument("Unnamed")
 App.ActiveDocument=App.getDocument("Unnamed")
 Gui.ActiveDocument=Gui.getDocument("Unnamed")
+#
 Gui.activateWorkbench("PartWorkbench")
 App.ActiveDocument.addObject("Part::Cylinder","Cylinder")
 App.ActiveDocument.ActiveObject.Label = "Cylinder"
@@ -39,13 +40,18 @@ Gui.activeDocument().resetEdit()
 import FemGui
 import CaeAnalysis
 import CaeSolver
-CaeAnalysis.makeCaeAnalysis('OpenFOAMAnalysis')
+CaeAnalysis.makeCaeAnalysis("OpenFOAMAnalysis")
 FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)
 CaeSolver.makeCaeSolver('OpenFOAM')
 #
 Gui.getDocument("Unnamed").getObject("Cylinder_Mesh").Visibility=False
 Gui.getDocument("Unnamed").getObject("Cylinder").Visibility=True
 #pressure inlet
+import MechanicalMaterial
+MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
+App.activeDocument().OpenFOAMAnalysis.Member = App.activeDocument().OpenFOAMAnalysis.Member + [App.ActiveDocument.ActiveObject]
+Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)
+#
 App.activeDocument().addObject("Fem::ConstraintPressure","FemConstraintPressure")
 App.activeDocument().FemConstraintPressure.Pressure = 0.0
 App.activeDocument().OpenFOAMAnalysis.Member = App.activeDocument().OpenFOAMAnalysis.Member + [App.activeDocument().FemConstraintPressure]
@@ -68,8 +74,5 @@ App.ActiveDocument.FemConstraintPressure001.References = [(App.ActiveDocument.Cy
 App.ActiveDocument.recompute()
 Gui.activeDocument().resetEdit()
 #
-import MechanicalMaterial
-MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
-App.activeDocument().OpenFOAMAnalysis.Member = App.activeDocument().OpenFOAMAnalysis.Member + [App.ActiveDocument.ActiveObject]
-Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)
+
 

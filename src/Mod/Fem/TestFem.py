@@ -27,7 +27,7 @@
 import Fem
 import FemTools
 import FreeCAD
-import MechanicalAnalysis
+import CaeAnalysis
 import MechanicalMaterial
 import csv
 import tempfile
@@ -69,7 +69,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_analysis(self):
-        self.analysis = MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')
+        self.analysis = CaeAnalysis.makeCaeAnalysis('Calculix','MechanicalAnalysis')
         self.active_doc.recompute()
 
     def create_new_mesh(self):

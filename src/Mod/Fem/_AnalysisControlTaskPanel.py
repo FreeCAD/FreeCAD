@@ -41,12 +41,15 @@ if FreeCAD.GuiUp:
 
 class _AnalysisControlTaskPanel:
     def __init__(self, analysis_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/AnalysisControl.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         
         self.analysis_object = analysis_object
-        self.solver_object=self.analysis_object.Proxy.getSolver()
-        self.solver_python_object=self.solver_object.Proxy # get the pure python object
+        import CaeTools
+        self.solver_object=CaeTools.getSolver(self.analysis_object)
+        #test if Proxy  existent is  not None and Correct type, or create a new instance
+        self.solver_python_object=CaeTools.getSolverPythonFromAnalysis(self.analysis_object) # get the python object for solver
+        
         self.working_dir = self.solver_object.WorkingDir
         self.SolverProcess = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
@@ -193,29 +196,30 @@ class _AnalysisControlTaskPanel:
             
     def write_input_file_handler(self):
         QApplication.restoreOverrideCursor()
-        if self.check_prerequisites_helper():
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            if self.solver_object.SolverName == "Calculix":
-                self.inp_file_name = ""
-                fea = FemTools()
-                fea.update_objects()
-                fea.write_inp_file()
-                if fea.inp_file_name != "":
-                    self.inp_file_name = fea.inp_file_name
-                    self.femConsoleMessage("Write completed.")
-                    self.form.pushButton_edit.setEnabled(True)
-                    self.form.pushButton_generate.setEnabled(True)
-                else:
-                    self.femConsoleMessage("Write .inp file failed!", "#FF0000")
-            else: # self.solver_object.SolverName == "OpenFOAM":
-                self.femConsoleMessage("{} case writer is called".format(self.solver_object.SolverName))
-                if self.solver_python_object.write_case(self.analysis_object):
-                    self.femConsoleMessage("Write {} case is completed.".format(self.solver_object.SolverName))
-                    self.form.pushButton_edit.setEnabled(True)
-                    self.form.pushButton_generate.setEnabled(True)
-                else:
-                    self.femConsoleMessage("Write .inp file failed!", "#FF0000")
-
+        try:  #protect code from exception and freezing UI by waitCursor
+            if self.check_prerequisites_helper():
+                QApplication.setOverrideCursor(Qt.WaitCursor)
+                if self.solver_object.SolverName == "Calculix":
+                    self.inp_file_name = ""
+                    fea = FemTools()
+                    fea.update_objects()
+                    fea.write_inp_file()
+                    if fea.inp_file_name != "":
+                        self.inp_file_name = fea.inp_file_name
+                        self.femConsoleMessage("Write completed.")
+                        self.form.pushButton_edit.setEnabled(True)
+                        self.form.pushButton_generate.setEnabled(True)
+                    else:
+                        self.femConsoleMessage("Write .inp file failed!", "#FF0000")
+                else: # self.solver_object.SolverName == "OpenFOAM":
+                    self.femConsoleMessage("{} case writer is called".format(self.solver_object.SolverName))
+                    if self.solver_python_object.write_case(self.analysis_object):
+                        self.femConsoleMessage("Write {} case is completed.".format(self.solver_object.SolverName))
+                        self.form.pushButton_edit.setEnabled(True)
+                        self.form.pushButton_generate.setEnabled(True)
+                    else:
+                        self.femConsoleMessage("Write .inp file failed!", "#FF0000")
+        finally:
             QApplication.restoreOverrideCursor()
 
     def check_prerequisites_helper(self):

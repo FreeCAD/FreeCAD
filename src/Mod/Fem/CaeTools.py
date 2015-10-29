@@ -30,7 +30,7 @@ def getMesh(analysis_object):
     for i in analysis_object.Member:
         if i.isDerivedFrom("Fem::FemMeshObject"):
             return i
-    #python will return None by default
+    #python will return None by default, so check None outside
             
 def getSolver(analysis_object):
     for i in analysis_object.Member:
@@ -41,11 +41,14 @@ def getSolver(analysis_object):
 def getSolverPythonFromAnalysis(analysis_object):
     solver = getSolver(analysis_object)
     if solver != None:
-        if True: #to-do 
-            return solver.Proxy
-        else:
+        try:
+            pobj = solver.Proxy
+            return pobj
+        finally:
             import CaeSolver
-            return CaeSolver.makeCaeSolver(analysis_object.SolverName)
+            solverInfo = CaeSolver.registered_solvers[solver.SolverName]
+            obj = CaeSolver._createCaeSolver(solverInfo, analysis_object, solver)
+            return obj.Proxy
         
 def getConstraintGroup(analysis_object):
     group = []

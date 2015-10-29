@@ -30,13 +30,12 @@ if FreeCAD.GuiUp:
 # each key has same name Property in Fem::FemSolverObjectPython
 registered_solvers={
 "Calculix":{ "SolverName":"Calculix", "Category":"FEM", "Module": "ccxFemSolver",
-                     "ExternalResultReader":"","ExternalCaseEditor":""},
+                     "ExternalResultViewer":"","ExternalCaseEditor":""},
 "OpenFOAM":{ "SolverName":"OpenFOAM", "Category":"CFD", "Module": "FoamCfdSolver",
                      "ExternalResultViewer":"paraFoam","ExternalCaseEditor":""}
 }
 
-def _SetSolverInfo(solver_obj, solverInfo):
-    #for key, value in d.iteritems(): solver_obj[k] = solverInfo[k]
+def _setSolverInfo(solver_obj, solverInfo):
     solver_obj.SolverName = solverInfo["SolverName"]
     solver_obj.Category = solverInfo["Category"]
     solver_obj.Module = solverInfo["Module"]
@@ -49,12 +48,12 @@ def makeCaeSolver(solverName, analysis=None):
     """
     if solverName != None and solverName in registered_solvers.keys():
         solverInfo=registered_solvers[solverName]
-        obj=_CreateCaeSolver(solverInfo, analysis)
-        _SetSolverInfo(obj, solverInfo)
+        obj=_createCaeSolver(solverInfo, analysis)
+        _setSolverInfo(obj, solverInfo)
     else:
         raise Exception('Solver: {} is not registered or found'.format(solverName)) 
         
-def _CreateCaeSolver(solverInfo,analysis=None):
+def _createCaeSolver(solverInfo, analysis = None, solver_object = None):
     if FreeCAD.GuiUp:
         if analysis != None: # other test like type
             _analysis=analysis
@@ -66,17 +65,21 @@ def _CreateCaeSolver(solverInfo,analysis=None):
         else:
             raise Exception('Analysis type is not the valid type')
     
-    #eval is not compatible with python 3?
+    #factory pattern: eval is not compatible with python 3? how about imp? 
     #eval("from {} import ViewProviderCaeSolver, CaeSolver".format(solverInfo["Module"]))
     if solverInfo["SolverName"] == "Calculix":
         from ccxFemSolver import ViewProviderCaeSolver, CaeSolver
     else:
         from FoamCfdSolver import ViewProviderCaeSolver, CaeSolver
-        
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", solverInfo["SolverName"])
+    
+    if solver_object == None:
+        obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", solverInfo["SolverName"])
+    else:
+        obj = solver_object
     CaeSolver(obj)
-    ViewProviderCaeSolver(obj.ViewObject)
     _analysis.Member = _analysis.Member + [obj] #FreeCAD.ActiveDocument.ActiveObject
+    if FreeCAD.GuiUp:
+        ViewProviderCaeSolver(obj.ViewObject)
     
     _analysis.Category = solverInfo["Category"]
     _analysis.SolverName = solverInfo["SolverName"]

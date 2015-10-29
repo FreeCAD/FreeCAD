@@ -44,6 +44,7 @@ def makeCaeAnalysis(name):
 class CaeAnalysis:
     """The CaeAnalysis container object, serve CFD ,FEM, etc
     to-do: Gui dialog is needed to select category and solver
+    This class should not have methods, since after document saved and reload, this class's instance does not exist!
     """
     def __init__(self, obj):
         self.Type = "CaeAnalysis"
@@ -51,28 +52,7 @@ class CaeAnalysis:
         obj.Proxy = self #link between App::DocumentObject to  this object
         obj.addProperty("App::PropertyString", "Category", "Analysis", "Cfd, Computional solid mechanics") #should be Enum
         obj.addProperty("App::PropertyString", "SolverName", "Analysis", "External solver unique name")
-    """
-    def setSolver(self, solverName):
-        #should check available and show error!
-        self.solver=makeCaeSolver(solverName)
-    """    
-    def getMesh(self):
-        for i in self.Object.Member:
-            if i.isDerivedFrom("Fem::FemMeshObject"):
-                return i
-        #python will return None by default
-                
-    def getSolver(self):
-        for i in self.Object.Member:
-            if i.isDerivedFrom("Fem::FemSolverObject"):
-                return i
-            
-    def getConstraintGroup(self):
-        group=[]
-        for i in self.Object.Member:
-            if i.isDerivedFrom("Fem::Constraint"):
-                group.append(i)
-        return group
+        
         
     #following are the FeutureT standard methods
     def execute(self, obj):
@@ -96,12 +76,13 @@ class ViewProviderCaeAnalysis:
     """A View Provider for the CaeAnalysis container object
     doubleClicked() should activate AnalysisControlTaskView
     """
+    #__class__.icon = ":/icons/fem-analysis.svg"
     def __init__(self, vobj):
-        self.icon=":/icons/fem-analysis.svg"
+        #self.icon=":/icons/fem-analysis.svg"
         vobj.Proxy = self
 
-    def getIcon(self):
-        return self.icon
+    #def getIcon(self):  # after read file, icon can not been found, this will fail to load this TaskPanel
+    #    return self.icon
         
     def setIcon(self,icon):
         self.icon=icon
@@ -135,7 +116,7 @@ class ViewProviderCaeAnalysis:
     def __setstate__(self, state):
         return None
 
-def _CreateCaeAnalysis(solverName, analysisName=None):
+def _CreateCaeAnalysis(solverName, analysisName = None):
         FreeCAD.ActiveDocument.openTransaction("Create Cae Analysis")
         FreeCADGui.addModule("FemGui")
         FreeCADGui.addModule("CaeAnalysis")

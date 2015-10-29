@@ -59,6 +59,7 @@ class CaeSolver():
         #adding solver specific properties
         # FemSolverObject standard properties should be set in _SetSolverInfo() of CaeSolver.py
     
+        
     ########## CaeSolver API #####################
     def check_prerequisites(self, analysis_object):
         return ""
@@ -67,7 +68,7 @@ class CaeSolver():
         return "Not yet implemented"
         
     def generate_cmdline(self):
-        return "icoFoam -help" #
+        return "icoFoam -help" # try to use abs path for case name file/folder
         
     def edit_case_externally(self):
         case_path = self.Object.WorkingDir + os.path.sep + self.Object.InputCaseName
@@ -75,7 +76,7 @@ class CaeSolver():
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(case_path))
         
     def view_result_externally(self):
-        return "paraFoam {}".format(obj.InputCaseName)
+        return "paraFoam {}".format(self.Object.InputCaseName)
     
     ############ standard FeutureT methods ##########
     def execute(self, obj):
