@@ -77,15 +77,9 @@ class ViewProviderCaeSolver:
         return
 
     def doubleClicked(self, vobj):
-        if not FemGui.getActiveAnalysis() == self.Object:
-            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
-                FreeCADGui.activateWorkbench("FemWorkbench")  
-            FemGui.setActiveAnalysis(self.Object)
-            return True
-        else:
-            #from import _SolverControlTaskPanel
-            taskd = _SolverControlTaskPanel(self.Object)  
-            FreeCADGui.Control.showDialog(taskd)
+        #from import _SolverControlTaskPanel
+        taskd = _SolverControlTaskPanel(self.Object)  
+        FreeCADGui.Control.showDialog(taskd)
         return True
         
     def setEdit(self, vobj, mode):

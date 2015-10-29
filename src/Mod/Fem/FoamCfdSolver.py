@@ -24,14 +24,19 @@ __title__ = "Command and Classes for New CAE Analysis"
 __author__ = "Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
+import os.path
+
 import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
+    from PySide import QtCore, QtGui
 
+TurbulenceModelList=["Laminar","KE","KW","LES"]
+AnalysisTypeList=[]
+        
 class CaeSolver():
-    """The Fem::FemSolver 's Proxy python type
-    add solver specific Properties and Bring up SolverControlTaskPanel
+    """Fem::FemSolverObject 's Proxy python type
+    add solver specific Properties and set in SolverControlTaskPanel
     """
     def __init__(self, obj):
         self.Type = "CfdSolver"
@@ -39,28 +44,51 @@ class CaeSolver():
         obj.Proxy = self #link between App::DocumentObject to  this object
         
         #general CFD properties
-        TurbulenceModelList={"Laminar","KE","KW","LES"}
-        #obj.addProperty("App::PropertyEnum", "TurbulenceModel", "CFD", "Laminar,KE,KW,LES,") #should be Enum
-        #obj.addProperty("App::PropertyBool", "Compressible", "CFD", "Compressible air or Incompressible like liquid")
-        #obj.addProperty("App::PropertyBool","ThermalAnalysisEnabled", "CFD","calc heat transfering")
+        #addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False)
+        #obj.addProperty("App::PropertyEnumeration", "TurbulenceModel", "CFD", 
+        #                "Laminar,KE,KW,LES,")
+        #obj.TurbulenceModel.Enum = TurbulenceModelList
+        obj.addProperty("App::PropertyBool", "Compressible", "CFD", 
+                        "Compressible air or Incompressible like liquid")
+        obj.addProperty("App::PropertyBool","ThermalAnalysisEnabled", "CFD",
+                        "calc heat transfering")
+        obj.addProperty("App::PropertyBool","Transient", "CFD",
+                        "static or transient analysis")
+        #CurrentTime TimeStep StartTime, StopTime
         
         #adding solver specific properties
-        obj.addProperty("App::PropertyString", "CommandLine", "OpenFOAM", "comand line string to solve analysis")
+        # FemSolverObject standard properties should be set in _SetSolverInfo() of CaeSolver.py
+    
+    ########## CaeSolver API #####################
+    def check_prerequisites(self, analysis_object):
+        return ""
+        
+    def write_case(self, analysis_object):
+        return "Not yet implemented"
         
     def generate_cmdline(self):
-        pass
+        return "icoFoam -help" #
+        
+    def edit_case_externally(self):
+        case_path = self.Object.WorkingDir + os.path.sep + self.Object.InputCaseName
+        if FreeCAD.GuiUp:
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl(case_path))
+        
+    def view_result_externally(self):
+        return "paraFoam {}".format(obj.InputCaseName)
     
-    #following are the standard methods
+    ############ standard FeutureT methods ##########
     def execute(self, obj):
+        """"this method is executed on object creation and whenever the document is recomputed"
+        update Part or Mesh should NOT lead to recompution of the analysis automatically, time consuming"""
         return
-
+    
     def onChanged(self, obj, prop):
-        """updated Part should lead to recompution of the analysis"""
-        return # to-do 
-
+        return
+    
     def __getstate__(self):
         return self.Type
-
+    
     def __setstate__(self, state):
         if state:
             self.Type = state
@@ -87,15 +115,9 @@ class ViewProviderCaeSolver:
         return
 
     def doubleClicked(self, vobj):
-        if not FemGui.getActiveAnalysis() == self.Object:
-            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
-                FreeCADGui.activateWorkbench("FemWorkbench")  
-            FemGui.setActiveAnalysis(self.Object)
-            return True
-        else:
-            #from import _SolverControlTaskPanel
-            taskd = _SolverControlTaskPanel(self.Object)  
-            FreeCADGui.Control.showDialog(taskd)
+        #from import _SolverControlTaskPanel
+        taskd = _SolverControlTaskPanel(self.Object)  
+        FreeCADGui.Control.showDialog(taskd)
         return True
         
     def setEdit(self, vobj, mode):
@@ -125,7 +147,8 @@ if FreeCAD.GuiUp:
 class _SolverControlTaskPanel:
     def __init__(self, solver_object):
         #self.ui = App.getResourceDir() + "Mod/Fem/_SolverControlTaskPanel.ui"
-        QtGui.QMessageBox.critical(None, "This task panel is not implement yet", "Please editor ")
+        QtGui.QMessageBox.critical(None, "This task panel is not implement yet", 
+                                         "Please edit in property editor ")
         pass
         
     def accept(self):

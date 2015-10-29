@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2015 Qingfeng Xia (FreeCAD@iesensor.com)                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,21 +43,29 @@ public:
     FemSolverObject(void);
     virtual ~FemSolverObject();
 
-    /// name
+    /// Solver name, unique to identify solver in registered_solver dict
     App::PropertyString SolverName;
-    /// enum of analysis type
+    /// CAE category like FEM, all capitalised letters
+    App::PropertyString Category;
+    /// python module name
+    App::PropertyString Module;
+    /// Path or program name for external case editor, empty string means using FreeCAD to view
+    App::PropertyString ExternalCaseEditor;
+    /// Path to External Result Viewer like Paraview, empty string means using FreeCAD
+    App::PropertyString ExternalResultViewer;
+    
+    /// for FEM: Static, Frequency
     App::PropertyString AnalysisType;
     /// Path of working dir for the solver
     App::PropertyPath WorkingDir;
-    /// run parallel
-    App::PropertyBool Parallel;
     /// name for the case file without suffix
-    App::PropertyString CaseFileName;
-    /// Path or program name for external case editor, e.g. gedit
-    App::PropertyString ExternalCaseEditor;
-    /// Path to External Result Viewer like Paraview
-    App::PropertyString ExternalResultViewer;
-
+    App::PropertyString InputCaseName;
+    /// run parallel in MPI or serial
+    App::PropertyBool Parallel;
+    /// if SetupChecked == true, analysis can be update for any change of geometry or mesh
+    //App::PropertyBool SetupChecked;
+    /// result has been obtained, purge result may be needed for rerun
+    App::PropertyBool ResultObtained;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -68,11 +77,9 @@ public:
     virtual short mustExecute(void) const;
     virtual PyObject *getPyObject(void);
 
-
 };
 
 typedef App::FeaturePythonT<FemSolverObject> FemSolverObjectPython;
-
 
 } //namespace Fem
 

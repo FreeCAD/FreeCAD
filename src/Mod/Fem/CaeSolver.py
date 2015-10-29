@@ -26,27 +26,35 @@ if FreeCAD.GuiUp:
     import FemGui
     from PySide import QtCore, QtGui
     
-#This list could be gen by python from preference page in the future
+#This list could be gen by python from preference page in the future,
+# each key has same name Property in Fem::FemSolverObjectPython
 registered_solvers={
-"Calculix":{ "Name":"Calculix", "Category":"Fem", "Module": "ccxFemSolver",
-                     "Version": (2,7,0), "ResultReader":"FreeCAD","ExternalCaseEditor":""},
-"OpenFOAM":{ "Name":"OpenFOAM", "Category":"Cfd", "Module": "FoamCfdSolver",
-                     "Version": (2,0,0), "ResultReader":"praraview","ExternalCaseEditor":""}
+"Calculix":{ "SolverName":"Calculix", "Category":"FEM", "Module": "ccxFemSolver",
+                     "ExternalResultReader":"","ExternalCaseEditor":""},
+"OpenFOAM":{ "SolverName":"OpenFOAM", "Category":"CFD", "Module": "FoamCfdSolver",
+                     "ExternalResultViewer":"paraFoam","ExternalCaseEditor":""}
 }
+
 def _SetSolverInfo(solver_obj, solverInfo):
-    """Fill registered solver into FemSolverObject' Properties defined in C++"""
-    pass
+    #for key, value in d.iteritems(): solver_obj[k] = solverInfo[k]
+    solver_obj.SolverName = solverInfo["SolverName"]
+    solver_obj.Category = solverInfo["Category"]
+    solver_obj.Module = solverInfo["Module"]
+    solver_obj.ExternalResultViewer = solverInfo["ExternalResultViewer"]
+    solver_obj.ExternalCaseEditor = solverInfo["ExternalCaseEditor"]
+    
 
 def makeCaeSolver(solverName, analysis=None):
     """CaeSolver Factory method, solverName string  "Calculix" "Openfoam"
     """
     if solverName != None and solverName in registered_solvers.keys():
-        sovlerInfo=registered_solvers[solverName]
-        _CreateCaeSolver(sovlerInfo, analysis)
+        solverInfo=registered_solvers[solverName]
+        obj=_CreateCaeSolver(solverInfo, analysis)
+        _SetSolverInfo(obj, solverInfo)
     else:
         raise Exception('Solver: {} is not registered or found'.format(solverName)) 
         
-def _CreateCaeSolver(sovlerInfo,analysis=None):
+def _CreateCaeSolver(solverInfo,analysis=None):
     if FreeCAD.GuiUp:
         if analysis != None: # other test like type
             _analysis=analysis
@@ -57,25 +65,23 @@ def _CreateCaeSolver(sovlerInfo,analysis=None):
             _analysis=analysis
         else:
             raise Exception('Analysis type is not the valid type')
-            
-    if FreeCAD.GuiUp:
-        #FreeCADGui.addModule(sovlerInfo["Module"])
-        FreeCADGui.doCommand("from {} import ViewProviderCaeSolver, CaeSolver".format(sovlerInfo["Module"]))
-    else:
-        pass # import 
     
-    obj=FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", sovlerInfo["Name"])
+    #eval is not compatible with python 3?
+    #eval("from {} import ViewProviderCaeSolver, CaeSolver".format(solverInfo["Module"]))
+    if solverInfo["SolverName"] == "Calculix":
+        from ccxFemSolver import ViewProviderCaeSolver, CaeSolver
+    else:
+        from FoamCfdSolver import ViewProviderCaeSolver, CaeSolver
+        
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", solverInfo["SolverName"])
     CaeSolver(obj)
     ViewProviderCaeSolver(obj.ViewObject)
-    _analysis.Category=sovlerInfo["Category"]
-    _analysis.SolverName=sovlerInfo["Name"]
+    _analysis.Member = _analysis.Member + [obj] #FreeCAD.ActiveDocument.ActiveObject
     
-    solverObj=obj.Proxy
-    solverObj.SolverInfo=solverInfo #dict should be add into property
-    FreeCAD.Console.PrintMessage("Solver {} is created\n".format(solverObj.SolverInfo["Name"]))
-    
-    _SetSolverInfo(obj, solverInfo)
-    FreeCAD.Console.PrintMessage("Solver {} is created\n".format(sovlerInfo["Name"]))
+    _analysis.Category = solverInfo["Category"]
+    _analysis.SolverName = solverInfo["SolverName"]
+
+    FreeCAD.Console.PrintMessage("Solver {} is created\n".format(solverInfo["SolverName"]))
     return obj
         
         

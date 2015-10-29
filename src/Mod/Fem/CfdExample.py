@@ -30,5 +30,46 @@ App.ActiveDocument.ActiveObject.Label = "Cylinder"
 App.ActiveDocument.recompute()
 Gui.SendMsgToActiveView("ViewFit")
 Gui.activateWorkbench("FemWorkbench")
-
+#
+App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', 'Cylinder_Mesh')
+App.activeDocument().ActiveObject.Shape = App.activeDocument().Cylinder
+Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)
+Gui.activeDocument().resetEdit()
+#
+import FemGui
+import CaeAnalysis
+import CaeSolver
+CaeAnalysis.makeCaeAnalysis('OpenFOAMAnalysis')
+FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)
+CaeSolver.makeCaeSolver('OpenFOAM')
+#
+Gui.getDocument("Unnamed").getObject("Cylinder_Mesh").Visibility=False
+Gui.getDocument("Unnamed").getObject("Cylinder").Visibility=True
+#pressure inlet
+App.activeDocument().addObject("Fem::ConstraintPressure","FemConstraintPressure")
+App.activeDocument().FemConstraintPressure.Pressure = 0.0
+App.activeDocument().OpenFOAMAnalysis.Member = App.activeDocument().OpenFOAMAnalysis.Member + [App.activeDocument().FemConstraintPressure]
+App.ActiveDocument.recompute()
+Gui.activeDocument().setEdit('FemConstraintPressure')
+App.ActiveDocument.FemConstraintPressure.Pressure = 0.010000
+App.ActiveDocument.FemConstraintPressure.Reversed = False
+App.ActiveDocument.FemConstraintPressure.References = [(App.ActiveDocument.Cylinder,"Face3")]
+App.ActiveDocument.recompute()
+Gui.activeDocument().resetEdit()
+#pressure outlet
+App.activeDocument().addObject("Fem::ConstraintPressure","FemConstraintPressure001")
+App.activeDocument().FemConstraintPressure001.Pressure = 0.0
+App.activeDocument().OpenFOAMAnalysis.Member = App.activeDocument().OpenFOAMAnalysis.Member + [App.activeDocument().FemConstraintPressure001]
+App.ActiveDocument.recompute()
+Gui.activeDocument().setEdit('FemConstraintPressure001')
+App.ActiveDocument.FemConstraintPressure001.Pressure = 0.000010
+App.ActiveDocument.FemConstraintPressure001.Reversed = True
+App.ActiveDocument.FemConstraintPressure001.References = [(App.ActiveDocument.Cylinder,"Face2")]
+App.ActiveDocument.recompute()
+Gui.activeDocument().resetEdit()
+#
+import MechanicalMaterial
+MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
+App.activeDocument().OpenFOAMAnalysis.Member = App.activeDocument().OpenFOAMAnalysis.Member + [App.ActiveDocument.ActiveObject]
+Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)
 

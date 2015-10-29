@@ -17,6 +17,7 @@ INSTALL(
         FemBeamSection.py
         FemBeamSection.ui
         FemExample.py
+	FemExample_New.py
         FemShellThickness.py 
         FemShellThickness.ui 
         #MechanicalAnalysis.py
@@ -33,7 +34,7 @@ INSTALL(
         ShowDisplacement.ui
         FemCommands.py
         _ResultControlTaskPanel.py
-        _JobControlTaskPanel.py
+        _AnalysisControlTaskPanel.py
         #_ViewProviderFemAnalysis.py
         #_FemAnalysis.py
         _CommandMechanicalShowResult.py
