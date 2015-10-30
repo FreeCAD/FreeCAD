@@ -41,6 +41,7 @@
 #include <Mod/Points/App/PointsPy.h>
 
 #include "ApproxSurface.h"
+#include "BSplineFitting.h"
 #include "SurfaceTriangulation.h"
 
 using namespace Reen;
@@ -59,6 +60,9 @@ public:
 #if defined(HAVE_PCL_SURFACE)
         add_varargs_method("triangulate",&Module::triangulate,
             "triangulate(PointKernel,searchRadius[,mu=2.5])."
+        );
+        add_keyword_method("fitBSpline",&Module::fitBSpline,
+            "fitBSpline(PointKernel)."
         );
 #endif
         initialize("This module is the ReverseEngineering module."); // register with Python
@@ -175,6 +179,45 @@ private:
         tria.perform(searchRadius, mu);
 
         return Py::asObject(new Mesh::MeshPy(mesh));
+    }
+    Py::Object fitBSpline(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pcObj;
+        int degree = 2;
+        int refinement = 4;
+        int iterations = 10;
+        double interiorSmoothness = 0.2;
+        double interiorWeight = 1.0;
+        double boundarySmoothness = 0.2;
+        double boundaryWeight = 0.0;
+
+        static char* kwds_approx[] = {"Points", "Degree", "Refinement", "Iterations",
+                                      "InteriorSmoothness", "InteriorWeight", "BoundarySmoothness", "BoundaryWeight", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iiidddd", kwds_approx,
+                                        &(Points::PointsPy::Type), &pcObj,
+                                        &degree, &refinement, &iterations,
+                                        &interiorSmoothness, &interiorWeight,
+                                        &boundarySmoothness, &boundaryWeight))
+            throw Py::Exception();
+
+        Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(pcObj);
+        Points::PointKernel* points = pPoints->getPointKernelPtr();
+
+        BSplineFitting fit(points->getBasicPoints());
+        fit.setOrder(degree+1);
+        fit.setRefinement(refinement);
+        fit.setIterations(iterations);
+        fit.setInteriorSmoothness(interiorSmoothness);
+        fit.setInteriorWeight(interiorWeight);
+        fit.setBoundarySmoothness(boundarySmoothness);
+        fit.setBoundaryWeight(boundaryWeight);
+        Handle(Geom_BSplineSurface) hSurf = fit.perform();
+
+        if (!hSurf.IsNull()) {
+            return Py::asObject(new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf)));
+        }
+
+        throw Py::RuntimeError("Computation of B-Spline surface failed");
     }
 #endif
 };
