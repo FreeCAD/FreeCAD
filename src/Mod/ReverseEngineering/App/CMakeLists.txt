@@ -38,6 +38,8 @@ SET(Reen_SRCS
     AppReverseEngineering.cpp
     ApproxSurface.cpp
     ApproxSurface.h
+    BSplineFitting.cpp
+    BSplineFitting.h
     SurfaceTriangulation.cpp
     SurfaceTriangulation.h
     PreCompiled.cpp
