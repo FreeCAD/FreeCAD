@@ -10,6 +10,7 @@ INSTALL(
         Init.py
         InitGui.py
         convert2TetGen.py
+        ccxDatReader.py
         ccxFrdReader.py
         ccxInpWriter.py
         FemTools.py
