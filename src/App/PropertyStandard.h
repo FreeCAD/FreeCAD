@@ -467,10 +467,10 @@ protected:
 };
 
 /** Constraint float properties
- * This property fullfill the need of constraint float. It holds basicly a 
+ * This property fullfill the need of constraint float. It holds basicly a
  * state (float) and a struct of boundaries. If the boundaries
- * is not set it act basicly like a IntegerProperty and do no checking.
- * The constraints struct can be created on the heap or build in.
+ * is not set it acts basicly like a PropertyFloat and does no checking
+ * The constraints struct can be created on the heap or built-in.
  */
 class AppExport PropertyFloatConstraint: public PropertyFloat
 {

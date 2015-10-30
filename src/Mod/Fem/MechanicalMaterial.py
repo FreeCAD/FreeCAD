@@ -141,7 +141,7 @@ class _MechanicalMaterialTaskPanel:
         self.import_materials()
         previous_mat_path = self.get_material_path(self.material)
         if not previous_mat_path:
-            print "Previously used material cannot be found in material directories. Using transient material."
+            print("Previously used material cannot be found in material directories. Using transient material.")
             material_name = self.get_material_name(self.material)
             if material_name != 'None':
                 self.add_transient_material(self.material)

@@ -1175,6 +1175,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 fcsolid.scale(0.001) # to meters
                 faces = []
                 curves = False
+                shapetype = "brep"
                 for fcface in fcsolid.Faces:
                     for e in fcface.Edges:
                         if not isinstance(e.Curve,Part.Line):
@@ -1182,17 +1183,19 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 curves = True
                                 break
                 if curves:
-                    #shapetype = "triangulated"
-                    #tris = fcsolid.tessellate(tessellation)
-                    #for tri in tris[1]:
-                    #    pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
-                    #    loop =  ifcfile.createIfcPolyLoop(pts)
-                    #    bound = ifcfile.createIfcFaceOuterBound(loop,True)
-                    #    face =  ifcfile.createIfcFace([bound])
-                    #    faces.append(face)
-                    fcsolid = Arch.removeCurves(fcsolid)
-
-                shapetype = "brep"
+                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcClassicTriangulation",False):
+                        shapetype = "triangulated"
+                        tris = fcsolid.tessellate(tessellation)
+                        for tri in tris[1]:
+                            pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
+                            loop =  ifcfile.createIfcPolyLoop(pts)
+                            bound = ifcfile.createIfcFaceOuterBound(loop,True)
+                            face =  ifcfile.createIfcFace([bound])
+                            faces.append(face)
+                            fcsolid = Part.Shape() # empty shape so below code is not executed
+                    else:
+                        fcsolid = Arch.removeCurves(fcsolid)
+                    
                 for fcface in fcsolid.Faces:
                     loops = []
                     verts = [v.Point for v in Part.Wire(Part.__sortEdges__(fcface.OuterWire.Edges)).Vertexes]
@@ -1220,9 +1223,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     face =  ifcfile.createIfcFace(loops)
                     faces.append(face)
 
-                shell = ifcfile.createIfcClosedShell(faces)
-                shape = ifcfile.createIfcFacetedBrep(shell)
-                shapes.append(shape)
+                if faces:
+                    shell = ifcfile.createIfcClosedShell(faces)
+                    shape = ifcfile.createIfcFacetedBrep(shell)
+                    shapes.append(shape)
 
     if shapes:
 

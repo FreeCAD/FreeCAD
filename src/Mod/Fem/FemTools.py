@@ -64,6 +64,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             else:
                 self.ccx_binary_present = False
                 self.setup_ccx()
+            self.result_object = None
         else:
             raise Exception('FEM: No active analysis found!')
 
@@ -244,7 +245,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                                        self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
-            print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
+            print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise
 
     def start_ccx(self):
@@ -274,11 +275,40 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## Sets eigenmode parameters for CalculiX frequency analysis
     #  @param self The python object self
-    #  @param number number of eigenmodes that wll be calculated, default 10
-    #  @param limit_low lower value of requested eigenfrequency range, default 0.0
-    #  @param limit_high higher value of requested eigenfrequency range, default 1000000.0
-    def set_eigenmode_parameters(self, number=10, limit_low=0.0, limit_high=1000000.0):
-        self.eigenmode_parameters = (number, limit_low, limit_high)
+    #  @param number number of eigenmodes that wll be calculated, default read for FEM prefs or 10 if not set in the FEM prefs
+    #  @param limit_low lower value of requested eigenfrequency range, default read for FEM prefs or 0.0 if not set in the FEM prefs
+    #  @param limit_high higher value of requested eigenfrequency range, default read for FEM prefs or 1000000.o if not set in the FEM prefs
+    def set_eigenmode_parameters(self, number=None, limit_low=None, limit_high=None):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        if number is not None:
+            _number = number
+        else:
+            try:
+                _number = self.analysis.NumberOfEigenmodes
+            except:
+                #Not yet in prefs, so it will always default to 10
+                _number = self.fem_prefs.GetString("NumberOfEigenmodes", 10)
+        if _number < 1:
+            _number = 1
+
+        if limit_low is not None:
+            _limit_low = limit_low
+        else:
+            try:
+                _limit_low = self.analysis.EigenmodeLowLimit
+            except:
+                #Not yet in prefs, so it will always default to 0.0
+                _limit_low = self.fem_prefs.GetString("EigenmodeLowLimit", 0.0)
+
+        if limit_high is not None:
+            _limit_high = limit_high
+        else:
+            try:
+                _limit_high = self.analysis.EigenmodeHighLimit
+            except:
+                #Not yet in prefs, so it will always default to 1000000.0
+                _limit_high = self.fem_prefs.GetString("EigenmodeHighLimit", 1000000.0)
+        self.eigenmode_parameters = (_number, _limit_low, _limit_high)
 
     ## Sets base_name
     #  @param self The python object self
@@ -311,8 +341,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if analysis_type is not None:
             self.analysis_type = analysis_type
         else:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-            self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
+            try:
+                self.analysis_type = self.analysis.AnalysisType
+            except:
+                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+                self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
 
     ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir from FEM preferences
     #  @param self The python object self
@@ -322,16 +355,20 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if working_dir is not None:
             self.working_dir = working_dir
         else:
-            self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+            try:
+                self.working_dir = self.analysis.WorkingDir
+            except:
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+                self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
 
         if not (os.path.isdir(self.working_dir)):
             try:
                 os.makedirs(self.working_dir)
             except:
-                print ("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
+                print("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
                 import tempfile
                 self.working_dir = tempfile.gettempdir()
-                print ("Dir \'{}\' will be used instead.".format(self.working_dir))
+                print("Dir \'{}\' will be used instead.".format(self.working_dir))
         # Update inp file name
         self.set_inp_file_name()
 
@@ -380,7 +417,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.result_object = m
-            if self.result_object is not None:
+            if self.result_object:
                 self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
@@ -405,15 +442,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.finished.emit(ret_code)
             progress_bar.stop()
         else:
-            print "Running analysis failed! " + message
+            print("Running analysis failed! {}".format(message))
         if ret_code or self.ccx_stderr:
-            print "Analysis failed with exit code {}".format(ret_code)
-            print "--------start of stderr-------"
-            print self.ccx_stderr
-            print "--------end of stderr---------"
-            print "--------start of stdout-------"
-            print self.ccx_stdout
-            print "--------end of stdout---------"
+            print("Analysis failed with exit code {}".format(ret_code))
+            print("--------start of stderr-------")
+            print(self.ccx_stderr)
+            print("--------end of stderr---------")
+            print("--------start of stdout-------")
+            print(self.ccx_stdout)
+            print("--------end of stdout---------")
 
     ## Returns minimum, average and maximum value for provided result type
     #  @param self The python object self

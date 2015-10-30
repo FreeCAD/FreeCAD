@@ -241,21 +241,39 @@ class IncreaseTolerance:
     def __init__(self,obj,child,tolerance=0):
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that wire must be extracted")
-        obj.addProperty("App::PropertyDistance","Tolerance","Base","Tolerance")
+        obj.addProperty("App::PropertyDistance","Vertex","Tolerance","Vertexes tolerance (0 default)")
+        obj.addProperty("App::PropertyDistance","Edge","Tolerance","Edges tolerance (0 default)")
+        obj.addProperty("App::PropertyDistance","Face","Tolerance","Faces tolerance (0 default)")
         obj.Base = child
-        obj.Tolerance = tolerance
+        obj.Vertex = tolerance
+        obj.Edge = tolerance
+        obj.Face = tolerance
         obj.Proxy = self
+
     def onChanged(self, fp, prop):
-        if prop in ["Tolerance"]:
+        # Tolerance property left for backward compatibility
+        if prop in ["Vertex", "Edge", "Face", "Tolerance"]:
             self.createGeometry(fp)
+
     def execute(self, fp):
         self.createGeometry(fp)
 
     def createGeometry(self,fp):
         if fp.Base:
             sh=fp.Base.Shape.copy()
-            for vertex in sh.Vertexes:
-                vertex.Tolerance = max(vertex.Tolerance,fp.Tolerance.Value)
+            # Check if property Tolerance exist and preserve support for backward compatibility
+            if hasattr(fp, "Tolerance") and fp.Proxy.__module__ == "OpenSCADFeatures":
+                for vertex in sh.Vertexes:
+                    vertex.Tolerance = max(vertex.Tolerance,fp.Tolerance.Value)
+            # New properties
+            else:
+                for vertex in sh.Vertexes:
+                    vertex.Tolerance = max(vertex.Tolerance,fp.Vertex.Value)
+                for edge in sh.Edges:
+                    edge.Tolerance = max(edge.Tolerance,fp.Edge.Value)
+                for face in sh.Faces:
+                    face.Tolerance = max(face.Tolerance,fp.Face.Value)
+
             fp.Shape = sh
             fp.Placement = sh.Placement
 

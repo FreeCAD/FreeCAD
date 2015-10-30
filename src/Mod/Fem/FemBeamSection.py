@@ -108,7 +108,7 @@ class _ViewProviderFemBeamSection:
     def setEdit(self, vobj, mode=0):
         taskd = _FemBeamSectionTaskPanel(self.Object)
         taskd.obj = vobj.Object
-        #taskd.update()     When is this needed ?
+        # taskd.update()    When is this needed ?
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -132,14 +132,13 @@ class _FemBeamSectionTaskPanel:
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/FemBeamSection.ui")
+        self.references = self.obj.References
 
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/FemBeamSection.ui")
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.previous_references = self.obj.References
-        self.references = self.obj.References
         self.rebuild_list_References()
 
     def accept(self):
@@ -171,7 +170,7 @@ class _FemBeamSectionTaskPanel:
             return
         currentItemName = str(self.form.list_References.currentItem().text())
         for ref in self.references:
-            refname_to_compare_listentry = ref[0].Name + '-->' + ref[1]
+            refname_to_compare_listentry = ref[0].Name + ':' + ref[1]
             if refname_to_compare_listentry == currentItemName:
                 self.references.remove(ref)
         self.rebuild_list_References()
@@ -184,27 +183,24 @@ class _FemBeamSectionTaskPanel:
         # start SelectionObserver and parse the function to add the References to the widget
         self.sel_server = ReferenceShapeSelectionObserver(self.selectionParser)
 
-    def selectionParser(self, selsub):
-        sel = selsub[0]
-        sub = selsub[1]
-        # print 'selection: ', sel.Shape.ShapeType, '  ', sel.Name, '  ', sub
-        if hasattr(sel, "Shape"):
-            elt = sel.Shape.getElement(sub)
+    def selectionParser(self, selection):
+        # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+        if hasattr(selection[0], "Shape"):
+            elt = selection[0].Shape.getElement(selection[1])
             if elt.ShapeType == 'Edge':
-                if selsub not in self.references:
-                    self.references.append(selsub)
+                if selection not in self.references:
+                    self.references.append(selection)
                     self.rebuild_list_References()
                 else:
-                    print sel.Name, '-->', sub, ' is already in reference list!'
-
+                    print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
         else:
-            print 'Selection has no shape!'
+            print('Selection has no shape!')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
         items = []
         for i in self.references:
-            item_name = i[0].Name + '-->' + i[1]
+            item_name = i[0].Name + ':' + i[1]
             items.append(item_name)
         for listItemName in sorted(items):
             listItem = QtGui.QListWidgetItem(listItemName, self.form.list_References)  # listItem =   is needed

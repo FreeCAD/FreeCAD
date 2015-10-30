@@ -467,7 +467,7 @@ Eall
 ***********************************************************
 ** Node sets for loads
 ** written by write_node_sets_constraints_force function
-*NSET,NSET=FemConstraintForce
+** no point load on vertices --> no set for node loads
 
 ***********************************************************
 ** Materials
@@ -504,9 +504,9 @@ FemConstraintFixed,3
 ***********************************************************
 ** Node loads
 ** written by write_constraints_force function
-** FemConstraintForce
 *CLOAD
-** node loads on element face: Box.Face2
+** FemConstraintForce
+** node loads on element Face: Box:Face2
 5,3,-0.0000000000000E+00
 6,3,-0.0000000000000E+00
 7,3,-0.0000000000000E+00
@@ -593,8 +593,8 @@ S
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
-**   written by    --> FreeCAD 0.16.5604 (Git)
-**   written on    --> Mon Sep 21 16:46:15 2015
+**   written by    --> FreeCAD 0.16.5838 +1 (Git)
+**   written on    --> Mon Oct 26 18:28:42 2015
 **   file name     --> 
 **   analysis name --> MechanicalAnalysis
 **

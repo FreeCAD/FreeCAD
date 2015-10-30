@@ -176,6 +176,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void chooseFile();
+    void editingFinished();
 
 private:
     QLineEdit *lineEdit;
