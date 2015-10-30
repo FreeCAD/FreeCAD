@@ -22,18 +22,17 @@
 
 import FreeCAD
 if FreeCAD.GuiUp:
-    import FreeCADGui
     import FemGui
-    from PySide import QtCore, QtGui
-    
-#This list could be gen by python from preference page in the future,
+
+# This list could be gen by python from preference page in the future,
 # each key has same name Property in Fem::FemSolverObjectPython
-registered_solvers={
-"Calculix":{ "SolverName":"Calculix", "Category":"FEM", "Module": "ccxFemSolver",
-                     "ExternalResultViewer":"","ExternalCaseEditor":""},
-"OpenFOAM":{ "SolverName":"OpenFOAM", "Category":"CFD", "Module": "FoamCfdSolver",
-                     "ExternalResultViewer":"paraFoam","ExternalCaseEditor":""}
+REGISTERED_SOLVERS = {
+    "Calculix": {"SolverName": "Calculix", "Category": "FEM", "Module": "ccxFemSolver",
+                 "ExternalResultViewer": "", "ExternalCaseEditor": ""},
+    "OpenFOAM": {"SolverName": "OpenFOAM", "Category": "CFD", "Module": "FoamCfdSolver",
+                 "ExternalResultViewer": "paraFoam", "ExternalCaseEditor": ""}
 }
+
 
 def _setSolverInfo(solver_obj, solverInfo):
     solver_obj.SolverName = solverInfo["SolverName"]
@@ -41,55 +40,53 @@ def _setSolverInfo(solver_obj, solverInfo):
     solver_obj.Module = solverInfo["Module"]
     solver_obj.ExternalResultViewer = solverInfo["ExternalResultViewer"]
     solver_obj.ExternalCaseEditor = solverInfo["ExternalCaseEditor"]
-    
+
 
 def makeCaeSolver(solverName, analysis=None):
     """CaeSolver Factory method, solverName string  "Calculix" "Openfoam"
     """
-    if solverName != None and solverName in registered_solvers.keys():
-        solverInfo=registered_solvers[solverName]
-        obj=_createCaeSolver(solverInfo, analysis)
+    if (solverName is None) and solverName in REGISTERED_SOLVERS.keys():
+        solverInfo = REGISTERED_SOLVERS[solverName]
+        obj = _createCaeSolver(solverInfo, analysis)
         _setSolverInfo(obj, solverInfo)
     else:
-        raise Exception('Solver: {} is not registered or found'.format(solverName)) 
-        
-def _createCaeSolver(solverInfo, analysis = None, solver_object = None):
+        raise Exception('Solver: {} is not registered or found'.format(solverName))
+
+
+def _createCaeSolver(solverInfo, analysis=None, solver_object=None):
     if FreeCAD.GuiUp:
-        if analysis != None: # other test like type
-            _analysis=analysis
+        if (analysis is not None) and analysis.isDerivedFrom("Fem::FemAnalysisObject"):
+            _analysis = analysis
         else:
-            _analysis=FemGui.getActiveAnalysis()
-    else: #nonGui
-        if analysis != None: # todo: other test like type
-            _analysis=analysis
+            _analysis = FemGui.getActiveAnalysis()
+    else:
+        if (analysis is not None) and analysis.isDerivedFrom("Fem::FemAnalysisObject"):
+            _analysis = analysis
         else:
             raise Exception('Analysis type is not the valid type')
-    
-    #factory pattern: eval is not compatible with python 3? how about imp? 
-    #eval("from {} import ViewProviderCaeSolver, CaeSolver".format(solverInfo["Module"]))
+
     if solverInfo["SolverName"] == "Calculix":
         from ccxFemSolver import ViewProviderCaeSolver, CaeSolver
     else:
         from FoamCfdSolver import ViewProviderCaeSolver, CaeSolver
-    
-    if solver_object == None:
+
+    if solver_object is None:
         obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", solverInfo["SolverName"])
     else:
         obj = solver_object
     CaeSolver(obj)
-    _analysis.Member = _analysis.Member + [obj] #FreeCAD.ActiveDocument.ActiveObject
+    _analysis.Member = _analysis.Member + [obj]
     if FreeCAD.GuiUp:
         ViewProviderCaeSolver(obj.ViewObject)
-    
+
     _analysis.Category = solverInfo["Category"]
     _analysis.SolverName = solverInfo["SolverName"]
 
     FreeCAD.Console.PrintMessage("Solver {} is created\n".format(solverInfo["SolverName"]))
     return obj
-        
-        
+
 """
-#Currently, one analysis has only one solver, once analysis is created, solver is added auto
+# Currently, one analysis has only one solver, once analysis is created, solver is added auto
 class _CommandNewCaeSolver:
     def GetResources(self):
         return {'Pixmap': 'fem-solver',
@@ -102,8 +99,7 @@ class _CommandNewCaeSolver:
         if not self.solver_object:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No solver is created in active Analysis")
             return
-        #not implemented yet!
-        #pop a dialog to select solver
+        # not implemented yet! pop a dialog to select solver
         #_CreateCaeSolver(???)
         #import _SolverControlTaskPanel
         #taskd = _SolverControlTaskPanel._ResultControlTaskPanel()
@@ -111,7 +107,7 @@ class _CommandNewCaeSolver:
 
     def IsActive(self):
         return FreeCADGui.ActiveDocument is not None and solver_present()
-    
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_CreateSolver', _CommandNewCaeSolver())
 """

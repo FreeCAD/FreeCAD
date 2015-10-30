@@ -26,30 +26,34 @@ This file provides utility functions, not belong to any python class
 Since python object will not be saved, reference to python object's instance will fail!
 """
 
+
 def getMesh(analysis_object):
     for i in analysis_object.Member:
         if i.isDerivedFrom("Fem::FemMeshObject"):
             return i
-    #python will return None by default, so check None outside
-            
+    # python will return None by default, so check None outside
+
+
 def getSolver(analysis_object):
     for i in analysis_object.Member:
         if i.isDerivedFrom("Fem::FemSolverObject"):
             return i
-    #print error if not found?
-        
+    # print error if not found?
+
+
 def getSolverPythonFromAnalysis(analysis_object):
     solver = getSolver(analysis_object)
-    if solver != None:
+    if solver is not None:
         try:
             pobj = solver.Proxy
             return pobj
         finally:
             import CaeSolver
-            solverInfo = CaeSolver.registered_solvers[solver.SolverName]
+            solverInfo = CaeSolver.REGISTERED_SOLVERS[solver.SolverName]
             obj = CaeSolver._createCaeSolver(solverInfo, analysis_object, solver)
             return obj.Proxy
-        
+
+
 def getConstraintGroup(analysis_object):
     group = []
     for i in analysis_object.Member:

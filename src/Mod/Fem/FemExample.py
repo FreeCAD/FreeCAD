@@ -21,15 +21,19 @@
 #*                                                                         *
 #***************************************************************************
 
+
 """This file can be pasted into FemWorkbench's python console for testing
 Material and Mesh need redo in GUI to work, since GUI operation is not recorded fully
 """
+
 
 App.newDocument("Unnamed")
 App.setActiveDocument("Unnamed")
 App.ActiveDocument=App.getDocument("Unnamed")
 Gui.ActiveDocument=Gui.getDocument("Unnamed")
+
 # copy from this line, if you want to create both CFD and FEM analysise
+
 App.ActiveDocument.addObject("Part::Box","Box")
 App.ActiveDocument.ActiveObject.Label = "Cube"
 App.ActiveDocument.recompute()
@@ -45,20 +49,16 @@ App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', 'Box_Mesh')
 App.activeDocument().ActiveObject.Shape = App.activeDocument().Box
 Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)
 Gui.activeDocument().resetEdit()
-#change should be made here, once FemCommands and CaeAnalysis are split
-import CaeAnalysis
-import CaeSolver
-FemGui.setActiveAnalysis(CaeAnalysis.makeCaeAnalysis('MechanicalAnalysis'))
-CaeSolver.makeCaeSolver('Calculix')
-#import MechanicalAnalysis
-#FemGui.setActiveAnalysis(MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis'))
-#App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument().Box_Mesh]
+#
+import MechanicalAnalysis
+FemGui.setActiveAnalysis(MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis'))
+FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().Box_Mesh]
 
 import MechanicalMaterial
 MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
 App.activeDocument().MechanicalAnalysis.Member = App.activeDocument().MechanicalAnalysis.Member + [App.ActiveDocument.ActiveObject]
 Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)
-#
+
 App.activeDocument().addObject("Fem::ConstraintFixed","FemConstraintFixed")
 App.activeDocument().MechanicalAnalysis.Member = App.activeDocument().MechanicalAnalysis.Member + [App.activeDocument().FemConstraintFixed]
 App.ActiveDocument.recompute()
@@ -82,7 +82,6 @@ App.ActiveDocument.FemConstraintForce.Reversed = False
 App.ActiveDocument.FemConstraintForce.References = [(App.ActiveDocument.Box,"Face4")]
 App.ActiveDocument.recompute()
 Gui.activeDocument().resetEdit()
-
 
 Gui.getDocument("Unnamed").getObject("Box_Mesh").Visibility=False
 Gui.getDocument("Unnamed").getObject("Box").Visibility=True

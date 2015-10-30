@@ -31,22 +31,23 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
 
+
 class CaeSolver():
     """The Fem::FemSolver 's Proxy python type
     add solver specific Properties and Bring up SolverControlTaskPanel
     """
     def __init__(self, obj):
         self.Type = "CaeAnalysis"
-        self.Object=obj #keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self #link between App::DocumentObject to  this object
+        self.Object = obj  # keep a ref to the DocObj for nonGui usage
+        obj.Proxy = self  # link between App::DocumentObject to  this object
 
-    #following are the standard methods
+    # following are the standard methods
     def execute(self, obj):
         return
 
     def onChanged(self, obj, prop):
-        """updated Part should lead to recompution of the analysis"""
-        return # to-do 
+        """updated Part should lead to recompution of the analysis # to-do """
+        return
 
     def __getstate__(self):
         return self.Type
@@ -55,7 +56,7 @@ class CaeSolver():
         if state:
             self.Type = state
 
-#this class could be moved into CaeSolver, as it can be shared by any solver
+
 class ViewProviderCaeSolver:
     """A View Provider for the Solver object, base class for all derived solver
     derived solver should implement  a specific TaskPanel and set up solver and override setEdit()"""
@@ -77,20 +78,20 @@ class ViewProviderCaeSolver:
         return
 
     def doubleClicked(self, vobj):
-        #from import _SolverControlTaskPanel
-        taskd = _SolverControlTaskPanel(self.Object)  
+        # from import _SolverControlTaskPanel
+        taskd = _SolverControlTaskPanel(self.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
-        
+
     def setEdit(self, vobj, mode):
-        #import module if it is defined in another file
-        taskd = _SolverControlTaskPanel(self.Object) 
+        # import module if it is defined in another file
+        taskd = _SolverControlTaskPanel(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
 
     def unsetEdit(self, vobj, mode):
-        #FreeCADGui.Control.closeDialog() #Todo
+        #FreeCADGui.Control.closeDialog()
         return
 
     def __getstate__(self):
@@ -99,19 +100,13 @@ class ViewProviderCaeSolver:
     def __setstate__(self, state):
         return None
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
-    from PySide import QtCore, QtGui
-    from PySide.QtCore import Qt
-    from PySide.QtGui import QApplication
-    
+
 class _SolverControlTaskPanel:
     def __init__(self, solver_object):
         #self.ui = App.getResourceDir() + "Mod/Fem/_SolverControlTaskPanel.ui"
-        QtGui.QMessageBox.critical(None, "This task panel is not implement yet", "Please editor ")
+        QtGui.QMessageBox.critical(None, "Not implement yet", "Please edit proper in property editor")
         pass
-        
+
     def accept(self):
         return True
 
