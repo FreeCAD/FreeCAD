@@ -19,28 +19,29 @@ INSTALL(
         FemExample.py
         FemShellThickness.py 
         FemShellThickness.ui 
-        #MechanicalAnalysis.py
         CaeAnalysis.py
         CaeSolver.py
+	CaeTools.py
         FoamCfdSolver.py
         FoamCaseWriter.py
         CfdExample.py
         _SolverControlTaskPanel.ui
         ccxFemSolver.py
+	MechanicalAnalysis.py
         MechanicalMaterial.py
         MechanicalMaterial.ui
         ShowDisplacement.ui
         FemCommands.py
         _ResultControlTaskPanel.py
         _AnalysisControlTaskPanel.py
-        AnalysisControl.ui
+        MechanicalAnalysis.ui # should be renamed into AnalysisControl.ui
         #_ViewProviderFemAnalysis.py
         #_FemAnalysis.py
         _CommandMechanicalShowResult.py
         _CommandFrequencyAnalysis.py
         _CommandQuickAnalysis.py
         _CommandPurgeFemResults.py
-        _CommandMechanicalJobControl.py
+        #_CommandMechanicalJobControl.py
         _CommandFemFromShape.py
         #_CommandNewMechanicalAnalysis.py
     DESTINATION

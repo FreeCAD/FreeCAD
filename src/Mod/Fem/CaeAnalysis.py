@@ -33,8 +33,12 @@ if FreeCAD.GuiUp:
     import FemGui
     from PySide import QtCore
 
+def makeMechanicalAnalysis(name):
+    '''makes a Fem MechAnalysis object'''
+    return _CreateCaeAnalysis('Calculix', name)
+
 def makeCaeAnalysis(name):
-    '''makeCaeAnalysis(name): makes a Fem Analysis object'''
+    '''makeCaeAnalysis(name): makes a Fem Analysis object, this should be marked for internal usage'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     CaeAnalysis(obj)
     ViewProviderCaeAnalysis(obj.ViewObject)
@@ -117,11 +121,13 @@ class ViewProviderCaeAnalysis:
         return None
 
 def _CreateCaeAnalysis(solverName, analysisName = None):
+        # todo: this function should be adapted to work without GUI later
         FreeCAD.ActiveDocument.openTransaction("Create Cae Analysis")
         FreeCADGui.addModule("FemGui")
         FreeCADGui.addModule("CaeAnalysis")
         _analysisName = analysisName if analysisName else solverName + "Analysis"
         FreeCADGui.doCommand("CaeAnalysis.makeCaeAnalysis('{}')".format(_analysisName))
+        obj = FreeCAD.activeDocument().ActiveObject
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
         #create an solver and append into analysisObject
         FreeCADGui.addModule("CaeSolver")
@@ -142,6 +148,7 @@ def _CreateCaeAnalysis(solverName, analysisName = None):
 
         #FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
+        return obj
         
 class _CommandNewCfdAnalysis(FemCommands):
     "the Cfd Analysis command definition"

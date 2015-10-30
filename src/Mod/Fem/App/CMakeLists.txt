@@ -67,33 +67,45 @@ SET(Mod_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
+#this FemScripts_SRCS is not used, but can copy py into build folder? so test FreeCAD without make install
 SET(FemScripts_SRCS
-    convert2TetGen.py
-    ccxFrdReader.py
-    ccxInpWriter.py
-    TestFem.py
-    FemShellThickness.py
-    FemShellThickness.ui
-    FemBeamSection.py
-    FemBeamSection.ui
-    FemTools.py
-    MechanicalAnalysis.ui
-    MechanicalAnalysis.py
-    MechanicalMaterial.ui
-    MechanicalMaterial.py
-    ShowDisplacement.ui
-    FemCommands.py
-    _ResultControlTaskPanel.py
-    _JobControlTaskPanel.py
-    _ViewProviderFemAnalysis.py
-    _FemAnalysis.py
-    _CommandMechanicalShowResult.py
-    _CommandFrequencyAnalysis.py
-    _CommandQuickAnalysis.py
-    _CommandPurgeFemResults.py
-    _CommandMechanicalJobControl.py
-    _CommandFemFromShape.py
-    _CommandNewMechanicalAnalysis.py
+        Init.py
+        InitGui.py
+        convert2TetGen.py
+        ccxFrdReader.py
+        ccxInpWriter.py
+        FemTools.py
+        TestFem.py
+        FemBeamSection.py
+        FemBeamSection.ui
+        FemExample.py
+        FemShellThickness.py 
+        FemShellThickness.ui 
+        CaeAnalysis.py
+        CaeSolver.py
+	CaeTools.py
+        FoamCfdSolver.py
+        FoamCaseWriter.py
+        CfdExample.py
+        _SolverControlTaskPanel.ui
+        ccxFemSolver.py
+	MechanicalAnalysis.py
+        MechanicalMaterial.py
+        MechanicalMaterial.ui
+        ShowDisplacement.ui
+        FemCommands.py
+        _ResultControlTaskPanel.py
+        _AnalysisControlTaskPanel.py
+        MechanicalAnalysis.ui # should be renamed into AnalysisControl.ui, but refered in other App/CMakeList.txt
+        #_ViewProviderFemAnalysis.py
+        #_FemAnalysis.py
+        _CommandMechanicalShowResult.py
+        _CommandFrequencyAnalysis.py
+        _CommandQuickAnalysis.py
+        _CommandPurgeFemResults.py
+        #_CommandMechanicalJobControl.py
+        _CommandFemFromShape.py
+        #_CommandNewMechanicalAnalysis.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
