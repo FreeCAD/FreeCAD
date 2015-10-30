@@ -225,6 +225,9 @@ def importFrd(filename, Analysis=None):
                     mstress.append(calculate_von_mises(i))
                 if eigenmode_number > 0:
                     results.StressValues = map((lambda x: x * scale), mstress)
+                    results.Eigenmode = eigenmode_number
+                    results.setEditorMode("Eigenmode", 1)
+
                 else:
                     results.StressValues = mstress
 
