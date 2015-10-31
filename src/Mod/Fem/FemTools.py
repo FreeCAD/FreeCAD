@@ -182,6 +182,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # set of shell thicknesses from the analyis. Updated with update_objects
         # Individual shell thicknesses are Proxy.Type "FemShellThickness"
         self.shell_thicknesses = []
+        self.PrescribedDisplacements = []
 
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
@@ -210,7 +211,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
+            elif m.isDerivedFrom('Part::FeaturePython'):
+                content = m.Content
+                if "DisplacementSettings" in m.Content:
+                   self.PrescribedDisplacements.append(m)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == 'FemBeamSection':
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
@@ -218,6 +223,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)
+
+
 
     def check_prerequisites(self):
         message = ""
@@ -269,6 +276,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             inp_writer = iw.inp_writer(self.analysis, self.mesh, self.materials,
                                        self.fixed_constraints,
                                        self.force_constraints, self.pressure_constraints,
+                                       self.PrescribedDisplacements,
                                        self.beam_sections, self.shell_thicknesses,
                                        self.analysis_type, self.eigenmode_parameters,
                                        self.working_dir)
