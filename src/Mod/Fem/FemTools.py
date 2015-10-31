@@ -166,6 +166,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.pressure_constraints = []
         self.beam_sections = []
         self.shell_thicknesses = []
+        self.PrescribedDisplacements = []
 
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemMeshObject"):
@@ -186,6 +187,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
+            elif m.isDerivedFrom('Part::FeaturePython'):
+                content = m.Content
+                if "DisplacementSettings" in m.Content:
+                   self.PrescribedDisplacements.append(m)
+
             elif hasattr(m, "Proxy") and m.Proxy.Type == 'FemBeamSection':
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
@@ -194,6 +200,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)
+
+
 
     def check_prerequisites(self):
         message = ""
@@ -239,6 +247,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
                                        self.fixed_constraints,
                                        self.force_constraints, self.pressure_constraints,
+                                       self.PrescribedDisplacements,
                                        self.beam_sections, self.shell_thicknesses,
                                        self.analysis_type, self.eigenmode_parameters,
                                        self.working_dir)

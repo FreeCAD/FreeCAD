@@ -33,9 +33,10 @@
 class FemWorkbench (Workbench):
     "Fem workbench object"
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Fem/Resources/icons/preferences-fem.svg"
-        self.__class__.MenuText = "FEM"
-        self.__class__.ToolTip = "FEM workbench"
+         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Fem/Resources/icons/preferences-fem.svg"
+         self.__class__.MenuText = "FEM"
+         self.__class__.ToolTip = "FEM workbench"
+
 
     def Initialize(self):
         # load the module
@@ -75,8 +76,50 @@ class FemWorkbench (Workbench):
         else:
             FreeCAD.Console.PrintError("Setting working directory \'{}\' for ccx failed!\n")
 
+        #Insert Prescribed displacement into menu
+        #Load Extra command python file
+        import _CommandPrescribedDisplacement
 
-    def GetClassName(self):
-        return "FemGui::Workbench"
+        cmdList = ["Fem_NewMechanicalAnalysis",
+                   "Fem_CreateFromShape",
+                   "Fem_MechanicalMaterial",
+                   "Separator"             ,
+                   "Fem_CreateNodesSet"    ,
+                   "Fem_BeamSection"    ,
+                   "Fem_ShellThickness"    ,
+                   "Separator"             ,
+                   "Fem_ConstraintFixed"    ,
+                   "Fem_PrescribedDisplacement",
+                   "Fem_ConstraintForce"    ,
+                   "Fem_ConstraintPressure" ,
+                   "Fem_ConstraintBearing"  ,
+                   "Fem_ConstraintGear"     ,
+                   "Fem_ConstraintPulley"    ,
+                   "Separator"                  ,
+                   "Fem_MechanicalJobControl"    ,
+                   "Fem_Quick_Analysis"          ,
+     #              "Fem_Frequency_Analysis"      ,
+                   "Fem_PurgeResults"             ,
+                   "Fem_ShowResult"]
+
+        self.appendToolbar("FEM", cmdList)
+        self.ToolTip = "FEM workbench"
+        self.appendMenu("FEM", cmdList)
+        FreeCADGui.addIconPath(FreeCAD.getResourceDir() + "Mod/Fem/Resources/icons/preferences-fem.svg")
+
+
+        def ContextMenu(self, recipient):
+            selection = [s  for s in FreeCADGui.Selection.getSelection() if s.Document == FreeCAD.ActiveDocument ]
+            if len(selection) == 1:
+                obj = selection[0]
+                if hasattr(obj,'Content'):
+                    if 'PrescribedDisplacement' in obj.Content:
+                        self.appendContextMenu("Edit Constaint", "PrescribedDispEdit")
+
+
+    # def GetClassName(self):
+    #    return "FemGui::Workbench"
+
+
 
 Gui.addWorkbench(FemWorkbench())
