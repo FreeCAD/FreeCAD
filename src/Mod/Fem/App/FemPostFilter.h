@@ -27,7 +27,11 @@
 #include "FemPostObject.h"
 
 #include <vtkSmartPointer.h>
-#include <vtkUnstructuredGrid.h>
+#include <vtkClipDataSet.h>
+#include <vtkExtractGeometry.h>
+#include <vtkGeometryFilter.h>
+#include <vtkPassThrough.h>
+#include <vtkPlane.h>
 
 namespace Fem
 {
@@ -40,19 +44,64 @@ public:
     /// Constructor
     FemPostFilter(void);
     virtual ~FemPostFilter();
+   
+    virtual App::DocumentObjectExecReturn* execute(void);
+    
+    vtkSmartPointer<vtkAlgorithm> getOutputAlgorithm();
+    
+    bool hasInputAlgorithmConnected();
+    void connectInputAlgorithm(vtkSmartPointer<vtkAlgorithm> algo);
+    vtkSmartPointer<vtkAlgorithm> getConnectedInputAlgorithm();
+    
+    bool hasInputDataConnected();
+    void connectInputData(vtkSmartPointer<vtkDataSet> data);
+    vtkSmartPointer<vtkDataObject> getConnectedInputData();
+    void clearInput();
+    
+    //returns true if the pipelines are set up correctly
+    bool valid();
+    //returns true if the filter is valid and connected
+    bool isConnected();
+    //override poly data providing to let the object know we only provide poly data if connected 
+    //to something
+    virtual bool providesPolyData();
 
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderPostPipeline";
-    }
-    short mustExecute(void) const;
-    PyObject* getPyObject();
+protected:       
+    //pipeline handling for derived filter
+    struct FilterPipeline {
+       vtkSmartPointer<vtkAlgorithm>                    source, target, visualisation;
+       std::vector<vtkSmartPointer<vtkAlgorithm> >      algorithmStorage;
+    };
+    
+    void addFilterPipeline(const FilterPipeline& p, std::string name);
+    void setActiveFilterPipeline(std::string name);
+    FilterPipeline& getFilterPipeline(std::string name);
+    
+private:
+    //handling of multiple pipelines which can be the filter 
+    std::map<std::string, FilterPipeline> m_pipelines;
+    std::string m_activePipeline;
+    vtkSmartPointer<vtkPassThrough> m_pass;
+};
 
+class AppFemExport FemPostClipFilter : public FemPostFilter {
+  
+    PROPERTY_HEADER(Fem::FemPostClipFilter);
+    
+public:
+    FemPostClipFilter(void);        
+    virtual ~FemPostClipFilter();
+    
+    App::PropertyLink Function;
+    App::PropertyBool InsideOut;
+    App::PropertyBool CutCells;
+    
 protected:
     virtual void onChanged(const App::Property* prop);
     
-    //members
-    vtkSmartPointer<vtkUnstructuredGrid> source;
+private:    
+    vtkSmartPointer<vtkClipDataSet>     m_clipper;
+    vtkSmartPointer<vtkExtractGeometry> m_extractor;
 };
 
 } //namespace Fem

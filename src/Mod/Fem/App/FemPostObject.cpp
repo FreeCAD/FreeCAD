@@ -28,6 +28,8 @@
 
 #include "FemPostObject.h"
 #include <Base/Console.h>
+#include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <vtkPointData.h>
 #include <vtkCellData.h>
@@ -53,42 +55,25 @@ short FemPostObject::mustExecute(void) const
 }
 
 DocumentObjectExecReturn* FemPostObject::execute(void) {
-    
-    //analyse the data and print
-    Base::Console().Message("\nPoly Data Analysis:\n");
-    
-    vtkPolyData*  poly = polyDataSource->GetOutput();
-    vtkPointData* point = poly->GetPointData();
-    Base::Console().Message("Point components: %i\n", point->GetNumberOfComponents());
-    Base::Console().Message("Point arrays: %i\n", point->GetNumberOfArrays());
-    Base::Console().Message("Point tuples: %i\n", point->GetNumberOfTuples());
-    
-    vtkCellData* cell = poly->GetCellData();
-    Base::Console().Message("Cell components: %i\n", cell->GetNumberOfComponents());
-    Base::Console().Message("Cell arrays: %i\n", cell->GetNumberOfArrays());
-    Base::Console().Message("Point tuples: %i\n", cell->GetNumberOfTuples());
-
-    
-    if(polyDataSource && static_cast<unsigned long>(ModificationTime.getValue()) < polyDataSource->GetMTime())
-        ModificationTime.setValue(static_cast<unsigned long>(polyDataSource->GetMTime()));
+       
+    if(providesPolyData()) {
+        polyDataSource->Update();
+        vtkSmartPointer<vtkPolyData> poly = polyDataSource->GetOutput();
+        
+        if(static_cast<unsigned long>(ModificationTime.getValue()) != poly->GetMTime()) {
+            
+            //update the bounding box
+            m_boundingBox = vtkBoundingBox(poly->GetBounds());
+            
+            //update the modification time to let the viewprovider know something changed
+            ModificationTime.setValue(static_cast<long>(poly->GetMTime()));   
+        }
+    }
     
     return DocumentObject::StdReturn;
-}
-
-
-PyObject *FemPostObject::getPyObject()
-{
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject); 
 }
 
 void FemPostObject::onChanged(const Property* prop)
 {
     App::GeoFeature::onChanged(prop);
-
-    // if the placement has changed apply the change to the grid data as well
-
 }

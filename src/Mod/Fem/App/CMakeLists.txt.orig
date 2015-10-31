@@ -189,17 +189,6 @@ SET(FemConstraints_SRCS
     )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
-<<<<<<< 09326bbbdaf756fe381d51d340e0db27fd8c452a
-SET(FemResult_SRCS
-    )
-SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
-
-SET(Fem_SRCS
-    ${FemBase_SRCS}
-    ${FemSet_SRCS}
-    ${FemConstraints_SRCS}
-    ${FemResult_SRCS}
-=======
 if(BUILD_FEM_VTK) 
     SET(FemPost_SRCS
         FemPostObject.h
@@ -208,17 +197,23 @@ if(BUILD_FEM_VTK)
         FemPostPipeline.cpp
         FemPostFilter.h
         FemPostFilter.cpp
+<<<<<<< eec6f7aee8b6e5979a799358e2ae69bdc5a7af5b
+    )
+=======
+        FemPostFunction.h
+        FemPostFunction.cpp
 	)
+>>>>>>> Basic implementation of filter framework
     SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
 endif(BUILD_FEM_VTK)
 
 
 SET(Fem_SRCS
-	${FemBase_SRCS}
-	${FemSet_SRCS}
-	${FemConstraints_SRCS}
-	${FemPost_SRCS}
->>>>>>> Move post processing to fem objects
+    ${FemBase_SRCS}
+    ${FemSet_SRCS}
+    ${FemConstraints_SRCS}
+    ${FemResult_SRCS}
+....${FemPost_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )

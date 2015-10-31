@@ -369,7 +369,7 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
 
 void ViewProviderFemPostObject::WriteColorData() {
 
-    if(!m_currentAlgorithm)
+    if(!setupPipeline())
         return;
     
     if(Coloring.getEnumVector().empty() || Coloring.getValue() == 0) {
@@ -429,7 +429,7 @@ void ViewProviderFemPostObject::updateData(const App::Property* p) {
 
 bool ViewProviderFemPostObject::setupPipeline() {
     
-    if(!static_cast<Fem::FemPostObject*>(getObject())->getPolyAlgorithm())
+    if(!static_cast<Fem::FemPostObject*>(getObject())->providesPolyData())
         return false;
     
     if(!m_currentAlgorithm) {
