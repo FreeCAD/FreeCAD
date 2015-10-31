@@ -1,4 +1,4 @@
-<<<<<<< 09326bbbdaf756fe381d51d340e0db27fd8c452a
+<<<<<<< eec6f7aee8b6e5979a799358e2ae69bdc5a7af5b
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
@@ -55,6 +55,8 @@
 
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
+#include "FemPostPipeline.h"
+#include "FemPostFilter.h"
 
 namespace Fem {
 extern PyObject* initModule();
@@ -143,9 +145,14 @@ PyMODINIT_FUNC initFem()
     Fem::ConstraintDisplacement     ::init();
 
     Fem::FemResultObject            ::init();
-    Fem::FemResultObjectPython      ::init();
     Fem::FemSolverObject            ::init();
     Fem::FemSolverObjectPython      ::init();
+    
+#ifdef FC_USE_VTK
+    Fem::FemPostObject              ::init();
+    Fem::FemPostPipeline            ::init();
+    Fem::FemPostFilter              ::init();
+#endif
 }
 =======
 /***************************************************************************
@@ -204,8 +211,12 @@ PyMODINIT_FUNC initFem()
 
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
+
+#ifdef FC_USE_VTK
 #include "FemPostPipeline.h"
 #include "FemPostFilter.h"
+#include "FemPostFunction.h"
+#endif
 
 namespace Fem {
 extern PyObject* initModule();
@@ -301,6 +312,10 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostObject              ::init();
     Fem::FemPostPipeline            ::init();
     Fem::FemPostFilter              ::init();
+    Fem::FemPostClipFilter          ::init();
+    Fem::FemPostFunction            ::init();
+    Fem::FemPostFunctionProvider    ::init();
+    Fem::FemPostPlaneFunction       ::init();
 #endif
 }
->>>>>>> Move post processing to fem objects
+>>>>>>> Basic implementation of filter framework

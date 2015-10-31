@@ -26,6 +26,7 @@
 # include <Standard_math.hxx>
 # include <QApplication>
 # include <QMessageBox>
+#include <QAction>
 #endif
 
 #include <Inventor/nodes/SoEventCallback.h>
@@ -47,6 +48,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
+#include <Gui/Action.h>
 
 #include <SMESH_Mesh.hxx>
 #include <SMESHDS_Mesh.hxx>
@@ -58,8 +60,11 @@
 #include <strstream>
 #include <Mod/Fem/App/FemConstraint.h>
 #include <Mod/Fem/App/FemAnalysis.h>
-
 #include "ActiveAnalysisObserver.h"
+
+#ifdef FC_USE_VTK
+#include <Mod/Fem/App/FemPostPipeline.h>
+#endif
 
 using namespace std;
 
@@ -757,6 +762,215 @@ bool CmdFemCreateNodesSet::isActive(void)
     return hasActiveDocument();
 }
 
+
+// #####################################################################################################
+
+#ifdef FC_USE_VTK
+
+
+DEF_STD_CMD_A(CmdFemPostCreateClipFilter);
+
+CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
+  : Command("Fem_PostCreateClipFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Define/create a clip filter for a post processing pipeline...");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter for a post processing pipeline...");
+    sWhatsThis      = "Fem_PostCreateClipFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-fem-mesh-create-node-by-poly";
+}
+
+void CmdFemPostCreateClipFilter::activated(int iMsg)
+{
+    Gui::SelectionFilter ObjectFilter("SELECT Fem::FemPostPipeline COUNT 1");
+ 
+    if (ObjectFilter.match()) {
+        Fem::FemPostPipeline *pipeline = static_cast<Fem::FemPostPipeline*>(ObjectFilter.Result[0][0].getObject());
+
+        std::string FeatName = getUniqueObjectName("Clip");
+
+        openCommand("Create clip filter");
+        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostClipFilter','%s')",FeatName.c_str());  
+        doCommand(Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
+        doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
+        doCommand(Doc,"App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
+        doCommand(Doc,"del __list__");
+        
+        this->updateActive();
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostCreateClipFilter", "Select a pipeline, please."));
+    }
+}
+
+bool CmdFemPostCreateClipFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+// #####################################################################################################
+
+
+DEF_STD_CMD_ACL(CmdFemPostFunctions);
+
+CmdFemPostFunctions::CmdFemPostFunctions()
+  : Command("Fem_PostCreateFunctions")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Functions for use in postprocessing filter...");
+    sToolTipText    = QT_TR_NOOP("Functions for use in postprocessing filter...");
+    sWhatsThis      = "Fem_PostCreateFunctions";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdFemPostFunctions::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    std::string name;
+    if (iMsg==0)
+        name = "Plane";
+    else if (iMsg==1)
+        rcCmdMgr.runCommandByName("Part_JoinEmbed");
+    else if (iMsg==2)
+        rcCmdMgr.runCommandByName("Part_JoinCutout");
+    else
+        return;
+
+    //create the object
+    Gui::SelectionFilter ObjectFilter("SELECT Fem::FemPostPipeline COUNT 1");
+    if (ObjectFilter.match()) {
+        Fem::FemPostPipeline *pipeline = static_cast<Fem::FemPostPipeline*>(ObjectFilter.Result[0][0].getObject());
+
+        openCommand("Create function");
+        
+        //check if the pipeline has a filter provider and add one if needed
+        Fem::FemPostFunctionProvider* provider;
+        if(!pipeline->Function.getValue() || pipeline->Function.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+            std::string FuncName = getUniqueObjectName("Functions");
+            doCommand(Doc,"App.ActiveDocument.addObject('Fem::FemPostFunctionProvider','%s')", FuncName.c_str());
+            doCommand(Doc,"App.ActiveDocument.%s.Function = App.ActiveDocument.%s", pipeline->getNameInDocument(), FuncName.c_str());
+            provider = static_cast<Fem::FemPostFunctionProvider*>(getDocument()->getObject(FuncName.c_str()));
+        }
+        else 
+            provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Function.getValue());
+        
+        //build the object
+        std::string FeatName = getUniqueObjectName(name.c_str());       
+        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPost%sFunction','%s')", name.c_str(), FeatName.c_str());  
+        doCommand(Doc,"__list__ = App.ActiveDocument.%s.Functions", provider->getNameInDocument());
+        doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
+        doCommand(Doc,"App.ActiveDocument.%s.Functions = __list__", provider->getNameInDocument());
+        doCommand(Doc,"del __list__");
+        
+        this->updateActive();
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostCreateClipFilter", "Select a pipeline, please."));
+    }
+    
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdFemPostFunctions::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    //cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_JoinConnect"));
+ 
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdFemPostFunctions::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* cmd0 = a[0];
+    cmd0->setText(QApplication::translate("CmdFemPostFunctions","Plane"));
+    cmd0->setToolTip(QApplication::translate("Fem_PostCreateFunctions","Create a plane function, defined by its orgin and normal"));
+    cmd0->setStatusTip(cmd0->toolTip());
+    
+}
+
+bool CmdFemPostFunctions::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+DEF_STD_CMD_AC(CmdFemPostApllyChanges);
+
+CmdFemPostApllyChanges::CmdFemPostApllyChanges()
+  : Command("Fem_PostApplyChanges")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
+    sToolTipText    = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
+    sWhatsThis      = "Fem_PostApplyChanges";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "view-refresh";
+}
+
+void CmdFemPostApllyChanges::activated(int iMsg)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
+    
+    if (iMsg == 1) 
+        hGrp->SetBool("PostAutoRecompute", true);
+    else
+        hGrp->SetBool("PostAutoRecompute", false);
+}
+
+bool CmdFemPostApllyChanges::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+Gui::Action * CmdFemPostApllyChanges::createAction(void)
+{
+    Gui::Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
+    pcAction->setChecked(hGrp->GetBool("PostAutoRecompute", false));
+    
+    return pcAction;
+}
+
+#endif
+
 //--------------------------------------------------------------------------------------
 
 
@@ -775,4 +989,10 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintGear());
     rcCmdMgr.addCommand(new CmdFemConstraintPulley());
     rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
+    
+#ifdef FC_USE_VTK
+    rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostFunctions);
+    rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
+#endif
 }

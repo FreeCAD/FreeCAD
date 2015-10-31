@@ -21,58 +21,39 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemPostObject_H
-#define Fem_FemPostObject_H
+#include "PreCompiled.h"
+#include "ViewProviderFemPostPipeline.h"
+#include <Mod/Fem/App/FemPostPipeline.h>
+#include <Base/Console.h>
 
-#include <App/GeoFeature.h>
+using namespace FemGui;
 
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataAlgorithm.h>
-#include <vtkBoundingBox.h>
 
-namespace Fem
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostPipeline, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
 {
+}
 
-//poly data is the only data we can visualize, hence every post processing object needs to expose it
-class AppFemExport FemPostObject : public App::GeoFeature
+ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()
 {
-    PROPERTY_HEADER(Fem::FemPostObject);
+}
 
-public:
-    /// Constructor
-    FemPostObject(void);
-    virtual ~FemPostObject();
-    
-    App::PropertyInteger ModificationTime;
+std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren(void) const {
 
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemPostObject";
-    }
+    Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+    std::vector<App::DocumentObject*> children;
     
-    short mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
+    if(pipeline->Function.getValue())
+        children.push_back(pipeline->Function.getValue());
     
-    //bounding box handling. By default the bounding box is calcualted from the poly data output 
-    //which is visualized
-    virtual vtkBoundingBox getBoundingBox() {return m_boundingBox;};
-    
-    //poly data algorithm handling
-    virtual bool                          providesPolyData() {return getPolyAlgorithm()!=NULL;};      
-    vtkSmartPointer<vtkPolyDataAlgorithm> getPolyAlgorithm() {return polyDataSource;};
-    
+    children.insert(children.end(), pipeline->Filter.getValues().begin(), pipeline->Filter.getValues().end());   
+    Base::Console().Message("claim children pipeline: %i\n", children.size());
+    return children;
+}
 
-protected:
-    virtual void onChanged(const App::Property* prop);
-    
-    //members
-    vtkSmartPointer<vtkPolyDataAlgorithm> polyDataSource;
-    
-private:
-    vtkBoundingBox m_boundingBox;
-};
+std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D(void) const {
 
-} //namespace Fem
+    return claimChildren();
+}
 
-
-#endif // Fem_FemPostObject_H

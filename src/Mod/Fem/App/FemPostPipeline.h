@@ -25,6 +25,8 @@
 #define Fem_FemPostPipeline_H
 
 #include "FemPostObject.h"
+#include "FemPostFilter.h"
+#include "FemPostFunction.h"
 
 #include <vtkSmartPointer.h>
 #include <vtkDataSet.h>
@@ -40,25 +42,33 @@ public:
     /// Constructor
     FemPostPipeline(void);
     virtual ~FemPostPipeline();
-
-    /// returns the type name of the ViewProvider
-//     virtual const char* getViewProviderName(void) const {
-//         return "FemGui::ViewProviderPostPipeline";
-//     }
+    
+    App::PropertyLinkList       Filter;
+    App::PropertyLink           Function;
+    App::PropertyEnumeration    Mode;
     
     short mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
-    PyObject* getPyObject();
-
+    //PyObject* getPyObject();
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostPipeline";
+    }
+    
     //load data from files
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
     
+    //Pipeline handling
+    vtkSmartPointer<vtkDataSet> getSource() {return source;};
+    FemPostObject* getLastPostObject();
+    
 protected:
     virtual void onChanged(const App::Property* prop);
     
-    //members
+private:
     vtkSmartPointer<vtkDataSet> source;
+    static const char* ModeEnums[];
 };
 
 } //namespace Fem

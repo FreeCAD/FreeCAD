@@ -213,6 +213,10 @@ if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_Post
         ViewProviderFemPostObject.h
         ViewProviderFemPostObject.cpp
+        ViewProviderFemPostPipeline.h
+        ViewProviderFemPostPipeline.cpp
+        ViewProviderFemPostFunction.h
+        ViewProviderFemPostFunction.cpp
         )
     SOURCE_GROUP("PostObjects" FILES ${FemGui_SRCS_Post})
 endif(BUILD_FEM_VTK)

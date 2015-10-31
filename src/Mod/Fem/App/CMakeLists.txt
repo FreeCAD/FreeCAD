@@ -208,6 +208,8 @@ if(BUILD_FEM_VTK)
         FemPostPipeline.cpp
         FemPostFilter.h
         FemPostFilter.cpp
+        FemPostFunction.h
+        FemPostFunction.cpp
     )
     SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
 endif(BUILD_FEM_VTK)

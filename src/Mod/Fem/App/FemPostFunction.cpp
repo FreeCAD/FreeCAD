@@ -21,58 +21,78 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemPostObject_H
-#define Fem_FemPostObject_H
+#include "PreCompiled.h"
 
-#include <App/GeoFeature.h>
+#ifndef _PreComp_
+#endif
 
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataAlgorithm.h>
-#include <vtkBoundingBox.h>
+#include "FemPostFunction.h"
+#include <Base/Console.h>
 
-namespace Fem
+using namespace Fem;
+using namespace App;
+
+PROPERTY_SOURCE(Fem::FemPostFunctionProvider, App::DocumentObject)
+
+FemPostFunctionProvider::FemPostFunctionProvider(void): DocumentObject() {
+
+    ADD_PROPERTY(Functions, (0));
+}
+
+FemPostFunctionProvider::~FemPostFunctionProvider() {
+
+}
+
+void FemPostFunctionProvider::onChanged(const Property* prop) {
+    App::DocumentObject::onChanged(prop);
+}
+
+
+PROPERTY_SOURCE(Fem::FemPostFunction, App::DocumentObject)
+
+FemPostFunction::FemPostFunction()
 {
+}
 
-//poly data is the only data we can visualize, hence every post processing object needs to expose it
-class AppFemExport FemPostObject : public App::GeoFeature
+FemPostFunction::~FemPostFunction()
 {
-    PROPERTY_HEADER(Fem::FemPostObject);
+}
 
-public:
-    /// Constructor
-    FemPostObject(void);
-    virtual ~FemPostObject();
+DocumentObjectExecReturn* FemPostFunction::execute(void) {
     
-    App::PropertyInteger ModificationTime;
+    return DocumentObject::StdReturn;
+}
 
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemPostObject";
+
+PROPERTY_SOURCE(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
+
+FemPostPlaneFunction::FemPostPlaneFunction(void): FemPostFunction() {
+
+    ADD_PROPERTY(Origin,(Base::Vector3d(0.0,0.0,0.0)));
+    ADD_PROPERTY(Normal,(Base::Vector3d(1.0,0.0,0.0)));
+    
+    m_plane = vtkPlane::New();
+    m_implicit = m_plane;
+    
+    m_plane->SetOrigin(0., 0., 0.);
+    m_plane->SetNormal(1., 0., 0.);
+}
+
+FemPostPlaneFunction::~FemPostPlaneFunction() {
+
+}
+
+void FemPostPlaneFunction::onChanged(const Property* prop) {
+    
+    Base::Console().Message("Changed origin and normal\n");
+    if(prop == &Origin) {
+        const Base::Vector3d& vec = Origin.getValue();
+        m_plane->SetOrigin(vec[0], vec[1], vec[2]);
+    }
+    else if(prop == &Normal) {
+        const Base::Vector3d& vec = Normal.getValue();
+        m_plane->SetNormal(vec[0], vec[1], vec[2]);
     }
     
-    short mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
-    
-    //bounding box handling. By default the bounding box is calcualted from the poly data output 
-    //which is visualized
-    virtual vtkBoundingBox getBoundingBox() {return m_boundingBox;};
-    
-    //poly data algorithm handling
-    virtual bool                          providesPolyData() {return getPolyAlgorithm()!=NULL;};      
-    vtkSmartPointer<vtkPolyDataAlgorithm> getPolyAlgorithm() {return polyDataSource;};
-    
-
-protected:
-    virtual void onChanged(const App::Property* prop);
-    
-    //members
-    vtkSmartPointer<vtkPolyDataAlgorithm> polyDataSource;
-    
-private:
-    vtkBoundingBox m_boundingBox;
-};
-
-} //namespace Fem
-
-
-#endif // Fem_FemPostObject_H
+    Fem::FemPostFunction::onChanged(prop);
+}
