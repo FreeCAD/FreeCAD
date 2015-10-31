@@ -25,6 +25,13 @@
 #ifndef _PreComp_
 #endif
 
+// PCL test
+#ifdef HAVE_PCL_IO
+#  include <iostream>
+#  include <pcl/io/ply_io.h>
+#  include <pcl/point_types.h>
+#endif
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/FileInfo.h>
@@ -33,13 +40,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Property.h>
-
-// PCL test
-#ifdef HAVE_PCL_IO
-#  include <iostream>
-#  include <pcl/io/ply_io.h>
-#  include <pcl/point_types.h>
-#endif
 
 #include "Points.h"
 #include "PointsPy.h"
