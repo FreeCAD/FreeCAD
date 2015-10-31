@@ -20,7 +20,6 @@ qt4_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
 SET(_TEMPLATE_Gui_SRCS
     ${_TEMPLATE__QRC_SRCS}
     App_TEMPLATE_Gui.cpp
-    App_TEMPLATE_GuiPy.cpp
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h

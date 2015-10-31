@@ -54,6 +54,7 @@
 #include "Language/Translator.h"
 #include "DownloadManager.h"
 #include <App/DocumentObjectPy.h>
+#include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
@@ -139,6 +140,9 @@ PyMethodDef Application::Methods[] = {
   {"activeDocument",          (PyCFunction) Application::sActiveDocument,   1,
    "activeDocument() -> object or None\n\n"
    "Return the active document or None if no one exists"},
+  {"setActiveDocument",       (PyCFunction) Application::sSetActiveDocument,1,
+   "setActiveDocument(string or App.Document) -> None\n\n"
+   "Activate the specified document"},
   {"getDocument",             (PyCFunction) Application::sGetDocument,      1,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
@@ -171,19 +175,71 @@ PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args,
     }
 }
 
-PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* Gui::Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    char *pstr=0;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception
+    Document *pcDoc = 0;
 
-    Document *pcDoc = Instance->getDocument(pstr);
+    do {
+        char *pstr=0;
+        if (PyArg_ParseTuple(args, "s", &pstr)) {
+            pcDoc = Instance->getDocument(pstr);
+            if (!pcDoc) {
+                PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
+                return 0;
+            }
+            break;
+        }
+
+        PyErr_Clear();
+        PyObject* doc;
+        if (PyArg_ParseTuple(args, "O!", &(App::DocumentPy::Type), &doc)) {
+            pcDoc = Instance->getDocument(static_cast<App::DocumentPy*>(doc)->getDocumentPtr());
+            if (!pcDoc) {
+                PyErr_Format(PyExc_KeyError, "Unknown document instance");
+                return 0;
+            }
+            break;
+        }
+    }
+    while(false);
+
     if (!pcDoc) {
-        PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
+        PyErr_SetString(PyExc_TypeError, "Either string or App.Document expected");
         return 0;
     }
 
-    return pcDoc->getPyObject();
+    if (Instance->activeDocument() != pcDoc) {
+        Gui::MDIView* view = pcDoc->getActiveView();
+        getMainWindow()->setActiveWindow(view);
+    }
+    Py_Return;
+}
+
+PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    if (PyArg_ParseTuple(args, "s", &pstr)) {
+        Document *pcDoc = Instance->getDocument(pstr);
+        if (!pcDoc) {
+            PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
+            return 0;
+        }
+        return pcDoc->getPyObject();
+    }
+
+    PyErr_Clear();
+    PyObject* doc;
+    if (PyArg_ParseTuple(args, "O!", &(App::DocumentPy::Type), &doc)) {
+        Document *pcDoc = Instance->getDocument(static_cast<App::DocumentPy*>(doc)->getDocumentPtr());
+        if (!pcDoc) {
+            PyErr_Format(PyExc_KeyError, "Unknown document instance");
+            return 0;
+        }
+        return pcDoc->getPyObject();
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Either string or App.Document exprected");
+    return 0;
 }
 
 PyObject* Application::sHide(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

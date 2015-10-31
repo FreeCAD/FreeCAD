@@ -51,11 +51,11 @@ class FemCommands(object):
             elif self.is_active == 'with_document':
                 active = FreeCADGui.ActiveDocument is not None
             elif self.is_active == 'with_analysis':
-                active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc()
             elif self.is_active == 'with_results':
-                active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None and self.results_present()
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.results_present()
             elif self.is_active == 'with_part_feature':
-                active = FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None and self.part_feature_selected()
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.part_feature_selected()
             return active
 
         def results_present(self):
@@ -72,3 +72,6 @@ class FemCommands(object):
                 return True
             else:
                 return False
+
+        def active_analysis_in_active_doc(self):
+            return FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument

@@ -28,7 +28,6 @@ qt4_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
 SET(ReenGui_SRCS
     ${ReenGui_QRC_SRCS}
     AppReverseEngineeringGui.cpp
-    AppReverseEngineeringGuiPy.cpp
     Command.cpp
     Resources/ReverseEngineering.qrc
     PreCompiled.cpp

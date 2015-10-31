@@ -26,6 +26,8 @@
 
 #include <QFileDialog>
 #include <QFileIconProvider>
+#include <QFileSystemModel>
+#include <QCompleter>
 
 class QButtonGroup;
 class QGridLayout;
@@ -174,9 +176,12 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void chooseFile();
+    void editingFinished();
 
 private:
     QLineEdit *lineEdit;
+    QCompleter *completer;
+    QFileSystemModel *fs_model;
     QPushButton *button;
     Mode md;
     QString _filter;

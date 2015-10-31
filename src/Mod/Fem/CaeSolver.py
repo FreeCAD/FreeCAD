@@ -45,7 +45,7 @@ def _setSolverInfo(solver_obj, solverInfo):
 def makeCaeSolver(solverName, analysis=None):
     """CaeSolver Factory method, solverName string  "Calculix" "Openfoam"
     """
-    if (solverName is None) and solverName in REGISTERED_SOLVERS.keys():
+    if (solverName is not None) and solverName in REGISTERED_SOLVERS.keys():
         solverInfo = REGISTERED_SOLVERS[solverName]
         obj = _createCaeSolver(solverInfo, analysis)
         _setSolverInfo(obj, solverInfo)

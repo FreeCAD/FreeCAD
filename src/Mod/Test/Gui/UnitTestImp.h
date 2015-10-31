@@ -38,6 +38,7 @@ public:
     void showErrorDialog(const char* title, const char* message);
     void addUnitTest(const QString& unit);
     void setUnitTest(const QString& unit);
+    void clearUnitTests();
     QString getUnitTest() const;
     void setStatusText(const QString& text);
     void setProgressFraction(float fraction, const QString& = QString::null);

@@ -29,13 +29,21 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     finished = QtCore.Signal(int)
 
-    def __init__(self, analysis=None):
+    known_analysis_types = ["static", "frequency"]
+
+    ## The constructor
+    #  @param analysis - analysis object to be used as the core object.
+    #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
+    #  "__init__" tries to use current active analysis in analysis is left empty.
+    #  Rises exception if analysis is not set and there is no active analysis
+    def __init__(self, analysis=None, test_mode=False):
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
 
-        self.known_analysis_types = ["static", "frequency"]
-
         if analysis:
+            ## @var analysis
+            #  FEM analysis - the core object. Has to be present.
+            #  It's set to analysis passed in "__init__" or set to current active analysis by default if nothing has been passed to "__init__".
             self.analysis = analysis
         else:
             import FemGui
@@ -44,10 +52,19 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.update_objects()
             self.set_analysis_type()
             self.set_eigenmode_parameters()
+            ## @var base_name
+            #  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
             self.base_name = ""
+            ## @var results_present
+            #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
             self.setup_working_dir()
-            self.setup_ccx()
+            if test_mode:
+                self.ccx_binary_present = True
+            else:
+                self.ccx_binary_present = False
+                self.setup_ccx()
+            self.result_object = None
         else:
             raise Exception('FEM: No active analysis found!')
 
@@ -56,7 +73,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     def purge_results(self):
         for m in self.analysis.Member:
             if (m.isDerivedFrom('Fem::FemResultObject')):
-                FreeCAD.ActiveDocument.removeObject(m.Name)
+                self.analysis.Document.removeObject(m.Name)
         self.results_present = False
 
     ## Resets mesh deformation
@@ -80,6 +97,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.reset_mesh_color()
         self.reset_mesh_deformation()
 
+    ## Sets mesh color using selected type of results (Sabs by default)
+    #  @param self The python object self
+    #  @param result_type Type of FEM result, allowed are:
+    #  - U1, U2, U3 - deformation
+    #  - Uabs - absolute deformation
+    #  - Sabs - Von Mises stress
+    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
     def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":
@@ -96,6 +120,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 values = list(d[match[result_type]])
             self.show_color_by_scalar_with_cutoff(values, limit)
 
+    ## Sets mesh color using list of values. Internally used by show_result function.
+    #  @param self The python object self
+    #  @param values list of values
+    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
     def show_color_by_scalar_with_cutoff(self, values, limit=None):
         if limit:
             filtered_values = []
@@ -120,10 +148,22 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
+
+        ## @var mesh
+        #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
         self.material = []
+        ## @var fixed_constraints
+        #  set of fixed constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintFixed" type
         self.fixed_constraints = []
+        ## @var force_constraints
+        #  set of force constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintForce" type
         self.force_constraints = []
+        ## @var pressure_constraints
+        #  set of pressure constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintPressure" type
         self.pressure_constraints = []
         self.beam_sections = []
         self.shell_thicknesses = []
@@ -162,6 +202,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             message += "No active Analysis\n"
         if self.analysis_type not in self.known_analysis_types:
             message += "Unknown analysis type: {}\n".format(self.analysis_type)
+        if not self.working_dir:
+            message += "Working directory not set\n"
+        import os
+        if not (os.path.isdir(self.working_dir)):
+                message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         if not self.mesh:
             message += "No mesh object in the Analysis\n"
         if not self.material:
@@ -200,14 +245,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                                        self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
-            print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
+            print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise
 
     def start_ccx(self):
         import multiprocessing
         import os
         import subprocess
-        if self.inp_file_name != "":
+        self.ccx_stdout = ""
+        self.ccx_stderr = ""
+        if self.inp_file_name != "" and self.ccx_binary_present:
             ont_backup = os.environ.get('OMP_NUM_THREADS')
             if not ont_backup:
                 ont_backup = ""
@@ -226,14 +273,46 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             return p.returncode
         return -1
 
-    ## sets eigenmode parameters for CalculiX frequency analysis
+    ## Sets eigenmode parameters for CalculiX frequency analysis
     #  @param self The python object self
-    #  @param number number of eigenmodes that wll be calculated, default 10
-    #  @param limit_low lower value of requested eigenfrequency range, default 0.0
-    #  @param limit_high higher value of requested eigenfrequency range, default 1000000.0
-    def set_eigenmode_parameters(self, number=10, limit_low=0.0, limit_high=1000000.0):
-        self.eigenmode_parameters = (number, limit_low, limit_high)
+    #  @param number number of eigenmodes that wll be calculated, default read for FEM prefs or 10 if not set in the FEM prefs
+    #  @param limit_low lower value of requested eigenfrequency range, default read for FEM prefs or 0.0 if not set in the FEM prefs
+    #  @param limit_high higher value of requested eigenfrequency range, default read for FEM prefs or 1000000.o if not set in the FEM prefs
+    def set_eigenmode_parameters(self, number=None, limit_low=None, limit_high=None):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        if number is not None:
+            _number = number
+        else:
+            try:
+                _number = self.analysis.NumberOfEigenmodes
+            except:
+                #Not yet in prefs, so it will always default to 10
+                _number = self.fem_prefs.GetString("NumberOfEigenmodes", 10)
+        if _number < 1:
+            _number = 1
 
+        if limit_low is not None:
+            _limit_low = limit_low
+        else:
+            try:
+                _limit_low = self.analysis.EigenmodeLowLimit
+            except:
+                #Not yet in prefs, so it will always default to 0.0
+                _limit_low = self.fem_prefs.GetString("EigenmodeLowLimit", 0.0)
+
+        if limit_high is not None:
+            _limit_high = limit_high
+        else:
+            try:
+                _limit_high = self.analysis.EigenmodeHighLimit
+            except:
+                #Not yet in prefs, so it will always default to 1000000.0
+                _limit_high = self.fem_prefs.GetString("EigenmodeHighLimit", 1000000.0)
+        self.eigenmode_parameters = (_number, _limit_low, _limit_high)
+
+    ## Sets base_name
+    #  @param self The python object self
+    #  @param base_name  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
     def set_base_name(self, base_name=None):
         if base_name is None:
             self.base_name = ""
@@ -242,34 +321,62 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # Update inp file name
         self.set_inp_file_name()
 
-    ## sets inp file name that is used to determine location and name of frd result file.
+    ## Sets inp file name that is used to determine location and name of frd result file.
     # Normally inp file name is set set by write_inp_file
     # Can be used to read mock calculations file
+    #  @param self The python object self
+    #  @inp_file_name .inp file name. If empty the .inp file path is constructed from working_dir, base_name and string ".inp"
     def set_inp_file_name(self, inp_file_name=None):
         if inp_file_name is not None:
             self.inp_file_name = inp_file_name
         else:
             self.inp_file_name = self.working_dir + '/' + self.base_name + '.inp'
 
-    def set_analysis_type(self, analysis_type=None):
-        if analysis_type is None:
-            self.analysis_type = "static"
-        else:
-            self.analysis_type = analysis_type
-
-    ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir for FEM preferences
+    ## Sets analysis type.
     #  @param self The python object self
-    #  @working_dir directory to be used for .inp file and ccx execution
-    def setup_working_dir(self, working_dir=None):
-        if working_dir is None:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-            self.working_dir = self.fem_prefs.GetString("WorkingDir", "/tmp")
+    #  @param analysis_type type of the analysis. Allowed values are:
+    #  - static
+    #  - frequency
+    def set_analysis_type(self, analysis_type=None):
+        if analysis_type is not None:
+            self.analysis_type = analysis_type
         else:
+            try:
+                self.analysis_type = self.analysis.AnalysisType
+            except:
+                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+                self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
+
+    ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir from FEM preferences
+    #  @param self The python object self
+    #  @working_dir directory to be used for writing .inp file and executing CalculiX ccx
+    def setup_working_dir(self, working_dir=None):
+        import os
+        if working_dir is not None:
             self.working_dir = working_dir
+        else:
+            try:
+                self.working_dir = self.analysis.WorkingDir
+            except:
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+                self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+
+        if not (os.path.isdir(self.working_dir)):
+            try:
+                os.makedirs(self.working_dir)
+            except:
+                print("Dir \'{}\' doesn't exist and cannot be created.".format(self.working_dir))
+                import tempfile
+                self.working_dir = tempfile.gettempdir()
+                print("Dir \'{}\' will be used instead.".format(self.working_dir))
         # Update inp file name
         self.set_inp_file_name()
 
-    def setup_ccx(self, ccx_binary=None):
+    ## Sets CalculiX ccx binary path and velidates if the binary can be executed
+    #  @param self The python object self
+    #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
+    #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
+    def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
         if not ccx_binary:
             self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
             ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
@@ -282,8 +389,23 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             else:
                 ccx_binary = "ccx"
         self.ccx_binary = ccx_binary
+        import subprocess
+        try:
+            p = subprocess.Popen([self.ccx_binary], stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, shell=False)
+            ccx_stdout, ccx_stderr = p.communicate()
+            if ccx_binary_sig in ccx_stdout:
+                self.ccx_binary_present = True
+        except OSError, e:
+            FreeCAD.Console.PrintError(e.message)
+            if e.errno == 2:
+                raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.".format(ccx_binary))
+        except Exception as e:
+            FreeCAD.Console.PrintError(e.message)
+            raise Exception("FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer".
+                            format(ccx_binary, ccx_stdout, ccx_binary_sig))
 
-    ## Load results of ccx calculiations from .frd file.
+    ## Load results of ccx calculations from .frd file.
     #  @param self The python object self
     def load_results(self):
         import ccxFrdReader
@@ -295,7 +417,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.result_object = m
-            if self.result_object is not None:
+            if self.result_object:
                 self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
@@ -306,7 +428,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 self.result_object = m
                 break
         if not self.result_object:
-            raise ("{} doesn't exist".format(results_name))
+            raise Exception("{} doesn't exist".format(results_name))
 
     def run(self):
         ret_code = 0
@@ -320,19 +442,23 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.finished.emit(ret_code)
             progress_bar.stop()
         else:
-            print "Running analysis failed! " + message
+            print("Running analysis failed! {}".format(message))
         if ret_code or self.ccx_stderr:
-            print "Analysis failed with exit code {}".format(ret_code)
-            print "--------start of stderr-------"
-            print self.ccx_stderr
-            print "--------end of stderr---------"
-            print "--------start of stdout-------"
-            print self.ccx_stdout
-            print "--------end of stdout---------"
+            print("Analysis failed with exit code {}".format(ret_code))
+            print("--------start of stderr-------")
+            print(self.ccx_stderr)
+            print("--------end of stderr---------")
+            print("--------start of stdout-------")
+            print(self.ccx_stdout)
+            print("--------end of stdout---------")
 
-    ## returns minimum, average and maximum value for provided result type
+    ## Returns minimum, average and maximum value for provided result type
     #  @param self The python object self
-    #  @result_type Type of FEM result, allowed U1, U2, U3, Uabs, Sabs and None
+    #  @param result_type Type of FEM result, allowed are:
+    #  - U1, U2, U3 - deformation
+    #  - Uabs - absolute deformation
+    #  - Sabs - Von Mises stress
+    #  - None - always return (0.0, 0.0, 0.0)
     def get_stats(self, result_type):
         stats = (0.0, 0.0, 0.0)
         for m in self.analysis.Member:

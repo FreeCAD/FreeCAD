@@ -64,7 +64,7 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
         GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
         ->GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str());
 
-    QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro"));
+    QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro *.py"));
     actionMacros->insertItems(0, d.entryList());
 
     QStringList labels; labels << tr("Icons") << tr("Macros");

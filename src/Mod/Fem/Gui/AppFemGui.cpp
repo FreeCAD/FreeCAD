@@ -69,7 +69,7 @@ extern struct PyMethodDef FemGui_Import_methods[];
 
 /* Python entry */
 extern "C" {
-void FemGuiExport initFemGui()  
+void FemGuiExport initFemGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -104,22 +104,6 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderFemConstraintPulley    ::init();
     FemGui::ViewProviderResult                 ::init();
     FemGui::ViewProviderResultPython           ::init();
-
-    Base::Interpreter().loadModule("FemCommands");
-
-    Base::Interpreter().loadModule("_CommandMechanicalShowResult");
-    Base::Interpreter().loadModule("_CommandFrequencyAnalysis");
-    Base::Interpreter().loadModule("_CommandQuickAnalysis");
-    Base::Interpreter().loadModule("_CommandPurgeFemResults");
-    Base::Interpreter().loadModule("_CommandFemFromShape");
-    //Base::Interpreter().loadModule("_CommandMechanicalJobControl");
-    //Base::Interpreter().loadModule("_CommandNewMechanicalAnalysis");
-
-    //Base::Interpreter().loadModule("MechanicalAnalysis");
-    Base::Interpreter().loadModule("CaeAnalysis");  
-    Base::Interpreter().loadModule("MechanicalMaterial");
-    Base::Interpreter().loadModule("FemBeamSection");
-    Base::Interpreter().loadModule("FemShellThickness");
 
     // register preferences pages
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemImp> ("FEM");

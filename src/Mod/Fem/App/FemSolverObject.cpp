@@ -82,6 +82,7 @@ PROPERTY_SOURCE_TEMPLATE(Fem::FemSolverObjectPython, Fem::FemSolverObject)
 template<> const char* Fem::FemSolverObjectPython::getViewProviderName(void) const {
     return "FemGui::ViewProviderSolverPython";
 }
+
 template<> PyObject* Fem::FemSolverObjectPython::getPyObject(void) {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

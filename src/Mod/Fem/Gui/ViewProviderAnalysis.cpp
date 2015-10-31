@@ -25,12 +25,16 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <boost/bind.hpp>
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include "ViewProviderAnalysis.h"
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Control.h>
+#include <Gui/ActionFunction.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemSolverObject.h>
@@ -44,10 +48,7 @@
 using namespace FemGui;
 
 
-
-
-
-
+/* TRANSLATOR FemGui::ViewProviderFemAnalysis */
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObject)
 
@@ -86,10 +87,9 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)co
 
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    //QAction* act;
-    //act = menu->addAction(QObject::tr("Edit pad"), receiver, member);
-    //act->setData(QVariant((int)ViewProvider::Default));
-    //PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(tr("Activate analysis"));
+    func->trigger(act, boost::bind(&ViewProviderFemAnalysis::doubleClicked, this));
 }
 
 bool ViewProviderFemAnalysis::setEdit(int ModNum)
@@ -120,11 +120,10 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
 //            Gui::Control().showDialog(padDlg);
 //        else
         
-        Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
-
-        Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
-
-        return true;
+        //Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
+        //Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
+        //return true;
+        return false;
     }
     else {
         return Gui::ViewProviderDocumentObject::setEdit(ModNum);
@@ -178,6 +177,8 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
     else if (obj->getTypeId().isDerivedFrom(Fem::Constraint::getClassTypeId()))
         return true;
     else if (obj->getTypeId().isDerivedFrom(Fem::FemSetObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FeaturePython")))
         return true;
     else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId()))
         return true;

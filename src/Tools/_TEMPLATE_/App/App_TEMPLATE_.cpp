@@ -28,12 +28,24 @@
 
 #include <Base/Console.h>
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
 
-/* registration table  */
-extern struct PyMethodDef _TEMPLATE__methods[];
 
-PyDoc_STRVAR(module__TEMPLATE__doc,
-"This module is the _TEMPLATE_ module.");
+namespace _TEMPLATE_ {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("_TEMPLATE_")
+    {
+        initialize("This module is the _TEMPLATE_ module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+} // namespace _TEMPLATE_
 
 
 /* Python entry */
@@ -43,7 +55,7 @@ void _TEMPLATE_AppExport init_TEMPLATE_() {
     // ADD YOUR CODE HERE
     //
     //
-    (void) Py_InitModule3("_TEMPLATE_", _TEMPLATE__methods, module__TEMPLATE__doc);   /* mod name, table ptr */
+    new _TEMPLATE_::Module();
     Base::Console().Log("Loading _TEMPLATE_ module... done\n");
 }
 

@@ -59,6 +59,29 @@ class CaeAnalysis:
         obj.Proxy = self  #  link between App::DocumentObject to  this object
         obj.addProperty("App::PropertyString", "Category", "Analysis", "Cfd, Computional solid mechanics")
         obj.addProperty("App::PropertyString", "SolverName", "Analysis", "External solver unique name")
+        
+        # added from Oct 30, 2015, this should be added into FemSolverPython object: ccxFemSolver, FemTools also needs change. 
+        from FemTools import FemTools
+        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
+        obj.AnalysisType = FemTools.known_analysis_types
+        analysis_type = fem_prefs.GetInt("AnalysisType", 0)
+        obj.AnalysisType = FemTools.known_analysis_types[analysis_type]
+        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations")
+        obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
+
+        obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
+        noe = fem_prefs.GetInt("NumberOfEigenmodes", 10)
+        obj.NumberOfEigenmodes = (noe, 1, 100, 1)
+
+        obj.addProperty("App::PropertyFloatConstraint", "EigenmodeLowLimit", "Fem", "Low frequency limit for eigenmode calculations")
+        #Not yet in prefs, so it will always default to 0.0
+        ell = fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
+        obj.EigenmodeLowLimit = (ell, 0.0, 1000000.0, 10000.0)
+
+        obj.addProperty("App::PropertyFloatConstraint", "EigenmodeHighLimit", "Fem", "High frequency limit for eigenmode calculations")
+        ehl = fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
+        obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
     # following are the FeutureT standard methods
     def execute(self, obj):
@@ -139,7 +162,7 @@ def _CreateCaeAnalysis(solverName, analysisName=None):
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("FreeCAD.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()." + sel[0].Name + "]")
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().ActiveObject.Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
             if(sel[0].isDerivedFrom("Part::Feature")):
                 FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
@@ -180,7 +203,8 @@ class _CommandNewMechanicalAnalysis(FemCommands):
 
     def Activated(self):
         #default solverName  show a dialog to select solver if more than one solver
-        _CreateCaeAnalysis('Calculix', 'MechanicalAnalysis')
+        import MechanicalAnalysis
+        MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')
 
 
 class _CommandAnalysisControl(FemCommands):

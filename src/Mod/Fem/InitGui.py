@@ -41,16 +41,20 @@ class FemWorkbench (Workbench):
         # load the module
         import Fem
         import FemGui
-        
+
+        import _CommandMechanicalShowResult
+        import _CommandQuickAnalysis
+        import _CommandPurgeFemResults
+        #import _CommandMechanicalJobControl
+        import _CommandFemFromShape
+        #import _CommandNewMechanicalAnalysis
+
         import CaeAnalysis
-        import CaeSolver
-        """# FemGui::Workbench  may needs some modification to add Toolbar from python
-        from PySide import QtCore
-        cmdlst = ["Fem_NewCfdAnalysis","Fem_NewMechanicalAnalysis"]
-        self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP("Fem", "Fem tools")), cmdlst)
-        self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP("Fem", "Fem")), cmdlst)
-        """
-        #The following code should be moved into SolverObject init function!
+        import MechanicalAnalysis
+        import MechanicalMaterial
+        import FemBeamSection
+        import FemShellThickness
+
         import subprocess
         from platform import system
         ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")
@@ -62,9 +66,29 @@ class FemWorkbench (Workbench):
                         ccx_path = p1.stdout.read().split('\n')[0]
                 elif system() == 'Windows':
                     ccx_path = FreeCAD.getHomePath() + 'bin/ccx.exe'
-                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("ccxBinaryPath", ccx_path)
+                if ccx_path:
+                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("ccxBinaryPath", ccx_path)
+                else:
+                    FreeCAD.Console.PrintError("CalculiX ccx binary not found! Please set it manually in FEM preferences.\n")
             except Exception as e:
                 FreeCAD.Console.PrintError(e.message)
+        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+
+        import os
+        working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+        if not (os.path.isdir(working_dir)):
+            try:
+                os.makedirs(working_dir)
+            except:
+                print ("Dir \'{}\' from FEM preferences doesn't exist and cannot be created.".format(working_dir))
+                import tempfile
+                working_dir = tempfile.gettempdir()
+                print ("Dir \'{}\' will be used instead.".format(working_dir))
+        if working_dir:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("WorkingDir", working_dir)
+        else:
+            FreeCAD.Console.PrintError("Setting working directory \'{}\' for ccx failed!\n")
+
 
     def GetClassName(self):
         return "FemGui::Workbench"

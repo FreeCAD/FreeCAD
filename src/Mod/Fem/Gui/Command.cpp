@@ -285,7 +285,7 @@ void CmdFemConstraintBearing::activated(int iMsg)
 
 bool CmdFemConstraintBearing::isActive(void)
 {
-    return hasActiveDocument();
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 //=====================================================================================
@@ -323,7 +323,7 @@ void CmdFemConstraintFixed::activated(int iMsg)
 
 bool CmdFemConstraintFixed::isActive(void)
 {
-    return hasActiveDocument();
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 //=====================================================================================
@@ -362,7 +362,7 @@ void CmdFemConstraintForce::activated(int iMsg)
 
 bool CmdFemConstraintForce::isActive(void)
 {
-    return hasActiveDocument();
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 //=====================================================================================
@@ -402,7 +402,7 @@ void CmdFemConstraintPressure::activated(int iMsg)
 
 bool CmdFemConstraintPressure::isActive(void)
 {
-    return hasActiveDocument();
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 //=====================================================================================
@@ -440,7 +440,7 @@ void CmdFemConstraintGear::activated(int iMsg)
 
 bool CmdFemConstraintGear::isActive(void)
 {
-    return hasActiveDocument();
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 //=====================================================================================
@@ -483,7 +483,7 @@ void CmdFemConstraintPulley::activated(int iMsg)
 
 bool CmdFemConstraintPulley::isActive(void)
 {
-    return hasActiveDocument();
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 // #####################################################################################################

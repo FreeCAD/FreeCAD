@@ -39,9 +39,10 @@ namespace GCS
     ///////////////////////////////////////
 
     enum SolveStatus {
-        Success = 0,   // Found a solution zeroing the error function
-        Converged = 1, // Found a solution minimizing the error function
-        Failed = 2     // Failed to find any solution
+        Success = 0,        // Found a solution zeroing the error function
+        Converged = 1,      // Found a solution minimizing the error function
+        Failed = 2,         // Failed to find any solution
+        SuccessfulSolutionInvalid = 3, // This is a solution where the solver succeeded, but the resulting geometry is OCE-invalid
     };
 
     enum Algorithm {

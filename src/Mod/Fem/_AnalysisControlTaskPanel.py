@@ -25,10 +25,9 @@ __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 from FemTools import FemTools
-import ccxFrdReader
-
 import FreeCAD
-import os
+import ccxFrdReader
+import os, os.path
 import time
 
 if FreeCAD.GuiUp:
@@ -50,7 +49,6 @@ class _AnalysisControlTaskPanel:
         # test if Proxy instance is not None and correct type, or create a new instance
         self.solver_python_object = CaeTools.getSolverPythonFromAnalysis(self.analysis_object)
 
-        self.working_dir = self.solver_object.WorkingDir
         self.SolverProcess = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
@@ -75,9 +73,12 @@ class _AnalysisControlTaskPanel:
 
         # Connect Signals and Slots
         QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
-        QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
-        QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.editSolverInputFile)
-        QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runSolverProcess)
+        QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
+        QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editSolverInputFile)
+        QtCore.QObject.connect(self.form.pb_run_solver, QtCore.SIGNAL("clicked()"), self.runSolverProcess)
+        # combobox is preferred
+        QtCore.QObject.connect(self.form.rb_static_analysis, QtCore.SIGNAL("clicked()"), self.select_static_analysis)
+        QtCore.QObject.connect(self.form.rb_frequency_analysis, QtCore.SIGNAL("clicked()"), self.select_frequency_analysis)
 
         QtCore.QObject.connect(self.SolverProcess, QtCore.SIGNAL("started()"), self.solverProcessStarted)
         QtCore.QObject.connect(self.SolverProcess, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.solverProcessStateChanged)
@@ -114,16 +115,16 @@ class _AnalysisControlTaskPanel:
 
     def updateText(self):
         if(self.SolverProcess.state() == QtCore.QProcess.ProcessState.Running):
-            self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def solverProcessError(self, error):
-        print "Error()", error
+        print ("Error() {}".format(error))
         self.femConsoleMessage("Solver execute error: {}".format(error), "#FF0000")
 
     def solverProcessStarted(self):
-        print "SolverProcessStarted()"
-        print self.SolverProcess.state()
-        self.form.pushButton_generate.setText("Break Solver process")
+        print ("calculixStarted()")
+        print (self.Calculix.state())
+        self.form.pb_run_solver.setText("Break Solver process")
 
     def solverProcessStateChanged(self, newState):
         if (newState == QtCore.QProcess.ProcessState.Starting):
@@ -134,7 +135,7 @@ class _AnalysisControlTaskPanel:
             self.femConsoleMessage("Solver stopped.")
 
     def solverProcessFinished(self, exitCode):
-        print "solverProcessFinished()", exitCode
+        print "Solver Process Finished() {}".format(exitCode)
         print self.SolverProcess.state()
 
         # Restore previous cwd
@@ -143,12 +144,11 @@ class _AnalysisControlTaskPanel:
         self.printSolverProcessStdout()
         self.Timer.stop()
         self.femConsoleMessage("External solver process is done!", "#00AA00")
-        self.form.pushButton_generate.setText("Re-run Solver")
+        self.form.pb_run_solver.setText("Re-run Solver")
 
         if self.solver_object.SolverName == "Calculix":
-            print "Loading results...."
             self.femConsoleMessage("Loading result sets...")
-            self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
             fea = FemTools()
             fea.reset_all()
             frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
@@ -158,7 +158,7 @@ class _AnalysisControlTaskPanel:
                 self.femConsoleMessage("Loading results done!", "#00AA00")
             else:
                 self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
-            self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         else:  # self.solver_object.SolverName == "OpenFOAM":
             self.femConsoleMessage("Please use external view to view the result", "#00AA00")
             self.solver_python_object.view_result_externally()
@@ -169,7 +169,15 @@ class _AnalysisControlTaskPanel:
 
     def update(self):
         'fills the widgets'
-        self.form.le_working_dir.setText(self.working_dir)
+        if self.solver_object.SolverName == "Calculix":
+            self.form.le_working_dir.setText(self.analysis_object.WorkingDir)  # need unification
+        else:
+            self.form.le_working_dir.setText(self.solver_object.WorkingDir)  # need unification    
+        # should use combobox instead 
+        if self.analysis_object.AnalysisType == 'static':
+            self.form.rb_static_analysis.setChecked(True)
+        elif self.analysis_object.AnalysisType == 'frequency':
+            self.form.rb_frequency_analysis.setChecked(True)
         return
 
     def accept(self):
@@ -179,14 +187,19 @@ class _AnalysisControlTaskPanel:
         FreeCADGui.Control.closeDialog()
 
     def choose_working_dir(self):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self.working_dir = QtGui.QFileDialog.getExistingDirectory(None,
-                                                                  'Choose Solver working directory',
-                                                                  self.fem_prefs.GetString("WorkingDir", '/tmp'))
-        if self.working_dir:
-            self.fem_prefs.SetString("WorkingDir", str(self.working_dir))
-            self.form.le_working_dir.setText(self.working_dir)
-            self.solver_object.WorkingDir = str(self.working_dir)
+        current_wd = self.setup_working_dir()
+        wd = QtGui.QFileDialog.getExistingDirectory(None, 
+                                                   'Choose Solver working directory',
+                                                    current_wd)
+        if self.solver_object.SolverName == "Calculix":
+            info_obj = self.analysis_object
+        else:
+            nfo_obj = self.solver_object
+        if wd:
+            info_obj.WorkingDir = wd
+        else:
+            info_obj.WorkingDir = current_wd
+        self.form.le_working_dir.setText(info_obj.WorkingDir)
 
     def write_input_file_handler(self):
         QApplication.restoreOverrideCursor()
@@ -196,21 +209,22 @@ class _AnalysisControlTaskPanel:
                 if self.solver_object.SolverName == "Calculix":
                     self.inp_file_name = ""
                     fea = FemTools()
-                    fea.update_objects()
+                    fea.set_analysis_type(self.analysis_object.AnalysisType)
+                    fea.update_objects()                    
                     fea.write_inp_file()
                     if fea.inp_file_name != "":
                         self.inp_file_name = fea.inp_file_name
                         self.femConsoleMessage("Write completed.")
-                        self.form.pushButton_edit.setEnabled(True)
-                        self.form.pushButton_generate.setEnabled(True)
+                        self.form.pb_edit_inp.setEnabled(True)
+                        self.form.pb_run_solver.setEnabled(True)
                     else:
                         self.femConsoleMessage("Write .inp file failed!", "#FF0000")
                 else:  # self.solver_object.SolverName == "OpenFOAM":
                     self.femConsoleMessage("{} case writer is called".format(self.solver_object.SolverName))
                     if self.solver_python_object.write_case(self.analysis_object):
                         self.femConsoleMessage("Write {} case is completed.".format(self.solver_object.SolverName))
-                        self.form.pushButton_edit.setEnabled(True)
-                        self.form.pushButton_generate.setEnabled(True)
+                        self.form.pb_edit_inp.setEnabled(True)
+                        self.form.pb_run_solver.setEnabled(True)
                     else:
                         self.femConsoleMessage("Write .inp file failed!", "#FF0000")
         finally:
@@ -219,7 +233,7 @@ class _AnalysisControlTaskPanel:
     def check_prerequisites_helper(self):
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
         if self.solver_object.SolverName == "Calculix":
             fea = FemTools()
@@ -240,7 +254,7 @@ class _AnalysisControlTaskPanel:
 
     def editSolverInputFile(self):
         if self.solver_object.SolverName == "Calculix":
-            print 'editCalculixInputFile {}'.format(self.inp_file_name)
+            print ('editCalculixInputFile {}'.format(self.inp_file_name))
             if self.fem_prefs.GetBool("UseInternalEditor", True):
                 FemGui.open(self.inp_file_name)
             else:
@@ -255,7 +269,7 @@ class _AnalysisControlTaskPanel:
             self.solver_python_object.edit_case_externally()
 
     def runSolverProcess(self):
-        print 'run solver process'
+        print ('run solver process')
         self.Start = time.time()
         self.femConsoleMessage("Run {}...".format(self.solver_object.SolverName))
 
@@ -276,3 +290,31 @@ class _AnalysisControlTaskPanel:
             self.SolverProcess.start(self.solver_python_object.generate_cmdline())
 
         QApplication.restoreOverrideCursor()
+
+    def select_analysis_type(self, analysis_type):
+        if self.analysis_object.AnalysisType != analysis_type:
+            self.analysis_object.AnalysisType = analysis_type
+            self.form.pb_edit_inp.setEnabled(False)
+            self.form.pb_run_solver.setEnabled(False)
+
+    def select_static_analysis(self):
+        self.select_analysis_type('static')
+
+    def select_frequency_analysis(self):
+        self.select_analysis_type('frequency')
+
+    # That function overlaps with FemTools setup_working_dir and needs to be removed when we migrate fully to FemTools
+    def setup_working_dir(self):
+        if self.solver_object.SolverName == "Calculix":
+            wd = self.analysis_object.WorkingDir
+        else:
+            wd = self.solver_object.WorkingDir
+        if not (os.path.isdir(wd)):
+            try:
+                os.makedirs(wd)
+            except:
+                print ("Dir \'{}\' from FEM preferences doesn't exist and cannot be created.".format(wd))
+                import tempfile
+                wd = tempfile.gettempdir()
+                print ("Dir \'{}\' will be used instead.".format(wd))
+        return wd

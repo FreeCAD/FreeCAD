@@ -22,7 +22,9 @@
 
 """API for compatibility"""
 import CaeAnalysis
+import FreeCAD
 
 def makeMechanicalAnalysis(name):
     '''makes a Fem MechAnalysis object'''
-    return CaeAnalysis._CreateCaeAnalysis('Calculix', name)
+    obj = CaeAnalysis._CreateCaeAnalysis('Calculix', name)
+    
