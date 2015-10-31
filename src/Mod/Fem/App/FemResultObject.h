@@ -55,6 +55,8 @@ public:
     App::PropertyFloatList StressValues;
     /// Eigenmode number
     App::PropertyInteger Eigenmode;
+    /// Eigenmode frequency
+    App::PropertyFloat EigenmodeFrequency;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
