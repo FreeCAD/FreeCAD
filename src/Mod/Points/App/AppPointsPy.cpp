@@ -140,10 +140,10 @@ insert(PyObject *self, PyObject *args)
             Points::PointKernel pkTemp;
 
             // pcl test
-            pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
-            pcl::io::loadPLYFile<pcl::PointXYZRGB>(EncodedName.c_str(),cloud_in); 
+            pcl::PointCloud<pcl::PointXYZ> cloud_in;
+            pcl::io::loadPLYFile<pcl::PointXYZ>(EncodedName.c_str(),cloud_in); 
 
-            for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+            for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
                 pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
             pcFeature->Points.setValue( pkTemp );
         }
