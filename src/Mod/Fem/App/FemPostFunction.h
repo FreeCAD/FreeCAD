@@ -21,58 +21,89 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemPostObject_H
-#define Fem_FemPostObject_H
+#ifndef Fem_FemPostFunction_H
+#define Fem_FemPostFunction_H
 
-#include <App/GeoFeature.h>
+#include "FemPostObject.h"
 
 #include <vtkSmartPointer.h>
-#include <vtkPolyDataAlgorithm.h>
-#include <vtkBoundingBox.h>
+#include <vtkImplicitFunction.h>
+#include <vtkPlane.h>
+#include <vtkPlaneSource.h>
 
 namespace Fem
 {
 
-//poly data is the only data we can visualize, hence every post processing object needs to expose it
-class AppFemExport FemPostObject : public App::GeoFeature
+class AppFemExport FemPostFunction : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::FemPostObject);
+    PROPERTY_HEADER(Fem::FemPostFunction);
 
 public:
     /// Constructor
-    FemPostObject(void);
-    virtual ~FemPostObject();
+    FemPostFunction(void);
+    virtual ~FemPostFunction();
     
-    App::PropertyInteger ModificationTime;
-
-    /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemPostObject";
+        return "FemGui::ViewProviderFemPostFunction";
+    }
+
+    virtual App::DocumentObjectExecReturn* execute(void);    
+    
+    //bound box handling
+    void setBoundingBox(vtkBoundingBox b) {m_boundingBox = b;};
+    
+    //get the algorithm or the data
+    vtkSmartPointer<vtkImplicitFunction> getImplicitFunction() {return m_implicit;}; 
+
+protected:
+    vtkSmartPointer<vtkImplicitFunction>  m_implicit;
+    vtkBoundingBox                        m_boundingBox;
+};
+
+class FemPostFunctionProvider : public App::DocumentObject {
+
+    PROPERTY_HEADER(Fem::FemPostFunctionProvider);
+    
+public:
+    FemPostFunctionProvider(void);
+    virtual ~FemPostFunctionProvider();
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostFunctionProvider";
     }
     
-    short mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
+    App::PropertyLinkList Functions;
     
-    //bounding box handling. By default the bounding box is calcualted from the poly data output 
-    //which is visualized
-    virtual vtkBoundingBox getBoundingBox() {return m_boundingBox;};
-    
-    //poly data algorithm handling
-    virtual bool                          providesPolyData() {return getPolyAlgorithm()!=NULL;};      
-    vtkSmartPointer<vtkPolyDataAlgorithm> getPolyAlgorithm() {return polyDataSource;};
-    
+protected:
+    virtual void onChanged(const App::Property* prop);
+};
 
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+class AppFemExport FemPostPlaneFunction : public FemPostFunction 
+{
+    PROPERTY_HEADER(Fem::FemPostPlaneFunction);
+    
+public:
+    
+    FemPostPlaneFunction(void);
+    virtual ~FemPostPlaneFunction();
+    
+    App::PropertyVector           Normal;
+    App::PropertyVectorDistance   Origin;
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostPlaneFunction";
+    }
+    
 protected:
     virtual void onChanged(const App::Property* prop);
     
-    //members
-    vtkSmartPointer<vtkPolyDataAlgorithm> polyDataSource;
-    
-private:
-    vtkBoundingBox m_boundingBox;
+    vtkSmartPointer<vtkPlane> m_plane;
 };
 
 } //namespace Fem
 
 
-#endif // Fem_FemPostObject_H
+#endif // Fem_FemPostFunction_H

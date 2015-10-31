@@ -187,6 +187,7 @@ private:
                 pcFeature->Label.setValue(file.fileNamePure().c_str());
                 pcFeature->read(file);
                 pcFeature->touch();
+                pcDoc->recomputeFeature(pcFeature);
             }
             else 
                 throw e;

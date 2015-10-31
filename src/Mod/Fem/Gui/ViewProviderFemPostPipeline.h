@@ -21,58 +21,29 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemPostObject_H
-#define Fem_FemPostObject_H
+#ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 
-#include <App/GeoFeature.h>
+#include "ViewProviderFemPostObject.h"
 
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataAlgorithm.h>
-#include <vtkBoundingBox.h>
-
-namespace Fem
+namespace FemGui
 {
 
-//poly data is the only data we can visualize, hence every post processing object needs to expose it
-class AppFemExport FemPostObject : public App::GeoFeature
-{
-    PROPERTY_HEADER(Fem::FemPostObject);
+class FemGuiExport ViewProviderFemPostPipeline : public ViewProviderFemPostObject {
+
+    PROPERTY_HEADER(FemGui::ViewProviderFemPostPipeline);
 
 public:
-    /// Constructor
-    FemPostObject(void);
-    virtual ~FemPostObject();
+    /// constructor.
+    ViewProviderFemPostPipeline();
+    ~ViewProviderFemPostPipeline();
     
-    App::PropertyInteger ModificationTime;
+    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
+    virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
 
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemPostObject";
-    }
-    
-    short mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
-    
-    //bounding box handling. By default the bounding box is calcualted from the poly data output 
-    //which is visualized
-    virtual vtkBoundingBox getBoundingBox() {return m_boundingBox;};
-    
-    //poly data algorithm handling
-    virtual bool                          providesPolyData() {return getPolyAlgorithm()!=NULL;};      
-    vtkSmartPointer<vtkPolyDataAlgorithm> getPolyAlgorithm() {return polyDataSource;};
-    
-
-protected:
-    virtual void onChanged(const App::Property* prop);
-    
-    //members
-    vtkSmartPointer<vtkPolyDataAlgorithm> polyDataSource;
-    
-private:
-    vtkBoundingBox m_boundingBox;
 };
 
-} //namespace Fem
+} //namespace FemGui
 
 
-#endif // Fem_FemPostObject_H
+#endif // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
