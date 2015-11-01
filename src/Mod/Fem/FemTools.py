@@ -287,7 +287,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 _number = self.analysis.NumberOfEigenmodes
             except:
                 #Not yet in prefs, so it will always default to 10
-                _number = self.fem_prefs.GetString("NumberOfEigenmodes", 10)
+                _number = self.fem_prefs.GetInteger("NumberOfEigenmodes", 10)
         if _number < 1:
             _number = 1
 
@@ -298,7 +298,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 _limit_low = self.analysis.EigenmodeLowLimit
             except:
                 #Not yet in prefs, so it will always default to 0.0
-                _limit_low = self.fem_prefs.GetString("EigenmodeLowLimit", 0.0)
+                _limit_low = self.fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
 
         if limit_high is not None:
             _limit_high = limit_high
@@ -307,7 +307,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 _limit_high = self.analysis.EigenmodeHighLimit
             except:
                 #Not yet in prefs, so it will always default to 1000000.0
-                _limit_high = self.fem_prefs.GetString("EigenmodeHighLimit", 1000000.0)
+                _limit_high = self.fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         self.eigenmode_parameters = (_number, _limit_low, _limit_high)
 
     ## Sets base_name
