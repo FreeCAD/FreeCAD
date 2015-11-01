@@ -50,8 +50,10 @@ App.activeDocument().ActiveObject.Shape = App.activeDocument().Box
 Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)
 Gui.activeDocument().resetEdit()
 #
-import MechanicalAnalysis
-FemGui.setActiveAnalysis(MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis'))
+#import MechanicalAnalysis #deprecated
+#FemGui.setActiveAnalysis(MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis'))
+import CaeAnalysis  #using NEW API for mech analysis
+FemGui.setActiveAnalysis(CaeAnalysis.makeMechanicalAnalysis('MechanicalAnalysis'))
 FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().Box_Mesh]
 
 import MechanicalMaterial

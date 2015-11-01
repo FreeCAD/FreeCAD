@@ -38,9 +38,9 @@ def makeMechanicalAnalysis(name):
     return _CreateCaeAnalysis('Calculix', name)
 
 
-def makeCaeAnalysis(name):
-    '''makeCaeAnalysis(name): makes a Fem Analysis object,
-    this should be marked for internal usage'''
+def _makeCaeAnalysis(name):
+    '''makeCaeAnalysis(name): makes a CAE Analysis object,
+    this is designed for internal usage only'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     CaeAnalysis(obj)
     ViewProviderCaeAnalysis(obj.ViewObject)
@@ -55,12 +55,13 @@ class CaeAnalysis:
     """
     def __init__(self, obj):
         self.Type = "CaeAnalysis"
-        self.Object = obj  #  keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  #  link between App::DocumentObject to  this object
+        self.Object = obj  # keep a ref to the DocObj for nonGui usage
+        obj.Proxy = self  # link between App::DocumentObject to  this object
         obj.addProperty("App::PropertyString", "Category", "Analysis", "Cfd, Computional solid mechanics")
         obj.addProperty("App::PropertyString", "SolverName", "Analysis", "External solver unique name")
-        
-        # added from Oct 30, 2015, this should be added into FemSolverPython object: ccxFemSolver, FemTools also needs change. 
+
+        # added from Oct 30, 2015, this should be added into FemSolverPython object: ccxFemSolver,
+        # FemTools.py  _AnalysisControlTaskPanel.py  also need change.
         from FemTools import FemTools
         fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
@@ -105,13 +106,14 @@ class ViewProviderCaeAnalysis:
     """A View Provider for the CaeAnalysis container object
     doubleClicked() should activate AnalysisControlTaskView
     """
-    #__class__.icon = ":/icons/fem-analysis.svg"
+    #icon = ":/icons/fem-analysis.svg"
+    # after read file, icon can not been found, this will fail to load this TaskPanel
     def __init__(self, vobj):
         #self.icon=":/icons/fem-analysis.svg"
         vobj.Proxy = self
 
-    #def getIcon(self):  # after read file, icon can not been found, this will fail to load this TaskPanel
-    #    return self.icon
+    #def getIcon(self):
+    #    return ViewProviderCaeAnalysis.icon
 
     def setIcon(self,icon):
         self.icon = icon
@@ -152,7 +154,7 @@ def _CreateCaeAnalysis(solverName, analysisName=None):
         FreeCADGui.addModule("FemGui")
         FreeCADGui.addModule("CaeAnalysis")
         _analysisName = analysisName if analysisName else solverName + "Analysis"
-        FreeCADGui.doCommand("CaeAnalysis.makeCaeAnalysis('{}')".format(_analysisName))
+        FreeCADGui.doCommand("CaeAnalysis._makeCaeAnalysis('{}')".format(_analysisName))
         obj = FreeCAD.activeDocument().ActiveObject
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
         # create an solver and append into analysisObject
@@ -182,29 +184,27 @@ class _CommandNewCfdAnalysis(FemCommands):
     def __init__(self):
         super(_CommandNewCfdAnalysis, self).__init__()
         self.resources = {'Pixmap': 'fem-cfd-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Cfd_Analysis", "New computional fluid dynamics analysis"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_CfdAnalysis", "New CFD analysis"),
                           'Accel': "N, A",  # conflict with mechanical analysis?
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Cfd_Analysis", "Create a new computional fluid dynamics analysis")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_CfdAnalysis", "Create a new computional fluid dynamics analysis")}
         self.is_active = 'with_document'
 
     def Activated(self):
         _CreateCaeAnalysis('OpenFOAM')
 
 
-class _CommandNewMechanicalAnalysis(FemCommands):
+class _CommandNewMechAnalysis(FemCommands):
     "the Mechancial FEM Analysis command definition"
     def __init__(self):
-        super(_CommandNewMechanicalAnalysis, self).__init__()
+        super(_CommandNewMechAnalysis, self).__init__()
         self.resources = {'Pixmap': 'fem-mech-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Mechanical FEM Analysis"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MechAnalysis", "New FEM Mechanical Analysis"),
                           'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new Mechanical FEM Analysis")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MechAnalysis", "Create a new Mechanical FEM Analysis")}
         self.is_active = 'with_document'
 
     def Activated(self):
-        #default solverName  show a dialog to select solver if more than one solver
-        import MechanicalAnalysis
-        MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')
+        _CreateCaeAnalysis('Calculix')
 
 
 class _CommandAnalysisControl(FemCommands):
@@ -212,7 +212,7 @@ class _CommandAnalysisControl(FemCommands):
     def __init__(self):
         super(_CommandAnalysisControl, self).__init__()
         self.resources = {'Pixmap': 'fem-new-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_AnalysisControl", "Start calculation"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_AnalysisControl", "Start analysis"),
                           'Accel': "S, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_AnalysisControl", "Dialog to start the calculation of the anlysis")}
         self.is_active = 'with_analysis'
@@ -226,5 +226,5 @@ class _CommandAnalysisControl(FemCommands):
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_NewCfdAnalysis', _CommandNewCfdAnalysis())
-    FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
-    FreeCADGui.addCommand('Fem_AnalysisControl', _CommandAnalysisControl())
+    FreeCADGui.addCommand('Fem_NewMechAnalysis', _CommandNewMechAnalysis())
+    #FreeCADGui.addCommand('Fem_AnalysisControl', _CommandAnalysisControl())

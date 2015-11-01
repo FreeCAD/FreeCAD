@@ -27,13 +27,15 @@ __url__ = "http://www.freecadweb.org"
 from FemTools import FemTools
 import FreeCAD
 import ccxFrdReader
-import os, os.path
+import os
+import os.path
 import time
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
+    from PySide import QtGui
     from PySide.QtCore import Qt
     from PySide.QtGui import QApplication
 
@@ -123,7 +125,7 @@ class _AnalysisControlTaskPanel:
 
     def solverProcessStarted(self):
         print ("calculixStarted()")
-        print (self.Calculix.state())
+        print (self.SolverProcess.state())
         self.form.pb_run_solver.setText("Break Solver process")
 
     def solverProcessStateChanged(self, newState):
@@ -172,8 +174,8 @@ class _AnalysisControlTaskPanel:
         if self.solver_object.SolverName == "Calculix":
             self.form.le_working_dir.setText(self.analysis_object.WorkingDir)  # need unification
         else:
-            self.form.le_working_dir.setText(self.solver_object.WorkingDir)  # need unification    
-        # should use combobox instead 
+            self.form.le_working_dir.setText(self.solver_object.WorkingDir)  # need unification
+        # to-do: should use combobox instead
         if self.analysis_object.AnalysisType == 'static':
             self.form.rb_static_analysis.setChecked(True)
         elif self.analysis_object.AnalysisType == 'frequency':
@@ -188,13 +190,13 @@ class _AnalysisControlTaskPanel:
 
     def choose_working_dir(self):
         current_wd = self.setup_working_dir()
-        wd = QtGui.QFileDialog.getExistingDirectory(None, 
-                                                   'Choose Solver working directory',
+        wd = QtGui.QFileDialog.getExistingDirectory(None,
+                                                    'Choose Solver working directory',
                                                     current_wd)
         if self.solver_object.SolverName == "Calculix":
             info_obj = self.analysis_object
         else:
-            nfo_obj = self.solver_object
+            info_obj = self.solver_object
         if wd:
             info_obj.WorkingDir = wd
         else:
@@ -210,7 +212,7 @@ class _AnalysisControlTaskPanel:
                     self.inp_file_name = ""
                     fea = FemTools()
                     fea.set_analysis_type(self.analysis_object.AnalysisType)
-                    fea.update_objects()                    
+                    fea.update_objects()
                     fea.write_inp_file()
                     if fea.inp_file_name != "":
                         self.inp_file_name = fea.inp_file_name

@@ -40,7 +40,7 @@ Gui.activeDocument().resetEdit()
 import FemGui
 import CaeAnalysis
 import CaeSolver
-CaeAnalysis.makeCaeAnalysis("OpenFOAMAnalysis")
+CaeAnalysis._makeCaeAnalysis("OpenFOAMAnalysis")
 FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)
 CaeSolver.makeCaeSolver('OpenFOAM')
 #

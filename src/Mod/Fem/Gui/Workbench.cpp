@@ -56,6 +56,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
     *fem << "Fem_NewMechanicalAnalysis"
+         << "Fem_NewMechAnalysis"
          << "Fem_NewCfdAnalysis"
          //<< "Fem_CreateSolver"
          << "Fem_CreateFromShape"
@@ -72,7 +73,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Fem_ConstraintGear"   
          << "Fem_ConstraintPulley"
          << "Separator"
-         << "Fem_AnalysisControl"
+         //<< "Fem_AnalysisControl"
+         << "Fem_MechanicalJobControl"
          << "Fem_Quick_Analysis"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
