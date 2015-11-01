@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#if defined(HAVE_PCL_SURFACE)
 #ifndef _PreComp_
 # include <Geom_BSplineSurface.hxx>
 # include <TColgp_Array2OfPnt.hxx>
@@ -35,7 +36,6 @@
 
 #include "BSplineFitting.h"
 
-#if defined(HAVE_PCL_SURFACE)
 #include <pcl/pcl_config.h>
 #if PCL_VERSION_COMPARE(>=,1,7,0)
 # include <pcl/point_cloud.h>
@@ -43,7 +43,6 @@
 # include <pcl/io/pcd_io.h>
 # include <pcl/surface/on_nurbs/fitting_surface_tdm.h>
 # include <pcl/surface/on_nurbs/fitting_curve_2d_asdm.h>
-#endif
 #endif
 
 using namespace Reen;
@@ -237,3 +236,4 @@ Handle(Geom_BSplineSurface) BSplineFitting::perform()
     return Handle_Geom_BSplineSurface();
 #endif
 }
+#endif // HAVE_PCL_SURFACE
