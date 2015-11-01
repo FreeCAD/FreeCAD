@@ -40,7 +40,7 @@ if FreeCAD.GuiUp:
 
 class _AnalysisControlTaskPanel:
     def __init__(self, analysis_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/_AnalysisControlTaskPanel.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         self.analysis_object = analysis_object

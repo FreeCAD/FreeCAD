@@ -81,11 +81,13 @@ SET(FemScripts_SRCS
     FemExample.py
     CaeAnalysis.py
     CaeSolver.py
-	CaeTools.py
+    _SolverControlTaskPanel.ui
+    CaeTools.py
     FoamCfdSolver.py
     FoamCaseWriter.py
     CfdExample.py
-    _SolverControlTaskPanel.ui
+    _AnalysisControlTaskPanel.py
+    _AnalysisControlTaskPanel.ui
     ccxFemSolver.py
     MechanicalAnalysis.py
     MechanicalMaterial.ui

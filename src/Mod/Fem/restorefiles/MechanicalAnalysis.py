@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2015 - Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk> *
+#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,16 +20,6 @@
 #*                                                                         *
 #***************************************************************************
 
-"""API for compatibility
-import CaeAnalysis
-import FreeCAD
-
-def makeMechanicalAnalysis(name):
-    '''makes a Fem MechAnalysis object'''
-    obj = CaeAnalysis._CreateCaeAnalysis('Calculix', name)
-    
-"""
-
 import FreeCAD
 
 __title__ = "Mechanical Analysis managment"
@@ -46,4 +36,3 @@ def makeMechanicalAnalysis(name):
     _ViewProviderFemAnalysis._ViewProviderFemAnalysis()
     #FreeCAD.ActiveDocument.recompute()
     return obj
-

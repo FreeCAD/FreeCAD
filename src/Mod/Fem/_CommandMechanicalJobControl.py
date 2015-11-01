@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2015 - Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk> *
+#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,30 +20,36 @@
 #*                                                                         *
 #***************************************************************************
 
-"""API for compatibility
-import CaeAnalysis
-import FreeCAD
-
-def makeMechanicalAnalysis(name):
-    '''makes a Fem MechAnalysis object'''
-    obj = CaeAnalysis._CreateCaeAnalysis('Calculix', name)
-    
-"""
-
-import FreeCAD
-
-__title__ = "Mechanical Analysis managment"
+__title__ = "Command Mechanical Job Control"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+import FreeCAD
+from FemCommands import FemCommands
 
-def makeMechanicalAnalysis(name):
-    '''makeFemAnalysis(name): makes a Fem Analysis object'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
-    import _FemAnalysis
-    _FemAnalysis._FemAnalysis(obj)
-    import _ViewProviderFemAnalysis
-    _ViewProviderFemAnalysis._ViewProviderFemAnalysis()
-    #FreeCAD.ActiveDocument.recompute()
-    return obj
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    import FemGui
+    from PySide import QtCore
 
+
+class _CommandMechanicalJobControl(FemCommands):
+    "the Fem JobControl command definition"
+    def __init__(self):
+        super(_CommandMechanicalJobControl, self).__init__()
+        self.resources = {'Pixmap': 'fem-new-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Start calculation"),
+                          'Accel': "S, C",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        import _JobControlTaskPanel
+        taskd = _JobControlTaskPanel._JobControlTaskPanel(FemGui.getActiveAnalysis())
+        #taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
