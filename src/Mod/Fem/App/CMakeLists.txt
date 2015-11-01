@@ -67,6 +67,7 @@ SET(Mod_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
+#this FemScripts_SRCS is not used, but can copy py into build folder? so test FreeCAD without make install
 SET(FemScripts_SRCS
     convert2TetGen.py
     ccxFrdReader.py
@@ -77,22 +78,33 @@ SET(FemScripts_SRCS
     FemBeamSection.py
     FemBeamSection.ui
     FemTools.py
-    MechanicalAnalysis.ui
+    FemExample.py
+    CaeAnalysis.py
+    CaeSolver.py
+    _SolverControlTaskPanel.ui
+    CaeTools.py
+    FoamCfdSolver.py
+    FoamCaseWriter.py
+    CfdExample.py
+    _AnalysisControlTaskPanel.py
+    _AnalysisControlTaskPanel.ui
+    ccxFemSolver.py
     MechanicalAnalysis.py
     MechanicalMaterial.ui
     MechanicalMaterial.py
     ShowDisplacement.ui
     FemCommands.py
     _ResultControlTaskPanel.py
-    _JobControlTaskPanel.py
-    _ViewProviderFemAnalysis.py
-    _FemAnalysis.py
+    _AnalysisControlTaskPanel.py
+    MechanicalAnalysis.ui
+    #_ViewProviderFemAnalysis.py
+    #_FemAnalysis.py
     _CommandMechanicalShowResult.py
     _CommandQuickAnalysis.py
     _CommandPurgeFemResults.py
-    _CommandMechanicalJobControl.py
+    #_CommandMechanicalJobControl.py
     _CommandFemFromShape.py
-    _CommandNewMechanicalAnalysis.py
+    #_CommandNewMechanicalAnalysis.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
@@ -124,6 +136,8 @@ SET(FemBase_SRCS
     FemMesh.h
     FemResultObject.cpp
     FemResultObject.h
+    FemSolverObject.cpp
+    FemSolverObject.h
     FemConstraint.cpp
     FemConstraint.h
     FemMeshProperty.cpp
