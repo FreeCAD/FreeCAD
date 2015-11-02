@@ -214,7 +214,7 @@ def importFrd(filename, Analysis=None):
 
             if len(disp) > 0:
                 results.DisplacementVectors = map((lambda x: x * scale), disp.values())
-                results.ElementNumbers = disp.keys()
+                results.NodeNumbers = disp.keys()
                 if(MeshObject):
                     results.Mesh = MeshObject
 
@@ -231,10 +231,10 @@ def importFrd(filename, Analysis=None):
                 else:
                     results.StressValues = mstress
 
-            if (results.ElementNumbers != 0 and results.ElementNumbers != stress.keys()):
+            if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
                 print ("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                       .format(results.ElementNumbers, len(results.StressValues)))
-                results.ElementNumbers = stress.keys()
+                       .format(results.NodeNumbers, len(results.StressValues)))
+                results.NodeNumbers = stress.keys()
 
             x_min, y_min, z_min = map(min, zip(*displacement))
             sum_list = map(sum, zip(*displacement))

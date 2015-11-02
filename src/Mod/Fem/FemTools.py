@@ -134,10 +134,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     filtered_values.append(v)
         else:
             filtered_values = values
-        self.mesh.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, filtered_values)
+        self.mesh.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, filtered_values)
 
     def show_displacement(self, displacement_factor=0.0):
-        self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers,
+        self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers,
                                                           self.result_object.DisplacementVectors)
         self.mesh.ViewObject.applyDisplacement(displacement_factor)
 

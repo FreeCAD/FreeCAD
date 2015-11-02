@@ -42,7 +42,7 @@ public:
     FemResultObject(void);
     virtual ~FemResultObject();
 
-    App::PropertyIntegerList ElementNumbers;
+    App::PropertyIntegerList NodeNumbers;
     /// Link to the corresponding  mesh
     App::PropertyLink Mesh;
     /// Stats of analysis
