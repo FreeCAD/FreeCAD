@@ -37,7 +37,7 @@ PROPERTY_SOURCE(Fem::FemResultObject, App::DocumentObject)
 
 FemResultObject::FemResultObject()
 {
-    ADD_PROPERTY_TYPE(ElementNumbers,(0), "Data",Prop_None,"Numbers of the result elements");
+    ADD_PROPERTY_TYPE(NodeNumbers,(0), "Data",Prop_None,"Numbers of the result nodes");
     ADD_PROPERTY_TYPE(Stats,(0), "Fem",Prop_None,"Statistics of the results");
     ADD_PROPERTY_TYPE(DisplacementVectors,(), "Fem",Prop_None,"List of displacement vectors");
     ADD_PROPERTY_TYPE(DisplacementLengths,(0), "Fem",Prop_None,"List of displacement lengths");
