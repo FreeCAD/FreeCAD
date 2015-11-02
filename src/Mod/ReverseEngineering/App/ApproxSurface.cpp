@@ -26,9 +26,15 @@
 #include <math_Householder.hxx>
 #include <Geom_BSplineSurface.hxx>
 
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QtConcurrentMap>
+#include <boost/bind.hpp>
+
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools2D.h>
+#include <Base/Tools.h>
 
 #include "ApproxSurface.h"
 
@@ -172,6 +178,23 @@ void BSplineBasis::AllBasisFunctions(double fParam, TColStd_Array1OfReal& vFuncV
 
         vFuncVals(j) = saved;
     }
+}
+
+BSplineBasis::ValueT BSplineBasis::LocalSupport(int iIndex, double fParam)
+{
+    int m = _vKnotVector.Length()-1;
+    int p = _iOrder-1;
+
+    if ((iIndex == 0 && fParam == _vKnotVector(0)) || 
+        (iIndex == m-p-1 && fParam == _vKnotVector(m))) {
+        return BSplineBasis::Full;
+    }
+
+    if (fParam < _vKnotVector(iIndex) || fParam >= _vKnotVector(iIndex+p+1)) {
+        return BSplineBasis::Zero;
+    }
+
+    return BSplineBasis::Other;
 }
 
 double BSplineBasis::BasisFunction(int iIndex, double fParam)
@@ -889,10 +912,29 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
         double fV = (*_pvcUVParam)(i).Y();
         unsigned long ulIdx=0;
 
+        // Vorberechnung der Werte der Basis-Funktionen
+        std::vector<double> basisU(_usUCtrlpoints);
         for (unsigned short j=0; j<_usUCtrlpoints; j++) {
-            for (unsigned short k=0; k<_usVCtrlpoints; k++) {
-                M(i,ulIdx) = _clUSpline.BasisFunction(j,fU)*_clVSpline.BasisFunction(k,fV);
-                ulIdx++;
+            basisU[j] = _clUSpline.BasisFunction(j,fU);
+        }
+        std::vector<double> basisV(_usVCtrlpoints);
+        for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+            basisV[k] = _clVSpline.BasisFunction(k,fV);
+        }
+
+        for (unsigned short j=0; j<_usUCtrlpoints; j++) {
+            double valueU = basisU[j];
+            if (valueU == 0.0) {
+                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                    M(i,ulIdx) = 0.0;
+                    ulIdx++;
+                }
+            }
+            else {
+                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                    M(i,ulIdx) = valueU * basisV[k];
+                    ulIdx++;
+                }
             }
         }
     }
@@ -925,52 +967,116 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
     return true;
 }
 
+namespace Reen {
+class ScalarProduct
+{
+public:
+    ScalarProduct(const math_Matrix& mat) : mat(mat)
+    {
+    }
+    std::vector<double> multiply(int col) const
+    {
+        math_Vector vec = mat.Col(col);
+        std::vector<double> out(mat.ColNumber());
+        for (int n=mat.LowerCol(); n<=mat.UpperCol(); n++) {
+            out[n] = vec * mat.Col(n);
+        }
+        return out;
+    }
+
+private:
+    const math_Matrix& mat;
+};
+}
+
 bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
 {
     unsigned long ulSize = _pvcPoints->Length();
     unsigned long ulDim  = _usUCtrlpoints*_usVCtrlpoints;
-    math_Matrix M  (0, ulSize-1, 0,_usUCtrlpoints*_usVCtrlpoints-1);
-    math_Matrix MTM(0, _usUCtrlpoints*_usVCtrlpoints-1, 
-                  0, _usUCtrlpoints*_usVCtrlpoints-1);
-    math_Vector Xx (0, _usUCtrlpoints*_usVCtrlpoints-1);
-    math_Vector Xy (0, _usUCtrlpoints*_usVCtrlpoints-1);
-    math_Vector Xz (0, _usUCtrlpoints*_usVCtrlpoints-1);
+    math_Matrix M  (0, ulSize-1, 0, ulDim-1);
+    math_Vector Xx (0, ulDim-1);
+    math_Vector Xy (0, ulDim-1);
+    math_Vector Xz (0, ulDim-1);
     math_Vector bx (0, ulSize-1);
     math_Vector by (0, ulSize-1);
     math_Vector bz (0, ulSize-1);
-    math_Vector Mbx(0, _usUCtrlpoints*_usVCtrlpoints-1);
-    math_Vector Mby(0, _usUCtrlpoints*_usVCtrlpoints-1);
-    math_Vector Mbz(0, _usUCtrlpoints*_usVCtrlpoints-1);
+    math_Vector Mbx(0, ulDim-1);
+    math_Vector Mby(0, ulDim-1);
+    math_Vector Mbz(0, ulDim-1);
 
     //Bestimmung der Koeffizientenmatrix des ueberbestimmten LGS
     for (unsigned long i=0; i<ulSize; i++) {
         double fU = (*_pvcUVParam)(i).X();
         double fV = (*_pvcUVParam)(i).Y();
-        unsigned long ulIdx=0;
+        int ulIdx=0;
+
+        // Vorberechnung der Werte der Basis-Funktionen
+        std::vector<double> basisU(_usUCtrlpoints);
+        for (unsigned short j=0; j<_usUCtrlpoints; j++) {
+            basisU[j] = _clUSpline.BasisFunction(j,fU);
+        }
+        std::vector<double> basisV(_usVCtrlpoints);
+        for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+            basisV[k] = _clVSpline.BasisFunction(k,fV);
+        }
 
         for (unsigned short j=0; j<_usUCtrlpoints; j++) {
-            for (unsigned short k=0; k<_usVCtrlpoints; k++) {
-                M(i,ulIdx) = _clUSpline.BasisFunction(j,fU)*_clVSpline.BasisFunction(k,fV);
-                ulIdx++;
+            double valueU = basisU[j];
+            if (valueU == 0.0) {
+                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                    M(i,ulIdx) = 0.0;
+                    ulIdx++;
+                }
+            }
+            else {
+                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                    M(i,ulIdx) = valueU * basisV[k];
+                    ulIdx++;
+                }
             }
         }
     }
 
-    //Das Produkt aus ihrer Transformierten und ihr selbst ergibt die quadratische Systemmatrix
+    //Das Produkt aus ihrer Transformierten und ihr selbst ergibt die quadratische Systemmatrix (langsam)
+#if 0
+    math_Matrix MTM = M.TMultiply(M);
+#elif 0
+    math_Matrix MTM(0, ulDim-1, 0, ulDim-1);
     for (unsigned long m=0; m<ulDim; m++) {
+        math_Vector Mm = M.Col(m);
         for (unsigned long n=m; n<ulDim; n++) {
-            MTM(m,n)=MTM(n,m)=M.Col(m)*M.Col(n);
+            MTM(m,n) = MTM(n,m) = Mm * M.Col(n);
         }
     }
+#else // multi-threaded
+    std::vector<int> columns(ulDim);
+    std::generate(columns.begin(), columns.end(), Base::iotaGen<int>(0));
+    ScalarProduct scalar(M);
+    QFuture< std::vector<double> > future = QtConcurrent::mapped
+        (columns, boost::bind(&ScalarProduct::multiply, &scalar, _1));
+    QFutureWatcher< std::vector<double> > watcher;
+    watcher.setFuture(future);
+    watcher.waitForFinished();
+
+    math_Matrix MTM(0, ulDim-1, 0, ulDim-1);
+    int rowIndex=0;
+    for (QFuture< std::vector<double> >::const_iterator it = future.begin(); it != future.end(); ++it) {
+        int colIndex=0;
+        for (std::vector<double>::const_iterator jt = it->begin(); jt != it->end(); ++jt, colIndex++)
+            MTM(rowIndex, colIndex) = *jt;
+        rowIndex++;
+    }
+#endif
 
     //Bestimmen der rechten Seite
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
         bx(ii) = (*_pvcPoints)(ii).X(); by(ii) = (*_pvcPoints)(ii).Y(); bz(ii) = (*_pvcPoints)(ii).Z();
     }
     for (unsigned long i=0; i<ulDim; i++) {
-        Mbx(i) = M.Col(i) * bx;
-        Mby(i) = M.Col(i) * by;
-        Mbz(i) = M.Col(i) * bz;
+        math_Vector Mi = M.Col(i);
+        Mbx(i) = Mi * bx;
+        Mby(i) = Mi * by;
+        Mbz(i) = Mi * bz;
     }
 
     // Loese das LGS mit der LU-Zerlegung
@@ -1048,7 +1154,7 @@ void BSplineParameterCorrection::CalcSecondSmoothMatrix(Base::SequencerLauncher&
                 for (unsigned short j=0; j<_usVCtrlpoints; j++) {
                     _clSecondMatrix(m,n) =  _clUSpline.GetIntegralOfProductOfBSplines(i,k,2,2) *
                                             _clVSpline.GetIntegralOfProductOfBSplines(j,l,0,0) +
-                                            2*_clUSpline.GetIntegralOfProductOfBSplines(i,k,1,1) *
+                                          2*_clUSpline.GetIntegralOfProductOfBSplines(i,k,1,1) *
                                             _clVSpline.GetIntegralOfProductOfBSplines(j,l,1,1) +
                                             _clUSpline.GetIntegralOfProductOfBSplines(i,k,0,0) *
                                             _clVSpline.GetIntegralOfProductOfBSplines(j,l,2,2);

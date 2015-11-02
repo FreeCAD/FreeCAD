@@ -160,6 +160,10 @@ private:
 
             throw Py::RuntimeError("Computation of B-Spline surface failed");
         }
+        catch (const Py::Exception&) {
+            // re-throw
+            throw;
+        }
         catch (Standard_Failure &e) {
             std::string str;
             Standard_CString msg = e.GetMessageString();

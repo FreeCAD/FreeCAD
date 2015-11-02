@@ -18,6 +18,7 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
     ${PCL_INCLUDE_DIRS}
     ${FLANN_INCLUDE_DIRS}
+    ${QT_QTCORE_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -32,6 +33,7 @@ set(Reen_LIBS
     ${PCL_FEATURES_LIBRARIES}
     ${PCL_SEARCH_LIBRARIES}
     ${PCL_SURFACE_LIBRARIES}
+    ${QT_QTCORE_LIBRARY}
 )
 
 SET(Reen_SRCS
