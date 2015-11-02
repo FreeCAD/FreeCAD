@@ -41,8 +41,8 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(Stats,(0), "Fem",Prop_None,"Statistics of the results");
     ADD_PROPERTY_TYPE(DisplacementVectors,(), "Fem",Prop_None,"List of displacement vectors");
     ADD_PROPERTY_TYPE(DisplacementLengths,(0), "Fem",Prop_None,"List of displacement lengths");
-    ADD_PROPERTY_TYPE(StressValues,(0), "Fem",Prop_None,"List of Von Misses strass values");
-    ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corrresponding mesh");
+    ADD_PROPERTY_TYPE(StressValues,(0), "Fem",Prop_None,"List of Von Misses stress values");
+    ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corresponding mesh");
     ADD_PROPERTY_TYPE(Eigenmode,(0), "Fem",Prop_None,"Number of the eigenmode");
     ADD_PROPERTY_TYPE(EigenmodeFrequency,(0), "Fem",Prop_None,"Frequency of the eigenmode");
 }
