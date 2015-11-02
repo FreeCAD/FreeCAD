@@ -24,18 +24,18 @@ INSTALL(
         _SolverControlTaskPanel.ui
         CaeTools.py
         FoamCfdSolver.py
-        FoamCaseWriter.py
+        #FoamCaseWriter.py
         CfdExample.py
         _AnalysisControlTaskPanel.py
         _AnalysisControlTaskPanel.ui
         MechanicalAnalysis.py
         MechanicalMaterial.py
         MechanicalMaterial.ui
+        MechanicalAnalysis.ui
         ShowDisplacement.ui
         FemCommands.py
         _ResultControlTaskPanel.py
-        _AnalysisControlTaskPanel.py
-        MechanicalAnalysis.ui
+        _JobControlTaskPanel.py
         _ViewProviderFemAnalysis.py
         _FemAnalysis.py
         _CommandMechanicalShowResult.py

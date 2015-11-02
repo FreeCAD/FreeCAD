@@ -84,29 +84,31 @@ SET(FemScripts_SRCS
     _SolverControlTaskPanel.ui
     CaeTools.py
     FoamCfdSolver.py
-    FoamCaseWriter.py
+    #FoamCaseWriter.py
     CfdExample.py
     _AnalysisControlTaskPanel.py
     _AnalysisControlTaskPanel.ui
     ccxFemSolver.py
+    MechanicalAnalysis.ui
     MechanicalAnalysis.py
     MechanicalMaterial.ui
     MechanicalMaterial.py
     ShowDisplacement.ui
     FemCommands.py
     _ResultControlTaskPanel.py
+    _JobControlTaskPanel.py
     _AnalysisControlTaskPanel.py
-    MechanicalAnalysis.ui
-    #_ViewProviderFemAnalysis.py
-    #_FemAnalysis.py
+    _ViewProviderFemAnalysis.py
+    _FemAnalysis.py
     _CommandMechanicalShowResult.py
     _CommandQuickAnalysis.py
     _CommandPurgeFemResults.py
-    #_CommandMechanicalJobControl.py
+    _CommandMechanicalJobControl.py
     _CommandFemFromShape.py
-    #_CommandNewMechanicalAnalysis.py
+    _CommandNewMechanicalAnalysis.py
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
+
 
 SET(FemTests_SRCS
     test_files/mesh_points.csv

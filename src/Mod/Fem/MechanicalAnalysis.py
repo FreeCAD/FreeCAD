@@ -27,7 +27,6 @@ import FreeCAD
 def makeMechanicalAnalysis(name):
     '''makes a Fem MechAnalysis object'''
     obj = CaeAnalysis._CreateCaeAnalysis('Calculix', name)
-    
 """
 
 import FreeCAD
