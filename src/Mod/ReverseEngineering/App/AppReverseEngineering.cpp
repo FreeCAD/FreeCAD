@@ -120,19 +120,33 @@ private:
         }
 
         try {
-            Py::Sequence l(o);
-            TColgp_Array1OfPnt clPoints(0, l.size()-1);
+            std::vector<Base::Vector3f> pts;
+            if (PyObject_TypeCheck(o, &(Points::PointsPy::Type))) {
+                Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(o);
+                Points::PointKernel* points = pPoints->getPointKernelPtr();
+                pts = points->getBasicPoints();
+            }
+            else {
+                Py::Sequence l(o);
+                pts.reserve(l.size());
+                for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
+                    Py::Tuple t(*it);
+                    pts.push_back(Base::Vector3f(
+                        (float)Py::Float(t.getItem(0)),
+                        (float)Py::Float(t.getItem(1)),
+                        (float)Py::Float(t.getItem(2)))
+                    );
+                }
+            }
+
+            TColgp_Array1OfPnt clPoints(0, pts.size()-1);
             if (clPoints.Length() < uPoles * vPoles) {
                 throw Py::ValueError("Too less data points for the specified number of poles");
             }
 
             int index=0;
-            for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
-                Py::Tuple t(*it);
-                clPoints(index++) = gp_Pnt(
-                    (double)Py::Float(t.getItem(0)),
-                    (double)Py::Float(t.getItem(1)),
-                    (double)Py::Float(t.getItem(2)));
+            for (std::vector<Base::Vector3f>::iterator it = pts.begin(); it != pts.end(); ++it) {
+                clPoints(index++) = gp_Pnt(it->x, it->y, it->z);
             }
 
             Reen::BSplineParameterCorrection pc(uOrder,vOrder,uPoles,vPoles);
