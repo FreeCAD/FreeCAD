@@ -45,6 +45,11 @@ namespace Reen {
 class ReenExport SplineBasisfunction
 {
 public:
+    enum ValueT {
+        Zero = 0,
+        Full,
+        Other
+    };
     /**
      * Konstruktor
      * @param iSize Length of Knots vector
@@ -71,6 +76,16 @@ public:
 
     virtual ~SplineBasisfunction();
 
+    /**
+     * Gibt an, ob der Funktionswert Nik(t) an der Stelle fParam
+     * 0, 1 oder ein Wert dazwischen ergibt.
+     * Dies dient dazu, um die Berechnung zu u.U. zu beschleunigen.
+     *
+     * @param iIndex Index
+     * @param fParam Parameterwert
+     * @return ValueT
+     */
+    virtual ValueT LocalSupport(int iIndex, double fParam)=0;
     /**
      * Berechnet den Funktionswert Nik(t) an der Stelle fParam
      * (aus: Piegl/Tiller 96 The NURBS-Book)
@@ -166,6 +181,17 @@ public:
      * Index, Parameterwert
      */
     virtual void AllBasisFunctions(double fParam, TColStd_Array1OfReal& vFuncVals);
+
+    /**
+     * Gibt an, ob der Funktionswert Nik(t) an der Stelle fParam
+     * 0, 1 oder ein Wert dazwischen ergibt.
+     * Dies dient dazu, um die Berechnung zu u.U. zu beschleunigen.
+     *
+     * @param iIndex Index
+     * @param fParam Parameterwert
+     * @return ValueT
+     */
+    virtual ValueT LocalSupport(int iIndex, double fParam);
 
     /**
      * Berechnet den Funktionswert Nik(t) an der Stelle fParam
