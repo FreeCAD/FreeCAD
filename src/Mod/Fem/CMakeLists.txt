@@ -66,6 +66,9 @@ INSTALL(
         _ViewProviderFemSolverCalculix.py
         _CommandFemSolverCalculix.py
 
+        FemPrescribedDisplacement.py
+        TaskPanelFemPrescribedDisplacement.ui
+
     DESTINATION
         Mod/Fem
 )

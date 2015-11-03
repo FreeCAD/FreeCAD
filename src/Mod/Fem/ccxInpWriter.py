@@ -76,8 +76,6 @@ class inp_writer:
         self.write_prescribed_displacement_nodes(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
             self.write_node_sets_constraints_force(inpfile)
-        self.write_prescribed_displacement_nodes(inpfile)
-        self.write_node_sets_constraints_force(inpfile)
         self.write_materials(inpfile)
         self.write_femelementsets(inpfile)
         self.write_step_begin(inpfile)
@@ -150,7 +148,6 @@ class inp_writer:
                 for i in n:
                     f.write(str(i) + ',\n')
 
-
     def write_prescribed_displacement_nodes(self,f):
         f.write('\n***********************************************************\n')
         f.write('** Node sets for prescribed displacement\n')
@@ -174,8 +171,6 @@ class inp_writer:
                 for j in n:
                     f.write(str(j)+'\n')
         f.write('\n')
-
-
 
     def write_node_sets_constraints_force(self, f):
         f.write('\n***********************************************************\n')
@@ -327,8 +322,6 @@ class inp_writer:
                 elif obj.rotzFree == False:
                     f.write(name + ',6,6,'+str(obj.zRotation)+'\n')
         f.write('\n')
-
-
 
     def write_constraints_force(self, f):
         f.write('\n***********************************************************\n')
