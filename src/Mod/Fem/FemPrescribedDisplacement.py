@@ -118,7 +118,7 @@ class viewProviderPrescribedDisplacement:
         vobj.Proxy = self
 
     def getIcon(self):
-        return str(FreeCAD.getHomePath()) + 'Mod/Fem/Resources/Fem_ConstraintDisplacement.svg'
+        return ':/icons/fem-constraint-displacement.svg'
 
     # Show boundary condition on GUI
     def attach(self, vobj):
@@ -166,7 +166,7 @@ class TaskPanelPrescribedDisplacement:
         self.obj = obj
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath()+ "Mod/Fem/Resources/TaskFemConstraintDisplacement.ui")
         self.form = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/PrescribedDispllacement.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemPrescribedDisplacement.ui")
         # Store initial value in case of cancel
         self.setIntialValues()
         self.xOld = self.obj.xDisplacement
@@ -557,13 +557,10 @@ class TaskPanelPrescribedDisplacement:
 
 class commandPrescribedDisplacement:
     def GetResources(self):
-        pixFile = str(FreeCAD.getHomePath()) + 'Mod/Fem/Resources/Fem_ConstraintDisplacement'
-        print
-        pixFile
-        return {'Pixmap': pixFile,
-                'MenuText': "Prescribed Displacement",
-                'Accel': "M, M",
-                'ToolTip': "Add prescribed displacement"}
+        return {'Pixmap': 'fem-constraint-displacement',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Prescribed_Displacement", "Creates a FEM prescribed displacement constraint ..."),
+                'Accel': "C, D",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Prescribed_Displacement", "Creates a FEM prescribed displacement constraint")}
 
     def Activated(self):
         selection = FreeCADGui.Selection.getSelectionEx()
@@ -608,11 +605,10 @@ class commandPrescribedDisplacement:
 
 class commandPrescribedDisplacementEdit:
     def GetResources(self):
-        pixFile = str(FreeCAD.getHomePath()) + 'Mod/Fem/Resources/Fem_ConstraintDisplacement'
-        return {'Pixmap': pixFile,
-                'MenuText': "Edit Prescribed Displacement",
-                'Accel': "",
-                'ToolTip': "Edit prescribed displacement"}
+        return {'Pixmap': 'fem-constraint-displacement',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Prescribed_Displacement_Edit", "Edits a FEM prescribed displacement constraint ..."),
+                'Accel': "C, D",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Prescribed_Displacement_Edit", "Edits a FEM prescribed displacement constraint")}
 
     def Activated(self):
         selection = FreeCADGui.Selection.getSelectionEx()
@@ -632,7 +628,3 @@ class commandPrescribedDisplacementEdit:
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_PrescribedDisplacement', commandPrescribedDisplacement())
     FreeCADGui.addCommand('PrescribedDispEdit', commandPrescribedDisplacementEdit())
-
-
-    # if FreeCAD.GuiUp:
-    # FreeCADGui.addCommand('PrescribedDispEdit',FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)"))
