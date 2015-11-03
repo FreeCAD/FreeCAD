@@ -35,7 +35,9 @@ if FreeCAD.GuiUp:
 
 def makeMechanicalAnalysis(name):
     '''makes a Fem MechAnalysis object'''
-    return _CreateCaeAnalysis('Calculix', name)
+    obj =  _CreateCaeAnalysis('Calculix', name)
+    obj.Type = "MechAnalysis"
+    return obj
 
 
 def _makeCaeAnalysis(name):
@@ -60,7 +62,7 @@ class CaeAnalysis:
         obj.addProperty("App::PropertyString", "Category", "Analysis", "Cfd, Computional solid mechanics")
         obj.addProperty("App::PropertyString", "SolverName", "Analysis", "External solver unique name")
 
-        # added from Oct 30, 2015, this should be added into FemSolverPython object: ccxFemSolver,
+        # added from Oct 30, 2015, these properties should be added into FemSolverPython object: ccxFemSolver,
         # FemTools.py  _AnalysisControlTaskPanel.py  also need change.
         from FemTools import FemTools
         fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
@@ -95,9 +97,11 @@ class CaeAnalysis:
             return  # todo!
 
     def __getstate__(self):
+        "store python attribute into FCStd file"
         return self.Type
 
     def __setstate__(self, state):
+        "restore python attribute from  FCStd file"
         if state:
             self.Type = state
 
@@ -106,14 +110,11 @@ class ViewProviderCaeAnalysis:
     """A View Provider for the CaeAnalysis container object
     doubleClicked() should activate AnalysisControlTaskView
     """
-    #icon = ":/icons/fem-analysis.svg"
-    # after read file, icon can not been found, this will fail to load this TaskPanel
     def __init__(self, vobj):
-        #self.icon=":/icons/fem-analysis.svg"
         vobj.Proxy = self
 
-    #def getIcon(self):
-    #    return ViewProviderCaeAnalysis.icon
+    def getIcon(self):
+        return ":/icons/fem-analysis.svg"
 
     def setIcon(self,icon):
         self.icon = icon
@@ -227,4 +228,4 @@ class _CommandAnalysisControl(FemCommands):
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_NewCfdAnalysis', _CommandNewCfdAnalysis())
     FreeCADGui.addCommand('Fem_NewMechAnalysis', _CommandNewMechAnalysis())
-    #FreeCADGui.addCommand('Fem_AnalysisControl', _CommandAnalysisControl())
+    FreeCADGui.addCommand('Fem_AnalysisControl', _CommandAnalysisControl())

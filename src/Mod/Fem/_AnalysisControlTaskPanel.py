@@ -48,19 +48,19 @@ class _AnalysisControlTaskPanel:
         self.analysis_object = analysis_object
         import CaeTools
         self.solver_object = CaeTools.getSolver(self.analysis_object)
-        # test if Proxy instance is not None and correct type, or create a new instance
+        # test if Proxy instance is not None and correct type, or create a new python instance
         self.solver_python_object = CaeTools.getSolverPythonFromAnalysis(self.analysis_object)
 
         self.SolverProcess = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
 
-        # consider: moved into FemSolverObjectPython.Proxy class
+        # consider: moved into FemSolverObject.Proxy class
         if self.solver_object.SolverName == "Calculix":
             ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
             if ccx_binary:
                 self.CalculixBinary = ccx_binary
-                print "Using ccx binary path from FEM preferences: {}".format(ccx_binary)
+                print ("Using ccx binary path from FEM preferences: {}".format(ccx_binary))
             else:
                 from platform import system
                 if system() == 'Linux':
@@ -137,7 +137,7 @@ class _AnalysisControlTaskPanel:
             self.femConsoleMessage("Solver stopped.")
 
     def solverProcessFinished(self, exitCode):
-        print "Solver Process Finished() {}".format(exitCode)
+        print ("Solver Process Finished() {}".format(exitCode))
         print self.SolverProcess.state()
 
         # Restore previous cwd
@@ -276,9 +276,9 @@ class _AnalysisControlTaskPanel:
         self.femConsoleMessage("Run {}...".format(self.solver_object.SolverName))
 
         if self.solver_object.SolverName == "Calculix":
-            # run Calculix
+
             self.femConsoleMessage("Solver binary: {}".format(self.CalculixBinary))
-            print 'run Calculix at: ', self.CalculixBinary, ' with: ', os.path.splitext(self.inp_file_name)[0]
+            print('run Calculix at: ', self.CalculixBinary, ' with: ', os.path.splitext(self.inp_file_name)[0])
             # change cwd because ccx may crash if directory has no write permission
             # there is also a limit of the length of file names so jump to the document directory
             self.cwd = QtCore.QDir.currentPath()

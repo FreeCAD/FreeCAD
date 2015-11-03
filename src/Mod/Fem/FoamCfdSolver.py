@@ -38,27 +38,30 @@ AnalysisTypeList = []
 
 class CaeSolver():
     """Fem::FemSolverObject 's Proxy python type
-    add solver specific Properties and set in SolverControlTaskPanel
+    add solver specific properties, methods and bring up SolverControlTaskPanel.
+    After loaded from FCStd file, this python class is not instantiated.
+    use CaeTools.getSolverPythonFromAnalysis() to get/create such an instance.
     """
     def __init__(self, obj):
         self.Type = "CfdSolver"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 
-        # general CFD properties
-        #addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False)
-        #obj.addProperty("App::PropertyEnumeration", "TurbulenceModel", "CFD",
-        #                "Laminar,KE,KW,LES,")
-        #obj.TurbulenceModel.Enum = TurbulenceModelList
-        obj.addProperty("App::PropertyBool", "Compressible", "CFD",
-                        "Compressible air or Incompressible like liquid")
-        obj.addProperty("App::PropertyBool", "ThermalAnalysisEnabled", "CFD",
-                        "calc heat transfering")
-        obj.addProperty("App::PropertyBool", "Transient", "CFD",
-                        "static or transient analysis")
-        # CurrentTime TimeStep StartTime, StopTime
+        # general CFD properties, if there are not existant for newly create FemSolverObj, adProperty
+        if not "Compressible" in obj.PropertiesList:
+            # API: addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False)
+            obj.addProperty("App::PropertyEnumeration", "TurbulenceModel", "CFD",
+                            "Laminar,KE,KW,LES,")
+            obj.TurbulenceModel = TurbulenceModelList
+            obj.addProperty("App::PropertyBool", "Compressible", "CFD",
+                            "Compressible air or Incompressible like liquid")
+            obj.addProperty("App::PropertyBool", "ThermalAnalysisEnabled", "CFD",
+                             "calc heat transfering")
+            obj.addProperty("App::PropertyBool", "Transient", "CFD",
+                            "static or transient analysis")
+            # CurrentTime TimeStep StartTime, StopTime
 
-        # adding solver specific properties
+            # adding solver specific properties
         # FemSolverObject standard properties should be set in _SetSolverInfo() of CaeSolver.py
 
     ########## CaeSolver API #####################
@@ -105,6 +108,7 @@ class ViewProviderCaeSolver:
         vobj.Proxy = self
 
     def getIcon(self):
+        """after load from FCStd file, self.icon does not exist, return constant path instead"""
         return ":/icons/fem-solver.svg"
 
     def attach(self, vobj):
@@ -118,14 +122,14 @@ class ViewProviderCaeSolver:
         return
 
     def doubleClicked(self, vobj):
-        # from import _SolverControlTaskPanel
-        taskd = _SolverControlTaskPanel(self.Object)
+        """after load from FCStd file, self.Object does not exist, use vobj.Object instead"""
+        # from solver_specific module import _SolverControlTaskPanel
+        taskd = _SolverControlTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
     def setEdit(self, vobj, mode):
-        taskd = _SolverControlTaskPanel(self.Object)
-        taskd.obj = vobj.Object
+        taskd = _SolverControlTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -142,8 +146,8 @@ class ViewProviderCaeSolver:
 
 class _SolverControlTaskPanel:
     def __init__(self, solver_object):
-        #self.ui = App.getResourceDir() + "Mod/Fem/_SolverControlTaskPanel.ui"
-        QtGui.QMessageBox.critical(None, "This task panel is not implement yet", "Please edit in property editor ")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/_SolverControlTaskPanel.ui")
+        #QtGui.QMessageBox.critical(None, "This task panel is not implement yet", "Please edit in property editor ")
         pass
 
     def accept(self):

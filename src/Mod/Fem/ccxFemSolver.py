@@ -33,15 +33,17 @@ if FreeCAD.GuiUp:
 
 
 class CaeSolver():
-    """The Fem::FemSolver 's Proxy python type
-    add solver specific Properties and Bring up SolverControlTaskPanel
+    """The Fem::FemSolver 's Proxy python type,
+    add solver specific properties, methods and bring up SolverControlTaskPanel.
+    After loaded from FCStd file, this python class is not instantiated.
+    use CaeTools.getSolverPythonFromAnalysis() to get/create such an instance.
     """
     def __init__(self, obj):
         self.Type = "CaeAnalysis"
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 
-    # following are the standard methods
+    # following are the standard FeaturePython methods
     def execute(self, obj):
         return
 
@@ -59,8 +61,8 @@ class CaeSolver():
 
 class ViewProviderCaeSolver:
     """A View Provider for the Solver object, base class for all derived solver
-    derived solver should implement  a specific TaskPanel and set up solver and override setEdit()"""
-
+    derived solver should implement  a specific TaskPanel and set up solver and override setEdit()
+    """
     def __init__(self, vobj):
         vobj.Proxy = self
 
@@ -79,14 +81,13 @@ class ViewProviderCaeSolver:
 
     def doubleClicked(self, vobj):
         # from import _SolverControlTaskPanel
-        taskd = _SolverControlTaskPanel(self.Object)
+        taskd = _SolverControlTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
     def setEdit(self, vobj, mode):
         # import module if it is defined in another file
-        taskd = _SolverControlTaskPanel(self.Object)
-        taskd.obj = vobj.Object
+        taskd = _SolverControlTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -103,8 +104,8 @@ class ViewProviderCaeSolver:
 
 class _SolverControlTaskPanel:
     def __init__(self, solver_object):
-        #self.ui = App.getResourceDir() + "Mod/Fem/_SolverControlTaskPanel.ui"
-        QtGui.QMessageBox.critical(None, "Not implement yet", "Please edit proper in property editor")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/_SolverControlTaskPanel.ui")
+        #QtGui.QMessageBox.critical(None, "Not implement yet", "Please edit proper in property editor")
         pass
 
     def accept(self):

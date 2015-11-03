@@ -54,16 +54,14 @@ public:
     /// Path to External Result Viewer like Paraview, empty string means using FreeCAD
     App::PropertyString ExternalResultViewer;
     
-    /// for FEM: Static, Frequency
+    /// for FEM: Static, Frequency, etc
     App::PropertyString AnalysisType;
     /// Path of working dir for the solver
-    App::PropertyPath WorkingDir;
+    App::PropertyString WorkingDir;
     /// name for the case file without suffix
     App::PropertyString InputCaseName;
-    /// run parallel in MPI or serial
+    /// run parallel in MPI (message passing interface)/multiple cores or serial(single CPU)
     App::PropertyBool Parallel;
-    /// if SetupChecked == true, analysis can be update for any change of geometry or mesh
-    //App::PropertyBool SetupChecked;
     /// result has been obtained, purge result may be needed for rerun
     App::PropertyBool ResultObtained;
 

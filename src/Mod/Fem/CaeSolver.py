@@ -24,8 +24,15 @@ import FreeCAD
 if FreeCAD.GuiUp:
     import FemGui
 
-# This list could be gen by python from preference page in the future,
-# each key has same name Property in Fem::FemSolverObjectPython
+"""
+CaeSolver, implements a factory pattern to create concrete solver from name. 
+it should define and Abstract class CaeSolver , but it is Python there is no need declare a class doing nothing. 
+Concrete solver module should define  classes: CaeSover, ViewProviderCaeSolver, and SolverControlTaskPanel
+"""
+
+""" This list could be gen by python from preference page in the future,
+     each key has same name Property in Fem::FemSolverObjectPython
+"""
 REGISTERED_SOLVERS = {
     "Calculix": {"SolverName": "Calculix", "Category": "FEM", "Module": "ccxFemSolver",
                  "ExternalResultViewer": "", "ExternalCaseEditor": ""},
@@ -72,6 +79,7 @@ def _createCaeSolver(solverInfo, analysis=None, solver_object=None):
 
     if solver_object is None:
         obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", solverInfo["SolverName"])
+        FreeCAD.Console.PrintMessage("Solver {} is created\n".format(solverInfo["SolverName"]))
     else:
         obj = solver_object
     CaeSolver(obj)
@@ -82,7 +90,6 @@ def _createCaeSolver(solverInfo, analysis=None, solver_object=None):
     _analysis.Category = solverInfo["Category"]
     _analysis.SolverName = solverInfo["SolverName"]
 
-    FreeCAD.Console.PrintMessage("Solver {} is created\n".format(solverInfo["SolverName"]))
     return obj
 
 """
@@ -99,8 +106,8 @@ class _CommandNewCaeSolver:
         if not self.solver_object:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No solver is created in active Analysis")
             return
-        # not implemented yet! pop a dialog to select solver
-        #_CreateCaeSolver(???)
+        # pop a dialog to select solver from combobox, not implemented yet! 
+        #_CreateCaeSolver(solverInfo)
         #import _SolverControlTaskPanel
         #taskd = _SolverControlTaskPanel._ResultControlTaskPanel()
         #FreeCADGui.Control.showDialog(taskd)

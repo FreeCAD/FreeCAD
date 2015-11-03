@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MechanicalMaterial</class>
- <widget class="QWidget" name="MechanicalMaterial">
+ <class>AnalysisControl</class>
+ <widget class="QWidget" name="AnalysisControl">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>258</width>
+    <width>329</width>
     <height>458</height>
    </rect>
   </property>
@@ -86,7 +86,7 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="pb_write_inp">
        <property name="text">
-        <string>Write .inp file</string>
+        <string>Write case input</string>
        </property>
       </widget>
      </item>
@@ -96,7 +96,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Edit .inp file</string>
+        <string>Edit case input</string>
        </property>
       </widget>
      </item>
@@ -106,7 +106,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Run Calculix</string>
+        <string>Run Solver</string>
        </property>
       </widget>
      </item>

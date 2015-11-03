@@ -55,8 +55,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
-    *fem << "Fem_NewMechanicalAnalysis"
-         << "Fem_NewMechAnalysis"
+    //*fem << "Fem_NewMechanicalAnalysis"
+    *fem << "Fem_NewMechAnalysis"
          << "Fem_NewCfdAnalysis"
          //<< "Fem_CreateSolver"
          << "Fem_CreateFromShape"
@@ -73,8 +73,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Fem_ConstraintGear"   
          << "Fem_ConstraintPulley"
          << "Separator"
-         //<< "Fem_AnalysisControl"
-         << "Fem_MechanicalJobControl"
+         << "Fem_AnalysisControl"
+         //<< "Fem_MechanicalJobControl" // double click to activate task panel
          << "Fem_Quick_Analysis"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";

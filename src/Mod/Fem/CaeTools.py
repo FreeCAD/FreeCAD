@@ -38,7 +38,7 @@ def getSolver(analysis_object):
     for i in analysis_object.Member:
         if i.isDerivedFrom("Fem::FemSolverObject"):
             return i
-    # print error if not found?
+        print("Error: No solver object is found from this analysis_object")
 
 
 def getSolverPythonFromAnalysis(analysis_object):

@@ -28,9 +28,10 @@
 #endif
 
 #include "FemSolverObject.h"
+
+#include <Base/FileInfo.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
-//#include <QDesktopServices> //Qt5 has <QStandardPaths> in QtCore
 
 
 using namespace Fem;
@@ -41,7 +42,7 @@ PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 
 FemSolverObject::FemSolverObject()
 {
-    //const char* workingDir = QDesktopServices::storageLocation(QDesktopServices::TempLocation).toAscii(); //toUtf8(); wrong encoding in GUI 
+
     ADD_PROPERTY_TYPE(SolverName,("Calculix"), "Data",Prop_None,"Solver program name");
     ADD_PROPERTY_TYPE(Category,("FEM"), "Data",Prop_None,"FEM, CFD ...");
     ADD_PROPERTY_TYPE(Module,(""), "Data",Prop_None,"Python module name");
@@ -49,10 +50,9 @@ FemSolverObject::FemSolverObject()
     ADD_PROPERTY_TYPE(ExternalResultViewer,(""), "Data",Prop_None,"External result viewer name");
 
     ADD_PROPERTY_TYPE(AnalysisType,("Static"), "Solver",Prop_None,"Specific analysis type");
-    ADD_PROPERTY_TYPE(WorkingDir,("/tmp"), "Solver",Prop_None,"Solver working directory");
+    ADD_PROPERTY_TYPE(WorkingDir,(Base::FileInfo::getTempPath()), "Solver",Prop_None,"Solver working directory");
     ADD_PROPERTY_TYPE(InputCaseName,("TestCase"), "Solver",Prop_None,"Solver input file without suffix");
     ADD_PROPERTY_TYPE(Parallel,(false), "Solver",Prop_None,"Run solver in parallel like MPI");
-    //ADD_PROPERTY_TYPE(SetupChecked,(false), "Solver",Prop_None,"if true, quick analysis is conducted on demand")
     ADD_PROPERTY_TYPE(ResultObtained,(false), "Solver",Prop_None,"if true, result has been obtained");
 }
 
