@@ -24,6 +24,7 @@ INSTALL(
         _SolverControlTaskPanel.ui
         CaeTools.py
         FoamCfdSolver.py
+        ccxFemSolver.py
         #FoamCaseWriter.py
         CfdExample.py
         _AnalysisControlTaskPanel.py
