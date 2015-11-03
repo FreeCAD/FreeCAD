@@ -304,6 +304,23 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 
 // ---------------------------------------------------------
 
+NotImplementedError::NotImplementedError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+NotImplementedError::NotImplementedError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+NotImplementedError::NotImplementedError(const NotImplementedError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 DivisionByZeroError::DivisionByZeroError(const char * sMessage)
   : Exception(sMessage)
 {
