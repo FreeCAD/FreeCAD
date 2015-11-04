@@ -257,10 +257,10 @@ class ReenExport ParameterCorrection
 
 public:
     // Konstruktor
-    ParameterCorrection(unsigned short usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
-                        unsigned short usVOrder=4,               //Ordnung in v-Richtung
-                        unsigned short usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
-                        unsigned short usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
+    ParameterCorrection(unsigned usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
+                        unsigned usVOrder=4,               //Ordnung in v-Richtung
+                        unsigned usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
+                        unsigned usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
 
     virtual ~ParameterCorrection()
     {
@@ -336,10 +336,10 @@ protected:
     bool                    _bGetUVDir;        //! Stellt fest, ob u/v-Richtung vorgegeben wird
     bool                    _bSmoothing;       //! Glaettung verwenden
     double                  _fSmoothInfluence; //! Einfluss der Glaettung
-    unsigned short          _usUOrder;         //! Ordnung in u-Richtung
-    unsigned short          _usVOrder;         //! Ordnung in v-Richtung
-    unsigned short          _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
-    unsigned short          _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
+    unsigned                _usUOrder;         //! Ordnung in u-Richtung
+    unsigned                _usVOrder;         //! Ordnung in v-Richtung
+    unsigned                _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
+    unsigned                _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
     Base::Vector3d          _clU;              //! u-Richtung
     Base::Vector3d          _clV;              //! v-Richtung
     Base::Vector3d          _clW;              //! w-Richtung (senkrecht zu u-und w-Richtung)
@@ -366,10 +366,10 @@ class ReenExport BSplineParameterCorrection : public ParameterCorrection
 {
 public:
     // Konstruktor
-    BSplineParameterCorrection(unsigned short usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
-                               unsigned short usVOrder=4,               //Ordnung in v-Richtung
-                               unsigned short usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
-                               unsigned short usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
+    BSplineParameterCorrection(unsigned usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
+                               unsigned usVOrder=4,               //Ordnung in v-Richtung
+                               unsigned usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
+                               unsigned usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
 
     virtual ~BSplineParameterCorrection(){};
 

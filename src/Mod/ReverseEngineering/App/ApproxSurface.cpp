@@ -550,8 +550,8 @@ int BSplineBasis::CalcSize(int r, int s)
 
 /////////////////// ParameterCorrection
 
-ParameterCorrection::ParameterCorrection(unsigned short usUOrder, unsigned short usVOrder, 
-                             unsigned short usUCtrlpoints, unsigned short usVCtrlpoints)
+ParameterCorrection::ParameterCorrection(unsigned usUOrder, unsigned usVOrder,
+                                         unsigned usUCtrlpoints, unsigned usVCtrlpoints)
   : _usUOrder(usUOrder)
   , _usVOrder(usVOrder)
   , _usUCtrlpoints(usUCtrlpoints)
@@ -570,15 +570,10 @@ ParameterCorrection::ParameterCorrection(unsigned short usUOrder, unsigned short
 void ParameterCorrection::CalcEigenvectors()
 {
     MeshCore::PlaneFit planeFit;
-    //for (it = aclPoints.begin(); it!=aclPoints.end(); ++it)
-    //    planeFit.AddPoint(*it);
     for (int i=_pvcPoints->Lower(); i<=_pvcPoints->Upper(); i++) {
-        planeFit.AddPoint(Base::Vector3f(
-            (float)(*_pvcPoints)(i).X(),
-            (float)(*_pvcPoints)(i).Y(),
-            (float)(*_pvcPoints)(i).Z()));
+        const gp_Pnt& pnt = (*_pvcPoints)(i);
+        planeFit.AddPoint(Base::Vector3f((float)pnt.X(), (float)pnt.Y(), (float)pnt.Z()));
     }
-
 
     planeFit.Fit();
     _clU = Base::toVector<double>(planeFit.GetDirU());
@@ -637,10 +632,8 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     // Berechne die Koordinaten der transf. Punkte und projiz. diese auf die x,y-Ebene des neuen
     // Koordinatensystems
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
-        Wm4::Vector3d clProjPnt = clRotMatTrans * ( Wm4::Vector3d(
-                                (*_pvcPoints)(ii).X(),
-                                (*_pvcPoints)(ii).Y(),
-                                (*_pvcPoints)(ii).Z()));
+        const gp_Pnt& pnt = (*_pvcPoints)(ii);
+        Wm4::Vector3d clProjPnt = clRotMatTrans * Wm4::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
         vcProjPts.push_back(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
         clBBox.Add(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
     }
@@ -688,12 +681,13 @@ void ParameterCorrection::GetUVW(Base::Vector3d& clU, Base::Vector3d& clV, Base:
 
 Base::Vector3d ParameterCorrection::GetGravityPoint() const
 {
-    unsigned long ulSize = _pvcPoints->Length();
+    Standard_Integer ulSize = _pvcPoints->Length();
     double x=0.0, y=0.0, z=0.0;
     for (int i=_pvcPoints->Lower(); i<=_pvcPoints->Upper(); i++) {
-        x += (*_pvcPoints)(i).X();
-        y += (*_pvcPoints)(i).Y();
-        z += (*_pvcPoints)(i).Z();
+        const gp_Pnt& pnt = (*_pvcPoints)(i);
+        x += pnt.X();
+        y += pnt.Y();
+        z += pnt.Z();
     }
 
     return Base::Vector3d(x/ulSize, y/ulSize, z/ulSize);
@@ -714,7 +708,7 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
     *_pvcPoints = points;
     _pvcUVParam = new TColgp_Array1OfPnt2d(points.Lower(), points.Upper());
 
-    if (_usUCtrlpoints*_usVCtrlpoints > _pvcPoints->Length())
+    if (_usUCtrlpoints*_usVCtrlpoints > static_cast<unsigned>(_pvcPoints->Length()))
         return NULL; //LGS unterbestimmt
     if (!DoInitialParameterCorrection(fSizeFactor))
         return NULL;
@@ -735,8 +729,8 @@ void ParameterCorrection::EnableSmoothing(bool bSmooth, double fSmoothInfl)
 /////////////////// BSplineParameterCorrection
 
 
-BSplineParameterCorrection::BSplineParameterCorrection(unsigned short usUOrder, unsigned short usVOrder,
-                                                       unsigned short usUCtrlpoints, unsigned short usVCtrlpoints)
+BSplineParameterCorrection::BSplineParameterCorrection(unsigned usUOrder, unsigned usVOrder,
+                                                       unsigned usUCtrlpoints, unsigned usVCtrlpoints)
   : ParameterCorrection(usUOrder, usVOrder, usUCtrlpoints, usVCtrlpoints)
   , _clUSpline(usUCtrlpoints+usUOrder)
   , _clVSpline(usVCtrlpoints+usVOrder)
@@ -763,12 +757,12 @@ void BSplineParameterCorrection::Init()
     _clSmoothMatrix.Init(0.0);
 
     /* Berechne die Knotenvektoren */
-    unsigned short usUMax = _usUCtrlpoints-_usUOrder+1;
-    unsigned short usVMax = _usVCtrlpoints-_usVOrder+1;
+    unsigned usUMax = _usUCtrlpoints-_usUOrder+1;
+    unsigned usVMax = _usVCtrlpoints-_usVOrder+1;
 
     // Knotenvektor fuer die CAS.CADE-Klasse
     // u-Richtung
-    for (int i=0;i<=usUMax; i++) {
+    for (unsigned i=0;i<=usUMax; i++) {
         _vUKnots(i) = static_cast<double>(i) / static_cast<double>(usUMax);
         _vUMults(i) = 1;
     }
@@ -777,7 +771,7 @@ void BSplineParameterCorrection::Init()
     _vUMults(usUMax) = _usUOrder;
     
     // v-Richtung
-    for (int i=0; i<=usVMax; i++) {
+    for (unsigned i=0; i<=usVMax; i++) {
         _vVKnots(i) = static_cast<double>(i) / static_cast<double>(usVMax);
         _vVMults(i) = 1;
     }
@@ -792,14 +786,14 @@ void BSplineParameterCorrection::Init()
 
 void BSplineParameterCorrection::SetUKnots(const std::vector<double>& afKnots)
 {
-    if (afKnots.size() != (std::size_t)(_usUCtrlpoints+_usUOrder))
+    if (afKnots.size() != static_cast<std::size_t>(_usUCtrlpoints+_usUOrder))
         return;
 
-    unsigned short usUMax = _usUCtrlpoints-_usUOrder+1;
+    unsigned usUMax = _usUCtrlpoints-_usUOrder+1;
 
     // Knotenvektor fuer die CAS.CADE-Klasse
     // u-Richtung
-    for (int i=1;i<usUMax; i++) {
+    for (unsigned i=1;i<usUMax; i++) {
         _vUKnots(i) = afKnots[_usUOrder+i-1];
         _vUMults(i) = 1;
     }
@@ -810,14 +804,14 @@ void BSplineParameterCorrection::SetUKnots(const std::vector<double>& afKnots)
 
 void BSplineParameterCorrection::SetVKnots(const std::vector<double>& afKnots)
 {
-    if (afKnots.size() != (unsigned long)(_usVCtrlpoints+_usVOrder))
+    if (afKnots.size() != static_cast<std::size_t>(_usVCtrlpoints+_usVOrder))
         return;
 
-    unsigned short usVMax = _usVCtrlpoints-_usVOrder+1;
+    unsigned usVMax = _usVCtrlpoints-_usVOrder+1;
 
     // Knotenvektor fuer die CAS.CADE-Klasse
     // v-Richtung
-    for (int i=1; i<usVMax; i++) {
+    for (unsigned i=1; i<usVMax; i++) {
         _vVKnots(i) = afKnots[_usVOrder+i-1];
         _vVMults(i) = 1;
     }
@@ -843,11 +837,13 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
 
         for (int ii=_pvcPoints->Lower();ii <=_pvcPoints->Upper();ii++) {
             double fDeltaU, fDeltaV, fU, fV;
-            gp_Vec P((*_pvcPoints)(ii).X(), (*_pvcPoints)(ii).Y(), (*_pvcPoints)(ii).Z());
+            const gp_Pnt& pnt = (*_pvcPoints)(ii);
+            gp_Vec P(pnt.X(), pnt.Y(), pnt.Z());
             gp_Pnt PntX;
             gp_Vec Xu, Xv, Xuv, Xuu, Xvv;
             //Berechne die ersten beiden Ableitungen und Punkt an der Stelle (u,v)
-            pclBSplineSurf->D2((*_pvcUVParam)(ii).X(), (*_pvcUVParam)(ii).Y(), PntX, Xu, Xv, Xuu, Xvv, Xuv);
+            gp_Pnt2d& uvValue = (*_pvcUVParam)(ii);
+            pclBSplineSurf->D2(uvValue.X(), uvValue.Y(), PntX, Xu, Xv, Xuu, Xvv, Xuv);
             gp_Vec X(PntX.X(), PntX.Y(), PntX.Z());
             gp_Vec ErrorVec = X - P;
 
@@ -869,12 +865,12 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
                 fDeltaV = 0.0;
 
             //Ersetze die alten u/v-Werte durch die neuen
-            fU = (*_pvcUVParam)(ii).X() - fDeltaU;
-            fV = (*_pvcUVParam)(ii).Y() - fDeltaV;
+            fU = uvValue.X() - fDeltaU;
+            fV = uvValue.Y() - fDeltaV;
             if (fU <= 1.0 && fU >= 0.0 &&
                 fV <= 1.0 && fV >= 0.0) {
-                (*_pvcUVParam)(ii).SetX(fU);
-                (*_pvcUVParam)(ii).SetY(fV);
+                uvValue.SetX(fU);
+                uvValue.SetY(fV);
                 fMaxDiff = std::max<double>(fabs(fDeltaU), fMaxDiff);
                 fMaxDiff = std::max<double>(fabs(fDeltaV), fMaxDiff);
             }
@@ -897,41 +893,43 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
 
 bool BSplineParameterCorrection::SolveWithoutSmoothing()
 {
-    unsigned long ulSize = _pvcPoints->Length();
-    math_Matrix M  (0, ulSize-1, 0,_usUCtrlpoints*_usVCtrlpoints-1);
-    math_Matrix Xx (0, _usUCtrlpoints*_usVCtrlpoints-1,0,0);
-    math_Matrix Xy (0, _usUCtrlpoints*_usVCtrlpoints-1,0,0);
-    math_Matrix Xz (0, _usUCtrlpoints*_usVCtrlpoints-1,0,0);
+    unsigned ulSize = _pvcPoints->Length();
+    unsigned ulDim  = _usUCtrlpoints*_usVCtrlpoints;
+    math_Matrix M  (0, ulSize-1, 0, ulDim-1);
+    math_Matrix Xx (0, ulDim-1, 0, 0);
+    math_Matrix Xy (0, ulDim-1, 0, 0);
+    math_Matrix Xz (0, ulDim-1, 0, 0);
     math_Vector bx (0, ulSize-1);
     math_Vector by (0, ulSize-1);
     math_Vector bz (0, ulSize-1);
 
     //Bestimmung der Koeffizientenmatrix des ueberbestimmten LGS
-    for (unsigned long i=0; i<ulSize; i++) {
-        double fU = (*_pvcUVParam)(i).X();
-        double fV = (*_pvcUVParam)(i).Y();
-        unsigned long ulIdx=0;
+    for (unsigned i=0; i<ulSize; i++) {
+        const gp_Pnt2d& uvValue = (*_pvcUVParam)(i);
+        double fU = uvValue.X();
+        double fV = uvValue.Y();
+        unsigned ulIdx=0;
 
         // Vorberechnung der Werte der Basis-Funktionen
         std::vector<double> basisU(_usUCtrlpoints);
-        for (unsigned short j=0; j<_usUCtrlpoints; j++) {
+        for (unsigned j=0; j<_usUCtrlpoints; j++) {
             basisU[j] = _clUSpline.BasisFunction(j,fU);
         }
         std::vector<double> basisV(_usVCtrlpoints);
-        for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+        for (unsigned k=0; k<_usVCtrlpoints; k++) {
             basisV[k] = _clVSpline.BasisFunction(k,fV);
         }
 
-        for (unsigned short j=0; j<_usUCtrlpoints; j++) {
+        for (unsigned j=0; j<_usUCtrlpoints; j++) {
             double valueU = basisU[j];
             if (valueU == 0.0) {
-                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                for (unsigned k=0; k<_usVCtrlpoints; k++) {
                     M(i,ulIdx) = 0.0;
                     ulIdx++;
                 }
             }
             else {
-                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                for (unsigned k=0; k<_usVCtrlpoints; k++) {
                     M(i,ulIdx) = valueU * basisV[k];
                     ulIdx++;
                 }
@@ -941,7 +939,8 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
 
     //Bestimmen der rechten Seite
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
-        bx(ii) = (*_pvcPoints)(ii).X(); by(ii) = (*_pvcPoints)(ii).Y(); bz(ii) = (*_pvcPoints)(ii).Z();
+        const gp_Pnt& pnt = (*_pvcPoints)(ii);
+        bx(ii) = pnt.X(); by(ii) = pnt.Y(); bz(ii) = pnt.Z();
     }
 
     // Loese das ueberbest. LGS mit der Householder-Transformation
@@ -956,9 +955,9 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
     Xy = hhY.AllValues();
     Xz = hhZ.AllValues();
 
-    unsigned long ulIdx=0;
-    for (unsigned short j=0;j<_usUCtrlpoints;j++) {
-        for (unsigned short k=0;k<_usVCtrlpoints;k++) {
+    unsigned ulIdx=0;
+    for (unsigned j=0;j<_usUCtrlpoints;j++) {
+        for (unsigned k=0;k<_usVCtrlpoints;k++) {
             _vCtrlPntsOfSurf(j,k) = gp_Pnt(Xx(ulIdx,0),Xy(ulIdx,0),Xz(ulIdx,0));
             ulIdx++;
         }
@@ -991,8 +990,8 @@ private:
 
 bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
 {
-    unsigned long ulSize = _pvcPoints->Length();
-    unsigned long ulDim  = _usUCtrlpoints*_usVCtrlpoints;
+    unsigned ulSize = _pvcPoints->Length();
+    unsigned ulDim  = _usUCtrlpoints*_usVCtrlpoints;
     math_Matrix M  (0, ulSize-1, 0, ulDim-1);
     math_Vector Xx (0, ulDim-1);
     math_Vector Xy (0, ulDim-1);
@@ -1005,31 +1004,32 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     math_Vector Mbz(0, ulDim-1);
 
     //Bestimmung der Koeffizientenmatrix des ueberbestimmten LGS
-    for (unsigned long i=0; i<ulSize; i++) {
-        double fU = (*_pvcUVParam)(i).X();
-        double fV = (*_pvcUVParam)(i).Y();
+    for (unsigned i=0; i<ulSize; i++) {
+        const gp_Pnt2d& uvValue = (*_pvcUVParam)(i);
+        double fU = uvValue.X();
+        double fV = uvValue.Y();
         int ulIdx=0;
 
         // Vorberechnung der Werte der Basis-Funktionen
         std::vector<double> basisU(_usUCtrlpoints);
-        for (unsigned short j=0; j<_usUCtrlpoints; j++) {
+        for (unsigned j=0; j<_usUCtrlpoints; j++) {
             basisU[j] = _clUSpline.BasisFunction(j,fU);
         }
         std::vector<double> basisV(_usVCtrlpoints);
-        for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+        for (unsigned k=0; k<_usVCtrlpoints; k++) {
             basisV[k] = _clVSpline.BasisFunction(k,fV);
         }
 
-        for (unsigned short j=0; j<_usUCtrlpoints; j++) {
+        for (unsigned j=0; j<_usUCtrlpoints; j++) {
             double valueU = basisU[j];
             if (valueU == 0.0) {
-                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                for (unsigned k=0; k<_usVCtrlpoints; k++) {
                     M(i,ulIdx) = 0.0;
                     ulIdx++;
                 }
             }
             else {
-                for (unsigned short k=0; k<_usVCtrlpoints; k++) {
+                for (unsigned k=0; k<_usVCtrlpoints; k++) {
                     M(i,ulIdx) = valueU * basisV[k];
                     ulIdx++;
                 }
@@ -1042,9 +1042,9 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     math_Matrix MTM = M.TMultiply(M);
 #elif 0
     math_Matrix MTM(0, ulDim-1, 0, ulDim-1);
-    for (unsigned long m=0; m<ulDim; m++) {
+    for (unsigned m=0; m<ulDim; m++) {
         math_Vector Mm = M.Col(m);
-        for (unsigned long n=m; n<ulDim; n++) {
+        for (unsigned n=m; n<ulDim; n++) {
             MTM(m,n) = MTM(n,m) = Mm * M.Col(n);
         }
     }
@@ -1070,9 +1070,10 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
 
     //Bestimmen der rechten Seite
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
-        bx(ii) = (*_pvcPoints)(ii).X(); by(ii) = (*_pvcPoints)(ii).Y(); bz(ii) = (*_pvcPoints)(ii).Z();
+        const gp_Pnt& pnt = (*_pvcPoints)(ii);
+        bx(ii) = pnt.X(); by(ii) = pnt.Y(); bz(ii) = pnt.Z();
     }
-    for (unsigned long i=0; i<ulDim; i++) {
+    for (unsigned i=0; i<ulDim; i++) {
         math_Vector Mi = M.Col(i);
         Mbx(i) = Mi * bx;
         Mby(i) = Mi * by;
@@ -1096,9 +1097,9 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     if (!mgGaussZ.IsDone())
         return false;
 
-    unsigned long ulIdx=0;
-    for (unsigned short j=0;j<_usUCtrlpoints;j++) {
-        for (unsigned short k=0;k<_usVCtrlpoints;k++) {
+    unsigned ulIdx=0;
+    for (unsigned j=0;j<_usUCtrlpoints;j++) {
+        for (unsigned k=0;k<_usVCtrlpoints;k++) {
             _vCtrlPntsOfSurf(j,k) = gp_Pnt(Xx(ulIdx),Xy(ulIdx),Xz(ulIdx));
             ulIdx++;
         }
@@ -1123,13 +1124,13 @@ void BSplineParameterCorrection::CalcSmoothingTerms(bool bRecalc, double fFirst,
 
 void BSplineParameterCorrection::CalcFirstSmoothMatrix(Base::SequencerLauncher& seq)
 {
-    unsigned long m=0;
-    for (unsigned long k=0; k<_usUCtrlpoints; k++) {
-        for (unsigned long l=0; l<_usVCtrlpoints; l++) {
-            unsigned long n=0;
+    unsigned m=0;
+    for (unsigned k=0; k<_usUCtrlpoints; k++) {
+        for (unsigned l=0; l<_usVCtrlpoints; l++) {
+            unsigned n=0;
 
-            for (unsigned short i=0; i<_usUCtrlpoints; i++) {
-                for (unsigned short j=0; j<_usVCtrlpoints; j++) {
+            for (unsigned i=0; i<_usUCtrlpoints; i++) {
+                for (unsigned j=0; j<_usVCtrlpoints; j++) {
                     _clFirstMatrix(m,n) =   _clUSpline.GetIntegralOfProductOfBSplines(i,k,1,1) *
                                             _clVSpline.GetIntegralOfProductOfBSplines(j,l,0,0) +
                                             _clUSpline.GetIntegralOfProductOfBSplines(i,k,0,0) *
@@ -1145,13 +1146,13 @@ void BSplineParameterCorrection::CalcFirstSmoothMatrix(Base::SequencerLauncher& 
 
 void BSplineParameterCorrection::CalcSecondSmoothMatrix(Base::SequencerLauncher& seq)
 {
-    unsigned long m=0;
-    for (unsigned long k=0; k<_usUCtrlpoints; k++) {
-        for (unsigned long l=0; l<_usVCtrlpoints; l++) {
-            unsigned long n=0;
+    unsigned m=0;
+    for (unsigned k=0; k<_usUCtrlpoints; k++) {
+        for (unsigned l=0; l<_usVCtrlpoints; l++) {
+            unsigned n=0;
 
-            for (unsigned short i=0; i<_usUCtrlpoints; i++) {
-                for (unsigned short j=0; j<_usVCtrlpoints; j++) {
+            for (unsigned i=0; i<_usUCtrlpoints; i++) {
+                for (unsigned j=0; j<_usVCtrlpoints; j++) {
                     _clSecondMatrix(m,n) =  _clUSpline.GetIntegralOfProductOfBSplines(i,k,2,2) *
                                             _clVSpline.GetIntegralOfProductOfBSplines(j,l,0,0) +
                                           2*_clUSpline.GetIntegralOfProductOfBSplines(i,k,1,1) *
@@ -1169,13 +1170,13 @@ void BSplineParameterCorrection::CalcSecondSmoothMatrix(Base::SequencerLauncher&
 
 void BSplineParameterCorrection::CalcThirdSmoothMatrix(Base::SequencerLauncher& seq)
 {
-    unsigned long m=0;
-    for (unsigned long k=0; k<_usUCtrlpoints; k++) {
-        for (unsigned long l=0; l<_usVCtrlpoints; l++) {
-            unsigned long n=0;
+    unsigned m=0;
+    for (unsigned k=0; k<_usUCtrlpoints; k++) {
+        for (unsigned l=0; l<_usVCtrlpoints; l++) {
+            unsigned n=0;
 
-            for (unsigned short i=0; i<_usUCtrlpoints; i++) {
-                for (unsigned short j=0; j<_usVCtrlpoints; j++) {
+            for (unsigned i=0; i<_usUCtrlpoints; i++) {
+                for (unsigned j=0; j<_usVCtrlpoints; j++) {
                     _clThirdMatrix(m,n) = _clUSpline.GetIntegralOfProductOfBSplines(i,k,3,3) *
                                           _clVSpline.GetIntegralOfProductOfBSplines(j,l,0,0) +
                                           _clUSpline.GetIntegralOfProductOfBSplines(i,k,3,1) *
