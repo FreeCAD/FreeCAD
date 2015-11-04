@@ -6,6 +6,10 @@ endif(MSVC)
 
 if (PCL_SURFACE_FOUND AND PCL_FEATURES_FOUND)
     add_definitions(-DHAVE_PCL_SURFACE)
+
+    if(EXISTS "${PCL_INCLUDE_DIRS}/pcl/surface/on_nurbs/fitting_surface_tdm.h")
+        add_definitions(-DHAVE_PCL_OPENNURBS)
+    endif()
 endif ()
 
 include_directories(

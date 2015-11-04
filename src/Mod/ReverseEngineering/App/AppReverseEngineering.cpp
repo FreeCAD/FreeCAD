@@ -61,6 +61,8 @@ public:
         add_varargs_method("triangulate",&Module::triangulate,
             "triangulate(PointKernel,searchRadius[,mu=2.5])."
         );
+#endif
+#if defined(HAVE_PCL_OPENNURBS)
         add_keyword_method("fitBSpline",&Module::fitBSpline,
             "fitBSpline(PointKernel)."
         );
@@ -198,6 +200,8 @@ private:
 
         return Py::asObject(new Mesh::MeshPy(mesh));
     }
+#endif
+#if defined(HAVE_PCL_OPENNURBS)
     Py::Object fitBSpline(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pcObj;
