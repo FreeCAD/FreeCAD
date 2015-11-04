@@ -108,7 +108,7 @@ class _ViewProviderMechanicalMaterial:
         return
 
     # overwrite the doubleClicked to make sure no other Material taskd (and thus no selection observer) is still active
-    def doubleClicked(self, vobj):  
+    def doubleClicked(self, vobj):
         doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not doc.getInEdit():
             doc.setEdit(vobj.Object.Name)
@@ -146,7 +146,7 @@ class _MechanicalMaterialTaskPanel:
         self.import_materials()
         previous_mat_path = self.get_material_path(self.material)
         if not previous_mat_path:
-            print("Previously used material cannot be found in material directories. Using transient material.")
+            FreeCAD.Console.PrintMessage("Previously used material cannot be found in material directories. Using transient material.\n")
             material_name = self.get_material_name(self.material)
             if material_name != 'None':
                 self.add_transient_material(self.material)
@@ -350,13 +350,13 @@ class _MechanicalMaterialTaskPanel:
                         self.references.append(selection)
                         self.rebuild_list_References()
                     else:
-                        print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
+                        FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
                 else:
-                    print(elt.ShapeType, ' selected, but List has allready ', self.references_shape_type, 's!')
+                    FreeCAD.Console.PrintMessage(elt.ShapeType + ' selected, but reference list has ' + self.references_shape_type + 's already!\n')
             else:
-                print('Select  Edge, Face or Solid!')
+                FreeCAD.Console.PrintMessage("Select Edges and Faces by single click on them or Solids by double click on a Vertex!\n")
         else:
-            print('Selection has no shape!')
+            FreeCAD.Console.PrintMessage("Selection has no shape!\n")
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
