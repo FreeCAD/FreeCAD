@@ -26,7 +26,24 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <stdexcept>
+# include <QByteArray>
+# include <QDataStream>
+# include <QDebug>
+# include <QFileInfo>
 # include <QSessionManager>
+# include <QTimer>
+#endif
+
+#include <QLocalServer>
+#include <QLocalSocket>
+
+#if defined(Q_OS_WIN)
+# include <Windows.h>
+#endif
+#if defined(Q_OS_UNIX)
+# include <sys/types.h>
+# include <time.h>
+# include <unistd.h>
 #endif
 
 #include "GuiApplication.h"
@@ -43,6 +60,10 @@ using namespace Gui;
 
 GUIApplication::GUIApplication(int & argc, char ** argv, int exitcode)
     : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
+{
+}
+
+GUIApplication::~GUIApplication()
 {
 }
 
@@ -121,6 +142,142 @@ void GUIApplication::commitData(QSessionManager &manager)
         App::GetApplication().closeAllDocuments();
         Gui::getMainWindow()->close();
     }
+}
+
+// ----------------------------------------------------------------------------
+
+class GUISingleApplication::Private {
+public:
+    Private(GUISingleApplication *q_ptr)
+      : q_ptr(q_ptr)
+      , timer(new QTimer(q_ptr))
+      , server(0)
+      , running(false)
+    {
+        timer->setSingleShot(true);
+        std::string exeName = App::GetApplication().getExecutableName();
+        serverName = QString::fromStdString(exeName);
+    }
+
+    ~Private()
+    {
+        if (server)
+            server->close();
+        delete server;
+    }
+
+    void setupConnection()
+    {
+        QLocalSocket socket;
+        socket.connectToServer(serverName);
+        if (socket.waitForConnected(1000)) {
+            this->running = true;
+        }
+        else {
+            startServer();
+        }
+    }
+
+    void startServer()
+    {
+        // Start a QLocalServer to listen for connections
+        server = new QLocalServer();
+        QObject::connect(server, SIGNAL(newConnection()),
+                         q_ptr, SLOT(receiveConnection()));
+        // first attempt
+        if (!server->listen(serverName)) {
+            if (server->serverError() == QAbstractSocket::AddressInUseError) {
+                // second attempt
+                server->removeServer(serverName);
+                server->listen(serverName);
+            }
+        }
+        if (server->isListening()) {
+            Base::Console().Log("Local server '%s' started\n", qPrintable(serverName));
+        }
+        else {
+            Base::Console().Log("Local server '%s' failed to start\n", qPrintable(serverName));
+        }
+    }
+
+    GUISingleApplication *q_ptr;
+    QTimer *timer;
+    QLocalServer *server;
+    QString serverName;
+    QList<QByteArray> messages;
+    bool running;
+};
+
+GUISingleApplication::GUISingleApplication(int & argc, char ** argv, int exitcode)
+    : GUIApplication(argc, argv, exitcode),
+      d_ptr(new Private(this))
+{
+    d_ptr->setupConnection();
+    connect(d_ptr->timer, SIGNAL(timeout()), this, SLOT(processMessages()));
+}
+
+GUISingleApplication::~GUISingleApplication()
+{
+}
+
+bool GUISingleApplication::isRunning() const
+{
+    return d_ptr->running;
+}
+
+bool GUISingleApplication::sendMessage(const QByteArray &message, int timeout)
+{
+    QLocalSocket socket;
+    bool connected = false;
+    for(int i = 0; i < 2; i++) {
+        socket.connectToServer(d_ptr->serverName);
+        connected = socket.waitForConnected(timeout/2);
+        if (connected || i > 0)
+            break;
+        int ms = 250;
+#if defined(Q_OS_WIN)
+        Sleep(DWORD(ms));
+#else
+        usleep(ms*1000);
+#endif
+    }
+    if (!connected)
+        return false;
+
+    QDataStream ds(&socket);
+    ds << message;
+    socket.waitForBytesWritten(timeout);
+    return true;
+}
+
+void GUISingleApplication::receiveConnection()
+{
+    QLocalSocket *socket = d_ptr->server->nextPendingConnection();
+    if (!socket)
+        return;
+
+    connect(socket, SIGNAL(disconnected()),
+            socket, SLOT(deleteLater()));
+    if (socket->waitForReadyRead()) {
+        QDataStream in(socket);
+        if (!in.atEnd()) {
+            d_ptr->timer->stop();
+            QByteArray message;
+            in >> message;
+            Base::Console().Log("Received message: %s\n", message.constData());
+            d_ptr->messages.push_back(message);
+            d_ptr->timer->start(1000);
+        }
+    }
+
+    socket->disconnectFromServer();
+}
+
+void GUISingleApplication::processMessages()
+{
+    QList<QByteArray> msg = d_ptr->messages;
+    d_ptr->messages.clear();
+    Q_EMIT messageReceived(msg);
 }
 
 #include "moc_GuiApplication.cpp"

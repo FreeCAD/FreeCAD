@@ -262,6 +262,10 @@ private Q_SLOTS:
      * \internal
      */
     void delayedStartup();
+    /**
+     * \internal
+     */
+    void processMessages(const QList<QByteArray> &);
 
 Q_SIGNALS:
     void timeEvent();
