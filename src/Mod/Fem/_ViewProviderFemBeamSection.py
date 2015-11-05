@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemBeamSection"
+__title__ = "_ViewProviderFemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -30,16 +30,51 @@ import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
+    from pivy import coin
 
 
-def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
-    '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
-    import _FemBeamSection
-    _FemBeamSection._FemBeamSection(obj)
-    obj.Width = width
-    obj.Height = height
-    if FreeCAD.GuiUp:
-        import _ViewProviderFemBeamSection
-        _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
-    return obj
+class _ViewProviderFemBeamSection:
+    "A View Provider for the FemBeamSection object"
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        return ":/icons/fem-beam-section.svg"
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self.standard = coin.SoGroup()
+        vobj.addDisplayMode(self.standard, "Standard")
+
+    def getDisplayModes(self, obj):
+        return ["Standard"]
+
+    def getDefaultDisplayMode(self):
+        return "Standard"
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def setEdit(self, vobj, mode=0):
+        import _FemBeamSectionTaskPanel
+        taskd = _FemBeamSectionTaskPanel._FemBeamSectionTaskPanel(self.Object)
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return
+
+    def doubleClicked(self, vobj):
+        self.setEdit(vobj)
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None

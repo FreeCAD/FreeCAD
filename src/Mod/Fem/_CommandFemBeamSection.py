@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemBeamSection"
+__title__ = "_CommandFemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -30,16 +30,28 @@ import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
+    from PySide import QtCore
 
 
-def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
-    '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
-    import _FemBeamSection
-    _FemBeamSection._FemBeamSection(obj)
-    obj.Width = width
-    obj.Height = height
-    if FreeCAD.GuiUp:
-        import _ViewProviderFemBeamSection
-        _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
-    return obj
+class _CommandFemBeamSection:
+    "The Fem_BeamSection command definition"
+    def GetResources(self):
+        return {'Pixmap': 'fem-beam-section',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "FEM Beam Cross Section Definition ..."),
+                'Accel': "C, B",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Creates a FEM Beam Cross Section")}
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
+        FreeCADGui.addModule("FemBeamSection")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemBeamSection.makeFemBeamSection()]")
+
+    def IsActive(self):
+        if FemGui.getActiveAnalysis():
+            return True
+        else:
+            return False
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Fem_BeamSection', _CommandFemBeamSection())
