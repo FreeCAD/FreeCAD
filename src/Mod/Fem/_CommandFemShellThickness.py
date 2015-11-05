@@ -26,6 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -33,24 +34,20 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
 
 
-class _CommandFemShellThickness:
+class _CommandFemShellThickness(FemCommands):
     "The Fem_ShellThickness command definition"
-    def GetResources(self):
-        return {'Pixmap': 'fem-shell-thickness',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "FEM Shell Plate Thickness Definition ..."),
-                'Accel': "C, S",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Creates a FEM Shell Thickness")}
+    def __init__(self):
+        super(_CommandFemShellThickness, self).__init__()
+        self.resources = {'Pixmap': 'fem-shell-thickness',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "FEM Shell Plate Thickness Definition ..."),
+                          'Accel': "C, S",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Creates a FEM Shell Thickness")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemShellThickness")
         FreeCADGui.addModule("FemShellThickness")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemShellThickness.makeFemShellThickness()]")
-
-    def IsActive(self):
-        if FemGui.getActiveAnalysis():
-            return True
-        else:
-            return False
 
 
 if FreeCAD.GuiUp:

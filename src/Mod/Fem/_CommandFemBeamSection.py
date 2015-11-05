@@ -26,6 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
+from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -33,24 +34,20 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
 
 
-class _CommandFemBeamSection:
+class _CommandFemBeamSection(FemCommands):
     "The Fem_BeamSection command definition"
-    def GetResources(self):
-        return {'Pixmap': 'fem-beam-section',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "FEM Beam Cross Section Definition ..."),
-                'Accel': "C, B",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Creates a FEM Beam Cross Section")}
+    def __init__(self):
+        super(_CommandFemBeamSection, self).__init__()
+        self.resources = {'Pixmap': 'fem-beam-section',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "FEM Beam Cross Section Definition ..."),
+                          'Accel': "C, B",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Creates a FEM Beam Cross Section")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
         FreeCADGui.addModule("FemBeamSection")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemBeamSection.makeFemBeamSection()]")
-
-    def IsActive(self):
-        if FemGui.getActiveAnalysis():
-            return True
-        else:
-            return False
 
 
 if FreeCAD.GuiUp:
