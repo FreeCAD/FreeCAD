@@ -15,8 +15,6 @@ INSTALL(
         ccxInpWriter.py
         FemTools.py
         TestFem.py
-        FemBeamSection.py
-        FemBeamSection.ui
         FemExample.py
         MechanicalAnalysis.py
         MechanicalMaterial.py
@@ -34,6 +32,13 @@ INSTALL(
         _CommandMechanicalJobControl.py
         _CommandFemFromShape.py
         _CommandNewMechanicalAnalysis.py
+
+        _FemBeamSection.py
+        _ViewProviderFemBeamSection.py
+        FemBeamSection.py
+        _CommandFemBeamSection.py
+        _FemBeamSectionTaskPanel.py
+        FemBeamSection.ui
 
         _FemShellThickness.py
         _ViewProviderFemShellThickness.py

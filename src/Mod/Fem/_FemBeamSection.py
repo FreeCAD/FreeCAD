@@ -20,26 +20,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemBeamSection"
+__title__ = "_FemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
 
+class _FemBeamSection:
+    "The FemBeamSection object"
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLength", "Width", "BeamSection", "set width of the beam elements")
+        obj.addProperty("App::PropertyLength", "Height", "BeamSection", "set height of the beam elements")
+        obj.addProperty("App::PropertyLinkSubList", "References", "BeamSection", "List of beam section shapes")
+        obj.Proxy = self
+        self.Type = "FemBeamSection"
 
-def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
-    '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
-    import _FemBeamSection
-    _FemBeamSection._FemBeamSection(obj)
-    obj.Width = width
-    obj.Height = height
-    if FreeCAD.GuiUp:
-        import _ViewProviderFemBeamSection
-        _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
-    return obj
+    def execute(self, obj):
+        return
