@@ -26,18 +26,13 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
+import _MechanicalMaterial
 
 
 def makeMechanicalMaterial(name):
     '''makeMaterial(name): makes an Material
     name there fore is a material name or an file name for a FCMat file'''
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
-    import _MechanicalMaterial
     _MechanicalMaterial._MechanicalMaterial(obj)
     if FreeCAD.GuiUp:
         import _ViewProviderMechanicalMaterial

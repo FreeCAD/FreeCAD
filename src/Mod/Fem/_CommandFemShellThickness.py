@@ -30,7 +30,6 @@ from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import FemGui
     from PySide import QtCore
 
 

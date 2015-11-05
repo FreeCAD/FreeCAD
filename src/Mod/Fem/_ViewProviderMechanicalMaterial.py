@@ -26,11 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
+import FreeCADGui
 
 
 class _ViewProviderMechanicalMaterial:
