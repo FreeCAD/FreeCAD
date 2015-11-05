@@ -999,6 +999,23 @@ void MainWindow::showMainWindow()
 #endif
 }
 
+void MainWindow::processMessages(const QList<QByteArray> & msg)
+{
+    // handle all the messages to open files
+    try {
+        WaitCursor wc;
+        std::list<std::string> files;
+        QByteArray action("OpenFile:");
+        for (QList<QByteArray>::const_iterator it = msg.begin(); it != msg.end(); ++it) {
+            if (it->startsWith(action))
+                files.push_back(std::string(it->mid(action.size()).constData()));
+        }
+        App::Application::processFiles(files);
+    }
+    catch (const Base::SystemExitException&) {
+    }
+}
+
 void MainWindow::delayedStartup()
 {
     // processing all command line files

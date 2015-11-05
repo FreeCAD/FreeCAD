@@ -1538,15 +1538,34 @@ void Application::initTypes(void)
 
 void Application::runApplication(void)
 {
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it;
+
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     int systemExit = 1000;
-    GUIApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+    GUISingleApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+
+    // check if a single or multiple instances can run
+    it = cfg.find("SingleInstance");
+    if (it != cfg.end() && mainApp.isRunning()) {
+        // send the file names to be opened to the server application so that this
+        // opens them
+        std::list<std::string> files = App::Application::getCmdLineFiles();
+        for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
+            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            msg.prepend("OpenFile:");
+            if (!mainApp.sendMessage(msg)) {
+                qWarning("Failed to send message to server");
+                break;
+            }
+        }
+        return;
+    }
+
     // set application icon and window title
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("Application");
     if (it != cfg.end()) {
         mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
@@ -1615,6 +1634,8 @@ void Application::runApplication(void)
     Application app(true);
     MainWindow mw;
     mw.setWindowTitle(mainApp.applicationName());
+    QObject::connect(&mainApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
+                     &mw, SLOT(processMessages(const QList<QByteArray> &)));
 
     ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
@@ -1741,19 +1762,8 @@ void Application::runApplication(void)
 
     Instance->d->startingUp = false;
 
-#if 0
-    // processing all command line files
-    App::Application::processCmdLineFiles();
-
-    // Create new document?
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    if (hGrp->GetBool("CreateNewDoc", false)) {
-        App::GetApplication().newDocument();
-    }
-#else
     // gets called once we start the event loop
     QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
-#endif
 
     // run the Application event loop
     Base::Console().Log("Init: Entering event loop\n");

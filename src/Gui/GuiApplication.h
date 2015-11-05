@@ -25,6 +25,7 @@
 #define GUI_APPLICATION_H
 
 #include "GuiApplicationNativeEventAware.h"
+#include <QList>
 
 class QSessionManager;
 
@@ -38,7 +39,8 @@ class GUIApplication : public GUIApplicationNativeEventAware
     Q_OBJECT
 
 public:
-    GUIApplication(int & argc, char ** argv, int exitcode);
+    explicit GUIApplication(int & argc, char ** argv, int exitcode);
+    virtual ~GUIApplication();
 
     /**
      * Make forwarding events exception-safe and get more detailed information
@@ -49,6 +51,29 @@ public:
 
 private:
     int systemExit;
+};
+
+class GUISingleApplication : public GUIApplication
+{
+    Q_OBJECT
+
+public:
+    explicit GUISingleApplication(int & argc, char ** argv, int exitcode);
+    virtual ~GUISingleApplication();
+
+    bool isRunning() const;
+    bool sendMessage(const QByteArray &message, int timeout = 5000);
+
+private Q_SLOTS:
+    void receiveConnection();
+    void processMessages();
+
+Q_SIGNALS:
+    void messageReceived(const QList<QByteArray> &);
+
+private:
+    class Private;
+    QScopedPointer<Private> d_ptr;
 };
 
 }
