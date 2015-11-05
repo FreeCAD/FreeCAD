@@ -17,8 +17,6 @@ INSTALL(
         TestFem.py
         FemExample.py
         MechanicalAnalysis.py
-        MechanicalMaterial.py
-        MechanicalMaterial.ui
         MechanicalAnalysis.ui
         ShowDisplacement.ui
         FemCommands.py
@@ -46,6 +44,14 @@ INSTALL(
         _CommandFemShellThickness.py
         _FemShellThicknessTaskPanel.py
         FemShellThickness.ui
+
+        _MechanicalMaterial.py
+        _ViewProviderMechanicalMaterial.py
+        MechanicalMaterial.py
+        _CommandMechanicalMaterial.py
+        _MechanicalMaterialTaskPanel.py
+        MechanicalMaterial.ui
+
     DESTINATION
         Mod/Fem
 )

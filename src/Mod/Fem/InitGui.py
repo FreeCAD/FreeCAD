@@ -50,9 +50,9 @@ class FemWorkbench (Workbench):
         import _CommandNewMechanicalAnalysis
         import _CommandFemShellThickness
         import _CommandFemBeamSection
+        import _CommandMechanicalMaterial
 
         import MechanicalAnalysis
-        import MechanicalMaterial
 
         import subprocess
         from platform import system

@@ -76,8 +76,6 @@ SET(FemScripts_SRCS
     FemTools.py
     MechanicalAnalysis.ui
     MechanicalAnalysis.py
-    MechanicalMaterial.ui
-    MechanicalMaterial.py
     ShowDisplacement.ui
     FemCommands.py
     _ResultControlTaskPanel.py
@@ -104,6 +102,13 @@ SET(FemScripts_SRCS
     _CommandFemShellThickness.py
     _FemShellThicknessTaskPanel.py
     FemShellThickness.ui
+
+    _MechanicalMaterial.py
+    _ViewProviderMechanicalMaterial.py
+    MechanicalMaterial.py
+    _CommandMechanicalMaterial.py
+    _MechanicalMaterialTaskPanel.py
+    MechanicalMaterial.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 

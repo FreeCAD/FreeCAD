@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "MechanicalMaterial"
+__title__ = "_CommandMechanicalMaterial"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
@@ -31,16 +31,29 @@ from FemCommands import FemCommands
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
+    from PySide import QtCore
 
 
-def makeMechanicalMaterial(name):
-    '''makeMaterial(name): makes an Material
-    name there fore is a material name or an file name for a FCMat file'''
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
-    import _MechanicalMaterial
-    _MechanicalMaterial._MechanicalMaterial(obj)
-    if FreeCAD.GuiUp:
-        import _ViewProviderMechanicalMaterial
-        _ViewProviderMechanicalMaterial._ViewProviderMechanicalMaterial(obj.ViewObject)
-    # FreeCAD.ActiveDocument.recompute()
-    return obj
+class _CommandMechanicalMaterial(FemCommands):
+    "the Fem Material command definition"
+    def __init__(self):
+        super(_CommandMechanicalMaterial, self).__init__()
+        self.resources = {'Pixmap': 'fem-material',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Mechanical material..."),
+                          'Accel': "M, M",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates or edit the mechanical material definition.")}
+        self.is_active = 'with_analysis'
+
+    def Activated(self):
+        femDoc = FemGui.getActiveAnalysis().Document
+        if FreeCAD.ActiveDocument is not femDoc:
+            FreeCADGui.setActiveDocument(femDoc)
+        FreeCAD.ActiveDocument.openTransaction("Create MechanicalMaterial")
+        FreeCADGui.addModule("MechanicalMaterial")
+        FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
+        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Fem_MechanicalMaterial', _CommandMechanicalMaterial())
