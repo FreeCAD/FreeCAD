@@ -20,27 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "MechanicalMaterial"
+__title__ = "_MechanicalMaterial"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
 
 
-def makeMechanicalMaterial(name):
-    '''makeMaterial(name): makes an Material
-    name there fore is a material name or an file name for a FCMat file'''
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
-    import _MechanicalMaterial
-    _MechanicalMaterial._MechanicalMaterial(obj)
-    if FreeCAD.GuiUp:
-        import _ViewProviderMechanicalMaterial
-        _ViewProviderMechanicalMaterial._ViewProviderMechanicalMaterial(obj.ViewObject)
-    # FreeCAD.ActiveDocument.recompute()
-    return obj
+class _MechanicalMaterial:
+    "The Material object"
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLinkSubList", "References", "Material", "List of material shapes")
+        obj.Proxy = self
+        self.Type = "MechanicalMaterial"
+
+    def execute(self, obj):
+        return
