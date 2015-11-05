@@ -18,8 +18,6 @@ INSTALL(
         FemBeamSection.py
         FemBeamSection.ui
         FemExample.py
-        FemShellThickness.py 
-        FemShellThickness.ui 
         MechanicalAnalysis.py
         MechanicalMaterial.py
         MechanicalMaterial.ui
@@ -36,6 +34,13 @@ INSTALL(
         _CommandMechanicalJobControl.py
         _CommandFemFromShape.py
         _CommandNewMechanicalAnalysis.py
+
+        _FemShellThickness.py
+        _ViewProviderFemShellThickness.py
+        FemShellThickness.py
+        _CommandFemShellThickness.py
+        _FemShellThicknessTaskPanel.py
+        FemShellThickness.ui
     DESTINATION
         Mod/Fem
 )

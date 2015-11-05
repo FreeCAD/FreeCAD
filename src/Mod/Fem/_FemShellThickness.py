@@ -20,25 +20,21 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemShellThickness"
+__title__ = "_FemShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
 
+class _FemShellThickness:
+    "The FemShellThickness object"
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLength", "Thickness", "ShellThickness", "set thickness of the shell elements")
+        obj.addProperty("App::PropertyLinkSubList", "References", "ShellThickness", "List of shell thickness shapes")
+        obj.Proxy = self
+        self.Type = "FemShellThickness"
 
-def makeFemShellThickness(thickness=20.0, name="ShellThickness"):
-    '''makeFemShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
-    import _FemShellThickness
-    _FemShellThickness._FemShellThickness(obj)
-    obj.Thickness = thickness
-    if FreeCAD.GuiUp:
-        import _ViewProviderFemShellThickness
-        _ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
-    return obj
+    def execute(self, obj):
+        return

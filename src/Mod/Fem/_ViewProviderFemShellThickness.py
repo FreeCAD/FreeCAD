@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemShellThickness"
+__title__ = "_ViewProviderFemShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -30,15 +30,51 @@ import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
+    from pivy import coin
 
 
-def makeFemShellThickness(thickness=20.0, name="ShellThickness"):
-    '''makeFemShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
-    import _FemShellThickness
-    _FemShellThickness._FemShellThickness(obj)
-    obj.Thickness = thickness
-    if FreeCAD.GuiUp:
-        import _ViewProviderFemShellThickness
-        _ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
-    return obj
+class _ViewProviderFemShellThickness:
+    "A View Provider for the FemShellThickness object"
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        return ":/icons/fem-shell-thickness.svg"
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self.standard = coin.SoGroup()
+        vobj.addDisplayMode(self.standard, "Standard")
+
+    def getDisplayModes(self, obj):
+        return ["Standard"]
+
+    def getDefaultDisplayMode(self):
+        return "Standard"
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def setEdit(self, vobj, mode=0):
+        import _FemShellThicknessTaskPanel
+        taskd = _FemShellThicknessTaskPanel._FemShellThicknessTaskPanel(self.Object)
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return
+
+    def doubleClicked(self, vobj):
+        self.setEdit(vobj)
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
