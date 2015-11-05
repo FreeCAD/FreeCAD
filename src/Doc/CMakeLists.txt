@@ -38,14 +38,9 @@ if(DOXYGEN_FOUND)
 
     # exclude some subdirectories
     # src/Tools : content not relevant ?
-    # src/3rdParty/CxImage : obsolete utility
-    # src/3rdParty/Pivy  
-    # src/3rdParty/Pivy-0.5 : huge python wrappers around Coin3D, not focused
-    #                         on FreeCAD properly
+    # src/3rdParty/CxImage : Windows thumbnailer
     set(        DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Tools)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/CxImage)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/Pivy)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/Pivy-0.5)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh)
 
     STRING(REGEX REPLACE ";" " " DOXYGEN_EXCLUDE_LIST "${DOXYGEN_EXCLUDE_DIR}")
