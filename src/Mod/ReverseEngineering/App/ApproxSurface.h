@@ -275,6 +275,11 @@ protected:
     virtual void CalcEigenvectors();
 
     /**
+     * Projiziert die Kontrollpunkte auf die Fit-Ebene
+     */
+    void ProjectControlPointsOnPlane();
+
+    /**
      * Berechnet eine initiale Flaeche zu Beginn des Algorithmus. Dazu wird die Ausgleichsebene zu der 
      * Punktwolke berechnet.
      * Die Punkte werden bzgl. der Basis bestehend aus den Eigenvektoren der Kovarianzmatrix berechnet und 
