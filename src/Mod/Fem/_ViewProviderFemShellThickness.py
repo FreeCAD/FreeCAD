@@ -26,11 +26,8 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
-    from pivy import coin
+import FreeCADGui
+from pivy import coin
 
 
 class _ViewProviderFemShellThickness:

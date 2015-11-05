@@ -26,13 +26,9 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
-    from PySide import QtGui
-    from PySide import QtCore
-    from pivy import coin
+import FreeCADGui
+from PySide import QtGui
+from PySide import QtCore
 
 
 class _FemBeamSectionTaskPanel:
