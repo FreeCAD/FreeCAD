@@ -38,6 +38,7 @@
 # include <BRepExtrema_DistShapeShape.hxx>
 #if OCC_VERSION_HEX >= 0x060801
 # include <BRepExtrema_ShapeProximity.hxx>
+# include <BRepExtrema_OverlappedSubShapes.hxx>
 #endif
 # include <BRepExtrema_SupportType.hxx>
 # include <gp_Ax1.hxx>
