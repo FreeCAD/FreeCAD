@@ -73,8 +73,6 @@ SET(FemScripts_SRCS
     ccxFrdReader.py
     ccxInpWriter.py
     TestFem.py
-    FemShellThickness.py
-    FemShellThickness.ui
     FemBeamSection.py
     FemBeamSection.ui
     FemTools.py
@@ -94,6 +92,13 @@ SET(FemScripts_SRCS
     _CommandMechanicalJobControl.py
     _CommandFemFromShape.py
     _CommandNewMechanicalAnalysis.py
+
+    _FemShellThickness.py
+    _ViewProviderFemShellThickness.py
+    FemShellThickness.py
+    _CommandFemShellThickness.py
+    _FemShellThicknessTaskPanel.py
+    FemShellThickness.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
