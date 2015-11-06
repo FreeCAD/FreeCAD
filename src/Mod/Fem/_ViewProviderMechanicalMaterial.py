@@ -49,8 +49,8 @@ class _ViewProviderMechanicalMaterial:
         return
 
     def setEdit(self, vobj, mode):
-        import _MechanicalMaterialTaskPanel
-        taskd = _MechanicalMaterialTaskPanel._MechanicalMaterialTaskPanel(self.Object)
+        import _TaskPanelMechanicalMaterial
+        taskd = _TaskPanelMechanicalMaterial._TaskPanelMechanicalMaterial(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True

@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_MechanicalMaterialTaskPanel"
+__title__ = "_TaskPanelMechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -31,7 +31,7 @@ from PySide import QtGui
 from PySide import QtCore
 
 
-class _MechanicalMaterialTaskPanel:
+class _TaskPanelMechanicalMaterial:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()

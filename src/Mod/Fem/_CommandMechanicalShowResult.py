@@ -49,8 +49,8 @@ class _CommandMechanicalShowResult(FemCommands):
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
             return
 
-        import _ResultControlTaskPanel
-        taskd = _ResultControlTaskPanel._ResultControlTaskPanel()
+        import _TaskPanelResultControl
+        taskd = _TaskPanelResultControl._TaskPanelResultControl()
         FreeCADGui.Control.showDialog(taskd)
 
 

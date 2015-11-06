@@ -7,6 +7,7 @@ endif(BUILD_GUI)
 
 INSTALL(
     FILES
+        # changes on the file list here needs to be made in App/CMakeLists.txt as well
         Init.py
         InitGui.py
         convert2TetGen.py
@@ -20,8 +21,8 @@ INSTALL(
         MechanicalAnalysis.ui
         ShowDisplacement.ui
         FemCommands.py
-        _ResultControlTaskPanel.py
-        _JobControlTaskPanel.py
+        _TaskPanelResultControl.py
+        _TaskPanelJobControl.py
         _ViewProviderFemAnalysis.py
         _FemAnalysis.py
         _CommandMechanicalShowResult.py
@@ -35,21 +36,21 @@ INSTALL(
         _ViewProviderFemBeamSection.py
         FemBeamSection.py
         _CommandFemBeamSection.py
-        _FemBeamSectionTaskPanel.py
+        _TaskPanelFemBeamSection.py
         FemBeamSection.ui
 
         _FemShellThickness.py
         _ViewProviderFemShellThickness.py
         FemShellThickness.py
         _CommandFemShellThickness.py
-        _FemShellThicknessTaskPanel.py
+        _TaskPanelFemShellThickness.py
         FemShellThickness.ui
 
         _MechanicalMaterial.py
         _ViewProviderMechanicalMaterial.py
         MechanicalMaterial.py
         _CommandMechanicalMaterial.py
-        _MechanicalMaterialTaskPanel.py
+        _TaskPanelMechanicalMaterial.py
         MechanicalMaterial.ui
 
     DESTINATION
