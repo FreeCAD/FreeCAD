@@ -35,13 +35,14 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
 #include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObject.h>
+#include <App/Placement.h>
 
 
 using namespace ReenGui;
@@ -65,7 +66,6 @@ FitBSplineSurfaceWidget::FitBSplineSurfaceWidget(const App::DocumentObjectT& obj
   : d(new Private())
 {
     d->ui.setupUi(this);
-    d->ui.uvdir->setDisabled(true);
     d->obj = obj;
     restoreSettings();
 }
@@ -139,8 +139,22 @@ bool FitBSplineSurfaceWidget::accept()
             .arg(d->ui.sizeFactor->value())
             ;
         if (d->ui.uvdir->isChecked()) {
-            // todo
-            argument += QString::fromLatin1(", UVDirs=(FreeCAD.Vector(1,0,0), FreeCAD.Vector(0,1,0))");
+            std::vector<App::Placement*> selection = Gui::Selection().getObjectsOfType<App::Placement>();
+            if (selection.size() != 1) {
+                QMessageBox::warning(this,
+                    tr("Wrong selection"),
+                    tr("Please select a single placement object to get local orientation.")
+                );
+                return false;
+            }
+
+            Base::Rotation rot = selection.front()->GeoFeature::Placement.getValue().getRotation();
+            Base::Vector3d u(1,0,0);
+            Base::Vector3d v(0,1,0);
+            rot.multVec(u, u);
+            rot.multVec(v, v);
+            argument += QString::fromLatin1(", UVDirs=(FreeCAD.Vector(%1,%2,%3), FreeCAD.Vector(%4,%5,%6))")
+                .arg(u.x).arg(u.y).arg(u.z).arg(v.x).arg(v.y).arg(v.z);
         }
         QString command = QString::fromLatin1("%1.addObject(\"Part::Spline\", \"Spline\").Shape = "
             "ReverseEngineering.approxSurface(%2).toShape()")
