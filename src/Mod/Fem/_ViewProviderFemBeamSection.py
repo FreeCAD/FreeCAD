@@ -68,7 +68,12 @@ class _ViewProviderFemBeamSection:
         return
 
     def doubleClicked(self, vobj):
-        self.setEdit(vobj)
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+        return True
 
     def __getstate__(self):
         return None
