@@ -664,12 +664,14 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     return true;
 }
 
-void ParameterCorrection::SetUVW(const Base::Vector3d& clU, const Base::Vector3d& clV, const Base::Vector3d& clW, bool bUseDir)
+void ParameterCorrection::SetUV(const Base::Vector3d& clU, const Base::Vector3d& clV, bool bUseDir)
 {
-    _clU = clU;
-    _clV = clV;
-    _clW = clW;
     _bGetUVDir = bUseDir;
+    if (_bGetUVDir) {
+        _clU = clU;
+        _clW = clU % clV;
+        _clV = _clW % _clU;
+    }
 }
 
 void ParameterCorrection::GetUVW(Base::Vector3d& clU, Base::Vector3d& clV, Base::Vector3d& clW) const
