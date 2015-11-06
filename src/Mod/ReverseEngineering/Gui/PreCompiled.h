@@ -33,12 +33,14 @@
 # define PartExport __declspec(dllimport)
 # define MeshExport    __declspec(dllimport)
 # define PointsExport __declspec(dllimport)
+# define AppExport __declspec(dllimport)
 #else // for Linux
 # define ReenExport
 # define ReenGuiExport
 # define PartExport
 # define MeshExport
 # define PointsExport
+# define AppExport
 #endif
 
 #ifdef _MSC_VER
