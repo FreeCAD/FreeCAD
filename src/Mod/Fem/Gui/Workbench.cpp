@@ -83,7 +83,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      Gui::ToolBarItem* post = new Gui::ToolBarItem(root);
      post->setCommand("Post Processing");
      *post  << "Fem_PostApplyChanges"
+            << "Separator"
             << "Fem_PostCreateClipFilter"
+            << "Fem_PostCreateScalarClipFilter"
+            << "Separator"
             << "Fem_PostCreateFunctions";
 #endif
             

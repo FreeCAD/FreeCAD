@@ -96,3 +96,37 @@ void FemPostPlaneFunction::onChanged(const Property* prop) {
     
     Fem::FemPostFunction::onChanged(prop);
 }
+
+
+
+
+PROPERTY_SOURCE(Fem::FemPostSphereFunction, Fem::FemPostFunction)
+
+FemPostSphereFunction::FemPostSphereFunction(void): FemPostFunction() {
+
+    ADD_PROPERTY(Radius,(5));
+    ADD_PROPERTY(Center,(Base::Vector3d(1.0,0.0,0.0)));
+    
+    m_sphere = vtkSphere::New();
+    m_implicit = m_sphere;
+
+    m_sphere->SetCenter(0., 0., 0.);
+    m_sphere->SetRadius(5);
+}
+
+FemPostSphereFunction::~FemPostSphereFunction() {
+
+}
+
+void FemPostSphereFunction::onChanged(const Property* prop) {
+
+    if(prop == &Center) {
+        const Base::Vector3d& vec = Center.getValue();
+        m_sphere->SetCenter(vec[0], vec[1], vec[2]);
+    }
+    else if(prop == &Radius) {
+        m_sphere->SetRadius(Radius.getValue());
+    }
+    
+    Fem::FemPostFunction::onChanged(prop);
+}
