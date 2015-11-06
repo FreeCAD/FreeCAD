@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 __title__ = "_MechanicalMaterial"
-__author__ = "Juergen Riegel"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
