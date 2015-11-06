@@ -72,20 +72,18 @@ def _createCaeSolver(solverInfo, analysis=None, solver_object=None):
         else:
             raise Exception('Analysis type is not the valid type')
 
-    if solverInfo["SolverName"] == "Calculix":
-        from ccxFemSolver import ViewProviderCaeSolver, CaeSolver
-    else:
-        from FoamCfdSolver import ViewProviderCaeSolver, CaeSolver
-
     if solver_object is None:
         obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", solverInfo["SolverName"])
         FreeCAD.Console.PrintMessage("Solver {} is created\n".format(solverInfo["SolverName"]))
     else:
         obj = solver_object
-    CaeSolver(obj)
-    _analysis.Member = _analysis.Member + [obj]
+
+    import importlib  # works for python 2.7 and 3.x
+    mod = importlib.import_module(solverInfo["Module"])
+    mod.CaeSolver(obj)
     if FreeCAD.GuiUp:
-        ViewProviderCaeSolver(obj.ViewObject)
+        mod.ViewProviderCaeSolver(obj.ViewObject)
+    _analysis.Member = _analysis.Member + [obj]
 
     _analysis.Category = solverInfo["Category"]
     _analysis.SolverName = solverInfo["SolverName"]
