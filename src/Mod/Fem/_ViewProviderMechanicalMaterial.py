@@ -65,7 +65,7 @@ class _ViewProviderMechanicalMaterial:
         if not doc.getInEdit():
             doc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('There is an active ViewProvider in EditMode! Please close this one!\n')
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
         return True
 
     def __getstate__(self):
