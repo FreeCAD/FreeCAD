@@ -24,6 +24,7 @@
 #ifndef APP_DOCUMENTOBSERVER_H
 #define APP_DOCUMENTOBSERVER_H
 
+#include <Base/BaseClass.h>
 #include <boost/signals.hpp>
 #include <set>
 
@@ -104,7 +105,7 @@ public:
     template<typename T>
     inline T* getObjectAs() const
     {
-        return freecad_dynamic_cast<T>(getObject());
+        return Base::freecad_dynamic_cast<T>(getObject());
     }
 
 private:
