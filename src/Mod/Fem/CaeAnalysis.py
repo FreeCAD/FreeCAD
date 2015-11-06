@@ -150,33 +150,40 @@ class ViewProviderCaeAnalysis:
 
 
 def _CreateCaeAnalysis(solverName, analysisName=None):
-        """ todo: this function should be adapted to work without GUI later """
-        FreeCAD.ActiveDocument.openTransaction("Create Cae Analysis")
-        FreeCADGui.addModule("FemGui")
-        FreeCADGui.addModule("CaeAnalysis")
+        """ work for both Gui and nonGui mode"""
         _analysisName = analysisName if analysisName else solverName + "Analysis"
-        FreeCADGui.doCommand("CaeAnalysis._makeCaeAnalysis('{}')".format(_analysisName))
-        obj = FreeCAD.activeDocument().ActiveObject
-        FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
-        # create an solver and append into analysisObject
-        FreeCADGui.addModule("CaeSolver")
-        FreeCADGui.doCommand("CaeSolver.makeCaeSolver('{}')".format(solverName))
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
-        sel = FreeCADGui.Selection.getSelection()
-        if (len(sel) == 1):
-            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().ActiveObject.Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
-            if(sel[0].isDerivedFrom("Part::Feature")):
-                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
-                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
-                #FreeCADGui.doCommand("Gui.activeDocument().hide('" + sel[0].Name + "')")
-                #FreeCADGui.doCommand("App.activeDocument().ActiveObject.touch()")
-                #FreeCADGui.doCommand("App.activeDocument().recompute()")
-                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+        if FreeCAD.GuiUp:
+            FreeCAD.ActiveDocument.openTransaction("Create Cae Analysis")
+            FreeCADGui.addModule("FemGui")
+            FreeCADGui.addModule("CaeAnalysis")
+            FreeCADGui.doCommand("CaeAnalysis._makeCaeAnalysis('{}')".format(_analysisName))
+            obj = FreeCAD.activeDocument().ActiveObject
+            FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
+            # create an solver and append into analysisObject
+            FreeCADGui.addModule("CaeSolver")
+            FreeCADGui.doCommand("CaeSolver.makeCaeSolver('{}')".format(solverName))
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+            sel = FreeCADGui.Selection.getSelection()
+            if (len(sel) == 1):
+                if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
+                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().ActiveObject.Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
+                if(sel[0].isDerivedFrom("Part::Feature")):
+                    FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
+                    FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
+                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+                    #FreeCADGui.doCommand("Gui.activeDocument().hide('" + sel[0].Name + "')")
+                    #FreeCADGui.doCommand("App.activeDocument().ActiveObject.touch()")
+                    #FreeCADGui.doCommand("App.activeDocument().recompute()")
+                    FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
-        #FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.Selection.clearSelection()
+            #FreeCAD.ActiveDocument.commitTransaction()
+            FreeCADGui.Selection.clearSelection()
+        else:
+            import CaeAnalysis
+            obj = CaeAnalysis._makeCaeAnalysis(_analysisName)
+            import CaeSolver
+            sobj = CaeSolver.makeCaeSolver(solverName)
+            obj.Member = obj.Member + [sobj]
         return obj
 
 
