@@ -59,6 +59,7 @@
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostPipeline.h"
 #include "ViewProviderFemPostFunction.h"
+#include "ViewProviderFemPostFilter.h"
 #endif
 
 #ifdef FC_USE_VTK
@@ -126,6 +127,9 @@ PyMODINIT_FUNC initFemGui()
     FemGui::ViewProviderFemPostFunction        ::init();
     FemGui::ViewProviderFemPostFunctionProvider::init();
     FemGui::ViewProviderFemPostPlaneFunction   ::init();
+    FemGui::ViewProviderFemPostSphereFunction  ::init();
+    FemGui::ViewProviderFemPostClip            ::init();
+    FemGui::ViewProviderFemPostScalarClip      ::init();
 #endif
 
 
