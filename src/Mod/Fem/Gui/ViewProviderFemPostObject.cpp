@@ -39,13 +39,19 @@
 #endif
 
 #include "ViewProviderFemPostObject.h"
+#include "TaskPostBoxes.h"
 #include <Mod/Fem/App/FemPostObject.h>
 #include <Base/Console.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/Control.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 
 #include <vtkPointData.h>
 #include <vtkCellArray.h>
 #include <vtkCellData.h>
 #include <vtkLookupTable.h>
+#include <QMessageBox>
 
 using namespace FemGui;
 
@@ -55,14 +61,10 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObje
 ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
 {
      //initialize the properties
-    ADD_PROPERTY(Coloring,((long)0));    
+    ADD_PROPERTY_TYPE(Field,((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");    
+    ADD_PROPERTY_TYPE(VectorMode,((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
     ADD_PROPERTY(Transperency, (0));
-    
-    m_transperencyConstraint.StepSize = 1;
-    m_transperencyConstraint.LowerBound = 0;
-    m_transperencyConstraint.UpperBound = 100;
-    Transperency.setConstraints(&m_transperencyConstraint);
-    
+       
     sPixmap = "fem-fem-mesh-from-shape";
     
     //create the subnodes which do the visualization work
@@ -177,15 +179,20 @@ void ViewProviderFemPostObject::update() {
     if(!setupPipeline())
         return;
     
-    m_currentAlgorithm->Update();
-    vtkPolyData* poly = m_currentAlgorithm->GetOutput();  
+    m_currentAlgorithm->Update();    
+    updateProperties();
+    update3D();
+}
+
+void ViewProviderFemPostObject::updateProperties() {
     
-    //update the coloring property
     m_blockPropertyChanges = true;
+    vtkPolyData* poly = m_currentAlgorithm->GetOutput(); 
     
+    //coloring
     std::string val;
-    if(Coloring.getEnums() && Coloring.getValue() >= 0)
-        val = Coloring.getValueAsString();
+    if(Field.getEnums() && Field.getValue() >= 0)
+        val = Field.getValueAsString();
     
     std::vector<std::string> colorArrays;
     colorArrays.push_back("None");
@@ -199,22 +206,51 @@ void ViewProviderFemPostObject::update() {
         colorArrays.push_back(cell->GetArrayName(i));
     
     App::Enumeration empty;
-    Coloring.setValue(empty);
+    Field.setValue(empty);
     m_coloringEnum.setEnums(colorArrays);
-    Coloring.setValue(m_coloringEnum);
+    Field.setValue(m_coloringEnum);
     
     std::vector<std::string>::iterator it = std::find(colorArrays.begin(), colorArrays.end(), val);
     if(!val.empty() && it != colorArrays.end())
-        Coloring.setValue(val.c_str());
+        Field.setValue(val.c_str());
     
-    Coloring.purgeTouched();
+    Field.purgeTouched();
+    
+    //Vector mode
+    if(VectorMode.getEnums() && VectorMode.getValue() >= 0)
+        val = VectorMode.getValueAsString();
+    
+    colorArrays.clear();
+    if(Field.getValue() == 0)         
+        colorArrays.push_back("Not a vector");
+    else {
+        int array = Field.getValue() - 1; //0 is none   
+        vtkPolyData*  pd = m_currentAlgorithm->GetOutput();         
+        vtkDataArray* data = pd->GetPointData()->GetArray(array);
+
+        if(data->GetNumberOfComponents() == 1)
+            colorArrays.push_back("Not a vector");
+        else {
+            colorArrays.push_back("Magnitude");
+            if(data->GetNumberOfComponents() >= 2) {
+                colorArrays.push_back("X");
+                colorArrays.push_back("Y");
+            }
+            if(data->GetNumberOfComponents() >= 3)
+                colorArrays.push_back("Z");
+        }
+    }
+
+    VectorMode.setValue(empty);
+    m_vectorEnum.setEnums(colorArrays);
+    VectorMode.setValue(m_vectorEnum); 
+    
+    it = std::find(colorArrays.begin(), colorArrays.end(), val);
+    if(!val.empty() && it != colorArrays.end())
+        VectorMode.setValue(val.c_str());
     
     m_blockPropertyChanges = false;
-    
-    //update the visualization
-    update3D();
 }
-
 
 void ViewProviderFemPostObject::update3D() {
     
@@ -343,11 +379,11 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     Base::Console().Message("\n");
 
     m_coordinates->point.startEditing();
+    m_coordinates->point.setNum(points->GetNumberOfPoints());
     for (i = 0; i < points->GetNumberOfPoints(); i++) {
         p = points->GetPoint(i);
         m_coordinates->point.set1Value(i, p[0], p[1], p[2]);
     }
-    m_coordinates->point.setNum(points->GetNumberOfPoints());
     m_coordinates->point.finishEditing();
 
     // write out the point normal data
@@ -355,11 +391,11 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
         
         Base::Console().Message("Write normals: %i\n", normals->GetNumberOfTuples());
         m_normals->vector.startEditing();
+        m_normals->vector.setNum(normals->GetNumberOfTuples());
         for (i = 0; i < normals->GetNumberOfTuples(); i++) {
             p = normals->GetTuple(i);
             m_normals->vector.set1Value(i, SbVec3f(p[0], p[1], p[2]));
         }
-        m_normals->vector.setNum(normals->GetNumberOfTuples());
         m_normals->vector.finishEditing();
 
         m_normalBinding->value = SoNormalBinding::PER_VERTEX_INDEXED;
@@ -372,7 +408,7 @@ void ViewProviderFemPostObject::WriteColorData() {
     if(!setupPipeline())
         return;
     
-    if(Coloring.getEnumVector().empty() || Coloring.getValue() == 0) {
+    if(Field.getEnumVector().empty() || Field.getValue() == 0) {
         
         m_material->diffuseColor.setValue(SbColor(0.8,0.8,0.8));
         m_material->transparency.setValue(0.);
@@ -382,13 +418,17 @@ void ViewProviderFemPostObject::WriteColorData() {
     };
  
     
-    int array = Coloring.getValue() - 1; //0 is none   
+    int array = Field.getValue() - 1; //0 is none   
     vtkPolyData*  pd = m_currentAlgorithm->GetOutput();         
     vtkDataArray* data = pd->GetPointData()->GetArray(array);
 
+    int component = VectorMode.getValue() - 1; //0 is either "Not a vector" or magnitude, for -1 is correct for magnitude. x y and z are one number too high
+    if(strcmp(VectorMode.getValueAsString(), "Not a vector")==0)
+        component = 0;
+        
     //build the lookuptable
     double range[2];
-    data->GetRange(range, 0);
+    data->GetRange(range, component);
     m_lookup->SetTableRange(range[0], range[1]);
     m_lookup->SetScaleToLinear();
     m_lookup->Build();
@@ -397,7 +437,15 @@ void ViewProviderFemPostObject::WriteColorData() {
      
     for (int i = 0; i < pd->GetNumberOfPoints(); i++) {
         
-        double value = data->GetComponent(i, 0);
+        double value = 0;
+        if(component >= 0)
+            value = data->GetComponent(i, component);
+        else {
+            for(int j=0; j<data->GetNumberOfComponents(); ++j)
+                value += std::pow(data->GetComponent(i, j),2);
+            
+            value = std::sqrt(value);
+        }
         double c[3];
         m_lookup->GetColor(value, c);
         m_material->diffuseColor.set1Value(i, c[0], c[1], c[2]);
@@ -465,12 +513,81 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
         return;
     
     Base::Console().Message("On Changed: %s\n", prop->getName());    
-    if(prop == &Coloring && setupPipeline()) {
+    if(prop == &Field && setupPipeline()) {
+        updateProperties();
         WriteColorData();
+        WriteTransperency();
     } 
+    else if(prop == &VectorMode && setupPipeline()) {
+        WriteColorData();
+        WriteTransperency();
+    }
     else if(prop == &Transperency) {
         WriteTransperency();
     }    
     
     ViewProviderDocumentObject::onChanged(prop);
 }
+
+bool ViewProviderFemPostObject::doubleClicked(void) {
+    Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
+    return true;
+}
+
+
+bool ViewProviderFemPostObject::setEdit(int ModNum) {
+    
+     if (ModNum == ViewProvider::Default || ModNum == 1 ) {
+
+        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+        TaskDlgPost *postDlg = qobject_cast<TaskDlgPost*>(dlg);
+        if (postDlg && postDlg->getView() != this)
+            postDlg = 0; // another pad left open its task panel
+        if (dlg && !postDlg) {
+            QMessageBox msgBox;
+            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
+            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::Yes);
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::Yes)
+                Gui::Control().reject();
+            else
+                return false;
+        }
+
+        // start the edit dialog
+        if (postDlg)
+            Gui::Control().showDialog(postDlg);
+        else {
+            postDlg = new TaskDlgPost(this);
+            setupTaskDialog(postDlg);
+            Gui::Control().showDialog(postDlg);
+        }
+
+        return true;
+    }
+    else {
+        return ViewProviderDocumentObject::setEdit(ModNum);
+    }
+}
+
+void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg) {
+
+    dlg->appendBox(new TaskPostDisplay(this));
+}
+
+void ViewProviderFemPostObject::unsetEdit(int ModNum) {
+    
+    if (ModNum == ViewProvider::Default) {
+        // and update the pad
+        //getSketchObject()->getDocument()->recompute();
+
+        // when pressing ESC make sure to close the dialog
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDocumentObject::unsetEdit(ModNum);
+    }
+}
+

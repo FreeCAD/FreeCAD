@@ -134,6 +134,10 @@ void FemPostPipeline::onChanged(const Property* prop)
         
         //we check if all connections are right and add new ones if needed
         std::vector<App::DocumentObject*> objs = Filter.getValues();
+        
+        if(objs.empty())
+            return;
+        
         std::vector<App::DocumentObject*>::iterator it = objs.begin();
         FemPostFilter* filter = static_cast<FemPostFilter*>(*it);
         

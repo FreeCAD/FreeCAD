@@ -25,7 +25,31 @@
 #define FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
 
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Mod/Fem/App/FemPostFunction.h>
 #include <Inventor/SbMatrix.h>
+#include <QWidget>
+
+
+#if defined(signals) && defined(QOBJECTDEFS_H) && \
+  !defined(QT_MOC_CPP)
+#  undef signals
+#  define signals signals
+#endif
+
+#include <boost/signal.hpp>
+namespace boost
+{
+  namespace signalslib = signals;
+}
+
+#if defined(signals) && defined(QOBJECTDEFS_H) && \
+  !defined(QT_MOC_CPP)
+#  undef signals
+// Restore the macro definition of "signals", as it was
+// defined by Qt's <qobjectdefs.h>.
+#  define signals protected
+#endif
+
 
 class SoScale;
 class SoSurroundScale;
@@ -33,9 +57,41 @@ class SoTransformManip;
 class SoComposeMatrix;
 class SoMatrixTransform;
 class SoDragger;
+class SoSphere;
+class Ui_PlaneWidget;
+class Ui_SphereWidget;
 
 namespace FemGui
 {
+
+class ViewProviderFemPostFunction;
+    
+class FemGuiExport FunctionWidget : public QWidget {
+  
+    Q_OBJECT
+public:
+    FunctionWidget() {};
+    virtual ~FunctionWidget() {};
+    
+    virtual void applyPythonCode() = 0;
+    virtual void setViewProvider(ViewProviderFemPostFunction* view);
+    void onObjectsChanged(const App::DocumentObject& obj, const App::Property&); 
+    
+protected:
+    ViewProviderFemPostFunction* getView()  {return m_view;};
+    Fem::FemPostFunction*        getObject(){return m_object;};
+    
+    bool blockObjectUpdates() {return m_block;};
+    void setBlockObjectUpdates(bool val) {m_block = val;};    
+    
+    virtual void onChange(const App::Property& p) = 0;
+    
+private:
+    bool                                        m_block;
+    ViewProviderFemPostFunction*                m_view;
+    Fem::FemPostFunction*                       m_object;
+    boost::signalslib::scoped_connection        m_connection;      
+};
     
 class FemGuiExport ViewProviderFemPostFunctionProvider : public Gui::ViewProviderDocumentObject
 {
@@ -59,9 +115,17 @@ public:
     ~ViewProviderFemPostFunction();
 
     void attach(App::DocumentObject *pcObject);
+    bool doubleClicked(void);
     std::vector<std::string> getDisplayModes() const;
-   
+    
+    //creates the widget used in the task dalogs, either for the function itself or for 
+    //the fiter using it
+    virtual FunctionWidget* createControlWidget() {return NULL;};
+
 protected:    
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    
     void setAutoScale(bool value) {m_autoscale = value;};
     bool autoScale()              {return m_autoscale;};
     
@@ -83,6 +147,27 @@ private:
     bool                m_autoscale, m_isDragging, m_autoRecompute;
 };
 
+//###############################################################################################
+
+class FemGuiExport PlaneWidget : public FunctionWidget {
+    
+    Q_OBJECT
+public:
+    PlaneWidget();
+    virtual ~PlaneWidget();
+
+    virtual void applyPythonCode();
+    virtual void onChange(const App::Property& p);
+    virtual void setViewProvider(ViewProviderFemPostFunction* view);
+
+private Q_SLOTS:
+    void originChanged(double val);
+    void normalChanged(double val);
+    
+private:
+    Ui_PlaneWidget* ui;
+};
+
 class FemGuiExport ViewProviderFemPostPlaneFunction : public ViewProviderFemPostFunction {
   
     PROPERTY_HEADER(FemGui::ViewProviderFemPostPlaneFunction);
@@ -91,9 +176,51 @@ public:
     ViewProviderFemPostPlaneFunction();     
     virtual ~ViewProviderFemPostPlaneFunction();
     
+    virtual FunctionWidget* createControlWidget();
+    
 protected:
     virtual void draggerUpdate(SoDragger* mat);
     virtual void updateData(const App::Property*);
+};
+
+//###############################################################################################
+
+class FemGuiExport SphereWidget : public FunctionWidget {
+    
+    Q_OBJECT
+public:
+    SphereWidget();
+    virtual ~SphereWidget();
+
+    virtual void applyPythonCode();
+    virtual void onChange(const App::Property& p);
+    virtual void setViewProvider(ViewProviderFemPostFunction* view);
+
+private Q_SLOTS:
+    void centerChanged(double val);
+    void radiusChanged(double val);
+    
+private:
+    Ui_SphereWidget* ui;
+};
+
+class FemGuiExport ViewProviderFemPostSphereFunction : public ViewProviderFemPostFunction {
+  
+    PROPERTY_HEADER(FemGui::ViewProviderFemPostSphereFunction);
+    
+public:
+    ViewProviderFemPostSphereFunction();     
+    virtual ~ViewProviderFemPostSphereFunction();
+    
+    virtual SoTransformManip* setupManipulator();
+    virtual FunctionWidget* createControlWidget();
+    
+protected:
+    virtual void draggerUpdate(SoDragger* mat);
+    virtual void updateData(const App::Property*);
+
+private:
+    SoSphere* m_sphereNode;
 };
 
 } //namespace FemGui

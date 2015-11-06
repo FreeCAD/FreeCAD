@@ -30,6 +30,8 @@
 #include "FemPostPipeline.h"
 #include <Base/Console.h>
 #include <App/DocumentObjectPy.h>
+#include <vtkFieldData.h>
+#include <vtkPointData.h>
 
 using namespace Fem;
 using namespace App;
@@ -44,6 +46,9 @@ FemPostFilter::FemPostFilter()
 
 FemPostFilter::~FemPostFilter()
 {
+    //we need to make sure that all vtk filters are disconnected
+    //as the would stay alive and connected otherwise
+    clearInput();    
 }
 
 bool FemPostFilter::valid() {
@@ -173,11 +178,11 @@ FemPostClipFilter::FemPostClipFilter(void) : FemPostFilter() {
     ADD_PROPERTY_TYPE(Function, (0), "Clip", App::Prop_None, "The function object which defines the clip regions");
     ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction"); 
     ADD_PROPERTY_TYPE(CutCells, (false), "Clip", App::Prop_None, "Decides if cells are cuttet and interpolated or if the cells are kept as a whole"); 
-
+  
     polyDataSource = vtkGeometryFilter::New();
     
     FilterPipeline clip;  
-    m_clipper           = vtkClipDataSet::New();
+    m_clipper           = vtkTableBasedClipDataSet::New();
     clip.source         = m_clipper;
     clip.target         = m_clipper;
     clip.visualisation  = m_clipper;
@@ -221,6 +226,118 @@ void FemPostClipFilter::onChanged(const Property* prop) {
     };              
     
     Fem::FemPostFilter::onChanged(prop);
+}
+
+
+
+
+PROPERTY_SOURCE(Fem::FemPostScalarClipFilter, Fem::FemPostFilter)
+
+FemPostScalarClipFilter::FemPostScalarClipFilter(void) : FemPostFilter() {
+
+    ADD_PROPERTY_TYPE(Value, (0), "Clip", App::Prop_None, "The scalar value used to clip the selected field");
+    ADD_PROPERTY_TYPE(Scalars, (long(0)), "Clip", App::Prop_None, "The field used to clip");
+    ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction"); 
+  
+    Value.setConstraints(&m_constraints);
+    
+    polyDataSource = vtkGeometryFilter::New();
+    
+    FilterPipeline clip;  
+    m_clipper           = vtkTableBasedClipDataSet::New();
+    clip.source         = m_clipper;
+    clip.target         = m_clipper;
+    clip.visualisation  = m_clipper;
+    addFilterPipeline(clip, "clip");
+    setActiveFilterPipeline("clip"); 
+}
+
+FemPostScalarClipFilter::~FemPostScalarClipFilter() {
+    
+}
+
+DocumentObjectExecReturn* FemPostScalarClipFilter::execute(void) {
+        
+    //update the available fields and set the correct input field data for clipping
+    if(!isConnected())
+        return StdReturn;
+ 
+    std::string val;
+    if(m_scalarFields.getEnums() && Scalars.getValue() >= 0)
+        val = Scalars.getValueAsString();
+    
+    std::vector<std::string> array;
+    
+    vtkDataObject* data;
+    if(hasInputAlgorithmConnected()) {
+        getConnectedInputAlgorithm()->Update();
+        data = getConnectedInputAlgorithm()->GetOutputDataObject(0);
+    }
+    else 
+        data = getConnectedInputData();
+   
+    vtkDataSet* dset = dynamic_cast<vtkDataSet*>(data);
+    if(!dset)
+        return StdReturn;
+    
+    vtkPointData* pd = dset->GetPointData();
+    
+    for(int i=0; i<pd->GetNumberOfArrays(); ++i) {
+        if(pd->GetArray(i)->GetNumberOfComponents()==1)
+            array.push_back(pd->GetArrayName(i));
+    }
+
+    App::Enumeration empty;
+    Scalars.setValue(empty);
+    m_scalarFields.setEnums(array);
+    Scalars.setValue(m_scalarFields);
+    
+    std::vector<std::string>::iterator it = std::find(array.begin(), array.end(), val);
+    if(!val.empty() && it != array.end())
+        Scalars.setValue(val.c_str());
+    
+    //recalculate the filter
+    return Fem::FemPostFilter::execute();
+}
+
+
+void FemPostScalarClipFilter::onChanged(const Property* prop) {
+    
+    if(prop == &Value) {
+        m_clipper->SetValue(Value.getValue());     
+    }
+    else if(prop == &InsideOut) {
+        m_clipper->SetInsideOut(InsideOut.getValue());
+    }
+    else if(prop == &Scalars && (Scalars.getValue() >= 0)) {
+        m_clipper->SetInputArrayToProcess(0, 0, 0, 
+                                          vtkDataObject::FIELD_ASSOCIATION_POINTS, Scalars.getValueAsString() );
+        setConstraintForField();
+    }
+    
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+void FemPostScalarClipFilter::setConstraintForField() {
+
+    vtkDataObject* data;
+    if(hasInputAlgorithmConnected()) {
+        getConnectedInputAlgorithm()->Update();
+        data = getConnectedInputAlgorithm()->GetOutputDataObject(0);
+    }
+    else 
+        data = getConnectedInputData();
+   
+    vtkDataSet* dset = dynamic_cast<vtkDataSet*>(data);
+    if(!dset)
+        return;
+    
+    vtkDataArray* pdata = dset->GetPointData()->GetArray(Scalars.getValueAsString());
+    double p[2];
+    pdata->GetRange(p);
+    m_constraints.LowerBound = p[0];
+    m_constraints.UpperBound = p[1];
+    m_constraints.StepSize = (p[1]-p[0])/100.;
 }
 
 

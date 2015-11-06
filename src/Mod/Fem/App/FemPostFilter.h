@@ -25,9 +25,10 @@
 #define Fem_FemPostFilter_H
 
 #include "FemPostObject.h"
+#include <App/PropertyUnits.h>
 
 #include <vtkSmartPointer.h>
-#include <vtkClipDataSet.h>
+#include <vtkTableBasedClipDataSet.h>
 #include <vtkExtractGeometry.h>
 #include <vtkGeometryFilter.h>
 #include <vtkPassThrough.h>
@@ -92,16 +93,48 @@ public:
     FemPostClipFilter(void);        
     virtual ~FemPostClipFilter();
     
-    App::PropertyLink Function;
-    App::PropertyBool InsideOut;
-    App::PropertyBool CutCells;
+    App::PropertyLink           Function;
+    App::PropertyBool           InsideOut;
+    App::PropertyBool           CutCells;
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostClip";
+    }
     
 protected:
     virtual void onChanged(const App::Property* prop);
     
 private:    
-    vtkSmartPointer<vtkClipDataSet>     m_clipper;
+    vtkSmartPointer<vtkTableBasedClipDataSet>     m_clipper;
     vtkSmartPointer<vtkExtractGeometry> m_extractor;
+};
+
+
+class AppFemExport FemPostScalarClipFilter : public FemPostFilter {
+  
+    PROPERTY_HEADER(Fem::FemPostScalarClipFilter);
+    
+public:
+    FemPostScalarClipFilter(void);        
+    virtual ~FemPostScalarClipFilter();
+
+    App::PropertyBool            InsideOut;
+    App::PropertyFloatConstraint Value;
+    App::PropertyEnumeration     Scalars;
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostScalarClip";
+    }
+    
+protected:
+    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual void onChanged(const App::Property* prop);
+    void setConstraintForField();
+    
+private:    
+    vtkSmartPointer<vtkTableBasedClipDataSet>             m_clipper;
+    App::Enumeration                            m_scalarFields;
+    App::PropertyFloatConstraint::Constraints   m_constraints;
 };
 
 } //namespace Fem

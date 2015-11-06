@@ -58,6 +58,8 @@ class SoIndexedTriangleStripSet;
 namespace FemGui
 {
 
+class TaskDlgPost;
+
 class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemPostObject);
@@ -69,14 +71,20 @@ public:
     /// destructor.
     ~ViewProviderFemPostObject();
     
-    App::PropertyEnumeration            Coloring;
-    App::PropertyIntegerConstraint      Transperency;
+    App::PropertyEnumeration            Field;
+    App::PropertyEnumeration            VectorMode;
+    App::PropertyPercent                Transperency;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
     void onChanged(const App::Property* prop);
+    
+    //edit handling
+    virtual bool doubleClicked(void);
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
     
       /** @name Selection handling
       * This group of methodes do the selection handling.
@@ -94,6 +102,7 @@ public:
 //     //@}
 
 protected:    
+    virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void update();
     
@@ -118,14 +127,14 @@ protected:
     vtkSmartPointer<vtkLookupTable>             m_lookup;
     
 private:
+    void updateProperties();
     void update3D();
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
                         vtkDataArray *tcoords);
     void WriteColorData();
     void WriteTransperency();
     
-    App::Enumeration m_coloringEnum;   
-    App::PropertyIntegerConstraint::Constraints m_transperencyConstraint;
+    App::Enumeration m_coloringEnum, m_vectorEnum;   
     bool m_blockPropertyChanges;
 };
 

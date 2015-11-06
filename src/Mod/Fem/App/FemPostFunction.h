@@ -25,11 +25,12 @@
 #define Fem_FemPostFunction_H
 
 #include "FemPostObject.h"
+#include <App/PropertyUnits.h>
 
 #include <vtkSmartPointer.h>
 #include <vtkImplicitFunction.h>
 #include <vtkPlane.h>
-#include <vtkPlaneSource.h>
+#include <vtkSphere.h>
 
 namespace Fem
 {
@@ -101,6 +102,30 @@ protected:
     virtual void onChanged(const App::Property* prop);
     
     vtkSmartPointer<vtkPlane> m_plane;
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+class AppFemExport FemPostSphereFunction : public FemPostFunction 
+{
+    PROPERTY_HEADER(Fem::FemPostSphereFunction);
+    
+public:
+    
+    FemPostSphereFunction(void);
+    virtual ~FemPostSphereFunction();
+    
+    App::PropertyDistance         Radius;
+    App::PropertyVectorDistance   Center;
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostSphereFunction";
+    }
+    
+protected:
+    virtual void onChanged(const App::Property* prop);
+    
+    vtkSmartPointer<vtkSphere> m_sphere;
 };
 
 } //namespace Fem
