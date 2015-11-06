@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 #endif
 
 #include <boost/signals.hpp>
@@ -35,6 +36,154 @@
 #include "DocumentObserver.h"
 
 using namespace App;
+
+
+DocumentT::DocumentT()
+{
+}
+
+DocumentT::DocumentT(Document* doc)
+{
+    document = doc->getName();
+}
+
+DocumentT::~DocumentT()
+{
+}
+
+void DocumentT::operator=(const DocumentT& doc)
+{
+    if (this == &doc)
+        return;
+    document = doc.document;
+}
+
+void DocumentT::operator=(const Document* doc)
+{
+    document = doc->getName();
+}
+
+Document* DocumentT::getDocument() const
+{
+    return GetApplication().getDocument(document.c_str());
+}
+
+std::string DocumentT::getDocumentName() const
+{
+    return document;
+}
+
+std::string DocumentT::getDocumentPython() const
+{
+    std::stringstream str;
+    Document* doc = GetApplication().getActiveDocument();
+    if (doc && document == doc->getName()) {
+        str << "FreeCAD.ActiveDocument";
+    }
+    else {
+        str << "FreeCAD.getDocument(\""
+            << document
+            << "\")";
+    }
+    return str.str();
+}
+
+// -----------------------------------------------------------------------------
+
+DocumentObjectT::DocumentObjectT()
+{
+}
+
+DocumentObjectT::DocumentObjectT(DocumentObject* obj)
+{
+    object = obj->getNameInDocument();
+    label = obj->Label.getValue();
+    document = obj->getDocument()->getName();
+}
+
+DocumentObjectT::~DocumentObjectT()
+{
+}
+
+void DocumentObjectT::operator=(const DocumentObjectT& obj)
+{
+    if (this == &obj)
+        return;
+    object = obj.object;
+    label = obj.label;
+    document = obj.document;
+}
+
+void DocumentObjectT::operator=(const DocumentObject* obj)
+{
+    object = obj->getNameInDocument();
+    label = obj->Label.getValue();
+    document = obj->getDocument()->getName();
+}
+
+Document* DocumentObjectT::getDocument() const
+{
+    return GetApplication().getDocument(document.c_str());
+}
+
+std::string DocumentObjectT::getDocumentName() const
+{
+    return document;
+}
+
+std::string DocumentObjectT::getDocumentPython() const
+{
+    std::stringstream str;
+    Document* doc = GetApplication().getActiveDocument();
+    if (doc && document == doc->getName()) {
+        str << "FreeCAD.ActiveDocument";
+    }
+    else {
+        str << "FreeCAD.getDocument(\""
+            << document
+            << "\")";
+    }
+    return str.str();
+}
+
+DocumentObject* DocumentObjectT::getObject() const
+{
+    DocumentObject* obj = 0;
+    Document* doc = getDocument();
+    if (doc) {
+        obj = doc->getObject(object.c_str());
+    }
+    return obj;
+}
+
+std::string DocumentObjectT::getObjectName() const
+{
+    return object;
+}
+
+std::string DocumentObjectT::getObjectLabel() const
+{
+    return label;
+}
+
+std::string DocumentObjectT::getObjectPython() const
+{
+    std::stringstream str;
+    Document* doc = GetApplication().getActiveDocument();
+    if (doc && document == doc->getName()) {
+        str << "FreeCAD.ActiveDocument.";
+    }
+    else {
+        str << "FreeCAD.getDocument(\""
+            << document
+            << "\").";
+    }
+
+    str << object;
+    return str.str();
+}
+
+// -----------------------------------------------------------------------------
 
 DocumentObserver::DocumentObserver() : _document(0)
 {
