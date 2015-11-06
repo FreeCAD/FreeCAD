@@ -78,8 +78,8 @@ SET(FemScripts_SRCS
     MechanicalAnalysis.py
     ShowDisplacement.ui
     FemCommands.py
-    _ResultControlTaskPanel.py
-    _JobControlTaskPanel.py
+    _TaskPanelResultControl.py
+    _TaskPanelJobControl.py
     _ViewProviderFemAnalysis.py
     _FemAnalysis.py
     _CommandMechanicalShowResult.py
@@ -93,21 +93,21 @@ SET(FemScripts_SRCS
     _ViewProviderFemBeamSection.py
     FemBeamSection.py
     _CommandFemBeamSection.py
-    _FemBeamSectionTaskPanel.py
+    _TaskPanelFemBeamSection.py
     FemBeamSection.ui
 
     _FemShellThickness.py
     _ViewProviderFemShellThickness.py
     FemShellThickness.py
     _CommandFemShellThickness.py
-    _FemShellThicknessTaskPanel.py
+    _TaskPanelFemShellThickness.py
     FemShellThickness.ui
 
     _MechanicalMaterial.py
     _ViewProviderMechanicalMaterial.py
     MechanicalMaterial.py
     _CommandMechanicalMaterial.py
-    _MechanicalMaterialTaskPanel.py
+    _TaskPanelMechanicalMaterial.py
     MechanicalMaterial.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})

@@ -36,7 +36,7 @@ if FreeCAD.GuiUp:
     from PySide.QtGui import QApplication
 
 
-class _ResultControlTaskPanel:
+class _TaskPanelResultControl:
     '''The control for the displacement post-processing'''
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/ShowDisplacement.ui")
