@@ -39,6 +39,7 @@ class TopoDS_Shape;
 class TopoDS_Face;
 class TopoDS_Edge;
 class TopoDS_Vertex;
+class TopoDS_Solid;
 
 namespace Fem
 {
@@ -87,6 +88,8 @@ public:
     //@{
     /// retrieving by region growing
     std::set<long> getSurfaceNodes(long ElemId, short FaceId, float Angle=360)const;
+    /// retrieving by solid
+    std::set<int> getNodesBySolid(const TopoDS_Solid &solid) const;
     /// retrieving by face
     std::set<int> getNodesByFace(const TopoDS_Face &face) const;
     /// retrieving by edge

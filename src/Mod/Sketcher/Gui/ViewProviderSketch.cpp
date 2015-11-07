@@ -4545,19 +4545,21 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
-    if (edit->sketchHandler)
-        deactivateHandler();
+    if (edit) {
+        if (edit->sketchHandler)
+            deactivateHandler();
 
-    edit->EditRoot->removeAllChildren();
-    pcRoot->removeChild(edit->EditRoot);
+        edit->EditRoot->removeAllChildren();
+        pcRoot->removeChild(edit->EditRoot);
 
-    if (edit->visibleBeforeEdit)
-        this->show();
-    else
-        this->hide();
+        if (edit->visibleBeforeEdit)
+            this->show();
+        else
+            this->hide();
 
-    delete edit;
-    edit = 0;
+        delete edit;
+        edit = 0;
+    }
 
     try {
         // and update the sketch
@@ -4571,10 +4573,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     std::string ObjName = getSketchObject()->getNameInDocument();
     std::string DocName = getSketchObject()->getDocument()->getName();
     Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str());
-    
+
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
-    
+
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
 }

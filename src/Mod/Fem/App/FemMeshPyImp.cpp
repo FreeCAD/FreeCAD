@@ -38,6 +38,7 @@
 #include <Base/QuantityPy.h>
 
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeSolidPy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeVertexPy.h>
@@ -607,6 +608,34 @@ PyObject* FemMeshPy::getNodeById(PyObject *args)
         return new Base::VectorPy( vec );
     }else{
         PyErr_SetString(Base::BaseExceptionFreeCADError, "No valid ID");
+        return 0;
+    }
+}
+
+PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeSolidPy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeSolidPy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Solid& fc = TopoDS::Solid(sh);
+        if (sh.IsNull()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Solid is empty");
+            return 0;
+        }
+        Py::List ret;
+        std::set<int> resultSet = getFemMeshPtr()->getNodesBySolid(fc);
+        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+            ret.append(Py::Int(*it));
+
+        return Py::new_reference_to(ret);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
 }

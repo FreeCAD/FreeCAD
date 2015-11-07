@@ -136,7 +136,7 @@ class _ResultControlTaskPanel:
         FreeCAD.FEM_dialog["results_type"] = "Sabs"
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.StressValues)
+            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.StressValues)
         (minm, avg, maxm) = self.get_result_stats("Sabs")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -145,13 +145,13 @@ class _ResultControlTaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if disp_type == "Uabs":
             if self.suitable_results:
-                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.DisplacementLengths)
+                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, self.result_object.DisplacementLengths)
         else:
             match = {"U1": 0, "U2": 1, "U3": 2}
             d = zip(*self.result_object.DisplacementVectors)
             displacements = list(d[match[disp_type]])
             if self.suitable_results:
-                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, displacements)
+                self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.NodeNumbers, displacements)
         (minm, avg, maxm) = self.get_result_stats(disp_type)
         self.set_result_stats("mm", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
@@ -180,7 +180,7 @@ class _ResultControlTaskPanel:
                 self.update_displacement()
         FreeCAD.FEM_dialog["result_object"] = self.result_object
         if self.suitable_results:
-            self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
+            self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.NodeNumbers, self.result_object.DisplacementVectors)
         self.update_displacement()
         QtGui.qApp.restoreOverrideCursor()
 
@@ -207,7 +207,7 @@ class _ResultControlTaskPanel:
 
         self.suitable_results = False
         if self.result_object:
-            if self.MeshObject.FemMesh.NodeCount == len(self.result_object.ElementNumbers):
+            if self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers):
                 self.suitable_results = True
             else:
                 if not self.MeshObject.FemMesh.VolumeCount:

@@ -1285,49 +1285,57 @@ void Application::initApplication(void)
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
 }
 
-void Application::processCmdLineFiles(void)
+std::list<std::string> Application::getCmdLineFiles()
 {
-    Base::Console().Log("Init: Processing command line files\n");
+    std::list<std::string> files;
 
     // cycling through all the open files
     unsigned short count = 0;
     count = atoi(mConfig["OpenFileCount"].c_str());
     std::string File;
 
-    if (count == 0 && mConfig["RunMode"] == "Exit")
-        mConfig["RunMode"] = "Cmd";
-
     for (unsigned short i=0; i<count; i++) {
         // getting file name
         std::ostringstream temp;
         temp << "OpenFile" << i;
 
-        FileInfo File(mConfig[temp.str()].c_str());
+        std::string file(mConfig[temp.str()]);
+        files.push_back(file);
+    }
 
-        std::string Ext = File.extension();
-        Base::Console().Log("Init:     Processing file: %s\n",File.filePath().c_str());
+    return files;
+}
+
+void Application::processFiles(const std::list<std::string>& files)
+{
+    Base::Console().Log("Init: Processing command line files\n");
+    for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
+        Base::FileInfo file(*it);
+
+        Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
+
         try {
-
-            if (File.hasExtension("fcstd") || File.hasExtension("std")) {
+            if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
-                Application::_pcSingleton->openDocument(File.filePath().c_str());
+                Application::_pcSingleton->openDocument(file.filePath().c_str());
             }
-            else if (File.hasExtension("fcscript")||File.hasExtension("fcmacro")) {
-                Base::Interpreter().runFile(File.filePath().c_str(), true);
+            else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
+                Base::Interpreter().runFile(file.filePath().c_str(), true);
             }
-            else if (File.hasExtension("py")) {
+            else if (file.hasExtension("py")) {
                 try {
-                    Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                    Base::Interpreter().loadModule(file.fileNamePure().c_str());
                 }
                 catch(const PyException&) {
                     // if module load not work, just try run the script (run in __main__)
-                    Base::Interpreter().runFile(File.filePath().c_str(),true);
+                    Base::Interpreter().runFile(file.filePath().c_str(),true);
                 }
             }
             else {
-                std::vector<std::string> mods = App::GetApplication().getImportModules(Ext.c_str());
+                std::string ext = file.extension();
+                std::vector<std::string> mods = App::GetApplication().getImportModules(ext.c_str());
                 if (!mods.empty()) {
-                    std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+                    std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
                     Base::Interpreter().loadModule(mods.front().c_str());
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
@@ -1335,7 +1343,7 @@ void Application::processCmdLineFiles(void)
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else {
-                    Console().Warning("File format not supported: %s \n", File.filePath().c_str());
+                    Console().Warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
         }
@@ -1343,11 +1351,23 @@ void Application::processCmdLineFiles(void)
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Console().Error("Exception while processing file: %s [%s]\n", File.filePath().c_str(), e.what());
+            Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
         }
         catch (...) {
-            Console().Error("Unknown exception while processing file: %s \n", File.filePath().c_str());
+            Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
+    }
+}
+
+void Application::processCmdLineFiles(void)
+{
+    // process files passed to command line
+    std::list<std::string> files = getCmdLineFiles();
+    processFiles(files);
+
+    if (files.empty()) {
+        if (mConfig["RunMode"] == "Exit")
+            mConfig["RunMode"] = "Cmd";
     }
 
     const std::map<std::string,std::string>& cfg = Application::Config();
@@ -1586,6 +1606,7 @@ void Application::ParseOptions(int ac, char ** av)
     ("run-test,t",   value<int>()   ,"Test level")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
+    ("single-instance", "Allow to run a single instance of the application")
     ;
 
 
@@ -1804,6 +1825,10 @@ void Application::ParseOptions(int ac, char ** av)
             //sScriptName = FreeCADTest;
             break;
         };
+    }
+
+    if (vm.count("single-instance")) {
+        mConfig["SingleInstance"] = "1";
     }
 
     if (vm.count("dump-config")) {

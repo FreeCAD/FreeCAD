@@ -23,23 +23,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
+# include <QMessageBox>
 #endif
 
 #include <sstream>
 
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Points/App/PointsFeature.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
 #include <Base/CoordinateSystem.h>
 
 #include "../App/ApproxSurface.h"
+#include "FitBSplineSurface.h"
 
 using namespace std;
 
@@ -50,7 +55,7 @@ CmdApproxSurface::CmdApproxSurface()
 {
     sAppModule      = "Reen";
     sGroup          = QT_TR_NOOP("Reverse Engineering");
-    sMenuText       = QT_TR_NOOP("Approximate surface...");
+    sMenuText       = QT_TR_NOOP("Approximate B-Spline surface...");
     sToolTipText    = QT_TR_NOOP("Approximate a B-Spline surface");
     sWhatsThis      = "Reen_ApproxSurface";
     sStatusTip      = sToolTipText;
@@ -59,48 +64,23 @@ CmdApproxSurface::CmdApproxSurface()
 
 void CmdApproxSurface::activated(int iMsg)
 {
-    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(obj[0])->Mesh.getValue();
-    if (mesh.countSegments() > 0) {
-        const Mesh::Segment& segm = mesh.getSegment(0);
-        const std::vector<unsigned long>& inds = segm.getIndices();
-        MeshCore::MeshFacetIterator f_iter(mesh.getKernel());
-        std::set<unsigned long> points;
-        for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-            f_iter.Set(*it);
-            MeshCore::MeshFacet face = f_iter.GetIndices();
-            points.insert(face._aulPoints[0]);
-            points.insert(face._aulPoints[1]);
-            points.insert(face._aulPoints[2]);
-        }
-
-        std::stringstream str;
-        str << "__points=[]" << std::endl;
-        for (std::set<unsigned long>::iterator it=points.begin(); it != points.end(); ++it) {
-            Mesh::MeshPoint p = mesh.getPoint(*it);
-            str << "__points.append((" << p.x << "," << p.y << "," << p.z << "))" << std::endl;
-        }
-
-        str << "import ReverseEngineering" << std::endl;
-        str << "__spline = ReverseEngineering.approxSurface(__points)" << std::endl;
-        str << "App.ActiveDocument.addObject(\"Part::Feature\",\"Surface\").Shape"
-               "=__spline.toShape(0.0,1.0,0.0,1.0)" << std::endl;
-        str << "App.ActiveDocument.recompute()" << std::endl;
-        str << "del __points" << std::endl;
-        str << "del __spline" << std::endl;
-        
-        openCommand("Fit surface");
-        doCommand(Gui::Command::Doc, str.str().c_str());
-        commitCommand(); 
-        updateActive();
+    App::DocumentObjectT objT;
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    if (obj.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Reen_ApproxSurface", "Wrong selection"),
+            qApp->translate("Reen_ApproxSurface", "Please select a single point cloud.")
+        );
+        return;
     }
+
+    objT = obj.front();
+    Gui::Control().showDialog(new ReenGui::TaskFitBSplineSurface(objT));
 }
 
 bool CmdApproxSurface::isActive(void)
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1)
-        return true;
-    return false;
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 DEF_STD_CMD_A(CmdApproxPlane);

@@ -31,6 +31,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
+#include <Base/GeometryPyCXX.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -61,6 +62,8 @@ public:
         add_varargs_method("triangulate",&Module::triangulate,
             "triangulate(PointKernel,searchRadius[,mu=2.5])."
         );
+#endif
+#if defined(HAVE_PCL_OPENNURBS)
         add_keyword_method("fitBSpline",&Module::fitBSpline,
             "fitBSpline(PointKernel)."
         );
@@ -74,6 +77,7 @@ private:
     Py::Object approxSurface(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *o;
+        PyObject *uvdirs = 0;
         // spline parameters
         int uDegree = 3;
         int vDegree = 3;
@@ -84,21 +88,22 @@ private:
         double weight = 0.1;
         double grad = 1.0;  //0.5
         double bend = 0.0; //0.2
+        double curv = 0.0; //0.3
         // other parameters
         int iteration = 5;
         PyObject* correction = Py_True;
         double factor = 1.0;
 
         static char* kwds_approx[] = {"Points", "UDegree", "VDegree", "NbUPoles", "NbVPoles",
-                                      "Smooth", "Weight", "Grad", "Bend",
-                                      "Iterations", "Correction", "PatchFactor", NULL};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O|iiiiO!dddiO!d",kwds_approx,
+                                      "Smooth", "Weight", "Grad", "Bend", "Curv",
+                                      "Iterations", "Correction", "PatchFactor","UVDirs", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O|iiiiO!ddddiO!dO!",kwds_approx,
                                         &o,&uDegree,&vDegree,&uPoles,&vPoles,
-                                        &PyBool_Type,&smooth,&weight,&grad,&bend,
-                                        &iteration,&PyBool_Type,&correction,&factor))
+                                        &PyBool_Type,&smooth,&weight,&grad,&bend,&curv,
+                                        &iteration,&PyBool_Type,&correction,&factor,
+                                        &PyTuple_Type,&uvdirs))
             throw Py::Exception();
 
-        double curvdiv = 1.0 - (grad + bend);
         int uOrder = uDegree + 1;
         int vOrder = vDegree + 1;
 
@@ -109,8 +114,8 @@ private:
         if (bend < 0.0 || bend > 1.0) {
             throw Py::ValueError("Value of Bend out of range [0,1]");
         }
-        if (curvdiv < 0.0 || curvdiv > 1.0) {
-            throw Py::ValueError("Sum of Grad and Bend out of range [0,1]");
+        if (curv < 0.0 || curv > 1.0) {
+            throw Py::ValueError("Value of Curv out of range [0,1]");
         }
         if (uDegree < 1 || uOrder > uPoles) {
             throw Py::ValueError("Value of uDegree out of range [1,NbUPoles-1]");
@@ -119,32 +124,60 @@ private:
             throw Py::ValueError("Value of vDegree out of range [1,NbVPoles-1]");
         }
 
+        double sum = (grad + bend + curv);
+        if (sum > 0)
+            weight = weight / sum;
+
         try {
-            Py::Sequence l(o);
-            TColgp_Array1OfPnt clPoints(0, l.size()-1);
+            std::vector<Base::Vector3f> pts;
+            if (PyObject_TypeCheck(o, &(Points::PointsPy::Type))) {
+                Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(o);
+                Points::PointKernel* points = pPoints->getPointKernelPtr();
+                pts = points->getBasicPoints();
+            }
+            else {
+                Py::Sequence l(o);
+                pts.reserve(l.size());
+                for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
+                    Py::Tuple t(*it);
+                    pts.push_back(Base::Vector3f(
+                        (float)Py::Float(t.getItem(0)),
+                        (float)Py::Float(t.getItem(1)),
+                        (float)Py::Float(t.getItem(2)))
+                    );
+                }
+            }
+
+            TColgp_Array1OfPnt clPoints(0, pts.size()-1);
             if (clPoints.Length() < uPoles * vPoles) {
                 throw Py::ValueError("Too less data points for the specified number of poles");
             }
 
             int index=0;
-            for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
-                Py::Tuple t(*it);
-                clPoints(index++) = gp_Pnt(
-                    (double)Py::Float(t.getItem(0)),
-                    (double)Py::Float(t.getItem(1)),
-                    (double)Py::Float(t.getItem(2)));
+            for (std::vector<Base::Vector3f>::iterator it = pts.begin(); it != pts.end(); ++it) {
+                clPoints(index++) = gp_Pnt(it->x, it->y, it->z);
             }
 
             Reen::BSplineParameterCorrection pc(uOrder,vOrder,uPoles,vPoles);
             Handle_Geom_BSplineSurface hSurf;
 
-            pc.EnableSmoothing(PyObject_IsTrue(smooth) ? true : false, weight, grad, bend, curvdiv);
+            if (uvdirs) {
+                Py::Tuple t(uvdirs);
+                Base::Vector3d u = Py::Vector(t.getItem(0)).toVector();
+                Base::Vector3d v = Py::Vector(t.getItem(1)).toVector();
+                pc.SetUV(u, v);
+            }
+            pc.EnableSmoothing(PyObject_IsTrue(smooth) ? true : false, weight, grad, bend, curv);
             hSurf = pc.CreateSurface(clPoints, iteration, PyObject_IsTrue(correction) ? true : false, factor);
             if (!hSurf.IsNull()) {
                 return Py::asObject(new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf)));
             }
 
             throw Py::RuntimeError("Computation of B-Spline surface failed");
+        }
+        catch (const Py::Exception&) {
+            // re-throw
+            throw;
         }
         catch (Standard_Failure &e) {
             std::string str;
@@ -180,6 +213,8 @@ private:
 
         return Py::asObject(new Mesh::MeshPy(mesh));
     }
+#endif
+#if defined(HAVE_PCL_OPENNURBS)
     Py::Object fitBSpline(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pcObj;

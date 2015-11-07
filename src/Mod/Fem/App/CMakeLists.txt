@@ -70,13 +70,10 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 #this FemScripts_SRCS is not used, but can copy py into build folder? so test FreeCAD without make install
 SET(FemScripts_SRCS
     convert2TetGen.py
+    ccxDatReader.py
     ccxFrdReader.py
     ccxInpWriter.py
     TestFem.py
-    FemShellThickness.py
-    FemShellThickness.ui
-    FemBeamSection.py
-    FemBeamSection.ui
     FemTools.py
     FemExample.py
     CaeAnalysis.py
@@ -91,8 +88,6 @@ SET(FemScripts_SRCS
     _AnalysisControlTaskPanel.ui
     MechanicalAnalysis.ui
     MechanicalAnalysis.py
-    MechanicalMaterial.ui
-    MechanicalMaterial.py
     ShowDisplacement.ui
     FemCommands.py
     _ResultControlTaskPanel.py
@@ -106,6 +101,27 @@ SET(FemScripts_SRCS
     _CommandMechanicalJobControl.py
     _CommandFemFromShape.py
     _CommandNewMechanicalAnalysis.py
+
+    _FemBeamSection.py
+    _ViewProviderFemBeamSection.py
+    FemBeamSection.py
+    _CommandFemBeamSection.py
+    _FemBeamSectionTaskPanel.py
+    FemBeamSection.ui
+
+    _FemShellThickness.py
+    _ViewProviderFemShellThickness.py
+    FemShellThickness.py
+    _CommandFemShellThickness.py
+    _FemShellThicknessTaskPanel.py
+    FemShellThickness.ui
+
+    _MechanicalMaterial.py
+    _ViewProviderMechanicalMaterial.py
+    MechanicalMaterial.py
+    _CommandMechanicalMaterial.py
+    _MechanicalMaterialTaskPanel.py
+    MechanicalMaterial.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 

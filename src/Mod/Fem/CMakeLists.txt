@@ -10,28 +10,13 @@ INSTALL(
         Init.py
         InitGui.py
         convert2TetGen.py
+        ccxDatReader.py
         ccxFrdReader.py
         ccxInpWriter.py
         FemTools.py
         TestFem.py
-        FemBeamSection.py
-        FemBeamSection.ui
         FemExample.py
-        FemShellThickness.py 
-        FemShellThickness.ui 
-        CaeAnalysis.py
-        CaeSolver.py
-        _SolverControlTaskPanel.ui
-        CaeTools.py
-        FoamCfdSolver.py
-        ccxFemSolver.py
-        #FoamCaseWriter.py
-        CfdExample.py
-        _AnalysisControlTaskPanel.py
-        _AnalysisControlTaskPanel.ui
         MechanicalAnalysis.py
-        MechanicalMaterial.py
-        MechanicalMaterial.ui
         MechanicalAnalysis.ui
         ShowDisplacement.ui
         FemCommands.py
@@ -45,15 +30,30 @@ INSTALL(
         _CommandMechanicalJobControl.py
         _CommandFemFromShape.py
         _CommandNewMechanicalAnalysis.py
+
+        _FemBeamSection.py
+        _ViewProviderFemBeamSection.py
+        FemBeamSection.py
+        _CommandFemBeamSection.py
+        _FemBeamSectionTaskPanel.py
+        FemBeamSection.ui
+
+        _FemShellThickness.py
+        _ViewProviderFemShellThickness.py
+        FemShellThickness.py
+        _CommandFemShellThickness.py
+        _FemShellThicknessTaskPanel.py
+        FemShellThickness.ui
+
+        _MechanicalMaterial.py
+        _ViewProviderMechanicalMaterial.py
+        MechanicalMaterial.py
+        _CommandMechanicalMaterial.py
+        _MechanicalMaterialTaskPanel.py
+        MechanicalMaterial.ui
+
     DESTINATION
         Mod/Fem
-)
-
-INSTALL(
-    FILES
-        cfd_files/Readme.md
-    DESTINATION
-        Mod/Fem/cfd_files
 )
 
 INSTALL(
