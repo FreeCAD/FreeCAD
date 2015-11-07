@@ -45,7 +45,8 @@ def _makeCaeAnalysis(name):
     this is designed for internal usage only'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     CaeAnalysis(obj)
-    ViewProviderCaeAnalysis(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        ViewProviderCaeAnalysis(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
     return obj
 

@@ -54,6 +54,8 @@ class _AnalysisControlTaskPanel:
         self.SolverProcess = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
+        
+        # update UI text according to solver info, replace sover with specific solver name
 
         # consider: moved into FemSolverObject.Proxy class
         if self.solver_object.SolverName == "Calculix":

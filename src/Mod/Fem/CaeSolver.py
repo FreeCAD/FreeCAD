@@ -67,10 +67,10 @@ def _createCaeSolver(solverInfo, analysis=None, solver_object=None):
         else:
             _analysis = FemGui.getActiveAnalysis()
     else:
-        if (analysis is not None) and analysis.isDerivedFrom("Fem::FemAnalysisObject"):
+        if (analysis is not None) and  analysis.isDerivedFrom("Fem::FemAnalysisObject"):
             _analysis = analysis
         else:
-            raise Exception('Analysis type is not the valid type')
+            raise Exception('Analysis obj is not the valid type of Fem::FemAnalysisObject')
 
     if solver_object is None:
         obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", solverInfo["SolverName"])

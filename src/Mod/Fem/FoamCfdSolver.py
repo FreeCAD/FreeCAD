@@ -68,8 +68,14 @@ class CaeSolver():
     def check_prerequisites(self, analysis_object):
         return ""
 
-    def write_case(self, analysis_object):
-        return "Not yet implemented"
+    def write_case(self, analysis_object=None):
+        if analysis_object is None and FreeCAD.GuiUp:
+            import FemGui
+            analysis_object = FemGui.getActiveAnalysis()
+        import FoamCaseWriter
+        writer = FoamCaseWriter.FoamCaseWriter(analysis_object)
+        writer.write_mesh()
+
 
     def generate_cmdline(self):
         return "icoFoam -help"  # try to use abs path for case name file/folder
