@@ -10,45 +10,53 @@ INSTALL(
         # changes on the file list here needs to be made in App/CMakeLists.txt as well
         Init.py
         InitGui.py
+
         convert2TetGen.py
+        FemExample.py
+
+        TestFem.py
+
         ccxDatReader.py
         ccxFrdReader.py
         ccxInpWriter.py
         FemTools.py
-        TestFem.py
-        FemExample.py
-        MechanicalAnalysis.py
-        MechanicalAnalysis.ui
-        ShowDisplacement.ui
+
         FemCommands.py
-        _TaskPanelResultControl.py
-        _TaskPanelJobControl.py
-        _ViewProviderFemAnalysis.py
-        _FemAnalysis.py
-        _CommandMechanicalShowResult.py
-        _CommandQuickAnalysis.py
-        _CommandPurgeFemResults.py
-        _CommandMechanicalJobControl.py
         _CommandFemFromShape.py
+        _CommandPurgeFemResults.py
+        _CommandQuickAnalysis.py
+
+        _CommandMechanicalShowResult.py
+        _TaskPanelResultControl.py
+        ShowDisplacement.ui
+
+        _FemAnalysis.py
+        _ViewProviderFemAnalysis.py
+
+        MechanicalAnalysis.py
         _CommandNewMechanicalAnalysis.py
 
+        _CommandMechanicalJobControl.py
+        _TaskPanelJobControl.py
+        MechanicalAnalysis.ui
+
+        FemBeamSection.py
         _FemBeamSection.py
         _ViewProviderFemBeamSection.py
-        FemBeamSection.py
         _CommandFemBeamSection.py
         _TaskPanelFemBeamSection.py
         FemBeamSection.ui
 
+        FemShellThickness.py
         _FemShellThickness.py
         _ViewProviderFemShellThickness.py
-        FemShellThickness.py
         _CommandFemShellThickness.py
         _TaskPanelFemShellThickness.py
         FemShellThickness.ui
 
+        MechanicalMaterial.py
         _MechanicalMaterial.py
         _ViewProviderMechanicalMaterial.py
-        MechanicalMaterial.py
         _CommandMechanicalMaterial.py
         _TaskPanelMechanicalMaterial.py
         MechanicalMaterial.ui
