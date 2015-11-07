@@ -1,8 +1,8 @@
-# FreeCAD init script of the Fem module  
+# FreeCAD init script of the Fem module
 # (c) 2001 Juergen Riegel
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *   
+#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -26,8 +26,8 @@
 #***************************************************************************/
 
 
-FreeCAD.addExportType("TetGen file (*.poly)","convert2TetGen") 
-FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)","Fem")
-FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)","Fem")
-FreeCAD.addImportType("CalculiX result (*.frd)","ccxFrdReader")
-FreeCAD.addImportType("Abaqus file (*.inp)","FemGui")
+FreeCAD.addExportType("TetGen file (*.poly)", "convert2TetGen")
+FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)", "Fem")
+FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)", "Fem")
+FreeCAD.addImportType("CalculiX result (*.frd)", "ccxFrdReader")
+FreeCAD.addImportType("Abaqus file (*.inp)", "FemGui")
