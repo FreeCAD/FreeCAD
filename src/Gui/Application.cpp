@@ -63,7 +63,7 @@
 
 #include "Application.h"
 #include "AutoSaver.h"
-#include "GuiApplicationNativeEventAware.h"
+#include "GuiApplication.h"
 #include "MainWindow.h"
 #include "Document.h"
 #include "View.h"
@@ -1536,113 +1536,36 @@ void Application::initTypes(void)
     Gui::PythonWorkbench                        ::init();
 }
 
-namespace Gui {
-/** Override QCoreApplication::notify() to fetch exceptions in Qt widgets
- * properly that are not handled in the event handler or slot.
- */
-class GUIApplication : public GUIApplicationNativeEventAware
-{
-    int systemExit;
-public:
-    GUIApplication(int & argc, char ** argv, int exitcode)
-        : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
-    {
-    }
-
-    /**
-     * Make forwarding events exception-safe and get more detailed information
-     * where an unhandled exception comes from.
-     */
-    bool notify (QObject * receiver, QEvent * event)
-    {
-        if (!receiver && event) {
-            Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
-                (int)event->type());
-        }
-        try {
-            if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
-                event->type() == Spaceball::MotionEvent::MotionEventType)
-                return processSpaceballEvent(receiver, event);
-            else
-                return QApplication::notify(receiver, event);
-        }
-        catch (const Base::SystemExitException&) {
-            qApp->exit(systemExit);
-            return true;
-        }
-        catch (const Base::Exception& e) {
-            Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                                  "The error message is: %s\n", e.what());
-        }
-        catch (const std::exception& e) {
-            Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
-                                  "The error message is: %s\n", e.what());
-        }
-        catch (...) {
-            Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n");
-        }
-
-        // Print some more information to the log file (if active) to ease bug fixing
-        if (receiver && event) {
-            try {
-                std::stringstream dump;
-                dump << "The event type " << (int)event->type() << " was sent to "
-                     << receiver->metaObject()->className() << "\n";
-                dump << "Object tree:\n";
-                if (receiver->isWidgetType()) {
-                    QWidget* w = qobject_cast<QWidget*>(receiver);
-                    while (w) {
-                        dump << "\t";
-                        dump << w->metaObject()->className();
-                        QString name = w->objectName();
-                        if (!name.isEmpty())
-                            dump << " (" << (const char*)name.toUtf8() << ")";
-                        w = w->parentWidget();
-                        if (w)
-                            dump << " is child of\n";
-                    }
-                    std::string str = dump.str();
-                    Base::Console().Log("%s",str.c_str());
-                }
-            }
-            catch (...) {
-                Base::Console().Log("Invalid recipient and/or event in GUIApplication::notify\n");
-            }
-        }
-
-        return true;
-    }
-    void commitData(QSessionManager &manager)
-    {
-        if (manager.allowsInteraction()) {
-            if (!Gui::getMainWindow()->close()) {
-                // cancel the shutdown
-                manager.release();
-                manager.cancel();
-            }
-        }
-        else {
-            // no user interaction allowed, thus close all documents and
-            // the main window
-            App::GetApplication().closeAllDocuments();
-            Gui::getMainWindow()->close();
-        }
-
-    }
-};
-}
-
 void Application::runApplication(void)
 {
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it;
+
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     int systemExit = 1000;
-    GUIApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+    GUISingleApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+
+    // check if a single or multiple instances can run
+    it = cfg.find("SingleInstance");
+    if (it != cfg.end() && mainApp.isRunning()) {
+        // send the file names to be opened to the server application so that this
+        // opens them
+        std::list<std::string> files = App::Application::getCmdLineFiles();
+        for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
+            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            msg.prepend("OpenFile:");
+            if (!mainApp.sendMessage(msg)) {
+                qWarning("Failed to send message to server");
+                break;
+            }
+        }
+        return;
+    }
+
     // set application icon and window title
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("Application");
     if (it != cfg.end()) {
         mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
@@ -1711,6 +1634,8 @@ void Application::runApplication(void)
     Application app(true);
     MainWindow mw;
     mw.setWindowTitle(mainApp.applicationName());
+    QObject::connect(&mainApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
+                     &mw, SLOT(processMessages(const QList<QByteArray> &)));
 
     ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
@@ -1837,19 +1762,8 @@ void Application::runApplication(void)
 
     Instance->d->startingUp = false;
 
-#if 0
-    // processing all command line files
-    App::Application::processCmdLineFiles();
-
-    // Create new document?
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    if (hGrp->GetBool("CreateNewDoc", false)) {
-        App::GetApplication().newDocument();
-    }
-#else
     // gets called once we start the event loop
     QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
-#endif
 
     // run the Application event loop
     Base::Console().Log("Init: Entering event loop\n");

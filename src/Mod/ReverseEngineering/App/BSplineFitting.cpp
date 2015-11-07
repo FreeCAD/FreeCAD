@@ -22,7 +22,7 @@
 
 
 #include "PreCompiled.h"
-#if defined(HAVE_PCL_SURFACE)
+#if defined(HAVE_PCL_OPENNURBS)
 #ifndef _PreComp_
 # include <Geom_BSplineSurface.hxx>
 # include <TColgp_Array2OfPnt.hxx>
@@ -236,4 +236,4 @@ Handle(Geom_BSplineSurface) BSplineFitting::perform()
     return Handle_Geom_BSplineSurface();
 #endif
 }
-#endif // HAVE_PCL_SURFACE
+#endif // HAVE_PCL_OPENNURBS

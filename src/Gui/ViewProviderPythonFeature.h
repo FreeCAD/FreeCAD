@@ -38,6 +38,12 @@ namespace Gui {
 class GuiExport ViewProviderPythonFeatureImp
 {
 public:
+    enum ValueT {
+        NotImplemented = 0, // not handled
+        Accepted = 1, // handled and accepted
+        Rejected = 2  // handled and rejected
+    };
+
     /// constructor.
     ViewProviderPythonFeatureImp(ViewProviderDocumentObject*);
     /// destructor.
@@ -73,6 +79,22 @@ public:
     std::vector<std::string> getDisplayModes(void) const;
     /// set the display mode
     std::string setDisplayMode(const char* ModeName);
+    //@}
+
+    /** @name Drag and drop */
+    //@{
+    /// Returns true if the view provider generally supports dragging objects
+    ValueT canDragObjects() const;
+    /// Check whether the object can be removed from the view provider by drag and drop
+    ValueT canDragObject(App::DocumentObject*) const;
+    /// Starts to drag the object
+    ValueT dragObject(App::DocumentObject*);
+    /// Returns true if the view provider generally accepts dropping of objects
+    ValueT canDropObjects() const;
+    /// Check whether the object can be dropped to the view provider by drag and drop
+    ValueT canDropObject(App::DocumentObject*) const;
+    /// If the dropped object type is accepted the object will be added as child
+    ValueT dropObject(App::DocumentObject*);
     //@}
 
 private:
@@ -171,6 +193,74 @@ public:
     }
     virtual void finishRestoring() {
         imp->finishRestoring();
+    }
+    //@}
+
+    /** @name Drag and drop */
+    //@{
+    /// Returns true if the view provider generally supports dragging objects
+    virtual bool canDragObjects() const {
+        switch (imp->canDragObjects()) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDragObjects();
+        }
+    }
+    /// Check whether the object can be removed from the view provider by drag and drop
+    virtual bool canDragObject(App::DocumentObject* obj) const {
+        switch (imp->canDragObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDragObject(obj);
+        }
+    }
+    /// Starts to drag the object
+    virtual void dragObject(App::DocumentObject* obj) {
+        switch (imp->dragObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderPythonFeatureImp::Rejected:
+            return;
+        default:
+            return ViewProviderT::dragObject(obj);
+        }
+    }
+    /// Returns true if the view provider generally accepts dropping of objects
+    virtual bool canDropObjects() const {
+        switch (imp->canDropObjects()) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDropObjects();
+        }
+    }
+    /// Check whether the object can be dropped to the view provider by drag and drop
+    virtual bool canDropObject(App::DocumentObject* obj) const {
+        switch (imp->canDropObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDropObject(obj);
+        }
+    }
+    /// If the dropped object type is accepted the object will be added as child
+    virtual void dropObject(App::DocumentObject* obj) {
+        switch (imp->dropObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderPythonFeatureImp::Rejected:
+            return;
+        default:
+            return ViewProviderT::dropObject(obj);
+        }
     }
     //@}
 

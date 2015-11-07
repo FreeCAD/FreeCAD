@@ -58,8 +58,7 @@ class inp_writer:
             self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
-        self.base_name = self.mesh_object.Name
-        self.file_name = self.dir_name + '/' + self.base_name + '.inp'
+        self.file_name = self.dir_name + '/' + self.mesh_object.Name + '.inp'
         self.fc_ver = FreeCAD.Version()
         self.ccx_eall = 'Eall'
         self.ccx_elsets = []
@@ -116,13 +115,15 @@ class inp_writer:
             else:                                                                       # multiple mats, solid
                 self.get_ccx_elsets_multiple_mat_solid()
         for ccx_elset in self.ccx_elsets:
-            # print(ccx_elset)
             f.write('*ELSET,ELSET=' + ccx_elset['ccx_elset_name'] + '\n')
-            if ccx_elset['ccx_elset'] == self.ccx_eall:
-                f.write(self.ccx_eall + '\n')
+            if ccx_elset['ccx_elset']:
+                if ccx_elset['ccx_elset'] == self.ccx_eall:
+                    f.write(self.ccx_eall + '\n')
+                else:
+                    for elid in ccx_elset['ccx_elset']:
+                        f.write(str(elid) + ',\n')
             else:
-                for elid in ccx_elset['ccx_elset']:
-                    f.write(str(elid) + ',\n')
+                f.write('**No elements found for these objects\n')
 
     def write_node_sets_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
@@ -213,27 +214,28 @@ class inp_writer:
         f.write('** Sections\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for ccx_elset in self.ccx_elsets:
-            if 'beamsection_obj'in ccx_elset:  # beam mesh
-                beamsec_obj = ccx_elset['beamsection_obj']
-                elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
-                material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
-                setion_def = '*BEAM SECTION, ' + elsetdef + material + ', SECTION=RECT\n'
-                setion_geo = str(beamsec_obj.Height.getValueAs('mm')) + ', ' + str(beamsec_obj.Width.getValueAs('mm')) + '\n'
-                f.write(setion_def)
-                f.write(setion_geo)
-            elif 'shellthickness_obj'in ccx_elset:  # shell mesh
-                shellth_obj = ccx_elset['shellthickness_obj']
-                elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
-                material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
-                setion_def = '*SHELL SECTION, ' + elsetdef + material + '\n'
-                setion_geo = str(shellth_obj.Thickness.getValueAs('mm')) + '\n'
-                f.write(setion_def)
-                f.write(setion_geo)
-            else:  # solid mesh
-                elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
-                material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
-                setion_def = '*SOLID SECTION, ' + elsetdef + material + '\n'
-                f.write(setion_def)
+            if ccx_elset['ccx_elset']:
+                if 'beamsection_obj'in ccx_elset:  # beam mesh
+                    beamsec_obj = ccx_elset['beamsection_obj']
+                    elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
+                    material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
+                    setion_def = '*BEAM SECTION, ' + elsetdef + material + ', SECTION=RECT\n'
+                    setion_geo = str(beamsec_obj.Height.getValueAs('mm')) + ', ' + str(beamsec_obj.Width.getValueAs('mm')) + '\n'
+                    f.write(setion_def)
+                    f.write(setion_geo)
+                elif 'shellthickness_obj'in ccx_elset:  # shell mesh
+                    shellth_obj = ccx_elset['shellthickness_obj']
+                    elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
+                    material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
+                    setion_def = '*SHELL SECTION, ' + elsetdef + material + '\n'
+                    setion_geo = str(shellth_obj.Thickness.getValueAs('mm')) + '\n'
+                    f.write(setion_def)
+                    f.write(setion_geo)
+                else:  # solid mesh
+                    elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
+                    material = 'MATERIAL=' + ccx_elset['ccx_mat_name']
+                    setion_def = '*SOLID SECTION, ' + elsetdef + material + '\n'
+                    f.write(setion_def)
 
     def write_step_begin(self, f):
         f.write('\n***********************************************************\n')
@@ -659,17 +661,17 @@ class inp_writer:
                 for ref in obj.References:
                     femnodes = []
                     femelements = []
-                    r = ref[0].Shape.getElement(ref[1])
+                    if ref[1]:
+                        r = ref[0].Shape.getElement(ref[1])
+                    else:
+                        r = ref[0].Shape
                     # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
                     if r.ShapeType == 'Edge':
                         femnodes = self.mesh_object.FemMesh.getNodesByEdge(r)
                     elif r.ShapeType == 'Face':
                         femnodes = self.mesh_object.FemMesh.getNodesByFace(r)
                     elif r.ShapeType == 'Solid':
-                        # femnodes = self.mesh_object.FemMesh.getNodesBySolid(r)  -->  TODO
-                        FreeCAD.Console.PrintError('Solid Reference Shapes, CalculiX input file may be broken!\n')
-                        fem_object['FEMElements'] = self.ccx_eall
-                        return
+                        femnodes = self.mesh_object.FemMesh.getNodesBySolid(r)
                     else:
                         print('  No Edge, Face or Solid as reference shapes!')
                     femelements = getFemElementsByNodes(self.fem_element_table, femnodes)

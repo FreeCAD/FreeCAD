@@ -45,6 +45,11 @@ namespace Reen {
 class ReenExport SplineBasisfunction
 {
 public:
+    enum ValueT {
+        Zero = 0,
+        Full,
+        Other
+    };
     /**
      * Konstruktor
      * @param iSize Length of Knots vector
@@ -71,6 +76,16 @@ public:
 
     virtual ~SplineBasisfunction();
 
+    /**
+     * Gibt an, ob der Funktionswert Nik(t) an der Stelle fParam
+     * 0, 1 oder ein Wert dazwischen ergibt.
+     * Dies dient dazu, um die Berechnung zu u.U. zu beschleunigen.
+     *
+     * @param iIndex Index
+     * @param fParam Parameterwert
+     * @return ValueT
+     */
+    virtual ValueT LocalSupport(int iIndex, double fParam)=0;
     /**
      * Berechnet den Funktionswert Nik(t) an der Stelle fParam
      * (aus: Piegl/Tiller 96 The NURBS-Book)
@@ -168,6 +183,17 @@ public:
     virtual void AllBasisFunctions(double fParam, TColStd_Array1OfReal& vFuncVals);
 
     /**
+     * Gibt an, ob der Funktionswert Nik(t) an der Stelle fParam
+     * 0, 1 oder ein Wert dazwischen ergibt.
+     * Dies dient dazu, um die Berechnung zu u.U. zu beschleunigen.
+     *
+     * @param iIndex Index
+     * @param fParam Parameterwert
+     * @return ValueT
+     */
+    virtual ValueT LocalSupport(int iIndex, double fParam);
+
+    /**
      * Berechnet den Funktionswert Nik(t) an der Stelle fParam
      * (aus: Piegl/Tiller 96 The NURBS-Book)
      * @param iIndex Index
@@ -231,10 +257,10 @@ class ReenExport ParameterCorrection
 
 public:
     // Konstruktor
-    ParameterCorrection(unsigned short usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
-                        unsigned short usVOrder=4,               //Ordnung in v-Richtung
-                        unsigned short usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
-                        unsigned short usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
+    ParameterCorrection(unsigned usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
+                        unsigned usVOrder=4,               //Ordnung in v-Richtung
+                        unsigned usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
+                        unsigned usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
 
     virtual ~ParameterCorrection()
     {
@@ -247,6 +273,11 @@ protected:
      * Berechnet die Eigenvektoren der Kovarianzmatrix
      */
     virtual void CalcEigenvectors();
+
+    /**
+     * Projiziert die Kontrollpunkte auf die Fit-Ebene
+     */
+    void ProjectControlPointsOnPlane();
 
     /**
      * Berechnet eine initiale Flaeche zu Beginn des Algorithmus. Dazu wird die Ausgleichsebene zu der 
@@ -289,7 +320,7 @@ public:
      * Setzen der u/v-Richtungen
      * Dritter Parameter gibt an, ob die Richtungen tatsaechlich verwendet werden sollen.
      */
-    virtual void SetUVW(const Base::Vector3d& clU, const Base::Vector3d& clV, const Base::Vector3d& clW, bool bUseDir=true);
+    virtual void SetUV(const Base::Vector3d& clU, const Base::Vector3d& clV, bool bUseDir=true);
 
     /**
      * Gibt die u/v/w-Richtungen zurueck
@@ -310,13 +341,13 @@ protected:
     bool                    _bGetUVDir;        //! Stellt fest, ob u/v-Richtung vorgegeben wird
     bool                    _bSmoothing;       //! Glaettung verwenden
     double                  _fSmoothInfluence; //! Einfluss der Glaettung
-    unsigned short          _usUOrder;         //! Ordnung in u-Richtung
-    unsigned short          _usVOrder;         //! Ordnung in v-Richtung
-    unsigned short          _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
-    unsigned short          _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
+    unsigned                _usUOrder;         //! Ordnung in u-Richtung
+    unsigned                _usVOrder;         //! Ordnung in v-Richtung
+    unsigned                _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
+    unsigned                _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
     Base::Vector3d          _clU;              //! u-Richtung
     Base::Vector3d          _clV;              //! v-Richtung
-    Base::Vector3d          _clW;              //! w-Richtung (senkrecht zu u-und w-Richtung)
+    Base::Vector3d          _clW;              //! w-Richtung (senkrecht zu u-und v-Richtung)
     TColgp_Array1OfPnt*     _pvcPoints;        //! Punktliste der Rohdaten
     TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameterwerte zu den Punkten aus der Liste
     TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array von Kontrollpunkten
@@ -340,10 +371,10 @@ class ReenExport BSplineParameterCorrection : public ParameterCorrection
 {
 public:
     // Konstruktor
-    BSplineParameterCorrection(unsigned short usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
-                               unsigned short usVOrder=4,               //Ordnung in v-Richtung
-                               unsigned short usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
-                               unsigned short usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
+    BSplineParameterCorrection(unsigned usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
+                               unsigned usVOrder=4,               //Ordnung in v-Richtung
+                               unsigned usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
+                               unsigned usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
 
     virtual ~BSplineParameterCorrection(){};
 

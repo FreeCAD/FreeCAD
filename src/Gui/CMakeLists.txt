@@ -210,6 +210,7 @@ set(Gui_MOC_HDRS
     Flag.h
     GraphicsViewZoom.h
     GraphvizView.h
+    GuiApplication.h
     GuiApplicationNativeEventAware.h
     HelpView.h
     InputVector.h
@@ -978,6 +979,7 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionBinding.cpp
     GraphicsViewZoom.cpp
     ExpressionCompleter.cpp
+    GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
     Macro.cpp
@@ -1001,6 +1003,7 @@ SET(FreeCADGui_SRCS
     ExpressionCompleter.h
     FreeCADGuiInit.py
     GraphicsViewZoom.h
+    GuiApplication.h
     GuiApplicationNativeEventAware.h
     GuiConsole.h
     InventorAll.h

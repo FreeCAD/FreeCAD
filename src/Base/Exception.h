@@ -271,6 +271,22 @@ public:
 };
 
 /**
+ * The NotImplementedError can be used to indicate that an invoked function is not implemented.
+ * @author Werner Mayer
+ */
+class BaseExport NotImplementedError : public Exception
+{
+public:
+  /// Construction
+  NotImplementedError(const char * sMessage);
+  NotImplementedError(const std::string& sMessage);
+  /// Construction
+  NotImplementedError(const NotImplementedError &inst);
+  /// Destruction
+  virtual ~NotImplementedError() throw() {}
+};
+
+/**
  * The DivisionByZeroError can be used to indicate a division by zero.
  * @author Werner Mayer
  */

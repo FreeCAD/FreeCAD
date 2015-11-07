@@ -33,7 +33,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE(App::Placement, App::DocumentObject)
+PROPERTY_SOURCE(App::Placement, App::GeoFeature)
 
 
 //===========================================================================
