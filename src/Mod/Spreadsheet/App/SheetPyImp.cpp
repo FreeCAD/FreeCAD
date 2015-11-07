@@ -172,7 +172,7 @@ PyObject* SheetPy::exportFile(PyObject *args)
     const char * quoteChar = "\"";
     const char * escapeChar = "\\";
 
-    if (!PyArg_ParseTuple(args, "s|sss:importFile", &filename, &delimiter, &quoteChar, &escapeChar))
+    if (!PyArg_ParseTuple(args, "s|sss:exportFile", &filename, &delimiter, &quoteChar, &escapeChar))
         return 0;
 
     if (getSheetPtr()->exportToFile(filename, delimiter[0], quoteChar[0], escapeChar[0]))
