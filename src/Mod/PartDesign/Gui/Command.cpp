@@ -772,31 +772,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
         ) != status.end();
     // TODO Clean this up (2015-10-20, Fat-Zer)
     auto* pcActiveBody = PartDesignGui::getBody(false);
-    if(pcActiveBody  && !bNoSketchWasSelected && ext) {
-
-        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
-
-        // TODO share this with UnifiedDatumCommand() (2015-10-20, Fat-Zer)
-        QDialog* dia = new QDialog;
-        Ui_Dialog dlg;
-        dlg.setupUi(dia);
-        dia->setModal(true);
-        int result = dia->exec();
-        if(result == QDialog::DialogCode::Rejected)
-            return;
-        else if(!dlg.radioXRef->isChecked()) {
-
-            auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
-            auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
-            if(oBody)
-                pcActiveBody->addFeature(copy);
-            else
-                pcActivePart->addObject(copy);
-
-        }
-    }
-
-    if(!bNoSketchWasSelected && ext) {
+    if(pcActiveBody && !bNoSketchWasSelected && ext) {
 
         auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
 
