@@ -276,7 +276,7 @@ class _TaskPanelMechanicalMaterial:
                 item_name = ref[0].Name
             items.append(item_name)
         for listItemName in sorted(items):
-            listItem = QtGui.QListWidgetItem(listItemName, self.form.list_References)  # listItem =   is needed
+            self.form.list_References.addItem(listItemName)
 
 
 class ReferenceShapeSelectionObserver:

@@ -108,7 +108,7 @@ class _TaskPanelFemShellThickness:
             item_name = i[0].Name + ':' + i[1]
             items.append(item_name)
         for listItemName in sorted(items):
-            listItem = QtGui.QListWidgetItem(listItemName, self.form.list_References)  # listItem =   is needed
+            self.form.list_References.addItem(listItemName)
 
 
 class ReferenceShapeSelectionObserver:
