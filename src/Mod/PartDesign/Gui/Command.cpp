@@ -621,11 +621,12 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
 // Common utility functions for SketchBased features
 //===========================================================================
 
-// Take a list of Part2DObjects and erase those which are not eligible for creating a
-// SketchBased feature.
+// Take a list of Part2DObjects and classify them for creating a
+// SketchBased feature. FirstFreeSketch is the first free sketch in the same body 
+// or sketches.end() if non available. The returned number is the amount of free sketches
 const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                                  std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
-                                 std::vector<App::DocumentObject*>::iterator& firstValidSketch)
+                                 std::vector<App::DocumentObject*>::iterator& firstFreeSketch)
 {
     // TODO Review the function for non-part bodies (2015-09-04, Fat-Zer)
     PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false);
@@ -633,8 +634,8 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
 
     // TODO: If the user previously opted to allow multiple use of sketches or use of sketches from other bodies,
     // then count these as valid sketches!
-    unsigned validSketches = 0;
-    firstValidSketch = sketches.end();
+    unsigned freeSketches = 0;
+    firstFreeSketch = sketches.end();
 
     for (std::vector<App::DocumentObject*>::iterator s = sketches.begin(); s != sketches.end(); s++) {
 
@@ -642,7 +643,6 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
             // We work in the old style outside any body
             if (PartDesign::Body::findBodyOf (*s)) {
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-                ++validSketches;
                 continue;
             }
         } else if (!pcActiveBody->hasFeature(*s)) {
@@ -655,7 +655,6 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                 status.push_back(PartDesignGui::TaskFeaturePick::notInBody);
             }
 
-            ++validSketches;
             continue;
         }
 
@@ -703,13 +702,13 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
         }
 
         // All checks passed - found a valid sketch
-        if (firstValidSketch == sketches.end())
-            firstValidSketch = s;
-        validSketches++;
+        if (firstFreeSketch == sketches.end())
+            firstFreeSketch = s;
+        freeSketches++;
         status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
     }
 
-    return validSketches;
+    return freeSketches;
 }
 
 void prepareSketchBased(Gui::Command* cmd, const std::string& which,
@@ -723,19 +722,16 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
         sketches = cmd->getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
         bNoSketchWasSelected = true;
     }
-    std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
-    std::vector<App::DocumentObject*>::iterator firstValidSketch;
-    unsigned validSketches = validateSketches(sketches, status, firstValidSketch);
-    if (validSketches == 0) {
-        if (bNoSketchWasSelected) {
+    
+    if(sketches.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sketch to work on"),
-                QObject::tr("No sketch was selected. None of the sketches in the document is free."));
+                QObject::tr("No sketch is available in the document"));
             return;
-        } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches selected"),
-                QObject::tr("Attention: none of selected sketches/2D objects is free."));
-        }
     }
+    
+    std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
+    std::vector<App::DocumentObject*>::iterator firstFreeSketch;
+    int freeSketches = validateSketches(sketches, status, firstFreeSketch);
 
     auto accepter = [=](const std::vector<App::DocumentObject*>& features) -> bool {
 
@@ -770,6 +766,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                     s == PartDesignGui::TaskFeaturePick::notInBody;
             }
         ) != status.end();
+        
     // TODO Clean this up (2015-10-20, Fat-Zer)
     auto* pcActiveBody = PartDesignGui::getBody(false);
     if(pcActiveBody && !bNoSketchWasSelected && ext) {
@@ -793,12 +790,13 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                     pcActivePart->addObject(copy);
 
                 sketches[0] = copy;
+                firstFreeSketch = sketches.begin();
         }
     }
-
-    // If there is more than one selection/possibility, show dialog and let user pick sketch
-    if ((bNoSketchWasSelected && validSketches > 1)  ||
-        (!bNoSketchWasSelected && sketches.size() > 1)) {
+    
+    // Show sketch choose dialog and let user pick sketch if no sketch was selected and no free one available or
+    // multiple free ones are available
+    if ( bNoSketchWasSelected && (freeSketches != 1) ) {
 
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
@@ -827,12 +825,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     }
     else {
         std::vector<App::DocumentObject*> theSketch;
-        theSketch.reserve(1);
-        if (bNoSketchWasSelected && validSketches == 1){
-            theSketch.push_back(*firstValidSketch);
-        } else if(!bNoSketchWasSelected && sketches.size() == 1) {
-            theSketch = sketches;
-        }
+        theSketch.push_back(*firstFreeSketch);
         worker(theSketch);
     }
 
