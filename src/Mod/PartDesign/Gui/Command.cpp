@@ -646,15 +646,15 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                 continue;
             }
         } else if (!pcActiveBody->hasFeature(*s)) {
-            // Check whether this plane belongs to the active body
-            if(pcActivePart && pcActivePart->hasObject(*s, true)) {
-                status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
-            } else if (PartDesign::Body::findBodyOf(*s)) {
-                status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-            } else {
+            // Check whether this plane belongs to a body of the same part
+            PartDesign::Body* b = PartDesign::Body::findBodyOf(*s);
+            if(!b)
                 status.push_back(PartDesignGui::TaskFeaturePick::notInBody);
-            }
-
+            else if(pcActivePart && pcActivePart->hasObject(b, true))
+                status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
+            else
+                status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
+           
             continue;
         }
 
