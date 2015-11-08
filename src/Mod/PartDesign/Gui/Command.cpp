@@ -423,7 +423,8 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     if(PlaneFilter.match())
                         supportString = std::string("(App.activeDocument().") + copy->getNameInDocument() + ", '')";
                     else
-                        supportString = std::string("(App.activeDocument().") + copy->getNameInDocument() + ", '" + sub +"')";
+                        //it is ensured that only a single face is selected, hence it must always be Face1 of the shapebinder
+                        supportString = std::string("(App.activeDocument().") + copy->getNameInDocument() + ", 'Face1')";
                 }
             }
         }

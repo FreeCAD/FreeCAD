@@ -320,7 +320,13 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
     }
     else {
 
-        auto name =  std::string("Reference") + std::string(obj->getNameInDocument());
+        std::string name;
+        if(!independent)
+            name = std::string("Reference");
+        else
+            name = std::string("Copy");
+        name += std::string(obj->getNameInDocument());
+
         std::string entity;
         if(!sub.empty())
             entity = sub;
