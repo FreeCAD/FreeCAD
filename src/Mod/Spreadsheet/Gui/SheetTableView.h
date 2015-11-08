@@ -25,6 +25,7 @@
 
 #include <QTableView>
 #include <QHeaderView>
+#include <QKeyEvent>
 #include <boost/signals/connection.hpp>
 #include "PreCompiled.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
@@ -64,6 +65,8 @@ protected Q_SLOTS:
     void cellProperties();
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
+    bool event(QEvent *event);
+    void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
