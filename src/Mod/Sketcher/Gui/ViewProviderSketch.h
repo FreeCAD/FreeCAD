@@ -25,6 +25,7 @@
 #define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SbColor.h>
 #include <Base/Tools2D.h>
@@ -390,7 +391,8 @@ protected:
     int antiAliasing;
 
     Gui::Rubberband* rubberband;
-    App::Part* parentPart = nullptr;
+    App::Part*          parentPart = nullptr;
+    Part::BodyBase*     parentBody = nullptr;
 };
 
 } // namespace PartGui
