@@ -4157,18 +4157,10 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
-    //find the Part object the feature belongs to, TODO: use GRAPH methods
-    App::DocumentObject* search = getSketchObject();
-    for(Part::BodyBase* b : getSketchObject()->getDocument()->getObjectsOfType<Part::BodyBase>()) {
-        if(b->hasFeature(getSketchObject())) {
-            search = b;
-        }            
-    }    
-    for(App::Part* p : getSketchObject()->getDocument()->getObjectsOfType<App::Part>()) {
-        if(p->hasObject(search)) {
-            parentPart = p;
-        }            
-    }
+    //find the Part and body object the feature belongs to for placement calculations
+    //TODO: this needs to be replaced with GRAPH methods to get the real stacked placement
+    parentPart = App::Part::getPartOfObject(getSketchObject());
+    parentBody = Part::BodyBase::findBodyOf(getSketchObject());
     
     // always change to sketcher WB, remember where we come from 
     oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
@@ -4896,8 +4888,10 @@ Base::Placement ViewProviderSketch::getPlacement() {
     //TODO: use GRAPH placement handling, as this function right now only works with one parent 
     //part object
     Base::Placement Plz = getSketchObject()->Placement.getValue();
+    if(parentBody)
+        Plz = parentBody->Placement.getValue()*Plz;
     if(parentPart)
-        return parentPart->Placement.getValue()*Plz;
+        Plz = parentPart->Placement.getValue()*Plz;
     
     return Plz;
 }
