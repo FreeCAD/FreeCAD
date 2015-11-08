@@ -28,7 +28,7 @@ INSTALL(
 
         _CommandMechanicalShowResult.py
         _TaskPanelResultControl.py
-        ShowDisplacement.ui
+        TaskPanelShowDisplacement.ui
 
         _FemAnalysis.py
         _ViewProviderFemAnalysis.py
@@ -38,28 +38,28 @@ INSTALL(
 
         _CommandMechanicalJobControl.py
         _TaskPanelJobControl.py
-        MechanicalAnalysis.ui
+        TaskPanelMechanicalAnalysis.ui
 
         FemBeamSection.py
         _FemBeamSection.py
         _ViewProviderFemBeamSection.py
         _CommandFemBeamSection.py
         _TaskPanelFemBeamSection.py
-        FemBeamSection.ui
+        TaskPanelFemBeamSection.ui
 
         FemShellThickness.py
         _FemShellThickness.py
         _ViewProviderFemShellThickness.py
         _CommandFemShellThickness.py
         _TaskPanelFemShellThickness.py
-        FemShellThickness.ui
+        TaskPanelFemShellThickness.ui
 
         MechanicalMaterial.py
         _MechanicalMaterial.py
         _ViewProviderMechanicalMaterial.py
         _CommandMechanicalMaterial.py
         _TaskPanelMechanicalMaterial.py
-        MechanicalMaterial.ui
+        TaskPanelMechanicalMaterial.ui
 
     DESTINATION
         Mod/Fem

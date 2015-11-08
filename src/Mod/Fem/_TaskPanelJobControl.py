@@ -40,7 +40,7 @@ if FreeCAD.GuiUp:
 
 class _TaskPanelJobControl:
     def __init__(self, analysis_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelMechanicalAnalysis.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:

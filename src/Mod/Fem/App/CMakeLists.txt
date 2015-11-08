@@ -105,11 +105,11 @@ SET(FemScripts_SRCS
     MechanicalMaterial.py
     TestFem.py
 
-    FemBeamSection.ui
-    FemShellThickness.ui
-    MechanicalAnalysis.ui
-    MechanicalMaterial.ui
-    ShowDisplacement.ui
+    TaskPanelFemBeamSection.ui
+    TaskPanelFemShellThickness.ui
+    TaskPanelMechanicalAnalysis.ui
+    TaskPanelMechanicalMaterial.ui
+    TaskPanelShowDisplacement.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
