@@ -84,15 +84,10 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
     connect(ui->checkUsed, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->checkOtherBody, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->bodyRadioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->bodyRadioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->checkOtherPart, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->partRadioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->partRadioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->partRadioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->checkNoBody, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->nobodyRadioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->nobodyRadioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
+    connect(ui->radioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
+    connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
+    connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
 
     enum { axisBit=0, planeBit = 1};
 
@@ -153,9 +148,6 @@ void TaskFeaturePick::updateList()
 {
     int index = 0;
 
-    //get all origins in temporary mode
-
-
     for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
         QListWidgetItem* item = ui->listWidget->item(index);
 
@@ -166,7 +158,7 @@ void TaskFeaturePick::updateList()
             case noWire: item->setHidden(true); break;
             case otherBody: item->setHidden(!ui->checkOtherBody->isChecked()); break;
             case otherPart: item->setHidden(!ui->checkOtherPart->isChecked()); break;
-            case notInBody: item->setHidden(!ui->checkNoBody->isChecked()); break;
+            case notInBody: item->setHidden(!ui->checkOtherPart->isChecked()); break;
             case basePlane: item->setHidden(false); break;
             case afterTip:  item->setHidden(true); break;
         }
@@ -177,24 +169,32 @@ void TaskFeaturePick::updateList()
 
 void TaskFeaturePick::onUpdate(bool)
 {
+    bool enable = false;
+    if(ui->checkOtherBody->isChecked() || ui->checkOtherPart->isChecked())
+        enable = true;
+
+    ui->radioDependent->setEnabled(enable);
+    ui->radioIndependent->setEnabled(enable);
+    ui->radioXRef->setEnabled(enable);
+
     updateList();
 }
 
 std::vector<App::DocumentObject*> TaskFeaturePick::getFeatures() {
-    
+
     features.clear();
     QListIterator<QListWidgetItem*> i(ui->listWidget->selectedItems());
     while (i.hasNext()) {
-        
+
         auto item = i.next();
         if(item->isHidden())
             continue;
-        
+
         QString t = item->text();
         t = t.left(t.indexOf(QString::fromAscii("(")) - 1);
         features.push_back(t);
     }
-    
+
     std::vector<App::DocumentObject*> result;
 
     for (std::vector<QString>::const_iterator s = features.begin(); s != features.end(); s++)
@@ -219,40 +219,30 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
             t = t.left(t.indexOf(QString::fromAscii("(")) - 1);
             auto obj = App::GetApplication().getActiveDocument()->getObject(t.toAscii().data());
 
-            //build the dependend copy if wanted by the user
-            if(*st == otherBody) {
+            //build the dependend copy or reference if wanted by the user
+            if(*st == otherBody  ||
+               *st == otherPart  ||
+               *st == notInBody ) {
 
-                if(ui->bodyRadioIndependent->isChecked()) {
-                    auto copy = makeCopy(obj, "", true);
-                    activeBody->addFeature(copy);
-                    result.push_back(copy);
-                } else {
-                    result.push_back(obj);
-                }
-            }
-            else if(*st == otherPart) {
+                if(!ui->radioXRef->isChecked()) {
+                    auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
 
-                if(!ui->partRadioXRef->isChecked()) {
-                    auto copy = makeCopy(obj, "", ui->partRadioIndependent->isChecked());
-
-                    auto oBody = PartDesignGui::getBodyFor(obj, false);
-                    if(oBody)
+                    if(*st == otherBody)
                         activeBody->addFeature(copy);
-                    else
-                        activePart->addObject(copy);
-
-                    result.push_back(copy);
-                }
-                else
-                    result.push_back(obj);
-            } else if(*st == notInBody) {
-                if(ui->bodyRadioIndependent->isChecked()) {
-                    auto copy = makeCopy(obj, "", true);
-                    activeBody->addFeature(copy);
-                    // doesn't supposed to get here anything but sketch but to be on the safe side better to check
-                    if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-                        Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
-                        PartDesignGui::fixSketchSupport(sketch);
+                    else if(*st == otherPart) {
+                        auto oBody = PartDesignGui::getBodyFor(obj, false);
+                        if(!oBody)
+                            activePart->addObject(copy);
+                        else
+                            activeBody->addFeature(copy);
+                    }
+                    else if(*st == notInBody) {
+                        activeBody->addFeature(copy);
+                        // doesn't supposed to get here anything but sketch but to be on the safe side better to check
+                        if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                            Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
+                            PartDesignGui::fixSketchSupport(sketch);
+                        }
                     }
                     result.push_back(copy);
                 }
@@ -400,12 +390,12 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
 
 void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
-{    
+{
     ui->listWidget->clearSelection();
     for(Gui::SelectionSingleton::SelObj obj :  Gui::Selection().getSelection()) {
-        
+
         for(int row = 0; row < ui->listWidget->count(); row++) {
-            
+
             QListWidgetItem *item = ui->listWidget->item(row);
             QString t = item->text();
             t = t.left(t.indexOf(QString::fromAscii("(")) - 1);
@@ -420,7 +410,6 @@ void TaskFeaturePick::showExternal(bool val) {
 
     ui->checkOtherBody->setChecked(val);
     ui->checkOtherPart->setChecked(val);
-    ui->checkNoBody->setChecked(val);
     updateList();
 }
 
@@ -430,7 +419,7 @@ void TaskFeaturePick::showExternal(bool val) {
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &objects, 
+TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &objects,
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
                                         boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
                                         boost::function<void (std::vector<App::DocumentObject*>)> wfunc)
@@ -438,15 +427,15 @@ TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &object
 {
     pick  = new TaskFeaturePick(objects, status);
     Content.push_back(pick);
-    
+
     acceptFunction = afunc;
     workFunction = wfunc;
 }
 
 TaskDlgFeaturePick::~TaskDlgFeaturePick()
 {
-    //do the work now as before in accept() the dialog is still open, hence the work 
-    //function could not open annother dialog    
+    //do the work now as before in accept() the dialog is still open, hence the work
+    //function could not open annother dialog
     if(accepted)
         workFunction(pick->buildFeatures());
 }
@@ -456,18 +445,18 @@ TaskDlgFeaturePick::~TaskDlgFeaturePick()
 
 void TaskDlgFeaturePick::open()
 {
-    
+
 }
 
 void TaskDlgFeaturePick::clicked(int)
 {
-    
+
 }
 
 bool TaskDlgFeaturePick::accept()
 {
     accepted = acceptFunction(pick->getFeatures());
-     
+
     return accepted;
 }
 
