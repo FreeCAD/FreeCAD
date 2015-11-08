@@ -58,7 +58,8 @@ public:
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual short int mustExecute(void) const;
+    virtual App::DocumentObjectExecReturn* execute(void);
 };
 
 //this class is needed as long as sketch-based features can only work with Part2DObjects
@@ -75,7 +76,7 @@ public:
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    virtual App::DocumentObjectExecReturn* execute(void);
 };
 
 } //namespace PartDesign

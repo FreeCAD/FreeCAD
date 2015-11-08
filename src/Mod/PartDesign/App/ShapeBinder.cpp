@@ -49,33 +49,35 @@ ShapeBinder::~ShapeBinder()
 {
 }
 
-// TODO Move this to mustExecute/execute (2015-09-11, Fat-Zer)
-void ShapeBinder::onChanged(const App::Property *prop)
-{
+short int ShapeBinder::mustExecute(void) const {
+
+    if(Support.isTouched())
+        return 1;
+
+    return Part::Feature::mustExecute();
+}
+
+App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
 
     if(! this->isRestoring()){
+        Part::Feature* obj = nullptr;
+        std::vector<std::string> subs;
 
-        if(prop == &Support) {
-
-            Part::Feature* obj = nullptr;
-            std::vector<std::string> subs;
-
-            ShapeBinder::getFilterdReferences(&Support, obj, subs);            
-            Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
-        }
-
+        ShapeBinder::getFilterdReferences(&Support, obj, subs);
+        Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
     }
-    Part::Feature::onChanged(prop);
+
+    return Part::Feature::execute();
 }
 
 void ShapeBinder::getFilterdReferences(App::PropertyLinkSubList* prop, Part::Feature*& obj, std::vector< std::string >& subobjects) {
 
     obj = nullptr;
     subobjects.clear();
-    
+
     auto objs = prop->getValues();
     auto subs = prop->getSubValues();
-    
+
     if(objs.empty()) {
         return;
     }
@@ -107,26 +109,26 @@ void ShapeBinder::getFilterdReferences(App::PropertyLinkSubList* prop, Part::Fea
         //in this mode the full shape is not allowed, as we already started the subshape
         //processing
         if(sub.empty())
-            continue;    
+            continue;
 
         subobjects.push_back(sub);
     }
 }
 
 
-TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector< std::string > subs) {  
- 
+TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector< std::string > subs) {
+
     if(!obj)
         return TopoDS_Shape();
-    
+
     if(subs.empty())
-        return obj->Shape.getShape();        
-    
+        return obj->Shape.getShape();
+
     //if we use multiple subshapes we build a shape from them by fusing them together
     TopoShape base;
     std::vector<TopoDS_Shape> operators;
     for(std::string sub : subs) {
-               
+
         if(base.isNull())
             base = obj->Shape.getShape().getSubShape(sub.c_str());
         else
@@ -134,7 +136,7 @@ TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector
     }
 
     try {
-    if(!operators.empty() && !base.isNull()) 
+    if(!operators.empty() && !base.isNull())
         return base.multiFuse(operators);
     }
     catch(...) {
@@ -154,19 +156,15 @@ ShapeBinder2D::~ShapeBinder2D() {
 
 }
 
-void ShapeBinder2D::onChanged(const App::Property* prop) {
+App::DocumentObjectExecReturn* ShapeBinder2D::execute(void) {
 
     if(! this->isRestoring()){
 
-        if(prop == &Support) {
+        Part::Feature* obj = nullptr;
+        std::vector<std::string> subs;
 
-            Part::Feature* obj = nullptr;
-            std::vector<std::string> subs;
-
-            ShapeBinder::getFilterdReferences(&Support, obj, subs);            
-            Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
-        }
-
+        ShapeBinder::getFilterdReferences(&Support, obj, subs);
+        Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
     }
-    Part::Feature::onChanged(prop);
+    return Part::Part2DObject::execute();
 }
