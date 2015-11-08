@@ -240,6 +240,9 @@ protected:
     Gui::DocumentPy *_pcDocPy;
 
 private:
+    //handles the scene graph nodes to correctly group child and parents
+    void handleChildren3D(ViewProvider* viewProvider);
+
     struct DocumentP* d;
     static int _iDocCount;
 
