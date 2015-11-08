@@ -84,8 +84,6 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Cell contents");
     ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Column widths");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Row heights");
-    ADD_PROPERTY_TYPE(currRow, (0), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Current row");
-    ADD_PROPERTY_TYPE(currColumn, (0), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Current column");
 
     docDeps.setSize(0);
 
@@ -452,18 +450,6 @@ std::map<int, int> Sheet::getRowHeights() const
     return rowHeights.getValues();
 }
 
-/**
- * @brief Set selected position for property to \a address.
- * @param address Target position
- */
-
-void Sheet::setPosition(CellAddress address)
-{
-    currRow.setValue(address.row());
-    currColumn.setValue(address.col());
-    currRow.purgeTouched();
-    currColumn.purgeTouched();
-}
 
 /**
  * @brief Remove all aliases.
@@ -844,11 +830,6 @@ DocumentObjectExecReturn *Sheet::execute(void)
     //cells.clearDirty();
     rowHeights.clearDirty();
     columnWidths.clearDirty();
-
-    positionChanged(CellAddress(currRow.getValue(), currColumn.getValue()));
-
-    currRow.purgeTouched();
-    currColumn.purgeTouched();
 
     std::set<DocumentObject*> ds(cells.getDocDeps());
 
