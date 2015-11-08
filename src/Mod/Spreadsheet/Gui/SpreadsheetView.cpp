@@ -50,6 +50,7 @@
 #include <boost/bind.hpp>
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "qtcolorpicker.h"
+#include <LineEdit.h>
 
 #include "ui_Sheet.h"
 
@@ -198,6 +199,7 @@ void SheetView::updateContentLine()
         if (cell)
             cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
+        ui->cellContent->setIndex(i);
         ui->cellContent->setEnabled(true);
 
         // Update completer model; for the time being, we do this by setting the document object of the input line.
@@ -289,6 +291,9 @@ void SheetView::editingFinished()
 
     // Update data in cell
     ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+
+    ui->cells->setCurrentIndex(ui->cellContent->next());
+    ui->cells->setFocus();
 }
 
 void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )
