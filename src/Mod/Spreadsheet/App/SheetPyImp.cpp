@@ -759,25 +759,6 @@ PyObject* SheetPy::getBackground(PyObject *args)
     }
 }
 
-PyObject* SheetPy::setPosition(PyObject *args)
-{
-    const char * strAddress;
-    CellAddress address;
-
-    if (!PyArg_ParseTuple(args, "s:setPosition", &strAddress))
-        return 0;
-
-    try {
-        address = stringToAddress(strAddress);
-        getSheetPtr()->setPosition(address);
-        Py_Return;
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
-}
-
 PyObject* SheetPy::setColumnWidth(PyObject *args)
 {
     const char * columnStr;
