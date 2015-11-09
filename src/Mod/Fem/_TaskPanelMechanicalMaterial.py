@@ -241,7 +241,10 @@ class _TaskPanelMechanicalMaterial:
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
-        self.sel_server = ReferenceShapeSelectionObserver(self.selectionParser)
+        # TODO add a ToolTip with print_message if the mouse pointer is over addReference button
+        print_message = "Select Edges and Faces by single click on them or Solids by double click on a Vertex to add them to the list"
+        import SelectionObserverFem
+        self.sel_server = SelectionObserverFem.SelectionObserverFem(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
@@ -261,10 +264,6 @@ class _TaskPanelMechanicalMaterial:
                         FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
                 else:
                     FreeCAD.Console.PrintMessage(elt.ShapeType + ' selected, but reference list has ' + self.references_shape_type + 's already!\n')
-            else:
-                FreeCAD.Console.PrintMessage("Select Edges and Faces by single click on them or Solids by double click on a Vertex!\n")
-        else:
-            FreeCAD.Console.PrintMessage("Selection has no shape!\n")
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
@@ -277,19 +276,3 @@ class _TaskPanelMechanicalMaterial:
             items.append(item_name)
         for listItemName in sorted(items):
             self.form.list_References.addItem(listItemName)
-
-
-class ReferenceShapeSelectionObserver:
-    '''ReferenceShapeSelectionObserver
-       started on click  button addReference'''
-    def __init__(self, parseSelectionFunction):
-        self.parseSelectionFunction = parseSelectionFunction
-        FreeCADGui.Selection.addObserver(self)
-        FreeCAD.Console.PrintMessage("Select Edges and Faces by single click on them or Solids by double click on a Vertex!\n")
-        # TODO add a ToolTip if mouse pointer is over addReference button
-
-    def addSelection(self, docName, objName, sub, pos):
-        selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
-        self.added_obj = (selected_object, sub)
-        # on double click on a vertex of a solid sub is None and obj is the solid
-        self.parseSelectionFunction(self.added_obj)
