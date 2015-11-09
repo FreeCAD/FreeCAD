@@ -157,9 +157,6 @@ void TaskFilletParameters::apply()
 
     //Gui::Command::openCommand("Fillet changed");
     ui->filletRadius->apply();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
 }
 
 //**************************************************************************

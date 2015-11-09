@@ -156,10 +156,6 @@ void TaskChamferParameters::apply()
 
     //Gui::Command::openCommand("Chamfer changed");
     ui->chamferDistance->apply();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
