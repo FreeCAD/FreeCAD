@@ -100,7 +100,7 @@ class _TaskPanelFemShellThickness:
                         self.references.append(selection)
                         self.rebuild_list_References()
                     else:
-                        print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
+                        FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
