@@ -103,6 +103,7 @@ SET(FemScripts_SRCS
     FemTools.py
     MechanicalAnalysis.py
     MechanicalMaterial.py
+    SelectionObserverFem.py
     TestFem.py
 
     TaskPanelFemBeamSection.ui

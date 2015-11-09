@@ -14,6 +14,7 @@ INSTALL(
         convert2TetGen.py
         FemExample.py
 
+        SelectionObserverFem.py
         TestFem.py
 
         ccxDatReader.py
