@@ -148,7 +148,16 @@ void ViewProviderOriginGroup::updateOriginSize () {
         return;
     }
 
-    View3DInventorViewer* viewer = static_cast<View3DInventor*>(this->getActiveView())->getViewer();
+
+    Gui::Document* gdoc = Gui::Application::Instance->getDocument(getObject()->getDocument());
+    if(!gdoc) 
+        return;
+    
+    Gui::MDIView* view = gdoc->getViewOfViewProvider(this);
+    if(!view)
+        return;
+    
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
     // calculate the bounding box for out content
