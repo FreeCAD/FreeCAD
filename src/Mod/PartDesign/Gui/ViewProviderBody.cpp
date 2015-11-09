@@ -307,8 +307,17 @@ void ViewProviderBody::slotChangedObjectGui (
 
 void ViewProviderBody::updateOriginDatumSize () {
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
+    
     // Use different bounding boxes for datums and for origins:
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(this->getActiveView())->getViewer();
+    Gui::Document* gdoc = Gui::Application::Instance->getDocument(getObject()->getDocument());
+    if(!gdoc) 
+        return;
+    
+    Gui::MDIView* view = gdoc->getViewOfViewProvider(this);
+    if(!view)
+        return;
+    
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
     const auto & model = body->getFullModel ();
