@@ -86,7 +86,9 @@ class _TaskPanelFemBeamSection:
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
-        self.sel_server = ReferenceShapeSelectionObserver(self.selectionParser)
+        print_message = "Select Edges by single click on them to add them to the list"
+        import SelectionObserverFem
+        self.sel_server = SelectionObserverFem.SelectionObserverFem(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
@@ -109,18 +111,3 @@ class _TaskPanelFemBeamSection:
             items.append(item_name)
         for listItemName in sorted(items):
             self.form.list_References.addItem(listItemName)
-
-
-class ReferenceShapeSelectionObserver:
-    '''ReferenceShapeSelectionObserver
-       started on click  button addReference'''
-    def __init__(self, parseSelectionFunction):
-        self.parseSelectionFunction = parseSelectionFunction
-        FreeCADGui.Selection.addObserver(self)
-        FreeCAD.Console.PrintMessage("Select Faces to add them to the list!\n")
-
-    def addSelection(self, docName, objName, sub, pos):
-        selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
-        self.added_obj = (selected_object, sub)
-        if sub:         # on doubleClick the solid is selected and sub will be empty
-            self.parseSelectionFunction(self.added_obj)
