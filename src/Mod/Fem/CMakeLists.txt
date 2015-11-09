@@ -16,6 +16,18 @@ INSTALL(
         FemTools.py
         TestFem.py
         FemExample.py
+
+	CaeAnalysis.py
+	CaeSolver.py
+	_SolverControlTaskPanel.ui
+	CaeTools.py
+	FoamCfdSolver.py
+	ccxFemSolver.py
+	#FoamCaseWriter.py
+	CfdExample.py
+	_AnalysisControlTaskPanel.py
+	_AnalysisControlTaskPanel.ui
+
         MechanicalAnalysis.py
         MechanicalAnalysis.ui
         ShowDisplacement.ui
