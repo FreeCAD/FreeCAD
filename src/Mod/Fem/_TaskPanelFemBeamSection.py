@@ -93,15 +93,14 @@ class _TaskPanelFemBeamSection:
     def selectionParser(self, selection):
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
         if hasattr(selection[0], "Shape"):
-            elt = selection[0].Shape.getElement(selection[1])
-            if elt.ShapeType == 'Edge':
-                if selection not in self.references:
-                    self.references.append(selection)
-                    self.rebuild_list_References()
-                else:
-                    print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
-        else:
-            print('Selection has no shape!')
+            if selection[1]:
+                elt = selection[0].Shape.getElement(selection[1])
+                if elt.ShapeType == 'Edge':
+                    if selection not in self.references:
+                        self.references.append(selection)
+                        self.rebuild_list_References()
+                    else:
+                        print(selection[0].Name, '-->', selection[1], ' is already in reference list!')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
