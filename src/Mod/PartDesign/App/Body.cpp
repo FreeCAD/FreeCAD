@@ -391,8 +391,6 @@ App::DocumentObjectExecReturn *Body::execute(void)
             return new App::DocumentObjectExecReturn ( "Linked object is not a PartDesign feature" );
         }
 
-        App::DocumentObject* link = Tip.getValue();
-
         // get the shape of the tip
         tipShape = static_cast<Part::Feature *>(tip)->Shape.getShape();
 

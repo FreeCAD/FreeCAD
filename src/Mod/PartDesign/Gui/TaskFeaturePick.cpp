@@ -119,7 +119,6 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     // Setup the origin's temporary visability
     for ( const auto & originPair: originVisStatus ) {
         const auto &origin = originPair.first;
-        const auto &status = originPair.second;
 
         Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*> (
                 Gui::Application::Instance->getViewProvider ( origin ) );

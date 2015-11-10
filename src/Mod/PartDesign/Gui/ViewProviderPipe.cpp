@@ -174,8 +174,9 @@ void ViewProviderPipe::highlightReferences(const bool on, bool auxillery)
             colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
             for (std::string e : edges) {
-                int idx = atoi(e.substr(4).c_str()) - 1;
-                if (idx < colors.size())
+                int idx = std::stoi(e.substr(4)) - 1;
+                assert ( idx > 0 );
+                if ( idx < (ssize_t) colors.size() )
                     colors[idx] = App::Color(1.0,0.0,1.0); // magenta
             }
             svp->LineColorArray.setValues(colors);

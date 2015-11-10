@@ -48,7 +48,7 @@
 using namespace PartDesignGui;
 
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : vp(vp), TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
+  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent), vp(vp)
 {
     proxy = new QWidget(this);
     ui.setupUi(proxy);

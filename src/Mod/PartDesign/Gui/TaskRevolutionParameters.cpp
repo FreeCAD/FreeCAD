@@ -155,7 +155,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
     if (forceRefill){
         ui->axis->clear();
 
-        for(int i = 0  ;  i < axesInList.size()  ;  i++ ){
+        for(size_t i = 0  ;  i < axesInList.size()  ;  i++ ){
             delete axesInList[i];
         }
         this->axesInList.clear();
@@ -198,7 +198,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
     int indexOfCurrent = -1;
     App::DocumentObject* ax = propReferenceAxis->getValue();
     const std::vector<std::string> &subList = propReferenceAxis->getSubValues();
-    for(int i = 0  ;  i < axesInList.size()  ;  i++) {
+    for(size_t i = 0  ;  i < axesInList.size()  ;  i++) {
         if(ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues())
             indexOfCurrent = i;
     }
@@ -373,7 +373,7 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
 
     delete ui;
 
-    for(int i = 0  ;  i < axesInList.size()  ;  i++ ){
+    for(size_t i = 0  ;  i < axesInList.size()  ;  i++ ){
         delete axesInList[i];
     }
 }

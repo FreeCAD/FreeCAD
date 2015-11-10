@@ -164,7 +164,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
             QStringList items;
             items.push_back(QObject::tr("Don't attach"));
             int iSugg = 0;//index of the auto-suggested mode in the list of valid modes
-            for (int i = 0  ;  i < validModes.size()  ;  ++i){
+            for (size_t i = 0  ;  i < validModes.size()  ;  ++i){
                 items.push_back(QString::fromLatin1(AttachEngine::eMapModeStrings[validModes[i]]));
                 if (validModes[i] == mapmode)
                     iSugg = items.size()-1;
@@ -473,7 +473,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
 
         // check circular dependency
         std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
-        for(  int i = 0  ;  i < selobjs.size()  ;  i++){
+        for (size_t i = 0  ;  i < selobjs.size()  ;  ++i){
             App::DocumentObject* part = static_cast<Part::Feature*>(selobjs[i].getObject());
             if (!part) {
                 assert(0);
@@ -512,7 +512,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         items.push_back(QObject::tr("Don't attach"));
         int iSugg = 0;//index of the auto-suggested mode in the list of valid modes
         int iCurr = 0;//index of current mode in the list of valid modes
-        for (int i = 0  ;  i < validModes.size()  ;  ++i){
+        for (size_t i = 0  ;  i < validModes.size()  ;  ++i){
             items.push_back(QString::fromLatin1(AttachEngine::eMapModeStrings[validModes[i]]));
             if (validModes[i] == curMapMode) {
                 iCurr = items.size() - 1;

@@ -112,10 +112,8 @@ short Pipe::mustExecute() const
 App::DocumentObjectExecReturn *Pipe::execute(void)
 {
     
-    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
     try {
-        sketch = getVerifiedSketch();
         wires = getSketchWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -182,7 +180,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                     return  new App::DocumentObjectExecReturn("All sections need to be part features");
                 
                 TopExp_Explorer ex;
-                int i=0;
+                size_t i=0;
                 for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next()) {
                     wiresections[i].push_back(TopoDS::Wire(ex.Current()));
                     if(i>=wiresections.size())

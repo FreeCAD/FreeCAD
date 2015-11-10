@@ -186,8 +186,6 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
     const std::vector<App::DocumentObject*> & features = body->Model.getValues();
-    App::DocumentObject *originObj   = body->Origin.getValue();
-    App::DocumentObject *baseFeature = body->BaseFeature.getValue();
 
     std::vector<App::DocumentObject*> rv;
 

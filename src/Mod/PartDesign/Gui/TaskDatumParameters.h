@@ -93,9 +93,9 @@ private:
     void updateUI(std::string message = std::string(), bool isWarning = false);
 
     void makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames);
-    QLineEdit* getLine(const int idx);
-    void onButtonRef(const bool checked, const int idx);
-    void onRefName(const QString& text, const int idx);
+    QLineEdit* getLine(unsigned idx);
+    void onButtonRef(const bool checked, unsigned idx);
+    void onRefName(const QString& text, unsigned idx);
 
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
@@ -111,6 +111,7 @@ private:
     Ui_TaskDatumParameters* ui;
     ViewProviderDatum *DatumView;
 
+    // TODO fix documentation here (2015-11-10, Fat-Zer)
     int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-2 means a reference is being picked.
     bool autoNext;//if we should automatically switch to next reference (true after dialog launch, false afterwards)
     std::vector<Attacher::eMapMode> modesInList; //this list is synchronous to what is populated into listOfModes widget.

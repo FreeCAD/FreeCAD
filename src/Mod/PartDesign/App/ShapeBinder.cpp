@@ -83,7 +83,7 @@ void ShapeBinder::getFilterdReferences(App::PropertyLinkSubList* prop, Part::Fea
     }
 
     //we only allow one part feature, so get the first one we find
-    int index = 0;
+    size_t index = 0;
     while(!objs[index]->isDerivedFrom(Part::Feature::getClassTypeId()) && index < objs.size())
         index++;
 

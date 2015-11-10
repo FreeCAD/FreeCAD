@@ -212,8 +212,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
-        const char* name = AddSubShape.getName();
-        const char* name1 = this->getPropertyName(&AddSubShape);
         this->AddSubShape.setValue(prism);
 
         if (!base.IsNull()) {

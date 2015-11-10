@@ -236,7 +236,7 @@ void TaskBooleanParameters::onBodyDeleted(void)
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     std::vector<App::DocumentObject*> bodies = pcBoolean->Bodies.getValues();
     int index = ui->listWidgetBodies->currentRow();
-    if (index > bodies.size())
+    if (index < 0 && (size_t) index > bodies.size())
         return;
     App::DocumentObject* body = bodies[index];
     bodies.erase(bodies.begin() + ui->listWidgetBodies->currentRow());
