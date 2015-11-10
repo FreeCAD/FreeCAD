@@ -43,7 +43,7 @@ class _CommandFemFromShape(FemCommands):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
         FreeCADGui.addModule("FemGui")
-        FreeCADGui.addModule("MechanicalAnalysis")
+        #FreeCADGui.addModule("MechanicalAnalysis")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Part::Feature")):
