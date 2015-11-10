@@ -52,10 +52,7 @@ protected:
     void updateAddSubShapeIndicator();
     
     std::string                 displayMode;
-    SoSeparator*                previewShape;
     PartGui::SoBrepFaceSet*     previewFaceSet;
-    SoCoordinate3*              previewCoords;
-    SoNormal*                   previewNorm;
 };
 
 } // namespace PartDesignGui

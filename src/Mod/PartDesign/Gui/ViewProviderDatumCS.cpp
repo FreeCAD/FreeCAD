@@ -83,7 +83,6 @@ void ViewProviderDatumCoordinateSystem::attach ( App::DocumentObject *obj ) {
     getShapeRoot ()->addChild(binding);
     getShapeRoot ()->addChild(material);
 
-    coord = new SoCoordinate3();
     coord->point.setNum(4);
 
     ViewProviderDatum::setExtents ( defaultBoundBox () );
