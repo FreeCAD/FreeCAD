@@ -75,23 +75,34 @@ using namespace Gui;
 WebView::WebView(QWidget *parent)
     : QWebView(parent)
 {
-  // Increase html font size for high DPI displays
-  QRect mainScreenSize = QApplication::desktop()->screenGeometry();
-  if(mainScreenSize.width() > 1920){
-    setTextSizeMultiplier (mainScreenSize.width()/1920.0);
-  }
+    // Increase html font size for high DPI displays
+    QRect mainScreenSize = QApplication::desktop()->screenGeometry();
+    if (mainScreenSize.width() > 1920){
+        setTextSizeMultiplier (mainScreenSize.width()/1920.0);
+    }
+}
+
+void WebView::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::MidButton) {
+        QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
+        if (!r.linkUrl().isEmpty()) {
+            openLinkInNewWindow(r.linkUrl());
+            return;
+        }
+    }
+    QWebView::mousePressEvent(event);
 }
 
 void WebView::wheelEvent(QWheelEvent *event)
 {
-  if (QApplication::keyboardModifiers() & Qt::ControlModifier)
-  {
-      qreal factor = zoomFactor() + (-event->delta() / 800.0);
-      setZoomFactor(factor);
-      event->accept();
-      return;
-  }
-  QWebView::wheelEvent(event);
+    if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+        qreal factor = zoomFactor() + (-event->delta() / 800.0);
+        setZoomFactor(factor);
+        event->accept();
+        return;
+    }
+    QWebView::wheelEvent(event);
 }
 
 void WebView::contextMenuEvent(QContextMenuEvent *event)
@@ -100,14 +111,21 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     if (!r.linkUrl().isEmpty()) {
         QMenu menu(this);
         menu.addAction(pageAction(QWebPage::OpenLink));
-        
+
         // building a custom signal for external browser action
         QSignalMapper* signalMapper = new QSignalMapper (this);
+        signalMapper->setProperty("url", QVariant(r.linkUrl()));
+        connect(signalMapper, SIGNAL(mapped(int)),
+                this, SLOT(triggerContextMenuAction(int)));
+
         QAction* extAction = menu.addAction(tr("Open in External Browser"));
         connect (extAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        signalMapper->setMapping(extAction,r.linkUrl().toString());
-        connect (signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(openLinkInExternalBrowser(const QString &)));
-        
+        signalMapper->setMapping(extAction, QWebPage::OpenLink);
+
+        QAction* newAction = menu.addAction(tr("Open in new window"));
+        connect (newAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(newAction, QWebPage::OpenLinkInNewWindow);
+
         menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
         menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
         menu.exec(mapToGlobal(event->pos()));
@@ -116,9 +134,21 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     QWebView::contextMenuEvent(event);
 }
 
-void WebView::openLinkInExternalBrowser(const QString& url)
-{   
-    QDesktopServices::openUrl(QUrl(url));
+void WebView::triggerContextMenuAction(int id)
+{
+    QObject* s = sender();
+    QUrl url = s->property("url").toUrl();
+
+    switch (id) {
+    case QWebPage::OpenLink:
+        openLinkInExternalBrowser(url);
+        break;
+    case QWebPage::OpenLinkInNewWindow:
+        openLinkInNewWindow(url);
+        break;
+    default:
+        break;
+    }
 }
 
 /* TRANSLATOR Gui::BrowserView */
@@ -153,6 +183,10 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onLoadFinished(bool)));
     connect(view, SIGNAL(linkClicked(const QUrl &)),
             this, SLOT(onLinkClicked(const QUrl &)));
+    connect(view, SIGNAL(openLinkInExternalBrowser(const QUrl &)),
+            this, SLOT(onOpenLinkInExternalBrowser(const QUrl &)));
+    connect(view, SIGNAL(openLinkInNewWindow(const QUrl &)),
+            this, SLOT(onOpenLinkInNewWindow(const QUrl &)));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
             this, SLOT(onDownloadRequested(const QNetworkRequest &)));
     connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
@@ -301,6 +335,20 @@ void BrowserView::onLoadFinished(bool ok)
         getMainWindow()->showMessage(QString());
     }
     isLoading = false;
+}
+
+void BrowserView::onOpenLinkInExternalBrowser(const QUrl& url)
+{
+    QDesktopServices::openUrl(url);
+}
+
+void BrowserView::onOpenLinkInNewWindow(const QUrl& url)
+{
+    BrowserView* view = new WebGui::BrowserView(Gui::getMainWindow());   
+    view->setWindowTitle(QObject::tr("Browser"));
+    view->resize(400, 300);
+    view->load(url);
+    Gui::getMainWindow()->addWindow(view);
 }
 
 void BrowserView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
