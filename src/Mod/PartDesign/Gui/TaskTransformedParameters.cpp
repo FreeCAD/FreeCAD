@@ -422,7 +422,7 @@ int ComboLinks::addLink(App::DocumentObject *linkObj, std::string linkSubname, Q
 
 void ComboLinks::clear()
 {
-    for(int i = 0  ;  i < this->linksInList.size()  ;  i++){
+    for(size_t i = 0  ;  i < this->linksInList.size()  ;  i++){
         delete linksInList[i];
     }
     if(this->_combo)
@@ -431,7 +431,7 @@ void ComboLinks::clear()
 
 App::PropertyLinkSub &ComboLinks::getLink(int index) const
 {
-    if (index < 0 || index > linksInList.size()-1)
+    if (index < 0 || index > (ssize_t) linksInList.size()-1)
         throw Base::Exception("ComboLinks::getLink:Index out of range");
     if (linksInList[index]->getValue() && doc && !(doc->isIn(linksInList[index]->getValue())))
         throw Base::Exception("Linked object is not in the document; it may have been deleted");
@@ -446,7 +446,7 @@ App::PropertyLinkSub &ComboLinks::getCurrentLink() const
 
 int ComboLinks::setCurrentLink(const App::PropertyLinkSub &lnk)
 {
-    for(int i = 0  ;  i < linksInList.size()  ;  i++) {
+    for(size_t i = 0  ;  i < linksInList.size()  ;  i++) {
         App::PropertyLinkSub &it = *(linksInList[i]);
         if(lnk.getValue() == it.getValue() && lnk.getSubValues() == it.getSubValues()){
             bool wasBlocked = _combo->signalsBlocked();

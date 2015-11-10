@@ -101,10 +101,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             cmd.doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",support.getValue()->getNameInDocument());
         } else if (pcActiveBody) {
 
-            auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
-
             // TODO Check how this will work outside of a body (2015-10-20, Fat-Zer)
-            // TODO rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
             std::string FeatName = cmd.getUniqueObjectName(name.c_str());
 
             std::string tmp = std::string("Create ")+name;
@@ -281,10 +278,8 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         //test if current selection fits a mode.
         if (support.getSize() > 0) {
-            AttachableObject* pcDatum = static_cast<AttachableObject*>(
-                    getDocument()->getObject(FeatName.c_str()));
             doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
-                    FeatName.c_str(),support.getPyReprString().c_str());
+                    FeatName.c_str(), support.getPyReprString().c_str());
         }
         doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                 pcActiveBody->getNameInDocument(), FeatName.c_str());
@@ -532,7 +527,6 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         };
 
         // If there is more than one possibility, show dialog and let user pick plane
-        bool reversed = false;
         if (validPlanes > 1) {
 
            Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -1813,11 +1807,9 @@ void CmdPartDesignBoolean::activated(int iMsg)
     if (!pcActiveBody) return;
 
     Gui::SelectionFilter BodyFilter("SELECT PartDesign::Body COUNT 1..");
-    PartDesign::Body* body = nullptr;
     std::string bodyString("");
 
     if (BodyFilter.match()) {
-        body = static_cast<PartDesign::Body*>(BodyFilter.Result[0][0].getObject());
         std::vector<App::DocumentObject*> bodies;
         std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
         for (; i != BodyFilter.Result.end(); i++) {

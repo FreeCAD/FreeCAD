@@ -96,7 +96,6 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
 
     PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
-    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
     // The solid this feature will be fused to
     App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );

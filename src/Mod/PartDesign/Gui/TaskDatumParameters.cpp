@@ -96,7 +96,7 @@ void TaskDatumParameters::makeRefStrings(std::vector<QString>& refstrings, std::
     std::vector<App::DocumentObject*> refs = pcDatum->Support.getValues();
     refnames = pcDatum->Support.getSubValues();
 
-    for (int r = 0; r < 4; r++) {
+    for (size_t r = 0; r < 4; r++) {
         if ((r < refs.size()) && (refs[r] != NULL)) {
             refstrings.push_back(makeRefString(refs[r], refnames[r]));
         } else {
@@ -312,7 +312,8 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     // Get hints for further required references
     eSuggestResult msg;
     std::set<eRefType> hint;
-    eMapMode suggMode = pcDatum->attacher().listMapModes(msg,0,&hint);
+
+    pcDatum->attacher().listMapModes(msg,0,&hint);
 
     if (msg != srOK) {
         if(hint.size() > 0)
@@ -374,18 +375,15 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     }
 }
 
-QLineEdit* TaskDatumParameters::getLine(const int idx)
+QLineEdit* TaskDatumParameters::getLine(unsigned idx)
 {
-    if (idx == 0)
-        return ui->lineRef1;
-    else if (idx == 1)
-        return ui->lineRef2;
-    else if (idx == 2)
-        return ui->lineRef3;
-    else if (idx == 3)
-        return ui->lineRef4;
-    else
-        return NULL;
+    switch(idx) {
+        case 0: return ui->lineRef1;
+        case 1: return ui->lineRef2;
+        case 2: return ui->lineRef3;
+        case 3: return ui->lineRef4;
+        default: return NULL;
+    }
 }
 
 void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -408,11 +406,11 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             subname = "";
 
         // eliminate duplicate selections
-        for (int r = 0; r < refs.size(); r++)
+        for (size_t r = 0; r < refs.size(); r++)
             if ((refs[r] == selObj) && (refnames[r] == subname))
                 return;
 
-        if (autoNext && iActiveRef > 0 && iActiveRef == refnames.size()){
+        if (autoNext && iActiveRef > 0 && iActiveRef == (ssize_t) refnames.size()){
             if (refs[iActiveRef-1] == selObj
                 && refnames[iActiveRef-1].length() != 0 && subname.length() == 0){
                 //A whole object was selected by clicking it twice. Fill it
@@ -422,7 +420,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 iActiveRef--;
             }
         }
-        if (iActiveRef < refs.size()) {
+        if (iActiveRef < (ssize_t) refs.size()) {
             refs[iActiveRef] = selObj;
             refnames[iActiveRef] = subname;
         } else {
@@ -521,7 +519,7 @@ void TaskDatumParameters::onCheckFlip(bool on)
     pcDatum->getDocument()->recomputeFeature(pcDatum);
 }
 
-void TaskDatumParameters::onButtonRef(const bool checked, const int idx)
+void TaskDatumParameters::onButtonRef(const bool checked, unsigned idx)
 {
     autoNext = false;
     if (checked) {
@@ -555,7 +553,7 @@ void TaskDatumParameters::onModeSelect()
     pcDatum->MapMode.setValue(getActiveMapMode());
 }
 
-void TaskDatumParameters::onRefName(const QString& text, const int idx)
+void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
 {
     QLineEdit* line = getLine(idx);
     if (line == NULL) return;
@@ -568,7 +566,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
         std::vector<std::string> refnames = pcDatum->Support.getSubValues();
         std::vector<App::DocumentObject*> newrefs;
         std::vector<std::string> newrefnames;
-        for (int r = 0; r < refs.size(); r++) {
+        for (size_t r = 0; r < refs.size(); r++) {
             if (r != idx) {
                 newrefs.push_back(refs[r]);
                 newrefnames.push_back(refnames[r]);
@@ -601,7 +599,6 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
     if (obj == NULL) return;
 
     std::string subElement;
-    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
@@ -690,7 +687,7 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
     ui->listOfModes->clear();
     QListWidgetItem* iSelect = 0;
     if (modesInList.size()>0) {
-        for(  int i = 0  ;  i < modesInList.size()  ;  i++){
+        for (size_t i = 0  ;  i < modesInList.size()  ;  ++i){
             eMapMode mmode = modesInList[i];
             ui->listOfModes->addItem(QString::fromLatin1(AttachEngine::eMapModeStrings[mmode]));
             if (mmode == curMode)
@@ -874,7 +871,6 @@ bool TaskDlgDatumParameters::accept()
     std::vector<App::DocumentObject*> copies;
 
     //see if we are able to assign a mode
-    bool bIgnoreError = false;
     if (parameter->getActiveMapMode() == mmDeactivated) {
         QMessageBox msg;
         msg.setWindowTitle(tr("Incompatible reference set"));
@@ -882,7 +878,7 @@ bool TaskDlgDatumParameters::accept()
         " of references. If you choose to continue, the feature will remain where"
         " it is now, and will not be moved as the references change."
         " Continue?"));
-        auto btYes = msg.addButton(QMessageBox::Yes);
+        msg.addButton(QMessageBox::Yes);
         auto btNo =  msg.addButton(QMessageBox::No);
         msg.setDefaultButton(btNo);
         msg.setIcon(QMessageBox::Warning);
@@ -970,8 +966,6 @@ bool TaskDlgDatumParameters::reject()
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-
-    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
     return true;
 }

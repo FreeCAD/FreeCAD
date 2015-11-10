@@ -89,8 +89,6 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
 void ViewProviderDatumPlane::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
-
     if (strcmp(prop->getName(),"Placement") == 0) {
         updateExtents ();
     }

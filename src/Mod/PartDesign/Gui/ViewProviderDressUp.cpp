@@ -104,8 +104,10 @@ void ViewProviderDressUp::highlightReferences(const bool on)
             colors.resize(fMap.Extent(), ShapeColor.getValue());
 
             for (std::vector<std::string>::const_iterator f = faces.begin(); f != faces.end(); ++f) {
-                int idx = atoi(f->substr(4).c_str()) - 1;
-                if (idx < colors.size())
+                // Note: std::stoi may throw in case of bad or very long face name, but screw the try {} catch
+                int idx = std::stoi(f->substr(4)) - 1;
+                assert ( idx>=0 );
+                if ( idx < (ssize_t) colors.size() )
                     colors[idx] = App::Color(1.0,0.0,1.0); // magenta
             }
             vp->DiffuseColor.setValues(colors);
@@ -118,8 +120,9 @@ void ViewProviderDressUp::highlightReferences(const bool on)
             colors.resize(eMap.Extent(), LineColor.getValue());
 
             for (std::vector<std::string>::const_iterator e = edges.begin(); e != edges.end(); ++e) {
-                int idx = atoi(e->substr(4).c_str()) - 1;
-                if (idx < colors.size())
+                int idx = std::stoi(e->substr(4)) - 1;
+                assert ( idx>=0 );
+                if ( idx < (ssize_t) colors.size() )
                     colors[idx] = App::Color(1.0,0.0,1.0); // magenta
             }
             vp->LineColorArray.setValues(colors);

@@ -67,8 +67,6 @@ void ViewProviderDatumLine::attach ( App::DocumentObject *obj ) {
 void ViewProviderDatumLine::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
-
     if (strcmp(prop->getName(),"Placement") == 0) {
         updateExtents ();
     }

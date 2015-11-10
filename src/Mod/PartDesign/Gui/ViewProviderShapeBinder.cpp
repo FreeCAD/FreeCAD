@@ -140,23 +140,24 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool auxillery)
             originalLineColors = svp->LineColorArray.getValues();
             std::vector<App::Color> lcolors = originalLineColors;
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
-            
+
             TopExp::MapShapes(obj->Shape.getValue(), TopAbs_FACE, eMap);
             originalFaceColors = svp->DiffuseColor.getValues();
             std::vector<App::Color> fcolors = originalFaceColors;
             fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
 
             for (std::string e : subs) {
+                // Note: stoi may throw, but it strictly shouldn't happen
                 if(e.substr(4) == "Edge") {
-                    
-                    int idx = atoi(e.substr(4).c_str()) - 1;
-                    if (idx < lcolors.size())
+                    int idx = std::stoi(e.substr(4)) - 1;
+                    assert ( idx>=0 );
+                    if ( idx < (ssize_t) lcolors.size() )
                         lcolors[idx] = App::Color(1.0,0.0,1.0); // magenta
                 }
                 else if(e.substr(4) == "Face")  {
-                    
-                    int idx = atoi(e.substr(4).c_str()) - 1;
-                    if (idx < fcolors.size())
+                    int idx = std::stoi(e.substr(4)) - 1;
+                    assert ( idx>=0 );
+                    if ( idx < (ssize_t) fcolors.size() )
                         fcolors[idx] = App::Color(1.0,0.0,1.0); // magenta
                 }
             }
