@@ -58,6 +58,7 @@ protected:
 
 private:
     App::ObjectIdentifier path;
+    boost::shared_ptr<App::Expression> lastExpression;
 protected:
     QLabel* iconLabel;
     QPalette defaultPalette;

@@ -321,11 +321,6 @@ bool QuantitySpinBox::apply(const std::string & propName)
         return false;
 }
 
-bool QuantitySpinBox::apply()
-{
-    return ExpressionBinding::apply();
-}
-
 void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 {
     QAbstractSpinBox::resizeEvent(event);

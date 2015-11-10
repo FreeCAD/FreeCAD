@@ -64,6 +64,7 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
 
     }
 
+    lastExpression = getExpression();
     docObj->ExpressionEngine.setValue(path, expr);
 }
 
@@ -146,11 +147,11 @@ bool ExpressionBinding::apply(const std::string & propName)
             if (!docObj)
                 throw Base::Exception("Document object not found.");
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', None)",
-                                    docObj->getDocument()->getName(),
-                                    docObj->getNameInDocument(),
-                                    path.toEscapedString().c_str());
-            return true;
+            if (lastExpression)
+                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', None)",
+                                        docObj->getDocument()->getName(),
+                                        docObj->getNameInDocument(),
+                                        path.toEscapedString().c_str());
         }
 
         return false;
