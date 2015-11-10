@@ -344,11 +344,12 @@ void BrowserView::onOpenLinkInExternalBrowser(const QUrl& url)
 
 void BrowserView::onOpenLinkInNewWindow(const QUrl& url)
 {
-    BrowserView* view = new WebGui::BrowserView(Gui::getMainWindow());   
+    BrowserView* view = new WebGui::BrowserView(Gui::getMainWindow());
     view->setWindowTitle(QObject::tr("Browser"));
     view->resize(400, 300);
     view->load(url);
     Gui::getMainWindow()->addWindow(view);
+    Gui::getMainWindow()->setActiveWindow(this);
 }
 
 void BrowserView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
