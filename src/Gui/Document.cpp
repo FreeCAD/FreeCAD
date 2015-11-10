@@ -1139,42 +1139,55 @@ bool Document::canClose ()
             QObject::tr("The document is not closable for the moment."));
         return false;
     }
-    else if (!Gui::Control().isAllowedAlterDocument()) {
-        std::string name = Gui::Control().activeDialog()->getDocumentName();
-        if (name == this->getDocument()->getName()) {
-            QMessageBox::warning(getActiveView(),
-                QObject::tr("Document not closable"),
-                QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
-                            "You either have to finish or cancel the editing in the task panel."));
-            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-            if (dlg) Gui::Control().showDialog(dlg);
-            return false;
+    //else if (!Gui::Control().isAllowedAlterDocument()) {
+    //    std::string name = Gui::Control().activeDialog()->getDocumentName();
+    //    if (name == this->getDocument()->getName()) {
+    //        QMessageBox::warning(getActiveView(),
+    //            QObject::tr("Document not closable"),
+    //            QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
+    //                        "You either have to finish or cancel the editing in the task panel."));
+    //        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    //        if (dlg) Gui::Control().showDialog(dlg);
+    //        return false;
+    //    }
+    //}
+
+    bool ok = true;
+    if (isModified()) {
+        QMessageBox box(getActiveView());
+        box.setIcon(QMessageBox::Question);
+        box.setWindowTitle(QObject::tr("Unsaved document"));
+        box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
+                    .arg(QString::fromUtf8(getDocument()->Label.getValue())));
+        box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
+        box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
+        box.setDefaultButton(QMessageBox::Save);
+
+        switch (box.exec())
+        {
+        case QMessageBox::Save:
+            ok = save();
+            break;
+        case QMessageBox::Discard:
+            ok = true;
+            break;
+        case QMessageBox::Cancel:
+            ok = false;
+            break;
         }
     }
 
-    if (!isModified())
-        return true;
-    bool ok = true;
-    QMessageBox box(getActiveView());
-    box.setIcon(QMessageBox::Question);
-    box.setWindowTitle(QObject::tr("Unsaved document"));
-    box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
-                .arg(QString::fromUtf8(getDocument()->Label.getValue())));
-    box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
-    box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
-    box.setDefaultButton(QMessageBox::Save);
-
-    switch (box.exec())
-    {
-    case QMessageBox::Save:
-        ok = save();
-        break;
-    case QMessageBox::Discard:
-        ok = true;
-        break;
-    case QMessageBox::Cancel:
-        ok = false;
-        break;
+    if (ok) {
+        // If a tsk dialog is open that doesn't allow other commands to modify
+        // the document it must be closed by resetting the edit mode of the
+        // corresponding view provider.
+        if (!Gui::Control().isAllowedAlterDocument()) {
+            std::string name = Gui::Control().activeDialog()->getDocumentName();
+            if (name == this->getDocument()->getName()) {
+                if (this->getInEdit())
+                    this->resetEdit();
+            }
+        }
     }
 
     return ok;

@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemBeamSectionTaskPanel"
+__title__ = "_TaskPanelFemShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -31,15 +31,15 @@ from PySide import QtGui
 from PySide import QtCore
 
 
-class _FemBeamSectionTaskPanel:
-    '''The TaskPanel for editing References property of FemBeamSection objects'''
+class _TaskPanelFemShellThickness:
+    '''The TaskPanel for editing References property of FemShellThickness objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
         self.references = self.obj.References
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/FemBeamSection.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemShellThickness.ui")
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
@@ -92,7 +92,7 @@ class _FemBeamSectionTaskPanel:
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
         if hasattr(selection[0], "Shape"):
             elt = selection[0].Shape.getElement(selection[1])
-            if elt.ShapeType == 'Edge':
+            if elt.ShapeType == 'Face':
                 if selection not in self.references:
                     self.references.append(selection)
                     self.rebuild_list_References()
@@ -108,7 +108,7 @@ class _FemBeamSectionTaskPanel:
             item_name = i[0].Name + ':' + i[1]
             items.append(item_name)
         for listItemName in sorted(items):
-            listItem = QtGui.QListWidgetItem(listItemName, self.form.list_References)  # listItem =   is needed
+            self.form.list_References.addItem(listItemName)
 
 
 class ReferenceShapeSelectionObserver:

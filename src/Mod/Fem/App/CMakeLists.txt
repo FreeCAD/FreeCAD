@@ -68,63 +68,64 @@ SET(Mod_SRCS
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 SET(FemScripts_SRCS
-    convert2TetGen.py
+    _CommandFemBeamSection.py
+    _CommandFemFromShape.py
+    _CommandFemShellThickness.py
+    _CommandMechanicalJobControl.py
+    _CommandMechanicalMaterial.py
+    _CommandMechanicalShowResult.py
+    _CommandNewMechanicalAnalysis.py
+    _CommandPurgeFemResults.py
+    _CommandQuickAnalysis.py
+    _FemAnalysis.py
+    _FemBeamSection.py
+    _FemShellThickness.py
+    _MechanicalMaterial.py
+    _TaskPanelFemBeamSection.py
+    _TaskPanelFemShellThickness.py
+    _TaskPanelJobControl.py
+    _TaskPanelMechanicalMaterial.py
+    _TaskPanelResultControl.py
+    _ViewProviderFemAnalysis.py
+    _ViewProviderFemBeamSection.py
+    _ViewProviderFemShellThickness.py
+    _ViewProviderMechanicalMaterial.py
     ccxDatReader.py
     ccxFrdReader.py
     ccxInpWriter.py
-    TestFem.py
-    FemTools.py
-    MechanicalAnalysis.ui
-    MechanicalAnalysis.py
-    ShowDisplacement.ui
+    convert2TetGen.py
+    Init.py
+    InitGui.py
     FemCommands.py
-    _ResultControlTaskPanel.py
-    _JobControlTaskPanel.py
-    _ViewProviderFemAnalysis.py
-    _FemAnalysis.py
-    _CommandMechanicalShowResult.py
-    _CommandQuickAnalysis.py
-    _CommandPurgeFemResults.py
-    _CommandMechanicalJobControl.py
-    _CommandFemFromShape.py
-    _CommandNewMechanicalAnalysis.py
-
-    _FemBeamSection.py
-    _ViewProviderFemBeamSection.py
     FemBeamSection.py
-    _CommandFemBeamSection.py
-    _FemBeamSectionTaskPanel.py
-    FemBeamSection.ui
-
-    _FemShellThickness.py
-    _ViewProviderFemShellThickness.py
+    FemExample.py
     FemShellThickness.py
-    _CommandFemShellThickness.py
-    _FemShellThicknessTaskPanel.py
-    FemShellThickness.ui
-
-    _MechanicalMaterial.py
-    _ViewProviderMechanicalMaterial.py
+    FemTools.py
+    MechanicalAnalysis.py
     MechanicalMaterial.py
-    _CommandMechanicalMaterial.py
-    _MechanicalMaterialTaskPanel.py
-    MechanicalMaterial.ui
+    TestFem.py
+
+    TaskPanelFemBeamSection.ui
+    TaskPanelFemShellThickness.ui
+    TaskPanelMechanicalAnalysis.ui
+    TaskPanelMechanicalMaterial.ui
+    TaskPanelShowDisplacement.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
 SET(FemTests_SRCS
-    test_files/mesh_points.csv
-    test_files/mesh_volumes.csv
-    test_files/static_analysis.inp
-    test_files/frequency_analysis.inp
-    test_files/cube_frequency.inp
-    test_files/cube_frequency.dat
-    test_files/cube_frequency.frd
-    test_files/cube_frequency_expected_values
-    test_files/cube_static.inp
-    test_files/cube_static.dat
-    test_files/cube_static.frd
-    test_files/cube_static_expected_values
+    test_files/ccx/mesh_points.csv
+    test_files/ccx/mesh_volumes.csv
+    test_files/ccx/static_analysis.inp
+    test_files/ccx/frequency_analysis.inp
+    test_files/ccx/cube_frequency.inp
+    test_files/ccx/cube_frequency.dat
+    test_files/ccx/cube_frequency.frd
+    test_files/ccx/cube_frequency_expected_values
+    test_files/ccx/cube_static.inp
+    test_files/ccx/cube_static.dat
+    test_files/ccx/cube_static.frd
+    test_files/ccx/cube_static_expected_values
 )
 
 SET(FemBase_SRCS

@@ -62,8 +62,8 @@ class _CommandQuickAnalysis(FemCommands):
     def show_results_on_mesh(self):
         #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
         # or confirmation that it's safe to call restore_result_dialog
-        import _ResultControlTaskPanel
-        tp = _ResultControlTaskPanel._ResultControlTaskPanel()
+        import _TaskPanelResultControl
+        tp = _TaskPanelResultControl._TaskPanelResultControl()
         tp.restore_result_dialog()
 
 

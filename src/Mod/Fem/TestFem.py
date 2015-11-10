@@ -37,7 +37,7 @@ mesh_name = 'Mesh'
 
 home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir()
-test_file_dir = home_path + 'Mod/Fem/test_files'
+test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
 
 static_base_name = 'cube_static'
 frequency_base_name = 'cube_frequency'
