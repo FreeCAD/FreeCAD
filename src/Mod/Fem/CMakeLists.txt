@@ -61,6 +61,17 @@ INSTALL(
         _TaskPanelMechanicalMaterial.py
         TaskPanelMechanicalMaterial.ui
 
+	CaeAnalysis.py
+	CaeSolver.py
+	TaskPanelSolverControl.ui
+	CaeTools.py
+	FoamCfdSolver.py
+	ccxFemSolver.py
+	#FoamCaseWriter.py
+	CfdExample.py
+	_TaskPanelAnalysisControl.py
+	TaskPanelAnalysisControl.ui
+
     DESTINATION
         Mod/Fem
 )

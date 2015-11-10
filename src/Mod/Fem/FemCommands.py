@@ -45,7 +45,7 @@ class FemCommands(object):
         def GetResources(self):
             return self.resources
 
-        def IsActive(self):
+        def IsActive(self): 
             if not self.is_active:
                 active = False
             elif self.is_active == 'with_document':
