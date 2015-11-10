@@ -79,8 +79,20 @@ public:
     QTabWidget* tabPanel() const;
     //@}
 
+    /*!
+      If a task dialog is open then it indicates whether this task dialog allows other commands to modify
+      the document while it is open. If no task dialog is open true is returned.
+     */
     bool isAllowedAlterDocument(void) const;
+    /*!
+      If a task dialog is open then it indicates whether this task dialog allows other commands to modify
+      the 3d view while it is open. If no task dialog is open true is returned.
+     */
     bool isAllowedAlterView(void) const;
+    /*!
+      If a task dialog is open then it indicates whether this task dialog allows other commands to modify
+      the selection while it is open. If no task dialog is open true is returned.
+     */
     bool isAllowedAlterSelection(void) const;
 
 public Q_SLOTS:

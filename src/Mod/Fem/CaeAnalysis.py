@@ -138,8 +138,8 @@ class ViewProviderCaeAnalysis:
             FemGui.setActiveAnalysis(self.Object)
             return True
         else:
-            import _AnalysisControlTaskPanel
-            taskd = _AnalysisControlTaskPanel._AnalysisControlTaskPanel(self.Object)
+            import _TaskPanelAnalysisControl
+            taskd = _TaskPanelAnalysisControl._TaskPanelAnalysisControl(self.Object)
             FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -227,9 +227,9 @@ class _CommandAnalysisControl(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        import _AnalysisControlTaskPanel
+        import _TaskPanelAnalysisControl
         import FemGui
-        taskd = _AnalysisControlTaskPanel._AnalysisControlTaskPanel(FemGui.getActiveAnalysis())
+        taskd = _TaskPanelAnalysisControl._TaskPanelAnalysisControl(FemGui.getActiveAnalysis())
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
 

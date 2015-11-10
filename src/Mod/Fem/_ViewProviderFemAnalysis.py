@@ -33,8 +33,8 @@ class _ViewProviderFemAnalysis:
             FemGui.setActiveAnalysis(self.Object)
             return True
         else:
-            import _JobControlTaskPanel
-            taskd = _JobControlTaskPanel(self.Object)
+            import _TaskPanelJobControl
+            taskd = _TaskPanelJobControl(self.Object)
             FreeCADGui.Control.showDialog(taskd)
         return True
 

@@ -40,9 +40,9 @@ if FreeCAD.GuiUp:
     from PySide.QtGui import QApplication
 
 
-class _AnalysisControlTaskPanel:
+class _TaskPanelAnalysisControl:
     def __init__(self, analysis_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/_AnalysisControlTaskPanel.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelAnalysisControl.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         self.analysis_object = analysis_object

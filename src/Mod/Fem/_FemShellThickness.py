@@ -25,9 +25,6 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD
-
-
 class _FemShellThickness:
     "The FemShellThickness object"
     def __init__(self, obj):

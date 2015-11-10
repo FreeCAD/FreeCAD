@@ -7,62 +7,70 @@ endif(BUILD_GUI)
 
 INSTALL(
     FILES
+        # changes on the file list here needs to be made in App/CMakeLists.txt as well
         Init.py
         InitGui.py
+
         convert2TetGen.py
+        FemExample.py
+
+        TestFem.py
+
         ccxDatReader.py
         ccxFrdReader.py
         ccxInpWriter.py
         FemTools.py
-        TestFem.py
-        FemExample.py
+
+        FemCommands.py
+        _CommandFemFromShape.py
+        _CommandPurgeFemResults.py
+        _CommandQuickAnalysis.py
+
+        _CommandMechanicalShowResult.py
+        _TaskPanelResultControl.py
+        TaskPanelShowDisplacement.ui
+
+        _FemAnalysis.py
+        _ViewProviderFemAnalysis.py
+
+        MechanicalAnalysis.py
+        _CommandNewMechanicalAnalysis.py
+
+        _CommandMechanicalJobControl.py
+        _TaskPanelJobControl.py
+        TaskPanelMechanicalAnalysis.ui
+
+        FemBeamSection.py
+        _FemBeamSection.py
+        _ViewProviderFemBeamSection.py
+        _CommandFemBeamSection.py
+        _TaskPanelFemBeamSection.py
+        TaskPanelFemBeamSection.ui
+
+        FemShellThickness.py
+        _FemShellThickness.py
+        _ViewProviderFemShellThickness.py
+        _CommandFemShellThickness.py
+        _TaskPanelFemShellThickness.py
+        TaskPanelFemShellThickness.ui
+
+        MechanicalMaterial.py
+        _MechanicalMaterial.py
+        _ViewProviderMechanicalMaterial.py
+        _CommandMechanicalMaterial.py
+        _TaskPanelMechanicalMaterial.py
+        TaskPanelMechanicalMaterial.ui
 
 	CaeAnalysis.py
 	CaeSolver.py
-	_SolverControlTaskPanel.ui
+	TaskPanelSolverControl.ui
 	CaeTools.py
 	FoamCfdSolver.py
 	ccxFemSolver.py
 	#FoamCaseWriter.py
 	CfdExample.py
-	_AnalysisControlTaskPanel.py
-	_AnalysisControlTaskPanel.ui
-
-        MechanicalAnalysis.py
-        MechanicalAnalysis.ui
-        ShowDisplacement.ui
-        FemCommands.py
-        _ResultControlTaskPanel.py
-        _JobControlTaskPanel.py
-        _ViewProviderFemAnalysis.py
-        _FemAnalysis.py
-        _CommandMechanicalShowResult.py
-        _CommandQuickAnalysis.py
-        _CommandPurgeFemResults.py
-        _CommandMechanicalJobControl.py
-        _CommandFemFromShape.py
-        _CommandNewMechanicalAnalysis.py
-
-        _FemBeamSection.py
-        _ViewProviderFemBeamSection.py
-        FemBeamSection.py
-        _CommandFemBeamSection.py
-        _FemBeamSectionTaskPanel.py
-        FemBeamSection.ui
-
-        _FemShellThickness.py
-        _ViewProviderFemShellThickness.py
-        FemShellThickness.py
-        _CommandFemShellThickness.py
-        _FemShellThicknessTaskPanel.py
-        FemShellThickness.ui
-
-        _MechanicalMaterial.py
-        _ViewProviderMechanicalMaterial.py
-        MechanicalMaterial.py
-        _CommandMechanicalMaterial.py
-        _MechanicalMaterialTaskPanel.py
-        MechanicalMaterial.ui
+	_TaskPanelAnalysisControl.py
+	TaskPanelAnalysisControl.ui
 
     DESTINATION
         Mod/Fem
@@ -70,18 +78,19 @@ INSTALL(
 
 INSTALL(
     FILES
-        test_files/mesh_points.csv
-        test_files/mesh_volumes.csv
-        test_files/static_analysis.inp
-        test_files/frequency_analysis.inp
-        test_files/cube_frequency.inp
-        test_files/cube_frequency.dat
-        test_files/cube_frequency.frd
-        test_files/cube_frequency_expected_values
-        test_files/cube_static.inp
-        test_files/cube_static.dat
-        test_files/cube_static.frd
-        test_files/cube_static_expected_values
+        # changes on the file list here needs to be made in App/CMakeLists.txt as well
+        test_files/ccx/mesh_points.csv
+        test_files/ccx/mesh_volumes.csv
+        test_files/ccx/static_analysis.inp
+        test_files/ccx/frequency_analysis.inp
+        test_files/ccx/cube_frequency.inp
+        test_files/ccx/cube_frequency.dat
+        test_files/ccx/cube_frequency.frd
+        test_files/ccx/cube_frequency_expected_values
+        test_files/ccx/cube_static.inp
+        test_files/ccx/cube_static.dat
+        test_files/ccx/cube_static.frd
+        test_files/ccx/cube_static_expected_values
     DESTINATION
-        Mod/Fem/test_files
+        Mod/Fem/test_files/ccx
 )

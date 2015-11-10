@@ -44,8 +44,8 @@ class _CommandMechanicalJobControl(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
-        import _JobControlTaskPanel
-        taskd = _JobControlTaskPanel._JobControlTaskPanel(FemGui.getActiveAnalysis())
+        import _TaskPanelJobControl
+        taskd = _TaskPanelJobControl._TaskPanelJobControl(FemGui.getActiveAnalysis())
         #taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)

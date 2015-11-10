@@ -81,13 +81,13 @@ class ViewProviderCaeSolver:
 
     def doubleClicked(self, vobj):
         # from import _SolverControlTaskPanel
-        taskd = _SolverControlTaskPanel(vobj.Object)
+        taskd = _TaskPanelSolverControl(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
     def setEdit(self, vobj, mode):
         # import module if it is defined in another file
-        taskd = _SolverControlTaskPanel(vobj.Object)
+        taskd = _TaskPanelSolverControl(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -102,9 +102,9 @@ class ViewProviderCaeSolver:
         return None
 
 
-class _SolverControlTaskPanel:
+class _TaskPanelSolverControl:
     def __init__(self, solver_object):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/_SolverControlTaskPanel.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelSolverControl.ui")
         #QtGui.QMessageBox.critical(None, "Not implement yet", "Please edit proper in property editor")
         pass
 

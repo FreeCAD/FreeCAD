@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_MechanicalMaterialTaskPanel"
+__title__ = "_TaskPanelMechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -31,7 +31,7 @@ from PySide import QtGui
 from PySide import QtCore
 
 
-class _MechanicalMaterialTaskPanel:
+class _TaskPanelMechanicalMaterial:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
@@ -41,7 +41,7 @@ class _MechanicalMaterialTaskPanel:
         self.references = self.obj.References
         self.references_shape_type = None
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelMechanicalMaterial.ui")
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
@@ -276,7 +276,7 @@ class _MechanicalMaterialTaskPanel:
                 item_name = ref[0].Name
             items.append(item_name)
         for listItemName in sorted(items):
-            listItem = QtGui.QListWidgetItem(listItemName, self.form.list_References)  # listItem =   is needed
+            self.form.list_References.addItem(listItemName)
 
 
 class ReferenceShapeSelectionObserver:
