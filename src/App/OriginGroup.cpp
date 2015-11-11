@@ -91,7 +91,7 @@ short OriginGroup::mustExecute() const {
 
 App::DocumentObjectExecReturn *OriginGroup::execute() {
     try { // try to find all base axis and planes in the origin
-        App::Origin *origin = getOrigin ();
+        getOrigin ();
     } catch (const Base::Exception &ex) {
         setError ();
         return new App::DocumentObjectExecReturn ( ex.what () );
