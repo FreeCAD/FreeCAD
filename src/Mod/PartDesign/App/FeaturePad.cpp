@@ -70,8 +70,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"P");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",App::Prop_None,"Face where pad will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pad",App::Prop_None,"Offset from face in which pad will end");
-    static const App::PropertyQuantityConstraint::PropertyQuantityConstraint::Constraints 
-        signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
+    static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
     Offset.setConstraints ( &signedLengthConstraint );
 }
 
