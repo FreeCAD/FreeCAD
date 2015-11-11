@@ -411,7 +411,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             ccx_stdout, ccx_stderr = p.communicate()
             if ccx_binary_sig in ccx_stdout:
                 self.ccx_binary_present = True
-        except OSError, e:
+        except OSError as e:
             FreeCAD.Console.PrintError(e.message)
             if e.errno == 2:
                 raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.".format(ccx_binary))
