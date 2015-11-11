@@ -52,6 +52,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintBearing.h>
+#include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>
@@ -172,7 +173,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             if (Objects.size() > 0) {
                 QMessageBox::warning(this, tr("Selection error"), tr("Please use only a single reference for bearing constraint"));
                 return;
-            }            
+            }
             if (subName.substr(0,4) != "Face") {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
@@ -193,20 +194,21 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
 
             // Turn off reference selection mode
             onButtonReference(false);
-        } else if (selectionMode == selloc) {
+        }
+        else if (selectionMode == selloc) {
             if (subName.substr(0,4) == "Face") {
-                BRepAdaptor_Surface surface(TopoDS::Face(ref));
-                if (surface.GetType() != GeomAbs_Plane) {
+                if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
                     return;
                 }
-            } else if (subName.substr(0,4) == "Edge") {
-                BRepAdaptor_Curve line(TopoDS::Edge(ref));
-                if (line.GetType() != GeomAbs_Line) {
+            }
+            else if (subName.substr(0,4) == "Edge") {
+                if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
                     return;
                 }
-            } else {
+            }
+            else {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
                 return;
             }

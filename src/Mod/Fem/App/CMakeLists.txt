@@ -62,6 +62,8 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SET(Mod_SRCS
     AppFem.cpp
     AppFemPy.cpp
+    FemTools.cpp
+    FemTools.h
     PreCompiled.cpp
     PreCompiled.h
 )
