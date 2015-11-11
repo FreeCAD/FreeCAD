@@ -52,6 +52,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintForce.h>
+#include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>
@@ -175,7 +176,8 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
                     QMessageBox::warning(this, tr("Selection error"), tr("Mixed shape types are not possible. Use a second constraint instead"));
                     return;
                 }
-            } else {
+            }
+            else {
                 if ((subName.substr(0,4) != "Face") && (subName.substr(0,4) != "Edge") && (subName.substr(0,6) != "Vertex")) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only faces, edges and vertices can be picked"));
                     return;
@@ -187,7 +189,7 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
             for (; pos < Objects.size(); pos++) {
                 if (obj == Objects[pos]) {
                     break;
-		}
+                }
             }
 
             if (pos != Objects.size()) {
@@ -204,20 +206,21 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
 
             // Turn off reference selection mode
             onButtonReference(false);
-        } else if (selectionMode == seldir) {
+        }
+        else if (selectionMode == seldir) {
             if (subName.substr(0,4) == "Face") {
-                BRepAdaptor_Surface surface(TopoDS::Face(ref));
-                if (surface.GetType() != GeomAbs_Plane) {
+                if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
                     return;
                 }
-            } else if (subName.substr(0,4) == "Edge") {
-                BRepAdaptor_Curve line(TopoDS::Edge(ref));
-                if (line.GetType() != GeomAbs_Line) {
+            }
+            else if (subName.substr(0,4) == "Edge") {
+                if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
                     return;
                 }
-            } else {
+            }
+            else {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
                 return;
             }
