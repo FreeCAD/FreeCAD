@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 #include "OriginGroup.h"
 
 #ifndef _PreComp_
