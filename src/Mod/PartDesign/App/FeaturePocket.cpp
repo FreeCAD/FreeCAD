@@ -65,8 +65,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
-    static const App::PropertyQuantityConstraint::PropertyQuantityConstraint::Constraints 
-        signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
+    static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
     Offset.setConstraints ( &signedLengthConstraint );
 }
 
