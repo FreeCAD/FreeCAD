@@ -32,7 +32,7 @@ class Origin;
 /**
  * Represents an abstact placeable group of objects with an associated Origin
  */
-class OriginGroup: public App::GeoFeatureGroup
+class AppExport OriginGroup: public App::GeoFeatureGroup
 {
     PROPERTY_HEADER(App::OriginGroup);
 public:
