@@ -396,6 +396,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 ccx_binary = "ccx"
         self.ccx_binary = ccx_binary
         import subprocess
+        ccx_stdout = None
+        ccx_stderr = None
         try:
             p = subprocess.Popen([self.ccx_binary], stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE, shell=False)
