@@ -383,11 +383,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
     #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
     def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
+        from platform import system
         if not ccx_binary:
             self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
             ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
         if not ccx_binary:
-            from platform import system
             if system() == "Linux":
                 ccx_binary = "ccx"
             elif system() == "Windows":
@@ -395,12 +395,19 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             else:
                 ccx_binary = "ccx"
         self.ccx_binary = ccx_binary
+
         import subprocess
+        startup_info = None
+        if system() == "Windows":
+            # Windows workaround to avoid blinking terminal window
+            startup_info = subprocess.STARTUPINFO()
+            startup_info.dwFlags = subprocess.STARTF_USESHOWWINDOW
         ccx_stdout = None
         ccx_stderr = None
         try:
             p = subprocess.Popen([self.ccx_binary], stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE, shell=False)
+                                 stderr=subprocess.PIPE, shell=False,
+                                 startupinfo=startup_info)
             ccx_stdout, ccx_stderr = p.communicate()
             if ccx_binary_sig in ccx_stdout:
                 self.ccx_binary_present = True
