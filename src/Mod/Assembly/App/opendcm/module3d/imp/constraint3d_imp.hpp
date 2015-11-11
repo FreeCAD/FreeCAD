@@ -42,6 +42,8 @@
 // #include <boost/preprocessor/seq/elem.hpp>
 // #include <boost/preprocessor/seq/push_front.hpp>
 // #include <boost/preprocessor/seq/remove.hpp>
+
+/*
 // 
 // #define SEQUENCE (dcm::Distance)(dcm::Orientation)(dcm::Angle)(dcm::Coincidence)(dcm::Alignment)
 // 
@@ -58,6 +60,7 @@
 //       BOOST_PP_FOR(BOOST_PP_SEQ_PUSH_FRONT(BOOST_PP_SEQ_PUSH_FRONT(SEQUENCE, Dim), System), LEVEL_1_PRED, LEVEL_1_OP, LEVEL_1)  
 // 
 // #endif //external
+*/
 
 namespace dcm {
 
