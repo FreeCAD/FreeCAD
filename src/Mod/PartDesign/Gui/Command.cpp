@@ -737,6 +737,9 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
     auto worker = [which, cmd, func](std::vector<App::DocumentObject*> features) {
 
+        if(features.empty())
+            return;
+        
         auto firstValidSketch = features.begin();
         Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(*firstValidSketch);
 
@@ -819,7 +822,11 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     }
     else {
         std::vector<App::DocumentObject*> theSketch;
-        theSketch.push_back(*firstFreeSketch);
+        if(!bNoSketchWasSelected)
+            theSketch.push_back(sketches[0]);
+        else
+            theSketch.push_back(*firstFreeSketch);
+        
         worker(theSketch);
     }
 

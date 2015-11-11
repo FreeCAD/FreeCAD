@@ -28,6 +28,7 @@
 # include <TopoDS_Face.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+#include <QDialog>
 #endif
 
 #include <App/OriginFeature.h>
@@ -47,6 +48,8 @@
 #include "Utils.h"
 
 #include "ReferenceSelection.h"
+#include "TaskFeaturePick.h"
+#include <ui_DlgReference.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -174,11 +177,47 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
 {
     if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
         return;
-
+    
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
         return;
+    
     std::string subname = msg.pSubName;
+    
+    //check if the selection is an external reference and ask the user what to do
+    //of course only if thisObj is in a body, as otherwise the old workflow would not 
+    //be supportet
+    PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
+    if(body) {
+        PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
+        if(!selBody || body != selBody) {
+            
+            auto* pcActivePart = PartDesignGui::getPartFor(body, false);
+
+            QDialog* dia = new QDialog;
+            Ui_Dialog dlg;
+            dlg.setupUi(dia);
+            dia->setModal(true);
+            int result = dia->exec();
+            if(result == QDialog::DialogCode::Rejected) {
+                selObj = NULL;
+                return;
+            }
+            else if(!dlg.radioXRef->isChecked()) {
+
+                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
+                    if(selBody)
+                        body->addFeature(copy);
+                    else
+                        pcActivePart->addObject(copy);
+
+                    selObj = copy;
+                    subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
+                    subname.append("1");
+            }
+        
+        }
+    }
 
     // Remove subname for planes and datum features
     if (PartDesign::Feature::isDatum(selObj)) {
