@@ -39,6 +39,7 @@
 #include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/DocumentObserver.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -53,6 +54,7 @@
 #include <Gui/WaitCursor.h>
 
 #include "../App/PartFeature.h"
+#include <Mod/Part/App/Part2DObject.h>
 #include "DlgPartImportStepImp.h"
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
@@ -1022,6 +1024,44 @@ bool CmdPartExtrude::isActive(void)
 }
 
 //===========================================================================
+// Part_MakeFace
+//===========================================================================
+DEF_STD_CMD_A(CmdPartMakeFace);
+
+CmdPartMakeFace::CmdPartMakeFace()
+  : Command("Part_MakeFace")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Make face from sketch");
+    sToolTipText  = QT_TR_NOOP("Make face from a selected sketch");
+    sWhatsThis    = "Part_MakeFace";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartMakeFace::activated(int iMsg)
+{
+    std::vector<Part::Part2DObject*> sketches = Gui::Selection().getObjectsOfType<Part::Part2DObject>();
+    openCommand("Make face");
+    for (std::vector<Part::Part2DObject*>::iterator it = sketches.begin(); it != sketches.end(); ++it) {
+        App::DocumentObjectT obj(*it);
+        std::stringstream str;
+        str << obj.getDocumentPython()
+            << ".addObject(\"Part::Face\", \"Face\").Sources = "
+            << obj.getObjectPython();
+        doCommand(Doc,str.str().c_str());
+    }
+    commitCommand();
+    updateActive();
+}
+
+bool CmdPartMakeFace::isActive(void)
+{
+    return (Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 &&
+            !Gui::Control().activeDialog());
+}
+
+//===========================================================================
 // Part_Revolve
 //===========================================================================
 DEF_STD_CMD_A(CmdPartRevolve);
@@ -1837,6 +1877,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartReverseShape());
     rcCmdMgr.addCommand(new CmdPartBoolean());
     rcCmdMgr.addCommand(new CmdPartExtrude());
+    rcCmdMgr.addCommand(new CmdPartMakeFace());
     rcCmdMgr.addCommand(new CmdPartMirror());
     rcCmdMgr.addCommand(new CmdPartRevolve());
     rcCmdMgr.addCommand(new CmdPartCrossSections());

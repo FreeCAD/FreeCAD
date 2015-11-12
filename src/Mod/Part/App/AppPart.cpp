@@ -43,6 +43,7 @@
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
+#include "FeatureFace.h"
 #include "FeatureExtrusion.h"
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
@@ -263,6 +264,7 @@ void PartExport initPart()
     Part::Wedge                 ::init();
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();
+    Part::Face                  ::init();
     Part::RuledSurface          ::init();
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
