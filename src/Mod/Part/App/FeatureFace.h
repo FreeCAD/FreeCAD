@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FACE_H
-#define PARTDESIGN_FACE_H
+#ifndef PART_FACE_H
+#define PART_FACE_H
 
-#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/PartFeature.h>
 
-namespace PartDesign
+namespace Part
 {
 
-class PartDesignExport Face : public Part::Part2DObject
+class PartExport Face : public Part::Feature
 {
-    PROPERTY_HEADER(PartDesign::Face);
+    PROPERTY_HEADER(Part::Face);
 
 public:
     Face();
@@ -53,7 +53,7 @@ private:
     class Wire_Compare;
 };
 
-} //namespace PartDesign
+} //namespace Part
 
 
-#endif // PARTDESIGN_FACE_H
+#endif // PART_FACE_H

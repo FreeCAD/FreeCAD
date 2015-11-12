@@ -44,12 +44,13 @@
 #include <Base/Placement.h>
 
 #include "FeatureFace.h"
+#include <Mod/Part/App/Part2DObject.h>
 
 
-using namespace PartDesign;
+using namespace Part;
 
 
-PROPERTY_SOURCE(PartDesign::Face, Part::Part2DObject)
+PROPERTY_SOURCE(Part::Face, Part::Feature)
 
 Face::Face()
 {
@@ -61,7 +62,7 @@ short Face::mustExecute() const
 {
     if (Sources.isTouched())
         return 1;
-    return Part::Part2DObject::mustExecute();
+    return Part::Feature::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Face::execute(void)

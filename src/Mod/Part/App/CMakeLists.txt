@@ -113,6 +113,8 @@ SET(Features_SRCS
     FeatureCompound.h
     FeatureExtrusion.cpp
     FeatureExtrusion.h
+    FeatureFace.cpp
+    FeatureFace.h
     FeatureFillet.cpp
     FeatureFillet.h
     FeatureMirroring.cpp
