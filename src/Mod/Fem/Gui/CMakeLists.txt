@@ -116,6 +116,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemMeshShapeNetgen.h
     ViewProviderAnalysis.cpp
     ViewProviderAnalysis.h
+    ViewProviderSolver.cpp
+    ViewProviderSolver.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
     ViewProviderSetElements.cpp
