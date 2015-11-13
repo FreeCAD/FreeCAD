@@ -77,13 +77,6 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)co
     return temp;
 }
 
-//std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren3D(void)const
-//{
-//
-//    //return static_cast<Assembly::ConstraintGroup*>(getObject())->Constraints.getValues();
-//    return std::vector<App::DocumentObject*> ();
-//}
-
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);

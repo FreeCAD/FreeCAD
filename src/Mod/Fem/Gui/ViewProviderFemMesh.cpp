@@ -74,33 +74,37 @@ using namespace FemGui;
 
 
 
-struct FemFace 
+struct FemFace
 {
-	const SMDS_MeshNode *Nodes[8];
-	unsigned long  ElementNumber; 
+    const SMDS_MeshNode *Nodes[8];
+    unsigned long  ElementNumber; 
     const SMDS_MeshElement* Element;
-	unsigned short Size;
-	unsigned short FaceNo;
+    unsigned short Size;
+    unsigned short FaceNo;
     bool hide;
     Base::Vector3d getFirstNodePoint(void) {
         return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
     }
-	
-	Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
-	
-	bool isSameFace (FemFace &face);
+
+    Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo,
+        const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,
+        const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
+
+    bool isSameFace (FemFace &face);
 };
 
-Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4,const SMDS_MeshNode* n5,const SMDS_MeshNode* n6,const SMDS_MeshNode* n7,const SMDS_MeshNode* n8)
+Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,short faceNo,
+                            const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4,
+                            const SMDS_MeshNode* n5,const SMDS_MeshNode* n6,const SMDS_MeshNode* n7,const SMDS_MeshNode* n8)
 {
-	Nodes[0] = n1;
-	Nodes[1] = n2;
-	Nodes[2] = n3;
-	Nodes[3] = n4;
-	Nodes[4] = n5;
-	Nodes[5] = n6;
-	Nodes[6] = n7;
-	Nodes[7] = n8;
+    Nodes[0] = n1;
+    Nodes[1] = n2;
+    Nodes[2] = n3;
+    Nodes[3] = n4;
+    Nodes[4] = n5;
+    Nodes[5] = n6;
+    Nodes[6] = n7;
+    Nodes[7] = n8;
 
     Element         = element;
     ElementNumber   = id; 
@@ -108,29 +112,29 @@ Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned 
     FaceNo          = faceNo;
     hide            = false;
 
-	// sorting the nodes for later easier comparison (bubble sort)
+    // sorting the nodes for later easier comparison (bubble sort)
     int i, j, flag = 1;    // set flag to 1 to start first pass
-	const SMDS_MeshNode* temp;   // holding variable
-	
-	for(i = 1; (i <= size) && flag; i++)
-	{
-		flag = 0;
-		for (j=0; j < (size -1); j++)
-		{
-			if (Nodes[j+1] > Nodes[j])      // ascending order simply changes to <
-			{ 
-				temp = Nodes[j];             // swap elements
-				Nodes[j] = Nodes[j+1];
-				Nodes[j+1] = temp;
-				flag = 1;               // indicates that a swap occurred.
-			}
-		}
-	}
+    const SMDS_MeshNode* temp;   // holding variable
+
+    for(i = 1; (i <= size) && flag; i++)
+    {
+        flag = 0;
+        for (j=0; j < (size -1); j++)
+        {
+            if (Nodes[j+1] > Nodes[j])      // ascending order simply changes to <
+            {
+                temp = Nodes[j];             // swap elements
+                Nodes[j] = Nodes[j+1];
+                Nodes[j+1] = temp;
+                flag = 1;               // indicates that a swap occurred.
+            }
+        }
+    }
 
     return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
-};
+}
 
-class FemFaceGridItem :public std::vector<FemFace*>{
+class FemFaceGridItem : public std::vector<FemFace*>{
 public:
     //FemFaceGridItem(void){reserve(200);}
 };
@@ -140,16 +144,16 @@ bool FemFace::isSameFace (FemFace &face)
     // the same element can not have the same face
     if(face.ElementNumber == ElementNumber)
         return false;
-	if(face.Size != Size)
+    if(face.Size != Size)
         return false;
-	// if the same face size just compare if the sorted nodes are the same
-	if( Nodes[0] == face.Nodes[0] &&
-	    Nodes[1] == face.Nodes[1] &&
-		Nodes[2] == face.Nodes[2] &&
-		Nodes[3] == face.Nodes[3] &&
-		Nodes[4] == face.Nodes[4] &&
-		Nodes[5] == face.Nodes[5] &&
-		Nodes[6] == face.Nodes[6] &&
+    // if the same face size just compare if the sorted nodes are the same
+    if( Nodes[0] == face.Nodes[0] &&
+        Nodes[1] == face.Nodes[1] &&
+        Nodes[2] == face.Nodes[2] &&
+        Nodes[3] == face.Nodes[3] &&
+        Nodes[4] == face.Nodes[4] &&
+        Nodes[5] == face.Nodes[5] &&
+        Nodes[6] == face.Nodes[6] &&
         Nodes[7] == face.Nodes[7] ){
             hide = true;
             face.hide = true;
@@ -228,7 +232,6 @@ ViewProviderFemMesh::~ViewProviderFemMesh()
     pcMatBinding->unref();
     pcPointMaterial->unref();
     pcPointStyle->unref();
-
 }
 
 void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)

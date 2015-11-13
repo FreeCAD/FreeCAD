@@ -25,20 +25,11 @@
 #define FEM_ViewProviderFemMeshShape_H
 
 #include "ViewProviderFemMesh.h"
-#include <Gui/ViewProviderBuilder.h>
-
-class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
-class SoShapeHints;
-class SoMaterialBinding;
 
 namespace FemGui
 {
 
-
-    class FemGuiExport ViewProviderFemMeshShape : public ViewProviderFemMesh
+class FemGuiExport ViewProviderFemMeshShape : public ViewProviderFemMesh
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemMeshShape);
 
@@ -47,9 +38,7 @@ public:
     ViewProviderFemMeshShape();
 
     /// destructor.
-    ~ViewProviderFemMeshShape();
-
-
+    virtual ~ViewProviderFemMeshShape();
 };
 
 } //namespace FemGui

@@ -24,42 +24,25 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
 #endif
 
 #include "ViewProviderResult.h"
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-
-#include <Mod/Fem/App/FemAnalysis.h>
-
-#include "TaskDlgAnalysis.h"
 
 using namespace FemGui;
 
 
 
-
-
-
-
 PROPERTY_SOURCE(FemGui::ViewProviderResult, Gui::ViewProviderDocumentObject)
-
 
 ViewProviderResult::ViewProviderResult()
 {
-  sPixmap = "fem-result";
-
+    sPixmap = "fem-result";
 }
 
 ViewProviderResult::~ViewProviderResult()
 {
 
 }
-
-
 
 // Python feature -----------------------------------------------------------------------
 
