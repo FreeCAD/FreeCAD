@@ -232,6 +232,7 @@ ViewProviderFemMesh::~ViewProviderFemMesh()
     pcMatBinding->unref();
     pcPointMaterial->unref();
     pcPointStyle->unref();
+    pcAnoCoords->unref();
 }
 
 void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
