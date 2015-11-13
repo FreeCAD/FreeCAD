@@ -24,30 +24,7 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
 
-#include <TopoDS_Shape.hxx>
-
 #include "ViewProviderFemConstraint.h"
-#include <QObject>
-
-class SoFontStyle;
-class SoText2;
-class SoBaseColor;
-class SoTranslation;
-class SbRotation;
-class SoMaterial;
-class SoLightModel;
-class SoCoordinate3;
-class SoIndexedLineSet;
-class SoIndexedFaceSet;
-class SoEventCallback;
-class SoMarkerSet;
-
-namespace Gui  {
-class View3DInventorViewer;
-    namespace TaskView {
-        class TaskDialog;
-    }
-}
 
 namespace FemGui
 {
@@ -69,7 +46,6 @@ protected:
 private:
     /// Direction of the force
     Base::Vector3f forceDirection;
-
 };
 
 } //namespace FemGui

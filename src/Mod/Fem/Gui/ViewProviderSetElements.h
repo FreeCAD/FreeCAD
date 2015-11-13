@@ -24,9 +24,7 @@
 #ifndef FEM_ViewProviderSetElements_H
 #define FEM_ViewProviderSetElements_H
 
-#include "ViewProviderSetElements.h"
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
 
 namespace FemGui
 {
@@ -37,10 +35,10 @@ class ViewProviderSetElements : public Gui::ViewProviderGeometryObject
 
 public:
     virtual bool doubleClicked(void);
+
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
-
 };
 
 } //namespace FemGui

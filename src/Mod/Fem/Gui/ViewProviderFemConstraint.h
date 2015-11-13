@@ -24,12 +24,9 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
-#include <TopoDS_Shape.hxx>
-
-#include "Gui/ViewProviderGeometryObject.h"
+#include <Gui/ViewProviderGeometryObject.h>
 #include <QObject>
 #include <QVBoxLayout>
-#include <QTableWidget>
 
 class SoFontStyle;
 class SoText2;
@@ -37,13 +34,6 @@ class SoBaseColor;
 class SoTranslation;
 class SbRotation;
 class SoMaterial;
-
-namespace Gui  {
-class View3DInventorViewer;
-    namespace TaskView {
-        class TaskDialog;
-    }
-}
 
 namespace FemGui
 {
