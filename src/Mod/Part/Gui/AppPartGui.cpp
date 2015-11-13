@@ -145,6 +145,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderConeParametric     ::init();
     PartGui::ViewProviderTorusParametric    ::init();
     PartGui::ViewProviderRuledSurface       ::init();
+    PartGui::ViewProviderFace               ::init();
     PartGui::DimensionLinear                ::initClass();
     PartGui::DimensionAngular               ::initClass();
     PartGui::ArcEngine                      ::initClass();
