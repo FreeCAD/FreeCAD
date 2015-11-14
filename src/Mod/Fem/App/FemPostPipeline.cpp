@@ -27,8 +27,11 @@
 #endif
 
 #include "FemPostPipeline.h"
+#include "FemMesh.h"
+#include "FemMeshObject.h"
 #include <Base/Console.h>
 #include <App/Document.h>
+#include <SMESH_Mesh.hxx>
 #include <App/DocumentObjectPy.h>
 #include <vtkDataSetReader.h>
 #include <vtkGeometryFilter.h>
@@ -36,6 +39,13 @@
 #include <vtkStructuredGrid.h>
 #include <vtkCellData.h>
 #include <vtkUnstructuredGrid.h>
+#include <vtkCellArray.h>
+#include <vtkDoubleArray.h>
+#include <vtkTetra.h>
+#include <vtkQuadraticTetra.h>
+#include <vtkTriangle.h>
+#include <vtkQuadraticTriangle.h>
+#include <vtkQuad.h>
 
 using namespace Fem;
 using namespace App;
@@ -173,4 +183,161 @@ FemPostObject* FemPostPipeline::getLastPostObject() {
         return this;
     
     return static_cast<FemPostObject*>(Filter.getValues().back());
+}
+
+
+void FemPostPipeline::load(FemResultObject* res) {
+
+    vtkSmartPointer<vtkUnstructuredGrid> grid = vtkUnstructuredGrid::New();
+    source = grid;
+    
+    //first copy the mesh over
+    //########################
+    
+    if(!res->Mesh.getValue() || !res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+        return;
+    
+    const FemMesh& mesh = static_cast<FemMeshObject*>(res->Mesh.getValue())->FemMesh.getValue();   
+    SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(mesh.getSMesh());
+    SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
+    const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
+    
+    //start with the nodes
+    vtkSmartPointer<vtkPoints> points = vtkPoints::New();
+    SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
+    
+    points->SetNumberOfPoints(info.NbNodes());
+    for(; aNodeIter->more(); ) {
+        const SMDS_MeshNode* node = aNodeIter->next();
+        float coords[3] = {float(node->X()), float(node->Y()), float(node->Z())};
+        points->SetPoint(node->GetID()-1, coords);      
+    }
+    grid->SetPoints(points);
+    
+    //start with 2d elements
+    vtkSmartPointer<vtkCellArray> triangleArray = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkCellArray> quadTriangleArray = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkCellArray> quadArray = vtkSmartPointer<vtkCellArray>::New();
+    
+    SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
+    for (;aFaceIter->more();) {
+        const SMDS_MeshFace* aFace = aFaceIter->next();
+
+        //triangle
+        if(aFace->NbNodes() == 3) {
+            vtkSmartPointer<vtkTriangle> tria = vtkTriangle::New(); 
+            tria->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID()-1);
+            tria->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID()-1);
+            tria->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID()-1);
+
+            triangleArray->InsertNextCell(tria);
+        }
+        //quad
+        else if(aFace->NbNodes() == 4) {
+            vtkSmartPointer<vtkQuad> quad = vtkQuad::New(); 
+            quad->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID()-1);
+            quad->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID()-1);
+            quad->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID()-1);
+
+            quadArray->InsertNextCell(quad);
+        }
+        else if (aFace->NbNodes() == 6) {
+            vtkSmartPointer<vtkQuadraticTriangle> tria = vtkQuadraticTriangle::New(); 
+            tria->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID()-1);
+            tria->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID()-1);
+            tria->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID()-1);
+            tria->GetPointIds()->SetId(3, aFace->GetNode(3)->GetID()-1);
+            tria->GetPointIds()->SetId(4, aFace->GetNode(4)->GetID()-1);
+            tria->GetPointIds()->SetId(5, aFace->GetNode(5)->GetID()-1);
+            quadTriangleArray->InsertNextCell(tria);
+        }
+     }
+     if(triangleArray->GetNumberOfCells()>0)
+        grid->SetCells(VTK_TRIANGLE, triangleArray);
+     
+     if(quadArray->GetNumberOfCells()>0)
+        grid->SetCells(VTK_QUAD, quadArray);
+    
+     if(quadTriangleArray->GetNumberOfCells()>0)
+        grid->SetCells(VTK_QUADRATIC_TRIANGLE, quadTriangleArray);
+    
+     
+    //now all volumes    
+    vtkSmartPointer<vtkCellArray> tetraArray = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkCellArray> quadTetraArray = vtkSmartPointer<vtkCellArray>::New();
+    
+    tetraArray->SetNumberOfCells(info.NbTetras());
+    SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
+    for (;aVolIter->more();) {
+        const SMDS_MeshVolume* aVol = aVolIter->next();
+
+        //tetrahedra
+        if(aVol->NbNodes() == 4) {
+            vtkSmartPointer<vtkTetra> tetra = vtkTetra::New();        
+            tetra->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
+            tetra->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
+            tetra->GetPointIds()->SetId(2, aVol->GetNode(2)->GetID()-1);
+            tetra->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID()-1);
+
+            tetraArray->InsertNextCell(tetra);
+        }
+        //quadratic tetrahedra
+        else if( aVol->NbNodes() == 10) {
+            
+            vtkSmartPointer<vtkQuadraticTetra> tetra = vtkQuadraticTetra::New();        
+            tetra->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
+            tetra->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
+            tetra->GetPointIds()->SetId(2, aVol->GetNode(2)->GetID()-1);
+            tetra->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID()-1);
+            tetra->GetPointIds()->SetId(4, aVol->GetNode(4)->GetID()-1);
+            tetra->GetPointIds()->SetId(5, aVol->GetNode(5)->GetID()-1);
+            tetra->GetPointIds()->SetId(6, aVol->GetNode(6)->GetID()-1);
+            tetra->GetPointIds()->SetId(7, aVol->GetNode(7)->GetID()-1);
+            tetra->GetPointIds()->SetId(8, aVol->GetNode(8)->GetID()-1);
+            tetra->GetPointIds()->SetId(9, aVol->GetNode(9)->GetID()-1);
+            
+            quadTetraArray->InsertNextCell(tetra);
+        }
+    }
+    if(tetraArray->GetNumberOfCells()>0)
+        grid->SetCells(VTK_TETRA, tetraArray);
+    
+    if(quadTetraArray->GetNumberOfCells()>0)
+        grid->SetCells(VTK_QUADRATIC_TETRA, quadTetraArray);
+    
+    
+    //Now copy the point data over
+    //############################
+    
+    if(!res->StressValues.getValues().empty()) {
+        const std::vector<double>& vec = res->StressValues.getValues();
+        vtkSmartPointer<vtkDoubleArray> data = vtkDoubleArray::New();
+        data->SetNumberOfValues(vec.size());
+        data->SetName("Stress");
+        
+        for(size_t i=0; i<vec.size(); ++i)
+            data->SetValue(i, vec[i]);
+        
+        grid->GetPointData()->AddArray(data);
+    }
+    
+    if(!res->StressValues.getValues().empty()) {
+        const std::vector<Base::Vector3d>& vec = res->DisplacementVectors.getValues();
+        vtkSmartPointer<vtkDoubleArray> data = vtkDoubleArray::New();
+        data->SetNumberOfComponents(3);
+        data->SetName("Displacement");
+        
+        for(std::vector<Base::Vector3d>::const_iterator it=vec.begin(); it!=vec.end(); ++it) {
+            double tuple[] = {it->x, it->y, it->z};
+                    Base::Console().Message("disp mag; %f\n", it->Length());
+            data->InsertNextTuple(tuple);
+        }
+        
+        grid->GetPointData()->AddArray(data);
+    }
+    
+      
+    polyDataSource = vtkGeometryFilter::New();
+    polyDataSource->SetInputData(source);
+    polyDataSource->Update();
 }

@@ -1023,6 +1023,53 @@ Gui::Action * CmdFemPostApllyChanges::createAction(void)
 
 #endif
 
+
+
+DEF_STD_CMD_A(CmdFemPostPipelineFromResult);
+
+CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
+  : Command("Fem_PostPipelineFromResult")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Creates a post processing pipeline from a result object");
+    sToolTipText    = QT_TR_NOOP("Creates a post processing pipeline from a result object");
+    sWhatsThis      = "Fem_PostPipelineFromResult";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-fem-mesh-create-node-by-poly";
+}
+
+void CmdFemPostPipelineFromResult::activated(int iMsg)
+{
+    Gui::SelectionFilter ResultFilter("SELECT Fem::FemResultObject COUNT 1");
+    
+    if (ResultFilter.match()) {
+ 
+        Fem::FemResultObject* result = static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
+        std::string FeatName = getUniqueObjectName("Pipeline");
+
+        openCommand("Create pipeline from result");
+        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());  
+
+        //TODO: use python function call for this 
+        static_cast<Fem::FemPostPipeline*>(getDocument()->getObject(FeatName.c_str()))->load(result);
+        
+        this->updateActive();
+  
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostCreateClipFilter", "Select a result, please."));
+    }
+}
+
+bool CmdFemPostPipelineFromResult::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
 //--------------------------------------------------------------------------------------
 
 
@@ -1047,5 +1094,6 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
+    rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
 #endif
 }

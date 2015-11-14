@@ -35,7 +35,9 @@
 #include <vtkExtractEdges.h>
 #include <vtkAppendPolyData.h>
 #include <vtkGeometryFilter.h>
+#include <vtkVertexGlyphFilter.h>
 
+class SoIndexedPointSet;
 class vtkUnsignedCharArray;
 class vtkDataArray;
 class vtkPoints;
@@ -107,7 +109,7 @@ protected:
     void update();
     
     SoCoordinate3*              m_coordinates;
-    SoIndexedMarkerSet*         m_markers;
+    SoIndexedPointSet*          m_markers;
     SoIndexedLineSet*           m_lines;
     SoIndexedFaceSet*           m_faces;    
     SoIndexedTriangleStripSet*  m_triangleStrips;
@@ -124,6 +126,7 @@ protected:
     vtkSmartPointer<vtkAppendPolyData>          m_surfaceEdges;
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
     vtkSmartPointer<vtkExtractEdges>            m_wireframe;
+    vtkSmartPointer<vtkVertexGlyphFilter>       m_points;
     vtkSmartPointer<vtkLookupTable>             m_lookup;
     
 private:
