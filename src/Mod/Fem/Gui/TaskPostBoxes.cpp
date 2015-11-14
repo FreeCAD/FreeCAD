@@ -29,6 +29,7 @@
 #include "ui_TaskPostDisplay.h"
 #include "ui_TaskPostClip.h"
 #include "ui_TaskPostScalarClip.h"
+#include "ui_TaskPostWarpVector.h"
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostFunction.h"
@@ -447,6 +448,93 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
     static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
 }
+
+
+//############################################################################################
+
+TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget* parent) :
+    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"), tr("Clip options"), parent) {
+
+    assert(view->isDerivedFrom(ViewProviderFemPostWarpVector::getClassTypeId()));
+     
+    //we load the views widget
+    proxy = new QWidget(this);
+    ui = new Ui_TaskPostWarpVector();
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+    this->groupLayout()->addWidget(proxy);    
+      
+    //load the default values
+    updateEnumerationList(getTypedObject<Fem::FemPostWarpVectorFilter>()->Vector, ui->Vector);
+ 
+    double value = static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.getValue();
+        //don't forget to sync the slider 
+    ui->Value->blockSignals(true);
+    ui->Value->setValue( value);
+    ui->Value->blockSignals(false);
+    //don't forget to sync the slider 
+    ui->Max->blockSignals(true);
+    ui->Max->setValue( value==0 ? 1 : value * 10.);
+    ui->Max->blockSignals(false);
+    ui->Min->blockSignals(true);
+    ui->Min->setValue( value==0 ? 0 : value / 10.);
+    ui->Min->blockSignals(false);
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue((value - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    ui->Slider->blockSignals(false);
+}
+
+TaskPostWarpVector::~TaskPostWarpVector() {
+
+}
+
+void TaskPostWarpVector::applyPythonCode() {
+
+}
+
+void TaskPostWarpVector::on_Vector_currentIndexChanged(int idx) {
+
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Vector.setValue(idx);
+    recompute();
+}
+
+void TaskPostWarpVector::on_Slider_valueChanged(int v) {
+
+    double val = ui->Min->value() + (ui->Max->value()-ui->Min->value())/100.*v;
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(val);
+    recompute();
+    
+    //don't forget to sync the spinbox 
+    ui->Value->blockSignals(true);
+    ui->Value->setValue( val );
+    ui->Value->blockSignals(false);
+}
+
+void TaskPostWarpVector::on_Value_valueChanged(double v) {
+
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(v);
+    recompute();
+    
+    //don't forget to sync the slider 
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue(int((v - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.));
+    ui->Slider->blockSignals(false);
+}
+
+void TaskPostWarpVector::on_Max_valueChanged(double v) {
+
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    ui->Slider->blockSignals(false);
+}
+
+void TaskPostWarpVector::on_Min_valueChanged(double v) {
+
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    ui->Slider->blockSignals(false);
+}
+
 
 
 #include "moc_TaskPostBoxes.cpp"

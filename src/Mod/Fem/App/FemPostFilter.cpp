@@ -341,3 +341,83 @@ void FemPostScalarClipFilter::setConstraintForField() {
 }
 
 
+PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
+
+FemPostWarpVectorFilter::FemPostWarpVectorFilter(void): FemPostFilter() {
+
+    ADD_PROPERTY_TYPE(Factor, (0), "Warp", App::Prop_None, "The scalar value used to clip the selected field");
+    ADD_PROPERTY_TYPE(Vector, (long(0)), "Warp", App::Prop_None, "The field used to clip");
+    
+    polyDataSource = vtkGeometryFilter::New();
+    
+    FilterPipeline warp;  
+    m_warp              = vtkWarpVector::New();
+    warp.source         = m_warp;
+    warp.target         = m_warp;
+    warp.visualisation  = m_warp;
+    addFilterPipeline(warp, "warp");
+    setActiveFilterPipeline("warp"); 
+}
+
+FemPostWarpVectorFilter::~FemPostWarpVectorFilter() {
+
+}
+
+
+DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
+        
+    //update the available fields and set the correct input field data for clipping
+    if(!isConnected())
+        return StdReturn;
+ 
+    std::string val;
+    if(m_vectorFields.getEnums() && Vector.getValue() >= 0)
+        val = Vector.getValueAsString();
+    
+    std::vector<std::string> array;
+    
+    vtkDataObject* data;
+    if(hasInputAlgorithmConnected()) {
+        getConnectedInputAlgorithm()->Update();
+        data = getConnectedInputAlgorithm()->GetOutputDataObject(0);
+    }
+    else 
+        data = getConnectedInputData();
+   
+    vtkDataSet* dset = dynamic_cast<vtkDataSet*>(data);
+    if(!dset)
+        return StdReturn;
+    
+    vtkPointData* pd = dset->GetPointData();
+    
+    for(int i=0; i<pd->GetNumberOfArrays(); ++i) {
+        if(pd->GetArray(i)->GetNumberOfComponents()==3)
+            array.push_back(pd->GetArrayName(i));
+    }
+
+    App::Enumeration empty;
+    Vector.setValue(empty);
+    m_vectorFields.setEnums(array);
+    Vector.setValue(m_vectorFields);
+    
+    std::vector<std::string>::iterator it = std::find(array.begin(), array.end(), val);
+    if(!val.empty() && it != array.end())
+        Vector.setValue(val.c_str());
+    
+    //recalculate the filter
+    return Fem::FemPostFilter::execute();
+}
+
+
+void FemPostWarpVectorFilter::onChanged(const Property* prop) {
+    
+    if(prop == &Factor) {
+        m_warp->SetScaleFactor(Factor.getValue());     
+    }
+    else if(prop == &Vector && (Vector.getValue() >= 0)) {
+        m_warp->SetInputArrayToProcess(0, 0, 0, 
+                                          vtkDataObject::FIELD_ASSOCIATION_POINTS, Vector.getValueAsString() );
+    }
+    
+    Fem::FemPostFilter::onChanged(prop);
+}

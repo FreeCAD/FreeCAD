@@ -69,3 +69,22 @@ void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg) {
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
+
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostWarpVector, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostWarpVector::ViewProviderFemPostWarpVector() {
+
+}
+
+ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() {
+
+}
+
+void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg) {
+    
+    //add the function box
+    dlg->appendBox(new TaskPostWarpVector(dlg->getView()));
+    
+    //add the display options
+    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
+}

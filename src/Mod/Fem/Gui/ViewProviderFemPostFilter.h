@@ -55,6 +55,19 @@ protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);    
 };
 
+class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObject {
+
+    PROPERTY_HEADER(FemGui::ViewProviderFemPostWarpVector);
+
+public:
+    /// constructor.
+    ViewProviderFemPostWarpVector();
+    ~ViewProviderFemPostWarpVector();
+    
+protected:
+    virtual void setupTaskDialog(TaskDlgPost* dlg);    
+};
+
 } //namespace FemGui
 
 

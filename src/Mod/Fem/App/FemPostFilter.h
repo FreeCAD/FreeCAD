@@ -33,6 +33,7 @@
 #include <vtkGeometryFilter.h>
 #include <vtkPassThrough.h>
 #include <vtkPlane.h>
+#include <vtkWarpVector.h>
 
 namespace Fem
 {
@@ -132,9 +133,33 @@ protected:
     void setConstraintForField();
     
 private:    
-    vtkSmartPointer<vtkTableBasedClipDataSet>             m_clipper;
+    vtkSmartPointer<vtkTableBasedClipDataSet>   m_clipper;
     App::Enumeration                            m_scalarFields;
     App::PropertyFloatConstraint::Constraints   m_constraints;
+};
+
+class AppFemExport FemPostWarpVectorFilter : public FemPostFilter {
+  
+    PROPERTY_HEADER(Fem::FemPostWarpVectorFilter);
+    
+public:
+    FemPostWarpVectorFilter(void);        
+    virtual ~FemPostWarpVectorFilter();
+
+    App::PropertyFloat        Factor;
+    App::PropertyEnumeration  Vector;
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostWarpVector";
+    }
+    
+protected:
+    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual void onChanged(const App::Property* prop);
+    
+private:    
+    vtkSmartPointer<vtkWarpVector>   m_warp;
+    App::Enumeration                 m_vectorFields;
 };
 
 } //namespace Fem
