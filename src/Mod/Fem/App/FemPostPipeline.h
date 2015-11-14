@@ -27,6 +27,7 @@
 #include "FemPostObject.h"
 #include "FemPostFilter.h"
 #include "FemPostFunction.h"
+#include "FemResultObject.h"
 
 #include <vtkSmartPointer.h>
 #include <vtkDataSet.h>
@@ -58,6 +59,9 @@ public:
     //load data from files
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
+    
+    //load from results
+    void load(FemResultObject* res);
     
     //Pipeline handling
     vtkSmartPointer<vtkDataSet> getSource() {return source;};
