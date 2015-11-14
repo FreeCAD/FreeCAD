@@ -114,7 +114,6 @@ bool ViewProviderSheet::setEdit(int ModNum)
             view->viewAll();
         }
         Gui::getMainWindow()->setActiveWindow(this->view);
-        return true;
     }
     return false;
 }
