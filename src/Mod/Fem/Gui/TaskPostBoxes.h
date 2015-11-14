@@ -35,6 +35,7 @@ class QComboBox;
 class Ui_TaskPostDisplay;
 class Ui_TaskPostClip;
 class Ui_TaskPostScalarClip;
+class Ui_TaskPostWarpVector;
 
 
 namespace FemGui { 
@@ -181,6 +182,28 @@ private Q_SLOTS:
 private:
     QWidget* proxy;
     Ui_TaskPostScalarClip* ui;
+};
+
+class TaskPostWarpVector : public TaskPostBox {
+    
+    Q_OBJECT
+    
+public:
+    TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    virtual ~TaskPostWarpVector();
+    
+    virtual void applyPythonCode();
+    
+private Q_SLOTS:
+    void on_Slider_valueChanged(int v);
+    void on_Value_valueChanged(double v);
+    void on_Max_valueChanged(double v);
+    void on_Min_valueChanged(double v);
+    void on_Vector_currentIndexChanged(int idx);
+    
+private:
+    QWidget* proxy;
+    Ui_TaskPostWarpVector* ui;
 };
 
 } //namespace FemGui
