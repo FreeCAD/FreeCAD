@@ -267,6 +267,31 @@ void MeshGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxG
   Base::BoundBox3f clBBMeshEnlarged = _pclMesh->GetBoundBox();
   float fVolElem;
 
+  // Stelle sicher, dass die Bounding box ein Volumen > 0 besitzt
+  float fLenX = clBBMeshEnlarged.LengthX();
+  float fLenY = clBBMeshEnlarged.LengthY();
+  float fLenZ = clBBMeshEnlarged.LengthZ();
+  float fMax = 0.005 * std::max<float>(std::max<float>(fLenX, fLenY), fLenZ);
+  // Falls Bounding box zu einem Punkt degeneriert ist
+  if (fMax == 0) {
+      _ulCtGridsX = 1;
+      _ulCtGridsY = 1;
+      _ulCtGridsZ = 1;
+      return;
+  }
+  if (fLenX == 0) {
+      clBBMeshEnlarged.MinX -= fMax;
+      clBBMeshEnlarged.MaxX += fMax;
+  }
+  if (fLenY == 0) {
+      clBBMeshEnlarged.MinY -= fMax;
+      clBBMeshEnlarged.MaxY += fMax;
+  }
+  if (fLenZ == 0) {
+      clBBMeshEnlarged.MinZ -= fMax;
+      clBBMeshEnlarged.MaxZ += fMax;
+  }
+
   if (_ulCtElements > (ulMaxGrids * ulCtGrid))
     fVolElem = (clBBMeshEnlarged.LengthX() * clBBMeshEnlarged.LengthY() * clBBMeshEnlarged.LengthZ()) / float(ulMaxGrids * ulCtGrid);
   else
