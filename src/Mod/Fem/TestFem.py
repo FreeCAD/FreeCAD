@@ -52,7 +52,7 @@ mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
 
 
 def fcc_print(message):
-    FreeCAD.Console.PrintMessage(message + '\n')
+    FreeCAD.Console.PrintMessage('{} \n'.format(message))
 
 
 class FemTest(unittest.TestCase):
