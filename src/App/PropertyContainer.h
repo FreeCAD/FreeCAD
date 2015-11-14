@@ -125,13 +125,13 @@ public:
   /// get the Group of a named Property
   virtual const char* getPropertyDocumentation(const char *name) const;
   /// check if the property is read-only
-  virtual bool isReadOnly(const Property* prop) const;
-  /// check if the nameed property is read-only
-  virtual bool isReadOnly(const char *name) const;
+  bool isReadOnly(const Property* prop) const;
+  /// check if the named property is read-only
+  bool isReadOnly(const char *name) const;
   /// check if the property is hidden
-  virtual bool isHidden(const Property* prop) const;
+  bool isHidden(const Property* prop) const;
   /// check if the named property is hidden
-  virtual bool isHidden(const char *name) const;
+  bool isHidden(const char *name) const;
   virtual App::Property* addDynamicProperty(
         const char* type, const char* name=0,
         const char* group=0, const char* doc=0,

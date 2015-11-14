@@ -210,6 +210,16 @@ public:
         return props.getPropertyType(prop);
     }
 
+    /// get the group of a property
+    const char* getPropertyGroup(const App::Property* prop) const {
+        return props.getPropertyGroup(prop);
+    }
+
+    /// get the documentation of a property
+    const char* getPropertyDocumentation(const App::Property* prop) const {
+        return props.getPropertyDocumentation(prop);
+    }
+
     /// get the name of a property
     virtual const char* getName(const App::Property* prop) const {
         return props.getPropertyName(prop);
