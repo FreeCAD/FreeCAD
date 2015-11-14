@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 #include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoIndexedMarkerSet.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
@@ -85,7 +85,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_faces->ref();
     m_triangleStrips = new SoIndexedTriangleStripSet();
     m_triangleStrips->ref();
-    m_markers = new SoIndexedMarkerSet();
+    m_markers = new SoIndexedPointSet();
     m_markers->ref();
     m_lines = new SoIndexedLineSet();
     m_lines->ref();
@@ -155,8 +155,8 @@ void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
         m_currentAlgorithm = static_cast<Fem::FemPostObject*>(getObject())->getPolyAlgorithm();
     else if (strcmp("Wireframe",ModeName)==0)
         m_currentAlgorithm = m_wireframe;
-    /*else if (strcmp("Nodes",ModeName)==0)
-        setDisplayMaskMode("Nodes");*/
+    else if (strcmp("Nodes",ModeName)==0)
+        m_currentAlgorithm = m_points;
 
     update();
     
@@ -167,7 +167,7 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
     StrList.push_back("Outline");
-   // StrList.push_back("Points");
+    StrList.push_back("Nodes");
     StrList.push_back("Surface");
     StrList.push_back("Surface with Edges");
     StrList.push_back("Wireframe");
@@ -344,22 +344,17 @@ void ViewProviderFemPostObject::update3D() {
       m_lines->coordIndex.setNum(0);
 
   // write out verts if any
-  // (more complex because there is no IndexedPointSet)
   if (pd->GetNumberOfVerts() > 0){
       
-        Base::Console().Message("render verts\n");
+        Base::Console().Message("render verts: %i\n", pd->GetNumberOfVerts());
         int soidx = 0;
         cells = pd->GetVerts();
         m_markers->coordIndex.startEditing();
+        m_markers->coordIndex.setNum(pd->GetNumberOfVerts());
         for (cells->InitTraversal(); cells->GetNextCell(npts,indx); ) {
-            for (int i = 0; i < npts; i++) {
-                m_markers->coordIndex.set1Value(soidx, static_cast<int>(indx[i]));
-                ++soidx;
-            }
-            m_markers->coordIndex.set1Value(soidx, -1);
-            ++soidx;  
+            m_markers->coordIndex.set1Value(soidx, static_cast<int>(indx[0]));
+            ++soidx;
         }
-        m_markers->coordIndex.setNum(soidx);
         m_markers->coordIndex.finishEditing();
   }
   else 
@@ -486,6 +481,9 @@ bool ViewProviderFemPostObject::setupPipeline() {
         
         m_outline   = vtkOutlineCornerFilter::New();
         m_outline->SetInputConnection(algorithm->GetOutputPort());
+        
+        m_points = vtkVertexGlyphFilter::New();
+        m_points->SetInputConnection(algorithm->GetOutputPort());
         
         m_surface = vtkGeometryFilter::New();
         m_surface->SetInputConnection(algorithm->GetOutputPort());
