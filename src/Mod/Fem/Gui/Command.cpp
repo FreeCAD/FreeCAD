@@ -857,6 +857,52 @@ bool CmdFemPostCreateScalarClipFilter::isActive(void)
     return hasActiveDocument();
 }
 
+
+
+DEF_STD_CMD_A(CmdFemPostWarpVectorFilter);
+
+CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
+  : Command("Fem_PostCreateWarpVectorFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
+    sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
+    sWhatsThis      = "Fem_PostCreateWarpVectorFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-fem-mesh-create-node-by-poly";
+}
+
+void CmdFemPostWarpVectorFilter::activated(int iMsg)
+{
+    std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
+    if (!pipelines.empty()) {
+        Fem::FemPostPipeline *pipeline = pipelines.front();
+
+        std::string FeatName = getUniqueObjectName("WarpVector");
+
+        openCommand("Create warp vector filter");
+        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostWarpVectorFilter','%s')",FeatName.c_str());  
+        doCommand(Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
+        doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
+        doCommand(Doc,"App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
+        doCommand(Doc,"del __list__");
+        
+        this->updateActive();
+        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostCreateWarpVectorFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostCreateWarpVectorFilter", "Select a pipeline, please."));
+    }
+}
+
+bool CmdFemPostWarpVectorFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 // #####################################################################################################
 
 
@@ -1092,6 +1138,7 @@ void CreateFemCommands(void)
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
