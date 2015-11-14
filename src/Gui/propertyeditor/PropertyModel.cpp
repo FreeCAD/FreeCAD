@@ -217,7 +217,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     for (jt = props.begin(); jt != props.end(); ++jt) {
         App::Property* prop = jt->second.front();
         const char* group = prop->getGroup();
-        std::string grp = group ? group : "Base";
+        bool isEmpty = (group == 0 || group[0] == '\0');
+        std::string grp = isEmpty ? "Base" : group;
         propGroup[grp].push_back(jt->second);
     }
 

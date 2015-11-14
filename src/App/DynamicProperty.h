@@ -93,7 +93,7 @@ public:
     const char* getPropertyDocumentation(const char *name) const;
     /// check if the property is read-only
     bool isReadOnly(const Property* prop) const;
-    /// check if the nameed property is read-only
+    /// check if the named property is read-only
     bool isReadOnly(const char *name) const;
     /// check if the property is hidden
     bool isHidden(const Property* prop) const;

@@ -345,22 +345,6 @@ public:
     const char* getPropertyDocumentation(const char *name) const {
         return props->getPropertyDocumentation(name);
     }
-    /// check if the property is read-only
-    bool isReadOnly(const App::Property* prop) const {
-        return props->isReadOnly(prop);
-    }
-    /// check if the nameed property is read-only
-    bool isReadOnly(const char *name) const {
-        return props->isReadOnly(name);
-    }
-    /// check if the property is hidden
-    bool isHidden(const App::Property* prop) const {
-        return props->isHidden(prop);
-    }
-    /// check if the named property is hidden
-    bool isHidden(const char *name) const {
-        return props->isHidden(name);
-    }
     //@}
 
     /** @name Property serialization */
