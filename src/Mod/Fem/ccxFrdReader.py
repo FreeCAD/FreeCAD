@@ -143,7 +143,7 @@ def calculate_von_mises(i):
     s11s22 = pow(s11 - s22, 2)
     s22s33 = pow(s22 - s33, 2)
     s33s11 = pow(s33 - s11, 2)
-    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) * pow(s31, 2))
+    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) + pow(s31, 2))
     vm_stress = sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31))
     return vm_stress
 
