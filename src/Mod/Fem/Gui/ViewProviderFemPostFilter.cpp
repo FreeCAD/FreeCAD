@@ -34,6 +34,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostClip, FemGui::ViewProviderFemPostObje
 
 ViewProviderFemPostClip::ViewProviderFemPostClip() {
 
+    sPixmap = "fem-clip";
 }
 
 ViewProviderFemPostClip::~ViewProviderFemPostClip() {
@@ -55,6 +56,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPo
 
 ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip() {
 
+    sPixmap = "fem-clip-scalar";
 }
 
 ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() {
@@ -74,6 +76,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostWarpVector, FemGui::ViewProviderFemPo
 
 ViewProviderFemPostWarpVector::ViewProviderFemPostWarpVector() {
 
+    sPixmap = "fem-warp";
 }
 
 ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() {
@@ -94,6 +97,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostCut, FemGui::ViewProviderFemPostObjec
 
 ViewProviderFemPostCut::ViewProviderFemPostCut() {
 
+    sPixmap = "fem-cut";
 }
 
 ViewProviderFemPostCut::~ViewProviderFemPostCut() {
