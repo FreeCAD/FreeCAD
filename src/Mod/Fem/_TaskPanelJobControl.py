@@ -39,7 +39,7 @@ if FreeCAD.GuiUp:
 
 
 class _TaskPanelJobControl:
-    def __init__(self, analysis_object):
+    def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelMechanicalAnalysis.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
@@ -56,7 +56,7 @@ class _TaskPanelJobControl:
                 self.CalculixBinary = 'ccx'
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
-        self.analysis_object = analysis_object
+        self.solver_object = solver_object
 
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
@@ -159,28 +159,28 @@ class _TaskPanelJobControl:
 
     def update(self):
         'fills the widgets'
-        self.form.le_working_dir.setText(self.analysis_object.WorkingDir)
-        if self.analysis_object.AnalysisType == 'static':
+        self.form.le_working_dir.setText(self.solver_object.WorkingDir)
+        if self.solver_object.AnalysisType == 'static':
             self.form.rb_static_analysis.setChecked(True)
-        elif self.analysis_object.AnalysisType == 'frequency':
+        elif self.solver_object.AnalysisType == 'frequency':
             self.form.rb_frequency_analysis.setChecked(True)
         return
 
     def accept(self):
-        FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
 
     def reject(self):
-        FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
 
     def choose_working_dir(self):
         current_wd = self.setup_working_dir()
         wd = QtGui.QFileDialog.getExistingDirectory(None, 'Choose CalculiX working directory',
                                                     current_wd)
         if wd:
-            self.analysis_object.WorkingDir = wd
+            self.solver_object.WorkingDir = wd
         else:
-            self.analysis_object.WorkingDir = current_wd
-        self.form.le_working_dir.setText(self.analysis_object.WorkingDir)
+            self.solver_object.WorkingDir = current_wd
+        self.form.le_working_dir.setText(self.solver_object.WorkingDir)
 
     def write_input_file_handler(self):
         QApplication.restoreOverrideCursor()
@@ -188,7 +188,7 @@ class _TaskPanelJobControl:
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
             fea = FemTools()
-            fea.set_analysis_type(self.analysis_object.AnalysisType)
+            fea.set_analysis_type(self.solver_object.AnalysisType)
             fea.update_objects()
             fea.write_inp_file()
             if fea.inp_file_name != "":
@@ -250,8 +250,8 @@ class _TaskPanelJobControl:
         QApplication.restoreOverrideCursor()
 
     def select_analysis_type(self, analysis_type):
-        if self.analysis_object.AnalysisType != analysis_type:
-            self.analysis_object.AnalysisType = analysis_type
+        if self.solver_object.AnalysisType != analysis_type:
+            self.solver_object.AnalysisType = analysis_type
             self.form.pb_edit_inp.setEnabled(False)
             self.form.pb_run_ccx.setEnabled(False)
 
@@ -263,7 +263,7 @@ class _TaskPanelJobControl:
 
     # That function overlaps with FemTools setup_working_dir and needs to be removed when we migrate fully to FemTools
     def setup_working_dir(self):
-        wd = self.analysis_object.WorkingDir
+        wd = self.solver_object.WorkingDir
         if not (os.path.isdir(wd)):
             try:
                 os.makedirs(wd)
