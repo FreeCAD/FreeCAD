@@ -278,6 +278,8 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFe
 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction() {
 
+    sPixmap = "fem-plane";
+    
     setAutoScale(true);
     
     //setup the visualisation geometry
@@ -409,6 +411,8 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostSphereFunction, FemGui::ViewProviderF
 
 ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction() {
 
+    sPixmap = "fem-sphere";
+    
     setAutoScale(true);
     
     //setup the visualisation geometry
