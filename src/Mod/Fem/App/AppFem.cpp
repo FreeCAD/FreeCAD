@@ -158,6 +158,7 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostClipFilter          ::init();
     Fem::FemPostScalarClipFilter    ::init();
     Fem::FemPostWarpVectorFilter    ::init();
+    Fem::FemPostCutFilter           ::init();
     Fem::FemPostFunction            ::init();
     Fem::FemPostFunctionProvider    ::init();
     Fem::FemPostPlaneFunction       ::init();

@@ -30,6 +30,7 @@
 #include "ui_TaskPostClip.h"
 #include "ui_TaskPostScalarClip.h"
 #include "ui_TaskPostWarpVector.h"
+#include "ui_TaskPostCut.h"
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostFunction.h"
@@ -535,6 +536,107 @@ void TaskPostWarpVector::on_Min_valueChanged(double v) {
     ui->Slider->blockSignals(false);
 }
 
+//############################################################################################
 
+TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"), tr("Choose implicit function"), parent) {
+    
+    assert(view->isDerivedFrom(ViewProviderFemPostCut::getClassTypeId()));
+    assert(function);
+    
+    fwidget = NULL;
+    
+    //we load the views widget
+    proxy = new QWidget(this);
+    ui = new Ui_TaskPostCut();
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+    this->groupLayout()->addWidget(proxy);
+    
+    //the layout for the container widget
+    QVBoxLayout *layout = new QVBoxLayout();
+    ui->Container->setLayout(layout);
+    
+    //fill up the combo box with possible functions
+    collectImplicitFunctions();
+    
+    //add the function creation command
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.getCommandByName("Fem_PostCreateFunctions")->getAction()->addTo(ui->CreateButton);
+    ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
+}
+
+TaskPostCut::~TaskPostCut() {
+
+}
+
+void TaskPostCut::applyPythonCode() {
+
+}
+
+void TaskPostCut::collectImplicitFunctions() {
+
+    std::vector<Fem::FemPostPipeline*> pipelines;
+    pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
+    if (!pipelines.empty()) {
+        Fem::FemPostPipeline *pipeline = pipelines.front();
+        if(pipeline->Function.getValue() && 
+           pipeline->Function.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+            
+            ui->FunctionBox->clear();
+            QStringList items;
+            const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
+                                                            pipeline->Function.getValue())->Functions.getValues();
+            for(std::size_t i=0; i<funcs.size(); ++i)
+                items.push_back(QString::fromAscii(funcs[i]->getNameInDocument()));
+           
+            ui->FunctionBox->addItems(items);
+        }
+    }
+}
+
+void TaskPostCut::on_CreateButton_triggered(QAction* a) {
+
+    collectImplicitFunctions();
+    recompute();
+}
+
+void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
+   
+    //set the correct property
+    std::vector<Fem::FemPostPipeline*> pipelines;
+    pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
+    if (!pipelines.empty()) {
+        Fem::FemPostPipeline *pipeline = pipelines.front();
+        if(pipeline->Function.getValue() && 
+           pipeline->Function.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+            
+            const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
+                                                            pipeline->Function.getValue())->Functions.getValues();
+            if(idx>=0)
+                static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(funcs[idx]);
+            else 
+                static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(NULL);
+        }
+    } 
+    
+    //load the correct view
+    Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
+                                    static_cast<Fem::FemPostCutFilter*>(getObject())->Function.getValue());
+    Gui::ViewProvider* view = NULL;
+    if(fobj)
+        view = Gui::Application::Instance->activeDocument()->getViewProvider(fobj);
+                                
+    if(fwidget)
+        fwidget->deleteLater();
+    
+    if(view) {
+        fwidget = static_cast<FemGui::ViewProviderFemPostFunction*>(view)->createControlWidget();
+        fwidget->setParent(ui->Container);
+        fwidget->setViewProvider(static_cast<FemGui::ViewProviderFemPostFunction*>(view));
+        ui->Container->layout()->addWidget(fwidget);
+    }
+    recompute();
+}
 
 #include "moc_TaskPostBoxes.cpp"

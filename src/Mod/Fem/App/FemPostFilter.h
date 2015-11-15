@@ -34,6 +34,7 @@
 #include <vtkPassThrough.h>
 #include <vtkPlane.h>
 #include <vtkWarpVector.h>
+#include <vtkCutter.h>
 
 namespace Fem
 {
@@ -160,6 +161,27 @@ protected:
 private:    
     vtkSmartPointer<vtkWarpVector>   m_warp;
     App::Enumeration                 m_vectorFields;
+};
+
+class AppFemExport FemPostCutFilter : public FemPostFilter {
+  
+    PROPERTY_HEADER(Fem::FemPostCutFilter);
+    
+public:
+    FemPostCutFilter(void);        
+    virtual ~FemPostCutFilter();
+
+    App::PropertyLink  Function;
+    
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemPostCut";
+    }
+    
+protected:
+    virtual void onChanged(const App::Property* prop);
+    
+private:    
+    vtkSmartPointer<vtkCutter>   m_cutter;
 };
 
 } //namespace Fem
