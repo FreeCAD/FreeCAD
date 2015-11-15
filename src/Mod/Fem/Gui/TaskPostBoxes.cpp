@@ -126,7 +126,8 @@ bool TaskDlgPost::reject()
 
 void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box) {
         
-    box->button(QDialogButtonBox::Apply)->setDefault(true);
+    if(box->button(QDialogButtonBox::Apply))
+        box->button(QDialogButtonBox::Apply)->setDefault(true);
 }
 
 
