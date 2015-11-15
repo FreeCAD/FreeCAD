@@ -213,18 +213,18 @@ def calculate_von_mises(i):
     return vm_stress
 
 
-def importFrd(filename, Analysis=None):
+def importFrd(filename, analysis=None):
     m = readResult(filename)
-    MeshObject = None
+    mesh_object = None
     if(len(m['Nodes']) > 0):
         import Fem
-        if Analysis is None:
-            AnalysisName = os.path.splitext(os.path.basename(filename))[0]
+        if analysis is None:
+            analysis_name = os.path.splitext(os.path.basename(filename))[0]
             import MechanicalAnalysis
-            AnalysisObject = MechanicalAnalysis.makeMechanicalAnalysis('Analysis')
-            AnalysisObject.Label = AnalysisName
+            analysis_object = MechanicalAnalysis.makeMechanicalAnalysis('Analysis')
+            analysis_object.Label = analysis_name
         else:
-            AnalysisObject = Analysis
+            analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
 
         if 'Nodes' in m:
             positions = []
@@ -238,7 +238,7 @@ def importFrd(filename, Analysis=None):
             z_span = abs(p_z_max - p_z_min)
             span = max(x_span, y_span, z_span)
 
-        if (('Hexa8Elem' in m) or ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or ('Tria3Elem' in m) or ('Tria6Elem' in m) or ('Quad4Elem' in m) or ('Quad8Elem' in m) or ('Seg2Elem' in m)) and ('Nodes' in m) and (not Analysis):
+        if  (not analysis) and ('Nodes' in m) and (('Hexa8Elem' in m) or ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or ('Tria3Elem' in m) or ('Tria6Elem' in m) or ('Quad4Elem' in m) or ('Quad8Elem' in m) or ('Seg2Elem' in m)):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
 
@@ -280,9 +280,9 @@ def importFrd(filename, Analysis=None):
             print ("imported mesh: %d nodes, %d HEXA8, %d TETRA4, %d TETRA10, %d TRIA3, %d TRIA6, %d QUAD4, %d QUAD8, %d SEG2"
                    %(len(nds), len(elms_hexa8), len(elms_tetra4), len(elms_tetra10), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2)))
             if len(nds) > 0:
-                MeshObject = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
-                MeshObject.FemMesh = mesh
-                AnalysisObject.Member = AnalysisObject.Member + [MeshObject]
+                mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
+                mesh_object.FemMesh = mesh
+                analysis_object.Member = analysis_object.Member + [mesh_object]
 
         for result_set in m['Results']:
             eigenmode_number = result_set['number']
@@ -311,8 +311,8 @@ def importFrd(filename, Analysis=None):
             if len(disp) > 0:
                 results.DisplacementVectors = map((lambda x: x * scale), disp.values())
                 results.NodeNumbers = disp.keys()
-                if(MeshObject):
-                    results.Mesh = MeshObject
+                if(mesh_object):
+                    results.Mesh = mesh_object
 
             stress = result_set['stress']
             if len(stress) > 0:
@@ -354,11 +354,11 @@ def importFrd(filename, Analysis=None):
                              z_min, z_avg, z_max,
                              a_min, a_avg, a_max,
                              s_min, s_avg, s_max]
-            AnalysisObject.Member = AnalysisObject.Member + [results]
+            analysis_object.Member = analysis_object.Member + [results]
 
         if(FreeCAD.GuiUp):
             import FemGui
-            FemGui.setActiveAnalysis(AnalysisObject)
+            FemGui.setActiveAnalysis(analysis_object)
 
 
 def insert(filename, docname):
