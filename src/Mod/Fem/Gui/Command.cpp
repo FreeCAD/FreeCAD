@@ -767,6 +767,32 @@ bool CmdFemCreateNodesSet::isActive(void)
 
 #ifdef FC_USE_VTK
 
+void setupFilter(Gui::Command* cmd, std::string Name) {
+    
+    std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
+    if (!pipelines.empty()) {
+        Fem::FemPostPipeline *pipeline = pipelines.front();
+
+        std::string FeatName = cmd->getUniqueObjectName(Name.c_str());
+
+        cmd->openCommand("Create filter");
+        cmd->doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Fem::FemPost%sFilter','%s')", Name.c_str(), FeatName.c_str());  
+        cmd->doCommand(Gui::Command::Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
+        cmd->doCommand(Gui::Command::Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
+        cmd->doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
+        cmd->doCommand(Gui::Command::Doc,"del __list__");
+        
+        cmd->updateActive();
+        cmd->doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostCreateClipFilter", "Select a pipeline, please."));
+    }
+    
+};
 
 DEF_STD_CMD_A(CmdFemPostCreateClipFilter);
 
@@ -784,28 +810,7 @@ CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
 
 void CmdFemPostCreateClipFilter::activated(int iMsg)
 {
-    std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
-    if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
-
-        std::string FeatName = getUniqueObjectName("Clip");
-
-        openCommand("Create clip filter");
-        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostClipFilter','%s')",FeatName.c_str());  
-        doCommand(Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
-        doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-        doCommand(Doc,"App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
-        doCommand(Doc,"del __list__");
-        
-        this->updateActive();
-        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-
-    }
-    else {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateClipFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateClipFilter", "Select a pipeline, please."));
-    }
+    setupFilter(this, "Clip");
 }
 
 bool CmdFemPostCreateClipFilter::isActive(void)
@@ -829,27 +834,7 @@ CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
 
 void CmdFemPostCreateScalarClipFilter::activated(int iMsg)
 {
-    std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
-    if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
-
-        std::string FeatName = getUniqueObjectName("ScalarClip");
-
-        openCommand("Create scalar clip filter");
-        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostScalarClipFilter','%s')",FeatName.c_str());  
-        doCommand(Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
-        doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-        doCommand(Doc,"App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
-        doCommand(Doc,"del __list__");
-        
-        this->updateActive();
-        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-    }
-    else {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateScalarClipFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateScalarClipFilter", "Select a pipeline, please."));
-    }
+    setupFilter(this, "ScalarClip");
 }
 
 bool CmdFemPostCreateScalarClipFilter::isActive(void)
@@ -875,30 +860,34 @@ CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
 
 void CmdFemPostWarpVectorFilter::activated(int iMsg)
 {
-    std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
-    if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
-
-        std::string FeatName = getUniqueObjectName("WarpVector");
-
-        openCommand("Create warp vector filter");
-        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostWarpVectorFilter','%s')",FeatName.c_str());  
-        doCommand(Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
-        doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-        doCommand(Doc,"App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
-        doCommand(Doc,"del __list__");
-        
-        this->updateActive();
-        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-    }
-    else {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdFemPostCreateWarpVectorFilter", "Wrong selection"),
-            qApp->translate("CmdFemPostCreateWarpVectorFilter", "Select a pipeline, please."));
-    }
+    setupFilter(this, "WarpVector");
 }
 
 bool CmdFemPostWarpVectorFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemPostCutFilter);
+
+CmdFemPostCutFilter::CmdFemPostCutFilter()
+  : Command("Fem_PostCreateCutFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Cut the data along an implicit function");
+    sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
+    sWhatsThis      = "Fem_PostCreateCutFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-fem-mesh-create-node-by-poly";
+}
+
+void CmdFemPostCutFilter::activated(int iMsg)
+{
+    setupFilter(this, "Cut");
+}
+
+bool CmdFemPostCutFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -958,7 +947,9 @@ void CmdFemPostFunctions::activated(int iMsg)
         doCommand(Doc,"del __list__");
         
         this->updateActive();
-        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+        //most of the times functions are added inside of a filter, make sure this still works
+        if(Gui::Application::Instance->activeDocument()->getInEdit() == NULL)
+            doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -1142,5 +1133,6 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
+    rcCmdMgr.addCommand(new CmdFemPostCutFilter);
 #endif
 }

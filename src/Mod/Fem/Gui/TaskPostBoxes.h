@@ -36,6 +36,7 @@ class Ui_TaskPostDisplay;
 class Ui_TaskPostClip;
 class Ui_TaskPostScalarClip;
 class Ui_TaskPostWarpVector;
+class Ui_TaskPostCut;
 
 
 namespace FemGui { 
@@ -204,6 +205,31 @@ private Q_SLOTS:
 private:
     QWidget* proxy;
     Ui_TaskPostWarpVector* ui;
+};
+
+
+
+class TaskPostCut : public TaskPostBox {
+    
+    Q_OBJECT
+    
+public:
+    TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = 0);
+    virtual ~TaskPostCut();
+    
+    virtual void applyPythonCode();
+    
+private Q_SLOTS:
+    void on_CreateButton_triggered(QAction* a);
+    void on_FunctionBox_currentIndexChanged(int idx);
+    
+private:
+    void collectImplicitFunctions();
+    
+    App::PropertyLink* m_functionProperty;
+    QWidget* proxy;
+    Ui_TaskPostCut* ui;
+    FunctionWidget* fwidget;
 };
 
 } //namespace FemGui
