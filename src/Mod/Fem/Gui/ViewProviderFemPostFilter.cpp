@@ -88,3 +88,24 @@ void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg) {
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
+
+
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostCut, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostCut::ViewProviderFemPostCut() {
+
+}
+
+ViewProviderFemPostCut::~ViewProviderFemPostCut() {
+
+}
+
+void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg) {
+    
+    //add the function box
+    dlg->appendBox(new TaskPostCut(dlg->getView(), 
+                                    &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
+    
+    //add the display options
+    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
+}

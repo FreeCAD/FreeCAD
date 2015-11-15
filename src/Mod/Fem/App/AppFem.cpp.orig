@@ -1,4 +1,4 @@
-<<<<<<< c8cde18ac8aa317da00f6668e9a156fcbe0b2975
+<<<<<<< 559b38429c3ec5bcad9eced553e5d7ca544cb55e
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
@@ -158,6 +158,7 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostFilter              ::init();
     Fem::FemPostClipFilter          ::init();
     Fem::FemPostScalarClipFilter    ::init();
+    Fem::FemPostWarpVectorFilter    ::init();
     Fem::FemPostFunction            ::init();
     Fem::FemPostFunctionProvider    ::init();
     Fem::FemPostPlaneFunction       ::init();
@@ -325,10 +326,11 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostClipFilter          ::init();
     Fem::FemPostScalarClipFilter    ::init();
     Fem::FemPostWarpVectorFilter    ::init();
+    Fem::FemPostCutFilter           ::init();
     Fem::FemPostFunction            ::init();
     Fem::FemPostFunctionProvider    ::init();
     Fem::FemPostPlaneFunction       ::init();
     Fem::FemPostSphereFunction      ::init();
 #endif
 }
->>>>>>> Add warp vector filter
+>>>>>>> Add cut filter

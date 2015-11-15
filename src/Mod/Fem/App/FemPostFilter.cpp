@@ -345,8 +345,8 @@ PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
 
 FemPostWarpVectorFilter::FemPostWarpVectorFilter(void): FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Factor, (0), "Warp", App::Prop_None, "The scalar value used to clip the selected field");
-    ADD_PROPERTY_TYPE(Vector, (long(0)), "Warp", App::Prop_None, "The field used to clip");
+    ADD_PROPERTY_TYPE(Factor, (0), "Warp", App::Prop_None, "The factor by which the vector is added to the node positions");
+    ADD_PROPERTY_TYPE(Vector, (long(0)), "Warp", App::Prop_None, "The field added to the node position");
     
     polyDataSource = vtkGeometryFilter::New();
     
@@ -418,6 +418,40 @@ void FemPostWarpVectorFilter::onChanged(const Property* prop) {
         m_warp->SetInputArrayToProcess(0, 0, 0, 
                                           vtkDataObject::FIELD_ASSOCIATION_POINTS, Vector.getValueAsString() );
     }
+    
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+
+PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
+
+FemPostCutFilter::FemPostCutFilter(void) : FemPostFilter() {
+
+    ADD_PROPERTY_TYPE(Function, (0), "Cut", App::Prop_None, "The function object which defines the clip cut function");
+ 
+    polyDataSource = vtkGeometryFilter::New();
+    
+    FilterPipeline clip;  
+    m_cutter            = vtkCutter::New();
+    clip.source         = m_cutter;
+    clip.target         = m_cutter;
+    clip.visualisation  = m_cutter;
+    addFilterPipeline(clip, "cut");
+    setActiveFilterPipeline("cut"); 
+}
+
+FemPostCutFilter::~FemPostCutFilter() {
+
+}
+
+void FemPostCutFilter::onChanged(const Property* prop) {
+
+    if(prop == &Function) {
+     
+        if(Function.getValue() && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
+            m_cutter->SetCutFunction(static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+         }
+    }      
     
     Fem::FemPostFilter::onChanged(prop);
 }
