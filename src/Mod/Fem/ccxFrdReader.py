@@ -220,7 +220,8 @@ def importFrd(filename, Analysis=None):
         import Fem
         if Analysis is None:
             AnalysisName = os.path.splitext(os.path.basename(filename))[0]
-            AnalysisObject = FreeCAD.ActiveDocument.addObject('Fem::FemAnalysis', 'Analysis')
+            import MechanicalAnalysis
+            AnalysisObject = MechanicalAnalysis.makeMechanicalAnalysis('Analysis')
             AnalysisObject.Label = AnalysisName
         else:
             AnalysisObject = Analysis
