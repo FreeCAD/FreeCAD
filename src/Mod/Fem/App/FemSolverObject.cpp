@@ -43,6 +43,7 @@ PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 FemSolverObject::FemSolverObject()
 {
 
+    /*
     ADD_PROPERTY_TYPE(SolverName,("Calculix"), "Data",Prop_None,"Solver program name");
     ADD_PROPERTY_TYPE(Category,("FEM"), "Data",Prop_None,"FEM, CFD ...");
     ADD_PROPERTY_TYPE(Module,(""), "Data",Prop_None,"Python module name");
@@ -54,6 +55,7 @@ FemSolverObject::FemSolverObject()
     ADD_PROPERTY_TYPE(InputCaseName,("TestCase"), "Solver",Prop_None,"Solver input file without suffix");
     ADD_PROPERTY_TYPE(Parallel,(false), "Solver",Prop_None,"Run solver in parallel like MPI");
     ADD_PROPERTY_TYPE(ResultObtained,(false), "Solver",Prop_None,"if true, result has been obtained");
+    */
 }
 
 FemSolverObject::~FemSolverObject()

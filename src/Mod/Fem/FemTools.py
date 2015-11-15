@@ -50,15 +50,18 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.analysis = FemGui.getActiveAnalysis()
         if self.analysis:
             self.update_objects()
-            self.set_analysis_type()
-            self.set_eigenmode_parameters()
             ## @var base_name
             #  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
             self.base_name = ""
             ## @var results_present
             #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
-            self.setup_working_dir()
+            if self.solver:
+                self.set_analysis_type()
+                self.set_eigenmode_parameters()
+                self.setup_working_dir()
+            else:
+                raise Exception('FEM: No solver found!')
             if test_mode:
                 self.ccx_binary_present = True
             else:
@@ -149,6 +152,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
 
+        ## @var solver
+        #  solver of the analysis. Used to store solver and analysis parameters
+        self.solver = None
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
@@ -178,7 +184,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.shell_thicknesses = []
 
         for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
+            if m.isDerivedFrom("Fem::FemSolverObjectPython"):
+                self.solver = m
+            elif m.isDerivedFrom("Fem::FemMeshObject"):
                 self.mesh = m
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_dict = {}
@@ -299,7 +307,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             _number = number
         else:
             try:
-                _number = self.analysis.NumberOfEigenmodes
+                _number = self.solver.NumberOfEigenmodes
             except:
                 #Not yet in prefs, so it will always default to 10
                 _number = self.fem_prefs.GetInteger("NumberOfEigenmodes", 10)
@@ -310,7 +318,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             _limit_low = limit_low
         else:
             try:
-                _limit_low = self.analysis.EigenmodeLowLimit
+                _limit_low = self.solver.EigenmodeLowLimit
             except:
                 #Not yet in prefs, so it will always default to 0.0
                 _limit_low = self.fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
@@ -319,7 +327,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             _limit_high = limit_high
         else:
             try:
-                _limit_high = self.analysis.EigenmodeHighLimit
+                _limit_high = self.solver.EigenmodeHighLimit
             except:
                 #Not yet in prefs, so it will always default to 1000000.0
                 _limit_high = self.fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
@@ -357,21 +365,21 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.analysis_type = analysis_type
         else:
             try:
-                self.analysis_type = self.analysis.AnalysisType
+                self.analysis_type = self.solver.AnalysisType
             except:
                 self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
                 self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
 
-    ## Sets working dir for ccx execution. Called with no working_dir uses WorkingDir from FEM preferences
+    ## Sets working dir for solver execution. Called with no working_dir uses WorkingDir from FEM preferences
     #  @param self The python object self
-    #  @working_dir directory to be used for writing .inp file and executing CalculiX ccx
+    #  @working_dir directory to be used for writing solver input file or files and executing solver
     def setup_working_dir(self, working_dir=None):
         import os
         if working_dir is not None:
             self.working_dir = working_dir
         else:
             try:
-                self.working_dir = self.analysis.WorkingDir
+                self.working_dir = self.solver.WorkingDir
             except:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
                 self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")

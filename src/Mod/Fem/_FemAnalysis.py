@@ -24,35 +24,12 @@ __title__ = "Fem Analysis"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD
-from FemTools import FemTools
-
 
 class _FemAnalysis:
     "The FemAnalysis container object"
     def __init__(self, obj):
         self.Type = "FemAnalysis"
         obj.Proxy = self
-        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
-        obj.AnalysisType = FemTools.known_analysis_types
-        analysis_type = fem_prefs.GetInt("AnalysisType", 0)
-        obj.AnalysisType = FemTools.known_analysis_types[analysis_type]
-        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations")
-        obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
-
-        obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
-        noe = fem_prefs.GetInt("NumberOfEigenmodes", 10)
-        obj.NumberOfEigenmodes = (noe, 1, 100, 1)
-
-        obj.addProperty("App::PropertyFloatConstraint", "EigenmodeLowLimit", "Fem", "Low frequency limit for eigenmode calculations")
-        #Not yet in prefs, so it will always default to 0.0
-        ell = fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
-        obj.EigenmodeLowLimit = (ell, 0.0, 1000000.0, 10000.0)
-
-        obj.addProperty("App::PropertyFloatConstraint", "EigenmodeHighLimit", "Fem", "High frequency limit for eigenmode calculations")
-        ehl = fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
-        obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
     def execute(self, obj):
         return

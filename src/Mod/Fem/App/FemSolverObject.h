@@ -43,6 +43,7 @@ public:
     FemSolverObject(void);
     virtual ~FemSolverObject();
 
+    /*
     /// Solver name, unique to identify solver in registered_solver dict
     App::PropertyString SolverName;
     /// CAE category like FEM, all capitalised letters
@@ -64,6 +65,7 @@ public:
     App::PropertyBool Parallel;
     /// result has been obtained, purge result may be needed for rerun
     App::PropertyBool ResultObtained;
+    */
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {

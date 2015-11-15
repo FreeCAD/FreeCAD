@@ -62,6 +62,11 @@ INSTALL(
         _TaskPanelMechanicalMaterial.py
         TaskPanelMechanicalMaterial.ui
 
+        FemSolverCalculix.py
+        _FemSolverCalculix.py
+        _ViewProviderFemSolverCalculix.py
+        _CommandFemSolverCalculix.py
+
     DESTINATION
         Mod/Fem
 )
