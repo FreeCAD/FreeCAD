@@ -52,6 +52,8 @@ public:
     /** Builds up the list view with the properties. */
     void buildUp(const PropertyModel::PropertyList& props);
     void updateProperty(const App::Property&);
+    void appendProperty(const App::Property&);
+    void removeProperty(const App::Property&);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
 
@@ -66,6 +68,7 @@ protected:
 private:
     PropertyModel* propertyModel;
     QStringList selectedProperty;
+    PropertyModel::PropertyList propList;
     bool autoupdate;
     bool committing;
     bool delaybuild;

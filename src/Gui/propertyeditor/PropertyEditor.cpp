@@ -143,6 +143,8 @@ void PropertyEditor::buildUp(const PropertyModel::PropertyList& props)
         QModelIndex index = propertyModel->propertyIndexFromPath(this->selectedProperty);
         this->setCurrentIndex(index);
     }
+
+    propList = props;
 }
 
 void PropertyEditor::updateProperty(const App::Property& prop)
@@ -150,6 +152,25 @@ void PropertyEditor::updateProperty(const App::Property& prop)
     // forward this to the model if the property is changed from outside
     if (!committing)
         propertyModel->updateProperty(prop);
+}
+
+void PropertyEditor::appendProperty(const App::Property& prop)
+{
+    //TODO: Find any property with the same container parent
+    //propertyModel->appendProperty(prop);
+}
+
+void PropertyEditor::removeProperty(const App::Property& prop)
+{
+    for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
+        // find the given property in the list and remove it if it's there
+        std::vector<App::Property*>::iterator pos = std::find(it->second.begin(), it->second.end(), &prop);
+        if (pos != it->second.end()) {
+            it->second.erase(pos);
+            propertyModel->removeProperty(prop);
+            break;
+        }
+    }
 }
 
 #include "moc_PropertyEditor.cpp"

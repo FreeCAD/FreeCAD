@@ -58,7 +58,7 @@ using namespace Gui::PropertyEditor;
 
 TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyItem, Base::BaseClass);
 
-PropertyItem::PropertyItem() : parentItem(0), readonly(false)
+PropertyItem::PropertyItem() : parentItem(0), valid(true), readonly(false)
 {
     precision = Base::UnitsApi::getDecimals();
 }
@@ -109,6 +109,16 @@ bool PropertyItem::hasProperty(const App::Property* prop) const
         return true;
     else
         return false;
+}
+
+void PropertyItem::removeProperty(const App::Property* prop)
+{
+    std::vector<App::Property*>::const_iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
+    if (it != propertyItems.end()) {
+        propertyItems.erase(it);
+        if (propertyItems.empty())
+            valid = false;
+    }
 }
 
 App::Property* PropertyItem::getFirstProperty()
@@ -346,6 +356,9 @@ bool PropertyItem::setData (const QVariant& value)
 
 Qt::ItemFlags PropertyItem::flags(int column) const
 {
+    // An item becomes invalid if all its properties have been removed.
+    if (!valid)
+        return Qt::NoItemFlags;
     Qt::ItemFlags basicFlags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     if (column == 1 && !isReadOnly())
         return basicFlags | Qt::ItemIsEditable;

@@ -141,6 +141,17 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
     //@}
 
+    /** @name Signals of property changes
+     * These signals are emitted on property additions or removal.
+     * The changed object can be any sub-class of PropertyContainer.
+     */
+    //@{
+    /// signal on adding a dynamic property
+    boost::signal<void (const App::Property&)> signalAppendDynamicProperty;
+    /// signal on about removing a dynamic property
+    boost::signal<void (const App::Property&)> signalRemoveDynamicProperty;
+    //@}
+
 
     /** @name methods for parameter handling */
     //@{
