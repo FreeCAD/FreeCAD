@@ -282,6 +282,34 @@ void PropertyModel::updateProperty(const App::Property& prop)
 
 void PropertyModel::appendProperty(const App::Property& prop)
 {
+    QString editor = QString::fromAscii(prop.getEditorName());
+    if (!editor.isEmpty()) {
+        Base::BaseClass* item = 0;
+        try {
+            item = static_cast<Base::BaseClass*>(Base::Type::
+                createInstanceByName(prop.getEditorName(),true));
+        }
+        catch (...) {
+        }
+        if (!item) {
+            qWarning("No property item for type %s found\n", prop.getEditorName());
+        }
+        else if (item->getTypeId().isDerivedFrom(PropertyItem::getClassTypeId())) {
+            // notify system to add new row
+            int row = rootItem->childCount();
+            beginInsertRows(QModelIndex(), row, row);
+
+            PropertyItem* child = static_cast<PropertyItem*>(item);
+            child->setParent(rootItem);
+            rootItem->appendChild(child);
+            child->setPropertyName(QString::fromAscii(prop.getName()));
+            std::vector<App::Property*> data;
+            data.push_back(const_cast<App::Property*>(&prop));
+            child->setPropertyData(data);
+
+            endInsertRows();
+        }
+    }
 }
 
 void PropertyModel::removeProperty(const App::Property& prop)
@@ -291,10 +319,8 @@ void PropertyModel::removeProperty(const App::Property& prop)
     for (int row=0; row<numChild; row++) {
         PropertyItem* child = rootItem->child(row);
         if (child->hasProperty(&prop)) {
-            child->removeProperty(&prop);
-            QModelIndex data = this->index(row, column, QModelIndex());
-            if (data.isValid()) {
-                dataChanged(data, data);
+            if (child->removeProperty(&prop)) {
+                removeRow(row, QModelIndex());
             }
             break;
         }
@@ -318,6 +344,22 @@ void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelI
         }
 #endif
     }
+}
+
+bool PropertyModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    PropertyItem* item;
+    if (!parent.isValid())
+        item = rootItem;
+    else
+        item = static_cast<PropertyItem*>(parent.internalPointer());
+
+    int start = row;
+    int end = row+count-1;
+    beginRemoveRows(parent, start, end);
+    item->removeChildren(start, end);
+    endRemoveRows();
+    return true;
 }
 
 #include "moc_PropertyModel.cpp"

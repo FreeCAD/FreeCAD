@@ -58,7 +58,7 @@ using namespace Gui::PropertyEditor;
 
 TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyItem, Base::BaseClass);
 
-PropertyItem::PropertyItem() : parentItem(0), valid(true), readonly(false)
+PropertyItem::PropertyItem() : parentItem(0), readonly(false)
 {
     precision = Base::UnitsApi::getDecimals();
 }
@@ -111,14 +111,14 @@ bool PropertyItem::hasProperty(const App::Property* prop) const
         return false;
 }
 
-void PropertyItem::removeProperty(const App::Property* prop)
+bool PropertyItem::removeProperty(const App::Property* prop)
 {
     std::vector<App::Property*>::const_iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
     if (it != propertyItems.end()) {
         propertyItems.erase(it);
-        if (propertyItems.empty())
-            valid = false;
     }
+
+    return propertyItems.empty();
 }
 
 App::Property* PropertyItem::getFirstProperty()
@@ -148,6 +148,15 @@ PropertyItem *PropertyItem::parent() const
 void PropertyItem::appendChild(PropertyItem *item)
 {
     childItems.append(item);
+}
+
+void PropertyItem::removeChildren(int from, int to)
+{
+    int count = to-from+1;
+    for (int i=0; i<count; i++) {
+        PropertyItem* child = childItems.takeAt(from);
+        delete child;
+    }
 }
 
 PropertyItem *PropertyItem::child(int row)
@@ -356,9 +365,6 @@ bool PropertyItem::setData (const QVariant& value)
 
 Qt::ItemFlags PropertyItem::flags(int column) const
 {
-    // An item becomes invalid if all its properties have been removed.
-    if (!valid)
-        return Qt::NoItemFlags;
     Qt::ItemFlags basicFlags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     if (column == 1 && !isReadOnly())
         return basicFlags | Qt::ItemIsEditable;

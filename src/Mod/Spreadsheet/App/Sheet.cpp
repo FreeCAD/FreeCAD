@@ -509,7 +509,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        floatProp = freecad_dynamic_cast<PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true));
+        floatProp = freecad_dynamic_cast<PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient, true, true));
         floatProp->StatusBits.set(3);
     }
     else
@@ -541,7 +541,7 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true);
+        Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient, true, true);
         quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
         quantityProp->StatusBits.set(3);
     }
@@ -576,7 +576,7 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        stringProp = freecad_dynamic_cast<PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true));
+        stringProp = freecad_dynamic_cast<PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient, true, true));
         stringProp->StatusBits.set(3);
     }
 
