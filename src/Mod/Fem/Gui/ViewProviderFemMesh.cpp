@@ -779,9 +779,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             case 6:// tria face with 6 nodes
                 BndBox.Add(facesHelper[i++].set(6, aFace, aFace->GetID(), 0, aFace->GetNode(0), aFace->GetNode(1), aFace->GetNode(2), aFace->GetNode(3), aFace->GetNode(4), aFace->GetNode(5)));
                 break;
-
-                //unknown case
-                default: assert(0);
+            default://unknown face type
+                throw std::runtime_error("Node count not supported by ViewProviderFemMesh, [3|4|6] are allowed");
             }
         }
     }
