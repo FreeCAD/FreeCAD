@@ -128,6 +128,9 @@ void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::P
 void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
+    if (parent->isHidden(&prop) || prop.StatusBits.test(3))
+        return;
+
     if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         propertyEditorData->appendProperty(prop);
     }

@@ -58,6 +58,8 @@ public:
     bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole);
     void buildUp(const PropertyList& props);
 
+    bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
+
     void updateProperty(const App::Property&);
     void appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
