@@ -324,9 +324,11 @@ class _ArchDrawingView:
                 svg = svg.replace('SWPlaceholder', str(linewidth*st) + 'px')
                 svg = svg.replace('DAPlaceholder', str(da))
                 if hasattr(self,"spaces"):
-                    if round(self.direction.getAngle(FreeCAD.Vector(0,0,1)),Draft.precision()) in [0,round(math.pi,Draft.precision())]:
+                    if self.spaces and round(self.direction.getAngle(FreeCAD.Vector(0,0,1)),Draft.precision()) in [0,round(math.pi,Draft.precision())]:
+                        svg += '<g transform="scale(1,-1)">'
                         for s in self.spaces:
                             svg += Draft.getSVG(s,scale=obj.Scale,fontsize=obj.FontSize.Value,direction=self.direction)
+                        svg += '</g>'
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
@@ -345,7 +347,7 @@ class _ArchDrawingView:
             if hasattr(obj,"Source"):
                 if obj.Source:
                     if obj.Source.Objects:
-                        objs = Draft.getGroupContents(obj.Source.Objects,walls=True)
+                        objs = Draft.getGroupContents(obj.Source.Objects,walls=True,addgroups=True)
                         objs = Draft.removeHidden(objs)
                         # separate spaces
                         self.spaces = []

@@ -2120,9 +2120,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         p1 = p2.add(FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue()))
         l = obj.ViewObject.LineSpacing/2.0
         j = obj.ViewObject.TextAlign
-        svg += getText(c,f1,n,a,getProj(p1),t1,l,j,flip=False)
+        svg += getText(c,f1,n,a,getProj(p1),t1,l,j,flip=True)
         if t2:
-            svg += getText(c,fontsize,n,a,getProj(p2),t2,l,j,flip=False)
+            svg += getText(c,fontsize,n,a,getProj(p2),t2,l,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull(): 
