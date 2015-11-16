@@ -152,6 +152,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
+        ## @var materials
+        # set of materials from the analysis. Updated with update_objects
+        # Induvidual materials are "App::MaterialObjectPython" type
         self.materials = []
         ## @var fixed_constraints
         #  set of fixed constraints from the analysis. Updated with update_objects
@@ -165,7 +168,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         #  set of pressure constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintPressure" type
         self.pressure_constraints = []
+        ## @var beam_sections
+        # set of beam sections from the analyis. Updated with update_objects
+        # Individual beam sections are Proxy.Type "FemBeamSection"
         self.beam_sections = []
+        ## @var shell_thicknesses
+        # set of shell thicknesses from the analyis. Updated with update_objects
+        # Individual shell thicknesses are Proxy.Type "FemShellThickness"
         self.shell_thicknesses = []
 
         for m in self.analysis.Member:
@@ -187,11 +196,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == 'FemBeamSection':
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
                 self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == 'FemShellThickness':
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemShellThickness":
                 shell_thickness_dict = {}
                 shell_thickness_dict['Object'] = m
                 self.shell_thicknesses.append(shell_thickness_dict)
