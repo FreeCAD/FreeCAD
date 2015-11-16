@@ -314,7 +314,6 @@ void PropertyModel::appendProperty(const App::Property& prop)
 
 void PropertyModel::removeProperty(const App::Property& prop)
 {
-    int column = 1;
     int numChild = rootItem->childCount();
     for (int row=0; row<numChild; row++) {
         PropertyItem* child = rootItem->child(row);
