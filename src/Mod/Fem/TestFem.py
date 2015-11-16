@@ -134,15 +134,21 @@ class FemTest(unittest.TestCase):
         return result
 
     def compare_stats(self, fea, stat_file=None):
+        sf_content_normalised = []
         if stat_file:
             sf = open(stat_file, 'r')
             sf_content = sf.readlines()
             sf.close()
+            # Force \n line ends
+            for line in sf_content:
+                if line.endswith("\r\n"):
+                    line = line[:-2] + '\n'
+                sf_content_normalised.append(line)
         stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
         stats = []
         for s in stat_types:
             stats.append("{}: {}\n".format(s, fea.get_stats(s)))
-        if sf_content != stats:
+        if sf_content_normalised != stats:
             fcc_print("Expected stats from {}".format(stat_file))
             fcc_print(sf_content)
             fcc_print("Stats read from {}.frd file".format(fea.base_name))
