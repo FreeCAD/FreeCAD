@@ -113,7 +113,7 @@ bool PropertyItem::hasProperty(const App::Property* prop) const
 
 bool PropertyItem::removeProperty(const App::Property* prop)
 {
-    std::vector<App::Property*>::const_iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
+    std::vector<App::Property*>::iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
     if (it != propertyItems.end()) {
         propertyItems.erase(it);
     }
