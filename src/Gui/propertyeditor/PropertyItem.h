@@ -63,6 +63,7 @@ public:
     void updateData();
     const std::vector<App::Property*>& getPropertyData() const;
     bool hasProperty(const App::Property*) const;
+    void removeProperty(const App::Property*);
     App::Property* getFirstProperty();
     const App::Property* getFirstProperty() const;
 
@@ -110,6 +111,7 @@ private:
     std::vector<App::Property*> propertyItems;
     PropertyItem *parentItem;
     QList<PropertyItem*> childItems;
+    bool valid;
     bool readonly;
     int precision;
 };

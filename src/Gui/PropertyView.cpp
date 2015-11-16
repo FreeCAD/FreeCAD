@@ -99,12 +99,20 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectPropView =
     Gui::Application::Instance->signalChangedObject.connect(boost::bind
         (&PropertyView::slotChangePropertyView, this, _1, _2));
+    this->connectPropAppend =
+    App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
+        (&PropertyView::slotAppendDynamicProperty, this, _1));
+    this->connectPropRemove =
+    App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
+        (&PropertyView::slotRemoveDynamicProperty, this, _1));
 }
 
 PropertyView::~PropertyView()
 {
     this->connectPropData.disconnect();
     this->connectPropView.disconnect();
+    this->connectPropAppend.disconnect();
+    this->connectPropRemove.disconnect();
 }
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
@@ -115,6 +123,28 @@ void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App:
 void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
 {
     propertyEditorView->updateProperty(prop);
+}
+
+void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        propertyEditorData->appendProperty(prop);
+    }
+    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+        propertyEditorView->appendProperty(prop);
+    }
+}
+
+void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        propertyEditorData->removeProperty(prop);
+    }
+    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+        propertyEditorView->removeProperty(prop);
+    }
 }
 
 struct PropertyView::PropInfo

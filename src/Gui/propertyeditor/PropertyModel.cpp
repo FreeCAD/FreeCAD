@@ -280,6 +280,27 @@ void PropertyModel::updateProperty(const App::Property& prop)
     }
 }
 
+void PropertyModel::appendProperty(const App::Property& prop)
+{
+}
+
+void PropertyModel::removeProperty(const App::Property& prop)
+{
+    int column = 1;
+    int numChild = rootItem->childCount();
+    for (int row=0; row<numChild; row++) {
+        PropertyItem* child = rootItem->child(row);
+        if (child->hasProperty(&prop)) {
+            child->removeProperty(&prop);
+            QModelIndex data = this->index(row, column, QModelIndex());
+            if (data.isValid()) {
+                dataChanged(data, data);
+            }
+            break;
+        }
+    }
+}
+
 void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelIndex& parent)
 {
     int numChild = item->childCount();

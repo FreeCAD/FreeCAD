@@ -29,6 +29,7 @@
 #include "DynamicProperty.h"
 #include "Property.h"
 #include "PropertyContainer.h"
+#include "Application.h"
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
@@ -242,6 +243,8 @@ Property* DynamicProperty::addDynamicProperty(const char* type, const char* name
     data.hidden = hidden;
     props[ObjectName] = data;
 
+    GetApplication().signalAppendDynamicProperty(*pcProperty);
+
     return pcProperty;
 }
 
@@ -249,6 +252,7 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
 {
     std::map<std::string,PropData>::iterator it = props.find(name);
     if (it != props.end()) {
+        GetApplication().signalRemoveDynamicProperty(*it->second.property);
         delete it->second.property;
         props.erase(it);
         return true;
