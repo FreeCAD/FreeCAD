@@ -234,6 +234,7 @@ void ActionGroup::addTo(QWidget *w)
             w->addAction(_action);
             QToolButton* tb = w->findChildren<QToolButton*>().last();
             tb->setPopupMode(QToolButton::MenuButtonPopup);
+            tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
             QList<QAction*> acts = _group->actions();
             QMenu* menu = new QMenu(tb);
             menu->addActions(acts);
