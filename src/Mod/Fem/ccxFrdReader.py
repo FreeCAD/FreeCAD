@@ -296,6 +296,10 @@ def importFrd(filename, analysis=None):
             else:
                 results_name = 'Results'
             results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
+            for m in analysis_object.Member:
+                if m.isDerivedFrom("Fem::FemMeshObject"):
+                    results.Mesh = m
+                    break
 
             disp = result_set['disp']
             l = len(disp)
