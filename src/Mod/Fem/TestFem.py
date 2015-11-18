@@ -115,15 +115,25 @@ class FemTest(unittest.TestCase):
         self.pressure_constraint.Pressure = 10.000000
         self.pressure_constraint.Reversed = True
 
+    def force_unix_line_ends(self, line_list):
+        new_line_list = []
+        for l in line_list:
+            if l.endswith("\r\n"):
+                l = l[:-2] + '\n'
+            new_line_list.append(l)
+        return new_line_list
+
     def compare_inp_files(self, file_name1, file_name2):
         file1 = open(file_name1, 'r')
         f1 = file1.readlines()
         file1.close()
+        lf1 = [l for l in f1 if not l.startswith('**   written ')]
+        lf1 = self.force_unix_line_ends(lf1)
         file2 = open(file_name2, 'r')
         f2 = file2.readlines()
         file2.close()
-        lf1 = [l for l in f1 if not l.startswith('**   written ')]
         lf2 = [l for l in f2 if not l.startswith('**   written ')]
+        lf2 = self.force_unix_line_ends(lf2)
         import difflib
         diff = difflib.unified_diff(lf1, lf2, n=0)
         result = ''
@@ -134,21 +144,16 @@ class FemTest(unittest.TestCase):
         return result
 
     def compare_stats(self, fea, stat_file=None):
-        sf_content_normalised = []
         if stat_file:
             sf = open(stat_file, 'r')
             sf_content = sf.readlines()
             sf.close()
-            # Force \n line ends
-            for line in sf_content:
-                if line.endswith("\r\n"):
-                    line = line[:-2] + '\n'
-                sf_content_normalised.append(line)
+            sf_content = self.force_unix_line_ends(sf_content)
         stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
         stats = []
         for s in stat_types:
             stats.append("{}: {}\n".format(s, fea.get_stats(s)))
-        if sf_content_normalised != stats:
+        if sf_content != stats:
             fcc_print("Expected stats from {}".format(stat_file))
             fcc_print(sf_content)
             fcc_print("Stats read from {}.frd file".format(fea.base_name))
