@@ -79,7 +79,7 @@ def readResult(frd_input):
             elemType = int(line[14:18])
         #then the 8 id's for the HEXA8 element
         if elements_found and (line[1:3] == "-2") and elemType == 1:
-            node_id_5= int(line[3:13])
+            node_id_5 = int(line[3:13])
             node_id_6 = int(line[13:23])
             node_id_7 = int(line[23:33])
             node_id_8 = int(line[33:43])
@@ -238,7 +238,10 @@ def importFrd(filename, analysis=None):
             z_span = abs(p_z_max - p_z_min)
             span = max(x_span, y_span, z_span)
 
-        if  (not analysis) and ('Nodes' in m) and (('Hexa8Elem' in m) or ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or ('Tria3Elem' in m) or ('Tria6Elem' in m) or ('Quad4Elem' in m) or ('Quad8Elem' in m) or ('Seg2Elem' in m)):
+        if (not analysis) and ('Nodes' in m) and (('Hexa8Elem' in m) or
+           ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or ('Tria3Elem' in m) or
+           ('Tria6Elem' in m) or ('Quad4Elem' in m) or ('Quad8Elem' in m) or
+           ('Seg2Elem' in m)):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
 
@@ -277,8 +280,10 @@ def importFrd(filename, analysis=None):
             for i in elms_seg2:
                 e = elms_seg2[i]
                 mesh.addEdge(e[0], e[1])
-            print ("imported mesh: %d nodes, %d HEXA8, %d TETRA4, %d TETRA10, %d TRIA3, %d TRIA6, %d QUAD4, %d QUAD8, %d SEG2"
-                   %(len(nds), len(elms_hexa8), len(elms_tetra4), len(elms_tetra10), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2)))
+            print ("imported mesh: {} nodes, {} HEXA8, {} TETRA4, {} TETRA10".format(
+                   len(nds), len(elms_hexa8), len(elms_tetra4), len(elms_tetra10)))
+            print ("imported mesh: {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2".format(
+                   len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2)))
             if len(nds) > 0:
                 mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
                 mesh_object.FemMesh = mesh
