@@ -947,6 +947,22 @@ void CmdFemPostFunctions::activated(int iMsg)
         doCommand(Doc,"App.ActiveDocument.%s.Functions = __list__", provider->getNameInDocument());
         doCommand(Doc,"del __list__");
         
+        //set the default values, for this get the bounding box
+        vtkBoundingBox box = pipeline->getBoundingBox();
+        
+        double center[3];
+        box.GetCenter(center);
+        
+        if (iMsg==0) 
+            doCommand(Doc,"App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)", FeatName.c_str(), center[0], 
+                                    center[1], center[2]);
+        else if (iMsg==1) {
+            doCommand(Doc,"App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", FeatName.c_str(), center[0],
+                      center[1] + box.GetLength(1)/2, center[2] + box.GetLength(2)/2);
+            doCommand(Doc,"App.ActiveDocument.%s.Radius = %f", FeatName.c_str(), box.GetDiagonalLength()/2);
+        }
+            
+        
         this->updateActive();
         //most of the times functions are added inside of a filter, make sure this still works
         if(Gui::Application::Instance->activeDocument()->getInEdit() == NULL)
