@@ -36,11 +36,14 @@
 #include <Inventor/manips/SoCenterballManip.h>
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
+#include <Inventor/manips/SoHandleBoxManip.h>
+#include <Inventor/manips/SoTabBoxManip.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/engines/SoDecomposeMatrix.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/draggers/SoTransformBoxDragger.h>
+#include <Inventor/draggers/SoHandleBoxDragger.h>
 #include <QMessageBox>
 #endif
 
@@ -58,6 +61,7 @@
 #include <App/PropertyUnits.h>
 
 #include <boost/bind.hpp>
+#include <math.h>
 
 #include "ui_PlaneWidget.h"
 #include "ui_SphereWidget.h"
@@ -97,15 +101,52 @@ std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimCh
     return claimChildren();
 }
 
+void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop) {
+    Gui::ViewProviderDocumentObject::onChanged(prop);
+    
+    updateSize();
+}
+
+void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop) {
+    Gui::ViewProviderDocumentObject::updateData(prop);
+    
+    if(strcmp(prop->getName(), "Functions") == 0) {
+        updateSize();       
+    }
+}
+
+void ViewProviderFemPostFunctionProvider::updateSize() {
+
+    std::vector< App::DocumentObject* > vec = claimChildren();
+    for(std::vector< App::DocumentObject* >::iterator it = vec.begin(); it != vec.end(); ++it) {
+        
+        if(!(*it)->isDerivedFrom(Fem::FemPostFunction::getClassTypeId()))
+            continue;
+        
+        ViewProviderFemPostFunction* vp = static_cast<FemGui::ViewProviderFemPostFunction*>(Gui::Application::Instance->getViewProvider(*it));
+        vp->AutoScaleFactorX.setValue(SizeX.getValue());
+        vp->AutoScaleFactorY.setValue(SizeY.getValue());
+        vp->AutoScaleFactorZ.setValue(SizeZ.getValue());
+    }
+}
+
+
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunction, Gui::ViewProviderDocumentObject)
 
 ViewProviderFemPostFunction::ViewProviderFemPostFunction() : m_autoscale(false), m_isDragging(false)
 {
+    
+    ADD_PROPERTY_TYPE(AutoScaleFactorX, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
+    ADD_PROPERTY_TYPE(AutoScaleFactorY, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
+    ADD_PROPERTY_TYPE(AutoScaleFactorZ, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
 
     m_geometrySeperator = new SoSeparator();
     m_geometrySeperator->ref();
 
+    m_transform = new SoTransform();
+    m_transform->ref();
+    
     m_scale = new SoScale();
     m_scale->ref();
     m_scale->scaleFactor = SbVec3f(1,1,1);
@@ -116,33 +157,27 @@ ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
     m_geometrySeperator->unref();
     m_manip->unref();
     m_scale->unref();
+    m_transform->unref();
 }
 
 void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
-    Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
-     
+    
     // setup the graph for editing the function unit geometry   
     SoMaterial* color = new SoMaterial();
     color->diffuseColor.setValue(0,0,1);
     color->transparency.setValue(0.5);
   
-    SoTransform* trans = new SoTransform;
-    const Base::Vector3d& norm = func->Normal.getValue();
-    const Base::Vector3d& base = func->Origin.getValue();
-    SbRotation rot(SbVec3f(0,0,1), SbVec3f(norm.x,norm.y,norm.z));
-    trans->rotation.setValue(rot);
-    trans->translation.setValue(base.x,base.y,base.z);
-    trans->center.setValue(0.0f,0.0f,0.0f);
-    
+    m_transform = new SoTransform;
+     
     m_manip = setupManipulator();
     m_manip->ref();
     
     SoSeparator* pcEditNode = new SoSeparator();
         
     pcEditNode->addChild(color);
-    pcEditNode->addChild(trans);
+    pcEditNode->addChild(m_transform);
     pcEditNode->addChild(m_geometrySeperator);    
     
     m_geometrySeperator->insertChild(m_scale, 0);
@@ -154,7 +189,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(FALSE);
-    sa.setNode(trans);
+    sa.setNode(m_transform);
     sa.apply(pcEditNode);
     SoPath * path = sa.getPath();
     if (path) {
@@ -272,6 +307,16 @@ void ViewProviderFemPostFunction::unsetEdit(int ModNum) {
     }
 }
 
+void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
+    
+    Gui::ViewProviderDocumentObject::onChanged(prop);
+    
+    if(m_autoscale)
+        m_scale->scaleFactor = SbVec3f(AutoScaleFactorX.getValue(), AutoScaleFactorY.getValue(), AutoScaleFactorZ.getValue());
+}
+
+
+
 //#################################################################################################
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFemPostFunction)
@@ -314,6 +359,19 @@ void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
     dragger->rotation.getValue().multVec(norm,norm);
     func->Origin.setValue(center[0], center[1], center[2]);
     func->Normal.setValue(norm[0],norm[1],norm[2]);
+    
+    SbVec3f c = static_cast<SoCenterballManip*>(getManipulator())->center.getValue();
+    SbVec3f t = static_cast<SoCenterballManip*>(getManipulator())->translation.getValue();
+    SbVec3f s = static_cast<SoCenterballManip*>(getManipulator())->scaleFactor.getValue();
+    SbVec3f rt, irt;
+    dragger->rotation.getValue().multVec(t,rt);
+    dragger->rotation.getValue().inverse().multVec(t,irt);
+    Base::Console().Message("Center:            %f, %f, %f\n", c[0], c[1], c[2]);
+    Base::Console().Message("Translation:       %f, %f, %f\n", t[0], t[1], t[2]);
+    Base::Console().Message("Rot Translation:   %f, %f, %f\n", rt[0], rt[1], rt[2]);
+    Base::Console().Message("I Rot Translation: %f, %f, %f\n", irt[0], irt[1], irt[2]);
+    Base::Console().Message("Normal             %f, %f, %f\n", norm[0], norm[1], norm[2]);
+    Base::Console().Message("Scale              %f, %f, %f\n", s[0], s[1], s[2]);
 }
 
 void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
@@ -321,16 +379,24 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
     Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
     
     if(!isDragging() && (p == &func->Origin || p == &func->Normal)) {
+               
+        Base::Vector3d trans = func->Origin.getValue();
+        Base::Vector3d norm = func->Normal.getValue();
+        Base::Console().Message("Translation: %f, %f, %f\n", trans.x, trans.y, trans.z);
+        Base::Console().Message("Normal       %f, %f, %f\n", norm.x, norm.y, norm.z);
         
-        const Base::Vector3d& trans = func->Origin.getValue();
-        const Base::Vector3d& norm = func->Normal.getValue();
+        norm = norm / norm.Length();
         SbRotation rot(SbVec3f(0.,0.,1.), SbVec3f(norm.x, norm.y, norm.z));
         
-        Base::Console().Message("Updated propertes\n");
-        static_cast<SoCenterballManip*>(getManipulator())->center.setValue(SbVec3f(trans[0], trans[1], trans[2]));
-        static_cast<SoCenterballManip*>(getManipulator())->rotation.setValue(rot);
-    }
+        SbMatrix t, translate;
+        t.setRotate(rot);
+        translate.setTranslate(SbVec3f(trans.x, trans.y, trans.z));
+        t.multRight(translate);
+        getManipulator()->setMatrix(t);
 
+        Base::Console().Message("Matrix:\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n\n", t[0][0], t[0][1], t[0][2], t[0][3],
+                                t[1][0], t[1][1], t[1][2], t[1][3], t[2][0], t[2][1], t[2][2], t[2][3], t[3][0], t[3][1], t[3][2], t[3][3]);
+    }
     Gui::ViewProviderDocumentObject::updateData(p);
 }
 
@@ -413,13 +479,32 @@ ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction() {
 
     sPixmap = "fem-sphere";
     
-    setAutoScale(true);
+    setAutoScale(false);
     
     //setup the visualisation geometry
-    m_sphereNode = new SoSphere;
-    m_sphereNode->ref();
-
-    getGeometryNode()->addChild(m_sphereNode);
+    SoCoordinate3* points = new SoCoordinate3();
+    points->point.setNum(2*84);
+    int idx = 0;
+    for(int i=0; i<4; i++) {    
+        for(int j=0; j<21; j++) {
+            points->point.set1Value(idx, SbVec3f(std::sin(2*M_PI/20*j) * std::cos(M_PI/4*i), 
+                                                 std::sin(2*M_PI/20*j) * std::sin(M_PI/4*i),
+                                                 std::cos(2*M_PI/20*j) ));        
+            ++idx;
+        }
+    }
+    for(int i=0; i<4; i++) {    
+        for(int j=0; j<21; j++) {
+            points->point.set1Value(idx, SbVec3f(std::sin(M_PI/4*i) * std::cos(2*M_PI/20*j), 
+                                                 std::sin(M_PI/4*i) * std::sin(2*M_PI/20*j),
+                                                 std::cos(M_PI/4*i) ));        
+            ++idx;
+        }
+    }
+    
+    SoLineSet* line = new SoLineSet();
+    getGeometryNode()->addChild(points);
+    getGeometryNode()->addChild(line);
 }
 
 ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() {
@@ -428,7 +513,21 @@ ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() {
 }
 
 SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator() {
-    return new SoTransformBoxManip();
+    SoHandleBoxManip* manip = new SoHandleBoxManip();
+    manip->getDragger()->setPart("extruder1", new SoSeparator);
+    manip->getDragger()->setPart("extruder2", new SoSeparator);
+    manip->getDragger()->setPart("extruder3", new SoSeparator);
+    manip->getDragger()->setPart("extruder4", new SoSeparator);
+    manip->getDragger()->setPart("extruder5", new SoSeparator);
+    manip->getDragger()->setPart("extruder6", new SoSeparator);
+    manip->getDragger()->setPart("extruder1Active", new SoSeparator);
+    manip->getDragger()->setPart("extruder2Active", new SoSeparator);
+    manip->getDragger()->setPart("extruder3Active", new SoSeparator);
+    manip->getDragger()->setPart("extruder4Active", new SoSeparator);
+    manip->getDragger()->setPart("extruder5Active", new SoSeparator);
+    manip->getDragger()->setPart("extruder6Active", new SoSeparator);
+    
+    return manip;
 }
 
 
@@ -437,34 +536,34 @@ void ViewProviderFemPostSphereFunction::draggerUpdate(SoDragger* m) {
     Base::Console().Message("dragger udate\n");
 
     Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
-    SoTransformBoxDragger* dragger = static_cast<SoTransformBoxDragger*>(m);
+    SoHandleBoxDragger* dragger = static_cast<SoHandleBoxDragger*>(m);
     
     // the new axis of the plane
     SbRotation rot, scaleDir;
     const SbVec3f& center = dragger->translation.getValue();
     
     SbVec3f norm(0,0,1);
-    dragger->rotation.getValue().multVec(norm,norm);
     func->Center.setValue(center[0], center[1], center[2]);
     func->Radius.setValue(dragger->scaleFactor.getValue()[0]);
 }
 
 void ViewProviderFemPostSphereFunction::updateData(const App::Property* p) {
-    /*
+    
     Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
     
-    if(!isDragging() && (p == &func->Origin || p == &func->Normal)) {
+    if(!isDragging() && (p == &func->Center || p == &func->Radius)) {
+               
+        Base::Vector3d trans = func->Center.getValue();
+        double radius = func->Radius.getValue();
         
-        const Base::Vector3d& trans = func->Origin.getValue();
-        const Base::Vector3d& norm = func->Normal.getValue();
-        SbRotation rot(SbVec3f(0.,0.,1.), SbVec3f(norm.x, norm.y, norm.z));
-        
-        Base::Console().Message("Updated propertes\n");
-        static_cast<SoCenterballManip*>(getManipulator())->center.setValue(SbVec3f(trans[0], trans[1], trans[2]));
-        static_cast<SoCenterballManip*>(getManipulator())->rotation.setValue(rot);
-    }
+        SbMatrix t, translate;
+        t.setScale(radius);
+        translate.setTranslate(SbVec3f(trans.x, trans.y, trans.z));
+        t.multRight(translate);
+        getManipulator()->setMatrix(t);
 
-    Gui::ViewProviderDocumentObject::updateData(p);*/
+    }
+    Gui::ViewProviderDocumentObject::updateData(p);
 }
 
 

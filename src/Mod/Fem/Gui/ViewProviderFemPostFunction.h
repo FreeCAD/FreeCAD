@@ -101,8 +101,17 @@ public:
     ViewProviderFemPostFunctionProvider();
     virtual ~ViewProviderFemPostFunctionProvider();
 
+    App::PropertyFloat SizeX;
+    App::PropertyFloat SizeY;
+    App::PropertyFloat SizeZ;
+    
+protected:
     virtual std::vector< App::DocumentObject* > claimChildren(void) const;
     virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
+    virtual void onChanged(const App::Property* prop);
+    virtual void updateData(const App::Property*);
+    
+    void updateSize();
 };
 
 class FemGuiExport ViewProviderFemPostFunction : public Gui::ViewProviderDocumentObject
@@ -113,6 +122,10 @@ public:
     /// constructor.
     ViewProviderFemPostFunction();
     ~ViewProviderFemPostFunction();
+    
+    App::PropertyFloat AutoScaleFactorX;
+    App::PropertyFloat AutoScaleFactorY;
+    App::PropertyFloat AutoScaleFactorZ;
 
     void attach(App::DocumentObject *pcObject);
     bool doubleClicked(void);
@@ -125,6 +138,7 @@ public:
 protected:    
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+    virtual void onChanged(const App::Property* prop);
     
     void setAutoScale(bool value) {m_autoscale = value;};
     bool autoScale()              {return m_autoscale;};
@@ -135,6 +149,8 @@ protected:
     virtual void                draggerUpdate(SoDragger* m) {};
     SoTransformManip*           getManipulator() {return m_manip;};
     SoSeparator*                getGeometryNode() {return m_geometrySeperator;};
+    SoScale*                    getScaleNode() {return m_scale;};
+    SoTransform*                getTransformNode() {return m_transform;};
     
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -144,6 +160,7 @@ private:
     SoSeparator*        m_geometrySeperator;
     SoTransformManip*   m_manip;
     SoScale*            m_scale;
+    SoTransform*        m_transform;
     bool                m_autoscale, m_isDragging, m_autoRecompute;
 };
 
