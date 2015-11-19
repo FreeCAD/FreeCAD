@@ -69,13 +69,13 @@ PROPERTY_SOURCE(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
 FemPostPlaneFunction::FemPostPlaneFunction(void): FemPostFunction() {
 
     ADD_PROPERTY(Origin,(Base::Vector3d(0.0,0.0,0.0)));
-    ADD_PROPERTY(Normal,(Base::Vector3d(1.0,0.0,0.0)));
+    ADD_PROPERTY(Normal,(Base::Vector3d(0.0,0.0,1.0)));
     
     m_plane = vtkPlane::New();
     m_implicit = m_plane;
     
     m_plane->SetOrigin(0., 0., 0.);
-    m_plane->SetNormal(1., 0., 0.);
+    m_plane->SetNormal(0., 0., 1.);
 }
 
 FemPostPlaneFunction::~FemPostPlaneFunction() {

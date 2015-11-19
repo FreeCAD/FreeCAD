@@ -23,8 +23,10 @@
 
 #include "PreCompiled.h"
 #include "ViewProviderFemPostPipeline.h"
+#include "ViewProviderFemPostFunction.h"
 #include <Mod/Fem/App/FemPostPipeline.h>
 #include <Base/Console.h>
+#include <Gui/Application.h>
 
 using namespace FemGui;
 
@@ -58,3 +60,35 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D
     return claimChildren();
 }
 
+void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
+    FemGui::ViewProviderFemPostObject::onChanged(prop);
+    
+    if(strcmp(prop->getName(), "ModificationTime") == 0) {
+        updateFunctionSize();        
+    }
+    else if(strcmp(prop->getName(), "Function") == 0) {
+        updateFunctionSize();        
+    }
+
+}
+
+void ViewProviderFemPostPipeline::updateFunctionSize() {
+
+    //we need to get the bounding box and set the function  provider size
+    Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
+    
+    if(!obj->Function.getValue() || !obj->Function.getValue()->isDerivedFrom(Fem::FemPostFunctionProvider::getClassTypeId()))
+        return;
+    
+    //get the functtion provider 
+    FemGui::ViewProviderFemPostFunctionProvider* vp = static_cast<FemGui::ViewProviderFemPostFunctionProvider*>(
+                                                    Gui::Application::Instance->getViewProvider(obj->Function.getValue()));
+            
+    if(obj->providesPolyData()) {
+        vtkBoundingBox box = obj->getBoundingBox();
+        
+        vp->SizeX.setValue(box.GetLength(0)*1.2);
+        vp->SizeY.setValue(box.GetLength(1)*1.2);
+        vp->SizeZ.setValue(box.GetLength(2)*1.2);
+    }
+}
