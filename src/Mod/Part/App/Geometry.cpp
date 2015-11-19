@@ -112,6 +112,7 @@
 #include "ConePy.h"
 #include "CylinderPy.h"
 #include "OffsetSurfacePy.h"
+#include "PlateSurfacePy.h"
 #include "PlanePy.h"
 #include "RectangularTrimmedSurfacePy.h"
 #include "SpherePy.h"
@@ -3328,8 +3329,7 @@ void GeomPlateSurface::Restore(Base::XMLReader &/*reader*/)
 
 PyObject *GeomPlateSurface::getPyObject(void)
 {
-    throw Base::NotImplementedError("GeomPlateSurface::getPyObject");
-//    return new PlateSurfacePy(static_cast<GeomPlateSurface*>(this->clone()));
+    return new PlateSurfacePy(static_cast<GeomPlateSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
