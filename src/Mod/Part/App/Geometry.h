@@ -43,9 +43,12 @@
 #include <Handle_Geom_ToroidalSurface.hxx>
 #include <Handle_Geom_Plane.hxx>
 #include <Handle_Geom_OffsetSurface.hxx>
+#include <Handle_GeomPlate_Surface.hxx>
 #include <Handle_Geom_RectangularTrimmedSurface.hxx>
 #include <Handle_Geom_SurfaceOfRevolution.hxx>
 #include <Handle_Geom_SurfaceOfLinearExtrusion.hxx>
+#include <GeomPlate_BuildPlateSurface.hxx>
+#include <Plate_Plate.hxx>
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
@@ -744,6 +747,31 @@ public:
 
 private:
     Handle_Geom_OffsetSurface mySurface;
+};
+
+class PartExport GeomPlateSurface : public GeomSurface
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomPlateSurface();
+    GeomPlateSurface(const Handle_Geom_Surface&, const Plate_Plate&);
+    GeomPlateSurface(const GeomPlate_BuildPlateSurface&);
+    GeomPlateSurface(const Handle_GeomPlate_Surface&);
+    virtual ~GeomPlateSurface();
+    virtual Geometry *clone(void) const;
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+    // Base implementer ----------------------------
+    virtual PyObject *getPyObject(void);
+
+    void setHandle(const Handle_GeomPlate_Surface& s);
+    const Handle_Geom_Geometry& handle() const;
+
+private:
+    Handle_GeomPlate_Surface mySurface;
 };
 
 class PartExport GeomTrimmedSurface : public GeomSurface
