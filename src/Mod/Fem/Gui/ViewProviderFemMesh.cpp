@@ -831,8 +831,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // face 4
                 BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 4, aVol->GetNode(2), aVol->GetNode(3), aVol->GetNode(0), aVol->GetNode(9), aVol->GetNode(7), aVol->GetNode(6)));
                 break;
-                //unknown case
-            default: assert(0);
+            default://unknown volume type
+                throw std::runtime_error("Node count not supported by ViewProviderFemMesh, [4|8|10] are allowed");  // [4|5|6|8|10|13|15|20] 
             }
         }
     }
