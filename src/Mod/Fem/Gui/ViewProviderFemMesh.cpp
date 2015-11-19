@@ -974,7 +974,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             case 3:triangleCount++; break;
             case 4:triangleCount += 2; break;
             case 6:triangleCount += 4; break;
-            default: assert(0);
+            //case 8:triangleCount += 6; break;  //quad8 face -> 6 triangle but no further implementation is done
+            default: throw std::runtime_error("only display mode nodes is supported for this element");
+            //default:assert(0); 
         }
     }
     // edge map collect and sort edges of the faces to be shown. 
@@ -1436,7 +1438,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     }
                     break;
 
-                default:assert(0); // not implemented node
+                //default:assert(0); // not implemented node
+                default: throw std::runtime_error("only display mode nodes is supported for this element");
+
             }
         }
     }
