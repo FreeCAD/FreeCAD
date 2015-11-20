@@ -63,6 +63,8 @@ namespace GCS
         void getParams(Eigen::VectorXd &xOut);
         void setParams(VEC_pD &params, Eigen::VectorXd &xIn);
         void setParams(Eigen::VectorXd &xIn);
+        
+        void getConstraintList(std::vector<Constraint *> &clist_);
 
         double error();
         void calcResidual(Eigen::VectorXd &r);
