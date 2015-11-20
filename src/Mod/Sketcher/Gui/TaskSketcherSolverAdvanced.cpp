@@ -127,7 +127,7 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->lineEditSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             sketchView->getSketchObject()->getSolvedSketch().setLM_eps(eps);
             sketchView->getSketchObject()->getSolvedSketch().setLM_eps1(eps1);
-            sketchView->getSketchObject()->getSolvedSketch().setLM_tau(eps1);            
+            sketchView->getSketchObject()->getSolvedSketch().setLM_tau(tau);
             break;
         }
         case 2: // DogLeg
