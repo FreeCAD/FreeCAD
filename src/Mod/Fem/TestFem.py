@@ -28,6 +28,7 @@ import Fem
 import FemTools
 import FreeCAD
 import MechanicalAnalysis
+import FemSolverCalculix
 import MechanicalMaterial
 import csv
 import tempfile
@@ -70,6 +71,10 @@ class FemTest(unittest.TestCase):
 
     def create_new_analysis(self):
         self.analysis = MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')
+        self.active_doc.recompute()
+
+    def create_new_solver(self):
+        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('Calculix')
         self.active_doc.recompute()
 
     def create_new_mesh(self):
@@ -166,6 +171,11 @@ class FemTest(unittest.TestCase):
         fcc_print('Checking FEM new analysis...')
         self.create_new_analysis()
         self.assertTrue(self.analysis, "FemTest of new analysis failed")
+
+        fcc_print('Checking FEM new solver...')
+        self.create_new_solver()
+        self.assertTrue(self.solver_object, "FemTest of new solver failed")
+        self.analysis.Member = self.analysis.Member + [self.solver_object]
 
         fcc_print('Checking FEM new mesh...')
         self.create_new_mesh()
