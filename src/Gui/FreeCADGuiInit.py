@@ -127,6 +127,7 @@ Log ('Init: Running FreeCADGuiInit.py start script...\n')
 # signal that the gui is up
 App.GuiUp = 1
 App.Gui = FreeCADGui
+FreeCADGui.Workbench = Workbench
 
 Gui.addWorkbench(NoneWorkbench())
 
