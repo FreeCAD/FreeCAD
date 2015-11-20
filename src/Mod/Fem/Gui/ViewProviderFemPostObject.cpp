@@ -147,6 +147,9 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
 {
+    if(!setupPipeline())
+        return;
+
     if (strcmp("Outline",ModeName)==0)
         m_currentAlgorithm = m_outline;
     else if (strcmp("Surface with Edges",ModeName)==0)
