@@ -51,7 +51,7 @@ namespace App
      *
      * \todo Implement lazy copy
      */
-    class Enumeration
+    class AppExport Enumeration
     {
         friend class App::PropertyEnumeration;
         public:
