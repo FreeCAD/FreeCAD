@@ -158,6 +158,9 @@ protected:
     SoIndexedLineSet      * pcLines;
 
     bool onlyEdges;
+
+private:
+    class Private;
 };
 
 } //namespace FemGui
