@@ -212,7 +212,6 @@ fc_target_copy_resource(FemGui
     ${CMAKE_BINARY_DIR}/Mod/Fem
     InitGui.py
     TaskPanelMechanicalMaterial.ui
-    TaskPanelMechanicalAnalysis.ui
     )
 
 SET(FemGuiIcon_SVG

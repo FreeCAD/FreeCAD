@@ -38,8 +38,8 @@ INSTALL(
         _CommandNewMechanicalAnalysis.py
 
         _CommandMechanicalJobControl.py
-        _TaskPanelJobControl.py
-        TaskPanelMechanicalAnalysis.ui
+        _TaskPanelFemSolverCalculix.py
+        TaskPanelFemSolverCalculix.ui
 
         FemBeamSection.py
         _FemBeamSection.py
