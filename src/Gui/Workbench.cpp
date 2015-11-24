@@ -570,12 +570,17 @@ ToolBarItem* StdWorkbench::setupToolBars() const
 {
     ToolBarItem* root = new ToolBarItem;
 
+    // Workbench switcher
+    ToolBarItem* wb = new ToolBarItem( root );
+    wb->setCommand("Workbench");
+    *wb << "Std_Workbench";
+
     // File
     ToolBarItem* file = new ToolBarItem( root );
     file->setCommand("File");
     *file << "Std_New" << "Std_Open" << "Std_Save" << "Std_Print" << "Separator" << "Std_Cut"
           << "Std_Copy" << "Std_Paste" << "Separator" << "Std_Undo" << "Std_Redo" << "Separator"
-          << "Std_Refresh" << "Separator" << "Std_Workbench" << "Std_WhatsThis";
+          << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Macro
     ToolBarItem* macro = new ToolBarItem( root );
