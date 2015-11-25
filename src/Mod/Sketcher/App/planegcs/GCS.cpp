@@ -42,9 +42,7 @@
                                + EIGEN_MINOR_VERSION)
 
 #if EIGEN_VERSION >= 30202
-#if EIGEN_VERSION < 30290 // this is eigen3.3. Bad numbering? This should be safe anyway
 #define EIGEN_SPARSEQR_COMPATIBLE
-#endif
 #if EIGEN_VERSION > 30290   // This regulates that only starting in Eigen 3.3, the problem with
                             // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
                             // was solved in Eigen:
@@ -3434,9 +3432,9 @@ int System::diagnose(Algorithm alg)
 
     if(qrAlgorithm==EigenDenseQR){
         if (J.rows() > 0) {
-            qrJT=Eigen::FullPivHouseholderQR<Eigen::MatrixXd>(J.topRows(count).transpose());
-            Eigen::MatrixXd Q = qrJT.matrixQ ();
-
+            qrJT.compute(J.topRows(count).transpose());
+            //Eigen::MatrixXd Q = qrJT.matrixQ ();
+            
             paramsNum = qrJT.rows();
             constrNum = qrJT.cols();
             qrJT.setThreshold(qrpivotThreshold);
@@ -3452,7 +3450,7 @@ int System::diagnose(Algorithm alg)
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
         if (SJ.rows() > 0) {
-            SqrJT=Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >(SJ.topRows(count).transpose());
+            SqrJT.compute(SJ.topRows(count).transpose());
             // Do not ask for Q Matrix!!
             // At Eigen 3.2 still has a bug that this only works for square matrices
             // if enabled it will crash
