@@ -146,7 +146,7 @@ namespace GCS
     public:
         ConstraintP2PDistance(Point &p1, Point &p2, double *d);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintP2PDistance(){};
+        inline ConstraintP2PDistance(){}
         #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
@@ -168,8 +168,8 @@ namespace GCS
     public:
         ConstraintP2PAngle(Point &p1, Point &p2, double *a, double da_=0.);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintP2PAngle(){};
-        #endif        
+        inline ConstraintP2PAngle(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -191,8 +191,8 @@ namespace GCS
     public:
         ConstraintP2LDistance(Point &p, Line &l, double *d);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintP2LDistance(){};
-        #endif        
+        inline ConstraintP2LDistance(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -215,8 +215,8 @@ namespace GCS
         ConstraintPointOnLine(Point &p, Line &l);
         ConstraintPointOnLine(Point &p, Point &lp1, Point &lp2);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintPointOnLine(){};
-        #endif        
+        inline ConstraintPointOnLine(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -238,7 +238,7 @@ namespace GCS
         ConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnPerpBisector(){};
-        #endif         
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -260,8 +260,8 @@ namespace GCS
     public:
         ConstraintParallel(Line &l1, Line &l2);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintParallel(){};
-        #endif        
+        inline ConstraintParallel(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -284,8 +284,8 @@ namespace GCS
         ConstraintPerpendicular(Line &l1, Line &l2);
         ConstraintPerpendicular(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintPerpendicular(){};
-        #endif         
+        inline ConstraintPerpendicular(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -310,8 +310,8 @@ namespace GCS
         ConstraintL2LAngle(Point &l1p1, Point &l1p2,
                            Point &l2p1, Point &l2p2, double *a);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintL2LAngle(){};
-        #endif         
+        inline ConstraintL2LAngle(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -335,8 +335,8 @@ namespace GCS
         ConstraintMidpointOnLine(Line &l1, Line &l2);
         ConstraintMidpointOnLine(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintMidpointOnLine(){};
-        #endif        
+        inline ConstraintMidpointOnLine(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -358,7 +358,7 @@ namespace GCS
         ConstraintTangentCircumf(Point &p1, Point &p2,
                                  double *rd1, double *rd2, bool internal_=false);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintTangentCircumf(bool internal_){internal=internal_;};
+        inline ConstraintTangentCircumf(bool internal_){internal=internal_;}
         #endif
         inline bool getInternal() {return internal;};
         virtual ConstraintType getTypeId();
@@ -381,8 +381,8 @@ namespace GCS
         ConstraintPointOnEllipse(Point &p, Ellipse &e);
         ConstraintPointOnEllipse(Point &p, ArcOfEllipse &a);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-        inline ConstraintPointOnEllipse(){};
-        #endif         
+        inline ConstraintPointOnEllipse(){}
+        #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
