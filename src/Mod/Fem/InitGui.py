@@ -53,8 +53,6 @@ class FemWorkbench (Workbench):
         import _CommandMechanicalMaterial
         import _CommandFemSolverCalculix
 
-        import MechanicalAnalysis
-
         import subprocess
         from platform import system
         ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")

@@ -45,9 +45,9 @@ class _CommandNewMechanicalAnalysis(FemCommands):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
-        FreeCADGui.addModule("MechanicalAnalysis")
+        FreeCADGui.addModule("FemAnalysis")
         FreeCADGui.addModule("FemSolverCalculix")
-        FreeCADGui.doCommand("MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')")
+        FreeCADGui.doCommand("FemAnalysis.makeFemAnalysis('MechanicalAnalysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
         FreeCADGui.doCommand("FemSolverCalculix.makeFemSolverCalculix('Calculix')")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
