@@ -41,7 +41,7 @@ class _CommandMechanicalJobControl(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Start calculation"),
                           'Accel': "S, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
-        self.is_active = 'with_analysis'
+        self.is_active = 'with_solver'
 
     def Activated(self):
         import _TaskPanelFemSolverCalculix
