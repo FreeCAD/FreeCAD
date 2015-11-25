@@ -12,7 +12,6 @@ INSTALL(
         InitGui.py
 
         convert2TetGen.py
-        FemExample.py
 
         SelectionObserverFem.py
         TestFem.py
