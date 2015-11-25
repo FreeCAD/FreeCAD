@@ -63,7 +63,7 @@ namespace GCS
         void getParams(Eigen::VectorXd &xOut);
         void setParams(VEC_pD &params, Eigen::VectorXd &xIn);
         void setParams(Eigen::VectorXd &xIn);
-        
+
         void getConstraintList(std::vector<Constraint *> &clist_);
 
         double error();
@@ -81,7 +81,7 @@ namespace GCS
         void analyse(Eigen::MatrixXd &J, Eigen::MatrixXd &ker, Eigen::MatrixXd &img);
         void report();
 
-void printResidual();
+        void printResidual();
     };
 
     double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir);

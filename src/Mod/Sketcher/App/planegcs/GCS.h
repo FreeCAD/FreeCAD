@@ -96,7 +96,7 @@ namespace GCS
         int solve_BFGS(SubSystem *subsys, bool isFine=true, bool isRedundantsolving=false);
         int solve_LM(SubSystem *subsys, bool isRedundantsolving=false);
         int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
-        
+
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
         #endif

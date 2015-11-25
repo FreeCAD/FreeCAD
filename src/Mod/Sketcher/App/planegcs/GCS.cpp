@@ -1131,7 +1131,7 @@ int System::solve_BFGS(SubSystem *subsys, bool isFine, bool isRedundantsolving)
     #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
     #endif
-    
+
     int xsize = subsys->pSize();
     if (xsize == 0)
         return Success;
@@ -1259,7 +1259,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
     #endif
-    
+
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
 
@@ -1431,7 +1431,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
     #endif
-    
+
     double tolg=(isRedundantsolving?DL_tolgRedundant:DL_tolg);
     double tolx=(isRedundantsolving?DL_tolxRedundant:DL_tolx);
     double tolf=(isRedundantsolving?DL_tolfRedundant:DL_tolf);
@@ -1628,29 +1628,29 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
     VEC_pD plistout; //std::vector<double *>
     std::vector<Constraint *> clist_;
     VEC_pD clist_params_;
-    
+
     subsys->getParamList(plistout);
     subsys->getConstraintList(clist_);
-    
+
     std::ofstream subsystemfile;
     subsystemfile.open("subsystemfile.txt", std::ofstream::out | std::ofstream::app);
     subsystemfile <<  std::endl;
     subsystemfile <<  std::endl;
     subsystemfile << "Solving: " << (isRedundantsolving?"Redundant":"Normal") << " Subsystem Dump starts here................................" << std::endl;
-    
+
     int ip=0;
-    
+
     subsystemfile << "GCS::VEC_pD plist_;" <<  std::endl; // all SYSTEM params
     subsystemfile << "std::vector<GCS::Constraint *> clist_;" <<  std::endl; // SUBSYSTEM constraints
     subsystemfile << "GCS::VEC_pD plistsub_;" <<  std::endl; // all SUBSYSTEM params
     subsystemfile << "GCS::VEC_pD clist_params_;" <<  std::endl; // constraint params not within SYSTEM params
-    
+
     // these are all the parameters, including those not in the subsystem to
     // which constraints in the subsystem may make reference.
     for( VEC_pD::iterator it = plist.begin(); it != plist.end(); ++it, ++ip) {
         subsystemfile << "plist_.push_back(new double("<< *(*it) <<")); // "<< ip <<" address: " << (void *)(*it) << std::endl;
     }
-    
+
     int ips=0;
     for( VEC_pD::iterator it = plistout.begin(); it != plistout.end(); ++it, ++ips) {
         VEC_pD::iterator p = std::find(plist.begin(), plist.end(),(*it));
@@ -1658,15 +1658,15 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
         
         if(p_index == plist.size()) {
             subsystemfile << "// Error: Subsystem parameter not in system params" << "address: " << (void *)(*it)  << std::endl;
-        }        
-        
+        }
+
         subsystemfile << "plistsub_.push_back(plist_[" << p_index <<"]); // "<< ips << std::endl;
-    }   
-    
+    }
+
     int ic=0; // constraint index
     int icp=0; // index of constraint params not within SYSTEM params
     for( std::vector<Constraint *>::iterator it = clist_.begin(); it != clist_.end(); ++it,++ic) {
-        
+
         switch((*it)->getTypeId())
         {
             case Equal:  
@@ -1689,11 +1689,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
-                
+
                 if(i2 == plist.size()) {
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -1701,9 +1701,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 subsystemfile << "clist_.push_back(new ConstraintEqual(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) << "]," \
                 << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) << "])); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << std::endl;
                 break;
@@ -1720,7 +1720,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
-                
+
                 if(i1 == plist.size()) {
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -1730,11 +1730,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
-                
+
                 if(i2 == plist.size()) {
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -1742,9 +1742,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
@@ -1756,9 +1756,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }                
-                
+                    npb3=true;
+                }
+
                 subsystemfile << "clist_.push_back(new ConstraintDifference(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) << "]," \
                 << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) << "]," \
                 << (npb3?("clist_params_["):("plist_[")) << (npb3?ni3:i3) << "])); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << std::endl;                 
@@ -1790,7 +1790,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
@@ -1802,9 +1802,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
@@ -1816,13 +1816,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);                
-                
+
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -1830,9 +1830,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
@@ -1844,9 +1844,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
-                }                
-                
+                    npb5=true;
+                }
+
                 subsystemfile << "ConstraintP2PDistance * c" << ic <<"=new ConstraintP2PDistance();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -1869,7 +1869,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
                 size_t i4 = std::distance(plist.begin(), p4);
-                size_t i5 = std::distance(plist.begin(), p5);                
+                size_t i5 = std::distance(plist.begin(), p5);
                 
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
@@ -1884,7 +1884,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
@@ -1896,9 +1896,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
@@ -1910,13 +1910,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
-                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
+
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -1924,9 +1924,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
@@ -1938,9 +1938,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 subsystemfile << "ConstraintP2PAngle * c" << ic <<"=new ConstraintP2PAngle();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -1968,11 +1968,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i5 = std::distance(plist.begin(), p5);  
                 size_t i6 = std::distance(plist.begin(), p6);
                 size_t i7 = std::distance(plist.begin(), p7);  
-                
+
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
-                
+
                 if(i1 == plist.size()) {
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -1982,7 +1982,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
@@ -1994,13 +1994,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
-                
+
                 if(i3 == plist.size()) {
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2008,12 +2008,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
                 
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
@@ -2022,7 +2022,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
                 
                 bool npb5=false;
@@ -2036,12 +2036,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
                 
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
@@ -2050,9 +2050,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 bool npb7=false;
                 VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
@@ -2064,9 +2064,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
                         icp++;
                     }
-                    npb7=true;                    
-                }                
-                
+                    npb7=true;
+                }
+
                 subsystemfile << "ConstraintP2LDistance * c" << ic <<"=new ConstraintP2LDistance();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -2079,7 +2079,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
                 subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << std::endl;
                 break;
-            }     
+            }
             case PointOnLine:
             { // 6
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
@@ -2094,11 +2094,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i4 = std::distance(plist.begin(), p4);
                 size_t i5 = std::distance(plist.begin(), p5);  
                 size_t i6 = std::distance(plist.begin(), p6); 
-                
+
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
-                
+
                 if(i1 == plist.size()) {
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2108,7 +2108,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
@@ -2120,13 +2120,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
-                
+
                 if(i3 == plist.size()) {
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2134,12 +2134,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
                 
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
@@ -2148,9 +2148,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
@@ -2162,13 +2162,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
-                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
+
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2176,9 +2176,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 subsystemfile << "ConstraintPointOnLine * c" << ic <<"=new ConstraintPointOnLine();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -2205,11 +2205,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i4 = std::distance(plist.begin(), p4);
                 size_t i5 = std::distance(plist.begin(), p5);  
                 size_t i6 = std::distance(plist.begin(), p6); 
-                
+
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
-                
+
                 if(i1 == plist.size()) {
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2219,7 +2219,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
@@ -2231,9 +2231,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
@@ -2245,12 +2245,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
                 
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
@@ -2259,13 +2259,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
-                
+
                 if(i5 == plist.size()) {
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2273,13 +2273,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
-                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
+
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2287,9 +2287,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 subsystemfile << "ConstraintPointOnPerpBisector * c" << ic <<"=new ConstraintPointOnPerpBisector();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -2334,11 +2334,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
-                
+
                 if(i2 == plist.size()) {
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2346,9 +2346,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
@@ -2360,12 +2360,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
                 
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
@@ -2374,9 +2374,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
@@ -2388,12 +2388,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
                 
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
@@ -2402,9 +2402,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 bool npb7=false;
                 VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
@@ -2416,9 +2416,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
                         icp++;
                     }
-                    npb7=true;                    
+                    npb7=true;
                 }
-                
+
                 bool npb8=false;
                 VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
@@ -2430,9 +2430,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
                         icp++;
                     }
-                    npb8=true;                    
+                    npb8=true;
                 }
-                
+
                 subsystemfile << "ConstraintParallel * c" << ic <<"=new ConstraintParallel();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -2465,7 +2465,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i6 = std::distance(plist.begin(), p6);
                 size_t i7 = std::distance(plist.begin(), p7);
                 size_t i8 = std::distance(plist.begin(), p8);
-                
+
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
@@ -2479,11 +2479,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
-                
+
                 if(i2 == plist.size()) {
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2491,9 +2491,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
@@ -2505,13 +2505,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
-                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
+
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2519,13 +2519,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
-                
+
                 if(i5 == plist.size()) {
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2533,13 +2533,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
-                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
+
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2547,13 +2547,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 bool npb7=false;
                 VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
-                
+
                 if(i7 == plist.size()) {
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2561,9 +2561,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
                         icp++;
                     }
-                    npb7=true;                    
+                    npb7=true;
                 }
-                
+
                 bool npb8=false;
                 VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
@@ -2575,9 +2575,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
                         icp++;
                     }
-                    npb8=true;                    
+                    npb8=true;
                 }
-                
+
                 subsystemfile << "ConstraintPerpendicular * c" << ic <<"=new ConstraintPerpendicular();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -2626,11 +2626,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
-                
+
                 if(i2 == plist.size()) {
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2638,9 +2638,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
@@ -2652,13 +2652,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
-                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
+
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2666,13 +2666,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
-                
+
                 if(i5 == plist.size()) {
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2680,12 +2680,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
                 
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
@@ -2694,13 +2694,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 bool npb7=false;
                 VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
-                
+
                 if(i7 == plist.size()) {
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2708,13 +2708,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
                         icp++;
                     }
-                    npb7=true;                    
+                    npb7=true;
                 }
-                
+
                 bool npb8=false;
                 VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
-                
+
                 if(i8 == plist.size()) {
                     if(ni8 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2722,13 +2722,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
                         icp++;
                     }
-                    npb8=true;                    
+                    npb8=true;
                 }
-                
+
                 bool npb9=false;
                 VEC_pD::iterator np9 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[8]);
                 size_t ni9 = std::distance(clist_params_.begin(), np9);
-                
+
                 if(i9 == plist.size()) {
                     if(ni9 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2736,9 +2736,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[8]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[8] << std::endl;
                         icp++;
                     }
-                    npb9=true;                    
-                }                
-                
+                    npb9=true;
+                }
+
                 subsystemfile << "ConstraintL2LAngle * c" << ic <<"=new ConstraintL2LAngle();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -2753,7 +2753,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
                 subsystemfile << "clist_.push_back(c" << ic << "); // addresses = "<< (*it)->pvec[0] << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << "," << (*it)->pvec[8] << std::endl;
                 break;
-            }    
+            }
             case MidpointOnLine:
             { // 8
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(),(*it)->pvec[0]);
@@ -2772,11 +2772,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i6 = std::distance(plist.begin(), p6);
                 size_t i7 = std::distance(plist.begin(), p7);
                 size_t i8 = std::distance(plist.begin(), p8);
-                
+
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
-                
+
                 if(i1 == plist.size()) {
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2786,7 +2786,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
@@ -2798,13 +2798,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
-                
+
                 if(i3 == plist.size()) {
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2812,13 +2812,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
-                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
+
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2826,13 +2826,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
-                
+
                 if(i5 == plist.size()) {
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2840,12 +2840,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
                 
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
@@ -2854,13 +2854,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 bool npb7=false;
                 VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
-                
+
                 if(i7 == plist.size()) {
                     if(ni7 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2868,9 +2868,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
                         icp++;
                     }
-                    npb7=true;                    
+                    npb7=true;
                 }
-                
+
                 bool npb8=false;
                 VEC_pD::iterator np8 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
@@ -2882,9 +2882,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[7]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[7] << std::endl;
                         icp++;
                     }
-                    npb8=true;                    
+                    npb8=true;
                 }
-                
+
                 subsystemfile << "ConstraintMidpointOnLine * c" << ic <<"=new ConstraintMidpointOnLine();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -2917,7 +2917,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
-                
+
                 if(i1 == plist.size()) {
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2927,11 +2927,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
-                
+
                 if(i2 == plist.size()) {
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2939,13 +2939,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
-                
+ 
                 if(i3 == plist.size()) {
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2953,13 +2953,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
-                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
+
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -2967,9 +2967,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
@@ -2981,12 +2981,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
                 
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
@@ -2995,9 +2995,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 subsystemfile << "ConstraintTangentCircumf * c" << ic <<"=new ConstraintTangentCircumf(" << (static_cast<ConstraintTangentCircumf *>(*it)->getInternal()?"true":"false") <<");" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -3023,14 +3023,14 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
                 size_t i4 = std::distance(plist.begin(), p4);
-                size_t i5 = std::distance(plist.begin(), p5);  
+                size_t i5 = std::distance(plist.begin(), p5);
                 size_t i6 = std::distance(plist.begin(), p6);
-                size_t i7 = std::distance(plist.begin(), p7);  
-                
+                size_t i7 = std::distance(plist.begin(), p7);
+
                 bool npb1=false;
                 VEC_pD::iterator np1 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
-                
+
                 if(i1 == plist.size()) {
                     if(ni1 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -3040,11 +3040,11 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                     }
                     npb1=true;
                 }
-                
+
                 bool npb2=false;
                 VEC_pD::iterator np2 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
-                
+
                 if(i2 == plist.size()) {
                     if(ni2 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -3052,13 +3052,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[1]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[1] << std::endl;
                         icp++;
                     }
-                    npb2=true;                    
+                    npb2=true;
                 }
-                
+
                 bool npb3=false;
                 VEC_pD::iterator np3 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
-                
+
                 if(i3 == plist.size()) {
                     if(ni3 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -3066,13 +3066,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[2]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[2] << std::endl;
                         icp++;
                     }
-                    npb3=true;                    
-                }    
-                
+                    npb3=true;
+                }
+
                 bool npb4=false;
                 VEC_pD::iterator np4 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[3]);
-                size_t ni4 = std::distance(clist_params_.begin(), np4);                
-                
+                size_t ni4 = std::distance(clist_params_.begin(), np4);
+
                 if(i4 == plist.size()) {
                     if(ni4 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -3080,13 +3080,13 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[3]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[3] << std::endl;
                         icp++;
                     }
-                    npb4=true;                    
+                    npb4=true;
                 }
-                
+
                 bool npb5=false;
                 VEC_pD::iterator np5 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
-                
+
                 if(i5 == plist.size()) {
                     if(ni5 == clist_params_.size()) {
                         subsystemfile << "// Address not in System params...rebuilding into clist_params_" << std::endl;
@@ -3094,12 +3094,12 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[4]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[4] << std::endl;
                         icp++;
                     }
-                    npb5=true;                    
+                    npb5=true;
                 }
-                
+
                 bool npb6=false;
                 VEC_pD::iterator np6 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[5]);
-                size_t ni6 = std::distance(clist_params_.begin(), np6);                
+                size_t ni6 = std::distance(clist_params_.begin(), np6);
                 
                 if(i6 == plist.size()) {
                     if(ni6 == clist_params_.size()) {
@@ -3108,9 +3108,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[5]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[5] << std::endl;
                         icp++;
                     }
-                    npb6=true;                    
+                    npb6=true;
                 }
-                
+
                 bool npb7=false;
                 VEC_pD::iterator np7 = std::find(clist_params_.begin(), clist_params_.end(),(*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
@@ -3122,9 +3122,9 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
                         subsystemfile << "clist_params_.push_back(new double("<< *((*it)->pvec[6]) <<")); // "<< icp <<" address: " << (void *)(*it)->pvec[6] << std::endl;
                         icp++;
                     }
-                    npb7=true;                    
+                    npb7=true;
                 }
-                
+
                 subsystemfile << "ConstraintPointOnEllipse * c" << ic <<"=new ConstraintPointOnEllipse();" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb1?("clist_params_["):("plist_[")) << (npb1?ni1:i1) <<"]);" << std::endl;
                 subsystemfile << "c" << ic << "->pvec.push_back(" << (npb2?("clist_params_["):("plist_[")) << (npb2?ni2:i2) <<"]);" << std::endl;
@@ -3145,12 +3145,10 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
             CASE_NOT_IMP(AngleViaPoint)
             CASE_NOT_IMP(Snell)
             CASE_NOT_IMP(None)
-            
         }
-        
     }
-    
-    subsystemfile.close();    
+
+    subsystemfile.close();
 }
 #endif
 
