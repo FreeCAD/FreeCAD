@@ -45,6 +45,13 @@
 #if EIGEN_VERSION < 30290 // this is eigen3.3. Bad numbering? This should be safe anyway
 #define EIGEN_SPARSEQR_COMPATIBLE
 #endif
+#if EIGEN_VERSION > 30290   // This regulates that only starting in Eigen 3.3, the problem with
+                            // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
+                            // was solved in Eigen:
+                            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=60#p106492
+                            // https://forum.kde.org/viewtopic.php?f=74&t=129439
+#define EIGEN_STOCK_FULLPIVLU_COMPUTE
+#endif
 #endif
 
 //#undef EIGEN_SPARSEQR_COMPATIBLE
@@ -71,7 +78,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
-// http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
+#ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
 namespace Eigen {
 
 typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
@@ -169,6 +176,7 @@ FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matri
 }
 
 } // Eigen
+#endif
 
 namespace GCS
 {
