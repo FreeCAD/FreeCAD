@@ -45,7 +45,7 @@ class FemWorkbench (Workbench):
         import _CommandMechanicalShowResult
         import _CommandQuickAnalysis
         import _CommandPurgeFemResults
-        import _CommandMechanicalJobControl
+        import _CommandSolverJobControl
         import _CommandFemFromShape
         import _CommandNewMechanicalAnalysis
         import _CommandFemShellThickness

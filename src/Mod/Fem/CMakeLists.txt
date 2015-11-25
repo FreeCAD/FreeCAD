@@ -37,7 +37,7 @@ INSTALL(
         MechanicalAnalysis.py
         _CommandNewMechanicalAnalysis.py
 
-        _CommandMechanicalJobControl.py
+        _CommandSolverJobControl.py
         _TaskPanelFemSolverCalculix.py
         TaskPanelFemSolverCalculix.ui
 
