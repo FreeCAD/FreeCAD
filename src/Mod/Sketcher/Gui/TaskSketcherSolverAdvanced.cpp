@@ -57,7 +57,7 @@
 #define DEFAULT_QRSOLVER 1          // DENSE=0, SPARSEQR=1
 #define QR_PIVOT_THRESHOLD 1E-13    // under this value a Jacobian value is regarded as zero
 #define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
-#define MAX_ITER_MULTIPLIER true
+#define MAX_ITER_MULTIPLIER false
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
