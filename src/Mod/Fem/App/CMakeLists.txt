@@ -74,12 +74,12 @@ SET(FemScripts_SRCS
     _CommandFemFromShape.py
     _CommandFemShellThickness.py
     _CommandFemSolverCalculix.py
-    _CommandMechanicalJobControl.py
     _CommandMechanicalMaterial.py
     _CommandMechanicalShowResult.py
     _CommandNewMechanicalAnalysis.py
     _CommandPurgeFemResults.py
     _CommandQuickAnalysis.py
+    _CommandSolverJobControl.py
     _FemAnalysis.py
     _FemBeamSection.py
     _FemShellThickness.py
