@@ -220,8 +220,8 @@ def importFrd(filename, analysis=None):
         import Fem
         if analysis is None:
             analysis_name = os.path.splitext(os.path.basename(filename))[0]
-            import MechanicalAnalysis
-            analysis_object = MechanicalAnalysis.makeMechanicalAnalysis('Analysis')
+            import FemAnalysis
+            analysis_object = FemAnalysis.makeFemAnalysis('Analysis')
             analysis_object.Label = analysis_name
         else:
             analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !

@@ -34,7 +34,7 @@ INSTALL(
         _FemAnalysis.py
         _ViewProviderFemAnalysis.py
 
-        MechanicalAnalysis.py
+        FemAnalysis.py
         _CommandNewMechanicalAnalysis.py
 
         _CommandSolverJobControl.py

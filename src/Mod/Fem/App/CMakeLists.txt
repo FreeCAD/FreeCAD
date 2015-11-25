@@ -101,13 +101,13 @@ SET(FemScripts_SRCS
     convert2TetGen.py
     Init.py
     InitGui.py
+    FemAnalysis.py
     FemCommands.py
     FemBeamSection.py
     FemExample.py
     FemShellThickness.py
     FemSolverCalculix.py
     FemTools.py
-    MechanicalAnalysis.py
     MechanicalMaterial.py
     SelectionObserverFem.py
     TestFem.py

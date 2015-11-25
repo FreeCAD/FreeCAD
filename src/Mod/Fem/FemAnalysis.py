@@ -22,12 +22,12 @@
 
 import FreeCAD
 
-__title__ = "Mechanical Analysis managment"
+__title__ = "FEM Analysis managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 
-def makeMechanicalAnalysis(name):
+def makeFemAnalysis(name):
     '''makeFemAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     import _FemAnalysis
