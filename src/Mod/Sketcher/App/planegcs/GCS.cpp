@@ -198,6 +198,7 @@ System::System()
   , convergence(1e-10)
   , convergenceRedundant(1e-10)
   , qrAlgorithm(EigenSparseQR)
+  , dogLegGaussStep(FullPivLU)
   , qrpivotThreshold(1E-13)
   , debugMode(Minimal)
   , LM_eps(1E-10)
@@ -1453,6 +1454,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                 << ", tolx: "           << tolx
                 << ", tolf: "           << tolf
                 << ", convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
+                << ", dogLegGaussStep: " << (dogLegGaussStep==FullPivLU?"FullPivLU":(dogLegGaussStep==LeastNormFullPivLU?"LeastNormFullPivLU":"LeastNormLdlt"))
                 << ", xsize: "          << xsize
                 << ", csize: "          << csize
                 << ", maxIter: "        << maxIterNumber  << "\n";
@@ -1505,7 +1507,20 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
             h_sd  = alpha*g;
 
             // get the gauss-newton step
-            h_gn = Jx.fullPivLu().solve(-fx);
+            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=50#p106220
+            // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
+            switch (dogLegGaussStep){
+                case FullPivLU:
+                    h_gn = Jx.fullPivLu().solve(-fx);
+                    break;
+                case LeastNormFullPivLU:
+                    h_gn = Jx.adjoint()*(Jx*Jx.adjoint()).fullPivLu().solve(-fx);
+                    break;
+                case LeastNormLdlt:
+                    h_gn = Jx.adjoint()*(Jx*Jx.adjoint()).ldlt().solve(-fx);
+                    break;
+            }
+            
             double rel_error = (Jx*h_gn + fx).norm() / fx.norm();
             if (rel_error > 1e15)
                 break;
