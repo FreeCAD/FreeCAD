@@ -185,9 +185,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
-                self.solver = m
+                if not self.solver:
+                    self.solver = m
+                else:
+                    raise Exception('FEM: Multiple solver in analysis not yet supported!')
             elif m.isDerivedFrom("Fem::FemMeshObject"):
-                self.mesh = m
+                if not self.mesh:
+                    self.mesh = m
+                else:
+                    raise Exception('FEM: Multiple mesh in analysis not yet supported!')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
                 material_dict = {}
                 material_dict['Object'] = m
