@@ -40,7 +40,7 @@ class _CommandQuickAnalysis(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
                           'Accel': "R, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
-        self.is_active = 'with_analysis'
+        self.is_active = 'with_solver'
 
     def Activated(self):
         def load_results(ret_code):
