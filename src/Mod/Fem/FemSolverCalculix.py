@@ -29,7 +29,7 @@ import FreeCAD
 import _FemSolverCalculix
 
 
-def makeFemSolverCalculix(name="Calculix"):
+def makeFemSolverCalculix(name="CalculiX"):
     '''makeSolverCalculix(name): makes a Calculix solver object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemSolverObjectPython", name)
     _FemSolverCalculix._FemSolverCalculix(obj)

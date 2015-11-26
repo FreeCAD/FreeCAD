@@ -74,7 +74,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_solver(self):
-        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('Calculix')
+        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
         self.active_doc.recompute()
 
     def create_new_mesh(self):

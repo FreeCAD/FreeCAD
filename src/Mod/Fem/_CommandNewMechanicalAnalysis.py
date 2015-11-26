@@ -49,7 +49,7 @@ class _CommandNewMechanicalAnalysis(FemCommands):
         FreeCADGui.addModule("FemSolverCalculix")
         FreeCADGui.doCommand("FemAnalysis.makeFemAnalysis('MechanicalAnalysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
-        FreeCADGui.doCommand("FemSolverCalculix.makeFemSolverCalculix('Calculix')")
+        FreeCADGui.doCommand("FemSolverCalculix.makeFemSolverCalculix('CalculiX')")
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
