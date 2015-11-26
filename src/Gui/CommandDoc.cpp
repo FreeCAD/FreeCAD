@@ -209,6 +209,8 @@ void StdCmdImport::activated(int iMsg)
     if (!fileList.isEmpty()) {
         hPath->SetASCII("FileImportFilter", selectedFilter.toLatin1().constData());
         SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
+
+        bool emptyDoc = (getActiveGuiDocument()->getDocument()->countObjects() == 0);
         // load the files with the associated modules
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->importFrom(it.key().toUtf8(),
@@ -216,9 +218,12 @@ void StdCmdImport::activated(int iMsg)
                 it.value().toAscii());
         }
 
-        std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
-        for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
-            (*it)->viewAll();
+        if (emptyDoc) {
+            // only do a view fit if the document was empty before. See also parameter 'AutoFitToView' in importFrom()
+            std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+            for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+                (*it)->viewAll();
+            }
         }
     }
 }
