@@ -38,9 +38,9 @@ class _CommandFemSolverCalculix(FemCommands):
     def __init__(self):
         super(_CommandFemSolverCalculix, self).__init__()
         self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Create FEM Solver Calculix ..."),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Create FEM Solver CalculiX ..."),
                           'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Creates FEM Solver Calculix")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Creates FEM Solver CalculiX")}
         self.is_active = 'with_analysis'
 
     def Activated(self):

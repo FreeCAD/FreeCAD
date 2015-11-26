@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Calculix Job Control Task Panel"
+__title__ = "CalculiX Job Control Task Panel"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
@@ -45,7 +45,7 @@ class _TaskPanelFemSolverCalculix:
         ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:
             self.CalculixBinary = ccx_binary
-            print ("Using ccx binary path from FEM preferences: {}".format(ccx_binary))
+            print ("Using CalculiX binary path from FEM preferences: {}".format(ccx_binary))
         else:
             from platform import system
             if system() == 'Linux':
@@ -137,7 +137,7 @@ class _TaskPanelFemSolverCalculix:
         self.printCalculiXstdout()
         self.Timer.stop()
 
-        self.femConsoleMessage("Calculix done!", "#00AA00")
+        self.femConsoleMessage("CalculiX done!", "#00AA00")
 
         self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
@@ -236,10 +236,10 @@ class _TaskPanelFemSolverCalculix:
         self.Start = time.time()
 
         self.femConsoleMessage("CalculiX binary: {}".format(self.CalculixBinary))
-        self.femConsoleMessage("Run Calculix...")
+        self.femConsoleMessage("Run CalculiX...")
 
         # run Calculix
-        print ('run Calculix at: {} with: {}'.format(self.CalculixBinary, os.path.splitext(self.inp_file_name)[0]))
+        print ('run CalculiX at: {} with: {}'.format(self.CalculixBinary, os.path.splitext(self.inp_file_name)[0]))
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
