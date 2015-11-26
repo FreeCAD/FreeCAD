@@ -331,7 +331,8 @@ void Builder3D::saveToFile(const char* FileName)
 // -----------------------------------------------------------------------------
 
 InventorBuilder::InventorBuilder(std::ostream& output)
-  : result(output),bStartEndOpen(false),bClosed(false), indent(0)
+  : result(output)
+  , indent(0)
 {
     result << "#Inventor V2.1 ascii " << std::endl << std::endl;
     beginSeparator();
@@ -344,8 +345,8 @@ InventorBuilder:: ~InventorBuilder()
 
 void InventorBuilder::close()
 {
-    if (!bClosed) {
-        bClosed = true;
+    if (indent > 0) {
+        indent = 0;
         endSeparator();
     }
 }
@@ -360,6 +361,28 @@ void InventorBuilder::endSeparator()
 {
     indent-=2;
     result << Base::blanks(indent) << "}" << std::endl;
+}
+
+void InventorBuilder::addInfo(const char* text)
+{
+    result << Base::blanks(indent) << "Info { " << std::endl;
+    result << Base::blanks(indent) << "  string \"" << text << "\"" << std::endl;
+    result << Base::blanks(indent) << "} " << std::endl;
+}
+
+void InventorBuilder::addLabel(const char* text)
+{
+    result << Base::blanks(indent) << "Label { " << std::endl;
+    result << Base::blanks(indent) << "  label \"" << text << "\"" << std::endl;
+    result << Base::blanks(indent) << "} " << std::endl;
+}
+
+void InventorBuilder::addBaseColor(float color_r,float color_g,float color_b)
+{
+    result << Base::blanks(indent) << "BaseColor { " << std::endl;
+    result << Base::blanks(indent) << "  rgb "
+           << color_r << " "<< color_g << " "<< color_b << std::endl;
+    result << Base::blanks(indent) << "} " << std::endl;
 }
 
 void InventorBuilder::addMaterial(float color_r,float color_g,float color_b)
@@ -386,6 +409,13 @@ void InventorBuilder::addDrawStyle(short pointSize, short lineWidth, unsigned sh
            << Base::blanks(indent) << "}" << std::endl;
 }
 
+void InventorBuilder::addShapeHints(float crease)
+{
+    result << Base::blanks(indent) << "ShapeHints {" << std::endl
+           << Base::blanks(indent) << "  creaseAngle " << crease << std::endl
+           << Base::blanks(indent) << "}" << std::endl;
+}
+
 //**************************************************************************
 // points handling
 
@@ -400,7 +430,7 @@ void InventorBuilder::beginPoints()
 {
     result << Base::blanks(indent) << "Coordinate3 { " << std::endl;
     indent += 2;
-    result << Base::blanks(indent) << "point [ ";
+    result << Base::blanks(indent) << "point [ " << std::endl;
     indent += 2;
 }
 
@@ -416,11 +446,17 @@ void InventorBuilder::addPoint(const Vector3f &vec)
     addPoint(vec.x,vec.y,vec.z);
 }
 
+void InventorBuilder::addPoints(const std::vector<Vector3f> &vec)
+{
+    for (std::vector<Vector3f>::const_iterator it = vec.begin(); it != vec.end(); ++it)
+        addPoint(it->x, it->y, it->z);
+}
+
 /**
  * Ends the point set operations and write the resulting inventor string.
  * @see startPoints()
  */
-void InventorBuilder::endPoints(void)
+void InventorBuilder::endPoints()
 {
     indent -= 2;
     result << Base::blanks(indent) << "]" << std::endl;
@@ -435,7 +471,7 @@ void InventorBuilder::endPoints(void)
  * @see beginPoints()
  * @see endPoints()
  */
-void InventorBuilder::addPointSet(void)
+void InventorBuilder::addPointSet()
 {
     result << Base::blanks(indent) << "PointSet { } " << std::endl;
 }
@@ -447,7 +483,7 @@ void InventorBuilder::addPointSet(void)
  * @see beginPoints()
  * @see endPoints()
  */
-void InventorBuilder::addLineSet(void)
+void InventorBuilder::addLineSet()
 {
     result << Base::blanks(indent) << "LineSet { } " << std::endl;
 }
@@ -467,9 +503,6 @@ void InventorBuilder::addLineSet(void)
  */
 void InventorBuilder::addText(float pos_x, float pos_y , float pos_z,const char * text, float color_r,float color_g,float color_b)
 {
-  // addSinglePoint() not between startXXX() and endXXX() allowed
-  assert( bStartEndOpen == false );
-
   result << Base::blanks(indent) << "Separator { "   << std::endl
          << Base::blanks(indent) << "  Material { diffuseColor "
          << color_r << " "<< color_g << " "<< color_b << "} "  << std::endl
@@ -598,39 +631,53 @@ void InventorBuilder::addLineSet(const std::vector<Vector3f>& points, short line
 //**************************************************************************
 // triangle handling
 
-void InventorBuilder::addIndexedFaceSet(const std::vector<Vector3f>& points, const std::vector<int>& indices, float crease)
+void InventorBuilder::addIndexedFaceSet(const std::vector<int>& indices)
 {
-    if (points.empty() || indices.size() < 4)
+    if (indices.size() < 4)
         return;
-    result << "  Separator { " << std::endl
-           << "    ShapeHints {" << std::endl
-           << "       creaseAngle " << crease << std::endl
-           << "    }" << std::endl
-           << "    Coordinate3 { " << std::endl
-           << "      point [ ";
-    std::vector<Vector3f>::const_iterator it_last_p = points.end()-1;
-    for (std::vector<Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        if (it != it_last_p)
-            result << it->x << " " << it->y << " " << it->z << "," << std::endl;
-        else
-            result << it->x << " " << it->y << " " << it->z << " ] " << std::endl;
-    }
 
-    result << "    } " << std::endl
-           << "    IndexedFaceSet { " << std::endl
-           << "      coordIndex [ ";
+    result << Base::blanks(indent) << "IndexedFaceSet { " << std::endl
+           << Base::blanks(indent) << "  coordIndex [ " << std::endl;
+
+    indent += 4;
     std::vector<int>::const_iterator it_last_f = indices.end()-1;
     int index=0;
     for (std::vector<int>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
-            if (it != it_last_f)
-                result << *it << ", ";
-            else
-                result << *it << " ] ";
-            if (++index%8==0)
-                result << std::endl;
+        if (index % 8 == 0)
+            result << Base::blanks(indent);
+        if (it != it_last_f)
+            result << *it << ", ";
+        else
+            result << *it << " ] " << std::endl;
+        if (++index % 8 == 0)
+            result << std::endl;
     }
-    result << "    } " << std::endl
-           << "  } " << std::endl;
+    indent -= 4;
+
+    result << Base::blanks(indent) << "} " << std::endl;
+}
+
+void InventorBuilder::beginNormal()
+{
+    result << Base::blanks(indent) << "Normal { " << std::endl;
+    indent += 2;
+    result << Base::blanks(indent) << "vector [ " << std::endl;
+    indent += 2;
+}
+
+void InventorBuilder::endNormal()
+{
+    indent -= 2;
+    result << Base::blanks(indent) << "]" << std::endl;
+    indent -= 2;
+    result << Base::blanks(indent) << "}" << std::endl;
+}
+
+void InventorBuilder::addNormalBinding(const char* binding)
+{
+    result << Base::blanks(indent) << "NormalBinding {" << std::endl
+           << Base::blanks(indent) << "  value " << binding << std::endl
+           << Base::blanks(indent) << "}" << std::endl;
 }
 
 void InventorBuilder::addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1, const Vector3f& pt2,

@@ -29,6 +29,7 @@
 #include "MeshIO.h"
 #include "Builder.h"
 
+#include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -2075,99 +2076,67 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
     MeshPointIterator clPtIter(_rclMesh), clPtEnd(_rclMesh);
     clPtIter.Transform(this->_transform);
     const MeshGeomFacet* pclFacet;
-    unsigned long ulAllFacets = _rclMesh.CountFacets();
 
     Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
     rstrOut.precision(6);
     rstrOut.setf(std::ios::fixed | std::ios::showpoint);
 
     // Header info
-    rstrOut << "#Inventor V2.1 ascii\n" << std::endl;
-    rstrOut << "# Created by FreeCAD <http://www.freecadweb.org>" << std::endl;
-    rstrOut << "# Triangle mesh contains " << _rclMesh.CountPoints() << " vertices"
-            << " and " << _rclMesh.CountFacets() << " faces" << std::endl;
-    rstrOut << "Separator {\n" << std::endl;
-    rstrOut << "  Label {" << std::endl;
-    rstrOut << "    label \"Triangle mesh\"\n  }" << std::endl;
+    Base::InventorBuilder builder(rstrOut);
+    builder.beginSeparator();
+    builder.addInfo("Created by FreeCAD <http://www.freecadweb.org>");
+    std::stringstream str;
+    str << "Triangle mesh contains "
+        << _rclMesh.CountPoints()
+        << " vertices and "
+        << _rclMesh.CountFacets()
+        << " faces";
+    builder.addLabel(str.str().c_str());
 
     // write out the normals of the facets
-    rstrOut << "  Normal { " << std::endl;
-    rstrOut << "    vector [ ";
+    builder.beginNormal();
 
     clIter.Begin();
     clEnd.End();
 
-    pclFacet = &(*clIter);
-    rstrOut << pclFacet->GetNormal().x << "  "
-            << pclFacet->GetNormal().y << "  "
-            << pclFacet->GetNormal().z;
-    ++clIter;
-
     while (clIter < clEnd) {
         pclFacet = &(*clIter);
-        rstrOut << ",\n        "
-                << pclFacet->GetNormal().x << "  "
-                << pclFacet->GetNormal().y << "  "
-                << pclFacet->GetNormal().z;
+        builder.addPoint(pclFacet->GetNormal());
         ++clIter;
 
         seq.next(true); // allow to cancel
     }
 
-    rstrOut << " ]\n\n  }" << std::endl;
+    builder.endNormal();
 
     // coordinates of the vertices
-    rstrOut << "  NormalBinding {\n    value PER_FACE\n  }" << std::endl;
-    rstrOut << "  Coordinate3 {\n    point [ ";
+    builder.addNormalBinding("PER_FACE");
+
+    builder.beginPoints();
 
     clPtIter.Begin();
     clPtEnd.End();
 
-    rstrOut << clPtIter->x << "  "
-            << clPtIter->y << "  "
-            << clPtIter->z;
-    ++clPtIter;
-
     while (clPtIter < clPtEnd) {
-        rstrOut << ",\n        " 
-                << clPtIter->x << "  "
-                << clPtIter->y << "  "
-                << clPtIter->z;
+        builder.addPoint(*clPtIter);
         ++clPtIter;
         seq.next(true); // allow to cancel
     }
 
-    rstrOut << " ]\n\n  }" << std::endl;
+    builder.endPoints();
 
     // and finally the facets with their point indices
-    rstrOut << "  IndexedFaceSet {\n    coordIndex [ ";
-
-    const MeshFacet clFacet = _rclMesh.GetFacets()[0];
-    rstrOut << clFacet._aulPoints[0] << ", "
-            << clFacet._aulPoints[1] << ", "
-            << clFacet._aulPoints[2] << ", -1";
-
-    unsigned long i = 1;
-    while (i < ulAllFacets) {
-        // write two triples per line
-        const MeshFacet clFacet = _rclMesh.GetFacets()[i];
-        if ( i%2==0 ) {
-            rstrOut << ",\n        "
-                    << clFacet._aulPoints[0] << ", "
-                    << clFacet._aulPoints[1] << ", "
-                    << clFacet._aulPoints[2] << ", -1";
-        }
-        else {
-            rstrOut << ", "
-                    << clFacet._aulPoints[0] << ", "
-                    << clFacet._aulPoints[1] << ", "
-                    << clFacet._aulPoints[2] << ", -1";
-        }
-        ++i;
+    const MeshFacetArray& faces = _rclMesh.GetFacets();
+    std::vector<int> indices;
+    indices.reserve(4*faces.size());
+    for (MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
+        indices.push_back(static_cast<int>(it->_aulPoints[0]));
+        indices.push_back(static_cast<int>(it->_aulPoints[1]));
+        indices.push_back(static_cast<int>(it->_aulPoints[2]));
+        indices.push_back(-1);
     }
-
-    rstrOut << " ]\n\n  }" << std::endl;
-    rstrOut << "#End of triangle mesh \n}\n" << std::endl;
+    builder.addIndexedFaceSet(indices);
+    builder.endSeparator();
 
     return true;
 }
