@@ -58,6 +58,8 @@ class FemCommands(object):
                 active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
             elif self.is_active == 'with_solver':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_selected()
+            elif self.is_active == 'with_analysis_without_solver':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and not self.analysis_has_solver()
             return active
 
         def results_present(self):
@@ -81,6 +83,17 @@ class FemCommands(object):
         def solver_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
+                return True
+            else:
+                return False
+
+        def analysis_has_solver(self):
+            solver = False
+            analysis_members = FemGui.getActiveAnalysis().Member
+            for o in analysis_members:
+                if o.isDerivedFrom("Fem::FemSolverObjectPython"):
+                    solver = True
+            if solver is True:
                 return True
             else:
                 return False
