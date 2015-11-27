@@ -43,11 +43,8 @@ class _CommandSolverJobControl(FemCommands):
         self.is_active = 'with_solver'
 
     def Activated(self):
-        import _TaskPanelFemSolverCalculix
-        taskd = _TaskPanelFemSolverCalculix._TaskPanelFemSolverCalculix(FreeCADGui.Selection.getSelection()[0])
-        #taskd.obj = vobj.Object
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
+        solver_obj = FreeCADGui.Selection.getSelection()[0]
+        FreeCADGui.ActiveDocument.setEdit(solver_obj,0)
 
 
 if FreeCAD.GuiUp:
