@@ -87,7 +87,6 @@ protected Q_SLOTS:
     void columnResizeFinished();
     void rowResizeFinished();
 protected:
-    void setPosition(Spreadsheet::CellAddress address);
     void updateContentLine();
     void setCurrentCell(QString str);
     void keyPressEvent(QKeyEvent *event);

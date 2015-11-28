@@ -413,7 +413,6 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 
         try {
             std::string strAddress = address.toString();
-            std::string next_address = CellAddress(address.row() + 1, address.col()).toString();
             QString str = value.toString();
             std::string content;
             Cell * cell = sheet->getCell(address);
@@ -426,8 +425,6 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
                 Gui::Command::openCommand("Edit cell");
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.set('%s', '%s')", sheet->getNameInDocument(),
                                         strAddress.c_str(), str.toUtf8().constData());
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setPosition('%s')", sheet->getNameInDocument(),
-                                        next_address.c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }

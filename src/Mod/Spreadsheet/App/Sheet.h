@@ -162,8 +162,6 @@ public:
 
     std::map<int, int> getRowHeights() const;
 
-    void setPosition(CellAddress address);
-
     // Signals
 
     boost::signal<void (Spreadsheet::CellAddress)> cellUpdated;
@@ -173,9 +171,6 @@ public:
     boost::signal<void (int, int)> columnWidthChanged;
 
     boost::signal<void (int, int)> rowHeightChanged;
-
-    boost::signal<void (CellAddress)> positionChanged;
-
 
     /** @name Access properties */
     //@{
@@ -284,9 +279,6 @@ protected:
 
     /* Row heights */
     PropertyRowHeights rowHeights;
-
-    App::PropertyInteger currRow;
-    App::PropertyInteger currColumn;
 
     /* Dependencies to other documents */
     App::PropertyLinkList docDeps;

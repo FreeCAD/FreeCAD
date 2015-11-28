@@ -51,6 +51,12 @@ namespace GCS
         DogLeg = 2
     };
     
+    enum DogLegGaussStep {
+        FullPivLU = 0,
+        LeastNormFullPivLU = 1,
+        LeastNormLdlt = 2
+    };
+    
     enum QRAlgorithm {
         EigenDenseQR = 0,
         EigenSparseQR = 1
@@ -108,6 +114,7 @@ namespace GCS
         double convergence;
         double convergenceRedundant;
         QRAlgorithm qrAlgorithm;
+        DogLegGaussStep dogLegGaussStep;
         double qrpivotThreshold;
         DebugMode debugMode;
         double LM_eps;

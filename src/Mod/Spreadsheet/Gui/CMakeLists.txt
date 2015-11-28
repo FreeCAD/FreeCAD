@@ -16,6 +16,7 @@ set(SpreadsheetGui_LIBS
 )
 
 set(SpreadsheetGui_MOC_HDRS
+    LineEdit.h
     SpreadsheetView.h
     SheetModel.h
     SheetTableView.h
@@ -55,6 +56,8 @@ SET(SpreadsheetGui_SRCS
     AppSpreadsheetGui.cpp
     AppSpreadsheetGuiPy.cpp
     Command.cpp
+    LineEdit.h
+    LineEdit.cpp
     ViewProviderSpreadsheet.cpp
     ViewProviderSpreadsheet.h
     Resources/Spreadsheet.qrc

@@ -47,7 +47,8 @@ public:
     ~TaskSketcherSolverAdvanced();
 
 private Q_SLOTS:
-    void on_comboBoxDefaultSolver_currentIndexChanged(int index);  
+    void on_comboBoxDefaultSolver_currentIndexChanged(int index); 
+    void on_comboBoxDogLegGaussStep_currentIndexChanged(int index);    
     void on_spinBoxMaxIter_valueChanged(int i);
     void on_checkBoxSketchSizeMultiplier_stateChanged(int state);    
     void on_lineEditConvergence_editingFinished();
