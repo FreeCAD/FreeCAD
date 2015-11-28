@@ -582,10 +582,10 @@ void View3DInventorViewer::initialize()
 void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                                     Gui::SelectionSingleton::MessageType Reason)
 {
-    if(Reason.Type == SelectionChanges::AddSelection ||
-            Reason.Type == SelectionChanges::RmvSelection ||
-            Reason.Type == SelectionChanges::SetSelection ||
-            Reason.Type == SelectionChanges::ClrSelection) {
+    if (Reason.Type == SelectionChanges::AddSelection ||
+        Reason.Type == SelectionChanges::RmvSelection ||
+        Reason.Type == SelectionChanges::SetSelection ||
+        Reason.Type == SelectionChanges::ClrSelection) {
         SoFCSelectionAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
     }
