@@ -34,5 +34,18 @@
    	<string>NSApplication</string>	
 	<key>NSHighResolutionCapable</key>
 	<string>True</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>fcstd</string>
+			</array>
+			<key>LSIsAppleDefaultForType</key>
+			<true/>
+		</dict>
+	</array>
 </dict>
 </plist>

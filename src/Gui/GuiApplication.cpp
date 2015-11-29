@@ -30,6 +30,7 @@
 # include <QDataStream>
 # include <QDebug>
 # include <QFileInfo>
+# include <QFileOpenEvent>
 # include <QSessionManager>
 # include <QTimer>
 #endif
@@ -47,6 +48,7 @@
 #endif
 
 #include "GuiApplication.h"
+#include "Application.h"
 #include "SpaceballEvent.h"
 #include "MainWindow.h"
 
@@ -142,6 +144,21 @@ void GUIApplication::commitData(QSessionManager &manager)
         App::GetApplication().closeAllDocuments();
         Gui::getMainWindow()->close();
     }
+}
+
+bool GUIApplication::event(QEvent * ev)
+{
+    if (ev->type() == QEvent::FileOpen) {
+        QString file = static_cast<QFileOpenEvent*>(ev)->file();
+        QFileInfo fi(file);
+        if (fi.suffix().toLower() == QLatin1String("fcstd")) {
+            QByteArray fn = file.toUtf8();
+            Application::Instance->open(fn, "FreeCAD");
+            return true;
+        }
+    }
+
+    return GUIApplicationNativeEventAware::event(ev);
 }
 
 // ----------------------------------------------------------------------------
