@@ -49,6 +49,9 @@ public:
     bool notify (QObject * receiver, QEvent * event);
     void commitData(QSessionManager &manager);
 
+protected:
+    bool event(QEvent * event);
+
 private:
     int systemExit;
 };
