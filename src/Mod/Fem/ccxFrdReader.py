@@ -81,133 +81,124 @@ def readResult(frd_input):
         if elements_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             elemType = int(line[14:18])
-        #then the 8 id's for the HEXA8 element
-        if elements_found and (line[1:3] == "-2") and elemType == 1:
-            node_id_5 = int(line[3:13])
-            node_id_6 = int(line[13:23])
-            node_id_7 = int(line[23:33])
-            node_id_8 = int(line[33:43])
-            node_id_1 = int(line[43:53])
-            node_id_2 = int(line[53:63])
-            node_id_3 = int(line[63:73])
-            node_id_4 = int(line[73:83])
-            elements_hexa8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
-        #then the 6 id's for the PENTA6 element
-        if elements_found and (line[1:3] == "-2") and elemType == 2:
-            node_id_4 = int(line[3:13])
-            node_id_5 = int(line[13:23])
-            node_id_6 = int(line[23:33])
-            node_id_1 = int(line[33:43])
-            node_id_2 = int(line[43:53])
-            node_id_3 = int(line[53:63])
-            elements_penta6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
-        #then the 4 id's for the TETRA4 element
-        if elements_found and (line[1:3] == "-2") and elemType == 3:
-            node_id_2 = int(line[3:13])
-            node_id_1 = int(line[13:23])
-            node_id_3 = int(line[23:33])
-            node_id_4 = int(line[33:43])
-            elements_tetra4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
-        #then the 20 id's for the HEXA20 element
-        if elements_found and (line[1:3] == "-2") and elemType == 4 and input_continues == False:
-            node_id_5 = int(line[3:13])
-            node_id_6 = int(line[13:23])
-            node_id_7 = int(line[23:33])
-            node_id_8 = int(line[33:43])
-            node_id_1 = int(line[43:53])
-            node_id_2 = int(line[53:63])
-            node_id_3 = int(line[63:73])
-            node_id_4 = int(line[73:83])
-            node_id_13 = int(line[83:93])
-            node_id_14 = int(line[93:103])
-            input_continues = True
-        elif elements_found and (line[1:3] == "-2") and elemType == 4 and input_continues == True:
-            node_id_15 = int(line[3:13])
-            node_id_16 = int(line[13:23])
-            node_id_9 = int(line[23:33])
-            node_id_10 = int(line[33:43])
-            node_id_11 = int(line[43:53])
-            node_id_12 = int(line[53:63])
-            node_id_17 = int(line[63:73])
-            node_id_18 = int(line[73:83])
-            node_id_19 = int(line[83:93])
-            node_id_20 = int(line[93:103])
-            input_continues = False
-            elements_hexa20[elem] = ( node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10, 
-                                     node_id_11,node_id_12,node_id_13,node_id_14,node_id_15,node_id_16,node_id_17,node_id_18,node_id_19, node_id_20)
-        #then the 15 id's for the PENTA15 element
-        if elements_found and (line[1:3] == "-2") and elemType == 5 and input_continues == False:
-            node_id_4 = int(line[3:13])
-            node_id_5 = int(line[13:23])
-            node_id_6 = int(line[23:33])
-            node_id_1 = int(line[33:43])
-            node_id_2 = int(line[43:53])
-            node_id_3 = int(line[53:63])
-            node_id_10 = int(line[63:73])
-            node_id_11 = int(line[73:83])
-            node_id_12 = int(line[83:93])
-            node_id_13 = int(line[93:103])
-            input_continues = True
-        elif elements_found and (line[1:3] == "-2") and elemType == 5 and input_continues == True:
-            node_id_14 = int(line[3:13])
-            node_id_15 = int(line[13:23])
-            node_id_7 = int(line[23:33])
-            node_id_8 = int(line[33:43])
-            node_id_9 = int(line[43:53])
-            input_continues = False
-            elements_penta15[elem] = ( node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10, 
-                                      node_id_11,node_id_12,node_id_13,node_id_14,node_id_15)
-        #then the 10 id's for the TETRA10 element
-        if elements_found and (line[1:3] == "-2") and elemType == 6:
-            node_id_2 = int(line[3:13])
-            node_id_1 = int(line[13:23])
-            node_id_3 = int(line[23:33])
-            node_id_4 = int(line[33:43])
-            node_id_5 = int(line[43:53])
-            node_id_7 = int(line[53:63])
-            node_id_6 = int(line[63:73])
-            node_id_9 = int(line[73:83])
-            node_id_8 = int(line[83:93])
-            node_id_10 = int(line[93:103])
-            elements_tetra10[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10)
-        #then the 3 id's for the TRIA3 element
-        if elements_found and (line[1:3] == "-2") and elemType == 7:
-            node_id_1 = int(line[3:13])
-            node_id_2 = int(line[13:23])
-            node_id_3 = int(line[23:33])
-            elements_tria3[elem] = (node_id_1, node_id_2, node_id_3)
-        #then the 6 id's for the TRIA6 element
-        if elements_found and (line[1:3] == "-2") and elemType == 8:
-            node_id_1 = int(line[3:13])
-            node_id_2 = int(line[13:23])
-            node_id_3 = int(line[23:33])
-            node_id_4 = int(line[33:43])
-            node_id_5 = int(line[43:53])
-            node_id_6 = int(line[53:63])
-            elements_tria6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
-        #then the 4 id's for the QUAD4 element
-        if elements_found and (line[1:3] == "-2") and elemType == 9:
-            node_id_1 = int(line[3:13])
-            node_id_2 = int(line[13:23])
-            node_id_3 = int(line[23:33])
-            node_id_4 = int(line[33:43])
-            elements_quad4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
-        #then the 8 id's for the QUAD8 element
-        if elements_found and (line[1:3] == "-2") and elemType == 10:
-            node_id_1 = int(line[3:13])
-            node_id_2 = int(line[13:23])
-            node_id_3 = int(line[23:33])
-            node_id_4 = int(line[33:43])
-            node_id_5 = int(line[43:53])
-            node_id_6 = int(line[53:63])
-            node_id_7 = int(line[63:73])
-            node_id_8 = int(line[73:83])
-            elements_quad8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
-        #then the 2 id's for the SEG2 element
-        if elements_found and (line[1:3] == "-2") and elemType == 11:
-            node_id_1 = int(line[3:13])
-            node_id_2 = int(line[13:23])
-            elements_seg2[elem] = (node_id_1, node_id_2)
+        #then import elements
+        if elements_found and (line[1:3] == "-2"):
+            if elemType == 1: # HEXA8 element
+                node_id_5 = int(line[3:13])
+                node_id_6 = int(line[13:23])
+                node_id_7 = int(line[23:33])
+                node_id_8 = int(line[33:43])
+                node_id_1 = int(line[43:53])
+                node_id_2 = int(line[53:63])
+                node_id_3 = int(line[63:73])
+                node_id_4 = int(line[73:83])
+                elements_hexa8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
+            elif elemType == 2: # PENTA6 element
+                node_id_4 = int(line[3:13])
+                node_id_5 = int(line[13:23])
+                node_id_6 = int(line[23:33])
+                node_id_1 = int(line[33:43])
+                node_id_2 = int(line[43:53])
+                node_id_3 = int(line[53:63])
+                elements_penta6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
+            elif elemType == 3:  # TETRA4 element
+                node_id_2 = int(line[3:13])
+                node_id_1 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                elements_tetra4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
+            elif elemType == 4 and input_continues == False: # HEXA20 element (1st line)
+                node_id_5 = int(line[3:13])
+                node_id_6 = int(line[13:23])
+                node_id_7 = int(line[23:33])
+                node_id_8 = int(line[33:43])
+                node_id_1 = int(line[43:53])
+                node_id_2 = int(line[53:63])
+                node_id_3 = int(line[63:73])
+                node_id_4 = int(line[73:83])
+                node_id_13 = int(line[83:93])
+                node_id_14 = int(line[93:103])
+                input_continues = True
+            elif elemType == 4 and input_continues == True: # HEXA20 element (2nd line)
+                node_id_15 = int(line[3:13])
+                node_id_16 = int(line[13:23])
+                node_id_9 = int(line[23:33])
+                node_id_10 = int(line[33:43])
+                node_id_11 = int(line[43:53])
+                node_id_12 = int(line[53:63])
+                node_id_17 = int(line[63:73])
+                node_id_18 = int(line[73:83])
+                node_id_19 = int(line[83:93])
+                node_id_20 = int(line[93:103])
+                input_continues = False
+                elements_hexa20[elem] = ( node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10, 
+                                         node_id_11,node_id_12,node_id_13,node_id_14,node_id_15,node_id_16,node_id_17,node_id_18,node_id_19, node_id_20)
+            elif elemType == 5 and input_continues == False: # PENTA15 element (1st line)
+                node_id_4 = int(line[3:13])
+                node_id_5 = int(line[13:23])
+                node_id_6 = int(line[23:33])
+                node_id_1 = int(line[33:43])
+                node_id_2 = int(line[43:53])
+                node_id_3 = int(line[53:63])
+                node_id_10 = int(line[63:73])
+                node_id_11 = int(line[73:83])
+                node_id_12 = int(line[83:93])
+                node_id_13 = int(line[93:103])
+                input_continues = True
+            elif elemType == 5 and input_continues == True: # PENTA15 element (2nd line)
+                node_id_14 = int(line[3:13])
+                node_id_15 = int(line[13:23])
+                node_id_7 = int(line[23:33])
+                node_id_8 = int(line[33:43])
+                node_id_9 = int(line[43:53])
+                input_continues = False
+                elements_penta15[elem] = ( node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10, 
+                                          node_id_11,node_id_12,node_id_13,node_id_14,node_id_15)
+            elif elemType == 6: # TETRA10 element
+                node_id_2 = int(line[3:13])
+                node_id_1 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                node_id_5 = int(line[43:53])
+                node_id_7 = int(line[53:63])
+                node_id_6 = int(line[63:73])
+                node_id_9 = int(line[73:83])
+                node_id_8 = int(line[83:93])
+                node_id_10 = int(line[93:103])
+                elements_tetra10[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10)
+            elif elemType == 7: # TRIA3 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                elements_tria3[elem] = (node_id_1, node_id_2, node_id_3)
+            elif elemType == 8: # TRIA6 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                node_id_5 = int(line[43:53])
+                node_id_6 = int(line[53:63])
+                elements_tria6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
+            elif elemType == 9: # QUAD4 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                elements_quad4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
+            elif elemType == 10: # QUAD8 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                node_id_5 = int(line[43:53])
+                node_id_6 = int(line[53:63])
+                node_id_7 = int(line[63:73])
+                node_id_8 = int(line[73:83])
+                elements_quad8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
+            elif elemType == 11: # SEG2 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                elements_seg2[elem] = (node_id_1, node_id_2)
 
         #Check if we found new eigenmode
         if line[5:10] == "PMODE":
