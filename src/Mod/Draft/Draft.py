@@ -4107,7 +4107,7 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyLength","Length","Draft","The length of this line")
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed") 
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
 
@@ -4230,24 +4230,39 @@ class _ViewProviderWire(_ViewProviderDraft):
     def __init__(self, obj):
         _ViewProviderDraft.__init__(self,obj)
         obj.addProperty("App::PropertyBool","EndArrow","Draft","Displays a dim symbol at the end of the wire")
+        obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
+        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
+        obj.ArrowSize = getParam("arrowsize",0.1)
+        obj.ArrowType = arrowtypes
+        obj.ArrowType = arrowtypes[getParam("dimsymbol",0)] 
 
     def attach(self, obj):
         from pivy import coin
         self.Object = obj.Object
         col = coin.SoBaseColor()
         col.rgb.setValue(obj.LineColor[0],obj.LineColor[1],obj.LineColor[2])
-        self.coords = coin.SoCoordinate3()
+        self.coords = coin.SoTransform()
         self.pt = coin.SoSeparator()
         self.pt.addChild(col)
         self.pt.addChild(self.coords)
-        self.pt.addChild(dimSymbol())
+        self.symbol = dimSymbol()
+        self.pt.addChild(self.symbol)
         _ViewProviderDraft.attach(self,obj)
         
     def updateData(self, obj, prop):
         if prop == "Points":
             if obj.Points:
                 p = obj.Points[-1]
-                self.coords.point.setValue((p.x,p.y,p.z))
+                if hasattr(self,"coords"):
+                    self.coords.translation.setValue((p.x,p.y,p.z))
+                    if len(obj.Points) >= 2:
+                        v1 = obj.Points[-1].sub(obj.Points[-2])
+                        v1.normalize()
+                        import DraftGeomUtils
+                        v2 = DraftGeomUtils.getNormal(obj.Shape)
+                        v3 = v1.cross(v2)
+                        q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
+                        self.coords.rotation.setValue((q[0],q[1],q[2],q[3]))
         return
 
     def onChanged(self, vp, prop):
@@ -4255,8 +4270,21 @@ class _ViewProviderWire(_ViewProviderDraft):
             rn = vp.RootNode
             if vp.EndArrow:
                 rn.addChild(self.pt)
+                self.onChanged(vp,"ArrowSize")
             else:
                 rn.removeChild(self.pt)
+        elif prop == "ArrowSize":
+            if hasattr(vp,"ArrowSize"):
+                s = vp.ArrowSize
+            else:
+                s = getParam("arrowsize",0.1)
+            self.coords.scaleFactor.setValue((s,s,s))
+        elif prop == "ArrowType":
+            if hasattr(self,"pt"):
+                self.pt.removeChild(self.symbol)
+                s = arrowtypes.index(vp.ArrowType)
+                self.symbol = dimSymbol(s)
+                self.pt.addChild(self.symbol)
         _ViewProviderDraft.onChanged(self,vp,prop)
         return
 
