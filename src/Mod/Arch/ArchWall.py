@@ -161,6 +161,7 @@ class _CommandWall:
     def Activated(self):
         self.Align = "Center"
         self.Length = None
+        self.lengthValue = 0
         self.continueCmd = False
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Width = p.GetFloat("WallWidth",200)
@@ -322,11 +323,20 @@ class _CommandWall:
         grid.addWidget(label4,4,0,1,1)
         grid.addWidget(value4,4,1,1,1)
 
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.setFocus)
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.selectAll)
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.setFocus)
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.selectAll)
+        QtCore.QObject.connect(value2,QtCore.SIGNAL("returnPressed()"),self.createFromGUI)
         return w
+        
+    def setLength(self,d):
+        self.lengthValue = d
 
     def setWidth(self,d):
         self.Width = d
@@ -343,7 +353,15 @@ class _CommandWall:
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
-
+            
+    def createFromGUI(self):
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommand('Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.escape()
 
 class _CommandMergeWalls:
     "the Arch Merge Walls command definition"
