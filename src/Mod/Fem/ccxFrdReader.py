@@ -83,7 +83,7 @@ def readResult(frd_input):
             elemType = int(line[14:18])
         #then import elements
         if elements_found and (line[1:3] == "-2"):
-            if elemType == 1: # HEXA8 element
+            if elemType == 1:  # HEXA8 element
                 node_id_5 = int(line[3:13])
                 node_id_6 = int(line[13:23])
                 node_id_7 = int(line[23:33])
@@ -93,7 +93,7 @@ def readResult(frd_input):
                 node_id_3 = int(line[63:73])
                 node_id_4 = int(line[73:83])
                 elements_hexa8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
-            elif elemType == 2: # PENTA6 element
+            elif elemType == 2:  # PENTA6 element
                 node_id_4 = int(line[3:13])
                 node_id_5 = int(line[13:23])
                 node_id_6 = int(line[23:33])
@@ -107,7 +107,7 @@ def readResult(frd_input):
                 node_id_3 = int(line[23:33])
                 node_id_4 = int(line[33:43])
                 elements_tetra4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
-            elif elemType == 4 and input_continues == False: # HEXA20 element (1st line)
+            elif elemType == 4 and input_continues is False:  # HEXA20 element (1st line)
                 node_id_5 = int(line[3:13])
                 node_id_6 = int(line[13:23])
                 node_id_7 = int(line[23:33])
@@ -119,7 +119,7 @@ def readResult(frd_input):
                 node_id_13 = int(line[83:93])
                 node_id_14 = int(line[93:103])
                 input_continues = True
-            elif elemType == 4 and input_continues == True: # HEXA20 element (2nd line)
+            elif elemType == 4 and input_continues is True:  # HEXA20 element (2nd line)
                 node_id_15 = int(line[3:13])
                 node_id_16 = int(line[13:23])
                 node_id_9 = int(line[23:33])
@@ -131,9 +131,9 @@ def readResult(frd_input):
                 node_id_19 = int(line[83:93])
                 node_id_20 = int(line[93:103])
                 input_continues = False
-                elements_hexa20[elem] = ( node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10, 
-                                         node_id_11,node_id_12,node_id_13,node_id_14,node_id_15,node_id_16,node_id_17,node_id_18,node_id_19, node_id_20)
-            elif elemType == 5 and input_continues == False: # PENTA15 element (1st line)
+                elements_hexa20[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10,
+                                         node_id_11, node_id_12, node_id_13, node_id_14, node_id_15, node_id_16, node_id_17, node_id_18, node_id_19, node_id_20)
+            elif elemType == 5 and input_continues is False:  # PENTA15 element (1st line)
                 node_id_4 = int(line[3:13])
                 node_id_5 = int(line[13:23])
                 node_id_6 = int(line[23:33])
@@ -145,16 +145,16 @@ def readResult(frd_input):
                 node_id_12 = int(line[83:93])
                 node_id_13 = int(line[93:103])
                 input_continues = True
-            elif elemType == 5 and input_continues == True: # PENTA15 element (2nd line)
+            elif elemType == 5 and input_continues is True:  # PENTA15 element (2nd line)
                 node_id_14 = int(line[3:13])
                 node_id_15 = int(line[13:23])
                 node_id_7 = int(line[23:33])
                 node_id_8 = int(line[33:43])
                 node_id_9 = int(line[43:53])
                 input_continues = False
-                elements_penta15[elem] = ( node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10, 
-                                          node_id_11,node_id_12,node_id_13,node_id_14,node_id_15)
-            elif elemType == 6: # TETRA10 element
+                elements_penta15[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10,
+                                          node_id_11, node_id_12, node_id_13, node_id_14, node_id_15)
+            elif elemType == 6:  # TETRA10 element
                 node_id_2 = int(line[3:13])
                 node_id_1 = int(line[13:23])
                 node_id_3 = int(line[23:33])
@@ -166,12 +166,12 @@ def readResult(frd_input):
                 node_id_8 = int(line[83:93])
                 node_id_10 = int(line[93:103])
                 elements_tetra10[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10)
-            elif elemType == 7: # TRIA3 element
+            elif elemType == 7:  # TRIA3 element
                 node_id_1 = int(line[3:13])
                 node_id_2 = int(line[13:23])
                 node_id_3 = int(line[23:33])
                 elements_tria3[elem] = (node_id_1, node_id_2, node_id_3)
-            elif elemType == 8: # TRIA6 element
+            elif elemType == 8:  # TRIA6 element
                 node_id_1 = int(line[3:13])
                 node_id_2 = int(line[13:23])
                 node_id_3 = int(line[23:33])
@@ -179,13 +179,13 @@ def readResult(frd_input):
                 node_id_5 = int(line[43:53])
                 node_id_6 = int(line[53:63])
                 elements_tria6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
-            elif elemType == 9: # QUAD4 element
+            elif elemType == 9:  # QUAD4 element
                 node_id_1 = int(line[3:13])
                 node_id_2 = int(line[13:23])
                 node_id_3 = int(line[23:33])
                 node_id_4 = int(line[33:43])
                 elements_quad4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
-            elif elemType == 10: # QUAD8 element
+            elif elemType == 10:  # QUAD8 element
                 node_id_1 = int(line[3:13])
                 node_id_2 = int(line[13:23])
                 node_id_3 = int(line[23:33])
@@ -195,7 +195,7 @@ def readResult(frd_input):
                 node_id_7 = int(line[63:73])
                 node_id_8 = int(line[73:83])
                 elements_quad8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
-            elif elemType == 11: # SEG2 element
+            elif elemType == 11:  # SEG2 element
                 node_id_1 = int(line[3:13])
                 node_id_2 = int(line[13:23])
                 elements_seg2[elem] = (node_id_1, node_id_2)
@@ -295,9 +295,9 @@ def importFrd(filename, analysis=None):
             span = max(x_span, y_span, z_span)
 
         if (not analysis) and ('Nodes' in m) and \
-           (('Hexa8Elem' in m) or ('Penta6Elem' in m) or ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or \
-            ('Penta6Elem' in m) or ('Hexa20Elem' in m) or ('Tria3Elem' in m) or ('Tria6Elem' in m) or \
-            ('Quad4Elem' in m) or ('Quad8Elem' in m) or ('Seg2Elem' in m)):
+            (('Hexa8Elem' in m) or ('Penta6Elem' in m) or ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or
+             ('Penta6Elem' in m) or ('Hexa20Elem' in m) or ('Tria3Elem' in m) or ('Tria6Elem' in m) or
+             ('Quad4Elem' in m) or ('Quad8Elem' in m) or ('Seg2Elem' in m)):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
 
@@ -323,13 +323,13 @@ def importFrd(filename, analysis=None):
             elms_penta15 = m['Penta15Elem']
             for i in elms_penta15:
                 e = elms_penta15[i]
-                mesh.addVolume([ e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
-                              e[10],e[11],e[12],e[13],e[14]], i)
+                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
+                                e[10], e[11], e[12], e[13], e[14]], i)
             elms_hexa20 = m['Hexa20Elem']
             for i in elms_hexa20:
                 e = elms_hexa20[i]
-                mesh.addVolume([ e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
-                                e[10],e[11],e[12],e[13],e[14],e[15],e[16],e[17],e[18],e[19]], i)
+                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
+                                e[10], e[11], e[12], e[13], e[14], e[15], e[16], e[17], e[18], e[19]], i)
             elms_tria3 = m['Tria3Elem']
             for i in elms_tria3:
                 e = elms_tria3[i]
