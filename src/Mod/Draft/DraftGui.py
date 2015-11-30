@@ -512,7 +512,8 @@ class DraftToolBar:
         QtCore.QObject.connect(self.xyButton,QtCore.SIGNAL("clicked()"),self.selectXY)
         QtCore.QObject.connect(self.xzButton,QtCore.SIGNAL("clicked()"),self.selectXZ)
         QtCore.QObject.connect(self.yzButton,QtCore.SIGNAL("clicked()"),self.selectYZ)
-        QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)               
+        QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
         QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill) 
         QtCore.QObject.connect(self.currentViewButton,QtCore.SIGNAL("clicked()"),self.selectCurrentView)
@@ -1006,6 +1007,9 @@ class DraftToolBar:
 
     def modUi(self):
         self.isCopy.show()
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if p.GetBool("copymode",True):
+            self.isCopy.setChecked(p.GetBool("copymodeValue",False))
         self.continueCmd.show()
 
     def vertUi(self,addmode=True):
@@ -1056,6 +1060,10 @@ class DraftToolBar:
         self.relativeMode = bool(val)
         if (not self.taskmode) or self.isTaskOn:
             self.isRelative.show()
+            
+    def setCopymode(self,val=0):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        p.SetBool("copymodeValue",bool(val))
 
     def relocate(self):
         "relocates the right-aligned buttons depending on the toolbar size"
