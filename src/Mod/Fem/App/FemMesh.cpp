@@ -894,7 +894,7 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
         // dimension 1
         //
         std::vector<int> b31 = boost::assign::list_of(0)(1);
-        std::vector<int> b32 = boost::assign::list_of(0)(1)(2);
+        std::vector<int> b32 = boost::assign::list_of(0)(2)(1);
 
         elemOrderMap.insert(std::make_pair("B31", b31));
         edgeTypeMap.insert(std::make_pair(elemOrderMap["B31"].size(), "B31"));
