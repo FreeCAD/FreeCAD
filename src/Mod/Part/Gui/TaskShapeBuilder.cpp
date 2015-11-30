@@ -31,9 +31,9 @@
 # include <QTextStream>
 #endif
 
+#include "ViewProviderExt.h"
 #include "ui_TaskShapeBuilder.h"
 #include "TaskShapeBuilder.h"
-#include "ViewProviderExt.h"
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
