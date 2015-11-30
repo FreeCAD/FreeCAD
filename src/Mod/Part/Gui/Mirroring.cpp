@@ -30,6 +30,7 @@
 # include <TopExp_Explorer.hxx>
 # include <boost/bind.hpp>
 # include <cfloat>
+# include <Inventor/system/inttypes.h>
 #endif
 
 #include "Mirroring.h"

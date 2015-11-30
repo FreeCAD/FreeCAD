@@ -27,6 +27,10 @@
 #   include <config.h>
 #endif // HAVE_CONFIG_H
 
+#ifdef _MSC_VER
+#   pragma warning(disable : 4005)
+#endif
+
 #include <QApplication>
 #include <QIcon>
 #include <QThread>

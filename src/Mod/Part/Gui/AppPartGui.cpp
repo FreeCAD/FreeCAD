@@ -13,6 +13,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Inventor/system/inttypes.h>
 #endif
 
 #include <Base/Console.h>

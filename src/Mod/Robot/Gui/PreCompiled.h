@@ -41,6 +41,10 @@
 
 #include <Standard_math.hxx>
 
+#ifdef _MSC_VER
+#   pragma warning(disable : 4005)
+#endif
+
 #ifdef _PreComp_
 
 // Python

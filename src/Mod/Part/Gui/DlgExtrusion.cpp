@@ -31,6 +31,7 @@
 # include <TopoDS_Face.hxx>
 # include <TopExp_Explorer.hxx>
 # include <QMessageBox>
+# include <Inventor/system/inttypes.h>
 #endif
 
 #include "ui_DlgExtrusion.h"
