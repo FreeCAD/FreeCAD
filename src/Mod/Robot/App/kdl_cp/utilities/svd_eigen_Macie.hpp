@@ -22,14 +22,40 @@
 
 //implementation of svd according to (Maciejewski and Klein,1989)
 //and (Braun, Ulrey, Maciejewski and Siegel,2002)
+
+/**
+ * \file svd_eigen_Macie.hpp
+ * provides Maciejewski's implementation for SVD.
+ */
+
 #ifndef SVD_BOOST_MACIE
 #define SVD_BOOST_MACIE
 
 #include <Eigen/Core>
-USING_PART_OF_NAMESPACE_EIGEN
+using namespace Eigen;
+
 
 namespace KDL
 {
+
+	/**
+	 * svd_eigen_Macie provides Maciejewski implementation for SVD.
+	 *
+	 * computes the singular value decomposition of a matrix A, such that
+	 * A=U*Sm*V
+	 *
+	 * (Maciejewski and Klein,1989) and (Braun, Ulrey, Maciejewski and Siegel,2002)
+	 *
+	 * \param A [INPUT] is an \f$m \times n\f$-matrix, where \f$ m \geq n \f$.
+	 * \param S [OUTPUT] is an \f$n\f$-vector, representing the diagonal elements of the diagonal matrix Sm.
+	 * \param U [INPUT/OUTPUT] is an \f$m \times m\f$ orthonormal matrix.
+	 * \param V [INPUT/OUTPUT] is an \f$n \times n\f$ orthonormal matrix.
+	 * \param B [TEMPORARY] is an \f$m \times n\f$ matrix used for temporary storage.
+	 * \param tempi [TEMPORARY] is an \f$m\f$ vector used for temporary storage.
+	 * \param thresshold [INPUT] Thresshold to determine orthogonality.
+	 * \param toggle [INPUT] toggle this boolean variable on each call of this routine.
+	 * \return number of sweeps.
+	 */
     int svd_eigen_Macie(const MatrixXd& A,MatrixXd& U,VectorXd& S, MatrixXd& V,
                         MatrixXd& B, VectorXd& tempi,
                         double treshold,bool toggle)
@@ -39,7 +65,7 @@ namespace KDL
         unsigned int rotations=0;
         if(toggle){
             //Calculate B from new A and previous V
-            B=(A*V).lazy();
+            B=A.lazyProduct(V);
             while(rotate){
                 rotate=false;
                 rotations=0;
@@ -76,9 +102,9 @@ namespace KDL
                         B.col(i) = tempi;
                         
                         //Apply plane rotation to columns of V
-                        tempi.start(V.rows()) = cos*V.col(i) + sin*V.col(j);
+                        tempi.head(V.rows()) = cos*V.col(i) + sin*V.col(j);
                         V.col(j) = - sin*V.col(i) + cos*V.col(j);
-                        V.col(i) = tempi.start(V.rows());
+                        V.col(i) = tempi.head(V.rows());
 
                         rotate=true;
                     }
@@ -103,7 +129,7 @@ namespace KDL
             return sweeps;
         }else{
             //Calculate B from new A and previous U'
-            B =(U.transpose() * A).lazy();
+            B = U.transpose().lazyProduct(A);
             while(rotate){
                 rotate=false;
                 rotations=0;
@@ -137,15 +163,15 @@ namespace KDL
                         }
 
                         //Apply plane rotation to rows of B
-                        tempi.start(B.cols()) =  cos*B.row(i) + sin*B.row(j);
+                        tempi.head(B.cols()) =  cos*B.row(i) + sin*B.row(j);
                         B.row(j) =  - sin*B.row(i) + cos*B.row(j);
-                        B.row(i) =  tempi.start(B.cols());
+                        B.row(i) =  tempi.head(B.cols());
 
 
                         //Apply plane rotation to rows of U
-                        tempi.start(U.rows()) = cos*U.col(i) + sin*U.col(j);
+                        tempi.head(U.rows()) = cos*U.col(i) + sin*U.col(j);
                         U.col(j) = - sin*U.col(i) + cos*U.col(j);
-                        U.col(i) = tempi.start(U.rows());
+                        U.col(i) = tempi.head(U.rows());
 
                         rotate=true;
                     }

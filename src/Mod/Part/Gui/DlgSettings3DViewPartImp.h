@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@ class Ui_DlgSettings3DViewPart;
 /**
  * The DlgSettings3DViewPartImp class implements a preference page to change settings
  * for the Inventor viewer.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class DlgSettings3DViewPart : public Gui::Dialog::PreferencePage
 { 

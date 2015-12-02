@@ -38,7 +38,7 @@ from urllib2 import urlopen, HTTPError
 
 URL = "http://www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds'] # pages that won't be fetched (kept online)
+NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','Introduction_to_python'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
@@ -48,7 +48,7 @@ WRITETHROUGH = True # if true, fetched files are constantly written to disk, in 
 
 wikiindex = "/index.php?title="
 
-def crawl():
+def crawl(pagename):
     "downloads an entire wiki site"    
     todolist = []
     processed = []
@@ -69,8 +69,11 @@ def crawl():
                 todolist.append(l.strip())
         f.close()
     else:
-        indexpages,imgs = get(INDEX)
-        todolist.extend(indexpages)
+        if pagename:
+            todolist = pagename
+        else:
+            indexpages,imgs = get(INDEX)
+            todolist.extend(indexpages)
     while todolist:
         targetpage = todolist.pop()
         if not targetpage in NORETRIEVE:
@@ -180,5 +183,5 @@ def writeList(pages,filename="wikifiles.txt"):
     if VERBOSE: print "written ",filename
 
 if __name__ == "__main__":
-	crawl()
+	crawl(sys.argv[1:])
       

@@ -79,19 +79,49 @@
         <UserDocu>Use a Placement object to perform a translation or rotation</UserDocu>
       </Documentation>
       </Methode>
-      <Methode Name="copy">
+      <Methode Name="copy" Const="true">
           <Documentation>
               <UserDocu>Make a copy of this FEM mesh.</UserDocu>
           </Documentation>
       </Methode>
-    <Methode Name="getNodeById">
+    <Methode Name="getVolumesByFace" Const="true">
+      <Documentation>
+        <UserDocu>Return a dict of volume IDs and face IDs which belong to a TopoFace</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getccxVolumesByFace" Const="true">
+      <Documentation>
+        <UserDocu>Return a dict of volume IDs and ccx face numbers which belong to a TopoFace</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getNodeById" Const="true">
       <Documentation>
         <UserDocu>Get the node position vector by an Node-ID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getNodesBySolid" Const="true">
+      <Documentation>
+        <UserDocu>Return a list of node IDs which belong to a TopoSolid</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getNodesByFace" Const="true">
       <Documentation>
         <UserDocu>Return a list of node IDs which belong to a TopoFace</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getNodesByEdge" Const="true">
+      <Documentation>
+        <UserDocu>Return a list of node IDs which belong to a TopoEdge</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getNodesByVertex" Const="true">
+      <Documentation>
+        <UserDocu>Return a list of node IDs which belong to a TopoVertex</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getElementNodes" Const="true">
+      <Documentation>
+        <UserDocu>Return a tuple of node IDs to a given element ID</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="Nodes" ReadOnly="true">
@@ -106,13 +136,25 @@
       </Documentation>
       <Parameter Name="NodeCount" Type="Int"/>
     </Attribute>
+    <Attribute Name="Edges" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Tuple of edge IDs</UserDocu>
+      </Documentation>
+      <Parameter Name="Edges" Type="Tuple"/>
+    </Attribute>
     <Attribute Name="EdgeCount" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Number of edges in the Mesh.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="EdgeCount" Type="Int"/>
 	  </Attribute>
-	  <Attribute Name="FacesCount" ReadOnly="true">
+    <Attribute Name="Faces" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Tuple of face IDs</UserDocu>
+      </Documentation>
+      <Parameter Name="Faces" Type="Tuple"/>
+    </Attribute>
+    <Attribute Name="FaceCount" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Number of Faces in the Mesh.</UserDocu>
 		  </Documentation>
@@ -136,8 +178,13 @@
 		  </Documentation>
 		  <Parameter Name="PolygonCount" Type="Int"/>
 	  </Attribute>
-
- 	  <Attribute Name="VolumeCount" ReadOnly="true">
+    <Attribute Name="Volumes" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Tuple of volume IDs</UserDocu>
+      </Documentation>
+      <Parameter Name="Volumes" Type="Tuple"/>
+    </Attribute>
+    <Attribute Name="VolumeCount" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Number of Volumes in the Mesh.</UserDocu>
 		  </Documentation>

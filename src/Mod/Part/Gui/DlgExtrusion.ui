@@ -197,7 +197,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="taperAngle">
+      <widget class="Gui::QuantitySpinBox" name="taperAngle">
        <property name="minimum">
         <double>-180.000000000000000</double>
        </property>
@@ -244,6 +244,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>treeWidget</tabstop>
   <tabstop>dirX</tabstop>

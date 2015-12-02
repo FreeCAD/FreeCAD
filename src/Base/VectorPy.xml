@@ -83,8 +83,11 @@
 		</Methode>
 		<Methode Name="projectToLine">
 			<Documentation>
-				<UserDocu>projectToLine(Vector,Vector)
-						  projects the vector on a line defined by a base point and a direction
+				<UserDocu>projectToLine(Vector pnt,Vector vec)
+						  Projects the point 'pnt' on a line that goes through the origin with the direction vector 'vec'.
+						  The result is the vector from point 'pnt' to the projected point.
+						  NOTE: The result does not depend on the vector instance 'self'.
+						  NOTE: This method modifies the vector instance 'self'.
 				</UserDocu>
 			</Documentation>
 		</Methode>

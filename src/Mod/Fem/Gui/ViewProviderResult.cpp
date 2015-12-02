@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,42 +24,25 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
 #endif
 
 #include "ViewProviderResult.h"
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-
-#include <Mod/Fem/App/FemAnalysis.h>
-
-#include "TaskDlgAnalysis.h"
 
 using namespace FemGui;
 
 
 
-
-
-
-
 PROPERTY_SOURCE(FemGui::ViewProviderResult, Gui::ViewProviderDocumentObject)
-
 
 ViewProviderResult::ViewProviderResult()
 {
-  sPixmap = "Fem_Result";
-
+    sPixmap = "fem-result";
 }
 
 ViewProviderResult::~ViewProviderResult()
 {
 
 }
-
-
 
 // Python feature -----------------------------------------------------------------------
 

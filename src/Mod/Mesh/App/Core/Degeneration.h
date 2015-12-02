@@ -328,7 +328,8 @@ public:
 };
 
 /**
- * The MeshEvalDeformedFacets class searches for deformed facets. A facet is regarded as deformed if an angle is < 30° or > 120°.
+ * The MeshEvalDeformedFacets class searches for deformed facets. A facet is regarded as deformed
+ * if an angle is < 30 deg or > 120 deg.
  * @see MeshFixDegeneratedFacets
  * @author Werner Mayer
  */

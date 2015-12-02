@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2005     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,7 +54,7 @@ public:
     Py::Object viewRear(const Py::Tuple&);
     Py::Object viewRight(const Py::Tuple&);
     Py::Object viewTop(const Py::Tuple&);
-    Py::Object viewAxometric(const Py::Tuple&);
+    Py::Object viewAxonometric(const Py::Tuple&);
     Py::Object viewPosition(const Py::Tuple&);
     Py::Object viewRotateLeft(const Py::Tuple&);
     Py::Object viewRotateRight(const Py::Tuple&);

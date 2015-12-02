@@ -188,18 +188,6 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->centerTime = ev->getTime();
                 processed = TRUE;
             }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                if (tmp.getValue() < dci) {
-                    newmode = NavigationStyle::ZOOMING;
-                }
-                processed = TRUE;
-            }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                this->setViewing(false);
-                processed = TRUE;
-            }
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = TRUE;
             }
@@ -227,14 +215,6 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
                 newmode = NavigationStyle::DRAGGING;
                 saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
-                processed = TRUE;
-            }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                if (tmp.getValue() < dci) {
-                    newmode = NavigationStyle::ZOOMING;
-                }
                 processed = TRUE;
             }
             this->button2down = press;
@@ -340,6 +320,9 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         else
             newmode = NavigationStyle::SELECTION;
         break;
+    //case BUTTON1DOWN|BUTTON3DOWN:
+    //    newmode = NavigationStyle::PANNING;
+    //    break;
     case SHIFTDOWN|BUTTON3DOWN:
         newmode = NavigationStyle::PANNING;
         break;
@@ -349,6 +332,9 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         newmode = NavigationStyle::DRAGGING;
         break;
+    //case BUTTON1DOWN|BUTTON2DOWN|BUTTON3DOWN:
+    //    newmode = NavigationStyle::ZOOMING;
+    //    break;
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;

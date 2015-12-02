@@ -20,77 +20,64 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, os
+import FreeCAD, FreeCADGui, os
 from PySide import QtCore, QtGui, QtUiTools
 
 __title__="FreeCAD material editor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# pyside dynamic ui loader from
-# from https://github.com/lunaryorn/snippets/blob/master/qt4/designer/pyside_dynamic.py
-class UiLoader(QtUiTools.QUiLoader):
-    def __init__(self, baseinstance):
-        QtUiTools.QUiLoader.__init__(self, baseinstance)
-        self.baseinstance = baseinstance
 
-    def createWidget(self, class_name, parent=None, name=''):
-        if parent is None and self.baseinstance:
-            return self.baseinstance
-        else:
-            widget = QtUiTools.QUiLoader.createWidget(self, class_name, parent, name)
-            if self.baseinstance:
-                setattr(self.baseinstance, name, widget)
-            return widget
+class MaterialEditor:
 
-class MaterialEditor(QtGui.QDialog):
-
-    def __init__(self, obj = None, prop = None):
-        "Initializes, optionally with an object name and a material property name to edit"
-        QtGui.QDialog.__init__(self)
+    def __init__(self, obj = None, prop = None, material = None):
+        """Initializes, optionally with an object name and a material property name to edit, or directly
+        with a material dictionary."""
         self.obj = obj
         self.prop = prop
+        self.material = material
         self.customprops = []
         # load the UI file from the same directory as this script
-        loader = UiLoader(self)
-        widget = loader.load(os.path.dirname(__file__)+os.sep+"materials-editor.ui")
-        #QtCore.QMetaObject.connectSlotsByName(widget)
-        self.ui = self
-        print self.ui
-        print dir(self.ui)
+        self.widget = FreeCADGui.PySideUic.loadUi(os.path.dirname(__file__)+os.sep+"materials-editor.ui")
         # additional UI fixes and tweaks
-        self.ButtonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
-        self.ButtonDeleteProperty.setEnabled(False)
-        self.standardButtons.button(QtGui.QDialogButtonBox.Ok).setAutoDefault(False)
-        self.standardButtons.button(QtGui.QDialogButtonBox.Cancel).setAutoDefault(False)
+        self.widget.ButtonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
+        self.widget.ButtonDeleteProperty.setEnabled(False)
+        self.widget.standardButtons.button(QtGui.QDialogButtonBox.Ok).setAutoDefault(False)
+        self.widget.standardButtons.button(QtGui.QDialogButtonBox.Cancel).setAutoDefault(False)
         self.updateCards()
-        self.Editor.header().resizeSection(0,200)
-        self.Editor.expandAll()
-        self.Editor.setFocus()
+        self.widget.Editor.header().resizeSection(0,200)
+        self.widget.Editor.expandAll()
+        self.widget.Editor.setFocus()
         # TODO allow to enter a custom property by pressing Enter in the lineedit (currently closes the dialog)
-        self.Editor.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        QtCore.QObject.connect(self.ComboMaterial, QtCore.SIGNAL("currentIndexChanged(QString)"), self.updateContents)
-        QtCore.QObject.connect(self.ButtonURL, QtCore.SIGNAL("clicked()"), self.openProductURL)
-        QtCore.QObject.connect(self.standardButtons, QtCore.SIGNAL("accepted()"), self.accept)
-        QtCore.QObject.connect(self.standardButtons, QtCore.SIGNAL("rejected()"), self.reject)
-        QtCore.QObject.connect(self.ButtonAddProperty, QtCore.SIGNAL("clicked()"), self.addCustomProperty)
-        QtCore.QObject.connect(self.EditProperty, QtCore.SIGNAL("returnPressed()"), self.addCustomProperty)
-        QtCore.QObject.connect(self.ButtonDeleteProperty, QtCore.SIGNAL("clicked()"), self.deleteCustomProperty)
-        QtCore.QObject.connect(self.Editor, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem*,int)"), self.itemClicked)
-        QtCore.QObject.connect(self.Editor, QtCore.SIGNAL("currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)"), self.checkDeletable)
-        QtCore.QObject.connect(self.ButtonOpen, QtCore.SIGNAL("clicked()"), self.openfile)
-        QtCore.QObject.connect(self.ButtonSave, QtCore.SIGNAL("clicked()"), self.savefile)
+        self.widget.Editor.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        QtCore.QObject.connect(self.widget.ComboMaterial, QtCore.SIGNAL("currentIndexChanged(QString)"), self.updateContents)
+        QtCore.QObject.connect(self.widget.ButtonURL, QtCore.SIGNAL("clicked()"), self.openProductURL)
+        QtCore.QObject.connect(self.widget.standardButtons, QtCore.SIGNAL("accepted()"), self.accept)
+        QtCore.QObject.connect(self.widget.standardButtons, QtCore.SIGNAL("rejected()"), self.reject)
+        QtCore.QObject.connect(self.widget.ButtonAddProperty, QtCore.SIGNAL("clicked()"), self.addCustomProperty)
+        QtCore.QObject.connect(self.widget.EditProperty, QtCore.SIGNAL("returnPressed()"), self.addCustomProperty)
+        QtCore.QObject.connect(self.widget.ButtonDeleteProperty, QtCore.SIGNAL("clicked()"), self.deleteCustomProperty)
+        QtCore.QObject.connect(self.widget.Editor, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem*,int)"), self.itemClicked)
+        QtCore.QObject.connect(self.widget.Editor, QtCore.SIGNAL("currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)"), self.checkDeletable)
+        QtCore.QObject.connect(self.widget.ButtonOpen, QtCore.SIGNAL("clicked()"), self.openfile)
+        QtCore.QObject.connect(self.widget.ButtonSave, QtCore.SIGNAL("clicked()"), self.savefile)
         # update the editor with the contents of the property, if we have one
+        d = None
         if self.prop and self.obj:
             d = FreeCAD.ActiveDocument.getObject(self.obj).getPropertyByName(self.prop)
+        elif self.material:
+            d = self.material
+        if d:
             self.updateContents(d)
 
     def updateCards(self):
         "updates the contents of the materials combo with existing material cards"
-        # look for cards in both resources dir and user folder. 
+        # look for cards in both resources dir and a Materials sub-folder in the user folder.
         # User cards with same name will override system cards
         paths = [FreeCAD.getResourceDir() + os.sep + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
-        paths.append(FreeCAD.ConfigGet("UserAppData"))
+        ap = FreeCAD.ConfigGet("UserAppData") + os.sep + "Materials"
+        if os.path.exists(ap):
+            paths.append(ap)
         self.cards = {}
         for p in paths:
             for f in os.listdir(p):
@@ -98,19 +85,19 @@ class MaterialEditor(QtGui.QDialog):
                 if e.upper() == ".FCMAT":
                     self.cards[b] = p + os.sep + f
         if self.cards:
-            self.ComboMaterial.clear()
-            self.ComboMaterial.addItem("") # add a blank item first
-            for k,i in self.cards.iteritems():
-                self.ComboMaterial.addItem(k)
+            self.widget.ComboMaterial.clear()
+            self.widget.ComboMaterial.addItem("") # add a blank item first
+            for k,i in self.cards.items():
+                self.widget.ComboMaterial.addItem(k)
 
     def updateContents(self,data):
         "updates the contents of the editor with the given data (can be the name of a card or a dictionary)"
         #print type(data)
         if isinstance(data,dict):
             self.clearEditor()
-            for k,i in data.iteritems():
+            for k,i in data.items():
                 k = self.expandKey(k)
-                slot = self.Editor.findItems(k,QtCore.Qt.MatchRecursive,0)
+                slot = self.widget.Editor.findItems(k,QtCore.Qt.MatchRecursive,0)
                 if len(slot) == 1:
                     slot = slot[0]
                     slot.setText(1,i)
@@ -127,7 +114,7 @@ class MaterialEditor(QtGui.QDialog):
 
     def openProductURL(self):
         "opens the contents of the ProductURL field in an external browser"
-        url = str(self.Editor.findItems(translate("Material","Product URL"),QtCore.Qt.MatchRecursive,0)[0].text(1))
+        url = str(self.widget.Editor.findItems(translate("Material","Product URL"),QtCore.Qt.MatchRecursive,0)[0].text(1))
         if url:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
 
@@ -137,7 +124,10 @@ class MaterialEditor(QtGui.QDialog):
             d = self.getDict()
             o = FreeCAD.ActiveDocument.getObject(self.obj)
             setattr(o,self.prop,d)
-        QtGui.QDialog.accept(self)
+        QtGui.QDialog.accept(self.widget)
+        
+    def reject(self):
+        QtGui.QDialog.reject(self.widget)
         
     def expandKey(self, key):
         "adds spaces before caps in a KeyName"
@@ -161,8 +151,8 @@ class MaterialEditor(QtGui.QDialog):
         
     def clearEditor(self):
         "Clears the contents of the editor"
-        for i1 in range(self.Editor.topLevelItemCount()):
-            w = self.Editor.topLevelItem(i1)
+        for i1 in range(self.widget.Editor.topLevelItemCount()):
+            w = self.widget.Editor.topLevelItem(i1)
             for i2 in range(w.childCount()):
                 c = w.child(i2)
                 c.setText(1,"")
@@ -172,29 +162,29 @@ class MaterialEditor(QtGui.QDialog):
     def addCustomProperty(self, key = None, value = None):
         "Adds a custom property to the editor, optionally with a value"
         if not key:
-            key = str(self.EditProperty.text())
+            key = str(self.widget.EditProperty.text())
         if key:
             if not key in self.customprops:
-                if not self.Editor.findItems(key,QtCore.Qt.MatchRecursive,0):
-                    top = self.Editor.findItems(translate("Material","User defined"),QtCore.Qt.MatchExactly,0)
+                if not self.widget.Editor.findItems(key,QtCore.Qt.MatchRecursive,0):
+                    top = self.widget.Editor.findItems(translate("Material","User defined"),QtCore.Qt.MatchExactly,0)
                     if top:
                         i = QtGui.QTreeWidgetItem(top[0])
                         i.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEditable|QtCore.Qt.ItemIsDragEnabled|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
                         i.setText(0,key)
                         self.customprops.append(key)
-                        self.EditProperty.setText("")
+                        self.widget.EditProperty.setText("")
                         if value:
                             i.setText(1,value)
         
     def deleteCustomProperty(self, key = None):
         "Deletes a custom property from the editor"
         if not key:
-            key = str(self.Editor.currentItem().text(0))
+            key = str(self.widget.Editor.currentItem().text(0))
         if key:
             if key in self.customprops:
-                i = self.Editor.findItems(key,QtCore.Qt.MatchRecursive,0)
+                i = self.widget.Editor.findItems(key,QtCore.Qt.MatchRecursive,0)
                 if i:
-                    top = self.Editor.findItems(translate("Material","User defined"),QtCore.Qt.MatchExactly,0)
+                    top = self.widget.Editor.findItems(translate("Material","User defined"),QtCore.Qt.MatchExactly,0)
                     if top:
                         top = top[0]
                         ii = top.indexOfChild(i[0])
@@ -205,20 +195,20 @@ class MaterialEditor(QtGui.QDialog):
     def itemClicked(self, item, column):
         "Edits an item if it is not in the first column"
         if column > 0:
-            self.Editor.editItem(item, column)
+            self.widget.Editor.editItem(item, column)
             
     def checkDeletable(self,current,previous):
         "Checks if the current item is a custom property, if yes enable the delete button"
         if str(current.text(0)) in self.customprops:
-            self.ButtonDeleteProperty.setEnabled(True)
+            self.widget.ButtonDeleteProperty.setEnabled(True)
         else:
-            self.ButtonDeleteProperty.setEnabled(False)
+            self.widget.ButtonDeleteProperty.setEnabled(False)
             
     def getDict(self):
         "returns a dictionnary from the contents of the editor"
         d = {}
-        for i1 in range(self.Editor.topLevelItemCount()):
-            w = self.Editor.topLevelItem(i1)
+        for i1 in range(self.widget.Editor.topLevelItemCount()):
+            w = self.widget.Editor.topLevelItem(i1)
             for i2 in range(w.childCount()):
                 c = w.child(i2)
                 # TODO the following should be translated back to english,since text(0) could be translated
@@ -231,13 +221,13 @@ class MaterialEditor(QtGui.QDialog):
         if filename:
             self.clearEditor()
             import importFCMat
-            d = importFCMat.read(filename)
+            d = importFCMat.read(filename[0])
             if d:
                 self.updateContents(d)
                 
     def savefile(self):
         "Saves a FCMat file"
-        name = str(self.Editor.findItems(translate("Material","Name"),QtCore.Qt.MatchRecursive,0)[0].text(1))
+        name = str(self.widget.Editor.findItems(translate("Material","Name"),QtCore.Qt.MatchRecursive,0)[0].text(1))
         if not name:
             name = "Material"
         filename = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(),'Save FreeCAD Material file',name+'.FCMat')
@@ -247,6 +237,11 @@ class MaterialEditor(QtGui.QDialog):
                 import importFCMat
                 importFCMat.write(filename,d)
 
+    def show(self):
+        self.widget.show()
+        
+    def exec_(self):
+        self.widget.exec_()
 
 def translate(context,text):
     "translates text"
@@ -257,4 +252,14 @@ def openEditor(obj = None, prop = None):
     an object name and material property name to edit"""
     editor = MaterialEditor(obj,prop)
     editor.show()
+    
+def editMaterial(material):
+    """editMaterial(material): opens the editor to edit the contents
+    of the given material dictionary. Returns the modified material."""
+    editor = MaterialEditor(material=material)
+    result = editor.exec_()
+    if result:
+        return editor.getDict()
+    else:
+        return material
 

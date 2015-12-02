@@ -109,11 +109,6 @@
       <translation type="unfinished">A bancada de &lt;b&gt;Projeto Arquitetônico&lt;/b&gt; é especialmente projetada para trabalhar com elementos arquitetônicos, tais como paredes ou janelas. Comece por desenhar formas em 2D, e use-las como guias para construir objetos arquitetônicos.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Design arquitectónico</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">Trabalhando com malhas</translation>
@@ -229,11 +224,6 @@
       <translation type="unfinished">A seção de tutoriais no site do FreeCAD</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">A seção do site do FreeCAD dedicada ao script python, com exemplos, explicações e comandos da API.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">Um blog dedicado ao ensino do FreeCAD, mantido por membros da comunidade FreeCAD</translation>
@@ -271,12 +261,7 @@
     <message>
       <location filename="StartPage.py" line="87"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc/pt-br</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="105"/>
@@ -286,7 +271,32 @@
     <message>
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub/pt-br</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Projeto Arquitetônico</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">A seção do site do FreeCAD dedicada à linguagem python, com exemplos, explicações e API.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches/pt-br</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">A sua versão do FreeCAD está atualizada.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">Há uma nova versão do FreeCAD disponível.</translation>
     </message>
   </context>
 </TS>

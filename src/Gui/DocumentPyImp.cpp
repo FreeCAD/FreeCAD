@@ -41,6 +41,7 @@
 #include <App/DocumentObjectPy.h>
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderPy.h"
 
 
 using namespace Gui;
@@ -101,22 +102,38 @@ PyObject* DocumentPy::setEdit(PyObject *args)
 {
     char *psFeatStr;
     int mod = 0;
-    if (!PyArg_ParseTuple(args, "s|i;Name of the object to edit has to be given!",
-                          &psFeatStr,&mod))     // convert args: Python->C 
-        return NULL;  // NULL triggers exception 
-    App::DocumentObject * obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
-    if (!obj) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
-        return 0;
-    }
-    
-    bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod);
-    if (!ok) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "Failed to set object '%s' in edit mode", psFeatStr);
-        return 0;
+
+    // by name
+    if (PyArg_ParseTuple(args, "s|i;Name of the object to edit has to be given!", &psFeatStr,&mod)) {
+        App::DocumentObject * obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
+        if (!obj) {
+            PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
+            return 0;
+        }
+
+        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod);
+        return PyBool_FromLong(ok ? 1 : 0);
     }
 
-    Py_Return;
+    // by document object
+    PyErr_Clear();
+    PyObject *docObj;
+    if (PyArg_ParseTuple(args, "O!|i", &(App::DocumentObjectPy::Type), &docObj,&mod)) {
+        App::DocumentObject * obj = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
+        bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod);
+        return PyBool_FromLong(ok ? 1 : 0);
+    }
+
+    // by view provider
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!|i", &(Gui::ViewProviderPy::Type), &docObj,&mod)) {
+        Gui::ViewProvider * view = static_cast<Gui::ViewProviderPy*>(docObj)->getViewProviderPtr();
+        bool ok = getDocumentPtr()->setEdit(view,mod);
+        return PyBool_FromLong(ok ? 1 : 0);
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Either string, document object or view provider expected.");
+    return 0;
 }
 
 PyObject* DocumentPy::getInEdit(PyObject *args)

@@ -72,8 +72,11 @@ void EditDatumDialog::exec(bool atCursor)
 {
     // Return if constraint doesn't have editable value
     if (Constr->Type == Sketcher::Distance ||
-        Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY ||
-        Constr->Type == Sketcher::Radius || Constr->Type == Sketcher::Angle) {
+        Constr->Type == Sketcher::DistanceX || 
+        Constr->Type == Sketcher::DistanceY ||
+        Constr->Type == Sketcher::Radius || 
+        Constr->Type == Sketcher::Angle ||
+        Constr->Type == Sketcher::SnellsLaw) {
 
         if (sketch->hasConflicts()) {
             QMessageBox::critical(qApp->activeWindow(), QObject::tr("Distance constraint"),
@@ -88,7 +91,7 @@ void EditDatumDialog::exec(bool atCursor)
 
         Ui::InsertDatum ui_ins_datum;
         ui_ins_datum.setupUi(&dlg);
-        double datum = Constr->Value;
+        double datum = Constr->getValue();
         Base::Quantity init_val;
 
         if (Constr->Type == Sketcher::Angle) {
@@ -104,6 +107,11 @@ void EditDatumDialog::exec(bool atCursor)
             ui_ins_datum.label->setText(tr("Radius:"));
             ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
+        else if (Constr->Type == Sketcher::SnellsLaw) {
+            dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
+            ui_ins_datum.label->setText(tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
+            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+        }
         else {
             dlg.setWindowTitle(tr("Insert length"));
             init_val.setUnit(Base::Unit::Length);
@@ -114,31 +122,37 @@ void EditDatumDialog::exec(bool atCursor)
 
         //ui_ins_datum.lineEdit->setParamGrpPath("User parameter:History/Sketcher/SetDatum");
 
+        // e.g. an angle or a distance X or Y applied on a line or two vertexes
         if (Constr->Type == Sketcher::Angle ||
             ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-             Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))
+             (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)))
             // hide negative sign
             init_val.setValue(std::abs(datum));
 
         else // show negative sign
             init_val.setValue(datum);
 
+        // Enable label if we are modifying a driving constraint
+        ui_ins_datum.labelEdit->setEnabled(Constr->isDriving);
+
         ui_ins_datum.labelEdit->setValue(init_val);
         ui_ins_datum.labelEdit->selectNumber();
+        ui_ins_datum.labelEdit->bind(sketch->Constraints.createPath(ConstrNbr));
+        ui_ins_datum.name->setText(Base::Tools::fromStdString(Constr->Name));
 
         if (atCursor)
             dlg.setGeometry(QCursor::pos().x() - dlg.geometry().width() / 2, QCursor::pos().y(), dlg.geometry().width(), dlg.geometry().height());
 
         if (dlg.exec()) {
             Base::Quantity newQuant = ui_ins_datum.labelEdit->value();
-            if (newQuant.isQuantity()) {
+            if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
                 // save the value for the history 
                 ui_ins_datum.labelEdit->pushToHistory();
 
                 double newDatum = newQuant.getValue();
                 if (Constr->Type == Sketcher::Angle ||
                     ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-                     Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)) {
+                     (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))) {
                     // Permit negative values to flip the sign of the constraint
                     if (newDatum >= 0) // keep the old sign
                         newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
@@ -148,11 +162,36 @@ void EditDatumDialog::exec(bool atCursor)
 
                 try {
                     Gui::Command::openCommand("Modify sketch constraints");
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                sketch->getNameInDocument(),
-                                ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+
+                    if (Constr->isDriving) {
+                        if (ui_ins_datum.labelEdit->hasExpression())
+                            ui_ins_datum.labelEdit->apply();
+                        else
+                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
+                                                    sketch->getNameInDocument(),
+                                                    ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+                    }
+
+                    QString constraintName = ui_ins_datum.name->text().trimmed();
+                    if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
+                        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
+                                                sketch->getNameInDocument(),
+                                                ConstrNbr, escapedstr.c_str());
+                    }
+
                     Gui::Command::commitCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                    if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
+                        sketch->ExpressionEngine.execute();
+                        sketch->solve();
+                    }
+
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));

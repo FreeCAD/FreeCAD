@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2012     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2012     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -44,7 +44,6 @@
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/details/SoLineDetail.h>
 #include "ViewProviderPlacement.h"
-#include "SoFCSelection.h"
 #include "Application.h"
 #include "Document.h"
 #include "View3DInventorViewer.h"

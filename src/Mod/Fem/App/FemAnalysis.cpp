@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
 
 #include "FemAnalysis.h"
 #include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Placement.h>
 #include <Base/Uuid.h>
 
@@ -68,6 +69,8 @@ void FemAnalysis::onChanged(const Property* prop)
 }
 
 
+// Dummy class 'DocumentObject' in Fem namespace
+PROPERTY_SOURCE_ABSTRACT(Fem::DocumentObject, App::DocumentObject)
 
 // Python feature ---------------------------------------------------------
 
@@ -88,4 +91,24 @@ template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
 
 // explicit template instantiation
 template class AppFemExport FeaturePythonT<Fem::FemAnalysis>;
+}
+
+// ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::FeaturePython, Fem::DocumentObject)
+template<> const char* Fem::FeaturePython::getViewProviderName(void) const {
+    return "Gui::ViewProviderPythonFeature";
+}
+template<> PyObject* Fem::FeaturePython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+// explicit template instantiation
+template class AppFemExport FeaturePythonT<Fem::DocumentObject>;
+/// @endcond
 }

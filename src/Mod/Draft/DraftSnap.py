@@ -1067,15 +1067,18 @@ class Snapper:
 
     def makeSnapToolBar(self):
         "builds the Snap toolbar"
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        bsize = p.GetInt("ToolbarIconSize",24)+2
+        isize = p.GetInt("ToolbarIconSize",24)/3*2
         self.toolbar = QtGui.QToolBar(None)
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         self.masterbutton = QtGui.QPushButton(None)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
-        self.masterbutton.setIconSize(QtCore.QSize(16, 16))
-        self.masterbutton.setMaximumSize(QtCore.QSize(26,26))
-        self.masterbutton.setToolTip("Snap On/Off")
+        self.masterbutton.setIconSize(QtCore.QSize(isize, isize))
+        self.masterbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
+        self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
         self.masterbutton.setObjectName("SnapButtonMain")
         self.masterbutton.setCheckable(True)
         self.masterbutton.setChecked(True)
@@ -1085,9 +1088,12 @@ class Snapper:
             if i:
                 b = QtGui.QPushButton(None)
                 b.setIcon(QtGui.QIcon(i))
-                b.setIconSize(QtCore.QSize(16, 16))
-                b.setMaximumSize(QtCore.QSize(26,26))
-                b.setToolTip(c)
+                b.setIconSize(QtCore.QSize(isize, isize))
+                b.setMaximumSize(QtCore.QSize(bsize,bsize))
+                if c == "passive":
+                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
+                else:
+                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
                 b.setObjectName("SnapButton"+c)
                 b.setCheckable(True)
                 b.setChecked(True)
@@ -1098,9 +1104,9 @@ class Snapper:
         for n in ["Dimensions","WorkingPlane"]:
             b = QtGui.QPushButton(None)
             b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
-            b.setIconSize(QtCore.QSize(16, 16))
-            b.setMaximumSize(QtCore.QSize(26,26))
-            b.setToolTip(n)
+            b.setIconSize(QtCore.QSize(isize, isize))
+            b.setMaximumSize(QtCore.QSize(bsize,bsize))
+            b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setObjectName("SnapButton"+n)
             b.setCheckable(True)
             b.setChecked(True)

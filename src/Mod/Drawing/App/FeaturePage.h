@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,7 +62,13 @@ public:
     virtual std::vector<std::string> getEditableTextsFromTemplate(void) const;
 
 protected:
+    void onBeforeChange(const App::Property* prop);
     void onChanged(const App::Property* prop);
+    /// get called after a document has been fully restored
+    virtual void onDocumentRestored();
+
+private:
+    int numChildren;
 };
 
 

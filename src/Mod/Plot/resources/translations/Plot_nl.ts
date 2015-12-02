@@ -24,7 +24,7 @@
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation type="unfinished">De parameters voor de assen instellen</translation>
     </message>
   </context>
   <context>

@@ -24,7 +24,7 @@
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation type="unfinished">Konfigurera axelparametrarna</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation type="unfinished">Save the plot as an image file</translation>
+      <translation type="unfinished">Spara plotten som bildfil</translation>
     </message>
   </context>
   <context>
@@ -97,12 +97,12 @@
     <message>
       <location filename="PlotGui.py" line="81"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation type="unfinished">Konfigurera serien</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="84"/>
       <source>Configure series drawing style and label</source>
-      <translation type="unfinished">Configure series drawing style and label</translation>
+      <translation type="unfinished">Konfigurera seriens utseende och etikett</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation type="unfinished">Check it to apply transformations to all axes</translation>
+      <translation type="unfinished">Markera för att applicera transform på alla axlar</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="263"/>
@@ -195,12 +195,12 @@
     <message>
       <location filename="TaskPanel.py" line="287"/>
       <source>Outward offset of X axis</source>
-      <translation type="unfinished">Outward offset of X axis</translation>
+      <translation type="unfinished">Yttre förskjutning av X-axeln</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="293"/>
       <source>Outward offset of Y axis</source>
-      <translation type="unfinished">Outward offset of Y axis</translation>
+      <translation type="unfinished">Yttre förskjutning av X-axeln</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="299"/>
@@ -218,22 +218,22 @@
     <message>
       <location filename="Plot.py" line="38"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation type="unfinished">matplotlib not found, so Plot module can not be loaded</translation>
+      <translation type="unfinished">matplotlib hittades inte, så Plot-modulen kan inte läsas in</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation type="unfinished">matplotlib not found, Plot module will be disabled</translation>
+      <translation type="unfinished">matplotlib hittades inte, Plot-modul kommer inaktiveras</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation type="unfinished">Plot document must be selected in order to save it</translation>
+      <translation type="unfinished">Plotdokument måste väljas för att spara det</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="365"/>
       <source>Axes 0 can not be deleted</source>
-      <translation type="unfinished">Axes 0 can not be deleted</translation>
+      <translation type="unfinished">Axel 0 kan inte tas bort</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="97"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="TaskPanel.py" line="163"/>
       <source>Title (associated to active axes)</source>
-      <translation type="unfinished">Title (associated to active axes)</translation>
+      <translation type="unfinished">Titel (associerad med aktiva axlar)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="169"/>
@@ -329,22 +329,22 @@
     <message>
       <location filename="TaskPanel.py" line="138"/>
       <source>List of modificable items</source>
-      <translation type="unfinished">List of modificable items</translation>
+      <translation type="unfinished">Lista över ändringsbara objekt</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="144"/>
       <source>X item position</source>
-      <translation type="unfinished">X item position</translation>
+      <translation type="unfinished">X objekt placering</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="150"/>
       <source>Y item position</source>
-      <translation type="unfinished">Y item position</translation>
+      <translation type="unfinished">Y objekt placering</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="156"/>
       <source>Item size</source>
-      <translation type="unfinished">Item size</translation>
+      <translation type="unfinished">Objektstorlek</translation>
     </message>
   </context>
   <context>
@@ -415,7 +415,7 @@
     <message>
       <location filename="TaskPanel.py" line="149"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation type="unfinished">Konfigurera serien</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="178"/>
@@ -445,7 +445,7 @@
     <message>
       <location filename="TaskPanel.py" line="220"/>
       <source>Line and marker color</source>
-      <translation type="unfinished">Line and marker color</translation>
+      <translation type="unfinished">Linje- och markörfärg</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="226"/>

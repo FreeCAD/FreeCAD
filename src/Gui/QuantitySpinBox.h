@@ -26,6 +26,7 @@
 
 #include <QAbstractSpinBox>
 #include <Base/Quantity.h>
+#include "ExpressionBinding.h"
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
@@ -34,7 +35,7 @@ Q_DECLARE_METATYPE(Base::Quantity)
 namespace Gui {
 
 class QuantitySpinBoxPrivate;
-class GuiExport QuantitySpinBox : public QAbstractSpinBox
+class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBinding
 {
     Q_OBJECT
 
@@ -45,6 +46,8 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
 
 public:
+    using ExpressionBinding::apply;
+
     explicit QuantitySpinBox(QWidget *parent = 0);
     virtual ~QuantitySpinBox();
 
@@ -95,6 +98,12 @@ public:
     virtual QValidator::State validate(QString &input, int &pos) const;
     virtual void fixup(QString &str) const;
 
+    bool event(QEvent *event);
+
+    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void bind(const App::ObjectIdentifier &_path);
+    bool apply(const std::string &propName);
+
 public Q_SLOTS:
     /// Sets the field with a quantity
     void setValue(const Base::Quantity& val);
@@ -103,13 +112,19 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void userInput(const QString & text);
+    void openFormulaDialog();
+    void finishFormulaDialog();
 
 protected:
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
+    virtual void focusOutEvent(QFocusEvent * event);
+    virtual void  keyPressEvent(QKeyEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
 
 private:
+
     void updateText(const Base::Quantity&);
 
 Q_SIGNALS:
@@ -123,9 +138,6 @@ Q_SIGNALS:
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
     void valueChanged(double);
-
-    /// Signal for an invalid user input
-    void parseError(const QString& errorText);
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;

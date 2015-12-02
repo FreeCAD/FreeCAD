@@ -48,11 +48,12 @@ public:
     virtual int createImageCopy(void* pSrcPixelData, unsigned long width, unsigned long height, int format, unsigned short numSigBitsPerSample, int displayMode = IV_DISPLAY_RESET);
     virtual int pointImageTo(void* pSrcPixelData, unsigned long width, unsigned long height, int format, unsigned short numSigBitsPerSample, bool takeOwnership, int displayMode = IV_DISPLAY_RESET);
 
-    virtual void EnableStatusBar(bool Enable);
-    virtual void EnableToolBar(bool Enable);
-    virtual void EnableMouseEvents(bool Enable);
-    virtual void EnableOneToOneAction(bool Enable);
-    virtual void EnableFitImageAction(bool Enable);
+    virtual void enableStatusBar(bool Enable);
+    virtual void enableToolBar(bool Enable);
+    virtual void enableMouseEvents(bool Enable);
+    virtual void enableOneToOneAction(bool Enable);
+    virtual void enableFitImageAction(bool Enable);
+    virtual void ignoreCloseEvent(bool ignoreCloseEvent) { _ignoreCloseEvent = ignoreCloseEvent; }
     virtual int createColorMap(int numEntriesReq = 0, bool Initialise = true);
     virtual void clearColorMap();
     virtual int getNumColorMapEntries() const;
@@ -69,9 +70,14 @@ public Q_SLOTS:
 protected Q_SLOTS:
     virtual void drawGraphics();
 
+Q_SIGNALS:
+    void closeEventIgnored();
+
 protected:
     virtual void createActions();
+    virtual QSize minimumSizeHint () const;
     virtual void showOriginalColors();
+    virtual void closeEvent(QCloseEvent *e);
     virtual void mousePressEvent(QMouseEvent* cEvent);
     virtual void mouseDoubleClickEvent(QMouseEvent* cEvent);
     virtual void mouseMoveEvent(QMouseEvent* cEvent);
@@ -113,9 +119,10 @@ protected:
     // Toolbars
     QToolBar* _pStdToolBar;
 
-    // Flag for status bar enablement
+    // Flags
     bool _statusBarEnabled;
-	bool _mouseEventsEnabled;
+    bool _mouseEventsEnabled;
+    bool _ignoreCloseEvent;
 };
 
 } // namespace ImageViewGui

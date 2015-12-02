@@ -62,7 +62,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintFixed */
 
 TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent)
-    : TaskFemConstraint(ConstraintView, parent, "Fem_ConstraintFixed")
+    : TaskFemConstraint(ConstraintView, parent, "fem-constraint-fixed")
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -144,13 +144,17 @@ void TaskFemConstraintFixed::onSelectionChanged(const Gui::SelectionChanges& msg
 
             // Avoid duplicates
             std::size_t pos = 0;
-            for (; pos < Objects.size(); pos++)
-                if (obj == Objects[pos])
+            for (; pos < Objects.size(); pos++) {
+                if (obj == Objects[pos]) {
                     break;
+                }
+            }
 
-            if (pos != Objects.size())
-                if (subName == SubElements[pos])
+            if (pos != Objects.size()) {
+                if (subName == SubElements[pos]) {
                     return;
+                }
+            }
 
             // add the new reference
             Objects.push_back(obj);

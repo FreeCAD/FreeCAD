@@ -11,7 +11,7 @@
     <message>
       <location filename="InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation type="unfinished">Plot</translation>
+      <translation type="unfinished">Grafico</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="PlotGui.py" line="113"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation type="unfinished">Mostra/Nasconde griglia sul grafico selezionato</translation>
+      <translation type="unfinished">Mostra/Nasconde la griglia sul grafico selezionato</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="TaskPanel.py" line="245"/>
       <source>Add new axes to the plot</source>
-      <translation type="unfinished">Aggiungi nuovi assi sul grafico</translation>
+      <translation type="unfinished">Aggiungi nuovi assi al grafico</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="251"/>
@@ -228,7 +228,7 @@
     <message>
       <location filename="TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation type="unfinished">Un documento Plot deve essere selezionato per poterlo salvare</translation>
+      <translation type="unfinished">Si deve selezionare un documento Plot per poterlo salvare</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="365"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="TaskPanel.py" line="169"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Punti per ogni punto, con dimensione definirà la risoluzione dell'immagine</translation>
+      <translation type="unfinished">Dot per punto, con la dimensione definisce la risoluzione dell'immagine</translation>
     </message>
   </context>
   <context>

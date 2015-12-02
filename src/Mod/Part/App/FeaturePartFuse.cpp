@@ -86,6 +86,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
     if (s.size() >= 2) {
         try {
             std::vector<ShapeHistory> history;
+#if OCC_VERSION_HEX <= 0x060800
             TopoDS_Shape resShape = s.front();
             if (resShape.IsNull())
                 throw Base::Exception("Input shape is null");
@@ -112,6 +113,25 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                     history.push_back(hist2);
                 }
             }
+#else
+            BRepAlgoAPI_Fuse mkFuse;
+            TopTools_ListOfShape shapeArguments,shapeTools;
+            shapeArguments.Append(s.front());
+            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                if (it->IsNull())
+                    throw Base::Exception("Input shape is null");
+                shapeTools.Append(*it);
+            }
+            mkFuse.SetArguments(shapeArguments);
+            mkFuse.SetTools(shapeTools);
+            mkFuse.Build();
+            if (!mkFuse.IsDone())
+                throw Base::Exception("MultiFusion failed");
+            TopoDS_Shape resShape = mkFuse.Shape();
+            for (std::vector<TopoDS_Shape>::iterator it = s.begin(); it != s.end(); ++it) {
+                history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, *it));
+            }
+#endif
             if (resShape.IsNull())
                 throw Base::Exception("Resulting shape is null");
 

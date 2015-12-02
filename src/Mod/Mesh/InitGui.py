@@ -30,46 +30,17 @@
 #***************************************************************************/
 
 
+class MeshWorkbench (Workbench):
+    "Mesh workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Mesh/Resources/icons/Tree_Mesh.svg"
+        self.__class__.MenuText = "Mesh Design"
+        self.__class__.ToolTip = "Mesh design workbench"
 
-class MeshWorkbench ( Workbench ):
-	"Mesh workbench object"
-	Icon = """
-                /* XPM */
-                static char * mesh_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #000200",
-                "+	c #002001",
-                "@	c #003A00",
-                "#	c #006500",
-                "$	c #018400",
-                "%	c #00B000",
-                "&	c #00CD00",
-                "*	c #00F600",
-                "                ",
-                "          ..    ",
-                "    ....   ..   ",
-                "   ..&$@.  ..   ",
-                "  .&+&**.  .$.  ",
-                " .&*+&**.. .*+  ",
-                " .&*+&**.. .&$. ",
-                " .**@&**.+..%%. ",
-                " .**@%**.@$@$&. ",
-                " .**@#%&.@#$#*. ",
-                " .*%.....@#&.&. ",
-                " .$.    .+@*#.. ",
-                " ..      .+**+. ",
-                " .       .+*&@. ",
-                "         .+@..  ",
-                "          ..    "};
-		"""
-	MenuText = "Mesh design"
-	ToolTip = "Mesh design workbench"
+    def Initialize(self):
+        import Mesh
+        import MeshGui
+    def GetClassName(self):
+        return "MeshGui::Workbench"
 
-	def Initialize(self):
-		# load the module
-		import MeshGui
-	def GetClassName(self):
-		return "MeshGui::Workbench"
-
-Gui.addWorkbench(MeshWorkbench)
+Gui.addWorkbench(MeshWorkbench())

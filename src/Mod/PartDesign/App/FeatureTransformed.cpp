@@ -46,6 +46,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Reader.h>
 #include <App/Application.h>
 #include <Mod/Part/App/modelRefine.h>
 
@@ -103,6 +104,58 @@ App::DocumentObject* Transformed::getSketchObject() const
     }
 }
 
+void Transformed::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+
+        // The property 'Angle' of PolarPattern has changed from PropertyFloat
+        // to PropertyAngle and the property 'Length' has changed to PropertyLength.
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop) {
+                Base::Type inputType = Base::Type::fromName(TypeName);
+                if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+                    inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+                    // Do not directly call the property's Restore method in case the implmentation
+                    // has changed. So, create a temporary PropertyFloat object and assign the value.
+                    App::PropertyFloat floatProp;
+                    floatProp.Restore(reader);
+                    static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
+}
+
 short Transformed::mustExecute() const
 {
     if (Originals.isTouched())
@@ -154,7 +207,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
     // to fail. The downside is that performance suffers when there are many originals. But it seems
     // safe to assume that in most cases there are few originals and many transformations
-    for (std::vector<App::DocumentObject*>::const_iterator o = originals.begin(); o != originals.end(); o++)
+    for (std::vector<App::DocumentObject*>::const_iterator o = originals.begin(); o != originals.end(); ++o)
     {
         // Extract the original shape and determine whether to cut or to fuse
         TopoDS_Shape shape;
@@ -181,8 +234,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<TopoDS_Shape> v_transformedShapes;
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-        t++; // Skip first transformation, which is always the identity transformation
-        for (; t != transformations.end(); t++) {
+        ++t; // Skip first transformation, which is always the identity transformation
+        for (; t != transformations.end(); ++t) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
             BRepBuilderAPI_Copy copy(shape);
@@ -228,10 +281,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
             std::vector<TopoDS_Shape>::iterator s1 = v_transformedShapes.begin();
             std::vector<TopoDS_Shape>::iterator s2 = s1;
-            s2++;
+            ++s2;
             std::vector<std::vector<gp_Trsf>::const_iterator>::const_iterator t1 = v_transformations.begin();
             std::vector<std::vector<gp_Trsf>::const_iterator>::const_iterator t2 = t1;
-            t2++;
+            ++t2;
             for (; s2 != v_transformedShapes.end();) {
                 // Check intersection with the original
                 if (Part::checkIntersection(shape, *s1, false, false)) {
@@ -239,19 +292,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     overlapping_trsfms.insert(*t1);
                 }
                 // Check intersection with other transformations
-                for (; s2 != v_transformedShapes.end(); s2++, t2++)
+                for (; s2 != v_transformedShapes.end(); ++s2, ++t2)
                     if (Part::checkIntersection(*s1, *s2, false, false)) {
                         rejected_iterators.insert(s1);
                         rejected_iterators.insert(s2);
                         overlapping_trsfms.insert(*t1);
                         overlapping_trsfms.insert(*t2);
                     }
-                s1++;
+                ++s1;
                 s2 = s1;
-                s2++;
-                t1++;
+                ++s2;
+                ++t1;
                 t2 = t1;
-                t2++;
+                ++t2;
             }
             // Check intersection of last transformation with the original
             if (Part::checkIntersection(shape, *s1, false, false)) {
@@ -260,7 +313,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             }
 
             for (std::set<std::vector<TopoDS_Shape>::iterator>::reverse_iterator it = rejected_iterators.rbegin();
-                 it != rejected_iterators.rend(); it++)
+                 it != rejected_iterators.rend(); ++it)
                 v_transformedShapes.erase(*it);
         }
 
@@ -271,7 +324,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         BRep_Builder builder;
         TopoDS_Compound transformedShapes;
         builder.MakeCompound(transformedShapes);
-        for (std::vector<TopoDS_Shape>::const_iterator s = v_transformedShapes.begin(); s != v_transformedShapes.end(); s++)
+        for (std::vector<TopoDS_Shape>::const_iterator s = v_transformedShapes.begin(); s != v_transformedShapes.end(); ++s)
             builder.Add(transformedShapes, *s);
 
         // Fuse/Cut the compounded transformed shapes with the support
@@ -301,11 +354,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     if (!overlapping_trsfms.empty())
         // Concentrate on overlapping shapes since they are more serious
         for (std::set<std::vector<gp_Trsf>::const_iterator>::const_iterator it = overlapping_trsfms.begin();
-             it != overlapping_trsfms.end(); it++)
+             it != overlapping_trsfms.end(); ++it)
             rejected.push_back(**it);
     else
         for (std::set<std::vector<gp_Trsf>::const_iterator>::const_iterator it = nointersect_trsfms.begin();
-             it != nointersect_trsfms.end(); it++)
+             it != nointersect_trsfms.end(); ++it)
             rejected.push_back(**it);
 
     this->Shape.setValue(support);

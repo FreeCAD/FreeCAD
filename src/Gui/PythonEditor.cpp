@@ -55,8 +55,8 @@ struct PythonEditorP
     PythonDebugger* debugger;
     PythonEditorP()
         : debugLine(-1),
-          breakpoint(QLatin1String(":/icons/breakpoint.png")),
-          debugMarker(QLatin1String(":/icons/debug-marker.png"))
+          breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16,16)),
+          debugMarker(BitmapFactory().iconFromTheme("debug-marker").pixmap(16,16))
     {
         debugger = Application::Instance->macroManager()->debugger();
     }

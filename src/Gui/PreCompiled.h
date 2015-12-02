@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,9 +36,6 @@
 #pragma warning( disable : 4503 )
 #pragma warning( disable : 4786 )  // specifier longer then 255 chars
 #endif
-
-// Python
-#include <Python.h>
 
 // standard
 #include <stdio.h>
@@ -87,6 +84,9 @@
 
 #include "InventorAll.h"
 #include "Qt4All.h"
+
+// Python
+#include <Python.h>
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>

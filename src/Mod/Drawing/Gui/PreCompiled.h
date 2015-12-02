@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,6 +38,9 @@
 # define DrawingGuiExport
 #endif
 
+#ifdef _MSC_VER
+#   pragma warning(disable : 4005)
+#endif
 
 #ifdef _PreComp_
 

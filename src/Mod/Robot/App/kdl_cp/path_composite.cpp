@@ -53,7 +53,8 @@ namespace KDL {
 // you propably want to use the cached_index variable
 double Path_Composite::Lookup(double s) const
 {
-
+	assert(s>=-1e-12);
+	assert(s<=pathlength+1e-12);
 	if ( (cached_starts <=s) && ( s <= cached_ends) ) {
 		return s - cached_starts;
 	}
@@ -92,6 +93,7 @@ double Path_Composite::PathLength() {
 	return pathlength;
 }
 
+
 Frame Path_Composite::Pos(double s) const {
 	s = Lookup(s);
 	return gv[cached_index].first->Pos(s);
@@ -124,6 +126,29 @@ void Path_Composite::Write(std::ostream& os)  {
 	os << "]" << std::endl;
 }
 
+int Path_Composite::GetNrOfSegments() {
+	return dv.size();
+}
+
+Path* Path_Composite::GetSegment(int i) {
+	assert(i>=0);
+	assert(i<static_cast<int>(dv.size()));
+	return gv[i].first;
+}
+
+double Path_Composite::GetLengthToEndOfSegment(int i) {
+	assert(i>=0);
+	assert(i<static_cast<int>(dv.size()));
+	return dv[i];
+}
+
+void Path_Composite::GetCurrentSegmentLocation(double s, int& segment_number,
+		double& inner_s)
+{
+	inner_s = Lookup(s);
+	segment_number= cached_index;
+}
+
 Path_Composite::~Path_Composite() {
 	PathVector::iterator it;
 	for (it=gv.begin();it!=gv.end();++it) {
@@ -132,4 +157,4 @@ Path_Composite::~Path_Composite() {
 	}
 }
 
-}
+} // namespace KDL

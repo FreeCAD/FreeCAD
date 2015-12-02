@@ -289,7 +289,7 @@ bool MeshEvalSolid::Evaluate ()
 {
   std::vector<MeshGeomEdge> edges;
   _rclMesh.GetEdges( edges );
-  for (std::vector<MeshGeomEdge>::iterator it = edges.begin(); it != edges.end(); it++)
+  for (std::vector<MeshGeomEdge>::iterator it = edges.begin(); it != edges.end(); ++it)
   {
     if (it->_bBorder)
       return false;
@@ -337,7 +337,7 @@ bool MeshEvalTopology::Evaluate ()
     // build up an array of edges
     MeshFacetArray::_TConstIterator pI;
     Base::SequencerLauncher seq("Checking topology...", rclFAry.size());
-    for (pI = rclFAry.begin(); pI != rclFAry.end(); pI++) {
+    for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
             item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
@@ -360,7 +360,7 @@ bool MeshEvalTopology::Evaluate ()
     int count = 0;
     std::vector<unsigned long> facets;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             count++;
             facets.push_back(pE->f);
@@ -390,7 +390,7 @@ void MeshEvalTopology::GetFacetManifolds (std::vector<unsigned long> &raclFacetI
     const MeshFacetArray& rclFAry = _rclMesh.GetFacets();
     MeshFacetArray::_TConstIterator pI;
 
-    for (pI = rclFAry.begin(); pI != rclFAry.end(); pI++) {
+    for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             unsigned long ulPt0 = std::min<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
             unsigned long ulPt1 = std::max<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
@@ -526,7 +526,7 @@ bool MeshEvalSingleFacet::Evaluate ()
   //
   //
   // build edge <=> facet map
-  for (pI = rclFAry.begin(); pI != rclFAry.end(); pI++)
+  for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI)
   {
     for (int i = 0; i < 3; i++)
     {
@@ -537,7 +537,7 @@ bool MeshEvalSingleFacet::Evaluate ()
   }
 
   // now search for single links
-  for (std::vector<std::list<unsigned long> >::const_iterator pMF = aclMf.begin(); pMF != aclMf.end(); pMF++)
+  for (std::vector<std::list<unsigned long> >::const_iterator pMF = aclMf.begin(); pMF != aclMf.end(); ++pMF)
   {
     std::list<unsigned long> aulManifolds;
     for (std::list<unsigned long>::const_iterator pF = pMF->begin(); pF != pMF->end(); ++pF)
@@ -809,7 +809,7 @@ bool MeshEvalNeighbourhood::Evaluate ()
     // build up an array of edges
     MeshFacetArray::_TConstIterator pI;
     Base::SequencerLauncher seq("Checking indices...", rclFAry.size());
-    for (pI = rclFAry.begin(); pI != rclFAry.end(); pI++) {
+    for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
             item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
@@ -828,7 +828,7 @@ bool MeshEvalNeighbourhood::Evaluate ()
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             f1 = pE->f;
             count++;
@@ -875,7 +875,7 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
     // build up an array of edges
     MeshFacetArray::_TConstIterator pI;
     Base::SequencerLauncher seq("Checking indices...", rclFAry.size());
-    for (pI = rclFAry.begin(); pI != rclFAry.end(); pI++) {
+    for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
             item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
@@ -894,7 +894,7 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             f1 = pE->f;
             count++;
@@ -951,7 +951,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     // build up an array of edges
     MeshFacetArray::_TConstIterator pI;
     MeshFacetArray::_TConstIterator pB = this->_aclFacetArray.begin();
-    for (pI = pB + index; pI != this->_aclFacetArray.end(); pI++) {
+    for (pI = pB + index; pI != this->_aclFacetArray.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
             item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
@@ -968,7 +968,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
-    for (pE = edges.begin(); pE != edges.end(); pE++) {
+    for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
             f1 = pE->f;
             count++;

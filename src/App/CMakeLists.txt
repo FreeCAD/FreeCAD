@@ -17,24 +17,18 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
 )
 
-if(WIN32)
-    set(FreeCADApp_LIBS
-        FreeCADBase
-        ${Boost_DEBUG_LIBRARIES}
-        ${Boost_LIBRARIES}
-    )
-else(WIN32)
-    set(FreeCADApp_LIBS
-        FreeCADBase
-        ${Boost_LIBRARIES}
-    )
-endif(WIN32)
+set(FreeCADApp_LIBS
+    FreeCADBase
+    ${Boost_LIBRARIES}
+    ${QT_QTCORE_LIBRARY}
+    ${QT_QTXML_LIBRARY}
+)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
@@ -68,6 +62,7 @@ SET(Document_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
+    Expression.cpp
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
@@ -89,6 +84,7 @@ SET(Document_HPP_SRCS
     DocumentObjectGroup.h
     DocumentObserver.h
     DocumentObserverPython.h
+    Expression.h
     FeaturePython.h
     FeaturePythonPyImp.h
     FeaturePythonPyImp.inl
@@ -112,6 +108,7 @@ SOURCE_GROUP("Document" FILES ${Document_SRCS})
 # The property stuff
 SET(Properties_CPP_SRCS
     DynamicProperty.cpp
+    ObjectIdentifier.cpp
     Property.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
@@ -121,9 +118,11 @@ SET(Properties_CPP_SRCS
     PropertyPythonObject.cpp
     PropertyStandard.cpp
     PropertyUnits.cpp
+    PropertyExpressionEngine.cpp
 )
 SET(Properties_HPP_SRCS
     DynamicProperty.h
+    ObjectIdentifier.h
     Property.h
     PropertyContainer.h
     PropertyFile.h
@@ -132,6 +131,7 @@ SET(Properties_HPP_SRCS
     PropertyPythonObject.h
     PropertyStandard.h
     PropertyUnits.h
+    PropertyExpressionEngine.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}
@@ -144,9 +144,11 @@ SET(FreeCADApp_CPP_SRCS
     ${Properties_CPP_SRCS}
     Application.cpp
     ApplicationPy.cpp
+    Branding.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    Enumeration.cpp
     Material.cpp
     MaterialPyImp.cpp
 )
@@ -155,8 +157,10 @@ SET(FreeCADApp_HPP_SRCS
     ${Document_HPP_SRCS}
     ${Properties_HPP_SRCS}
     Application.h
+    Branding.h
     ColorModel.h
     ComplexGeoData.h
+    Enumeration.h
     Material.h
 )
 

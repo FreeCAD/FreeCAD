@@ -27,6 +27,7 @@
 #include <Base/Handle.h>
 #include <Base/Builder3D.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/MatrixPy.h>
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -227,7 +228,13 @@ PyObject*  MeshPy::writeInventor(PyObject *args)
 
     std::stringstream result;
     Base::InventorBuilder builder(result);
-    builder.addIndexedFaceSet(coords, indices, creaseangle);
+    builder.beginSeparator();
+    builder.addShapeHints(creaseangle);
+    builder.beginPoints();
+    builder.addPoints(coords);
+    builder.endPoints();
+    builder.addIndexedFaceSet(indices);
+    builder.endSeparator();
     builder.close();
 
     return Py::new_reference_to(Py::String(result.str()));
@@ -465,6 +472,18 @@ PyObject*  MeshPy::transformToEigen(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::getEigenSystem(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Base::Vector3d vec;
+    Base::Matrix4D mat = getMeshObjectPtr()->getEigenSystem(vec);
+    Py::Tuple t(2);
+    t.setItem(0, Py::Matrix(mat));
+    t.setItem(1, Py::Vector(vec));
+    return Py::new_reference_to(t);
+}
+
 PyObject*  MeshPy::addFacet(PyObject *args)
 {
     double x1,y1,z1,x2,y2,z2,x3,y3,z3;
@@ -670,6 +689,22 @@ PyObject*  MeshPy::setPoint(PyObject *args)
     } PY_CATCH;
 
     Py_Return;
+}
+
+PyObject*  MeshPy::getPointNormals(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        std::vector<Base::Vector3d> normals = getMeshObjectPtr()->getPointNormals();
+        Py::Tuple ary(normals.size());
+        std::size_t numNormals = normals.size();
+        for (std::size_t i=0; i<numNormals; i++) {
+            ary.setItem(i, Py::Vector(normals[i]));
+        }
+        return Py::new_reference_to(ary);
+    } PY_CATCH;
 }
 
 PyObject* MeshPy::countSegments(PyObject *args)

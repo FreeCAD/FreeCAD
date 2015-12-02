@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2006     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2006     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,12 +37,14 @@
 #include <QProcess>
 #include <qrect.h>
 #include <qregexp.h>
+#include <qrunnable.h>
 #include <QSet>
 #include <QSignalMapper>
 #include <QTemporaryFile>
 #include <qtextcodec.h>
 #include <qtextstream.h>
 #include <qthread.h>
+#include <qthreadpool.h>
 #include <qtimer.h>
 #include <qtranslator.h>
 #include <QUrl>
@@ -82,6 +84,7 @@
 #include <QImageWriter>
 #include <qinputdialog.h>
 #include <QItemDelegate>
+#include <QStyledItemDelegate>
 #include <QItemEditorFactory>
 #include <qlabel.h>
 #include <qlayout.h>
@@ -108,6 +111,7 @@
 #include <qradiobutton.h>
 #include <QScrollArea>
 #include <qscrollbar.h>
+#include <QSessionManager>
 #include <QSettings>
 #include <QShortcut>
 #include <qslider.h>
@@ -169,5 +173,8 @@
 //#include <QWebSettings>
 #endif
 
+#include "qmath.h"
+#include <QGraphicsView>
+#include <QGraphicsScene>
 
 #endif

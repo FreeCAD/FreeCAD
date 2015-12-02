@@ -75,9 +75,9 @@ void MeshBuilder::Initialize (unsigned long ctFacets, bool deletion)
     }
     else
     {
-        for (MeshPointArray::_TConstIterator it1 = _meshKernel._aclPointArray.begin(); it1 != _meshKernel._aclPointArray.end(); it1++)
+        for (MeshPointArray::_TConstIterator it1 = _meshKernel._aclPointArray.begin(); it1 != _meshKernel._aclPointArray.end(); ++it1)
         {
-            MeshPointIterator pit = _points.insert(*it1);			
+            MeshPointIterator pit = _points.insert(*it1);
             _pointsIterator.push_back(pit);
         }
         _ptIdx = _points.size();
@@ -130,14 +130,14 @@ void MeshBuilder::AddFacet (Base::Vector3f* facetPoints, unsigned char flag, uns
     int i = 0;
     for (i = 0; i < 3; i++)
     {
-        MeshPoint pt(facetPoints[i]);			
+        MeshPoint pt(facetPoints[i]);
         std::set<MeshPoint>::iterator p = _points.find(pt);
         if (p == _points.end())
         {
             mf._aulPoints[i] = _ptIdx;
             pt._ulProp = _ptIdx++;
             // keep an iterator to the right vertex
-            MeshPointIterator it = _points.insert(pt);			
+            MeshPointIterator it = _points.insert(pt);
             _pointsIterator.push_back(it);
         }
         else
@@ -156,7 +156,7 @@ void MeshBuilder::SetNeighbourhood ()
     std::set<Edge> edges;
     int facetIdx = 0;
 
-    for (MeshFacetArray::_TIterator it = _meshKernel._aclFacetArray.begin(); it != _meshKernel._aclFacetArray.end(); it++)
+    for (MeshFacetArray::_TIterator it = _meshKernel._aclFacetArray.begin(); it != _meshKernel._aclFacetArray.end(); ++it)
     {
         this->_seq->next(true); // allow to cancel
         MeshFacet& mf = *it;
@@ -221,7 +221,11 @@ void MeshBuilder::Finish (bool freeMemory)
 
     // free all memory of the internal structures
     // Note: this scope is needed to free memory immediately
+#if defined(_MSC_VER) && defined(_DEBUG)
+    // Just do nothing here as it may take a long time when running the debugger
+#else
     { std::vector<MeshPointIterator>().swap(_pointsIterator); }
+#endif
     _points.clear();
 
     SetNeighbourhood();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,14 +42,21 @@ public:
     FemResultObject(void);
     virtual ~FemResultObject();
 
-    /// Data type specifier of the data stored in this object
-    App::PropertyString DataType;
-    /// Unit and factor of the values
-    App::PropertyQuantity Unit;
-    /// List of element numbers in this result object
-    App::PropertyIntegerList ElementNumbers;
-    /// Link to the corosbonding mesh
+    App::PropertyIntegerList NodeNumbers;
+    /// Link to the corresponding  mesh
     App::PropertyLink Mesh;
+    /// Stats of analysis
+    App::PropertyFloatList Stats;
+    /// Displacement vectors of analysis
+    App::PropertyVectorList DisplacementVectors;
+    /// Lengths of displacement vestors of analysis
+    App::PropertyFloatList DisplacementLengths;
+    /// Von Mises Stress values of analysis
+    App::PropertyFloatList StressValues;
+    /// Eigenmode number
+    App::PropertyInteger Eigenmode;
+    /// Eigenmode frequency
+    App::PropertyFloat EigenmodeFrequency;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -64,7 +71,7 @@ public:
 
 };
 
-typedef App::FeaturePythonT<FemResultObject> FemResultPython;
+typedef App::FeaturePythonT<FemResultObject> FemResultObjectPython;
 
 
 } //namespace Fem

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,26 +26,38 @@
 
 
 #include <Base/Persistence.h>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 
 namespace Sketcher
 {
 
 enum ConstraintType {
-    None,
-    Coincident,
-    Horizontal,
-    Vertical,
-    Parallel,
-    Tangent,
-    Distance,
-    DistanceX,
-    DistanceY,
-    Angle,
-    Perpendicular,
-    Radius,
-    Equal,
-    PointOnObject,
-    Symmetric
+    None = 0,
+    Coincident = 1,
+    Horizontal = 2,
+    Vertical = 3,
+    Parallel = 4,
+    Tangent = 5,
+    Distance = 6,
+    DistanceX = 7,
+    DistanceY = 8,
+    Angle = 9,
+    Perpendicular = 10,
+    Radius = 11,
+    Equal = 12,
+    PointOnObject = 13,
+    Symmetric = 14,
+    InternalAlignment = 15,
+    SnellsLaw = 16
+};
+
+enum InternalAlignmentType {
+    Undef                   = 0,
+    EllipseMajorDiameter    = 1,
+    EllipseMinorDiameter    = 2,
+    EllipseFocus1           = 3,
+    EllipseFocus2           = 4
 };
 
 /// define if you want to use the end or start point
@@ -70,12 +82,19 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    friend class Sketch;
+    void setValue(double newValue);
+    double getPresentationValue() const;
+    double getValue() const;
 
+    friend class Sketch;
+    friend class PropertyConstraintList;
+
+private:
+    double Value;
 public:
     ConstraintType Type;
+    InternalAlignmentType AlignmentType;
     std::string Name;
-    double Value;
     int First;
     PointPos FirstPos;
     int Second;
@@ -84,6 +103,10 @@ public:
     PointPos ThirdPos;
     float LabelDistance;
     float LabelPosition;
+    bool isDriving;
+
+protected:
+    boost::uuids::uuid tag;
 };
 
 } //namespace Sketcher

@@ -204,9 +204,9 @@ SbBool SoSFMeshObject::readValue(SoInput *in)
     for (std::vector<float>::iterator it = verts.begin();
         it != verts.end();) {
             Base::Vector3f p;
-            p.x = *it; it++;
-            p.y = *it; it++;
-            p.z = *it; it++;
+            p.x = *it; ++it;
+            p.y = *it; ++it;
+            p.z = *it; ++it;
             rPoints.push_back(p);
     }
 
@@ -220,9 +220,9 @@ SbBool SoSFMeshObject::readValue(SoInput *in)
     for (std::vector<int32_t>::iterator it = faces.begin();
         it != faces.end();) {
             MeshCore::MeshFacet f;
-            f._aulPoints[0] = *it; it++;
-            f._aulPoints[1] = *it; it++;
-            f._aulPoints[2] = *it; it++;
+            f._aulPoints[0] = *it; ++it;
+            f._aulPoints[1] = *it; ++it;
+            f._aulPoints[2] = *it; ++it;
             rFacets.push_back(f);
     }
 
@@ -1096,7 +1096,7 @@ void SoFCMeshObjectShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &c
         Base::BoundBox3f cBox = mesh->getKernel().GetBoundBox();
         box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
                       SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
-        Base::Vector3f mid = cBox.CalcCenter();
+        Base::Vector3f mid = cBox.GetCenter();
         center.setValue(mid.x,mid.y,mid.z);
     }
     else {
@@ -1503,14 +1503,14 @@ void SoFCMeshSegmentShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &
             for (std::vector<unsigned long>::const_iterator it = indices.begin();
                 it != indices.end(); ++it) {
                     const MeshCore::MeshFacet& face = rFaces[*it];
-                    cBox &= rPoint[face._aulPoints[0]];
-                    cBox &= rPoint[face._aulPoints[1]];
-                    cBox &= rPoint[face._aulPoints[2]];
+                    cBox.Add(rPoint[face._aulPoints[0]]);
+                    cBox.Add(rPoint[face._aulPoints[1]]);
+                    cBox.Add(rPoint[face._aulPoints[2]]);
             }
             
             box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
                           SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
-            Base::Vector3f mid = cBox.CalcCenter();
+            Base::Vector3f mid = cBox.GetCenter();
             center.setValue(mid.x,mid.y,mid.z);
         }
     }
@@ -1653,10 +1653,10 @@ void SoFCMeshObjectBoundary::computeBBox(SoAction *action, SbBox3f &box, SbVec3f
     if (rPoints.size() > 0) {
         Base::BoundBox3f cBox;
         for (MeshCore::MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it)
-            cBox &= (*it);
+            cBox.Add(*it);
         box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
                       SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
-        Base::Vector3f mid = cBox.CalcCenter();
+        Base::Vector3f mid = cBox.GetCenter();
         center.setValue(mid.x,mid.y,mid.z);
     }
     else {

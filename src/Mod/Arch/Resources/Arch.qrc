@@ -51,9 +51,18 @@
         <file>icons/Arch_StructuralSystem_Tree.svg</file>
         <file>icons/Arch_ToggleIfcBrepFlag.svg</file>
         <file>icons/Arch_CutPlane.svg</file>
-        <file>ui/archprefs-base.ui</file>
-        <file>ui/archprefs-defaults.ui</file>
-        <file>ui/archprefs-import.ui</file>
+        <file>icons/Arch_Bimserver.svg</file>
+        <file>icons/Git.svg</file>
+        <file>icons/Arch_Component.svg</file>
+        <file>icons/Arch_Material.svg</file>
+        <file>icons/Arch_Material_Group.svg</file>
+        <file>icons/Arch_Schedule.svg</file>
+        <file>ui/preferences-arch.ui</file>
+        <file>ui/preferences-archdefaults.ui</file>
+        <file>ui/preferences-ifc.ui</file>
+        <file>ui/preferences-dae.ui</file>
+        <file>ui/ArchMaterial.ui</file>
+        <file>ui/ArchSchedule.ui</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
@@ -83,5 +92,6 @@
         <file>translations/Arch_zh-CN.qm</file>
         <file>translations/Arch_ro.qm</file>
         <file>translations/Arch_pt-PT.qm</file>
+        <file>translations/Arch_sr.qm</file>
     </qresource>
 </RCC> 

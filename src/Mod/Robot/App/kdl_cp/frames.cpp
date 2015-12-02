@@ -27,6 +27,9 @@
 
 #include "frames.hpp"
 
+#define _USE_MATH_DEFINES  // For MSVC
+#include <math.h>
+
 namespace KDL {
 
 #ifndef KDL_INLINE
@@ -40,7 +43,7 @@ namespace KDL {
         for (i=0;i<3;i++) {
             for (j=0;j<3;j++)
                 d[i*4+j]=M(i,j);
-            d[i*4+3] = p(i)/1000;
+            d[i*4+3] = p(i);
         }
         for (j=0;j<3;j++)
             d[12+j] = 0.;
@@ -194,32 +197,33 @@ namespace KDL {
     */
     void Rotation::GetQuaternion(double& x,double& y,double& z, double& w) const
     {
-        double trace = (*this)(0,0) + (*this)(1,1) + (*this)(2,2) + 1.0f;
+        double trace = (*this)(0,0) + (*this)(1,1) + (*this)(2,2);
+        double epsilon=1E-12;
         if( trace > epsilon ){
-            double s = 0.5f / sqrt(trace);
-            w = 0.25f / s;
+            double s = 0.5 / sqrt(trace + 1.0);
+            w = 0.25 / s;
             x = ( (*this)(2,1) - (*this)(1,2) ) * s;
             y = ( (*this)(0,2) - (*this)(2,0) ) * s;
             z = ( (*this)(1,0) - (*this)(0,1) ) * s;
         }else{
             if ( (*this)(0,0) > (*this)(1,1) && (*this)(0,0) > (*this)(2,2) ){
-                float s = 2.0f * sqrtf( 1.0f + (*this)(0,0) - (*this)(1,1) - (*this)(2,2));
+                double s = 2.0 * sqrt( 1.0 + (*this)(0,0) - (*this)(1,1) - (*this)(2,2));
                 w = ((*this)(2,1) - (*this)(1,2) ) / s;
-                x = 0.25f * s;
+                x = 0.25 * s;
                 y = ((*this)(0,1) + (*this)(1,0) ) / s;
                 z = ((*this)(0,2) + (*this)(2,0) ) / s;
             } else if ((*this)(1,1) > (*this)(2,2)) {
-                float s = 2.0f * sqrtf( 1.0f + (*this)(1,1) - (*this)(0,0) - (*this)(2,2));
+                double s = 2.0 * sqrt( 1.0 + (*this)(1,1) - (*this)(0,0) - (*this)(2,2));
                 w = ((*this)(0,2) - (*this)(2,0) ) / s;
                 x = ((*this)(0,1) + (*this)(1,0) ) / s;
-                y = 0.25f * s;
+                y = 0.25 * s;
                 z = ((*this)(1,2) + (*this)(2,1) ) / s;
             }else {
-                float s = 2.0f * sqrtf( 1.0f + (*this)(2,2) - (*this)(0,0) - (*this)(1,1) );
+                double s = 2.0 * sqrt( 1.0 + (*this)(2,2) - (*this)(0,0) - (*this)(1,1) );
                 w = ((*this)(1,0) - (*this)(0,1) ) / s;
                 x = ((*this)(0,2) + (*this)(2,0) ) / s;
                 y = ((*this)(1,2) + (*this)(2,1) ) / s;
-                z = 0.25f * s;
+                z = 0.25 * s;
             }
         }    
     }
@@ -238,13 +242,13 @@ Rotation Rotation::RPY(double roll,double pitch,double yaw)
 // Gives back a rotation matrix specified with RPY convention
 void Rotation::GetRPY(double& roll,double& pitch,double& yaw) const
     {
-        if (fabs(data[6]) > 1.0 - epsilon ) {
-            roll = -sign(data[6]) * atan2(data[1], data[4]);
-            pitch= -sign(data[6]) * PI / 2;
-            yaw  = 0.0 ;
+		double epsilon=1E-12;
+		pitch = atan2(-data[6], sqrt( sqr(data[0]) +sqr(data[3]) )  );
+        if ( fabs(pitch) > (M_PI/2.0-epsilon) ) {
+            yaw = atan2(	-data[1], data[4]);
+            roll  = 0.0 ;
         } else {
             roll  = atan2(data[7], data[8]);
-            pitch = atan2(-data[6], sqrt( sqr(data[0]) +sqr(data[3]) )  );
             yaw   = atan2(data[3], data[0]);
         }
     }
@@ -262,18 +266,19 @@ Rotation Rotation::EulerZYZ(double Alfa,double Beta,double Gamma) {
      }
 
 
-void Rotation::GetEulerZYZ(double& alfa,double& beta,double& gamma) const {
-        if (fabs(data[6]) < epsilon ) {
-            alfa=0.0;
+void Rotation::GetEulerZYZ(double& alpha,double& beta,double& gamma) const {
+		double epsilon = 1E-12;
+        if (fabs(data[8]) > 1-epsilon  ) {
+            gamma=0.0;
             if (data[8]>0) {
                 beta = 0.0;
-                gamma= atan2(-data[1],data[0]);
+                alpha= atan2(data[3],data[0]);
             } else {
                 beta = PI;
-                gamma= atan2(data[1],-data[0]);
+                alpha= atan2(-data[3],-data[0]);
             }
         } else {
-            alfa=atan2(data[5], data[2]);
+            alpha=atan2(data[5], data[2]);
             beta=atan2(sqrt( sqr(data[6]) +sqr(data[7]) ),data[8]);
             gamma=atan2(data[7], -data[6]);
         }
@@ -326,18 +331,10 @@ Vector Rotation::GetRot() const
          // Returns a vector with the direction of the equiv. axis
          // and its norm is angle
      {
-       Vector axis  = Vector((data[7]-data[5]),
-			     (data[2]-data[6]),
-			     (data[3]-data[1]) )/2;
-
-       double sa    = axis.Norm();
-       double ca    = (data[0]+data[4]+data[8]-1)/2.0;
-       double alfa;
-       if (sa > epsilon)
-           alfa = ::atan2(sa,ca)/sa;
-       else
-           alfa = 1;
-       return axis * alfa;
+       Vector axis;
+       double angle;
+       angle = Rotation::GetRotAngle(axis,epsilon);
+       return axis * angle;
      }
 
 
@@ -345,7 +342,7 @@ Vector Rotation::GetRot() const
 /** Returns the rotation angle around the equiv. axis
  * @param axis the rotation axis is returned in this variable
  * @param eps :  in the case of angle == 0 : rot axis is undefined and choosen
- *                                         to be +/- Z-axis
+ *                                         to be the Z-axis
  *               in the case of angle == PI : 2 solutions, positive Z-component
  *                                            of the axis is choosen.
  * @result returns the rotation angle (between [0..PI] )
@@ -354,30 +351,43 @@ Vector Rotation::GetRot() const
  */
 double Rotation::GetRotAngle(Vector& axis,double eps) const {
 	double ca    = (data[0]+data[4]+data[8]-1)/2.0;
-	if (ca>1-eps) {
+	double t= eps*eps/2.0;
+	if (ca>1-t) {
 		// undefined choose the Z-axis, and angle 0
 		axis = Vector(0,0,1);
 		return 0;
 	}
-	if (ca < -1+eps) {
+	if (ca < -1+t) {
+		// The case of angles consisting of multiples of M_PI:
 		// two solutions, choose a positive Z-component of the axis
-		double z = sqrt( (data[8]+1)/2 );
-		double x = (data[2])/2/z;
-		double y = (data[5])/2/z;
+		double x = sqrt( (data[0]+1.0)/2);
+		double y = sqrt( (data[4]+1.0)/2);
+		double z = sqrt( (data[8]+1.0)/2);
+		if ( data[2] < 0) x=-x;
+		if ( data[7] < 0) y=-y;
+		if ( x*y*data[1] < 0) x=-x;  // this last line can be necessary when z is 0
+		// z always >= 0 
+		// if z equal to zero 
 		axis = Vector( x,y,z  );
 		return PI;
 	}
-	double angle = acos(ca);
-	double sa    = sin(angle);
-	axis  = Vector((data[7]-data[5])/2/sa,
-                       (data[2]-data[6])/2/sa,
-                       (data[3]-data[1])/2/sa  );
-	return angle;
+    double angle;
+    double mod_axis;
+    double axisx, axisy, axisz;
+	axisx = data[7]-data[5];
+    axisy = data[2]-data[6];
+    axisz = data[3]-data[1];
+    mod_axis = sqrt(axisx*axisx+axisy*axisy+axisz*axisz);
+	axis  = Vector(axisx/mod_axis,
+                   axisy/mod_axis,
+                   axisz/mod_axis );
+    angle = atan2(mod_axis/2,ca);
+    return angle;
 }
 
 bool operator==(const Rotation& a,const Rotation& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b);
+    return Equal(a,b,epsilon);
 #else
     return ( a.data[0]==b.data[0] &&
              a.data[1]==b.data[1] &&

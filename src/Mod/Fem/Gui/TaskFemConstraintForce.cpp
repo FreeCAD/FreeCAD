@@ -52,6 +52,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintForce.h>
+#include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>
@@ -62,7 +63,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintForce */
 
 TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent)
-    : TaskFemConstraint(ConstraintView, parent, "Fem_ConstraintForce")
+    : TaskFemConstraint(ConstraintView, parent, "fem-constraint-force")
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -138,11 +139,11 @@ void TaskFemConstraintForce::updateUI()
     std::string ref = ui->listReferences->item(0)->text().toStdString();
     int pos = ref.find_last_of(":");
     if (ref.substr(pos+1, 6) == "Vertex")
-        ui->labelForce->setText(tr("Point load [N]"));
+        ui->labelForce->setText(tr("Point load"));
     else if (ref.substr(pos+1, 4) == "Edge")
-        ui->labelForce->setText(tr("Line load [N/mm]"));
+        ui->labelForce->setText(tr("Line load"));
     else if (ref.substr(pos+1, 4) == "Face")
-        ui->labelForce->setText(trUtf8("Area load [N/mm\xc2\xb2]"));
+        ui->labelForce->setText(tr("Area load"));
 }
 
 void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -175,7 +176,8 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
                     QMessageBox::warning(this, tr("Selection error"), tr("Mixed shape types are not possible. Use a second constraint instead"));
                     return;
                 }
-            } else {
+            }
+            else {
                 if ((subName.substr(0,4) != "Face") && (subName.substr(0,4) != "Edge") && (subName.substr(0,6) != "Vertex")) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only faces, edges and vertices can be picked"));
                     return;
@@ -184,13 +186,17 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
 
             // Avoid duplicates
             std::size_t pos = 0;
-            for (; pos < Objects.size(); pos++)
-                if (obj == Objects[pos])
+            for (; pos < Objects.size(); pos++) {
+                if (obj == Objects[pos]) {
                     break;
+                }
+            }
 
-            if (pos != Objects.size())
-                if (subName == SubElements[pos])
+            if (pos != Objects.size()) {
+                if (subName == SubElements[pos]) {
                     return;
+                }
+            }
 
             // add the new reference
             Objects.push_back(obj);
@@ -200,20 +206,21 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
 
             // Turn off reference selection mode
             onButtonReference(false);
-        } else if (selectionMode == seldir) {
+        }
+        else if (selectionMode == seldir) {
             if (subName.substr(0,4) == "Face") {
-                BRepAdaptor_Surface surface(TopoDS::Face(ref));
-                if (surface.GetType() != GeomAbs_Plane) {
+                if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
                     return;
                 }
-            } else if (subName.substr(0,4) == "Edge") {
-                BRepAdaptor_Curve line(TopoDS::Edge(ref));
-                if (line.GetType() != GeomAbs_Line) {
+            }
+            else if (subName.substr(0,4) == "Edge") {
+                if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
                     return;
                 }
-            } else {
+            }
+            else {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
                 return;
             }
@@ -329,6 +336,15 @@ TaskDlgFemConstraintForce::TaskDlgFemConstraintForce(ViewProviderFemConstraintFo
 
 //==== calls from the TaskView ===============================================================
 
+void TaskDlgFemConstraintForce::open()
+{
+    // a transaction is already open at creation time of the panel
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = QObject::tr("Constraint force");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
+}
+
 bool TaskDlgFemConstraintForce::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -358,6 +374,16 @@ bool TaskDlgFemConstraintForce::accept()
     }
 
     return TaskDlgFemConstraint::accept();
+}
+
+bool TaskDlgFemConstraintForce::reject()
+{
+    // roll back the changes
+    Gui::Command::abortCommand();
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::updateActive();
+
+    return true;
 }
 
 #include "moc_TaskFemConstraintForce.cpp"

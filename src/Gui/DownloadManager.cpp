@@ -71,6 +71,8 @@ DownloadManager::DownloadManager(QWidget *parent)
     m_model = new DownloadModel(this);
     ui->downloadsView->setModel(m_model);
     connect(ui->cleanupButton, SIGNAL(clicked()), this, SLOT(cleanup()));
+    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(replyFinished(QNetworkReply*)));
     load();
 
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
@@ -108,11 +110,68 @@ int DownloadManager::activeDownloads() const
     return count;
 }
 
+QUrl DownloadManager::redirectUrl(const QUrl& url) const
+{
+    QUrl redirectUrl = url;
+    if (url.host() == QLatin1String("www.dropbox.com")) {
+        QList< QPair<QString, QString> > query = url.queryItems();
+        for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
+            if (it->first == QLatin1String("dl") && it->second == QLatin1String("0\r\n")) {
+                redirectUrl.removeQueryItem(QLatin1String("dl"));
+                redirectUrl.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
+                break;
+            }
+        }
+    }
+    else {
+        // When the url comes from drag and drop it may end with CR+LF. This may cause problems
+        // and thus should be removed.
+        QString str = redirectUrl.toString();
+        if (str.endsWith(QLatin1String("\r\n"))) {
+            str.chop(2);
+            redirectUrl.setUrl(str);
+        }
+    }
+
+    return redirectUrl;
+}
+
+void DownloadManager::replyFinished(QNetworkReply* reply)
+{
+    // The 'requestFileName' is used to store the argument passed by 'download()'
+    // and to also distinguish between replies created by 'download()' and
+    // this method.
+    // Replies from this method shouldn't be further examined because it's not
+    // assumed to get re-directed urls over several steps.
+    QVariant var = reply->property("requestFileName");
+    if (var.isValid()) {
+        bool requestFileName = reply->property("requestFileName").toBool();
+
+        QUrl url = reply->url();
+
+        // If this is a redirected url use this instead
+        QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+        if (!redirectUrl.isEmpty()) {
+            url = redirectUrl;
+        }
+
+        // start the actual download now
+        handleUnsupportedContent(m_manager->get(QNetworkRequest(url)), requestFileName);
+    }
+
+    reply->deleteLater();
+}
+
 void DownloadManager::download(const QNetworkRequest &request, bool requestFileName)
 {
     if (request.url().isEmpty())
         return;
-    handleUnsupportedContent(m_manager->get(request), requestFileName);
+        
+    std::cout << request.url().toString().toStdString() << std::endl;
+
+    // postpone this reply until we can examine it in replyFinished
+    QNetworkReply* reply = m_manager->get(request);
+    reply->setProperty("requestFileName", QVariant(requestFileName));
 }
 
 void DownloadManager::handleUnsupportedContent(QNetworkReply *reply, bool requestFileName)
@@ -233,7 +292,7 @@ void DownloadManager::load()
         QString fileName = settings.value(key + QLatin1String("location")).toString();
         bool done = settings.value(key + QLatin1String("done"), true).toBool();
         if (!url.isEmpty() && !fileName.isEmpty()) {
-            DownloadItem *item = new DownloadItem(0, this);
+            DownloadItem *item = new DownloadItem(0, false, this);
             item->m_output.setFileName(fileName);
             item->fileNameLabel->setText(QFileInfo(item->m_output.fileName()).fileName());
             item->m_url = url;

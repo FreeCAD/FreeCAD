@@ -48,6 +48,7 @@ public:
     App::PropertyFloat Height;
     App::PropertyBool ShowFrame;
     App::PropertyString ViewResult;
+    App::PropertyBool Visible;
 
     /** @name methods overide Feature */
     //@{
@@ -57,7 +58,7 @@ public:
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "DrawingGui::ViewProviderDrawingPage";
+        return "DrawingGui::ViewProviderDrawingClip";
     }
 
 protected:

@@ -302,6 +302,11 @@ class plane:
         self.u = rot.multVec(FreeCAD.Vector(1,0,0))
         self.v = rot.multVec(FreeCAD.Vector(0,1,0))
         self.axis = rot.multVec(FreeCAD.Vector(0,0,1))
+        
+    def inverse(self):
+        "inverts the direction of the working plane"
+        self.u = self.u.negative()
+        self.axis = self.axis.negative()
 
     def save(self):
         "stores the current plane state"

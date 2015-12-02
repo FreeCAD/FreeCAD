@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,7 +30,6 @@
 
 #include <QDialogButtonBox>
 
-#include <Gui/iisTaskPanel/include/iisTaskPanel>
 #include <Gui/Selection.h>
 
 namespace App {
@@ -72,10 +71,22 @@ public:
     { return documentName; }
     void setDocumentName(const std::string& doc)
     { documentName = doc; }
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the document while it is open.
+    */
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the 3d view while it is open.
+    */
     virtual bool isAllowedAlterView(void) const
     { return true; }
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the selection while it is open.
+    */
     virtual bool isAllowedAlterSelection(void) const
     { return true; }
     virtual bool needsFullSpace() const

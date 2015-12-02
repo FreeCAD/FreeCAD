@@ -4,6 +4,15 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+# Uncomment this code if you want to try Eigen's multithread
+#find_package(OpenMP)
+#if (OPENMP_FOUND)
+#    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+#    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+#endif()
+
+# set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEIGEN_NO_DEBUG") # Necessary to avoid SparseQR crash with Eigen 3.2 due to a wrong assertion
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -15,8 +24,8 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -68,20 +77,21 @@ SET(Python_SRCS
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
-SET(FreeGCS_SRCS
-    freegcs/qp_eq.h
-    freegcs/GCS.cpp
-    freegcs/GCS.h
-    freegcs/Util.h
-    freegcs/Geo.h
-    freegcs/Constraints.cpp
-    freegcs/Constraints.h
-    freegcs/SubSystem.cpp
-    freegcs/SubSystem.h
-    freegcs/qp_eq.cpp
-    freegcs/qp_eq.h
+SET(PlaneGCS_SRCS
+    planegcs/qp_eq.h
+    planegcs/GCS.cpp
+    planegcs/GCS.h
+    planegcs/Util.h
+    planegcs/Geo.cpp
+    planegcs/Geo.h
+    planegcs/Constraints.cpp
+    planegcs/Constraints.h
+    planegcs/SubSystem.cpp
+    planegcs/SubSystem.h
+    planegcs/qp_eq.cpp
+    planegcs/qp_eq.h
 )
-SOURCE_GROUP("FreeGCS" FILES ${FreeGCS_SRCS})
+SOURCE_GROUP("PlaneGCS" FILES ${PlaneGCS_SRCS})
 
 SET(SketchModule_SRCS
     AppSketcher.cpp
@@ -93,7 +103,7 @@ SOURCE_GROUP("Module" FILES ${SketchModule_SRCS})
 
 SET(Sketcher_SRCS
     ${Features_SRCS}
-    ${FreeGCS_SRCS}
+    ${PlaneGCS_SRCS}
     ${SketchModule_SRCS}
     ${Python_SRCS}
     ${Properties_SRCS}

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2009     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,6 +37,9 @@ class SMESH_Mesh;
 class SMESH_Hypothesis;
 class TopoDS_Shape;
 class TopoDS_Face;
+class TopoDS_Edge;
+class TopoDS_Vertex;
+class TopoDS_Solid;
 
 namespace Fem
 {
@@ -81,12 +84,24 @@ public:
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     //@}
 
-    /** @name search and retraivel */
+    /** @name search and retrieval */
     //@{
-    /// retriving by region growing
-    std::set<long> getSurfaceNodes(long ElemId,short FaceId, float Angle=360)const;
-    /// retrivinb by face
-    std::set<long> getSurfaceNodes(const TopoDS_Face &face)const;
+    /// retrieving by region growing
+    std::set<long> getSurfaceNodes(long ElemId, short FaceId, float Angle=360)const;
+    /// retrieving by solid
+    std::set<int> getNodesBySolid(const TopoDS_Solid &solid) const;
+    /// retrieving by face
+    std::set<int> getNodesByFace(const TopoDS_Face &face) const;
+    /// retrieving by edge
+    std::set<int> getNodesByEdge(const TopoDS_Edge &edge) const;
+    /// retrieving by vertex
+    std::set<int> getNodesByVertex(const TopoDS_Vertex &vertex) const;
+    /// retrieving node IDs by element ID
+    std::list<int> getElementNodes(int id) const;
+    /// retrieving volume IDs and face IDs number by face
+    std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
+    /// retrieving volume IDs and CalculiX face number by face
+    std::map<int, int> getccxVolumesByFace(const TopoDS_Face &face) const;
     //@}
 
     /** @name Placement control */
@@ -108,7 +123,7 @@ public:
     //@}
 
     struct FemMeshInfo {
-	    int numFaces; 
+        int numFaces; 
         int numNode;
         int numTria;
         int numQuad;

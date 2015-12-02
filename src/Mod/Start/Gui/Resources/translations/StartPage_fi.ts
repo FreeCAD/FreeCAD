@@ -6,7 +6,7 @@
     <message>
       <location filename="StartPage.py" line="50"/>
       <source>FreeCAD Start Center</source>
-      <translation type="unfinished">FreeCAD Aloituskeskus</translation>
+      <translation type="unfinished">FreeCAD aloituskeskus</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="51"/>
@@ -107,11 +107,6 @@
       <location filename="StartPage.py" line="73"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
       <translation type="unfinished">&lt;b&gt;Arkkitehtuuri&lt;/b&gt; Työpöytä on suunniteltu arkkitehtonisten elementtien, kuten seinien tai ikkunoiden käsittelemistä varten. Käynnistää 2D piirroksena ja käyttää niitä apuviivoina rakentaessa arkkitehtonisia objekteja.</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Arkkitehtuurinen suunnittelu</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
@@ -229,11 +224,6 @@
       <translation type="unfinished">Tutoriaalit osio FreeCAD-sivustolla</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">FreeCAD Web-sivuston osan hakutoimintoihin on sisällytetty dto python skriptikieltä komentosarjojen esimerkeissä, selvitykssä ja API-komennoissa.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">Blogi omistettu FreeCAD:n opettamiselle, pääasiassa FreeCAD-yhteisön jäsenet ylläpitävät opetusta</translation>
@@ -274,11 +264,6 @@
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
@@ -287,6 +272,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Arkkitehtisuunnittelu</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">FreeCAD verkkosivujen osio on  omistettu python skripteille, mukana esimerkkejä, selityksiä ja API-komentoja.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">Sinun FreeCAD versio on ajan tasalla.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">FreeCAD:n uusi versio on saatavilla.</translation>
     </message>
   </context>
 </TS>

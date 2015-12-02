@@ -491,6 +491,11 @@
 				<UserDocu>Returns the table of weights of the poles for this B-Spline surface.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getPolesAndWeights">
+			<Documentation>
+				<UserDocu>Returns the table of poles and weights in homogenous ccordinates.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="getResolution" Const="true">
 			<Documentation>
 				<UserDocu>

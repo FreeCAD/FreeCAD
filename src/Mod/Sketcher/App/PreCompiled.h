@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,6 +54,7 @@
 #include <Python.h>
 
 #elif defined(FC_OS_WIN32)
+#define NOMINMAX
 #include <windows.h>
 #endif // _PreComp_
 #endif

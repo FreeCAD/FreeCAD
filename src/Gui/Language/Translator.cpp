@@ -136,7 +136,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"             )] = "ja";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Simplified"   )] = "zh-CN";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional"  )] = "zh-TW";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "kr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "ko";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"              )] = "sv-SE";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";

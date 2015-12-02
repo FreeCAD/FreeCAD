@@ -104,7 +104,7 @@ void TaskMirroredParameters::setupUI()
 
     // Fill data into dialog elements
     ui->lineOriginal->setEnabled(false);
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
+    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL) { // find the first valid original
             ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
@@ -289,6 +289,10 @@ const std::string TaskMirroredParameters::getMirrorPlane(void) const
                ui->comboPlane->count() == maxcount + 2)
         return ui->comboPlane->currentText().toStdString();
     return std::string("");
+}
+
+void TaskMirroredParameters::apply()
+{
 }
 
 TaskMirroredParameters::~TaskMirroredParameters()

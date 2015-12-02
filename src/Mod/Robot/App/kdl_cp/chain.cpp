@@ -25,14 +25,16 @@ namespace KDL {
     using namespace std;
 
     Chain::Chain():
-        segments(0),
-        nrOfJoints(0),
-        nrOfSegments(0)
+            nrOfJoints(0),
+            nrOfSegments(0),
+            segments(0)
     {
     }
 
-    Chain::Chain(const Chain& in):nrOfJoints(0),
-                                  nrOfSegments(0)
+    Chain::Chain(const Chain& in):
+            nrOfJoints(0),
+            nrOfSegments(0),
+            segments(0)
     {
         for(unsigned int i=0;i<in.getNrOfSegments();i++)
             this->addSegment(in.getSegment(i));

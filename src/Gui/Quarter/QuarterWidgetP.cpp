@@ -34,6 +34,10 @@
 #include <Quarter/QuarterWidget.h>
 #include <Quarter/eventhandlers/EventFilter.h>
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4267)
+#endif
+
 #include <QtGui/QApplication>
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>
@@ -76,19 +80,21 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QGLWidget * shar
   initialsoeventmanager(false),
   headlight(NULL),
   cachecontext(NULL),
-  contextmenu(NULL),
   contextmenuenabled(true),
   autoredrawenabled(true),
   interactionmodeenabled(false),
   clearzbuffer(true),
   clearwindow(true),
-  addactions(true)
+  addactions(true),
+  contextmenu(NULL)
 {
   this->cachecontext = findCacheContext(masterptr, sharewidget);
 
   // FIXME: Centralize this as only one custom event filter can be
   // added to an application. (20101019 handegar)
+#ifdef HAVE_SPACENAV_LIB // fixes #0001970
   qApp->setEventFilter(QuarterWidgetP::nativeEventFilter);
+#endif
 }
 
 QuarterWidgetP::~QuarterWidgetP()

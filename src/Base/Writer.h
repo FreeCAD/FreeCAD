@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de)          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,12 +24,15 @@
 #define BASE_WRITER_H
 
 
+#include <set>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <cassert>
 
+#ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
+#endif
 #include <zipios++/zipfile.h>
 #include <zipios++/zipinputstream.h>
 #include <zipios++/zipoutputstream.h>
@@ -78,6 +81,26 @@ public:
     virtual void writeFiles(void)=0;
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
+    /// Set mode
+    void setMode(const std::string& mode);
+    /// Set modes
+    void setModes(const std::set<std::string>& modes);
+    /// Get mode
+    bool getMode(const std::string& mode) const;
+    /// Get modes
+    std::set<std::string> getModes() const;
+    /// Clear mode
+    void clearMode(const std::string& mode);
+    /// Clear modes
+    void clearModes();
+    //@}
+
+    /** @name Error handling */
+    //@{
+    void addError(const std::string&);
+    bool hasErrors() const;
+    void clearErrors();
+    std::vector<std::string> getErrors() const;
     //@}
 
     /** @name pretty formating for XML */
@@ -103,6 +126,8 @@ protected:
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
+    std::vector<std::string> Errors;
+    std::set<std::string> Modes;
 
     short indent;
     char indBuf[1024];
@@ -120,11 +145,10 @@ protected:
  */
 class BaseExport ZipWriter : public Writer
 {
-
 public:
     ZipWriter(const char* FileName);
     ZipWriter(std::ostream&);
-    ~ZipWriter();
+    virtual ~ZipWriter();
 
     virtual void writeFiles(void);
 
@@ -149,11 +173,38 @@ class BaseExport StringWriter : public Writer
 
 public:
     virtual std::ostream &Stream(void){return StrStream;}
-    std::string getString(void){return StrStream.str();}
-    virtual void writeFiles(void){assert(0);}
+    std::string getString(void) const {return StrStream.str();}
+    virtual void writeFiles(void){}
 
 private:
     std::stringstream StrStream;
+};
+
+/*! The FileWriter class
+  This class writes out the data into files into a given directory name.
+  \see Base::Persistence
+  \author Werner Mayer
+ */
+class BaseExport FileWriter : public Writer
+{
+public:
+    FileWriter(const char* DirName);
+    virtual ~FileWriter();
+
+    void putNextEntry(const char* file);
+    virtual void writeFiles(void);
+
+    virtual std::ostream &Stream(void){return FileStream;}
+    /*!
+     This method can be re-implemented in sub-classes to avoid
+     to write out certain objects. The default implementation
+     always returns true.
+     */
+    virtual bool shouldWrite(const std::string& name, const Base::Persistence *Object) const;
+
+protected:
+    std::string DirName;
+    std::ofstream FileStream;
 };
 
 

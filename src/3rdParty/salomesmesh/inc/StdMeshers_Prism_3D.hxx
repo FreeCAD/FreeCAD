@@ -332,7 +332,7 @@ private:
     TPCurveOnHorFaceAdaptor( const TSideFace*   sideFace,
                              const bool         isTop,
                              const TopoDS_Face& horFace)
-      : mySide(sideFace), myFace(horFace), myZ(isTop ? mySide->ColumnHeight() - 1 : 0 ) {}
+      : mySide(sideFace), myZ(isTop ? mySide->ColumnHeight() - 1 : 0 ), myFace(horFace) {}
     gp_Pnt2d Value(const Standard_Real U) const;
     Standard_Real FirstParameter() const { return 0; }
     Standard_Real LastParameter() const { return 1; }

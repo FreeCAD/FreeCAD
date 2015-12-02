@@ -42,8 +42,11 @@
 #endif
 
 #ifdef _USE_3DCONNEXION_SDK
+//windows
+#ifdef Q_WS_WIN
 Gui::GUIApplicationNativeEventAware* Gui::GUIApplicationNativeEventAware::gMouseInput = 0;
 #endif
+#endif //_USE_3DCONNEXION_SDK
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
         QApplication (argc, argv), spaceballPresent(false)
@@ -53,17 +56,36 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, c
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 {
+#ifdef Q_WS_X11
 #ifdef SPNAV_FOUND
     if (spnav_close())
         Base::Console().Log("Couldn't disconnect from spacenav daemon\n");
     else
         Base::Console().Log("Disconnected from spacenav daemon\n");
 #endif
+#endif
 
 #ifdef _USE_3DCONNEXION_SDK
+#ifdef Q_WS_WIN
     if (gMouseInput == this) {
         gMouseInput = 0;
     }
+#endif
+//mac
+#ifdef Q_WS_MACX
+    /* make sure the framework is installed */
+    if (InstallConnexionHandlers == NULL)
+      {
+        Base::Console().Log("3Dconnexion framework not found!\n");
+        return;
+      }
+    /* close the connection with the 3dx driver */
+    //std::cerr << "tdxClientID: " << tdxClientID << std::endl;
+    if (tdxClientID)
+      UnregisterConnexionClient(tdxClientID);
+    CleanupConnexionHandlers();
+    Base::Console().Log("Disconnected from 3DConnexion driver\n");
+#endif
 #endif
 }
 
@@ -71,6 +93,7 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
     mainWindow = window;
 
+#ifdef Q_WS_X11
 #ifdef SPNAV_FOUND
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1)
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
@@ -80,8 +103,10 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
         spaceballPresent = true;
     }
 #endif
+#endif
 
 #ifdef _USE_3DCONNEXION_SDK
+#ifdef Q_WS_WIN
     spaceballPresent = Is3dmouseAttached();
 
     if (spaceballPresent) {
@@ -92,6 +117,41 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
             qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
         }
     }
+#endif
+//mac
+#ifdef Q_WS_MACX
+    OSStatus err;
+    /* make sure the framework is installed */
+    if (InstallConnexionHandlers == NULL)
+      {
+        Base::Console().Log("3Dconnexion framework not found!\n");
+        return;
+      }
+    /* install 3dx message handler in order to receive driver events */
+    err = InstallConnexionHandlers(tdx_drv_handler, 0L, 0L);
+    assert(err == 0);
+    if (err)
+      {
+        Base::Console().Log("Error installing 3Dconnexion handler\n");
+        return;
+      }
+    /* register our app with the driver */
+    //Pascal string Application name required to register driver for application
+    UInt8  tdxAppName[] = {7,'F','r','e','e','C','A','D'};
+    //32bit appID to register driver for application
+    UInt32 tdxAppID = 'FCAd';
+    //std::cerr << "tdxClientID: " << tdxClientID << std::endl;
+    tdxClientID = RegisterConnexionClient(tdxAppID, tdxAppName, kConnexionClientModeTakeOver, kConnexionMaskAll);
+    //std::cerr << "tdxClientID: " << tdxClientID << std::endl;
+    if (tdxClientID == 0)
+      {
+        Base::Console().Log("Couldn't connect to 3Dconnexion driver\n");
+        return;
+      }
+    
+    Base::Console().Log("3Dconnexion device initialized. Client ID: %d\n", tdxClientID);
+    spaceballPresent = true;
+#endif
 #endif // _USE_3DCONNEXION_SDK
 
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();

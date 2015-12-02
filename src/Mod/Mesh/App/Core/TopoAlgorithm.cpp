@@ -146,7 +146,7 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
   // For each internal edge get the adjacent facets. When doing an edge swap we must update
   // this structure.
   std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> > aEdge2Face;
-  for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); pI++)
+  for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); ++pI)
   {
     for (int i = 0; i < 3; i++)
     {
@@ -338,7 +338,7 @@ void MeshTopoAlgorithm::DelaunayFlip(float fMaxAngle)
     // For each internal edge get the adjacent facets.
     std::set<std::pair<unsigned long, unsigned long> > aEdge2Face;
     unsigned long index = 0;
-    for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); pI++, index++) {
+    for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); ++pI, index++) {
         for (int i = 0; i < 3; i++) {
             // ignore open edges
             if (pI->_aulNeighbours[i] != ULONG_MAX) {
@@ -1324,7 +1324,7 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
     // insert new points and faces into the mesh structure
     _rclMesh._aclPointArray.insert(_rclMesh._aclPointArray.end(), newPoints.begin(), newPoints.end());
     for (MeshPointArray::_TIterator it = newPoints.begin(); it != newPoints.end(); ++it)
-        _rclMesh._clBoundBox &= *it;
+        _rclMesh._clBoundBox.Add(*it);
     if (!newFacets.empty()) {
         // Do some checks for invalid point indices
         MeshFacetArray addFacets;
@@ -1386,7 +1386,7 @@ void MeshTopoAlgorithm::HarmonizeNormals (void)
 
 void MeshTopoAlgorithm::FlipNormals (void)
 {
-  for (MeshFacetArray::_TIterator i = _rclMesh._aclFacetArray.begin(); i < _rclMesh._aclFacetArray.end(); i++)
+  for (MeshFacetArray::_TIterator i = _rclMesh._aclFacetArray.begin(); i < _rclMesh._aclFacetArray.end(); ++i)
     i->FlipNormal();
 }
 
@@ -1427,7 +1427,7 @@ void MeshComponents::SearchForComponents(TMode tMode, std::vector<std::vector<un
   // all facets
   std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
   unsigned long k = 0;
-  for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); pI++)
+  for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
     *pI = k++;
 
   SearchForComponents( tMode, aulAllFacets, aclT );

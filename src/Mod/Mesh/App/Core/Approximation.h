@@ -103,11 +103,11 @@ public:
     /**
      * Construction
      */
-    Approximation() : _bIsFitted(false) { }
+    Approximation();
     /**
      * Destroys the object and frees any allocated resources.
      */
-    virtual ~Approximation(){ Clear(); }
+    virtual ~Approximation();
     /**
      * Add point for the fit algorithm.
      */
@@ -188,11 +188,11 @@ public:
     /**
      * Construction
      */
-    PlaneFit(){};
+    PlaneFit();
     /**
      * Destruction
      */
-    virtual ~PlaneFit(){};
+    virtual ~PlaneFit();
     Base::Vector3f GetBase() const;
     Base::Vector3f GetDirU() const;
     Base::Vector3f GetDirV() const;
@@ -229,6 +229,12 @@ public:
      * Get the dimension of the fitted plane.
      */
     void Dimension(float& length, float& width) const;
+    /**
+     * Returns an array of the transformed points relative to the coordinate system
+     * of the plane. If this method is called before the plane is computed an empty
+     * array is returned.
+     */
+    std::vector<Base::Vector3f> GetLocalPoints() const;
 
 protected:
     Base::Vector3f _vBase; /**< Base vector of the plane. */
@@ -260,35 +266,35 @@ public:
      */
     virtual ~QuadraticFit(){};
     /**
-     * Übertragen der Quadric-Koeffizienten
-     * @param ulIndex Nummer des Koeffizienten (0..9)
-     * @return double Wert des Koeffizienten
+     * Get the quadric coefficients
+     * @param ulIndex Number of coefficient (0..9)
+     * @return double value of coefficient
      */
     double GetCoeff(unsigned long ulIndex) const;
     /**
-     * Übertragen der Koeffizientan als Referenz
-     * auf das interne Array
-     * @return const double& Referenz auf das double-Array
+     * Get the quadric coefficients as reference to the
+     * internal array
+     * @return const double& Reference to the double array
      */
     const double& GetCoeffArray() const;
     /**
-     * Aufruf des Fit-Algorithmus
-     * @return float Qualität des Fits.
+     * Invocation of fitting algorithm
+     * @return float Quality of fit.
      */
     float Fit();
 
     void CalcZValues(double x, double y, double &dZ1, double &dZ2) const;
     /**
-     * Berechnen der Krümmungswerte der Quadric in einem bestimmten Punkt.
-     * @param x X-Koordinate
-     * @param y Y-Koordinate
-     * @param z Z-Koordinate
-     * @param rfCurv0 1. Hauptkrümmung
-     * @param rfCurv1 2. Hauptkrümmung
-     * @param rkDir0  Richtung der 1. Hauptkrümmung
-     * @param rkDir1  Richtung der 2. Hauptkrümmung
+     * Calculate the curvatures of the quadric at a given point.
+     * @param x X-coordinate
+     * @param y Y-coordinate
+     * @param z Z-coordinate
+     * @param rfCurv0 1. principal curvature
+     * @param rfCurv1 2. principal curvature
+     * @param rkDir0  Direction of 1. principal curvature
+     * @param rkDir1  Direction of 2. principal curvature
      * @param dDistance
-     * @return bool Fehlerfreie Ausfürhung = true, ansonsten false
+     * @return bool Success = true, otherwise false
      */
     bool GetCurvatureInfo(double x, double y, double z,
                           double &rfCurv0, double &rfCurv1,
@@ -297,32 +303,31 @@ public:
     bool GetCurvatureInfo(double x, double y, double z,
                           double &rfCurv0, double &rfcurv1);
     /**
-     * Aufstellen der Formanmatrix A und Berechnen der Eigenwerte.
-     * @param dLambda1 Eigenwert 1
-     * @param dLambda2 Eigenwert 2
-     * @param dLambda3 Eigenwert 3
-     * @param clEV1    Eigenvektor 1
-     * @param clEV2    Eigenvektor 2
-     * @param clEV3    Eigenvektor 3
+     * Compute form matrix A and calculate Eigenvalues.
+     * @param dLambda1 Eigenvalue 1
+     * @param dLambda2 Eigenvalue 2
+     * @param dLambda3 Eigenvalue 3
+     * @param clEV1    Eigenvector 1
+     * @param clEV2    Eigenvector 2
+     * @param clEV3    Eigenvector 3
      */
     void CalcEigenValues(double &dLambda1, double &dLambda2, double &dLambda3,
                          Base::Vector3f &clEV1, Base::Vector3f &clEV2, Base::Vector3f &clEV3) const;
 
 protected:
-    double _fCoeff[ 10 ];  /**< Ziel der Koeffizienten aus dem Fit */
+    double _fCoeff[ 10 ];  /**< Coefficients of the fit */
 };
 
 // -------------------------------------------------------------------------------
 
 /**
- * Dies ist ein 2,5D-Ansatz, bei dem zunächst die Ausgleichsebene der Punktmenge (P_i = (x,y,z), i=1,...,n) 
- * bestimmt wird. Danach wird eine Parametrisierung der Datenpunkte errechnet. Die Datenpunkte 
- * werden somit bzgl. des lokalen Systems der Ebene dargestellt (P_i = (u,v,w)). 
- * Durch diese transformierten Punkte wird nun eine quadratische Funktion
+ * This is an 2.5D approach which first determines the bestfit plane of the point set (P_i = (x,y,z), i=1,...,n)
+ * to get a parametrisation of the points afterwards. The coordinates of the points with respect to the local
+ * coordinate system of the plane are determined and then a quadratic polynomial function of the form:
  *      w = f(u,v) = a*u^2 + b*v^2 + c*u*v + d*u + e*v + f
- * berechnet.
- * Dieser Ansatz wurde als Alternative für den 3D-Ansatz mit Quadriken entwickelt, da bei
- * Quadriken in (vor allem) ebenen Bereichen recht seltsame Artefakte auftreten.
+ * is determined.
+ * This approach was developed as an alternative for the 3D approach with quadrics because
+ * the latter suffers from strange artifacts in planar areas.
  */
 class MeshExport SurfaceFit : public PlaneFit
 {
@@ -341,6 +346,7 @@ public:
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfcurv1);
     float Fit();
     double Value(double x, double y) const;
+    void GetCoefficients(double& a,double& b,double& c,double& d,double& e,double& f) const;
 
 protected:
     double PolynomFit();
@@ -350,22 +356,20 @@ protected:
 // -------------------------------------------------------------------------------
 
 /**
- * Hilfs-Klasse für den Quadric-Fit. Beinhaltet die 
- * partiellen Ableitungen der Quadric und dient zur
- * Berechnung der Quadrik-Eigenschaften.
+ * Helper class for the quadric fit. Includes the
+ * partial derivates of the quadric and serves for
+ * calculation of the quadric properties.
  */
 class FunctionContainer
 {
 public:
     /**
-     * Die MGC-Algorithmen arbeiten mit Funktionen dieses
-     * Types
+     * WildMagic library uses function with this interface
      */
     typedef double (*Function)(double,double,double);
     /**
-     * Der parametrisierte Konstruktor. Erwartet ein Array
-     * mit den Quadric-Koeffizienten.
-     * @param pKoef Zeiger auf die Quadric-Parameter
+     * The constructor expects an array of quadric coefficients.
+     * @param pKoef Pointer to the quadric coefficients
      *        (double [10])
      */
     FunctionContainer(const double *pKoef)
@@ -374,8 +378,8 @@ public:
         pImplSurf = new Wm4::QuadricSurface<double>( dKoeff );
     }
     /**
-     * Übernehmen der Quadric-Parameter
-     * @param pKoef Zeiger auf die Quadric-Parameter
+     * Apply quadric coefficients
+     * @param pKoef Pointer to the quadric coefficients
      *        (double [10])
      */
     void Assign( const double *pKoef )
@@ -384,28 +388,28 @@ public:
             dKoeff[ ct ] = pKoef[ ct ];
     }
     /**
-     * Destruktor. Löscht die ImpicitSurface Klasse
-     * der MGC-Bibliothek wieder
+     * Destruktor. Deletes the ImpicitSurface instance
+     * of the WildMagic library
      */
     ~FunctionContainer(){ delete pImplSurf; }
     /** 
-     * Zugriff auf die Koeffizienten der Quadric
-     * @param idx Index des Parameters
-     * @return double& Der Koeffizient
+     * Access to the quadric coefficients
+     * @param idx Index to coefficient
+     * @return double& coefficient
      */
     double& operator[](int idx){ return dKoeff[ idx ]; }
     /**
-     * Redirector auf eine Methode der MGC Bibliothek. Ermittelt
-     * die Hauptkrümmungen und ihre Richtungen im angegebenen Punkt.
-     * @param x X-Koordinate
-     * @param y Y-Koordinate
-     * @param z Z-Koordinate
-     * @param rfCurv0 1. Hauptkrümmung
-     * @param rfCurv1 2. Hauptkrümmung
-     * @param rkDir0  Richtung der 1. Hauptkrümmung
-     * @param rkDir1  Richtung der 2. Hauptkrümmung
-     * @param dDistance Ergebnis das die Entfernung des Punktes von der Quadrik angibt.
-     * @return bool Fehlerfreie Ausfürhung = true, ansonsten false
+     * Redirector to a method of the WildMagic library. Determines
+     * the principal curvatures and their directions at the given point.
+     * @param x X-coordinate
+     * @param y Y-coordinate
+     * @param z Z-coordinate
+     * @param rfCurv0 1. principal curvature
+     * @param rfCurv1 2. principal curvature
+     * @param rkDir0  direction of 1. principal curvature
+     * @param rkDir1  direction of 2. principal curvature
+     * @param dDistance Gives distances from the point to the quadric.
+     * @return bool Success = true, otherwise false
      */
     bool CurvatureInfo(double x, double y, double z, 
                        double &rfCurv0, double &rfCurv1,
@@ -502,8 +506,8 @@ public:
     }
    
 protected:
-    double dKoeff[ 10 ];     /**< Koeffizienten der Quadric */
-    Wm4::ImplicitSurface<double> *pImplSurf;  /**< Zugriff auf die MGC-Bibliothek */
+    double dKoeff[ 10 ];     /**< Coefficients of quadric */
+    Wm4::ImplicitSurface<double> *pImplSurf;  /**< Access to the WildMagic library */
 
 private:
     /**

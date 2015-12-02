@@ -123,12 +123,14 @@ public:
 
     virtual void attach(App::DocumentObject *);
     virtual bool useNewSelectionModel(void) const {return false;}
+    Gui::SoFCSelection* getHighlightNode() const { return pcHighlight; }
     virtual QIcon getIcon() const;
     /// Sets the correct display mode
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary=false) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
     /** @name Editing */
     //@{
@@ -169,9 +171,12 @@ protected:
     virtual void selectArea(short, short, short, short, const SbViewportRegion&, SoCamera*);
     void highlightSelection();
     void unhighlightSelection();
+    void highlightComponents();
+    void setHighlightedComponents(bool);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
+    Gui::SoFCSelection* createFromSettings() const;
 
 public:
     static void faceInfoCallback(void * ud, SoEventCallback * n);
@@ -192,6 +197,7 @@ private:
     static void panCamera(SoCamera*, float, const SbPlane&, const SbVec2f&, const SbVec2f&);
 
 protected:
+    Gui::SoFCSelection  * pcHighlight;
     SoDrawStyle         * pcLineStyle;
     SoDrawStyle         * pcPointStyle;
     SoSeparator         * pcOpenEdge;

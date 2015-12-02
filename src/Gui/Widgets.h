@@ -30,6 +30,7 @@
 #include <QLineEdit>
 #include <QPointer>
 #include <QPushButton>
+#include <QPlainTextEdit>
 #include <QBasicTimer>
 #include <QTime>
 
@@ -341,6 +342,30 @@ private:
 
 // ----------------------------------------------------------------------
 
+class PropertyListEditor : public QPlainTextEdit
+{
+    Q_OBJECT
+
+public:
+    PropertyListEditor(QWidget *parent = 0);
+
+    void lineNumberAreaPaintEvent(QPaintEvent *event);
+    int lineNumberAreaWidth();
+
+protected:
+    void resizeEvent(QResizeEvent *event);
+
+private Q_SLOTS:
+    void updateLineNumberAreaWidth(int newBlockCount);
+    void highlightCurrentLine();
+    void updateLineNumberArea(const QRect &, int);
+
+private:
+    QWidget *lineNumberArea;
+};
+
+// ----------------------------------------------------------------------
+
 class GuiExport LabelEditor : public QWidget
 {
     Q_OBJECT
@@ -349,11 +374,13 @@ class GuiExport LabelEditor : public QWidget
     Q_PROPERTY(QString  buttonText  READ buttonText  WRITE setButtonText)
 
 public:
+    enum InputType {String, Float, Integer};
+
     LabelEditor (QWidget * parent = 0);
     virtual ~LabelEditor();
 
     /** 
-    * Returns the filename.
+    * Returns the text.
     */
     QString text() const;
 
@@ -361,6 +388,11 @@ public:
     * Returns the button's text.
     */
     QString buttonText() const;
+
+    /**
+    * Set the input type.
+    */
+    void setInputType(InputType);
 
 public Q_SLOTS:
     virtual void setText(const QString &);
@@ -373,6 +405,8 @@ private Q_SLOTS:
     void changeText();
 
 private:
+    InputType type;
+    QString plainText;
     QLineEdit *lineEdit;
     QPushButton *button;
 };

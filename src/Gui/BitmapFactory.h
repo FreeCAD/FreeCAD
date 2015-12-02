@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,7 @@
 
 #include <Base/Factory.h>
 #include <QPixmap>
+#include <QIcon>
 
 // forward declaration
 class SoSFImage;
@@ -37,7 +38,7 @@ namespace Gui {
   * the main purpose is to collect all build in Bitmaps and
   * hold all paths for the extern bitmaps (files) to serve
   * as a single point of accessing bitmaps in FreeCAD
-  * \author Werner Mayer, Jürgen Riegel
+  * \author Werner Mayer, JÃ¼rgen Riegel
   */
 class BitmapFactoryInstP;
 class GuiExport BitmapFactoryInst : public Base::Factory
@@ -54,12 +55,12 @@ public:
     static BitmapFactoryInst& instance(void);
     static void destruct (void);
 
-    void addCustomPath(const QString&);
-
     /// Adds a path where pixmaps can be found
     void addPath(const QString& path);
     /// Removes a path from the list of pixmap paths
     void removePath(const QString& path);
+    /// Returns the list of search paths
+    QStringList getPaths() const;
     /// Returns the absolute file names of icons found in the given search paths
     QStringList findIconFiles() const;
     /// Adds a build in XPM pixmap under a given name
@@ -68,6 +69,10 @@ public:
     void addPixmapToCache(const char* name, const QPixmap& icon);
     /// Checks whether the pixmap is already registered.
     bool findPixmapInCache(const char* name, QPixmap& icon) const;
+    /** Returns the QIcon corresponding to name in the current icon theme.
+     * If no such icon is found in the current theme fallback is returned instead.
+     */
+    QIcon iconFromTheme(const char* name, const QIcon& fallback = QIcon());
     /// Retrieves a pixmap by name
     QPixmap pixmap(const char* name) const;
     /** Retrieves a pixmap by name and size created by an

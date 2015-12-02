@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *   
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2008                        *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,13 +46,6 @@
 #include <QLocale>
 #include <QTextCodec>
 
-#include <QDomDocument>
-#include <QXmlSimpleReader>
-#include <QXmlInputSource>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-
 // FreeCAD header
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -65,7 +58,7 @@
 
 void PrintInitHelp(void);
 
-const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2014\n"\
+const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2015\n"\
 "  #####                 ####  ###   ####  \n" \
 "  #                    #      # #   #   # \n" \
 "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -73,92 +66,6 @@ const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2
 "  #     #   #### ####  #    #     # #   # \n" \
 "  #     #   #    #     #    #     # #   #  ##  ##  ##\n" \
 "  #     #   #### ####   ### #     # ####   ##  ##  ##\n\n" ;
-
-class Branding
-{
-public:
-    typedef std::map<std::string, std::string> XmlConfig;
-    Branding()
-    {
-        filter.push_back("Application");
-        filter.push_back("WindowTitle");
-        filter.push_back("CopyrightInfo");
-        filter.push_back("MaintainerUrl");
-        filter.push_back("WindowIcon");
-        filter.push_back("ProgramLogo");
-        filter.push_back("ProgramIcons");
-
-        filter.push_back("BuildVersionMajor");
-        filter.push_back("BuildVersionMinor");
-        filter.push_back("BuildRevision");
-        filter.push_back("BuildRevisionDate");
-
-        filter.push_back("SplashScreen");
-        filter.push_back("SplashAlignment");
-        filter.push_back("SplashTextColor");
-        filter.push_back("SplashInfoColor");
-
-        filter.push_back("StartWorkbench");
-
-        filter.push_back("ExeName");
-        filter.push_back("ExeVendor");
-    }
-
-    bool readFile(const QString& fn)
-    {
-        QFile file(fn);
-        if (!file.open(QFile::ReadOnly))
-            return false;
-        if (!evaluateXML(&file, domDocument))
-            return false;
-        file.close();
-        return true;
-    }
-    XmlConfig getUserDefines() const
-    {
-        XmlConfig cfg;
-        QDomElement root = domDocument.documentElement();
-        QDomElement child;
-        if (!root.isNull()) {
-            child = root.firstChildElement();
-            while (!child.isNull()) {
-                std::string name = (const char*)child.localName().toAscii();
-                std::string value = (const char*)child.text().toUtf8();
-                if (std::find(filter.begin(), filter.end(), name) != filter.end())
-                    cfg[name] = value;
-                child = child.nextSiblingElement();
-            }
-        }
-        return cfg;
-    }
-
-private:
-    std::vector<std::string> filter;
-    bool evaluateXML(QIODevice *device, QDomDocument& xmlDocument)
-    {
-        QString errorStr;
-        int errorLine;
-        int errorColumn;
-
-        if (!xmlDocument.setContent(device, true, &errorStr, &errorLine,
-                                    &errorColumn)) {
-            return false;
-        }
-
-        QDomElement root = xmlDocument.documentElement();
-        if (root.tagName() != QLatin1String("Branding")) {
-            return false;
-        }
-        else if (root.hasAttribute(QLatin1String("version"))) {
-            QString attr = root.attribute(QLatin1String("version"));
-            if (attr != QLatin1String("1.0"))
-                return false;
-        }
-
-        return true;
-    }
-    QDomDocument domDocument;
-};
 
 #if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);
@@ -191,13 +98,11 @@ int main( int argc, char ** argv )
     QFile::setDecodingFunction(myDecoderFunc);
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
-    putenv("LANG=C");
-    putenv("LC_ALL=C");
+    putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #elif defined(FC_OS_MACOSX)
     (void)QLocale::system();
-    putenv("LANG=C");
-    putenv("LC_ALL=C");
+    putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #else
     setlocale(LC_NUMERIC, "C");
@@ -254,8 +159,19 @@ int main( int argc, char ** argv )
         dmpfile += "crash.dmp";
         InitMiniDumpWriter(dmpfile);
 #endif
+        std::map<std::string, std::string>::iterator it = App::Application::Config().find("NavigationStyle");
+        if (it != App::Application::Config().end()) {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            // if not already defined do it now (for the very first start)
+            std::string style = hGrp->GetASCII("NavigationStyle", it->second.c_str());
+            hGrp->SetASCII("NavigationStyle", style.c_str());
+        }
+
         Gui::Application::initApplication();
-        Base::Interpreter().replaceStdOutput();
+
+        // Only if 'RunMode' is set to 'Gui' do the replacement
+        if (App::Application::Config()["RunMode"] == "Gui")
+            Base::Interpreter().replaceStdOutput();
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc,argv);
@@ -304,17 +220,6 @@ int main( int argc, char ** argv )
                                   "Please contact the application's support team for more information.\n\n").arg(appName);
         QMessageBox::critical(0, QObject::tr("Initialization of %1 failed").arg(appName), msg);
         exit(101);
-    }
-
-    // Now it's time to read-in the file branding.xml if it exists
-    Branding brand;
-    QString path = QString::fromUtf8(App::GetApplication().getHomePath());
-    QFileInfo fi(path, QString::fromAscii("branding.xml"));
-    if (brand.readFile(fi.absoluteFilePath())) {
-        Branding::XmlConfig cfg = brand.getUserDefines();
-        for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
-            App::Application::Config()[it->first] = it->second;
-        }
     }
 
     // Run phase ===========================================================

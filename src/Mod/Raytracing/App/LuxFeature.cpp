@@ -47,6 +47,7 @@ LuxFeature::LuxFeature(void)
 {
     ADD_PROPERTY(Source,(0));
     ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
+    ADD_PROPERTY(Transparency,(0));
 }
 
 App::DocumentObjectExecReturn *LuxFeature::execute(void)
@@ -67,10 +68,26 @@ App::DocumentObjectExecReturn *LuxFeature::execute(void)
     // write a material entry
     // This must not be done in LuxTools::writeShape!
     const App::Color& c = Color.getValue();
-    result << "MakeNamedMaterial \"FreeCADMaterial_" << Name << "\"" << endl
-           << "    \"color Kd\" [" << c.r << " " << c.g << " " << c.b << "]" << endl
-           << "    \"float sigma\" [0.000000000000000]" << endl
-           << "    \"string type\" [\"matte\"]" << endl << endl;
+    long t = Transparency.getValue();
+    if (t == 0) {
+        result << "MakeNamedMaterial \"FreeCADMaterial_" << Name << "\"" << endl
+               << "    \"color Kd\" [" << c.r << " " << c.g << " " << c.b << "]" << endl
+               << "    \"float sigma\" [0.000000000000000]" << endl
+               << "    \"string type\" [\"matte\"]" << endl << endl;
+    } else {
+        float trans = t/100.0f;
+        result << "MakeNamedMaterial \"FreeCADMaterial_Base_" << Name << "\"" << endl
+               << "    \"color Kd\" [" << c.r << " " << c.g << " " << c.b << "]" << endl
+               << "    \"float sigma\" [0.000000000000000]" << endl
+               << "    \"string type\" [\"matte\"]" << endl << endl
+               << "MakeNamedMaterial \"FreeCADMaterial_Null_" << Name << "\"" << endl
+               << "    \"string type\" [\"null\"]" << endl << endl
+               << "MakeNamedMaterial \"FreeCADMaterial_" << Name << "\"" << endl
+               << "    \"string namedmaterial1\" [\"FreeCADMaterial_Null_" << Name << "\"]" << endl
+               << "    \"string namedmaterial2\" [\"FreeCADMaterial_Base_" << Name << "\"]" << endl
+               << "    \"float amount\" [" << trans << "]" << endl
+               << "    \"string type\" [\"mix\"]" << endl << endl;
+    }
     
     LuxTools::writeShape(result,Name.c_str(),shape);
     

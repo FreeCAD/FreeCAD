@@ -20,37 +20,40 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "chainiksolvervel_pinv_nso.hpp"
+#include "utilities/svd_eigen_HH.hpp"
 
 namespace KDL
 {
-    ChainIkSolverVel_pinv_nso::ChainIkSolverVel_pinv_nso(const Chain& _chain, JntArray _opt_pos, JntArray _weights, double _eps, int _maxiter, int _alpha):
+    ChainIkSolverVel_pinv_nso::ChainIkSolverVel_pinv_nso(const Chain& _chain, JntArray _opt_pos, JntArray _weights, double _eps, int _maxiter, double _alpha):
         chain(_chain),
         jnt2jac(chain),
-        jac(chain.getNrOfJoints()),
-        svd(jac),
-        U(6,JntArray(chain.getNrOfJoints())),
-        S(chain.getNrOfJoints()),
-        V(chain.getNrOfJoints(),JntArray(chain.getNrOfJoints())),
-        tmp(chain.getNrOfJoints()),
-        tmp2(chain.getNrOfJoints()-6),
+        nj(chain.getNrOfJoints()),
+        jac(nj),
+        U(MatrixXd::Zero(6,nj)),
+        S(VectorXd::Zero(nj)),
+        Sinv(VectorXd::Zero(nj)),
+        V(MatrixXd::Zero(nj,nj)),
+        tmp(VectorXd::Zero(nj)),
+        tmp2(VectorXd::Zero(nj)),
         eps(_eps),
         maxiter(_maxiter),
         alpha(_alpha),
-        opt_pos(_opt_pos),
-        weights(_weights)
+        weights(_weights),
+        opt_pos(_opt_pos)
     {
     }
 
-        ChainIkSolverVel_pinv_nso::ChainIkSolverVel_pinv_nso(const Chain& _chain, double _eps, int _maxiter, int _alpha):
+    ChainIkSolverVel_pinv_nso::ChainIkSolverVel_pinv_nso(const Chain& _chain, double _eps, int _maxiter, double _alpha):
         chain(_chain),
         jnt2jac(chain),
-        jac(chain.getNrOfJoints()),
-        svd(jac),
-        U(6,JntArray(chain.getNrOfJoints())),
-        S(chain.getNrOfJoints()),
-        V(chain.getNrOfJoints(),JntArray(chain.getNrOfJoints())),
-        tmp(chain.getNrOfJoints()),
-        tmp2(chain.getNrOfJoints()-6),
+        nj(chain.getNrOfJoints()),
+        jac(nj),
+        U(MatrixXd::Zero(6,nj)),
+        S(VectorXd::Zero(nj)),
+        Sinv(VectorXd::Zero(nj)),
+        V(MatrixXd::Zero(nj,nj)),
+        tmp(VectorXd::Zero(nj)),
+        tmp2(VectorXd::Zero(nj)),
         eps(_eps),
         maxiter(_maxiter),
         alpha(_alpha)
@@ -71,76 +74,90 @@ namespace KDL
         //Do a singular value decomposition of "jac" with maximum
         //iterations "maxiter", put the results in "U", "S" and "V"
         //jac = U*S*Vt
-        int ret = svd.calculate(jac,U,S,V,maxiter);
+        int svdResult = svd_eigen_HH(jac.data,U,S,V,tmp,maxiter);
+        if (0 != svdResult)
+        {
+            qdot_out.data.setZero() ;
+            return svdResult;
+        }
 
-        double sum;
-        unsigned int i,j;
+        unsigned int i;
 
         // We have to calculate qdot_out = jac_pinv*v_in
         // Using the svd decomposition this becomes(jac_pinv=V*S_pinv*Ut):
         // qdot_out = V*S_pinv*Ut*v_in
 
-        //first we calculate Ut*v_in
-        for (i=0;i<jac.columns();i++) {
-            sum = 0.0;
-            for (j=0;j<jac.rows();j++) {
-                sum+= U[j](i)*v_in(j);
-            }
-            //If the singular value is too small (<eps), don't invert it but
-            //set the inverted singular value to zero (truncated svd)
-            tmp(i) = sum*(fabs(S(i))<eps?0.0:1.0/S(i));
+        // S^-1
+        for (i = 0; i < nj; ++i) {
+            Sinv(i) = fabs(S(i))<eps ? 0.0 : 1.0/S(i);
         }
-        //tmp is now: tmp=S_pinv*Ut*v_in, we still have to premultiply
-        //it with V to get qdot_out
-        for (i=0;i<jac.columns();i++) {
-            sum = 0.0;
-            for (j=0;j<jac.columns();j++) {
-                sum+=V[i](j)*tmp(j);
-            }
-            //Put the result in qdot_out
-            qdot_out(i)=sum;
+        for (i = 0; i < 6; ++i) {
+            tmp(i) = v_in(i);
         }
-        
-        //Now onto NULL space
-        
-        for(i = 0; i < jac.columns(); i++)
-            tmp(i) = weights(i)*(opt_pos(i) - q_in(i));
-        
-        //Vtn*tmp
-        for (i=jac.rows()+1;i<jac.columns();i++) {
-            tmp2(i-(jac.rows()+1)) = 0.0;
-            for (j=0;j<jac.columns();j++) {
-                tmp2(i-(jac.rows()+1)) +=V[j](i)*tmp(j);
-            }
+
+        qdot_out.data = V * Sinv.asDiagonal() * U.transpose() * tmp.head(6);
+
+        // Now onto NULL space
+        // Given the cost function g, and the current joints q, desired joints qd, and weights w:
+        // t = g(q) = 1/2 * Sum( w_i * (q_i - qd_i)^2 )
+        //
+        // The jacobian Jc is:
+        //  t_dot = Jc(q) * q_dot
+        //  Jc = dt/dq = w_j * (q_i - qd_i) [1 x nj vector]
+        //
+        // The pseudo inverse (^-1) is
+        // Jc^-1 = w_j * (q_i - qd_i) / A [nj x 1 vector]
+        // A = Sum( w_i^2 * (q_i - qd_i)^2 )
+        //
+        // We can set the change as the step needed to remove the error times a value alpha:
+        // t_dot = -2 * alpha * t
+        //
+        // When we put it together and project into the nullspace, the final result is
+        // q'_out += (I_n - J^-1 * J) * Jc^-1 * (-2 * alpha * g(q))
+
+        double g = 0; // g(q)
+        double A = 0; // normalizing term
+        for (i = 0; i < nj; ++i) {
+            double qd = q_in(i) - opt_pos(i);
+            g += 0.5 * qd*qd * weights(i);
+            A += qd*qd * weights(i)*weights(i);
         }
-        
-        for (i=0;i<jac.columns();i++) {
-            sum = 0.0;
-            for (j=jac.rows()+1;j<jac.columns();j++) {
-                sum +=V[i](j)*tmp2(j);
-            }
-            qdot_out(i) += alpha*sum;
+
+        if (A > 1e-9) {
+          // Calculate inverse Jacobian Jc^-1
+          for (i = 0; i < nj; ++i) {
+              tmp(i) = weights(i)*(q_in(i) - opt_pos(i)) / A;
+          }
+
+          // Calcualte J^-1 * J * Jc^-1 = V*S^-1*U' * U*S*V' * tmp
+          tmp2 = V * Sinv.asDiagonal() * U.transpose() * U * S.asDiagonal() * V.transpose() * tmp;
+
+          for (i = 0; i < nj; ++i) {
+              //std::cerr << i <<": "<< qdot_out(i) <<", "<< -2*alpha*g * (tmp(i) - tmp2(i)) << std::endl;
+              qdot_out(i) += -2*alpha*g * (tmp(i) - tmp2(i));
+          }
         }
-        
         //return the return value of the svd decomposition
-        return ret;
+        return svdResult;
     }
-    
-	int ChainIkSolverVel_pinv_nso::setWeights(const JntArray & _weights)
-	{
-		weights = _weights;
-        return 0;
-	}
-	int ChainIkSolverVel_pinv_nso::setOptPos(const JntArray & _opt_pos)
-	{
-		opt_pos = _opt_pos;
-        return 0;
-	}
-	int ChainIkSolverVel_pinv_nso::setAlpha(const int _alpha)
-	{
-		alpha = _alpha;
-        return 0;
-	}
+
+    int ChainIkSolverVel_pinv_nso::setWeights(const JntArray & _weights)
+    {
+      weights = _weights;
+      return 0;
+    }
+
+    int ChainIkSolverVel_pinv_nso::setOptPos(const JntArray & _opt_pos)
+    {
+      opt_pos = _opt_pos;
+      return 0;
+    }
+
+    int ChainIkSolverVel_pinv_nso::setAlpha(const double _alpha)
+    {
+      alpha = _alpha;
+      return 0;
+    }
 
 
 }

@@ -189,7 +189,7 @@ public:
      * Checks for the given facet indices what will be the degree for each point
      * when these facets are removed from the mesh kernel.
      * The point degree information is stored in \a point_degree. The return value
-     * gices the number of points which will have a degree of zero.
+     * gives the number of points which will have a degree of zero.
      */
     unsigned long getPointDegree(const std::vector<unsigned long>& facets,
         std::vector<unsigned long>& point_degree) const;
@@ -200,10 +200,12 @@ public:
     /// clears the Mesh
     void clear(void);
     void transformToEigenSystem();
+    Base::Matrix4D getEigenSystem(Base::Vector3d& v) const;
     void movePoint(unsigned long, const Base::Vector3d& v);
     void setPoint(unsigned long, const Base::Vector3d& v);
     void smooth(int iterations, float d_max);
     Base::Vector3d getPointNormal(unsigned long) const;
+    std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
     void cut(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);

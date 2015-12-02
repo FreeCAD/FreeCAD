@@ -92,7 +92,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
             Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
             std::vector<App::Color> baseCol = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            if (baseCol.size() == baseMap.Extent()) {
+            if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
                 applyColor(hist[index], baseCol, compCol);
                 setColor = true;
             }

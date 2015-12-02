@@ -34,5 +34,6 @@
         <file>FreeCAD_ro.qm</file>
         <file>FreeCAD_hu.qm</file>
         <file>FreeCAD_pt-PT.qm</file>
+        <file>FreeCAD_sr.qm</file>
     </qresource>
 </RCC> 

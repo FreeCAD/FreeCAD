@@ -9,8 +9,9 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
+    ${QT_QTCORE_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -57,14 +58,30 @@ SOURCE_GROUP("Features" FILES ${Features_SRCS})
 SOURCE_GROUP("Algorithms" FILES ${DrawingAlgos_SRCS})
 
 SET(Drawing_Templates
+    Templates/A0_Landscape_ISO7200.svg
+    Templates/A0_Landscape_plain.svg
+    Templates/A0_Portrait_plain.svg
+    Templates/A1_Landscape_ISO7200.svg
+    Templates/A1_Landscape_plain.svg
+    Templates/A1_Portrait_plain.svg
+    Templates/A2_Landscape_ISO7200.svg
+    Templates/A2_Landscape_plain.svg
+    Templates/A2_Portrait_plain.svg
     Templates/A3_Landscape.svg
+    Templates/A3_Landscape_ISO7200.svg
+    Templates/A3_Landscape_plain.svg
+    Templates/A3_Portrait_plain.svg
     Templates/A4_Landscape.svg
+    Templates/A4_Landscape_ISO7200.svg
+    Templates/A4_Landscape_plain.svg
+    Templates/A4_Portrait_ISO7200.svg
+    Templates/A4_Portrait_plain.svg
 )
 
 if(MSVC)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Drawing_CPP_SRCS ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Drawing PreCompiled.h PreCompiled.cpp Drawing_CPP_SRCS)
+    #add_definitions(-D_PreComp_)
+    #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Drawing_CPP_SRCS ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
+    #ADD_MSVC_PRECOMPILED_HEADER(Drawing PreCompiled.h PreCompiled.cpp Drawing_CPP_SRCS)
 endif(MSVC)
 
 add_library(Drawing SHARED ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})

@@ -30,6 +30,7 @@
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/SbMatrix.h>
 # include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemConstraintGear.h"
@@ -46,7 +47,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintGear, FemGui::ViewProviderFemCo
 
 ViewProviderFemConstraintGear::ViewProviderFemConstraintGear()
 {
-    sPixmap = "Fem_ConstraintGear";
+    sPixmap = "fem-constraint-gear";
 }
 
 ViewProviderFemConstraintGear::~ViewProviderFemConstraintGear()

@@ -21,5 +21,12 @@
     const Geom_Circle &amp; value(void) const {return *getGeom_CirclePtr();}
 	</ClassDeclarations>
 	-->
+	<!--
+	<ClassDeclarations>public:
+      ArcPy(const Geom_Ellipse &amp; circ, PyTypeObject *T = &amp;Type)
+      :PyObjectBase(new Geom_Ellipse(circ),T){}
+    const Geom_Ellipse &amp; value(void) const {return *getGeom_EllipsePtr();}
+	</ClassDeclarations>
+	-->
   </PythonExport>
 </GenerateModel>

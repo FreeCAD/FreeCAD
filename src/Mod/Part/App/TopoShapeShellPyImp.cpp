@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,9 @@
 # include <gp_Ax1.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepCheck_Analyzer.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shell.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
@@ -38,6 +41,7 @@
 #include <Base/GeometryPyCXX.h>
 
 #include "OCCError.h"
+#include "Tools.h"
 #include "TopoShape.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompSolidPy.h"
@@ -188,7 +192,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
 
     try {
         Base::Vector3d pt = Py::Vector(pPnt,false).toVector();
-        BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Face(this->getTopoShapePtr()->_Shape), gp_Pnt(pt.x,pt.y,pt.z));
+        BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Shell(this->getTopoShapePtr()->_Shape), gp_Pnt(pt.x,pt.y,pt.z));
         return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
     }
     catch (Standard_Failure) {
@@ -196,6 +200,82 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
+}
+
+Py::Object TopoShapeShellPy::getMass(void) const
+{
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    double c = props.Mass();
+    return Py::Float(c);
+}
+
+Py::Object TopoShapeShellPy::getCenterOfMass(void) const
+{
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    gp_Pnt c = props.CentreOfMass();
+    return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
+}
+
+Py::Object TopoShapeShellPy::getMatrixOfInertia(void) const
+{
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    gp_Mat m = props.MatrixOfInertia();
+    Base::Matrix4D mat;
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            mat[i][j] = m(i+1,j+1);
+        }
+    }
+    return Py::Matrix(mat);
+}
+
+Py::Object TopoShapeShellPy::getStaticMoments(void) const
+{
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    Standard_Real lx,ly,lz;
+    props.StaticMoments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    return tuple;
+}
+
+Py::Dict TopoShapeShellPy::getPrincipalProperties(void) const
+{
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    GProp_PrincipalProps pprops = props.PrincipalProperties();
+
+    Py::Dict dict;
+    dict.setItem("SymmetryAxis", Py::Boolean(pprops.HasSymmetryAxis() ? true : false));
+    dict.setItem("SymmetryPoint", Py::Boolean(pprops.HasSymmetryPoint() ? true : false));
+    Standard_Real lx,ly,lz;
+    pprops.Moments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    dict.setItem("Moments",tuple);
+    dict.setItem("FirstAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.FirstAxisOfInertia())));
+    dict.setItem("SecondAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.SecondAxisOfInertia())));
+    dict.setItem("ThirdAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.ThirdAxisOfInertia())));
+
+    Standard_Real Rxx,Ryy,Rzz;
+    pprops.RadiusOfGyration(Rxx,Ryy,Rzz);
+    Py::Tuple rog(3);
+    rog.setItem(0, Py::Float(Rxx));
+    rog.setItem(1, Py::Float(Ryy));
+    rog.setItem(2, Py::Float(Rzz));
+    dict.setItem("RadiusOfGyration",rog);
+    return dict;
 }
 
 PyObject *TopoShapeShellPy::getCustomAttributes(const char* /*attr*/) const

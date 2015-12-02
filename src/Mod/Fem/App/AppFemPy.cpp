@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -192,7 +192,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
 //
 //		std::ifstream inputfile;
 //
-//		//Für Debugoutput
+//		//FÃ¼r Debugoutput
 //		ofstream anOutput;
 //		anOutput.open("c:/time_measurement.txt");
 //		time_t seconds1,seconds2;
@@ -320,7 +320,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
 //		double perfect_ax=0.0,perfect_ay=0.0,perfect_az=0.0;
 //
 //		//Do a Monte Carlo approach and start from the Principal Axis System
-//		//and rotate +/- 60° around each axis in a first iteration
+//		//and rotate +/- 60Â° around each axis in a first iteration
 //		double	angle_range_min_x=-M_PI/3.0,angle_range_max_x=M_PI/3.0,
 //				angle_range_min_y=-M_PI/3.0,angle_range_max_y=M_PI/3.0,
 //				angle_range_min_z=-M_PI/3.0,angle_range_max_z=M_PI/3.0;
@@ -409,8 +409,8 @@ static PyObject * importer(PyObject *self, PyObject *args)
 //
 //		for(unsigned int i=0;i<all_elements.size();i++)
 //		{
-//			//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
-//			//Ansonsten ist eine konsistente Datenstruktur nicht möglich
+//			//Die Reihenfolge wie hier die Elemente hinzugefÃ¼gt werden ist sehr wichtig. 
+//			//Ansonsten ist eine konsistente Datenstruktur nicht mÃ¶glich
 //			meshds->AddVolumeWithID(
 //				meshds->FindNode(all_elements[i][0]),
 //				meshds->FindNode(all_elements[i][2]),

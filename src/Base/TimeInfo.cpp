@@ -71,6 +71,10 @@ void TimeInfo::setTime_t (uint64_t seconds)
 
 std::string TimeInfo::currentDateTimeString()
 {
+#if (QT_VERSION >= 0x050300)
+    return QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC)
+        .toString(Qt::ISODate).toStdString();
+#else
     QDateTime local = QDateTime::currentDateTime();
     QDateTime utc = local.toUTC();
     utc.setTimeSpec(Qt::LocalTime);
@@ -78,6 +82,7 @@ std::string TimeInfo::currentDateTimeString()
     local.setUtcOffset(utcOffset);
     QString dm = local.toString(Qt::ISODate);
     return dm.toStdString();
+#endif
 }
 
 std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd )

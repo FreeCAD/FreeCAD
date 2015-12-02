@@ -88,7 +88,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
         float len = (float)bbox.CalcDiagonalLength();
         Base::Vector3d base = mf->Base.getValue();
         Base::Vector3d norm = mf->Normal.getValue();
-        Base::Vector3d cent = bbox.CalcCenter();
+        Base::Vector3d cent = bbox.GetCenter();
         base = cent.ProjToPlane(base, norm);
 
         // setup the graph for editing the mirror plane
@@ -174,6 +174,7 @@ void ViewProviderMirror::unsetEdit(int ModNum)
 
 std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
 {
+    // Make the input object a child (see also #0001482)
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
     return temp;
@@ -252,7 +253,7 @@ void ViewProviderFillet::updateData(const App::Property* prop)
             colFill.resize(fillMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
 
             bool setColor=false;
-            if (colBase.size() == baseMap.Extent()) {
+            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[0], colBase, colFill);
                 setColor = true;
             }
@@ -355,7 +356,7 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
             colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
 
             bool setColor=false;
-            if (colBase.size() == baseMap.Extent()) {
+            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                 applyColor(hist[0], colBase, colCham);
                 setColor = true;
             }

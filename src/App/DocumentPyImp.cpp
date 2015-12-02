@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,11 +52,22 @@ std::string DocumentPy::representation(void) const
 
 PyObject*  DocumentPy::save(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
-    if (!getDocumentPtr()->save()) {
-        PyErr_Format(PyExc_ValueError, "Object attribute 'FileName' is not set");
-        return NULL;
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    try {
+        if (!getDocumentPtr()->save()) {
+            PyErr_SetString(PyExc_ValueError, "Object attribute 'FileName' is not set");
+            return NULL;
+        }
+    }
+    catch (const Base::FileException& e) {
+        PyErr_SetString(PyExc_IOError, e.what());
+        return 0;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
     }
 
     const char* filename = getDocumentPtr()->FileName.getValue();
@@ -72,9 +83,39 @@ PyObject*  DocumentPy::save(PyObject * args)
 PyObject*  DocumentPy::saveAs(PyObject * args)
 {
     char* fn;
+    if (!PyArg_ParseTuple(args, "s", &fn))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    try {
+        if (!getDocumentPtr()->saveAs(fn)) {
+            PyErr_SetString(PyExc_ValueError, "Object attribute 'FileName' is not set");
+            return NULL;
+        }
+    }
+    catch (const Base::FileException& e) {
+        PyErr_SetString(PyExc_IOError, e.what());
+        return 0;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
+    }
+
+    Base::FileInfo fi(fn);
+    if (!fi.isReadable()) {
+        PyErr_Format(PyExc_IOError, "No such file or directory: '%s'", fn);
+        return NULL;
+    }
+
+    Py_Return;
+}
+
+PyObject*  DocumentPy::saveCopy(PyObject * args)
+{
+    char* fn;
     if (!PyArg_ParseTuple(args, "s", &fn))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception 
-    if (!getDocumentPtr()->saveAs(fn)) {
+    if (!getDocumentPtr()->saveCopy(fn)) {
         PyErr_Format(PyExc_ValueError, "Object attribute 'FileName' is not set");
         return NULL;
     }
@@ -242,14 +283,14 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
+    // 'keep' is not needed any more but leave it there for backward compatibility
     PyObject *obj, *rec=Py_False, *keep=Py_False;
     if (!PyArg_ParseTuple(args, "O!|O!O!",&(DocumentObjectPy::Type),&obj,&PyBool_Type,&rec,&PyBool_Type,&keep))
         return NULL;    // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
     DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(),
-        PyObject_IsTrue(rec) ? true : false,
-        PyObject_IsTrue(keep)? true : false);
+        PyObject_IsTrue(rec) ? true : false);
     if (copy) {
         return copy->getPyObject();
     }
@@ -570,8 +611,9 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
         std::stringstream str;
         str << "'Document' object attribute '" << attr 
             << "' must not be set this way" << std::ends;
-        throw Py::AttributeError(str.str());
+        PyErr_SetString(PyExc_RuntimeError, str.str().c_str());
+        return -1;
     }
-    
+
     return 0;
 }

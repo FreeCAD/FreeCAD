@@ -52,11 +52,7 @@ public:
     TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent = 0);
     ~TaskRevolutionParameters();
 
-    QString getReferenceAxis(void) const;
-    double getAngle(void) const;
-    bool getMidplane(void) const;
-    bool getReversed(void) const;
-    const bool updateView() const;
+    void apply();
 
 private Q_SLOTS:
     void onAngleChanged(double);
@@ -67,6 +63,11 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    const bool updateView() const;
+    QString getReferenceAxis(void) const;
+    double getAngle(void) const;
+    bool getMidplane(void) const;
+    bool getReversed(void) const;
 
 private:
 
@@ -98,7 +99,6 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 

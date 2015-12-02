@@ -23,11 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <GC_MakeLine.hxx>
 # include <GC_MakeSegment.hxx>
 # include <Precision.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
 
 #include <Base/VectorPy.h>
@@ -36,6 +38,9 @@
 #include "Geometry.h"
 #include "PointPy.h"
 #include "PointPy.cpp"
+#include "OCCError.h"
+#include "TopoShape.h"
+#include "TopoShapeVertexPy.h"
 
 using namespace Part;
 
@@ -97,6 +102,30 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         "-- Point\n"
         "-- Coordinates vector");
     return -1;
+}
+
+PyObject* PointPy::toShape(PyObject *args)
+{
+    Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+        (this->getGeomPointPtr()->handle());
+    try {
+        if (!this_point.IsNull()) {
+            if (!PyArg_ParseTuple(args, ""))
+                return 0;
+
+            BRepBuilderAPI_MakeVertex mkBuilder(this_point->Pnt());
+            const TopoDS_Vertex& sh = mkBuilder.Vertex();
+            return new TopoShapeVertexPy(new TopoShape(sh));
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a point");
+    return 0;
 }
 
 Py::Float PointPy::getX(void) const

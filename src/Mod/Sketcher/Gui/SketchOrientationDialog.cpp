@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,7 +41,6 @@ SketchOrientationDialog::SketchOrientationDialog(void)
   : QDialog(Gui::getMainWindow()), ui(new Ui_SketchOrientationDialog)
 {
     ui->setupUi(this);
-    ui->Offset_doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
     onPreview();
 
     connect(ui->Reverse_checkBox, SIGNAL(clicked(bool)), this, SLOT(onPreview()));
@@ -57,7 +56,7 @@ SketchOrientationDialog::~SketchOrientationDialog()
 
 void SketchOrientationDialog::accept()
 {
-    double offset = ui->Offset_doubleSpinBox->value();
+    double offset = ui->Offset_doubleSpinBox->value().getValue();
     bool reverse = ui->Reverse_checkBox->isChecked();
     if (ui->XY_radioButton->isChecked()) {
         if (reverse) {

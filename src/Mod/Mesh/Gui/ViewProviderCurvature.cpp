@@ -224,14 +224,6 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     pcColorBar->setRange( fMin, fMax, 3 );
 }
 
-void ViewProviderMeshCurvature::slotCreatedObject(const App::DocumentObject& Obj)
-{
-}
-
-void ViewProviderMeshCurvature::slotDeletedObject(const App::DocumentObject& Obj)
-{
-}
-
 void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     // we get this for any object for that a property has changed. Thus, we must regard that object
@@ -246,14 +238,6 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
             static_cast<Mesh::Curvature*>(pcObject)->Source.touch(); // make sure to recompute the feature
         }
     }
-}
-
-void ViewProviderMeshCurvature::slotCreatedDocument(const App::Document& Doc)
-{
-}
-
-void ViewProviderMeshCurvature::slotDeletedDocument(const App::Document& Doc)
-{
 }
 
 void ViewProviderMeshCurvature::attach(App::DocumentObject *pcFeat)
@@ -315,7 +299,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             // get the view provider of the associated mesh feature
             App::Document* rDoc = pcObject->getDocument();
             Gui::Document* pDoc = Gui::Application::Instance->getDocument(rDoc);
-            Gui::ViewProviderGeometryObject* view = static_cast<Gui::ViewProviderGeometryObject*>(pDoc->getViewProvider(object));
+            ViewProviderMesh* view = static_cast<ViewProviderMesh*>(pDoc->getViewProvider(object));
             this->pcLinkRoot->addChild(view->getHighlightNode());
         }
     }

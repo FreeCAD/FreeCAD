@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMenu>
+#endif
 
 #include "TaskOrthoViews.h"
 #include "ui_TaskOrthoViews.h"
@@ -48,6 +51,12 @@ using namespace std;
 #endif
 
 
+#if _MSC_VER <= 1700
+// maybe in the c++ standard later, older compiler don't have round()
+double round(double r) {
+    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+}
+#endif  // _MSC_VER < 1500
 
 void pagesize(string & page_template, int dims[4], int block[4])
 {
@@ -133,9 +142,9 @@ orthoview::orthoview(App::Document * parent, App::DocumentObject * part, App::Do
     parent_doc = parent;
     myname = parent_doc->getUniqueObjectName("Ortho");
 
-    cx = partbox->CalcCenter().x;
-    cy = partbox->CalcCenter().y;
-    cz = partbox->CalcCenter().z;
+    cx = partbox->GetCenter().x;
+    cy = partbox->GetCenter().y;
+    cz = partbox->GetCenter().z;
 
     this_view = static_cast<Drawing::FeatureViewPart *> (parent_doc->addObject("Drawing::FeatureViewPart", myname.c_str()));
     static_cast<App::DocumentObjectGroup *>(page)->addObject(this_view);
@@ -235,7 +244,17 @@ void orthoview::set_projection(gp_Ax2 cs)
     Z_dir = cs.Direction();
 
     // coord system of created view - same code as used in projection algos
-    actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(Z_dir.X(),Z_dir.Y(),Z_dir.Z()));
+    // actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(Z_dir.X(),Z_dir.Y(),Z_dir.Z()));
+
+    // but as the file gets saved the projection direction gets rounded.
+    // this can lead to choosing a different normal x-direction when the file
+    // gets reloaded see issue #1909
+    // we anticipate the actual_cs after reloading by rounding the Z_dir now
+    const double x = round( Z_dir.X()  * 1e12 ) / 1e12;
+    const double y = round( Z_dir.Y()  * 1e12 ) / 1e12;
+    const double z = round( Z_dir.Z()  * 1e12 ) / 1e12;
+    actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(x,y,z));
+
     actual_X = actual_cs.XDirection();
 
     // angle between desired projection and actual projection
@@ -247,7 +266,8 @@ void orthoview::set_projection(gp_Ax2 cs)
 
     calcCentre();
 
-    this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
+    //this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
+    this_view->Direction.setValue(x,y,z);
     this_view->Rotation.setValue(180 * rotation / PI);
 }
 
@@ -268,11 +288,13 @@ OrthoViews::OrthoViews(const char * pagename, const char * partname)
     part_name = partname;
 
     parent_doc = App::GetApplication().getActiveDocument();
+    parent_doc->openTransaction("Create view");
 
     part = parent_doc->getObject(partname);
     bbox.Add(static_cast<Part::Feature*>(part)->Shape.getBoundingBox());
 
     page = parent_doc->getObject(pagename);
+    Gui::Application::Instance->showViewProvider(page);
     load_page();
 
     min_space = 15;             // should be preferenced
@@ -1140,6 +1162,7 @@ void TaskOrthoViews::toggle_auto(int i)
 
         for (int j = 0; j < 5; j++)
             inputs[j]->setEnabled(true);        //enable user input boxes
+        set_configs();
     }
 }
 
@@ -1342,12 +1365,18 @@ void TaskDlgOrthoViews::clicked(int)
 bool TaskDlgOrthoViews::accept()
 {
     bool check = widget->user_input();
+    App::Document* doc = App::GetApplication().getDocument(this->getDocumentName().c_str());
+    if (doc)
+        doc->commitTransaction();
     return !check;
 }
 
 bool TaskDlgOrthoViews::reject()
 {
     widget->clean_up();
+    App::Document* doc = App::GetApplication().getDocument(this->getDocumentName().c_str());
+    if (doc)
+        doc->abortTransaction();
     return true;
 }
 

@@ -24,7 +24,13 @@
 #ifndef COMPLETEGUI_WORKBENCH_H
 #define COMPLETEGUI_WORKBENCH_H
 
+#include <QList>
+
 #include <Gui/Workbench.h>
+
+#define QSTRING(x) QString::fromAscii(x)
+
+extern QList<QString> mods;
 
 namespace CompleteGui {
 

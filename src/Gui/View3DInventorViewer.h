@@ -203,7 +203,7 @@ public:
     /**
      * Writes the current scenegraph to an Inventor file, either in ascii or binary. 
      */
-    bool dumpToFile(const char* filename, bool binary) const;
+    bool dumpToFile(SoNode* node, const char* filename, bool binary) const;
 
     /** @name Selection methods */
     //@{
@@ -357,6 +357,13 @@ protected:
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
+
+    enum eWinGestureTuneState{
+        ewgtsDisabled, //suppress tuning/re-tuning after errors
+        ewgtsNeedTuning, //gestures are to be retuned upon next event
+        ewgtsTuned
+    };
+    eWinGestureTuneState winGestureTuneState;//See ViewerEventFilter::eventFilter function for explanation
 
 private:
     static void setViewportCB(void * userdata, SoAction * action);

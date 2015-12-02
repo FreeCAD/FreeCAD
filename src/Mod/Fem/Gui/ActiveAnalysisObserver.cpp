@@ -80,10 +80,6 @@ void ActiveAnalysisObserver::highlightActiveObject(const Gui::HighlightMode& mod
         activeDocument->signalHighlightObject(*activeView, mode, on);
 }
 
-void ActiveAnalysisObserver::slotCreatedDocument(const App::Document& Doc)
-{
-}
-
 void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)
 {
     App::Document* d = getDocument();
@@ -95,18 +91,10 @@ void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)
     }
 }
 
-void ActiveAnalysisObserver::slotCreatedObject(const App::DocumentObject& Obj)
-{
-}
-
 void ActiveAnalysisObserver::slotDeletedObject(const App::DocumentObject& Obj)
 {
     if (activeObject == &Obj) {
         activeObject = 0;
         activeView = 0;
     }
-}
-
-void ActiveAnalysisObserver::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
-{
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2005 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -61,6 +61,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
 
@@ -261,32 +262,30 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         if (selaction->SelChange.Type == SelectionChanges::AddSelection || 
             selaction->SelChange.Type == SelectionChanges::RmvSelection) {
             // selection changes inside the 3d view are handled in handleEvent()
-            if (!currenthighlight) {
-                App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
-                App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
-                ViewProvider*vp = Application::Instance->getViewProvider(obj);
-                if (vp && vp->useNewSelectionModel() && vp->isSelectable()) {
-                    SoDetail* detail = vp->getDetail(selaction->SelChange.pSubName);
-                    SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-                    if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
-                        if (detail)
-                            type = SoSelectionElementAction::Append;
-                        else
-                            type = SoSelectionElementAction::All;
-                    }
-                    else {
-                        if (detail)
-                            type = SoSelectionElementAction::Remove;
-                        else
-                            type = SoSelectionElementAction::None;
-                    }
-
-                    SoSelectionElementAction action(type);
-                    action.setColor(this->colorSelection.getValue());
-                    action.setElement(detail);
-                    action.apply(vp->getRoot());
-                    delete detail;
+            App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
+            App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
+            ViewProvider*vp = Application::Instance->getViewProvider(obj);
+            if (vp && vp->useNewSelectionModel() && vp->isSelectable()) {
+                SoDetail* detail = vp->getDetail(selaction->SelChange.pSubName);
+                SoSelectionElementAction::Type type = SoSelectionElementAction::None;
+                if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
+                    if (detail)
+                        type = SoSelectionElementAction::Append;
+                    else
+                        type = SoSelectionElementAction::All;
                 }
+                else {
+                    if (detail)
+                        type = SoSelectionElementAction::Remove;
+                    else
+                        type = SoSelectionElementAction::None;
+                }
+
+                SoSelectionElementAction action(type);
+                action.setColor(this->colorSelection.getValue());
+                action.setElement(detail);
+                action.apply(vp->getRoot());
+                delete detail;
             }
         }
         else if (selaction->SelChange.Type == SelectionChanges::ClrSelection ||
@@ -706,13 +705,14 @@ void SoVRMLAction::initClass()
     SO_ACTION_ADD_METHOD(SoCoordinate3,callDoAction);
     SO_ACTION_ADD_METHOD(SoMaterialBinding,callDoAction);
     SO_ACTION_ADD_METHOD(SoMaterial,callDoAction);
+    SO_ACTION_ADD_METHOD(SoNormalBinding,callDoAction);
     SO_ACTION_ADD_METHOD(SoGroup,callDoAction);
     SO_ACTION_ADD_METHOD(SoIndexedLineSet,callDoAction);
     SO_ACTION_ADD_METHOD(SoIndexedFaceSet,callDoAction);
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoVRMLAction::SoVRMLAction()
+SoVRMLAction::SoVRMLAction() : overrideMode(true)
 {
     SO_ACTION_CONSTRUCTOR(SoVRMLAction);
 }
@@ -721,7 +721,33 @@ SoVRMLAction::~SoVRMLAction()
 {
 }
 
-void SoVRMLAction::callDoAction(SoAction *action,SoNode *node)
+void SoVRMLAction::setOverrideMode(SbBool on)
 {
+    overrideMode = on;
+}
+
+SbBool SoVRMLAction::isOverrideMode() const
+{
+    return overrideMode;
+}
+
+void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
+{
+    if (node->getTypeId().isDerivedFrom(SoNormalBinding::getClassTypeId()) && action->isOfType(SoVRMLAction::getClassTypeId())) {
+        SoVRMLAction* vrmlAction = static_cast<SoVRMLAction*>(action);
+        if (vrmlAction->overrideMode) {
+            SoNormalBinding* bind = static_cast<SoNormalBinding*>(node);
+            vrmlAction->bindList.push_back(bind->value.getValue());
+            // this normal binding causes some problems for the part view provider
+            // See also #0002222: Number of normals in exported VRML is wrong
+            if (bind->value.getValue() == static_cast<int>(SoNormalBinding::PER_VERTEX_INDEXED))
+                bind->value = SoNormalBinding::OVERALL;
+        }
+        else if (!vrmlAction->bindList.empty()) {
+            static_cast<SoNormalBinding*>(node)->value = static_cast<SoNormalBinding::Binding>(vrmlAction->bindList.front());
+            vrmlAction->bindList.pop_front();
+        }
+    }
+
     node->doAction(action);
 }

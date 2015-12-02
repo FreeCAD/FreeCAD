@@ -568,6 +568,10 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
                 hide();
                 return true;
             }
+            else if ((ke->key() == Qt::Key_Minus) && (ke->modifiers() & Qt::ShiftModifier)) {
+                // do nothing here, but this check is needed to ignore underscore
+                // which in Qt 4.8 gives Key_Minus instead of Key_Underscore
+            }
             else if (this->hideKeys.indexOf(ke->key()) > -1) {
                 itemActivated(currentItem());
                 return false;
@@ -586,9 +590,9 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
                 itemActivated(currentItem());
                 return false;
             }
-            else if (ke->key() == Qt::Key_Shift || ke->key() == Qt::Key_Control || 
-                       ke->key() == Qt::Key_Meta || ke->key() == Qt::Key_Alt || 
-                       ke->key() == Qt::Key_AltGr) {
+            else if (ke->key() == Qt::Key_Shift || ke->key() == Qt::Key_Control ||
+                     ke->key() == Qt::Key_Meta || ke->key() == Qt::Key_Alt ||
+                     ke->key() == Qt::Key_AltGr) {
                 // filter these meta keys to avoid to call keyboardSearch()
                 return true;
             }

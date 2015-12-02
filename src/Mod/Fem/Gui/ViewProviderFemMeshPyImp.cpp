@@ -6,9 +6,13 @@
 
 #include <App/DocumentObjectPy.h>
 
-#include "Mod/Fem/Gui/ViewProviderFemMesh.h"
-#include "Mod/Fem/App/FemResultVector.h"
-#include "Mod/Fem/App/FemResultValue.h"
+#include <Mod/Fem/Gui/ViewProviderFemMesh.h>
+#include <Mod/Fem/App/FemResultObject.h>
+#include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemMesh.h>
+#include <SMESH_Mesh.hxx>
+#include <SMESHDS_Mesh.hxx>
+#include <SMDSAbs_ElementType.hxx>
 
 // inclusion of the generated files (generated out of ViewProviderFemMeshPy.xml)
 #include "ViewProviderFemMeshPy.h"
@@ -24,13 +28,13 @@ std::string ViewProviderFemMeshPy::representation(void) const
 
 
 
-PyObject* ViewProviderFemMeshPy::animate(PyObject * args)
+PyObject* ViewProviderFemMeshPy::applyDisplacement(PyObject * args)
 {
     double factor;
     if (!PyArg_ParseTuple(args, "d", &factor))
         return 0;
 
-    this->getViewProviderFemMeshPtr()->animateNodes(factor);
+    this->getViewProviderFemMeshPtr()->applyDisplacementToNodes(factor);
 
     Py_Return;
 }
@@ -58,122 +62,72 @@ App::Color calcColor(double value,double min, double max)
 }
 
 
-PyObject* ViewProviderFemMeshPy::setNodeColorByResult(PyObject *args)
+PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject *args)
 {
-	// statistical values get collected and returned
-	double max = -1e12;
+    double max = -1e12;
     double min = +1e12;
-	double avg = 0;
+    PyObject *node_ids_py;
+    PyObject *values_py;
 
-    PyObject *object=0;
-    int type = 0;
-    if (PyArg_ParseTuple(args,"O!|i",&(App::DocumentObjectPy::Type), &object, &type)) {
-        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
-        if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultValue::getClassTypeId())){
-            Fem::FemResultValue *result = static_cast<Fem::FemResultValue*>(obj);
-            const std::vector<long> & Ids = result->ElementNumbers.getValues() ;
-            const std::vector<double> & Vals = result->Values.getValues() ;
-            std::vector<App::Color> NodeColors(Vals.size());
-			for(std::vector<double>::const_iterator it= Vals.begin();it!=Vals.end();++it){
-                if(*it > max)
-                    max = *it;
-                if(*it < min)
-                    min = *it;
-				avg += *it;
-			}
-			avg /= Vals.size();
-
-            // fill up color vector
-            long i=0;
-            for(std::vector<double>::const_iterator it= Vals.begin();it!=Vals.end();++it,i++)
-                NodeColors[i] = calcColor(*it,0.0,max);    
-          
-            // set the color to the view-provider 
-            this->getViewProviderFemMeshPtr()->setColorByNodeId(Ids,NodeColors);
-
-
-        }else if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultVector::getClassTypeId())){
-            Fem::FemResultVector *result = static_cast<Fem::FemResultVector*>(obj);
-            const std::vector<long> & Ids = result->ElementNumbers.getValues() ;
-            const std::vector<Base::Vector3d> & Vecs = result->Values.getValues() ;
-            std::vector<App::Color> NodeColors(Vecs.size());
-
-			for(std::vector<Base::Vector3d>::const_iterator it= Vecs.begin();it!=Vecs.end();++it){
-                double val;
-                if(type == 0)
-                    val = it->Length();
-                else if (type == 1)
-                    val = it->x;
-                else if (type == 2)
-                    val = it->y;
-                else if (type == 3)
-                    val = it->z;
-                else 
-                    val = it->Length();
-
-                if(val > max)
-                    max = val;
-                if(val < min)
-                    min = val;
-				avg += val;
-            }
-			avg /= Vecs.size();
-
-            // fill up color vector
-            long i=0;
-            for(std::vector<Base::Vector3d>::const_iterator it= Vecs.begin();it!=Vecs.end();++it,i++)
-                if(type == 0)
-                    NodeColors[i] = calcColor(it->Length(),0.0,max);
-                else if (type == 1)
-                    NodeColors[i] = calcColor(it->x,min,max);
-                else if (type == 2)
-                    NodeColors[i] = calcColor(it->y,min,max);
-                else if (type == 3)
-                    NodeColors[i] = calcColor(it->z,min,max);
-                else
-                    NodeColors[i] = calcColor(it->Length(),0.0,max);
-
-            // set the color to the view-provider 
-            this->getViewProviderFemMeshPtr()->setColorByNodeId(Ids,NodeColors);
-
-
-        }else{
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Argument has to be a ResultValue or ResultVector!");
-            return 0;
+    if (PyArg_ParseTuple(args,"O!O!",&PyList_Type, &node_ids_py, &PyList_Type, &values_py)) {
+        std::vector<long> ids;
+        std::vector<double> values;
+        int num_items = PyList_Size(node_ids_py);
+        if (num_items < 0) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "PyList_Size < 0. That is not a valid list!");
+            Py_Return;
         }
-    }
-
-	Py::Tuple res(3);
-	res[0] = Py::Float(min);
-	res[1] = Py::Float(max);
-	res[2] = Py::Float(avg);
-
-	return Py::new_reference_to(res);
-
-}
-
-PyObject* ViewProviderFemMeshPy::setNodeDisplacementByResult(PyObject *args)
-{
-    PyObject *object=0;
-    if (PyArg_ParseTuple(args,"O!",&(App::DocumentObjectPy::Type), &object)) {
-        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
-        if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultVector::getClassTypeId())){
-            Fem::FemResultVector *result = static_cast<Fem::FemResultVector*>(obj);
-            const std::vector<long> & Ids = result->ElementNumbers.getValues() ;
-            const std::vector<Base::Vector3d> & Vecs = result->Values.getValues() ;
-            // set the displacement to the view-provider 
-            this->getViewProviderFemMeshPtr()->setDisplacementByNodeId(Ids,Vecs);
-
-
-        }else{
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Argument has to be a ResultVector!");
-            return 0;
+        std::vector<App::Color> node_colors(num_items);
+        for (int i=0; i<num_items; i++){
+            PyObject *id_py = PyList_GetItem(node_ids_py, i);
+            long id = PyLong_AsLong(id_py);
+            ids.push_back(id);
+            PyObject *value_py = PyList_GetItem(values_py, i);
+            double val = PyFloat_AsDouble(value_py);
+            values.push_back(val);
+            if(val > max)
+                max = val;
+            if(val < min)
+                min = val;
         }
+        long i=0;
+        for(std::vector<double>::const_iterator it=values.begin(); it!=values.end(); ++it, i++)
+            node_colors[i] = calcColor(*it, min, max);
+        this->getViewProviderFemMeshPtr()->setColorByNodeId(ids, node_colors);
+    } else {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeByScalars");
     }
-
     Py_Return;
-
 }
+
+
+PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject *args)
+{
+    PyObject *node_ids_py;
+    PyObject *vectors_py;
+    if (PyArg_ParseTuple(args,"O!O!",&PyList_Type, &node_ids_py, &PyList_Type, &vectors_py)) {
+        std::vector<long> ids;
+        std::vector<Base::Vector3d> vectors;
+        int num_items = PyList_Size(node_ids_py);
+        if (num_items < 0) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "PyList_Size < 0. That is not a valid list!");
+            Py_Return;
+        }
+        for (int i=0; i<num_items; i++){
+            PyObject *id_py = PyList_GetItem(node_ids_py, i);
+            long id = PyLong_AsLong(id_py);
+            ids.push_back(id);
+            PyObject *vector_py = PyList_GetItem(vectors_py, i);
+            Base::Vector3d vec = Base::getVectorFromTuple<double>(vector_py);
+            vectors.push_back(vec);
+        }
+        this->getViewProviderFemMeshPtr()->setDisplacementByNodeId(ids, vectors);
+    } else {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeDisplacementByVectors");
+    }
+    Py_Return;
+}
+
 Py::Dict ViewProviderFemMeshPy::getNodeColor(void) const
 {
     //return Py::List();
@@ -269,13 +223,18 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 
 void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
-    std::set<long> res;
+    ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
+    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>
+        (vp->getObject())->FemMesh).getValue().getSMesh())->GetMeshDS();
 
-    for( Py::List::iterator it = arg.begin(); it!= arg.end();++it){
-        Py::Int id(*it);
-        if(id)
+    std::set<long> res;
+    for(Py::List::iterator it = arg.begin(); it!= arg.end();++it){
+        long id = static_cast<long>(Py::Int(*it));
+        const SMDS_MeshNode *node = data->FindNode(id);
+        if(node)
             res.insert(id);
     }
+
     this->getViewProviderFemMeshPtr()->setHighlightNodes(res);
 }
 

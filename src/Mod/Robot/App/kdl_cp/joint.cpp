@@ -29,6 +29,7 @@ namespace KDL {
       name(_name),type(_type),scale(_scale),offset(_offset),inertia(_inertia),damping(_damping),stiffness(_stiffness)
     {
       if (type == RotAxis || type == TransAxis) throw joint_type_ex;
+      q_previous = 0;
     }
 
     // constructor for joint along x,y or z axis, at origin of reference frame
@@ -37,12 +38,14 @@ namespace KDL {
       name("NoName"),type(_type),scale(_scale),offset(_offset),inertia(_inertia),damping(_damping),stiffness(_stiffness)
     {
       if (type == RotAxis || type == TransAxis) throw joint_type_ex;
+      q_previous = 0;
     }
 
     // constructor for joint along arbitrary axis, at arbitrary origin
     Joint::Joint(const std::string& _name, const Vector& _origin, const Vector& _axis, const JointType& _type, const double& _scale, 
                  const double& _offset, const double& _inertia, const double& _damping, const double& _stiffness):
-      name(_name), origin(_origin), axis(_axis / _axis.Norm()), type(_type),scale(_scale),offset(_offset),inertia(_inertia),damping(_damping),stiffness(_stiffness)
+      name(_name), type(_type),scale(_scale),offset(_offset),inertia(_inertia),damping(_damping),stiffness(_stiffness)
+      , axis(_axis / _axis.Norm()), origin(_origin)
     {
       if (type != RotAxis && type != TransAxis) throw joint_type_ex;
 
@@ -55,7 +58,8 @@ namespace KDL {
     // constructor for joint along arbitrary axis, at arbitrary origin
     Joint::Joint(const Vector& _origin, const Vector& _axis, const JointType& _type, const double& _scale, 
                  const double& _offset, const double& _inertia, const double& _damping, const double& _stiffness):
-      name("NoName"), origin(_origin), axis(_axis / _axis.Norm()), type(_type),scale(_scale),offset(_offset),inertia(_inertia),damping(_damping),stiffness(_stiffness)
+          name("NoName"), type(_type),scale(_scale),offset(_offset),inertia(_inertia),damping(_damping),stiffness(_stiffness),
+          axis(_axis / _axis.Norm()),origin(_origin)
     {
       if (type != RotAxis && type != TransAxis) throw joint_type_ex;
 
@@ -71,41 +75,32 @@ namespace KDL {
 
     Frame Joint::pose(const double& q)const
     {
-
         switch(type){
-        case RotAxis:{
+        case RotAxis:
             // calculate the rotation matrix around the vector "axis"
             if (q != q_previous){
                 q_previous = q;
                 joint_pose.M = Rotation::Rot2(axis, scale*q+offset);
             }
             return joint_pose;
-            break;}
         case RotX:
             return Frame(Rotation::RotX(scale*q+offset));
-            break;
         case RotY:
             return  Frame(Rotation::RotY(scale*q+offset));
-            break;
         case RotZ:
             return  Frame(Rotation::RotZ(scale*q+offset));
-            break;
         case TransAxis:
             return Frame(origin + (axis * (scale*q+offset)));
-            break;
         case TransX:
             return  Frame(Vector(scale*q+offset,0.0,0.0));
-            break;
         case TransY:
             return Frame(Vector(0.0,scale*q+offset,0.0));
-            break;
         case TransZ:
             return Frame(Vector(0.0,0.0,scale*q+offset));
-            break;
         case None:
             return Frame::Identity();
-            break;
         }
+        return Frame::Identity();
     }
 
     Twist Joint::twist(const double& qdot)const
@@ -113,32 +108,24 @@ namespace KDL {
         switch(type){
         case RotAxis:
             return Twist(Vector(0,0,0), axis * ( scale * qdot));
-            break;
         case RotX:
             return Twist(Vector(0.0,0.0,0.0),Vector(scale*qdot,0.0,0.0));
-            break;
         case RotY:
             return Twist(Vector(0.0,0.0,0.0),Vector(0.0,scale*qdot,0.0));
-            break;
         case RotZ:
             return Twist(Vector(0.0,0.0,0.0),Vector(0.0,0.0,scale*qdot));
-            break;
-	case TransAxis:
-	    return Twist(axis * (scale * qdot), Vector(0,0,0));
-	    break;
+        case TransAxis:
+            return Twist(axis * (scale * qdot), Vector(0,0,0));
         case TransX:
             return Twist(Vector(scale*qdot,0.0,0.0),Vector(0.0,0.0,0.0));
-            break;
         case TransY:
             return Twist(Vector(0.0,scale*qdot,0.0),Vector(0.0,0.0,0.0));
-            break;
         case TransZ:
             return Twist(Vector(0.0,0.0,scale*qdot),Vector(0.0,0.0,0.0));
-            break;
         case None:
             return Twist::Zero();
-            break;
         }
+        return Twist::Zero();
     }
 
   Vector Joint::JointAxis() const
@@ -147,32 +134,24 @@ namespace KDL {
       {
       case RotAxis:
         return axis;
-        break;
       case RotX:
         return Vector(1.,0.,0.);
-        break;
       case RotY:
         return Vector(0.,1.,0.);
-        break;
       case RotZ:
         return Vector(0.,0.,1.);
-        break;
       case TransAxis:
         return axis;
-        break;
       case TransX:
         return Vector(1.,0.,0.);
-        break;
       case TransY:
         return Vector(0.,1.,0.);
-        break;
       case TransZ:
         return Vector(0.,0.,1.);
-        break;
       case None:
         return Vector::Zero();
-        break;
       }
+    return Vector::Zero();
   }
 
   Vector Joint::JointOrigin() const

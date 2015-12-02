@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,17 +52,26 @@ PROPERTY_SOURCE(Drawing::FeaturePage, App::DocumentObjectGroup)
 
 const char *group = "Drawing view";
 
-FeaturePage::FeaturePage(void) 
+FeaturePage::FeaturePage(void) : numChildren(0)
 {
     static const char *group = "Drawing view";
 
     ADD_PROPERTY_TYPE(PageResult ,(0),group,App::Prop_Output,"Resulting SVG document of that page");
-    ADD_PROPERTY_TYPE(Template   ,(""),group,App::Prop_None  ,"Template for the page");
+    ADD_PROPERTY_TYPE(Template   ,(""),group,App::Prop_Transient  ,"Template for the page");
     ADD_PROPERTY_TYPE(EditableTexts,(""),group,App::Prop_None,"Substitution values for the editable strings in the template");
 }
 
 FeaturePage::~FeaturePage()
 {
+}
+
+void FeaturePage::onBeforeChange(const App::Property* prop)
+{
+    if (prop == &Group) {
+        numChildren = Group.getSize();
+    }
+
+    App::DocumentObjectGroup::onBeforeChange(prop);
 }
 
 /// get called by the container when a Property was changed
@@ -85,8 +94,30 @@ void FeaturePage::onChanged(const App::Property* prop)
         if (!this->isRestoring()) {
             EditableTexts.setValues(getEditableTextsFromTemplate());
         }
+    } else if (prop == &Group) {
+        if (Group.getSize() != numChildren) {
+            numChildren = Group.getSize();
+            touch();
+        }
     }
+
     App::DocumentObjectGroup::onChanged(prop);
+}
+
+void FeaturePage::onDocumentRestored()
+{
+    // Needs to be tmp. set because otherwise the custom text gets overridden (#0002064)
+    this->StatusBits.set(4); // the 'Restore' flag
+
+    Base::FileInfo fi(PageResult.getValue());
+    std::string path = App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName();
+    // try to find the template in user dir/Templates first
+    Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+    if (tempfi.exists())
+        path = tempfi.filePath();
+    Template.setValue(path);
+
+    this->StatusBits.reset(4); // the 'Restore' flag
 }
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)
@@ -133,12 +164,16 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
                 if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
                     Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
-                    ofile << View->ViewResult.getValue();
-                    ofile << tempendl << tempendl << tempendl;
+                    if (View->Visible.getValue()) {
+                        ofile << View->ViewResult.getValue();
+                        ofile << tempendl << tempendl << tempendl;
+                    }
                 } else if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId()) ) {
                     Drawing::FeatureClip *Clip = dynamic_cast<Drawing::FeatureClip *>(*It);
-                    ofile << Clip->ViewResult.getValue();
-                    ofile << tempendl << tempendl << tempendl;
+                    if (Clip->Visible.getValue()) {
+                        ofile << Clip->ViewResult.getValue();
+                        ofile << tempendl << tempendl << tempendl;
+                    }
                 } else if ( (*It)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) ) {
                     // getting children inside subgroups too
                     App::DocumentObjectGroup *SubGroup = dynamic_cast<App::DocumentObjectGroup *>(*It);
@@ -146,8 +181,10 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
                     for (std::vector<App::DocumentObject*>::const_iterator Grit= SubGrp.begin();Grit!=SubGrp.end();++Grit) {
                         if ( (*Grit)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
                             Drawing::FeatureView *SView = dynamic_cast<Drawing::FeatureView *>(*Grit);
-                            ofile << SView->ViewResult.getValue();
-                            ofile << tempendl << tempendl << tempendl;
+                            if (SView->Visible.getValue()) {
+                                ofile << SView->ViewResult.getValue();
+                                ofile << tempendl << tempendl << tempendl;
+                            }
                         }
                     }
                 }

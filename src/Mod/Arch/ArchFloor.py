@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,10 +34,11 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeFloor(objectslist=None,baseobj=None,name=translate("Arch","Floor")):
+def makeFloor(objectslist=None,baseobj=None,name="Floor"):
     '''makeFloor(objectslist): creates a floor including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
+    obj.Label = translate("Arch",name)
     _Floor(obj)
     if FreeCAD.GuiUp:
         _ViewProviderFloor(obj.ViewObject)
@@ -55,7 +56,7 @@ class _CommandFloor:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         ok = False
@@ -80,7 +81,7 @@ class _CommandFloor:
             FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        
+
 class _Floor:
     "The Floor object"
     def __init__(self,obj):
@@ -117,21 +118,21 @@ class _Floor:
                 if Draft.getType(o) in ["Wall","Structure"]:
                     if not o.Height.Value:
                         o.Proxy.execute(o)
-        
+
     def addObject(self,child):
         if hasattr(self,"Object"):
             g = self.Object.Group
             if not child in g:
                 g.append(child)
                 self.Object.Group = g
-        
+
     def removeObject(self,child):
         if hasattr(self,"Object"):
             g = self.Object.Group
             if child in g:
                 g.remove(child)
                 self.Object.Group = g
-    
+
 class _ViewProviderFloor:
     "A View Provider for the Floor object"
     def __init__(self,vobj):
@@ -143,8 +144,8 @@ class _ViewProviderFloor:
 
     def attach(self,vobj):
         self.Object = vobj.Object
-        return    
-    
+        return
+
     def claimChildren(self):
         return self.Object.Group
 
@@ -154,5 +155,5 @@ class _ViewProviderFloor:
     def __setstate__(self,state):
         return None
 
-if FreeCAD.GuiUp: 
+if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Floor',_CommandFloor())

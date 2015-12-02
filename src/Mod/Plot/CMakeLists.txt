@@ -1,8 +1,9 @@
+PYSIDE_WRAP_RC(Plot_QRC_SRCS resources/Plot.qrc)
+
 SET(PlotMain_SRCS
 	Plot.py
 	InitGui.py
 	PlotGui.py
-	Plot_rc.py
 )
 SOURCE_GROUP("" FILES ${PlotMain_SRCS})
 
@@ -50,10 +51,15 @@ SOURCE_GROUP("plotutils" FILES ${PlotUtils_SRCS})
 SET(all_files ${PlotMain_SRCS} ${PlotAxes_SRCS} ${PlotLabels_SRCS} ${PlotPositions_SRCS} ${PlotSave_SRCS} ${PlotSeries_SRCS} ${PlotUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Plot ALL
-    SOURCES ${all_files}
+    SOURCES ${all_files} ${Plot_QRC_SRCS}
 )
 
 fc_copy_sources(Plot "${CMAKE_BINARY_DIR}/Mod/Plot" ${all_files})
+
+fc_target_copy_resource(Plot
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Plot
+    Plot_rc.py)
 
 INSTALL(
     FILES
@@ -94,6 +100,7 @@ INSTALL(
 INSTALL(
     FILES
         ${PlotMain_SRCS}
+        ${Plot_QRC_SRCS}
     DESTINATION
         Mod/Plot
 )

@@ -72,8 +72,6 @@ public:
     void setMesh( Mesh::Feature* );
 
 private:
-    /** Checks if a new document was created */
-    void slotCreatedDocument(const App::Document& Doc);
     /** Checks if the given document is about to be closed */
     void slotDeletedDocument(const App::Document& Doc);
     /** Checks if a new object was added. */

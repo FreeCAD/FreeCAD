@@ -216,7 +216,7 @@ def getcolor(color):
             b = float(int(color[3],16)*17/255.0)
         return (r,g,b,0.0)
     elif color.lower().startswith('rgb('):
-        cvalues=color[3:].lstrip('(').rstrip(')').replace('%',' ').split(',')
+        cvalues=color[3:].lstrip('(').rstrip(')').replace('%','').split(',')
         if '%' in color:
             r,g,b = [int(cv)/100.0 for cv in cvalues]
         else:
@@ -229,6 +229,21 @@ def getcolor(color):
             return (r,g,b,0.0)
         #for k,v in svgcolors.iteritems():
         #    if (k.lower() == color.lower()): pass
+
+def transformCopyShape(shape,m):
+    """apply transformation matrix m on given shape
+since OCCT 6.8.0 transformShape can be used to apply certian non-orthogonal
+transformations on shapes. This way a conversion to BSplines in
+transformGeometry can be avoided."""
+    if abs(m.A11**2+m.A12**2 -m.A21**2-m.A22**2) < 1e-8 and \
+            abs(m.A11*m.A21+m.A12*m.A22) < 1e-8: #no shear
+        try:
+            newshape=shape.copy()
+            newshape.transformShape(m)
+            return newshape
+        except Part.OCCError: # older versions of OCCT will refuse to work on
+            pass              # non-orthogonal matrices
+    return shape.transformGeometry(m)
 
 def getsize(length,mode='discard',base=1):
         """parses length values containing number and unit
@@ -282,8 +297,8 @@ def makewire(path,checkclosed=False,donttry=False):
         closed if required the 'connectEdgesToWires' function is used'''
         if not donttry:
                 try:
-                        import DraftGeomUtils
-                        sh = Part.Wire(DraftGeomUtils.sortEdges(path))
+                        import Part
+                        sh = Part.Wire(Part.__sortEdges__(path))
                         #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
                 except Part.OCCError:# BRep_API:command not done
@@ -371,11 +386,14 @@ class svgHandler(xml.sax.ContentHandler):
                 "retrieving Draft parameters"
                 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
                 self.style = params.GetInt("svgstyle")
+                self.disableUnitScaling = params.GetBool("svgDisableUnitScaling",False)
                 self.count = 0
                 self.transform = None
                 self.grouptransform = []
                 self.lastdim = None
                 self.viewbox = None
+                self.symbols = {}
+                self.currentsymbol = None
 
                 global Part
                 import Part
@@ -413,8 +431,9 @@ class svgHandler(xml.sax.ContentHandler):
                 data = {}
                 for (keyword,content) in list(attrs.items()):
                         #print keyword,content
-                        content = content.replace(',',' ')
-                        content = content.split()
+                        if keyword != "style":
+                            content = content.replace(',',' ')
+                            content = content.split()
                         #print keyword,content
                         data[keyword]=content
 
@@ -449,36 +468,37 @@ class svgHandler(xml.sax.ContentHandler):
                 
                 if name == 'svg':
                         m=FreeCAD.Matrix()
-                        if 'width' in data and 'height' in data and \
-                            'viewBox' in data:
-                                vbw=float(data['viewBox'][2])
-                                vbh=float(data['viewBox'][3])
-                                w=attrs.getValue('width')
-                                h=attrs.getValue('height')
-                                self.viewbox=(vbw,vbh)
-                                if len(self.grouptransform)==0:
-                                    unitmode='mm'
-                                else: #nested svg element
-                                    unitmode='css'
-                                abw = getsize(w,unitmode)
-                                abh = getsize(h,unitmode)
-                                sx=abw/vbw
-                                sy=abh/vbh
-                                preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
-                                uniformscaling = round(sx/sy,5) == 1
-                                if uniformscaling:
-                                    m.scale(Vector(sx,sy,1))
-                                else:
-                                    FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
-                                    if preservearstr.startswith('none'):
+                        if not self.disableUnitScaling:
+                            if 'width' in data and 'height' in data and \
+                                'viewBox' in data:
+                                    vbw=float(data['viewBox'][2])
+                                    vbh=float(data['viewBox'][3])
+                                    w=attrs.getValue('width')
+                                    h=attrs.getValue('height')
+                                    self.viewbox=(vbw,vbh)
+                                    if len(self.grouptransform)==0:
+                                        unitmode='mm'
+                                    else: #nested svg element
+                                        unitmode='css'
+                                    abw = getsize(w,unitmode)
+                                    abh = getsize(h,unitmode)
+                                    sx=abw/vbw
+                                    sy=abh/vbh
+                                    preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
+                                    uniformscaling = round(sx/sy,5) == 1
+                                    if uniformscaling:
                                         m.scale(Vector(sx,sy,1))
-                                    else: #preserve the aspect ratio
-                                        if preservearstr.endswith('slice'):
-                                            sxy=max(sx,sy)
-                                        else:
-                                            sxy=min(sx,sy)
-                                        m.scale(Vector(sxy,sxy,1))
-                        elif len(self.grouptransform)==0:
+                                    else:
+                                        FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
+                                        if preservearstr.startswith('none'):
+                                            m.scale(Vector(sx,sy,1))
+                                        else: #preserve the aspect ratio
+                                            if preservearstr.endswith('slice'):
+                                                sxy=max(sx,sy)
+                                            else:
+                                                sxy=min(sx,sy)
+                                            m.scale(Vector(sxy,sxy,1))
+                            elif len(self.grouptransform)==0:
                                 #fallback to 90 dpi
                                 m.scale(Vector(25.4/90.0,25.4/90.0,1))
                         self.grouptransform.append(m) 
@@ -555,6 +575,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                 obj = self.doc.addObject("Part::Feature",pathname)
                                                 obj.Shape = sh
                                                 self.format(obj)
+                                                if self.currentsymbol:
+                                                    self.symbols[self.currentsymbol].append(obj)
                                                 path = []
                                                 #if firstvec:
                                                 #        lastvec = firstvec #Move relative to last move command not last draw command
@@ -768,6 +790,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                         lastvec = firstvec #Move relative to recent draw command
                                                 point = []
                                                 command = None
+                                                if self.currentsymbol:
+                                                    self.symbols[self.currentsymbol].append(obj)
                         if path:
                                 sh=makewire(path,checkclosed=False)
                                 #sh = Part.Wire(path)
@@ -777,6 +801,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 obj = self.doc.addObject("Part::Feature",pathname)
                                 obj.Shape = sh
                                 self.format(obj)
+                                if self.currentsymbol:
+                                    self.symbols[self.currentsymbol].append(obj)
 
 
                 # processing rects
@@ -784,6 +810,10 @@ class svgHandler(xml.sax.ContentHandler):
                 if name == "rect":
                         if not pathname: pathname = 'Rectangle'
                         edges = []
+                        if not "x" in data:
+                            data["x"] = 0
+                        if not "y" in data:
+                            data["y"] = 0
                         if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) and \
                            ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())): #negative values are invalid
 #                        if True: 
@@ -850,6 +880,9 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
+                        
                 # processing lines
 
                 if name == "line":
@@ -861,6 +894,8 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
 
                 # processing polylines and polygons
 
@@ -890,6 +925,8 @@ class svgHandler(xml.sax.ContentHandler):
                                         sh = self.applyTrans(sh)
                                         obj = self.doc.addObject("Part::Feature",pathname)
                                         obj.Shape = sh
+                                        if self.currentsymbol:
+                                            self.symbols[self.currentsymbol].append(obj)
 
                 # processing ellipses
 
@@ -916,6 +953,8 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
 
 
                 # processing circles
@@ -933,6 +972,8 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
 
                 # processing texts
 
@@ -955,6 +996,32 @@ class svgHandler(xml.sax.ContentHandler):
                         else:
                                 if self.lastdim:
                                         self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
+                                        
+                # processing symbols
+                
+                if name == "symbol":
+                    self.symbols[pathname] = []
+                    self.currentsymbol = pathname
+                    
+                if name == "use":
+                    if "xlink:href" in data:
+                        symbol = data["xlink:href"][0][1:]
+                        if symbol in self.symbols:
+                            FreeCAD.Console.PrintMessage("using symbol "+symbol+"\n")
+                            shapes = []
+                            for o in self.symbols[symbol]:
+                                if o.isDerivedFrom("Part::Feature"):
+                                    shapes.append(o.Shape)
+                            if shapes:
+                                sh = Part.makeCompound(shapes)
+                                v = FreeCAD.Vector(float(data['x']),-float(data['y']),0)
+                                sh.translate(v)
+                                sh = self.applyTrans(sh)
+                                obj = self.doc.addObject("Part::Feature",symbol)
+                                obj.Shape = sh
+                                self.format(obj)
+                        else:
+                            FreeCAD.Console.PrintMessage("no symbol data\n")
 
                 FreeCAD.Console.PrintMessage("done processing element %d\n"%self.count)
                 
@@ -963,6 +1030,8 @@ class svgHandler(xml.sax.ContentHandler):
                         FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
                         obj=self.doc.addObject("App::Annotation",'Text')
                         obj.LabelText = content.encode('latin1')
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
                         vec = Vector(self.x,-self.y,0)
                         if self.transform:
                                 vec = self.translateVec(vec,self.transform)
@@ -978,20 +1047,33 @@ class svgHandler(xml.sax.ContentHandler):
                                 else: obj.ViewObject.TextColor = (0.0,0.0,0.0,0.0)
 
         def endElement(self, name):
-                if not name in ["tspan"]:
-                        self.transform = None
-                        self.text = None
-                if name == "g" or name == "svg":
-                        FreeCAD.Console.PrintMessage("closing group\n")
-                        self.grouptransform.pop()
+            if not name in ["tspan"]:
+                self.transform = None
+                self.text = None
+            if name == "g" or name == "svg":
+                FreeCAD.Console.PrintMessage("closing group\n")
+                self.grouptransform.pop()
+            if name == "symbol":
+                if self.doc.getObject("svgsymbols"):
+                    group = self.doc.getObject("svgsymbols")
+                else:
+                    group = self.doc.addObject("App::DocumentObjectGroup","svgsymbols")
+                for o in self.symbols[self.currentsymbol]:
+                    group.addObject(o)
+                self.currentsymbol = None
+                    
 
         def applyTrans(self,sh):
                 if isinstance(sh,Part.Shape):
                         if self.transform:
                                 FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
+                                #sh = transformCopyShape(sh,self.transform)
+                                # see issue #2062
                                 sh = sh.transformGeometry(self.transform)
                         for transform in self.grouptransform[::-1]:
                                 FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
+                                #sh = transformCopyShape(sh,transform)
+                                # see issue 2062
                                 sh = sh.transformGeometry(transform)
                         return sh
                 elif Draft.getType(sh) == "Dimension":
@@ -1125,17 +1207,22 @@ def export(exportList,filename):
             svg_export_style = 0
 
         # finding sheet size
-        minx = 10000
-        miny = 10000
-        maxx = 0
-        maxy = 0
+        bb = None
         for ob in exportList:
                 if ob.isDerivedFrom("Part::Feature"):
-                        for v in ob.Shape.Vertexes:
-                                if v.Point.x < minx: minx = v.Point.x
-                                if v.Point.x > maxx: maxx = v.Point.x
-                                if v.Point.y < miny: miny = v.Point.y
-                                if v.Point.y > maxy: maxy = v.Point.y
+                    if bb:
+                        bb.add(ob.Shape.BoundBox)
+                    else:
+                        bb = ob.Shape.BoundBox
+        if bb:
+            minx = bb.XMin
+            maxx = bb.XMax
+            miny = bb.YMin
+            maxy = bb.YMax
+        else:
+            FreeCAD.Console.PrintError("The export list contains no shape\n")
+            return
+            
         if svg_export_style == 0:
             # translated-style exports get a bit of a margin
             margin = (maxx-minx)*.01
@@ -1176,13 +1263,17 @@ def export(exportList,filename):
                 if svg_export_style == 0:
                     # translated-style exports have the entire sketch translated to fit in the X>0, Y>0 quadrant
                     #svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
-                    svg.write('<g transform="translate('+str(-minx)+','+str(maxy)+') scale(1,-1)">\n')
+                    svg.write('<g id="%s" transform="translate(%f,%f) '
+                            'scale(1,-1)">\n'% (ob.Name,-minx,maxy))
                 else:
                     # raw-style exports do not translate the sketch
-                    svg.write('<g transform="scale(1,-1)">\n')
+                    svg.write('<g id="%s" transform="scale(1,-1)">\n' %\
+                            ob.Name)
                 svg.write(Draft.getSVG(ob))
+                svg.write('<title>%s</title>\n' % ob.Label.encode('utf8')\
+                        .replace('<','&lt;').replace('>','&gt;'))
+                        # replace('"',\ "&quot;")
                 svg.write('</g>\n')
-                
         # closing
         svg.write('</svg>')
         svg.close()

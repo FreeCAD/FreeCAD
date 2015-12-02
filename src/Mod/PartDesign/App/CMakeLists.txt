@@ -10,8 +10,8 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -62,8 +62,6 @@ SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 SET(FeaturesSketchBased_SRCS
     FeatureSketchBased.cpp
     FeatureSketchBased.h
-    FeatureFace.cpp
-    FeatureFace.h
     FeaturePad.cpp
     FeaturePad.h
     FeaturePocket.cpp

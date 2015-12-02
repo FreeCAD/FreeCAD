@@ -25,13 +25,15 @@
 #define MESH_PROJECTION_H
 
 #include <vector>
-
+#include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
-#ifdef FC_USE_OCC
+
 using Base::Vector3f;
 
+#ifdef FC_USE_OCC
 class TopoDS_Edge;
 class TopoDS_Shape;
+#endif
 
 namespace MeshCore
 {
@@ -40,6 +42,26 @@ class MeshFacetGrid;
 class MeshKernel;
 class MeshGeomFacet;
 
+class MeshExport MeshProjection
+{
+public:
+    MeshProjection(const MeshKernel&);
+    ~MeshProjection();
+
+    bool projectLineOnMesh(const MeshFacetGrid& grid, const Base::Vector3f& p1, unsigned long f1,
+        const Base::Vector3f& p2, unsigned long f2, const Base::Vector3f& view,
+        std::vector<Base::Vector3f>& polyline);
+protected:
+    bool bboxInsideRectangle (const Base::BoundBox3f& bbox, const Base::Vector3f& p1, const Base::Vector3f& p2, const Base::Vector3f& view) const;
+    bool isPointInsideDistance (const Base::Vector3f& p1, const Base::Vector3f& p2, const Base::Vector3f& pt) const;
+    bool connectLines(std::list< std::pair<Base::Vector3f, Base::Vector3f> >& cutLines, const Base::Vector3f& startPoint,
+        const Base::Vector3f& endPoint, std::vector<Base::Vector3f>& polyline) const;
+
+private:
+    const MeshKernel& kernel;
+};
+
+#ifdef FC_USE_OCC
 /// Helper class
 struct SplitEdge
 {
@@ -78,8 +100,8 @@ protected:
 private:
   const MeshKernel& _rcMesh;
 };
+#endif
 
 } // namespace MeshCore
-#endif
 
 #endif  // MESH_PROJECTION_H 

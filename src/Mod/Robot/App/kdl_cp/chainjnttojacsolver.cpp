@@ -43,18 +43,32 @@ namespace KDL
             if(!locked_joints_[i])
                 nr_of_unlocked_joints_++;
         }
+
+        return 0;
     }
 
-    int ChainJntToJacSolver::JntToJac(const JntArray& q_in,Jacobian& jac)
+    int ChainJntToJacSolver::JntToJac(const JntArray& q_in, Jacobian& jac, int seg_nr)
     {
+        unsigned int segmentNr;
+        if(seg_nr<0)
+            segmentNr=chain.getNrOfSegments();
+        else
+            segmentNr = seg_nr;
+
+        //Initialize Jacobian to zero since only segmentNr colunns are computed
+        SetToZero(jac) ;
+
         if(q_in.rows()!=chain.getNrOfJoints()||nr_of_unlocked_joints_!=jac.columns())
-            return -1;
+            return (error = E_JAC_FAILED);
+        else if(segmentNr>chain.getNrOfSegments())
+            return (error = E_JAC_FAILED);
+
         T_tmp = Frame::Identity();
         SetToZero(t_tmp);
         int j=0;
         int k=0;
         Frame total;
-        for (unsigned int i=0;i<chain.getNrOfSegments();i++) {
+        for (unsigned int i=0;i<segmentNr;i++) {
             //Calculate new Frame_base_ee
             if(chain.getSegment(i).getJoint().getType()!=Joint::None){
             	//pose of the new end-point expressed in the base
@@ -81,7 +95,13 @@ namespace KDL
 
             T_tmp = total;
         }
-        return 0;
+        return (error = E_NOERROR);
+    }
+
+    const char* ChainJntToJacSolver::strError(const int error) const
+    {
+        if (E_JAC_FAILED == error) return "Jac Failed";
+        else return SolverI::strError(error);
     }
 }
 

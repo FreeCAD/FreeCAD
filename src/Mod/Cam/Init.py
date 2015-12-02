@@ -24,22 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2007                                                   *
 #***************************************************************************/
-
-
-class CamDocument:
-	"Cam document"
-	def Info(self):
-		return "Cam document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Cam")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Cam/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "Cam")
-ParGrp.SetString("DocTemplateScript","TemplCam.py")
-ParGrp.SetString("WorkBenchName",    "Cam Design")
-ParGrp.SetString("WorkBenchModule",  "CamWorkbench.py")
-
-

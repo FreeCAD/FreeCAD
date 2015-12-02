@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,7 +41,9 @@
 # include <QGLFramebufferObject>
 #endif
 # include <QSessionManager>
+# include <QStatusBar>
 # include <QTextStream>
+# include <QTimer>
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>
@@ -60,7 +62,8 @@
 #include <App/DocumentObjectPy.h>
 
 #include "Application.h"
-#include "GuiApplicationNativeEventAware.h"
+#include "AutoSaver.h"
+#include "GuiApplication.h"
 #include "MainWindow.h"
 #include "Document.h"
 #include "View.h"
@@ -83,6 +86,9 @@
 #include "View3DPy.h"
 #include "DlgOnlineHelpImp.h"
 #include "SpaceballEvent.h"
+#include "Control.h"
+#include "DocumentRecovery.h"
+#include "TaskView/TaskView.h"
 
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
@@ -591,12 +597,20 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             str << "import " << Module << std::endl;
             str << Module << ".export(__objs__,u\"" << unicodepath << "\")" << std::endl;
-            str << "del __objs__" << std::endl;
+            //str << "del __objs__" << std::endl;
 
             std::string code = str.str();
             // the original file name is required
-            if (runPythonCode(code.c_str(), false))
-                getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            if (runPythonCode(code.c_str(), false)) {
+                // search for a module that is able to open the exported file because otherwise
+                // it doesn't need to be added to the recent files list (#0002047)
+                std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
+                if (!importMap.empty())
+                    getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            }
+
+            // allow exporters to pass _objs__ to submodules before deleting it
+            runPythonCode("del __objs__", false);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -636,7 +650,7 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalNewObject.connect(boost::bind(&Gui::Application::slotNewObject, this, _1));
     pDoc->signalDeletedObject.connect(boost::bind(&Gui::Application::slotDeletedObject, this, _1));
     pDoc->signalChangedObject.connect(boost::bind(&Gui::Application::slotChangedObject, this, _1, _2));
-    pDoc->signalRenamedObject.connect(boost::bind(&Gui::Application::slotRenamedObject, this, _1));
+    pDoc->signalRelabelObject.connect(boost::bind(&Gui::Application::slotRelabelObject, this, _1));
     pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
 
 
@@ -692,8 +706,23 @@ void Application::slotActiveDocument(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
     // this can happen when closing a document with two views opened
-    if (doc != d->documents.end())
+    if (doc != d->documents.end()) {
+        // this can happen when calling App.setActiveDocument directly from Python
+        // because no MDI view will be activated
+        if (d->activeDocument != doc->second) {
+            d->activeDocument = doc->second;
+            if (d->activeDocument) {
+                Base::PyGILStateLocker lock;
+                Py::Object active(d->activeDocument->getPyObject(), true);
+                Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),active);
+            }
+            else {
+                Base::PyGILStateLocker lock;
+                Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),Py::None());
+            }
+        }
         signalActiveDocument(*doc->second);
+    }
 }
 
 void Application::slotNewObject(const ViewProvider& vp)
@@ -711,9 +740,9 @@ void Application::slotChangedObject(const ViewProvider& vp, const App::Property&
     this->signalChangedObject(vp,prop);
 }
 
-void Application::slotRenamedObject(const ViewProvider& vp)
+void Application::slotRelabelObject(const ViewProvider& vp)
 {
-    this->signalRenamedObject(vp);
+    this->signalRelabelObject(vp);
 }
 
 void Application::slotActivatedObject(const ViewProvider& vp)
@@ -811,7 +840,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     }
 
     // notify all views attached to the application (not views belong to a special document)
-    for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();It++)
+    for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();++It)
         (*It)->setDocument(pcDocument);
 }
 
@@ -848,7 +877,7 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
-    App::Document* doc = obj->getDocument();
+    App::Document* doc = obj ? obj->getDocument() : 0;
     if (doc) {
         Gui::Document* gui = getDocument(doc);
         if (gui) {
@@ -874,10 +903,10 @@ void Application::onUpdate(void)
 {
     // update all documents
     std::map<const App::Document*, Gui::Document*>::iterator It;
-    for (It = d->documents.begin();It != d->documents.end();It++)
+    for (It = d->documents.begin();It != d->documents.end();++It)
         It->second->onUpdate();
     // update all the independed views
-    for (std::list<Gui::BaseView*>::iterator It2 = d->passive.begin();It2 != d->passive.end();It2++)
+    for (std::list<Gui::BaseView*>::iterator It2 = d->passive.begin();It2 != d->passive.end();++It2)
         (*It2)->onUpdate();
 }
 
@@ -911,7 +940,7 @@ void Application::tryClose(QCloseEvent * e)
     else {
         // ask all documents if closable
         std::map<const App::Document*, Gui::Document*>::iterator It;
-        for (It = d->documents.begin();It!=d->documents.end();It++) {
+        for (It = d->documents.begin();It!=d->documents.end();++It) {
             // a document may have several views attached, so ask it directly
 #if 0
             MDIView* active = It->second->getActiveView();
@@ -925,7 +954,7 @@ void Application::tryClose(QCloseEvent * e)
     }
 
     // ask all passive views if closable
-    for (std::list<Gui::BaseView*>::iterator It = d->passive.begin();It!=d->passive.end();It++) {
+    for (std::list<Gui::BaseView*>::iterator It = d->passive.begin();It!=d->passive.end();++It) {
         e->setAccepted((*It)->canClose());
         if (!e->isAccepted())
             return;
@@ -995,9 +1024,11 @@ bool Application::activateWorkbench(const char* name)
             Py::Callable method(handler.getAttr(std::string("GetClassName")));
             Py::Tuple args;
             Py::String result(method.apply(args));
-            type = result.as_std_string();
+            type = result.as_std_string("ascii");
             if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
                 Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
+                if (!wb)
+                    throw Py::RuntimeError("Failed to instantiate workbench of type " + type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
             }
 
@@ -1009,7 +1040,7 @@ bool Application::activateWorkbench(const char* name)
             // can be defined after the call of Initialize()
             if (type.empty()) {
                 Py::String result(method.apply(args));
-                type = result.as_std_string();
+                type = result.as_std_string("ascii");
             }
         }
 
@@ -1108,7 +1139,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
             if (handler.hasAttr(std::string("Icon"))) {
                 Py::Object member = handler.getAttr(std::string("Icon"));
                 Py::String data(member);
-                std::string content = data.as_std_string();
+                std::string content = data.as_std_string("utf-8");
 
                 // test if in XPM format
                 QByteArray ary;
@@ -1155,11 +1186,10 @@ QPixmap Application::workbenchIcon(const QString& wb) const
     QIcon icon = QApplication::windowIcon();
     if (!icon.isNull()) {
         QList<QSize> s = icon.availableSizes();
-        return icon.pixmap(s[0]);
+        if (!s.isEmpty())
+            return icon.pixmap(s[0]);
     }
-    else {
-        return QPixmap();
-    }
+    return QPixmap();
 }
 
 QString Application::workbenchToolTip(const QString& wb) const
@@ -1175,7 +1205,7 @@ QString Application::workbenchToolTip(const QString& wb) const
             Py::Object member = handler.getAttr(std::string("ToolTip"));
             if (member.isString()) {
                 Py::String tip(member);
-                return QString::fromUtf8(tip.as_std_string().c_str());
+                return QString::fromUtf8(tip.as_std_string("utf-8").c_str());
             }
         }
         catch (Py::Exception& e) {
@@ -1200,7 +1230,7 @@ QString Application::workbenchMenuText(const QString& wb) const
             Py::Object member = handler.getAttr(std::string("MenuText"));
             if (member.isString()) {
                 Py::String tip(member);
-                return QString::fromUtf8(tip.as_std_string().c_str());
+                return QString::fromUtf8(tip.as_std_string("utf-8").c_str());
             }
         }
         catch (Py::Exception& e) {
@@ -1285,7 +1315,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 e.clear();
                 if (o.isString()) {
                     Py::String s(o);
-                    std::clog << "Application::setupContextMenu: " << s.as_std_string() << std::endl;
+                    std::clog << "Application::setupContextMenu: " << s.as_std_string("utf-8") << std::endl;
                 }
             }
         }
@@ -1506,108 +1536,36 @@ void Application::initTypes(void)
     Gui::PythonWorkbench                        ::init();
 }
 
-namespace Gui {
-/** Override QCoreApplication::notify() to fetch exceptions in Qt widgets
- * properly that are not handled in the event handler or slot.
- */
-class GUIApplication : public GUIApplicationNativeEventAware
-{
-    int systemExit;
-public:
-    GUIApplication(int & argc, char ** argv, int exitcode)
-        : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
-    {
-    }
-
-    /**
-     * Make forwarding events exception-safe and get more detailed information
-     * where an unhandled exception comes from.
-     */
-    bool notify (QObject * receiver, QEvent * event)
-    {
-        if (!receiver && event) {
-            Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
-                (int)event->type());
-        }
-        try {
-            if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
-                event->type() == Spaceball::MotionEvent::MotionEventType)
-                return processSpaceballEvent(receiver, event);
-            else
-                return QApplication::notify(receiver, event);
-        }
-        catch (const Base::SystemExitException&) {
-            qApp->exit(systemExit);
-            return true;
-        }
-        catch (const Base::Exception& e) {
-            Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                                  "The error message is: %s\n", e.what());
-        }
-        catch (const std::exception& e) {
-            Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
-                                  "The error message is: %s\n", e.what());
-        }
-        catch (...) {
-            Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n");
-        }
-
-        // Print some more information to the log file (if active) to ease bug fixing
-        if (receiver && event) {
-            std::stringstream dump;
-            dump << "The event type " << (int)event->type() << " was sent to "
-                 << receiver->metaObject()->className() << "\n";
-            dump << "Object tree:\n";
-            if (receiver->isWidgetType()) {
-                QWidget* w = qobject_cast<QWidget*>(receiver);
-                while (w) {
-                    dump << "\t";
-                    dump << w->metaObject()->className();
-                    QString name = w->objectName();
-                    if (!name.isEmpty())
-                        dump << " (" << (const char*)name.toUtf8() << ")";
-                    w = w->parentWidget();
-                    if (w)
-                        dump << " is child of\n";
-                }
-                std::string str = dump.str();
-                Base::Console().Log("%s",str.c_str());
-            }
-        }
-
-        return true;
-    }
-    void commitData(QSessionManager &manager)
-    {
-        if (manager.allowsInteraction()) {
-            if (!Gui::getMainWindow()->close()) {
-                // cancel the shutdown
-                manager.release();
-                manager.cancel();
-            }
-        }
-        else {
-            // no user interaction allowed, thus close all documents and
-            // the main window
-            App::GetApplication().closeAllDocuments();
-            Gui::getMainWindow()->close();
-        }
-
-    }
-};
-}
-
 void Application::runApplication(void)
 {
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it;
+
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     int systemExit = 1000;
-    GUIApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+    GUISingleApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+
+    // check if a single or multiple instances can run
+    it = cfg.find("SingleInstance");
+    if (it != cfg.end() && mainApp.isRunning()) {
+        // send the file names to be opened to the server application so that this
+        // opens them
+        std::list<std::string> files = App::Application::getCmdLineFiles();
+        for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
+            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            msg.prepend("OpenFile:");
+            if (!mainApp.sendMessage(msg)) {
+                qWarning("Failed to send message to server");
+                break;
+            }
+        }
+        return;
+    }
+
     // set application icon and window title
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("Application");
     if (it != cfg.end()) {
         mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
@@ -1620,6 +1578,16 @@ void Application::runApplication(void)
     plugin = QString::fromUtf8(App::GetApplication().getHomePath());
     plugin += QLatin1String("/plugins");
     QCoreApplication::addLibraryPath(plugin);
+
+    // setup the search paths for Qt style sheets
+    QStringList qssPaths;
+    qssPaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
+             << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
+             << QLatin1String(":/stylesheets");
+    QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
+
+    // register action style event type
+    ActionStyleEvent::EventType = QEvent::registerEventType(QEvent::User + 1);
 
     // check for OpenGL
     if (!QGLFormat::hasOpenGL()) {
@@ -1658,9 +1626,23 @@ void Application::runApplication(void)
     else if (version & QGLFormat::OpenGL_Version_None)
         Base::Console().Log("No OpenGL is present or no OpenGL context is current\n");
 
+#if !defined(Q_WS_X11)
+    QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
+    QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+#endif
+
     Application app(true);
     MainWindow mw;
     mw.setWindowTitle(mainApp.applicationName());
+    QObject::connect(&mainApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
+                     &mw, SLOT(processMessages(const QList<QByteArray> &)));
+
+    ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
+    int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
+    if (!hDocGrp->GetBool("AutoSaveEnabled", true))
+        timeout = 0;
+    AutoSaver::instance()->setTimeout(timeout * 60000);
+    AutoSaver::instance()->setCompressed(hDocGrp->GetBool("AutoSaveCompressed", true));
 
     // set toolbar icon size
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
@@ -1764,6 +1746,9 @@ void Application::runApplication(void)
             mdi->setBackground(QBrush(Qt::NoBrush));
             QTextStream str(&f);
             qApp->setStyleSheet(str.readAll());
+
+            ActionStyleEvent e(ActionStyleEvent::Clear);
+            qApp->sendEvent(&mw, &e);
         }
     }
 
@@ -1777,26 +1762,15 @@ void Application::runApplication(void)
 
     Instance->d->startingUp = false;
 
-#if 0
-    // processing all command line files
-    App::Application::processCmdLineFiles();
-
-    // Create new document?
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    if (hGrp->GetBool("CreateNewDoc", false)) {
-        App::GetApplication().newDocument();
-    }
-#else
     // gets called once we start the event loop
     QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
-#endif
 
     // run the Application event loop
     Base::Console().Log("Init: Entering event loop\n");
 
     try {
         std::stringstream s;
-        s << Base::FileInfo::getTempPath() << App::GetApplication().getExecutableName()
+        s << App::Application::getTempPath() << App::GetApplication().getExecutableName()
           << "_" << QCoreApplication::applicationPid() << ".lock";
         // open a lock file with the PID
         Base::FileInfo fi(s.str());
@@ -1830,7 +1804,7 @@ void Application::runApplication(void)
 
 void Application::checkForPreviousCrashes()
 {
-    QDir tmp = QDir::temp();
+    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
     tmp.setNameFilters(QStringList() << QString::fromAscii("*.lock"));
     tmp.setFilter(QDir::Files);
 
@@ -1870,7 +1844,8 @@ void Application::checkForPreviousCrashes()
                             if (tmp.rmdir(it->filePath()))
                                 countDeletedDocs++;
                         }
-                        else {
+                        // search for the existance of a recovery file
+                        else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
                             // store the transient directory in case it's not empty
                             restoreDocFiles << *it;
                         }
@@ -1887,6 +1862,8 @@ void Application::checkForPreviousCrashes()
     }
 
     if (!restoreDocFiles.isEmpty()) {
-        //TODO:
+        Gui::Dialog::DocumentRecovery dlg(restoreDocFiles, Gui::getMainWindow());
+        if (dlg.foundDocuments())
+            dlg.exec();
     }
 }

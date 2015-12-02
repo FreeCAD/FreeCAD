@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2011 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -76,7 +76,7 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     ViewProviderDocumentObject::attach(pcObj);
 
     // NOTE: SoFCSelection node has beem removed because it led to
-    // problems using the image as a construction plan with the
+    // problems using the image as a construction plane with the
     // draft commands
     SoSeparator* planesep = new SoSeparator;
     planesep->addChild(pcCoords);

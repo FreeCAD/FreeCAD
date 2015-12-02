@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,7 +25,11 @@
 
 #ifndef _PreComp_
 # include <boost/bind.hpp>
+# include <QActionEvent>
+# include <QApplication>
 # include <QCursor>
+# include <QPointer>
+# include <QPushButton>
 #endif
 
 #include "TaskView.h"
@@ -36,6 +40,12 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Control.h>
+
+#if defined (QSINT_ACTIONPANEL)
+#include <Gui/QSint/actionpanel/taskgroup_p.h>
+#include <Gui/QSint/actionpanel/taskheader_p.h>
+#include <Gui/QSint/actionpanel/freecadscheme.h>
+#endif
 
 using namespace Gui::TaskView;
 
@@ -67,6 +77,7 @@ TaskWidget::~TaskWidget()
 // TaskGroup
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#if !defined (QSINT_ACTIONPANEL)
 TaskGroup::TaskGroup(QWidget *parent)
     : iisTaskGroup(parent, false)
 {
@@ -128,17 +139,100 @@ void TaskGroup::actionEvent (QActionEvent* e)
         break;
     }
 }
+#else
+TaskGroup::TaskGroup(QWidget *parent)
+    : QSint::ActionBox(parent)
+{
+}
 
+TaskGroup::TaskGroup(const QString & headerText, QWidget *parent)
+    : QSint::ActionBox(headerText, parent)
+{
+}
+
+TaskGroup::TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *parent)
+    : QSint::ActionBox(icon, headerText, parent)
+{
+}
+
+TaskGroup::~TaskGroup()
+{
+}
+
+void TaskGroup::actionEvent (QActionEvent* e)
+{
+    QAction *action = e->action();
+    switch (e->type()) {
+    case QEvent::ActionAdded:
+        {
+            this->createItem(action);
+            break;
+        }
+    case QEvent::ActionChanged:
+        {
+            break;
+        }
+    case QEvent::ActionRemoved:
+        {
+            // cannot change anything
+            break;
+        }
+    default:
+        break;
+    }
+}
+#endif
 //**************************************************************************
 //**************************************************************************
 // TaskBox
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#if !defined (QSINT_ACTIONPANEL)
 TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
     : iisTaskBox(icon, title, expandable, parent), wasShown(false)
 {
     setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
 }
+#else
+TaskBox::TaskBox(QWidget *parent)
+  : QSint::ActionGroup(parent), wasShown(false)
+{
+    // override vertical size policy because otherwise task dialogs
+    // whose needsFullSpace() returns true won't take full space.
+    myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+}
+
+TaskBox::TaskBox(const QString &title, bool expandable, QWidget *parent)
+  : QSint::ActionGroup(title, expandable, parent), wasShown(false)
+{
+    // override vertical size policy because otherwise task dialogs
+    // whose needsFullSpace() returns true won't take full space.
+    myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+}
+
+TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
+    : QSint::ActionGroup(icon, title, expandable, parent), wasShown(false)
+{
+    // override vertical size policy because otherwise task dialogs
+    // whose needsFullSpace() returns true won't take full space.
+    myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+}
+
+QSize TaskBox::minimumSizeHint() const
+{
+    // ActionGroup returns a size of 200x100 which leads to problems
+    // when there are several task groups in a panel and the first
+    // one is collapsed. In this case the task panel doesn't expand to
+    // the actually required size and all the remaining groups are
+    // squeezed into the available space and thus the widgets in there
+    // often can't be used any more.
+    // To fix this problem minimumSizeHint() is implemented to again
+    // respect the layout's minimum size.
+    QSize s1 = QSint::ActionGroup::minimumSizeHint();
+    QSize s2 = QWidget::minimumSizeHint();
+    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+}
+#endif
 
 TaskBox::~TaskBox()
 {
@@ -191,20 +285,31 @@ void TaskBox::hideGroupBox()
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
+bool TaskBox::isGroupVisible() const
+{
+    return myGroup->isVisible();
+}
+
 void TaskBox::actionEvent (QActionEvent* e)
 {
     QAction *action = e->action();
     switch (e->type()) {
     case QEvent::ActionAdded:
         {
+#if !defined (QSINT_ACTIONPANEL)
             TaskIconLabel *label = new TaskIconLabel(
                 action->icon(), action->text(), this);
             this->addIconLabel(label);
             connect(label,SIGNAL(clicked()),action,SIGNAL(triggered()));
+#else
+            QSint::ActionLabel *label = new QSint::ActionLabel(action, this);
+            this->addActionLabel(label, true, false);
+#endif
             break;
         }
     case QEvent::ActionChanged:
         {
+#if !defined (QSINT_ACTIONPANEL)
             // update label when action changes
             QBoxLayout* bl = myGroup->groupLayout();
             int index = this->actions().indexOf(action);
@@ -212,6 +317,7 @@ void TaskBox::actionEvent (QActionEvent* e)
             QWidgetItem* item = static_cast<QWidgetItem*>(bl->itemAt(index));
             TaskIconLabel* label = static_cast<TaskIconLabel*>(item->widget());
             label->setTitle(action->text());
+#endif
             break;
         }
     case QEvent::ActionRemoved:
@@ -224,6 +330,36 @@ void TaskBox::actionEvent (QActionEvent* e)
     }
 }
 
+//**************************************************************************
+//**************************************************************************
+// TaskPanel
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#if defined (QSINT_ACTIONPANEL)
+TaskPanel::TaskPanel(QWidget *parent)
+  : QSint::ActionPanel(parent)
+{
+}
+
+TaskPanel::~TaskPanel()
+{
+}
+
+QSize TaskPanel::minimumSizeHint() const
+{
+    // ActionPanel returns a size of 200x150 which leads to problems
+    // when there are several task groups in the panel and the first
+    // one is collapsed. In this case the task panel doesn't expand to
+    // the actually required size and all the remaining groups are
+    // squeezed into the available space and thus the widgets in there
+    // often can't be used any more.
+    // To fix this problem minimumSizeHint() is implemented to again
+    // respect the layout's minimum size.
+    QSize s1 = QSint::ActionPanel::minimumSizeHint();
+    QSize s2 = QWidget::minimumSizeHint();
+    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+}
+#endif
 
 //**************************************************************************
 //**************************************************************************
@@ -236,8 +372,18 @@ TaskView::TaskView(QWidget *parent)
     //addWidget(new TaskEditControl(this));
     //addWidget(new TaskAppearance(this));
     //addStretch();
+#if !defined (QSINT_ACTIONPANEL)
     taskPanel = new iisTaskPanel(this);
     taskPanel->setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
+#else
+    taskPanel = new TaskPanel(this);
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
+    taskPanel->setSizePolicy(sizePolicy);
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
     this->setWidget(taskPanel);
     setWidgetResizable(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -403,6 +549,10 @@ void TaskView::showDialog(TaskDialog *dlg)
         taskPanel->addWidget(ActiveCtrl);
     }
 
+#if defined (QSINT_ACTIONPANEL)
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
+
     if (!dlg->needsFullSpace())
         taskPanel->addStretch();
 
@@ -437,6 +587,23 @@ void TaskView::removeDialog(void)
 
 void TaskView::updateWatcher(void)
 {
+    // In case a child of the TaskView has the focus and get hidden we have
+    // to make sure that set the focus on a widget that won't be hidden or
+    // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
+    // to the mdi area which may switch to another mdi view which is not an
+    // acceptable behaviour.
+    QWidget *fw = QApplication::focusWidget();
+    if (!fw)
+        this->setFocus();
+    QPointer<QWidget> fwp = fw;
+    while (fw &&  !fw->isWindow()) {
+        if (fw == this) {
+            this->setFocus();
+            break;
+        }
+        fw = fw->parentWidget();
+    }
+
     // add all widgets for all watcher to the task view
     for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it) {
         bool match = (*it)->shouldShow();
@@ -448,6 +615,11 @@ void TaskView::updateWatcher(void)
                 (*it2)->hide();
         }
     }
+
+    // In case the previous widget that had the focus is still visible
+    // give it the focus back.
+    if (fwp && fwp->isVisible())
+        fwp->setFocus();
 }
 
 void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
@@ -482,10 +654,30 @@ void TaskView::addTaskWatcher(void)
     if (!ActiveWatcher.empty())
         taskPanel->addStretch();
     updateWatcher();
+
+#if defined (QSINT_ACTIONPANEL)
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
 }
 
 void TaskView::removeTaskWatcher(void)
 {
+    // In case a child of the TaskView has the focus and get hidden we have
+    // to make sure that set the focus on a widget that won't be hidden or
+    // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
+    // to the mdi area which may switch to another mdi view which is not an
+    // acceptable behaviour.
+    QWidget *fw = QApplication::focusWidget();
+    if (!fw)
+        this->setFocus();
+    while (fw &&  !fw->isWindow()) {
+        if (fw == this) {
+            this->setFocus();
+            break;
+        }
+        fw = fw->parentWidget();
+    }
+
     // remove all widgets
     for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it) {
         std::vector<QWidget*> &cont = (*it)->getWatcherContent();
@@ -519,6 +711,22 @@ void TaskView::clicked (QAbstractButton * button)
 {
     int id = ActiveCtrl->buttonBox->standardButton(button);
     ActiveDialog->clicked(id);
+}
+
+void TaskView::clearActionStyle()
+{
+#if defined (QSINT_ACTIONPANEL)
+    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->clearActionStyle();
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
+}
+
+void TaskView::restoreActionStyle()
+{
+#if defined (QSINT_ACTIONPANEL)
+    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
 }
 
 

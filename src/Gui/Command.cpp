@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <QApplication>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
@@ -292,7 +293,11 @@ void Command::invoke(int i)
     }
     catch (Base::PyException &e) {
         e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
+    }
+    catch (Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        e.ReportException();
     }
     catch (Base::AbortException&) {
     }
@@ -527,7 +532,7 @@ bool Command::isActiveObjectValid(void)
 void Command::updateAll(std::list<Gui::Document*> cList)
 {
     if (cList.size()>0) {
-        for (std::list<Gui::Document*>::iterator It= cList.begin();It!=cList.end();It++)
+        for (std::list<Gui::Document*>::iterator It= cList.begin();It!=cList.end();++It)
             (*It)->onUpdate();
     }
     else {
@@ -656,7 +661,7 @@ Action * Command::createAction(void)
     pcAction->setShortcut(QString::fromAscii(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
-        pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
 
     return pcAction;
 }
@@ -666,6 +671,10 @@ void Command::languageChange()
     if (_pcAction) {
         applyCommandData(this->className(), _pcAction);
     }
+}
+
+void Command::updateAction(int)
+{
 }
 
 //===========================================================================
@@ -685,6 +694,12 @@ MacroCommand::MacroCommand(const char* name)
     eType  = 0;
 }
 
+MacroCommand::~MacroCommand()
+{
+    free(const_cast<char*>(sName));
+    sName = 0;
+}
+
 void MacroCommand::activated(int iMsg)
 {
     std::string cMacroPath = App::GetApplication().GetParameterGroupByPath
@@ -693,10 +708,17 @@ void MacroCommand::activated(int iMsg)
 
     QDir d(QString::fromUtf8(cMacroPath.c_str()));
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
-    Application::Instance->macroManager()->run(MacroManager::File, fi.filePath().toUtf8());
-    // after macro run recalculate the document
-    if (Application::Instance->activeDocument())
-        Application::Instance->activeDocument()->getDocument()->recompute();
+    if (!fi.exists()) {
+        QMessageBox::critical(Gui::getMainWindow(),
+            qApp->translate("Gui::MacroCommand", "Macro file doesn't exist"),
+            qApp->translate("Gui::MacroCommand", "No such macro file: '%1'").arg(fi.absoluteFilePath()));
+    }
+    else {
+        Application::Instance->macroManager()->run(MacroManager::File, fi.filePath().toUtf8());
+        // after macro run recalculate the document
+        if (Application::Instance->activeDocument())
+            Application::Instance->activeDocument()->getDocument()->recompute();
+    }
 }
 
 Action * MacroCommand::createAction(void)
@@ -785,8 +807,13 @@ void MacroCommand::save()
 // PythonCommand
 //===========================================================================
 
-PythonCommand::PythonCommand(const char* name,PyObject * pcPyCommand, const char* pActivationString)
-  : Command(name),_pcPyCommand(pcPyCommand)
+PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString)
+#if defined (_MSC_VER)
+  : Command( _strdup(name) )
+#else
+  : Command( strdup(name) )
+#endif
+  ,_pcPyCommand(pcPyCommand)
 {
     if (pActivationString)
         Activation = pActivationString;
@@ -798,8 +825,10 @@ PythonCommand::PythonCommand(const char* name,PyObject * pcPyCommand, const char
     // call the method "GetResources()" of the command object
     _pcPyResourceDict = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
     // check if the "GetResources()" method returns a Dict object
-    if (!PyDict_Check(_pcPyResourceDict))
-        throw Base::Exception("PythonCommand::PythonCommand(): Method GetResources() of the Python command object returns the wrong type (has to be Py Dictonary)");
+    if (!PyDict_Check(_pcPyResourceDict)) {
+        throw Base::Exception("PythonCommand::PythonCommand(): Method GetResources() of the Python "
+                              "command object returns the wrong type (has to be dict)");
+    }
 
     // check for command type
     std::string cmdType = getResource("CmdType");
@@ -817,6 +846,14 @@ PythonCommand::PythonCommand(const char* name,PyObject * pcPyCommand, const char
     }
 }
 
+PythonCommand::~PythonCommand()
+{
+    Base::PyGILStateLocker lock;
+    Py_DECREF(_pcPyCommand);
+    free(const_cast<char*>(sName));
+    sName = 0;
+}
+
 const char* PythonCommand::getResource(const char* sName) const
 {
     PyObject* pcTemp;
@@ -825,8 +862,10 @@ const char* PythonCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResourceDict,sName);
     if (!pcTemp)
         return "";
-    if (!PyString_Check(pcTemp))
-        throw Base::Exception("PythonCommand::getResource(): Method GetResources() of the Python command object returns a dictionary which holds not only strings");
+    if (!PyString_Check(pcTemp)) {
+        throw Base::Exception("PythonCommand::getResource(): Method GetResources() of the Python "
+                              "command object returns a dictionary which holds not only strings");
+    }
 
     return PyString_AsString(pcTemp);
 }
@@ -835,7 +874,12 @@ void PythonCommand::activated(int iMsg)
 {
     if (Activation.empty()) {
         try {
-            Interpreter().runMethodVoid(_pcPyCommand, "Activated");
+            if (isCheckable()) {
+                Interpreter().runMethod(_pcPyCommand, "Activated", "", 0, "(i)", iMsg);
+            }
+            else {
+                Interpreter().runMethodVoid(_pcPyCommand, "Activated");
+            }
         }
         catch (const Base::PyException& e) {
             Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
@@ -893,13 +937,27 @@ const char* PythonCommand::getHelpUrl(void) const
 
 Action * PythonCommand::createAction(void)
 {
+    QAction* qtAction = new QAction(0);
     Action *pcAction;
 
-    pcAction = new Action(this,getMainWindow());
+    pcAction = new Action(this, qtAction, getMainWindow());
     pcAction->setShortcut(QString::fromAscii(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
-        pcAction->setIcon(Gui::BitmapFactory().pixmap(getResource("Pixmap")));
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));
+
+    try {
+        if (isCheckable()) {
+            pcAction->setCheckable(true);
+            // Here the QAction must be tmp. blocked to avoid to call the 'activated' method
+            qtAction->blockSignals(true);
+            pcAction->setChecked(isChecked());
+            qtAction->blockSignals(false);
+        }
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+    }
 
     return pcAction;
 }
@@ -929,12 +987,331 @@ const char* PythonCommand::getStatusTip() const
 
 const char* PythonCommand::getPixmap() const
 {
-    return getResource("Pixmap");
+    const char* ret = getResource("Pixmap");
+    return (ret && ret[0] != '\0') ? ret : 0;
 }
 
 const char* PythonCommand::getAccel() const
 {
     return getResource("Accel");
+}
+
+bool PythonCommand::isCheckable() const
+{
+    PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
+    return item ? true : false;
+}
+
+bool PythonCommand::isChecked() const
+{
+    PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
+    if (!item) {
+        throw Base::Exception("PythonCommand::isChecked(): Method GetResources() of the Python "
+                              "command object doesn't contain the key 'Checkable'");
+    }
+
+    if (PyBool_Check(item)) {
+        return PyObject_IsTrue(item) ? true : false;
+    }
+    else {
+        throw Base::Exception("PythonCommand::isChecked(): Method GetResources() of the Python "
+                              "command object contains the key 'Checkable' which is not a boolean");
+    }
+}
+
+//===========================================================================
+// PythonGroupCommand
+//===========================================================================
+
+PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
+#if defined (_MSC_VER)
+  : Command( _strdup(name) )
+#else
+  : Command( strdup(name) )
+#endif
+  ,_pcPyCommand(pcPyCommand)
+{
+    sGroup = "Python";
+
+    Py_INCREF(_pcPyCommand);
+
+    // call the method "GetResources()" of the command object
+    _pcPyResource = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
+    // check if the "GetResources()" method returns a Dict object
+    if (!PyDict_Check(_pcPyResource)) {
+        throw Base::TypeError("PythonGroupCommand::PythonGroupCommand(): Method GetResources() of the Python "
+                              "command object returns the wrong type (has to be dict)");
+    }
+
+    // check for command type
+    std::string cmdType = getResource("CmdType");
+    if (!cmdType.empty()) {
+        int type = 0;
+        if (cmdType.find("AlterDoc") != std::string::npos)
+            type += int(AlterDoc);
+        if (cmdType.find("Alter3DView") != std::string::npos)
+            type += int(Alter3DView);
+        if (cmdType.find("AlterSelection") != std::string::npos)
+            type += int(AlterSelection);
+        if (cmdType.find("ForEdit") != std::string::npos)
+            type += int(ForEdit);
+        eType = type;
+    }
+}
+
+PythonGroupCommand::~PythonGroupCommand()
+{
+    Base::PyGILStateLocker lock;
+    Py_DECREF(_pcPyCommand);
+    free(const_cast<char*>(sName));
+    sName = 0;
+}
+
+void PythonGroupCommand::activated(int iMsg)
+{
+    try {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+        QList<QAction*> a = pcAction->actions();
+        assert(iMsg < a.size());
+        QAction* act = a[iMsg];
+
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+        if (cmd.hasAttr("Activated")) {
+            Py::Callable call(cmd.getAttr("Activated"));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Int(iMsg));
+            Py::Object ret = call.apply(args);
+        }
+        // If the command group doesn't implement the 'Activated' method then invoke the command directly
+        else {
+            Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+            rcCmdMgr.runCommandByName(act->property("CommandName").toByteArray());
+        }
+
+        // Since the default icon is reset when enabing/disabling the command we have
+        // to explicitly set the icon of the used command.
+        pcAction->setIcon(a[iMsg]->icon());
+    }
+    catch(Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+                              sName, e.getStackTrace().c_str(), e.what());
+    }
+}
+
+bool PythonGroupCommand::isActive(void)
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+        if (cmd.hasAttr("IsActive")) {
+            Py::Callable call(cmd.getAttr("IsActive"));
+            Py::Tuple args;
+            Py::Object ret = call.apply(args);
+            // if return type is not boolean or not true
+            if (!PyBool_Check(ret.ptr()) || ret.ptr() != Py_True)
+                return false;
+        }
+    }
+    catch(Py::Exception& e) {
+        Base::PyGILStateLocker lock;
+        e.clear();
+        return false;
+    }
+
+    return true;
+}
+
+Action * PythonGroupCommand::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(hasDropDownMenu());
+    pcAction->setExclusive(isExclusive());
+
+    applyCommandData(this->getName(), pcAction);
+
+    int defaultId = 0;
+
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+        Py::Callable call(cmd.getAttr("GetCommands"));
+        Py::Tuple args;
+        Py::Tuple ret(call.apply(args));
+        for (Py::Tuple::iterator it = ret.begin(); it != ret.end(); ++it) {
+            Py::String str(*it);
+            QAction* cmd = pcAction->addAction(QString());
+            cmd->setProperty("CommandName", QByteArray(static_cast<std::string>(str).c_str()));
+
+            PythonCommand* pycmd = dynamic_cast<PythonCommand*>(rcCmdMgr.getCommandByName(cmd->property("CommandName").toByteArray()));
+            if (pycmd) {
+                cmd->setCheckable(pycmd->isCheckable());
+            }
+        }
+
+        if (cmd.hasAttr("GetDefaultCommand")) {
+            Py::Callable call2(cmd.getAttr("GetDefaultCommand"));
+            Py::Int def(call2.apply(args));
+            defaultId = static_cast<int>(def);
+        }
+
+        // if the command is 'exclusive' then activate the default action
+        if (pcAction->isExclusive()) {
+            QList<QAction*> a = pcAction->actions();
+            if (defaultId >= 0 && defaultId < a.size()) {
+                QAction* qtAction = a[defaultId];
+                if (qtAction->isCheckable()) {
+                    qtAction->blockSignals(true);
+                    qtAction->setChecked(true);
+                    qtAction->blockSignals(false);
+                }
+            }
+        }
+    }
+    catch(Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        Base::Console().Error("createAction() of the Python command '%s' failed:\n%s\n%s",
+                              sName, e.getStackTrace().c_str(), e.what());
+    }
+
+    _pcAction = pcAction;
+    languageChange();
+
+    if (strcmp(getResource("Pixmap"),"") != 0) {
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));
+    }
+    else {
+        QList<QAction*> a = pcAction->actions();
+        // if out of range then set to 0
+        if (defaultId < 0 || defaultId >= a.size())
+            defaultId = 0;
+        if (a.size() > defaultId)
+            pcAction->setIcon(a[defaultId]->icon());
+    }
+
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void PythonGroupCommand::languageChange()
+{
+    if (!_pcAction)
+        return;
+
+    applyCommandData(this->getName(), _pcAction);
+
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
+        Gui::Command* cmd = rcCmdMgr.getCommandByName((*it)->property("CommandName").toByteArray());
+        // Python command use getName as context
+        if (dynamic_cast<PythonCommand*>(cmd)) {
+            (*it)->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
+            (*it)->setText(QApplication::translate(cmd->getName(), cmd->getMenuText()));
+            (*it)->setToolTip(QApplication::translate(cmd->getName(), cmd->getToolTipText()));
+            (*it)->setStatusTip(QApplication::translate(cmd->getName(), cmd->getStatusTip()));
+        }
+        else if (cmd) {
+            (*it)->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
+            (*it)->setText(QApplication::translate(cmd->className(), cmd->getMenuText()));
+            (*it)->setToolTip(QApplication::translate(cmd->className(), cmd->getToolTipText()));
+            (*it)->setStatusTip(QApplication::translate(cmd->className(), cmd->getStatusTip()));
+        }
+    }
+}
+
+const char* PythonGroupCommand::getHelpUrl(void) const
+{
+    return "";
+}
+
+const char* PythonGroupCommand::getResource(const char* sName) const
+{
+    PyObject* pcTemp;
+
+    // get the "MenuText" resource string
+    pcTemp = PyDict_GetItemString(_pcPyResource, sName);
+    if (!pcTemp)
+        return "";
+    if (!PyString_Check(pcTemp)) {
+        throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
+                               "group command object returns a dictionary which holds not only strings");
+    }
+
+    return PyString_AsString(pcTemp);
+}
+
+const char* PythonGroupCommand::getWhatsThis() const
+{
+    const char* whatsthis = getResource("WhatsThis");
+    if (!whatsthis || whatsthis[0] == '\0')
+        whatsthis = this->getName();
+    return whatsthis;
+}
+
+const char* PythonGroupCommand::getMenuText() const
+{
+    return getResource("MenuText");
+}
+
+const char* PythonGroupCommand::getToolTipText() const
+{
+    return getResource("ToolTip");
+}
+
+const char* PythonGroupCommand::getStatusTip() const
+{
+    return getResource("StatusTip");
+}
+
+const char* PythonGroupCommand::getPixmap() const
+{
+    const char* ret = getResource("Pixmap");
+    return (ret && ret[0] != '\0') ? ret : 0;
+}
+
+const char* PythonGroupCommand::getAccel() const
+{
+    return getResource("Accel");
+}
+
+bool PythonGroupCommand::isExclusive() const
+{
+    PyObject* item = PyDict_GetItemString(_pcPyResource,"Exclusive");
+    if (!item) {
+        return false;
+    }
+
+    if (PyBool_Check(item)) {
+        return PyObject_IsTrue(item) ? true : false;
+    }
+    else {
+        throw Base::Exception("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
+                              "command object contains the key 'Exclusive' which is not a boolean");
+    }
+}
+
+bool PythonGroupCommand::hasDropDownMenu() const
+{
+    PyObject* item = PyDict_GetItemString(_pcPyResource,"DropDownMenu");
+    if (!item) {
+        return true;
+    }
+
+    if (PyBool_Check(item)) {
+        return PyObject_IsTrue(item) ? true : false;
+    }
+    else {
+        throw Base::Exception("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
+                              "command object contains the key 'DropDownMenu' which is not a boolean");
+    }
 }
 
 //===========================================================================
@@ -993,7 +1370,7 @@ std::vector <Command*> CommandManager::getModuleCommands(const char *sModName) c
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         if ( strcmp(It->second->getAppModuleName(),sModName) == 0)
             vCmds.push_back(It->second);
     }
@@ -1005,7 +1382,7 @@ std::vector <Command*> CommandManager::getAllCommands(void) const
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         vCmds.push_back(It->second);
     }
 
@@ -1016,7 +1393,7 @@ std::vector <Command*> CommandManager::getGroupCommands(const char *sGrpName) co
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         if ( strcmp(It->second->getGroupName(),sGrpName) == 0)
             vCmds.push_back(It->second);
     }
@@ -1040,8 +1417,25 @@ void CommandManager::runCommandByName (const char* sName) const
 
 void CommandManager::testActive(void)
 {
-    for ( std::map<std::string, Command*>::iterator It= _sCommands.begin();It!=_sCommands.end();It++) {
+    for ( std::map<std::string, Command*>::iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
         It->second->testActive();
     }
 }
 
+void CommandManager::addCommandMode(const char* sContext, const char* sName)
+{
+    _sCommandModes[sContext].push_back(sName);
+}
+
+void CommandManager::updateCommands(const char* sContext, int mode)
+{
+    std::map<std::string, std::list<std::string> >::iterator it = _sCommandModes.find(sContext);
+    if (it != _sCommandModes.end()) {
+        for (std::list<std::string>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+            Command* cmd = getCommandByName(jt->c_str());
+            if (cmd) {
+                cmd->updateAction(mode);
+            }
+        }
+    }
+}

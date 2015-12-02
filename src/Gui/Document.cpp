@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -73,7 +73,7 @@ struct DocumentP
     int        _iDocId;
     bool       _isClosing;
     bool       _isModified;
-    ViewProvider*   _pcInEdit;
+    ViewProvider*   _editViewProvider;
     Application*    _pcAppWnd;
     // the doc/Document
     App::Document*  _pcDocument;
@@ -96,6 +96,8 @@ struct DocumentP
     Connection connectFinishLoadDocument;
     Connection connectExportObjects;
     Connection connectImportObjects;
+    Connection connectUndoDocument;
+    Connection connectRedoDocument;
 };
 
 } // namespace Gui
@@ -116,7 +118,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_isModified = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
-    d->_pcInEdit = 0;
+    d->_editViewProvider = 0;
 
     // Setup the connections
     d->connectNewObject = pcDocument->signalNewObject.connect
@@ -125,8 +127,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotDeletedObject, this, _1));
     d->connectCngObject = pcDocument->signalChangedObject.connect
         (boost::bind(&Gui::Document::slotChangedObject, this, _1, _2));
-    d->connectRenObject = pcDocument->signalRenamedObject.connect
-        (boost::bind(&Gui::Document::slotRenamedObject, this, _1));
+    d->connectRenObject = pcDocument->signalRelabelObject.connect
+        (boost::bind(&Gui::Document::slotRelabelObject, this, _1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
         (boost::bind(&Gui::Document::slotActivatedObject, this, _1));
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
@@ -142,6 +144,11 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::exportObjects, this, _1, _2));
     d->connectImportObjects = pcDocument->signalImportViewObjects.connect
         (boost::bind(&Gui::Document::importObjects, this, _1, _2, _3));
+        
+    d->connectUndoDocument = pcDocument->signalUndo.connect
+        (boost::bind(&Gui::Document::slotUndoDocument, this, _1));
+    d->connectRedoDocument = pcDocument->signalRedo.connect
+        (boost::bind(&Gui::Document::slotRedoDocument, this, _1));  
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
@@ -171,6 +178,8 @@ Document::~Document()
     d->connectFinishLoadDocument.disconnect();
     d->connectExportObjects.disconnect();
     d->connectImportObjects.disconnect();
+    d->connectUndoDocument.disconnect();
+    d->connectRedoDocument.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -198,49 +207,59 @@ Document::~Document()
 
 bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
 {
-    if (d->_pcInEdit)
+    if (d->_editViewProvider)
         resetEdit();
     // is it really a ViewProvider of this document?
     if (d->_ViewProviderMap.find(dynamic_cast<ViewProviderDocumentObject*>(p)->getObject()) == d->_ViewProviderMap.end())
         return false;
 
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
+    // if the currently active view is not the 3d view search for it and activate it
+    if (!activeView) {
+        activeView = dynamic_cast<View3DInventor *>(getViewOfViewProvider(p));
+        if (activeView)
+            getMainWindow()->setActiveWindow(activeView);
+    }
+
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
-        d->_pcInEdit = p;
+        d->_editViewProvider = p;
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         if (dlg)
             dlg->setDocumentName(this->getDocument()->getName());
-        if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
+        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+            signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
     }
-    else
+    else {
         return false;
+    }
+
     return true;
 }
 
 void Document::resetEdit(void)
 {
     std::list<Gui::BaseView*>::iterator it;
-    if (d->_pcInEdit) {
+    if (d->_editViewProvider) {
         for (it = d->baseViews.begin();it != d->baseViews.end();++it) {
             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*it);
             if (activeView)
                 activeView->getViewer()->resetEditingViewProvider();
         }
 
-        if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
-        d->_pcInEdit = 0;
+        d->_editViewProvider->finishEditing();
+        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
+        d->_editViewProvider = 0;
     }
 }
 
 ViewProvider *Document::getInEdit(void) const
 {
-    if (d->_pcInEdit) {
+    if (d->_editViewProvider) {
         // there is only one 3d view which is in edit mode
         View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
         if (activeView && activeView->getViewer()->isEditingViewProvider())
-            return d->_pcInEdit;
+            return d->_editViewProvider;
     }
 
     return 0;
@@ -437,7 +456,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
             if (activeView) {
-                if (d->_pcInEdit == viewProvider)
+                if (d->_editViewProvider == viewProvider)
                     resetEdit();
                 activeView->getViewer()->removeViewProvider(viewProvider);
             }
@@ -458,21 +477,27 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     if (viewProvider) {
         try {
             viewProvider->update(&Prop);
-        } catch(const Base::MemoryException& e) {
+        }
+        catch(const Base::MemoryException& e) {
             Base::Console().Error("Memory exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
-        } catch(Base::Exception &e){
+        }
+        catch(Base::Exception& e){
             e.ReportException();
-        } catch (...) {
+        }
+        catch(const std::exception& e){
+            Base::Console().Error("C++ exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
+        }
+        catch (...) {
             Base::Console().Error("Cannot update representation for '%s'.\n", Obj.getNameInDocument());
         }
 
         // check for children 
-        if(viewProvider->getChildRoot()) {
+        if (viewProvider->getChildRoot()) {
             std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
             SoGroup* childGroup =  viewProvider->getChildRoot();
 
             // size not the same -> build up the list new
-            if(childGroup->getNumChildren() != children.size()){
+            if(childGroup->getNumChildren() != static_cast<int>(children.size())){
 
                 childGroup->removeAllChildren();
             
@@ -486,7 +511,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                         for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
                             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
                             if (activeView && viewProvider) {
-                                if (d->_pcInEdit == ChildViewProvider)
+                                if (d->_editViewProvider == ChildViewProvider)
                                     resetEdit();
                                 activeView->getViewer()->removeViewProvider(ChildViewProvider);
                             }
@@ -504,11 +529,11 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     setModified(true);
 }
 
-void Document::slotRenamedObject(const App::DocumentObject& Obj)
+void Document::slotRelabelObject(const App::DocumentObject& Obj)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-        signalRenamedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        signalRelabelObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
 }
 
@@ -518,6 +543,22 @@ void Document::slotActivatedObject(const App::DocumentObject& Obj)
     if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
         signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
+}
+
+void Document::slotUndoDocument(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    
+    signalUndoDocument(*this);  
+}
+
+void Document::slotRedoDocument(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    
+    signalRedoDocument(*this);   
 }
 
 void Document::setModified(bool b)
@@ -564,10 +605,16 @@ App::Document* Document::getDocument(void) const
 bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
-        Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
-                                       ,d->_pcDocument->getName());
-        setModified(false);
+        try {
+            Gui::WaitCursor wc;
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
+                                           ,d->_pcDocument->getName());
+            setModified(false);
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
+                QString::fromLatin1(e.what()));
+        }
         return true;
     }
     else {
@@ -582,6 +629,40 @@ bool Document::saveAs(void)
 
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
+        QString(), QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
+    if (!fn.isEmpty()) {
+        QFileInfo fi;
+        fi.setFile(fn);
+
+        const char * DocName = App::GetApplication().getDocumentName(getDocument());
+
+        // save as new file name
+        try {
+            Gui::WaitCursor wc;
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(\"%s\")"
+                                           , DocName, (const char*)fn.toUtf8());
+            setModified(false);
+            getMainWindow()->appendRecentFile(fi.filePath());
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
+                QString::fromLatin1(e.what()));
+        }
+        return true;
+    }
+    else {
+        getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
+        return false;
+    }
+}
+
+/// Save a copy of the document under a new file name
+bool Document::saveCopy(void)
+{
+    getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename..."));
+
+    QString exe = qApp->applicationName();
+    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
                                              QString(), QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
         QFileInfo fi;
@@ -591,11 +672,9 @@ bool Document::saveAs(void)
 
         // save as new file name
         Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(\"%s\")"
+        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveCopy(\"%s\")"
                                        , DocName, (const char*)fn.toUtf8());
-        setModified(false);
 
-        getMainWindow()->appendRecentFile(fi.filePath());
         return true;
     }
     else {
@@ -651,7 +730,6 @@ void Document::Restore(Base::XMLReader &reader)
     // RestoreDocFile then restores the visibility status again
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        it->second->hide();
         it->second->startRestoring();
     }
 }
@@ -1061,40 +1139,55 @@ bool Document::canClose ()
             QObject::tr("The document is not closable for the moment."));
         return false;
     }
-    else if (!Gui::Control().isAllowedAlterDocument()) {
-        std::string name = Gui::Control().activeDialog()->getDocumentName();
-        if (name == this->getDocument()->getName()) {
-            QMessageBox::warning(getActiveView(),
-                QObject::tr("Document not closable"),
-                QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
-                            "You either have to finish or cancel the editing in the task panel."));
-            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-            if (dlg) Gui::Control().showDialog(dlg);
-            return false;
+    //else if (!Gui::Control().isAllowedAlterDocument()) {
+    //    std::string name = Gui::Control().activeDialog()->getDocumentName();
+    //    if (name == this->getDocument()->getName()) {
+    //        QMessageBox::warning(getActiveView(),
+    //            QObject::tr("Document not closable"),
+    //            QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
+    //                        "You either have to finish or cancel the editing in the task panel."));
+    //        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    //        if (dlg) Gui::Control().showDialog(dlg);
+    //        return false;
+    //    }
+    //}
+
+    bool ok = true;
+    if (isModified()) {
+        QMessageBox box(getActiveView());
+        box.setIcon(QMessageBox::Question);
+        box.setWindowTitle(QObject::tr("Unsaved document"));
+        box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
+                    .arg(QString::fromUtf8(getDocument()->Label.getValue())));
+        box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
+        box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
+        box.setDefaultButton(QMessageBox::Save);
+
+        switch (box.exec())
+        {
+        case QMessageBox::Save:
+            ok = save();
+            break;
+        case QMessageBox::Discard:
+            ok = true;
+            break;
+        case QMessageBox::Cancel:
+            ok = false;
+            break;
         }
     }
 
-    if (!isModified())
-        return true;
-    bool ok = true;
-    switch(QMessageBox::question(getActiveView(),
-        QObject::tr("Unsaved document"),
-        QObject::tr("The document '%1' has been modified.\n"
-                    "Do you want to save your changes?")
-        .arg(QString::fromUtf8(getDocument()->Label.getValue())),
-        QMessageBox::Yes | QMessageBox::Default,
-        QMessageBox::No,
-        QMessageBox::Cancel | QMessageBox::Escape))
-    {
-    case QMessageBox::Yes:
-        ok = save();
-        break;
-    case QMessageBox::No:
-        ok = true;
-        break;
-    case QMessageBox::Cancel:
-        ok = false;
-        break;
+    if (ok) {
+        // If a tsk dialog is open that doesn't allow other commands to modify
+        // the document it must be closed by resetting the edit mode of the
+        // corresponding view provider.
+        if (!Gui::Control().isAllowedAlterDocument()) {
+            std::string name = Gui::Control().activeDialog()->getDocumentName();
+            if (name == this->getDocument()->getName()) {
+                if (this->getInEdit())
+                    this->resetEdit();
+            }
+        }
     }
 
     return ok;
@@ -1147,6 +1240,26 @@ bool Document::sendMsgToViews(const char* pMsg)
     return false;
 }
 
+bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn)
+{
+    // first try the active view
+    Gui::MDIView* view = getActiveView();
+    if (view && view->isDerivedFrom(typeId)) {
+        if (view->onMsg(pMsg, ppReturn))
+            return true;
+    }
+
+    // now try the other views
+    std::list<Gui::MDIView*> views = getMDIViewsOfType(typeId);
+    for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+        if ((*it != view) && (*it)->onMsg(pMsg, ppReturn)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /// Getter for the active view
 MDIView* Document::getActiveView(void) const
 {
@@ -1174,13 +1287,25 @@ MDIView* Document::getActiveView(void) const
 
 Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
 {
-    std::list<MDIView*> mdis = getMDIViews();
+    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
     for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
-            View3DInventor* view = static_cast<View3DInventor*>(*it);
-            if (view->getViewer()->hasViewProvider(vp))
-                return *it;
-        }
+        View3DInventor* view = static_cast<View3DInventor*>(*it);
+        if (view->getViewer()->hasViewProvider(vp))
+            return *it;
+    }
+
+    return 0;
+}
+
+Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) const
+{
+    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
+    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
+        View3DInventor* view = static_cast<View3DInventor*>(*it);
+        View3DInventorViewer* viewer = view->getViewer();
+        // there is only one 3d view which is in edit mode
+        if (viewer->hasViewProvider(vp) && viewer->isEditingViewProvider())
+            return *it;
     }
 
     return 0;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,15 +30,15 @@
 #ifdef FC_OS_WIN32
 # define AppFemExport   __declspec(dllexport)
 # define FemExport      __declspec(dllexport)
-# define PartExport  __declspec(dllimport)
+# define PartExport     __declspec(dllimport)
 # define MeshExport     __declspec(dllimport)
 # define BaseExport     __declspec(dllimport)
 #else // for Linux
 # define AppFemExport
 # define FemExport
-# define PartExport 
-# define MeshExport  
-# define BaseExport  
+# define PartExport
+# define MeshExport
+# define BaseExport
 #endif
 
 #ifdef _MSC_VER

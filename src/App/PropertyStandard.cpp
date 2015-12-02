@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,14 +30,17 @@
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <boost/math/special_functions/round.hpp>
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Stream.h>
+#include <Base/Quantity.h>
 
 #include "PropertyStandard.h"
 #include "MaterialPy.h"
+#include "ObjectIdentifier.h"
 
 using namespace App;
 using namespace Base;
@@ -128,6 +131,22 @@ void PropertyInteger::Paste(const Property &from)
     aboutToSetValue();
     _lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
     hasSetValue();
+}
+
+void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    verifyPath(path);
+
+    if (value.type() == typeid(long))
+        setValue(boost::any_cast<long>(value));
+    else if (value.type() == typeid(double))
+        setValue(boost::math::round(boost::any_cast<double>(value)));
+    else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
+        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
+    else if (value.type() == typeid(int))
+        setValue(boost::any_cast<int>(value));
+    else
+        throw bad_cast();
 }
 
 
@@ -265,9 +284,13 @@ TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::PropertyInteger);
 
 
 PropertyEnumeration::PropertyEnumeration()
-  : _CustomEnum(false), _EnumArray(0)
 {
 
+}
+
+PropertyEnumeration::PropertyEnumeration(const App::Enumeration &e)
+{
+    _enum = e;
 }
 
 PropertyEnumeration::~PropertyEnumeration()
@@ -275,148 +298,79 @@ PropertyEnumeration::~PropertyEnumeration()
 
 }
 
-void PropertyEnumeration::setEnums(const char** plEnums)
+void PropertyEnumeration::setEnums(const char **plEnums)
 {
-    _EnumArray = plEnums;
-# ifdef FC_DEBUG
-    if (_EnumArray) {
-        // check for NULL termination
-        const char* p = *_EnumArray;
-        unsigned int i=0;
-        while(*(p++) != 0)i++;
-            // very unlikely to have enums with more then 5000 entries!
-            assert(i<5000);
-    }
-# endif
+    // Setting the enum is done only once inside the constructor
+    // but before the current index is already set. So, this needs
+    // to be preserved.
+    int index = _enum._index;
+    _enum.setEnums(plEnums);
+    _enum._index = index;
 }
 
-void PropertyEnumeration::setValue(const char* value)
+void PropertyEnumeration::setValue(const char *value)
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-
-    // set zero if there is no enum array
-    if(!_EnumArray){
-        PropertyInteger::setValue(0);
-        return;
-    }
-
-    unsigned int i=0;
-    const char** plEnums = _EnumArray;
-
-    // search for the right entry
-    while(1){
-        // end of list? set zero
-        if(*plEnums==NULL){
-            PropertyInteger::setValue(0);
-            break;
-        }
-        if(strcmp(*plEnums,value)==0){
-            PropertyInteger::setValue(i);
-            break;
-        }
-        plEnums++;
-        i++;
-    }
+    aboutToSetValue();
+    _enum.setValue(value);
+    hasSetValue();
 }
 
 void PropertyEnumeration::setValue(long value)
 {
-# ifdef FC_DEBUG
-    assert(value>=0 && value<5000);
-    if(_EnumArray){
-        const char** plEnums = _EnumArray;
-        long i=0;
-        while(*(plEnums++) != NULL)i++;
-        // very unlikely to have enums with more then 5000 entries!
-        // Note: Do NOT call assert() because this code might be executed from Python console!
-        if ( value < 0 || i <= value )
-            throw Base::Exception("Out of range");
-    }
-# endif
-    PropertyInteger::setValue(value);
+    aboutToSetValue();
+    _enum.setValue(value);
+    hasSetValue();
 }
 
-/// checks if the property is set to a certain string value
-bool PropertyEnumeration::isValue(const char* value) const
+void PropertyEnumeration::setValue(const Enumeration &source)
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-    return strcmp(_EnumArray[getValue()],value)==0;
+    aboutToSetValue();
+    _enum = source;
+    hasSetValue();
 }
 
-/// checks if a string is included in the enumeration
-bool PropertyEnumeration::isPartOf(const char* value) const
+long PropertyEnumeration::getValue(void) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-
-    const char** plEnums = _EnumArray;
-
-    // search for the right entry
-    while(1){
-        // end of list?
-        if(*plEnums==NULL) 
-            return false;
-        if(strcmp(*plEnums,value)==0) 
-            return true;
-        plEnums++;
-    }
+    return _enum.getInt();
 }
 
-/// get the value as string
-const char* PropertyEnumeration::getValueAsString(void) const
+bool PropertyEnumeration::isValue(const char *value) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-    return _EnumArray[getValue()];
+    return _enum.isValue(value);
+}
+
+bool PropertyEnumeration::isPartOf(const char *value) const
+{
+    return _enum.contains(value);
+}
+
+const char * PropertyEnumeration::getValueAsString(void) const
+{
+    return _enum.getCStr();
+}
+
+Enumeration PropertyEnumeration::getEnum(void) const
+{
+    return _enum;
 }
 
 std::vector<std::string> PropertyEnumeration::getEnumVector(void) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-
-    std::vector<std::string> result;
-    const char** plEnums = _EnumArray;
-
-    // end of list?
-    while(*plEnums!=NULL){ 
-        result.push_back(*plEnums);
-        plEnums++;
-    }
-
-    return result;
+    return _enum.getEnumVector();
 }
 
-void PropertyEnumeration::setEnumVector(const std::vector<std::string>& values)
+const char ** PropertyEnumeration::getEnums(void) const
 {
-    delete [] _EnumArray;
-    _EnumArray = new const char*[values.size()+1];
-    int i=0;
-    for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
-#if defined (_MSC_VER)
-        _EnumArray[i++] = _strdup(it->c_str());
-#else
-        _EnumArray[i++] = strdup(it->c_str());
-#endif
-    }
-
-    _EnumArray[i] = 0; // null termination
-}
-
-const char** PropertyEnumeration::getEnums(void) const
-{
-    return _EnumArray;
+    return _enum.getEnums();
 }
 
 void PropertyEnumeration::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _lValue <<"\"";
-    if (_CustomEnum)
+    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _enum.getInt() <<"\"";
+    if (_enum.isCustom())
         writer.Stream() << " CustomEnum=\"true\"";
     writer.Stream() << "/>" << std::endl;
-    if (_CustomEnum) {
+    if (_enum.isCustom()) {
         std::vector<std::string> items = getEnumVector();
         writer.Stream() << writer.ind() << "<CustomEnumList count=\"" <<  items.size() <<"\">" << endl;
         writer.incInd();
@@ -440,6 +394,7 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
         reader.readElement("CustomEnumList");
         int count = reader.getAttributeAsInteger("count");
         std::vector<std::string> values(count);
+
         for(int i = 0; i < count; i++) {
             reader.readElement("Enum");
             values[i] = reader.getAttribute("value");
@@ -447,16 +402,15 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
 
         reader.readEndElement("CustomEnumList");
 
-        _CustomEnum = true;
-        setEnumVector(values);
+        _enum.setEnums(values);
     }
 
     setValue(val);
 }
 
-PyObject *PropertyEnumeration::getPyObject(void)
+PyObject * PropertyEnumeration::getPyObject(void)
 {
-    if (!_EnumArray) {
+    if (!_enum.isValid()) {
         PyErr_SetString(PyExc_AssertionError, "The enum is empty");
         return 0;
     }
@@ -468,19 +422,18 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 { 
     if (PyInt_Check(value)) {
         long val = PyInt_AsLong(value);
-        if (_EnumArray) {
-            const char** plEnums = _EnumArray;
-            long i=0;
-            while(*(plEnums++) != NULL)i++;
-            if (val < 0 || i <= val)
-                throw Base::ValueError("Out of range");
-            PropertyInteger::setValue(val);
+        if (_enum.isValid()) {
+            aboutToSetValue();
+            _enum.setValue(val, true);
+            hasSetValue();
         }
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);
-        if (_EnumArray && isPartOf(str)) {
-            setValue(PyString_AsString (value));
+        if (_enum.contains(str)) {
+            aboutToSetValue();
+            _enum.setValue(PyString_AsString (value));
+            hasSetValue();
         }
         else {
             std::stringstream out;
@@ -493,48 +446,59 @@ void PropertyEnumeration::setPyObject(PyObject *value)
         std::vector<std::string> values;
         values.resize(nSize);
 
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
-            if (!PyString_Check(item)) {
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
+            PyObject *item = PyList_GetItem(value, i);
+
+            if ( !PyString_Check(item) ) {
                 std::string error = std::string("type in list must be str, not ");
-                error += item->ob_type->tp_name;
-                throw Base::TypeError(error);
+                throw Base::TypeError(error + item->ob_type->tp_name);
             }
+
             values[i] = PyString_AsString(item);
         }
 
-        _CustomEnum = true;
-        setEnumVector(values);
+        _enum.setEnums(values);
         setValue((long)0);
     }
     else {
         std::string error = std::string("type must be int or str, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+        throw Base::TypeError(error + value->ob_type->tp_name);
     }
 }
 
-Property *PropertyEnumeration::Copy(void) const
+Property * PropertyEnumeration::Copy(void) const
 {
-    PropertyEnumeration *p= new PropertyEnumeration();
-    p->_lValue = _lValue;
-    if (_CustomEnum) {
-        p->_CustomEnum = true;
-        p->setEnumVector(getEnumVector());
-    }
-    return p;
+    return new PropertyEnumeration(_enum);
 }
 
 void PropertyEnumeration::Paste(const Property &from)
 {
     aboutToSetValue();
+
     const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
-    _lValue = prop._lValue;
-    if (prop._CustomEnum) {
-        this->_CustomEnum = true;
-        this->setEnumVector(prop.getEnumVector());
-    }
+    _enum = prop._enum;
+
     hasSetValue();
+}
+
+void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    verifyPath(path);
+
+    if (value.type() == typeid(int))
+        setValue(boost::any_cast<int>(value));
+    else if (value.type() == typeid(double))
+        setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(short))
+        setValue(boost::any_cast<short>(value));
+    else if (value.type() == typeid(std::string))
+        setValue(boost::any_cast<std::string>(value).c_str());
+    else if (value.type() == typeid(char*))
+        setValue(boost::any_cast<char*>(value));
+    else if (value.type() == typeid(const char*))
+        setValue(boost::any_cast<const char*>(value));
+    else
+        throw bad_cast();
 }
 
 //**************************************************************************
@@ -995,6 +959,24 @@ void PropertyFloat::Paste(const Property &from)
     hasSetValue();
 }
 
+void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    verifyPath(path);
+
+    if (value.type() == typeid(double))
+        setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
+        setValue((boost::any_cast<Quantity>(value)).getValue());
+    else
+        throw bad_cast();
+}
+
+const boost::any PropertyFloat::getPathValue(const ObjectIdentifier &path) const
+{
+    verifyPath(path);
+    return _dValue;
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyFloatConstraint
@@ -1363,6 +1345,17 @@ void PropertyString::Paste(const Property &from)
 unsigned int PropertyString::getMemSize (void) const
 {
     return static_cast<unsigned int>(_cValue.size());
+}
+
+void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    verifyPath(path);
+}
+
+const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) const
+{
+    verifyPath(path);
+    return _cValue;
 }
 
 //**************************************************************************
@@ -1863,11 +1856,7 @@ bool PropertyBool::getValue(void) const
 
 PyObject *PropertyBool::getPyObject(void)
 {
-    if (_lValue)
-        {Py_INCREF(Py_True); return Py_True;}
-    else
-        {Py_INCREF(Py_False); return Py_False;}
-
+    return PyBool_FromLong(_lValue ? 1 : 0);
 }
 
 void PropertyBool::setPyObject(PyObject *value)
@@ -1915,6 +1904,29 @@ void PropertyBool::Paste(const Property &from)
     aboutToSetValue();
     _lValue = dynamic_cast<const PropertyBool&>(from)._lValue;
     hasSetValue();
+}
+
+void PropertyBool::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    verifyPath(path);
+
+    if (value.type() == typeid(bool))
+        setValue(boost::any_cast<bool>(value));
+    else if (value.type() == typeid(int))
+        setValue(boost::any_cast<int>(value) != 0);
+    else if (value.type() == typeid(double))
+        setValue(boost::math::round(boost::any_cast<double>(value)));
+    else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
+        setValue(boost::any_cast<Quantity>(value).getValue() != 0);
+    else
+        throw bad_cast();
+}
+
+const boost::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
+{
+    verifyPath(path);
+
+    return _lValue;
 }
 
 //**************************************************************************
@@ -1979,12 +1991,10 @@ PyObject *PropertyBoolList::getPyObject(void)
     for(int i = 0;i<getSize(); i++) {
         bool v = _lValueList[i];
         if (v) {
-            Py_INCREF(Py_True);
-            PyTuple_SetItem(tuple, i, Py_True);
+            PyTuple_SetItem(tuple, i, PyBool_FromLong(1));
         }
         else {
-            Py_INCREF(Py_False);
-            PyTuple_SetItem(tuple, i, Py_False);
+            PyTuple_SetItem(tuple, i, PyBool_FromLong(0));
         }
     }
     return tuple;

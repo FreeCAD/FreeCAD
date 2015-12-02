@@ -1,1931 +1,3658 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="fi" sourcelanguage="en">
-  <context>
+<context>
+    <name>CmdSketcherClone</name>
+    <message>
+        <location filename="../../CommandSketcherTools.cpp" line="+1523"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Creates a clone of the geometry taking as reference the last selected point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCloseShape</name>
+    <message>
+        <location line="-1428"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Close Shape</source>
+        <translation type="unfinished">Sulje muoto</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Produce closed shape by Link end point of element with next elements&apos; starting point</source>
+        <translation type="unfinished">Tuota suljettu muoto kytkemällä kohteen päätepiste seuraavan kohteen alkupisteeseen</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCompCopy</name>
+    <message>
+        <location line="+1451"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Creates a clone of the geometry taking as reference the last selected point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1533"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location filename="../../CommandCreateGeo.cpp" line="+1751"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create arc</source>
-      <translation type="unfinished">Luo kaari</translation>
+        <location line="+1"/>
+        <source>Create arc</source>
+        <translation type="unfinished">Luo kaari</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create an arc in the sketcher</source>
-      <translation type="unfinished">Create an arc in the sketcher</translation>
+        <location line="+1"/>
+        <source>Create an arc in the sketcher</source>
+        <translation type="unfinished">Luo kaari luonnostyökalulla</translation>
     </message>
     <message>
-      <location line="+55"/>
-      <source>Center and end points</source>
-      <translation type="unfinished">Center and end points</translation>
+        <location line="+74"/>
+        <source>Center and end points</source>
+        <translation type="unfinished">Keski- ja loppupisteet</translation>
     </message>
     <message>
-      <location line="+4"/>
-      <source>End points and rim point</source>
-      <translation type="unfinished">End points and rim point</translation>
+        <location line="+4"/>
+        <source>End points and rim point</source>
+        <translation type="unfinished">Loppupisteet ja kehän kohta</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location line="+415"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location line="+1833"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create circle</source>
-      <translation type="unfinished">Luo ympyrä</translation>
+        <location line="+1"/>
+        <source>Create circle</source>
+        <translation type="unfinished">Luo ympyrä</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a circle in the sketcher</source>
-      <translation type="unfinished">Create a circle in the sketcher</translation>
+        <location line="+1"/>
+        <source>Create a circle in the sketcher</source>
+        <translation type="unfinished">Luo ympyrä luonnostyökalulla</translation>
     </message>
     <message>
-      <location line="+55"/>
-      <source>Center and rim point</source>
-      <translation type="unfinished">Center and rim point</translation>
+        <location line="+74"/>
+        <source>Center and rim point</source>
+        <translation type="unfinished">keskipiste ja kehäpiste</translation>
     </message>
     <message>
-      <location line="+4"/>
-      <source>3 rim points</source>
-      <translation type="unfinished">3 rim points</translation>
+        <location line="+4"/>
+        <source>3 rim points</source>
+        <translation type="unfinished">3 kehän pistettä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCompCreateConic</name>
+    <message>
+        <location line="-438"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a conic</source>
+        <translation type="unfinished">Luo kartio</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a conic in the sketch</source>
+        <translation type="unfinished">Luo kartio luonnokseen</translation>
+    </message>
+    <message>
+        <location line="+88"/>
+        <source>Ellipse by center, major radius, point</source>
+        <translation type="unfinished">Ellipsi keskipisteellä, pääsäteellä tai pisteellä</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Ellipse by Periapsis, apoapsis, minor radius</source>
+        <translation type="unfinished">Ellipsi kauimmalla pisteellä, lähimmällä pisteellä tai pienellä säteellä</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Arc of ellipse by center, major radius, endpoints</source>
+        <translation type="unfinished">Ellipsin kaari keskipisteellä, suurella säteellä, päätepisteillä</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCompCreateRegularPolygon</name>
+    <message>
+        <location line="+1821"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create regular polygon</source>
+        <translation type="unfinished">Luo säännöllinen monikulmio</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an regular polygon in the sketcher</source>
+        <translation type="unfinished">Luo säännöllinen monikulmio luonnostyökalulla</translation>
+    </message>
+    <message>
+        <location line="+100"/>
+        <source>Triangle</source>
+        <translation type="unfinished">Kolmio</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Square</source>
+        <translation type="unfinished">Neliö</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Pentagon</source>
+        <translation type="unfinished">Viisikulmio</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Hexagon</source>
+        <translation type="unfinished">Kuusikulmio</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Heptagon</source>
+        <translation type="unfinished">Seitsenkulmio</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Octagon</source>
+        <translation type="unfinished">Kahdeksankulmio</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherConnect</name>
+    <message>
+        <location filename="../../CommandSketcherTools.cpp" line="-1345"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Connect Edges</source>
+        <translation type="unfinished">Yhdistä reunat</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Link end point of element with next elements&apos; starting point</source>
+        <translation type="unfinished">Yhdistä kohteen päätepiste seuraavan kohteen alkupisteeseen</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1504"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location filename="../../CommandConstraints.cpp" line="+2505"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain angle</source>
-      <translation>Rajoita kulma</translation>
+        <location line="+1"/>
+        <source>Constrain angle</source>
+        <translation>Rajoita kulma</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Korjaa viivan kulmaa tai kahden viivan välistä kulma</translation>
+        <location line="+1"/>
+        <source>Fix the angle of a line or the angle between two lines</source>
+        <translation>Korjaa viivan kulmaa tai kahden viivan välistä kulma</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location line="-1003"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-1664"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain coincident</source>
-      <translation>Samanlaisuus rajoite</translation>
+        <location line="+1"/>
+        <source>Constrain coincident</source>
+        <translation>Samanlaisuus rajoite</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a coincident constraint on the selected item</source>
-      <translation>Luo samanlainen rajoite valituille kohteille</translation>
+        <location line="+1"/>
+        <source>Create a coincident constraint on the selected item</source>
+        <translation>Luo samanlainen rajoite valituille kohteille</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="+74"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+90"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain distance</source>
-      <translation>Etäisyys rajoitus</translation>
+        <location line="+1"/>
+        <source>Constrain distance</source>
+        <translation>Etäisyys rajoitus</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Fix a length of a line or the distance between a line and a vertex</source>
-      <translation>Korjaa viivan pituutta tai etäisyyttä viivan ja pisteen välillä</translation>
+        <location line="+1"/>
+        <source>Fix a length of a line or the distance between a line and a vertex</source>
+        <translation>Korjaa viivan pituutta tai etäisyyttä viivan ja pisteen välillä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location line="+227"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+263"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain horizontal distance</source>
-      <translation>Vaakasuoran etäisyyden rajoite</translation>
+        <location line="+1"/>
+        <source>Constrain horizontal distance</source>
+        <translation>Vaakasuoran etäisyyden rajoite</translation>
     </message>
     <message>
-      <source>Constrain vertical distance</source>
-      <translation type="obsolete">Constrain vertical distance</translation>
+        <source>Constrain vertical distance</source>
+        <translation type="obsolete">Constrain vertical distance</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Korjaa kahden pisteen tai viivanpään vaakasuoraa etäisyyttä</translation>
+        <location line="+1"/>
+        <source>Fix the horizontal distance between two points or line ends</source>
+        <translation>Korjaa kahden pisteen tai viivanpään vaakasuoraa etäisyyttä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location line="+132"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+163"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain vertical distance</source>
-      <translation>Constrain vertical distance</translation>
+        <location line="+1"/>
+        <source>Constrain vertical distance</source>
+        <translation>Constrain vertical distance</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation type="obsolete">Vaakasuoran etäisyyden rajoite</translation>
+        <source>Constrain horizontal distance</source>
+        <translation type="obsolete">Vaakasuoran etäisyyden rajoite</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Korjaa kahden pisteen tai viivanpään pystysuoraa etäisyyttä</translation>
+        <location line="+1"/>
+        <source>Fix the vertical distance between two points or line ends</source>
+        <translation>Korjaa kahden pisteen tai viivanpään pystysuoraa etäisyyttä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+697"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+1403"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain equal</source>
-      <translation>Yhtäsuuruus rajoite</translation>
+        <location line="+1"/>
+        <source>Constrain equal</source>
+        <translation>Yhtäsuuruus rajoite</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Luo yhtäsuuruus rajoite kahdelle viivalle tai ympyröille ja kaarille</translation>
+        <location line="+1"/>
+        <source>Create an equality constraint between two lines or between circles and arcs</source>
+        <translation>Luo yhtäsuuruus rajoite kahdelle viivan tai ympyröiden ja kaarien väliin</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-1396"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-2222"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain horizontally</source>
-      <translation>Vaakasuora rajoite</translation>
+        <location line="+1"/>
+        <source>Constrain horizontally</source>
+        <translation>Vaakasuora rajoite</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a horizontal constraint on the selected item</source>
-      <translation>Luo vaakasuora rajoite valittujen osien välille</translation>
+        <location line="+1"/>
+        <source>Create a horizontal constraint on the selected item</source>
+        <translation>Luo vaakasuora rajoite valittujen osien välille</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherConstrainInternalAlignment</name>
+    <message>
+        <location line="+2654"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Constrain InternalAlignment</source>
+        <translation type="unfinished">Rajoita SisäinenTasaus</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Constrains an element to be aligned with the internal geometry of another element</source>
+        <translation type="unfinished">Rajoitus: kohde tasataan toisen kohteen sisäisen geometrian kanssa</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="+182"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-2464"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain lock</source>
-      <translation>Rajoite lukko</translation>
+        <location line="+1"/>
+        <source>Constrain lock</source>
+        <translation>Rajoite lukko</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a lock constraint on the selected item</source>
-      <translation>Luo lukittu rajoite valituille kohteille</translation>
+        <location line="+1"/>
+        <source>Create a lock constraint on the selected item</source>
+        <translation>Luo lukittu rajoite valituille kohteille</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location line="+641"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+782"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain parallel</source>
-      <translation>Rajoita yhdensuuntaiseksi</translation>
+        <location line="+1"/>
+        <source>Constrain parallel</source>
+        <translation>Rajoita yhdensuuntaiseksi</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a parallel constraint between two lines</source>
-      <translation>Luo rinnakkaisuus rajoite kahden viivan välille</translation>
+        <location line="+1"/>
+        <source>Create a parallel constraint between two lines</source>
+        <translation>Luo rinnakkaisuus rajoite kahden viivan välille</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location line="+91"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+97"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain perpendicular</source>
-      <translation>Rajoita kohtisuorasti</translation>
+        <location line="+1"/>
+        <source>Constrain perpendicular</source>
+        <translation>Rajoita kohtisuorasti</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a perpendicular constraint between two lines</source>
-      <translation type="unfinished">Create a perpendicular constraint between two lines</translation>
+        <location line="+1"/>
+        <source>Create a perpendicular constraint between two lines</source>
+        <translation type="unfinished">Luo kohtisuora rajoitus kahden viivan väliin</translation>
     </message>
     <message>
-      <source>Create a Perpendicular constraint between two lines</source>
-      <translation type="obsolete">Luo kohtisuora rajoite kahden viivan välillä</translation>
+        <source>Create a Perpendicular constraint between two lines</source>
+        <translation type="obsolete">Luo kohtisuora rajoite kahden viivan välillä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location line="-443"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-515"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain point onto object</source>
-      <translation>Rajoita piste objektiin</translation>
+        <location line="+1"/>
+        <source>Constrain point onto object</source>
+        <translation>Rajoita piste objektiin</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Fix a point onto an object</source>
-      <translation>Korjaa piste objektin paalle</translation>
+        <location line="+1"/>
+        <source>Fix a point onto an object</source>
+        <translation>Korjaa piste objektin paalle</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location line="+695"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+1087"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain radius</source>
-      <translation>Rajoita säde</translation>
+        <location line="+1"/>
+        <source>Constrain radius</source>
+        <translation>Rajoita säde</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Fix the radius of a circle or an arc</source>
-      <translation>Korjaa ympyrän tai kaaren sädettä</translation>
+        <location line="+1"/>
+        <source>Fix the radius of a circle or an arc</source>
+        <translation>Korjaa ympyrän tai kaaren sädettä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherConstrainSnellsLaw</name>
+    <message>
+        <location line="+854"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Constrain refraction (Snell&apos;s law&apos;)</source>
+        <translation type="unfinished">Rajoita taittuminen (Snellin laki)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</source>
+        <translation type="unfinished">Luo taittumislaki (Snellin laki) Rajoitus säteiden kahden päätepisteen kanssa ja liitäntänä on reuna.</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location line="+326"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-172"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain symmetrical</source>
-      <translation>Rajoita symmetrisesti</translation>
+        <location line="+1"/>
+        <source>Constrain symmetrical</source>
+        <translation>Rajoita symmetrisesti</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-      <translation type="unfinished">Create a symmetry constraint between two points with respect to a line or a third point</translation>
+        <location line="+1"/>
+        <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
+        <translation type="unfinished">Luo symmetrinen rajoite kahden pisteen väliin  suhteessa viivaan tai kolmanteen pisteeseen</translation>
     </message>
     <message>
-      <source>Create an symmetry constraint between two points with respect to a line</source>
-      <translation type="obsolete">Luo symmetrisyys rajoite kahdelle pisteelle suhteessa viivaan</translation>
+        <source>Create an symmetry constraint between two points with respect to a line</source>
+        <translation type="obsolete">Luo symmetrisyys rajoite kahdelle pisteelle suhteessa viivaan</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-438"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-952"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain tangent</source>
-      <translation>Rajoita tangentti</translation>
+        <location line="+1"/>
+        <source>Constrain tangent</source>
+        <translation>Rajoita tangentti</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a tangent constraint between two entities</source>
-      <translation>Luo tangenttirajoite kahden yksikön välillä</translation>
+        <location line="+1"/>
+        <source>Create a tangent constraint between two entities</source>
+        <translation>Luo tangenttirajoite kahden yksikön välillä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location line="-978"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-1294"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constrain vertically</source>
-      <translation>Rajoita pystysuuntaisesti</translation>
+        <location line="+1"/>
+        <source>Constrain vertically</source>
+        <translation>Rajoita pystysuuntaisesti</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a vertical constraint on the selected item</source>
-      <translation>Luo pystysuora rajoite valitulle kohteelle</translation>
+        <location line="+1"/>
+        <source>Create a vertical constraint on the selected item</source>
+        <translation>Luo pystysuora rajoite valitulle kohteelle</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCopy</name>
+    <message>
+        <location filename="../../CommandSketcherTools.cpp" line="+1278"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-563"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location filename="../../CommandCreateGeo.cpp" line="-3622"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create arc by three points</source>
-      <translation type="unfinished">Create arc by three points</translation>
+        <location line="+1"/>
+        <source>Create arc by three points</source>
+        <translation type="unfinished">Luo kaari kolmella pistettä</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create an arc by its end points and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+        <location line="+1"/>
+        <source>Create an arc by its end points and a point along the arc</source>
+        <translation type="unfinished">Luoda kaari sen loppupisteistä ja kaarella olevasta pisteestä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location line="+474"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location line="+1911"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create circle by three points</source>
-      <translation type="unfinished">Create circle by three points</translation>
+        <location line="+1"/>
+        <source>Create circle by three points</source>
+        <translation type="unfinished">Luo ympyrä kolmella pistettä</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a circle by 3 perimeter points</source>
-      <translation type="unfinished">Create a circle by 3 perimeter points</translation>
+        <location line="+1"/>
+        <source>Create a circle by 3 perimeter points</source>
+        <translation type="unfinished">Luo ympyrä kolmella kehän pisteellä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location line="-752"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-2213"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create arc by center</source>
-      <translation type="unfinished">Create arc by center</translation>
+        <location line="+1"/>
+        <source>Create arc by center</source>
+        <translation type="unfinished">Luo kaari keskipistettä</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create an arc by its center and by its end points</source>
-      <translation type="unfinished">Create an arc by its center and by its end points</translation>
+        <location line="+1"/>
+        <source>Create an arc by its center and by its end points</source>
+        <translation type="unfinished">Luo kaari sen keskipisteellä ja sen loppupisteillä</translation>
     </message>
     <message>
-      <source>Create arc</source>
-      <translation type="obsolete">Luo kaari</translation>
+        <source>Create arc</source>
+        <translation type="obsolete">Luo kaari</translation>
     </message>
     <message>
-      <source>Create an arc in the sketch</source>
-      <translation type="obsolete">Luo kaaren luonnoksessa</translation>
+        <source>Create an arc in the sketch</source>
+        <translation type="obsolete">Luo kaaren luonnoksessa</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCreateArcOfEllipse</name>
+    <message>
+        <location line="+1848"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc of ellipse</source>
+        <translation type="unfinished">Luo  ellipsin kaari</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc of ellipse in the sketch</source>
+        <translation type="unfinished">Luo ellipsin kaaren luonnoksessa</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location line="+527"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-1256"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create circle</source>
-      <translation>Luo ympyrä</translation>
+        <location line="+1"/>
+        <source>Create circle</source>
+        <translation>Luo ympyrä</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a circle in the sketch</source>
-      <translation>Luo ympyrän luonnoksessa</translation>
+        <location line="+1"/>
+        <source>Create a circle in the sketch</source>
+        <translation>Luo ympyrän luonnoksessa</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location line="+476"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+1910"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create draft line</source>
-      <translation>Luo vedosviiva</translation>
+        <location line="+1"/>
+        <source>Create draft line</source>
+        <translation>Luo vedosviiva</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a draft line in the sketch</source>
-      <translation>Luo vedosviiva luonnokseen</translation>
+        <location line="+1"/>
+        <source>Create a draft line in the sketch</source>
+        <translation>Luo vedosviiva luonnokseen</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCreateEllipseBy3Points</name>
+    <message>
+        <location line="-1039"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create ellipse by 3 points</source>
+        <translation type="unfinished">Luo ellipsi 3:lla pisteellä</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an ellipse by 3 points in the sketch</source>
+        <translation type="unfinished">Luo ellipsi 3 pisteellä luonnoksessa</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreateEllipseByCenter</name>
+    <message>
+        <location line="-31"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create ellipse by center</source>
+        <translation type="unfinished">Luo ellipsi keskipisteen avulla</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an ellipse by center in the sketch</source>
+        <translation type="unfinished">Luo ellipsi keskipisteen avulla luonnoksessa</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location line="+246"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+1346"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create fillet</source>
-      <translation>Luo pyöristys</translation>
+        <location line="+1"/>
+        <source>Create fillet</source>
+        <translation>Luo pyöristys</translation>
     </message>
     <message>
-      <source>Create a fillet between two lines or at a coincidental point</source>
-      <translation type="obsolete">Create a fillet between two lines or at a coincidental point</translation>
+        <source>Create a fillet between two lines or at a coincidental point</source>
+        <translation type="obsolete">Create a fillet between two lines or at a coincidental point</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a fillet between two lines or at a coincident point</source>
-      <translation>Create a fillet between two lines or at a coincident point</translation>
+        <location line="+1"/>
+        <source>Create a fillet between two lines or at a coincident point</source>
+        <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCreateHeptagon</name>
+    <message>
+        <location line="+954"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create heptagon</source>
+        <translation type="unfinished">Luo seitsenkulmio</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a heptagon in the sketch</source>
+        <translation type="unfinished">Luo seitsenkulmio luonnoksessa</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreateHexagon</name>
+    <message>
+        <location line="-27"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create hexagon</source>
+        <translation type="unfinished">Luo kuusikulmio</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a hexagon in the sketch</source>
+        <translation type="unfinished">Luo kuusikulmio luonnoksessa</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location line="-2224"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-4845"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create line</source>
-      <translation>Luo viiva</translation>
+        <location line="+1"/>
+        <source>Create line</source>
+        <translation>Luo viiva</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a line in the sketch</source>
-      <translation>Luo viivan luonnoksessa</translation>
+        <location line="+1"/>
+        <source>Create a line in the sketch</source>
+        <translation>Luo viiva luonnoksessa</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCreateOctagon</name>
+    <message>
+        <location line="+4891"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create octagon</source>
+        <translation type="unfinished">Luo kahdeksankulmio</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an octagon in the sketch</source>
+        <translation type="unfinished">Luo kahdeksankulmio luonnoksessa</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreatePentagon</name>
+    <message>
+        <location line="-78"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create pentagon</source>
+        <translation type="unfinished">Luo viisikulmio</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a pentagon in the sketch</source>
+        <translation type="unfinished">Luo viisikulmio luonnoksessa</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location line="+1917"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-1244"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create point</source>
-      <translation>Luo piste</translation>
+        <location line="+1"/>
+        <source>Create point</source>
+        <translation>Luo piste</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a point in the sketch</source>
-      <translation>Luo pisteen luonnoksessa</translation>
+        <location line="+1"/>
+        <source>Create a point in the sketch</source>
+        <translation>Luo pisteen luonnoksessa</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location line="-1192"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-2729"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create polyline</source>
-      <translation>Luo murtoviiva</translation>
+        <location line="+1"/>
+        <source>Create polyline</source>
+        <translation>Luo murtoviiva</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation type="unfinished">Create a polyline in the sketch. 'M' Key cycles behaviour</translation>
+        <location line="+1"/>
+        <source>Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</source>
+        <translation type="unfinished">Luo murtoviivan luonnos.  &apos;M&apos; avain ohjaa käyttäytymistä</translation>
     </message>
     <message>
-      <source>Create a polyline in the sketch</source>
-      <translation type="obsolete">Luo murtoviiva luonnokseen</translation>
+        <source>Create a polyline in the sketch</source>
+        <translation type="obsolete">Luo murtoviiva luonnokseen</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location line="-525"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-616"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create rectangle</source>
-      <translation>Luo suorakolmio</translation>
+        <location line="+1"/>
+        <source>Create rectangle</source>
+        <translation>Luo suorakolmio</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a rectangle in the sketch</source>
-      <translation>Luo suorakulmion luonnoksessa</translation>
+        <location line="+1"/>
+        <source>Create a rectangle in the sketch</source>
+        <translation>Luo suorakulmion luonnoksessa</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location line="+2599"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location line="+4293"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create slot</source>
-      <translation type="unfinished">Create slot</translation>
+        <location line="+1"/>
+        <source>Create slot</source>
+        <translation type="unfinished">Luo rako</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a slot in the sketch</source>
-      <translation type="unfinished">Create a slot in the sketch</translation>
+        <location line="+1"/>
+        <source>Create a slot in the sketch</source>
+        <translation type="unfinished">Luo rako luonnokseen</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCreateSquare</name>
+    <message>
+        <location line="+261"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create square</source>
+        <translation type="unfinished">Luo neliö</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a square in the sketch</source>
+        <translation type="unfinished">Luo neliö luonnoksessa</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location line="-862"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-1191"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create text</source>
-      <translation>Luo tekstiä</translation>
+        <location line="+1"/>
+        <source>Create text</source>
+        <translation>Luo tekstiä</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create text in the sketch</source>
-      <translation>Luo teksti luonnokseen</translation>
+        <location line="+1"/>
+        <source>Create text in the sketch</source>
+        <translation>Luo teksti luonnokseen</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherCreateTriangle</name>
+    <message>
+        <location line="+1162"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create equilateral triangle</source>
+        <translation type="unfinished">Luo tasasivuinen kolmio</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an equilateral triangle in the sketch</source>
+        <translation type="unfinished">Luo tasasivuinen kolmio luonnoksessa</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherEditSketch</name>
+    <message>
+        <location filename="../../Command.cpp" line="+186"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Edit sketch</source>
+        <translation type="unfinished">Muokkaa luonnosta</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Edit the selected sketch</source>
+        <translation type="unfinished">Muokkaa valittua luonnosta</translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location line="+598"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location filename="../../CommandCreateGeo.cpp" line="-503"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>External geometry</source>
-      <translation>Ulkoinen geometria</translation>
+        <location line="+1"/>
+        <source>External geometry</source>
+        <translation>Ulkoinen geometria</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create an edge linked to an external geometry</source>
-      <translation>Luo reuna joka on yhteydessä ulkoiseen geometriaan</translation>
+        <location line="+1"/>
+        <source>Create an edge linked to an external geometry</source>
+        <translation>Luo reuna joka on yhteydessä ulkoiseen geometriaan</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+364"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location filename="../../Command.cpp" line="+28"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Leave sketch</source>
-      <translation>Poistu luonnoksesta</translation>
+        <location line="+1"/>
+        <source>Leave sketch</source>
+        <translation>Poistu luonnoksesta</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Close the editing of the sketch</source>
-      <translation>Sulje luonnoksen muokkaus</translation>
+        <location line="+1"/>
+        <source>Close the editing of the sketch</source>
+        <translation>Sulje luonnoksen muokkaus</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location line="-101"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="+125"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Map sketch to face...</source>
-      <translation>Kartoita sketsi pinnalle...</translation>
+        <location line="+1"/>
+        <source>Map sketch to face...</source>
+        <translation>Kartoita sketsi pinnalle...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Map a sketch to a face</source>
-      <translation>Kartoita sketsi pinnalle</translation>
+        <location line="+1"/>
+        <source>Map a sketch to a face</source>
+        <translation>Kartoita sketsi pinnalle</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherMergeSketches</name>
+    <message>
+        <location line="+280"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Merge sketches</source>
+        <translation type="unfinished">Yhdistä luonnokset</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Wrong selection</source>
+        <translation type="unfinished">Väärä valinta</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select at least two sketches, please.</source>
+        <translation type="unfinished">Valitse vähintään kaksi luonnosta, ole hyvä.</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherMirrorSketch</name>
+    <message>
+        <location line="-124"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Mirror sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Wrong selection</source>
+        <translation type="unfinished">Väärä valinta</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select one or more sketches, please.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location line="-204"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-466"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create sketch</source>
-      <translation>Luo luonnos</translation>
+        <location line="+1"/>
+        <source>Create sketch</source>
+        <translation>Luo luonnos</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Create a new or edit the selected sketch</source>
-      <translation>Luo uusi tai muokkaa valittua sketsiä</translation>
+        <source>Create a new or edit the selected sketch</source>
+        <translation type="obsolete">Luo uusi tai muokkaa valittua sketsiä</translation>
     </message>
     <message>
-      <source>Create a new sketch</source>
-      <translation type="obsolete">Luo uusi luonnos</translation>
+        <location line="+1"/>
+        <source>Create a new sketch</source>
+        <translation type="unfinished">Luo uusi luonnos</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherNewSketchSF</name>
     <message>
-      <source>Sketcher</source>
-      <translation type="obsolete">Lunnostelija</translation>
+        <source>Sketcher</source>
+        <translation type="obsolete">Lunnostelija</translation>
     </message>
     <message>
-      <source>Sketchflat sketch</source>
-      <translation type="obsolete">Sketchflat luonnos</translation>
+        <source>Sketchflat sketch</source>
+        <translation type="obsolete">Sketchflat luonnos</translation>
     </message>
     <message>
-      <source>Create a new sketchflat sketch by starting externel editor</source>
-      <translation type="obsolete">Luo uusi sketchflat luonnos käynnistämällä ulkoinen editori</translation>
+        <source>Create a new sketchflat sketch by starting externel editor</source>
+        <translation type="obsolete">Luo uusi sketchflat luonnos käynnistämällä ulkoinen editori</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherRectangularArray</name>
+    <message>
+        <location filename="../../CommandSketcherTools.cpp" line="+317"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Rectangular Array</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Creates an rectangular array pattern of the geometry taking as reference the last selected point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location line="+118"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location filename="../../Command.cpp" line="+194"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Reorient sketch...</source>
-      <translation type="unfinished">Reorient sketch...</translation>
+        <location line="+1"/>
+        <source>Reorient sketch...</source>
+        <translation type="unfinished">Suuntaa luonnos...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Reorient the selected sketch</source>
-      <translation type="unfinished">Reorient the selected sketch</translation>
+        <location line="+1"/>
+        <source>Reorient the selected sketch</source>
+        <translation type="unfinished">Suuntaa valittu luonnos</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
+    <message>
+        <location filename="../../CommandSketcherTools.cpp" line="-1087"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Show/hide internal geometry</source>
+        <translation type="unfinished">Näytä/Piilota sisäinen geometria</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Show all internal geometry / hide unused internal geometry</source>
+        <translation type="unfinished">Näytä kaikki sisäinen geometria / Piilota käyttämätön sisäinen geometria</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSelectConflictingConstraints</name>
+    <message>
+        <location line="-178"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Select Conflicting Constraints</source>
+        <translation type="unfinished">Valitse ristiriitaiset rajoitteet</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSelectConstraints</name>
+    <message>
+        <location line="-254"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Constraints</source>
+        <translation type="unfinished">Valitse rajoitteet</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select the constraints associated to the selected elements</source>
+        <translation type="unfinished">Valitse rajoitteet, jotka liittyvät valittuihin osiin</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
+    <message>
+        <location line="+303"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Select Elements associated with constraints</source>
+        <translation type="unfinished">Valitse osat, jotka liittyvät rajoituksiin</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSelectHorizontalAxis</name>
+    <message>
+        <location line="-152"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Horizontal Axis</source>
+        <translation type="unfinished">Valitse vaaka-akseli</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select the horizontal axis</source>
+        <translation type="unfinished">Valitse se vaaka-akseli</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSelectOrigin</name>
+    <message>
+        <location line="-92"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Origin</source>
+        <translation type="unfinished">Valitse alkuperä</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select the origin point</source>
+        <translation type="unfinished">Valitse aloituskohta</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSelectRedundantConstraints</name>
+    <message>
+        <location line="+130"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Select Redundant Constraints</source>
+        <translation type="unfinished">Valitse tarpeettomat rajoitteet</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSelectVerticalAxis</name>
+    <message>
+        <location line="-87"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Vertical Axis</source>
+        <translation type="unfinished">Valitse pystyakseli</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select the vertical axis</source>
+        <translation type="unfinished">Valitse se pystyakseli</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherSymmetry</name>
+    <message>
+        <location line="+593"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Symmetry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Creates symmetric geometry with respect to the last selected line or point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="+67"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location filename="../../CommandAlterGeometry.cpp" line="+72"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Toggle construction line</source>
-      <translation>Kytke rajoiteviiva</translation>
+        <location line="+1"/>
+        <source>Toggle construction geometry</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Toggles the currently selected lines to/from construction mode</source>
-      <translation>Näyttää tai piilottaa valitut viivat rajoitetilassa</translation>
+        <location line="+1"/>
+        <source>Toggles the toolbar or selected geometry to/from construction mode</source>
+        <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>Toggle construction line</source>
+        <translation type="obsolete">Kytke rajoiteviiva</translation>
+    </message>
+    <message>
+        <source>Toggles the currently selected lines to/from construction mode</source>
+        <translation type="obsolete">Näyttää tai piilottaa valitut viivat rajoitetilassa</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherToggleDrivingConstraint</name>
+    <message>
+        <location filename="../../CommandConstraints.cpp" line="+2980"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Toggle reference/driving constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Toggles the toolbar or selected constraints to/from reference mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-173"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location filename="../../CommandCreateGeo.cpp" line="-193"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Trim edge</source>
-      <translation>Trimmaa reuna</translation>
+        <location line="+1"/>
+        <source>Trim edge</source>
+        <translation>Trimmaa reuna</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Trim an edge with respect to the picked position</source>
-      <translation>Tarkenna reuna suhteessa valittuun kohtaan</translation>
+        <location line="+1"/>
+        <source>Trim an edge with respect to the picked position</source>
+        <translation>Tarkenna reuna suhteessa valittuun kohtaan</translation>
     </message>
     <message>
-      <source>Trims an edge with respect to the picked position</source>
-      <translation type="obsolete">Trimmaa reuna suhteessa poimittuun sijaintiin</translation>
+        <source>Trims an edge with respect to the picked position</source>
+        <translation type="obsolete">Trimmaa reuna suhteessa poimittuun sijaintiin</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+250"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location filename="../../Command.cpp" line="+220"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Validate sketch...</source>
-      <translation type="unfinished">Validate sketch...</translation>
+        <location line="+1"/>
+        <source>Validate sketch...</source>
+        <translation type="unfinished">Vahvista luonnos...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Validate sketch</source>
-      <translation type="unfinished">Validate sketch</translation>
+        <location line="+1"/>
+        <source>Validate sketch</source>
+        <translation type="unfinished">Vahvista luonnos</translation>
     </message>
     <message>
-      <location line="+11"/>
-      <source>Wrong selection</source>
-      <translation type="unfinished">Väärä valinta</translation>
+        <location line="+11"/>
+        <source>Wrong selection</source>
+        <translation type="unfinished">Väärä valinta</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Select one sketch, please.</source>
-      <translation type="unfinished">Select one sketch, please.</translation>
+        <location line="+1"/>
+        <source>Select one sketch, please.</source>
+        <translation type="unfinished">Valitse yksi luonnos, ole hyvä.</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location line="-49"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location line="-49"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>View sketch</source>
-      <translation>Näytä sketsi</translation>
+        <location line="+1"/>
+        <source>View sketch</source>
+        <translation>Näytä sketsi</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>View sketch perpendicular to sketch plane</source>
-      <translation>Näytä sketsi kohtisuorassa sketsin tasossa</translation>
+        <location line="+1"/>
+        <source>View sketch perpendicular to sketch plane</source>
+        <translation>Näytä sketsi kohtisuorassa sketsin tasossa</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
     <message>
-      <location filename="../../TaskSketcherCreateCommands.cpp" line="+40"/>
-      <source>Appearance</source>
-      <translation>Ulkoasu</translation>
+        <location filename="../../TaskSketcherCreateCommands.cpp" line="+41"/>
+        <source>Appearance</source>
+        <translation>Ulkoasu</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="+15"/>
-      <location filename="../../CommandConstraints.cpp" line="-245"/>
-      <location line="+168"/>
-      <location line="+92"/>
-      <location line="+91"/>
-      <location line="+10"/>
-      <location line="+10"/>
-      <location line="+53"/>
-      <location line="+10"/>
-      <location line="+10"/>
-      <location line="+56"/>
-      <location line="+10"/>
-      <location line="+79"/>
-      <location line="+24"/>
-      <location line="+34"/>
-      <location line="+10"/>
-      <location line="+39"/>
-      <location line="+33"/>
-      <location line="+10"/>
-      <location line="+44"/>
-      <location line="+26"/>
-      <location line="+20"/>
-      <location line="+34"/>
-      <location line="+10"/>
-      <location line="+42"/>
-      <location line="+26"/>
-      <location line="+20"/>
-      <location line="+34"/>
-      <location line="+12"/>
-      <location line="+14"/>
-      <location line="+16"/>
-      <location line="+51"/>
-      <location line="+10"/>
-      <location line="+17"/>
-      <location line="+14"/>
-      <location line="+22"/>
-      <location line="+10"/>
-      <location line="+7"/>
-      <location line="+20"/>
-      <location line="+14"/>
-      <location line="+34"/>
-      <location line="+10"/>
-      <location line="+17"/>
-      <location line="+22"/>
-      <location line="+25"/>
-      <location line="+34"/>
-      <location line="+10"/>
-      <location line="+37"/>
-      <location line="+34"/>
-      <location line="+10"/>
-      <location line="+69"/>
-      <location line="+24"/>
-      <location line="+34"/>
-      <location line="+12"/>
-      <location line="+15"/>
-      <location line="+6"/>
-      <location line="+20"/>
-      <location line="+9"/>
-      <location line="+49"/>
-      <location line="+10"/>
-      <location line="+21"/>
-      <location line="+21"/>
-      <location line="+18"/>
-      <location line="+12"/>
-      <location line="+36"/>
-      <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
-    </message>
-    <message>
-      <location line="+1"/>
-      <source>Select edge(s) from the sketch.</source>
-      <translation>Valitse reuna(t) sketsistä.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="-1622"/>
-      <location line="+92"/>
-      <source>Select an edge from the sketch.</source>
-      <translation>Valitse luonnoksen reuna.</translation>
-    </message>
-    <message>
-      <location line="-65"/>
-      <location line="+97"/>
-      <source>Double constraint</source>
-      <translation>Kaksinkertainen rajoite</translation>
-    </message>
-    <message>
-      <location line="-96"/>
-      <location line="+92"/>
-      <source>The selected edge has already a horizontal constraint!</source>
-      <translation>Valitulla reunalla on jo vaakasuora rajoitus!</translation>
-    </message>
-    <message>
-      <location line="-102"/>
-      <location line="+14"/>
-      <location line="+10"/>
-      <location line="+68"/>
-      <location line="+9"/>
-      <location line="+15"/>
-      <source>Impossible constraint</source>
-      <translation>Mahdoton rajoite</translation>
-    </message>
+        <location filename="../../CommandAlterGeometry.cpp" line="+42"/>
+        <location line="+8"/>
+        <location filename="../../CommandConstraints.cpp" line="-3393"/>
+        <location line="+329"/>
+        <location line="+97"/>
+        <location line="+96"/>
+        <location line="+10"/>
+        <location line="+10"/>
+        <location line="+80"/>
+        <location line="+10"/>
+        <location line="+10"/>
+        <location line="+72"/>
+        <location line="+10"/>
+        <location line="+93"/>
+        <location line="+30"/>
+        <location line="+46"/>
+        <location line="+45"/>
+        <location line="+7"/>
+        <location line="+34"/>
+        <location line="+10"/>
+        <location line="+51"/>
+        <location line="+32"/>
+        <location line="+26"/>
+        <location line="+46"/>
+        <location line="+10"/>
+        <location line="+49"/>
+        <location line="+32"/>
+        <location line="+26"/>
+        <location line="+46"/>
+        <location line="+12"/>
+        <location line="+14"/>
+        <location line="+16"/>
+        <location line="+66"/>
+        <location line="+12"/>
+        <location line="+91"/>
+        <location line="+28"/>
+        <location line="+26"/>
+        <location line="+112"/>
+        <location line="+43"/>
+        <location line="+13"/>
+        <location line="+90"/>
+        <location line="+28"/>
+        <location line="+90"/>
+        <location line="+34"/>
+        <location line="+10"/>
+        <location line="+41"/>
+        <location line="+253"/>
+        <location line="+11"/>
+        <location line="+151"/>
+        <location line="+56"/>
+        <location line="+45"/>
+        <location line="+12"/>
+        <location line="+15"/>
+        <location line="+6"/>
+        <location line="+24"/>
+        <location line="+9"/>
+        <location line="+54"/>
+        <location line="+10"/>
+        <location line="+21"/>
+        <location line="+27"/>
+        <location line="+18"/>
+        <location line="+12"/>
+        <location line="+48"/>
+        <location line="+180"/>
+        <location line="+11"/>
+        <location line="+20"/>
+        <location line="+23"/>
+        <location line="+22"/>
+        <location line="+6"/>
+        <location line="+6"/>
+        <location line="+146"/>
+        <location line="+6"/>
+        <location line="+6"/>
+        <location line="+6"/>
+        <location line="+137"/>
+        <location line="+51"/>
+        <location line="+8"/>
+        <location line="+30"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-888"/>
+        <location line="+8"/>
+        <location line="+42"/>
+        <location line="+60"/>
+        <location line="+8"/>
+        <location line="+79"/>
+        <location line="+428"/>
+        <location line="+242"/>
+        <location line="+37"/>
+        <location line="+111"/>
+        <location line="+6"/>
+        <location line="+228"/>
+        <location line="+67"/>
+        <location line="+394"/>
+        <location line="+67"/>
+        <source>Wrong selection</source>
+        <translation>Väärä valinta</translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <location line="+8"/>
+        <source>Select edge(s) from the sketch.</source>
+        <translation>Valitse reuna(t) sketsistä.</translation>
+    </message>
+    <message>
+        <location filename="../../CommandConstraints.cpp" line="-3133"/>
+        <location line="+97"/>
+        <source>Select an edge from the sketch.</source>
+        <translation>Valitse luonnoksen reuna.</translation>
+    </message>
+    <message>
+        <location line="-70"/>
+        <location line="+102"/>
+        <source>Double constraint</source>
+        <translation>Kaksinkertainen rajoite</translation>
+    </message>
+    <message>
+        <location line="-101"/>
+        <location line="+97"/>
+        <source>The selected edge has already a horizontal constraint!</source>
+        <translation>Valitulla reunalla on jo vaakasuora rajoitus!</translation>
+    </message>
+    <message>
+        <location line="-107"/>
+        <location line="+14"/>
+        <location line="+10"/>
+        <location line="+73"/>
+        <location line="+9"/>
+        <location line="+15"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-1737"/>
+        <location line="+102"/>
+        <source>Impossible constraint</source>
+        <translation>Mahdoton rajoite</translation>
+    </message>
+    <message>
+        <location line="-468"/>
+        <source>Cannot add a constraint between two external geometries!</source>
+        <translation>Kahden ulkoisen geometrian välille ei voida lisätä rajoitetta!</translation>
+    </message>
+    <message>
+        <location line="+260"/>
+        <location line="+11"/>
+        <location line="+12"/>
+        <source>Only sketch and its support is allowed to select</source>
+        <translation>Vain sketsi ja sen tuki on sallittu valinta</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>One of the selected has to be on the sketch</source>
+        <translation>Yksi valituista on oltava sketsi</translation>
+    </message>
+    <message>
+        <location line="+56"/>
+        <location line="+97"/>
+        <source>The selected edge is not a line segment</source>
+        <translation>Valittu reuna ei ole viivasegmentillä</translation>
+    </message>
+    <message>
+        <location line="-83"/>
+        <location line="+97"/>
+        <source>The selected edge has already a vertical constraint!</source>
+        <translation>Valitulla reunalla on jo pystysuora rajoite!</translation>
+    </message>
+    <message>
+        <location line="-87"/>
+        <source>The selected item(s) can&apos;t accept a horizontal constraint!</source>
+        <translation>Valitut kohteet eivät voi hyväksyä vaakasuoraa rajoitetta!</translation>
+    </message>
+    <message>
+        <location line="+97"/>
+        <source>The selected item(s) can&apos;t accept a vertical constraint!</source>
+        <translation>Valitut kohteet eivät voi hyväksyä pystysuoraa rajoitetta!</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Select entities from the sketch.</source>
+        <translation>Valitse yksiköt sketsistä.</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Select exactly one entity from the sketch.</source>
+        <translation>Valitse täsmälleen yksi yksikkö sketsistä.</translation>
+    </message>
+    <message>
+        <source>Select one vertex from the sketch.</source>
+        <translation type="obsolete">Valitse yksi kulmapiste luonnoksesta.</translation>
+    </message>
+    <message>
+        <location line="+90"/>
+        <location line="+92"/>
+        <location line="+179"/>
+        <location line="+86"/>
+        <location line="+165"/>
+        <source>Select vertexes from the sketch.</source>
+        <translation>Valitse pisteet luonnoksesta.</translation>
+    </message>
+    <message>
+        <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
+        <translation type="obsolete">Ei voi lisätä kiinteätä x-koordinaatin rajoitusta ulkoiseen geometriaan!</translation>
+    </message>
+    <message>
+        <location line="-72"/>
+        <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
+        <translation type="unfinished">Ei voi lisätä kiinteätä x-koordinaatin rajoitusta ydinpisteeseen!</translation>
+    </message>
+    <message>
+        <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
+        <translation type="obsolete">Ei voi lisätä kiinteätä y-koordinaatin rajoitusta ulkoiseen geometriaan!</translation>
+    </message>
+    <message>
+        <location line="-530"/>
+        <source>Select one vertex from the sketch other than the origin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+396"/>
+        <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+290"/>
+        <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
+        <translation type="unfinished">Ei voi lisätä kiinteätä y-koordinaatin rajoitusta ydinpisteeseen!</translation>
+    </message>
+    <message>
+        <location line="+747"/>
+        <location line="+10"/>
+        <location line="+41"/>
+        <source>Select one or more arcs or circles from the sketch.</source>
+        <translation type="unfinished">Valitse yksi tai userampia kaaria tai ympyröitä luonnoksesta.</translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>Constrain equal</source>
+        <translation type="unfinished">Yhtäsuuruus rajoite</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you want to share the same radius for all selected elements?</source>
+        <translation type="unfinished">Haluat jakaa saman säteen kaikissa valituissa osissa?</translation>
+    </message>
+    <message>
+        <location line="+200"/>
+        <source>Select only entities from the sketch.</source>
+        <translation type="unfinished">Valitse kohteita vain luonnoksesta.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location line="+207"/>
+        <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
+        <translation type="unfinished">Valitse yksi tai useampi viiva luonnoksesta. Tai valitse kaksi reunaa ja piste.</translation>
+    </message>
+    <message>
+        <location line="-90"/>
+        <source>Parallel lines</source>
+        <translation type="unfinished">Samansuuntaiset viivat</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>An angle constraint cannot be set for two parallel lines.</source>
+        <translation type="unfinished">Kulma-rajoitusta ei voi määrittää kahdelle samansuuntaiselle viivalle.</translation>
+    </message>
+    <message>
+        <location line="+417"/>
+        <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
+        <comment>Constraint_SnellsLaw</comment>
+        <translation type="unfinished">Valitse kaksi viivojen päätepistettä säteinä toimimaan sekä reuna kuvaamaan rajaa. Ensimmäinen valittu piste vastaa indeksiä n1, toinen - n2 ja viitearvo määrittää suhteen n2/n1.</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Selected objects are not just geometry from one sketch.</source>
+        <translation type="unfinished">Valitut kohteet eivät ole vain yhden luonnoksen geometriaa.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Number of selected objects is not 3 (is %1).</source>
+        <translation type="unfinished">Valittuja kohteita ei ole 3 (on %1).</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Can not create constraint with external geometry only!!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Incompatible geometry is selected!</source>
+        <translation type="unfinished">Sopimaton geometria on valittu!</translation>
+    </message>
+    <message>
+        <location line="+100"/>
+        <location line="+11"/>
+        <source>Select at least one ellipse and one edge from the sketch.</source>
+        <translation type="unfinished">Valitse vähintään yksi ellipsi ja yksi reuna luonnoksesta.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Sketch axes cannot be used in internal alignment constraint</source>
+        <translation type="unfinished">Luonnoksen akseleita ei voi käyttää sisäisen tasauksen rajoitteessa</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</source>
+        <translation type="unfinished">Et voi sisäisesti rajoittaa ellipsiä toisen ellipsin päällä. Valitse vain yksi ellipsi.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+164"/>
+        <source>Maximum 2 points are supported.</source>
+        <translation type="unfinished">Enintään 2 pistettä ovat tuettuja.</translation>
+    </message>
+    <message>
+        <location line="-158"/>
+        <location line="+164"/>
+        <source>Maximum 2 lines are supported.</source>
+        <translation type="unfinished">Enintään 2 viivaa ovat tuettuja.</translation>
+    </message>
+    <message>
+        <location line="-127"/>
+        <location line="+164"/>
+        <source>Nothing to constraint</source>
+        <translation type="unfinished">Ei mitään rajoitettavaa</translation>
+    </message>
+    <message>
+        <location line="-163"/>
+        <source>Currently all internal geometry of the ellipse is already exposed.</source>
+        <translation type="unfinished">Tällä hetkellä kaikki ellipsin sisäinen geometria on jo paljastettu.</translation>
+    </message>
+    <message>
+        <location line="+86"/>
+        <location line="+8"/>
+        <location line="+155"/>
+        <location line="+8"/>
+        <source>Extra elements</source>
+        <translation type="unfinished">Ylimääräisiä osia</translation>
+    </message>
+    <message>
+        <location line="-170"/>
+        <location line="+8"/>
+        <location line="+155"/>
+        <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
+        <translation type="unfinished">Enemmän osia kuin on mahdollista annettuun määriteltyyn ellipsiin. Nämä jätettiin huomiotta.</translation>
+    </message>
+    <message>
+        <location line="-142"/>
+        <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
+        <translation type="unfinished">Et voi sisäisesti rajoittaa kaarta tai ellipsiä toisen karen tai ellipsin päällä. Valitse vain yksi kaari tai ellipsi.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
+        <translation type="unfinished">Et voi sisäisesti rajoittaa ellipsiä toisen ellipsin kaaren päällä. Valitse vain yksi ellipsi tai ellipsin kaari.</translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>Currently all internal geometry of the arc of ellipse is already exposed.</source>
+        <translation type="unfinished">Tällä hetkellä kaikki ellipsin kaaren sisäinen geometria on jo paljastettu.</translation>
+    </message>
+    <message>
+        <location line="+94"/>
+        <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
+        <translation type="unfinished">Enemmän osia kuin on mahdollista annettuun määriteltyyn ellipsin kaareen. Nämä jätettiin huomiotta.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
+        <translation type="unfinished">Tällä hetkellä sisäinen geometria tuetaan vain ellipsille tai ellipsin kaarelle. Viimeksi valitun osan on oltava ellipsi tai ellipsin kaari.</translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <location line="+8"/>
+        <location line="+30"/>
+        <source>Select constraint(s) from the sketch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select exactly two vertexes from the sketch.</source>
+        <translation type="obsolete">Valitse kaksi pistettä luonnoksesta.</translation>
+    </message>
+    <message>
+        <location line="-2831"/>
+        <location line="+10"/>
+        <source>Select two or more vertexes from the sketch.</source>
+        <translation type="unfinished">Valitse vähintään kaksi kärkipistettä luonnoksesta.</translation>
+    </message>
+    <message>
+        <location line="+82"/>
+        <location line="+123"/>
+        <source>Select exactly one line or one point and one line or two points from the sketch.</source>
+        <translation>Valitse täsmälleen yksi viiva tai yksi piste ja yksi viiva tai kaksi pistettä sketsistä.</translation>
+    </message>
+    <message>
+        <source>Cannot add a length constraint on an external geometry!</source>
+        <translation type="obsolete">Ulkoiseen geometriaan ei voida lisätä pituusrajoitetta!</translation>
+    </message>
+    <message>
+        <location line="-30"/>
+        <source>Cannot add a length constraint on an axis!</source>
+        <translation>Akselille ei voida lisätä pituusrajoitetta!</translation>
+    </message>
+    <message>
+        <source>Select exactly one point and one object from the sketch.</source>
+        <translation type="obsolete">Valitse täsmälleen yksi piste ja yksi objekti sketsistä.</translation>
+    </message>
+    <message>
+        <location line="+172"/>
+        <location line="+109"/>
+        <location line="+56"/>
+        <location line="+107"/>
+        <source>Select exactly one line or up to two points from the sketch.</source>
+        <translation>Valitse täsmälleen yksi viiva tai enintään kaksi pistettä sketsistä.</translation>
+    </message>
     <message>
-      <location line="-302"/>
-      <source>Cannot add a constraint between two external geometries!</source>
-      <translation>Kahden ulkoisen geometrian välille ei voida lisätä rajoitetta!</translation>
+        <source>Cannot add a horizontal length constraint on an external geometry!</source>
+        <translation type="obsolete">Ulkoiseen geometriaan ei voida lisätä vaakasuoraa pituusrajoitetta!</translation>
     </message>
     <message>
-      <location line="+90"/>
-      <location line="+11"/>
-      <location line="+13"/>
-      <source>Only sketch and its support is allowed to select</source>
-      <translation>Vain sketsi ja sen tuki on sallittu valinta</translation>
+        <location line="-221"/>
+        <source>Cannot add a horizontal length constraint on an axis!</source>
+        <translation>Akselille ei voida lisätä vaakasuoraa pituusrajoitetta!</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>One of the selected has to be on the sketch</source>
-      <translation>Yksi valituista on oltava sketsi</translation>
+        <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+        <translation type="obsolete">Ulkoiseen geometriaan ei voida lisätä kiinteää x-koordinaattirajoitetta!</translation>
     </message>
     <message>
-      <location line="+63"/>
-      <location line="+92"/>
-      <source>The selected edge is not a line segment</source>
-      <translation>Valittu reuna ei ole viivasegmentillä</translation>
+        <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+        <translation type="obsolete">Juuripisteeseen ei voida lisätä kiinteää x-koordinaattirajoitetta!</translation>
     </message>
     <message>
-      <location line="-78"/>
-      <location line="+92"/>
-      <source>The selected edge has already a vertical constraint!</source>
-      <translation>Valitulla reunalla on jo pystysuora rajoite!</translation>
+        <source>Cannot add a vertical length constraint on an external geometry!</source>
+        <translation type="obsolete">Ulkoiseen geometriaan ei voida lisätä pystypituusrajoitetta!</translation>
     </message>
     <message>
-      <location line="-82"/>
-      <source>The selected item(s) can't accept a horizontal constraint!</source>
-      <translation>Valitut kohteet eivät voi hyväksyä vaakasuoraa rajoitetta!</translation>
+        <location line="+163"/>
+        <source>Cannot add a vertical length constraint on an axis!</source>
+        <translation>Akselille ei voida lisätä vaakapituusrajoitetta!</translation>
     </message>
     <message>
-      <location line="+92"/>
-      <source>The selected item(s) can't accept a vertical constraint!</source>
-      <translation>Valitut kohteet eivät voi hyväksyä pystysuoraa rajoitetta!</translation>
+        <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+        <translation type="obsolete">Ulkoiseen geometriaan ei voida lisätä kiinteää y-koordinaattirajoitetta!</translation>
     </message>
     <message>
-      <location line="+48"/>
-      <source>Select entities from the sketch.</source>
-      <translation>Valitse yksiköt sketsistä.</translation>
+        <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+        <translation type="obsolete">Juuripisteeseen ei voida lisätä kiinteää y-koordinaattirajoitetta!</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>Select exactly one entity from the sketch.</source>
-      <translation>Valitse täsmälleen yksi yksikkö sketsistä.</translation>
+        <location line="+104"/>
+        <source>Select two or more lines from the sketch.</source>
+        <translation>Valitse kaksi tai useampi viiva sketsistä.</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>Select one vertex from the sketch.</source>
-      <translation>Valitse yksi kulmapiste luonnoksesta.</translation>
+        <location line="+12"/>
+        <location line="+1242"/>
+        <source>Select at least two lines from the sketch.</source>
+        <translation>Valitse vähintään kaksi viivaa sketsistä.</translation>
     </message>
     <message>
-      <location line="+53"/>
-      <location line="+76"/>
-      <location line="+147"/>
-      <location line="+82"/>
-      <location line="+134"/>
-      <location line="+562"/>
-      <source>Select vertexes from the sketch.</source>
-      <translation>Valitse pisteet luonnoksesta.</translation>
+        <location line="-1228"/>
+        <source>Select a valid line</source>
+        <translation>Valitse kelvollinen viiva</translation>
     </message>
     <message>
-      <source>Select exactly two vertexes from the sketch.</source>
-      <translation type="obsolete">Valitse kaksi pistettä luonnoksesta.</translation>
+        <location line="+16"/>
+        <source>The selected edge is not a valid line</source>
+        <translation>Valittu reuna ei ole kelvollinen viiva</translation>
     </message>
     <message>
-      <location line="-991"/>
-      <location line="+10"/>
-      <source>Select two or more vertexes from the sketch.</source>
-      <translation type="unfinished">Select two or more vertexes from the sketch.</translation>
+        <location line="+52"/>
+        <source>There is a number of ways this constraint can be applied.
+
+Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
+        <comment>perpendicular constraint</comment>
+        <translation type="unfinished">On useita tapoja tehdä tämä rajoite.
+
+Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päätepistettä; kaksi käyrää ja piste.</translation>
     </message>
     <message>
-      <location line="+66"/>
-      <location line="+103"/>
-      <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Valitse täsmälleen yksi viiva tai yksi piste ja yksi viiva tai kaksi pistettä sketsistä.</translation>
+        <location line="+11"/>
+        <source>Select some geometry from the sketch.</source>
+        <comment>perpendicular constraint</comment>
+        <translation type="unfinished">Valitse jokin geometria luonnoksesta.</translation>
     </message>
     <message>
-      <location line="-24"/>
-      <source>Cannot add a length constraint on an external geometry!</source>
-      <translation>Ulkoiseen geometriaan ei voida lisätä pituusrajoitetta!</translation>
+        <location line="+12"/>
+        <source>Wrong number of selected objects!</source>
+        <comment>perpendicular constraint</comment>
+        <translation type="unfinished">Väärä lukumäärä valittuja kohteita!</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Cannot add a length constraint on an axis!</source>
-      <translation>Akselille ei voida lisätä pituusrajoitetta!</translation>
+        <location line="+59"/>
+        <location line="+313"/>
+        <location line="+1155"/>
+        <source>Error</source>
+        <translation type="unfinished">Virhe</translation>
     </message>
     <message>
-      <location line="+67"/>
-      <location line="+39"/>
-      <source>Select exactly one point and one object from the sketch.</source>
-      <translation>Valitse täsmälleen yksi piste ja yksi objekti sketsistä.</translation>
+        <location line="-1442"/>
+        <location line="+312"/>
+        <source>With 3 objects, there must be 2 curves and 1 point.</source>
+        <comment>tangent constraint</comment>
+        <translation type="unfinished">3 kohteella on oltava 2 käyrää ja 1 piste.</translation>
     </message>
     <message>
-      <location line="+43"/>
-      <location line="+90"/>
-      <location line="+44"/>
-      <location line="+88"/>
-      <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Valitse täsmälleen yksi viiva tai enintään kaksi pistettä sketsistä.</translation>
+        <location line="-303"/>
+        <location line="+28"/>
+        <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+        <translation>Yhdistämättömille pisteille ei voida lisätä samansuuntausuusrajoitetta!</translation>
     </message>
     <message>
-      <location line="-178"/>
-      <source>Cannot add a horizontal length constraint on an external geometry!</source>
-      <translation>Ulkoiseen geometriaan ei voida lisätä vaakasuoraa pituusrajoitetta!</translation>
+        <source>The selected points should be end points of arcs and lines.</source>
+        <translation type="obsolete">Valittujen pisteiden pitäisi olla kaarien tai viivojen päätepisteitä.</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Cannot add a horizontal length constraint on an axis!</source>
-      <translation>Akselille ei voida lisätä vaakasuoraa pituusrajoitetta!</translation>
+        <source>The selected point should be an end point of an arc or line.</source>
+        <translation type="obsolete">Valitun pisteen pitäisi olla kaaren tai suoran päätepiste.</translation>
     </message>
     <message>
-      <location line="+25"/>
-      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
-      <translation>Ulkoiseen geometriaan ei voida lisätä kiinteää x-koordinaattirajoitetta!</translation>
+        <source>The selected edge should be an arc, line or circle.</source>
+        <translation type="obsolete">Valitun reunan pitäisi olla kaari, viiva tai ympyrä.</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
-      <translation>Juuripisteeseen ei voida lisätä kiinteää x-koordinaattirajoitetta!</translation>
+        <location line="+26"/>
+        <source>One of the selected edges should be a line.</source>
+        <translation>Yhden valituista reunoista pitäisi olla viiva.</translation>
     </message>
     <message>
-      <location line="+105"/>
-      <source>Cannot add a vertical length constraint on an external geometry!</source>
-      <translation>Ulkoiseen geometriaan ei voida lisätä pystypituusrajoitetta!</translation>
+        <location line="+141"/>
+        <source>There is a number of ways this constraint can be applied.
+
+Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
+        <comment>tangent constraint</comment>
+        <translation type="unfinished">On useita tapoja tehdä tämä rajoite.
+
+Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päätepistettä; kaksi käyrää ja piste.</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Cannot add a vertical length constraint on an axis!</source>
-      <translation>Akselille ei voida lisätä vaakapituusrajoitetta!</translation>
+        <location line="+11"/>
+        <source>Select some geometry from the sketch.</source>
+        <comment>tangent constraint</comment>
+        <translation type="unfinished">Valitse jokin geometria luonnoksesta.</translation>
     </message>
     <message>
-      <location line="+25"/>
-      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
-      <translation>Ulkoiseen geometriaan ei voida lisätä kiinteää y-koordinaattirajoitetta!</translation>
+        <location line="+13"/>
+        <source>Wrong number of selected objects!</source>
+        <comment>tangent constraint</comment>
+        <translation type="unfinished">Väärä lukumäärä valittuja kohteita!</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
-      <translation>Juuripisteeseen ei voida lisätä kiinteää y-koordinaattirajoitetta!</translation>
+        <location line="+93"/>
+        <location line="+28"/>
+        <source>Cannot add a tangency constraint at an unconnected point!</source>
+        <translation>Yhdistämättömään pisteeseen ei voi lisätä samansuuntaisuusrajoitetta!</translation>
     </message>
     <message>
-      <location line="+53"/>
-      <source>Select two or more lines from the sketch.</source>
-      <translation>Valitse kaksi tai useampi viiva sketsistä.</translation>
+        <source>Select exactly one arc or circle from the sketch.</source>
+        <translation type="obsolete">Valitse täsmälleen yksi kaari tai ympyrä sketsistä.</translation>
     </message>
     <message>
-      <location line="+12"/>
-      <source>Select at least two lines from the sketch.</source>
-      <translation>Valitse vähintään kaksi viivaa sketsistä.</translation>
+        <source>Select one or two lines from the sketch.</source>
+        <translation type="obsolete">Valitse luonnoksesta yksi tai kaksi viivaa.</translation>
     </message>
     <message>
-      <location line="+14"/>
-      <source>Select a valid line</source>
-      <translation>Valitse kelvollinen viiva</translation>
+        <source>Cannot add an angle constraint on an external geometry!</source>
+        <translation type="obsolete">Ulkoiseen geometriaan ei voida lisätä kulmarajoitetta!</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <source>The selected edge is not a valid line</source>
-      <translation>Valittu reuna ei ole kelvollinen viiva</translation>
+        <location line="+590"/>
+        <source>Cannot add an angle constraint on an axis!</source>
+        <translation>Akseliin ei voi lisätä kulmarajoitetta!</translation>
     </message>
     <message>
-      <location line="+78"/>
-      <location line="+36"/>
-      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
-      <translation>Yhdistämättömille pisteille ei voida lisätä samansuuntausuusrajoitetta!</translation>
+        <source>Select exactly one or two lines from the sketch.</source>
+        <translation type="obsolete">Valitse sketsistä täsmälleen yksi tai kaksi viivaa.</translation>
     </message>
     <message>
-      <location line="-22"/>
-      <source>The selected points should be end points of arcs and lines.</source>
-      <translation>Valittujen pisteiden pitäisi olla kaarien tai viivojen päätepisteitä.</translation>
+        <location line="+101"/>
+        <source>Select two edges from the sketch.</source>
+        <translation>Valitse kaksi reunaa sketsistä.</translation>
     </message>
     <message>
-      <location line="+32"/>
-      <source>The selected point should be an end point of an arc or line.</source>
-      <translation>Valitun pisteen pitäisi olla kaaren tai suoran päätepiste.</translation>
+        <source>Select atleast two lines from the sketch.</source>
+        <translation type="obsolete">Valitse vähintään kaksi viivaa sketsistä.</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>The selected edge should be an arc, line or circle.</source>
-      <translation>Valitun reunan pitäisi olla kaari, viiva tai ympyrä.</translation>
+        <location line="+27"/>
+        <location line="+463"/>
+        <source>Select two or more compatible edges</source>
+        <translation>Valitse yksi tai useampi yhteensopiva reuna</translation>
     </message>
     <message>
-      <location line="+20"/>
-      <source>One of the selected edges should be a line.</source>
-      <translation>Yhden valituista reunoista pitäisi olla viiva.</translation>
+        <location line="-457"/>
+        <source>Sketch axes cannot be used in equality constraints</source>
+        <translation>Luonnoksen akseleita ei voida käyttää yhtäsuuruusrajoitteina</translation>
     </message>
     <message>
-      <location line="+75"/>
-      <location line="+22"/>
-      <source>Cannot add a tangency constraint at an unconnected point!</source>
-      <translation>Yhdistämättömään pisteeseen ei voi lisätä samansuuntaisuusrajoitetta!</translation>
+        <location line="+24"/>
+        <location line="+9"/>
+        <source>Select two or more edges of similar type</source>
+        <translation>Valitse yksi tai useampi samantyyppinen reuna</translation>
     </message>
     <message>
-      <location line="+59"/>
-      <location line="+10"/>
-      <location line="+37"/>
-      <source>Select exactly one arc or circle from the sketch.</source>
-      <translation>Valitse täsmälleen yksi kaari tai ympyrä sketsistä.</translation>
+        <location line="+54"/>
+        <location line="+10"/>
+        <location line="+48"/>
+        <location line="+78"/>
+        <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
+        <translation type="unfinished">Valitse kaksi pistettä ja symmetria linja, kaksi pistettä ja symmetria kohta, tai linja ja symmetriakohta luonnoksesta.</translation>
     </message>
     <message>
-      <location line="+44"/>
-      <source>Select one or two lines from the sketch.</source>
-      <translation>Valitse luonnoksesta yksi tai kaksi viivaa.</translation>
+        <location line="-60"/>
+        <source>Cannot add a constraint between external geometries!</source>
+        <translation>Ulkoisten geometrioiden välille ei voi lisätä rajoitetta!</translation>
     </message>
     <message>
-      <location line="+69"/>
-      <source>Cannot add an angle constraint on an external geometry!</source>
-      <translation>Ulkoiseen geometriaan ei voida lisätä kulmarajoitetta!</translation>
+        <location line="-45"/>
+        <location line="+57"/>
+        <source>Cannot add a symmetry constraint between a line and its end points!</source>
+        <translation>Viivan ja sen päätepisteiden välille ei voi lisätä symmetriarajoitetta!</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Cannot add an angle constraint on an axis!</source>
-      <translation>Akseliin ei voi lisätä kulmarajoitetta!</translation>
+        <source>Select exactly two same geometries</source>
+        <translation type="obsolete">Valitse täsmälleen kaksi samanlaista geometriaa</translation>
     </message>
     <message>
-      <location line="+23"/>
-      <source>Select exactly one or two lines from the sketch.</source>
-      <translation>Valitse sketsistä täsmälleen yksi tai kaksi viivaa.</translation>
+        <source>Select valid geometries</source>
+        <translation type="obsolete">Valitse kelvollinen geometria</translation>
     </message>
     <message>
-      <location line="+34"/>
-      <source>Select two edges from the sketch.</source>
-      <translation>Valitse kaksi reunaa sketsistä.</translation>
+        <source>Select geometry of similar type</source>
+        <translation type="obsolete">Valitse samantyyppinen geometria</translation>
     </message>
     <message>
-      <location line="+12"/>
-      <source>Select atleast two lines from the sketch.</source>
-      <translation>Valitse vähintään kaksi viivaa sketsistä.</translation>
+        <source>Select two points and one line from the sketch.</source>
+        <translation type="obsolete">Valitse kaksi pistettä ja yksi viiva sketsistä.</translation>
     </message>
     <message>
-      <location line="+15"/>
-      <source>Select two or more compatible edges</source>
-      <translation>Valitse yksi tai useampi yhteensopiva reuna</translation>
+        <source>Select exactly one line from the sketch.</source>
+        <translation type="obsolete">Valitse yksi viiva luonnoksesta.</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Sketch axes cannot be used in equality constraints</source>
-      <translation>Luonnoksen akseleita ei voida käyttää yhtäsuuruusrajoitteina</translation>
+        <source>Select two lines from the sketch.</source>
+        <translation type="obsolete">Valitse kaksi viivaa luonnoksesta.</translation>
     </message>
     <message>
-      <location line="+20"/>
-      <location line="+9"/>
-      <source>Select two or more edges of similar type</source>
-      <translation>Valitse yksi tai useampi samantyyppinen reuna</translation>
+        <source>Select exactly two lines from the sketch.</source>
+        <translation type="obsolete">Valitse kaksi viivaa luonnoksesta.</translation>
     </message>
     <message>
-      <location line="+49"/>
-      <location line="+10"/>
-      <location line="+42"/>
-      <location line="+66"/>
-      <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-      <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</translation>
+        <source>Select two entities from the sketch.</source>
+        <translation type="obsolete">Valitse kaksi yksikköä sketsistä.</translation>
     </message>
     <message>
-      <location line="-48"/>
-      <source>Cannot add a constraint between external geometries!</source>
-      <translation>Ulkoisten geometrioiden välille ei voi lisätä rajoitetta!</translation>
+        <source>Select exactly two entities from the sketch.</source>
+        <translation type="obsolete">Valitse täsmälleen kaksi yksikköä sketsistä.</translation>
     </message>
     <message>
-      <location line="-39"/>
-      <location line="+51"/>
-      <source>Cannot add a symmetry constraint between a line and its end points!</source>
-      <translation>Viivan ja sen päätepisteiden välille ei voi lisätä symmetriarajoitetta!</translation>
+        <location filename="../../ViewProviderSketch.cpp" line="+4123"/>
+        <source>Edit sketch</source>
+        <translation>Muokkaa luonnosta</translation>
     </message>
     <message>
-      <source>Select exactly two same geometries</source>
-      <translation type="obsolete">Valitse täsmälleen kaksi samanlaista geometriaa</translation>
+        <location line="+14"/>
+        <source>A dialog is already open in the task panel</source>
+        <translation>Valintaikkuna on jo avoinna tehtäväpaneelissa</translation>
     </message>
     <message>
-      <source>Select valid geometries</source>
-      <translation type="obsolete">Valitse kelvollinen geometria</translation>
+        <location line="+1"/>
+        <source>Do you want to close this dialog?</source>
+        <translation>Haluatko sulkea tämän valintaikkunan?</translation>
     </message>
     <message>
-      <source>Select geometry of similar type</source>
-      <translation type="obsolete">Valitse samantyyppinen geometria</translation>
+        <location filename="../../Command.cpp" line="-359"/>
+        <source>Several sub-elements selected</source>
+        <translation>Valittu useita alielementtejä</translation>
     </message>
     <message>
-      <source>Select two points and one line from the sketch.</source>
-      <translation type="obsolete">Valitse kaksi pistettä ja yksi viiva sketsistä.</translation>
+        <location line="+1"/>
+        <source>You have to select a single face as support for a sketch!</source>
+        <translation>Sinun on valittava yksittäinen pinta sketsille!</translation>
     </message>
     <message>
-      <source>Select exactly one line from the sketch.</source>
-      <translation type="obsolete">Valitse yksi viiva luonnoksesta.</translation>
+        <location line="+9"/>
+        <source>No support face selected</source>
+        <translation>Pintaa ei ole valittu</translation>
     </message>
     <message>
-      <source>Select two lines from the sketch.</source>
-      <translation type="obsolete">Valitse kaksi viivaa luonnoksesta.</translation>
+        <location line="+1"/>
+        <source>You have to select a face as support for a sketch!</source>
+        <translation>Sinun on valittava pinta sketsille!</translation>
     </message>
     <message>
-      <source>Select exactly two lines from the sketch.</source>
-      <translation type="obsolete">Valitse kaksi viivaa luonnoksesta.</translation>
+        <location line="+6"/>
+        <source>No planar support</source>
+        <translation>Ei tukea tasoille</translation>
     </message>
     <message>
-      <location line="-667"/>
-      <location line="+148"/>
-      <source>Select two entities from the sketch.</source>
-      <translation>Valitse kaksi yksikköä sketsistä.</translation>
+        <location line="+1"/>
+        <source>You need a planar face as support for a sketch!</source>
+        <translation>Tarvitset tasopinnan tuen sketsille!</translation>
     </message>
     <message>
-      <location line="-138"/>
-      <location line="+104"/>
-      <location line="+44"/>
-      <location line="+64"/>
-      <source>Select exactly two entities from the sketch.</source>
-      <translation>Valitse täsmälleen kaksi yksikköä sketsistä.</translation>
+        <location filename="../../EditDatumDialog.cpp" line="+82"/>
+        <source>Distance constraint</source>
+        <translation>Etäisyys rajoite</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2955"/>
-      <source>Edit sketch</source>
-      <translation>Muokkaa luonnosta</translation>
+        <location line="+1"/>
+        <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
+        <translation>Tietoja ei voi muokata, koska sketsi sisältää ristiriitaisia rajoitteita</translation>
     </message>
     <message>
-      <location line="+14"/>
-      <source>A dialog is already open in the task panel</source>
-      <translation>Valintaikkuna on jo avoinna tehtäväpaneelissa</translation>
+        <location filename="../../CommandConstraints.cpp" line="-2827"/>
+        <location line="+2270"/>
+        <location filename="../../EditDatumDialog.cpp" line="+89"/>
+        <source>Dimensional constraint</source>
+        <translation>Mittarajoite</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Do you want to close this dialog?</source>
-      <translation>Haluatko sulkea tämän valintaikkunan?</translation>
+        <location filename="../../AppSketcherGui.cpp" line="+99"/>
+        <source>Display</source>
+        <translation type="unfinished">Näyttö</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-314"/>
-      <source>Several sub-elements selected</source>
-      <translation>Valittu useita alielementtejä</translation>
+        <location filename="../../CommandSketcherTools.cpp" line="-141"/>
+        <location line="+8"/>
+        <location line="+102"/>
+        <location line="+8"/>
+        <source>Select at least two edges from the sketch.</source>
+        <translation type="unfinished">Valitse vähintään kaksi reunaa luonnoksesta.</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>You have to select a single face as support for a sketch!</source>
-      <translation>Sinun on valittava yksittäinen pinta sketsille!</translation>
+        <location line="-78"/>
+        <location line="+102"/>
+        <source>One selected edge is not connectable</source>
+        <translation type="unfinished">Yksi valittu reuna ei ole liitettävissä</translation>
     </message>
     <message>
-      <location line="+9"/>
-      <source>No support face selected</source>
-      <translation>Pintaa ei ole valittu</translation>
+        <location line="-92"/>
+        <source>Closing a shape formed by exactly two lines makes no sense.</source>
+        <translation type="unfinished">Muodon sulkeminen tehtynä  täsmälleen kahdella viivalla on järjetöntä.</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>You have to select a face as support for a sketch!</source>
-      <translation>Sinun on valittava pinta sketsille!</translation>
+        <location line="+147"/>
+        <location line="+428"/>
+        <location line="+279"/>
+        <location line="+345"/>
+        <location line="+461"/>
+        <source>Select elements from a single sketch.</source>
+        <translation type="unfinished">Valitse osat yhdestä luonnkoksesta.</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>No planar support</source>
-      <translation>Ei tukea tasoille</translation>
+        <location line="-1120"/>
+        <source>No constraint selected</source>
+        <translation type="unfinished">Ei rajoitetta valittuna</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>You need a planar face as support for a sketch!</source>
-      <translation>Tarvitset tasopinnan tuen sketsille!</translation>
+        <location line="+1"/>
+        <source>At least one constraint must be selected</source>
+        <translation type="unfinished">Vähintään yksi rajoite on valittava</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="+79"/>
-      <source>Distance constraint</source>
-      <translation>Etäisyys rajoite</translation>
+        <location line="+276"/>
+        <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
+        <translation type="unfinished">Tällä hetkellä sisäinen geometria tuetaan vain ellipsille ja ellipsin kaarelle. Viimeksi valitun osan on oltava ellipsi tai ellipsin kaari.</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Tietoja ei voi muokata, koska sketsi sisältää ristiriitaisia rajoitteita</translation>
+        <location line="+148"/>
+        <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location line="+78"/>
-      <source>Dimensional constraint</source>
-      <translation>Mittarajoite</translation>
+        <location line="+6"/>
+        <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="+94"/>
-      <source>Display</source>
-      <translation type="unfinished">Näyttö</translation>
+        <location line="+295"/>
+        <location line="+461"/>
+        <source>A copy requires at least one selected non-external geometric element</source>
+        <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>SketchOrientationDialog</name>
     <message>
-      <source>Choose orientation</source>
-      <translation type="obsolete">Valitse suunta</translation>
+        <source>Choose orientation</source>
+        <translation type="obsolete">Valitse suunta</translation>
     </message>
     <message>
-      <source>Sketch orientation</source>
-      <translation type="obsolete">Sketsin suunta</translation>
+        <source>Sketch orientation</source>
+        <translation type="obsolete">Sketsin suunta</translation>
     </message>
     <message>
-      <source>XY-Plane</source>
-      <translation type="obsolete">XY-taso</translation>
+        <source>XY-Plane</source>
+        <translation type="obsolete">XY-taso</translation>
     </message>
     <message>
-      <source>XZ-Plane</source>
-      <translation type="obsolete">XZ-taso</translation>
+        <source>XZ-Plane</source>
+        <translation type="obsolete">XZ-taso</translation>
     </message>
     <message>
-      <source>YZ-Plane</source>
-      <translation type="obsolete">YZ-taso</translation>
+        <source>YZ-Plane</source>
+        <translation type="obsolete">YZ-taso</translation>
     </message>
     <message>
-      <source>Reverse direction</source>
-      <translation type="obsolete">Vastakkainen suunta</translation>
+        <source>Reverse direction</source>
+        <translation type="obsolete">Vastakkainen suunta</translation>
     </message>
     <message>
-      <source>Offset:</source>
-      <translation type="obsolete">Siirtymä:</translation>
+        <source>Offset:</source>
+        <translation type="obsolete">Siirtymä:</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+110"/>
-      <source>Change value</source>
-      <translation type="unfinished">Muuta arvoa</translation>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+141"/>
+        <source>Toggle to/from reference</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location line="+4"/>
-      <source>Rename</source>
-      <translation type="unfinished">Nimeä uudelleen</translation>
+        <location line="+16"/>
+        <source>Change value</source>
+        <translation type="unfinished">Muuta arvoa</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>Delete</source>
-      <translation type="unfinished">Poista</translation>
+        <location line="+5"/>
+        <source>Rename</source>
+        <translation type="unfinished">Nimeä uudelleen</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location line="+7"/>
+        <source>Delete</source>
+        <translation type="unfinished">Poista</translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="-62"/>
-      <source>Insert angle</source>
-      <translation type="unfinished">Insert angle</translation>
+        <location filename="../../CommandConstraints.cpp" line="-2336"/>
+        <location filename="../../EditDatumDialog.cpp" line="-73"/>
+        <source>Insert angle</source>
+        <translation type="unfinished">Aseta kulma</translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>Angle:</source>
-      <translation type="unfinished">Kulma:</translation>
+        <location line="+2"/>
+        <location filename="../../EditDatumDialog.cpp" line="+2"/>
+        <source>Angle:</source>
+        <translation type="unfinished">Kulma:</translation>
     </message>
     <message>
-      <location line="+4"/>
-      <source>Insert radius</source>
-      <translation type="unfinished">Insert radius</translation>
+        <location line="+4"/>
+        <location filename="../../EditDatumDialog.cpp" line="+4"/>
+        <source>Insert radius</source>
+        <translation type="unfinished">Aseta säde</translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>Radius:</source>
-      <translation type="unfinished">Säde:</translation>
+        <location line="+6"/>
+        <location filename="../../EditDatumDialog.cpp" line="+6"/>
+        <source>Refractive index ratio</source>
+        <comment>Constraint_SnellsLaw</comment>
+        <translation type="unfinished">Taitekerroin suhdeluku</translation>
     </message>
     <message>
-      <location line="+4"/>
-      <source>Insert length</source>
-      <translation type="unfinished">Insert length</translation>
+        <location line="+1"/>
+        <location filename="../../EditDatumDialog.cpp" line="+1"/>
+        <source>Ratio n2/n1:</source>
+        <comment>Constraint_SnellsLaw</comment>
+        <translation type="unfinished">Suhde n2/n1:</translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>Length:</source>
-      <translation type="unfinished">Pituus:</translation>
+        <location line="+2285"/>
+        <source>Change radius</source>
+        <translation type="unfinished">Vaihda sädettä</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location line="-2290"/>
+        <location line="+2291"/>
+        <location filename="../../EditDatumDialog.cpp" line="-5"/>
+        <source>Radius:</source>
+        <translation type="unfinished">Säde:</translation>
+    </message>
+    <message>
+        <location line="+733"/>
+        <source>Refractive index ratio</source>
+        <translation type="unfinished">Taitekerroin suhdeluku</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ratio n2/n1:</source>
+        <translation type="unfinished">Suhde n2/n1:</translation>
+    </message>
+    <message>
+        <location line="-3016"/>
+        <location filename="../../EditDatumDialog.cpp" line="+9"/>
+        <source>Insert length</source>
+        <translation type="unfinished">Aseta pituus</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../../EditDatumDialog.cpp" line="+2"/>
+        <source>Length:</source>
+        <translation type="unfinished">Pituus:</translation>
+    </message>
+</context>
+<context>
+    <name>SketcherGui::ElementView</name>
+    <message>
+        <location filename="../../TaskSketcherElements.cpp" line="+169"/>
+        <source>Delete</source>
+        <translation type="unfinished">Poista</translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::InsertDatum</name>
     <message>
-      <location filename="../../InsertDatum.ui" line="+17"/>
-      <source>Insert datum</source>
-      <translation>Lisää päiväys</translation>
+        <location filename="../../InsertDatum.ui" line="+17"/>
+        <source>Insert datum</source>
+        <translation>Lisää päiväys</translation>
     </message>
     <message>
-      <location line="+8"/>
-      <source>datum:</source>
-      <translation>päiväys:</translation>
+        <location line="+8"/>
+        <source>datum:</source>
+        <translation>päiväys:</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>SketcherGui::PropertyConstraintListItem</name>
+    <message>
+        <location filename="../../PropertyConstraintListItem.cpp" line="+120"/>
+        <source>Unnamed</source>
+        <translation type="unfinished">Nimetön</translation>
+    </message>
+</context>
+<context>
+    <name>SketcherGui::SketchMirrorDialog</name>
+    <message>
+        <location filename="../../SketchMirrorDialog.ui" line="+14"/>
+        <location line="+6"/>
+        <source>Select Mirror Axis/Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>X-Axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Y-Axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
-      <source>Choose orientation</source>
-      <translation>Valitse suunta</translation>
+        <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+        <source>Choose orientation</source>
+        <translation>Valitse suunta</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Sketch orientation</source>
-      <translation>Sketsin suunta</translation>
+        <location line="+6"/>
+        <source>Sketch orientation</source>
+        <translation>Sketsin suunta</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>XY-Plane</source>
-      <translation>XY-taso</translation>
+        <location line="+6"/>
+        <source>XY-Plane</source>
+        <translation>XY-taso</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>XZ-Plane</source>
-      <translation>XZ-taso</translation>
+        <location line="+10"/>
+        <source>XZ-Plane</source>
+        <translation>XZ-taso</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>YZ-Plane</source>
-      <translation>YZ-taso</translation>
+        <location line="+7"/>
+        <source>YZ-Plane</source>
+        <translation>YZ-taso</translation>
     </message>
     <message>
-      <location line="+29"/>
-      <source>Reverse direction</source>
-      <translation>Vastakkainen suunta</translation>
+        <location line="+29"/>
+        <source>Reverse direction</source>
+        <translation>Vastakkainen suunta</translation>
     </message>
     <message>
-      <location line="+9"/>
-      <source>Offset:</source>
-      <translation>Siirtymä:</translation>
+        <location line="+9"/>
+        <source>Offset:</source>
+        <translation>Siirtymä:</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>SketcherGui::SketchRectangularArrayDialog</name>
+    <message>
+        <location filename="../../SketchRectangularArrayDialog.ui" line="+17"/>
+        <source>Create array</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Columns:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Number of columns of the linear array</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Rows:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Number of rows of the linear array</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Makes the inter-row and inter-col spacing the same if clicked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Equal vertical/horizontal spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>if selected, each element in the array is constraint with respect to the others using construction lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Constrain inter-element separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>If checked it substitutes dimensional constraints by geometric constraints in the copies, so that a change in the original element is directly reflected on copies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-      <location filename="../../SketcherSettings.ui" line="+14"/>
-      <source>Sketcher</source>
-      <translation type="unfinished">Lunnostelija</translation>
+        <location filename="../../SketcherSettings.ui" line="+14"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Lunnostelija</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Sketcher colors</source>
-      <translation type="unfinished">Sketcher colors</translation>
+        <location line="+6"/>
+        <source>Sketcher colors</source>
+        <translation type="unfinished">Luonnostyökalun värit</translation>
     </message>
     <message>
-      <location line="+14"/>
-      <source>Default edge color</source>
-      <translation type="unfinished">Default edge color</translation>
+        <location line="+14"/>
+        <source>Default edge color</source>
+        <translation type="unfinished">Oletusarvoinen reunan väri</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <location line="+66"/>
-      <source>The color of edges being edited</source>
-      <translation type="unfinished">The color of edges being edited</translation>
+        <location line="+7"/>
+        <location line="+66"/>
+        <source>The color of edges being edited</source>
+        <translation type="unfinished">Reunojen väriä on muokattu</translation>
     </message>
     <message>
-      <location line="-40"/>
-      <source>Default vertex color</source>
-      <translation type="unfinished">Default vertex color</translation>
+        <location line="-40"/>
+        <source>Default vertex color</source>
+        <translation type="unfinished">Päätepisteen oletusväri</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <location line="+66"/>
-      <source>The color of vertices being edited</source>
-      <translation type="unfinished">The color of vertices being edited</translation>
+        <location line="+7"/>
+        <location line="+66"/>
+        <source>The color of vertices being edited</source>
+        <translation type="unfinished">Kärkipisteiden väriä on muokattu</translation>
     </message>
     <message>
-      <location line="-40"/>
-      <source>Edit edge color</source>
-      <translation type="unfinished">Edit edge color</translation>
+        <location line="-40"/>
+        <source>Edit edge color</source>
+        <translation type="unfinished">Muokkaa reunaväriä</translation>
     </message>
     <message>
-      <location line="+33"/>
-      <source>Edit vertex color</source>
-      <translation type="unfinished">Edit vertex color</translation>
+        <location line="+33"/>
+        <source>Edit vertex color</source>
+        <translation type="unfinished">Muokaka kärkipisteen väriä</translation>
     </message>
     <message>
-      <location line="+33"/>
-      <source>Construction geometry</source>
-      <translation type="unfinished">Rakenteen geometria</translation>
+        <location line="+33"/>
+        <source>Construction geometry</source>
+        <translation type="unfinished">Rakenteen geometria</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>The color of construction geometry in edit mode</source>
-      <translation type="unfinished">The color of construction geometry in edit mode</translation>
+        <location line="+27"/>
+        <source>The color of construction geometry in edit mode</source>
+        <translation type="unfinished">Rakennegeometrian väri muokkaustilassa</translation>
     </message>
     <message>
-      <location line="+26"/>
-      <source>External geometry</source>
-      <translation type="unfinished">Ulkoinen geometria</translation>
+        <location line="+26"/>
+        <source>External geometry</source>
+        <translation type="unfinished">Ulkoinen geometria</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>The color of external geometry in edit mode</source>
-      <translation type="unfinished">The color of external geometry in edit mode</translation>
+        <location line="+7"/>
+        <source>The color of external geometry in edit mode</source>
+        <translation type="unfinished">Ulkoisen geometrian väri muokkaustilassa</translation>
     </message>
     <message>
-      <location line="+26"/>
-      <source>Fully constrained geometry</source>
-      <translation type="unfinished">Fully constrained geometry</translation>
+        <location line="+26"/>
+        <source>Fully constrained geometry</source>
+        <translation type="unfinished">Täysin rajoitettu geometria</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <location line="+33"/>
-      <location line="+33"/>
-      <source>The color of fully constrained geometry in edit mode</source>
-      <translation type="unfinished">The color of fully constrained geometry in edit mode</translation>
+        <location line="+319"/>
+        <source>Geometry Creation &quot;Continue Mode&quot;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location line="-40"/>
-      <source>Constrain color</source>
-      <translation type="unfinished">Constrain color</translation>
+        <location line="+19"/>
+        <source>Sketch Solver</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location line="+33"/>
-      <source>Datum color</source>
-      <translation type="unfinished">Datum color</translation>
+        <location line="+6"/>
+        <source>Show Advanced Solver Control in the Task bar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location line="+33"/>
-      <source>Datum text size</source>
-      <translation type="unfinished">Datum text size</translation>
+        <location line="-423"/>
+        <location line="+99"/>
+        <source>The color of fully constrained geometry in edit mode</source>
+        <translation type="unfinished">Täysin rajatun geometrian väli muokkaustilassa</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <location line="+35"/>
-      <location line="+35"/>
-      <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+        <location line="-7"/>
+        <source>Constraint color</source>
+        <translation type="unfinished">Rajoita väri</translation>
     </message>
     <message>
-      <location line="-67"/>
-      <location line="+35"/>
-      <location line="+35"/>
-      <location line="+75"/>
-      <source>px</source>
-      <translation type="unfinished">px</translation>
+        <location line="+33"/>
+        <source>Datum color</source>
+        <translation type="unfinished">Rajoitteiden väri</translation>
     </message>
     <message>
-      <location line="-120"/>
-      <source>Default vertex size</source>
-      <translation type="unfinished">Default vertex size</translation>
+        <location line="+13"/>
+        <source>Datum text size</source>
+        <translation type="unfinished">Rajoitteiden tekstikoko</translation>
     </message>
     <message>
-      <location line="+35"/>
-      <source>Default line width</source>
-      <translation type="unfinished">Default line width</translation>
+        <location line="+20"/>
+        <location line="+35"/>
+        <location line="+52"/>
+        <source>The default line thickness for new shapes</source>
+        <translation type="unfinished">Uusien muotojen viivojen oletuspaksuus</translation>
     </message>
     <message>
-      <location line="+35"/>
-      <source>Cursor text color</source>
-      <translation type="unfinished">Cursor text color</translation>
+        <location line="-84"/>
+        <location line="+35"/>
+        <location line="+52"/>
+        <location line="+92"/>
+        <source>px</source>
+        <translation type="unfinished">px</translation>
     </message>
     <message>
-      <location line="+29"/>
-      <source>Sketch editing</source>
-      <translation type="unfinished">Sketch editing</translation>
+        <location line="-189"/>
+        <source>Default vertex size</source>
+        <translation type="unfinished">Päätepisteen oletuskoko</translation>
     </message>
     <message>
-      <location line="+14"/>
-      <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+        <location line="+35"/>
+        <source>Default line width</source>
+        <translation type="unfinished">Oletusarvo viivan leveydelle</translation>
     </message>
     <message>
-      <location line="+33"/>
-      <source>Grid line pattern</source>
-      <translation type="unfinished">Grid line pattern</translation>
+        <location line="+35"/>
+        <source>Cursor text color</source>
+        <translation type="unfinished">Kohdistimen tekstin väri</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <source>Ask for value after creating a distance constraint</source>
-      <translation type="unfinished">Ask for value after creating a distance constraint</translation>
+        <location line="+46"/>
+        <source>Non-driving Datum color</source>
+        <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location line="+7"/>
+        <source>The color of driving constraints in edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>The color of non-driving constrains or dimensions in edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Sketch editing</source>
+        <translation type="unfinished">Luonnoksen muokkaaminen</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Font size</source>
+        <translation type="unfinished">Kirjasimen koko</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Grid line pattern</source>
+        <translation type="unfinished">Ruudukon viivakuvio</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Ask for value after creating a distance constraint</source>
+        <translation type="unfinished">Pyydä arvo etäisyysrajoitteen luomisen jälkeen</translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="+265"/>
-      <source>No missing coincidences</source>
-      <translation type="unfinished">No missing coincidences</translation>
+        <location filename="../../TaskSketcherValidation.cpp" line="+279"/>
+        <source>No missing coincidences</source>
+        <translation type="unfinished">Ei puuttuvia yhteensattumia</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>No missing coincidences found</source>
-      <translation type="unfinished">No missing coincidences found</translation>
+        <location line="+1"/>
+        <source>No missing coincidences found</source>
+        <translation type="unfinished">Ei puuttuvia yhteensattumia löydettävissä</translation>
     </message>
     <message>
-      <location line="+5"/>
-      <source>Missing coincidences</source>
-      <translation type="unfinished">Missing coincidences</translation>
+        <location line="+5"/>
+        <source>Missing coincidences</source>
+        <translation type="unfinished">Puuttuvat yhteensattumia</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>%1 missing coincidences found</source>
-      <translation type="unfinished">%1 missing coincidences found</translation>
+        <location line="+1"/>
+        <source>%1 missing coincidences found</source>
+        <translation type="unfinished">%1 puuttuvia yhteensattumia löytyi</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location line="+38"/>
+        <source>No invalid constraints</source>
+        <translation type="unfinished">Virheellinen rajoitukset</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No invalid constraints found</source>
+        <translation type="unfinished">Ei ole löytynyt virheellisiä rajoituksia</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Invalid constraints</source>
+        <translation type="unfinished">Epäkelpoja rajoituksia</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Invalid constraints found</source>
+        <translation type="unfinished">Virheellisiä rajoituksia löytyi</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <location line="+11"/>
+        <location line="+7"/>
+        <location line="+11"/>
+        <source>Reversed external geometry</source>
+        <translation type="unfinished">Reversed external geometry</translation>
+    </message>
+    <message>
+        <location line="-28"/>
+        <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
+
+Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
+        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
+
+Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+However, no constraints linking to the endpoints were found.</source>
+        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+However, no constraints linking to the endpoints were found.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>No reversed external-geometry arcs were found.</source>
+        <translation type="unfinished">No reversed external-geometry arcs were found.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
+        <translation type="unfinished">%1 changes were made to constraints linking to endpoints of reversed arcs.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location line="+14"/>
+        <source>Constraint orientation locking</source>
+        <translation type="unfinished">Constraint orientation locking</translation>
+    </message>
+    <message>
+        <location line="-13"/>
+        <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
+        <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+        <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+12"/>
+        <source>Delete constraints to external geom.</source>
+        <translation type="unfinished">Delete constraints to external geom.</translation>
+    </message>
+    <message>
+        <location line="-11"/>
+        <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
+        <translation type="unfinished">You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>All constraints that deal with external geometry were deleted.</source>
+        <translation type="unfinished">All constraints that deal with external geometry were deleted.</translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::TaskSketcherConstrains</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="+14"/>
-      <source>Form</source>
-      <translation>Lomake</translation>
+        <location filename="../../TaskSketcherConstrains.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Lomake</translation>
     </message>
     <message>
-      <location line="+8"/>
-      <source>Filter:</source>
-      <translation>Suodatin:</translation>
+        <location line="+8"/>
+        <source>Filter:</source>
+        <translation>Suodatin:</translation>
     </message>
     <message>
-      <location line="+11"/>
-      <source>All</source>
-      <translation>Kaikki</translation>
+        <location line="+11"/>
+        <source>All</source>
+        <translation>Kaikki</translation>
     </message>
     <message>
-      <location line="+5"/>
-      <source>Normal</source>
-      <translation>Normaali</translation>
+        <location line="+5"/>
+        <source>Normal</source>
+        <translation>Normaali</translation>
     </message>
     <message>
-      <location line="+5"/>
-      <source>Datums</source>
-      <translation>Päiväykset</translation>
+        <location line="+5"/>
+        <source>Datums</source>
+        <translation>Päiväykset</translation>
     </message>
     <message>
-      <location line="+5"/>
-      <source>Named</source>
-      <translation>Nimetty</translation>
+        <location line="+5"/>
+        <source>Named</source>
+        <translation>Nimetty</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+37"/>
-      <source>Constraints</source>
-      <translation>Rajoitteet</translation>
+        <location line="+5"/>
+        <source>Reference</source>
+        <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+51"/>
+        <source>Constraints</source>
+        <translation>Rajoitteet</translation>
+    </message>
+</context>
+<context>
+    <name>SketcherGui::TaskSketcherElements</name>
+    <message>
+        <location filename="../../TaskSketcherElements.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Lomake</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Type:</source>
+        <translation type="unfinished">Tyyppi:</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Edge</source>
+        <translation type="unfinished">Reuna</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Starting Point</source>
+        <translation type="unfinished">Lähtöpiste</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>End Point</source>
+        <translation type="unfinished">Päätepiste</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Center Point</source>
+        <translation type="unfinished">Keskipiste</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Extended Naming</source>
+        <translation type="unfinished">Laajennettu nimeäminen</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Auto-switch to Edge</source>
+        <translation type="unfinished">Automaattien vaihto reunaan</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: monivalinta&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: siirry seuraavaan kelvolliseen tyyppiin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../TaskSketcherElements.cpp" line="+66"/>
+        <source>Elements</source>
+        <translation type="unfinished">Osat</translation>
+    </message>
+    <message>
+        <location line="+444"/>
+        <location line="+1"/>
+        <location line="+46"/>
+        <location line="+1"/>
+        <source>Point</source>
+        <translation type="unfinished">Piste</translation>
+    </message>
+    <message>
+        <location line="-45"/>
+        <location line="+1"/>
+        <location line="+46"/>
+        <location line="+1"/>
+        <source>Line</source>
+        <translation type="unfinished">Viiva</translation>
+    </message>
+    <message>
+        <location line="-45"/>
+        <location line="+1"/>
+        <location line="+46"/>
+        <location line="+1"/>
+        <source>Arc</source>
+        <translation type="unfinished">Kaari</translation>
+    </message>
+    <message>
+        <location line="-45"/>
+        <location line="+1"/>
+        <location line="+46"/>
+        <location line="+1"/>
+        <source>Circle</source>
+        <translation type="unfinished">Ympyrä</translation>
+    </message>
+    <message>
+        <location line="-45"/>
+        <location line="+1"/>
+        <source>Ellipse</source>
+        <translation type="unfinished">Ellipsi</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <source>Elliptical Arc</source>
+        <translation type="unfinished">Elliptinen kaari</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <location line="+40"/>
+        <location line="+1"/>
+        <source>Other</source>
+        <translation type="unfinished">Muu</translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::TaskSketcherGeneral</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="+14"/>
-      <source>Form</source>
-      <translation>Lomake</translation>
+        <location filename="../../TaskSketcherGeneral.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Lomake</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Show grid</source>
-      <translation type="unfinished">Show grid</translation>
+        <location line="+6"/>
+        <source>Show grid</source>
+        <translation type="unfinished">Näytä ruudukko</translation>
     </message>
     <message>
-      <location line="+12"/>
-      <source>Grid size:</source>
-      <translation>Ruudukon koko:</translation>
+        <location line="+12"/>
+        <source>Grid size:</source>
+        <translation>Ruudukon koko:</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>mm</source>
-      <translation type="unfinished">mm</translation>
+        <location line="+34"/>
+        <source>Grid snap</source>
+        <translation>Kohdista ruudukkoon</translation>
     </message>
     <message>
-      <location line="+27"/>
-      <source>Grid snap</source>
-      <translation>Kohdista ruudukkoon</translation>
+        <source>Unsolved</source>
+        <translation type="obsolete">Ratkaisematta</translation>
     </message>
     <message>
-      <source>Unsolved</source>
-      <translation type="obsolete">Ratkaisematta</translation>
+        <source>Grid Snap</source>
+        <translation type="obsolete">Ruudukkoon kohdistus</translation>
     </message>
     <message>
-      <source>Grid Snap</source>
-      <translation type="obsolete">Ruudukkoon kohdistus</translation>
+        <source>0.1 mm</source>
+        <translation type="obsolete">0,1 mm</translation>
     </message>
     <message>
-      <source>0.1 mm</source>
-      <translation type="obsolete">0,1 mm</translation>
+        <source>0.2 mm</source>
+        <translation type="obsolete">0.2 mm</translation>
     </message>
     <message>
-      <source>0.2 mm</source>
-      <translation type="obsolete">0.2 mm</translation>
+        <source>0.5 mm</source>
+        <translation type="obsolete">0,5 mm</translation>
     </message>
     <message>
-      <source>0.5 mm</source>
-      <translation type="obsolete">0,5 mm</translation>
+        <source>1 mm</source>
+        <translation type="obsolete">1 mm</translation>
     </message>
     <message>
-      <source>1 mm</source>
-      <translation type="obsolete">1 mm</translation>
+        <source>2 mm</source>
+        <translation type="obsolete">2 mm</translation>
     </message>
     <message>
-      <source>2 mm</source>
-      <translation type="obsolete">2 mm</translation>
+        <source>5 mm</source>
+        <translation type="obsolete">5 mm</translation>
     </message>
     <message>
-      <source>5 mm</source>
-      <translation type="obsolete">5 mm</translation>
+        <source>10 mm</source>
+        <translation type="obsolete">10 mm</translation>
     </message>
     <message>
-      <source>10 mm</source>
-      <translation type="obsolete">10 mm</translation>
+        <source>20 mm</source>
+        <translation type="obsolete">20 mm</translation>
     </message>
     <message>
-      <source>20 mm</source>
-      <translation type="obsolete">20 mm</translation>
+        <source>50 mm</source>
+        <translation type="obsolete">50 mm</translation>
     </message>
     <message>
-      <source>50 mm</source>
-      <translation type="obsolete">50 mm</translation>
+        <source>100 mm</source>
+        <translation type="obsolete">100 mm</translation>
     </message>
     <message>
-      <source>100 mm</source>
-      <translation type="obsolete">100 mm</translation>
+        <source>200 mm</source>
+        <translation type="obsolete">200 mm</translation>
     </message>
     <message>
-      <source>200 mm</source>
-      <translation type="obsolete">200 mm</translation>
+        <source>500 mm</source>
+        <translation type="obsolete">500 mm</translation>
     </message>
     <message>
-      <source>500 mm</source>
-      <translation type="obsolete">500 mm</translation>
+        <source>1 m</source>
+        <translation type="obsolete">1 m</translation>
     </message>
     <message>
-      <source>1 m</source>
-      <translation type="obsolete">1 m</translation>
+        <source>2 m</source>
+        <translation type="obsolete">2 m</translation>
     </message>
     <message>
-      <source>2 m</source>
-      <translation type="obsolete">2 m</translation>
+        <source>5 m</source>
+        <translation type="obsolete">5 m</translation>
     </message>
     <message>
-      <source>5 m</source>
-      <translation type="obsolete">5 m</translation>
+        <source>10 m</source>
+        <translation type="obsolete">10 m</translation>
     </message>
     <message>
-      <source>10 m</source>
-      <translation type="obsolete">10 m</translation>
+        <source>20 m</source>
+        <translation type="obsolete">20 m</translation>
     </message>
     <message>
-      <source>20 m</source>
-      <translation type="obsolete">20 m</translation>
+        <location line="+10"/>
+        <source>Auto constraints</source>
+        <translation>Automaattiset rajoitteet</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>Auto constraints</source>
-      <translation>Automaattiset rajoitteet</translation>
+        <source>auto constraints</source>
+        <translation type="obsolete">auto constraints</translation>
     </message>
     <message>
-      <source>auto constraints</source>
-      <translation type="obsolete">auto constraints</translation>
+        <location filename="../../TaskSketcherGeneral.cpp" line="+121"/>
+        <source>Edit controls</source>
+        <translation>Muokkaa säätöjä</translation>
     </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+123"/>
-      <source>Edit controls</source>
-      <translation>Muokkaa säätöjä</translation>
-    </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>SketcherGui::TaskSketcherMessages</name>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
-      <source>Solver messages</source>
-      <translation>Ratkaisimen viestit</translation>
+        <location filename="../../TaskSketcherMessages.cpp" line="+49"/>
+        <source>Solver messages</source>
+        <translation>Ratkaisimen viestit</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>SketcherGui::TaskSketcherSolverAdvanced</name>
+    <message>
+        <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+66"/>
+        <source>Advanced solver control</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::TaskSketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="+14"/>
-      <source>Sketcher validation</source>
-      <translation type="unfinished">Sketcher validation</translation>
+        <location filename="../../TaskSketcherValidation.ui" line="+14"/>
+        <source>Sketcher validation</source>
+        <translation type="unfinished">Luönnostyökalun kokeilu ja kelpuutus</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Missing coincidences</source>
-      <translation type="unfinished">Missing coincidences</translation>
+        <location line="+26"/>
+        <source>Delete constraints to external geom.</source>
+        <translation type="unfinished">Delete constraints to external geom.</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Tolerance:</source>
-      <translation type="unfinished">Tolerance:</translation>
+        <location line="+10"/>
+        <source>Missing coincidences</source>
+        <translation type="unfinished">Puuttuvat yhteensattumia</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>Find</source>
-      <translation type="unfinished">Find</translation>
+        <location line="+6"/>
+        <source>Tolerance:</source>
+        <translation type="unfinished">Toleranssi:</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>Fix</source>
-      <translation type="unfinished">Fix</translation>
+        <location line="+27"/>
+        <source>Reversed external geometry</source>
+        <translation type="unfinished">Reversed external geometry</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location line="+13"/>
+        <source>Swap endpoints in constraints</source>
+        <translation type="unfinished">Swap endpoints in constraints</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Constraint orientation locking</source>
+        <translation type="unfinished">Constraint orientation locking</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Enable/Update</source>
+        <translation type="unfinished">Enable/Update</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Disable</source>
+        <translation type="unfinished">Disable</translation>
+    </message>
+    <message>
+        <location line="-86"/>
+        <location line="+33"/>
+        <location line="+23"/>
+        <source>Find</source>
+        <translation type="unfinished">Etsi</translation>
+    </message>
+    <message>
+        <location line="-63"/>
+        <location line="+47"/>
+        <source>Fix</source>
+        <translation type="unfinished">Korjaa</translation>
+    </message>
+    <message>
+        <location line="-53"/>
+        <source>Invalid constraints</source>
+        <translation type="unfinished">Epäkelpoja rajoituksia</translation>
+    </message>
+</context>
+<context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+86"/>
-      <source>Please remove the following constraint:</source>
-      <translation>Poista seuraava rajoite:</translation>
+        <location filename="../../ViewProviderSketch.cpp" line="+12"/>
+        <source>Invalid sketch</source>
+        <translation type="unfinished">Virheellinen luonnos</translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>Please remove at least one of the following constraints:</source>
-      <translation>Poista ainakin yksi seuraavista rajoitteista:</translation>
+        <location line="+1"/>
+        <source>The sketch is invalid and cannot be edited.
+Use the sketch validation tool.</source>
+        <translation type="unfinished">Luonnos on virheellinen eikä sitä voida muokata.
+Käytä luonnoksen kelpuutustyökalua.</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <source>Please remove the following redundant constraint:</source>
-      <translation>Poista seuraava turha rajoite:</translation>
+        <location line="+99"/>
+        <source>Please remove the following constraint:</source>
+        <translation>Poista seuraava rajoite:</translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>Please remove the following redundant constraints:</source>
-      <translation>Poista seuraavat turhat rajoitteet:</translation>
+        <location line="+2"/>
+        <source>Please remove at least one of the following constraints:</source>
+        <translation>Poista ainakin yksi seuraavista rajoitteista:</translation>
     </message>
     <message>
-      <location line="+17"/>
-      <source>Empty sketch</source>
-      <translation>Tyhjä luonnos</translation>
+        <location line="+16"/>
+        <source>Please remove the following redundant constraint:</source>
+        <translation>Poista seuraava turha rajoite:</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>Over-constrained sketch</source>
-      <translation>Ylirajoitteinen luonnos</translation>
+        <location line="+2"/>
+        <source>Please remove the following redundant constraints:</source>
+        <translation>Poista seuraavat turhat rajoitteet:</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Sketch contains conflicting constraints</source>
-      <translation>Luonnos sisältää ristiriitaisia rajoitteita</translation>
+        <location line="+19"/>
+        <source>Empty sketch</source>
+        <translation>Tyhjä luonnos</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>Sketch contains redundant constraints</source>
-      <translation>Luonnos sisältää tarpeettomia rajoituksia</translation>
+        <location line="+7"/>
+        <source>Over-constrained sketch </source>
+        <translation type="unfinished">Liian rajoitettu luonnos </translation>
     </message>
     <message>
-      <location line="+8"/>
-      <source>Fully constrained sketch</source>
-      <translation>Täysin rajoitettu luonnos</translation>
+        <location line="+1"/>
+        <location line="+7"/>
+        <location line="+8"/>
+        <source>(click to select)</source>
+        <translation type="unfinished">(Valitse napsauttamalla)</translation>
     </message>
     <message>
-      <location line="+4"/>
-      <source>Under-constrained sketch with 1 degree of freedom</source>
-      <translation>Liian vähän rajoitettu luonnos jossa on 1 vapausaste</translation>
+        <location line="-9"/>
+        <source>Sketch contains conflicting constraints </source>
+        <translation type="unfinished">Luonnos sisältää ristiriitaisia rajoituksIa </translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>Under-constrained sketch with %1 degrees of freedom</source>
-      <translation>Liian vähän rajoitettu luonnos jossa on %1 vapausastetta</translation>
+        <location line="+8"/>
+        <source>Sketch contains redundant constraints </source>
+        <translation type="unfinished">Luonnos sisältää tarpeettomia rajoituksia </translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>Solved in %1 sec</source>
-      <translation>Ratkaistu %1 sekunnissa</translation>
+        <source>Over-constrained sketch</source>
+        <translation type="obsolete">Ylirajoitteinen luonnos</translation>
     </message>
     <message>
-      <location line="+3"/>
-      <source>Unsolved (%1 sec)</source>
-      <translation>Ratkaisematta (%1 sekuntia)</translation>
+        <source>Sketch contains conflicting constraints</source>
+        <translation type="obsolete">Luonnos sisältää ristiriitaisia rajoitteita</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>Sketch contains redundant constraints</source>
+        <translation type="obsolete">Luonnos sisältää tarpeettomia rajoituksia</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Fully constrained sketch</source>
+        <translation>Täysin rajoitettu luonnos</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Under-constrained sketch with 1 degree of freedom</source>
+        <translation>Liian vähän rajoitettu luonnos jossa on 1 vapausaste</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Under-constrained sketch with %1 degrees of freedom</source>
+        <translation>Liian vähän rajoitettu luonnos jossa on %1 vapausastetta</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Solved in %1 sec</source>
+        <translation>Ratkaistu %1 sekunnissa</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Unsolved (%1 sec)</source>
+        <translation>Ratkaisematta (%1 sekuntia)</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_Clone</name>
+    <message>
+        <location filename="../../CommandSketcherTools.cpp" line="-276"/>
+        <location line="+1"/>
+        <source>Creates a clone of the geometry taking as reference the last selected point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CompCopy</name>
+    <message>
+        <location line="-2"/>
+        <source>Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_Copy</name>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-1049"/>
-      <location line="+1"/>
-      <source>Create an arc by its end points and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+        <location filename="../../CommandCreateGeo.cpp" line="-2550"/>
+        <location line="+1"/>
+        <source>Create an arc by its end points and a point along the arc</source>
+        <translation type="unfinished">Luoda kaari sen loppupisteistä ja kaarella olevasta pisteestä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location line="+475"/>
-      <location line="+1"/>
-      <source>Create a circle by 3 rim points</source>
-      <translation type="unfinished">Create a circle by 3 rim points</translation>
+        <location line="+1912"/>
+        <location line="+1"/>
+        <source>Create a circle by 3 rim points</source>
+        <translation type="unfinished">Luo ympyrä kehän 3:sta pisteestä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location line="-481"/>
-      <location line="+1"/>
-      <source>Create an arc by its center and by its end points</source>
-      <translation type="unfinished">Create an arc by its center and by its end points</translation>
+        <location line="-1918"/>
+        <location line="+1"/>
+        <source>Create an arc by its center and by its end points</source>
+        <translation type="unfinished">Luo kaari sen keskipisteellä ja sen loppupisteillä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>Sketcher_CreateArcOfEllipse</name>
+    <message>
+        <location line="+1576"/>
+        <location line="+1"/>
+        <source>Create an arc of ellipse by its center, major radius, endpoints</source>
+        <translation type="unfinished">Luo ellipsin kaari keskipisteellä, suurella säteellä, päätepisteillä</translation>
+    </message>
+</context>
+<context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location line="+475"/>
-      <location line="+1"/>
-      <source>Create a circle by its center and by a rim point</source>
-      <translation type="unfinished">Create a circle by its center and by a rim point</translation>
+        <location line="+335"/>
+        <location line="+1"/>
+        <source>Create a circle by its center and by a rim point</source>
+        <translation type="unfinished">Luoda ympyrä sen keskipisteellä ja kehän pisteellä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>Sketcher_CreateEllipseBy3Points</name>
+    <message>
+        <location line="-341"/>
+        <location line="+1"/>
+        <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
+        <translation type="unfinished">Luo ellipsi kauimmalla pisteellä, lähimmällä pisteellä ja pienellä säteellä</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateEllipseByCenter</name>
+    <message>
+        <location line="-5"/>
+        <location line="+1"/>
+        <source>Create an ellipse by center, major radius and point</source>
+        <translation type="unfinished">Luo ellipsi keskipisteellä, suurella säteellä ja pisteellä</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateHeptagon</name>
+    <message>
+        <location line="+1946"/>
+        <location line="+1"/>
+        <source>Create a heptagon by its center and by one corner</source>
+        <translation type="unfinished">Luo seitsenkulmio keskipisteellä ja yhdellä kulmalla</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateHexagon</name>
+    <message>
+        <location line="-5"/>
+        <location line="+1"/>
+        <source>Create a hexagon by its center and by one corner</source>
+        <translation type="unfinished">Luo kuusikulmio keskipisteellä ja yhdellä kulmalla</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateOctagon</name>
+    <message>
+        <location line="+7"/>
+        <location line="+1"/>
+        <source>Create an octagon by its center and by one corner</source>
+        <translation type="unfinished">Luo kahdeksankulmio keskipisteellä ja yhdellä kulmalla</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreatePentagon</name>
+    <message>
+        <location line="-13"/>
+        <location line="+1"/>
+        <source>Create a pentagon by its center and by one corner</source>
+        <translation type="unfinished">Luo viisikulmio keskipisteellä ja yhdellä kulmalla</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateSquare</name>
+    <message>
+        <location line="-5"/>
+        <location line="+1"/>
+        <source>Create a square by its center and by one corner</source>
+        <translation type="unfinished">Luo neliö keskipisteellä ja yhdellä kulmalla</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateTriangle</name>
+    <message>
+        <location line="-5"/>
+        <location line="+1"/>
+        <source>Create an equilateral triangle by its center and by one corner</source>
+        <translation type="unfinished">Luo tasasivuinen kolmio keskipisteellä ja yhdellä kulmalla</translation>
+    </message>
+</context>
+<context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+89"/>
-      <source>Sketch has support</source>
-      <translation type="unfinished">Sketch has support</translation>
+        <location filename="../../Command.cpp" line="+164"/>
+        <source>Sketch has support</source>
+        <translation type="unfinished">Luonnoksella on tuki</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Sketch with a support face cannot be reoriented.
+        <location line="+1"/>
+        <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation type="unfinished">Sketch with a support face cannot be reoriented.
-Do you want to detach it from the support?</translation>
+        <translation type="unfinished">Luonnos, jolla on tukinäkymä, ei voida suunnata uudelleen.
+Haluatko irrottaa sen näkymän tuesta?</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>TaskSketcherConstrains</name>
     <message>
-      <source>Constraints</source>
-      <translation type="obsolete">Rajoitteet</translation>
+        <source>Constraints</source>
+        <translation type="obsolete">Rajoitteet</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>TaskSketcherCreateCommands</name>
     <message>
-      <source>Appearance</source>
-      <translation type="obsolete">Ulkoasu</translation>
+        <source>Appearance</source>
+        <translation type="obsolete">Ulkoasu</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>TaskSketcherGeneral</name>
     <message>
-      <source>Edit controls</source>
-      <translation type="obsolete">Muokkaa säätöjä</translation>
+        <source>Edit controls</source>
+        <translation type="obsolete">Muokkaa säätöjä</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>TaskSketcherMessages</name>
     <message>
-      <location filename="../../TaskSketcherMessages.ui" line="+14"/>
-      <source>Form</source>
-      <translation>Lomake</translation>
+        <location filename="../../TaskSketcherMessages.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Lomake</translation>
     </message>
     <message>
-      <location line="+12"/>
-      <source>Undefined degrees of freedom</source>
-      <translation>Vapausasteet määtittelemättä</translation>
+        <location line="+12"/>
+        <source>Undefined degrees of freedom</source>
+        <translation>Vapausasteet määtittelemättä</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <source>Not solved yet</source>
-      <translation>Ei ole vielä ratkaistu</translation>
+        <location line="+16"/>
+        <source>Not solved yet</source>
+        <translation>Ei ole vielä ratkaistu</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location line="+25"/>
+        <source>Executes a recompute of the active document after every command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Auto Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Forces a recompute of the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TaskSketcherSolverAdvanced</name>
+    <message>
+        <location filename="../../TaskSketcherSolverAdvanced.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Lomake</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Default algorithm used for Sketch solving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Solver:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <location line="+280"/>
+        <source>BFGS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-275"/>
+        <location line="+280"/>
+        <source>LevenbergMarquardt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-275"/>
+        <location line="+280"/>
+        <source>DogLeg</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-268"/>
+        <source>Maximum number of iterations of the default algorithm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Maximum Iterations:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>If selected, the Maximum iterations value is multiplied by the sketch size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Sketch size multiplier:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Error threshold under which convergence is reached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Convergence:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Param1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Param2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Param3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Algorithm used for the rank revealing QR decomposition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>QR Algorithm:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Eigen Dense QR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Eigen Sparse QR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Pivot threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>1E-13</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Solving algorithm used for determination of Redundant constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Redundant Solver:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>Maximum number of iterations of the solver used for determination of Redundant constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Red. Max Iterations:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Red. Sketch size multiplier:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Error threshold under which convergence is reached for the solving of redundant constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Red. Convergence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>1E-10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Red. Param1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Red. Param2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Red. Param3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Degree of verbosity of the debug output to the console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Console  Debug mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Minimum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Iteration Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Solve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Resets all solver values to their default values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Restore Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
-      <source>Sketcher</source>
-      <translation>Lunnostelija</translation>
+        <location filename="../../Workbench.cpp" line="+37"/>
+        <source>Sketcher</source>
+        <translation>Lunnostelija</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Sketcher geometries</source>
-      <translation>Sketsin geometriat</translation>
+        <location line="+1"/>
+        <source>Sketcher geometries</source>
+        <translation>Sketsin geometriat</translation>
     </message>
     <message>
-      <source>Sketcher geoms</source>
-      <translation type="obsolete">Luonnostelijan geometriat</translation>
+        <location line="+2"/>
+        <source>Sketcher tools</source>
+        <translation type="unfinished">Luonnostyökalut</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Sketcher constraints</source>
-      <translation>Sketsin rajoitteet</translation>
+        <source>Sketcher geoms</source>
+        <translation type="obsolete">Luonnostelijan geometriat</translation>
     </message>
-  </context>
+    <message>
+        <location line="-1"/>
+        <source>Sketcher constraints</source>
+        <translation>Sketsin rajoitteet</translation>
+    </message>
+</context>
 </TS>

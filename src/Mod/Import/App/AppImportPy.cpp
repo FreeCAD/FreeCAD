@@ -116,10 +116,15 @@ static PyObject * importer(PyObject *self, PyObject *args)
             }
         }
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
+
             try {
                 IGESControl_Controller::Init();
-                Interface_Static::SetIVal("read.surfacecurve.mode",3);
                 IGESCAFControl_Reader aReader;
+                // http://www.opencascade.org/org/forum/thread_20603/?forum=3
+                aReader.SetReadVisible(hGrp->GetBool("SkipBlankEntities", true)
+                    ? Standard_True : Standard_False);
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
@@ -255,7 +260,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             IGESData_GlobalSection header = writer.Model()->GlobalSection();
             header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
             header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
-          //header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+            header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
             writer.Model()->SetGlobalSection(header);
             writer.Transfer(hDoc);
             Standard_Boolean ret = writer.Write(name8bit.c_str());

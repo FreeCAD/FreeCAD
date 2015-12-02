@@ -27,9 +27,35 @@
 #endif
 
 #include "Unit.h"
+#include "Exception.h"
 
 using namespace Base;
 
+static inline void checkRange(const char * op, int length, int mass, int time, int electricCurrent,
+                              int thermodynamicTemperature, int amountOfSubstance, int luminoseIntensity, int angle,
+                              int density)
+{
+    if ( ( length                   >=  (1 << (UnitSignatureLengthBits                   - 1)) ) ||
+         ( mass                     >=  (1 << (UnitSignatureMassBits                     - 1)) ) ||
+         ( time                     >=  (1 << (UnitSignatureTimeBits                     - 1)) ) ||
+         ( electricCurrent          >=  (1 << (UnitSignatureElectricCurrentBits          - 1)) ) ||
+         ( thermodynamicTemperature >=  (1 << (UnitSignatureThermodynamicTemperatureBits - 1)) ) ||
+         ( amountOfSubstance        >=  (1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
+         ( luminoseIntensity        >=  (1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
+         ( angle                    >=  (1 << (UnitSignatureAngleBits                    - 1)) ) ||
+         ( density                  >=  (1 << (UnitSignatureDensityBits                  - 1)) ) )
+        throw Base::Exception((std::string("Unit overflow in ") + std::string(op)).c_str());
+    if ( ( length                   <  -(1 << (UnitSignatureLengthBits                   - 1)) ) ||
+         ( mass                     <  -(1 << (UnitSignatureMassBits                     - 1)) ) ||
+         ( time                     <  -(1 << (UnitSignatureTimeBits                     - 1)) ) ||
+         ( electricCurrent          <  -(1 << (UnitSignatureElectricCurrentBits          - 1)) ) ||
+         ( thermodynamicTemperature <  -(1 << (UnitSignatureThermodynamicTemperatureBits - 1)) ) ||
+         ( amountOfSubstance        <  -(1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
+         ( luminoseIntensity        <  -(1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
+         ( angle                    <  -(1 << (UnitSignatureAngleBits                    - 1)) ) ||
+         ( density                  <  -(1 << (UnitSignatureDensityBits                  - 1)) ) )
+        throw Base::Exception((std::string("Unit underflow in ") + std::string(op)).c_str());
+}
 
 Unit::Unit(int8_t Length,
            int8_t Mass,
@@ -38,9 +64,21 @@ Unit::Unit(int8_t Length,
            int8_t ThermodynamicTemperature,
            int8_t AmountOfSubstance,
            int8_t LuminoseIntensity,
-           int8_t Angle)
+           int8_t Angle,
+           int8_t Density)
 {
-    Sig.Length                   = Length;                   
+    checkRange("unit",
+               (int32_t)Length,
+               (int32_t)Mass,
+               (int32_t)Time,
+               (int32_t)ElectricCurrent,
+               (int32_t)ThermodynamicTemperature,
+               (int32_t)AmountOfSubstance,
+               (int32_t)LuminoseIntensity,
+               (int32_t)Angle,
+               (int32_t)Density);
+
+    Sig.Length                   = Length;
     Sig.Mass                     = Mass;                     
     Sig.Time                     = Time;                     
     Sig.ElectricCurrent          = ElectricCurrent;          
@@ -48,6 +86,7 @@ Unit::Unit(int8_t Length,
     Sig.AmountOfSubstance        = AmountOfSubstance;        
     Sig.LuminoseIntensity        = LuminoseIntensity;        
     Sig.Angle                    = Angle;                    
+    Sig.Density                  = Density;
 }
 
 
@@ -61,6 +100,7 @@ Unit::Unit()
     Sig.AmountOfSubstance        = 0;        
     Sig.LuminoseIntensity        = 0;        
     Sig.Angle                    = 0;                    
+    Sig.Density                  = 0;
 }
 
 Unit::Unit(const Unit& that)
@@ -75,6 +115,17 @@ Unit::Unit(const std::string& Pars)
 
 Unit Unit::pow(char exp)const
 {
+    checkRange("pow()",
+               (int32_t)Sig.Length * (int32_t)exp,
+               (int32_t)Sig.Mass * (int32_t)exp,
+               (int32_t)Sig.Time * (int32_t)exp,
+               (int32_t)Sig.ElectricCurrent * (int32_t)exp,
+               (int32_t)Sig.ThermodynamicTemperature * (int32_t)exp,
+               (int32_t)Sig.AmountOfSubstance * (int32_t)exp,
+               (int32_t)Sig.LuminoseIntensity * (int32_t)exp,
+               (int32_t)Sig.Angle * (int32_t)exp,
+               (int32_t)Sig.Density * (int32_t)exp);
+
     Unit result;
     result.Sig.Length                   = Sig.Length                    * exp;
     result.Sig.Mass                     = Sig.Mass                      * exp;
@@ -84,9 +135,9 @@ Unit Unit::pow(char exp)const
     result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         * exp;
     result.Sig.LuminoseIntensity        = Sig.LuminoseIntensity         * exp;
     result.Sig.Angle                    = Sig.Angle                     * exp;
+    result.Sig.Density                  = Sig.Density                   * exp;
 
     return result;
-
 }
 
 bool Unit::isEmpty(void)const
@@ -98,7 +149,8 @@ bool Unit::isEmpty(void)const
         && (this->Sig.ThermodynamicTemperature == 0)
         && (this->Sig.AmountOfSubstance == 0)
         && (this->Sig.LuminoseIntensity == 0)
-        && (this->Sig.Angle == 0);
+        && (this->Sig.Angle == 0)
+        && (this->Sig.Density == 0);
 }
 
 bool Unit::operator ==(const Unit& that) const
@@ -110,12 +162,24 @@ bool Unit::operator ==(const Unit& that) const
         && (this->Sig.ThermodynamicTemperature == that.Sig.ThermodynamicTemperature)
         && (this->Sig.AmountOfSubstance == that.Sig.AmountOfSubstance)
         && (this->Sig.LuminoseIntensity == that.Sig.LuminoseIntensity)
-        && (this->Sig.Angle == that.Sig.Angle);
+        && (this->Sig.Angle == that.Sig.Angle)
+        && (this->Sig.Density == that.Sig.Density);
 }
 
 
 Unit Unit::operator *(const Unit &right) const
 {
+    checkRange("* operator",
+               (int32_t)Sig.Length + (int32_t)right.Sig.Length,
+               (int32_t)Sig.Mass + (int32_t)right.Sig.Mass,
+               (int32_t)Sig.Time + (int32_t)right.Sig.Time,
+               (int32_t)Sig.ElectricCurrent + (int32_t)right.Sig.ElectricCurrent,
+               (int32_t)Sig.ThermodynamicTemperature + (int32_t)right.Sig.ThermodynamicTemperature,
+               (int32_t)Sig.AmountOfSubstance + (int32_t)right.Sig.AmountOfSubstance,
+               (int32_t)Sig.LuminoseIntensity + (int32_t)right.Sig.LuminoseIntensity,
+               (int32_t)Sig.Angle + (int32_t)right.Sig.Angle,
+               (int32_t)Sig.Density + (int32_t)right.Sig.Density);
+
     Unit result;
     result.Sig.Length                   = Sig.Length                    + right.Sig.Length;
     result.Sig.Mass                     = Sig.Mass                      + right.Sig.Mass;
@@ -125,12 +189,24 @@ Unit Unit::operator *(const Unit &right) const
     result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         + right.Sig.AmountOfSubstance;
     result.Sig.LuminoseIntensity        = Sig.LuminoseIntensity         + right.Sig.LuminoseIntensity;
     result.Sig.Angle                    = Sig.Angle                     + right.Sig.Angle;
+    result.Sig.Density                  = Sig.Density                   + right.Sig.Density;
 
     return result;
 }
 
 Unit Unit::operator /(const Unit &right) const
 {
+    checkRange("/ operator",
+               (int32_t)Sig.Length - (int32_t)right.Sig.Length,
+               (int32_t)Sig.Mass - (int32_t)right.Sig.Mass,
+               (int32_t)Sig.Time - (int32_t)right.Sig.Time,
+               (int32_t)Sig.ElectricCurrent - (int32_t)right.Sig.ElectricCurrent,
+               (int32_t)Sig.ThermodynamicTemperature - (int32_t)right.Sig.ThermodynamicTemperature,
+               (int32_t)Sig.AmountOfSubstance - (int32_t)right.Sig.AmountOfSubstance,
+               (int32_t)Sig.LuminoseIntensity - (int32_t)right.Sig.LuminoseIntensity,
+               (int32_t)Sig.Angle - (int32_t)right.Sig.Angle,
+               (int32_t)Sig.Density - (int32_t)right.Sig.Density);
+
     Unit result;
     result.Sig.Length                   = Sig.Length                    - right.Sig.Length;
     result.Sig.Mass                     = Sig.Mass                      - right.Sig.Mass;
@@ -140,6 +216,7 @@ Unit Unit::operator /(const Unit &right) const
     result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         - right.Sig.AmountOfSubstance;
     result.Sig.LuminoseIntensity        = Sig.LuminoseIntensity         - right.Sig.LuminoseIntensity;
     result.Sig.Angle                    = Sig.Angle                     - right.Sig.Angle;
+    result.Sig.Density                  = Sig.Density                   - right.Sig.Density;
 
     return result;
 }
@@ -154,6 +231,7 @@ Unit& Unit::operator = (const Unit &New)
     Sig.AmountOfSubstance        = New.Sig.AmountOfSubstance       ;
     Sig.LuminoseIntensity        = New.Sig.LuminoseIntensity       ;
     Sig.Angle                    = New.Sig.Angle    ;
+    Sig.Density                  = New.Sig.Density    ;
 
     return *this;
 }
@@ -165,152 +243,169 @@ QString Unit::getString(void) const
 	if(isEmpty())
 		return QString();
 
-	if(     Sig.Length                  > 0 ||
-		    Sig.Mass                    > 0 ||
-		    Sig.Time                    > 0 ||
-		    Sig.ElectricCurrent         > 0 ||
-		    Sig.ThermodynamicTemperature> 0 ||
-		    Sig.AmountOfSubstance       > 0 ||
-		    Sig.LuminoseIntensity       > 0 ||
-			Sig.Angle                   > 0 ){
+	if(Sig.Length                  > 0 ||
+           Sig.Mass                    > 0 ||
+           Sig.Time                    > 0 ||
+           Sig.ElectricCurrent         > 0 ||
+           Sig.ThermodynamicTemperature> 0 ||
+           Sig.AmountOfSubstance       > 0 ||
+           Sig.LuminoseIntensity       > 0 ||
+           Sig.Angle                   > 0 ||
+           Sig.Density                 > 0 ){
 
-        bool mult = false;
-		if(Sig.Length > 0){
-            mult = true;
-			ret << "mm";
-			if(Sig.Length >1)
-				ret << "^" << Sig.Length;
-		}
-		if(Sig.Mass > 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "kg";
-			if(Sig.Mass >1)
-				ret << "^" << Sig.Mass;
-		}
-		if(Sig.Time > 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "s";
-			if(Sig.Time >1)
-				ret << "^" << Sig.Time;
-		}
-		if(Sig.ElectricCurrent > 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "A";
-			if(Sig.ElectricCurrent >1)
-				ret << "^" << Sig.ElectricCurrent;
-		}
-		if(Sig.ThermodynamicTemperature > 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "K";
-			if(Sig.ThermodynamicTemperature >1)
-				ret << "^" << Sig.ThermodynamicTemperature;
-		}
-		if(Sig.AmountOfSubstance > 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "mol";
-			if(Sig.AmountOfSubstance >1)
-				ret << "^" << Sig.AmountOfSubstance;
-		}
-		if(Sig.LuminoseIntensity > 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "cd";
-			if(Sig.LuminoseIntensity >1)
-				ret << "^" << Sig.LuminoseIntensity;
-		}
-		if(Sig.Angle > 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "deg";
-			if(Sig.Angle >1)
-				ret << "^" << Sig.Angle;
-		}
-	}else{
+            bool mult = false;
+            if(Sig.Length > 0){
+                mult = true;
+                ret << "mm";
+                if(Sig.Length >1)
+                    ret << "^" << Sig.Length;
+            }
+            if(Sig.Mass > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "kg";
+                if(Sig.Mass >1)
+                    ret << "^" << Sig.Mass;
+            }
+            if(Sig.Time > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "s";
+                if(Sig.Time >1)
+                    ret << "^" << Sig.Time;
+            }
+            if(Sig.ElectricCurrent > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "A";
+                if(Sig.ElectricCurrent >1)
+                    ret << "^" << Sig.ElectricCurrent;
+            }
+            if(Sig.ThermodynamicTemperature > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "K";
+                if(Sig.ThermodynamicTemperature >1)
+                    ret << "^" << Sig.ThermodynamicTemperature;
+            }
+            if(Sig.AmountOfSubstance > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "mol";
+                if(Sig.AmountOfSubstance >1)
+                    ret << "^" << Sig.AmountOfSubstance;
+            }
+            if(Sig.LuminoseIntensity > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "cd";
+                if(Sig.LuminoseIntensity >1)
+                    ret << "^" << Sig.LuminoseIntensity;
+            }
+            if(Sig.Angle > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "deg";
+                if(Sig.Angle >1)
+                    ret << "^" << Sig.Angle;
+            }
+            if(Sig.Density > 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "kg/m^3";
+                if(Sig.Density >1)
+                    ret << "^" << Sig.Density;
+            }
+        }else{
 		ret << "1";
 	}
 
-	if(     Sig.Length                  < 0 ||
-		    Sig.Mass                    < 0 ||
-		    Sig.Time                    < 0 ||
-		    Sig.ElectricCurrent         < 0 ||
-		    Sig.ThermodynamicTemperature< 0 ||
-		    Sig.AmountOfSubstance       < 0 ||
-		    Sig.LuminoseIntensity       < 0 ||
-			Sig.Angle                   < 0 ){
-		ret << "/";
+	if(Sig.Length                  < 0 ||
+           Sig.Mass                    < 0 ||
+           Sig.Time                    < 0 ||
+           Sig.ElectricCurrent         < 0 ||
+           Sig.ThermodynamicTemperature< 0 ||
+           Sig.AmountOfSubstance       < 0 ||
+           Sig.LuminoseIntensity       < 0 ||
+           Sig.Angle                   < 0 ||
+           Sig.Density                 < 0 ){
+            ret << "/";
 
-        int nnom = Sig.Length<0?1:2 +
-                    Sig.Mass<0?1:2 +
-                    Sig.Time<0?1:2 +
-                    Sig.ElectricCurrent<0?1:2 +
-                    Sig.ThermodynamicTemperature<0?1:2 +
-                    Sig.AmountOfSubstance<0?1:2 +
-                    Sig.LuminoseIntensity<0?1:2 +
-                    Sig.Angle<0?1:2 ;
-        if (nnom > 1) ret << '(';
-        bool mult=false;
-		if(Sig.Length < 0){
-			ret << "mm";
-            mult = true;
-			if(Sig.Length <-1)
-				ret << "^" << abs(Sig.Length);
-		}
-		if(Sig.Mass < 0){
-            if(mult) ret<<'*';
-            mult = true;
-            ret << "kg";
-			if(Sig.Mass <-1)
-				ret << "^" << abs(Sig.Mass);
-		}
-		if(Sig.Time < 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "s";
-			if(Sig.Time <-1)
-				ret << "^" << abs(Sig.Time);
-		}
-		if(Sig.ElectricCurrent < 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "A";
-			if(Sig.ElectricCurrent <-1)
-				ret << "^" << abs(Sig.ElectricCurrent);
-		}
-		if(Sig.ThermodynamicTemperature < 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "K";
-			if(Sig.ThermodynamicTemperature <-1)
-				ret << "^" << abs(Sig.ThermodynamicTemperature);
-		}
-		if(Sig.AmountOfSubstance < 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "mol";
-			if(Sig.AmountOfSubstance <-1)
-				ret << "^" << abs(Sig.AmountOfSubstance);
-		}
-		if(Sig.LuminoseIntensity < 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "cd";
-			if(Sig.LuminoseIntensity <-1)
-				ret << "^" << abs(Sig.LuminoseIntensity);
-		}
-		if(Sig.Angle < 0){
-            if(mult) ret<<'*';
-            mult = true;
-			ret << "deg";
-			if(Sig.Angle <-1)
-				ret << "^" << abs(Sig.Angle);
-		}
-        if (nnom > 1) ret << ')';
-	}
+            int nnom = Sig.Length<0?1:2 +
+                Sig.Mass<0?1:2 +
+                Sig.Time<0?1:2 +
+                Sig.ElectricCurrent<0?1:2 +
+                Sig.ThermodynamicTemperature<0?1:2 +
+                Sig.AmountOfSubstance<0?1:2 +
+                Sig.LuminoseIntensity<0?1:2 +
+                Sig.Angle<0?1:2 +
+                Sig.Density<0?1:2 ;
+            if (nnom > 1) ret << '(';
+            bool mult=false;
+            if(Sig.Length < 0){
+                ret << "mm";
+                mult = true;
+                if(Sig.Length <-1)
+                    ret << "^" << abs(Sig.Length);
+            }
+            if(Sig.Mass < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "kg";
+                if(Sig.Mass <-1)
+                    ret << "^" << abs(Sig.Mass);
+            }
+            if(Sig.Time < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "s";
+                if(Sig.Time <-1)
+                    ret << "^" << abs(Sig.Time);
+            }
+            if(Sig.ElectricCurrent < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "A";
+                if(Sig.ElectricCurrent <-1)
+                    ret << "^" << abs(Sig.ElectricCurrent);
+            }
+            if(Sig.ThermodynamicTemperature < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "K";
+                if(Sig.ThermodynamicTemperature <-1)
+                    ret << "^" << abs(Sig.ThermodynamicTemperature);
+            }
+            if(Sig.AmountOfSubstance < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "mol";
+                if(Sig.AmountOfSubstance <-1)
+                    ret << "^" << abs(Sig.AmountOfSubstance);
+            }
+            if(Sig.LuminoseIntensity < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "cd";
+                if(Sig.LuminoseIntensity <-1)
+                    ret << "^" << abs(Sig.LuminoseIntensity);
+            }
+            if(Sig.Angle < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "deg";
+                if(Sig.Angle <-1)
+                    ret << "^" << abs(Sig.Angle);
+            }
+            if(Sig.Density < 0){
+                if(mult) ret<<'*';
+                mult = true;
+                ret << "kg/m^3";
+                if(Sig.Density <-1)
+                    ret << "^" << abs(Sig.Density);
+            }
+            if (nnom > 1) ret << ')';
+        }
 
     return QString::fromUtf8(ret.str().c_str());
 }
@@ -322,6 +417,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::Volume            )       return QString::fromLatin1("Volume"); else
     if(*this == Unit::Mass              )       return QString::fromLatin1("Mass"); else
     if(*this == Unit::Angle             )       return QString::fromLatin1("Angle"); else
+    if(*this == Unit::Density           )       return QString::fromLatin1("Density"); else
     if(*this == Unit::TimeSpan          )       return QString::fromLatin1("TimeSpan"); else
     if(*this == Unit::Velocity          )       return QString::fromLatin1("Velocity"); else
     if(*this == Unit::Acceleration      )       return QString::fromLatin1("Acceleration"); else
@@ -342,6 +438,7 @@ Unit Unit::Area(2);
 Unit Unit::Volume(3);
 Unit Unit::Mass(0,1);
 Unit Unit::Angle(0,0,0,0,0,0,0,1);
+Unit Unit::Density(-3,1);
 
 Unit Unit::TimeSpan(0,0,1);
 Unit Unit::Velocity(1,0,-1);

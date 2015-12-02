@@ -14,29 +14,14 @@ IF(PYSIDEUIC4BINARY AND PYSIDERCC4BINARY)
   set(PYSIDE_TOOLS_FOUND_QUIETLY TRUE)
 ENDIF(PYSIDEUIC4BINARY AND PYSIDERCC4BINARY)
 
-if(WIN32)
-	FIND_PROGRAM(PYSIDEUIC4BINARY pyside-uic
-		HINTS ${PYSIDE_BIN_DIR}
-	)
-	FIND_PROGRAM(PYSIDERCC4BINARY pyside-rcc
-		HINTS ${PYSIDE_BIN_DIR}
-	)
-else(WIN32)
-    if(APPLE)
-    	#set (PYTHON_BIN_DIR /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin )
-    	FIND_PROGRAM( PYSIDEUIC4BINARY PYSIDEUIC4
-    		HINTS ${PYSIDE_BIN_DIR}
-    		)
-    	FIND_PROGRAM(PYSIDERCC4BINARY PYSIDERCC4
-    		HINTS ${PYSIDE_BIN_DIR}
-    		)
-    else(APPLE)
-        FIND_PROGRAM(PYSIDEUIC4BINARY pyside-uic)
-        FIND_PROGRAM(PYSIDERCC4BINARY pyside-rcc)
-    endif(APPLE)
-endif(WIN32)
-#message(STATUS "PYSIDEUIC4BINARY ${PYSIDEUIC4BINARY}" )
-#message(STATUS "PYSIDERCC4BINARY ${PYSIDERCC4BINARY}" )
+if(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    #pyside tools are often in same location as python interpreter
+    get_filename_component(PYTHON_BIN_DIR ${PYTHON_EXECUTABLE} PATH)
+    set(PYSIDE_BIN_DIR ${PYTHON_BIN_DIR})
+endif(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
+FIND_PROGRAM(PYSIDEUIC4BINARY NAMES pyside-uic pyside-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
+FIND_PROGRAM(PYSIDERCC4BINARY NAMES pyside-rcc pyside-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
 
 MACRO(PYSIDE_WRAP_UI outfiles)
   FOREACH(it ${ARGN})
@@ -46,10 +31,20 @@ MACRO(PYSIDE_WRAP_UI outfiles)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
-    ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-      COMMAND ${PYSIDEUIC4BINARY} ${infile} -o ${outfile}
-      MAIN_DEPENDENCY ${infile}
-    )
+    if(WIN32)
+        ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+          COMMAND ${PYSIDEUIC4BINARY} ${infile} -o ${outfile}
+          MAIN_DEPENDENCY ${infile}
+        )
+    else(WIN32)
+        # Especially on Open Build Service we don't want changing date like
+        # pyside-uic generates in comments at beginning.
+        EXECUTE_PROCESS(
+          COMMAND ${PYSIDEUIC4BINARY} ${infile}
+          COMMAND sed "/^# /d"
+          OUTPUT_FILE ${outfile}
+        )
+    endif(WIN32)
     SET(${outfiles} ${${outfiles}} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_UI)
@@ -62,10 +57,20 @@ MACRO(PYSIDE_WRAP_RC outfiles)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
-    ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-      COMMAND ${PYSIDERCC4BINARY} ${infile} -o ${outfile}
-      MAIN_DEPENDENCY ${infile}
-    )
+    if(WIN32)
+        ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+          COMMAND ${PYSIDERCC4BINARY} ${infile} -o ${outfile}
+          MAIN_DEPENDENCY ${infile}
+        )
+    else(WIN32)
+        # Especially on Open Build Service we don't want changing date like
+        # pyside-rcc generates in comments at beginning.
+        EXECUTE_PROCESS(
+          COMMAND ${PYSIDERCC4BINARY} ${infile}
+          COMMAND sed "/^# /d"
+          OUTPUT_FILE ${outfile}
+       )
+    endif(WIN32)
     SET(${outfiles} ${${outfiles}} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_RC)
@@ -80,7 +85,7 @@ if(PYSIDERCC4BINARY AND PYSIDEUIC4BINARY)
     endif (NOT PySideTools_FIND_QUIETLY)
 else(PYSIDERCC4BINARY AND PYSIDEUIC4BINARY)
     if(PySideTools_FIND_REQUIRED)
-        message(FATAL_ERROR "PySideTools could not be not found, but are required.")
+        message(FATAL_ERROR "PySideTools could not be found, but are required.")
     else(PySideTools_FIND_REQUIRED)
         if (NOT PySideTools_FIND_QUIETLY)
                 message(STATUS "PySideTools: not found.")

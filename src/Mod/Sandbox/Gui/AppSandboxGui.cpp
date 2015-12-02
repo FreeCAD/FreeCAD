@@ -34,6 +34,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/Reader.h>
 #include <Base/VectorPy.h>
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -61,18 +62,6 @@ public:
     {
     }
 private:
-    void slotCreatedDocument(const App::Document& Doc)
-    {
-    }
-    void slotDeletedDocument(const App::Document& Doc)
-    {
-    }
-    void slotCreatedObject(const App::DocumentObject& Obj)
-    {
-    }
-    void slotDeletedObject(const App::DocumentObject& Obj)
-    {
-    }
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
     {
         if (object == &Obj && Prop.getTypeId() == Part::PropertyGeometryList::getClassTypeId()) {
@@ -92,8 +81,8 @@ private:
             try {
                 Base::Vector3d m1 = arc->getCenter();
               //Base::Vector3d a3 = arc->getStartPoint();
-                Base::Vector3d a3 = arc->getEndPoint();
-                Base::Vector3d l1 = seg->getStartPoint();
+                Base::Vector3d a3 = arc->getEndPoint(true);
+              //Base::Vector3d l1 = seg->getStartPoint();
                 Base::Vector3d l2 = seg->getEndPoint();
 #if 0
                 Py::Module pd("FilletArc");
@@ -206,6 +195,8 @@ public:
     {
         add_varargs_method("interactiveFilletArc",&SandboxModuleGui::interactiveFilletArc,
             "Interactive fillet arc");
+        add_varargs_method("xmlReader",&SandboxModuleGui::xmlReader,
+            "Read XML");
         initialize("This module is the SandboxGui module"); // register with Python
     }
     
@@ -233,6 +224,16 @@ private:
                 obs->attachDocument(doc->getDocument());
             }
         }
+        return Py::None();
+    }
+    Py::Object xmlReader(const Py::Tuple& args)
+    {
+        std::string file = static_cast<std::string>(Py::String(args[0]));
+        App::Document* doc = App::GetApplication().newDocument();
+
+        std::ifstream str(file.c_str(), std::ios::in);
+        Base::XMLReader reader(file.c_str(), str);
+        doc->Restore(reader);
         return Py::None();
     }
 };

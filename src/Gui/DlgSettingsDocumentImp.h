@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,22 +32,25 @@ namespace Dialog {
 
 /**
  * The DlgSettingsDocumentImp class implements a preference page to change settings
- * for the Inventor viewer.
- * \author Jürgen Riegel
+ * for the document.
+ * \author JÃ¼rgen Riegel
  */
- class DlgSettingsDocumentImp : public PreferencePage, public Ui_DlgSettingsDocument
-{ 
-  Q_OBJECT
+class DlgSettingsDocumentImp : public PreferencePage, public Ui_DlgSettingsDocument
+{
+    Q_OBJECT
 
 public:
-  DlgSettingsDocumentImp( QWidget* parent = 0 );
-  ~DlgSettingsDocumentImp();
+    DlgSettingsDocumentImp( QWidget* parent = 0 );
+    ~DlgSettingsDocumentImp();
 
-  void saveSettings();
-  void loadSettings();
+    void saveSettings();
+    void loadSettings();
+
+protected Q_SLOTS:
+    void onLicenseTypeChanged(int index);
 
 protected:
-  void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e);
 };
 
 } // namespace Dialog

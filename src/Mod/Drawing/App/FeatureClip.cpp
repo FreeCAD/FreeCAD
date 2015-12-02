@@ -58,6 +58,10 @@ FeatureClip::FeatureClip(void)
     ADD_PROPERTY_TYPE(Height     ,(10),group,App::Prop_None  ,"The height of the view area of this clip");
     ADD_PROPERTY_TYPE(Width      ,(10),group,App::Prop_None  ,"The width of the view area of this clip");
     ADD_PROPERTY_TYPE(ShowFrame  ,(0),group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
+    // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag set to
+    // avoid to call the execute() method. The view provider touches the page object, instead.
+    App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
+    ADD_PROPERTY_TYPE(Visible, (true),group,propType,"Control whether frame is visible in page object");
 }
 
 FeatureClip::~FeatureClip()

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QInputDialog>
 # include <QMessageBox>
 #endif
 
@@ -114,14 +115,14 @@ void CmdRobotInsertWaypoint::activated(int iMsg)
 
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
-    Robot::RobotObject *pcRobotObject;
+    Robot::RobotObject *pcRobotObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[1].pObject);
     std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject;
+    Robot::TrajectoryObject *pcTrajectoryObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
@@ -382,8 +383,8 @@ CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
 {
     sAppModule      = "Robot";
     sGroup          = QT_TR_NOOP("Robot");
-    sMenuText       = QT_TR_NOOP("Dress up trajectory...");
-    sToolTipText    = QT_TR_NOOP("Create a dress up object which overide some aspects of a trajectory");
+    sMenuText       = QT_TR_NOOP("Dress-up trajectory...");
+    sToolTipText    = QT_TR_NOOP("Create a dress-up object which overrides some aspects of a trajectory");
     sWhatsThis      = "Robot_TrajectoryDressUp";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_TrajectoryDressUp";

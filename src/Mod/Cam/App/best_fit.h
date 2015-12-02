@@ -38,7 +38,7 @@
 
 
 #define SMALL_NUM  1e-6
-#define ERR_TOL    0.001       // Abbruchkriterium für Least-Square-Matching (Fehleränderung zweier aufeinanderfolgenden Iterationsschritten)
+#define ERR_TOL    0.001       // Abbruchkriterium fÃ¼r Least-Square-Matching (FehlerÃ¤nderung zweier aufeinanderfolgenden Iterationsschritten)
 
 
 /*! \brief The main class for the best_fit routine
@@ -168,13 +168,13 @@ public:
     std::vector<double>         m_error;
 
     /*! \brief Stores the point-sets computed with the function ANN() */
-    std::vector<std::vector<Base::Vector3f> > m_LSPnts;  // zu fittende Punktesätze für den Least-Square
+    std::vector<std::vector<Base::Vector3f> > m_LSPnts;  // zu fittende PunktesÃ¤tze fÃ¼r den Least-Square
 
     /*! \brief Stores the weights computed with the function Comp_Weights() */
-    std::vector<double> m_weights;                       // gewichtungen für den Least-Square bzgl. allen Netzpunkte
+    std::vector<double> m_weights;                       // gewichtungen fÃ¼r den Least-Square bzgl. allen Netzpunkte
 
     /*! \brief A working-copy of m_weights */
-    std::vector<double> m_weights_loc;                   // gewichtungen für den Least-Square bzgl. den projezierten Netzpunkten
+    std::vector<double> m_weights_loc;                   // gewichtungen fÃ¼r den Least-Square bzgl. den projezierten Netzpunkten
 
     /*! \brief Translation-vector from the function ShapeFit_Coarse() */
     gp_Vec m_cad2orig;                     // Translationsvektor welche die CAD-Geometrie um den Ursprung zentriert

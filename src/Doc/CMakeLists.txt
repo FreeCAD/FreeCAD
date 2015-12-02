@@ -18,7 +18,7 @@ if(DOXYGEN_FOUND)
 
     # directory order seems important for correct macro expansion
     # (files containing macros definitions must be parsed before the files using them)
-    SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIR}/Inventor/fields/SoSubField.h 
+    SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIRS}/Inventor/fields/SoSubField.h 
                            ${CMAKE_SOURCE_DIR}/src/CXX 
                            ${CMAKE_SOURCE_DIR}/src/zipios++ 
                            ${CMAKE_SOURCE_DIR}/src/3rdParty
@@ -38,14 +38,9 @@ if(DOXYGEN_FOUND)
 
     # exclude some subdirectories
     # src/Tools : content not relevant ?
-    # src/3rdParty/CxImage : obsolete utility
-    # src/3rdParty/Pivy  
-    # src/3rdParty/Pivy-0.5 : huge python wrappers around Coin3D, not focused
-    #                         on FreeCAD properly
+    # src/3rdParty/CxImage : Windows thumbnailer
     set(        DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Tools)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/CxImage)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/Pivy)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/Pivy-0.5)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh)
 
     STRING(REGEX REPLACE ";" " " DOXYGEN_EXCLUDE_LIST "${DOXYGEN_EXCLUDE_DIR}")
@@ -104,6 +99,8 @@ if(DOXYGEN_FOUND)
         )
 
     endif( FREECAD_MAINTAINERS_BUILD )
-
+else( DOXYGEN_FOUND )
+    ADD_CUSTOM_TARGET(DevDoc
+                      echo "Doxygen not found.  Install it and rerun CMake")
 endif( DOXYGEN_FOUND )
 

@@ -200,9 +200,9 @@ static bool findIJ (const SMDS_MeshNode* node, const FaceQuadStruct * quad, int&
  * -0.  - shape and face mesh verification
  * -1.  - identify faces and vertices of the "cube"
  * -2.  - Algorithm from:
- * "Application de l'interpolation transfinie à la création de maillages
+ * "Application de l'interpolation transfinie Ã  la crÃ©ation de maillages
  *  C0 ou G1 continus sur des triangles, quadrangles, tetraedres, pentaedres
- *  et hexaedres déformés."
+ *  et hexaedres dÃ©formÃ©s."
  * Alain PERONNET - 8 janvier 1999
  */
 //=============================================================================
@@ -876,6 +876,7 @@ void StdMeshers_Hexa_3D::GetConv2DCoefs(const faceQuadStruct & quad,
   
 	int a1, b1, c1, a2, b2, c2;
 	if (VA.IsSame(V0))
+	{
 		if (VB.IsSame(V1))
 		{
 			a1 = 1;
@@ -895,7 +896,9 @@ void StdMeshers_Hexa_3D::GetConv2DCoefs(const faceQuadStruct & quad,
 			b2 = 0;
 			c2 = 0;				// x
 		}
+	}
 	if (VA.IsSame(V1))
+	{
 		if (VB.IsSame(V2))
 		{
 			a1 = 0;
@@ -915,7 +918,9 @@ void StdMeshers_Hexa_3D::GetConv2DCoefs(const faceQuadStruct & quad,
 			b2 = 1;
 			c2 = 0;				// y
 		}
+	}
 	if (VA.IsSame(V2))
+	{
 		if (VB.IsSame(V3))
 		{
 			a1 = -1;
@@ -935,7 +940,9 @@ void StdMeshers_Hexa_3D::GetConv2DCoefs(const faceQuadStruct & quad,
 			b2 = 0;
 			c2 = 1;				// 1-x
 		}
+	}
 	if (VA.IsSame(V3))
+	{
 		if (VB.IsSame(V0))
 		{
 			a1 = 0;
@@ -955,6 +962,7 @@ void StdMeshers_Hexa_3D::GetConv2DCoefs(const faceQuadStruct & quad,
 			b2 = -1;
 			c2 = 1;				// 1-y
 		}
+	}
 // 	MESSAGE("X = " << c1 << "+ " << a1 << "*x + " << b1 << "*y");
 // 	MESSAGE("Y = " << c2 << "+ " << a2 << "*x + " << b2 << "*y");
 	conv.a1 = a1;

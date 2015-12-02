@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
 #include "TaskDlgMeshShapeNetgen.h"
@@ -34,6 +35,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Gui/WaitCursor.h>
 
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -68,10 +70,11 @@ TaskDlgMeshShapeNetgen::~TaskDlgMeshShapeNetgen()
 
 void TaskDlgMeshShapeNetgen::open()
 {
-    //select->activate();
-    //Edge2TaskObject->execute();
-    //param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,Edge2TaskObject->NbrOfCluster);
-
+    // a transaction is already open at creation time of the mesh
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = tr("Edit FEM mesh");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
 }
 
 void TaskDlgMeshShapeNetgen::clicked(int button)
@@ -97,10 +100,24 @@ bool TaskDlgMeshShapeNetgen::accept()
         if(param->touched)
         {
             Gui::WaitCursor wc;
-            FemMeshShapeNetgenObject->recompute();
+            App::DocumentObjectExecReturn* ret = FemMeshShapeNetgenObject->recompute();
+            if (ret) {
+                wc.restoreCursor();
+                QMessageBox::critical(Gui::getMainWindow(), tr("Meshing failure"), QString::fromStdString(ret->Why));
+                delete ret;
+                return true;
+            }
         }
+
+        // hide the input object
+        App::DocumentObject* obj = FemMeshShapeNetgenObject->Shape.getValue();
+        if (obj) {
+            Gui::Application::Instance->hideViewProvider(obj);
+        }
+
         //FemSetNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::Command::commitCommand();
 
         return true;
     }

@@ -86,7 +86,7 @@
     <message>
       <location filename="StartPage.py" line="69"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation type="unfinished">Робочий простір &lt;b&gt;Розробка деталі&lt;/b&gt; призначений для створення комплексної деталі, що базується на простих 2D-ескізах. Використовуйте його для малювання 2D-форм, обмежуючи деякі їхні елементи та "видавлюйте" їх у тривимірні деталі.</translation>
+      <translation type="unfinished">Робочий простір &lt;b&gt;Розробка деталі&lt;/b&gt; призначений для створення комплексної деталі, що базується на простих 2D-ескізах. Використовуйте його для малювання 2D-форм, обмежуючи деякі їхні елементи та видавлюйте їх у тривимірні деталі.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="70"/>
@@ -109,11 +109,6 @@
       <translation type="unfinished">Робочий простір &lt;b&gt;Архітектурний дизайн&lt;/b&gt; спеціально призначений для роботи з архітектурними елементами, такими як стіни та вікна. Починайте з малювання 2D-форм і використовуйте їх як направляючі для побудови архітектурних об'єктів.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Архітектурний дизайн</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">Робота із сітками</translation>
@@ -121,7 +116,7 @@
     <message>
       <location filename="StartPage.py" line="76"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation type="unfinished">Робочій простір &lt;b&gt;Сітка&lt;/b&gt; використовується для роботи з об'єктами Сітка. Сітки більш прості 3D-об'єкти ніж об'єкт Деталь, але вони часто виявляються легшими для імпортування та експортування у/з інші програми.</translation>
+      <translation type="unfinished">Робочій простір &lt;b&gt;Сітка&lt;/b&gt; використовується для роботи з об'єктами Сітка. Сітки більш прості 3D-об'єкти ніж об'єкт Деталь, але вони часто виявляються легшими для імпортування та експортування до або з інші програми.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="77"/>
@@ -229,11 +224,6 @@
       <translation type="unfinished">Розділ посібників на сайті FreeCAD</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">Цей розділ веб-сайту FreeCAD призначений для сценаріїв python з прикладами, поясненнями та командами API.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">Блог, присвячений навчанню FreeCAD, підтримується членами спільноти FreeCAD</translation>
@@ -246,7 +236,7 @@
     <message>
       <location filename="StartPage.py" line="99"/>
       <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation type="unfinished">FreeCAD інтерфейс, поділений на робочі столи, які становлять набір інструментів, що підходить для конкретного завдання. Ви можете почати з одним робочим столом в цьому списку, або з повним робочим столом, який представляє вам деякі з найбільш часто використовуваних інструментів, зібрані від інших робочих столів. Натисніть, щоб прочитати більше про робочі столи на веб-сайті FreeCAD.</translation>
+      <translation type="unfinished">Інтерфейс FreeCAD  поділений на робочі столи, які складаються з набору інструментів для конкретного завдань. Ви можете почати з одним робочим столом в цьому списку, або з повним робочим столом, який представляє вам деякі з найбільш часто використовуваних інструментів. Натисніть, щоб прочитати більше про робочі столи на веб-сайті FreeCAD.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="101"/>
@@ -274,11 +264,6 @@
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
@@ -287,6 +272,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Архітектурне проектування</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
     </message>
   </context>
 </TS>

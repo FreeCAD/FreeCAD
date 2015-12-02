@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,6 +52,8 @@ public:
 
 private Q_SLOTS:
     void on_labelConstrainStatus_linkActivated(const QString &);
+    void on_autoUpdate_stateChanged(int state);
+    void on_manualUpdate_clicked(bool checked);
     
 protected:
     ViewProviderSketch *sketchView;

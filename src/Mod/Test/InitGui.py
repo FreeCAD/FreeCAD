@@ -86,6 +86,10 @@ class TestWorkbench ( Workbench ):
 		list = ["Std_TestProgress1", "Std_TestProgress2", "Std_TestProgress3", "Std_TestProgress4", "Std_TestProgress5"]
 		self.appendMenu(menu,list)
 
+		menu = ["Test &Commands","Console"]
+		list = ["Std_TestConsoleOutput"]
+		self.appendMenu(menu,list)
+
 		menu = ["Test &Commands","MDI"]
 		list = ["Std_MDITest1", "Std_MDITest2", "Std_MDITest3"]
 		self.appendMenu(menu,list)

@@ -74,7 +74,7 @@ open(PyObject *self, PyObject *args)
             }
         }
         else
-            Py_Error(Base::BaseExceptionFreeCADError,"Could not load image");
+            Py_Error(PyExc_IOError, "Could not load image file");
 
         // Displaying the image in a view.
         // This ImageView object takes ownership of the pixel data (in 'pointImageTo') so we don't need to delete it here
@@ -87,7 +87,7 @@ open(PyObject *self, PyObject *args)
 
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 

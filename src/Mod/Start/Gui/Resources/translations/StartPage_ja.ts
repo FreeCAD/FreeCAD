@@ -110,11 +110,6 @@
       <translation type="unfinished">&lt;b&gt;建築設計&lt;/b&gt;ワークベンチは、特別に壁や窓などの建築要素を扱うために設計されています。 初めに2Dの図形を作図しておき、建築オブジェクトを構築するためのガイドに用いることもできます。</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">建築設計</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">メッシュの操作</translation>
@@ -230,11 +225,6 @@
       <translation type="unfinished">FreeCADホームページのチュートリアルセクション</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">Pythonスクリプトのためのセクションです。Pythonのサンプル，解説，APIコマンドについて書かれています。</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">FreeCADを学ぶためのブログです。FreeCADコミュニティのメンバーが維持管理しています。</translation>
@@ -272,12 +262,7 @@
     <message>
       <location filename="StartPage.py" line="87"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc/ja</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="105"/>
@@ -288,6 +273,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">建築デザイン</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">FreeCAD ウェブサイトのセクションには、python スクリプトの例および API コマンドに関する説明があります 。</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">FreeCAD のバージョンは最新です。</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">FreeCAD の新しいリリースが利用できます。</translation>
     </message>
   </context>
 </TS>

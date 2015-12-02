@@ -41,6 +41,7 @@ VERBOSE = True # set true to get output messages
 INCLUDECOMMANDS = True # if true, the command pages of each workbench are included after each WB page
 OVERWRITE = False # if true, pdf files are recreated even if already existing
 FIREFOXPDFFOLDER = os.path.expanduser("~")+os.sep+"PDF" # if firefox is used, set this to where it places its pdf files by default
+COVER = "http://www.freecadweb.org/wiki/images/7/79/Freecad-pdf-cover.svg"
 
 #    END CONFIGURATION      ##############################################
 
@@ -50,7 +51,7 @@ FOLDER = "./localwiki"
 fcount = dcount = 0
 
 def crawl():
-    "downloads an entire wiki site"
+    "creates a pdf file from the localwiki folder"
 
     # tests ###############################################
     
@@ -65,9 +66,9 @@ def crawl():
             print "Error: Htmldoc not found, exiting."
             return 1
     try:
-        from pyPdf import PdfFileReader,PdfFileWriter
+        from PyPDF2 import PdfFileReader,PdfFileWriter
     except:
-        print "Error: Python-pypdf not installed, exiting."
+        print "Error: Python-pypdf2 not installed, exiting."
 
     # run ########################################################
     
@@ -76,6 +77,7 @@ def crawl():
 
     if VERBOSE: print "All done!"
     return 0
+
 
 def buildpdffiles():
     "scans a folder for html files and converts them all to pdf"
@@ -101,6 +103,7 @@ def buildpdffiles():
             createpdf_htmldoc(f[:-5])
         i += 1
 
+
 def fetch_resources(uri, rel):
         """
         Callback to allow pisa/reportlab to retrieve Images,Stylesheets, etc.
@@ -116,14 +119,15 @@ def createpdf_pisa(pagename):
     "creates a pdf file from a saved page using pisa (python module)"
     import ho.pisa as pisa
     if (not exists(pagename+".pdf",image=True)) or OVERWRTIE:
-        infile = file(FOLDER + os.sep + pagename+'.html','ro')
-        outfile = file(FOLDER + os.sep + pagename+'.pdf','wb')
+        infile = open(FOLDER + os.sep + pagename+'.html','ro')
+        outfile = open(FOLDER + os.sep + pagename+'.pdf','wb')
         if VERBOSE: print "Converting " + pagename + " to pdf..."
         pdf = pisa.CreatePDF(infile,outfile,FOLDER,link_callback=fetch_resources)
         outfile.close()
         if pdf.err: 
             return pdf.err
         return 0
+
 
 def createpdf_firefox(pagename):
     "creates a pdf file from a saved page using firefox (needs command line printing extension)"
@@ -139,12 +143,14 @@ def createpdf_firefox(pagename):
         else:
             print "-----------------------------------------> Couldn't find print output!"
 
+
 def createpdf_htmldoc(pagename):
     "creates a pdf file from a saved page using htmldoc (external app, but supports images)"
     if (not exists(pagename+".pdf",image=True)) or OVERWRITE:
         infile = FOLDER + os.sep + pagename+'.html'
         outfile = FOLDER + os.sep + pagename+'.pdf'
         return os.system('htmldoc --webpage --textfont sans --browserwidth 840 -f '+outfile+' '+infile)
+
 
 def createpdf_wkhtmltopdf(pagename):
     "creates a pdf file from a saved page using htmldoc (external app, but supports images)"
@@ -155,54 +161,58 @@ def createpdf_wkhtmltopdf(pagename):
     else:
         print "skipping"
 
+
 def joinpdf():
-    "creates one pdf file from several others, following order from startpage"
-    from pyPdf import PdfFileReader,PdfFileWriter
+    "creates one pdf file from several others, following order from the cover"
+    from PyPDF2 import PdfFileReader,PdfFileWriter
     if VERBOSE: print "Building table of contents..."
-    f = open(FOLDER+os.sep+INDEX+'.html')
-    html = ''
-    for line in f: html += line
-    f.close()
-    html = html.replace("\n"," ")
-    html = html.replace("> <","><")
-    html = re.findall("<ul.*/ul>",html)[0]
-    pages = re.findall('href="(.*?)"',html)
-    pages.insert(1,INDEX+".html")
+    
     result = PdfFileWriter()
-    for p in pages:
-        if exists(p[:-5]):
-            if VERBOSE: print 'Appending',p[:-5]+'.pdf'
-            try: 
-                inputfile = PdfFileReader(file(FOLDER+os.sep+p[:-5]+'.pdf','rb'))
-            except: 
-                print 'Unable to append',p
-            else:
-                for i in range(inputfile.getNumPages()):
+    createCover()
+    inputfile = PdfFileReader(open(FOLDER+os.sep+'Cover.pdf','rb'))
+    result.addPage(inputfile.getPage(0))
+    count = 1
+
+    tocfile = open("toc.txt")
+    parent = False
+    for page in tocfile:
+        page = page.strip()
+        if page:
+            if page[0] == "#":
+                continue
+            if page == "begin":
+                parent = True
+                continue
+            if page == "end":
+                parent = False
+                continue
+            if VERBOSE: print 'Appending',page, "at position",count
+            title = page.replace("_"," ")
+            pdffile = page + ".pdf"
+            if exists(pdffile,True):
+                inputfile = PdfFileReader(open(FOLDER + os.sep + pdffile,'rb'))
+                numpages = inputfile.getNumPages()
+                for i in range(numpages):
                     result.addPage(inputfile.getPage(i))
-                if INCLUDECOMMANDS:
-                    if ("_Workbench.html" in p) or ("_Module.html" in p):
-                        mod = [p.split("_")[0]]
-                        if mod[0] == "PartDesign":
-                            mod.append("Constraint")
-                        for m in mod:
-                            for f in fileslist:
-                                if f[:len(m)+1] == m+"_":
-                                    if (not("Module" in f)) and (not("Workbench" in f)) and (not("Scripting" in f)) and (not("API" in f)):
-                                        if VERBOSE: print '    Appending',f[:-5]+'.pdf'
-                                        try:
-                                            inputfile = PdfFileReader(file(FOLDER+os.sep+f[:-5]+'.pdf','rb'))
-                                        except: 
-                                            print 'Unable to append',f
-                                        else:
-                                            for i in range(inputfile.getNumPages()):
-                                                result.addPage(inputfile.getPage(i))
+                if parent == True:
+                    parent = result.addBookmark(title,count)
+                elif parent == False:
+                    result.addBookmark(title,count)
+                else:
+                    result.addBookmark(title,count,parent)
+                count += numpages
+            else:
+                print "page",pdffile,"not found, aborting."
+                sys.exit()
+
     if VERBOSE: print "Writing..."
-    outputfile = file(FOLDER+os.sep+"freecad.pdf",'wb')
+    outputfile = open(FOLDER+os.sep+"freecad.pdf",'wb')
     result.write(outputfile)
     outputfile.close()
     if VERBOSE: 
         print ' '
         print 'Successfully created '+FOLDER+os.sep+'freecad.pdf'
+
 
 def local(page,image=False):
     "returns a local path for a given page/image"
@@ -211,22 +221,41 @@ def local(page,image=False):
     else:
         return FOLDER + os.sep + page + '.html'
 
+
 def exists(page,image=False):
     "checks if given page/image already exists"
     path = local(page,image)
     if os.path.exists(path): return True
     return False
 
+
 def makeStyleSheet():
     "Creates a stylesheet for wkhtmltopdf"
-    outputfile = file(FOLDER+os.sep+"wkhtmltopdf.css",'wb')
+    outputfile = open(FOLDER+os.sep+"wkhtmltopdf.css",'wb')
     outputfile.write("""
 html {
-    margin: 50px 0;
+    margin: 50px 0 0 50px !important;
+}
+a:link, a:visited {
+  color: #000 !important;
+}
+.printfooter {
+  display:none !important;
 }
 """)
     outputfile.close()
-    
+
+
+def createCover():
+    "downloads and creates a cover page"
+    if VERBOSE: print "fetching " + COVER
+    data = (urlopen(COVER).read())
+    path = FOLDER + os.sep + "Cover.svg"
+    fil = open(path,'wb')
+    fil.write(data)
+    fil.close()
+    os.system('inkscape --export-pdf='+FOLDER+os.sep+'Cover.pdf'+' '+FOLDER+os.sep+'Cover.svg')
+
+
 if __name__ == "__main__":
-	crawl()
-      
+    crawl()

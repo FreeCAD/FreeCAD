@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,10 +37,14 @@ PROPERTY_SOURCE(Fem::FemResultObject, App::DocumentObject)
 
 FemResultObject::FemResultObject()
 {
-    ADD_PROPERTY_TYPE(DataType,(""), "General",Prop_None,"Type identifier of the result data");
-    ADD_PROPERTY_TYPE(Unit,(0), "General",Prop_None,"Unit of the data");
-    ADD_PROPERTY_TYPE(ElementNumbers,(0), "Data",Prop_None,"Numbers of the result elements");
-    ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corosbonding mesh");
+    ADD_PROPERTY_TYPE(NodeNumbers,(0), "Data",Prop_None,"Numbers of the result nodes");
+    ADD_PROPERTY_TYPE(Stats,(0), "Fem",Prop_None,"Statistics of the results");
+    ADD_PROPERTY_TYPE(DisplacementVectors,(), "Fem",Prop_None,"List of displacement vectors");
+    ADD_PROPERTY_TYPE(DisplacementLengths,(0), "Fem",Prop_None,"List of displacement lengths");
+    ADD_PROPERTY_TYPE(StressValues,(0), "Fem",Prop_None,"List of Von Misses stress values");
+    ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corresponding mesh");
+    ADD_PROPERTY_TYPE(Eigenmode,(0), "Fem",Prop_None,"Number of the eigenmode");
+    ADD_PROPERTY_TYPE(EigenmodeFrequency,(0), "Fem",Prop_None,"Frequency of the eigenmode");
 }
 
 FemResultObject::~FemResultObject()
@@ -65,8 +69,8 @@ PyObject *FemResultObject::getPyObject()
 
 namespace App {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(Fem::FemResultPython, Fem::FemResultObject)
-template<> const char* Fem::FemResultPython::getViewProviderName(void) const {
+PROPERTY_SOURCE_TEMPLATE(Fem::FemResultObjectPython, Fem::FemResultObject)
+template<> const char* Fem::FemResultObjectPython::getViewProviderName(void) const {
     return "FemGui::ViewProviderFemResultPython";
 }
 /// @endcond

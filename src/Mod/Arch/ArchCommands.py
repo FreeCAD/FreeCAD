@@ -140,27 +140,10 @@ def removeComponents(objectsList,host=None):
             for o in objectsList:
                 if not o in s:
                     s.append(o)
-                    if Draft.getType(o) == "Window":
-                        # fix for sketch-based windows
-                        if o.Base:
-                            if o.Base.Support:
-                                if isinstance(o.Base.Support,tuple):
-                                   if o.Base.Support[0].Name == host.Name:
-                                       FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                                       o.Base.Support = None
-                                elif o.Base.Support.Name == host.Name:
-                                    FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                                    o.Base.Support = None
-                            elif o.Base.ExternalGeometry:
-                                for i in range(len(o.Base.ExternalGeometry)):
-                                    if o.Base.ExternalGeometry[i][0].Name == host.Name:
-                                        o.Base.delExternal(i)
-                                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                                        break
-                    else:
-                        if FreeCAD.GuiUp:
-                            if not Draft.getType(o) == "Roof":
-                                o.ViewObject.hide()
+                    fixDAG(o)
+                    if FreeCAD.GuiUp:
+                        if not Draft.getType(o) in ["Window","Roof"]:
+                            o.ViewObject.hide()
             host.Subtractions = s
     else:
         for o in objectsList:
@@ -192,26 +175,44 @@ def removeComponents(objectsList,host=None):
                    if o in a:
                        a.remove(o)
                        h.Objects = a
+                       
+def makeComponent(baseobj=None,name="Component",delete=False):
+    '''makeComponent([baseobj]): creates an undefined, non-parametric Arch
+    component from the given base object'''
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
+    ArchComponent.Component(obj)
+    if FreeCAD.GuiUp:
+        ArchComponent.ViewProviderComponent(obj.ViewObject)
+    if baseobj:
+        import Part
+        if baseobj.isDerivedFrom("Part::Feature"):
+            obj.Shape = baseobj.Shape
+            obj.Placement = baseobj.Placement
+            if delete:
+                FreeCAD.ActiveDocument.removeObject(baseobj.Name)
+            else:
+                obj.Base = baseobj
+                if FreeCAD.GuiUp:
+                    baseobj.ViewObject.hide()
+        elif isinstance(baseobj,Part.Shape):
+            obj.Shape = baseobj
+    return obj
 
-def fixWindow(obj):
-    '''fixWindow(object): Fixes non-DAG problems in windows
+def fixDAG(obj):
+    '''fixDAG(object): Fixes non-DAG problems in windows and rebars
     by removing supports and external geometry from underlying sketches'''
-    if Draft.getType(obj) == "Window":
+    if Draft.getType(obj) in ["Window","Rebar"]:
         if obj.Base:
             if hasattr(obj.Base,"Support"):
                 if obj.Base.Support:
-                    if isinstance(o.Base.Support,tuple):
-                       if obj.Base.Support[0]:
-                           FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                           obj.Base.Support = None
-                    elif obj.Base.Support:
-                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                        obj.Base.Support = None
+                    FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
+                    obj.Base.Support = None
             if hasattr(obj.Base,"ExternalGeometry"):
                 if obj.Base.ExternalGeometry:
-                    for i in range(len(obj.Base.ExternalGeometry)):
+                    for g in obj.Base.ExternalGeometry:
                         obj.Base.delExternal(0)
-                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch external references to avoid cross-referencing"))
+                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch external reference to avoid cross-referencing"))
 
 def copyProperties(obj1,obj2):
     '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
@@ -320,7 +321,7 @@ def closeHole(shape):
     for e in shape.Edges:
         if lut[e.hashCode()] == 1:
             bound.append(e)
-    bound = DraftGeomUtils.sortEdges(bound)
+    bound = Part.__sortEdges__(bound)
     try:
         nface = Part.Face(Part.Wire(bound))
         shell = Part.makeShell(shape.Faces+[nface])
@@ -334,6 +335,8 @@ def getCutVolume(cutplane,shapes):
     """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
     from the given shapes and the given cutting plane"""
     if not shapes:
+        return None,None,None
+    if not cutplane.Faces:
         return None,None,None
     import Part
     if not isinstance(shapes,list):
@@ -404,7 +407,12 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             pts = []
             for pp in p:
                 pts.append(FreeCAD.Vector(pp[0],pp[1],pp[2]))
-            faces.append(Part.Face(Part.makePolygon(pts)))
+            try:
+                f = Part.Face(Part.makePolygon(pts))
+            except:
+                pass
+            else:
+                faces.append(f)
         shell = Part.makeShell(faces)
         solid = Part.Solid(shell)
         solid = solid.removeSplitter()
@@ -483,12 +491,20 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
                 FreeCAD.ActiveDocument.removeObject(name)
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             newobj.Shape = solid
-            newobj.Placement = plac
+            #newobj.Placement = plac #the placement is already computed in the mesh
             if (not solid.isClosed()) or (not solid.isValid()):
                 if mark:
                     newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
             return newobj
     return None
+
+def removeCurves(shape,tolerance=5):
+    '''removeCurves(shape,tolerance=5): replaces curved faces in a shape
+    with faceted segments'''
+    import Mesh
+    t = shape.cleaned().tessellate(tolerance)
+    m = Mesh.Mesh(t)
+    return getShapeFromMesh(m)
 
 def removeShape(objs,mark=True):
     '''removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
@@ -633,7 +649,14 @@ def pruneIncluded(objectslist):
                     if parent.isDerivedFrom("Part::Feature"):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
-                            toplevel = False
+                            if hasattr(parent,"CloneOf"):
+                                if parent.CloneOf:
+                                    if parent.CloneOf.Name != obj.Name:
+                                        toplevel = False
+                                else:
+                                    toplevel = False
+                            else:
+                                toplevel = False
         if toplevel:
             newlist.append(obj)
     return newlist
@@ -727,7 +750,7 @@ def survey(callback=False):
                                     t = t.getUserPreferred()[0]
                                     t = t.encode("utf8")
                                     anno.LabelText = "l " + t
-                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t + "\n")
+                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t.decode("utf8") + "\n")
                                 if FreeCAD.GuiUp and t:
                                     QtGui.qApp.clipboard().setText(t)
                             else:
@@ -755,13 +778,13 @@ def survey(callback=False):
                                         t = t.getUserPreferred()[0]
                                         t = t.encode("utf8")
                                         anno.LabelText = "l " + t
-                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t + "\n")
+                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t.decode("utf8") + "\n")
                                     elif "Vertex" in el:
                                         t = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
                                         t = t.getUserPreferred()[0]
                                         t = t.encode("utf8")
                                         anno.LabelText = "z " + t
-                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t + "\n")
+                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t.decode("utf8") + "\n")
                                     if FreeCAD.GuiUp and t:
                                         QtGui.qApp.clipboard().setText(t)
 
@@ -865,7 +888,45 @@ def rebuildArchShape(objects=None):
             print "Failed"
     FreeCAD.ActiveDocument.recompute()
 
+
+def getExtrusionData(shape):
+    """getExtrusionData(shape): returns a base face and an extrusion vector
+    if this shape can be described as a perpendicular extrusion, or None if not."""
+    if shape.isNull():
+        return None
+    if not shape.Solids:
+        return None
+    if len(shape.Faces) < 5:
+        return None
+    # build faces list with normals
+    faces = []
+    for f in shape.Faces:
+        faces.append([f,f.normalAt(0,0)])
+    # find opposite normals pairs
+    pairs = []
+    for i1, f1 in enumerate(faces):
+        for i2, f2 in enumerate(faces):
+            if f1[0].hashCode() != f2[0].hashCode():
+                if round(f1[1].getAngle(f2[1]),8) == 3.14159265:
+                    pairs.append([i1,i2])
+    if not pairs:
+        return None
+    for p in pairs:
+        hc = [faces[p[0]][0].hashCode(),faces[p[1]][0].hashCode()]
+        ok = True
+        # check if other normals are all at 90 degrees
+        for f in faces:
+            if f[0].hashCode() not in hc:
+                if round(f[1].getAngle(faces[p[0]][1]),8) != 1.57079633:
+                    ok = False
+        if ok:
+            return [faces[p[0]][0],faces[p[1]][0].CenterOfMass.sub(faces[p[0]][0].CenterOfMass)]
+    return None
+
+
 # command definitions ###############################################
+
+
 class _CommandAdd:
     "the Arch Add command definition"
     def GetResources(self):
@@ -1021,6 +1082,7 @@ class _CommandSelectNonSolidMeshes:
             for o in sel:
                 FreeCADGui.Selection.addSelection(o)
 
+
 class _CommandRemoveShape:
     "the Arch RemoveShape command definition"
     def GetResources(self):
@@ -1034,6 +1096,7 @@ class _CommandRemoveShape:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         removeShape(sel)
+
 
 class _CommandCloseHoles:
     "the Arch CloseHoles command definition"
@@ -1050,6 +1113,7 @@ class _CommandCloseHoles:
             s = closeHole(o.Shape)
             if s:
                 o.Shape = s
+
 
 class _CommandCheck:
     "the Arch Check command definition"
@@ -1116,6 +1180,29 @@ class _ToggleIfcBrepFlag:
             toggleIfcBrepFlag(o)
 
 
+class _CommandComponent:
+    "the Arch Component command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Component',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Component","Component"),
+                'Accel': "C, M",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Component","Creates an undefined architectural component")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Component"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.Control.closeDialog()
+            for o in sel:
+                FreeCADGui.doCommand("Arch.makeComponent(FreeCAD.ActiveDocument."+o.Name+")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
     FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
@@ -1128,3 +1215,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
+    FreeCADGui.addCommand('Arch_Component',_CommandComponent())

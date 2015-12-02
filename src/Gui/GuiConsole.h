@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,7 +38,7 @@ namespace Gui {
  *  massages. The class must not used directly! Only the 
  *  over the FCConsole class is allowed!
  *  @see FCConsole
- *  \author Jürgen Riegel
+ *  \author JÃ¼rgen Riegel
  */
 class GuiExport GUIConsole :public Base::ConsoleObserver
 {

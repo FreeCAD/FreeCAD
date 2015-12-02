@@ -47,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -58,9 +59,11 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
+#include <Gui/MouseSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/NavigationStyle.h>
 #include <Gui/WaitCursor.h>
 #include <CXX/Objects.hxx>
 
@@ -382,16 +385,16 @@ void CmdMeshImport::activated(int iMsg)
 {
     // use current path as default
     QStringList filter;
-    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)");
-    filter << QObject::tr("Binary STL (*.stl)");
-    filter << QObject::tr("ASCII STL (*.ast)");
-    filter << QObject::tr("Binary Mesh (*.bms)");
-    filter << QObject::tr("Alias Mesh (*.obj)");
-    filter << QObject::tr("Object File Format (*.off)");
-    filter << QObject::tr("Inventor V2.1 ascii (*.iv)");
-    filter << QObject::tr("Stanford Polygon (*.ply)");
+    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.ply)").arg(QObject::tr("All Mesh Files"));
+    filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
+    filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
+    filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
+    filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
+    filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
+    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii"));
+    filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
     //filter << "Nastran (*.nas *.bdf)";
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
@@ -400,10 +403,11 @@ void CmdMeshImport::activated(int iMsg)
         QFileInfo fi;
         fi.setFile(*it);
 
+        std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8((*it).toUtf8().data());
         openCommand("Import Mesh");
         doCommand(Doc,"import Mesh");
-        doCommand(Doc,"Mesh.insert(\"%s\")",
-                 (const char*)(*it).toUtf8());
+        doCommand(Doc,"Mesh.insert(u\"%s\")",
+                  unicodepath.c_str());
         commitCommand();
         updateActive();
     }
@@ -441,20 +445,20 @@ void CmdMeshExport::activated(int iMsg)
 
     QString dir = QString::fromUtf8(docObj->Label.getValue());
     QList<QPair<QString, QByteArray> > ext;
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Binary STL (*.stl)"), "STL");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("ASCII STL (*.stl)"), "AST");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("ASCII STL (*.ast)"), "AST");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Binary Mesh (*.bms)"), "BMS");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Alias Mesh (*.obj)"), "OBJ");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Object File Format (*.off)"), "OFF");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Inventor V2.1 ascii (*.iv)"), "IV");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("X3D Extensible 3D (*.x3d)"), "X3D");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Stanford Polygon (*.ply)"), "PLY");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("VRML V2.0 (*.wrl *.vrml)"), "VRML");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Compressed VRML 2.0 (*.wrz)"), "WRZ");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Nastran (*.nas *.bdf)"), "NAS");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Python module def (*.py)"), "PY");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("All Files (*.*)"), ""); // Undefined
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     QStringList filter;
     for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it)
         filter << it->first;
@@ -835,7 +839,11 @@ void CmdMeshPolyCut::activated(int iMsg)
             if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
-                viewer->startSelection(Gui::View3DInventorViewer::Clip);
+
+                Gui::PolyClipSelection* clip = new Gui::PolyClipSelection();
+                clip->setColor(0.0f,0.0f,1.0f);
+                clip->setLineWidth(1.0f);
+                viewer->navigationStyle()->startSelection(clip);
                 viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::clipMeshCallback);
             }
             else {
@@ -965,7 +973,7 @@ void CmdMeshTrimByPlane::activated(int iMsg)
         Base::BoundBox3d bbox = mesh->getBoundBox();
         double len = bbox.CalcDiagonalLength();
         // project center of bbox onto plane and use this as base point
-        Base::Vector3d cnt = bbox.CalcCenter();
+        Base::Vector3d cnt = bbox.GetCenter();
         double dist = (cnt-base)*normal;
         base = cnt - normal * dist;
 
@@ -1626,6 +1634,48 @@ bool CmdMeshSegmentation::isActive(void)
         (Mesh::Feature::getClassTypeId()) == 1;
 }
 
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdMeshMerge);
+
+CmdMeshMerge::CmdMeshMerge()
+  :Command("Mesh_Merge")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Merge");
+    sToolTipText  = QT_TR_NOOP("Merges selected meshes into one");
+    sWhatsThis    = "Mesh_Merge";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdMeshMerge::activated(int iMsg)
+{
+    App::Document *pcDoc = App::GetApplication().getActiveDocument();
+    if (!pcDoc)
+        return;
+
+    openCommand("Mesh merge");
+    Mesh::Feature *pcFeature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
+    Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
+        const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
+        newMesh->addMesh(mesh);
+    }
+
+    pcFeature->Mesh.finishEditing();
+    updateActive();
+    commitCommand();
+}
+
+bool CmdMeshMerge::isActive(void)
+{
+    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) >= 2;
+}
+
+
 void CreateMeshCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1661,4 +1711,5 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
     rcCmdMgr.addCommand(new CmdMeshFromPartShape());
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
+    rcCmdMgr.addCommand(new CmdMeshMerge());
 }

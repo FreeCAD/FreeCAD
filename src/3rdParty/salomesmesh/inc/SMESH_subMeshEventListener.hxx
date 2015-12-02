@@ -45,6 +45,7 @@ class SMESH_EXPORT SMESH_subMeshEventListener {
   bool myIsDeletable; //!< if true, it will be deleted by SMESH_subMesh
 public:
   SMESH_subMeshEventListener(bool isDeletable):myIsDeletable(isDeletable) {}
+  virtual ~SMESH_subMeshEventListener() {};
   bool IsDeletable() const { return myIsDeletable; }
   /*!
    * \brief Do something on a certain event

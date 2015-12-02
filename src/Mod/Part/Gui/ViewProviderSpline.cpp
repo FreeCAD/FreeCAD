@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
- 
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
@@ -42,11 +42,16 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
+# include <QAction>
+# include <QMenu>
 #endif
+
+#include <boost/bind.hpp>
 
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Gui/ActionFunction.h>
 #include "SoFCShapeObject.h"
 #include "ViewProviderSpline.h"
 
@@ -64,6 +69,23 @@ ViewProviderSpline::ViewProviderSpline()
 
 ViewProviderSpline::~ViewProviderSpline()
 {
+}
+
+void ViewProviderSpline::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderPartExt::setupContextMenu(menu, receiver, member);
+
+    // toggle command to display components
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Show control points"));
+    act->setCheckable(true);
+    act->setChecked(ControlPoints.getValue());
+    func->toggle(act, boost::bind(&ViewProviderSpline::toggleControlPoints, this, _1));
+}
+
+void ViewProviderSpline::toggleControlPoints(bool on)
+{
+    ControlPoints.setValue(on);
 }
 
 void ViewProviderSpline::updateData(const App::Property* prop)

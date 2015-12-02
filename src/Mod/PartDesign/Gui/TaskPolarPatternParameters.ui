@@ -70,17 +70,17 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="polarAngle">
+      <widget class="Gui::QuantitySpinBox" name="polarAngle" native="true">
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>360.000000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>360.000000000000000</double>
        </property>
       </widget>
@@ -97,14 +97,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinOccurrences">
-       <property name="minimum">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <number>99999</number>
-       </property>
-      </widget>
+      <widget class="Gui::UIntSpinBox" name="spinOccurrences" native="true"/>
      </item>
     </layout>
    </item>
@@ -149,6 +142,12 @@
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::UIntSpinBox</class>
+   <extends>QWidget</extends>
+   <header location="global">Gui/SpinBox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -80,7 +80,7 @@ public:
     virtual void Save(Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
 
-    virtual Property *Copy(void) const;
+    virtual App::Property *Copy(void) const;
     virtual void Paste(const App::Property &from);
 
     virtual unsigned int getMemSize(void) const;

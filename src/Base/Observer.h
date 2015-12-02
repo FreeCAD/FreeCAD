@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -169,7 +169,7 @@ public:
    */
   void Notify(_MessageType rcReason)
   {
-    for(typename std::set<Observer<_MessageType> * >::iterator Iter=_ObserverSet.begin();Iter!=_ObserverSet.end();Iter++)
+    for(typename std::set<Observer<_MessageType> * >::iterator Iter=_ObserverSet.begin();Iter!=_ObserverSet.end();++Iter)
       (*Iter)->OnChange(*this,rcReason);   // send OnChange-signal
   }
 
@@ -180,7 +180,7 @@ public:
   Observer<_MessageType> * Get(const char *Name)
   {
     const char* OName;
-    for(typename std::set<Observer<_MessageType> * >::iterator Iter=_ObserverSet.begin();Iter!=_ObserverSet.end();Iter++)
+    for(typename std::set<Observer<_MessageType> * >::iterator Iter=_ObserverSet.begin();Iter!=_ObserverSet.end();++Iter)
     {
       OName = (*Iter)->Name();   // get the name
       if(OName && strcmp(OName,Name) == 0)

@@ -47,7 +47,7 @@ class SMESH_Hypothesis;
 class SMESH_Algo;
 class SMESH_Gen;
 class SMESH_subMeshEventListener;
-class SMESH_subMeshEventListenerData;
+struct SMESH_subMeshEventListenerData;
 class SMESH_subMesh;
 
 typedef SMESH_subMeshEventListener     EventListener;

@@ -60,7 +60,10 @@ public:
 
     /** Sets the current property objects. */
     void setPropertyData( const std::vector<App::Property*>& );
+    void updateData();
     const std::vector<App::Property*>& getPropertyData() const;
+    bool hasProperty(const App::Property*) const;
+    bool removeProperty(const App::Property*);
     App::Property* getFirstProperty();
     const App::Property* getFirstProperty() const;
 
@@ -73,6 +76,7 @@ public:
     void setParent(PropertyItem* parent);
     PropertyItem *parent() const;
     void appendChild(PropertyItem *child);
+    void removeChildren(int from, int to);
 
     void setReadOnly(bool);
     bool isReadOnly() const;
@@ -559,7 +563,7 @@ protected:
 };
 
 /**
- * Edit properties of enum type. 
+ * Edit properties of string list type.
  * \author Werner Mayer
  */
 class GuiExport PropertyStringListItem: public PropertyItem
@@ -577,6 +581,48 @@ protected:
 
 protected:
     PropertyStringListItem();
+};
+
+/**
+ * Edit properties of float list type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyFloatListItem: public PropertyItem
+{
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyFloatListItem();
+};
+
+/**
+ * Edit properties of float list type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyIntegerListItem: public PropertyItem
+{
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyIntegerListItem();
 };
 
 /**

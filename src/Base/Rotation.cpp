@@ -257,7 +257,6 @@ Rotation & Rotation::invert(void)
     this->quat[0] = -this->quat[0];
     this->quat[1] = -this->quat[1];
     this->quat[2] = -this->quat[2];
-    this->quat[3] =  this->quat[3];
     return *this;
 }
 
@@ -377,14 +376,18 @@ Rotation Rotation::identity(void)
 
 void Rotation::setYawPitchRoll(double y, double p, double r)
 {
-    // taken from http://www.resonancepub.com/quaterni.htm
-    // The Euler angles (yaw,pitch,roll) are in ZY'X''-notation
-    double c1 = cos(((y/180.0)*D_PI)/2.0);
-    double s1 = sin(((y/180.0)*D_PI)/2.0);
-    double c2 = cos(((p/180.0)*D_PI)/2.0);
-    double s2 = sin(((p/180.0)*D_PI)/2.0);
-    double c3 = cos(((r/180.0)*D_PI)/2.0);
-    double s3 = sin(((r/180.0)*D_PI)/2.0);
+    // The Euler angles (yaw,pitch,roll) are in XY'Z''-notation
+    // convert to radians
+    y = (y/180.0)*D_PI;
+    p = (p/180.0)*D_PI;
+    r = (r/180.0)*D_PI;
+
+    double c1 = cos(y/2.0);
+    double s1 = sin(y/2.0);
+    double c2 = cos(p/2.0);
+    double s2 = sin(p/2.0);
+    double c3 = cos(r/2.0);
+    double s3 = sin(r/2.0);
 
     quat[0] = c1*c2*s3 - s1*s2*c3;
     quat[1] = c1*s2*c3 + s1*c2*s3;
@@ -394,8 +397,6 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
 
 void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
 {
-    // taken from http://www.resonancepub.com/quaterni.htm
-    // see also http://willperone.net/Code/quaternion.php
     double q00 = quat[0]*quat[0];
     double q11 = quat[1]*quat[1];
     double q22 = quat[2]*quat[2];

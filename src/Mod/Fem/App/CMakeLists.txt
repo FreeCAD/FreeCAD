@@ -18,10 +18,10 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc 
+    ${XercesC_INCLUDE_DIRS}
+    ${SMESH_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -34,6 +34,8 @@ if(BUILD_FEM_NETGEN)
         StdMeshers
         NETGENPlugin
         SMESH
+        SMDS
+        SMESHDS
     )
 else(BUILD_FEM_NETGEN)
     set(Fem_LIBS
@@ -41,6 +43,8 @@ else(BUILD_FEM_NETGEN)
         FreeCADApp
         StdMeshers
         SMESH
+        SMDS
+        SMESHDS
     )
 endif(BUILD_FEM_NETGEN)
 
@@ -58,22 +62,77 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SET(Mod_SRCS
     AppFem.cpp
     AppFemPy.cpp
+    FemTools.cpp
+    FemTools.h
     PreCompiled.cpp
     PreCompiled.h
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 SET(FemScripts_SRCS
+    _CommandFemBeamSection.py
+    _CommandFemFromShape.py
+    _CommandFemShellThickness.py
+    _CommandFemSolverCalculix.py
+    _CommandMechanicalMaterial.py
+    _CommandMechanicalShowResult.py
+    _CommandNewMechanicalAnalysis.py
+    _CommandPurgeFemResults.py
+    _CommandQuickAnalysis.py
+    _CommandSolverJobControl.py
+    _FemAnalysis.py
+    _FemBeamSection.py
+    _FemShellThickness.py
+    _FemSolverCalculix.py
+    _MechanicalMaterial.py
+    _TaskPanelFemBeamSection.py
+    _TaskPanelFemShellThickness.py
+    _TaskPanelFemSolverCalculix.py
+    _TaskPanelMechanicalMaterial.py
+    _TaskPanelResultControl.py
+    _ViewProviderFemAnalysis.py
+    _ViewProviderFemBeamSection.py
+    _ViewProviderFemShellThickness.py
+    _ViewProviderFemSolverCalculix.py
+    _ViewProviderMechanicalMaterial.py
+    ccxDatReader.py
+    ccxFrdReader.py
+    ccxInpWriter.py
     convert2TetGen.py
-    FemLib.py
-    CalculixLib.py
-    MechanicalAnalysis.ui
-    MechanicalAnalysis.py
-    MechanicalMaterial.ui
+    Init.py
+    InitGui.py
+    FemAnalysis.py
+    FemCommands.py
+    FemBeamSection.py
+    FemShellThickness.py
+    FemSolverCalculix.py
+    FemTools.py
     MechanicalMaterial.py
-    ShowDisplacement.ui
+    SelectionObserverFem.py
+    TestFem.py
+
+    TaskPanelFemBeamSection.ui
+    TaskPanelFemShellThickness.ui
+    TaskPanelFemSolverCalculix.ui
+    TaskPanelMechanicalMaterial.ui
+    TaskPanelShowDisplacement.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
+
+SET(FemTests_SRCS
+    test_files/ccx/mesh_points.csv
+    test_files/ccx/mesh_volumes.csv
+    test_files/ccx/static_analysis.inp
+    test_files/ccx/frequency_analysis.inp
+    test_files/ccx/cube_frequency.inp
+    test_files/ccx/cube_frequency.dat
+    test_files/ccx/cube_frequency.frd
+    test_files/ccx/cube_frequency_expected_values
+    test_files/ccx/cube_static.inp
+    test_files/ccx/cube_static.dat
+    test_files/ccx/cube_static.frd
+    test_files/ccx/cube_static_expected_values
+)
 
 SET(FemBase_SRCS
     FemMeshObject.cpp
@@ -88,6 +147,8 @@ SET(FemBase_SRCS
     FemMesh.h
     FemResultObject.cpp
     FemResultObject.h
+    FemSolverObject.cpp
+    FemSolverObject.h
     FemConstraint.cpp
     FemConstraint.h
     FemMeshProperty.cpp
@@ -117,6 +178,8 @@ SET(FemConstraints_SRCS
     FemConstraintFixed.h
     FemConstraintForce.cpp
     FemConstraintForce.h
+    FemConstraintPressure.cpp
+    FemConstraintPressure.h
     FemConstraintGear.cpp
     FemConstraintGear.h
     FemConstraintPulley.cpp
@@ -125,10 +188,6 @@ SET(FemConstraints_SRCS
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
 SET(FemResult_SRCS
-    FemResultValue.cpp
-    FemResultValue.h
-    FemResultVector.cpp
-    FemResultVector.h
 	)
 SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
 
@@ -141,9 +200,6 @@ SET(Fem_SRCS
     ${Python_SRCS}
 )
 
-FILE( GLOB Driver_Resources Driver/*.py )
-
-
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS})
 
@@ -151,9 +207,9 @@ target_link_libraries(Fem ${Fem_LIBS})
 fc_target_copy_resource(Fem 
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
-	${Driver_Resources} 
 	Init.py 
     ${FemScripts_SRCS}
+    ${FemTests_SRCS}
     )
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)

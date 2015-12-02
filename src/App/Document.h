@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -106,8 +106,8 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalDeletedObject;
     /// signal on changed Object
     boost::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
-    /// signal on renamed Object
-    boost::signal<void (const App::DocumentObject&)> signalRenamedObject;
+    /// signal on relabeled Object
+    boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
     /// signal on undo
@@ -129,6 +129,7 @@ public:
                         Base::XMLReader&)> signalImportObjects;
     boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
+    boost::signal<void (const App::Document&)> signalRecomputed;
     //@}
 
     /** @name File handling of the document */
@@ -138,10 +139,11 @@ public:
     /// Save the document to the file in Property Path
     bool save (void);
     bool saveAs(const char* file);
+    bool saveCopy(const char* file);
     /// Restore the document from the file in Property Path
     void restore (void);
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
-    void exportGraphviz(std::ostream&);
+    void exportGraphviz(std::ostream&) const;
     std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);
     /// Opens the document from its file name
     //void open (void);
@@ -168,7 +170,7 @@ public:
      * are copied as well. By default \a recursive is false.
      * Returns the copy of the object or 0 if the creation failed.
      */
-    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false, bool keepdigitsatend=false);
+    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false);
     /** Move an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are moved as well. By default \a recursive is false.
@@ -276,6 +278,9 @@ public:
     // set Changed
     //void setChanged(DocumentObject* change);
     //@}
+
+    /// Function called to signal that an object identifier has been renamed
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
     virtual PyObject *getPyObject(void);
 

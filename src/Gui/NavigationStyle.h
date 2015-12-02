@@ -32,6 +32,7 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/events/SoEvents.h>
 #include <QCursor>
 #include <QEvent>
 #include <Base/BaseClass.h>
@@ -177,10 +178,16 @@ protected:
     void zoom(SoCamera * camera, float diffvalue);
     void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
     void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
+    void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
+    void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
     SbBool doSpin();
+    void spin_simplified(SoCamera *cam, SbVec2f curpos, SbVec2f prevpos);
     void moveCursorPosition();
     void saveCursorPosition(const SoEvent * const ev);
+
+    SbVec2f normalizePixelPos(SbVec2s pixpos);
+    SbVec2f normalizePixelPos(SbVec2f pixpos);
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent * const ev);
@@ -189,6 +196,7 @@ protected:
 
     void clearLog(void);
     void addToLog(const SbVec2s pos, const SbTime time);
+
 
 protected:
     struct { // tracking mouse movement in a log
@@ -301,6 +309,30 @@ private:
     SbBool lockButton1;
 };
 
+class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    MayaGestureNavigationStyle();
+    ~MayaGestureNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+    SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
+    short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
+    bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
+    int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
+    SoMouseButtonEvent mousedownConsumedEvent[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
+    bool testMoveThreshold(const SbVec2s currentPos) const;
+
+    bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
+    bool inGesture; //a flag that is used to filter out mouse events during gestures.
+};
+
 class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
@@ -313,6 +345,45 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
+};
+
+class GuiExport GestureNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    GestureNavigationStyle();
+    ~GestureNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+    SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
+    short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
+    bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
+    int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
+    SoMouseButtonEvent mousedownConsumedEvent[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
+    bool testMoveThreshold(const SbVec2s currentPos) const;
+
+    bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
+    bool inGesture; //a flag that is used to filter out mouse events during gestures.
+};
+
+class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    OpenCascadeNavigationStyle();
+    ~OpenCascadeNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
 };
 
 } // namespace Gui

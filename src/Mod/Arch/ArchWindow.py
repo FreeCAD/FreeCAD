@@ -43,7 +43,7 @@ WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
 Roles =           ["Window","Door"]
 
 
-def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Arch","Window")):
+def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
 
@@ -53,6 +53,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Ar
             return obj
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Window(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
@@ -175,7 +176,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 
         if windowtype == "Fixed":
             wp = outerFrame(s,width,height,h1,w1,o1)
-            wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1/2)])
+            wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1+w1/2)])
 
         elif windowtype == "Open 1-pane":
             wp = outerFrame(s,width,height,h1,w1,o1)
@@ -446,50 +447,39 @@ class _CommandWindow:
         self.tracker.length(self.Width)
         self.tracker.width(self.Thickness)
         self.tracker.height(self.Height)
+        self.tracker.on()
         FreeCAD.Console.PrintMessage(translate("Arch","Pick a face on an existing object or select a preset\n"))
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
-        FreeCADGui.Snapper.setSelectMode(True)
+        #FreeCADGui.Snapper.setSelectMode(True)
 
     def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
         self.tracker.finalize()
-        FreeCADGui.Control.closeDialog()
         if point == None:
             return
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
-        if not self.Preset:
-            if obj and (self.baseFace != None):
-                if Draft.getType(obj) in AllowedHosts:
-                    # make sure only one face is selected
-                    FreeCADGui.Selection.clearSelection()
-                    FreeCADGui.Selection.addSelection(obj,"Face"+str(self.baseFace+1))
-                    FreeCADGui.activateWorkbench("SketcherWorkbench")
-                    FreeCADGui.runCommand("Sketcher_NewSketch")
-                    FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
-                    FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+        # preset
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+        FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
+        if obj and (self.baseFace != None):
+            FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
         else:
-            # preset
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-            FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
-            if obj and (self.baseFace != None):
-                FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
-            else:
-                FreeCADGui.doCommand("m = FreeCAD.Matrix()")
-                FreeCADGui.doCommand("m.rotateX(math.pi/2)")
-                FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
-            FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
-            wp = ""
-            for p in self.wparams:
-                wp += p.lower() + "=" + str(getattr(self,p)) + ","
-            FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset-1] + "\"," + wp + "placement=pl)")
-            if obj:
-                if Draft.getType(obj) in AllowedHosts:
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
-                    siblings = obj.Proxy.getSiblings(obj)
-                    for sibling in siblings:
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            FreeCADGui.doCommand("m = FreeCAD.Matrix()")
+            FreeCADGui.doCommand("m.rotateX(math.pi/2)")
+            FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
+        FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
+        wp = ""
+        for p in self.wparams:
+            wp += p.lower() + "=" + str(getattr(self,p)) + ","
+        FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
+        if obj:
+            if Draft.getType(obj) in AllowedHosts:
+                FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
+                siblings = obj.Proxy.getSiblings(obj)
+                for sibling in siblings:
+                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
         return
 
     def update(self,point,info):
@@ -515,20 +505,20 @@ class _CommandWindow:
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Window options"))
+        w.setWindowTitle(translate("Arch","Window options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
 
         # sill height
-        labels = QtGui.QLabel(translate("Arch","Sill height"))
+        labels = QtGui.QLabel(translate("Arch","Sill height").decode("utf8"))
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels,0,0,1,1)
         grid.addWidget(values,0,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset"))
+        labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
         valuep = QtGui.QComboBox()
-        valuep.addItems(["Create from scratch"]+WindowPresets)
+        valuep.addItems(WindowPresets)
         valuep.setCurrentIndex(self.Preset)
         grid.addWidget(labelp,1,0,1,1)
         grid.addWidget(valuep,1,1,1,1)
@@ -539,7 +529,7 @@ class _CommandWindow:
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
         grid.addWidget(self.im,2,0,1,2)
-        self.im.hide()
+        #self.im.hide()
 
         # parameters
         i = 3
@@ -574,21 +564,21 @@ class _CommandWindow:
 
     def setPreset(self,i):
         self.Preset = i
-        if i > 0:
+        if i >= 0:
             FreeCADGui.Snapper.setSelectMode(False)
             self.tracker.length(self.Width)
             self.tracker.width(self.Thickness)
             self.tracker.height(self.Height)
             self.tracker.on()
-            if i == 1:
+            if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i == 2:
+            elif i == 1:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i == 7:
-                self.im.load(":/ui/ParametersDoorGlass.svg")
-            elif i == 4:
-                self.im.load(":/ui/ParametersWindowStash.svg")
             elif i == 6:
+                self.im.load(":/ui/ParametersDoorGlass.svg")
+            elif i == 3:
+                self.im.load(":/ui/ParametersWindowStash.svg")
+            elif i == 5:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
             else:
                 self.im.load(":/ui/ParametersWindowDouble.svg")
@@ -609,16 +599,19 @@ class _Window(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",translate("Arch","the components of this window"))
         obj.addProperty("App::PropertyLength","HoleDepth","Arch",translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
-        obj.addProperty("Part::PropertyPartShape","Subvolume","Arch",translate("Arch","an optional volume to be subtracted from hosts of this window"))
+        obj.addProperty("App::PropertyLink","Subvolume","Arch",translate("Arch","an optional object that defines a volume to be subtracted from hosts of this window"))
         obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this window (for preset windows only)"))
         obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this window (for preset windows only)"))
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
+        obj.addProperty("App::PropertyLink","PanelMaterial","Material",translate("Arch","A material for this object"))
+        obj.addProperty("App::PropertyLink","GlassMaterial","Material",translate("Arch","A material for this object"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
         obj.Role = Roles
         obj.Proxy = self
+        obj.MoveWithHost = True
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
@@ -644,6 +637,10 @@ class _Window(ArchComponent.Component):
 
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         import Part, DraftGeomUtils
         pl = obj.Placement
         base = None
@@ -698,7 +695,10 @@ class _Window(ArchComponent.Component):
                         print "Arch: Bad formatting of window parts definitions"
 
         base = self.processSubShapes(obj,base)
-        self.applyShape(obj,base,pl)
+        if base:
+            if not base.isNull():
+                if base.Solids:
+                    self.applyShape(obj,base,pl)
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
@@ -706,8 +706,12 @@ class _Window(ArchComponent.Component):
         # check if we have a custom subvolume
         if hasattr(obj,"Subvolume"):
             if obj.Subvolume:
-                if not obj.Subvolume.isNull():
-                    return obj.Subvolume
+                if obj.Subvolume.isDerivedFrom("Part::Feature"):
+                    if not obj.Subvolume.Shape.isNull():
+                        sh = obj.Subvolume.Shape.copy()   
+                        if plac:
+                            sh.Placement = plac
+                        return sh
 
         # getting extrusion depth
         base = None
@@ -780,6 +784,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             if obj.Shape:
                 if not obj.Shape.isNull():
                     self.colorize(obj)
+        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def onChanged(self,vobj,prop):
         if (prop == "DiffuseColor") and vobj.Object:
@@ -787,6 +792,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 if vobj.Object.Shape:
                     if not vobj.Object.Shape.isNull():
                         self.colorize(vobj.Object)
+        ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
         taskd = _ArchWindowTaskPanel()
@@ -810,6 +816,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def colorize(self,obj):
         "setting different part colors"
+        if not obj.WindowParts:
+            return
         solids = obj.Shape.copy().Solids
         #print "Colorizing ", solids
         colors = []

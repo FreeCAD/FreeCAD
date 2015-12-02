@@ -29,7 +29,7 @@
 #endif
 
 # include <QTime>
-#include <Python.h>
+#include "PyExport.h"
 #include "Tools.h"
 
 namespace Base {

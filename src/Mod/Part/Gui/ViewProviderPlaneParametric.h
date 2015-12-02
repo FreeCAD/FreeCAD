@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,15 +33,10 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace Gui {
-  class View3DInventorViewer;
-  class SoFCSelection;
-}
-
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderPlaneParametric:public ViewProviderPart
+class PartGuiExport ViewProviderPlaneParametric : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderPlaneParametric);
 
@@ -55,6 +50,23 @@ public:
 
 protected:
 
+};
+
+class PartGuiExport ViewProviderFace : public ViewProviderPlaneParametric
+{
+    PROPERTY_HEADER(PartGui::ViewProviderFace);
+
+public:
+    ViewProviderFace();
+    virtual ~ViewProviderFace();
+
+    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+    virtual bool canDragObjects() const;
+    virtual bool canDragObject(App::DocumentObject*) const;
+    virtual void dragObject(App::DocumentObject*);
+    virtual bool canDropObjects() const;
+    virtual bool canDropObject(App::DocumentObject*) const;
+    virtual void dropObject(App::DocumentObject*);
 };
 
 } // namespace PartGui

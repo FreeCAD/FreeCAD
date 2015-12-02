@@ -85,12 +85,12 @@ PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
     {"addProperty",
         (PyCFunction) staticCallback_addProperty,
         METH_VARARGS,
-        "addProperty(string, string) -- Add a generic property.\nThe first argument specifies the type, the second the\nname of the property.\n		"
+        "addProperty(string, string) -- Add a generic property.\nThe first argument specifies the type, the second the\nname of the property.\n"
     },
     {"removeProperty",
         (PyCFunction) staticCallback_removeProperty,
         METH_VARARGS,
-        "removeProperty(string) -- Remove a generic property.\nNote, you can only remove user-defined properties but not built-in ones.\n		"
+        "removeProperty(string) -- Remove a generic property.\nNote, you can only remove user-defined properties but not built-in ones.\n"
     },
     {"supportedProperties",
         (PyCFunction) staticCallback_supportedProperties,
@@ -385,6 +385,12 @@ PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) co
         if (Base::streq(attr, "__dict__")){
             // Return the default dict
             PyTypeObject *tp = this->ob_type;
+            // register type if needed
+            if (tp->tp_dict == NULL) {
+                if (PyType_Ready(tp) < 0)
+                    return 0;
+            }
+
             PyObject* dict = PyDict_Copy(tp->tp_dict);
             std::map<std::string,App::Property*> Map;
             FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsArch</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsArch">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>456</width>
+    <height>478</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>IFC</string>
+  </property>
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="margin">
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>General options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+          <property name="toolTip">
+           <string>Show verbose information during import and export of IFC files</string>
+          </property>
+          <property name="text">
+           <string>Show debug messages</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcDebug</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Import options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Import arch IFC objects as</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>Specifies what kind of objects will be created in FreeCAD</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcImportModeArch</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Parametric Arch objects</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Non-parametric Arch objects</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Simple Part shapes</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>One compound per floor</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Do not import Arch objects</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Import struct IFC objects as</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox_2">
+          <property name="toolTip">
+           <string>Specifies what kind of objects will be created in FreeCAD</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcImportModeStruct</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Non-parametric Arch objects</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Simple Part shapes</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>One compound for all</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Do not import structural objects</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Root element:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit_2">
+          <property name="toolTip">
+           <string>Only subtypes of this element will be imported. Keep value as &quot;IfcProduct&quot; to import all building elements.</string>
+          </property>
+          <property name="text">
+           <string>IfcProduct</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcRootElement</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
+          <property name="toolTip">
+           <string>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</string>
+          </property>
+          <property name="text">
+           <string>Separate openings</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSeparateOpenings</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_2">
+          <property name="toolTip">
+           <string>If this is checked, the importer will try to detect extrusions. This might slow things down...</string>
+          </property>
+          <property name="text">
+           <string>Detect extrusions</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcGetExtrusions</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+          <property name="toolTip">
+           <string>If this is checked, object names will be prefixed with the IFC ID number</string>
+          </property>
+          <property name="text">
+           <string>Prefix names with ID number</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcPrefixNumbers</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_3">
+          <property name="toolTip">
+           <string>If several materials with the same name are found in the IFC file, they will be treated as one.</string>
+          </property>
+          <property name="text">
+           <string>Merge materials with same name</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcMergeMaterials</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Exclude list: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
+          <property name="toolTip">
+           <string>A comma-separated list of Ifc entities to exclude from import</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSkip</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Export options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="toolTip">
+           <string>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</string>
+          </property>
+          <property name="text">
+           <string>Force export as Brep</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcExportAsBrep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_4">
+          <property name="toolTip">
+           <string>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, simple triangulation will be used, otherwise some additional calculation is done to join coplanar facets.</string>
+          </property>
+          <property name="text">
+           <string>Use classic triangulation</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcClassicTriangulation</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

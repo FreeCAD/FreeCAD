@@ -97,7 +97,7 @@ void MeshGrid::InitGrid (void)
 
   // Grid Laengen berechnen wenn nicht initialisiert
   //
-  if ((_ulCtGridsX == 0) || (_ulCtGridsX == 0) || (_ulCtGridsX == 0))
+  if ((_ulCtGridsX == 0) || (_ulCtGridsY == 0) || (_ulCtGridsZ == 0))
     CalculateGridLength(MESH_CT_GRID, MESH_MAX_GRIDS);
 
   // Grid Laengen und Offset bestimmen
@@ -189,7 +189,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<unsig
     {
       for (k = ulMinZ; k <= ulMaxZ; k++)
       {
-        if (Base::DistanceP2(GetBoundBox(i, j, k).CalcCenter(), rclOrg) < fMinDistP2)
+        if (Base::DistanceP2(GetBoundBox(i, j, k).GetCenter(), rclOrg) < fMinDistP2)
           raulElements.insert(raulElements.end(), _aulGrid[i][j][k].begin(), _aulGrid[i][j][k].end());
       }
     }
@@ -261,23 +261,50 @@ void MeshGrid::Position (const Base::Vector3f &rclPoint, unsigned long &rulX, un
 
 void MeshGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxGrids)
 {
-  // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
-  // pro Grid sollen ca. 10 (?!?!) Facets liegen
-  // bzw. max Grids sollten 10000 nicht ueberschreiten
-  Base::BoundBox3f clBBMeshEnlarged = _pclMesh->GetBoundBox();
-  float fVolElem;
+    // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
+    // pro Grid sollen ca. 10 (?!?!) Facets liegen
+    // bzw. max Grids sollten 10000 nicht ueberschreiten
+    Base::BoundBox3f clBBMeshEnlarged = _pclMesh->GetBoundBox();
+    float fGridLen = 0;
 
-  if (_ulCtElements > (ulMaxGrids * ulCtGrid))
-    fVolElem = (clBBMeshEnlarged.LengthX() * clBBMeshEnlarged.LengthY() * clBBMeshEnlarged.LengthZ()) / float(ulMaxGrids * ulCtGrid);
-  else
-    fVolElem = (clBBMeshEnlarged.LengthX() * clBBMeshEnlarged.LengthY() * clBBMeshEnlarged.LengthZ()) / float(_ulCtElements);
+    float fLenX = clBBMeshEnlarged.LengthX();
+    float fLenY = clBBMeshEnlarged.LengthY();
+    float fLenZ = clBBMeshEnlarged.LengthZ();
 
-  float fVol     = fVolElem * float(ulCtGrid);
-  float fGridLen = float(pow((float)fVol,(float) 1.0f / 3.0f));
+    float fVolume = fLenX * fLenY * fLenZ;
+    if (fVolume > 0.0f) {
+        float fVolElem;
+        if (_ulCtElements > (ulMaxGrids * ulCtGrid))
+            fVolElem = (fLenX * fLenY * fLenZ) / float(ulMaxGrids * ulCtGrid);
+        else
+            fVolElem = (fLenX * fLenY * fLenZ) / float(_ulCtElements);
 
-  _ulCtGridsX = std::max<unsigned long>((unsigned long)(clBBMeshEnlarged.LengthX() / fGridLen), 1);
-  _ulCtGridsY = std::max<unsigned long>((unsigned long)(clBBMeshEnlarged.LengthY() / fGridLen), 1);
-  _ulCtGridsZ = std::max<unsigned long>((unsigned long)(clBBMeshEnlarged.LengthZ() / fGridLen), 1);
+        float fVol = fVolElem * float(ulCtGrid);
+        fGridLen = float(pow(fVol, 1.0f / 3.0f));
+    }
+    else {
+        // Planare Bounding box
+        float fArea = fLenX * fLenY + fLenX * fLenZ + fLenY * fLenZ;
+        float fAreaElem;
+        if (_ulCtElements > (ulMaxGrids * ulCtGrid))
+            fAreaElem = fArea / float(ulMaxGrids * ulCtGrid);
+        else
+            fAreaElem = fArea / float(_ulCtElements);
+
+        fGridLen = sqrt(fAreaElem * float(ulCtGrid));
+    }
+
+    if (fGridLen > 0) {
+        _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenX / fGridLen), 1);
+        _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenY / fGridLen), 1);
+        _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenZ / fGridLen), 1);
+    }
+    else {
+        // Degenerated grid
+        _ulCtGridsX = 1;
+        _ulCtGridsY = 1;
+        _ulCtGridsZ = 1;
+    }
 }
 
 void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
@@ -440,7 +467,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
   }
   else
   { // Punkt ausserhalb
-    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.CalcCenter() - rclPt);
+    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
       case Base::BoundBox3f::RIGHT:
@@ -742,7 +769,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
   }
   else
   { // Punkt ausserhalb
-    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.CalcCenter() - rclPt);
+    Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
       case Base::BoundBox3f::RIGHT:
@@ -850,7 +877,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
 
   Inside(clBB, aulFacets, rclPt, fMaxSearchArea, true);
 
-  for (std::vector<unsigned long>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); pI++)
+  for (std::vector<unsigned long>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI)
   {    
     float fDist;
 
@@ -920,7 +947,7 @@ void MeshFacetGrid::SearchNearestFacetInGrid(unsigned long ulX, unsigned long ul
                                              unsigned long &rulFacetInd) const
 {
   const std::set<unsigned long> &rclSet = _aulGrid[ulX][ulY][ulZ];
-  for (std::set<unsigned long>::const_iterator pI = rclSet.begin(); pI != rclSet.end(); pI++)
+  for (std::set<unsigned long>::const_iterator pI = rclSet.begin(); pI != rclSet.end(); ++pI)
   {
     float fDist = _pclMesh->GetFacet(*pI).DistanceToPoint(rclPt);
     if (fDist < rfMinDist)

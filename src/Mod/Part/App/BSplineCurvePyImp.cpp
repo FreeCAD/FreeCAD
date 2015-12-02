@@ -78,14 +78,7 @@ PyObject* BSplineCurvePy::isRational(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
@@ -95,14 +88,7 @@ PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::isClosed(PyObject *args)
@@ -112,14 +98,7 @@ PyObject* BSplineCurvePy::isClosed(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::increaseDegree(PyObject * args)
@@ -249,14 +228,7 @@ PyObject* BSplineCurvePy::removeKnot(PyObject * args)
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = curve->RemoveKnot(Index,M,tol);
-        if (ok) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -425,6 +397,38 @@ PyObject* BSplineCurvePy::getPoles(PyObject * args)
             Base::VectorPy* vec = new Base::VectorPy(Base::Vector3d(
                 pnt.X(), pnt.Y(), pnt.Z()));
             poles.append(Py::Object(vec));
+        }
+        return Py::new_reference_to(poles);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* BSplineCurvePy::getPolesAndWeights(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+            (getGeometryPtr()->handle());
+        TColgp_Array1OfPnt p(1,curve->NbPoles());
+        curve->Poles(p);
+        TColStd_Array1OfReal w(1,curve->NbPoles());
+        curve->Weights(w);
+
+        Py::List poles;
+        for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
+            gp_Pnt pnt = p(i);
+            double weight = w(i);
+            Py::Tuple t(4);
+            t.setItem(0, Py::Float(pnt.X()));
+            t.setItem(1, Py::Float(pnt.Y()));
+            t.setItem(2, Py::Float(pnt.Z()));
+            t.setItem(3, Py::Float(weight));
+            poles.append(t);
         }
         return Py::new_reference_to(poles);
     }
@@ -709,6 +713,31 @@ Py::List BSplineCurvePy::getKnotSequence(void) const
         list.append(Py::Float(k(i)));
     }
     return list;
+}
+
+PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
+{
+    double tolerance = 0.001;
+    if (!PyArg_ParseTuple(args, "d", &tolerance))
+        return 0;
+    try {
+        GeomBSplineCurve* curve = getGeomBSplineCurvePtr();
+        std::list<Geometry*> arcs;
+        arcs = curve->toBiArcs(tolerance);
+
+        Py::List list;
+        for (std::list<Geometry*>::iterator it = arcs.begin(); it != arcs.end(); ++it) {
+            list.append(Py::asObject((*it)->getPyObject()));
+            delete (*it);
+        }
+
+        return Py::new_reference_to(list);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* BSplineCurvePy::approximate(PyObject *args)
@@ -1049,14 +1078,7 @@ PyObject* BSplineCurvePy::join(PyObject *args)
 
     bool ok = curve1->join(spline);
 
-    if (ok) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(ok ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::makeC1Continuous(PyObject *args)

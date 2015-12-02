@@ -29,6 +29,7 @@
 #include "DynamicProperty.h"
 #include "Property.h"
 #include "PropertyContainer.h"
+#include "Application.h"
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
@@ -129,8 +130,14 @@ unsigned int DynamicProperty::getMemSize (void) const
 short DynamicProperty::getPropertyType(const Property* prop) const
 {
     for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second.property == prop)
-            return it->second.attr;
+        if (it->second.property == prop) {
+            short attr = it->second.attr;
+            if (it->second.hidden)
+                attr |= Prop_Hidden;
+            if (it->second.readonly)
+                attr |= Prop_ReadOnly;
+            return attr;
+        }
     }
     return this->pc->PropertyContainer::getPropertyType(prop);
 }
@@ -138,8 +145,14 @@ short DynamicProperty::getPropertyType(const Property* prop) const
 short DynamicProperty::getPropertyType(const char *name) const
 {
     std::map<std::string,PropData>::const_iterator it = props.find(name);
-    if (it != props.end())
-        return it->second.attr;
+    if (it != props.end()) {
+        short attr = it->second.attr;
+        if (it->second.hidden)
+            attr |= Prop_Hidden;
+        if (it->second.readonly)
+            attr |= Prop_ReadOnly;
+        return attr;
+    }
     return this->pc->PropertyContainer::getPropertyType(name);
 }
 
@@ -177,40 +190,6 @@ const char* DynamicProperty::getPropertyDocumentation(const char *name) const
     return this->pc->PropertyContainer::getPropertyDocumentation(name);
 }
 
-bool DynamicProperty::isReadOnly(const Property* prop) const
-{
-    for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second.property == prop)
-            return it->second.readonly;
-    }
-    return this->pc->PropertyContainer::isReadOnly(prop);
-}
-
-bool DynamicProperty::isReadOnly(const char *name) const
-{
-    std::map<std::string,PropData>::const_iterator it = props.find(name);
-    if (it != props.end())
-        return it->second.readonly;
-    return this->pc->PropertyContainer::isReadOnly(name);
-}
-
-bool DynamicProperty::isHidden(const Property* prop) const
-{
-    for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
-        if (it->second.property == prop)
-            return it->second.hidden;
-    }
-    return this->pc->PropertyContainer::isHidden(prop);
-}
-
-bool DynamicProperty::isHidden(const char *name) const
-{
-    std::map<std::string,PropData>::const_iterator it = props.find(name);
-    if (it != props.end())
-        return it->second.hidden;
-    return this->pc->PropertyContainer::isHidden(name);
-}
-
 Property* DynamicProperty::addDynamicProperty(const char* type, const char* name, const char* group,
                                               const char* doc, short attr, bool ro, bool hidden)
 {
@@ -242,6 +221,8 @@ Property* DynamicProperty::addDynamicProperty(const char* type, const char* name
     data.hidden = hidden;
     props[ObjectName] = data;
 
+    GetApplication().signalAppendDynamicProperty(*pcProperty);
+
     return pcProperty;
 }
 
@@ -249,6 +230,7 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
 {
     std::map<std::string,PropData>::iterator it = props.find(name);
     if (it != props.end()) {
+        GetApplication().signalRemoveDynamicProperty(*it->second.property);
         delete it->second.property;
         props.erase(it);
         return true;
@@ -289,12 +271,16 @@ std::string DynamicProperty::encodeAttribute(const std::string& str) const
             tmp += "&lt;";
         else if (*it == '"')
             tmp += "&quot;";
+        else if (*it == '\'')
+            tmp += "&apos;";
         else if (*it == '&')
             tmp += "&amp;";
         else if (*it == '>')
             tmp += "&gt;";
+        else if (*it == '\r')
+            tmp += "&#xD;";
         else if (*it == '\n')
-            tmp += " ";
+            tmp += "&#xA;";
         else
             tmp += *it;
     }

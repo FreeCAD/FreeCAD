@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -198,7 +198,7 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
 
         // filling up Text nodes
         std::vector<std::pair<std::string,std::string> > mcTextMap = _hcGrp->GetASCIIMap();
-        for(std::vector<std::pair<std::string,std::string> >::iterator It2=mcTextMap.begin();It2!=mcTextMap.end();It2++)
+        for(std::vector<std::pair<std::string,std::string> >::iterator It2=mcTextMap.begin();It2!=mcTextMap.end();++It2)
         {
             (void)new ParameterText(paramValue,QString::fromUtf8(It2->first.c_str()),
                 It2->second.c_str(), _hcGrp);
@@ -206,28 +206,28 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
 
         // filling up Int nodes
         std::vector<std::pair<std::string,long> > mcIntMap = _hcGrp->GetIntMap();
-        for(std::vector<std::pair<std::string,long> >::iterator It3=mcIntMap.begin();It3!=mcIntMap.end();It3++)
+        for(std::vector<std::pair<std::string,long> >::iterator It3=mcIntMap.begin();It3!=mcIntMap.end();++It3)
         {
             (void)new ParameterInt(paramValue,QString::fromUtf8(It3->first.c_str()),It3->second, _hcGrp);
         }
 
         // filling up Float nodes
         std::vector<std::pair<std::string,double> > mcFloatMap = _hcGrp->GetFloatMap();
-        for(std::vector<std::pair<std::string,double> >::iterator It4=mcFloatMap.begin();It4!=mcFloatMap.end();It4++)
+        for(std::vector<std::pair<std::string,double> >::iterator It4=mcFloatMap.begin();It4!=mcFloatMap.end();++It4)
         {
             (void)new ParameterFloat(paramValue,QString::fromUtf8(It4->first.c_str()),It4->second, _hcGrp);
         }
 
         // filling up bool nodes
         std::vector<std::pair<std::string,bool> > mcBoolMap = _hcGrp->GetBoolMap();
-        for(std::vector<std::pair<std::string,bool> >::iterator It5=mcBoolMap.begin();It5!=mcBoolMap.end();It5++)
+        for(std::vector<std::pair<std::string,bool> >::iterator It5=mcBoolMap.begin();It5!=mcBoolMap.end();++It5)
         {
             (void)new ParameterBool(paramValue,QString::fromUtf8(It5->first.c_str()),It5->second, _hcGrp);
         }
 
         // filling up UInt nodes
         std::vector<std::pair<std::string,unsigned long> > mcUIntMap = _hcGrp->GetUnsignedMap();
-        for(std::vector<std::pair<std::string,unsigned long> >::iterator It6=mcUIntMap.begin();It6!=mcUIntMap.end();It6++)
+        for(std::vector<std::pair<std::string,unsigned long> >::iterator It6=mcUIntMap.begin();It6!=mcUIntMap.end();++It6)
         {
             (void)new ParameterUInt(paramValue,QString::fromUtf8(It6->first.c_str()),It6->second, _hcGrp);
         }
@@ -442,7 +442,7 @@ void ParameterGroup::onCreateSubgroup()
 void ParameterGroup::onExportToFile()
 {
     QString file = FileDialog::getSaveFileName( this, tr("Export parameter to file"),
-        QString::null, tr("XML (*.FCParam)"));
+        QString::null, QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
@@ -458,7 +458,7 @@ void ParameterGroup::onExportToFile()
 void ParameterGroup::onImportFromFile()
 {
     QString file = FileDialog::getOpenFileName( this, tr("Import parameter from file"),
-        QString::null, tr("XML (*.FCParam)"));
+        QString::null, QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QFileInfo fi(file);
@@ -799,7 +799,7 @@ void ParameterGroupItem::fillUp(void)
     std::vector<Base::Reference<ParameterGrp> > vhcParamGrp = _hcGrp->GetGroups();
 
     setText(0,QString::fromUtf8(_hcGrp->GetGroupName()));
-    for(std::vector<Base::Reference<ParameterGrp> >::iterator It=vhcParamGrp.begin();It!=vhcParamGrp.end();It++)
+    for(std::vector<Base::Reference<ParameterGrp> >::iterator It=vhcParamGrp.begin();It!=vhcParamGrp.end();++It)
         (void)new ParameterGroupItem(this,*It);
 }
 

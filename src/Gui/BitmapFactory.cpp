@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,7 +64,6 @@ class BitmapFactoryInstP
 public:
     QMap<std::string, const char**> xpmMap;
     QMap<std::string, QPixmap> xpmCache;
-    QStringList paths;
 };
 }
 
@@ -114,16 +113,6 @@ BitmapFactoryInst::~BitmapFactoryInst()
     delete d;
 }
 
-void BitmapFactoryInst::addCustomPath(const QString& path)
-{
-    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Bitmaps");
-    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
-    std::stringstream str;
-    str << "CustomPath" << paths.size();
-    group->SetASCII(str.str().c_str(), (const char*)path.toUtf8());
-}
-
 void BitmapFactoryInst::restoreCustomPaths()
 {
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
@@ -136,13 +125,22 @@ void BitmapFactoryInst::restoreCustomPaths()
 
 void BitmapFactoryInst::addPath(const QString& path)
 {
-    d->paths.push_back(path);
+    QDir::addSearchPath(QString::fromLatin1("icons"), path);
 }
 
 void BitmapFactoryInst::removePath(const QString& path)
 {
-    int pos = d->paths.indexOf(path);
-    if (pos != -1) d->paths.removeAt(pos);
+    QStringList iconPaths = QDir::searchPaths(QString::fromLatin1("icons"));
+    int pos = iconPaths.indexOf(path);
+    if (pos != -1) {
+        iconPaths.removeAt(pos);
+        QDir::setSearchPaths(QString::fromLatin1("icons"), iconPaths);
+    }
+}
+
+QStringList BitmapFactoryInst::getPaths() const
+{
+    return QDir::searchPaths(QString::fromLatin1("icons"));
 }
 
 QStringList BitmapFactoryInst::findIconFiles() const
@@ -152,7 +150,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
     for (QList<QByteArray>::iterator it = formats.begin(); it != formats.end(); ++it)
         filters << QString::fromAscii("*.%1").arg(QString::fromAscii(*it).toLower());
 
-    QStringList paths = d->paths;
+    QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
 #if QT_VERSION >= 0x040500
     paths.removeDuplicates();
 #endif
@@ -190,16 +188,26 @@ bool BitmapFactoryInst::findPixmapInCache(const char* name, QPixmap& px) const
     return false;
 }
 
+QIcon BitmapFactoryInst::iconFromTheme(const char* name, const QIcon& fallback)
+{
+    QString iconName = QString::fromLatin1(name);
+    QIcon icon = QIcon::fromTheme(iconName, fallback);
+    if (icon.isNull()) {
+        QPixmap px = pixmap(name);
+        if (!px.isNull())
+            icon.addPixmap(px);
+    }
+
+    return icon;
+}
+
 bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
 {
     QFileInfo fi(filename);
     if (fi.exists()) {
-        // There is a crash when using the Webkit engine in debug mode
-        // for a couple of SVG files. Thus, use the qsvg plugin.
-#if QT_VERSION < 0x040800 || !defined(_DEBUG)
         // first check if it's an SVG because Qt's qsvg4 module shouldn't be used therefore
         if (fi.suffix().toLower() == QLatin1String("svg")) {
-            QFile svgFile(filename);
+            QFile svgFile(fi.filePath());
             if (svgFile.open(QFile::ReadOnly | QFile::Text)) {
                 QByteArray content = svgFile.readAll();
                 icon = pixmapFromSvg(content, QSize(64,64));
@@ -207,11 +215,8 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
         }
         else {
             // try with Qt plugins
-            icon.load(filename);
+            icon.load(fi.filePath());
         }
-#else
-        icon.load(filename);
-#endif
     }
 
     return !icon.isNull();
@@ -220,7 +225,7 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
 QPixmap BitmapFactoryInst::pixmap(const char* name) const
 {
     if (!name || *name == '\0')
-        return QPixmap(px);
+        return QPixmap();
 
     // as very first test check whether the pixmap is in the cache
     QMap<std::string, QPixmap>::ConstIterator it = d->xpmCache.find(name);
@@ -238,28 +243,20 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     if (icon.isNull())
         loadPixmap(fn, icon);
 
-    // try to find it in the given directories
+    // try to find it in the 'icons' search paths
     if (icon.isNull()) {
         QList<QByteArray> formats = QImageReader::supportedImageFormats();
         formats.prepend("SVG"); // check first for SVG to use special import mechanism
-        for (QStringList::ConstIterator pt = d->paths.begin(); pt != d->paths.end(); ++pt) {
-            QDir d(*pt);
-            QString fileName = d.filePath(fn);
-            if (loadPixmap(fileName, icon)) {
-                break;
-            }
-            else {
-                // Go through supported file formats
-                for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                    QString path = QString::fromAscii("%1.%2").arg(fileName).
-                        arg(QString::fromAscii((*fm).toLower().constData()));
-                    if (loadPixmap(path, icon)) {
-                        break;
-                    }
-                }
 
-                if (!icon.isNull())
+        QString fileName = QString::fromLatin1("icons:") + fn;
+        if (!loadPixmap(fileName, icon)) {
+            // Go through supported file formats
+            for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
+                QString path = QString::fromAscii("%1.%2").arg(fileName).
+                    arg(QString::fromAscii((*fm).toLower().constData()));
+                if (loadPixmap(path, icon)) {
                     break;
+                }
             }
         }
     }
@@ -282,20 +279,18 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) co
     if (QFile(fn).exists())
         iconPath = fn;
 
-    // try to find it in the given directories
+    // try to find it in the 'icons' search paths
     if (iconPath.isEmpty()) {
-        for (QStringList::ConstIterator pt = d->paths.begin(); pt != d->paths.end(); ++pt) {
-            QDir d(*pt);
-            QString fileName = d.filePath(fn);
-            if (QFile(fileName).exists()) {
-                iconPath = fileName;
-                break;
-            } else {
-                fileName += QLatin1String(".svg");
-                if (QFile(fileName).exists()) {
-                    iconPath = fileName;
-                    break;
-                }
+        QString fileName = QString::fromLatin1("icons:") + fn;
+        QFileInfo fi(fileName);
+        if (fi.exists()) {
+            iconPath = fi.filePath();
+        }
+        else {
+            fileName += QLatin1String(".svg");
+            fi.setFile(fileName);
+            if (fi.exists()) {
+                iconPath = fi.filePath();
             }
         }
     }
@@ -314,6 +309,9 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) co
 QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize& size) const
 {
 #ifdef QTWEBKIT
+    // There is a crash when using the Webkit engine in debug mode
+    // for a couple of SVG files. Thus, use the qsvg plugin.
+#if QT_VERSION < 0x040800 || !defined(_DEBUG)
     QWebView webView;
     QPalette pal = webView.palette();
     pal.setColor(QPalette::Background, Qt::transparent);
@@ -336,13 +334,11 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     double hh = frame->evaluateJavaScript(h).toDouble();
     if (ww == 0.0 || hh == 0.0)
         return QPixmap();
-#endif
 
     QImage image(size, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
 
     QPainter p(&image);
-#ifdef QTWEBKIT
     qreal xs = size.isValid() ? size.width() / ww : 1.0;
     qreal ys = size.isValid() ? size.height() / hh : 1.0;
     p.scale(xs, ys);
@@ -353,16 +349,63 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     p.setRenderHint(QPainter::SmoothPixmapTransform);
     p.setOpacity(0); // important to keep transparent background
     frame->render(&p);
-#else
+    p.end();
+
+    return QPixmap::fromImage(image);
+#else // QT_VERSION
+    QWebPage webPage;
+    QPalette pal = webPage.palette();
+    pal.setColor(QPalette::Background, Qt::transparent);
+    webPage.setPalette(pal);
+    QWebFrame* frame = webPage.mainFrame();
+    if (!frame) {
+        return QPixmap();
+    }
+    frame->setContent(contents, QString::fromAscii("image/svg+xml"));
+    // Important to exclude user events here because otherwise
+    // it may happen that an item the icon is created for gets
+    // deleted in the meantime. This happens e.g. dragging over
+    // the categories in the commands panel very quickly.
+    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+    webPage.setViewportSize(webPage.mainFrame()->contentsSize());
+
+    double ww = webPage.viewportSize().width();
+    double hh = webPage.viewportSize().height();
+    if (ww == 0.0 || hh == 0.0)
+        return QPixmap();
+
+    QImage image(size, QImage::Format_ARGB32_Premultiplied);
+    image.fill(0x00000000);
+
+    QPainter p(&image);
+    qreal xs = size.isValid() ? size.width() / ww : 1.0;
+    qreal ys = size.isValid() ? size.height() / hh : 1.0;
+    p.scale(xs, ys);
+
+    // the best quality
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setRenderHint(QPainter::TextAntialiasing);
+    p.setRenderHint(QPainter::SmoothPixmapTransform);
+    p.setOpacity(0); // important to keep transparent background
+    frame->render(&p);
+    p.end();
+
+    return QPixmap::fromImage(image);
+#endif // QT_VERSION
+#else //QTWEBKIT
+    QImage image(size, QImage::Format_ARGB32_Premultiplied);
+    image.fill(0x00000000);
+
+    QPainter p(&image);
     // tmp. disable the report window to suppress some bothering warnings
     Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, false);
     QSvgRenderer svg(contents);
     Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, true);
     svg.render(&p);
-#endif
     p.end();
 
     return QPixmap::fromImage(image);
+#endif
 }
 
 QStringList BitmapFactoryInst::pixmapNames() const
@@ -547,7 +590,25 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     size[1] = p.height();
 
     int buffersize = p.numBytes();
-    int numcomponents = buffersize / ( size[0] * size[1] );
+    int numcomponents = 0;
+    QVector<QRgb> table = p.colorTable();
+    if (!table.isEmpty()) {
+        if (p.hasAlphaChannel()) {
+            if (p.allGray())
+                numcomponents = 2;
+            else
+                numcomponents = 4;
+        }
+        else {
+            if (p.allGray())
+                numcomponents = 1;
+            else
+                numcomponents = 3;
+        }
+    }
+    else {
+        numcomponents = buffersize / (size[0] * size[1]);
+    }
 
     // allocate image data
     img.setValue(size, numcomponents, NULL);

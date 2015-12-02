@@ -107,8 +107,8 @@ void TaskPolarPatternParameters::setupUI()
             this, SLOT(onCheckReverse(bool)));
     connect(ui->polarAngle, SIGNAL(valueChanged(double)),
             this, SLOT(onAngle(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(int)),
-            this, SLOT(onOccurrences(int)));
+    connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
+            this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
@@ -118,7 +118,7 @@ void TaskPolarPatternParameters::setupUI()
 
     // Fill data into dialog elements
     ui->lineOriginal->setEnabled(false);
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
+    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL) { // find the first valid original
             ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
@@ -126,6 +126,10 @@ void TaskPolarPatternParameters::setupUI()
         }
     }
     // ---------------------
+
+    ui->polarAngle->bind(pcPolarPattern->Angle);
+    ui->spinOccurrences->setMaximum(INT_MAX);
+    ui->spinOccurrences->bind(pcPolarPattern->Occurrences);
 
     ui->comboAxis->setEnabled(true);
     ui->checkReverse->setEnabled(true);
@@ -244,7 +248,7 @@ void TaskPolarPatternParameters::onAngle(const double a) {
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onOccurrences(const int n) {
+void TaskPolarPatternParameters::onOccurrences(const uint n) {
     if (blockUpdate)
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
@@ -342,6 +346,36 @@ void TaskPolarPatternParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskPolarPatternParameters::apply()
+{
+    std::string name = TransformedView->getObject()->getNameInDocument();
+    std::string axis = getAxis();
+
+    if (!axis.empty()) {
+        App::DocumentObject* sketch = 0;
+        if (axis == "N_Axis")
+            sketch = getSketchObject();
+        else
+            sketch = getSupportObject();
+
+        if (sketch) {
+            QString buf = QString::fromLatin1("(App.ActiveDocument.%1,[\"%2\"])");
+            buf = buf.arg(QString::fromLatin1(sketch->getNameInDocument()));
+            buf = buf.arg(QString::fromLatin1(axis.c_str()));
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), buf.toStdString().c_str());
+        }
+    } else
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = None", name.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
+    ui->polarAngle->apply();
+    ui->spinOccurrences->apply();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    if (!TransformedView->getObject()->isValid())
+        throw Base::Exception(TransformedView->getObject()->getStatusString());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -358,39 +392,13 @@ TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(ViewProviderPolarPa
 
 bool TaskDlgPolarPatternParameters::accept()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
     try {
         //Gui::Command::openCommand("PolarPattern changed");
         // Handle Originals
         if (!TaskDlgTransformedParameters::accept())
             return false;
 
-        TaskPolarPatternParameters* polarpatternParameter = static_cast<TaskPolarPatternParameters*>(parameter);
-        std::string axis = polarpatternParameter->getAxis();
-        if (!axis.empty()) {
-            App::DocumentObject* sketch = 0;
-            if (axis == "N_Axis")
-                sketch = polarpatternParameter->getSketchObject();
-            else
-                sketch = polarpatternParameter->getSupportObject();
-
-            if (sketch) {
-                QString buf = QString::fromLatin1("(App.ActiveDocument.%1,[\"%2\"])");
-                buf = buf.arg(QString::fromLatin1(sketch->getNameInDocument()));
-                buf = buf.arg(QString::fromLatin1(axis.c_str()));
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), buf.toStdString().c_str());
-            }
-        } else
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = None", name.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),polarpatternParameter->getReverse());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),polarpatternParameter->getAngle());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(),polarpatternParameter->getOccurrences());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!TransformedView->getObject()->isValid())
-            throw Base::Exception(TransformedView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        parameter->apply();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));

@@ -1,11 +1,19 @@
 #add_subdirectory(Icons)
 
 if(WIN32)
-add_definitions(-DFCGui -DQIIS_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
+add_definitions(-DFCGui -DQIIS_MAKEDLL -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
+
+IF(CMAKE_BUILD_TYPE)
+    add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+ENDIF(CMAKE_BUILD_TYPE)
 
 if (FREECAD_USE_3DCONNEXION)
     add_definitions(-D_USE_3DCONNEXION_SDK)
+    if(APPLE)
+        set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
+        set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers )
+    endif(APPLE)
 endif(FREECAD_USE_3DCONNEXION)
 
 if (BUILD_VR)
@@ -23,32 +31,30 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${3DCONNEXION_INCLUDE_DIR}
 )
 
 if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
-         debug ${COIN3D_LIBRARY_DEBUG}
-         optimized ${COIN3D_LIBRARY_RELEASE}
-         ${QT_DEBUG_LIBRARIES}
+         ${COIN3D_LIBRARIES}
          ${QT_LIBRARIES}
-         optimized QtUiTools.lib
-         debug QtUiToolsd.lib
+         ${QT_QTUITOOLS_LIBRARY}
          ${OPENGL_gl_LIBRARY}
     )
 else(MSVC)
     set(FreeCADGui_LIBS
-        FreeCADBase
         FreeCADApp
-        ${COIN3D_LIBRARY}
+        ${COIN3D_LIBRARIES}
         ${QT_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
+        ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
 
@@ -61,6 +67,13 @@ IF(SPNAV_FOUND)
         ${FreeCADGui_LIBS}
         ${SPNAV_LIBRARIES}
     )
+    find_package(X11 QUIET)
+    if (X11_FOUND)
+        set(FreeCADGui_LIBS
+            ${FreeCADGui_LIBS}
+            ${X11_X11_LIB}
+        )
+    endif(X11_FOUND)
 ENDIF(SPNAV_FOUND)
 
 IF(OCULUS_FOUND)
@@ -121,7 +134,7 @@ SET(FreeCADGui_XML_SRCS
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
 # The 3D Connexion SDK files
-if(FREECAD_USE_3DCONNEXION)
+if(FREECAD_USE_3DCONNEXION AND MSVC)
 SET(FreeCADGui_SDK_SRCS
     3Dconnexion/I3dMouseParams.h
     3Dconnexion/MouseParameters.cpp
@@ -129,11 +142,20 @@ SET(FreeCADGui_SDK_SRCS
     3Dconnexion/GuiApplicationNativeEventAwareWin32.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-endif(FREECAD_USE_3DCONNEXION)
+endif(FREECAD_USE_3DCONNEXION AND MSVC)
+
+if(FREECAD_USE_3DCONNEXION AND APPLE)
+SET(FreeCADGui_SDK_SRCS
+    3Dconnexion/GuiApplicationNativeEventAwareMac.cpp
+)
+SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
 set(Gui_MOC_HDRS
     Action.h
+    ActionFunction.h
     Assistant.h
+    AutoSaver.h
     CallTips.h
     CombiView.h
     Control.h
@@ -175,14 +197,20 @@ set(Gui_MOC_HDRS
     DlgSettingsUnitsImp.h
     DlgTipOfTheDayImp.h
     DlgToolbarsImp.h
+    DlgWorkbenchesImp.h
     TaskDlgRelocation.h
     DlgUndoRedo.h
     DockWindow.h
     DockWindowManager.h
+    DocumentRecovery.h
     EditorView.h
+    ExpressionCompleter.h
+    DlgExpressionInput.h
     FileDialog.h
     Flag.h
+    GraphicsViewZoom.h
     GraphvizView.h
+    GuiApplication.h
     GuiApplicationNativeEventAware.h
     HelpView.h
     InputVector.h
@@ -201,12 +229,13 @@ set(Gui_MOC_HDRS
     PythonDebugger.h
     PythonEditor.h
     QuantitySpinBox.h
+    QListWidgetCustom.h
+    QuantitySpinBox_p.h
     ReportView.h
     SceneInspector.h
     SelectionView.h
     SpinBox.h
     Splashscreen.h
-    TaskPanelView.h
     TextEdit.h
     TextureMapping.h
     ToolBox.h
@@ -232,6 +261,12 @@ set(Gui_MOC_HDRS
 #qt4_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 #SOURCE_GROUP("Moc" FILES ${Gui_MOC_SRCS})
+
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
+    COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
+
+set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
@@ -269,11 +304,14 @@ SET(Gui_UIC_SRCS
     DlgSettingsMacro.ui
     DlgTipOfTheDay.ui
     DlgToolbars.ui
+    DlgWorkbenches.ui
     DlgTreeWidget.ui
     DlgLocationAngle.ui
     DlgLocationPos.ui
+    DocumentRecovery.ui
     DownloadManager.ui
     DownloadItem.ui
+    DlgExpressionInput.ui
     MouseButtons.ui
     SceneInspector.ui
     InputVector.ui
@@ -287,6 +325,7 @@ SET(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
     iisTaskPanel/src/iisTaskPanel.qrc
+    QSint/actionpanel/schemes.qrc
 )
 QT4_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
 
@@ -296,6 +335,7 @@ SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 # The command sources
 SET(Command_CPP_SRCS
     Action.cpp
+    ActionFunction.cpp
     Command.cpp
     CommandDoc.cpp
     CommandFeat.cpp
@@ -308,6 +348,7 @@ SET(Command_CPP_SRCS
 SET(Command_SRCS
     ${Command_CPP_SRCS}
     Action.h
+    ActionFunction.h
     Command.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
@@ -330,6 +371,7 @@ SET(Dialog_CPP_SRCS
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
     DlgTipOfTheDayImp.cpp
+    DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
     DlgUndoRedo.cpp
     InputVector.cpp
@@ -341,6 +383,7 @@ SET(Dialog_CPP_SRCS
     DownloadDialog.cpp
     DownloadItem.cpp
     DownloadManager.cpp
+    DocumentRecovery.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -360,6 +403,7 @@ SET(Dialog_HPP_SRCS
     DlgProjectUtility.h
     DlgPropertyLink.h
     DlgTipOfTheDayImp.h
+    DlgExpressionInput.h
     TaskDlgRelocation.h
     DlgUndoRedo.h
     InputVector.h
@@ -371,6 +415,7 @@ SET(Dialog_HPP_SRCS
     DownloadDialog.h
     DownloadItem.h
     DownloadManager.h
+    DocumentRecovery.h
 )
 
 SET(Dialog_SRCS
@@ -396,8 +441,10 @@ SET(Dialog_SRCS
     DlgPropertyLink.ui
     DlgTipOfTheDay.ui
     DlgTreeWidget.ui
+    DlgExpressionInput.ui
     DownloadManager.ui
     DownloadItem.ui
+    DocumentRecovery.ui
     MouseButtons.ui
     InputVector.ui
     Placement.ui
@@ -415,6 +462,8 @@ SET(Dialog_Customize_CPP_SRCS
     DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
+    DlgWorkbenchesImp.cpp
+    QListWidgetCustom.cpp
 )
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
@@ -424,6 +473,8 @@ SET(Dialog_Customize_HPP_SRCS
     DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
+    DlgWorkbenchesImp.h
+    QListWidgetCustom.h
 )
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
@@ -434,6 +485,7 @@ SET(Dialog_Customize_SRCS
     DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
+    DlgWorkbenches.ui
 )
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
@@ -492,7 +544,6 @@ SET(Dock_Windows_CPP_SRCS
     PropertyView.cpp
     ReportView.cpp
     SelectionView.cpp
-    TaskPanelView.cpp
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
@@ -505,7 +556,6 @@ SET(Dock_Windows_HPP_SRCS
     PropertyView.h
     ReportView.h
     SelectionView.h
-    TaskPanelView.h
     ToolBox.h
     Tree.h
     TreeView.h
@@ -632,6 +682,42 @@ set(iis_MOC_HDRS
 qt4_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
 SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
 
+SET(qsintActionPanel_SRCS
+    QSint/actionpanel/actionbox.cpp
+    QSint/actionpanel/actionbox.h
+    QSint/actionpanel/actionlabel.cpp
+    QSint/actionpanel/actionlabel.h
+    QSint/actionpanel/actiongroup.cpp
+    QSint/actionpanel/actiongroup.h
+    QSint/actionpanel/actionpanel.cpp
+    QSint/actionpanel/actionpanel.h
+    QSint/actionpanel/actionpanelscheme.cpp
+    QSint/actionpanel/actionpanelscheme.h
+    QSint/actionpanel/androidpanelscheme.cpp
+    QSint/actionpanel/androidpanelscheme.h
+    QSint/actionpanel/macpanelscheme.cpp
+    QSint/actionpanel/macpanelscheme.h
+    QSint/actionpanel/taskgroup_p.cpp
+    QSint/actionpanel/taskgroup_p.h
+    QSint/actionpanel/taskheader_p.cpp
+    QSint/actionpanel/taskheader_p.h
+    QSint/actionpanel/winvistapanelscheme.cpp
+    QSint/actionpanel/winvistapanelscheme.h
+    QSint/actionpanel/winxppanelscheme.cpp
+    QSint/actionpanel/winxppanelscheme.h
+    QSint/actionpanel/freecadscheme.cpp
+    QSint/actionpanel/freecadscheme.h
+)
+SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
+set(qsint_MOC_HDRS
+    QSint/actionpanel/actionbox.h
+    QSint/actionpanel/actionlabel.h
+    QSint/actionpanel/actiongroup.h
+    QSint/actionpanel/actionpanel.h
+    QSint/actionpanel/taskheader_p.h
+)
+qt4_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
+SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
 #SET(Resource_RCS
 #   Icons/resource.qrc
@@ -653,14 +739,17 @@ SET(View3D_CPP_SRCS
     InventorNavigationStyle.cpp
     CADNavigationStyle.cpp
     BlenderNavigationStyle.cpp
+    MayaGestureNavigationStyle.cpp
+    OpenCascadeNavigationStyle.cpp
     TouchpadNavigationStyle.cpp
+    GestureNavigationStyle.cpp
     SplitView3DInventor.cpp
     View.cpp
     View3DInventor.cpp
     View3DInventorExamples.cpp
     View3DInventorViewer.cpp
     View3DInventorRiftViewer.cpp
-	CoinRiftWidget.cpp
+    CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
 )
@@ -766,6 +855,7 @@ SET(Inventor_CPP_SRCS
     SoNavigationDragger.cpp
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
+    SoTouchEvents.cpp
 )
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
@@ -787,6 +877,7 @@ SET(Inventor_SRCS
     SoNavigationDragger.h
     SoAxisCrossKit.h
     SoTextLabel.h
+    SoTouchEvents.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 
@@ -811,6 +902,7 @@ SET(Widget_HPP_SRCS
     InputField.h
     ProgressBar.h
     QuantitySpinBox.h
+    QuantitySpinBox_p.h
     SpinBox.h
     Splashscreen.h
     WidgetFactory.h
@@ -879,10 +971,15 @@ SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 SET(FreeCADGui_CPP_SRCS
     Application.cpp
     ApplicationPy.cpp
+    AutoSaver.cpp
     BitmapFactory.cpp
     Document.cpp
     DocumentModel.cpp
     DocumentPyImp.cpp
+    ExpressionBinding.cpp
+    GraphicsViewZoom.cpp
+    ExpressionCompleter.cpp
+    GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
     Macro.cpp
@@ -894,13 +991,19 @@ SET(FreeCADGui_CPP_SRCS
     Utilities.cpp
     WaitCursor.cpp
     ManualAlignment.cpp
+    WinNativeGestureRecognizers.cpp
 )
 SET(FreeCADGui_SRCS 
     Application.h
+    AutoSaver.h
     BitmapFactory.h
     Document.h
     DocumentModel.h
+    ExpressionBinding.cpp
+    ExpressionCompleter.h
     FreeCADGuiInit.py
+    GraphicsViewZoom.h
+    GuiApplication.h
     GuiApplicationNativeEventAware.h
     GuiConsole.h
     InventorAll.h
@@ -915,6 +1018,7 @@ SET(FreeCADGui_SRCS
     Utilities.h
     WaitCursor.h
     ManualAlignment.h
+    WinNativeGestureRecognizers.h
 )
 
 SET(FreeCADGui_SRCS
@@ -922,6 +1026,7 @@ SET(FreeCADGui_SRCS
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${iis_MOC_SRCS}
+    ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
     ${Command_SRCS}
@@ -936,6 +1041,7 @@ SET(FreeCADGui_SRCS
     ${Propertyeditor_SRCS}
     ${Task_View_SRCS}
     ${iisTaskPanel_SRCS}
+    ${qsintActionPanel_SRCS}
     ${Resource_SRCS}
     ${Quarter_SRCS}
     ${View3D_SRCS}

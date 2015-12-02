@@ -49,9 +49,9 @@ SelectionObject::~SelectionObject()
 
 const App::DocumentObject * SelectionObject::getObject(void) const
 {
-    if (DocName != "") {
+    if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
-        if (doc && FeatName != "")
+        if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
     return 0;
@@ -59,9 +59,9 @@ const App::DocumentObject * SelectionObject::getObject(void) const
 
 App::DocumentObject * SelectionObject::getObject(void) 
 {
-    if (DocName != "") {
+    if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
-        if (doc && FeatName != "")
+        if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
     return 0;
@@ -93,9 +93,7 @@ std::string SelectionObject::getAsPropertyLinkSubString(void)const
     return buf;
 }
 
-
 PyObject* SelectionObject::getPyObject()
 {
     return new SelectionObjectPy(new SelectionObject(*this));
 }
-

@@ -34,12 +34,16 @@ class SoDragger;
 class SoNode;
 
 namespace Gui {
-class SoFCSelection;
-class SoFCBoundingBox;
 
 class GuiExport ViewProviderPythonFeatureImp
 {
 public:
+    enum ValueT {
+        NotImplemented = 0, // not handled
+        Accepted = 1, // handled and accepted
+        Rejected = 2  // handled and rejected
+    };
+
     /// constructor.
     ViewProviderPythonFeatureImp(ViewProviderDocumentObject*);
     /// destructor.
@@ -55,6 +59,7 @@ public:
     bool setEdit(int ModNum);
     bool unsetEdit(int ModNum);
     bool doubleClicked(void);
+    void setupContextMenu(QMenu* menu);
 
     /** @name Update data methods*/
     //@{
@@ -63,6 +68,7 @@ public:
     void onChanged(const App::Property* prop);
     void startRestoring();
     void finishRestoring();
+    bool onDelete(const std::vector<std::string> & sub);
     //@}
 
     /** @name Display methods */
@@ -73,6 +79,22 @@ public:
     std::vector<std::string> getDisplayModes(void) const;
     /// set the display mode
     std::string setDisplayMode(const char* ModeName);
+    //@}
+
+    /** @name Drag and drop */
+    //@{
+    /// Returns true if the view provider generally supports dragging objects
+    ValueT canDragObjects() const;
+    /// Check whether the object can be removed from the view provider by drag and drop
+    ValueT canDragObject(App::DocumentObject*) const;
+    /// Starts to drag the object
+    ValueT dragObject(App::DocumentObject*);
+    /// Returns true if the view provider generally accepts dropping of objects
+    ValueT canDropObjects() const;
+    /// Check whether the object can be dropped to the view provider by drag and drop
+    ValueT canDropObject(App::DocumentObject*) const;
+    /// If the dropped object type is accepted the object will be added as child
+    ValueT dropObject(App::DocumentObject*);
     //@}
 
 private:
@@ -157,6 +179,11 @@ public:
     virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>& c) const {
         ViewProviderT::getTaskViewContent(c);
     }
+    virtual bool onDelete(const std::vector<std::string> & sub) {
+        bool ok = imp->onDelete(sub);
+        if (!ok) return ok;
+        return ViewProviderT::onDelete(sub);
+    }
     //@}
 
     /** @name Restoring view provider from document load */
@@ -166,6 +193,74 @@ public:
     }
     virtual void finishRestoring() {
         imp->finishRestoring();
+    }
+    //@}
+
+    /** @name Drag and drop */
+    //@{
+    /// Returns true if the view provider generally supports dragging objects
+    virtual bool canDragObjects() const {
+        switch (imp->canDragObjects()) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDragObjects();
+        }
+    }
+    /// Check whether the object can be removed from the view provider by drag and drop
+    virtual bool canDragObject(App::DocumentObject* obj) const {
+        switch (imp->canDragObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDragObject(obj);
+        }
+    }
+    /// Starts to drag the object
+    virtual void dragObject(App::DocumentObject* obj) {
+        switch (imp->dragObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderPythonFeatureImp::Rejected:
+            return;
+        default:
+            return ViewProviderT::dragObject(obj);
+        }
+    }
+    /// Returns true if the view provider generally accepts dropping of objects
+    virtual bool canDropObjects() const {
+        switch (imp->canDropObjects()) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDropObjects();
+        }
+    }
+    /// Check whether the object can be dropped to the view provider by drag and drop
+    virtual bool canDropObject(App::DocumentObject* obj) const {
+        switch (imp->canDropObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDropObject(obj);
+        }
+    }
+    /// If the dropped object type is accepted the object will be added as child
+    virtual void dropObject(App::DocumentObject* obj) {
+        switch (imp->dropObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderPythonFeatureImp::Rejected:
+            return;
+        default:
+            return ViewProviderT::dropObject(obj);
+        }
     }
     //@}
 
@@ -250,22 +345,6 @@ public:
     const char* getPropertyDocumentation(const char *name) const {
         return props->getPropertyDocumentation(name);
     }
-    /// check if the property is read-only
-    bool isReadOnly(const App::Property* prop) const {
-        return props->isReadOnly(prop);
-    }
-    /// check if the nameed property is read-only
-    bool isReadOnly(const char *name) const {
-        return props->isReadOnly(name);
-    }
-    /// check if the property is hidden
-    bool isHidden(const App::Property* prop) const {
-        return props->isHidden(prop);
-    }
-    /// check if the named property is hidden
-    bool isHidden(const char *name) const {
-        return props->isHidden(name);
-    }
     //@}
 
     /** @name Property serialization */
@@ -295,6 +374,7 @@ protected:
                     ViewProviderT::attach(ViewProviderT::pcObject);
                     // needed to load the right display mode after they're known now
                     ViewProviderT::DisplayMode.touch();
+                    ViewProviderT::setOverrideMode(viewerMode);
                 }
                 ViewProviderT::updateView();
             }
@@ -318,6 +398,14 @@ protected:
         if (!ok) ViewProviderT::unsetEdit(ModNum);
     }
 
+public:
+    virtual void setupContextMenu(QMenu* menu, QObject* recipient, const char* member)
+    {
+        ViewProviderT::setupContextMenu(menu, recipient, member);
+        imp->setupContextMenu(menu);
+    }
+
+protected:
     virtual bool doubleClicked(void)
     {
         bool ok = imp->doubleClicked();
@@ -326,11 +414,17 @@ protected:
         else 
             return true;
     }
+    virtual void setOverrideMode(const std::string &mode)
+    {
+        ViewProviderT::setOverrideMode(mode);
+        viewerMode = mode;
+    }
 
 private:
     ViewProviderPythonFeatureImp* imp;
     App::DynamicProperty *props;
     App::PropertyPythonObject Proxy;
+    std::string viewerMode;
     bool _attached;
 };
 

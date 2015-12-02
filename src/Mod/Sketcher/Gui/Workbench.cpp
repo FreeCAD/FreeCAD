@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -136,12 +136,16 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom){
     geom    << "Sketcher_CreateArc"
             << "Sketcher_Create3PointArc"
             << "Sketcher_CreateCircle"
-            << "Sketcher_Create3PointCircle";
+            << "Sketcher_Create3PointCircle"
+            << "Sketcher_CreateEllipseByCenter"
+            << "Sketcher_CreateEllipseBy3Points"
+            << "Sketcher_CreateArcOfEllipse";
 }
 template <>
 inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
     geom    << "Sketcher_CompCreateArc"
-            << "Sketcher_CompCreateCircle";
+            << "Sketcher_CompCreateCircle"
+            << "Sketcher_CompCreateConic";
 }
 template <typename T>
 void SketcherAddWorkspaceRegularPolygon(T& geom);
@@ -177,9 +181,11 @@ inline void SketcherAddWorkbenchGeometries(T& geom){
             /*<< "Sketcher_CreateDraftLine"*/;
 }
 
-
 template <typename T>
-inline void SketcherAddWorkbenchConstraints(T& cons){
+inline void SketcherAddWorkbenchConstraints(T& cons);
+
+template <>
+inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons){
     cons    << "Sketcher_ConstrainCoincident"
             << "Sketcher_ConstrainPointOnObject"
             << "Sketcher_ConstrainVertical"
@@ -195,8 +201,34 @@ inline void SketcherAddWorkbenchConstraints(T& cons){
             << "Sketcher_ConstrainDistanceY"
             << "Sketcher_ConstrainDistance"
             << "Sketcher_ConstrainRadius"
-            << "Sketcher_ConstrainAngle";
+            << "Sketcher_ConstrainAngle"
+            << "Sketcher_ConstrainSnellsLaw"
+            << "Sketcher_ConstrainInternalAlignment"
+            << "Separator"
+            << "Sketcher_ToggleDrivingConstraint";
+}
 
+template <>
+inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons){
+    cons    << "Sketcher_ConstrainCoincident"
+            << "Sketcher_ConstrainPointOnObject"
+            << "Sketcher_ConstrainVertical"
+            << "Sketcher_ConstrainHorizontal"
+            << "Sketcher_ConstrainParallel"
+            << "Sketcher_ConstrainPerpendicular"
+            << "Sketcher_ConstrainTangent"
+            << "Sketcher_ConstrainEqual"
+            << "Sketcher_ConstrainSymmetric"
+            << "Separator"
+            << "Sketcher_ConstrainLock"
+            << "Sketcher_ConstrainDistanceX"
+            << "Sketcher_ConstrainDistanceY"
+            << "Sketcher_ConstrainDistance"
+            << "Sketcher_ConstrainRadius"
+            << "Sketcher_ConstrainAngle"
+            << "Sketcher_ConstrainSnellsLaw"
+            << "Separator"
+            << "Sketcher_ToggleDrivingConstraint";            
 }
 
 template <typename T>
@@ -212,13 +244,24 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
 		<< "Sketcher_SelectHorizontalAxis"
         << "Sketcher_SelectRedundantConstraints"
         << "Sketcher_SelectConflictingConstraints"
-        << "Sketcher_SelectElementsAssociatedWithConstraints";
+        << "Sketcher_SelectElementsAssociatedWithConstraints"
+        << "Sketcher_RestoreInternalAlignmentGeometry" 
+        << "Sketcher_Symmetry"
+        << "Sketcher_Clone"
+        << "Sketcher_Copy"
+        << "Sketcher_RectangularArray";
+    
 }
 template <>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel){
     consaccel << "Sketcher_CloseShape"
         << "Sketcher_ConnectLines"
-        << "Sketcher_SelectConstraints";
+        << "Sketcher_SelectConstraints"
+        << "Sketcher_SelectElementsAssociatedWithConstraints"
+        << "Sketcher_RestoreInternalAlignmentGeometry"
+        << "Sketcher_Symmetry"
+        << "Sketcher_CompCopy"
+        << "Sketcher_RectangularArray";
 }
 
 template <typename T>
@@ -229,7 +272,8 @@ template <>
 inline void SketcherAddWorkspaceSketchExtra<Gui::MenuItem>(Gui::MenuItem& sketch){
     sketch  << "Sketcher_ReorientSketch"
             << "Sketcher_ValidateSketch"
-            << "Sketcher_MergeSketches";
+            << "Sketcher_MergeSketches"
+            << "Sketcher_MirrorSketch";
 }
 
 template <typename T>

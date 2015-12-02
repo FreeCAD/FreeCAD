@@ -1,0 +1,22 @@
+; EN-GJL-300 - 0.6030 - EN 1561
+; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
+; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = EN-GJL-300
+NameDE = GG-30
+DescriptionDE = hochbeanspruchbar, für Motorständer, Lagerschalen
+Father = Metal
+YoungsModulus = 125000 MPa
+UltimateTensileStrength = 300
+PoissonRatio = 0.3
+Density = 7200 kg/m^3
+KindOfMaterial = Cast iron
+KindOfMaterialDE = Guss
+MaterialNumber = 0.603
+ModulusOfShare = 48000
+Norm = EN 1561
+ThermalExpansionCoefficient = 1.00E-005
+UltimateStrain = 0
+YieldStrength = 195

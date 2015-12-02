@@ -151,8 +151,9 @@ Py::Tuple FacetPy::getPointIndices(void) const
       { return Py::Tuple(); }
 
     Py::Tuple idxTuple(3);
-    for (int i=0; i<3; i++)
-      { idxTuple.setItem( i, Py::Int( (long)face->PIndex[i] ) ); }
+    for (int i=0; i<3; i++) {
+        idxTuple.setItem(i, Py::Long(face->PIndex[i]));
+    }
     return idxTuple;
 }
 
@@ -163,8 +164,9 @@ Py::Tuple FacetPy::getNeighbourIndices(void) const
       { return Py::Tuple(); }
 
     Py::Tuple idxTuple(3);
-    for (int i=0; i<3; i++)
-      { idxTuple.setItem( i, Py::Int( (long)face->NIndex[i] ) ); }
+    for (int i=0; i<3; i++) {
+        idxTuple.setItem(i, Py::Long(face->NIndex[i]));
+    }
     return idxTuple;
 }
 

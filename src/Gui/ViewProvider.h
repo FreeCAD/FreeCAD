@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -134,7 +134,7 @@ public:
     /** @name Methods used by the Tree
       * If you want to take control over the 
       * appearance of your object in the tree you
-      * can reimplemnt this methods.
+      * can reimplemnt these methods.
      */
     //@{
     /// deliver the icon shown in the tree view
@@ -148,15 +148,32 @@ public:
       */
     virtual std::vector<App::DocumentObject*> claimChildren(void) const
     { return std::vector<App::DocumentObject*>(); }
+    //@}
+
+    /** @name Drag and drop
+     * To enable drag and drop you have to re-implement \ref canDragObjects() and
+     * \ref canDropObjects() to return true. For finer control you can also re-implement
+     * \ref canDragObject() or \ref canDropObject() to filter certain object types, by
+     * default these methods don't filter any types.
+     * To take action of drag and drop the method \ref dragObject() and \ref dropObject()
+     * must be re-implemented, too.
+     */
+    //@{
     /** Check whether children can be removed from the view provider by drag and drop */
     virtual bool canDragObjects() const
     { return false; }
+    /** Check whether the object can be removed from the view provider by drag and drop */
+    virtual bool canDragObject(App::DocumentObject*) const
+    { return true; }
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*)
     { }
     /** Check whether objects can be added to the view provider by drag and drop */
     virtual bool canDropObjects() const
     { return false; }
+    /** Check whether the object can be dropped to the view provider by drag and drop */
+    virtual bool canDropObject(App::DocumentObject*) const
+    { return true; }
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*)
     { }
@@ -205,7 +222,7 @@ public:
     void setVisible(bool);
     bool isVisible() const;
     /// Overrides the display mode with mode.
-    void setOverrideMode(const std::string &mode);
+    virtual void setOverrideMode(const std::string &mode);
     //@}
 
 

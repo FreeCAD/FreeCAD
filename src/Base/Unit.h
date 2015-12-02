@@ -34,16 +34,26 @@
 
 namespace Base {
 
+#define UnitSignatureLengthBits 4
+#define UnitSignatureMassBits 4
+#define UnitSignatureTimeBits 4
+#define UnitSignatureElectricCurrentBits 4
+#define UnitSignatureThermodynamicTemperatureBits 4
+#define UnitSignatureAmountOfSubstanceBits 4
+#define UnitSignatureLuminoseIntensityBits 4
+#define UnitSignatureAngleBits 4
+#define UnitSignatureDensityBits 4
 
 struct UnitSignature{
-    int32_t Length:4;
-    int32_t Mass:4;
-    int32_t Time:4;
-    int32_t ElectricCurrent:4;
-    int32_t ThermodynamicTemperature:4;
-    int32_t AmountOfSubstance:4;
-    int32_t LuminoseIntensity:4;
-    int32_t Angle:4;
+    int32_t Length:UnitSignatureLengthBits;
+    int32_t Mass:UnitSignatureMassBits;
+    int32_t Time:UnitSignatureTimeBits;
+    int32_t ElectricCurrent:UnitSignatureElectricCurrentBits;
+    int32_t ThermodynamicTemperature:UnitSignatureThermodynamicTemperatureBits;
+    int32_t AmountOfSubstance:UnitSignatureAmountOfSubstanceBits;
+    int32_t LuminoseIntensity:UnitSignatureLuminoseIntensityBits;
+    int32_t Angle:UnitSignatureAngleBits;
+    int32_t Density:UnitSignatureDensityBits;
 };
 /**
  * The Unit class.
@@ -52,7 +62,7 @@ class BaseExport Unit
 {
 public:
     /// default constructor
-    Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminoseIntensity=0,int8_t Angle=0);
+    Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminoseIntensity=0,int8_t Angle=0, int8_t Density=0);
     Unit(void);
     Unit(const Unit&);
     Unit(const std::string& Pars);
@@ -87,6 +97,7 @@ public:
 	static Unit Mass;
 	/// Angle
 	static Unit Angle;
+	static Unit Density;
 
 	static Unit Area;
 	static Unit Volume;

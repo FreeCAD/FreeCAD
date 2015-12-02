@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ class DocumentPy;
  *  All handled views on the document must inherit from MDIView
  *  @see App::Document 
  *  @see MDIView
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 class GuiExport Document : public Base::Persistence
 {
@@ -73,10 +73,12 @@ protected:
     void slotNewObject(const App::DocumentObject&);
     void slotDeletedObject(const App::DocumentObject&);
     void slotChangedObject(const App::DocumentObject&, const App::Property&);
-    void slotRenamedObject(const App::DocumentObject&);
+    void slotRelabelObject(const App::DocumentObject&);
     void slotActivatedObject(const App::DocumentObject&);
     void slotStartRestoreDocument(const App::Document&);
     void slotFinishRestoreDocument(const App::Document&);
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
     //@}
 
 public:
@@ -91,7 +93,7 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
                                 const App::Property&)>                   signalChangedObject;
     /// signal on renamed Object
-    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalRenamedObject;
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
     /// signal on entering in edit mode
@@ -105,7 +107,10 @@ public:
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
                                 const Gui::TreeItemMode&)>               signalExpandObject;
-
+    /// signal on undo Document
+    mutable boost::signal<void (const Gui::Document& doc)> signalUndoDocument;
+    /// signal on redo Document
+    mutable boost::signal<void (const Gui::Document& doc)> signalRedoDocument;
     //@}
 
     /** @name I/O of the document */
@@ -115,6 +120,8 @@ public:
     bool save(void);
     /// Save the document under a new file name
     bool saveAs(void);
+    /// Save a copy of the document under a new file name
+    bool saveCopy(void);
     /// This method is used to save properties or very small amounts of data to an XML document.
     virtual void Save (Base::Writer &writer) const;
     /// This method is used to restore properties from an XML document.
@@ -141,8 +148,9 @@ public:
     //@{
     /// Getter for the active view
     Gui::MDIView* getActiveView(void) const;
+    Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
-    /// Creat a new view
+    /// Create a new view
     void createView(const Base::Type& typeId);
     /** send messages to the active view 
      * Send a specific massage to the active view and is able to recive a
@@ -150,10 +158,16 @@ public:
      */
     /// send Messages to all views
     bool sendMsgToViews(const char* pMsg);
+    /** Sends the message \a pMsg to the views of type \a typeid and stops with
+     * the first view that supports the message and returns \a ppReturn. The very
+     * first checked view is the current active view.
+     * If a view supports the message true is returned and false otherwise.
+     */
+    bool sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn);
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
+    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// helper for selection
     ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
     /// call update on all attached views

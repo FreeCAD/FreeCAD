@@ -27,6 +27,7 @@
 # include <Inventor/nodes/SoClipPlane.h>
 # include <Inventor/nodes/SoGroup.h>
 # include <QPointer>
+# include <cmath>
 #endif
 # include <Inventor/sensors/SoTimerSensor.h>
 
@@ -138,6 +139,45 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
         d->ui.clipX->setValue(cnt[0]);
         d->ui.clipY->setValue(cnt[1]);
         d->ui.clipZ->setValue(cnt[2]);
+
+        int minDecimals = 2;
+        float lenx, leny,lenz;
+        box.getSize(lenx, leny, lenz);
+        int steps = 100;
+        float minlen = std::min<float>(lenx, std::min<float>(leny, lenz));
+
+        // determine the single step values
+        {
+            minlen = minlen / steps;
+            int dim = static_cast<int>(log10(minlen));
+            double singleStep = pow(10.0, dim);
+            d->ui.clipView->setSingleStep(singleStep);
+            minDecimals = std::max(minDecimals, -dim);
+        }
+        {
+            lenx = lenx / steps;
+            int dim = static_cast<int>(log10(lenx));
+            double singleStep = pow(10.0, dim);
+            d->ui.clipX->setSingleStep(singleStep);
+        }
+        {
+            leny = leny / steps;
+            int dim = static_cast<int>(log10(leny));
+            double singleStep = pow(10.0, dim);
+            d->ui.clipY->setSingleStep(singleStep);
+        }
+        {
+            lenz = lenz / steps;
+            int dim = static_cast<int>(log10(lenz));
+            double singleStep = pow(10.0, dim);
+            d->ui.clipZ->setSingleStep(singleStep);
+        }
+
+        // set decimals
+        d->ui.clipView->setDecimals(minDecimals);
+        d->ui.clipX->setDecimals(minDecimals);
+        d->ui.clipY->setDecimals(minDecimals);
+        d->ui.clipZ->setDecimals(minDecimals);
     }
 }
 

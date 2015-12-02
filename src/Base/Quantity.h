@@ -58,6 +58,7 @@ public:
     Quantity operator /(const Quantity &p) const;
     bool operator ==(const Quantity&) const;
     bool operator < (const Quantity&) const;
+    bool operator > (const Quantity&) const;
     Quantity& operator =(const Quantity&);
     Quantity pow(const Quantity&)const;
     //@}

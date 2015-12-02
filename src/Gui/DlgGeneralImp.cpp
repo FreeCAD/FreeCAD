@@ -162,6 +162,9 @@ void DlgGeneralImp::saveSettings()
                 mdi->setBackground(QBrush(Qt::NoBrush));
                 QTextStream str(&f);
                 qApp->setStyleSheet(str.readAll());
+
+                ActionStyleEvent e(ActionStyleEvent::Clear);
+                qApp->sendEvent(getMainWindow(), &e);
             }
         }
     }
@@ -169,10 +172,14 @@ void DlgGeneralImp::saveSettings()
     if (sheet.toString().isEmpty()) {
         if (this->tiledBackground->isChecked()) {
             qApp->setStyleSheet(QString());
+            ActionStyleEvent e(ActionStyleEvent::Restore);
+            qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QPixmap(QLatin1String(":/icons/background.png")));
         }
         else {
             qApp->setStyleSheet(QString());
+            ActionStyleEvent e(ActionStyleEvent::Restore);
+            qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QBrush(QColor(160,160,160)));
         }
     }
@@ -251,35 +258,20 @@ void DlgGeneralImp::loadSettings()
     filter << QString::fromAscii("*.css");
     QFileInfoList fileNames;
 
-    // read from user directory
-    dir.setPath(QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str()));
-    fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
-    for (QFileInfoList::iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
-        if (cssFiles.find(it->baseName()) == cssFiles.end()) {
-            cssFiles[it->baseName()] = it->absoluteFilePath();
-        }
-    }
-
-    // read from resource directory
-    dir.setPath(QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str()));
-    fileNames = dir.entryInfoList(QStringList(filter), QDir::Files, QDir::Name);
-    for (QFileInfoList::iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
-        if (cssFiles.find(it->baseName()) == cssFiles.end()) {
-            cssFiles[it->baseName()] = it->absoluteFilePath();
-        }
-    }
-
-    // read from the built-in directory
-    dir.setPath(QLatin1String(":/stylesheets"));
-    fileNames = dir.entryInfoList(QStringList(filter), QDir::Files, QDir::Name);
-    this->StyleSheets->addItem(tr("No style sheet"), QString::fromAscii(""));
-    for (QFileInfoList::iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
-        if (cssFiles.find(it->baseName()) == cssFiles.end()) {
-            cssFiles[it->baseName()] = it->absoluteFilePath();
+    // read from user, resource and built-in directory
+    QStringList qssPaths = QDir::searchPaths(QString::fromLatin1("qss"));
+    for (QStringList::iterator it = qssPaths.begin(); it != qssPaths.end(); ++it) {
+        dir.setPath(*it);
+        fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
+        for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
+            if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
+                cssFiles[jt->baseName()] = jt->absoluteFilePath();
+            }
         }
     }
 
     // now add all unique items
+    this->StyleSheets->addItem(tr("No style sheet"), QString::fromAscii(""));
     for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
         this->StyleSheets->addItem(it.key(), it.value());
     }

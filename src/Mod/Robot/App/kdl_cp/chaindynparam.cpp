@@ -26,19 +26,20 @@
 namespace KDL {
 
     ChainDynParam::ChainDynParam(const Chain& _chain, Vector _grav):
-        chain(_chain), 
-	grav(_grav),
-	chainidsolver_coriolis( chain, Vector::Zero()),
-	chainidsolver_gravity( chain, grav),
-	nj(chain.getNrOfJoints()),
-	ns(chain.getNrOfSegments()),
-	jntarraynull(nj),
-	wrenchnull(ns,Wrench::Zero()),
-	Ic(ns),
-	X(ns),
-	S(ns)
+            chain(_chain),
+            nr(0),
+            nj(chain.getNrOfJoints()),
+            ns(chain.getNrOfSegments()),
+            grav(_grav),
+            jntarraynull(nj),
+            chainidsolver_coriolis( chain, Vector::Zero()),
+            chainidsolver_gravity( chain, grav),
+            wrenchnull(ns,Wrench::Zero()),
+            X(ns),
+            S(ns),
+            Ic(ns)
     {
-	ag=-Twist(grav,Vector::Zero());
+        ag=-Twist(grav,Vector::Zero());
     }
 
     //calculate inertia matrix H
@@ -102,6 +103,7 @@ namespace KDL {
 	  }
 
 	}
+	return 0;
     }
 
     //calculate coriolis matrix C
@@ -112,9 +114,9 @@ namespace KDL {
 
 	
 	//the calculation of coriolis matrix C
-	return chainidsolver_coriolis.CartToJnt(q, q_dot, jntarraynull, wrenchnull, coriolis);
+	chainidsolver_coriolis.CartToJnt(q, q_dot, jntarraynull, wrenchnull, coriolis);
 	
-
+	return 0;
     }
 
     //calculate gravity matrix G
@@ -125,7 +127,8 @@ namespace KDL {
 	
 	SetToZero(jntarraynull);
 	//the calculation of coriolis matrix C
-	return chainidsolver_gravity.CartToJnt(q, jntarraynull, jntarraynull, wrenchnull, gravity);
+	chainidsolver_gravity.CartToJnt(q, jntarraynull, jntarraynull, wrenchnull, gravity);
+	return 0;
     }
 
     ChainDynParam::~ChainDynParam()

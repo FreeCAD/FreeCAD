@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -116,6 +116,21 @@ void PropertyQuantity::setPyObject(PyObject *value)
         throw Base::Exception("Not matching Unit!");
 
     PropertyFloat::setValue(quant.getValue());
+}
+
+void PropertyQuantity::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    if (value.type() == typeid(double))
+        setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(Base::Quantity))
+        setValue((boost::any_cast<Quantity>(value)).getValue());
+    else
+        throw bad_cast();
+}
+
+const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier &path) const
+{
+    return Quantity(_dValue, _Unit);
 }
 
 //**************************************************************************

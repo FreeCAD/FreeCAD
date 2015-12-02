@@ -1198,7 +1198,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
         t = []
         if len(data.Wires) == 1:
             import Part,DraftGeomUtils
-            data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
+            data = Part.Wire(Part.__sortEdges__(data.Wires[0].Edges))
             verts = data.Vertexes
             try:
                 c = data.CenterOfMass
@@ -1274,7 +1274,7 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
                     ecurves = []
                     last = None
                     import DraftGeomUtils
-                    edges = DraftGeomUtils.sortEdges(p.Edges)
+                    edges = Part.__sortEdges__(p.Edges)
                     for e in edges:
                         if isinstance(e.Curve,Part.Circle):
                             import math
@@ -1407,8 +1407,12 @@ class IfcSchema:
     def __init__(self, filename):
         self.filename = filename
         if not os.path.exists(filename):
-            raise ImportError("no IFCSchema file found!")
-        else:
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+            p = p.GetString("MacroPath","")
+            filename = p + os.sep + filename
+            if not os.path.exists(filename):
+                raise ImportError("no IFCSchema file found!")
+
             self.file = open(self.filename)
             self.data = self.file.read()
             self.types = self.readTypes()
@@ -1861,6 +1865,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
                                 t = "        " + str(t)
                                 item = QtGui.QTreeWidgetItem(tree)
                                 item.setText(2,str(t))
+
     d = QtGui.QDialog()
     d.setObjectName("IfcExplorer")
     d.setWindowTitle("Ifc Explorer")

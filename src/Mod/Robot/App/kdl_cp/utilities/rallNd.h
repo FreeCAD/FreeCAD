@@ -54,7 +54,7 @@ public:
  * verniet berekend in de recursieve implementatie.  
  * of met 2de orde over 1ste order : kan ook efficient :
  * 0 1
- * ==>1 2
+ * ==\>1 2
  * 2 3
  */
 // N>2:
@@ -76,7 +76,7 @@ public:
 template <>
 class RallNd<2> : public Rall2d<double>  {
 public:
-	RallNd() {} /* (dwz. met evenveel numerieke operaties als een */
+	RallNd() {} /* (dwz. met evenveel numerieke operaties als een  */
 	RallNd(const Rall2d<double>& arg) :
 		Rall2d<double>(arg) {}
 	RallNd(double value,double d[]) {

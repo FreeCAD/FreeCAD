@@ -127,6 +127,7 @@ Log ('Init: Running FreeCADGuiInit.py start script...\n')
 # signal that the gui is up
 App.GuiUp = 1
 App.Gui = FreeCADGui
+FreeCADGui.Workbench = Workbench
 
 Gui.addWorkbench(NoneWorkbench())
 
@@ -143,7 +144,7 @@ FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript)","FreeCADGui")
 FreeCAD.addExportType("Inventor V2.1 (*.iv)","FreeCADGui")
 FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
 #FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
-FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
+#FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
 FreeCAD.addExportType("Portable Document Format (*.pdf)","FreeCADGui")
 
 del(InitApplications)

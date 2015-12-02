@@ -94,6 +94,12 @@ void SoFCOffscreenRenderer::writeToImage (QImage& img) const
 
 void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* comment, const SbMatrix& mat, const QImage& image)
 {
+    if (image.isNull()) {
+        std::stringstream str;
+        str << "Cannot save null image.";
+        throw Base::ValueError(str.str());
+    }
+
     Base::FileInfo file(filename);
     if (file.hasExtension("JPG") || file.hasExtension("JPEG")) {
         // writing comment in case of jpeg (Qt ignores setText() in case of jpeg)
@@ -163,13 +169,15 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
                     f.close();
                     std::stringstream str;
                     str << "Cannot save image to file '" << filename << "'.";
-                    throw Base::Exception(str.str());
+                    throw Base::ValueError(str.str());
                 }
             }
             else {
                 std::stringstream str;
                 str << "Cannot open file '" << filename << "' for writing.";
-                throw Base::Exception(str.str());
+                Base::FileException e;
+                e.setMessage(str.str());
+                throw e;
             }
         }
         //

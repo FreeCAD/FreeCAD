@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,6 +64,12 @@ public:
 
     void setUnit(const Base::Unit &u) {_Unit = u;}
     const Base::Unit &getUnit(void) const {return _Unit;}
+
+    void setValue(double lValue) { PropertyFloat::setValue(lValue); }
+    double getValue(void) const { return PropertyFloat::getValue(); }
+
+    virtual void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
+    virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
 protected:
     Base::Quantity createQuantityFromPy(PyObject *value);

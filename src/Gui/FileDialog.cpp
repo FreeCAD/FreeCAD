@@ -25,8 +25,10 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QButtonGroup>
+# include <QCompleter>
 # include <QComboBox>
 # include <QDesktopServices>
+# include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
 # include <QLineEdit>
@@ -69,8 +71,42 @@ void FileDialog::onSelectedFilter(const QString& filter)
     }
 }
 
+bool FileDialog::hasSuffix(const QString& ext) const
+{
+    QRegExp rx(QString::fromLatin1("\\*.(%1)\\W").arg(ext));
+    rx.setCaseSensitivity(Qt::CaseInsensitive);
+    QStringList filters = nameFilters();
+    for (QStringList::iterator it = filters.begin(); it != filters.end(); ++it) {
+        QString str = *it;
+        if (rx.indexIn(str) != -1) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void FileDialog::accept()
 {
+    // When saving to a file make sure that the entered filename ends with the selected
+    // file filter
+    if (acceptMode() == QFileDialog::AcceptSave) {
+        QStringList files = selectedFiles();
+        if (!files.isEmpty()) {
+            QString ext = this->defaultSuffix();
+            QString file = files.front();
+            QString suffix = QFileInfo(file).suffix();
+            // #0001928: do not add a suffix if a file with suffix is entered
+            // #0002209: make sure that the entered suffix is part of one of the filters
+            if (!ext.isEmpty() && (suffix.isEmpty() || !hasSuffix(suffix))) {
+                file = QString::fromLatin1("%1.%2").arg(file).arg(ext);
+                // That's the built-in line edit
+                QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
+                if (fileNameEdit)
+                    fileNameEdit->setText(file);
+            }
+        }
+    }
     QFileDialog::accept();
 }
 
@@ -453,6 +489,18 @@ QIcon FileIconProvider::icon(IconType type) const
 
 QIcon FileIconProvider::icon(const QFileInfo & info) const
 {
+    if (info.suffix().toLower() == QLatin1String("fcstd")) {
+        // return QApplication::windowIcon();
+        return QIcon(QString::fromLatin1(":/icons/freecad-doc.png"));
+    }
+    else if (info.suffix().toLower().startsWith(QLatin1String("fcstd"))) {
+        QIcon icon(QString::fromLatin1(":/icons/freecad-doc.png"));
+        QIcon darkIcon;
+        int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+        darkIcon.addPixmap(icon.pixmap(w, w, QIcon::Disabled, QIcon::Off), QIcon::Normal, QIcon::Off);
+        darkIcon.addPixmap(icon.pixmap(w, w, QIcon::Disabled, QIcon::On ), QIcon::Normal, QIcon::On );
+        return darkIcon;
+    }
     return QFileIconProvider::icon(info);
 }
 
@@ -475,11 +523,20 @@ FileChooser::FileChooser ( QWidget * parent )
     layout->setMargin( 0 );
     layout->setSpacing( 6 );
 
-    lineEdit = new QLineEdit( this );
+    lineEdit = new QLineEdit ( this );
+    completer = new QCompleter ( this );
+    completer->setMaxVisibleItems( 12 );
+    fs_model = new QFileSystemModel( completer );
+    fs_model->setRootPath(QString::fromUtf8(""));
+    completer->setModel( fs_model );
+    lineEdit->setCompleter( completer );
+
     layout->addWidget( lineEdit );
 
     connect(lineEdit, SIGNAL(textChanged(const QString &)),
             this, SIGNAL(fileNameChanged(const QString &)));
+
+    connect(lineEdit, SIGNAL(editingFinished()), this, SLOT(editingFinished()));
 
     button = new QPushButton(QLatin1String("..."), this);
     button->setFixedWidth(2*button->fontMetrics().width(QLatin1String(" ... ")));
@@ -507,6 +564,14 @@ QString FileChooser::fileName() const
     return lineEdit->text();
 }
 
+void FileChooser::editingFinished()
+{
+    QString le_converted = QDir::fromNativeSeparators(lineEdit->text());
+    lineEdit->setText(le_converted);
+    FileDialog::setWorkingDirectory(le_converted);
+    fileNameSelected(le_converted);
+}
+
 /** 
  * Sets the file name \a s.
  */
@@ -521,14 +586,21 @@ void FileChooser::setFileName( const QString& s )
  */
 void FileChooser::chooseFile()
 {
+    QString prechosenDirectory = lineEdit->text();
+    if (prechosenDirectory.isEmpty()) {
+        prechosenDirectory = FileDialog::getWorkingDirectory();
+    }
+
     QString fn;
     if ( mode() == File )
-        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), lineEdit->text(), _filter );
+        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter );
     else
-        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), lineEdit->text() );
+        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory );
 
     if (!fn.isEmpty()) {
+        fn = QDir::fromNativeSeparators(fn);
         lineEdit->setText(fn);
+        FileDialog::setWorkingDirectory(fn);
         fileNameSelected(fn);
     }
 }

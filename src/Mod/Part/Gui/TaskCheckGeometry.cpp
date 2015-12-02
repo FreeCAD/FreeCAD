@@ -21,6 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QBoxLayout>
+# include <QHeaderView>
+# include <QTextEdit>
+# include <QTextStream>
+# include <QTreeWidget>
+#endif
+
 #include <Standard_Version.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Result.hxx>
@@ -183,10 +191,10 @@ ResultEntry::ResultEntry()
 
 ResultEntry::~ResultEntry()
 {
-    if (boxSep)
+    if (boxSep && viewProviderRoot)
         viewProviderRoot->removeChild(boxSep);
     if (viewProviderRoot)
-      viewProviderRoot->unref();
+        viewProviderRoot->unref();
     qDeleteAll(children);
 }
 

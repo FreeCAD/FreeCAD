@@ -13,6 +13,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Inventor/system/inttypes.h>
 #endif
 
 #include <Base/Console.h>
@@ -105,7 +106,6 @@ void PartGuiExport initPartGui()
     PartGui::SoBrepEdgeSet                  ::initClass();
     PartGui::SoBrepPointSet                 ::initClass();
     PartGui::SoFCControlPoints              ::initClass();
-    PartGui::ViewProviderPartBase           ::init();
     PartGui::ViewProviderPartExt            ::init();
     PartGui::ViewProviderPart               ::init();
     PartGui::ViewProviderEllipsoid          ::init();
@@ -146,6 +146,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderConeParametric     ::init();
     PartGui::ViewProviderTorusParametric    ::init();
     PartGui::ViewProviderRuledSurface       ::init();
+    PartGui::ViewProviderFace               ::init();
     PartGui::DimensionLinear                ::initClass();
     PartGui::DimensionAngular               ::initClass();
     PartGui::ArcEngine                      ::initClass();

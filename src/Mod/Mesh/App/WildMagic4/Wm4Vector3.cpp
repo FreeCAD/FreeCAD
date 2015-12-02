@@ -16,7 +16,8 @@
 
 #include "Wm4FoundationPCH.h"
 #include "Wm4Vector3.h"
-using namespace Wm4;
+
+namespace Wm4 {
 
 template<> const Vector3<float> Vector3<float>::ZERO(0.0f,0.0f,0.0f);
 template<> const Vector3<float> Vector3<float>::UNIT_X(1.0f,0.0f,0.0f);
@@ -31,3 +32,5 @@ template<> const Vector3<double> Vector3<double>::UNIT_Y(0.0,1.0,0.0);
 template<> const Vector3<double> Vector3<double>::UNIT_Z(0.0,0.0,1.0);
 template<> const Vector3<double> Vector3<double>::ONE(1.0,1.0,1.0);
 /// @endcond
+
+}

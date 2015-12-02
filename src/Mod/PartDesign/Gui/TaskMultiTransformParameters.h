@@ -32,6 +32,7 @@
 #include "ViewProviderMultiTransform.h"
 
 class Ui_TaskMultiTransformParameters;
+class QModelIndex;
 
 namespace PartDesign {
 class Transformed;
@@ -61,6 +62,8 @@ public:
 
     /// Return the currently active subFeature
     PartDesign::Transformed* getSubFeature(void) { return subFeature; }
+
+    virtual void apply();
 
 private Q_SLOTS:
     void onTransformDelete();

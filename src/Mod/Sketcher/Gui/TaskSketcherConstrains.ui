@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>176</width>
+    <width>212</width>
     <height>288</height>
    </rect>
   </property>
@@ -26,7 +26,7 @@
      <item>
       <widget class="QComboBox" name="comboBoxFilter">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <item>
         <property name="text">
@@ -46,6 +46,11 @@
        <item>
         <property name="text">
          <string>Named</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Reference</string>
         </property>
        </item>
       </widget>

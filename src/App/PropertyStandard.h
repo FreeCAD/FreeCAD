@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,6 +34,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include <Base/Uuid.h>
+#include "Enumeration.h"
 #include "Property.h"
 #include "Material.h"
 
@@ -75,6 +76,9 @@ public:
     virtual void Paste(const Property &from);
 
     virtual unsigned int getMemSize (void) const{return sizeof(long);}
+
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const { return _lValue; }
 
 protected:
     long _lValue;
@@ -121,30 +125,25 @@ protected:
     boost::filesystem::path _cValue;
 };
 
-/** Enum properties
- * This property fullfill the need of enumarations. It holds basicly a 
- * state (integer) and a list of valid state names. If the valid state
- * list is not set it act basicly like a IntegerProperty and do no checking.
- * If the list is set it checks on the range and if you set the state with
- * a string if its included in the enumarations.
- * In DEBUG the boundaries get checked, otherwise the caller of setValue()
- * has the responsebility to check the correctnes.
- * This mean if you set by setValue(const char*) with an not included value
- * and not using isPartOf() before,
- * in DEBUG you get an assert() in release its set to 0.
- */
-class AppExport PropertyEnumeration: public PropertyInteger
+/// Property wrapper around an Enumeration object.
+class AppExport PropertyEnumeration: public Property
 {
     TYPESYSTEM_HEADER();
 
 public:
     /// Standard constructor
     PropertyEnumeration();
+
+    /// Obvious constructor
+    PropertyEnumeration(const Enumeration &e);
     
     /// destructor
     virtual ~PropertyEnumeration();
 
     /// Enumeration methods 
+    /*!
+     * These all function as per documentation in Enumeration
+     */
     //@{
     /** setting the enumaration string list
      * The list is a NULL terminated array of pointers to a const char* string
@@ -162,34 +161,48 @@ public:
      * Is faster then using setValue(const char*).
      */
     void setValue(long);
+
+    /// Setter using Enumeration
+    void setValue(const Enumeration &source);
+
+    /// Returns current value of the enumeration as an integer
+    long getValue(void) const;
+
     /// checks if the property is set to a certain string value
     bool isValue(const char* value) const;
+
     /// checks if a string is included in the enumeration
     bool isPartOf(const char* value) const;
+
     /// get the value as string
-    const char* getValueAsString(void) const;
+    const char * getValueAsString(void) const;
+
+    /// Returns Enumeration object
+    Enumeration getEnum(void) const;
+
     /// get all possible enum values as vector of strings
     std::vector<std::string> getEnumVector(void) const;
-    /// set all enum values as vector of strings
-    void setEnumVector(const std::vector<std::string>&);
+
     /// get the pointer to the enum list
-    const char** getEnums(void) const;
+    const char ** getEnums(void) const;
     //@}
 
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyEnumItem"; }
+    virtual const char * getEditorName(void) const { return "Gui::PropertyEditor::PropertyEnumItem"; }
     
-    virtual PyObject *getPyObject(void);
+    virtual PyObject * getPyObject(void);
     virtual void setPyObject(PyObject *);
 
-    virtual void Save (Base::Writer &writer) const;
+    virtual void Save(Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
 
-    virtual Property *Copy(void) const;
+    virtual Property * Copy(void) const;
     virtual void Paste(const Property &from);
 
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const { return _enum; }
+
 private:
-    bool _CustomEnum;
-    const char** _EnumArray;
+    Enumeration _enum;
 };
 
 /** Constraint integer properties
@@ -287,6 +300,8 @@ public:
     void setValues (const std::vector<long>& values);
 
     const std::vector<long> &getValues(void) const{return _lValueList;}
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyIntegerListItem"; }
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -444,15 +459,18 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(double);}
     
+    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
+    const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+
 protected:
     double _dValue;
 };
 
 /** Constraint float properties
- * This property fullfill the need of constraint float. It holds basicly a 
+ * This property fullfill the need of constraint float. It holds basicly a
  * state (float) and a struct of boundaries. If the boundaries
- * is not set it act basicly like a IntegerProperty and do no checking.
- * The constraints struct can be created on the heap or build in.
+ * is not set it acts basicly like a PropertyFloat and does no checking
+ * The constraints struct can be created on the heap or built-in.
  */
 class AppExport PropertyFloatConstraint: public PropertyFloat
 {
@@ -535,7 +553,10 @@ public:
     void setValues (const std::vector<double>& values);
     
     const std::vector<double> &getValues(void) const{return _lValueList;}
-    
+
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyFloatListItem"; }
+
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
     
@@ -592,6 +613,9 @@ public:
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
+
+    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
+    const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
 private:
     std::string _cValue;
@@ -688,7 +712,8 @@ public:
     
     const std::vector<std::string> &getValues(void) const{return _lValueList;}
     
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyStringListItem"; }
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyStringListItem"; }
     
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -743,6 +768,9 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(bool);}
     
+    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
+    const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+
 private:
     bool _lValue;
 };

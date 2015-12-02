@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -77,6 +77,8 @@ public:
     virtual int getAxisCount(void) const;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
     virtual Base::Axis getAxis(int axId) const;
+    /// verify and accept the assigned geometry
+    virtual void acceptGeometry();
 
     /** calculate the points where a curve with index GeoId should be trimmed
       * with respect to the rest of the curves contained in the list geomlist

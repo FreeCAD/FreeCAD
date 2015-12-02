@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,6 +50,7 @@ public:
 
     App::PropertyFloat X,Y,Scale,Rotation;
     App::PropertyString ViewResult;
+    App::PropertyBool Visible;
 
 
     /** @name methods overide Feature */

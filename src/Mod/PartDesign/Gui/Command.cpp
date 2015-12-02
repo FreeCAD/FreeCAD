@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -73,7 +73,7 @@ void validateSketches(std::vector<App::DocumentObject*>& sketches, const bool su
         std::vector<App::DocumentObject*> ref = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator r = ref.begin();
         while (r != ref.end()) {
-            if ((*r)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
+            if (!(*r)->getTypeId().isDerivedFrom(PartDesign::SketchBased().getClassTypeId())) {
                 r = ref.erase(r);
                 continue;
             }
@@ -186,20 +186,26 @@ CmdPartDesignPad::CmdPartDesignPad()
 
 void CmdPartDesignPad::activated(int iMsg)
 {
+    bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
     // First check selections
     std::vector<App::DocumentObject*> sketches = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    Gui::validateSketches(sketches, false);
-    // Next let the user choose from a list of all eligible objects
-    if (sketches.size() == 0) {
+    if (sketches.size() == 0) {//no sketches were selected. Let user pick an object from valid ones available in document
         sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        Gui::validateSketches(sketches, false);
-        if (sketches.size() == 0) {
+        bNoSketchWasSelected = true;
+    }
+    Gui::validateSketches(sketches, false);
+    if (sketches.size() == 0) {
+        if (bNoSketchWasSelected) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
                 QObject::tr("Please create a sketch or 2D object first"));
-            return;
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches selected"),
+                QObject::tr("None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature."));
         }
+        return;
     }
+
     // If there is more than one selection/possibility, show dialog and let user pick sketch
     if (sketches.size() > 1) {
         PartDesignGui::FeaturePickDialog Dlg(sketches);
@@ -228,7 +234,9 @@ void CmdPartDesignPad::activated(int iMsg)
         if (support)
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s',1)",FeatName.c_str());
+    // #0001721: use '0' as edit value to avoid switching off selection in
+    // ViewProviderGeometryObject::setEditViewer
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s',0)",FeatName.c_str());
 
     //commitCommand();
     adjustCameraPosition();
@@ -336,20 +344,26 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 
 void CmdPartDesignRevolution::activated(int iMsg)
 {
+    bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
     // First check selections
     std::vector<App::DocumentObject*> sketches = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    Gui::validateSketches(sketches, false);
-    // Next let the user choose from a list of all eligible objects
-    if (sketches.size() == 0) {
+    if (sketches.size() == 0) {//no sketches were selected. Let user pick an object from valid ones available in document
         sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        Gui::validateSketches(sketches, false);
-        if (sketches.size() == 0) {
+        bNoSketchWasSelected = true;
+    }
+    Gui::validateSketches(sketches, false);
+    if (sketches.size() == 0) {
+        if (bNoSketchWasSelected) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
                 QObject::tr("Please create a sketch or 2D object first"));
-            return;
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches selected"),
+                QObject::tr("None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature."));
         }
+        return;
     }
+
     // If there is more than one selection/possibility, show dialog and let user pick sketch
     if (sketches.size() > 1) {
         PartDesignGui::FeaturePickDialog Dlg(sketches);

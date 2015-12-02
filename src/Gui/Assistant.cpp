@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QDir>
+# include <QFileInfo>
 # include <QLibraryInfo>
 # include <QMessageBox>
 # include <QProcess>
@@ -36,6 +37,8 @@
 #include <App/Application.h>
 
 using namespace Gui;
+
+/* TRANSLATOR Gui::Assistant */
 
 Assistant::Assistant()
     : proc(0)
@@ -97,6 +100,13 @@ bool Assistant::startAssistant()
         QString doc = QString::fromUtf8(App::Application::getHelpDir().c_str());
         QString qhc = doc + exe.toLower() + QLatin1String(".qhc");
 
+        QFileInfo fi(qhc);
+        if (!fi.isReadable()) {
+            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe).arg(qhc));
+            return false;
+        }
+
         static bool first = true;
         if (first) {
             Base::Console().Log("Help file at %s\n", (const char*)qhc.toUtf8());
@@ -111,8 +121,8 @@ bool Assistant::startAssistant()
         proc->start(app, args);
 
         if (!proc->waitForStarted()) {
-            QMessageBox::critical(0, QObject::tr("%1 Help").arg(exe),
-            QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
+            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                tr("Unable to launch Qt Assistant (%1)").arg(app));
             return false;
         }
     }

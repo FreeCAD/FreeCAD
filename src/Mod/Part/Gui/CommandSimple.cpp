@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -190,6 +190,7 @@ void CmdPartSimpleCopy::activated(int iMsg)
         copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
         copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
         copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
+        copyVisual("ActiveObject", "DiffuseColor", (*it)->getNameInDocument());
     }
     commitCommand();
     updateActive();

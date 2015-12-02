@@ -50,6 +50,7 @@
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -143,8 +144,12 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action)
     mb.sendFirst(); // make sure we have the correct material
 
     int32_t id = this->highlightIndex.getValue();
-
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), &id, 1);
+    if (id < this->startIndex.getValue() || id >= coords->getNum()) {
+        SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
+    }
+    else {
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), &id, 1);
+    }
     state->pop();
 }
 
@@ -173,8 +178,24 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action)
     cindices = this->selectionIndex.getValues(0);
     numcindices = this->selectionIndex.getNum();
 
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+    if (!validIndexes(coords, this->startIndex.getValue(), cindices, numcindices)) {
+        SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
+    }
+    else {
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+    }
     state->pop();
+}
+
+bool SoBrepPointSet::validIndexes(const SoCoordinateElement* coords, int32_t startIndex, const int32_t * cindices, int numcindices) const
+{
+    for (int i=0; i<numcindices; i++) {
+        int32_t id = cindices[i];
+        if (id < startIndex || id >= coords->getNum()) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void SoBrepPointSet::doAction(SoAction* action)
@@ -226,14 +247,17 @@ void SoBrepPointSet::doAction(SoAction* action)
             switch (selaction->getType()) {
             case Gui::SoSelectionElementAction::Append:
                 {
-                    int start = this->selectionIndex.getNum();
-                    this->selectionIndex.set1Value(start, index);
+                    if (this->selectionIndex.find(index) < 0) {
+                        int start = this->selectionIndex.getNum();
+                        this->selectionIndex.set1Value(start, index);
+                    }
                 }
                 break;
             case Gui::SoSelectionElementAction::Remove:
                 {
                     int start = this->selectionIndex.find(index);
-                    this->selectionIndex.deleteValues(start,1);
+                    if (start >= 0)
+                        this->selectionIndex.deleteValues(start,1);
                 }
                 break;
             default:

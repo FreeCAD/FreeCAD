@@ -71,7 +71,7 @@ PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDocumentObject
 
 const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 
-ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
+ViewProviderGeometryObject::ViewProviderGeometryObject() : m_dragStart(false), pcBoundSwitch(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
@@ -85,11 +85,8 @@ ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
     ADD_PROPERTY(BoundingBox,(false));
     ADD_PROPERTY(Selectable,(true));
 
-    // Create the selection node
-    pcHighlight = createFromSettings();
-    pcHighlight->ref();
-    if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
-        Selectable.setValue(false);
+    bool enableSel = hGrp->GetBool("EnableSelection", true);
+    Selectable.setValue(enableSel);
 
     pcShapeMaterial = new SoMaterial;
     pcShapeMaterial->ref();
@@ -104,7 +101,6 @@ ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
 ViewProviderGeometryObject::~ViewProviderGeometryObject()
 {
     pcShapeMaterial->unref();
-    pcHighlight->unref();
     pcBoundingBox->unref();
 }
 
@@ -157,9 +153,6 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
 void ViewProviderGeometryObject::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
-    pcHighlight->objectName = pcObj->getNameInDocument();
-    pcHighlight->documentName = pcObj->getDocument()->getName();
-    pcHighlight->subElementName = "Main";
 }
 
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
@@ -193,6 +186,27 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         pcTransform->translation.setValue(px,py,pz);
         pcTransform->center.setValue(0.0f,0.0f,0.0f);
         pcTransform->scaleFactor.setValue(1.0f,1.0f,1.0f);
+
+        // If this view provider is in edit mode also check whether it has
+        // an SoCenterballManip that must be updated (#0002150)
+        if (isEditing() && !m_dragStart) {
+            SoSearchAction sa;
+            sa.setType(SoCenterballManip::getClassTypeId());
+            sa.setInterest(SoSearchAction::FIRST);
+            sa.apply(pcRoot);
+
+            SoPath * path = sa.getPath();
+            if (path) {
+                // check if the name matches to avoid to get any other manipulator
+                SoCenterballManip * manip = static_cast<SoCenterballManip*>(path->getTail());
+                if (manip->getName() == SbName("ViewProviderGeometryObject")) {
+                    manip->rotation.setValue(q0,q1,q2,q3);
+                    manip->translation.setValue(px,py,pz);
+                    manip->center.setValue(0.0f,0.0f,0.0f);
+                    manip->scaleFactor.setValue(1.0f,1.0f,1.0f);
+                }
+            }
+        }
     }
 }
 
@@ -219,6 +233,7 @@ bool ViewProviderGeometryObject::setEdit(int ModNum)
     SoPath * path = sa.getPath();
     if (path) {
         SoCenterballManip * manip = new SoCenterballManip;
+        manip->setName("ViewProviderGeometryObject");
         SoDragger* dragger = manip->getDragger();
         dragger->addStartCallback(dragStartCallback, this);
         dragger->addFinishCallback(dragFinishCallback, this);
@@ -475,7 +490,7 @@ void ViewProviderGeometryObject::dragMotionCallback(void * data, SoDragger * d)
             t -= c;
             newPlm.setPosition(t);
 
-            // #0001441: entering Transform mode degrades the Placemens rotation to single precision
+            // #0001441: entering Transform mode degrades the Placement rotation to single precision
             Base::Placement oldPlm = geometry->Placement.getValue();
             const Base::Vector3d& p1 = oldPlm.getPosition();
             const Base::Vector3d& p2 = newPlm.getPosition();
@@ -502,12 +517,16 @@ void ViewProviderGeometryObject::dragStartCallback(void *data, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand("Transform");
+    ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
+    view->m_dragStart = true;
 }
 
 void ViewProviderGeometryObject::dragFinishCallback(void *data, SoDragger *)
 {
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
+    ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
+    view->m_dragStart = false;
 }
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll) const
@@ -516,7 +535,7 @@ SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos
     root->ref();
     root->addChild(viewer.getHeadlight());
     root->addChild(viewer.getSoRenderManager()->getCamera());
-    root->addChild(this->pcHighlight);
+    root->addChild(const_cast<ViewProviderGeometryObject*>(this)->getRoot());
 
     SoRayPickAction rp(viewer.getSoRenderManager()->getViewportRegion());
     rp.setPickAll(pickAll);
@@ -534,7 +553,7 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
     root->ref();
     root->addChild(viewer.getHeadlight());
     root->addChild(viewer.getSoRenderManager()->getCamera());
-    root->addChild(this->pcHighlight);
+    root->addChild(const_cast<ViewProviderGeometryObject*>(this)->getRoot());
 
     SoRayPickAction rp(viewer.getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
@@ -576,40 +595,6 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
     if (pcBoundSwitch) {
         pcBoundSwitch->whichChild = (show ? 0 : -1);
     }
-}
-
-SoFCSelection* ViewProviderGeometryObject::createFromSettings() const
-{
-    SoFCSelection* sel = new SoFCSelection();
-
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    bool enablePre = hGrp->GetBool("EnablePreselection", true);
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    if (!enablePre) {
-        sel->highlightMode = Gui::SoFCSelection::OFF;
-    }
-    else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = sel->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        sel->colorHighlight.setValue(highlightColor);
-    }
-    if (!enableSel || !Selectable.getValue()) {
-        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    }
-    else {
-        // Do the same with the selection color
-        SbColor selectionColor = sel->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        sel->colorSelection.setValue(selectionColor);
-    }
-
-    return sel;
 }
 
 void ViewProviderGeometryObject::setSelectable(bool selectable)

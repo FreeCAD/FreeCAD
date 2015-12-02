@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2008                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,7 +53,7 @@
 using Base::Console;
 using App::Application;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2014\n"\
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2015\n"\
                        "  #####                 ####  ###   ####  \n" \
                        "  #                    #      # #   #   # \n" \
                        "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -67,12 +67,8 @@ const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2
 int main( int argc, char ** argv )
 {
     // Make sure that we use '.' as decimal point
-#if defined(FC_OS_LINUX)
-    putenv("LANG=C");
-    putenv("LC_ALL=C");
-#else
+    setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
-#endif
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,7 +29,6 @@
 #include <vector>
 #include <QObject>
 
-#include <Gui/iisTaskPanel/include/iisTaskPanel>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 

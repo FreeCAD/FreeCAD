@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <iterator>
 #include <Geom_Surface.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_CylindricalSurface.hxx>
@@ -61,6 +62,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <TColgp_SequenceOfPnt.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Base/Console.h>
 #include "modelRefine.h"
 
 using namespace ModelRefine;
@@ -342,12 +344,31 @@ FaceTypedPlane::FaceTypedPlane() : FaceTypedBase(GeomAbs_Plane)
 {
 }
 
+static Handle(Geom_Plane) getGeomPlane(const TopoDS_Face &faceIn)
+{
+  Handle_Geom_Plane planeSurfaceOut;
+  Handle_Geom_Surface surface = BRep_Tool::Surface(faceIn);
+  if (!surface.IsNull())
+  {
+    planeSurfaceOut = Handle(Geom_Plane)::DownCast(surface);
+    if (planeSurfaceOut.IsNull())
+    {
+      Handle_Geom_RectangularTrimmedSurface trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
+      if (!trimmedSurface.IsNull())
+        planeSurfaceOut = Handle(Geom_Plane)::DownCast(trimmedSurface->BasisSurface());
+    }
+  }
+
+  return planeSurfaceOut;
+}
+
 bool FaceTypedPlane::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
-    Handle(Geom_Plane) planeSurfaceOne = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceOne));
-    Handle(Geom_Plane) planeSurfaceTwo = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceTwo));
-    if (planeSurfaceOne.IsNull() || planeSurfaceTwo.IsNull())
-        return false;//error?
+  Handle(Geom_Plane) planeSurfaceOne = getGeomPlane(faceOne);
+  Handle(Geom_Plane) planeSurfaceTwo = getGeomPlane(faceTwo);
+  if (planeSurfaceOne.IsNull() || planeSurfaceTwo.IsNull())
+      return false;//error?
+
     gp_Pln planeOne(planeSurfaceOne->Pln());
     gp_Pln planeTwo(planeSurfaceTwo->Pln());
     return (planeOne.Position().Direction().IsParallel(planeTwo.Position().Direction(), Precision::Confusion()) &&
@@ -519,11 +540,13 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
                     gp_Vec dv = gp_Vec(pend.X(), pend.Y(), pend.Z()) - bv;
                     double dist = dv.Magnitude();
 
-                    // Check orientation of this piece in relation to cylinder axis
-                    if ((bv - cv).Crossed(dv).IsOpposite(av, Precision::Confusion()))
-                        dist = -dist;
+                    if (dist > 0) {
+                        // Check orientation of this piece in relation to cylinder axis
+                        if ((bv - cv).Crossed(dv).IsOpposite(av, Precision::Confusion()))
+                            dist = -dist;
 
-                    length += dist;
+                        length += dist;
+                    }
                 }
 
                 begin = pend;
@@ -737,7 +760,7 @@ FaceTypedCylinder& ModelRefine::getCylinderObject()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x070000
+#if OCC_VERSION_HEX <= 0x7fffff
 void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &map)
 {
   TopTools_IndexedMapOfShape edges;
@@ -765,6 +788,8 @@ FaceTypedBSpline::FaceTypedBSpline() : FaceTypedBase(GeomAbs_BSplineSurface)
 
 bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
+  try
+  {
     Handle(Geom_BSplineSurface) surfaceOne = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceOne));
     Handle(Geom_BSplineSurface) surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceTwo));
 
@@ -772,7 +797,7 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
         return false;
 
     if (surfaceOne->IsURational() != surfaceTwo->IsURational()) return false;
-    if (surfaceTwo->IsVRational() != surfaceTwo->IsVRational()) return false;
+    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational()) return false;
     if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic()) return false;
     if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic()) return false;
     if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed()) return false;
@@ -847,6 +872,22 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
         if (vKnotSequenceOne.Value(indexV) != vKnotSequenceTwo.Value(indexV))
             return false;
     return true;
+  }
+  catch (Standard_Failure)
+  {
+    Handle(Standard_Failure) e = Standard_Failure::Caught();
+    std::ostringstream stream;
+    stream << "FaceTypedBSpline::isEqual: OCC Error: " << e->GetMessageString() << std::endl;
+    Base::Console().Message(stream.str().c_str());
+  }
+  catch (...)
+  {
+    std::ostringstream stream;
+    stream << "FaceTypedBSpline::isEqual: Unknown Error" << std::endl;
+    Base::Console().Message(stream.str().c_str());
+  }
+  
+  return false;
 }
 
 GeomAbs_SurfaceType FaceTypedBSpline::getType() const
@@ -1024,12 +1065,11 @@ bool FaceUniter::process()
         
         BRepLib_FuseEdges edgeFuse(workShell);
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x070000
+#if OCC_VERSION_HEX <= 0x7fffff
         TopTools_IndexedMapOfShape map;
         collectConicEdges(workShell, map);
         edgeFuse.AvoidEdges(map);
 #endif
-        edgeFuse.Perform();
         TopTools_DataMapOfShapeShape affectedFaces;
         edgeFuse.Faces(affectedFaces);
         TopTools_DataMapIteratorOfDataMapOfShapeShape mapIt;
@@ -1074,7 +1114,8 @@ bool FaceUniter::process()
             TopTools_ListIteratorOfListOfShape edgeIt;
             for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
             {
-                modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
+                if (newEdges.IsBound(idx))
+                    modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
             }
             // TODO: Handle vertices that have disappeared in the fusion of the edges
         }

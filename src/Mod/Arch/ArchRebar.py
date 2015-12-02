@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2013                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -35,16 +35,16 @@ __title__="FreeCAD Rebar"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-    
-def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name=translate("Arch","Rebar")):
+
+def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
     """makeRebar(baseobj,sketch,[diameter,amount,offset,name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Rebar(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)
-        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Rebar")
     if hasattr(sketch,"Support"):
         if sketch.Support:
             if isinstance(sketch.Support,tuple):
@@ -69,12 +69,13 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name=translate("
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
+    ArchCommands.fixDAG(obj)
     return obj
 
 
 class _CommandRebar:
     "the Arch Rebar command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Rebar',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
@@ -99,7 +100,7 @@ class _CommandRebar:
                         FreeCAD.ActiveDocument.commitTransaction()
                         FreeCAD.ActiveDocument.recompute()
                         return
-                else: 
+                else:
                     # we have only a base object: open the sketcher
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
                     FreeCADGui.runCommand("Sketcher_NewSketch")
@@ -132,7 +133,7 @@ class _CommandRebar:
 
 class _Rebar(ArchComponent.Component):
     "A parametric reinforcement bar (rebar) object"
-    
+
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Diameter","Arch","The diameter of the bar")
@@ -145,18 +146,26 @@ class _Rebar(ArchComponent.Component):
         self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 
-    def getBaseAndAxis(self,obj):
-        "returns a base point and orientation axis from the base sketch"
+    def getBaseAndAxis(self,wire):
+        "returns a base point and orientation axis from the base wire"
+        import DraftGeomUtils
+        if wire:
+            e = wire.Edges[0]
+            v = DraftGeomUtils.vec(e).normalize()
+            return e.Vertexes[0].Point,v
         if obj.Base:
             if obj.Base.Shape:
                 if obj.Base.Shape.Wires:
                     e = obj.Base.Shape.Wires[0].Edges[0]
-                    import DraftGeomUtils
                     v = DraftGeomUtils.vec(e).normalize()
                     return e.Vertexes[0].Point,v
         return None,None
-        
+
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         if len(obj.InList) != 1:
             return
         if Draft.getType(obj.InList[0]) != "Structure":
@@ -181,7 +190,7 @@ class _Rebar(ArchComponent.Component):
                 radius = obj.Rounding * obj.Diameter.Value
                 import DraftGeomUtils
                 wire = DraftGeomUtils.filletWire(wire,radius)
-        bpoint, bvec = self.getBaseAndAxis(obj)
+        bpoint, bvec = self.getBaseAndAxis(wire)
         if not bpoint:
             return
         axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
@@ -237,12 +246,13 @@ class _Rebar(ArchComponent.Component):
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
 
-        
+
 class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
     "A View Provider for the Rebar object"
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Rebar")
 
     def getIcon(self):
         import Arch_rc

@@ -57,9 +57,12 @@ class TaskPanel:
         form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
         form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
 
-        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
-        min_draft = Units.Quantity(form.minDraft.text()).getValueAs('m').Value
-        max_draft = Units.Quantity(form.maxDraft.text()).getValueAs('m').Value
+        trim = Units.Quantity(Locale.fromString(
+            form.trim.text())).getValueAs('deg').Value
+        min_draft = Units.Quantity(Locale.fromString(
+            form.minDraft.text())).getValueAs('m').Value
+        max_draft = Units.Quantity(Locale.fromString(
+            form.maxDraft.text())).getValueAs('m').Value
         n_draft = form.nDraft.value()
 
         draft = min_draft
@@ -253,7 +256,7 @@ class TaskPanel:
                     USys.getLengthUnits()).Value)))
         except ValueError:
             form.minDraft.setText(Locale.toString(length_format.format(
-                0.9 * self.ship.Draft.getValueAs('m').Value)))
+                0.9 * self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
         try:
             props.index("HydrostaticsMaxDraft")
             form.maxDraft.setText(Locale.toString(length_format.format(
@@ -261,7 +264,7 @@ class TaskPanel:
                     USys.getLengthUnits()).Value)))
         except ValueError:
             form.maxDraft.setText(Locale.toString(length_format.format(
-                1.1 * self.ship.Draft.getValueAs('m').Value)))
+                1.1 * self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
 
         try:
             props.index("HydrostaticsNDraft")
@@ -340,7 +343,8 @@ class TaskPanel:
 
         # Get the values (or fix them in bad setting case)
         try:
-            trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+            trim = Units.Quantity(Locale.fromString(
+                form.trim.text())).getValueAs('deg').Value
         except:
             trim = 0.0
             input_format = USys.getAngleFormat()
@@ -348,8 +352,8 @@ class TaskPanel:
             form.trim.setText(Locale.toString(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
-            min_draft = Units.Quantity(
-                form.minDraft.text()).getValueAs('m').Value
+            min_draft = Units.Quantity(Locale.fromString(
+                form.minDraft.text())).getValueAs('m').Value
         except:
             min_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
@@ -357,8 +361,8 @@ class TaskPanel:
             form.minDraft.setText(Locale.toString(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
-            max_draft = Units.Quantity(
-                form.minDraft.text()).getValueAs('m').Value
+            max_draft = Units.Quantity(Locale.fromString(
+                form.minDraft.text())).getValueAs('m').Value
         except:
             max_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
@@ -404,9 +408,12 @@ class TaskPanel:
         form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
         form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
 
-        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
-        min_draft = Units.Quantity(form.minDraft.text()).getValueAs('m').Value
-        max_draft = Units.Quantity(form.maxDraft.text()).getValueAs('m').Value
+        trim = Units.Quantity(Locale.fromString(
+            form.trim.text())).getValueAs('deg').Value
+        min_draft = Units.Quantity(Locale.fromString(
+            form.minDraft.text())).getValueAs('m').Value
+        max_draft = Units.Quantity(Locale.fromString(
+            form.maxDraft.text())).getValueAs('m').Value
         n_draft = form.nDraft.value()
 
         props = self.ship.PropertiesList

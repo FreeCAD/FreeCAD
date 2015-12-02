@@ -64,14 +64,7 @@ PyObject* BezierCurvePy::isRational(PyObject *args)
     Handle_Geom_BezierCurve curve = Handle_Geom_BezierCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierCurvePy::isPeriodic(PyObject *args)
@@ -81,14 +74,7 @@ PyObject* BezierCurvePy::isPeriodic(PyObject *args)
     Handle_Geom_BezierCurve curve = Handle_Geom_BezierCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierCurvePy::isClosed(PyObject *args)
@@ -98,14 +84,7 @@ PyObject* BezierCurvePy::isClosed(PyObject *args)
     Handle_Geom_BezierCurve curve = Handle_Geom_BezierCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierCurvePy::increase(PyObject * args)

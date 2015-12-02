@@ -829,7 +829,7 @@ void StdMeshers_Penta_3D::MakeMeshOnFxy1()
   while(itf->more()) {
     const SMDS_MeshElement* pE0 = itf->next();
     aElementType = pE0->GetType();
-    if (!aElementType==SMDSAbs_Face) {
+    if (aElementType!=SMDSAbs_Face) {
       continue;
     }
     aNbNodes = pE0->NbNodes();

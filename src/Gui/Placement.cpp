@@ -430,7 +430,7 @@ Base::Placement Placement::getPlacementData() const
         Base::Vector3d dir = getDirection();
         rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->value().getValue()));
     }
-    else if (index == 1) {
+    else if (index == 1) { // Euler angles (XY'Z'')
         rot.setYawPitchRoll(
             ui->yawAngle->value().getValue(),
             ui->pitchAngle->value().getValue(),

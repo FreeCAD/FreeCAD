@@ -67,6 +67,10 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotRelabelDocument, this, _1));
     this->connectApplicationActivateDocument = App::GetApplication().signalActiveDocument.connect(boost::bind
         (&DocumentObserverPython::slotActivateDocument, this, _1));
+    this->connectApplicationUndoDocument = App::GetApplication().signalUndoDocument.connect(boost::bind
+        (&DocumentObserverPython::slotUndoDocument, this, _1));
+    this->connectApplicationRedoDocument = App::GetApplication().signalRedoDocument.connect(boost::bind
+        (&DocumentObserverPython::slotRedoDocument, this, _1));
 
     this->connectDocumentCreatedObject = App::GetApplication().signalNewObject.connect(boost::bind
         (&DocumentObserverPython::slotCreatedObject, this, _1));
@@ -82,6 +86,8 @@ DocumentObserverPython::~DocumentObserverPython()
     this->connectApplicationDeletedDocument.disconnect();
     this->connectApplicationRelabelDocument.disconnect();
     this->connectApplicationActivateDocument.disconnect();
+    this->connectApplicationUndoDocument.disconnect();
+    this->connectApplicationRedoDocument.disconnect();
 
     this->connectDocumentCreatedObject.disconnect();
     this->connectDocumentDeletedObject.disconnect();
@@ -145,6 +151,40 @@ void DocumentObserverPython::slotActivateDocument(const App::Document& Doc)
     try {
         if (this->inst.hasAttr(std::string("slotActivateDocument"))) {
             Py::Callable method(this->inst.getAttr(std::string("slotActivateDocument")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(Doc).getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotUndoDocument(const App::Document& Doc)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotUndoDocument"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotUndoDocument")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(Doc).getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotRedoDocument(const App::Document& Doc)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotRedoDocument"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotRedoDocument")));
             Py::Tuple args(1);
             args.setItem(0, Py::Object(const_cast<App::Document&>(Doc).getPyObject(), true));
             method.apply(args);

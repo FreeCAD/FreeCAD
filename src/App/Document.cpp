@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -89,7 +89,9 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 
+#ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
+#endif
 #include <zipios++/zipfile.h>
 #include <zipios++/zipinputstream.h>
 #include <zipios++/zipoutputstream.h>
@@ -198,30 +200,341 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     out << "}" << endl;
 }
 
-void Document::exportGraphviz(std::ostream& out)
+void Document::exportGraphviz(std::ostream& out) const
 {
-    std::vector<std::string> names;
-    names.reserve(d->objectMap.size());
-    DependencyList DepList;
-    std::map<DocumentObject*,Vertex> VertexObjectList;
+    /* Typedefs for a graph with graphviz attributes */
+    typedef std::map<std::string, std::string> GraphvizAttributes;
+    typedef subgraph< adjacency_list<vecS, vecS, directedS,
+            property<vertex_attribute_t, GraphvizAttributes>,
+            property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
+            property<graph_name_t, std::string,
+            property<graph_graph_attribute_t,  GraphvizAttributes,
+            property<graph_vertex_attribute_t, GraphvizAttributes,
+            property<graph_edge_attribute_t,   GraphvizAttributes>
+            > > > > > Graph;
 
-    // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        // add the object as Vertex and remember the index
-        VertexObjectList[It->second] = add_vertex(DepList);
-        names.push_back(It->second->Label.getValue());
-    }
-    // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2)
-                add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
+    /**
+     * @brief The GraphCreator class
+     *
+     * This class creates the dependency graph for a document.
+     *
+     */
+
+    class GraphCreator {
+    public:
+
+        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0) {
+            build();
         }
-    }
 
-    if (!names.empty())
-        boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
+        const Graph & getGraph() const { return DepList; }
+
+    private:
+
+        void build() {
+            // Set attribute(s) for main graph
+            get_property(DepList, graph_graph_attribute)["compound"] = "true";
+
+            addSubgraphs();
+            buildAdjacencyList();
+            addEdges();
+        }
+
+        /**
+         * @brief getId returns a canonical string for a DocumentObject.
+         * @param docObj Document object to get an ID from
+         * @return A string
+         */
+
+        std::string getId(const DocumentObject * docObj) {
+            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument();
+        }
+
+        /**
+         * @brief getId returns a canonical string for an ObjectIdentifier;
+         * @param path
+         * @return A string
+         */
+
+        std::string getId(const ObjectIdentifier & path) {
+            DocumentObject * docObj = path.getDocumentObject();
+
+            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
+        }
+
+        std::string getClusterName(const DocumentObject * docObj) const {
+            return std::string("cluster") + docObj->getNameInDocument();
+        }
+
+        /**
+         * @brief setGraphAttributes Set graph attributes on a subgraph for a DocumentObject node.
+         * @param obj DocumentObject
+         */
+
+        void setGraphAttributes(const DocumentObject * obj) {
+            assert(GraphList[obj] != 0);
+            get_property(*GraphList[obj], graph_name) = getClusterName(obj);
+            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
+            get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
+        }
+
+        /**
+         * @brief setPropertyVertexAttributes Set vertex attributes for a Porperty node in a graph.
+         * @param g Graph
+         * @param vertex Property node
+         * @param name Name of node
+         */
+
+        void setPropertyVertexAttributes(Graph & g, Vertex vertex, const std::string & name) {
+            get(vertex_attribute, g)[vertex]["label"] = name;
+            get(vertex_attribute, g)[vertex]["shape"] = "box";
+            get(vertex_attribute, g)[vertex]["style"] = "dashed";
+            get(vertex_attribute, g)[vertex]["fontsize"] = "8pt";
+        }
+
+        /**
+         * @brief addSubgraphIfNeeded Add a subgraph to the main graph if it is needed, i.e there are defined at least one expression in hte
+         *                            document object, or other objects are referencing properties in it.
+         * @param obj DocumentObject to assess.
+         */
+
+        void addSubgraphIfNeeded(DocumentObject * obj) {
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();
+
+            if (expressions.size() > 0) {
+
+                // If documentObject has an expression, create a subgraph for it
+                if (!GraphList[obj]) {
+                    GraphList[obj] = &DepList.create_subgraph();
+                    setGraphAttributes(obj);
+                }
+
+                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+                while (i != expressions.end()) {
+                    std::set<ObjectIdentifier> deps;
+
+                    i->second.expression->getDeps(deps);
+
+                    std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+                    while (j != deps.end()) {
+                        DocumentObject * o = j->getDocumentObject();
+
+                        // Doesn't exist already?
+                        if (!GraphList[o]) {
+                            GraphList[o] = &DepList.create_subgraph();
+                            setGraphAttributes(o);
+                        }
+                        ++j;
+                    }
+                    ++i;
+                }
+            }
+        }
+
+        /**
+         * @brief add Add @docObj to the graph, including all expressions (and dependencies) it includes.
+         * @param docObj The document object to add.
+         * @param name Name of node.
+         */
+
+        void add(DocumentObject * docObj, const std::string & name, const std::string & label) {
+            Graph * sgraph = GraphList[docObj] ? GraphList[docObj] : &DepList;
+
+            // Keep a list of all added document objects.
+            objects.insert(docObj);
+
+            // Add vertex to graph. Track global and local index
+            LocalVertexList[getId(docObj)] = add_vertex(*sgraph);
+            GlobalVertexList[getId(docObj)] = vertex_no++;
+
+            // Set node label
+            if (name == label)
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
+            else
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
+
+            // If node is in main graph, style it with rounded corners. If not, remove the border as the subgraph will contain it.
+            if (sgraph == &DepList) {
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
+            }
+            else
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["color"] = "none";
+
+            // Add expressions and its dependencies
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+
+            // Add nodes for each property that has an expression attached to it
+            while (i != expressions.end()) {
+                std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(i->first));
+                if (k == GlobalVertexList.end()) {
+                    int vid = LocalVertexList[getId(i->first)] = add_vertex(*sgraph);
+                    GlobalVertexList[getId(i->first)] = vertex_no++;
+                    setPropertyVertexAttributes(*sgraph, vid, i->first.toString());
+                }
+
+                ++i;
+            }
+
+            // Add all dependencies
+            i = expressions.begin();
+            while (i != expressions.end()) {
+
+                // Get dependencies
+                std::set<ObjectIdentifier> deps;
+                i->second.expression->getDeps(deps);
+
+                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+                while (j != deps.end()) {
+                    DocumentObject * depObjDoc = j->getDocumentObject();
+                    std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(*j));
+
+                    if (k == GlobalVertexList.end()) {
+                        Graph * depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
+
+                        LocalVertexList[getId(*j)] = add_vertex(*depSgraph);
+                        GlobalVertexList[getId(*j)] = vertex_no++;
+                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(*j)], j->getPropertyName() + j->getSubPathStr());
+                    }
+
+                    ++j;
+                }
+                ++i;
+            }
+
+        }
+
+        void addSubgraphs() {
+            // Internal document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+                addSubgraphIfNeeded(It->second);
+
+            // Add external document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+
+                        if (item == GlobalVertexList.end())
+                            addSubgraphIfNeeded(*It2);
+                    }
+                }
+            }
+        }
+
+        // Filling up the adjacency List
+        void buildAdjacencyList() {
+            // Add internal document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+                add(It->second, It->second->getNameInDocument(), It->second->Label.getValue());
+
+            // Add external document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+
+                        if (item == GlobalVertexList.end())
+                            add(*It2,
+                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->getNameInDocument(),
+                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue());
+                    }
+                }
+            }
+        }
+
+        void addEdges() {
+            // Get edge properties for main graph
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+
+            // Track edges between document objects connected by expression dependencies
+            std::set<std::pair<const DocumentObject*, const DocumentObject*> > existingEdges;
+
+            // Add edges between properties
+            std::set<const DocumentObject*>::const_iterator j = objects.begin();
+            while (j != objects.end()) {
+                const DocumentObject * docObj = *j;
+
+                // Add expressions and its dependencies
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+
+                while (i != expressions.end()) {
+                    std::set<ObjectIdentifier> deps;
+                    i->second.expression->getDeps(deps);
+
+                    // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                    std::set<ObjectIdentifier>::const_iterator k = deps.begin();
+                    while (k != deps.end()) {
+                        DocumentObject * depObjDoc = k->getDocumentObject();
+                        Edge edge;
+                        bool inserted;
+
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(i->first)], GlobalVertexList[getId(*k)], DepList);
+
+                        // Add this edge to the set of all expression generated edges
+                        existingEdges.insert(std::make_pair(docObj, depObjDoc));
+
+                        // Edges between properties should be a bit smaller, and dashed
+                        edgeAttrMap[edge]["arrowsize"] = "0.5";
+                        edgeAttrMap[edge]["style"] = "dashed";
+                        ++k;
+                    }
+                    ++i;
+                }
+                ++j;
+            }
+
+            // Add edges between document objects
+            for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        const DocumentObject * docObj = It->second;
+
+                        // Skip duplicate edges
+                        if (edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList).second)
+                            continue;
+
+                        // Skip edge if an expression edge already exists
+                        if (existingEdges.find(std::make_pair(docObj, *It2)) != existingEdges.end())
+                            continue;
+
+                        // Add edge
+
+                        Edge edge;
+                        bool inserted;
+
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList);
+
+                        // Set properties to make arrows go between subgraphs if needed
+                        if (GraphList[docObj])
+                            edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
+                        if (GraphList[*It2])
+                            edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
+                    }
+                }
+            }
+
+        }
+
+        const struct DocumentP* d;
+        Graph DepList;
+        int vertex_no;
+        std::map<std::string, Vertex> LocalVertexList;
+        std::map<std::string, Vertex> GlobalVertexList;
+        std::set<const DocumentObject*> objects;
+        std::map<const DocumentObject*, Graph*> GraphList;
+    };
+
+    GraphCreator g(d);
+
+    boost::write_graphviz(out, g.getGraph());
 }
 
 //bool _has_cycle_dfs(const DependencyList & g, vertex_t u, default_color_type * color)
@@ -595,13 +908,17 @@ Document::Document(void)
     Console().Log("+App::Document: %p\n",this);
 #endif
     std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
+    std::string Author = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
+    std::string AuthorComp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany","");
     ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
-    ADD_PROPERTY_TYPE(FileName,(""),0,Prop_ReadOnly,"The path to the file where the document is saved to");
-    ADD_PROPERTY_TYPE(CreatedBy,(""),0,Prop_None,"The creator of the document");
+    ADD_PROPERTY_TYPE(FileName,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),"The path to the file where the document is saved to");
+    ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),0,Prop_None,"The creator of the document");
     ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),0,Prop_ReadOnly,"Date of creation");
     ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
     ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(""),0,Prop_None,"Additional tag to save the the name of the company");
+    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),0,Prop_None,"Additional tag to save the the name of the company");
     ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
     ADD_PROPERTY_TYPE(Meta,(),0,Prop_None,"Map with additional meta information");
     ADD_PROPERTY_TYPE(Material,(),0,Prop_None,"Map with material properties");
@@ -611,8 +928,57 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(Uid,(id),0,Prop_ReadOnly,"UUID of the document");
 
     // license stuff
-    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
+    int licenseId = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType",0);
+    std::string license;
+    std::string licenseUrl;
+    switch (licenseId) {
+        case 0:
+            license = "All rights reserved";
+            licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
+            break;
+        case 1:
+            license = "CreativeCommons Attribution";
+            licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
+            break;
+        case 2:
+            license = "CreativeCommons Attribution-ShareAlike";
+            licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
+            break;
+        case 3:
+            license = "CreativeCommons Attribution-NoDerivatives";
+            licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
+            break;
+        case 4:
+            license = "CreativeCommons Attribution-NonCommercial";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
+            break;
+        case 5:
+            license = "CreativeCommons Attribution-NonCommercial-ShareAlike";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
+            break;
+        case 6:
+            license = "CreativeCommons Attribution-NonCommercial-NoDerivatives";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
+            break;
+        case 7:
+            license = "Public Domain";
+            licenseUrl = "http://en.wikipedia.org/wiki/Public_domain";
+            break;
+        case 8:
+            license = "FreeArt";
+            licenseUrl = "http://artlibre.org/licence/lal";
+            break;
+        default:
+            license = "Other";
+            break;
+    }
+
+    licenseUrl = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
+
+    ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
@@ -660,7 +1026,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
     std::stringstream s;
     QCryptographicHash hash(QCryptographicHash::Sha1);
     hash.addData(filename.c_str(), filename.size());
-    s << Base::FileInfo::getTempPath() << GetApplication().getExecutableName()
+    s << App::Application::getTempPath() << GetApplication().getExecutableName()
       << "_Doc_" << uuid
       << "_" << hash.result().toHex().left(6).constData()
       << "_" << QCoreApplication::applicationPid();
@@ -832,6 +1198,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
+    bool keepDigits = d->keepTrailingDigits;
     d->keepTrailingDigits = !reader.doNameMapping();
     std::vector<App::DocumentObject*> objs;
 
@@ -861,6 +1228,7 @@ Document::readObjects(Base::XMLReader& reader)
         }
     }
     reader.readEndElement("Objects");
+    d->keepTrailingDigits = keepDigits;
 
     // read the features itself
     reader.readElement("ObjectData");
@@ -941,6 +1309,24 @@ bool Document::saveAs(const char* file)
     return save();
 }
 
+bool Document::saveCopy(const char* file)
+{
+    std::string originalFileName = this->FileName.getStrValue();
+    std::string originalLabel = this->Label.getStrValue();
+    Base::FileInfo fi(file);
+    if (this->FileName.getStrValue() != file) {
+        this->FileName.setValue(file);
+        this->Label.setValue(fi.fileNamePure());
+        this->Uid.touch(); // this forces a rename of the transient directory
+        bool result = save();
+        this->FileName.setValue(originalFileName);
+        this->Label.setValue(originalLabel);
+        this->Uid.touch();
+        return result;
+    }
+    return false;
+}
+
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
@@ -951,6 +1337,14 @@ bool Document::save (void)
     if (*(FileName.getValue()) != '\0') {
         std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
+        // set author if needed
+        bool saveAuthor = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("prefSetAuthorOnSave",false);
+        if (saveAuthor) {
+            std::string Author = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
+            LastModifiedBy.setValue(Author.c_str());
+        }
         // make a tmp. file where to save the project data first and then rename to
         // the actual file name. This may be useful if overwriting an existing file
         // fails so that the data of the work up to now isn't lost.
@@ -975,6 +1369,10 @@ bool Document::save (void)
 
             // write additional files
             writer.writeFiles();
+
+            if (writer.hasErrors()) {
+                throw Base::FileException("Failed to write all data to file", tmp);
+            }
 
             GetApplication().signalSaveDocument(*this);
         }
@@ -1088,6 +1486,7 @@ void Document::restore (void)
     
     // reset all touched
     for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
+        It->second->connectRelabelSignals();
         It->second->onDocumentRestored();
         It->second->purgeTouched();
     }
@@ -1203,6 +1602,22 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         Vertex v = add_vertex(DepList);
         ObjectMap[*it] = v;
         VertexMap[v] = *it;
+    }  
+
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
+        std::vector<DocumentObject*> outList = (*it)->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator jt = outList.begin(); jt != outList.end();++jt) {
+            if (*jt) {
+                std::map<DocumentObject*,Vertex>::const_iterator i = ObjectMap.find(*jt);
+
+                if (i == ObjectMap.end()) {
+                    Vertex v = add_vertex(DepList);
+
+                    ObjectMap[*jt] = v;
+                    VertexMap[v] = *jt;
+                }
+            }
+        }
     }
 
     // add the edges
@@ -1243,6 +1658,29 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
     return ary;
 }
 
+/**
+ * @brief Signal that object identifiers, typically a property or document object has been renamed.
+ *
+ * This function iterates through all document object in the document, and calls its
+ * renameObjectIdentifiers functions.
+ *
+ * @param paths Map with current and new names
+ */
+
+void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
+{
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
+
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier>::const_iterator it = paths.begin();
+    while (it != paths.end()) {
+        extendedPaths[it->first.canonicalPath()] = it->second.canonicalPath();
+        ++it;
+    }
+
+    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
+        (*it)->renameObjectIdentifiers(extendedPaths);
+}
+
 void Document::_rebuildDependencyList(void)
 {
     d->VertexObjectList.clear();
@@ -1252,6 +1690,20 @@ void Document::_rebuildDependencyList(void)
         // add the object as Vertex and remember the index
         d->VertexObjectList[It->second] = add_vertex(d->DepList);
     }
+
+    // add the edges
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+            if (*It2) {
+                std::map<DocumentObject*,Vertex>::iterator i = d->VertexObjectList.find(*It2);
+
+                if (i == d->VertexObjectList.end())
+                    d->VertexObjectList[*It2] = add_vertex(d->DepList);
+            }
+        }
+    }
+
     // add the edges
     for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         std::vector<DocumentObject*> OutList = It->second->getOutList();
@@ -1275,6 +1727,7 @@ void Document::recompute()
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;
 
+
     try {
         // this sort gives the execute
         boost::topological_sort(d->DepList, std::front_inserter(make_order));
@@ -1292,40 +1745,66 @@ void Document::recompute()
     std::clog << "make ordering: " << std::endl;
 #endif
 
+    std::set<DocumentObject*> recomputeList;
+
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
         if (!Cur) continue;
 #ifdef FC_LOGFEATUREUPDATE
-        std::clog << Cur->getNameInDocument() << " dep on: " ;
+        std::clog << Cur->getNameInDocument() << " dep on:" ;
 #endif
         bool NeedUpdate = false;
 
         // ask the object if it should be recomputed
-        if (Cur->mustExecute() == 1)
+        if (Cur->mustExecute() == 1 || Cur->ExpressionEngine.depsAreTouched()) {
+#ifdef FC_LOGFEATUREUPDATE
+            std::clog << "[touched]";
+#endif
             NeedUpdate = true;
+        }
         else {// if (Cur->mustExecute() == -1)
             // update if one of the dependencies is touched
             for (boost::tie(j, jend) = out_edges(*i, d->DepList); j != jend; ++j) {
                 DocumentObject* Test = d->vertexMap[target(*j, d->DepList)];
+
                 if (!Test) continue;
 #ifdef FC_LOGFEATUREUPDATE
-                std::clog << Test->getNameInDocument() << ", " ;
+                std::clog << " " << Test->getNameInDocument();
 #endif
                 if (Test->isTouched()) {
                     NeedUpdate = true;
-                    break;
+#ifdef FC_LOGFEATUREUPDATE
+                    std::clog << "[touched]";
+#endif
                 }
             }
-#ifdef FC_LOGFEATUREUPDATE
-            std::clog << std::endl;
-#endif
         }
         // if one touched recompute
         if (NeedUpdate) {
+            Cur->touch();
 #ifdef FC_LOGFEATUREUPDATE
-            std::clog << "Recompute" << std::endl;
+            std::clog << " => Recompute feature";
 #endif
-            if (_recomputeFeature(Cur)) {
+            recomputeList.insert(Cur);
+        }
+#ifdef FC_LOGFEATUREUPDATE
+        std::clog << std::endl;
+#endif
+    }
+
+#ifdef FC_LOGFEATUREUPDATE
+    std::clog << "Have to recompute the following document objects" << std::endl;
+    for (std::set<DocumentObject*>::const_iterator it = recomputeList.begin(); it != recomputeList.end(); ++it) {
+        std::clog << "  " << (*it)->getNameInDocument() << std::endl;
+    }
+#endif
+
+    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
+        DocumentObject* Cur = d->vertexMap[*i];
+
+        if (recomputeList.find(Cur) != recomputeList.end() ||
+                Cur->ExpressionEngine.depsAreTouched()) {
+            if ( _recomputeFeature(Cur)) {
                 // if somthing happen break execution of recompute
                 d->vertexMap.clear();
                 return;
@@ -1339,6 +1818,8 @@ void Document::recompute()
             it->second->purgeTouched();
     }
     d->vertexMap.clear();
+
+    signalRecomputed(*this);
 }
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
@@ -1358,6 +1839,17 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 
     DocumentObjectExecReturn  *returnCode = 0;
     try {
+        returnCode = Feat->ExpressionEngine.execute();
+        if (returnCode != DocumentObject::StdReturn) {
+            returnCode->Which = Feat;
+            _RecomputeLog.push_back(returnCode);
+    #ifdef FC_DEBUG
+            Base::Console().Error("%s\n",returnCode->Why.c_str());
+    #endif
+            Feat->setError();
+            return true;
+        }
+
         returnCode = Feat->recompute();
     }
     catch(Base::AbortException &e){
@@ -1476,10 +1968,11 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 {
-    d->objectMap[pObjectName] = pcObject;
+    std::string ObjectName = getUniqueObjectName(pObjectName);
+    d->objectMap[ObjectName] = pcObject;
     d->objectArray.push_back(pcObject);
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
-    pcObject->pcNameInDocument = &(d->objectMap.find(pObjectName)->first);
+    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
 
     // do no transactions if we do a rollback!
     if(!d->rollback){
@@ -1492,6 +1985,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     }
     // send the signal
     signalNewObject(*pcObject);
+
+    d->activeObject = pcObject;
+    signalActivatedObject(*pcObject);
 }
 
 /// Remove an object out of the document
@@ -1657,7 +2153,7 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
     }
 }
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool /*keepdigitsatend*/)
+DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
 {
     std::vector<DocumentObject*> objs;
     objs.push_back(obj);
@@ -1762,14 +2258,6 @@ std::string Document::getUniqueObjectName(const char *Name) const
     if (!Name || *Name == '\0')
         return std::string();
     std::string CleanName = Base::Tools::getIdentifier(Name);
-    // remove also trailing digits from clean name which is to avoid to create lengthy names
-    // like 'Box001001'
-    if (!d->keepTrailingDigits) {
-        std::string::size_type index = CleanName.find_last_not_of("0123456789");
-        if (index+1 < CleanName.size()) {
-            CleanName = CleanName.substr(0,index+1);
-        }
-    }
 
     // name in use?
     std::map<std::string,DocumentObject*>::const_iterator pos;
@@ -1780,6 +2268,15 @@ std::string Document::getUniqueObjectName(const char *Name) const
         return CleanName;
     }
     else {
+        // remove also trailing digits from clean name which is to avoid to create lengthy names
+        // like 'Box001001'
+        if (!d->keepTrailingDigits) {
+            std::string::size_type index = CleanName.find_last_not_of("0123456789");
+            if (index+1 < CleanName.size()) {
+                CleanName = CleanName.substr(0,index+1);
+            }
+        }
+
         std::vector<std::string> names;
         names.reserve(d->objectMap.size());
         for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {

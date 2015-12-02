@@ -79,6 +79,14 @@ bool Quantity::operator <(const Quantity& that) const
     return (this->_Value < that._Value) ;
 }
 
+bool Quantity::operator >(const Quantity& that) const
+{
+    if(this->_Unit != that._Unit)
+        throw Base::Exception("Quantity::operator >(): quantities need to have same unit to compare");
+
+    return (this->_Value > that._Value) ;
+}
+
 Quantity Quantity::operator *(const Quantity &p) const
 {
     return Quantity(this->_Value * p._Value,this->_Unit * p._Unit);

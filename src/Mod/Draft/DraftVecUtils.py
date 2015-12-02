@@ -27,12 +27,17 @@ __url__ = ["http://www.freecadweb.org"]
 
 "a vector math library for FreeCAD"
 
+## \defgroup DRAFTVECUTILS DraftVecUtils
+#  \ingroup DRAFT
+#
+# Vector math utilities
+
 import math,FreeCAD
 from FreeCAD import Vector, Matrix
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 def precision():
-    return params.GetInt("precision")
+    return params.GetInt("precision",6)
 
 def typecheck (args_and_types, name="?"):
     for v,t in args_and_types:
@@ -187,6 +192,19 @@ def find(vector,vlist):
         if equals(vector,v):
             return i
     return None
+    
+def closest(vector,vlist):
+    '''closest(vector,vlist): finds the closest vector to the given vector
+    in a list of vectors'''
+    typecheck ([(vector,Vector), (vlist,list)], "closest")
+    dist = 9999999999999999
+    index = None
+    for i,v in enumerate(vlist):
+        d = vector.sub(v).Length
+        if d < dist:
+            dist = d
+            index = i
+    return index
 
 def isColinear(vlist):
     '''isColinear(list_of_vectors): checks if vectors in given list are colinear'''

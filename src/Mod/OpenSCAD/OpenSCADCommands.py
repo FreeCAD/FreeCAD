@@ -43,9 +43,23 @@ class ExplodeGroup:
         return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
+        def isdefault(shapecolor):
+            def comparefloat(f1,f2):
+                if f1 == 0.0:
+                    return f1 == f2
+                else:
+                    return abs((f1-f2)/f1) < 2**-24
+            scol=FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
+                    .GetUnsigned('DefaultShapeColor',0xccccccff)
+            defaultcolor = (((scol >> 24) & 0xff) / 255.0,\
+                    ((scol >> 16) & 0xff) / 255.0,\
+                    ((scol >>  8) & 0xff) / 255.0, 0.0)
+            return all(all(comparefloat(fcc,dcc) for fcc,dcc in \
+                    zip(facecolor,defaultcolor))  for facecolor in shapecolor)
+
         def isgrey(shapecolor):
-            defaultcolor=(float.fromhex('0x1.99999ap-1'),float.fromhex('0x1.99999ap-1'),\
-                float.fromhex('0x1.99999ap-1'),0.0)
+            defaultcolor=(float.fromhex('0x1.99999ap-1'),float.fromhex(\
+                    '0x1.99999ap-1'),float.fromhex('0x1.99999ap-1'),0.0)
             return all(facecolor == defaultcolor  for facecolor in shapecolor)
 
         def randomcolor(transp=0.0):
@@ -58,7 +72,9 @@ class ExplodeGroup:
                     obj.isDerivedFrom('Part::Compound'):
                 plm = obj.Placement
                 outlist = obj.OutList[:]
-                if plm.isNull() or all(len(oo.InList)==1 for oo in obj.OutList):
+                if plm.isNull() or all((len(oo.InList)==1 and \
+                        not oo.isDerivedFrom('PartDesign::Feature')) \
+                        for oo in obj.OutList):
                     obj.Document.removeObject(obj.Name)
                     for oo in outlist:
                         if not plm.isNull():
@@ -66,11 +82,14 @@ class ExplodeGroup:
                         if FreeCAD.GuiUp:
                             import FreeCADGui
                             oo.ViewObject.show()
-                            if color and isgrey(oo.ViewObject.DiffuseColor):
+                            if color and isdefault(oo.ViewObject.DiffuseColor):
                                 if color == True:
                                     oo.ViewObject.DiffuseColor=randomcolor()
                                 else:
                                     oo.ViewObject.DiffuseColor=color
+                else:
+                    FreeCAD.Console.PrintError(unicode(translate('OpenSCAD',\
+                    'Unable to explode %s')) % obj.Name +u'\n')
 
         for obj in FreeCADGui.Selection.getSelection():
             if len(obj.InList) == 0: # allowed only for for top level objects

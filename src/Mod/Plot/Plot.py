@@ -46,7 +46,7 @@ except ImportError:
 
 def getMainWindow():
     """ Return the FreeCAD main window. """
-    toplevel = PySide.QtGui.qApp.topLevelWidgets()
+    toplevel = PySide.QtGui.QApplication.topLevelWidgets()
     for i in toplevel:
         if i.metaObject().className() == "Gui::MainWindow":
             return i
@@ -192,7 +192,10 @@ def legend(status=True, pos=None, fontsize=None):
             # Update canvas in order to compute legend data
             plt.canvas.draw()
             # Get resultant position
-            fax = axes.get_frame().get_extents()
+            try:
+                fax = axes.get_frame().get_extents()
+            except:
+                fax = axes.patch.get_extents()
             fl = l.get_frame()
             plt.legPos = (
                 (fl._x + fl._width - fax.x0) / fax.width,

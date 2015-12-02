@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -215,7 +215,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     gp_Pln plane(gp_Pnt(0,0,0),gp_Dir(0,0,1));
 
     Standard_Boolean periodic=Standard_False;
-    double period;
+    double period = 0;
     Handle_Geom2d_Curve primaryCurve;
     Handle_Geom_Geometry geom = (geomlist[GeoId])->handle();
     Handle_Geom_Curve curve3d = Handle_Geom_Curve::DownCast(geom);
@@ -288,7 +288,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 
     if (periodic) {
         // in case both points coincide, cancel the selection of one of both
-        if (abs(param2-param1-period) < 1e-10) {
+        if (fabs(param2-param1-period) < 1e-10) {
             if (param2 - pickedParam >= pickedParam - param1)
                 GeoId2 = -1;
             else
@@ -304,6 +304,11 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
    if (GeoId2 >= 0)
        intersect2 = Base::Vector3d(p2.X(),p2.Y(),0.f);
    return true;
+}
+
+void Part2DObject::acceptGeometry()
+{
+    // implemented in sub-classes
 }
 
 // Python Drawing feature ---------------------------------------------------------

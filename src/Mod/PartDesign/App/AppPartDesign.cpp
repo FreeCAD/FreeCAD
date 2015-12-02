@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,7 +39,6 @@
 #include "FeatureDressUp.h"
 #include "FeatureChamfer.h"
 #include "FeatureDraft.h"
-#include "FeatureFace.h"
 #include "FeatureSubtractive.h"
 #include "FeatureAdditive.h"
 #include "FeatureTransformed.h"
@@ -96,8 +95,7 @@ void PartDesignExport init_PartDesign()
     PartDesign::Revolution         ::init();
     PartDesign::Groove             ::init();
     PartDesign::Chamfer            ::init();
-    PartDesign::Face               ::init();
-    PartDesign::Draft		   ::init();
+    PartDesign::Draft           ::init();
 }
 
 } // extern "C"

@@ -143,6 +143,62 @@ void PropertyEditor::buildUp(const PropertyModel::PropertyList& props)
         QModelIndex index = propertyModel->propertyIndexFromPath(this->selectedProperty);
         this->setCurrentIndex(index);
     }
+
+    propList = props;
+}
+
+void PropertyEditor::updateProperty(const App::Property& prop)
+{
+    // forward this to the model if the property is changed from outside
+    if (!committing)
+        propertyModel->updateProperty(prop);
+}
+
+void PropertyEditor::appendProperty(const App::Property& prop)
+{
+    // check if the parent object is selected
+    std::string editor = prop.getEditorName();
+    if (editor.empty())
+        return;
+    App::PropertyContainer* parent = prop.getContainer();
+    std::string context = prop.getName();
+
+    bool canAddProperty = (!propList.empty());
+    for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
+        if (it->second.empty() || it->second.size() > 1) {
+            canAddProperty = false;
+            break;
+        }
+        else if (it->second.front()->getContainer() != parent) {
+            canAddProperty = false;
+            break;
+        }
+    }
+
+    if (canAddProperty) {
+        std::vector<App::Property*> list;
+        list.push_back(const_cast<App::Property*>(&prop));
+        std::pair< std::string, std::vector<App::Property*> > pair = std::make_pair(context, list);
+        propList.push_back(pair);
+        propertyModel->appendProperty(prop);
+    }
+}
+
+void PropertyEditor::removeProperty(const App::Property& prop)
+{
+    for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
+        // find the given property in the list and remove it if it's there
+        std::vector<App::Property*>::iterator pos = std::find(it->second.begin(), it->second.end(), &prop);
+        if (pos != it->second.end()) {
+            it->second.erase(pos);
+            // if the last property of this name is removed then also remove the whole group
+            if (it->second.empty()) {
+                propList.erase(it);
+            }
+            propertyModel->removeProperty(prop);
+            break;
+        }
+    }
 }
 
 #include "moc_PropertyEditor.cpp"

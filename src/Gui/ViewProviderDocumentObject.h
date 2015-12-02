@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -90,8 +90,24 @@ public:
     //@}
 
 protected:
-    /// Get the active mdi view of a view provider
+    /*! Get the active mdi view of the document this view provider is part of.
+      @note The returned mdi view doesn't need to be a 3d view but can be e.g.
+      an image view, an SVG view or something else.
+     */
     Gui::MDIView* getActiveView() const;
+    /*! Get the mdi view of the document this view provider is part of and
+      that is in editing mode.
+      @note In case there is no mdi view in editing mode 0 is returned.
+      If a value different to 0 is returned it is guaranteed to be a 3d view.
+     */
+    Gui::MDIView* getEditingView() const;
+    /*! Get any mdi view of the document this view provider is part of.
+      In case there is an mdi view in editing mode that contains this
+      view provider that mdi view is returned. Otherwise any other
+      3d view that contains this view provider is returned.
+      If a value different to 0 is returned it is guaranteed to be a 3d view.
+     */
+    Gui::MDIView* getInventorView() const;
     /// Gets called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
     /** Searches in all view providers that are attached to an object that

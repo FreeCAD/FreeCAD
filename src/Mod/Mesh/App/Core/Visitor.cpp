@@ -46,7 +46,7 @@ unsigned long MeshKernel::VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, u
     // as long as free neighbours
     while (clCurrentLevel.size() > 0) {
         // visit all neighbours of the current level
-        for (clCurrIter = clCurrentLevel.begin(); clCurrIter < clCurrentLevel.end(); clCurrIter++) {
+        for (clCurrIter = clCurrentLevel.begin(); clCurrIter < clCurrentLevel.end(); ++clCurrIter) {
             clCurrFacet = _aclFacetArray.begin() + *clCurrIter;
 
             // visit all neighbours of the current level if not yet done
@@ -96,11 +96,11 @@ unsigned long MeshKernel::VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rcl
 
     while (aclCurrentLevel.size() > 0) {
         // visit all neighbours of the current level
-        for (std::vector<unsigned long>::iterator pCurrFacet = aclCurrentLevel.begin(); pCurrFacet < aclCurrentLevel.end(); pCurrFacet++) {
+        for (std::vector<unsigned long>::iterator pCurrFacet = aclCurrentLevel.begin(); pCurrFacet < aclCurrentLevel.end(); ++pCurrFacet) {
             for (int i = 0; i < 3; i++) {
                 const MeshFacet &rclFacet = raclFAry[*pCurrFacet];
                 const std::set<unsigned long>& raclNB = clRPF[rclFacet._aulPoints[i]];
-                for (std::set<unsigned long>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); pINb++) {
+                for (std::set<unsigned long>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); ++pINb) {
                     if (pFBegin[*pINb].IsFlag(MeshFacet::VISIT) == false) {
                         // only visit if VISIT Flag not set
                         ulVisited++;

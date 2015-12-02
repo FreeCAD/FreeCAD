@@ -91,14 +91,7 @@ PyObject* BSplineSurfacePy::isURational(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsURational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isVRational(PyObject *args)
@@ -109,14 +102,7 @@ PyObject* BSplineSurfacePy::isVRational(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args)
@@ -127,14 +113,7 @@ PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args)
@@ -145,14 +124,7 @@ PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isUClosed(PyObject *args)
@@ -163,14 +135,7 @@ PyObject* BSplineSurfacePy::isUClosed(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isVClosed(PyObject *args)
@@ -181,14 +146,7 @@ PyObject* BSplineSurfacePy::isVClosed(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::increaseDegree(PyObject *args)
@@ -420,14 +378,7 @@ PyObject* BSplineSurfacePy::removeUKnot(PyObject *args)
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = surf->RemoveUKnot(Index,M,tol);
-        if (ok) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -447,14 +398,7 @@ PyObject* BSplineSurfacePy::removeVKnot(PyObject *args)
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = surf->RemoveVKnot(Index,M,tol);
-        if (ok) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -917,6 +861,42 @@ PyObject* BSplineSurfacePy::getWeights(PyObject *args)
     }
 }
 
+PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+            (getGeometryPtr()->handle());
+        TColgp_Array2OfPnt p(1,surf->NbUPoles(),1,surf->NbVPoles());
+        surf->Poles(p);
+        TColStd_Array2OfReal w(1,surf->NbUPoles(),1,surf->NbVPoles());
+        surf->Weights(w);
+
+        Py::List poles;
+        for (Standard_Integer i=p.LowerRow(); i<=p.UpperRow(); i++) {
+            Py::List row;
+            for (Standard_Integer j=p.LowerCol(); j<=p.UpperCol(); j++) {
+                const gp_Pnt& pole = p(i,j);
+                double weight = w(i,j);
+                Py::Tuple t(4);
+                t.setItem(0, Py::Float(pole.X()));
+                t.setItem(1, Py::Float(pole.Y()));
+                t.setItem(2, Py::Float(pole.Z()));
+                t.setItem(3, Py::Float(weight));
+                row.append(t);
+            }
+            poles.append(row);
+        }
+        return Py::new_reference_to(poles);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
 PyObject* BSplineSurfacePy::getResolution(PyObject *args)
 {
     double tol;
@@ -1301,7 +1281,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAbs_Shape c;
+        GeomAbs_Shape c = GeomAbs_CN;
         switch(continuity){
         case 0:
             c = GeomAbs_C0;

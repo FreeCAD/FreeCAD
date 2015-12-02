@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -100,6 +100,29 @@ private:
 };
 
 
+class AppExport PropertyVectorDistance: public PropertyVector
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyVectorDistance();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyVectorDistance();
+
+    const char* getEditorName(void) const {
+        return "Gui::PropertyEditor::PropertyVectorDistanceItem";
+    }
+};
+
+
 class AppExport PropertyVectorList: public PropertyLists
 {
     TYPESYSTEM_HEADER();
@@ -160,8 +183,9 @@ private:
     std::vector<Base::Vector3d> _lValueList;
 };
 
-/** Vector properties
- * This is the father of all properties handling Integers.
+/// Property representing a 4x4 matrix
+/*!
+ * Encapsulates a Base::Matrix4D in a Property
  */
 class AppExport PropertyMatrix: public Property
 {
@@ -170,7 +194,7 @@ class AppExport PropertyMatrix: public Property
 public:
     /**
      * A constructor.
-     * A more elaborate description of the constructor.
+     * Intitialises to an identity matrix
      */
     PropertyMatrix();
 
@@ -235,6 +259,10 @@ public:
     /** This method returns a string representation of the property
      */
     const Base::Placement &getValue(void) const;
+
+    /// Get valid paths for this property; used by auto completer
+    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }

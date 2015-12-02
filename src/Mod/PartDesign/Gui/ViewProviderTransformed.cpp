@@ -28,6 +28,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
+# include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <Poly_Triangulation.hxx>
@@ -41,6 +42,9 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoTransparencyType.h>
+# include <QAction>
+# include <QMenu>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderTransformed.h"
@@ -249,7 +253,13 @@ void ViewProviderTransformed::recomputeFeature(void)
             Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
 
             // create or use the mesh on the data structure
-            BRepMesh_IncrementalMesh myMesh(cShape,deflection);
+#if OCC_VERSION_HEX >= 0x060600
+            Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+            BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
+                                        AngDeflectionRads,Standard_True);
+#else
+            BRepMesh_IncrementalMesh(cShape,deflection);
+#endif
             // We must reset the location here because the transformation data
             // are set in the placement property
             TopLoc_Location aLoc;

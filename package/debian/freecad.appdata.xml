@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
  <id type="desktop">freecad.desktop</id>
- <licence>LGPL</licence>
+ <metadata_licence>CC-BY-3.0</metadata_licence>
+ <project_license>LGPL-2.1+</project_license>
  <name>FreeCAD</name>
  <summary>An open source parametric 3D CAD modeler</summary>
  <description>
@@ -14,7 +15,7 @@
   file formats such as STEP, IGES, STL and others.</p>
  </description>
  <screenshots>
-  <screenshot type="default" width="800" height="600">http://www.freecadweb.org/wiki/index.php?title=File:FreeCAD011.png</screenshot>
+  <screenshot type="default" width="800" height="600">http://www.freecadweb.org/wiki/images/5/56/Freecad_jeep.png</screenshot>
  </screenshots>
  <url type="homepage">http://www.freecadweb.org</url>
  <updatecontact>yorik@uncreated.net</updatecontact>

@@ -28,6 +28,19 @@
 
 namespace KDL
 {
+    // Equal is friend function, but default arguments for friends are forbidden (§8.3.6.4)
+    class JntArrayVel;
+    bool Equal(const JntArrayVel& src1,const JntArrayVel& src2,double eps=epsilon);
+    void Add(const JntArrayVel& src1,const JntArrayVel& src2,JntArrayVel& dest);
+    void Add(const JntArrayVel& src1,const JntArray& src2,JntArrayVel& dest);
+    void Subtract(const JntArrayVel& src1,const JntArrayVel& src2,JntArrayVel& dest);
+    void Subtract(const JntArrayVel& src1,const JntArray& src2,JntArrayVel& dest);
+    void Multiply(const JntArrayVel& src,const double& factor,JntArrayVel& dest);
+    void Multiply(const JntArrayVel& src,const doubleVel& factor,JntArrayVel& dest);
+    void Divide(const JntArrayVel& src,const double& factor,JntArrayVel& dest);
+    void Divide(const JntArrayVel& src,const doubleVel& factor,JntArrayVel& dest);
+    void SetToZero(JntArrayVel& array);
+
 
     class JntArrayVel
     {
@@ -36,9 +49,9 @@ namespace KDL
         JntArray qdot;
     public:
         JntArrayVel(){};
-        JntArrayVel(unsigned int size);
+        explicit JntArrayVel(unsigned int size);
         JntArrayVel(const JntArray& q,const JntArray& qdot);
-        JntArrayVel(const JntArray& q);
+        explicit JntArrayVel(const JntArray& q);
 
         void resize(unsigned int newSize);
 
@@ -54,9 +67,10 @@ namespace KDL
         friend void Divide(const JntArrayVel& src,const double& factor,JntArrayVel& dest);
         friend void Divide(const JntArrayVel& src,const doubleVel& factor,JntArrayVel& dest);
         friend void SetToZero(JntArrayVel& array);
-        friend bool Equal(const JntArrayVel& src1,const JntArrayVel& src2,double eps=epsilon);
+        friend bool Equal(const JntArrayVel& src1,const JntArrayVel& src2,double eps);
 
     };
+
 }
 
 #endif

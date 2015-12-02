@@ -49,9 +49,9 @@ class TaskPanel:
         form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        obj.Length = form.length.text()
-        obj.Breadth = form.breadth.text()
-        obj.Draft = form.draft.text()
+        obj.Length = Locale.fromString(form.length.text())
+        obj.Breadth = Locale.fromString(form.breadth.text())
+        obj.Draft = Locale.fromString(form.draft.text())
         App.ActiveDocument.recompute()
         return True
 
@@ -266,17 +266,17 @@ class TaskPanel:
         form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        qty = Units.Quantity(form.length.text())
+        qty = Units.Quantity(Locale.fromString(form.length.text()))
         val_min = 0.001
         val_max = self.bounds[0] / Units.Metre.Value
         val = qty.getValueAs('m').Value
         self.L = self.clampVal(form.length, val_min, val_max, val)
-        qty = Units.Quantity(form.breadth.text())
+        qty = Units.Quantity(Locale.fromString(form.breadth.text()))
         val_min = 0.001
         val_max = self.bounds[1] / Units.Metre.Value
         val = qty.getValueAs('m').Value
         self.B = self.clampVal(form.breadth, val_min, val_max, val)
-        qty = Units.Quantity(form.draft.text())
+        qty = Units.Quantity(Locale.fromString(form.draft.text()))
         val_min = 0.001
         val_max = self.bounds[2] / Units.Metre.Value
         val = qty.getValueAs('m').Value

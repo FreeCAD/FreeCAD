@@ -43,7 +43,7 @@ FeaturePickDialog::FeaturePickDialog(std::vector<App::DocumentObject*>& objects)
   : QDialog(Gui::getMainWindow()), ui(new Ui_FeaturePickDialog)
 {
     ui->setupUi(this);
-    for (std::vector<App::DocumentObject*>::const_iterator o = objects.begin(); o != objects.end(); o++)
+    for (std::vector<App::DocumentObject*>::const_iterator o = objects.begin(); o != objects.end(); ++o)
         ui->listWidget->addItem(QString::fromAscii((*o)->getNameInDocument()));
 }
 
@@ -55,7 +55,7 @@ FeaturePickDialog::~FeaturePickDialog()
 std::vector<App::DocumentObject*> FeaturePickDialog::getFeatures() {
     std::vector<App::DocumentObject*> result;
 
-    for (std::vector<QString>::const_iterator s = features.begin(); s != features.end(); s++)
+    for (std::vector<QString>::const_iterator s = features.begin(); s != features.end(); ++s)
         result.push_back(App::GetApplication().getActiveDocument()->getObject(s->toAscii().data()));
 
     return result;

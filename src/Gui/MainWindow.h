@@ -24,25 +24,18 @@
 #ifndef GUI_MAINWINDOW_H
 #define GUI_MAINWINDOW_H
 
-//#define NO_USE_QT_MDI_AREA
-
 #include "Window.h"
 #include <Base/Console.h>
 #include <string>
 #include <vector>
 
+#include <QEvent>
 #include <QMainWindow>
-#ifndef NO_USE_QT_MDI_AREA
 #include <QMdiArea>
-#else
-#include <QWorkspace>
-#endif
 
 class QMimeData;
 class QUrl;
-#if !defined (NO_USE_QT_MDI_AREA)
 class QMdiSubWindow;
-#endif
 
 namespace App {
 class Document;
@@ -95,11 +88,7 @@ public:
     /**
      * Returns a list of all MDI windows in the worpspace.
      */
-#if !defined(NO_USE_QT_MDI_AREA) 
     QList<QWidget*> windows(QMdiArea::WindowOrder order = QMdiArea::CreationOrder) const;
-#else
-    QList<QWidget*> windows(QWorkspace::WindowOrder order = QWorkspace::CreationOrder) const;
-#endif
     /**
      * Can be called after the caption of an MDIView has changed to update the tab's caption.
      */
@@ -237,7 +226,6 @@ protected:
     void changeEvent(QEvent *e);
 
 private Q_SLOTS:
-#if !defined (NO_USE_QT_MDI_AREA)
     /**
      * \internal
      */
@@ -250,20 +238,6 @@ private Q_SLOTS:
      * Close tab at position index.
      */
     void tabCloseRequested(int index);
-#else
-    /**
-     * Activates the associated tab to this widget.
-     */
-    void onWindowActivated(QWidget*);
-    /**
-     * Activates the associated window to the tab with \a id.
-     */
-    void onTabSelected(int i);
-    /**
-     * Removes the associated tab to the window when it gets destroyed from outside.
-     */
-    void onWindowDestroyed();
-#endif
     /**
      * Fills up the menu with the current windows in the workspace.
      */
@@ -288,6 +262,10 @@ private Q_SLOTS:
      * \internal
      */
     void delayedStartup();
+    /**
+     * \internal
+     */
+    void processMessages(const QList<QByteArray> &);
 
 Q_SIGNALS:
     void timeEvent();
@@ -338,6 +316,24 @@ public:
 
 private:
     QString msg, wrn, err;
+};
+
+// -------------------------------------------------------------
+
+/** This is a helper class needed when a style sheet is restored or cleared.
+ * @author Werner Mayer
+ */
+class ActionStyleEvent : public QEvent
+{
+public:
+    static int EventType;
+    enum Style {Restore, Clear};
+
+    ActionStyleEvent(Style type);
+    Style getType() const;
+
+private:
+    Style type;
 };
 
 } // namespace Gui

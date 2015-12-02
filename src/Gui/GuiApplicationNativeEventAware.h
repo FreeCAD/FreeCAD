@@ -31,6 +31,8 @@ class QMainWindow;
 
 
 #ifdef _USE_3DCONNEXION_SDK
+
+#ifdef Q_WS_WIN
 #include "3Dconnexion/MouseParameters.h"
 
 #include <vector>
@@ -39,6 +41,17 @@ class QMainWindow;
 //#define _WIN32_WINNT 0x0501  //target at least windows XP
 
 #include <Windows.h>
+#endif // Q_WS_WIN
+
+#ifdef Q_WS_MACX
+#include <IOKit/IOKitLib.h>
+#include <3DconnexionClient/ConnexionClientAPI.h>
+extern OSErr InstallConnexionHandlers(ConnexionMessageHandlerProc messageHandler, ConnexionAddedHandlerProc addedHandler, ConnexionRemovedHandlerProc removedHandler)
+  __attribute__((weak_import));
+extern UInt16 RegisterConnexionClient(UInt32 signature, UInt8 *name, UInt16 mode, UInt32 mask) __attribute__((weak_import));
+extern void UnregisterConnexionClient(UInt16 clientID) __attribute__((weak_import));
+extern void CleanupConnexionHandlers(void) __attribute__((weak_import));
+#endif // Q_WS_MACX
 
 #endif // _USE_3DCONNEXION_SDK
 
@@ -67,8 +80,9 @@ namespace Gui
         bool x11EventFilter(XEvent *event);
 #endif // Q_WS_X11
 
-// For Windows
 #ifdef _USE_3DCONNEXION_SDK
+// For Windows
+#ifdef Q_WS_WIN
     public:
         static bool Is3dmouseAttached();
 
@@ -112,6 +126,17 @@ namespace Gui
         // use to calculate distance traveled since last event
         DWORD fLast3dmouseInputTime;
         static Gui::GUIApplicationNativeEventAware* gMouseInput;
+#endif // Q_WS_WIN
+#ifdef Q_WS_MACX
+    private:
+	static	UInt16        tdxClientID; /* ID assigned by the driver */
+	static uint32_t lastButtons;
+    public:
+	static	void tdx_drv_handler(io_connect_t connection, natural_t messageType, void *messageArgument);
+	void Move3d();
+	void Button3d(bool buttonDown, int buttonNumber);
+
+#endif// Q_WS_MACX
 #endif // _USE_3DCONNEXION_SDK
     };
 }

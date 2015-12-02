@@ -107,8 +107,8 @@ void TaskLinearPatternParameters::setupUI()
             this, SLOT(onCheckReverse(bool)));
     connect(ui->spinLength, SIGNAL(valueChanged(double)),
             this, SLOT(onLength(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(int)),
-            this, SLOT(onOccurrences(int)));
+    connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
+            this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
@@ -118,7 +118,7 @@ void TaskLinearPatternParameters::setupUI()
 
     // Fill data into dialog elements
     ui->lineOriginal->setEnabled(false);
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
+    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL) { // find the first valid original
             ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
@@ -126,6 +126,10 @@ void TaskLinearPatternParameters::setupUI()
         }
     }
     // ---------------------
+
+    ui->spinLength->bind(pcLinearPattern->Length);
+    ui->spinOccurrences->setMaximum(INT_MAX);
+    ui->spinOccurrences->bind(pcLinearPattern->Occurrences);
 
     ui->comboDirection->setEnabled(true);
     ui->checkReverse->setEnabled(true);
@@ -271,7 +275,7 @@ void TaskLinearPatternParameters::onLength(const double l) {
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onOccurrences(const int n) {
+void TaskLinearPatternParameters::onOccurrences(const uint n) {
     if (blockUpdate)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
@@ -396,6 +400,39 @@ void TaskLinearPatternParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskLinearPatternParameters::apply()
+{
+    std::string name = TransformedView->getObject()->getNameInDocument();
+    std::string direction = getDirection();
+
+    if (!direction.empty()) {
+        App::DocumentObject* sketch = 0;
+        if (direction == "H_Axis" || direction == "V_Axis" ||
+                (direction.size() > 4 && direction.substr(0,4) == "Axis"))
+            sketch = getSketchObject();
+        else
+            sketch = getSupportObject();
+
+        if (sketch) {
+            QString buf = QString::fromLatin1("(App.ActiveDocument.%1,[\"%2\"])");
+            buf = buf.arg(QString::fromLatin1(sketch->getNameInDocument()));
+            buf = buf.arg(QString::fromLatin1(direction.c_str()));
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), buf.toStdString().c_str());
+        }
+    } else
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = None", name.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
+
+    ui->spinLength->apply();
+    ui->spinOccurrences->apply();
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    if (!TransformedView->getObject()->isValid())
+        throw Base::Exception(TransformedView->getObject()->getStatusString());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -413,40 +450,13 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(ViewProviderLinea
 
 bool TaskDlgLinearPatternParameters::accept()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
     try {
         //Gui::Command::openCommand("LinearPattern changed");
         // Handle Originals
         if (!TaskDlgTransformedParameters::accept())
             return false;
 
-        TaskLinearPatternParameters* linearpatternParameter = static_cast<TaskLinearPatternParameters*>(parameter);
-        std::string direction = linearpatternParameter->getDirection();
-        if (!direction.empty()) {
-            App::DocumentObject* sketch = 0;
-            if (direction == "H_Axis" || direction == "V_Axis" ||
-                (direction.size() > 4 && direction.substr(0,4) == "Axis"))
-                sketch = linearpatternParameter->getSketchObject();
-            else
-                sketch = linearpatternParameter->getSupportObject();
-
-            if (sketch) {
-                QString buf = QString::fromLatin1("(App.ActiveDocument.%1,[\"%2\"])");
-                buf = buf.arg(QString::fromLatin1(sketch->getNameInDocument()));
-                buf = buf.arg(QString::fromLatin1(direction.c_str()));
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), buf.toStdString().c_str());
-            }
-        } else
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = None", name.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),linearpatternParameter->getReverse());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),linearpatternParameter->getLength());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(),linearpatternParameter->getOccurrences());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!TransformedView->getObject()->isValid())
-            throw Base::Exception(TransformedView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        parameter->apply();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));

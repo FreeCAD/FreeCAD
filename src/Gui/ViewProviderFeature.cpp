@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +37,6 @@
 #include <App/Document.h>
 
 #include "Window.h"
-#include "SoFCSelection.h"
 #include "ViewProviderFeature.h"
 #include "View3DInventorViewer.h"
 

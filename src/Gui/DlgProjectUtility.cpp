@@ -37,7 +37,7 @@
 using namespace Gui::Dialog;
 
 // taken from the script doctools.py
-const char* doctools = 
+std::string DlgProjectUtility::doctools =
 "import os,sys,string\n"
 "import xml.sax\n"
 "import xml.sax.handler\n"
@@ -112,6 +112,7 @@ DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgProjectUtility)
 {
     ui->setupUi(this);
+    ui->extractSource->setFilter(QString::fromLatin1("%1 (*.fcstd)").arg(tr("Project file")));
 }
 
 /**

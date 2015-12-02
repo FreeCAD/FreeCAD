@@ -18,6 +18,16 @@ Sub-elements such as vertices, edges or faces are accessible as:
 * Edge#, where # is in range(1, number of edges)
 * Face#, where # is in range(1, number of faces)</UserDocu>
     </Documentation>
+    <Methode Name="__getstate__" Const="true">
+      <Documentation>
+        <UserDocu>Serialize the content of this shape to a string in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="__setstate__">
+      <Documentation>
+        <UserDocu>Deserialize the content of this shape from a string in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="read">
       <Documentation>
         <UserDocu>Read in an IGES, STEP or BREP file.</UserDocu>
@@ -43,6 +53,11 @@ Sub-elements such as vertices, edges or faces are accessible as:
         <UserDocu>Export the content of this shape to an BREP file. BREP is a CasCade native format.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="exportBinary" Const="true">
+      <Documentation>
+        <UserDocu>Export the content of this shape in binary format to a file.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="exportBrepToString" Const="true">
       <Documentation>
         <UserDocu>Export the content of this shape to a string in BREP format. BREP is a CasCade native format.</UserDocu>
@@ -60,12 +75,17 @@ Sub-elements such as vertices, edges or faces are accessible as:
     </Methode>
     <Methode Name="importBrep">
       <Documentation>
+        <UserDocu>Load the shape from a file in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importBinary">
+      <Documentation>
         <UserDocu>Import the content to this shape of a string in BREP format.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="importBrepFromString">
       <Documentation>
-        <UserDocu>Import the content to this shape from a string in BREP format.</UserDocu>
+        <UserDocu>Load the shape from a string that keeps the content in BREP format.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="extrude" Const="true">
@@ -121,6 +141,13 @@ This is a more detailed check as done in isValid().</UserDocu>
     <Methode Name="fuse" Const="true">
       <Documentation>
         <UserDocu>Union of this and a given topo shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="multiFuse" Const="true">
+      <Documentation>
+        <UserDocu>multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+Union of this and a given list of topo shapes.
+Beginning from OCCT 6.8.1 a tolerance value can be specified</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="oldFuse" Const="true">
@@ -309,7 +336,9 @@ As a result, this shape becomes null.</UserDocu>
     </Methode>
     <Methode Name="fix">
       <Documentation>
-        <UserDocu>Tries t fix a broken shape. True is returned if the operation succeeded, False otherwise.</UserDocu>
+        <UserDocu>Tries to fix a broken shape. True is returned if the operation succeeded, False otherwise.
+fix(working precision, minimum precision, maximum precision)
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="hashCode" Const="true">
@@ -397,11 +426,36 @@ Boolean indicates if the point lying directly on a face is considered to be insi
         <UserDocu>Removes redundant edges from the B-REP model</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="proximity" Const="true">
+      <Documentation>
+        <UserDocu>proximity(Shape s): Returns two lists of Face indexes for the Faces involved in the intersection.</UserDocu>
+      </Documentation>
+    </Methode>
 	<Methode Name="distToShape" Const="true">
       <Documentation>
 		<UserDocu>Find the minimum distance to another shape.
-distToShape(Shape s):  Returns a list of minimum distance and solution point pairs - [mindist, (pointonthis,supporttype,
-pointons,supporttype),(...),...]</UserDocu>
+distToShape(Shape s):  Returns a list of minimum distance and solution point pairs.
+
+Returned is a tuple of three: (dist, vectors, infos).
+
+dist is the minimum distance, in mm (float value).
+
+vectors is a list of pairs of App.Vector. Each pair corresponds to solution.
+Example: [(Vector (2.0, -1.0, 2.0), Vector (2.0, 0.0, 2.0)), (Vector (2.0,
+-1.0, 2.0), Vector (2.0, -1.0, 3.0))] First vector is a point on self, second
+vector is a point on s.
+
+infos contains additional info on the solutions. It is a list of tuples:
+(topo1, index1, params1, topo2, index2, params2)
+
+    topo1, topo2 are strings identifying type of BREP element: 'Vertex',
+    'Edge', or 'Face'.
+
+    index1, index2 are indexes of the elements (zero-based).
+
+    params1, params2 are parameters of internal space of the elements. For
+    vertices, params is None. For edges, params is one float, u. For faces,
+    params is a tuple (u,v). </UserDocu>
 	  </Documentation>
 	</Methode>
     <Methode Name="getElement" Const="true">

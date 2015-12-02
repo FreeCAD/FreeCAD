@@ -2,9 +2,9 @@
 include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(_TEMPLATE__LIBS
@@ -13,7 +13,6 @@ set(_TEMPLATE__LIBS
 
 SET(_TEMPLATE__SRCS
     App_TEMPLATE_.cpp
-    App_TEMPLATE_Py.cpp
     PreCompiled.cpp
     PreCompiled.h
 )

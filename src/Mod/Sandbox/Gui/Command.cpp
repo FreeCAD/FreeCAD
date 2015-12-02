@@ -24,8 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
+# define WIN32_LEAN_AND_MEAN
+# define NOMINMAX
 # include <windows.h>
 # endif
+# include <QApplication>
 # include <QCalendarWidget>
 # include <QColorDialog>
 # include <QCryptographicHash>
@@ -76,7 +79,7 @@
 #include <Mod/Mesh/App/Core/Degeneration.h>
 #include "Workbench.h"
 #include "GLGraphicsView.h"
-
+#include "TaskPanelView.h"
 
 DEF_STD_CMD(CmdSandboxDocumentThread);
 
@@ -129,6 +132,34 @@ void CmdSandboxDocumentTestThread::activated(int iMsg)
 
 // -------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdSandboxDocumentSaveThread);
+
+CmdSandboxDocumentSaveThread::CmdSandboxDocumentSaveThread()
+  :Command("Sandbox_SaveThread")
+{
+    sAppModule    = "Sandbox";
+    sGroup        = QT_TR_NOOP("Sandbox");
+    sMenuText     = QT_TR_NOOP("Save thread");
+    sToolTipText  = QT_TR_NOOP("Sandbox save function");
+    sWhatsThis    = QT_TR_NOOP("Sandbox save function");
+    sStatusTip    = QT_TR_NOOP("Sandbox save function");
+}
+
+void CmdSandboxDocumentSaveThread::activated(int iMsg)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    Sandbox::DocumentSaverThread* dt = new Sandbox::DocumentSaverThread(doc);
+    QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
+    dt->start();
+}
+
+bool CmdSandboxDocumentSaveThread::isActive()
+{
+    return App::GetApplication().getActiveDocument() != 0;
+}
+
+// -------------------------------------------------------------------------------
+
 DEF_STD_CMD(CmdSandboxDocThreadWithSeq);
 
 CmdSandboxDocThreadWithSeq::CmdSandboxDocThreadWithSeq()
@@ -163,6 +194,7 @@ void CmdSandboxDocThreadWithSeq::activated(int iMsg)
         }
         seq.next(true);
     }
+    (void)val;
 }
 
 // -------------------------------------------------------------------------------
@@ -199,6 +231,7 @@ void CmdSandboxDocThreadBusy::activated(int iMsg)
             val = sin(0.12345);
         }
     }
+    (void)val;
 }
 
 // -------------------------------------------------------------------------------
@@ -223,10 +256,12 @@ void CmdSandboxDocumentNoThread::activated(int iMsg)
     App::Document* doc = App::GetApplication().getActiveDocument();
     Sandbox::DocumentProtector dp(doc);
     App::DocumentObject* obj = dp.addObject("Mesh::Cube", "MyCube");
+    (void)obj;
     dp.recompute();
     App::GetApplication().closeDocument("Thread");
     // this forces an exception
     App::DocumentObject* obj2 = dp.addObject("Mesh::Cube", "MyCube");
+    (void)obj2;
     dp.recompute();
 }
 
@@ -1046,7 +1081,7 @@ void CmdTestImageNode::activated(int iMsg)
     roundRectPath.closeSubpath();
 
 
-    QLabel* l = new QLabel();
+    //QLabel* l = new QLabel();
     //l.setText(QLatin1String("Distance: 2.784mm"));
     //QPixmap p = QPixmap::grabWidget(&l, 0,0,100,100);
     //l.show();
@@ -1381,12 +1416,35 @@ bool CmdTestGraphicsView::isActive(void)
     return (getActiveGuiDocument()!=NULL);
 }
 
+//===========================================================================
+// Std_TestTaskBox
+//===========================================================================
+DEF_STD_CMD(CmdTestTaskBox);
+
+CmdTestTaskBox::CmdTestTaskBox()
+  : Command("Std_TestTaskBox")
+{
+    sGroup          = "Standard-Test";
+    sMenuText       = "Task box";
+    sToolTipText    = "Task box";
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+}
+
+void CmdTestTaskBox::activated(int iMsg)
+{
+    QWidget* w = new SandboxGui::TaskPanelView();
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
+}
+
 
 void CreateSandboxCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdSandboxDocumentThread());
     rcCmdMgr.addCommand(new CmdSandboxDocumentTestThread());
+    rcCmdMgr.addCommand(new CmdSandboxDocumentSaveThread());
     rcCmdMgr.addCommand(new CmdSandboxDocThreadWithSeq());
     rcCmdMgr.addCommand(new CmdSandboxDocThreadBusy());
     rcCmdMgr.addCommand(new CmdSandboxDocumentNoThread());
@@ -1412,4 +1470,5 @@ void CreateSandboxCommands(void)
     rcCmdMgr.addCommand(new CmdTestCryptographicHash());
     rcCmdMgr.addCommand(new CmdMengerSponge());
     rcCmdMgr.addCommand(new CmdTestGraphicsView());
+    rcCmdMgr.addCommand(new CmdTestTaskBox());
 }

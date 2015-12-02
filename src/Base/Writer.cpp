@@ -108,6 +108,59 @@ int Writer::getFileVersion() const
     return fileVersion;
 }
 
+void Writer::setMode(const std::string& mode)
+{
+    Modes.insert(mode);
+}
+
+void Writer::setModes(const std::set<std::string>& modes)
+{
+    Modes = modes;
+}
+
+bool Writer::getMode(const std::string& mode) const
+{
+    std::set<std::string>::const_iterator it = Modes.find(mode);
+    return (it != Modes.end());
+}
+
+std::set<std::string> Writer::getModes() const
+{
+    return Modes;
+}
+
+void Writer::clearMode(const std::string& mode)
+{
+    std::set<std::string>::iterator it = Modes.find(mode);
+    if (it != Modes.end())
+        Modes.erase(it);
+}
+
+void Writer::clearModes()
+{
+    Modes.clear();
+}
+
+void Writer::addError(const std::string& msg)
+{
+    Errors.push_back(msg);
+}
+
+bool Writer::hasErrors() const
+{
+    return (!Errors.empty());
+}
+
+void Writer::clearErrors()
+{
+    Errors.clear();
+}
+
+std::vector<std::string> Writer::getErrors() const
+{
+    return Errors;
+}
+
 std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
 {
     // always check isForceXML() before requesting a file!
@@ -184,6 +237,8 @@ void Writer::decInd(void)
     indBuf[indent] = '\0';
 }
 
+// ----------------------------------------------------------------------------
+
 ZipWriter::ZipWriter(const char* FileName) 
   : ZipStream(FileName)
 {
@@ -226,4 +281,54 @@ void ZipWriter::writeFiles(void)
 ZipWriter::~ZipWriter()
 {
     ZipStream.close();
+}
+
+// ----------------------------------------------------------------------------
+
+FileWriter::FileWriter(const char* DirName) : DirName(DirName)
+{
+}
+
+FileWriter::~FileWriter()
+{
+}
+
+void FileWriter::putNextEntry(const char* file)
+{
+    std::string fileName = DirName + "/" + file;
+    this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+}
+
+bool FileWriter::shouldWrite(const std::string& , const Base::Persistence *) const
+{
+    return true;
+}
+
+void FileWriter::writeFiles(void)
+{
+    // use a while loop because it is possible that while
+    // processing the files new ones can be added
+    size_t index = 0;
+    this->FileStream.close();
+    while (index < FileList.size()) {
+        FileEntry entry = FileList.begin()[index];
+
+        if (shouldWrite(entry.FileName, entry.Object)) {
+            std::string filePath = entry.FileName;
+            std::string::size_type pos = 0;
+            while ((pos = filePath.find("/", pos)) != std::string::npos) {
+                std::string dirName = DirName + "/" + filePath.substr(0, pos);
+                pos++;
+                Base::FileInfo fi(dirName);
+                fi.createDirectory();
+            }
+
+            std::string fileName = DirName + "/" + entry.FileName;
+            this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+            entry.Object->SaveDocFile(*this);
+            this->FileStream.close();
+        }
+
+        index++;
+    }
 }

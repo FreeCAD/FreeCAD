@@ -112,6 +112,11 @@ Example:
 				<UserDocu>Transform the mesh to its eigenbase</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getEigenSystem" Const="true">
+			<Documentation>
+				<UserDocu>Get Eigen base of the mesh</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="addFacet">
 			<Documentation>
 				<UserDocu>Add a facet to the mesh</UserDocu>
@@ -147,6 +152,14 @@ Example:
 				<UserDocu>
 					setPoint(int, Vector)
 					Sets the point at index.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPointNormals" Const="true">
+			<Documentation>
+				<UserDocu>
+					getPointNormals()
+					Get the normals of the points.
 				</UserDocu>
 			</Documentation>
 		</Methode>

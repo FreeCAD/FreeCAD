@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -171,7 +171,13 @@ PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    const char* Group = getPropertyContainerPtr()->getPropertyGroup(pstr);
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    const char* Group = getPropertyContainerPtr()->getPropertyGroup(prop);
     if (Group)
         return Py::new_reference_to(Py::String(Group));
     else
@@ -184,7 +190,13 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    const char* Group = getPropertyContainerPtr()->getPropertyDocumentation(pstr);
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    const char* Group = getPropertyContainerPtr()->getPropertyDocumentation(prop);
     if (Group)
         return Py::new_reference_to(Py::String(Group));
     else

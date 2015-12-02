@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,6 +30,7 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
+#include <App/Application.h>
 #include "RayProject.h"
 #include "RayFeature.h"
 
@@ -45,8 +46,19 @@ PROPERTY_SOURCE(Raytracing::RayProject, App::DocumentObjectGroup)
 RayProject::RayProject(void)
 {
     ADD_PROPERTY_TYPE(PageResult ,(0),0,App::Prop_Output,"Resulting povray Project file");
-    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_None ,"Template for the Povray project");
+    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_Transient ,"Template for the Povray project");
     ADD_PROPERTY_TYPE(Camera     ,(""),0,App::Prop_None ,"Camera settings");
+}
+
+void RayProject::onDocumentRestored()
+{
+    Base::FileInfo fi(PageResult.getValue());
+    std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
+    // try to find the template in user dir/Templates first
+    Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+    if (tempfi.exists())
+        path = tempfi.filePath();
+    Template.setValue(path);
 }
 
 App::DocumentObjectExecReturn *RayProject::execute(void)

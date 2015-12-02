@@ -1,7 +1,7 @@
 #   (c) Juergen Riegel (juergen.riegel@web.de) 2007      LGPL
 
 import FreeCAD, os, sys, unittest, Mesh
-import thread, time, tempfile
+import thread, time, tempfile, math
 
 
 #---------------------------------------------------------------------------
@@ -158,6 +158,65 @@ class LoadMeshInThreadsCases(unittest.TestCase):
         for i in range(2):
             thread.start_new(loadFile,(name,))
         time.sleep(1)
+
+    def tearDown(self):
+        pass
+
+
+class PolynomialFitCases(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def testFitGood(self):
+        # symmetric
+        v=[]
+        v.append(FreeCAD.Vector(0,0,0.0))
+        v.append(FreeCAD.Vector(1,0,0.5))
+        v.append(FreeCAD.Vector(2,0,0.0))
+        v.append(FreeCAD.Vector(0,1,0.5))
+        v.append(FreeCAD.Vector(1,1,1.0))
+        v.append(FreeCAD.Vector(2,1,0.5))
+        v.append(FreeCAD.Vector(0,2,0.0))
+        v.append(FreeCAD.Vector(1,2,0.5))
+        v.append(FreeCAD.Vector(2,2,0.0))
+        d = Mesh.polynomialFit(v)
+        c = d["Coefficients"]
+        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        for i in d["Residuals"]:
+           self.failUnless(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
+
+    def testFitExact(self):
+        # symmetric
+        v=[]
+        v.append(FreeCAD.Vector(0,0,0.0))
+        v.append(FreeCAD.Vector(1,0,0.0))
+        v.append(FreeCAD.Vector(2,0,0.0))
+        v.append(FreeCAD.Vector(0,1,0.0))
+        v.append(FreeCAD.Vector(1,1,1.0))
+        v.append(FreeCAD.Vector(2,1,0.0))
+        d = Mesh.polynomialFit(v)
+        c = d["Coefficients"]
+        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        for i in d["Residuals"]:
+           self.failUnless(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
+
+    def testFitBad(self):
+        # symmetric
+        v=[]
+        v.append(FreeCAD.Vector(0,0,0.0))
+        v.append(FreeCAD.Vector(1,0,0.0))
+        v.append(FreeCAD.Vector(2,0,0.0))
+        v.append(FreeCAD.Vector(0,1,0.0))
+        v.append(FreeCAD.Vector(1,1,1.0))
+        v.append(FreeCAD.Vector(2,1,0.0))
+        v.append(FreeCAD.Vector(0,2,0.0))
+        v.append(FreeCAD.Vector(1,2,0.0))
+        v.append(FreeCAD.Vector(2,2,0.0))
+        d = Mesh.polynomialFit(v)
+        c = d["Coefficients"]
+        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        for i in d["Residuals"]:
+           self.failIf(math.fabs(i) < 0.0001, "Residual %f must be higher" % math.fabs(i))
 
     def tearDown(self):
         pass

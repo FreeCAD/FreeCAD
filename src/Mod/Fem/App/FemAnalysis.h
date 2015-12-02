@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,7 +64,13 @@ protected:
     virtual void onChanged (const App::Property* prop);
 };
 
+class AppFemExport DocumentObject : public App::DocumentObject
+{
+    PROPERTY_HEADER(Fem::DocumentObject);
+};
+
 typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;
+typedef App::FeaturePythonT<DocumentObject> FeaturePython;
 
 
 } //namespace Fem

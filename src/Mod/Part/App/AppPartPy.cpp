@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -445,9 +445,6 @@ makeCompound(PyObject *self, PyObject *args)
 
 static PyObject * makeFilledFace(PyObject *self, PyObject *args)
 {
-    // http://opencascade.blogspot.com/2010/03/surface-modeling-part6.html
-    // TODO: GeomPlate_BuildPlateSurface
-    // TODO: GeomPlate_MakeApprox
     // TODO: BRepFeat_SplitShape
     PyObject *obj;
     PyObject *surf=0;
@@ -1524,24 +1521,38 @@ static std::list<TopoDS_Edge> sort_Edges(double tol3d, const std::vector<TopoDS_
                 last = pEI->v2;
                 sorted.push_back(pEI->edge);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
             else if (pEI->v2.SquareDistance(first) <= tol3d) {
                 first = pEI->v1;
                 sorted.push_front(pEI->edge);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
             else if (pEI->v2.SquareDistance(last) <= tol3d) {
                 last = pEI->v1;
-                sorted.push_back(pEI->edge);
+                Standard_Real first, last;
+                const Handle_Geom_Curve & curve = BRep_Tool::Curve(pEI->edge, first, last);
+                first = curve->ReversedParameter(first);
+                last = curve->ReversedParameter(last);
+                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                sorted.push_back(edgeReversed);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
             else if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
-                sorted.push_front(pEI->edge);
+                Standard_Real first, last;
+                const Handle_Geom_Curve & curve = BRep_Tool::Curve(pEI->edge, first, last);
+                first = curve->ReversedParameter(first);
+                last = curve->ReversedParameter(last);
+                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                sorted.push_front(edgeReversed);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
         }
@@ -1790,7 +1801,7 @@ struct PyMethodDef Part_methods[] = {
      "makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."},
 
     {"makeLoft" ,makeLoft,METH_VARARGS,
-     "makeLoft(list of wires) -- Create a loft shape."},
+     "makeLoft(list of wires,[solid=False,ruled=False,closed=False]) -- Create a loft shape."},
 
     {"makeWireString" ,makeWireString ,METH_VARARGS,
      "makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."},

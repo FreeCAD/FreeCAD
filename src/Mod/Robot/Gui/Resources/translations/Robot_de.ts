@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -40,19 +40,19 @@
 <context>
     <name>CmdRobotCreateTrajectory</name>
     <message>
-        <location filename="../../CommandTrajectory.cpp" line="+61"/>
+        <location filename="../../CommandTrajectory.cpp" line="+62"/>
         <source>Robot</source>
         <translation>Roboter</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create trajectory</source>
-        <translation>Erstelle Arbeitsbewegung</translation>
+        <translation>Erstelle Bewegungsbahn</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new empty trajectory </source>
-        <translation>Erstellen Sie eine neue, leere Arbeitsbewegung </translation>
+        <translation>Erstellen Sie eine neue, leere Bewegungsbahn </translation>
     </message>
 </context>
 <context>
@@ -65,12 +65,12 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>Punkt zur Arbeitsbewegung hinzufügen...</translation>
+        <translation>Bewegungsbahn aus Kanten...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Generate a Trajectory from a set of edges</source>
-        <translation>Generieren Sie eine Arbeitsbewegung aus einer Reihe von Punkten</translation>
+        <translation>Erstellen einer Bewegungsbahn aus einer Menge von Kanten</translation>
     </message>
 </context>
 <context>
@@ -88,7 +88,7 @@
     <message>
         <location line="+1"/>
         <source>Export the trajectory as a compact KRL subroutine.</source>
-        <translation>Exportieren Sie die Arbeitsbewegung als kompaktes KRL Unterprogramm.</translation>
+        <translation>Exportieren Sie die Bewegungsbahn als kompaktes KRL Unterprogramm.</translation>
     </message>
 </context>
 <context>
@@ -106,7 +106,7 @@
     <message>
         <location line="+1"/>
         <source>Export the trajectory as a full KRL subroutine.</source>
-        <translation>Exportieren Sie die Arbeitsbewegung als eine volle KRL-Unterroutine.</translation>
+        <translation>Exportieren Sie die Bewegungsbahn als eine volle KRL-Unterroutine.</translation>
     </message>
 </context>
 <context>
@@ -191,12 +191,12 @@
     <message>
         <location line="+1"/>
         <source>Insert in trajectory</source>
-        <translation>Fügen Sie eine Arbeitsbewegung ein</translation>
+        <translation>In Bewegungsbahn einfügen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert robot Tool location into trajectory</source>
-        <translation>Lage des Roboterwerkzeugs in Arbeitsbewegung einbringen</translation>
+        <translation>Lage des Roboterwerkzeugs in Bewegungsbahn einfügen</translation>
     </message>
 </context>
 <context>
@@ -209,12 +209,12 @@
     <message>
         <location line="+1"/>
         <source>Insert in trajectory</source>
-        <translation>Fügen Sie eine Arbeitsbewegung ein</translation>
+        <translation>In Bewegungsbahn einfügen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation>Vorausgewählte Position in Arbeitsbewegung einbringen (W)</translation>
+        <translation>Vorausgewählte Position in Bewegungsbahn einfügen (W)</translation>
     </message>
 </context>
 <context>
@@ -291,12 +291,12 @@
     <message>
         <location line="+1"/>
         <source>Simulate a trajectory</source>
-        <translation>Simulieren einer Arbeitsbewegung</translation>
+        <translation>Simulieren einer Bewegungsbahn</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Run a simulation on a trajectory</source>
-        <translation>Simulation über die Bewegungsbahn starten</translation>
+        <translation>Simulation der Bewegungsbahn starten</translation>
     </message>
 </context>
 <context>
@@ -309,12 +309,12 @@
     <message>
         <location line="+1"/>
         <source>Trajectory compound...</source>
-        <translation>Verbinden der Arbeitsbewegungen ...</translation>
+        <translation>Bewegungsbahnverbund ...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Group and connect some trajectories to one</source>
-        <translation>Gruppieren und Verbinden zu einer Arbeitsbewegung</translation>
+        <translation>Gruppieren und Verbinden mehrerer Bewegungsbahnen zu einer einzigen</translation>
     </message>
 </context>
 <context>
@@ -326,21 +326,29 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Dress up trajectory...</source>
-        <translation>Arbeitsbewegung verfeinern ...</translation>
+        <source>Dress-up trajectory...</source>
+        <translation type="unfinished">Verkleidete Bewegungsbahn...</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a dress-up object which overrides some aspects of a trajectory</source>
+        <translation type="unfinished">Erstellt ein Verkleidungsobjekt, das gewisse Eigenschaften einer Bewegungsbahn überschreibt</translation>
+    </message>
+    <message>
+        <source>Dress up trajectory...</source>
+        <translation type="obsolete">Bewegungsbahn verfeinern ...</translation>
+    </message>
+    <message>
         <source>Create a dress up object which overide som aspects of a trajectory</source>
-        <translation>Erstelle Dress-Up-Objekt, das Teile der Trajektorie überschreibt</translation>
+        <translation type="obsolete">Erstelle Dress-Up-Objekt, das Teile der Bewegungsbahn überschreibt</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+52"/>
+        <location filename="../../Workbench.cpp" line="+53"/>
         <source>Trajectory tools</source>
-        <translation>Bahnverlaufswerkzeuge</translation>
+        <translation>Bewegungsbahnwerkzeuge</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -377,12 +385,12 @@
         <location line="+65"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
-        <translation>Wählen Sie einen Roboter und eine Arbeitsbewegung.</translation>
+        <translation>Wählen Sie einen Roboter und eine Bewegungsbahn.</translation>
     </message>
     <message>
         <location line="-24"/>
         <source>Trajectory not valid</source>
-        <translation>Arbeitsbewegung nicht gültig</translation>
+        <translation>Bewegungsbahn nicht gültig</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -437,7 +445,7 @@ Siehe Dokumentation für Details.</translation>
         <location filename="../../CommandTrajectory.cpp" line="-24"/>
         <location line="+17"/>
         <source>Select one Trajectory object.</source>
-        <translation>Einen Bewegungsablauf wählen.</translation>
+        <translation>Eine Bewegungsbahn wählen.</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -472,7 +480,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Wählen Sie die Bewegung die Sie verwenden wollen.</translation>
+        <translation>Wählen Sie die Bewegungsbahn die Sie verwenden wollen.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>
@@ -735,7 +743,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
         <location filename="../../TaskTrajectory.cpp" line="+44"/>
         <source>Trajectory</source>
-        <translation>Bahnverlauf</translation>
+        <translation>Bewegungsbahn</translation>
     </message>
 </context>
 <context>
@@ -776,7 +784,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
         <location line="+31"/>
         <source>Use orientation of edge</source>
-        <translation>Orientierung am Rand</translation>
+        <translation>Verwende Richtung der Kante</translation>
     </message>
     <message>
         <source>TaskEdge2TracParameter</source>
@@ -933,7 +941,7 @@ Siehe Dokumentation für Details.</translation>
     <name>TaskTrajectory</name>
     <message>
         <source>Trajectory</source>
-        <translation type="obsolete">Bahnverlauf</translation>
+        <translation type="obsolete">Bewegungsbahn</translation>
     </message>
 </context>
 <context>
@@ -1039,7 +1047,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
         <location line="+1"/>
         <source>Export trajectory</source>
-        <translation>Exportiere Arbeitsbewegung</translation>
+        <translation>Exportiere Bewegungsbahn</translation>
     </message>
 </context>
 </TS>

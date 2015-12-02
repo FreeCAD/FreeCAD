@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <stdlib.h>
+# include <QAction>
 # include <QMenu>
 # include <Inventor/SbBox2s.h>
 # include <Inventor/SbLine.h>
@@ -77,6 +79,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ActionFunction.h>
 
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
@@ -90,6 +93,7 @@
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <zipios++/gzipoutputstream.h>
+#include <boost/bind.hpp>
 
 #include "ViewProvider.h"
 #include "SoFCIndexedFaceSet.h"
@@ -238,6 +242,12 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     Lighting.setEnums(LightingEnums);
     ADD_PROPERTY(LineColor,(0,0,0));
 
+    // Create the selection node
+    pcHighlight = createFromSettings();
+    pcHighlight->ref();
+    if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
+        Selectable.setValue(false);
+
     pOpenColor = new SoBaseColor();
     setOpenEdgeColorFrom(ShapeColor.getValue());
     pOpenColor->ref();
@@ -303,12 +313,47 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 
 ViewProviderMesh::~ViewProviderMesh()
 {
+    pcHighlight->unref();
     pOpenColor->unref();
     pcLineStyle->unref();
     pcPointStyle->unref();
     pShapeHints->unref();
     pcMatBinding->unref();
     pLineColor->unref();
+}
+
+Gui::SoFCSelection* ViewProviderMesh::createFromSettings() const
+{
+    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
+
+    float transparency;
+    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+    bool enablePre = hGrp->GetBool("EnablePreselection", true);
+    bool enableSel = hGrp->GetBool("EnableSelection", true);
+    if (!enablePre) {
+        sel->highlightMode = Gui::SoFCSelection::OFF;
+    }
+    else {
+        // Search for a user defined value with the current color as default
+        SbColor highlightColor = sel->colorHighlight.getValue();
+        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
+        highlightColor.setPackedValue((uint32_t)highlight, transparency);
+        sel->colorHighlight.setValue(highlightColor);
+    }
+    if (!enableSel || !Selectable.getValue()) {
+        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
+    }
+    else {
+        // Do the same with the selection color
+        SbColor selectionColor = sel->colorSelection.getValue();
+        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        selection = hGrp->GetUnsigned("SelectionColor", selection);
+        selectionColor.setPackedValue((uint32_t)selection, transparency);
+        sel->colorSelection.setValue(selectionColor);
+    }
+
+    return sel;
 }
 
 void ViewProviderMesh::onChanged(const App::Property* prop)
@@ -385,6 +430,10 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderGeometryObject::attach(pcFeat);
 
+    pcHighlight->objectName = pcFeat->getNameInDocument();
+    pcHighlight->documentName = pcFeat->getDocument()->getName();
+    pcHighlight->subElementName = "Main";
+
     // Note: Since for mesh data the SoFCSelection node has no SoSeparator but
     // an SoGroup as parent the EMISSIVE style if set has fundamentally no effect.
     // This behaviour is given due to the fact that SoFCSelection inherits from
@@ -419,16 +468,33 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
     // faces+wires
+    Gui::SoFCSelection* selGroup = createFromSettings();
+    selGroup->objectName = getObject()->getNameInDocument();
+    selGroup->documentName = getObject()->getDocument()->getName();
+    selGroup->subElementName = "Main";
+    selGroup->addChild(getShapeNode());
+
     // Avoid any Z-buffer artefacts, so that the lines always
     // appear on top of the faces
     SoPolygonOffset* offset = new SoPolygonOffset();
-    offset->styles = SoPolygonOffset::LINES;
-    offset->factor = -2.0f;
+    offset->styles = SoPolygonOffset::FILLED;
+    offset->factor = 1.0f;
     offset->units = 1.0f;
+
     SoGroup* pcFlatWireRoot = new SoGroup();
-    pcFlatWireRoot->addChild(pcFlatRoot);
+    pcFlatWireRoot->addChild(getCoordNode());
+    SoSeparator* sep = new SoSeparator();
+    sep->addChild(pcLineStyle);
+    sep->addChild(pcLightModel);
+    sep->addChild(binding);
+    sep->addChild(pLineColor);
+    sep->addChild(selGroup);
+    pcFlatWireRoot->addChild(sep);
     pcFlatWireRoot->addChild(offset);
-    pcFlatWireRoot->addChild(pcWireRoot);
+    pcFlatWireRoot->addChild(pShapeHints);
+    pcFlatWireRoot->addChild(pcShapeMaterial);
+    pcFlatWireRoot->addChild(pcMatBinding);
+    pcFlatWireRoot->addChild(getShapeNode());
     addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
 }
 
@@ -502,10 +568,10 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
     SoMaterialBinding* binding = new SoMaterialBinding;
     SoMaterial* material = new SoMaterial;
 
-    if (mat.diffuseColor.size() == coords->point.getNum()) {
+    if (static_cast<int>(mat.diffuseColor.size()) == coords->point.getNum()) {
         binding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
     }
-    else if (mat.diffuseColor.size() == faces->coordIndex.getNum()/4) {
+    else if (static_cast<int>(mat.diffuseColor.size()) == faces->coordIndex.getNum()/4) {
         binding->value = SoMaterialBinding::PER_FACE_INDEXED;
     }
 
@@ -555,10 +621,24 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
     return false;
 }
 
+void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
+
+    // toggle command to display components
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Display components"));
+    act->setCheckable(true);
+    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE);
+    func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, _1));
+}
+
 bool ViewProviderMesh::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
         return ViewProviderGeometryObject::setEdit(ModNum);
+    else if (ModNum == ViewProvider::Color)
+        highlightComponents();
     return true;
 }
 
@@ -566,6 +646,8 @@ void ViewProviderMesh::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
         ViewProviderGeometryObject::unsetEdit(ModNum);
+    else if (ModNum == ViewProvider::Color)
+        unhighlightSelection();
 }
 
 bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const SbViewVolume& vol,
@@ -1016,11 +1098,11 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion & vp, 
     float scaleX = (float)sizeX/(float)size[0];
     float scaleY = (float)sizeY/(float)size[1];
     float scale = std::max<float>(scaleX, scaleY);
-    if (cam && cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * scale;
         static_cast<SoOrthographicCamera*>(cam)->height = height;
     }
-    else if (cam && cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
         height = 2.0f * atan(tan(height) * scale);
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
@@ -1648,6 +1730,39 @@ void ViewProviderMesh::unhighlightSelection()
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(1);
     pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+}
+
+void ViewProviderMesh::setHighlightedComponents(bool on)
+{
+    if (on) {
+        highlightComponents();
+    }
+    else {
+        unhighlightSelection();
+    }
+}
+
+void ViewProviderMesh::highlightComponents()
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    std::vector<std::vector<unsigned long> > comps = rMesh.getComponents();
+
+    // Colorize the components
+    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+    int uCtFacets = (int)rMesh.countFacets();
+    pcShapeMaterial->diffuseColor.setNum(uCtFacets);
+
+    SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+    for (std::vector<std::vector<unsigned long> >::iterator it = comps.begin(); it != comps.end(); ++it) {
+        float fMax = (float)RAND_MAX;
+        float fRed = (float)rand()/fMax;
+        float fGrn = (float)rand()/fMax;
+        float fBlu = (float)rand()/fMax;
+        for (std::vector<unsigned long>::iterator jt = it->begin(); jt != it->end(); ++jt) {
+            cols[*jt].setValue(fRed,fGrn,fBlu);
+        }
+    }
+    pcShapeMaterial->diffuseColor.finishEditing();
 }
 
 // ------------------------------------------------------

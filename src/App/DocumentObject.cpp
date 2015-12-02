@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de)          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,9 @@
 #include "DocumentObjectPy.h"
 #include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
+#include "PropertyExpressionEngine.h"
+#include <boost/signals/connection.hpp>
+#include <boost/bind.hpp>
 
 using namespace App;
 
@@ -46,10 +49,11 @@ DocumentObjectExecReturn *DocumentObject::StdReturn = 0;
 //===========================================================================
 
 DocumentObject::DocumentObject(void)
-  : _pDoc(0),pcNameInDocument(0)
+    : ExpressionEngine(),_pDoc(0),pcNameInDocument(0)
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");
+    ADD_PROPERTY_TYPE(ExpressionEngine,(),"Base",Prop_Hidden,"Property expressions");
 }
 
 DocumentObject::~DocumentObject(void)
@@ -88,7 +92,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
-    return DocumentObject::StdReturn;
+    return StdReturn;
 }
 
 short DocumentObject::mustExecute(void) const
@@ -148,6 +152,10 @@ std::vector<DocumentObject*> DocumentObject::getOutList(void) const
                 ret.push_back(static_cast<PropertyLinkSub*>(*It)->getValue());
         }
     }
+
+    // Get document objects that this document object relies on
+    ExpressionEngine.getDocumentObjectDeps(ret);
+
     return ret;
 }
 
@@ -182,6 +190,12 @@ void DocumentObject::setDocument(App::Document* doc)
 
 void DocumentObject::onBeforeChange(const Property* prop)
 {
+
+    // Store current name in oldLabel, to be able to easily retrieve old name of document object later
+    // when renaming expressions.
+    if (prop == &Label)
+        oldLabel = Label.getStrValue();
+
     if (_pDoc)
         _pDoc->onBeforeChangeProperty(this,prop);
 }
@@ -191,6 +205,10 @@ void DocumentObject::onChanged(const Property* prop)
 {
     if (_pDoc)
         _pDoc->onChangedProperty(this,prop);
+
+    if (prop == &Label && _pDoc)
+        _pDoc->signalRelabelObject(*this);
+
     if (prop->getType() & Prop_Output)
         return;
     // set object touched
@@ -217,8 +235,87 @@ void DocumentObject::touch(void)
     StatusBits.set(0);
 }
 
+/**
+ * @brief Check whether the document object is touched or not.
+ * @return true if document object is touched, false if not.
+ */
+
+bool DocumentObject::isTouched() const
+{
+    return ExpressionEngine.isTouched() || StatusBits.test(0);
+}
+
 void DocumentObject::Save (Base::Writer &writer) const
 {
     writer.ObjectName = this->getNameInDocument();
     App::PropertyContainer::Save(writer);
+}
+
+/**
+ * @brief Associate the expression \expr with the object identifier \a path in this document object.
+ * @param path Target object identifier for the result of the expression
+ * @param expr Expression tree
+ * @param comment Optional comment describing the expression
+ */
+
+void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr, const char * comment)
+{
+    ExpressionEngine.setValue(path, expr, comment);
+    connectRelabelSignals();
+}
+
+/**
+ * @brief Get expression information associated with \a path.
+ * @param path Object identifier
+ * @return Expression info, containing expression and optional comment.
+ */
+
+const PropertyExpressionEngine::ExpressionInfo DocumentObject::getExpression(const ObjectIdentifier &path) const
+{
+    boost::any value = ExpressionEngine.getPathValue(path);
+
+    if (value.type() == typeid(PropertyExpressionEngine::ExpressionInfo))
+        return boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(value);
+    else
+        return PropertyExpressionEngine::ExpressionInfo();
+}
+
+/**
+ * @brief Invoke ExpressionEngine's renameObjectIdentifier, to possibly rewrite expressions using
+ * the \a paths map with current and new identifiers.
+ *
+ * @param paths
+ */
+
+void DocumentObject::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
+{
+    ExpressionEngine.renameObjectIdentifiers(paths);
+}
+
+/**
+ * @brief Helper function that sets up a signal to track document object renames.
+ */
+
+void DocumentObject::connectRelabelSignals()
+{
+    // Only keep signal if the ExpressionEngine has at least one expression
+    if (ExpressionEngine.numExpressions() > 0) {
+
+        // Not already connected?
+        if (!onRelabledObjectConnection.connected())
+            onRelabledObjectConnection = getDocument()->signalRelabelObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed, &ExpressionEngine, _1));
+
+        try {
+            // Crude method to resolve all expression dependencies
+            ExpressionEngine.execute();
+        }
+        catch (...) {
+            // Ignore any error
+        }
+    }
+    else {
+        // Disconnect signals; nothing to track now
+        onRelabledObjectConnection.disconnect();
+        onRelabledDocumentConnection.disconnect();
+    }
 }

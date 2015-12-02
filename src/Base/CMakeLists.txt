@@ -10,8 +10,8 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}
@@ -20,11 +20,9 @@ include_directories(
 if(MSVC)
     set(FreeCADBase_LIBS
         ${Boost_LIBRARIES}
-        ${Boost_DEBUG_LIBRARIES}
-        debug ${PYTHON_DEBUG_LIBRARY}
-        optimized ${PYTHON_LIBRARY}
-        debug ${XERCESC_DEBUG_LIBRARIES}
-        optimized ${XERCESC_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+        debug ${XercesC_DEBUG_LIBRARIES}
+        optimized ${XercesC_LIBRARIES}
         ${QT_QTCORE_LIBRARY}
         ${ZLIB_LIBRARIES}
         debug MSVCRTD.LIB
@@ -36,8 +34,8 @@ if(MSVC)
     )
 elseif(MINGW)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARY}
-        ${XERCESC_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+        ${XercesC_LIBRARIES}
         ${QT_QTCORE_LIBRARY}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
@@ -45,15 +43,22 @@ elseif(MINGW)
     )
 else(MSVC)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARY}
-        ${XERCESC_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+        ${XercesC_LIBRARIES}
         ${QT_QTCORE_LIBRARY}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
+    )
+endif(MSVC)
+
+# needed for OpenSUSE
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    set(FreeCADBase_LIBS
+        ${FreeCADBase_LIBS}
         -lutil
         -ldl
     )
-endif(MSVC)
+endif()
 
 generate_from_xml(BaseClassPy)
 generate_from_xml(BoundBoxPy)

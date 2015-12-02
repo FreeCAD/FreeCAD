@@ -73,7 +73,7 @@ void PropertyConstraintListItem::initialize()
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Angle) {
+            (*it)->Type == Sketcher::Angle ) {
 
             PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
 
@@ -146,17 +146,17 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Angle) {
+            (*it)->Type == Sketcher::Angle ) {
 
             Base::Quantity quant;
-            if ((*it)->Type == Sketcher::Angle) {
-                double datum = Base::toDegrees<double>((*it)->Value);
+            if ((*it)->Type == Sketcher::Angle ) {
+                double datum = Base::toDegrees<double>((*it)->getValue());
                 quant.setUnit(Base::Unit::Angle);
                 quant.setValue(datum);
             }
             else {
                 quant.setUnit(Base::Unit::Length);
-                quant.setValue((*it)->Value);
+                quant.setValue((*it)->getValue());
             }
 
             quantities.append(quant);
@@ -220,7 +220,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                     (*it)->Type == Sketcher::DistanceX ||
                     (*it)->Type == Sketcher::DistanceY ||
                     (*it)->Type == Sketcher::Radius ||
-                    (*it)->Type == Sketcher::Angle) {
+                    (*it)->Type == Sketcher::Angle ) {
 
                     // Get the internal name
                     QString internalName = QString::fromLatin1("Constraint%1").arg(id+1);
@@ -228,7 +228,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                         double datum = quant.getValue();
                         if ((*it)->Type == Sketcher::Angle)
                             datum = Base::toRadians<double>(datum);
-                        const_cast<Sketcher::Constraint *>((*it))->Value = datum;
+                        const_cast<Sketcher::Constraint *>((*it))->setValue(datum);
                         item->set1Value(id,(*it));
                         break;
                     }

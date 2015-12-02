@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,33 +25,37 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-
+# include <boost/bind.hpp>
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include "ViewProviderAnalysis.h"
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Control.h>
+#include <Gui/ActionFunction.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemSolverObject.h>
+#include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemSetObject.h>
+#include <Mod/Fem/App/FemConstraint.h>
+#include <App/MaterialObject.h>
 
 #include "TaskDlgAnalysis.h"
 
 using namespace FemGui;
 
 
-
-
-
-
+/* TRANSLATOR FemGui::ViewProviderFemAnalysis */
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObject)
 
 
 ViewProviderFemAnalysis::ViewProviderFemAnalysis()
 {
-    sPixmap = "Fem_Analysis";
-
+    sPixmap = "fem-analysis";
 }
 
 ViewProviderFemAnalysis::~ViewProviderFemAnalysis()
@@ -74,19 +78,11 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)co
     return temp;
 }
 
-//std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren3D(void)const
-//{
-//
-//    //return static_cast<Assembly::ConstraintGroup*>(getObject())->Constraints.getValues();
-//    return std::vector<App::DocumentObject*> ();
-//}
-
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    //QAction* act;
-    //act = menu->addAction(QObject::tr("Edit pad"), receiver, member);
-    //act->setData(QVariant((int)ViewProvider::Default));
-    //PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(tr("Activate analysis"));
+    func->trigger(act, boost::bind(&ViewProviderFemAnalysis::doubleClicked, this));
 }
 
 bool ViewProviderFemAnalysis::setEdit(int ModNum)
@@ -117,11 +113,10 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
 //            Gui::Control().showDialog(padDlg);
 //        else
         
-        Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
-
-        Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
-
-        return true;
+        //Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
+        //Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
+        //return true;
+        return false;
     }
     else {
         return Gui::ViewProviderDocumentObject::setEdit(ModNum);
@@ -157,6 +152,62 @@ bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
     //    Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
     return true;
+}
+
+bool ViewProviderFemAnalysis::canDragObjects() const
+{
+    return true;
+}
+
+bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
+{
+    if (!obj)
+        return false;
+    if (obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::Constraint::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemSetObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FeaturePython")))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId()))
+        return true;
+    else
+        return false;
+}
+
+void ViewProviderFemAnalysis::dragObject(App::DocumentObject* obj)
+{
+    Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
+    std::vector<App::DocumentObject*> fem = analyze->Member.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
+        if (*it == obj) {
+            fem.erase(it);
+            analyze->Member.setValues(fem);
+            break;
+        }
+    }
+}
+
+bool ViewProviderFemAnalysis::canDropObjects() const
+{
+    return true;
+}
+
+bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject* obj) const
+{
+    return canDragObject(obj);
+}
+
+void ViewProviderFemAnalysis::dropObject(App::DocumentObject* obj)
+{
+    Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
+    std::vector<App::DocumentObject*> fem = analyze->Member.getValues();
+    fem.push_back(obj);
+    analyze->Member.setValues(fem);
 }
 
 // Python feature -----------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,10 @@
 #else // for Linux
 # define PointsExport
 # define PointsGuiExport
+#endif
+
+#ifdef FC_OS_WIN32
+# define NOMINMAX
 #endif
 
 #ifdef _PreComp_

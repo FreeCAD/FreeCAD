@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
 #include "DocumentObjectPy.h"
 #include "DocumentObjectPy.cpp"
+#include "Expression.h"
 
 using namespace App;
 
@@ -88,6 +89,14 @@ Py::List DocumentObjectPy::getState(void) const
         uptodate = false;
         list.append(Py::String("Invalid"));
     }
+    if (object->isRecomputing()) {
+        uptodate = false;
+        list.append(Py::String("Recompute"));
+    }
+    if (object->isRestoring()) {
+        uptodate = false;
+        list.append(Py::String("Restore"));
+    }
     if (uptodate) {
         list.append(Py::String("Up-to-date"));
     }
@@ -144,6 +153,45 @@ Py::List DocumentObjectPy::getOutList(void) const
     return ret;
 }
 
+PyObject*  DocumentObjectPy::setExpression(PyObject * args)
+{
+    char * path = NULL;
+    PyObject * expr;
+    char * comment = 0;
+
+    if (!PyArg_ParseTuple(args, "sO|s", &path, &expr, &comment))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
+
+    if (Py::Object(expr).isNone())
+        getDocumentObjectPtr()->setExpression(p, boost::shared_ptr<Expression>());
+    else if (PyString_Check(expr)) {
+        const char * exprStr = PyString_AsString(expr);
+        boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr));
+
+        getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+    }
+    else if (PyUnicode_Check(expr)) {
+        PyObject* unicode = PyUnicode_AsEncodedString(expr, "utf-8", 0);
+        if (unicode) {
+            std::string exprStr = PyString_AsString(unicode);
+            Py_DECREF(unicode);
+            boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
+
+            getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+        }
+        else {
+            // utf-8 encoding failed
+            return 0;
+        }
+    }
+    else
+        throw Py::TypeError("String or None expected.");
+    Py_Return;
+}
+
+
 PyObject *DocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -162,7 +210,14 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
             throw Py::AttributeError(s.str());
         }
 
-        prop->setPyObject(obj);
+        try {
+            prop->setPyObject(obj);
+        }
+        catch (const Base::TypeError& e) {
+            std::stringstream s;
+            s << "Property '" << prop->getName() << "': " << e.what();
+            throw Py::TypeError(s.str());
+        }
         return 1;
     } 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,11 +33,6 @@ class TopoDS_Face;
 class SoSeparator;
 class SbVec3f;
 class SoTransform;
-
-namespace Gui {
-  class View3DInventorViewer;
-  class SoFCSelection;
-}
 
 namespace PartGui {
 

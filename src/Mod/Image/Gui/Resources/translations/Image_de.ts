@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name>CmdCreateImagePlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+94"/>
+        <location filename="../../Command.cpp" line="+93"/>
         <source>Image</source>
         <translation>Grafik</translation>
     </message>
@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Create a planar image in the 3D space</source>
-        <translation>Erzeuge ein planare Grafik im 3D-Raum</translation>
+        <translation>Ein planare Grafik im 3D-Raum erzeugen</translation>
     </message>
     <message>
         <source>create a planar image in the 3D space</source>
@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+326"/>
+        <location filename="../../GLImageBox.cpp" line="+327"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Undefinierter Farbraum-Typ für die Bildbetrachtung</translation>
     </message>
@@ -59,37 +59,37 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientierung wählen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bildebene</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">XY-Ebene</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">XZ-Ebene</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">YZ-Ebene</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Umgekehrte Richtung</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Versatz:</translation>
     </message>
 </context>
 <context>
@@ -176,19 +176,17 @@
         <translation type="obsolete">Bildbetrachter</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+117"/>
         <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-        <translation>Bilder (*.png *.xpm *.jpg *.bmp)</translation>
+        <translation type="obsolete">Bilder (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location filename="../../Command.cpp" line="+18"/>
         <location line="+41"/>
-        <location line="+57"/>
         <source>Choose an image file to open</source>
         <translation>Wählen Sie ein Bild zum Öffnen aus</translation>
     </message>
     <message>
-        <location line="-105"/>
+        <location line="-48"/>
         <location line="+41"/>
         <source>Images</source>
         <translation>Grafiken</translation>

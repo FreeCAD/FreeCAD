@@ -103,8 +103,33 @@ public:
 
 };
 
+/**
+ * Template that works just like dynamic_cast, but expects the argument to
+ * inherit from Base::BaseClass.
+ *
+ */
 
+template<typename T> T * freecad_dynamic_cast(Base::BaseClass * t)
+{
+    if (t && t->isDerivedFrom(T::getClassTypeId()))
+        return static_cast<T*>(t);
+    else
+        return 0;
+}
 
+/**
+ * Template that works just like dynamic_cast, but expects the argument to
+ * inherit from a const Base::BaseClass.
+ *
+ */
+
+template<typename T> const T * freecad_dynamic_cast(const Base::BaseClass * t)
+{
+    if (t && t->isDerivedFrom(T::getClassTypeId()))
+        return static_cast<const T*>(t);
+    else
+        return 0;
+}
 
 
 } //namespace Base

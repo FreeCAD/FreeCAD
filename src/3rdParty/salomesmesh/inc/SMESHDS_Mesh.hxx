@@ -372,7 +372,7 @@ public:
 
   void MoveNode(const SMDS_MeshNode *, double x, double y, double z);
   virtual void RemoveNode(const SMDS_MeshNode *);
-  void RemoveElement(const SMDS_MeshElement *);
+  virtual void RemoveElement(const SMDS_MeshElement *, bool removenodes = false);
 
   /*! Remove only the given element/node and only if it is free.
    *  Methods do not work for meshes with descendants.
@@ -380,6 +380,7 @@ public:
    */
   void RemoveFreeNode   (const SMDS_MeshNode *,    SMESHDS_SubMesh *, bool fromGroups=true);
   void RemoveFreeElement(const SMDS_MeshElement *, SMESHDS_SubMesh *, bool fromGroups=true);
+  virtual void RemoveFreeElement(const SMDS_MeshElement *); ///< reimplement virtual from the base class
 
   void ClearMesh();
 

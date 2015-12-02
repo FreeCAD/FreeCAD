@@ -146,7 +146,7 @@ void SetOperations::Do ()
   std::vector<MeshGeomFacet> facets;
 
   std::vector<MeshGeomFacet>::iterator itf;
-  for (itf = _facetsOf[0].begin(); itf != _facetsOf[0].end(); itf++)
+  for (itf = _facetsOf[0].begin(); itf != _facetsOf[0].end(); ++itf)
   {
     if (_operationType == Difference)
     { // toggle normal
@@ -157,7 +157,7 @@ void SetOperations::Do ()
     facets.push_back(*itf);
   }
 
-  for (itf = _facetsOf[1].begin(); itf != _facetsOf[1].end(); itf++)
+  for (itf = _facetsOf[1].begin(); itf != _facetsOf[1].end(); ++itf)
   {
     facets.push_back(*itf);
   }
@@ -198,13 +198,13 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
             grid1.GetElements(gx1, gy1, gz1, vecFacets1);
             
             std::set<unsigned long>::iterator it1;
-            for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); it1++)
+            for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
             {
               unsigned long fidx1 = *it1;
               MeshGeomFacet f1 = _cutMesh0.GetFacet(*it1);
               
               std::vector<unsigned long>::iterator it2;
-              for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); it2++)
+              for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
               {
                 unsigned long fidx2 = *it2;
                 MeshGeomFacet f2 = _cutMesh1.GetFacet(fidx2);
@@ -292,8 +292,8 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
                   }
 
                  } // if (f1.IntersectWithFacet(f2, p0, p1))
-              } // for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); it2++)
-            } // for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); it1++)
+              } // for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
+            } // for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
           } // if (vecFacets2.size() > 0)
         } // if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
       } // for (gz1 = 0; gz1 < ctGz1; gz1++)
@@ -305,7 +305,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
 {
   // Triangulate Mesh 
   std::map<unsigned long, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
-  for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); it1++)
+  for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
   {
     std::vector<Vector3f> points;
     std::set<MeshPoint>   pointsSet;
@@ -327,7 +327,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     
     // triangulated facets
     std::list<std::set<MeshPoint>::iterator>::iterator it2;
-    for (it2 = it1->second.begin(); it2 != it1->second.end(); it2++)
+    for (it2 = it1->second.begin(); it2 != it1->second.end(); ++it2)
     {
       if (pointsSet.find(*(*it2)) == pointsSet.end())
       {
@@ -346,7 +346,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     // project points to 2D plane
     std::vector<Vector3f>::iterator it;
     std::vector<Vector3f> vertices;
-    for (it = points.begin(); it != points.end(); it++)
+    for (it = points.begin(); it != points.end(); ++it)
     {
       Vector3f pv = *it;
       pv.TransformToCoordinateSystem(base, dirX, dirY);
@@ -435,7 +435,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
       _newMeshFacets[side].push_back(facet);
 
     } // for (i = 0; i < (out->numberoftriangles * 3); i += 3)
-  } // for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); it1++)
+  } // for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
 }
 
 void SetOperations::CollectFacets (int side, float mult)
@@ -447,7 +447,7 @@ void SetOperations::CollectFacets (int side, float mult)
   MeshBuilder mb(mesh);
   mb.Initialize(_newMeshFacets[side].size());
   std::vector<MeshGeomFacet>::iterator it;
-  for (it = _newMeshFacets[side].begin(); it != _newMeshFacets[side].end(); it++)
+  for (it = _newMeshFacets[side].begin(); it != _newMeshFacets[side].end(); ++it)
   {
     //if (it->IsFlag(MeshFacet::MARKED))
     //{
@@ -464,7 +464,7 @@ void SetOperations::CollectFacets (int side, float mult)
   // search for facet not visited
   MeshFacetArray::_TConstIterator itf;
   const MeshFacetArray& rFacets = mesh.GetFacets();
-  for (itf = rFacets.begin(); itf != rFacets.end(); itf++)
+  for (itf = rFacets.begin(); itf != rFacets.end(); ++itf)
   {
     if (!itf->IsFlag(MeshFacet::VISIT))
     { // Facet found, visit neighbours
@@ -481,7 +481,7 @@ void SetOperations::CollectFacets (int side, float mult)
   }
 
   // add all facets to the result vector
-  for (itf = rFacets.begin(); itf != rFacets.end(); itf++)
+  for (itf = rFacets.begin(); itf != rFacets.end(); ++itf)
   {
     if (itf->IsFlag(MeshFacet::TMP0))
     {

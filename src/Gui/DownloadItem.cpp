@@ -464,16 +464,16 @@ void DownloadItem::metaDataChanged()
                 header.chop(1);
             m_fileName = QUrl::fromPercentEncoding(header);
         }
-        else {
-            index = header.indexOf("filename*=UTF-8''");
-            if (index >= 0) {
-                header = header.mid(index+17);
-                if (header.startsWith("\"") || header.startsWith("'"))
-                    header = header.mid(1);
-                if (header.endsWith("\"") || header.endsWith("'"))
-                    header.chop(1);
-                m_fileName = QUrl::fromPercentEncoding(header);
-            }
+        // Sometimes "filename=" and "filename*=UTF-8''" is set.
+        // So, search for this too.
+        index = header.indexOf("filename*=UTF-8''");
+        if (index >= 0) {
+            header = header.mid(index+17);
+            if (header.startsWith("\"") || header.startsWith("'"))
+                header = header.mid(1);
+            if (header.endsWith("\"") || header.endsWith("'"))
+                header.chop(1);
+            m_fileName = QUrl::fromPercentEncoding(header);
         }
     }
 

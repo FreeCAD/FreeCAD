@@ -249,7 +249,7 @@ int System::Write1 (char* acBuffer, int iQuantity, const void* pvData)
 int System::Read1 (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-    fread(pvData,1,iQuantity,pkFile);
+    size_t r = fread(pvData,1,iQuantity,pkFile); (void)r;
     return iQuantity;
 }
 //----------------------------------------------------------------------------
@@ -335,7 +335,7 @@ int System::Write8le (char* acBuffer, int iQuantity, const void* pvData)
 int System::Read2le (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-    fread(pvData,2,iQuantity,pkFile);
+    size_t r = fread(pvData,2,iQuantity,pkFile); (void)r;
 #ifdef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,pvData);
 #endif
@@ -345,7 +345,7 @@ int System::Read2le (FILE* pkFile, int iQuantity, void* pvData)
 int System::Read4le (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-    fread(pvData,4,iQuantity,pkFile);
+    size_t r = fread(pvData,4,iQuantity,pkFile); (void)r;
 #ifdef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,pvData);
 #endif
@@ -355,7 +355,7 @@ int System::Read4le (FILE* pkFile, int iQuantity, void* pvData)
 int System::Read8le (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-    fread(pvData,8,iQuantity,pkFile);
+    size_t r = fread(pvData,8,iQuantity,pkFile); (void)r;
 #ifdef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,pvData);
 #endif
@@ -488,7 +488,7 @@ int System::Write8be (char* acBuffer, int iQuantity, const void* pvData)
 int System::Read2be (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-    fread(pvData,2,iQuantity,pkFile);
+    size_t r = fread(pvData,2,iQuantity,pkFile); (void)r;
 #ifndef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,pvData);
 #endif
@@ -498,7 +498,7 @@ int System::Read2be (FILE* pkFile, int iQuantity, void* pvData)
 int System::Read4be (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-    fread(pvData,4,iQuantity,pkFile);
+    size_t r = fread(pvData,4,iQuantity,pkFile); (void)r;
 #ifndef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,pvData);
 #endif
@@ -508,7 +508,7 @@ int System::Read4be (FILE* pkFile, int iQuantity, void* pvData)
 int System::Read8be (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-    fread(pvData,8,iQuantity,pkFile);
+    size_t r = fread(pvData,8,iQuantity,pkFile); (void)r;
 #ifndef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,pvData);
 #endif

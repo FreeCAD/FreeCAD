@@ -59,6 +59,8 @@ public:
 
     const std::string getMirrorPlane(void) const;
 
+    virtual void apply();
+
 private Q_SLOTS:
     void onPlaneChanged(int num);
     virtual void onUpdateView(bool);

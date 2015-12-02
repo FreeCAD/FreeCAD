@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopExp_Explorer.hxx>
+# include <QMessageBox>
 #endif
 
 #include "Tessellation.h"
@@ -318,7 +319,7 @@ bool Tessellation::accept()
                         .arg(label);
                 }
             }
-            Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toAscii());
+            Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
         }
         activeDoc->commitTransaction();
     }

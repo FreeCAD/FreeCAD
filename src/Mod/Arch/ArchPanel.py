@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -35,20 +35,23 @@ __title__="FreeCAD Panel"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+#           Description                 l    w    t
 
 Presets = [None,
-           ["Plywoood 12mm, 1220 x 2440",1200,2400,18],
-           ["Plywoood 15mm, 1220 x 2440",1200,2400,18],
-           ["Plywoood 18mm, 1220 x 2440",1200,2400,18],
-           ["Plywoood 25mm, 1220 x 2440",1200,2400,18]]
+           ["Plywood 12mm, 1220 x 2440",1200,2400,12],
+           ["Plywood 15mm, 1220 x 2440",1200,2400,15],
+           ["Plywood 18mm, 1220 x 2440",1200,2400,18],
+           ["Plywood 25mm, 1220 x 2440",1200,2400,25],
+           ["MDF 3mm, 900 x 600",       900, 600, 3],
+           ["MDF 6mm, 900 x 600",       900, 600, 6]]
 
-
-def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=translate("Arch","Panel")):
+def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
     '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
     panel element based on the given profile object and the given
     extrusion thickness. If no base object is given, you can also specify
     length and width for a simple cubic object.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Panel(obj)
     _ViewProviderPanel(obj.ViewObject)
     if baseobj:
@@ -60,7 +63,6 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=tran
         obj.Thickness = thickness
     if length:
         obj.Length = length
-    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Panel")
     return obj
 
 
@@ -94,7 +96,7 @@ class _CommandPanel:
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
-    def Activated(self):    
+    def Activated(self):
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Length = p.GetFloat("PanelLength",1000)
         self.Width = p.GetFloat("PanelWidth",1000)
@@ -128,7 +130,7 @@ class _CommandPanel:
         self.tracker.length(self.Length)
         self.tracker.on()
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
-            
+
     def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
         self.tracker.finalize()
@@ -157,7 +159,7 @@ class _CommandPanel:
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Panel options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
-        
+
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
         valuep = QtGui.QComboBox()
@@ -167,14 +169,14 @@ class _CommandPanel:
         valuep.addItems(fpresets)
         grid.addWidget(labelp,0,0,1,1)
         grid.addWidget(valuep,0,1,1,1)
-        
+
         # length
         label1 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         self.vLength = ui.createWidget("Gui::InputField")
         self.vLength.setText(self.FORMAT % self.Length)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(self.vLength,1,1,1,1)
-        
+
         # width
         label2 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         self.vWidth = ui.createWidget("Gui::InputField")
@@ -188,7 +190,7 @@ class _CommandPanel:
         self.vHeight.setText(self.FORMAT % self.Thickness)
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(self.vHeight,3,1,1,1)
-        
+
         # horizontal button
         value5 = QtGui.QPushButton(translate("Arch","Rotate").decode("utf8"))
         grid.addWidget(value5,4,0,1,2)
@@ -212,7 +214,7 @@ class _CommandPanel:
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
         QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotate)
         return w
-        
+
     def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
         if FreeCADGui.Control.activeDialog():
@@ -225,7 +227,7 @@ class _CommandPanel:
                 self.tracker.width(self.Width)
                 self.tracker.height(self.Thickness)
                 self.tracker.length(self.Length)
-        
+
     def setWidth(self,d):
         self.Width = d
 
@@ -239,13 +241,13 @@ class _CommandPanel:
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
-        
+
     def setPreset(self,i):
         if i > 0:
             self.vLength.setText(self.FORMAT % float(Presets[i][1]))
             self.vWidth.setText(self.FORMAT % float(Presets[i][2]))
             self.vHeight.setText(self.FORMAT % float(Presets[i][3]))
-            
+
     def rotate(self):
         self.rotated = not self.rotated
 
@@ -261,12 +263,15 @@ class _Panel(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Offset","Arch",translate("Arch","The offset between this panel and its baseline"))
         obj.Sheets = 1
         self.Type = "Panel"
-        
+
     def execute(self,obj):
         "creates the panel shape"
         
+        if self.clone(obj):
+            return
+
         import Part, DraftGeomUtils
-        
+
         # base tests
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -291,7 +296,7 @@ class _Panel(ArchComponent.Component):
                 return
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not obj.Base.Solids:
-                    return                
+                    return
 
         # creating base shape
         pl = obj.Placement
@@ -317,7 +322,7 @@ class _Panel(ArchComponent.Component):
                     base = ArchCommands.makeFace(base.Wires)
                     self.BaseProfile = base
                     self.ExtrusionVector = normal
-                    base = base.extrude(normal)               
+                    base = base.extrude(normal)
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
@@ -346,7 +351,7 @@ class _Panel(ArchComponent.Component):
                 b.translate(n)
                 bases.append(b)
             base = Part.makeCompound(bases)
-            
+
         if base and normal and hasattr(obj,"Offset"):
             if obj.Offset.Value:
                 v = DraftVecUtils.scaleTo(normal,obj.Offset.Value)
@@ -354,7 +359,7 @@ class _Panel(ArchComponent.Component):
 
         # process subshapes
         base = self.processSubShapes(obj,base,pl)
-            
+
         # applying
         if base:
             if not base.isNull():
@@ -375,6 +380,7 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Panel")
 
     def getIcon(self):
         import Arch_rc
@@ -437,7 +443,7 @@ class _PanelView:
                 result += svg2
                 result += '</g>'
                 obj.ViewResult = result
-            
+
     def onChanged(self, obj, prop):
         pass
 

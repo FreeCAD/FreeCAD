@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,12 +47,12 @@
 #include "FemConstraintBearing.h"
 #include "FemConstraintFixed.h"
 #include "FemConstraintForce.h"
+#include "FemConstraintPressure.h"
 #include "FemConstraintGear.h"
 #include "FemConstraintPulley.h"
 
 #include "FemResultObject.h"
-#include "FemResultValue.h"
-#include "FemResultVector.h"
+#include "FemSolverObject.h"
 
 extern struct PyMethodDef Fem_methods[];
 
@@ -119,6 +119,8 @@ void AppFemExport initFem()
  
     Fem::FemAnalysis                ::init();
     Fem::FemAnalysisPython          ::init();
+    Fem::DocumentObject             ::init();
+    Fem::FeaturePython              ::init();
     Fem::FemMesh                    ::init();
     Fem::FemMeshObject              ::init();
     Fem::FemMeshShapeObject         ::init();
@@ -135,15 +137,14 @@ void AppFemExport initFem()
     Fem::ConstraintBearing          ::init();
     Fem::ConstraintFixed            ::init();
     Fem::ConstraintForce            ::init();
+    Fem::ConstraintPressure         ::init();
     Fem::ConstraintGear             ::init();
     Fem::ConstraintPulley           ::init();
 
     Fem::FemResultObject            ::init();
-    Fem::FemResultPython            ::init();
-    Fem::FemResultValue             ::init();
-    Fem::FemResultValuePython       ::init();
-    Fem::FemResultVector            ::init();
-    Fem::FemResultVectorPython      ::init();
+    Fem::FemResultObjectPython      ::init();
+    Fem::FemSolverObject            ::init();
+    Fem::FemSolverObjectPython      ::init();
 }
 
 } // extern "C"

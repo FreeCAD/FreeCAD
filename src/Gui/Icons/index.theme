@@ -1,0 +1,13 @@
+[Icon Theme]
+Name=FreeCAD-default
+Comment=Default FreeCAD icon theme
+Inherits=Default
+
+# Directory list
+Directories=scalable
+
+[scalable]
+Size=48
+MinSize=8
+MaxSize=512
+Type=Scalable

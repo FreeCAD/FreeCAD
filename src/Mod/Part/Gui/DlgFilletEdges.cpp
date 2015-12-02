@@ -547,6 +547,8 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         on_shapeObject_activated(current_index);
         ui->shapeObject->setEnabled(false);
 
+        double startRadius = 1;
+        double endRadius = 1;
         std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         bool block = model->blockSignals(true); // do not call toggleCheckState
@@ -558,6 +560,9 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
                 model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
                 model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
 
+                startRadius = et->radius1;
+                endRadius = et->radius2;
+
                 int id = model->index(index, 0).data(Qt::UserRole).toInt();
                 std::stringstream str;
                 str << "Edge" << id;
@@ -565,6 +570,14 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             }
         }
         model->blockSignals(block);
+
+        // #0001746
+        ui->filletStartRadius->blockSignals(true);
+        ui->filletStartRadius->setValue(startRadius);
+        ui->filletStartRadius->blockSignals(false);
+        ui->filletEndRadius->blockSignals(true);
+        ui->filletEndRadius->setValue(endRadius);
+        ui->filletEndRadius->blockSignals(false);
 
         App::Document* doc = d->object->getDocument();
         Gui::Selection().addSelection(doc->getName(),

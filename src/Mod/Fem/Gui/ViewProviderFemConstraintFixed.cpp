@@ -30,6 +30,7 @@
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
 # include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemConstraintFixed.h"
@@ -47,7 +48,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintFixed, FemGui::ViewProviderFemC
 
 ViewProviderFemConstraintFixed::ViewProviderFemConstraintFixed()
 {
-    sPixmap = "Fem_ConstraintFixed";
+    sPixmap = "fem-constraint-fixed";
 }
 
 ViewProviderFemConstraintFixed::~ViewProviderFemConstraintFixed()
@@ -56,7 +57,6 @@ ViewProviderFemConstraintFixed::~ViewProviderFemConstraintFixed()
 
 bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
 {
-    Base::Console().Error("ViewProviderFemConstraintFixed::setEdit()\n");
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
@@ -107,24 +107,22 @@ bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
 
 #define HEIGHT 4
 #define WIDTH (1.5*HEIGHT)
+#define USE_MULTIPLE_COPY
 
 void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintFixed* pcConstraint = static_cast<Fem::ConstraintFixed*>(this->getObject());
 
-    /*
-    // This has a HUGE performance penalty as opposed to separate nodes for every symbol
-    // The problem seems to be SoCone
+#ifdef USE_MULTIPLE_COPY
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
         SoMultipleCopy* cp = new SoMultipleCopy();
-        cp->ref();
         cp->matrix.setNum(0);
         cp->addChild((SoNode*)createFixed(HEIGHT, WIDTH));
         pShapeSep->addChild(cp);
     }
-    */
+#endif
 
     if (strcmp(prop->getName(),"Points") == 0) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
@@ -133,32 +131,36 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
             return;
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-        // Note: Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
-
-        /*
+#ifdef USE_MULTIPLE_COPY
         SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cp->matrix.setNum(points.size());
+        SbMatrix* matrices = cp->matrix.startEditing();
         int idx = 0;
-        */
+#else
+        // Note: Points and Normals are always updated together
+        pShapeSep->removeAllChildren();
+#endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);
             SbRotation rot(SbVec3f(0,-1,0), dir);
-            /*
+#ifdef USE_MULTIPLE_COPY
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1,1,1));
-            cp->matrix.set1Value(idx, m);
-            idx++
-            */
+            matrices[idx] = m;
+            idx++;
+#else
             SoSeparator* sep = new SoSeparator();
             createPlacement(sep, base, rot);
             createFixed(sep, HEIGHT, WIDTH);
             pShapeSep->addChild(sep);
-
+#endif
             n++;
         }
+#ifdef USE_MULTIPLE_COPY
+        cp->matrix.finishEditing();
+#endif
     }
 
     ViewProviderFemConstraint::updateData(prop);

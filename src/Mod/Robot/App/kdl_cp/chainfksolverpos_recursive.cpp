@@ -30,10 +30,12 @@ namespace KDL {
     {
     }
 
-    int ChainFkSolverPos_recursive::JntToCart(const JntArray& q_in, Frame& p_out, int segmentNr)
-    {
-        if(segmentNr<0)
-             segmentNr=chain.getNrOfSegments();
+    int ChainFkSolverPos_recursive::JntToCart(const JntArray& q_in, Frame& p_out, int seg_nr)    {
+        unsigned int segmentNr;
+        if(seg_nr<0)
+            segmentNr=chain.getNrOfSegments();
+        else
+            segmentNr = seg_nr;
 
         p_out = Frame::Identity();
 

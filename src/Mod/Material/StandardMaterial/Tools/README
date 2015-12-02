@@ -1,0 +1,42 @@
+WARNING: The scripts operate with limited checks and can be dangerous.
+         Commit your changes before using the scripts!
+
+That directory contains set of scripts for FCMat<->ods conversion.
+The main purpose of conversion FCMat<->ods is to allow batch editing as
+it's much easier to edit a column in spreadsheet than 25 separate FCMat files.
+Also creating new materials similar to an existing material is just
+a matter of copying a row, changing file names and relevant properties.
+
+Typical workflow:
+
+1. Run ./make_ods.sh to create Materials.ods
+2. Edit Materials.ods
+4. Run ./make_FCMats.sh to create directory with new FCMat files
+5. Copy edited FCMat files to StandardMaterials directory
+
+Other scenarios:
+
+A. Removing a property
+
+1. Remove the property from headers file and from the TEMPLATE.FCMat file
+2. Run ./make_ods.sh to create Materials.ods
+3. Run ./make_FCMats.sh to create directory with new FCMat files
+4. Copy FCMat files to StandardMaterials directory
+
+B. Adding a property
+
+1. Add the property to headers file and to the TEMPLATE.FCMat file with a description
+2. Run ./make_ods.sh to create Materials.ods
+3. Edit Materials.ods and fill the values of the new property (empty properties are not written to FCMat files)
+3. Run ./make_FCMats.sh to create directory with new FCMat files
+4. Copy FCMat files to StandardMaterials directory
+
+C. Sorting properties as per header file order
+
+2. Run ./make_ods.sh to create Materials.ods
+3. Run ./make_FCMats.sh to create directory with new FCMat files
+4. Copy FCMat files to StandardMaterials directory
+
+Important comments:
+1. First 5 lines of a FCMat file are copied without modification to the new FCMat file
+2. The scripts are to be used only on linux, in the source code directory.

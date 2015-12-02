@@ -4,19 +4,19 @@
 if(BUILD_GUI)
     include_directories(
         ${Boost_INCLUDE_DIRS}
-        ${COIN3D_INCLUDE_DIR}
+        ${COIN3D_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
         ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_PATH}
-        ${XERCESC_INCLUDE_DIR}
+        ${PYTHON_INCLUDE_DIRS}
+        ${XercesC_INCLUDE_DIRS}
     )
 else(BUILD_GUI)
     include_directories(
         ${Boost_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
         ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_PATH}
-        ${XERCESC_INCLUDE_DIR}
+        ${PYTHON_INCLUDE_DIRS}
+        ${XercesC_INCLUDE_DIRS}
     )
 endif(BUILD_GUI)
 
@@ -32,8 +32,7 @@ if(BUILD_GUI)
     if(MSVC)
         SET(FreeCAD_LIBS
             FreeCADGui
-            debug qtmaind.lib
-            optimized qtmain.lib
+            ${QT_QTMAIN_LIBRARY}
         )
     else(MSVC)
         SET(FreeCAD_LIBS
@@ -66,8 +65,8 @@ add_executable(FreeCADMainCmd ${FreeCADMainCmd_SRCS})
 
 target_link_libraries(FreeCADMainCmd 
     FreeCADApp
-    ${QT_DEBUG_LIBRARIES}
-    ${QT_LIBRARIES}
+    ${QT_QTCORE_LIBRARY}
+    ${QT_QTXML_LIBRARY}
 )
 
 SET_BIN_DIR(FreeCADMainCmd FreeCADCmd)
@@ -86,7 +85,7 @@ endif(WIN32)
 ######################## FreeCADMainPy ########################
 
 SET(FreeCADMainPy_SRCS
-     MainPy.cpp
+    MainPy.cpp
 )
 
 add_library(FreeCADMainPy SHARED ${FreeCADMainPy_SRCS})

@@ -58,6 +58,7 @@ class EditorViewP {
 public:
     QPlainTextEdit* textEdit;
     QString fileName;
+    EditorView::DisplayName displayName;
     QTimer*  activityTimer;
     uint timeStamp;
     bool lock;
@@ -79,6 +80,7 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
 {
     d = new EditorViewP;
     d->lock = false;
+    d->displayName = EditorView::FullName;
 
     // create the editor first
     d->textEdit = editor;
@@ -256,13 +258,18 @@ bool EditorView::canClose(void)
     }
 }
 
+void EditorView::setDisplayName(EditorView::DisplayName type)
+{
+    d->displayName = type;
+}
+
 /**
  * Saves the content of the editor to a file specified by the appearing file dialog.
  */
 bool EditorView::saveAs(void)
 {
     QString fn = FileDialog::getSaveFileName(this, QObject::tr("Save Macro"),
-        QString::null, tr("FreeCAD macro (*.FCMacro);;Python (*.py)"));
+        QString::null, QString::fromLatin1("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
     if (fn.isEmpty())
         return false;
     setCurrentFileName(fn);
@@ -384,7 +391,8 @@ void EditorView::print(QPrinter* printer)
  */
 void EditorView::printPdf()
 {
-    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), tr("PDF file (*.pdf)"));
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);
@@ -399,11 +407,25 @@ void EditorView::setCurrentFileName(const QString &fileName)
     /*emit*/ changeFileName(d->fileName);
     d->textEdit->document()->setModified(false);
 
+    QString name;
+    QFileInfo fi(fileName);
+    switch (d->displayName) {
+    case FullName:
+        name = fileName;
+        break;
+    case FileName:
+        name = fi.fileName();
+        break;
+    case BaseName:
+        name = fi.baseName();
+        break;
+    }
+
     QString shownName;
     if (fileName.isEmpty())
         shownName = tr("untitled[*]");
     else
-        shownName = QString::fromAscii("%1[*]").arg(fileName);
+        shownName = QString::fromAscii("%1[*]").arg(name);
     shownName += tr(" - Editor");
     setWindowTitle(shownName);
     setWindowModified(false);
@@ -534,6 +556,9 @@ bool PythonEditorView::onHasMsg(const char* pMsg) const
  */
 void PythonEditorView::executeScript()
 {
+    // always save the macro when it is modified
+    if (EditorView::onHasMsg("Save"))
+        EditorView::onMsg("Save", 0);
     Application::Instance->macroManager()->run(Gui::MacroManager::File,fileName().toUtf8());
 }
 

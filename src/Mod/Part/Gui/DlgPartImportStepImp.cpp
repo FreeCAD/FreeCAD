@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -65,9 +65,11 @@ void DlgPartImportStepImp::OnApply()
 
 void DlgPartImportStepImp::onChooseFileName()
 {
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString::null, QString::null, tr("STEP (*.stp *.step);;All Files (*.*)"));
-    if (! fn.isEmpty() )
-    {
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString::null, QString::null,
+        QString::fromLatin1("%1 (*.stp *.step);;%2 (*.*)"))
+        .arg(tr("STEP"))
+        .arg(tr("All Files"));
+    if (!fn.isEmpty()) {
         FileName->setText(fn);
     }
 }

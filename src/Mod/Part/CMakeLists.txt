@@ -11,6 +11,7 @@ INSTALL(
         MakeBottle.py
         TestPartApp.py
         TestPartGui.py
+        JoinFeatures.py
     DESTINATION
         Mod/Part
 )

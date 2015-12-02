@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,6 +32,8 @@
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>
 #include "Constraint.h"
+#include <boost/signals.hpp>
+#include <boost/unordered/unordered_map.hpp>
 
 namespace Base {
 class Writer;
@@ -79,6 +81,9 @@ public:
     const std::vector<Constraint*> &getValues(void) const {
         return invalidGeometry ? _emptyValueList : _lValueList;
     }
+    const std::vector<Constraint*> &getValuesForce(void) const {//to suppress check for invalid geometry, to be used for sketch repairing.
+        return  _lValueList;
+    }
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -93,9 +98,38 @@ public:
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
     void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
+    bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
+    bool isGeometryInvalid(){return invalidGeometry;}
+
+
+    const Constraint *getConstraint(const App::ObjectIdentifier &path) const;
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const;
+    virtual const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+
+    typedef std::pair<int, const Constraint*> ConstraintInfo ;
+
+    boost::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;
+    boost::signal<void (const std::set<App::ObjectIdentifier> &)> signalConstraintsRemoved;
+
+    static std::string getConstraintName(const std::string &name, int i);
+
+    static std::string getConstraintName(int i);
+
+    static int getIndexFromConstraintName(const std::string & name);
+
+    static bool validConstraintName(const std::string &name);
+
+    App::ObjectIdentifier createPath(int ConstrNbr) const;
 
 private:
+    App::ObjectIdentifier makeArrayPath(int idx);
+    App::ObjectIdentifier makeSimplePath(const Constraint *c);
+    App::ObjectIdentifier makePath(int idx, const Constraint *c);
+
     std::vector<Constraint *> _lValueList;
+    boost::unordered_map<boost::uuids::uuid, std::size_t> valueMap;
 
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;

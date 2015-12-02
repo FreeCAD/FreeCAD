@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,6 +36,7 @@
 # include <QMenu>
 # include <QPixmap>
 # include <QTimer>
+# include <QToolTip>
 # include <QHeaderView>
 #endif
 
@@ -389,6 +390,9 @@ QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
                 if (!vp->canDragObjects()) {
                     return 0;
                 }
+                else if (!vp->canDragObject(obj)) {
+                    return 0;
+                }
             }
         }
     }
@@ -475,6 +479,12 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
             // if the item is already a child of the target item there is nothing to do
             if (children.contains(item)) {
+                event->ignore();
+                return;
+            }
+
+            // let the view provider decide to accept the object or ignore it
+            if (!vp->canDropObject(obj)) {
                 event->ignore();
                 return;
             }
@@ -825,21 +835,30 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     : QTreeWidgetItem(parent, TreeWidget::DocumentType), pDocument(doc)
 {
     // Setup connections
-    doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
-    doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1));
-    doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1));
-    doc->signalRenamedObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
-    doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
-    doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
-    doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
-    doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
-    doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
+    connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
+    connectDelObject = doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1));
+    connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1));
+    connectRenObject = doc->signalRelabelObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
+    connectActObject = doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
+    connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
+    connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
+    connectHltObject = doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
+    connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
 
 DocumentItem::~DocumentItem()
 {
+    connectNewObject.disconnect();
+    connectDelObject.disconnect();
+    connectChgObject.disconnect();
+    connectRenObject.disconnect();
+    connectActObject.disconnect();
+    connectEdtObject.disconnect();
+    connectResObject.disconnect();
+    connectHltObject.disconnect();
+    connectExpObject.disconnect();
 }
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
@@ -876,15 +895,38 @@ void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
     }
 }
 
-void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& obj)
+void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view)
 {
-    std::string objectName = obj.getObject()->getNameInDocument();
+    App::DocumentObject* obj = view.getObject();
+    std::string objectName = obj->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
     if (it != ObjectMap.end()) {
         QTreeWidgetItem* parent = it->second->parent();
         if (it->second->childCount() > 0) {
+            // When removing an object check if there are multiple parents of its children
+            //
+            // this removes the children from their parent
             QList<QTreeWidgetItem*> children = it->second->takeChildren();
-            parent->addChildren(children);
+            for (QList<QTreeWidgetItem*>::iterator jt = children.begin(); jt != children.end(); ++jt) {
+                std::vector<DocumentObjectItem*> parents = getAllParents(static_cast<DocumentObjectItem*>(*jt));
+                for (std::vector<DocumentObjectItem*>::iterator kt = parents.begin(); kt != parents.end(); ++kt) {
+                    if (*kt != it->second) {
+                        // there is another parent object of this child
+                        (*kt)->addChild(*jt);
+                        break;
+                    }
+                }
+            }
+
+            // if there are still children, move them to the document item (#0001905)
+            QList<QTreeWidgetItem*> freeChildren;
+            for (QList<QTreeWidgetItem*>::iterator jt = children.begin(); jt != children.end(); ++jt) {
+                if (!(*jt)->parent())
+                    freeChildren << *jt;
+            }
+
+            if (!freeChildren.isEmpty())
+                this->addChildren(freeChildren);
         }
 
         parent->takeChild(parent->indexOfChild(it->second));
@@ -953,18 +995,7 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
 
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    for (std::map<std::string,DocumentObjectItem*>::iterator it = ObjectMap.begin(); it != ObjectMap.end(); ++it) {
-        if (it->second->object() == &obj) {
-            DocumentObjectItem* item = it->second;
-            ObjectMap.erase(it);
-            std::string objectName = obj.getObject()->getNameInDocument();
-            ObjectMap[objectName] = item;
-            return;
-        }
-    }
-
-    // no such object found
-    Base::Console().Warning("DocumentItem::slotRenamedObject: Cannot rename unknown object.\n");
+    // Do nothing here because the Label is set in slotChangeObject
 }
 
 void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
@@ -1182,6 +1213,30 @@ void DocumentItem::selectItems(void)
     static_cast<TreeWidget*>(treeWidget())->setItemsSelected(deselitems, false);
 }
 
+std::vector<DocumentObjectItem*> DocumentItem::getAllParents(DocumentObjectItem* item) const
+{
+    std::vector<DocumentObjectItem*> parents;
+    App::DocumentObject* obj = item->object()->getObject();
+    std::vector<App::DocumentObject*> inlist = obj->getInList();
+
+    for (std::vector<App::DocumentObject*>::iterator it = inlist.begin(); it != inlist.end(); ++it) {
+        Gui::ViewProvider* vp = pDocument->getViewProvider(*it);
+        std::vector<App::DocumentObject*> child = vp->claimChildren();
+        for (std::vector<App::DocumentObject*>::iterator jt = child.begin(); jt != child.end(); ++jt) {
+            if (*jt == obj) {
+                std::map<std::string, DocumentObjectItem*>::const_iterator kt;
+                kt = ObjectMap.find((*it)->getNameInDocument());
+                if (kt != ObjectMap.end()) {
+                    parents.push_back(kt->second);
+                }
+                break;
+            }
+        }
+    }
+
+    return parents;
+}
+
 // ----------------------------------------------------------------------------
 
 DocumentObjectItem::DocumentObjectItem(Gui::ViewProviderDocumentObject* pcViewProvider,
@@ -1313,7 +1368,12 @@ void DocumentObjectItem::displayStatusInfo()
     if ( Obj->mustExecute() == 1 )
         info += QString::fromAscii(" (but must be executed)");
     getMainWindow()->showMessage( info );
-   
+
+    if (Obj->isError()) {
+        QTreeWidget* tree = this->treeWidget();
+        QPoint pos = tree->visualItemRect(this).topRight();
+        QToolTip::showText(tree->mapToGlobal(pos), info);
+    }
 }
 
 void DocumentObjectItem::setExpandedStatus(bool on)

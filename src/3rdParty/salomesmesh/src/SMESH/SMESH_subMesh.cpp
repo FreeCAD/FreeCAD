@@ -1508,11 +1508,12 @@ bool SMESH_subMesh::ComputeStateEngine(int event)
       ComputeSubMeshStateEngine( CHECK_COMPUTE_STATE );
       break;
     case CHECK_COMPUTE_STATE:
-      if ( !IsMeshComputed() )
+      if ( !IsMeshComputed() ) {
         if (_algoState == HYP_OK)
           _computeState = READY_TO_COMPUTE;
         else
           _computeState = NOT_READY;
+      }
       break;
     default:
       ASSERT(0);

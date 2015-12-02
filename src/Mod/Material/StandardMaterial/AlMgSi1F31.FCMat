@@ -3,39 +3,19 @@
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
-[General]
-Vendor=
-Name=German norm only!
-NameDE=AlMgSi1F31
-MaterialNumber=3.2315.72
-Norm=DIN 1725
-KindOfMaterial=Aluminium
-KindOfMaterialDE=Aluminium
-SpecificPrice=
-Father=Metal
-ProductURL=
-; Specific Weight - kg/m³
-SpecificWeight=2700
-Description=
-DescriptionDE=kalt- und warmaushärtbar; Schiff- und Fahrzeugbau
-
-[Mechanical]
-;Ultimate Tensile Strength - Rm - N/mm²
-UltimateTensileStrength=310
-; Yield Strength - Re - N/mm²
-YieldStrength=260
-CompressiveStrength=
-; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=70000
-; ModulusOfShare - G-Modul - N/mm²
-ModulusOfShare=27000
-Elasticity=
-FractureToughness=
-; Ultimate Strain - Bruchdehnung - %
-UltimateStrain=10
-; Thermal Expansion Coefficient - Ausdehnungskoeffizient - 1/K
-ThermalExpansionCoefficient=2,30E-05
-
-[FEM]
-; Poisson Ratio - Querkontraktionszahl
-PoissonRatio=0.3
+[FCMat]
+Name = [DE]AlMgSi1F31
+NameDE = AlMgSi1F31
+Father = Metal
+YoungsModulus = 70000 MPa
+UltimateTensileStrength = 310
+PoissonRatio = 0.3
+Density = 2700 kg/m^3
+KindOfMaterial = Aluminium
+KindOfMaterialDE = Aluminium
+MaterialNumber = 3.2315.72
+ModulusOfShare = 27000
+Norm = DIN 1725
+ThermalExpansionCoefficient = 2.30E-005
+UltimateStrain = 10
+YieldStrength = 260

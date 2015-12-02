@@ -38,6 +38,7 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Line.hxx>
 # include <gp_Lin.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskFemConstraintBearing.h"
@@ -53,6 +54,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintGear.h>
+#include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>
@@ -148,18 +150,18 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         if (selectionMode == seldir) {
             if (subName.substr(0,4) == "Face") {
-                BRepAdaptor_Surface surface(TopoDS::Face(ref));
-                if (surface.GetType() != GeomAbs_Plane) {
+                if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
                     return;
                 }
-            } else if (subName.substr(0,4) == "Edge") {
-                BRepAdaptor_Curve line(TopoDS::Edge(ref));
-                if (line.GetType() != GeomAbs_Line) {
+            }
+            else if (subName.substr(0,4) == "Edge") {
+                if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
                     return;
                 }
-            } else {
+            }
+            else {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
                 return;
             }
@@ -273,7 +275,7 @@ TaskDlgFemConstraintGear::TaskDlgFemConstraintGear(ViewProviderFemConstraintGear
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintGear(ConstraintView, 0, "Fem_ConstraintGear");
+    this->parameter = new TaskFemConstraintGear(ConstraintView, 0, "fem-constraint-gear");
 
     Content.push_back(parameter);
 }

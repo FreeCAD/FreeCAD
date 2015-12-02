@@ -24,7 +24,8 @@
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation type="unfinished">軸パラメーターの
+詳細設定</translation>
     </message>
   </context>
   <context>
@@ -238,12 +239,12 @@
     <message>
       <location filename="PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation type="unfinished">プロットドキュメント上でグリッドをアクティブにする必要があります</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="126"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation type="unfinished">プロットドキュメント上で凡例をアクティブにする必要があります</translation>
     </message>
   </context>
   <context>

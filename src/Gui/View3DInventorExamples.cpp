@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -290,8 +290,8 @@ void LightManip(SoSeparator * root)
   SoInput in;
   in.setBuffer((void *)scenegraph, std::strlen(scenegraph));
   SoSeparator * _root = SoDB::readAll( &in );
+  if ( _root == NULL ) return; // Shouldn't happen.
   root->addChild(_root);
-  if ( root == NULL ) return; // Shouldn't happen.
   root->ref();
 
   const char * pointlightnames[3] = { "RedLight", "GreenLight", "BlueLight" };

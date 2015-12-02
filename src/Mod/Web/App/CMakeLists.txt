@@ -3,24 +3,16 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
 )
 
-if(MSVC)
-    set(Web_LIBS
-         FreeCADApp
-         ${QT_DEBUG_LIBRARIES}
-         ${QT_LIBRARIES}
-    )
-else(MSVC)
-    set(Web_LIBS
-        FreeCADApp
-        ${QT_LIBRARIES}
-    )
-endif(MSVC)
+set(Web_LIBS
+     FreeCADApp
+     ${QT_LIBRARIES}
+)
 
 set(Web_MOC_HDRS
     Server.h

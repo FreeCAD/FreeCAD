@@ -65,6 +65,10 @@ private:
     void slotDeletedObject(const App::DocumentObject& Obj);
     /** The property of an observed object has changed */
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    /** Undoes the last transaction of the document */
+    void slotUndoDocument(const App::Document& Doc);
+    /** Redoes the last undone transaction of the document */
+    void slotRedoDocument(const App::Document& Doc);
 
 private:
     Py::Object inst;
@@ -75,6 +79,8 @@ private:
     Connection connectApplicationDeletedDocument;
     Connection connectApplicationRelabelDocument;
     Connection connectApplicationActivateDocument;
+    Connection connectApplicationUndoDocument;
+    Connection connectApplicationRedoDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;

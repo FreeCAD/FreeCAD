@@ -24,9 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QEventLoop>
 # include <QMessageBox>
 # include <QTextStream>
+# include <QTimer>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
@@ -417,7 +419,7 @@ void SweepWidget::changeEvent(QEvent *e)
 
 /* TRANSLATOR PartGui::TaskSweep */
 
-TaskSweep::TaskSweep()
+TaskSweep::TaskSweep() : label(0)
 {
     widget = new SweepWidget();
     taskbox = new Gui::TaskView::TaskBox(
@@ -429,14 +431,27 @@ TaskSweep::TaskSweep()
 
 TaskSweep::~TaskSweep()
 {
+    delete label;
 }
 
 void TaskSweep::open()
 {
 }
 
-void TaskSweep::clicked(int)
+void TaskSweep::clicked(int id)
 {
+    if (id == QDialogButtonBox::Help) {
+        QString help = QApplication::translate("PartGui::TaskSweep",
+            "Select one or more profiles and select an edge or wire\n"
+            "in the 3D view for the sweep path.");
+        if (!label) {
+            label = new Gui::StatusWidget(widget);
+            label->setStatusText(help);
+        }
+
+        label->show();
+        QTimer::singleShot(3000, label, SLOT(hide()));
+    }
 }
 
 bool TaskSweep::accept()

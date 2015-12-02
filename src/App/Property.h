@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 // Std. configurations
 
 #include <Base/Persistence.h>
+#include <boost/any.hpp>
 #include <string>
 #include <bitset>
 
@@ -35,6 +36,7 @@ namespace App
 {
 
 class PropertyContainer;
+class ObjectIdentifier;
 
 /** Base class of all properties
  * This is the father of all properties. Properties are objects which are used
@@ -84,6 +86,19 @@ public:
 
     /// Get a pointer to the PropertyContainer derived class the property belongs to
     PropertyContainer *getContainer(void) const {return father;}
+
+    /// Set value of property
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
+
+    /// Get value of property
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const;
+
+    /// Convert p to a canonical representation of it
+    virtual const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
+
+    /// Get valid paths for this property; used by auto completer
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+
     /// Set the property touched
     void touch();
     /// Test if this property is touched 
@@ -96,7 +111,7 @@ public:
     /// Paste the value from the property (mainly for Undo/Redo and transactions)
     virtual void Paste(const Property &from) = 0;
     /// Encodes an attribute upon saving.
-    std::string encodeAttribute(const std::string&) const;
+    static std::string encodeAttribute(const std::string&);
 
 
     friend class PropertyContainer;
@@ -118,6 +133,9 @@ protected:
     void hasSetValue(void);
     /// Gets called by all setValue() methods before the value has changed
     void aboutToSetValue(void);
+
+    /// Verify a path for the current property
+    virtual void verifyPath(const App::ObjectIdentifier & p) const;
 
 private:
     // forbidden

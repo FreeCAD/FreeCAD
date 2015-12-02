@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,13 +36,13 @@ namespace Robot
 /// Definition of the Axis properties
 struct AxisDefinition {
     double a;        // a of the Denavit-Hartenberg parameters (mm) 
-    double alpha;    // alpha of the Denavit-Hartenberg parameters (°)
+    double alpha;    // alpha of the Denavit-Hartenberg parameters (Â°)
     double d;        // d of the Denavit-Hartenberg parameters (mm)
-    double theta;    // a of the Denavit-Hartenberg parameters (°) 
+    double theta;    // a of the Denavit-Hartenberg parameters (Â°) 
     double rotDir;   // rotational direction (1|-1)
-    double maxAngle; // soft ends + in °
-    double minAngle; // soft ends - in ° 
-    double velocity; // max vlocity of the axle in °/s
+    double maxAngle; // soft ends + in Â°
+    double minAngle; // soft ends - in Â° 
+    double velocity; // max vlocity of the axle in Â°/s
 };
 
 

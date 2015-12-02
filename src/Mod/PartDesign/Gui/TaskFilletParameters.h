@@ -51,12 +51,13 @@ public:
     TaskFilletParameters(ViewProviderFillet *FilletView, QWidget *parent=0);
     ~TaskFilletParameters();
 
-    double getLength(void) const;
+    void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
 
 protected:
+    double getLength(void) const;
     void changeEvent(QEvent *e);
 
 private:
@@ -89,7 +90,6 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 

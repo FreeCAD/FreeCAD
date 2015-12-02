@@ -13,13 +13,13 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
+    ${SMESH_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -41,7 +41,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
 set(FemGui_MOC_HDRS
-    Hypothesis.h
+    DlgSettingsFemImp.h
     TaskObjectName.h
     TaskCreateNodeSet.h
     TaskDlgCreateNodeSet.h
@@ -49,6 +49,7 @@ set(FemGui_MOC_HDRS
     TaskFemConstraintBearing.h
     TaskFemConstraintFixed.h  
     TaskFemConstraintForce.h  
+    TaskFemConstraintPressure.h
     TaskFemConstraintGear.h   
     TaskFemConstraintPulley.h
     TaskTetParameter.h
@@ -61,13 +62,14 @@ fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
 set(FemGui_UIC_SRCS
-    Hypothesis.ui
+    DlgSettingsFem.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
     TaskFemConstraintBearing.ui
     TaskFemConstraintFixed.ui
     TaskFemConstraintForce.ui
+    TaskFemConstraintPressure.ui
     TaskTetParameter.ui
     TaskAnalysisInfo.ui
     TaskDriver.ui
@@ -76,9 +78,9 @@ qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 
 SET(FemGui_DLG_SRCS
     ${FemGui_UIC_HDRS}
-    Hypothesis.ui
-    Hypothesis.cpp
-    Hypothesis.h
+    DlgSettingsFem.ui
+    DlgSettingsFemImp.cpp
+    DlgSettingsFemImp.h
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
@@ -91,6 +93,9 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintForce.ui
     TaskFemConstraintForce.cpp
     TaskFemConstraintForce.h
+    TaskFemConstraintPressure.ui
+    TaskFemConstraintPressure.cpp
+    TaskFemConstraintPressure.h
     TaskFemConstraintGear.cpp
     TaskFemConstraintGear.h
     TaskFemConstraintPulley.cpp
@@ -111,6 +116,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemMeshShapeNetgen.h
     ViewProviderAnalysis.cpp
     ViewProviderAnalysis.h
+    ViewProviderSolver.cpp
+    ViewProviderSolver.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
     ViewProviderSetElements.cpp
@@ -129,6 +136,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintFixed.h
     ViewProviderFemConstraintForce.cpp
     ViewProviderFemConstraintForce.h
+    ViewProviderFemConstraintPressure.cpp
+    ViewProviderFemConstraintPressure.h
     ViewProviderFemConstraintGear.cpp
     ViewProviderFemConstraintGear.h
     ViewProviderFemConstraintPulley.cpp
@@ -170,6 +179,8 @@ SOURCE_GROUP("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
 SET(FemGui_SRCS_Module
     AppFemGui.cpp
     AppFemGuiPy.cpp
+    AbaqusHighlighter.cpp
+    AbaqusHighlighter.h
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
@@ -200,9 +211,16 @@ fc_target_copy_resource(FemGui
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
     InitGui.py
-    MechanicalMaterial.ui
-    MechanicalAnalysis.ui
+    TaskPanelMechanicalMaterial.ui
     )
+
+SET(FemGuiIcon_SVG
+    Resources/icons/preferences-fem.svg
+)
+
+fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
+
+INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons")
 
 SET_BIN_DIR(FemGui FemGui /Mod/Fem)
 SET_PYTHON_PREFIX_SUFFIX(FemGui)

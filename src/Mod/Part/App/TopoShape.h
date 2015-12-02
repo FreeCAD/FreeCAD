@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -124,10 +124,12 @@ public:
     void importStep(const char *FileName);
     void importBrep(const char *FileName);
     void importBrep(std::istream&);
+    void importBinary(std::istream&);
     void exportIges(const char *FileName) const;
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;
     void exportBrep(std::ostream&) const;
+    void exportBinary(std::ostream&);
     void exportStl (const char *FileName, double deflection) const;
     void exportFaceSet(double, double, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
@@ -146,6 +148,7 @@ public:
     TopoDS_Shape cut(TopoDS_Shape) const;
     TopoDS_Shape common(TopoDS_Shape) const;
     TopoDS_Shape fuse(TopoDS_Shape) const;
+    TopoDS_Shape multiFuse(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
     TopoDS_Shape oldFuse(TopoDS_Shape) const;
     TopoDS_Shape section(TopoDS_Shape) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;

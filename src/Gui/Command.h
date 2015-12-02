@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -69,11 +69,12 @@ void CreateTestCommands(void);
  */
 class GuiExport CommandBase 
 {
-public:
+protected:
     CommandBase(const char* sMenu, const char* sToolTip=0, const char* sWhat=0, 
                 const char* sStatus=0, const char* sPixmap=0, const char* sAccel=0);
     virtual ~CommandBase();
 
+public:
     /**
      * Returns the Action object of this command, or 0 if it doesn't exist.
      */
@@ -84,9 +85,12 @@ public:
 protected:
     /// Creates the used Action when adding to a widget. The default implementation does nothing.
     virtual Action * createAction(void);
+
 public:
     /// Reassigns QAction stuff after the language has changed. 
     virtual void languageChange() = 0;
+    /// Updates the QAction with respect to the passed mode.
+    virtual void updateAction(int mode) = 0;
     /// The C++ class name is needed as context for the translation framework
     virtual const char* className() const = 0;
     //@}
@@ -141,11 +145,11 @@ protected:
  * - anything else, especially altering the document must be done on application level. See doCommand() for details.
  *
  * @see CommandManager
- * @author Jürgen Riegel
+ * @author JÃ¼rgen Riegel
  */
 class GuiExport Command : public CommandBase
 {
-public:
+protected:
     Command(const char* name);
     virtual ~Command();
 
@@ -219,6 +223,8 @@ public:
     static bool isActiveObjectValid(void);
     /// Translate command
     void languageChange();
+    /// Updates the QAction with respect to the passed mode.
+    void updateAction(int mode);
     //@}
 
     /** @name Helper methods for issuing commands to the Python interpreter */
@@ -312,13 +318,13 @@ private:
  * passing between the C++ and the Python world. This includes everything like setting resources such as
  * bitmaps, activation or bindings to the user interface.
  * @see CommandManager
- * @author Jürgen Riegel
+ * @author JÃ¼rgen Riegel
  */
 class PythonCommand: public Command
 {
 public:
-    PythonCommand(const char* name,PyObject * pcPyCommand, const char* pActivationString);
-    virtual ~PythonCommand() {}
+    PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString);
+    virtual ~PythonCommand();
 
 protected:
     /** @name Methods reimplemented for Command Framework */
@@ -346,6 +352,8 @@ public:
     const char* getStatusTip  () const;
     const char* getPixmap     () const;
     const char* getAccel      () const;
+    bool isCheckable          () const;
+    bool isChecked            () const;
     //@}
 
 protected:
@@ -357,6 +365,55 @@ protected:
     PyObject * _pcPyResourceDict;
     /// the activation sequence
     std::string Activation;
+};
+
+/** The Python group command class
+ * @see CommandManager
+ * @author Werner Mayer
+ */
+class PythonGroupCommand: public Command
+{
+public:
+    PythonGroupCommand(const char* name, PyObject * pcPyCommand);
+    virtual ~PythonGroupCommand();
+
+protected:
+    /** @name Methods reimplemented for Command Framework */
+    //@{
+    /// Method which gets called when activated
+    virtual void activated(int iMsg);
+    /// if the command is not always active
+    virtual bool isActive(void);
+    /// Get the help URL
+    const char* getHelpUrl(void) const;
+    /// Creates the used Action
+    virtual Action * createAction(void);
+    //@}
+
+public:
+    /** @name Methods to get the properties of the command */
+    //@{
+    /// Reassigns QAction stuff after the language has changed. 
+    void languageChange();
+    const char* className() const
+    { return "PythonGroupCommand"; }
+    const char* getWhatsThis  () const;
+    const char* getMenuText   () const;
+    const char* getToolTipText() const;
+    const char* getStatusTip  () const;
+    const char* getPixmap     () const;
+    const char* getAccel      () const;
+    bool isExclusive          () const;
+    bool hasDropDownMenu      () const;
+    //@}
+
+protected:
+    /// Returns the resource values
+    const char* getResource(const char* sName) const;
+    /// a pointer to the Python command object
+    PyObject * _pcPyCommand;
+    /// the command object resources
+    PyObject * _pcPyResource;
 };
 
 
@@ -373,7 +430,7 @@ class MacroCommand: public Command
 {
 public:
     MacroCommand(const char* name);
-    virtual ~MacroCommand() {}
+    virtual ~MacroCommand();
 
 protected:
     /** @name methods reimplemented for Command Framework */
@@ -417,7 +474,7 @@ protected:
  *  on are handles here. Further the Building of Toolbars and (Context) 
  *  menus (connecting to a QAction) is done here.
  *  @see Command
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 class GuiExport CommandManager
 {
@@ -464,14 +521,19 @@ public:
      */
     void runCommandByName (const char* sName) const;
 
-    /// method is OBSOLET use GetModuleCommands() or GetAllCommands()
+    /// method is OBSOLETE use GetModuleCommands() or GetAllCommands()
     const std::map<std::string, Command*>& getCommands() const { return _sCommands; }
     /// get frequently called by the AppWnd to check the commands are active.
     void testActive(void);
+
+    void addCommandMode(const char* sContext, const char* sName);
+    void updateCommands(const char* sContext, int mode);
+
 private:
     /// Destroys all commands in the manager and empties the list.
     void clearCommands();
-    std::map<std::string,Command*> _sCommands;
+    std::map<std::string, Command*> _sCommands;
+    std::map<std::string, std::list<std::string> > _sCommandModes;
 };
 
 } // namespace Gui
@@ -480,7 +542,7 @@ private:
 /** The Command Macro Standard
  *  This macro makes it easier to define a new command.
  *  The parameters are the class name.
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 #define DEF_STD_CMD(X) class X : public Gui::Command \
 {\
@@ -495,7 +557,7 @@ protected: \
 /** The Command Macro Standard + isActive()
  *  This macro makes it easier to define a new command.
  *  The parameters are the class name
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 #define DEF_STD_CMD_A(X) class X : public Gui::Command \
 {\
@@ -512,7 +574,7 @@ protected: \
 /** The Command Macro Standard + createAction()
  *  This macro makes it easier to define a new command.
  *  The parameters are the class name
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 #define DEF_STD_CMD_C(X) class X : public Gui::Command \
 {\
@@ -544,6 +606,24 @@ protected: \
     virtual Gui::Action * createAction(void);\
 };
 
+/** The Command Macro Standard + isActive() + updateAction()
+ *  This macro makes it easier to define a new command.
+ *  The parameters are the class name
+ *  @author Werner Mayer
+ */
+#define DEF_STD_CMD_AU(X) class X : public Gui::Command \
+{\
+public:\
+    X();\
+    virtual ~X(){}\
+    virtual void updateAction(int mode); \
+    virtual const char* className() const\
+    { return #X; }\
+protected: \
+    virtual void activated(int iMsg);\
+    virtual bool isActive(void);\
+};
+
 /** The Command Macro Standard + isActive() + createAction()
  *  + languageChange()
  *  This macro makes it easier to define a new command.
@@ -564,11 +644,32 @@ protected: \
     virtual Gui::Action * createAction(void);\
 };
 
+/** The Command Macro Standard + isActive() + createAction()
+ *  + languageChange() + updateAction()
+ *  This macro makes it easier to define a new command.
+ *  The parameters are the class name
+ *  @author Werner Mayer
+ */
+#define DEF_STD_CMD_ACLU(X) class X : public Gui::Command \
+{\
+public:\
+    X();\
+    virtual ~X(){}\
+    virtual void languageChange(); \
+    virtual void updateAction(int mode); \
+    virtual const char* className() const\
+    { return #X; }\
+protected: \
+    virtual void activated(int iMsg);\
+    virtual bool isActive(void);\
+    virtual Gui::Action * createAction(void);\
+};
+
 /** The Command Macro view
  *  This macro makes it easier to define a new command for the 3D View
  *  It activate the command only when a 3DView is active.
  *  The parameters are the class name
- *  @author Jürgen Riegel
+ *  @author JÃ¼rgen Riegel
  */
 #define DEF_3DV_CMD(X) class X : public Gui::Command \
 {\

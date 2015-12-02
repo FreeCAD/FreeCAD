@@ -11,7 +11,7 @@
     <message>
       <location filename="InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation type="unfinished">Plotagem</translation>
+      <translation type="unfinished">Traçar</translation>
     </message>
   </context>
   <context>
@@ -218,7 +218,7 @@
     <message>
       <location filename="Plot.py" line="38"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation type="unfinished">matplotlib not found, so Plot module can not be loaded</translation>
+      <translation type="unfinished">matplotlib não encontrado, então o módulo de traçagem não pode ser carregado</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="54"/>
@@ -395,22 +395,22 @@
     <message>
       <location filename="TaskPanel.py" line="154"/>
       <source>No label</source>
-      <translation type="unfinished">No label</translation>
+      <translation type="unfinished">Sem rótulo</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="160"/>
       <source>Remove serie</source>
-      <translation type="unfinished">Remove serie</translation>
+      <translation type="unfinished">Remover serie</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="196"/>
       <source>Line style</source>
-      <translation type="unfinished">Line style</translation>
+      <translation type="unfinished">Estilo de linha</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="172"/>
       <source>Marker</source>
-      <translation type="unfinished">Marker</translation>
+      <translation type="unfinished">Marcador</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="149"/>
@@ -420,37 +420,37 @@
     <message>
       <location filename="TaskPanel.py" line="178"/>
       <source>List of available series</source>
-      <translation type="unfinished">List of available series</translation>
+      <translation type="unfinished">Lista de séries disponíveis</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="184"/>
       <source>Line title</source>
-      <translation type="unfinished">Line title</translation>
+      <translation type="unfinished">Título de linha</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="202"/>
       <source>Marker style</source>
-      <translation type="unfinished">Marker style</translation>
+      <translation type="unfinished">Estilo de marcador</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="208"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation type="unfinished">Largura da linha</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="214"/>
       <source>Marker size</source>
-      <translation type="unfinished">Marker size</translation>
+      <translation type="unfinished">Tamanho do marcador</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="220"/>
       <source>Line and marker color</source>
-      <translation type="unfinished">Line and marker color</translation>
+      <translation type="unfinished">Cor de linha e de marcador</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="226"/>
       <source>Removes this serie</source>
-      <translation type="unfinished">Removes this serie</translation>
+      <translation type="unfinished">Remove esta série</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="190"/>

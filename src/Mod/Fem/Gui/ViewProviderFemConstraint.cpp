@@ -25,7 +25,11 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <QAction>
 # include <QApplication>
+# include <QDockWidget>
+# include <QMenu>
+# include <QStackedWidget>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoFontStyle.h>
@@ -72,12 +76,9 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     pTextColor = new SoBaseColor();
     pTextColor->ref();
 
-    pMaterials = new SoMaterial();
+    pMaterials = new SoBaseColor();
     pMaterials->ref();
-    pMaterials->diffuseColor.setValue(1.0f, 0.0f, 0.2f);
-    pMaterials->transparency.setValue(0.1f);
-    //pMaterials->ambientColor.setValue(0.8f, 0.8f, 0.8f);
-    //pMaterials->shininess.setValue(1.0);
+    pMaterials->rgb.setValue(1.0f, 0.0f, 0.2f);
 
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
@@ -157,7 +158,7 @@ void ViewProviderFemConstraint::onChanged(const App::Property* prop)
     }
     else if (prop == &FaceColor) {
         const App::Color& c = FaceColor.getValue();
-        pMaterials->diffuseColor.setValue(c.r,c.g,c.b);
+        pMaterials->rgb.setValue(c.r,c.g,c.b);
     }
     else if (prop == &FontSize) {
         pFont->size = FontSize.getValue();
@@ -246,11 +247,9 @@ void getLocalCoordinateSystem(const SbVec3f& z, SbVec3f& y, SbVec3f& x)
 void ViewProviderFemConstraint::createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r)
 {
     SoTranslation* trans = new SoTranslation();
-    trans->ref();
     trans->translation.setValue(base);
     sep->addChild(trans);
     SoRotation* rot = new SoRotation();
-    rot->ref();
     rot->rotation.setValue(r);
     sep->addChild(rot);
 }
@@ -269,11 +268,9 @@ void ViewProviderFemConstraint::createCone(SoSeparator* sep, const double height
 {
     // Adjust cone so that the tip is on base
     SoTranslation* trans = new SoTranslation();
-    trans->ref();
     trans->translation.setValue(SbVec3f(0,-height/2,0));
     sep->addChild(trans);
     SoCone* cone = new SoCone();
-    cone->ref();
     cone->height.setValue(height);
     cone->bottomRadius.setValue(radius);
     sep->addChild(cone);
@@ -302,7 +299,6 @@ void ViewProviderFemConstraint::updateCone(const SoNode* node, const int idx, co
 void ViewProviderFemConstraint::createCylinder(SoSeparator* sep, const double height, const double radius)
 {
     SoCylinder* cyl = new SoCylinder();
-    cyl->ref();
     cyl->height.setValue(height);
     cyl->radius.setValue(radius);
     sep->addChild(cyl);
@@ -329,7 +325,6 @@ void ViewProviderFemConstraint::updateCylinder(const SoNode* node, const int idx
 void ViewProviderFemConstraint::createCube(SoSeparator* sep, const double width, const double length, const double height)
 {
     SoCube* cube = new SoCube();
-    cube->ref();
     cube->width.setValue(width);
     cube->depth.setValue(length);
     cube->height.setValue(height);
@@ -421,21 +416,21 @@ void ViewProviderFemConstraint::checkForWizard()
     wizardSubLayout = NULL;
     Gui::MainWindow* mw = Gui::getMainWindow();
     if (mw == NULL) return;
-    QDockWidget* dw = mw->findChild<QDockWidget*>(QObject::tr("Combo View"));
+    QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
     if (dw == NULL) return;
-    QWidget* cw = dw->findChild<QWidget*>(QObject::tr("Combo View"));
+    QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
     if (cw == NULL) return;
-    QTabWidget* tw = cw->findChild<QTabWidget*>(QObject::tr("combiTab"));
+    QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
     if (tw == NULL) return;
-    QStackedWidget* sw = tw->findChild<QStackedWidget*>(QObject::tr("qt_tabwidget_stackedwidget"));
+    QStackedWidget* sw = tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
     if (sw == NULL) return;
     QScrollArea* sa = sw->findChild<QScrollArea*>();
     if (sa== NULL) return;
     QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
     if (wd == NULL) return;
-    QObject* wiz = findChildByName(wd, QObject::tr("ShaftWizard")); // FIXME: Actually, we don't want to translate this...
+    QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
     if (wiz != NULL) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
-        wizardSubLayout = wiz->findChild<QVBoxLayout*>(QObject::tr("ShaftWizardLayout"));
+        wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
     }
 }

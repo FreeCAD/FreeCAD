@@ -107,6 +107,16 @@ def InitApplications():
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:
 		os.environ["PATH"] = PathExtension + os.environ["PATH"]
+	except UnicodeDecodeError:
+		# See #0002238. FIXME: check again once ported to Python 3.x
+		Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...')
+		path = os.environ["PATH"].split(os.pathsep)
+		cleanpath=[]
+		for i in path:
+			if test_ascii(i):
+				cleanpath.append(i)
+		os.environ["PATH"] = PathExtension + os.pathsep.join(cleanpath)
+		Log('done\n')
 	except KeyError:
 		os.environ["PATH"] = PathExtension
 	path = os.environ["PATH"].split(os.pathsep)
@@ -126,13 +136,14 @@ Log = FreeCAD.Console.PrintLog
 Msg = FreeCAD.Console.PrintMessage
 Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
+test_ascii = lambda s: all(ord(c) < 128 for c in s)
 
 Log ('Init: starting App::FreeCADInit.py\n')
 
 # init every application by importing Init.py
 InitApplications()
 
-FreeCAD.EndingAdd("FreeCAD document (*.FCStd)","FreeCAD")
+FreeCAD.addImportType("FreeCAD document (*.FCStd)","FreeCAD")
 
 # set to no gui, is overwritten by InitGui
 App.GuiUp = 0
@@ -236,6 +247,7 @@ App.Units.Power         = App.Units.Unit(2,1,-3)
 
 # clean up namespace
 del(InitApplications)
+del(test_ascii)
 
 Log ('Init: App::FreeCADInit.py done\n')
 

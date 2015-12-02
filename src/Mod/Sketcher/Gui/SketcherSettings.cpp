@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QPainter>
 # include <QPixmap>
 #endif
 
@@ -103,6 +104,7 @@ void SketcherSettings::saveSettings()
     ui->FullyConstrainedColor->onSave();
 
     ui->ConstrainedColor->onSave();
+    ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
 
     ui->SketcherDatumWidth->onSave();
@@ -114,6 +116,8 @@ void SketcherSettings::saveSettings()
     // Sketch editing
     ui->EditSketcherFontSize->onSave();
     ui->dialogOnDistanceConstraint->onSave();
+    ui->continueMode->onSave();
+    ui->checkBoxAdvancedSolverTaskBox->onSave();
     form->saveSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
@@ -134,6 +138,7 @@ void SketcherSettings::loadSettings()
     ui->FullyConstrainedColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
+    ui->NonDrivingConstraintColor->onRestore();
     ui->DatumColor->onRestore();
 
     ui->SketcherDatumWidth->onRestore();
@@ -145,6 +150,8 @@ void SketcherSettings::loadSettings()
     // Sketch editing
     ui->EditSketcherFontSize->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
+    ui->continueMode->onRestore();
+    ui->checkBoxAdvancedSolverTaskBox->onRestore();
     form->loadSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <cmath>
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Circle.hxx>
 # include <gp_Circ.hxx>
@@ -33,6 +34,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
@@ -58,6 +60,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
+#include <TColStd_Array1OfReal.hxx>
 #include <BRep_Tool.hxx>
 
 #include <BRepAdaptor_CompCurve.hxx>
@@ -71,12 +74,102 @@
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <Geom2d_BSplineCurve.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <Standard_Failure.hxx>
 
 #include "DrawingExport.h"
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 
 using namespace Drawing;
+
+TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
+{
+    double curv=0;
+    gp_Pnt pnt, center;
+
+    try {
+        // approximate the circle center from three positions
+        BRepLProp_CLProps prop(c,c.FirstParameter(),2,Precision::Confusion());
+        curv += prop.Curvature();
+        prop.CentreOfCurvature(pnt);
+        center.ChangeCoord().Add(pnt.Coord());
+
+        prop.SetParameter(0.5*(c.FirstParameter()+c.LastParameter()));
+        curv += prop.Curvature();
+        prop.CentreOfCurvature(pnt);
+        center.ChangeCoord().Add(pnt.Coord());
+
+        prop.SetParameter(c.LastParameter());
+        curv += prop.Curvature();
+        prop.CentreOfCurvature(pnt);
+        center.ChangeCoord().Add(pnt.Coord());
+
+        center.ChangeCoord().Divide(3);
+        curv /= 3;
+    }
+    catch (Standard_Failure) {
+        // if getting center of curvature fails, e.g.
+        // for straight lines it raises LProp_NotDefined
+        return TopoDS_Edge();
+    }
+
+    // get circle from curvature information
+    double radius = 1 / curv;
+
+    TopLoc_Location location;
+    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(c.Edge(), location);
+    if (!polygon.IsNull()) {
+        const TColgp_Array1OfPnt& nodes = polygon->Nodes();
+        for (int i = nodes.Lower(); i <= nodes.Upper(); i++) {
+            gp_Pnt p = nodes(i);
+            double dist = p.Distance(center);
+            if (std::abs(dist - radius) > 0.001)
+                return TopoDS_Edge();
+        }
+
+        gp_Circ circ;
+        circ.SetLocation(center);
+        circ.SetRadius(radius);
+        gp_Pnt p1 = nodes(nodes.Lower());
+        gp_Pnt p2 = nodes(nodes.Upper());
+        double dist = p1.Distance(p2);
+
+        if (dist < Precision::Confusion()) {
+            BRepBuilderAPI_MakeEdge mkEdge(circ);
+            return mkEdge.Edge();
+        }
+        else {
+            gp_Vec dir1(center, p1);
+            dir1.Normalize();
+            gp_Vec dir2(center, p2);
+            dir2.Normalize();
+            p1 = gp_Pnt(center.XYZ() + radius * dir1.XYZ());
+            p2 = gp_Pnt(center.XYZ() + radius * dir2.XYZ());
+            BRepBuilderAPI_MakeEdge mkEdge(circ, p1, p2);
+            return mkEdge.Edge();
+        }
+    }
+
+    return TopoDS_Edge();
+}
+
+TopoDS_Edge DrawingOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree) const
+{
+    Standard_Real tol3D = 0.001;
+    Standard_Integer maxSegment = 50;
+    Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+    // approximate the curve using a tolerance
+    Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+    if (approx.IsDone() && approx.HasResult()) {
+        // have the result
+        Handle_Geom_BSplineCurve spline = approx.Curve();
+        BRepBuilderAPI_MakeEdge mkEdge(spline, spline->FirstParameter(), spline->LastParameter());
+        return mkEdge.Edge();
+    }
+
+    return TopoDS_Edge();
+}
 
 SVGOutput::SVGOutput()
 {
@@ -97,7 +190,17 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
             printEllipse(adapt, i, result);
         }
         else if (adapt.GetType() == GeomAbs_BSplineCurve) {
-            printBSpline(adapt, i, result);
+//            TopoDS_Edge circle = asCircle(adapt);
+//            if (circle.IsNull()) {
+                printBSpline(adapt, i, result);
+//            }
+//            else {
+//                BRepAdaptor_Curve adapt_circle(circle);
+//                printCircle(adapt_circle, result);
+//            }
+        }
+        else if (adapt.GetType() == GeomAbs_BezierCurve) {
+            printBezier(adapt, i, result);
         }
         // fallback
         else {
@@ -181,6 +284,70 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
 }
 
+void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+{
+    try {
+        std::stringstream str;
+        str << "<path d=\"M";
+
+        Handle_Geom_BezierCurve bezier = c.Bezier();
+        Standard_Integer poles = bezier->NbPoles();
+
+        // if it's a bezier with degree higher than 3 convert it into a B-spline
+        if (bezier->Degree() > 3 || bezier->IsRational()) {
+            TopoDS_Edge edge = asBSpline(c, 3);
+            if (!edge.IsNull()) {
+                BRepAdaptor_Curve spline(edge);
+                printBSpline(spline, id, out);
+            }
+            else {
+                Standard_Failure::Raise("do it the generic way");
+            }
+
+            return;
+        }
+
+
+        gp_Pnt p1 = bezier->Pole(1);
+        str << p1.X() << "," << p1.Y();
+        if (bezier->Degree() == 3) {
+            if (poles != 4)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            gp_Pnt p3 = bezier->Pole(3);
+            gp_Pnt p4 = bezier->Pole(4);
+            str << " C"
+                << p2.X() << "," << p2.Y() << " "
+                << p3.X() << "," << p3.Y() << " "
+                << p4.X() << "," << p4.Y() << " ";
+        }
+        else if (bezier->Degree() == 2) {
+            if (poles != 3)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            gp_Pnt p3 = bezier->Pole(3);
+            str << " Q"
+                << p2.X() << "," << p2.Y() << " "
+                << p3.X() << "," << p3.Y() << " ";
+        }
+        else if (bezier->Degree() == 1) {
+            if (poles != 2)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            str << " L" << p2.X() << "," << p2.Y() << " ";
+        }
+        else {
+            Standard_Failure::Raise("do it the generic way");
+        }
+
+        str << "\" />";
+        out << str.str();
+    }
+    catch (Standard_Failure) {
+        printGeneric(c, id, out);
+    }
+}
+
 void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& out)
 {
     try {
@@ -188,7 +355,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Handle_Geom_BSplineCurve spline = c.BSpline();
         if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
-            Standard_Integer maxDegree = 3, maxSegment = 10;
+            Standard_Integer maxDegree = 3, maxSegment = 50;
             Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
             Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
@@ -391,16 +558,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     const gp_Pnt& p= ellp.Location();
     double r1 = ellp.MajorRadius();
     double r2 = ellp.MinorRadius();
-    double f = c.FirstParameter();
-    double l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt m = c.Value((l+f)/2.0);
-    gp_Pnt e = c.Value(l);
-
-    gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
-    gp_Vec v3(0,0,1);
-    double a = v3.DotCross(v1,v2);
+    double dp = ellp.Axis().Direction().Dot(gp_Vec(0,0,1));
 
     // a full ellipse
    /* if (s.SquareDistance(e) < 0.001) {
@@ -421,26 +579,20 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
             << e.X() << " " << e.Y() << "\" />";
     }*/
         gp_Dir xaxis = ellp.XAxis().Direction();
-        double angle = xaxis.Angle(gp_Dir(1,0,0));
+        double angle = xaxis.AngleWithRef(gp_Dir(1,0,0),gp_Dir(0,0,-1));
         //double rotation = Base::toDegrees<double>(angle);
 
-
-	double ax = s.X() - p.X();
-	double ay = s.Y() - p.Y();
-	double bx = e.X() - p.X();
-	double by = e.Y() - p.Y();
-
-	double start_angle = atan2(ay, ax) * 180/D_PI;
-	double end_angle = atan2(by, bx) * 180/D_PI;
+	double start_angle = c.FirstParameter();
+	double end_angle = c.LastParameter();
 
 	double major_x;double major_y;
-	
-	major_x = r1 * sin(angle*90);
-	major_y = r1 * cos(angle*90);
+
+	major_x = r1 * cos(angle);
+	major_y = r1 * sin(angle);
 
 	double ratio = r2/r1;
 
-	if(a > 0){
+	if(dp < 0){
 		double temp = start_angle;
 		start_angle = end_angle;
 		end_angle = temp;
@@ -476,7 +628,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Handle_Geom_BSplineCurve spline = c.BSpline();
         if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
-            Standard_Integer maxDegree = 3, maxSegment = 10;
+            Standard_Integer maxDegree = 3, maxSegment = 50;
             Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
             Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
@@ -486,166 +638,52 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             }
         }
 		
-        GeomConvert_BSplineCurveToBezierCurve crt(spline);
+        //GeomConvert_BSplineCurveToBezierCurve crt(spline);
 		//GeomConvert_BSplineCurveKnotSplitting crt(spline,0);
-        Standard_Integer arcs = crt.NbArcs();
+        //Standard_Integer arcs = crt.NbArcs();
 		//Standard_Integer arcs = crt.NbSplits()-1;
-        	str << 0 << endl
-				<< "SECTION" << endl
-				<< 2 << endl
-				<< "ENTITIES" << endl
-				<< 0 << endl
-				<< "SPLINE" << endl;
-				//<< 8 << endl
-				//<< 0 << endl
-				//<< 66 << endl
-				//<< 1 << endl
-				//<< 0 << endl;
+        Standard_Integer m = 0;
+        if (spline->IsPeriodic()) {
+            m = spline->NbPoles() + 2*spline->Degree() - spline->Multiplicity(1) + 2;
+        }
+        else {
+            for (int i=1; i<= spline->NbKnots(); i++)
+                m += spline->Multiplicity(i);
+        }
+        TColStd_Array1OfReal knotsequence(1,m);
+        spline->KnotSequence(knotsequence);
+        TColgp_Array1OfPnt poles(1,spline->NbPoles());
+        spline->Poles(poles);
 
-        for (Standard_Integer i=1; i<=arcs; i++) {
-            Handle_Geom_BezierCurve bezier = crt.Arc(i);
-            Standard_Integer poles = bezier->NbPoles();
-			//Standard_Integer poles = bspline->NbPoles();
-			//gp_Pnt p1 = bspline->Pole(1);
 
-            if (bezier->Degree() == 3) {
-                if (poles != 4)
-                    Standard_Failure::Raise("do it the generic way");
-                gp_Pnt p1 = bezier->Pole(1);
-                gp_Pnt p2 = bezier->Pole(2);
-                gp_Pnt p3 = bezier->Pole(3);
-                gp_Pnt p4 = bezier->Pole(4);
-                if (i == 1) {
-                    str 
-						<< 10 << endl
-						<< p1.X() << endl
-						<< 20 << endl
-						<< p1.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p2.X() << endl
-						<< 20 << endl
-						<< p2.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p4.X() << endl
-						<< 20 << endl
-						<< p4.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
+        str << 0 << endl
+            << "SECTION" << endl
+            << 2 << endl
+            << "ENTITIES" << endl
+            << 0 << endl
+            << "SPLINE" << endl;
+        //<< 8 << endl
+        //<< 0 << endl
+        //<< 66 << endl
+        //<< 1 << endl
+        //<< 0 << endl;
+        str << 70 << endl
+            << spline->IsRational()*4 << endl //flags
+            << 71 << endl << spline->Degree() << endl
+            << 72 << endl << knotsequence.Length() << endl
+            << 73 << endl << poles.Length() << endl
+            << 74 << endl << 0 << endl; //fitpoints
 
-						<< 12 << endl
-						<< p1.X() << endl
-						<< 22 << endl
-						<< p1.Y() << endl
-						<< 32 << endl
-						<< 0 << endl
-
-						<< 13 << endl
-						<< p4.X() << endl
-						<< 23 << endl
-						<< p4.Y() << endl
-						<< 33 << endl
-						<< 0 << endl;
-                }
-                else {
-                    str 
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p4.X() << endl
-						<< 20 << endl
-						<< p4.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-
-						<< 12 << endl
-						<< p3.X() << endl
-						<< 22 << endl
-						<< p3.Y() << endl
-						<< 32 << endl
-						<< 0 << endl
-
-						<< 13 << endl
-						<< p4.X() << endl
-						<< 23 << endl
-						<< p4.Y() << endl
-						<< 33 << endl
-						<< 0 << endl;
-
-                }
-            }
-            else if (bezier->Degree() == 2) {
-                if (poles != 3)
-                    Standard_Failure::Raise("do it the generic way");
-                gp_Pnt p1 = bezier->Pole(1);
-                gp_Pnt p2 = bezier->Pole(2);
-                gp_Pnt p3 = bezier->Pole(3);
-                if (i == 1) {
-                    str 
-						<< 10 << endl
-						<< p1.X() << endl
-						<< 20 << endl
-						<< p1.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p2.X() << endl
-						<< 20 << endl
-						<< p2.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-
-						<< 12 << endl
-						<< p1.X() << endl
-						<< 22 << endl
-						<< p1.Y() << endl
-						<< 32 << endl
-						<< 0 << endl
-
-						<< 13 << endl
-						<< p3.X() << endl
-						<< 23 << endl
-						<< p3.Y() << endl
-						<< 33 << endl
-						<< 0 << endl;
-                }
-                else {
-                    str 
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl;
-                }
-            }
-            else {
-                Standard_Failure::Raise("do it the generic way");
+        for (int i = knotsequence.Lower() ; i <= knotsequence.Upper(); i++) {
+            str << 40 << endl << knotsequence(i) << endl;
+        }
+        for (int i = poles.Lower(); i <= poles.Upper(); i++) {
+            gp_Pnt pole = poles(i);
+            str << 10 << endl << pole.X() << endl
+                << 20 << endl << pole.Y() << endl
+                << 30 << endl << pole.Z() << endl;
+            if (spline->IsRational()) {
+                str << 41 << endl << spline->Weight(i) << endl;
             }
         }
 

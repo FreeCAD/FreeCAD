@@ -64,22 +64,22 @@ unsigned long MeshPointArray::GetOrAddIndex (const MeshPoint &rclPoint)
 
 void MeshPointArray::SetFlag (MeshPoint::TFlagType tF) const
 {
-  for (MeshPointArray::_TConstIterator i = begin(); i < end(); i++) i->SetFlag(tF);
+  for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) i->SetFlag(tF);
 }
 
 void MeshPointArray::ResetFlag (MeshPoint::TFlagType tF) const
 {
-  for (MeshPointArray::_TConstIterator i = begin(); i < end(); i++) i->ResetFlag(tF);
+  for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) i->ResetFlag(tF);
 }
 
 void MeshPointArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pP = begin(); pP != end(); pP++) pP->SetProperty(ulVal);
+  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->SetProperty(ulVal);
 }
 
 void MeshPointArray::ResetInvalid (void) const
 {
-  for (_TConstIterator pP = begin(); pP != end(); pP++) pP->ResetInvalid();
+  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->ResetInvalid();
 }
 
 MeshPointArray& MeshPointArray::operator = (const MeshPointArray &rclPAry)
@@ -134,22 +134,22 @@ void MeshFacetArray::DecrementIndices (unsigned long ulIndex)
 
 void MeshFacetArray::SetFlag (MeshFacet::TFlagType tF) const
 {
-  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); i++) i->SetFlag(tF);
+  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) i->SetFlag(tF);
 }
 
 void MeshFacetArray::ResetFlag (MeshFacet::TFlagType tF) const
 {
-  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); i++) i->ResetFlag(tF);
+  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) i->ResetFlag(tF);
 }
 
 void MeshFacetArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pF = begin(); pF != end(); pF++) pF->SetProperty(ulVal);
+  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->SetProperty(ulVal);
 }
 
 void MeshFacetArray::ResetInvalid (void) const
 {
-  for (_TConstIterator pF = begin(); pF != end(); pF++) pF->ResetInvalid();
+  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->ResetInvalid();
 }
 
 MeshFacetArray& MeshFacetArray::operator = (const MeshFacetArray &rclFAry)
@@ -204,7 +204,7 @@ bool MeshGeomEdge::IntersectBoundingBox (const Base::BoundBox3f &rclBB) const
 
   Segment3<float> akSeg(p, n, 0.5f*len);
 
-  Base::Vector3f clCenter  = rclBB.CalcCenter();
+  Base::Vector3f clCenter  = rclBB.GetCenter();
   Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
   Vector3<float> axis0(1.0f, 0.0f, 0.0f);
   Vector3<float> axis1(0.0f, 1.0f, 0.0f);
@@ -432,7 +432,7 @@ bool MeshGeomFacet::IsDeformed() const
 
     fCosAngle = u * v;
 
-    // x < 30° => cos(x) > sqrt(3)/2 or x > 120° => cos(x) < -0.5
+    // x < 30 deg => cos(x) > sqrt(3)/2 or x > 120 deg => cos(x) < -0.5
     if (fCosAngle > 0.86f || fCosAngle < -0.5f)
       return true;
   }
@@ -473,7 +473,7 @@ bool MeshGeomFacet::IntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
   Segment3<float> akSeg2(p2, d2, len2/2.0f);
 
   // Build up the box
-  Base::Vector3f clCenter  = rclBB.CalcCenter();
+  Base::Vector3f clCenter  = rclBB.GetCenter();
   Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
   Vector3<float> axis0(1.0f, 0.0f, 0.0f);
   Vector3<float> axis1(0.0f, 1.0f, 0.0f);
@@ -748,7 +748,7 @@ void MeshGeomFacet::SubSample (float fStep, std::vector<Base::Vector3f> &rclPoin
 }
 
 /**
- * Fast Triangle-Triangle Intersection Test by Tomas Möller
+ * Fast Triangle-Triangle Intersection Test by Tomas Moeller
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */
@@ -771,7 +771,7 @@ bool MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet &rclFacet) const
 }
 
 /**
- * Fast Triangle-Triangle Intersection Test by Tomas Möller
+ * Fast Triangle-Triangle Intersection Test by Tomas Moeller
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */

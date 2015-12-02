@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskFemConstraintBearing.h"
@@ -49,7 +50,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintPulley */
 
 TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent)
-    : TaskFemConstraintGear(ConstraintView, parent, "Fem_ConstraintPulley")
+    : TaskFemConstraintGear(ConstraintView, parent, "fem-constraint-pulley")
 {
     connect(ui->spinOtherDiameter, SIGNAL(valueChanged(double)),
             this, SLOT(onOtherDiameterChanged(double)));

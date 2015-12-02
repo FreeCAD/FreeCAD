@@ -1,11 +1,11 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${COIN3D_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(MeshGui_LIBS
@@ -127,6 +127,15 @@ fc_target_copy_resource(MeshGui
     ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
     ${CMAKE_BINARY_DIR}/Mod/Mesh
     InitGui.py)
+
+SET(MeshGuiIcon_SVG
+    Resources/icons/Tree_Mesh.svg
+)
+
+fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})
+
+INSTALL(FILES ${MeshGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Mesh/Resources/icons")
+
 
 SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
 SET_PYTHON_PREFIX_SUFFIX(MeshGui)

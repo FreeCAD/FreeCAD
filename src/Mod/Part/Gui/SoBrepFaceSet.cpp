@@ -51,6 +51,7 @@
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -134,14 +135,17 @@ void SoBrepFaceSet::doAction(SoAction* action)
             switch (selaction->getType()) {
             case Gui::SoSelectionElementAction::Append:
                 {
-                    int start = this->selectionIndex.getNum();
-                    this->selectionIndex.set1Value(start, index);
+                    if (this->selectionIndex.find(index) < 0) {
+                        int start = this->selectionIndex.getNum();
+                        this->selectionIndex.set1Value(start, index);
+                    }
                 }
                 break;
             case Gui::SoSelectionElementAction::Remove:
                 {
                     int start = this->selectionIndex.find(index);
-                    this->selectionIndex.deleteValues(start,1);
+                    if (start >= 0)
+                        this->selectionIndex.deleteValues(start,1);
                 }
                 break;
             default:
@@ -704,33 +708,37 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
     mb.sendFirst(); // make sure we have the correct material
 
     int32_t id = this->highlightIndex.getValue();
+    if (id >= this->partIndex.getNum()) {
+        SoDebugError::postWarning("SoBrepFaceSet::renderHighlight", "highlightIndex out of range");
+    }
+    else {
+        // just in case someone forgot
+        if (!mindices) mindices = cindices;
+        if (!nindices) nindices = cindices;
+        pindices = this->partIndex.getValues(0);
 
-    // just in case someone forgot
-    if (!mindices) mindices = cindices;
-    if (!nindices) nindices = cindices;
-    pindices = this->partIndex.getValues(0);
+        // coords
+        int length = (int)pindices[id]*4;
+        int start=0;
+        for (int i=0;i<id;i++)
+            start+=(int)pindices[i];
+        start *= 4;
 
-    // coords
-    int length = (int)pindices[id]*4;
-    int start=0;
-    for (int i=0;i<id;i++)
-        start+=(int)pindices[i];
-    start *= 4;
+        // normals
+        if (nbind == PER_VERTEX_INDEXED)
+            nindices = &(nindices[start]);
+        else if (nbind == PER_VERTEX)
+            normals = &(normals[start]);
+        else 
+            nbind = OVERALL;
 
-    // normals
-    if (nbind == PER_VERTEX_INDEXED)
-        nindices = &(nindices[start]);
-    else if (nbind == PER_VERTEX)
-        normals = &(normals[start]);
-    else 
-        nbind = OVERALL;
+        // materials
+        mbind = OVERALL;
+        doTextures = FALSE;
 
-    // materials
-    mbind = OVERALL;
-    doTextures = FALSE;
-
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
-        &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
+            &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+    }
     state->pop();
 }
 
@@ -787,6 +795,10 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
 
     for (int i=0; i<numSelected; i++) {
         int id = selected[i];
+        if (id >= this->partIndex.getNum()) {
+            SoDebugError::postWarning("SoBrepFaceSet::renderSelection", "selectionIndex out of range");
+            break;
+        }
 
         // coords
         int length = (int)pindices[id]*4;
@@ -866,6 +878,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             break;
         }
         v4 = viptr < viendptr ? *viptr++ : -1;
+        (void)v4;
 
         /* vertex 1 *********************************************************/
         if (mbind == PER_PART) {

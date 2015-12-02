@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -38,19 +38,22 @@ __url__ = "http://www.freecadweb.org"
 # Possible roles for walls
 Roles = ['Wall','Wall Layer','Beam','Column','Curtain Wall']
 
-def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name=translate("Arch","Wall")):
+def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name="Wall"):
     '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
-    all, then you must provide length, width and height. Align can be "Center","Left" or "Right", 
+    all, then you must provide length, width and height. Align can be "Center","Left" or "Right",
     face can be an index number of a face in the base object to base the wall on.'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Wall(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
-        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
     if baseobj:
-        obj.Base = baseobj
+        if baseobj.isDerivedFrom("Part::Feature") or baseobj.isDerivedFrom("Mesh::Feature"):
+            obj.Base = baseobj
+        else:
+            FreeCAD.Console.PrintWarning(str(translate("Arch","Walls can only be based on Part or Mesh objects")))
     if face:
         obj.Face = face
     if length:
@@ -101,7 +104,7 @@ def joinWalls(walls,delete=False):
     FreeCAD.ActiveDocument.recompute()
     base.ViewObject.show()
     return base
-    
+
 def mergeShapes(w1,w2):
     "returns a Shape built on two walls that share same properties and have a coincident endpoint"
     if not areSameWallTypes([w1,w2]):
@@ -110,10 +113,10 @@ def mergeShapes(w1,w2):
         return None
     if w1.Base.Shape.Faces or w2.Base.Shape.Faces:
         return None
-        
+
     # TODO fix this
     return None
-    
+
     eds = w1.Base.Shape.Edges + w2.Base.Shape.Edges
     import DraftGeomUtils
     w = DraftGeomUtils.findWires(eds)
@@ -154,10 +157,11 @@ class _CommandWall:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         self.Align = "Center"
         self.Length = None
+        self.lengthValue = 0
         self.continueCmd = False
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Width = p.GetFloat("WallWidth",200)
@@ -281,25 +285,25 @@ class _CommandWall:
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Wall options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
-        
+
         label5 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
         grid.addWidget(label5,0,0,1,1)
         grid.addWidget(self.Length,0,1,1,1)
-        
+
         label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         value1 = ui.createWidget("Gui::InputField")
         value1.setText(self.FORMAT % self.Width)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(value1,1,1,1,1)
-        
+
         label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         value2 = ui.createWidget("Gui::InputField")
         value2.setText(self.FORMAT % self.Height)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(value2,2,1,1,1)
-        
+
         label3 = QtGui.QLabel(translate("Arch","Alignment").decode("utf8"))
         value3 = QtGui.QComboBox()
         items = ["Center","Left","Right"]
@@ -307,7 +311,7 @@ class _CommandWall:
         value3.setCurrentIndex(items.index(self.Align))
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(value3,3,1,1,1)
-        
+
         label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
@@ -319,12 +323,21 @@ class _CommandWall:
         grid.addWidget(label4,4,0,1,1)
         grid.addWidget(value4,4,1,1,1)
 
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.setFocus)
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.selectAll)
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.setFocus)
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.selectAll)
+        QtCore.QObject.connect(value2,QtCore.SIGNAL("returnPressed()"),self.createFromGUI)
         return w
         
+    def setLength(self,d):
+        self.lengthValue = d
+
     def setWidth(self,d):
         self.Width = d
         self.tracker.width(d)
@@ -340,7 +353,15 @@ class _CommandWall:
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
-
+            
+    def createFromGUI(self):
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommand('Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.escape()
 
 class _CommandMergeWalls:
     "the Arch Merge Walls command definition"
@@ -354,7 +375,7 @@ class _CommandMergeWalls:
 
     def Activated(self):
         walls = FreeCADGui.Selection.getSelection()
-        if len(walls) == 1: 
+        if len(walls) == 1:
             if Draft.getType(walls[0]) == "Wall":
                 ostr = "FreeCAD.ActiveDocument."+ walls[0].Name
                 ok = False
@@ -382,7 +403,7 @@ class _CommandMergeWalls:
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
         FreeCAD.ActiveDocument.commitTransaction()
- 
+
 
 class _Wall(ArchComponent.Component):
     "The Wall object"
@@ -398,10 +419,13 @@ class _Wall(ArchComponent.Component):
         obj.Align = ['Left','Right','Center']
         obj.Role = Roles
         self.Type = "Wall"
-        
+
     def execute(self,obj):
         "builds the wall shape"
         
+        if self.clone(obj):
+            return
+
         import Part, DraftGeomUtils
         pl = obj.Placement
         normal,length,width,height = self.getDefaultValues(obj)
@@ -417,7 +441,7 @@ class _Wall(ArchComponent.Component):
                     if not obj.Base.Shape.Solids:
                         # let pass invalid objects if they have solids...
                         return
-                    
+
                 if hasattr(obj,"Face"):
                     if obj.Face > 0:
                         if len(obj.Base.Shape.Faces) >= obj.Face:
@@ -455,7 +479,7 @@ class _Wall(ArchComponent.Component):
                 else:
                     base = None
                     FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
-                        
+
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
@@ -469,10 +493,10 @@ class _Wall(ArchComponent.Component):
             # computing a shape from scratch
             if length and width and height:
                 base = Part.makeBox(length,width,height)
-                        
+
         base = self.processSubShapes(obj,base,pl)
         self.applyShape(obj,base,pl)
-        
+
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
@@ -483,6 +507,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Wall")
 
     def getIcon(self):
         import Arch_rc
@@ -491,16 +516,6 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                 if Draft.getType(o) == "Wall":
                     return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
-
-    def getDisplayModes(self,vobj):
-        return ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Flat 2D"]
-
-    def setDisplayMode(self,mode):
-        self.Object.Proxy.execute(self.Object)
-        if mode == "Flat 2D":
-            return "Flat Lines"
-        else:
-            return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
     def attach(self,vobj):
         self.Object = vobj.Object

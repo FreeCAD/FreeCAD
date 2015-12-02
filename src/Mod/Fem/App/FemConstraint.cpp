@@ -52,9 +52,11 @@
 #endif
 
 #include "FemConstraint.h"
+#include "FemTools.h"
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 using namespace Fem;
 
@@ -312,26 +314,15 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     const Part::TopoShape& shape = feat->Shape.getShape();
     if (shape.isNull())
         return Base::Vector3d(0,0,0);
-    TopoDS_Shape sh = shape.getSubShape(subName.c_str());
-    gp_Dir dir;
-
-    if (sh.ShapeType() == TopAbs_FACE) {
-        BRepAdaptor_Surface surface(TopoDS::Face(sh));
-        if (surface.GetType() == GeomAbs_Plane) {
-            dir = surface.Plane().Axis().Direction();
-        } else {
-            return Base::Vector3d(0,0,0); // "Direction must be a planar face or linear edge"
-        }
-    } else if (sh.ShapeType() == TopAbs_EDGE) {
-        BRepAdaptor_Curve line(TopoDS::Edge(sh));
-        if (line.GetType() == GeomAbs_Line) {
-            dir = line.Line().Direction();
-        } else {
-            return Base::Vector3d(0,0,0); // "Direction must be a planar face or linear edge"
-        }
+    TopoDS_Shape sh;
+    try {
+        sh = shape.getSubShape(subName.c_str());
+    }
+    catch (Standard_Failure) {
+        std::stringstream str;
+        str << "No such sub-element '" << subName << "'";
+        throw Base::AttributeError(str.str());
     }
 
-    Base::Vector3d the_direction(dir.X(), dir.Y(), dir.Z());
-    the_direction.Normalize();
-    return the_direction;
+    return Fem::Tools::getDirectionFromShape(sh);
 }

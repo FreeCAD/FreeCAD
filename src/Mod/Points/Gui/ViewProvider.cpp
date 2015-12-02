@@ -24,9 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -50,6 +47,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/SoFCSelection.h>
+#include <Gui/Window.h>
 
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Points/App/PointsFeature.h>
@@ -72,6 +70,12 @@ ViewProviderPoints::ViewProviderPoints()
     ADD_PROPERTY(PointSize,(2.0f));
     PointSize.setConstraints(&floatRange);
 
+    // Create the selection node
+    pcHighlight = createFromSettings();
+    pcHighlight->ref();
+    if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
+        Selectable.setValue(false);
+
     pcPointsCoord = new SoCoordinate3();
     pcPointsCoord->ref();
     pcPoints = new SoPointSet();
@@ -89,11 +93,46 @@ ViewProviderPoints::ViewProviderPoints()
 
 ViewProviderPoints::~ViewProviderPoints()
 {
+    pcHighlight->unref();
     pcPointsCoord->unref();
     pcPoints->unref();
     pcPointsNormal->unref();
     pcColorMat->unref();
     pcPointStyle->unref();
+}
+
+Gui::SoFCSelection* ViewProviderPoints::createFromSettings() const
+{
+    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
+
+    float transparency;
+    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+    bool enablePre = hGrp->GetBool("EnablePreselection", true);
+    bool enableSel = hGrp->GetBool("EnableSelection", true);
+    if (!enablePre) {
+        sel->highlightMode = Gui::SoFCSelection::OFF;
+    }
+    else {
+        // Search for a user defined value with the current color as default
+        SbColor highlightColor = sel->colorHighlight.getValue();
+        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
+        highlightColor.setPackedValue((uint32_t)highlight, transparency);
+        sel->colorHighlight.setValue(highlightColor);
+    }
+    if (!enableSel || !Selectable.getValue()) {
+        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
+    }
+    else {
+        // Do the same with the selection color
+        SbColor selectionColor = sel->colorSelection.getValue();
+        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        selection = hGrp->GetUnsigned("SelectionColor", selection);
+        selectionColor.setPackedValue((uint32_t)selection, transparency);
+        sel->colorSelection.setValue(selectionColor);
+    }
+
+    return sel;
 }
 
 void ViewProviderPoints::onChanged(const App::Property* prop)
@@ -161,6 +200,10 @@ void ViewProviderPoints::attach(App::DocumentObject* pcObj)
 {
     // call parent's attach to define display modes
     ViewProviderGeometryObject::attach(pcObj);
+
+    pcHighlight->objectName = pcObj->getNameInDocument();
+    pcHighlight->documentName = pcObj->getDocument()->getName();
+    pcHighlight->subElementName = "Main";
 
     SoGroup* pcPointRoot = new SoGroup();
     SoGroup* pcPointShadedRoot = new SoGroup();
@@ -379,7 +422,7 @@ void ViewProviderPoints::clipPointsCallback(void * ud, SoEventCallback * n)
         }
     }
 
-    view->getSoRenderManager()->render();
+    view->redraw();
 }
 
 void ViewProviderPoints::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)

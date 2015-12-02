@@ -10,11 +10,11 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -25,10 +25,28 @@ set(ReenGui_LIBS
 
 qt4_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
 
+set(ReenGui_MOC_HDRS
+    FitBSplineSurface.h
+)
+fc_wrap_cpp(ReenGui_MOC_SRCS ${ReenGui_MOC_HDRS})
+SOURCE_GROUP("Moc" FILES ${ReenGui_MOC_SRCS})
+
+set(Dialogs_UIC_SRCS
+    FitBSplineSurface.ui
+)
+qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
+SET(Dialogs_SRCS
+    ${Dialogs_UIC_HDRS}
+    ${Dialogs_UIC_SRCS}
+    FitBSplineSurface.cpp
+    FitBSplineSurface.h
+)
+SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
+
 SET(ReenGui_SRCS
     ${ReenGui_QRC_SRCS}
+    ${Dialogs_SRCS}
     AppReverseEngineeringGui.cpp
-    AppReverseEngineeringGuiPy.cpp
     Command.cpp
     Resources/ReverseEngineering.qrc
     PreCompiled.cpp

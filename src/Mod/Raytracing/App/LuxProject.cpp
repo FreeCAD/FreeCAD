@@ -30,6 +30,7 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
+#include <App/Application.h>
 #include "LuxProject.h"
 #include "LuxFeature.h"
 #include "LuxTools.h"
@@ -46,8 +47,19 @@ PROPERTY_SOURCE(Raytracing::LuxProject, App::DocumentObjectGroup)
 LuxProject::LuxProject(void)
 {
     ADD_PROPERTY_TYPE(PageResult ,(0),0,App::Prop_Output,"Resulting Luxrender Scene file");
-    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_None ,"Template for the Luxrender project");
+    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_Transient ,"Template for the Luxrender project");
     ADD_PROPERTY_TYPE(Camera     ,(""),0,App::Prop_None ,"Camera settings");
+}
+
+void LuxProject::onDocumentRestored()
+{
+    Base::FileInfo fi(PageResult.getValue());
+    std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
+    // try to find the template in user dir/Templates first
+    Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+    if (tempfi.exists())
+        path = tempfi.filePath();
+    Template.setValue(path);
 }
 
 App::DocumentObjectExecReturn *LuxProject::execute(void)

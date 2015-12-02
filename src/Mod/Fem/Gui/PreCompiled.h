@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,6 +38,7 @@
 #endif
 
 #ifdef _MSC_VER
+# pragma warning(disable : 4005)
 # pragma warning(disable : 4290)
 #endif
 
@@ -61,6 +62,9 @@
 #include <stack>
 #include <queue>
 #include <bitset>
+
+// boost
+#include <boost/bind.hpp>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>

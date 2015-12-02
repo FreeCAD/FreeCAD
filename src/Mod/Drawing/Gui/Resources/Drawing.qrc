@@ -19,6 +19,7 @@
         <file>icons/actions/drawing-annotation.svg</file>
         <file>icons/actions/drawing-clip.svg</file>
         <file>icons/actions/drawing-symbol.svg</file>
+        <file>icons/actions/drawing-draft-view.svg</file>
         <file>translations/Drawing_af.qm</file>
         <file>translations/Drawing_de.qm</file>
         <file>translations/Drawing_fi.qm</file>
@@ -42,5 +43,6 @@
         <file>translations/Drawing_ro.qm</file>
         <file>translations/Drawing_hu.qm</file>
         <file>translations/Drawing_pt-PT.qm</file>
+        <file>translations/Drawing_sr.qm</file>
     </qresource>
 </RCC> 

@@ -57,22 +57,23 @@ public:
     TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskLinearPatternParameters();
 
-    const std::string getDirection(void) const;
-    const bool getReverse(void) const;
-    const double getLength(void) const;
-    const unsigned getOccurrences(void) const;
+    virtual void apply();
 
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);
     void onLength(const double l);
-    void onOccurrences(const int n);
+    void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    const std::string getDirection(void) const;
+    const bool getReverse(void) const;
+    const double getLength(void) const;
+    const unsigned getOccurrences(void) const;
 
 private:
     void setupUI();

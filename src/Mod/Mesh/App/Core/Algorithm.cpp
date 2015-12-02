@@ -150,7 +150,7 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     bool bSol = false;
     unsigned long ulInd = 0;
 
-    for (std::vector<unsigned long>::const_iterator pI = raulFacets.begin(); pI != raulFacets.end(); pI++) {
+    for (std::vector<unsigned long>::const_iterator pI = raulFacets.begin(); pI != raulFacets.end(); ++pI) {
         MeshGeomFacet rclSFacet = _rclMesh.GetFacet(*pI);
         if (rclSFacet.Foraminate(rclPt, rclDir, clRes) == true) {
             if (bSol == false) {// erste Loesung
@@ -182,7 +182,7 @@ bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Ve
     bool bSol = false;
     unsigned long ulInd = 0;
 
-    for (std::vector<unsigned long>::const_iterator pF = raulFacets.begin(); pF != raulFacets.end(); pF++) {
+    for (std::vector<unsigned long>::const_iterator pF = raulFacets.begin(); pF != raulFacets.end(); ++pF) {
         if (_rclMesh.GetFacet(*pF).Foraminate(rclPt, rclDir, clRes/*, fMaxAngle*/) == true) {
             if (bSol == false) { // erste Loesung
                 bSol   = true;
@@ -270,7 +270,7 @@ void MeshAlgorithm::GetMeshBorders (std::list<std::vector<Base::Vector3f> > &rcl
 {
     std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
     unsigned long k = 0;
-    for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); pI++)
+    for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
         *pI = k++;
 
     GetFacetBorders(aulAllFacets, rclBorders);
@@ -280,7 +280,7 @@ void MeshAlgorithm::GetMeshBorders (std::list<std::vector<unsigned long> > &rclB
 {
     std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
     unsigned long k = 0;
-    for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); pI++)
+    for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
         *pI = k++;
 
     GetFacetBorders(aulAllFacets, rclBorders, true);
@@ -309,12 +309,12 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd, 
 
   // alle Facets markieren die in der Indizie-Liste vorkommen
   ResetFacetFlag(MeshFacet::VISIT);
-  for (std::vector<unsigned long>::const_iterator pIter = raulInd.begin(); pIter != raulInd.end(); pIter++)
+  for (std::vector<unsigned long>::const_iterator pIter = raulInd.begin(); pIter != raulInd.end(); ++pIter)
     rclFAry[*pIter].SetFlag(MeshFacet::VISIT);
 
   std::list<std::pair<unsigned long, unsigned long> >  aclEdges;
   // alle Randkanten suchen und ablegen (unsortiert)
-  for (std::vector<unsigned long>::const_iterator pIter2 = raulInd.begin(); pIter2 != raulInd.end(); pIter2++)
+  for (std::vector<unsigned long>::const_iterator pIter2 = raulInd.begin(); pIter2 != raulInd.end(); ++pIter2)
   {
     const MeshFacet  &rclFacet = rclFAry[*pIter2];
     for (int i = 0; i < 3; i++)
@@ -348,7 +348,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd, 
   {
     // naechste anliegende Kante suchen
     std::list<std::pair<unsigned long, unsigned long> >::iterator pEI;
-    for (pEI = aclEdges.begin(); pEI != aclEdges.end(); pEI++)
+    for (pEI = aclEdges.begin(); pEI != aclEdges.end(); ++pEI)
     {
       if (pEI->first == ulLast)
       {
@@ -532,13 +532,14 @@ void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>
     {
         // find adjacent edge
         std::list<std::pair<unsigned long, unsigned long> >::iterator pEI;
-        for (pEI = openEdges.begin(); pEI != openEdges.end(); pEI++)
+        for (pEI = openEdges.begin(); pEI != openEdges.end(); ++pEI)
         {
             if (pEI->first == ulLast)
             {
                 ulLast = pEI->second;
                 rBorder.push_back(ulLast);
                 openEdges.erase(pEI);
+                pEI = openEdges.begin();
                 break;
             }
             else if (pEI->second == ulFirst)
@@ -546,6 +547,7 @@ void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>
                 ulFirst = pEI->first;
                 rBorder.push_front(ulFirst);
                 openEdges.erase(pEI);
+                pEI = openEdges.begin();
                 break;
             }
         }
@@ -796,19 +798,19 @@ void MeshAlgorithm::SetFacetsProperty(const std::vector<unsigned long> &raulInds
     if (raulInds.size() != raulProps.size()) return;
 
     std::vector<unsigned long>::const_iterator iP = raulProps.begin();
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); i++, iP++)
+    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i, ++iP)
         _rclMesh._aclFacetArray[*i].SetProperty(*iP);
 }
 
 void MeshAlgorithm::SetFacetsFlag (const std::vector<unsigned long> &raulInds, MeshFacet::TFlagType tF) const
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); i++)
+    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclFacetArray[*i].SetFlag(tF);
 }
 
 void MeshAlgorithm::SetPointsFlag (const std::vector<unsigned long> &raulInds, MeshPoint::TFlagType tF) const 
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); i++)
+    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclPointArray[*i].SetFlag(tF);
 }
 
@@ -836,13 +838,13 @@ void MeshAlgorithm::GetPointsFlag (std::vector<unsigned long> &raulInds, MeshPoi
 
 void MeshAlgorithm::ResetFacetsFlag (const std::vector<unsigned long> &raulInds, MeshFacet::TFlagType tF) const
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); i++)
+    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclFacetArray[*i].ResetFlag(tF);
 }
 
 void MeshAlgorithm::ResetPointsFlag (const std::vector<unsigned long> &raulInds, MeshPoint::TFlagType tF) const
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); i++)
+    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclPointArray[*i].ResetFlag(tF);
 }
 
@@ -1101,7 +1103,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
         {
             clBBox3d = clGridIter.GetBoundBox();
             clViewBBox = clBBox3d.ProjectBox(pclProj);
-            if (clViewBBox || clPolyBBox)
+            if (clViewBBox.Intersect(clPolyBBox))
             {
                 // alle Elemente in AllElements sammeln
                 clGridIter.GetElements(aulAllElements);
@@ -1113,7 +1115,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
 
         Base::SequencerLauncher seq( "Check facets", aulAllElements.size() );
 
-        for (it = aulAllElements.begin(); it != aulAllElements.end(); it++)
+        for (it = aulAllElements.begin(); it != aulAllElements.end(); ++it)
         {
             bNoPointInside = true;
             clGravityOfFacet.Set(0.0f, 0.0f, 0.0f);
@@ -1229,13 +1231,13 @@ void MeshAlgorithm::SearchFacetsFromPolyline (const std::vector<Base::Vector3f> 
     return; // no polygon defined
 
   std::set<unsigned long>  aclFacets;
-  for (std::vector<Base::Vector3f>::const_iterator pV = rclPolyline.begin(); pV < (rclPolyline.end() - 1); pV++)
+  for (std::vector<Base::Vector3f>::const_iterator pV = rclPolyline.begin(); pV < (rclPolyline.end() - 1); ++pV)
   {
     const Base::Vector3f &rclP0 = *pV, &rclP1 = *(pV + 1);
    
     // BB eines Polyline-Segments
     BoundBox3f clSegmBB(rclP0.x, rclP0.y, rclP0.z, rclP0.x, rclP0.y, rclP0.z);
-    clSegmBB &= rclP1;
+    clSegmBB.Add(rclP1);
     clSegmBB.Enlarge(fRadius);  // BB um Suchradius vergroessern
 
     std::vector<unsigned long> aclBBFacets;
@@ -1260,7 +1262,7 @@ void MeshAlgorithm::CutBorderFacets (std::vector<unsigned long> &raclFacetIndice
   std::vector<unsigned long>  aclResult;
   std::set<unsigned long>     aclTmp(aclToDelete.begin(), aclToDelete.end());
 
-  for (std::vector<unsigned long>::iterator pI = raclFacetIndices.begin(); pI != raclFacetIndices.end(); pI++)
+  for (std::vector<unsigned long>::iterator pI = raclFacetIndices.begin(); pI != raclFacetIndices.end(); ++pI)
   {
     if (aclTmp.find(*pI) == aclTmp.end())
       aclResult.push_back(*pI);
@@ -1293,7 +1295,7 @@ void MeshAlgorithm::CheckBorderFacets (const std::vector<unsigned long> &raclFac
 
   for (unsigned short usL = 0; usL < usLevel; usL++)
   {
-    for (std::vector<unsigned long>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); pF++)
+    for (std::vector<unsigned long>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); ++pF)
     {
       for (int i = 0; i < 3; i++)
       {
@@ -1322,7 +1324,7 @@ void MeshAlgorithm::GetBorderPoints (const std::vector<unsigned long> &raclFacet
 
   const MeshFacetArray &rclFAry = _rclMesh._aclFacetArray;
 
-  for (std::vector<unsigned long>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); pF++)
+  for (std::vector<unsigned long>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); ++pF)
   {
     for (int i = 0; i < 3; i++)
     {
@@ -1422,7 +1424,7 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
   // alle Facets mit Ebene schneiden
   std::list<std::pair<Base::Vector3f, Base::Vector3f> > clTempPoly;  // Feld mit Schnittlinien (unsortiert, nicht verkettet)
 
-  for (std::vector<unsigned long>::iterator pF = aulFacets.begin(); pF != aulFacets.end(); pF++)
+  for (std::vector<unsigned long>::iterator pF = aulFacets.begin(); pF != aulFacets.end(); ++pF)
   {
     Base::Vector3f  clE1, clE2;
     const MeshGeomFacet clF(_rclMesh.GetFacet(*pF));
@@ -1440,7 +1442,7 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
       ConnectLines(clTempPoly, tempList, fMinEps);
       ConnectPolygons(tempList, clTempPoly);
 
-      for(std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator iter = clTempPoly.begin(); iter != clTempPoly.end(); iter++)
+      for(std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator iter = clTempPoly.begin(); iter != clTempPoly.end(); ++iter)
       {
         rclResultLines.push_front(*iter);
       }
@@ -1454,139 +1456,131 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
 bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vector3f> > &rclLines,
                                   std::list<std::vector<Base::Vector3f> > &rclPolylines, float fMinEps) const
 {
-  typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
+    typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
 
-  // square search radius
-  // const float fMinEps = 1.0e-2f; // := 10 mirometer distance
-  fMinEps = fMinEps * fMinEps;  
+    // square search radius
+    // const float fMinEps = 1.0e-2f; // := 10 mirometer distance
+    fMinEps = fMinEps * fMinEps;
 
-  // remove all lines which distance is smaller than epsilon
-  std::list<TCIter> _clToDelete;
-  float fToDelDist = fMinEps / 10.0f;
-  for (TCIter pF = rclLines.begin(); pF != rclLines.end(); pF++)
-  {
+    // remove all lines whose distance is smaller than epsilon
+    std::list<TCIter> _clToDelete;
+    float fToDelDist = fMinEps / 10.0f;
+    for (TCIter pF = rclLines.begin(); pF != rclLines.end(); ++pF) {
     if (Base::DistanceP2(pF->first, pF->second) < fToDelDist)
-      _clToDelete.push_back(pF);
-  }
-  for (std::list<TCIter>::iterator pI = _clToDelete.begin(); pI != _clToDelete.end(); pI++)
-    rclLines.erase(*pI);
-
-
-  while (rclLines.size() > 0)
-  {
-    TCIter pF;
-    
-    // new polyline
-    std::list<Base::Vector3f> clPoly;
-
-    // add first line and delete from the list
-    Base::Vector3f clFront = rclLines.begin()->first;  // current start point of the polyline
-    Base::Vector3f clEnd   = rclLines.begin()->second; // current end point of the polyline
-    clPoly.push_back(clFront);
-    clPoly.push_back(clEnd);
-    rclLines.erase(rclLines.begin());
-
-    // search for the next line on the begin/end of the polyline and add it
-    TCIter pFront, pEnd;
-    do
-    {
-      float  fFrontMin = fMinEps, fEndMin = fMinEps;
-      bool   bFrontFirst=false, bEndFirst=false;
-
-      pFront = rclLines.end();
-      pEnd   = rclLines.end();
-      for (pF = rclLines.begin(); pF != rclLines.end(); pF++)
-      {
-        if (Base::DistanceP2(clFront, pF->first) < fFrontMin) 
-        {
-          fFrontMin   = Base::DistanceP2(clFront, pF->first);
-          pFront      = pF;
-          bFrontFirst = true;
-        }
-        else if (Base::DistanceP2(clEnd, pF->first) < fEndMin)
-        {
-          fEndMin     = Base::DistanceP2(clEnd, pF->first);
-          pEnd        = pF;
-          bEndFirst   = true;
-        }
-        else if (Base::DistanceP2(clFront, pF->second) < fFrontMin)
-        {
-          fFrontMin   = Base::DistanceP2(clFront, pF->second);
-          pFront      = pF;
-          bFrontFirst = false;
-        }
-        else if (Base::DistanceP2(clEnd, pF->second) < fEndMin)
-        {
-          fEndMin     = Base::DistanceP2(clEnd, pF->second);
-          pEnd        = pF;
-          bEndFirst   = false;
-        }        
-      }
-
-      if (pFront != rclLines.end())
-      {
-        if (bFrontFirst == true)
-        {
-          clPoly.push_front(pFront->second);
-          clFront = pFront->second;
-        }
-        else
-        {
-          clPoly.push_front(pFront->first);
-          clFront = pFront->first;
-        }
-        rclLines.erase(pFront);
-      }
-
-      if (pEnd != rclLines.end())
-      {
-        if (bEndFirst == true)
-        {
-          clPoly.push_back(pEnd->second);
-          clEnd = pEnd->second;
-        }
-        else
-        {
-          clPoly.push_back(pEnd->first);
-          clEnd = pEnd->first;
-        }
-        rclLines.erase(pEnd);
-      }
+        _clToDelete.push_back(pF);
     }
-    while ((pFront != rclLines.end()) || (pEnd != rclLines.end()));
 
-    rclPolylines.push_back(std::vector<Base::Vector3f>(clPoly.begin(), clPoly.end()));
-  }  
-  
-  // remove all polylines with too few length
-  typedef std::list<std::vector<Base::Vector3f> >::iterator TPIter;
-  std::list<TPIter> _clPolyToDelete;
-  for (TPIter pJ = rclPolylines.begin(); pJ != rclPolylines.end(); pJ++)
-  {
-    if (pJ->size() == 2) // only one line segment
-    {
-      if (Base::DistanceP2(*pJ->begin(), *(pJ->begin() + 1)) <= fMinEps)
-        _clPolyToDelete.push_back(pJ);
+    for (std::list<TCIter>::iterator pI = _clToDelete.begin(); pI != _clToDelete.end(); ++pI)
+        rclLines.erase(*pI);
+
+    while (!rclLines.empty()) {
+        TCIter pF;
+
+        // new polyline
+        std::list<Base::Vector3f> clPoly;
+
+        // add first line and delete from the list
+        Base::Vector3f clFront = rclLines.begin()->first;  // current start point of the polyline
+        Base::Vector3f clEnd   = rclLines.begin()->second; // current end point of the polyline
+        clPoly.push_back(clFront);
+        clPoly.push_back(clEnd);
+        rclLines.erase(rclLines.begin());
+
+        // search for the next line on the begin/end of the polyline and add it
+        TCIter pFront, pEnd;
+        bool bFoundLine;
+        do {
+            float  fFrontMin = fMinEps, fEndMin = fMinEps;
+            bool   bFrontFirst=false, bEndFirst=false;
+
+            pFront = rclLines.end();
+            pEnd   = rclLines.end();
+            bFoundLine = false;
+
+            for (pF = rclLines.begin(); pF != rclLines.end(); ++pF) {
+                if (Base::DistanceP2(clFront, pF->first) < fFrontMin) {
+                    fFrontMin   = Base::DistanceP2(clFront, pF->first);
+                    pFront      = pF;
+                    bFrontFirst = true;
+                }
+                else if (Base::DistanceP2(clEnd, pF->first) < fEndMin) {
+                    fEndMin     = Base::DistanceP2(clEnd, pF->first);
+                    pEnd        = pF;
+                    bEndFirst   = true;
+                }
+                else if (Base::DistanceP2(clFront, pF->second) < fFrontMin) {
+                    fFrontMin   = Base::DistanceP2(clFront, pF->second);
+                    pFront      = pF;
+                    bFrontFirst = false;
+                }
+                else if (Base::DistanceP2(clEnd, pF->second) < fEndMin) {
+                    fEndMin     = Base::DistanceP2(clEnd, pF->second);
+                    pEnd        = pF;
+                    bEndFirst   = false;
+                }
+            }
+
+            if (pFront != rclLines.end()) {
+                bFoundLine = true;
+                if (bFrontFirst) {
+                    clPoly.push_front(pFront->second);
+                    clFront = pFront->second;
+                }
+                else {
+                    clPoly.push_front(pFront->first);
+                    clFront = pFront->first;
+                }
+
+                rclLines.erase(pFront);
+            }
+
+            if (pEnd != rclLines.end()) {
+                bFoundLine = true;
+                if (bEndFirst) {
+                    clPoly.push_back(pEnd->second);
+                    clEnd = pEnd->second;
+                }
+                else {
+                    clPoly.push_back(pEnd->first);
+                    clEnd = pEnd->first;
+                }
+
+                rclLines.erase(pEnd);
+            }
+        }
+        while (bFoundLine);
+
+        rclPolylines.push_back(std::vector<Base::Vector3f>(clPoly.begin(), clPoly.end()));
     }
-  }
-  for (std::list<TPIter>::iterator pK = _clPolyToDelete.begin(); pK != _clPolyToDelete.end(); pK++)
-    rclPolylines.erase(*pK);
 
-  return true;
+    // remove all polylines with too few length
+    typedef std::list<std::vector<Base::Vector3f> >::iterator TPIter;
+    std::list<TPIter> _clPolyToDelete;
+    for (TPIter pJ = rclPolylines.begin(); pJ != rclPolylines.end(); ++pJ) {
+        if (pJ->size() == 2) { // only one line segment
+            if (Base::DistanceP2(*pJ->begin(), *(pJ->begin() + 1)) <= fMinEps)
+                _clPolyToDelete.push_back(pJ);
+        }
+    }
+
+    for (std::list<TPIter>::iterator pK = _clPolyToDelete.begin(); pK != _clPolyToDelete.end(); ++pK)
+        rclPolylines.erase(*pK);
+
+    return true;
 }
 
 bool MeshAlgorithm::ConnectPolygons(std::list<std::vector<Base::Vector3f> > &clPolyList,
                                     std::list<std::pair<Base::Vector3f, Base::Vector3f> > &rclLines) const
 {
 
-  for(std::list< std::vector<Base::Vector3f> >::iterator OutIter = clPolyList.begin(); OutIter != clPolyList.end() ; OutIter++)
+  for(std::list< std::vector<Base::Vector3f> >::iterator OutIter = clPolyList.begin(); OutIter != clPolyList.end(); ++OutIter)
   {
     std::pair<Base::Vector3f,Base::Vector3f> currentSort;
     float fDist = Base::Distance(OutIter->front(),OutIter->back());
     currentSort.first = OutIter->front();
     currentSort.second = OutIter->back();
 
-    for(std::list< std::vector<Base::Vector3f> >::iterator InnerIter = clPolyList.begin(); InnerIter != clPolyList.end(); InnerIter++)
+    for(std::list< std::vector<Base::Vector3f> >::iterator InnerIter = clPolyList.begin(); InnerIter != clPolyList.end(); ++InnerIter)
     {
       if(OutIter == InnerIter) continue;
 
@@ -1651,14 +1645,14 @@ void MeshAlgorithm::PointsFromFacetsIndices (const std::vector<unsigned long> &r
 
   std::set<unsigned long> setPoints;
 
-  for (std::vector<unsigned long>::const_iterator itI = rvecIndices.begin(); itI != rvecIndices.end(); itI++)
+  for (std::vector<unsigned long>::const_iterator itI = rvecIndices.begin(); itI != rvecIndices.end(); ++itI)
   {
     for (int i = 0; i < 3; i++)
       setPoints.insert(rclFAry[*itI]._aulPoints[i]);
   }
 
   rvecPoints.clear();
-  for (std::set<unsigned long>::iterator itP = setPoints.begin(); itP != setPoints.end(); itP++)
+  for (std::set<unsigned long>::iterator itP = setPoints.begin(); itP != setPoints.end(); ++itP)
     rvecPoints.push_back(rclPAry[*itP]);
 }
 
@@ -1669,9 +1663,9 @@ bool MeshAlgorithm::Distance (const Base::Vector3f &rclPt, unsigned long ulFacet
   const unsigned long *pulIdx = rclFAry[ulFacetIdx]._aulPoints;
 
   BoundBox3f clBB;
-  clBB &= rclPAry[*(pulIdx++)];
-  clBB &= rclPAry[*(pulIdx++)];
-  clBB &= rclPAry[*pulIdx];
+  clBB.Add(rclPAry[*(pulIdx++)]);
+  clBB.Add(rclPAry[*(pulIdx++)]);
+  clBB.Add(rclPAry[*pulIdx]);
   clBB.Enlarge(fMaxDistance);
 
   if (clBB.IsInBox(rclPt) == false)

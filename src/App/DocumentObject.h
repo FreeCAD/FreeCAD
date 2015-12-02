@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de)          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,18 +26,20 @@
 
 #include <App/PropertyContainer.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyExpressionEngine.h>
 
 #include <Base/TimeInfo.h>
 #include <CXX/Objects.hxx>
 
 #include <bitset>
-
+#include <boost/signals.hpp>
 
 namespace App
 {
 class Document;
 class DocumentObjectGroup;
 class DocumentObjectPy;
+class Expression;
 
 enum ObjectStatus {
     Touch = 0,
@@ -79,6 +81,7 @@ class AppExport DocumentObject: public App::PropertyContainer
 public:
 
     PropertyString Label;
+    PropertyExpressionEngine ExpressionEngine;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -99,7 +102,7 @@ public:
     /// set this feature touched (cause recomputation on depndend features)
     void touch(void);
     /// test if this feature is touched
-    bool isTouched(void) const {return StatusBits.test(0);}
+    bool isTouched(void) const;
     /// reset this feature touched
     void purgeTouched(void){StatusBits.reset(0);setPropertyStatus(0,false);}
     /// set this feature to error
@@ -160,6 +163,18 @@ public:
 
     virtual void Save (Base::Writer &writer) const;
 
+    /* Expression support */
+
+    virtual void setExpression(const ObjectIdentifier & path, boost::shared_ptr<App::Expression> expr, const char *comment = 0);
+
+    virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
+
+    virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
+
+    virtual void connectRelabelSignals();
+
+    const std::string & getOldLabel() const { return oldLabel; }
+
 protected:
     /** get called by the document to recompute this feature
       * Normaly this method get called in the processing of
@@ -204,6 +219,13 @@ protected: // attributes
     Py::Object PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
+
+    // Connections to track relabeling of document and document objects
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledDocumentConnection;
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledObjectConnection;
+
+    /// Old label; used for renaming expressions
+    std::string oldLabel;
 
     // pointer to the document name string (for performance)
     const std::string *pcNameInDocument;

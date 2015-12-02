@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,12 +28,15 @@
 
 #include "DockWindow.h"
 #include "Selection.h"
+#include <boost/signals.hpp>
 
 class QPixmap;
 class QTabWidget;
 
 namespace App {
+  class Property;
   class PropertyContainer;
+  class DocumentObject;
 }
 
 namespace Gui {
@@ -47,7 +50,7 @@ class PropertyEditor;
 } // namespace Gui
 
 namespace Gui {
-
+class ViewProvider;
 
 /** The property view class.
  */
@@ -62,15 +65,28 @@ public:
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
     Gui::PropertyEditor::PropertyEditor* propertyEditorData;
 
+public Q_SLOTS:
+    /// Stores a preference for the last tab selected
+    void tabChanged(int index);
+
 protected:
     void changeEvent(QEvent *e);
 
 private:
     void onSelectionChanged(const SelectionChanges& msg);
+    void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
+    void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
+    void slotAppendDynamicProperty(const App::Property&);
+    void slotRemoveDynamicProperty(const App::Property&);
 
 private:
     struct PropInfo;
     struct PropFind;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectPropData;
+    Connection connectPropView;
+    Connection connectPropAppend;
+    Connection connectPropRemove;
     QTabWidget* tabs;
 };
 

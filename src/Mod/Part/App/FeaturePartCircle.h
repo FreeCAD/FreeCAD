@@ -37,7 +37,7 @@ public:
     Circle();
     virtual ~Circle();
 
-    App::PropertyFloat Radius;
+    App::PropertyLength Radius;
     App::PropertyAngle Angle0;
     App::PropertyAngle Angle1;
 

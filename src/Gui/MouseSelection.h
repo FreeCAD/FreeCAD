@@ -50,7 +50,7 @@ class View3DInventorViewer;
  * In derived classes you must implement the methods @ref initialize() and @ref terminate()
  * For all drawing stuff you just have to reimplement the @ref draw() method.
  * In general you need not to do anything else.
- * \author Werner Mayer and Jürgen Riegel
+ * \author Werner Mayer and JÃ¼rgen Riegel
  */
 class GuiExport AbstractMouseSelection
 {
@@ -99,7 +99,6 @@ protected:
     int  m_iXold, m_iYold;
     int  m_iXnew, m_iYnew;
     SbBool m_bInner;
-    SbBool mustRedraw;
     std::vector<SbVec2s> _clPoly;
 };
 
@@ -107,13 +106,13 @@ protected:
 
 /**
  * The standard mouse selection class
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class GuiExport BaseMouseSelection : public AbstractMouseSelection
 {
 public:
     BaseMouseSelection();
-    virtual ~BaseMouseSelection() {};
+    virtual ~BaseMouseSelection(){}
 };
 
 // -----------------------------------------------------------------------------------
@@ -129,6 +128,9 @@ public:
     PolyPickerSelection();
     virtual ~PolyPickerSelection();
 
+    void setLineWidth(float l);
+    void setColor(float r, float g, float b, float a = 1.0);
+
     virtual void initialize();
     virtual void terminate();
 
@@ -142,6 +144,7 @@ protected:
     virtual int popupMenu();
 
     Gui::Polyline polyline;
+    bool lastConfirmed;
 };
 
 // -----------------------------------------------------------------------------------
@@ -171,14 +174,13 @@ class GuiExport BrushSelection : public PolyPickerSelection
 {
 public:
     BrushSelection();
-    ~BrushSelection();
+    virtual ~BrushSelection();
 
-    void setLineWidth(float l);
     void setClosed(bool c);
-    void setColor(float r, float g, float b, float a = 1.0);
 
 protected:
     virtual int popupMenu();
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
     virtual int locationEvent(const SoLocation2Event*  const e, const QPoint& pos);
 };
 
@@ -195,9 +197,9 @@ public:
     RubberbandSelection();
     virtual ~RubberbandSelection();
 
-    /// do nothing
+    void setColor(float r, float g, float b, float a = 1.0);
+
     virtual void initialize();
-    /// do nothing
     virtual void terminate();
 
 protected:

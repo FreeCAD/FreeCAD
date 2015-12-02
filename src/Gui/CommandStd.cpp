@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -127,7 +127,7 @@ Action * StdCmdWorkbench::createAction(void)
     pcAction->setShortcut(QString::fromAscii(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
-        pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
 
     return pcAction;
 }
@@ -209,7 +209,7 @@ Action * StdCmdAbout::createAction(void)
     pcAction->setShortcut(QString::fromAscii(sAccel));
     //Prevent Qt from using AboutRole -- fixes issue #0001485
     pcAction->setMenuRole(QAction::ApplicationSpecificRole);
-	
+
     return pcAction;
 }
 
@@ -429,7 +429,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 
 void StdCmdOnlineHelp::activated(int iMsg)
 {
-    Gui::getMainWindow()->showDocumentation(QString());
+    Gui::getMainWindow()->showDocumentation(QString::fromLatin1("Online_Help_Startpage"));
 }
 
 //===========================================================================
@@ -678,7 +678,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
     sToolTipText  = QT_TR_NOOP("Start the units calculator");
     sWhatsThis    = QT_TR_NOOP("Start the units calculator");
     sStatusTip    = QT_TR_NOOP("Start the units calculator");
-    //sPixmap     = "";
+    sPixmap       = "accessories-calculator";
     eType         = 0;
 }
 

@@ -88,6 +88,10 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     ui = new Ui_DlgImportExportIges();
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
+
+    bg = new QButtonGroup(this);
+    bg->addButton(ui->radioButtonBRepOff, 0);
+    bg->addButton(ui->radioButtonBRepOn, 1);
 }
 
 /** 
@@ -117,8 +121,11 @@ void DlgImportExportIges::saveSettings()
             break;
     }
 
-    hGrp->SetBool("BrepMode", ui->checkBrepMode->isChecked());
-    Interface_Static::SetIVal("write.iges.brep.mode",ui->checkBrepMode->isChecked() ? 1 : 0);
+    hGrp->SetBool("BrepMode", bg->checkedId() == 1);
+    Interface_Static::SetIVal("write.iges.brep.mode", bg->checkedId());
+
+    // Import
+    hGrp->SetBool("SkipBlankEntities", ui->checkSkipBlank->isChecked());
 
     // header info
     hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
@@ -139,7 +146,13 @@ void DlgImportExportIges::loadSettings()
 
     int value = Interface_Static::IVal("write.iges.brep.mode");
     bool brep = hGrp->GetBool("BrepMode", value > 0);
-    ui->checkBrepMode->setChecked(brep);
+    if (brep)
+        ui->radioButtonBRepOn->setChecked(true);
+    else
+        ui->radioButtonBRepOff->setChecked(true);
+
+    // Import
+    ui->checkSkipBlank->setChecked(hGrp->GetBool("SkipBlankEntities", true));
 
     // header info
     ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company",
@@ -204,12 +217,12 @@ void DlgImportExportStep::saveSettings()
     // scheme
     if (ui->radioButtonAP203->isChecked()) {
         Interface_Static::SetCVal("write.step.schema","AP203");
-        hGrp->GetASCII("Scheme", "AP203");
+        hGrp->SetASCII("Scheme", "AP203");
     }
     else {
         // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002)
         Interface_Static::SetCVal("write.step.schema","AP214CD");
-        hGrp->GetASCII("Scheme", "AP214CD");
+        hGrp->SetASCII("Scheme", "AP214CD");
     }
 
     // header info

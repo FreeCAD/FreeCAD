@@ -33,6 +33,7 @@
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
+# include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Precision.hxx>
@@ -144,15 +145,22 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             // because the feature does not add any material. This only happens with the "2" option, though
             // Note: It might be possible to pass a shell or a compound containing multiple faces
             // as the Until parameter of Perform()
-            // Note: Multiple independent wires are not supported, we should check for that and
-            // warn the user
-            BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(support, sketchshape, supportface, dir, 2, 1);
-            PrismMaker.Perform(upToFace);
+            // Note: Multiple independent wires are not supported, that's why we have to iterate over them.
+            TopoDS_Compound comp;
+            BRep_Builder builder;
+            builder.MakeCompound(comp);
 
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
-            prism = PrismMaker.Shape();
+            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
+                BRepFeat_MakePrism PrismMaker;
+                PrismMaker.Init(support, xp.Current(), supportface, dir, 2, 1);
+                PrismMaker.Perform(upToFace);
+
+                if (!PrismMaker.IsDone())
+                    return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
+                builder.Add(comp, PrismMaker.Shape());
+            }
+
+            prism = comp;
         } else {
             generatePrism(prism, sketchshape, method, dir, L, L2,
                           Midplane.getValue(), Reversed.getValue());

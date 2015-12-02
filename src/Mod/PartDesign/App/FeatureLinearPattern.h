@@ -25,8 +25,8 @@
 #define PARTDESIGN_FeatureLinearPattern_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
-
 
 namespace PartDesign
 {
@@ -40,7 +40,7 @@ public:
 
     App::PropertyLinkSub Direction;
     App::PropertyBool    Reversed;
-    App::PropertyFloat   Length;
+    App::PropertyLength  Length;
     App::PropertyInteger Occurrences;
 
    /** @name methods override feature */

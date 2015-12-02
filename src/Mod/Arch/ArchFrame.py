@@ -42,6 +42,7 @@ def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
     """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
     containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Frame(obj)
     if FreeCAD.GuiUp:
         _ViewProviderFrame(obj.ViewObject)
@@ -82,13 +83,17 @@ class _Frame(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Profile","Arch","The profile used to build this frame")
         obj.addProperty("App::PropertyBool","Align","Arch","Specifies if the profile must be aligned with the extrusion wires")
-        obj.addProperty("App::PropertyVector","Offset","Arch","An offset vector between the base sketch and the frame")
-        obj.addProperty("App::PropertyInteger","BasePoint","Arch","The point of the profile by which the path passes.")
+        obj.addProperty("App::PropertyVectorDistance","Offset","Arch","An offset vector between the base sketch and the frame")
+        obj.addProperty("App::PropertyInteger","BasePoint","Arch","Crossing point of the path on the profile.")
         obj.addProperty("App::PropertyAngle","Rotation","Arch","The rotation of the profile around its extrusion axis")
         self.Type = "Frame"
         obj.Role = Roles
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         if not obj.Base:
             return
         if not obj.Base.Shape:
@@ -134,11 +139,16 @@ class _Frame(ArchComponent.Component):
                 profile = baseprofile.copy()
                 #basepoint = profile.Placement.Base
                 if hasattr(obj,"BasePoint"):
-                    if obj.BasePoint == 0 :
-                        basepoint = profile.CenterOfMass
-                    else :
-                        # TODO add mid point of edges and make an ordered list point, mid point , ...
-                        basepoint = profile.Vertexes[obj.BasePoint - 1].Point
+                    edges = Part.__sortEdges__(profile.Edges)
+                    basepointliste = [profile.CenterOfMass]
+                    for edge in edges:
+                        basepointliste.append(DraftGeomUtils.findMidpoint(edge))
+                        basepointliste.append(edge.Vertexes[-1].Point)
+                    try:
+                        basepoint = basepointliste[obj.BasePoint]
+                    except IndexError:
+                        FreeCAD.Console.PrintMessage(translate("Arch","Crossing point not found in profile.\n"))
+                        basepoint = basepointliste[0]
                 else :
                     basepoint = profile.CenterOfMass
                 profile.translate(bpoint.sub(basepoint))

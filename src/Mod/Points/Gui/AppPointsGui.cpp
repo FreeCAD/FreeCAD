@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,14 +25,14 @@
 #ifndef _PreComp_
 #endif
 
+#include "ViewProvider.h"
+#include "Workbench.h"
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include <Mod/Points/App/PropertyPointKernel.h>
-
-#include "ViewProvider.h"
-#include "Workbench.h"
 
 // use a different name to CreateCommand()
 void CreatePointsCommands(void);

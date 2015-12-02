@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,6 +36,9 @@
 # include <BRepProj_Projection.hxx>
 # include <BRepTools.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+#if OCC_VERSION_HEX >= 0x060801
+# include <BRepExtrema_ShapeProximity.hxx>
+#endif
 # include <BRepExtrema_SupportType.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
@@ -352,6 +355,26 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::exportBinary(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read binary brep
+        std::ofstream str(input, std::ios::out | std::ios::binary);
+        getTopoShapePtr()->exportBinary(str);
+        str.close();
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PartExceptionOCCError,e.what());
+        return NULL;
+    }
+
+    Py_Return;
+}
+
 PyObject*  TopoShapePy::dumpToString(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -427,6 +450,26 @@ PyObject*  TopoShapePy::importBrep(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::importBinary(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read binary brep
+        std::ifstream str(input, std::ios::in | std::ios::binary);
+        getTopoShapePtr()->importBinary(str);
+        str.close();
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PartExceptionOCCError,e.what());
+        return NULL;
+    }
+
+    Py_Return;
+}
+
 PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
 {
     char* input;
@@ -453,6 +496,21 @@ PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
     }
 
     Py_Return;
+}
+
+PyObject*  TopoShapePy::__getstate__(PyObject *args) {
+    return exportBrepToString(args);
+}
+
+
+PyObject*  TopoShapePy::__setstate__(PyObject *args) {
+    if (! getTopoShapePtr()) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError,"no c++ object");
+        return 0;
+    }
+    else {
+        return importBrepFromString(args);
+    }
 }
 
 PyObject*  TopoShapePy::exportStl(PyObject *args)
@@ -618,6 +676,39 @@ PyObject*  TopoShapePy::fuse(PyObject *args)
         // Let's call algorithm computing a fuse operation:
         TopoDS_Shape fusShape = this->getTopoShapePtr()->fuse(shape);
         return new TopoShapePy(new TopoShape(fusShape));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return NULL;
+    }
+}
+
+PyObject*  TopoShapePy::multiFuse(PyObject *args)
+{
+    double tolerance = 0.0;
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance))
+        return NULL;
+    std::vector<TopoDS_Shape> shapeVec;
+    Py::Sequence shapeSeq(pcObj);
+    for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+        PyObject* item = (*it).ptr();
+        if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+            shapeVec.push_back(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape);
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+            return 0;
+       }
+    }
+    try {
+        TopoDS_Shape multiFusedShape = this->getTopoShapePtr()->multiFuse(shapeVec,tolerance);
+        return new TopoShapePy(new TopoShape(multiFusedShape));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -1605,6 +1696,58 @@ PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape)
     return PyInt_FromLong(supportIndex);
 }
 
+PyObject* TopoShapePy::proximity(PyObject *args)
+{
+#if OCC_VERSION_HEX >= 0x060801
+#if OCC_VERSION_HEX >= 0x060901
+    typedef BRepExtrema_MapOfIntegerPackedMapOfInteger BRepExtrema_OverlappedSubShapes;
+#endif
+    PyObject* ps2;
+    Standard_Real tol = Precision::Confusion();
+    if (!PyArg_ParseTuple(args, "O!|d",&(TopoShapePy::Type), &ps2, &tol))
+        return 0;
+    const TopoDS_Shape& s1 = getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s2 = static_cast<Part::TopoShapePy*>(ps2)->getTopoShapePtr()->_Shape;
+    if (s1.IsNull()) {
+        PyErr_SetString(PyExc_ValueError, "proximity: Shape object is invalid");
+        return 0;
+    }
+    if (s2.IsNull()) {
+        PyErr_SetString(PyExc_ValueError, "proximity: Shape parameter is invalid");
+        return 0;
+    }
+
+    BRepExtrema_ShapeProximity proximity;
+    proximity.LoadShape1 (s1);
+    proximity.LoadShape2 (s2);
+    if (tol > 0.0)
+        proximity.SetTolerance (tol);
+    proximity.Perform();
+    if (!proximity.IsDone()) {
+        PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done");
+        return 0;
+    }
+    //PyObject* overlappss1 = PyList_New(0);
+    //PyObject* overlappss2 = PyList_New(0);
+    PyObject* overlappssindex1 = PyList_New(0);
+    PyObject* overlappssindex2 = PyList_New(0);
+
+    for (BRepExtrema_OverlappedSubShapes::Iterator anIt1 (proximity.OverlapSubShapes1()); anIt1.More(); anIt1.Next()) {
+        //PyList_Append(overlappss1, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape1 (anIt1.Key()))));
+        PyList_Append(overlappssindex1,PyInt_FromLong(anIt1.Key()+1));
+    }
+    for (BRepExtrema_OverlappedSubShapes::Iterator anIt2 (proximity.OverlapSubShapes2()); anIt2.More(); anIt2.Next()) {
+        //PyList_Append(overlappss2, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape2 (anIt2.Key()))));
+        PyList_Append(overlappssindex2,PyInt_FromLong(anIt2.Key()+1));
+    }
+    //return Py_BuildValue("OO", overlappss1, overlappss2); //subshapes
+    return Py_BuildValue("OO", overlappssindex1, overlappssindex2); //face indexes
+#else
+    PyErr_SetString(PyExc_NotImplementedError, "proximity requires OCCT >= 6.8.1");
+    return 0;
+#endif
+}
+
 PyObject* TopoShapePy::distToShape(PyObject *args)
 {
     PyObject* ps2;
@@ -1648,18 +1791,21 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     pSuppType1 = PyString_FromString("Vertex");
                     pSupportIndex1 = _getSupportIndex("Vertex",ts1,suppS1);
                     pParm1 = Py_None;
+                    pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsOnEdge:
                     pSuppType1 = PyString_FromString("Edge");
                     pSupportIndex1 = _getSupportIndex("Edge",ts1,suppS1);
                     extss.ParOnEdgeS1(i,t1);
                     pParm1 = PyFloat_FromDouble(t1);
+                    pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsInFace:
                     pSuppType1 = PyString_FromString("Face");
                     pSupportIndex1 = _getSupportIndex("Face",ts1,suppS1);
                     extss.ParOnFaceS1(i,u1,v1);
                     pParm1 = PyTuple_New(2);
+                    pParm2 = Py_None;
                     PyTuple_SetItem(pParm1,0,PyFloat_FromDouble(u1));
                     PyTuple_SetItem(pParm1,1,PyFloat_FromDouble(v1));
                     break;
@@ -1668,6 +1814,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     pSuppType1 = PyString_FromString("Unknown");
                     pSupportIndex1 = PyInt_FromLong(-1);
                     pParm1 = Py_None;
+                    pParm2 = Py_None;
             }
 
             P2 = extss.PointOnShape2(i);

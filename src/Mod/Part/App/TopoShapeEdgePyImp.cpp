@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,7 @@
 # include <BRepLProp_CLProps.hxx>
 # include <BRepLProp_CurveTool.hxx>
 # include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Curve.hxx>
 # include <Geom_Ellipse.hxx>
@@ -67,6 +68,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "Tools.h"
 #include "OCCError.h"
 #include "TopoShape.h"
 #include "TopoShapeFacePy.h"
@@ -756,12 +758,80 @@ Py::Float TopoShapeEdgePy::getLastParameter(void) const
     return Py::Float(t);
 }
 
+Py::Object TopoShapeEdgePy::getMass(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    double c = props.Mass();
+    return Py::Float(c);
+}
+
 Py::Object TopoShapeEdgePy::getCenterOfMass(void) const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
     gp_Pnt c = props.CentreOfMass();
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
+}
+
+Py::Object TopoShapeEdgePy::getMatrixOfInertia(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    gp_Mat m = props.MatrixOfInertia();
+    Base::Matrix4D mat;
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            mat[i][j] = m(i+1,j+1);
+        }
+    }
+    return Py::Matrix(mat);
+}
+
+Py::Object TopoShapeEdgePy::getStaticMoments(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    Standard_Real lx,ly,lz;
+    props.StaticMoments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    return tuple;
+}
+
+Py::Dict TopoShapeEdgePy::getPrincipalProperties(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    GProp_PrincipalProps pprops = props.PrincipalProperties();
+
+    Py::Dict dict;
+    dict.setItem("SymmetryAxis", Py::Boolean(pprops.HasSymmetryAxis() ? true : false));
+    dict.setItem("SymmetryPoint", Py::Boolean(pprops.HasSymmetryPoint() ? true : false));
+    Standard_Real lx,ly,lz;
+    pprops.Moments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    dict.setItem("Moments",tuple);
+    dict.setItem("FirstAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.FirstAxisOfInertia())));
+    dict.setItem("SecondAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.SecondAxisOfInertia())));
+    dict.setItem("ThirdAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.ThirdAxisOfInertia())));
+
+    Standard_Real Rxx,Ryy,Rzz;
+    pprops.RadiusOfGyration(Rxx,Ryy,Rzz);
+    Py::Tuple rog(3);
+    rog.setItem(0, Py::Float(Rxx));
+    rog.setItem(1, Py::Float(Ryy));
+    rog.setItem(2, Py::Float(Rzz));
+    dict.setItem("RadiusOfGyration",rog);
+    return dict;
 }
 
 Py::Boolean TopoShapeEdgePy::getClosed(void) const

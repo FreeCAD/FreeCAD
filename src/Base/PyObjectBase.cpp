@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -131,11 +131,6 @@ PyTypeObject PyObjectBase::Type = {
 PyMethodDef PyObjectBase::Methods[] = {
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
-
-/*------------------------------
- * PyObjectBase Parents		-- Every class, even the abstract one should have parents
-------------------------------*/
-PyParentObject PyObjectBase::Parents[] = {&PyObjectBase::Type, NULL};
 
 PyObject* PyObjectBase::__getattr(PyObject * obj, char *attr)
 {

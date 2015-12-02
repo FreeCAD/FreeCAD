@@ -100,6 +100,14 @@ class Path_Circle : public Path
 		virtual Twist Acc(double s,double sd,double sdd) const;
 		virtual Path* Clone();
 		virtual void Write(std::ostream& os);
+
+		/**
+		 * gets an identifier indicating the type of this Path object
+		 */
+		virtual IdentifierType getIdentifier() const {
+			return ID_CIRCLE;
+		}
+
 		virtual ~Path_Circle();
 	};
 

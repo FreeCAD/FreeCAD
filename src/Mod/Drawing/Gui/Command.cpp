@@ -22,6 +22,8 @@
 
 #include <vector>
 
+#include <App/PropertyGeo.h>
+
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -65,8 +67,8 @@ CmdDrawingOpen::CmdDrawingOpen()
 void CmdDrawingOpen::activated(int iMsg)
 {
     // Reading an image
-    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null, 
-                                           QObject::tr("Scalable Vector Graphics (*.svg *.svgz)"));
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null,
+        QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
     if (!filename.isEmpty())
     {
         // load the file with the module
@@ -101,10 +103,11 @@ void CmdDrawingNewPage::activated(int iMsg)
 
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
-        openCommand("Drawing create page");
+        openCommand("Create page");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
         doCommand(Doc,"App.activeDocument().recompute()");
+        doCommand(Doc,"Gui.activeDocument().getObject('%s').show()",FeatName.c_str());
         commitCommand();
     }
     else {
@@ -123,37 +126,66 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
     QAction* defaultAction = 0;
     int defaultId = 0;
 
+    QString lastPaper;
+    int lastId = -1;
+
     std::string path = App::Application::getResourceDir();
     path += "Mod/Drawing/Templates/";
     QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("*.svg"));
     for (unsigned int i=0; i<dir.count(); i++ ) {
-        QRegExp rx(QString::fromAscii("(A|B|C|D|E)(\\d)_(Landscape|Portrait).svg"));
+        QRegExp rx(QString::fromAscii("(A|B|C|D|E)(\\d)_(Landscape|Portrait)(_.*\\.|\\.)svg$"));
         if (rx.indexIn(dir[i]) > -1) {
             QString paper = rx.cap(1);
             int id = rx.cap(2).toInt();
             QString orientation = rx.cap(3);
+            QString info = rx.cap(4).mid(1);
+            info.chop(1);
+            if (!info.isEmpty()) {
+                info[0] = info[0].toUpper();
+            }
+
+            // group by paper size
+            if (!lastPaper.isEmpty()) {
+                if (lastPaper != paper) {
+                    QAction* sep = pcAction->addAction(QString());
+                    sep->setSeparator(true);
+                }
+                else if (lastId != id) {
+                    QAction* sep = pcAction->addAction(QString());
+                    sep->setSeparator(true);
+                }
+            }
+
+            lastPaper = paper;
+            lastId = id;
+
             QFile file(QString::fromAscii(":/icons/actions/drawing-landscape-A0.svg"));
             QAction* a = pcAction->addAction(QString());
             if (file.open(QFile::ReadOnly)) {
                 QString s = QString::fromAscii("style=\"font-size:22px\">%1%2</tspan></text>").arg(paper).arg(id);
                 QByteArray data = file.readAll();
                 data.replace("style=\"font-size:22px\">A0</tspan></text>", s.toAscii());
-                a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(24,24)));
+                a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(64,64)));
             }
 
             a->setProperty("TemplatePaper", paper);
             a->setProperty("TemplateOrientation", orientation);
             a->setProperty("TemplateId", id);
+            a->setProperty("TemplateInfo", info);
             a->setProperty("Template", dir.absoluteFilePath(dir[i]));
 
             if (id == 3) {
-                defaultAction = a;
-                defaultId = pcAction->actions().size() - 1;
+                if (!defaultAction) {
+                    // set the first found A3 (A3_Landscape) as default
+                    defaultAction = a;
+                    defaultId = pcAction->actions().size() - 1;
+                }
             }
         }
     }
 
     _pcAction = pcAction;
+
     languageChange();
     if (defaultAction) {
         pcAction->setIcon(defaultAction->icon());
@@ -176,6 +208,8 @@ void CmdDrawingNewPage::languageChange()
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
     for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
+        if ((*it)->isSeparator())
+            continue;
         QString paper = (*it)->property("TemplatePaper").toString();
         int id = (*it)->property("TemplateId").toInt();
         QString orientation = (*it)->property("TemplateOrientation").toString();
@@ -183,19 +217,38 @@ void CmdDrawingNewPage::languageChange()
             orientation = QCoreApplication::translate("Drawing_NewPage", "Landscape", 0, QCoreApplication::CodecForTr);
         else if (orientation.compare(QLatin1String("portrait"), Qt::CaseInsensitive) == 0)
             orientation = QCoreApplication::translate("Drawing_NewPage", "Portrait", 0, QCoreApplication::CodecForTr);
+        QString info = (*it)->property("TemplateInfo").toString();
 
-        (*it)->setText(QCoreApplication::translate(
-            "Drawing_NewPage", "%1%2 %3", 0,
-            QCoreApplication::CodecForTr)
-            .arg(paper)
-            .arg(id)
-            .arg(orientation));
-        (*it)->setToolTip(QCoreApplication::translate(
-            "Drawing_NewPage", "Insert new %1%2 %3 drawing", 0,
-            QCoreApplication::CodecForTr)
-            .arg(paper)
-            .arg(id)
-            .arg(orientation));
+        if (info.isEmpty()) {
+            (*it)->setText(QCoreApplication::translate(
+                "Drawing_NewPage", "%1%2 %3", 0,
+                QCoreApplication::CodecForTr)
+                .arg(paper)
+                .arg(id)
+                .arg(orientation));
+            (*it)->setToolTip(QCoreApplication::translate(
+                "Drawing_NewPage", "Insert new %1%2 %3 drawing", 0,
+                QCoreApplication::CodecForTr)
+                .arg(paper)
+                .arg(id)
+                .arg(orientation));
+        }
+        else {
+            (*it)->setText(QCoreApplication::translate(
+                "Drawing_NewPage", "%1%2 %3 (%4)", 0,
+                QCoreApplication::CodecForTr)
+                .arg(paper)
+                .arg(id)
+                .arg(orientation)
+                .arg(info));
+            (*it)->setToolTip(QCoreApplication::translate(
+                "Drawing_NewPage", "Insert new %1%2 %3 (%4) drawing", 0,
+                QCoreApplication::CodecForTr)
+                .arg(paper)
+                .arg(id)
+                .arg(orientation)
+                .arg(info));
+        }
     }
 }
 
@@ -229,7 +282,7 @@ void CmdDrawingNewA3Landscape::activated(int iMsg)
 {
     std::string FeatName = getUniqueObjectName("Page");
 
-    openCommand("Drawing create page");
+    openCommand("Create page");
     doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Template = 'A3_Landscape.svg'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().recompute()");
@@ -282,6 +335,29 @@ void CmdDrawingNewView::activated(int iMsg)
         }
     }
 
+    const std::vector<App::DocumentObject*> selectedProjections = getSelection().getObjectsOfType(Drawing::FeatureView::getClassTypeId());
+    float newX = 10.0;
+    float newY = 10.0;
+    float newScale = 1.0;
+    float newRotation = 0.0;
+    Base::Vector3d newDirection(0.0, 0.0, 1.0);
+    if (!selectedProjections.empty()) {
+        const Drawing::FeatureView* const myView = dynamic_cast<Drawing::FeatureView*>(selectedProjections.front());
+
+        newX = myView->X.getValue();
+        newY = myView->Y.getValue();
+        newScale = myView->Scale.getValue();
+        newRotation = myView->Rotation.getValue();
+
+        // The "Direction" property does not belong to Drawing::FeatureView, but to one of the
+        // many child classes that are projecting objects into the drawing. Therefore, we get the
+        // property by name.
+        const App::PropertyVector* const propDirection = dynamic_cast<App::PropertyVector*>(myView->getPropertyByName("Direction"));
+        if (propDirection) {
+            newDirection = propDirection->getValue();
+        }
+    }
+
     std::string PageName = pages.front()->getNameInDocument();
 
     openCommand("Create view");
@@ -289,10 +365,11 @@ void CmdDrawingNewView::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("View");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewPart','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
-        doCommand(Doc,"App.activeDocument().%s.Direction = (0.0,0.0,1.0)",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Scale = 1.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Direction = (%e,%e,%e)",FeatName.c_str(), newDirection.x, newDirection.y, newDirection.z);
+        doCommand(Doc,"App.activeDocument().%s.X = %e",FeatName.c_str(), newX);
+        doCommand(Doc,"App.activeDocument().%s.Y = %e",FeatName.c_str(), newY);
+        doCommand(Doc,"App.activeDocument().%s.Scale = %e",FeatName.c_str(), newScale);
+        doCommand(Doc,"App.activeDocument().%s.Rotation = %e",FeatName.c_str(), newRotation);
         doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     }
     updateActive();
@@ -335,7 +412,9 @@ void CmdDrawingOrthoViews::activated(int iMsg)
         return;
     }
 
-    Gui::Control().showDialog(new TaskDlgOrthoViews());
+    TaskDlgOrthoViews* dlg = new TaskDlgOrthoViews();
+    dlg->setDocumentName(this->getDocument()->getName());
+    Gui::Control().showDialog(dlg);
 }
 
 bool CmdDrawingOrthoViews::isActive(void)
@@ -507,8 +586,8 @@ void CmdDrawingSymbol::activated(int iMsg)
         }
     }
     // Reading an image
-    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null, 
-                                           QObject::tr("Scalable Vector Graphics (*.svg *.svgz)"));
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null,
+        QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
     if (!filename.isEmpty())
     {
         std::string PageName = pages.front()->getNameInDocument();
@@ -560,8 +639,8 @@ void CmdDrawingExportPage::activated(int iMsg)
     }
 
     QStringList filter;
-    filter << QObject::tr("SVG(*.svg)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.svg)").arg(QObject::tr("Scalable Vector Graphic"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
@@ -618,6 +697,37 @@ bool CmdDrawingProjectShape::isActive(void)
 
 
 
+//===========================================================================
+// Drawing_Draft_View
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingDraftView);
+
+CmdDrawingDraftView::CmdDrawingDraftView()
+  : Command("Drawing_DraftView")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("&Draft View");
+    sToolTipText  = QT_TR_NOOP("Inserts a Draft view of the selected object(s) in the active drawing");
+    sWhatsThis    = "Drawing_DraftView";
+    sStatusTip    = QT_TR_NOOP("Inserts a Draft view of the selected object(s) in the active drawing");
+    sPixmap       = "actions/drawing-draft-view";
+}
+
+void CmdDrawingDraftView::activated(int iMsg)
+{
+    addModule(Gui,"Draft");
+    doCommand(Gui,"Gui.runCommand(\"Draft_Drawing\")");
+}
+
+bool CmdDrawingDraftView::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
+
+
 void CreateDrawingCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -633,4 +743,5 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingSymbol());
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
+    rcCmdMgr.addCommand(new CmdDrawingDraftView());
 }

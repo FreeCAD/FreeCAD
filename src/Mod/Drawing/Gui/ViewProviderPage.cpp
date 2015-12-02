@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is Drawing of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,9 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
 # include <QAction>
 # include <QMenu>
 # include <QTimer>
@@ -41,7 +38,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
@@ -66,6 +62,10 @@ ViewProviderDrawingPage::ViewProviderDrawingPage()
     ADD_PROPERTY(HintScale,(10.0));
     ADD_PROPERTY(HintOffsetX,(10.0));
     ADD_PROPERTY(HintOffsetY,(10.0));
+
+    // do not show this in the property editor
+    Visibility.StatusBits.set(3, true);
+    DisplayMode.StatusBits.set(3, true);
 }
 
 ViewProviderDrawingPage::~ViewProviderDrawingPage()
@@ -91,17 +91,40 @@ std::vector<std::string> ViewProviderDrawingPage::getDisplayModes(void) const
     return StrList;
 }
 
+void ViewProviderDrawingPage::show(void)
+{
+    // showing the drawing page should not affect its children but opens the MDI view
+    // therefore do not call the method of its direct base class
+    ViewProviderDocumentObject::show();
+    if (!this->view) {
+        showDrawingView();
+        this->view->load(QString::fromUtf8(getPageObject()->PageResult.getValue()));
+        view->viewAll();
+    }
+}
+
+void ViewProviderDrawingPage::hide(void)
+{
+    // hiding the drawing page should not affect its children but closes the MDI view
+    // therefore do not call the method of its direct base class
+    ViewProviderDocumentObject::hide();
+    if (view) {
+        view->parentWidget()->deleteLater();
+    }
+}
+
 void ViewProviderDrawingPage::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObjectGroup::updateData(prop);
     if (prop->getTypeId() == App::PropertyFileIncluded::getClassTypeId()) {
         if (std::string(getPageObject()->PageResult.getValue()) != "") {
-            DrawingView* view = showDrawingView();
-            view->load(QString::fromUtf8(getPageObject()->PageResult.getValue()));
-            if (view->isHidden())
-                QTimer::singleShot(300, view, SLOT(viewAll()));
-            else
-                view->viewAll();
+            if (view) {
+                view->load(QString::fromUtf8(getPageObject()->PageResult.getValue()));
+                if (view->isHidden())
+                    QTimer::singleShot(300, view, SLOT(viewAll()));
+                else
+                    view->viewAll();
+            }
         }
     }
     else if (pcObject && prop == &pcObject->Label) {
@@ -115,10 +138,18 @@ void ViewProviderDrawingPage::updateData(const App::Property* prop)
     }
 }
 
+bool ViewProviderDrawingPage::onDelete(const std::vector<std::string> & items)
+{
+    if (view) {
+        view->parentWidget()->deleteLater();
+    }
+
+    return ViewProviderDocumentObjectGroup::onDelete(items);
+}
+
 void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
+    menu->addAction(QObject::tr("Show drawing"), receiver, member);
 }
 
 bool ViewProviderDrawingPage::setEdit(int ModNum)
@@ -129,11 +160,7 @@ bool ViewProviderDrawingPage::setEdit(int ModNum)
 
 bool ViewProviderDrawingPage::doubleClicked(void)
 {
-    if (!this->view) {
-        showDrawingView();
-        this->view->load(QString::fromUtf8(getPageObject()->PageResult.getValue()));
-        view->viewAll();
-    }
+    show();
     Gui::getMainWindow()->setActiveWindow(this->view);
     return true;
 }
@@ -149,6 +176,7 @@ DrawingView* ViewProviderDrawingPage::showDrawingView()
         const char* objname = pcObject->Label.getValue();
         view->setObjectName(QString::fromUtf8(objname));
         view->onRelabel(doc);
+        view->setDocumentObject(pcObject->getNameInDocument());
         Gui::getMainWindow()->addWindow(view);
     }
 

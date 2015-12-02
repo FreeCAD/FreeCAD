@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2005                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -205,7 +205,12 @@ void FileInfo::setFile(const char* name)
     }
 
     FileName = name;
-    std::replace(FileName.begin(), FileName.end(), '\\', '/');
+
+    // keep the UNC paths intact
+    if (FileName.substr(0,2) == std::string("\\\\"))
+        std::replace(FileName.begin()+2, FileName.end(), '\\', '/');
+    else
+        std::replace(FileName.begin(), FileName.end(), '\\', '/');
 }
 
 std::string FileInfo::filePath () const
@@ -511,7 +516,7 @@ bool FileInfo::deleteDirectoryRecursive(void) const
             It->deleteFile();
         }
         else {
-            Base::Exception("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");
+            throw Base::FileException("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");
         }
     }
     return deleteDirectory();

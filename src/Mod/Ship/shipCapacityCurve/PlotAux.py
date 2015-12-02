@@ -107,21 +107,19 @@ class Plot(object):
         @param v Volume of fluid.
         @param tank Active tank instance.
         """
-        # Create the spreadsheet
-        obj = Spreadsheet.makeSpreadsheet()
-        s = obj.Proxy
-        obj.Label = 'Capacity curve'
+        s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
+                                               'Capacity curve')
 
         # Print the header
-        s.a1 = "Percentage of filling level"
-        s.b1 = "Level [m]"
-        s.c1 = "Volume [m^3]"
+        s.set("A1", "Percentage of filling level")
+        s.set("B1", "Level [m]")
+        s.set("C1", "Volume [m^3]")
 
         # Print the data
         for i in range(len(l)):
-            s.__setattr__("a{}".format(i + 2), l[i])
-            s.__setattr__("b{}".format(i + 2), z[i])
-            s.__setattr__("c{}".format(i + 2), v[i])
+            s.set("A{}".format(i + 2), str(l[i]))
+            s.set("B{}".format(i + 2), str(z[i]))
+            s.set("C{}".format(i + 2), str(v[i]))
 
-        # Open the spreadsheet
-        FreeCADGui.ActiveDocument.setEdit(obj.Name, 0)
+        # Recompute
+        FreeCAD.activeDocument().recompute()

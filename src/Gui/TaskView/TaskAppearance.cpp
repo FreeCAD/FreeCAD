@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -138,7 +138,7 @@ void TaskAppearance::on_changeMode_activated(const QString& s)
 {
     Gui::WaitCursor wc;
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();It++) {
+    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* Display = (App::PropertyEnumeration*)prop;
@@ -158,7 +158,7 @@ void TaskAppearance::on_changePlot_activated(const QString&s)
 void TaskAppearance::on_spinTransparency_valueChanged(int transparency)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();It++) {
+    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("Transparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
             App::PropertyInteger* Transparency = (App::PropertyInteger*)prop;
@@ -173,7 +173,7 @@ void TaskAppearance::on_spinTransparency_valueChanged(int transparency)
 void TaskAppearance::on_spinPointSize_valueChanged(int pointsize)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();It++) {
+    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("PointSize");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
             App::PropertyFloat* PointSize = (App::PropertyFloat*)prop;
@@ -188,7 +188,7 @@ void TaskAppearance::on_spinPointSize_valueChanged(int pointsize)
 void TaskAppearance::on_spinLineWidth_valueChanged(int linewidth)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();It++) {
+    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("LineWidth");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
             App::PropertyFloat* LineWidth = (App::PropertyFloat*)prop;

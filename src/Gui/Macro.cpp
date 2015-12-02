@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -118,7 +118,9 @@ void MacroManager::commit(void)
             }
         }
 
-        QString header = QString::fromAscii("# Macro Begin: ");
+        QString header;
+        header += QString::fromAscii("# -*- coding: utf-8 -*-\n\n");
+        header += QString::fromAscii("# Macro Begin: ");
         header += this->macroName;
         header += QString::fromAscii(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
 

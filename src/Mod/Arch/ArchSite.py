@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,10 +34,11 @@ __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeSite(objectslist=None,baseobj=None,name=translate("Arch","Site")):
+def makeSite(objectslist=None,baseobj=None,name="Site"):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
+    obj.Label = translate("Arch",name)
     _Site(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSite(obj.ViewObject)
@@ -57,7 +58,7 @@ class _CommandSite:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         ok = False
@@ -92,21 +93,24 @@ class _Site(ArchFloor._Floor):
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Terrain","Arch",translate("Arch","The terrain of this site"))
-        obj.addProperty("App::PropertyString","Address","Arch",translate("Arch","The address of this site"))
+        obj.addProperty("App::PropertyString","Address","Arch",translate("Arch","The street and housenumber of this site"))
+        obj.addProperty("App::PropertyString","PostalCode","Arch",translate("Arch","The postal or zip code of this site"))
+        obj.addProperty("App::PropertyString","City","Arch",translate("Arch","The city of this site"))
+        obj.addProperty("App::PropertyString","Country","Arch",translate("Arch","The country of this site"))
         obj.addProperty("App::PropertyString","Coordinates","Arch",translate("Arch","The geographic coordinates of this site"))
         obj.addProperty("App::PropertyString","Url","Arch",translate("Arch","An url that shows this site in a mapping website"))
         self.Type = "Site"
         obj.setEditorMode('Height',2)
-                
+
 class _ViewProviderSite(ArchFloor._ViewProviderFloor):
     "A View Provider for the Site object"
     def __init__(self,vobj):
-        ArchFloor._ViewProviderFloor.__init__(self,vobj)        
+        ArchFloor._ViewProviderFloor.__init__(self,vobj)
 
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Site_Tree.svg"
-        
+
     def claimChildren(self):
         return self.Object.Group+[self.Object.Terrain]
 

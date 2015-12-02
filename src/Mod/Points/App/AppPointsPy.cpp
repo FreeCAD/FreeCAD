@@ -25,6 +25,13 @@
 #ifndef _PreComp_
 #endif
 
+// PCL test
+#ifdef HAVE_PCL_IO
+#  include <iostream>
+#  include <pcl/io/ply_io.h>
+#  include <pcl/point_types.h>
+#endif
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/FileInfo.h>
@@ -33,13 +40,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Property.h>
-
-// PCL test
-#ifdef HAVE_PCL_IO
-#  include <iostream>
-#  include <pcl/io/ply_io.h>
-#  include <pcl/point_types.h>
-#endif
 
 #include "Points.h"
 #include "PointsPy.h"
@@ -83,10 +83,10 @@ open(PyObject *self, PyObject *args)
             Points::PointKernel pkTemp;
 
             // pcl test
-            pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
-            pcl::io::loadPLYFile<pcl::PointXYZRGB>(EncodedName.c_str(),cloud_in); 
+            pcl::PointCloud<pcl::PointXYZ> cloud_in;
+            pcl::io::loadPLYFile<pcl::PointXYZ>(EncodedName.c_str(),cloud_in); 
 
-            for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+            for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
                 pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
             pcFeature->Points.setValue( pkTemp );
         }
@@ -140,10 +140,10 @@ insert(PyObject *self, PyObject *args)
             Points::PointKernel pkTemp;
 
             // pcl test
-            pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
-            pcl::io::loadPLYFile<pcl::PointXYZRGB>(EncodedName.c_str(),cloud_in); 
+            pcl::PointCloud<pcl::PointXYZ> cloud_in;
+            pcl::io::loadPLYFile<pcl::PointXYZ>(EncodedName.c_str(),cloud_in); 
 
-            for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+            for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
                 pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
             pcFeature->Points.setValue( pkTemp );
         }

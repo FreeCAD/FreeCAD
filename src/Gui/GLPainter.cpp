@@ -293,12 +293,20 @@ void Rubberband::paintGL()
     glDisable(GL_BLEND);
 }
 
+// -----------------------------------------------------------------------------------
+
 Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
 {
     x_new = y_new = 0;
     working = false;
     closed = true;
+    stippled = false;
     line = 2.0;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
 Polyline::Polyline()
@@ -306,7 +314,13 @@ Polyline::Polyline()
     x_new = y_new = 0;
     working = false;
     closed = true;
+    stippled = false;
     line = 2.0;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
 Polyline::~Polyline()
@@ -318,7 +332,7 @@ void Polyline::setWorking(bool on)
     working = on;
 }
 
-bool Polyline::isWorking()
+bool Polyline::isWorking() const
 {
     return working;
 }
@@ -336,15 +350,20 @@ void Polyline::setCoords(int x, int y)
 
 void Polyline::setColor(int r, int g, int b, int a)
 {
-    rgb_a = a;
-    rgb_b = b;
-    rgb_g = g;
     rgb_r = r;
+    rgb_g = g;
+    rgb_b = b;
+    rgb_a = a;
 }
 
 void Polyline::setClosed(bool c)
 {
     closed = c;
+}
+
+void Polyline::setCloseStippled(bool c)
+{
+    stippled = c;
 }
 
 void Polyline::setLineWidth(float l)
@@ -355,6 +374,12 @@ void Polyline::setLineWidth(float l)
 void Polyline::addNode(const QPoint& p)
 {
     _cNodeVector.push_back(p);
+}
+
+void Polyline::popNode()
+{
+    if (!_cNodeVector.empty())
+        _cNodeVector.pop_back();
 }
 
 void Polyline::clear()
@@ -383,17 +408,38 @@ void Polyline::paintGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glLineWidth(line);
     glColor4f(rgb_r, rgb_g, rgb_b, rgb_a);
-    glBegin(GL_LINE_LOOP);
 
-    QPoint start = _cNodeVector.front();
+    if (closed && !stippled) {
+        glBegin(GL_LINE_LOOP);
 
-    for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
-        glVertex2i(it->x(), it->y());
+        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+            glVertex2i(it->x(), it->y());
+        }
+
+        glEnd();
+    }
+    else {
+        glBegin(GL_LINES);
+
+        QPoint start = _cNodeVector.front();
+        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+            glVertex2i(start.x(), start.y());
+            start = *it;
+            glVertex2i(it->x(), it->y());
+        }
+
+        glEnd();
+
+        if (closed && stippled) {
+            glEnable(GL_LINE_STIPPLE);
+            glLineStipple(2, 0x3F3F);
+            glBegin(GL_LINES);
+                glVertex2i(_cNodeVector.back().x(), _cNodeVector.back().y());
+                glVertex2i(_cNodeVector.front().x(), _cNodeVector.front().y());
+            glEnd();
+            glDisable(GL_LINE_STIPPLE);
+        }
     }
 
-    if (!_cNodeVector.empty())
-        glVertex2i(x_new, y_new);
-
-    glEnd();
     glDisable(GL_BLEND);
 }

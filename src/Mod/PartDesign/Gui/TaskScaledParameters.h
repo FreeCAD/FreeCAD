@@ -56,17 +56,18 @@ public:
     TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskScaledParameters();
 
-    const double getFactor(void) const;
-    const unsigned getOccurrences(void) const;
+    virtual void apply();
 
 private Q_SLOTS:
     void onFactor(const double f);
-    void onOccurrences(const int n);
+    void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    const double getFactor(void) const;
+    const unsigned getOccurrences(void) const;
 
 private:
     void setupUI();

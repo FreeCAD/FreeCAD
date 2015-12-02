@@ -11,11 +11,11 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${COIN3D_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${COIN3D_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -32,10 +32,13 @@ set(SketcherGui_MOC_HDRS
     TaskSketcherCreateCommands.h
     TaskSketcherGeneral.h
     TaskSketcherMessages.h
+    TaskSketcherSolverAdvanced.h
     TaskSketcherValidation.h
     TaskDlgEditSketch.h
     SketchOrientationDialog.h
+    SketchMirrorDialog.h
     SketcherSettings.h
+    SketchRectangularArrayDialog.h
     PropertyConstraintListItem.h
 )
 fc_wrap_cpp(SketcherGui_MOC_SRCS ${SketcherGui_MOC_HDRS})
@@ -48,10 +51,13 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherElements.ui
     TaskSketcherGeneral.ui
     TaskSketcherMessages.ui
+    TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
     InsertDatum.ui
     SketchOrientationDialog.ui
+    SketchMirrorDialog.ui
     SketcherSettings.ui
+    SketchRectangularArrayDialog.ui
 )
 qt4_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
 
@@ -60,8 +66,10 @@ SET(SketcherGui_SRCS
     ${SketcherGui_UIC_HDRS}
     AppSketcherGui.cpp
     AppSketcherGuiPy.cpp
+    GeometryCreationMode.h
     Command.cpp
     CommandCreateGeo.cpp
+    CommandConstraints.h
     CommandConstraints.cpp
     CommandSketcherTools.cpp
     CommandAlterGeometry.cpp
@@ -88,6 +96,9 @@ SET(SketcherGui_SRCS
     TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
+    TaskSketcherSolverAdvanced.ui
+    TaskSketcherSolverAdvanced.h
+    TaskSketcherSolverAdvanced.cpp
     TaskSketcherValidation.ui
     TaskSketcherValidation.cpp
     TaskSketcherValidation.h
@@ -101,8 +112,12 @@ SET(SketcherGui_SRCS
     EditDatumDialog.h
     SketchOrientationDialog.cpp
     SketchOrientationDialog.h
+    SketchMirrorDialog.cpp
+    SketchMirrorDialog.h
     SketcherSettings.cpp
     SketcherSettings.h
+    SketchRectangularArrayDialog.h
+    SketchRectangularArrayDialog.cpp
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp

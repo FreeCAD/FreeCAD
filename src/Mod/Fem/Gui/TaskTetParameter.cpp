@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,9 +48,9 @@ using namespace Gui;
 
 
 TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Fem_FemMesh_createnodebypoly"),
+    : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
       tr("Tet Parameter"),
-      true, 
+      true,
       parent),
       pcObject(pcObject)
 {
@@ -63,7 +63,7 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
     this->groupLayout()->addWidget(proxy);
 
     ui->doubleSpinBox_MaxSize->setValue(pcObject->MaxSize.getValue());
-    ui->comboBox_Fineness->setCurrentIndex(pcObject->Fininess.getValue());
+    ui->comboBox_Fineness->setCurrentIndex(pcObject->Fineness.getValue());
     ui->checkBox_SecondOrder->setChecked(pcObject->SecondOrder.getValue());
     ui->doubleSpinBox_GrowthRate->setValue(pcObject->GrowthRate.getValue());
     ui->spinBox_SegsPerEdge->setValue(pcObject->NbSegsPerEdge.getValue());
@@ -103,7 +103,7 @@ void TaskTetParameter::SwitchMethod(int Value)
         ui->spinBox_SegsPerRadius->setEnabled(false);
     }
 
-    pcObject->Fininess.setValue(Value);
+    pcObject->Fineness.setValue(Value);
     touched = true;
 }
 

@@ -65,13 +65,14 @@ class MyIterator: public SMDS_ElemIterator
   MyIterator(SMDSAbs_ElementType type, const SMESHDS_SubMesh* subMesh)
     : myType(type), myElem(0)
   {
-    if ( subMesh ) 
+    if ( subMesh ) {
       if ( myType == SMDSAbs_Node )
         myNodeIt = subMesh->GetNodes();
       else {
         myElemIt = subMesh->GetElements();
         next();
       }
+	}
   }
   bool more()
   {
@@ -92,6 +93,7 @@ class MyIterator: public SMDS_ElemIterator
       else
         myElem = 0;
     }
+	return res;
   }
 };
 

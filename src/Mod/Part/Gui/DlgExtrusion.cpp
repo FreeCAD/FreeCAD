@@ -31,6 +31,7 @@
 # include <TopoDS_Face.hxx>
 # include <TopExp_Explorer.hxx>
 # include <QMessageBox>
+# include <Inventor/system/inttypes.h>
 #endif
 
 #include "ui_DlgExtrusion.h"
@@ -62,7 +63,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WFlags fl)
     ui->dirY->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirZ->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirLen->setDecimals(Base::UnitsApi::getDecimals());
-    ui->taperAngle->setDecimals(Base::UnitsApi::getDecimals());
+    ui->taperAngle->setUnit(Base::Unit::Angle);
     ui->dirLen->setMinimumWidth(55); // needed to show all digits
     findShapes();
 
@@ -182,7 +183,7 @@ void DlgExtrusion::apply()
         double dirX = ui->dirX->value();
         double dirY = ui->dirY->value();
         double dirZ = ui->dirZ->value();
-        double angle = ui->taperAngle->value();
+        double angle = ui->taperAngle->value().getValue();
         bool makeSolid = ui->makeSolid->isChecked();
 
         // inspect geometry

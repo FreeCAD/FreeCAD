@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -472,10 +472,13 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
 
     PyGILStateLocker locker;
     pmeth = PyObject_GetAttrString(pobject, method);
-    if (pmeth == NULL)                             /* get callable object */
+    if (pmeth == NULL) {                            /* get callable object */
+        va_end(argslist);
         throw Exception("Error running InterpreterSingleton::RunMethod() method not defined");                                 /* bound method? has self */
+    }
 
     pargs = Py_VaBuildValue(argfmt, argslist);     /* args: c->python */
+    va_end(argslist);
 
     if (pargs == NULL) {
         Py_DECREF(pmeth);
@@ -491,6 +494,28 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
             PyErr_Print();
         throw Exception("Error running InterpreterSingleton::RunMethod() exception in called method");
     }
+}
+
+PyObject * InterpreterSingleton::getValue(const char * key, const char * result_var)
+{
+    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");         /* get module, init python */
+    if (module == NULL)
+        throw PyException();                         /* not incref'd */
+    dict = PyModule_GetDict(module);            /* get dict namespace */
+    if (dict == NULL)
+        throw PyException();                           /* not incref'd */
+
+
+    presult = PyRun_String(key, Py_file_input, dict, dict); /* eval direct */
+    if (!presult) {
+        throw PyException();
+    }
+    Py_DECREF(presult);
+
+    return PyObject_GetAttrString(module, result_var);
 }
 
 void InterpreterSingleton::dbgObserveFile(const char* sFileName)

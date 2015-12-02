@@ -35,9 +35,9 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/EditorView.h>
 #include <Gui/TextEdit.h>
-#include <Gui/MainWindow.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View.h>
 
@@ -96,16 +96,29 @@ povViewCamera(PyObject *self, PyObject *args)
         std::string out;
         const char* ppReturn=0;
 
-        Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            doc->sendMsgToFirstView(Gui::MDIView::getClassTypeId(), "GetCamera", &ppReturn);
+        }
+        else {
+            PyErr_SetString(PyExc_RuntimeError, "No active document found");
+            return 0;
+        }
+
+        if (!ppReturn) {
+            PyErr_SetString(PyExc_RuntimeError, "Could not read camera information from active view");
+            return 0;
+        }
 
         SoNode* rootNode;
         SoInput in;
         in.setBuffer((void*)ppReturn,std::strlen(ppReturn));
         SoDB::read(&in,rootNode);
 
-        if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()))
-            throw Base::Exception("CmdRaytracingWriteCamera::activated(): Could not read "
-                                  "camera information from ASCII stream....\n");
+        if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId())) {
+            PyErr_SetString(PyExc_RuntimeError, "Could not read camera information from ASCII stream");
+            return 0;
+        }
 
         // root-node returned from SoDB::readAll() has initial zero
         // ref-count, so reference it before we start using it to
@@ -123,6 +136,7 @@ povViewCamera(PyObject *self, PyObject *args)
 
         SbVec3f pos = Cam->position.getValue();
         float Dist = Cam->focalDistance.getValue();
+        Cam->unref(); // free memory
 
         // making gp out of the Coin stuff
         gp_Vec gpPos(pos.getValue()[0],pos.getValue()[1],pos.getValue()[2]);
@@ -155,16 +169,29 @@ luxViewCamera(PyObject *self, PyObject *args)
         std::string out;
         const char* ppReturn=0;
 
-        Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            doc->sendMsgToFirstView(Gui::MDIView::getClassTypeId(), "GetCamera", &ppReturn);
+        }
+        else {
+            PyErr_SetString(PyExc_RuntimeError, "No active document found");
+            return 0;
+        }
+
+        if (!ppReturn) {
+            PyErr_SetString(PyExc_RuntimeError, "Could not read camera information from active view");
+            return 0;
+        }
 
         SoNode* rootNode;
         SoInput in;
         in.setBuffer((void*)ppReturn,std::strlen(ppReturn));
         SoDB::read(&in,rootNode);
 
-        if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()))
-            throw Base::Exception("CmdRaytracingWriteCamera::activated(): Could not read "
-                                  "camera information from ASCII stream....\n");
+        if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId())) {
+            PyErr_SetString(PyExc_RuntimeError, "Could not read camera information from ASCII stream");
+            return 0;
+        }
 
         // root-node returned from SoDB::readAll() has initial zero
         // ref-count, so reference it before we start using it to
@@ -182,6 +209,7 @@ luxViewCamera(PyObject *self, PyObject *args)
 
         SbVec3f pos = Cam->position.getValue();
         float Dist = Cam->focalDistance.getValue();
+        Cam->unref(); // free memory
 
         // making gp out of the Coin stuff
         gp_Vec gpPos(pos.getValue()[0],pos.getValue()[1],pos.getValue()[2]);

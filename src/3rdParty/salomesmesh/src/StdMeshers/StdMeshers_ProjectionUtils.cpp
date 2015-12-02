@@ -1245,7 +1245,7 @@ bool StdMeshers_ProjectionUtils::IsSubShape( const TopoDS_Shape& shape,
   return
     aMesh->GetMeshDS()->ShapeToIndex( shape ) ||
     // PAL16202
-    shape.ShapeType() == TopAbs_COMPOUND && aMesh->GetMeshDS()->IsGroupOfSubShapes( shape );
+     (shape.ShapeType() == TopAbs_COMPOUND && aMesh->GetMeshDS()->IsGroupOfSubShapes( shape ));
 }
 
 //=======================================================================

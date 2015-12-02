@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -295,7 +295,7 @@ void StdCmdFreezeViews::onSaveViews()
 {
     // Save the views to an XML file
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save frozen views"),
-                                             QString(), QObject::tr("Frozen views (*.cam)"));
+                                             QString(), QString::fromLatin1("%1 (*.cam)").arg(QObject::tr("Frozen views")));
     if (fn.isEmpty())
         return;
     QFile file(fn);
@@ -345,7 +345,7 @@ void StdCmdFreezeViews::onRestoreViews()
 
     // Restore the views from an XML file
     QString fn = FileDialog::getOpenFileName(getMainWindow(), QObject::tr("Restore frozen views"),
-                                             QString(), QObject::tr("Frozen views (*.cam)"));
+                                             QString(), QString::fromLatin1("%1 (*.cam)").arg(QObject::tr("Frozen views")));
     if (fn.isEmpty())
         return;
     QFile file(fn);
@@ -563,20 +563,20 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
 
     QAction* a0 = pcAction->addAction(QString());
     a0->setCheckable(true);
-    a0->setIcon(BitmapFactory().pixmap("DrawStyleAsIs"));
+    a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
-    a1->setIcon(BitmapFactory().pixmap("DrawStyleFlatLines"));
+    a1->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
-    a2->setIcon(BitmapFactory().pixmap("DrawStyleShaded"));
+    a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
-    a3->setIcon(BitmapFactory().pixmap("DrawStyleWireFrame"));
+    a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
-    a4->setIcon(BitmapFactory().pixmap("DrawStylePoints"));
+    a4->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
@@ -671,7 +671,7 @@ void StdCmdDrawStyle::activated(int iMsg)
     std::list<MDIView*> views = doc->getMDIViews();
     std::list<MDIView*>::iterator viewIt;
     bool oneChangedSignal(false);
-    for (viewIt = views.begin(); viewIt != views.end(); viewIt++)
+    for (viewIt = views.begin(); viewIt != views.end(); ++viewIt)
     {
         View3DInventor* view = qobject_cast<View3DInventor*>(*viewIt);
         if (view)
@@ -737,7 +737,7 @@ void StdCmdToggleVisibility::activated(int iMsg)
 
         // in case a group object and an object of the group is selected then ignore the group object
         std::vector<App::DocumentObject*> ignore;
-        for (std::vector<App::DocumentObject*>::iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for (std::vector<App::DocumentObject*>::iterator ft=sel.begin();ft!=sel.end();++ft) {
             if ((*ft)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
                 App::DocumentObjectGroup* grp = static_cast<App::DocumentObjectGroup*>(*ft);
                 std::vector<App::DocumentObject*> sub = grp->Group.getValues();
@@ -759,7 +759,7 @@ void StdCmdToggleVisibility::activated(int iMsg)
             sel = diff;
         }
 
-        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             if (pcDoc && pcDoc->isShow((*ft)->getNameInDocument()))
                 doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
                              , (*it)->getName(), (*ft)->getNameInDocument());
@@ -802,7 +802,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
             (App::DocumentObject::getClassTypeId(), (*it)->getName());
 
  
-        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
             if(pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
                     if (dynamic_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
@@ -844,7 +844,7 @@ void StdCmdShowSelection::activated(int iMsg)
     for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
         const std::vector<App::DocumentObject*> sel = Selection().getObjectsOfType
             (App::DocumentObject::getClassTypeId(), (*it)->getName());
-        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
                          , (*it)->getName(), (*ft)->getNameInDocument());
         }
@@ -879,7 +879,7 @@ void StdCmdHideSelection::activated(int iMsg)
     for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
         const std::vector<App::DocumentObject*> sel = Selection().getObjectsOfType
             (App::DocumentObject::getClassTypeId(), (*it)->getName());
-        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();ft++) {
+        for(std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
                          , (*it)->getName(), (*ft)->getNameInDocument());
         }
@@ -1180,18 +1180,18 @@ StdCmdViewAxo::StdCmdViewAxo()
   : Command("Std_ViewAxo")
 {
   sGroup      = QT_TR_NOOP("Standard-View");
-  sMenuText   = QT_TR_NOOP("Axometric");
-  sToolTipText= QT_TR_NOOP("Set to axometric view");
+  sMenuText   = QT_TR_NOOP("Axonometric");
+  sToolTipText= QT_TR_NOOP("Set to axonometric view");
   sWhatsThis  = "Std_ViewXX";
-  sStatusTip  = QT_TR_NOOP("Set to axometric view");
-  sPixmap     = "view-axometric";
+  sStatusTip  = QT_TR_NOOP("Set to axonometric view");
+  sPixmap     = "view-axonometric";
   sAccel      = "0";
   eType         = Alter3DView;
 }
 
 void StdCmdViewAxo::activated(int iMsg)
 {
-  doCommand(Command::Gui,"Gui.activeDocument().activeView().viewAxometric()");
+  doCommand(Command::Gui,"Gui.activeDocument().activeView().viewAxonometric()");
 }
 
 //===========================================================================
@@ -1250,25 +1250,25 @@ DEF_STD_CMD_A(StdCmdViewFitAll);
 StdCmdViewFitAll::StdCmdViewFitAll()
   : Command("Std_ViewFitAll")
 {
-  sGroup        = QT_TR_NOOP("Standard-View");
-  sMenuText     = QT_TR_NOOP("Fit all");
-  sToolTipText  = QT_TR_NOOP("Fits the whole content on the screen");
-  sWhatsThis    = "Std_ViewFitAll";
-  sStatusTip    = QT_TR_NOOP("Fits the whole content on the screen");
-  sPixmap       = "view-zoom-all";
-  eType         = Alter3DView;
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Fit all");
+    sToolTipText  = QT_TR_NOOP("Fits the whole content on the screen");
+    sWhatsThis    = "Std_ViewFitAll";
+    sStatusTip    = QT_TR_NOOP("Fits the whole content on the screen");
+    sPixmap       = "zoom-all";
+    eType         = Alter3DView;
 }
 
 void StdCmdViewFitAll::activated(int iMsg)
 {
-  //doCommand(Command::Gui,"Gui.activeDocument().activeView().fitAll()");
-   doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ViewFit\")");
+    //doCommand(Command::Gui,"Gui.activeDocument().activeView().fitAll()");
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
 bool StdCmdViewFitAll::isActive(void)
 {
-  //return isViewOfType(Gui::View3DInventor::getClassTypeId());
-  return getGuiApplication()->sendHasMsgToActiveView("ViewFit");
+    //return isViewOfType(Gui::View3DInventor::getClassTypeId());
+    return getGuiApplication()->sendHasMsgToActiveView("ViewFit");
 }
 
 //===========================================================================
@@ -1285,7 +1285,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
     sWhatsThis    = "Std_ViewFitSelection";
     sStatusTip    = QT_TR_NOOP("Fits the selected content on the screen");
 #if QT_VERSION >= 0x040200
-    sPixmap       = "view-zoom-selection";
+    sPixmap       = "zoom-selection";
 #endif
   eType         = Alter3DView;
 }
@@ -1364,7 +1364,7 @@ Action * StdViewDockUndockFullscreen::createAction(void)
         QCoreApplication::CodecForTr));
     fullscr->setShortcut(Qt::Key_F11);
     fullscr->setCheckable(true);
-    fullscr->setIcon(Gui::BitmapFactory().pixmap("view-fullscreen"));
+    fullscr->setIcon(Gui::BitmapFactory().iconFromTheme("view-fullscreen"));
 
     return pcAction;
 }
@@ -1417,13 +1417,12 @@ DEF_STD_CMD_A(StdCmdViewVR);
 StdCmdViewVR::StdCmdViewVR()
   : Command("Std_ViewVR")
 {
-  sGroup        = QT_TR_NOOP("Standard-View");
-  sMenuText     = QT_TR_NOOP("FreeCAD-VR");
-  sToolTipText  = QT_TR_NOOP("Extend the FreeCAD 3D Window to a Oculus Rift");
-  sWhatsThis    = "Std_ViewVR";
-  sStatusTip    = QT_TR_NOOP("Extend the FreeCAD 3D Window to a Oculus Rift");
-  sPixmap       = "view-zoom-all";
-  eType         = Alter3DView;
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("FreeCAD-VR");
+    sToolTipText  = QT_TR_NOOP("Extend the FreeCAD 3D Window to a Oculus Rift");
+    sWhatsThis    = "Std_ViewVR";
+    sStatusTip    = QT_TR_NOOP("Extend the FreeCAD 3D Window to a Oculus Rift");
+    eType         = Alter3DView;
 }
 
 void StdCmdViewVR::activated(int iMsg)
@@ -2039,7 +2038,7 @@ StdViewZoomIn::StdViewZoomIn()
     sWhatsThis    = "Std_ViewZoom";
     sStatusTip    = QT_TR_NOOP("Zoom In");
 #if QT_VERSION >= 0x040200
-    sPixmap       = "view-zoom-in";
+    sPixmap       = "zoom-in";
 #endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomIn);
     eType         = Alter3DView;
@@ -2073,7 +2072,7 @@ StdViewZoomOut::StdViewZoomOut()
     sWhatsThis    = "Std_ViewZoom";
     sStatusTip    = QT_TR_NOOP("Zoom Out");
 #if QT_VERSION >= 0x040200
-    sPixmap       = "view-zoom-out";
+    sPixmap       = "zoom-out";
 #endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomOut);
     eType         = Alter3DView;
@@ -2107,7 +2106,7 @@ StdViewBoxZoom::StdViewBoxZoom()
     sWhatsThis    = "Std_ViewBoxZoom";
     sStatusTip    = QT_TR_NOOP("Box zoom");
 #if QT_VERSION >= 0x040200
-    sPixmap       = "view-zoom-border";
+    sPixmap       = "zoom-border";
 #endif
     sAccel        = "Ctrl+B";
     eType         = Alter3DView;
@@ -2183,7 +2182,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                     App::PropertyGeometry* prop = static_cast<App::PropertyGeometry*>(*jt);
                     Base::BoundBox3d bbox = prop->getBoundingBox();
                     Base::Vector3d pt2d;
-                    pt2d = proj(bbox.CalcCenter());
+                    pt2d = proj(bbox.GetCenter());
                     if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
                         Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
                     }
@@ -2299,9 +2298,9 @@ void StdCmdMeasureDistance::activated(int iMsg)
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
         viewer->setEditingCursor(QCursor(QPixmap(cursor_ruler), 7, 7));
-	
-	// Derives from QObject and we have a parent object, so we don't
-	// require a delete.
+
+        // Derives from QObject and we have a parent object, so we don't
+        // require a delete.
         PointMarker* marker = new PointMarker(viewer);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             ViewProviderMeasureDistance::measureDistanceCallback, marker);

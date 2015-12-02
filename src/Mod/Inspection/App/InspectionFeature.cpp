@@ -182,9 +182,9 @@ namespace Inspection {
             unsigned long ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;
 
             Base::BoundBox3f clBB;
-            clBB &= rclFacet._aclPoints[0];
-            clBB &= rclFacet._aclPoints[1];
-            clBB &= rclFacet._aclPoints[2];
+            clBB.Add(rclFacet._aclPoints[0]);
+            clBB.Add(rclFacet._aclPoints[1]);
+            clBB.Add(rclFacet._aclPoints[2]);
 
             Pos(Base::Vector3f(clBB.MinX,clBB.MinY,clBB.MinZ), ulX1, ulY1, ulZ1);
             Pos(Base::Vector3f(clBB.MaxX,clBB.MaxY,clBB.MaxZ), ulX2, ulY2, ulZ2);

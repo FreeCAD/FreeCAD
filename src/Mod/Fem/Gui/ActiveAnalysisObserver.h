@@ -50,11 +50,8 @@ private:
     ActiveAnalysisObserver();
     ~ActiveAnalysisObserver();
 
-    void slotCreatedDocument(const App::Document& Doc);
     void slotDeletedDocument(const App::Document& Doc);
-    void slotCreatedObject(const App::DocumentObject& Obj);
     void slotDeletedObject(const App::DocumentObject& Obj);
-    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
 
 private:
     static ActiveAnalysisObserver* inst;

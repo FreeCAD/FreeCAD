@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2014                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2014                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -81,7 +81,7 @@ int StepShape::read(const char* fileName)
     Handle(TColStd_HSequenceOfTransient) list = aReader.GiveList(); 
 
     //Use method StepData_StepModel::NextNumberForLabel to find its rank with the following:
-    Standard_CString label = "#...";
+    //Standard_CString label = "#...";
     Handle_StepData_StepModel model = aReader.StepModel();
     //rank = model->NextNumberForLabe(label, 0, Standard_False);
 

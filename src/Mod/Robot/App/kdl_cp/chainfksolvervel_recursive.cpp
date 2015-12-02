@@ -33,11 +33,13 @@ namespace KDL
     {
     }
 
-    int ChainFkSolverVel_recursive::JntToCart(const JntArrayVel& in,FrameVel& out,int segmentNr)
+    int ChainFkSolverVel_recursive::JntToCart(const JntArrayVel& in,FrameVel& out,int seg_nr)
     {
-
-        if(segmentNr<0)
-             segmentNr=chain.getNrOfSegments();
+        unsigned int segmentNr;
+        if(seg_nr<0)
+            segmentNr=chain.getNrOfSegments();
+        else
+            segmentNr = seg_nr;
 
         out=FrameVel::Identity();
 

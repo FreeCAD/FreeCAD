@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,6 +37,7 @@
 
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
+#include <GProp_PrincipalProps.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 #include <GCPnts_TangentialDeflection.hxx>
@@ -54,6 +55,7 @@
 #include "TopoShapeWirePy.h"
 #include "TopoShapeWirePy.cpp"
 #include "OCCError.h"
+#include "Tools.h"
 
 using namespace Part;
 
@@ -105,6 +107,11 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O", &pcObj)) {
+        if(!Py::Object(pcObj).isList() && !Py::Object(pcObj).isTuple()) {
+            PyErr_SetString(PyExc_TypeError, "object is neither a list nor a tuple");
+            return -1;
+        }
+
         BRepBuilderAPI_MakeWire mkWire;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -499,12 +506,80 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
     return 0;
 }
 
+Py::Object TopoShapeWirePy::getMass(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    double c = props.Mass();
+    return Py::Float(c);
+}
+
 Py::Object TopoShapeWirePy::getCenterOfMass(void) const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
     gp_Pnt c = props.CentreOfMass();
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
+}
+
+Py::Object TopoShapeWirePy::getMatrixOfInertia(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    gp_Mat m = props.MatrixOfInertia();
+    Base::Matrix4D mat;
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            mat[i][j] = m(i+1,j+1);
+        }
+    }
+    return Py::Matrix(mat);
+}
+
+Py::Object TopoShapeWirePy::getStaticMoments(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    Standard_Real lx,ly,lz;
+    props.StaticMoments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    return tuple;
+}
+
+Py::Dict TopoShapeWirePy::getPrincipalProperties(void) const
+{
+    GProp_GProps props;
+    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    GProp_PrincipalProps pprops = props.PrincipalProperties();
+
+    Py::Dict dict;
+    dict.setItem("SymmetryAxis", Py::Boolean(pprops.HasSymmetryAxis() ? true : false));
+    dict.setItem("SymmetryPoint", Py::Boolean(pprops.HasSymmetryPoint() ? true : false));
+    Standard_Real lx,ly,lz;
+    pprops.Moments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    dict.setItem("Moments",tuple);
+    dict.setItem("FirstAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.FirstAxisOfInertia())));
+    dict.setItem("SecondAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.SecondAxisOfInertia())));
+    dict.setItem("ThirdAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.ThirdAxisOfInertia())));
+
+    Standard_Real Rxx,Ryy,Rzz;
+    pprops.RadiusOfGyration(Rxx,Ryy,Rzz);
+    Py::Tuple rog(3);
+    rog.setItem(0, Py::Float(Rxx));
+    rog.setItem(1, Py::Float(Ryy));
+    rog.setItem(2, Py::Float(Rzz));
+    dict.setItem("RadiusOfGyration",rog);
+    return dict;
 }
 
 PyObject *TopoShapeWirePy::getCustomAttributes(const char* /*attr*/) const

@@ -72,6 +72,12 @@ Matrix4D::Matrix4D (const Vector3f& rclBase, const Vector3f& rclDir, float fAngl
     this->rotLine(rclBase,rclDir,fAngle);
 }
 
+Matrix4D::Matrix4D (const Vector3d& rclBase, const Vector3d& rclDir, double fAngle)
+{
+    setToUnity();
+    this->rotLine(rclBase,rclDir,fAngle);
+}
+
 void Matrix4D::setToUnity (void)
 {
     dMtrx4D[0][0] = 1.0; dMtrx4D[0][1] = 0.0; dMtrx4D[0][2] = 0.0; dMtrx4D[0][3] = 0.0;

@@ -144,6 +144,15 @@ class Rotation2;
 class Frame2;
 
 
+// Equal is friend function, but default arguments for friends are forbidden (§8.3.6.4)
+inline bool Equal(const Vector& a,const Vector& b,double eps=epsilon);
+inline bool Equal(const Frame& a,const Frame& b,double eps=epsilon);
+inline bool Equal(const Twist& a,const Twist& b,double eps=epsilon);
+inline bool Equal(const Wrench& a,const Wrench& b,double eps=epsilon);
+inline bool Equal(const Vector2& a,const Vector2& b,double eps=epsilon);
+inline bool Equal(const Rotation2& a,const Rotation2& b,double eps=epsilon);
+inline bool Equal(const Frame2& a,const Frame2& b,double eps=epsilon);
+
 
 /**
  * \brief A concrete implementation of a 3 dimensional vector class
@@ -244,7 +253,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Vector& a,const Vector& b,double eps=epsilon);
+     inline friend bool Equal(const Vector& a,const Vector& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Vector& a,const Vector& b);
@@ -378,24 +387,34 @@ public:
 	double GetRotAngle(Vector& axis,double eps=epsilon) const;
 
 
-    //! Gives back a rotation matrix specified with EulerZYZ convention :
-    //!  First rotate around Z with alfa,
-    //!  then around the new Y with beta, then around
-    //!  new Z with gamma.
+/**     Gives back a rotation matrix specified with EulerZYZ convention :
+	 *       - First rotate around Z with alfa,
+	 *       - then around the new Y with beta,
+	 *	     - then around new Z with gamma.
+	 *  Invariants:
+	 *  	- EulerZYX(alpha,beta,gamma) == EulerZYX(alpha +/- PHI, -beta, gamma +/- PI)
+	 *  	- (angle + 2*k*PI)
+	 **/
     static Rotation EulerZYZ(double Alfa,double Beta,double Gamma);
 
-    //! Gives back the EulerZYZ convention description of the rotation matrix :
-    //!  First rotate around Z with alfa,
-    //!  then around the new Y with beta, then around
-    //!  new Z with gamma.
-    //!
-    //! Variables are bound by
-    //!  (-PI <= alfa <= PI),
-    //! (0 <= beta <= PI),
-    //!  (-PI <= alfa <= PI)
-    void GetEulerZYZ(double& alfa,double& beta,double& gamma) const;
+	/** Gives back the EulerZYZ convention description of the rotation matrix :
+	 First rotate around Z with alpha,
+	 then around the new Y with beta, then around
+	 new Z with gamma.
 
-    //! Sets the value of this object to a rotation specified with Quaternion convention
+	 Variables are bound by:
+	 - (-PI <  alpha  <= PI),
+	 - (0   <= beta  <= PI),
+	 - (-PI <  gamma <= PI)
+
+	 if beta==0 or beta==PI, then alpha and gamma are not unique, in this case gamma is chosen to be zero.
+	 Invariants:
+	   - EulerZYX(alpha,beta,gamma) == EulerZYX(alpha +/- PI, -beta, gamma +/- PI)
+	   - angle + 2*k*PI
+	 */
+    void GetEulerZYZ(double& alpha,double& beta,double& gamma) const;
+
+    //! Gives back a rotation matrix specified with Quaternion convention
     //! the norm of (x,y,z,w) should be equal to 1
     static Rotation Quaternion(double x,double y,double z, double w);
     
@@ -403,42 +422,74 @@ public:
     //! \post the norm of (x,y,z,w) is 1
     void GetQuaternion(double& x,double& y,double& z, double& w) const;
 
-    //! Sets the value of this object to a rotation specified with RPY convention:
-    //! first rotate around X with roll, then around the
-    //!               old Y with pitch, then around old Z with alfa
+    /**
+     *
+     * Gives back a rotation matrix specified with RPY convention:
+     * first rotate around X with roll, then around the
+     *              old Y with pitch, then around old Z with yaw
+     *
+     * Invariants:
+     *  - RPY(roll,pitch,yaw) == RPY( roll +/- PI, PI-pitch, yaw +/- PI )
+     *  - angles + 2*k*PI
+     */
     static Rotation RPY(double roll,double pitch,double yaw);
 
-    //! Gives back a vector in RPY coordinates, variables are bound by
-    //!   -PI <= roll <= PI
-    //!    -PI <= Yaw  <= PI
-    //!   -PI/2 <= PITCH <= PI/2
-    //!
-    //!  convention : first rotate around X with roll, then around the
-    //!               old Y with pitch, then around old Z with alfa
+/**  Gives back a vector in RPY coordinates, variables are bound by
+     -  -PI <= roll <= PI
+     -   -PI <= Yaw  <= PI
+     -  -PI/2 <= PITCH <= PI/2
+
+	 convention :
+	 - first rotate around X with roll,
+	 - then around the old Y with pitch,
+	 - then around old Z with yaw
+
+	 if pitch == PI/2 or pitch == -PI/2, multiple solutions for gamma and alpha exist.  The solution where roll==0
+	 is chosen.
+
+	 Invariants:
+	 - RPY(roll,pitch,yaw) == RPY( roll +/- PI, PI-pitch, yaw +/- PI )
+	 - angles + 2*k*PI
+
+**/
     void GetRPY(double& roll,double& pitch,double& yaw) const;
 
 
-    //! Gives back a rotation matrix specified with EulerZYX convention :
-    //!  First rotate around Z with alfa,
-    //!  then around the new Y with beta, then around
-    //!  new X with gamma.
-    //!
-    //! closely related to RPY-convention
+    /**  EulerZYX constructs a Rotation from the Euler ZYX parameters:
+     *   -  First rotate around Z with alfa,
+     *   - then around the new Y with beta,
+     *   - then around new X with gamma.
+     *
+     *  Closely related to RPY-convention.
+     *
+     *  Invariants:
+     *  	- EulerZYX(alpha,beta,gamma) == EulerZYX(alpha +/- PI, PI-beta, gamma +/- PI)
+     *  	- (angle + 2*k*PI)
+     **/
     inline static Rotation EulerZYX(double Alfa,double Beta,double Gamma) {
         return RPY(Gamma,Beta,Alfa);
     }
 
-    //! GetEulerZYX gets the euler ZYX parameters of a rotation :
-    //!  First rotate around Z with alfa,
-    //!  then around the new Y with beta, then around
-    //!  new X with gamma.
-    //!
-    //! Range of the results of GetEulerZYX :
-    //!   -PI <= alfa <= PI
-    //!    -PI <= gamma <= PI
-    //!   -PI/2 <= beta <= PI/2
-    //!
-    //! Closely related to RPY-convention.
+    /**   GetEulerZYX gets the euler ZYX parameters of a rotation :
+     *   First rotate around Z with alfa,
+     *   then around the new Y with beta, then around
+     *   new X with gamma.
+     *
+     *  Range of the results of GetEulerZYX :
+     *  -  -PI <= alfa <= PI
+     *  -   -PI <= gamma <= PI
+     *  -  -PI/2 <= beta <= PI/2
+     *
+     *  if beta == PI/2 or beta == -PI/2, multiple solutions for gamma and alpha exist.  The solution where gamma==0
+     *  is chosen.
+     *
+     *
+     *  Invariants:
+     *  	- EulerZYX(alpha,beta,gamma) == EulerZYX(alpha +/- PI, PI-beta, gamma +/- PI)
+     *  	- and also (angle + 2*k*PI)
+     *
+     *  Closely related to RPY-convention.
+     **/
     inline void GetEulerZYX(double& Alfa,double& Beta,double& Gamma) const {
         GetRPY(Gamma,Beta,Alfa);
     }
@@ -493,7 +544,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     friend bool Equal(const Rotation& a,const Rotation& b,double eps=epsilon);
+     friend bool Equal(const Rotation& a,const Rotation& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      friend bool operator==(const Rotation& a,const Rotation& b);
@@ -503,6 +554,7 @@ public:
      friend class Frame;
 };
     bool operator==(const Rotation& a,const Rotation& b);
+    bool Equal(const Rotation& a,const Rotation& b,double eps=epsilon);
 
 
 
@@ -651,7 +703,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Frame& a,const Frame& b,double eps=epsilon);
+     inline friend bool Equal(const Frame& a,const Frame& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Frame& a,const Frame& b);
@@ -726,7 +778,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Twist& a,const Twist& b,double eps=epsilon);
+     inline friend bool Equal(const Twist& a,const Twist& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Twist& a,const Twist& b);
@@ -889,7 +941,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Wrench& a,const Wrench& b,double eps=epsilon);
+     inline friend bool Equal(const Wrench& a,const Wrench& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Wrench& a,const Wrench& b);
@@ -982,7 +1034,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Vector2& a,const Vector2& b,double eps=epsilon);
+     inline friend bool Equal(const Vector2& a,const Vector2& b,double eps);
 
 	//! The literal equality operator==(), also identical.
 	inline friend bool operator==(const Vector2& a,const Vector2& b);
@@ -1034,7 +1086,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Rotation2& a,const Rotation2& b,double eps=epsilon);
+     inline friend bool Equal(const Rotation2& a,const Rotation2& b,double eps);
 };
 
 //! A 2D frame class, for further documentation see the Frames class
@@ -1075,18 +1127,126 @@ public:
         tmp.SetIdentity();
         return tmp;
      }
-     inline friend bool Equal(const Frame2& a,const Frame2& b,double eps=epsilon);
+     inline friend bool Equal(const Frame2& a,const Frame2& b,double eps);
 };
 
-IMETHOD Vector diff(const Vector& a,const Vector& b,double dt=1);
+/**
+ * determines the difference of vector b with vector a.
+ *
+ * see diff for Rotation matrices for further background information.
+ *
+ * \param p_w_a start vector a expressed to some frame w
+ * \param p_w_b end vector   b expressed to some frame w .
+ * \param dt [optional][obsolete] time interval over which the numerical differentiation takes place.
+ * \return the difference (b-a) expressed to the frame w.
+ */
+IMETHOD Vector diff(const Vector& p_w_a,const Vector& p_w_b,double dt=1);
+
+
+/**
+ * determines the (scaled) rotation axis necessary to rotate from b1 to b2.  
+ *
+ * This rotation axis is expressed w.r.t. frame a.  The rotation axis is scaled
+ * by the necessary rotation angle. The rotation angle is always in the 
+ * (inclusive) interval \f$ [0 , \pi] \f$.
+ *
+ * This definition is chosen in this way to facilitate numerical differentiation.
+ * With this definition diff(a,b) == -diff(b,a).
+ *
+ * The diff() function is overloaded for all classes in frames.hpp and framesvel.hpp, such that 
+ * numerical differentiation, equality checks with tolerances, etc.  can be performed 
+ * without caring exactly on which type the operation is performed.  
+ *  
+ * \param R_a_b1: The rotation matrix \f$ _a^{b1} R  \f$ of b1 with respect to frame a. 
+ * \param R_a_b2: The Rotation matrix \f$ _a^{b2} R \f$ of b2 with respect to frame a. 
+ * \param dt [optional][obsolete] time interval over which the numerical differentiation takes place. By default this is set to 1.0.
+ * \return rotation axis to rotate from b1 to b2, scaled by the rotation angle, expressed in frame a.
+ * \warning - The result is not a rotational vector, i.e. it is not a mathematical vector.
+ *          (no communitative addition). 
+ *
+ * \warning - When used in the context of numerical differentiation, with the frames b1 and b2 very
+ *           close to each other, the semantics correspond to the twist, scaled by the time. 
+ *
+ * \warning - For angles equal to \f$ \pi \f$, The negative of the
+ *          return value is equally valid. 
+ */
 IMETHOD Vector diff(const Rotation& R_a_b1,const Rotation& R_a_b2,double dt=1);
+
+/**
+ * determines the rotation axis necessary to rotate the frame b1 to the same orientation as frame b2 and the vector
+ * necessary to translate the origin of b1 to the origin of b2, and stores the result in a Twist datastructure.   
+ * \param F_a_b1 frame b1 expressed with respect to some frame a. 
+ * \param F_a_b2 frame b2 expressed with respect to some frame a. 
+ * \warning The result is not a Twist!  
+ * see diff() for Rotation and Vector arguments for further detail on the semantics.
+ */
 IMETHOD Twist diff(const Frame& F_a_b1,const Frame& F_a_b2,double dt=1);
+
+/**
+ * determines the difference between two twists i.e. the difference between
+ * the underlying velocity vectors and rotational velocity vectors. 
+ */
 IMETHOD Twist diff(const Twist& a,const Twist& b,double dt=1);
+
+/**
+ * determines the difference between two wrenches i.e. the difference between
+ * the underlying torque vectors and force vectors. 
+ */
 IMETHOD Wrench diff(const Wrench& W_a_p1,const Wrench& W_a_p2,double dt=1);
-IMETHOD Vector addDelta(const Vector& a,const Vector&da,double dt=1);
-IMETHOD Rotation addDelta(const Rotation& a,const Vector&da,double dt=1);
-IMETHOD Frame addDelta(const Frame& a,const Twist& da,double dt=1);
+
+/**
+ * \brief adds vector da to vector a.
+ * see also the corresponding diff() routine.
+ * \param p_w_a vector a expressed to some frame w.
+ * \param p_w_da vector da expressed to some frame w.
+ * \returns the vector resulting from the displacement of vector a by vector da, expressed in the frame w.
+ */
+IMETHOD Vector addDelta(const Vector& p_w_a,const Vector& p_w_da,double dt=1);
+
+/**
+ * returns the rotation matrix resulting from the rotation of frame a by the axis and angle
+ * specified with da_w.  
+ *
+ * see also the corresponding diff() routine.
+ *
+ * \param R_w_a Rotation matrix of frame a expressed to some frame w.
+ * \param da_w  axis and angle of the rotation expressed to some frame w.
+ * \returns the rotation matrix resulting from the rotation of frame a by the axis and angle
+ *          specified with da.   The resulting rotation matrix is expressed with respect to
+ *          frame w.
+ */
+IMETHOD Rotation addDelta(const Rotation& R_w_a,const Vector& da_w,double dt=1);
+
+/**
+ * returns the frame resulting from the rotation of frame a by the axis and angle
+ * specified in da_w and the translation of the origin (also specified in da_w). 
+ *
+ * see also the corresponding diff() routine.
+ * \param R_w_a Rotation matrix of frame a expressed to some frame w.
+ * \param da_w  axis and angle of the rotation (da_w.rot), together with a displacement vector for the origin (da_w.vel),  expressed to some frame w.
+ * \returns the frame resulting from the rotation of frame a by the axis and angle
+ *          specified with da.rot, and the translation of the origin da_w.vel .  The resulting frame is expressed with respect to frame w.
+ */
+IMETHOD Frame addDelta(const Frame& F_w_a,const Twist& da_w,double dt=1);
+
+/**
+ * \brief adds the twist da to the twist a.
+ * see also the corresponding diff() routine.
+ * \param a a twist wrt some frame
+ * \param da a twist difference wrt some frame
+ * \returns The twist (a+da) wrt the corresponding frame.
+ */
 IMETHOD Twist addDelta(const Twist& a,const Twist&da,double dt=1);
+
+
+/**
+ * \brief adds the wrench da to the wrench w.
+ * see also the corresponding diff() routine.
+ * see also the corresponding diff() routine.
+ * \param a a wrench wrt some frame
+ * \param da a wrench difference wrt some frame
+ * \returns the wrench (a+da) wrt the corresponding frame.
+ */
 IMETHOD Wrench addDelta(const Wrench& a,const Wrench&da,double dt=1);
 
 } // namespace KDL

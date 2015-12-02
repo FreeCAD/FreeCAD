@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,6 +36,7 @@
 # include <QGLFormat>
 # include <QGLWidget>
 # include <QGLPixelBuffer>
+# include <QMessageBox>
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
@@ -70,6 +71,7 @@
 #include "Application.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
+#include "ViewProvider.h"
 #include "WaitCursor.h"
 #include "SoFCVectorizeSVGAction.h"
 
@@ -83,6 +85,8 @@
 #include "SoFCDB.h"
 #include "NavigationStyle.h"
 #include "PropertyView.h"
+#include "Selection.h"
+#include "SelectionObject.h"
 
 #include <locale>
 
@@ -150,7 +154,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
         _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
 
     // create the inventor widget and set the defaults
-#if !defined (NO_USE_QT_MDI_AREA)
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
@@ -160,10 +163,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // By default, the wheel events are processed by the 3d view AND the mdi area.
     //_viewer->getGLWidget()->setAttribute(Qt::WA_NoMousePropagation);
     setCentralWidget(stack);
-#else
-    _viewer->setDocument(this->_pcDocument);
-#endif
-    
+
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
@@ -451,7 +451,8 @@ void View3DInventor::print()
 
 void View3DInventor::printPdf()
 {
-    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), tr("PDF file (*.pdf)"));
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), 
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
@@ -531,6 +532,13 @@ void View3DInventor::print(QPrinter* printer)
 #else
     QImage img;
     QPainter p(printer);
+    if (!p.isActive() && !printer->outputFileName().isEmpty()) {
+        qApp->setOverrideCursor(Qt::ArrowCursor);
+        QMessageBox::critical(this, tr("Opening file failed"),
+            tr("Can't open file '%1' for writing.").arg(printer->outputFileName()));
+        qApp->restoreOverrideCursor();
+        return;
+    }
     QRect rect = printer->pageRect();
 
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
@@ -554,7 +562,14 @@ void View3DInventor::print(QPrinter* printer)
 
 void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
 {
+#if QT_VERSION >= 0x040600
+    QGLFramebufferObjectFormat format;
+    format.setSamples(8);
+    format.setAttachment(QGLFramebufferObject::Depth);
+    QGLFramebufferObject fbo(rect.width(), rect.height(), format);
+#else
     QGLFramebufferObject fbo(rect.width(), rect.height(), QGLFramebufferObject::Depth);
+#endif
     const QColor col = _viewer->backgroundColor();
     bool on = _viewer->hasGradientBackground();
     _viewer->setBackgroundColor(QColor(255,255,255));
@@ -695,6 +710,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         getGuiDocument()->saveAs();
         return true;
     }
+    else if (strcmp("SaveCopy",pMsg) == 0) {
+        getGuiDocument()->saveCopy();
+        return true;
+    }
     else
         return false;
 }
@@ -704,6 +723,8 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     if  (strcmp("Save",pMsg) == 0)
         return true;
     else if (strcmp("SaveAs",pMsg) == 0)
+        return true;
+    else if (strcmp("SaveCopy",pMsg) == 0)
         return true;
     else if (strcmp("Undo",pMsg) == 0) {
         App::Document* doc = getAppDocument();
@@ -870,9 +891,9 @@ void View3DInventor::dump(const char* filename)
     action.apply(_viewer->getSceneGraph());
 
     if ( action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000 )
-        _viewer->dumpToFile(filename,true);
+        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, true);
     else
-        _viewer->dumpToFile(filename,false);
+        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, false);
 }
 
 void View3DInventor::windowStateChanged(MDIView* view)

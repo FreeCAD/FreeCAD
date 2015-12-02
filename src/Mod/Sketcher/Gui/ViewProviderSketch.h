@@ -32,6 +32,9 @@
 #include <Gui/GLPainter.h>
 #include <boost/signals.hpp>
 #include <QCoreApplication>
+#include <Gui/Document.h>
+
+#include <boost/signals.hpp>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -58,7 +61,6 @@ struct EditData;
 
 namespace Gui {
     class View3DInventorViewer;
-    class SoFCSelection;
 }
 
 namespace Sketcher {
@@ -163,6 +165,9 @@ public:
                                            const Gui::View3DInventorViewer *viewer,
                                            const SbVec2s &cursorPos);
 
+    /*! Look at the center of the bounding of all selected items */
+    void centerSelection();
+
     /// box selection method
     void doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
                         const Gui::View3DInventorViewer *viewer);
@@ -207,6 +212,7 @@ public:
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
+    
     friend class DrawSketchHandler;
     friend struct ::EditData;
 
@@ -218,21 +224,15 @@ public:
     boost::signal<void (QString msg)> signalSolved;
     /// signals if the elements list has changed
     boost::signal<void ()> signalElementsChanged;
-    
-    /** @name Act sketch interface */
-    //@{
-    const std::vector<int> &getConflicting(void) const;
-    const std::vector<int> &getRedundant(void) const; 
-    //@}
-    
+        
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
     virtual void unsetEditViewer(Gui::View3DInventorViewer*);
     void deactivateHandler();
-    /// set up and solve the sketch
-    void solveSketch(void);
+    /// update solver information based on last solving at SketchObject
+    void UpdateSolverInformation(void);
     /// helper to detect whether the picked point lies on the sketch
     bool isPointOnSketch(const SoPickedPoint *pp) const;
     /// get called by the container whenever a property has been changed
@@ -247,6 +247,14 @@ protected:
     EditData *edit;
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
+    
+    void slotUndoDocument(const Gui::Document&);
+    void slotRedoDocument(const Gui::Document&);
+    
+protected:
+    boost::signals::connection connectUndoDocument;
+    boost::signals::connection connectRedoDocument;
+    
 
     /** @name Protected helpers for drawing constraint icons*/
     //@{
@@ -350,6 +358,7 @@ protected:
     static SbColor FullyConstrainedColor;
     static SbColor ConstrDimColor;
     static SbColor ConstrIcoColor;
+    static SbColor NonDrivingConstrDimColor;
     static SbColor PreselectColor;
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;

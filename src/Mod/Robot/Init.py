@@ -24,24 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-
-class RobotDocument:
-	"Robot document"
-	def Info(self):
-		return "Robot document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Robot")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Robot/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "Robot")
-ParGrp.SetString("DocTemplateScript","TemplRobot.py")
-ParGrp.SetString("WorkBenchName",    "Robot Design")
-ParGrp.SetString("WorkBenchModule",  "RobotWorkbench.py")
-
-
-#FreeCAD.EndingAdd("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Robot")
-

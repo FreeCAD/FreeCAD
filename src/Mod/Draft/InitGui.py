@@ -110,9 +110,9 @@ class DraftWorkbench (Workbench):
                         "Draft_ShapeString","Draft_Facebinder","Draft_BezCurve"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
+                        "Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_PathArray","Draft_Clone"]
+                        "Draft_PathArray","Draft_Clone","Draft_Drawing"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid"]
@@ -132,11 +132,14 @@ class DraftWorkbench (Workbench):
         self.appendMenu([translate("draft","&Draft"),translate("draft","Snapping")],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
-                FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-snap.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-visual.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import1.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import2.ui","Import-Export")
+                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui","Import-Export")
+                FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui","Import-Export")
+                FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui","Import-Export")
+                FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui","Import-Export")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
 
@@ -172,9 +175,7 @@ class DraftWorkbench (Workbench):
     def GetClassName(self): 
         return "Gui::PythonWorkbench"
 
-# ability to turn off the Draft workbench (since it is also all included in Arch)
-if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("hideDraftWorkbench"):
-    FreeCADGui.addWorkbench(DraftWorkbench)
+FreeCADGui.addWorkbench(DraftWorkbench)
 
 # add Import/Export types
 App.addImportType("Autodesk DXF (*.dxf)","importDXF") 

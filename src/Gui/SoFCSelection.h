@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2005 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 # include <OpenGL/gl.h>
 # else
 # ifdef FC_OS_WIN32
+#  define NOMINMAX
 #  include <windows.h>
 # endif
 # include <GL/gl.h>
@@ -48,7 +49,7 @@ namespace Gui {
 
 /** Selection node
  *  This node does the complete highlighting and selection together with the viewer
- *  \author Jürgen Riegel
+ *  \author JÃ¼rgen Riegel
  */
 class GuiExport SoFCSelection : public SoGroup {
     typedef SoGroup inherited;

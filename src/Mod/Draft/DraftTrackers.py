@@ -25,6 +25,15 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+## \defgroup DRAFTTRACKERS DraftTrackers
+#  \ingroup DRAFT
+#
+# Custom Pivy-based objects used by the Draft workbench
+#
+# This module contains a collection of Coin3D (pivy)-based objects
+# that are used by the Draft workbench to draw temporary geometry
+# on the 3D view
+
 import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
 from FreeCAD import Vector
 from pivy import coin
@@ -131,12 +140,12 @@ class snapTracker(Tracker):
 
 class lineTracker(Tracker):
     "A Line tracker, used by the tools that need to draw temporary lines"
-    def __init__(self,dotted=False,scolor=None,swidth=None):
+    def __init__(self,dotted=False,scolor=None,swidth=None,ontop=False):
         line = coin.SoLineSet()
         line.numVertices.setValue(2)
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValues(0,2,[[0,0,0],[1,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
+        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],ontop)
 
     def p1(self,point=None):
         "sets or gets the first point of the line"
