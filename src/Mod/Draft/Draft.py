@@ -3006,6 +3006,7 @@ def downgrade(objects,delete=False,force=None):
     onlyedges = True
     parts = []
     solids = []
+    result = None
 
     for o in objects:
         if o.isDerivedFrom("Part::Feature"):
