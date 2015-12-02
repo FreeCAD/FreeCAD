@@ -45,6 +45,7 @@
 
 #include "../App/ApproxSurface.h"
 #include "FitBSplineSurface.h"
+#include "Poisson.h"
 
 using namespace std;
 
@@ -179,9 +180,44 @@ bool CmdApproxPlane::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdPoissonReconstruction);
+
+CmdPoissonReconstruction::CmdPoissonReconstruction()
+  : Command("Reen_PoissonReconstruction")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Poisson...");
+    sToolTipText    = QT_TR_NOOP("Poisson surface reconstruction");
+    sWhatsThis      = "Reen_PoissonReconstruction";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdPoissonReconstruction::activated(int iMsg)
+{
+    App::DocumentObjectT objT;
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    if (obj.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Reen_ApproxSurface", "Wrong selection"),
+            qApp->translate("Reen_ApproxSurface", "Please select a single point cloud.")
+        );
+        return;
+    }
+
+    objT = obj.front();
+    Gui::Control().showDialog(new ReenGui::TaskPoisson(objT));
+}
+
+bool CmdPoissonReconstruction::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
 void CreateReverseEngineeringCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdApproxSurface());
     rcCmdMgr.addCommand(new CmdApproxPlane());
+    rcCmdMgr.addCommand(new CmdPoissonReconstruction());
 }
