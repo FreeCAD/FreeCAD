@@ -2963,7 +2963,7 @@ def downgrade(objects,delete=False,force=None):
         faces = []
         for o in objects:
             if o.Shape.Faces:
-                faces.append(o.Shape.Faces)
+                faces.extend(o.Shape.Faces)
                 deleteList.append(o)
         u = faces.pop(0)
         for f in faces:
