@@ -55,7 +55,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* reen = new Gui::MenuItem;
     root->insertItem(item, reen);
     reen->setCommand("&REEN");
-    *reen << "Reen_ApproxPlane" << "Reen_ApproxSurface";
+    *reen << "Reen_ApproxPlane"
+          << "Reen_ApproxSurface";
+
+    Gui::MenuItem *reconstruct = new Gui::MenuItem();
+    reconstruct->setCommand("Surface reconstruction");
+    *reconstruct << "Reen_PoissonReconstruction";
+    *reen << reconstruct;
+
     return root;
 }
 

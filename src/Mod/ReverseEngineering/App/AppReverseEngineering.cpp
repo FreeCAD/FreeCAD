@@ -62,6 +62,9 @@ public:
         add_varargs_method("triangulate",&Module::triangulate,
             "triangulate(PointKernel,searchRadius[,mu=2.5])."
         );
+        add_keyword_method("poissonReconstruction",&Module::poissonReconstruction,
+            "poissonReconstruction(PointKernel)."
+        );
 #endif
 #if defined(HAVE_PCL_OPENNURBS)
         add_keyword_method("fitBSpline",&Module::fitBSpline,
@@ -210,6 +213,33 @@ private:
         Mesh::MeshObject* mesh = new Mesh::MeshObject();
         SurfaceTriangulation tria(*points, *mesh);
         tria.perform(searchRadius, mu);
+
+        return Py::asObject(new Mesh::MeshPy(mesh));
+    }
+    Py::Object poissonReconstruction(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pcObj;
+        int ksearch=5;
+        int octreeDepth=-1;
+        int solverDivide=-1;
+        double samplesPerNode=-1.0;
+
+        static char* kwds_poisson[] = {"Points", "KSearch", "OctreeDepth", "SolverDivide",
+                                      "SamplesPerNode", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iiid", kwds_poisson,
+                                        &(Points::PointsPy::Type), &pcObj,
+                                        &ksearch, &octreeDepth, &solverDivide, &samplesPerNode))
+            throw Py::Exception();
+
+        Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(pcObj);
+        Points::PointKernel* points = pPoints->getPointKernelPtr();
+
+        Mesh::MeshObject* mesh = new Mesh::MeshObject();
+        Reen::PoissonReconstruction poisson(*points, *mesh);
+        poisson.setDepth(octreeDepth);
+        poisson.setSolverDivide(solverDivide);
+        poisson.setSamplesPerNode(samplesPerNode);
+        poisson.perform(ksearch);
 
         return Py::asObject(new Mesh::MeshPy(mesh));
     }
