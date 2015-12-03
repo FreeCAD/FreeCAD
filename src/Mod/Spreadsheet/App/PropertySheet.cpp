@@ -579,7 +579,7 @@ public:
                 if (thisRow >= mRow || thisCol >= mCol) {
                     thisRow += mRowCount;
                     thisCol += mColCount;
-                    varExpr->setName(columnName(thisCol) + rowName(thisRow));
+                    varExpr->setPath(ObjectIdentifier(varExpr->getOwner(), columnName(thisCol) + rowName(thisRow)));
                     mChanged = true;
                 }
             }
