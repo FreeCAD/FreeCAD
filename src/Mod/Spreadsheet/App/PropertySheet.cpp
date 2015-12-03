@@ -260,9 +260,15 @@ void PropertySheet::Paste(const Property &from)
     while (icurr != data.end()) {
         Cell * cell = icurr->second;
 
-        if (cell->isMarked())
-            clear(ifrom->first);
-        ++icurr;
+        if (cell->isMarked()) {
+            std::map<CellAddress, Cell* >::iterator next = icurr;
+
+            ++next;
+            clear(icurr->first);
+            icurr = next;
+        }
+        else
+            ++icurr;
     }
 
     mergedCells = froms->mergedCells;
