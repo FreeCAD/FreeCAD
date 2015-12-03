@@ -1441,6 +1441,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     sides, the total width being the given delta length.'''
     import Part, DraftGeomUtils
     newwire = None
+    delete = None
     
     if getType(obj) in ["Sketch","Part"]:
         copy = True
@@ -1503,6 +1504,8 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
         newobj.Shape = DraftGeomUtils.offsetWire(obj.Shape,delta,occ=True)
         formatObject(newobj,obj)
+        if not copy:
+            delete = obj.Name
     elif bind:
         if not DraftGeomUtils.isReallyClosed(obj.Shape):
             if sym:
@@ -1515,9 +1518,13 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             w2 = s2.Edges
             w3 = Part.Line(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
             w4 = Part.Line(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
-            newobj = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+            newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
         else:
-            newobj = Part.Face(obj.Shape.Wires[0])
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+            newobj.Shape = Part.Face(obj.Shape.Wires[0])
+        if not copy:
+            delete = obj.Name
     elif copy:
         newobj = None
         if sym: return None
@@ -1586,6 +1593,8 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         select(newobj)
     else:
         select(obj)
+    if delete:
+        FreeCAD.ActiveDocument.removeObject(delete)
     return newobj
 
 def draftify(objectslist,makeblock=False,delete=True):
