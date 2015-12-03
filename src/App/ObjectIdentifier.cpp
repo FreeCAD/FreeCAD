@@ -574,7 +574,7 @@ void ObjectIdentifier::resolve() const
     else {
         /* Document object name not specified, resolve from path */
         if (components.size() == 1) {
-            documentObjectName = String(freecad_dynamic_cast<DocumentObject>(owner)->getNameInDocument());
+            documentObjectName = String(static_cast<const DocumentObject*>(owner)->getNameInDocument());
             propertyName = components[0].name.getString();
             propertyIndex = 0;
         }
@@ -590,7 +590,7 @@ void ObjectIdentifier::resolve() const
                 propertyIndex = 1;
             }
             else {
-                documentObjectName = String(freecad_dynamic_cast<DocumentObject>(owner)->getNameInDocument());
+                documentObjectName = String(static_cast<const DocumentObject*>(owner)->getNameInDocument());
                 propertyName = components[0].name.getString();
                 propertyIndex = 0;
             }
