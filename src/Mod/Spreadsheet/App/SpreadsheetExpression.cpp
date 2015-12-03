@@ -87,6 +87,19 @@ AggregateFunctionExpression::~AggregateFunctionExpression()
 {
 }
 
+Expression *AggregateFunctionExpression::copy() const
+{
+    std::vector<Expression*>::const_iterator i = args.begin();
+    std::vector<Expression*> a;
+
+    while (i != args.end()) {
+        a.push_back((*i)->copy());
+        ++i;
+    }
+
+    return new AggregateFunctionExpression(owner, f, a);
+}
+
 /**
   * Evaluate function. Returns a NumberExpression if evaluation is successfuly.
   * Throws an exception if something fails.
