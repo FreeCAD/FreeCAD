@@ -419,7 +419,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         if DEBUG: print count+1,"/",len(products)," creating object #",pid," : ",ptype,
         name = str(ptype[3:])
         if product.Name:
-            name = product.Name.decode("unicode_escape").encode("utf8")
+            name = product.Name.encode("utf8")
         if PREFIX_NUMBERS: name = "ID" + str(pid) + " " + name
         obj = None
         baseobj = None
@@ -594,7 +594,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     for p in properties[pid]:
                         o = ifcfile[p]
                         if o.is_a("IfcPropertySingleValue"):
-                            a[o.Name.decode("unicode_escape").encode("utf8")] = str(o.NominalValue)
+                            a[o.Name.encode("utf8")] = str(o.NominalValue)
                     obj.IfcAttributes = a
 
             # color
@@ -729,7 +729,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         if "IfcAnnotation" in SKIP: continue # preferences-set type skip list
         name = "Annotation"
         if annotation.Name:
-            name = annotation.Name.decode("unicode_escape").encode("utf8")
+            name = annotation.Name.encode("utf8")
         if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
         shapes2d = []
         for repres in annotation.Representation.Representations:
@@ -752,7 +752,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     for material in materials:
         name = "Material"
         if material.Name:
-            name = material.Name.decode("unicode_escape").encode("utf8")
+            name = material.Name.encode("utf8")
         if MERGE_MATERIALS and (name in fcmats.keys()):
             mat = fcmats[name]
         else:
