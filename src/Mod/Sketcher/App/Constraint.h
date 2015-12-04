@@ -71,7 +71,8 @@ public:
     Constraint();
     Constraint(const Constraint&);
     virtual ~Constraint();
-    virtual Constraint *clone(void) const;
+    virtual Constraint *clone(void) const; // does copy the tag, it will be treated as a rename by the expression engine.
+    virtual Constraint *copy(void) const; // does not copy the tag, but generates a new one
 
     static const int GeoUndef;
 
