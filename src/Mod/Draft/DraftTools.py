@@ -3425,7 +3425,8 @@ class Edit(Modifier):
                         self.running = True
                         plane.save()
                         if "Shape" in self.obj.PropertiesList:
-                            plane.alignToFace(self.obj.Shape)
+                            if plane.weak:
+                                plane.alignToFace(self.obj.Shape)
                         if self.planetrack:
                             self.planetrack.set(self.editpoints[0])
                     else:
@@ -3450,6 +3451,8 @@ class Edit(Modifier):
                 self.obj.ViewObject.Selectable = self.selectstate
         Modifier.finish(self)
         plane.restore()
+        if FreeCADGui.Snapper.grid:
+            FreeCADGui.Snapper.grid.set()
         self.running = False
         # following line causes crash
         # FreeCADGui.ActiveDocument.resetEdit()
