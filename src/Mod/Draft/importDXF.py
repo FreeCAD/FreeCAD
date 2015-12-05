@@ -1274,15 +1274,30 @@ def processdxf(document,filename,getShapes=False):
             if dxfImportLayouts or (not rawValue(dim,67)):
                 try:
                     layer = rawValue(dim,8)
-                    x1 = float(rawValue(dim,10))
-                    y1 = float(rawValue(dim,20))
-                    z1 = float(rawValue(dim,30))
-                    x2 = float(rawValue(dim,13))
-                    y2 = float(rawValue(dim,23))
-                    z2 = float(rawValue(dim,33))
-                    x3 = float(rawValue(dim,14))
-                    y3 = float(rawValue(dim,24))
-                    z3 = float(rawValue(dim,34))
+                    if rawValue(dim,15) != None:
+                        # this is a radial or diameter dimension
+                        #x1 = float(rawValue(dim,11))
+                        #y1 = float(rawValue(dim,21))
+                        #z1 = float(rawValue(dim,31))
+                        x2 = float(rawValue(dim,10))
+                        y2 = float(rawValue(dim,20))
+                        z2 = float(rawValue(dim,30))
+                        x3 = float(rawValue(dim,15))
+                        y3 = float(rawValue(dim,25))
+                        z3 = float(rawValue(dim,35))
+                        x1 = x2
+                        y1 = y2
+                        z1 = z2
+                    else:
+                        x1 = float(rawValue(dim,10))
+                        y1 = float(rawValue(dim,20))
+                        z1 = float(rawValue(dim,30))
+                        x2 = float(rawValue(dim,13))
+                        y2 = float(rawValue(dim,23))
+                        z2 = float(rawValue(dim,33))
+                        x3 = float(rawValue(dim,14))
+                        y3 = float(rawValue(dim,24))
+                        z3 = float(rawValue(dim,34))
                     d = rawValue(dim,70)
                     if d: align = int(d)
                     else: align = 0
@@ -1486,21 +1501,21 @@ def open(filename):
             docname = docname.encode(sys.getfilesystemencoding())
         doc = FreeCAD.newDocument(docname)
         doc.Label = decodeName(docname)
-        FreeCAD.setActiveDocument(docname)
+        FreeCAD.setActiveDocument(doc.Name)
         import DraftUtils
         DraftUtils.readDXF(filename)
 
 def insert(filename,docname):
     "called when freecad imports a file"
     readPreferences()
+    try:
+        doc=FreeCAD.getDocument(docname)
+    except NameError:
+        doc=FreeCAD.newDocument(docname)
+    FreeCAD.setActiveDocument(docname)
     if dxfUseLegacyImporter:
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
-            try:
-                doc=FreeCAD.getDocument(docname)
-            except NameError:
-                doc=FreeCAD.newDocument(docname)
-            FreeCAD.setActiveDocument(docname)
             importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
             importgroup.Label = decodeName(groupname)
             processdxf(doc,filename)
@@ -1509,7 +1524,6 @@ def insert(filename,docname):
         else:
             errorDXFLib(gui)
     else:
-        FreeCAD.setActiveDocument(docname)
         import DraftUtils
         DraftUtils.readDXF(filename)
 
