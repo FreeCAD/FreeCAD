@@ -26,8 +26,10 @@
 #include "SurfaceTriangulation.h"
 #include <Mod/Points/App/Points.h>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Base/Exception.h>
 
 // http://svn.pointclouds.org/pcl/tags/pcl-1.5.1/test/
 #if defined(HAVE_PCL_SURFACE)
@@ -42,6 +44,8 @@
 //#include <pcl/surface/convex_hull.h>
 //#include <pcl/surface/concave_hull.h>
 #include <pcl/surface/organized_fast_mesh.h>
+#include <pcl/surface/marching_cubes_rbf.h>
+#include <pcl/surface/marching_cubes_hoppe.h>
 #include <pcl/surface/ear_clipping.h>
 #include <pcl/common/common.h>
 #include <boost/random.hpp>
@@ -55,18 +59,25 @@ using namespace pcl::io;
 using namespace std;
 using namespace Reen;
 
+// See
+// http://www.ics.uci.edu/~gopi/PAPERS/Euro00.pdf
+// http://www.ics.uci.edu/~gopi/PAPERS/CGMV.pdf
 SurfaceTriangulation::SurfaceTriangulation(const Points::PointKernel& pts, Mesh::MeshObject& mesh)
-  : myPoints(pts), myMesh(mesh)
+  : myPoints(pts)
+  , myMesh(mesh)
+  , mu(0)
+  , searchRadius(0)
 {
 }
 
-void SurfaceTriangulation::perform(double searchRadius, double mu)
+void SurfaceTriangulation::perform(int ksearch)
 {
     PointCloud<PointXYZ>::Ptr cloud (new PointCloud<PointXYZ>);
     PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
     search::KdTree<PointXYZ>::Ptr tree;
     search::KdTree<PointNormal>::Ptr tree2;
-    
+
+    cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
         cloud->push_back(PointXYZ(it->x, it->y, it->z));
     }
@@ -81,12 +92,12 @@ void SurfaceTriangulation::perform(double searchRadius, double mu)
     n.setInputCloud (cloud);
     //n.setIndices (indices[B);
     n.setSearchMethod (tree);
-    n.setKSearch (20);
+    n.setKSearch (ksearch);
     n.compute (*normals);
 
     // Concatenate XYZ and normal information
     pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
-      
+
     // Create search tree
     tree2.reset (new search::KdTree<PointNormal>);
     tree2->setInputCloud (cloud_with_normals);
@@ -104,6 +115,61 @@ void SurfaceTriangulation::perform(double searchRadius, double mu)
     gp3.setMinimumAngle(M_PI/18); // 10 degrees
     gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
     gp3.setNormalConsistency(false);
+    gp3.setConsistentVertexOrdering(true);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    gp3.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+
+    // Additional vertex information
+    //std::vector<int> parts = gp3.getPartIDs();
+    //std::vector<int> states = gp3.getPointStates();
+}
+
+void SurfaceTriangulation::perform(const std::vector<Base::Vector3f>& normals)
+{
+    if (myPoints.size() != normals.size())
+        throw Base::RuntimeError("Number of points doesn't match with number of normals");
+
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointNormal>::Ptr tree;
+
+    cloud_with_normals->reserve(myPoints.size());
+    std::size_t num_points = myPoints.size();
+    const std::vector<Base::Vector3f>& points = myPoints.getBasicPoints();
+    for (std::size_t index=0; index<num_points; index++) {
+        const Base::Vector3f& p = points[index];
+        const Base::Vector3f& n = normals[index];
+        PointNormal pn;
+        pn.x = p.x;
+        pn.y = p.y;
+        pn.z = p.z;
+        pn.normal_x = n.x;
+        pn.normal_y = n.y;
+        pn.normal_z = n.z;
+        cloud_with_normals->push_back(pn);
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointNormal>);
+    tree->setInputCloud (cloud_with_normals);
+
+    // Init objects
+    GreedyProjectionTriangulation<PointNormal> gp3;
+
+    // Set parameters
+    gp3.setInputCloud (cloud_with_normals);
+    gp3.setSearchMethod (tree);
+    gp3.setSearchRadius (searchRadius);
+    gp3.setMu (mu);
+    gp3.setMaximumNearestNeighbors (100);
+    gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
+    gp3.setMinimumAngle(M_PI/18); // 10 degrees
+    gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
+    gp3.setNormalConsistency(true);
+    gp3.setConsistentVertexOrdering(true);
 
     // Reconstruct
     PolygonMesh mesh;
@@ -136,6 +202,7 @@ void PoissonReconstruction::perform(int ksearch)
     search::KdTree<PointXYZ>::Ptr tree;
     search::KdTree<PointNormal>::Ptr tree2;
 
+    cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
         cloud->push_back(PointXYZ(it->x, it->y, it->z));
     }
@@ -155,7 +222,7 @@ void PoissonReconstruction::perform(int ksearch)
 
     // Concatenate XYZ and normal information
     pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
-      
+
     // Create search tree
     tree2.reset (new search::KdTree<PointNormal>);
     tree2->setInputCloud (cloud_with_normals);
@@ -176,6 +243,449 @@ void PoissonReconstruction::perform(int ksearch)
     // Reconstruct
     PolygonMesh mesh;
     poisson.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+}
+
+void PoissonReconstruction::perform(const std::vector<Base::Vector3f>& normals)
+{
+    if (myPoints.size() != normals.size())
+        throw Base::RuntimeError("Number of points doesn't match with number of normals");
+
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointNormal>::Ptr tree;
+
+    cloud_with_normals->reserve(myPoints.size());
+    std::size_t num_points = myPoints.size();
+    const std::vector<Base::Vector3f>& points = myPoints.getBasicPoints();
+    for (std::size_t index=0; index<num_points; index++) {
+        const Base::Vector3f& p = points[index];
+        const Base::Vector3f& n = normals[index];
+        PointNormal pn;
+        pn.x = p.x;
+        pn.y = p.y;
+        pn.z = p.z;
+        pn.normal_x = n.x;
+        pn.normal_y = n.y;
+        pn.normal_z = n.z;
+        cloud_with_normals->push_back(pn);
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointNormal>);
+    tree->setInputCloud (cloud_with_normals);
+
+    // Init objects
+    Poisson<PointNormal> poisson;
+
+    // Set parameters
+    poisson.setInputCloud (cloud_with_normals);
+    poisson.setSearchMethod (tree);
+    if (depth >= 1)
+        poisson.setDepth(depth);
+    if (solverDivide >= 1)
+        poisson.setSolverDivide(solverDivide);
+    if (samplesPerNode >= 1.0f)
+        poisson.setSamplesPerNode(samplesPerNode);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    poisson.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+}
+
+// ----------------------------------------------------------------------------
+
+GridReconstruction::GridReconstruction(const Points::PointKernel& pts, Mesh::MeshObject& mesh)
+  : myPoints(pts)
+  , myMesh(mesh)
+{
+}
+
+void GridReconstruction::perform(int ksearch)
+{
+    PointCloud<PointXYZ>::Ptr cloud (new PointCloud<PointXYZ>);
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointXYZ>::Ptr tree;
+    search::KdTree<PointNormal>::Ptr tree2;
+
+    cloud->reserve(myPoints.size());
+    for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
+        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointXYZ> (false));
+    tree->setInputCloud (cloud);
+
+    // Normal estimation
+    NormalEstimation<PointXYZ, Normal> n;
+    PointCloud<Normal>::Ptr normals (new PointCloud<Normal> ());
+    n.setInputCloud (cloud);
+    //n.setIndices (indices[B);
+    n.setSearchMethod (tree);
+    n.setKSearch (ksearch);
+    n.compute (*normals);
+
+    // Concatenate XYZ and normal information
+    pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
+
+    // Create search tree
+    tree2.reset (new search::KdTree<PointNormal>);
+    tree2->setInputCloud (cloud_with_normals);
+
+    // Init objects
+    GridProjection<PointNormal> grid;
+
+    // Set parameters
+    grid.setResolution(0.005); 
+    grid.setPaddingSize(3); 
+    grid.setNearestNeighborNum(100); 
+    grid.setMaxBinarySearchLevel(10);
+    grid.setInputCloud (cloud_with_normals);
+    grid.setSearchMethod (tree2);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    grid.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+}
+
+void GridReconstruction::perform(const std::vector<Base::Vector3f>& normals)
+{
+    if (myPoints.size() != normals.size())
+        throw Base::RuntimeError("Number of points doesn't match with number of normals");
+
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointNormal>::Ptr tree;
+
+    cloud_with_normals->reserve(myPoints.size());
+    std::size_t num_points = myPoints.size();
+    const std::vector<Base::Vector3f>& points = myPoints.getBasicPoints();
+    for (std::size_t index=0; index<num_points; index++) {
+        const Base::Vector3f& p = points[index];
+        const Base::Vector3f& n = normals[index];
+        PointNormal pn;
+        pn.x = p.x;
+        pn.y = p.y;
+        pn.z = p.z;
+        pn.normal_x = n.x;
+        pn.normal_y = n.y;
+        pn.normal_z = n.z;
+        cloud_with_normals->push_back(pn);
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointNormal>);
+    tree->setInputCloud (cloud_with_normals);
+
+    // Init objects
+    GridProjection<PointNormal> grid;
+
+    // Set parameters
+    grid.setResolution(0.005); 
+    grid.setPaddingSize(3); 
+    grid.setNearestNeighborNum(100); 
+    grid.setMaxBinarySearchLevel(10);
+    grid.setInputCloud (cloud_with_normals);
+    grid.setSearchMethod (tree);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    grid.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+}
+
+// ----------------------------------------------------------------------------
+
+ImageTriangulation::ImageTriangulation(int width, int height, const Points::PointKernel& pts, Mesh::MeshObject& mesh)
+  : width(width)
+  , height(height)
+  , myPoints(pts)
+  , myMesh(mesh)
+{
+}
+
+void ImageTriangulation::perform()
+{
+    if (myPoints.size() != width * height)
+        throw Base::RuntimeError("Number of points doesn't match with given width and height");
+
+    //construct dataset
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_organized (new pcl::PointCloud<pcl::PointXYZ> ());
+    cloud_organized->width = width;
+    cloud_organized->height = height;
+    cloud_organized->points.resize (cloud_organized->width * cloud_organized->height);
+
+    const std::vector<Base::Vector3f>& points = myPoints.getBasicPoints();
+
+    int npoints = 0;
+    for (size_t i = 0; i < cloud_organized->height; i++) {
+        for (size_t j = 0; j < cloud_organized->width; j++) {
+            const Base::Vector3f& p = points[npoints];
+            cloud_organized->points[npoints].x = p.x;
+            cloud_organized->points[npoints].y = p.y;
+            cloud_organized->points[npoints].z = p.z;
+            npoints++;
+        }
+    }
+
+    OrganizedFastMesh<PointXYZ> ofm;
+
+    // Set parameters
+    ofm.setInputCloud (cloud_organized);
+    // This parameter is not yet implmented (pcl 1.7)
+    ofm.setMaxEdgeLength (1.5);
+    ofm.setTrianglePixelSize (1);
+    ofm.setTriangulationType (OrganizedFastMesh<PointXYZ>::TRIANGLE_ADAPTIVE_CUT);
+    ofm.storeShadowedFaces(true);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    ofm.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+
+    // remove invalid points
+    //
+    MeshCore::MeshKernel& kernel = myMesh.getKernel();
+    const MeshCore::MeshFacetArray& face = kernel.GetFacets();
+    MeshCore::MeshAlgorithm meshAlg(kernel);
+    meshAlg.SetPointFlag(MeshCore::MeshPoint::INVALID);
+    std::vector<unsigned long> validPoints;
+    validPoints.reserve(face.size()*3);
+    for (MeshCore::MeshFacetArray::_TConstIterator it = face.begin(); it != face.end(); ++it) {
+        validPoints.push_back(it->_aulPoints[0]);
+        validPoints.push_back(it->_aulPoints[1]);
+        validPoints.push_back(it->_aulPoints[2]);
+    }
+
+    // remove duplicates
+    std::sort(validPoints.begin(), validPoints.end());
+    validPoints.erase(std::unique(validPoints.begin(), validPoints.end()), validPoints.end());
+    meshAlg.ResetPointsFlag(validPoints, MeshCore::MeshPoint::INVALID);
+
+    unsigned long countInvalid = meshAlg.CountPointFlag(MeshCore::MeshPoint::INVALID);
+    if (countInvalid > 0) {
+        std::vector<unsigned long> invalidPoints;
+        invalidPoints.reserve(countInvalid);
+        meshAlg.GetPointsFlag(invalidPoints, MeshCore::MeshPoint::INVALID);
+
+        kernel.DeletePoints(invalidPoints);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+Reen::MarchingCubesRBF::MarchingCubesRBF(const Points::PointKernel& pts, Mesh::MeshObject& mesh)
+  : myPoints(pts)
+  , myMesh(mesh)
+{
+}
+
+void Reen::MarchingCubesRBF::perform(int ksearch)
+{
+    PointCloud<PointXYZ>::Ptr cloud (new PointCloud<PointXYZ>);
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointXYZ>::Ptr tree;
+    search::KdTree<PointNormal>::Ptr tree2;
+
+    cloud->reserve(myPoints.size());
+    for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
+        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointXYZ> (false));
+    tree->setInputCloud (cloud);
+
+    // Normal estimation
+    NormalEstimation<PointXYZ, Normal> n;
+    PointCloud<Normal>::Ptr normals (new PointCloud<Normal> ());
+    n.setInputCloud (cloud);
+    //n.setIndices (indices[B);
+    n.setSearchMethod (tree);
+    n.setKSearch (ksearch);
+    n.compute (*normals);
+
+    // Concatenate XYZ and normal information
+    pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
+
+    // Create search tree
+    tree2.reset (new search::KdTree<PointNormal>);
+    tree2->setInputCloud (cloud_with_normals);
+
+    // Init objects
+    pcl::MarchingCubesRBF<PointNormal> rbf;
+
+    // Set parameters
+    rbf.setIsoLevel (0);
+    rbf.setGridResolution (60, 60, 60);
+    rbf.setPercentageExtendGrid (0.1f);
+    rbf.setOffSurfaceDisplacement (0.02f);
+
+    rbf.setInputCloud (cloud_with_normals);
+    rbf.setSearchMethod (tree2);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    rbf.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+}
+
+void Reen::MarchingCubesRBF::perform(const std::vector<Base::Vector3f>& normals)
+{
+    if (myPoints.size() != normals.size())
+        throw Base::RuntimeError("Number of points doesn't match with number of normals");
+
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointNormal>::Ptr tree;
+
+    cloud_with_normals->reserve(myPoints.size());
+    std::size_t num_points = myPoints.size();
+    const std::vector<Base::Vector3f>& points = myPoints.getBasicPoints();
+    for (std::size_t index=0; index<num_points; index++) {
+        const Base::Vector3f& p = points[index];
+        const Base::Vector3f& n = normals[index];
+        PointNormal pn;
+        pn.x = p.x;
+        pn.y = p.y;
+        pn.z = p.z;
+        pn.normal_x = n.x;
+        pn.normal_y = n.y;
+        pn.normal_z = n.z;
+        cloud_with_normals->push_back(pn);
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointNormal>);
+    tree->setInputCloud (cloud_with_normals);
+
+
+    // Init objects
+    pcl::MarchingCubesRBF<PointNormal> rbf;
+
+    // Set parameters
+    rbf.setIsoLevel (0);
+    rbf.setGridResolution (60, 60, 60);
+    rbf.setPercentageExtendGrid (0.1f);
+    rbf.setOffSurfaceDisplacement (0.02f);
+
+    rbf.setInputCloud (cloud_with_normals);
+    rbf.setSearchMethod (tree);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    rbf.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+}
+
+// ----------------------------------------------------------------------------
+
+Reen::MarchingCubesHoppe::MarchingCubesHoppe(const Points::PointKernel& pts, Mesh::MeshObject& mesh)
+  : myPoints(pts)
+  , myMesh(mesh)
+{
+}
+
+void Reen::MarchingCubesHoppe::perform(int ksearch)
+{
+    PointCloud<PointXYZ>::Ptr cloud (new PointCloud<PointXYZ>);
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointXYZ>::Ptr tree;
+    search::KdTree<PointNormal>::Ptr tree2;
+
+    cloud->reserve(myPoints.size());
+    for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
+        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointXYZ> (false));
+    tree->setInputCloud (cloud);
+
+    // Normal estimation
+    NormalEstimation<PointXYZ, Normal> n;
+    PointCloud<Normal>::Ptr normals (new PointCloud<Normal> ());
+    n.setInputCloud (cloud);
+    //n.setIndices (indices[B);
+    n.setSearchMethod (tree);
+    n.setKSearch (ksearch);
+    n.compute (*normals);
+
+    // Concatenate XYZ and normal information
+    pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
+
+    // Create search tree
+    tree2.reset (new search::KdTree<PointNormal>);
+    tree2->setInputCloud (cloud_with_normals);
+
+    // Init objects
+    pcl::MarchingCubesHoppe<PointNormal> hoppe;
+
+    // Set parameters
+    hoppe.setIsoLevel (0);
+    hoppe.setGridResolution (60, 60, 60);
+    hoppe.setPercentageExtendGrid (0.1f);
+
+    hoppe.setInputCloud (cloud_with_normals);
+    hoppe.setSearchMethod (tree2);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    hoppe.reconstruct (mesh);
+
+    MeshConversion::convert(mesh, myMesh);
+}
+
+void Reen::MarchingCubesHoppe::perform(const std::vector<Base::Vector3f>& normals)
+{
+    if (myPoints.size() != normals.size())
+        throw Base::RuntimeError("Number of points doesn't match with number of normals");
+
+    PointCloud<PointNormal>::Ptr cloud_with_normals (new PointCloud<PointNormal>);
+    search::KdTree<PointNormal>::Ptr tree;
+
+    cloud_with_normals->reserve(myPoints.size());
+    std::size_t num_points = myPoints.size();
+    const std::vector<Base::Vector3f>& points = myPoints.getBasicPoints();
+    for (std::size_t index=0; index<num_points; index++) {
+        const Base::Vector3f& p = points[index];
+        const Base::Vector3f& n = normals[index];
+        PointNormal pn;
+        pn.x = p.x;
+        pn.y = p.y;
+        pn.z = p.z;
+        pn.normal_x = n.x;
+        pn.normal_y = n.y;
+        pn.normal_z = n.z;
+        cloud_with_normals->push_back(pn);
+    }
+
+    // Create search tree
+    tree.reset (new search::KdTree<PointNormal>);
+    tree->setInputCloud (cloud_with_normals);
+
+
+    // Init objects
+    pcl::MarchingCubesHoppe<PointNormal> hoppe;
+
+    // Set parameters
+    hoppe.setIsoLevel (0);
+    hoppe.setGridResolution (60, 60, 60);
+    hoppe.setPercentageExtendGrid (0.1f);
+
+    hoppe.setInputCloud (cloud_with_normals);
+    hoppe.setSearchMethod (tree);
+
+    // Reconstruct
+    PolygonMesh mesh;
+    hoppe.reconstruct (mesh);
 
     MeshConversion::convert(mesh, myMesh);
 }
