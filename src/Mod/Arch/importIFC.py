@@ -318,7 +318,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     if DEBUG: print "done."
 
-    global ifcfile # keeping global for debugging purposes
+    #global ifcfile # keeping global for debugging purposes
     filename = decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
     from ifcopenshell import geom
