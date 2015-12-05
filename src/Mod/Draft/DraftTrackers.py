@@ -611,6 +611,27 @@ class ghostTracker(Tracker):
         except:
             print("Error retrieving coin node")
         return sep
+        
+    def getMatrix(self):
+        r = FreeCADGui.ActiveDocument.ActiveView.getViewer().getSoRenderManager().getViewportRegion()
+        v = coin.SoGetMatrixAction(r)
+        m = self.trans.getMatrix(v)
+        if m:
+            m = m.getValue()
+            return FreeCAD.Matrix(m[0][0],m[0][1],m[0][2],m[0][3],
+                                  m[1][0],m[1][1],m[1][2],m[1][3],
+                                  m[2][0],m[2][1],m[2][2],m[2][3],
+                                  m[3][0],m[3][1],m[3][2],m[3][3])
+        else:
+            return FreeCAD.Matrix()
+        
+    def setMatrix(self,matrix):
+        m = coin.SbMatrix(matrix.A11,matrix.A12,matrix.A13,matrix.A14,
+                          matrix.A21,matrix.A22,matrix.A23,matrix.A24,
+                          matrix.A31,matrix.A32,matrix.A33,matrix.A34,
+                          matrix.A41,matrix.A42,matrix.A43,matrix.A44)
+        self.trans.setMatrix(m)
+
 
 class editTracker(Tracker):
     "A node edit tracker"
