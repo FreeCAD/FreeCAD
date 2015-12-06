@@ -60,8 +60,7 @@ using namespace Gui;
 
 TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
                                                      const std::string& pixmapname, const QString& parname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()),parname,true, parent),
-      vp(vp), blockUpdate(false)
+    : TaskFeatureParameters(vp, parent, pixmapname, parname)
 {
 
 }
@@ -172,7 +171,7 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
     }
 }
 
-QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub) const
+QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub)
 {
     QString o = obj.left(obj.indexOf(QString::fromAscii(":")));
 
@@ -181,20 +180,6 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
     else
         return QString::fromAscii("(App.activeDocument().") + o +
                 QString::fromAscii(", [\"") + sub + QString::fromAscii("\"])");
-}
-
-void TaskSketchBasedParameters::onUpdateView(bool on)
-{
-    blockUpdate = !on;
-    recomputeFeature();
-}
-
-void TaskSketchBasedParameters::recomputeFeature()
-{
-    if (!blockUpdate) {
-        PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
-        pcSketchBased->getDocument()->recomputeFeature(pcSketchBased);
-    }
 }
 
 TaskSketchBasedParameters::~TaskSketchBasedParameters()
@@ -258,6 +243,5 @@ bool TaskDlgSketchBasedParameters::reject()
 
     return rv;
 }
-
 
 #include "moc_TaskSketchBasedParameters.cpp"

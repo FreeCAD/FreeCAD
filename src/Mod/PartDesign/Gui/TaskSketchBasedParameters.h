@@ -24,7 +24,6 @@
 #ifndef GUI_TASKVIEW_TaskSketchBasedParameters_H
 #define GUI_TASKVIEW_TaskSketchBasedParameters_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include "ViewProvider.h"
 
@@ -38,7 +37,7 @@ namespace PartDesignGui {
 
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskSketchBasedParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskSketchBasedParameters : public PartDesignGui::TaskFeatureParameters, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -53,16 +52,8 @@ protected:
     void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar);
     void exitSelectionMode();
     const QByteArray onFaceName(const QString& text);
-    QString getFaceReference(const QString& obj, const QString& sub) const;
-    void recomputeFeature();
 
-protected Q_SLOTS:
-    void onUpdateView(bool on);
-
-protected:
-    PartDesignGui::ViewProvider *vp;
-    /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-    bool blockUpdate;
+    static QString getFaceReference(const QString& obj, const QString& sub);
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

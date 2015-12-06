@@ -27,6 +27,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/BitmapFactory.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 
@@ -34,6 +35,31 @@
 
 using namespace PartDesignGui;
 using namespace Gui;
+
+/*********************************************************************
+ *                      Task Feature Parameters                      *
+ *********************************************************************/
+
+TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
+                                                     const std::string& pixmapname, const QString& parname)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()),parname,true, parent),
+      vp(vp), blockUpdate(false)
+{ }
+
+void TaskFeatureParameters::onUpdateView(bool on)
+{
+    blockUpdate = !on;
+    recomputeFeature();
+}
+
+void TaskFeatureParameters::recomputeFeature()
+{
+    if (!blockUpdate) {
+        App::DocumentObject* obj = vp->getObject ();
+        assert (obj);
+        obj->getDocument()->recomputeFeature ( obj );
+    }
+}
 
 /*********************************************************************
  *                            Task Dialog                            *
@@ -53,6 +79,12 @@ bool TaskDlgFeatureParameters::accept() {
     App::DocumentObject* feature = vp->getObject();
 
     try {
+        // Iterate over parameter dialogs and apply all parameters from them
+        for ( QWidget *wgt : Content ) {
+            TaskFeatureParameters *param = qobject_cast<TaskFeatureParameters *> (wgt);
+            param->saveHistory ();
+            param->apply ();
+        }
         // Make sure the feature is what we are expecting
         // Should be fine but you never know...
         if ( !feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {

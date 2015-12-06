@@ -414,27 +414,7 @@ TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
     : TaskDlgSketchBasedParameters(PocketView)
 {
     assert(vp);
-    parameter  = new TaskPocketParameters(static_cast<ViewProviderPocket*>(vp));
-
-    Content.push_back(parameter);
+    Content.push_back ( new TaskPocketParameters(PocketView ) );
 }
-
-TaskDlgPocketParameters::~TaskDlgPocketParameters()
-{
-
-}
-
-//==== calls from the TaskView ===============================================================
-
-bool TaskDlgPocketParameters::accept()
-{
-    parameter->apply();
-
-    // save the history
-    parameter->saveHistory();
-
-    return TaskDlgSketchBasedParameters::accept();
-}
-
 
 #include "moc_TaskPocketParameters.cpp"

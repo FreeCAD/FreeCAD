@@ -409,24 +409,6 @@ TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(PartDesignGui::ViewProv
     : TaskDlgSketchBasedParameters(RevolutionView)
 {
     assert(RevolutionView);
-    parameter  = new TaskRevolutionParameters(RevolutionView);
-
-    Content.push_back(parameter);
+    Content.push_back(new TaskRevolutionParameters(RevolutionView));
 }
-
-TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
-{
-
-}
-
-//==== calls from the TaskView ===============================================================
-
-bool TaskDlgRevolutionParameters::accept()
-{
-    parameter->apply();
-
-    return TaskDlgSketchBasedParameters::accept();
-}
-
-
 #include "moc_TaskRevolutionParameters.cpp"

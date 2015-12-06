@@ -52,9 +52,8 @@ public:
     TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = 0, bool newObj=false);
     ~TaskPadParameters();
 
-
-    void saveHistory(void);
-    void apply();
+    virtual void saveHistory() override;
+    virtual void apply() override;
 
 private Q_SLOTS:
     void onLengthChanged(double);
@@ -92,18 +91,9 @@ class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
 
 public:
     TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
-    ~TaskDlgPadParameters();
 
     ViewProviderPad* getPadView() const
     { return static_cast<ViewProviderPad*>(vp); }
-
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-
-protected:
-    TaskPadParameters  *parameter;
 };
 
 } //namespace PartDesignGui
