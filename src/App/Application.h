@@ -247,6 +247,7 @@ public:
     static std::string getTempPath();
     static std::string getTempFileName(const char* FileName=0);
     static std::string getUserAppDataDir();
+    static std::string getUserMacroDir();
     static std::string getResourceDir();
     static std::string getHelpDir();
     //@}
