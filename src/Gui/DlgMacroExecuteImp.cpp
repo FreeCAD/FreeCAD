@@ -45,6 +45,25 @@
 using namespace Gui;
 using namespace Gui::Dialog;
 
+namespace Gui {
+    namespace Dialog {
+        class MacroItem : public QTreeWidgetItem
+        {
+        public:
+            MacroItem(QTreeWidget * widget, bool systemwide, bool separator=false)
+            : QTreeWidgetItem(widget),
+            systemWide(systemwide),
+            Separator(separator){}
+            
+            ~MacroItem(){}
+            
+            bool systemWide;
+            bool Separator;
+        };
+    }
+}
+
+
 /* TRANSLATOR Gui::Dialog::DlgMacroExecuteImp */
 
 /**
@@ -90,8 +109,22 @@ void DlgMacroExecuteImp::fillUpList(void)
     // fill up with the directory
     macroListBox->clear();
     for (unsigned int i=0; i<dir.count(); i++ ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(macroListBox);
+        MacroItem* item = new MacroItem(macroListBox,false);
         item->setText(0, dir[i]);
+    }
+    
+    QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    
+    dir = QDir(dirstr, QLatin1String("*.FCMacro *.py"));
+    
+    if(dir.exists()) {    
+        MacroItem* item = new MacroItem(macroListBox,false,true);
+        item->setText(0, tr("----- system-wide macros -----"));
+        
+        for (unsigned int i=0; i<dir.count(); i++ ) {
+            MacroItem* item = new MacroItem(macroListBox,true);
+            item->setText(0, dir[i]);
+        }
     }
 }
 
@@ -101,10 +134,28 @@ void DlgMacroExecuteImp::fillUpList(void)
 void DlgMacroExecuteImp::on_macroListBox_currentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
-        LineEditMacroName->setText(item->text(0));
-        executeButton->setEnabled(true);
-        editButton->setEnabled(true);
-        deleteButton->setEnabled(true);
+        MacroItem * mitem = static_cast<MacroItem *>(item);
+        
+        if(!mitem->Separator) {
+            LineEditMacroName->setText(item->text(0));
+            
+            if(!mitem->systemWide) {
+                executeButton->setEnabled(true);
+                editButton->setEnabled(true);
+                deleteButton->setEnabled(true);
+            }
+            else {
+                executeButton->setEnabled(true);
+                editButton->setEnabled(false);
+                deleteButton->setEnabled(false);            
+            }
+        }
+        else {
+            LineEditMacroName->setText(QString::fromLatin1(""));
+            executeButton->setEnabled(false);
+            editButton->setEnabled(false);
+            deleteButton->setEnabled(false);
+        }
     }
 }
 
@@ -117,7 +168,19 @@ void DlgMacroExecuteImp::accept()
     if (!item) return;
     
     QDialog::accept();
-    QDir dir(this->macroPath);
+    
+    MacroItem * mitem = static_cast<MacroItem *>(item);
+    
+    QDir dir;
+    
+    if(!mitem->systemWide){
+        dir =QDir(this->macroPath);
+    }
+    else {   
+        QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+        dir = QDir(dirstr);
+    }
+    
     QFileInfo fi(dir, item->text(0));
     try {
         Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
@@ -155,6 +218,14 @@ void DlgMacroExecuteImp::on_editButton_clicked()
 {
     QTreeWidgetItem* item = macroListBox->currentItem();
     if (!item) return;
+    
+    MacroItem * mitem = static_cast<MacroItem *>(item);
+    
+    if(mitem->systemWide) {
+        QMessageBox::critical(qApp->activeWindow(), QObject::tr("Delete macro"),
+                              QObject::tr("Not allowed to edit system-wide macros"));
+        return;
+    }
 
     QDir dir(this->macroPath);
     QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
@@ -207,6 +278,14 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
 {
     QTreeWidgetItem* item = macroListBox->currentItem();
     if (!item) return;
+    
+    MacroItem * mitem = static_cast<MacroItem *>(item);
+    
+    if(mitem->systemWide) {
+        QMessageBox::critical(qApp->activeWindow(), QObject::tr("Delete macro"),
+            QObject::tr("Not allowed to delete system-wide macros"));
+        return;
+    }
 
     QString fn = item->text(0);
     int ret = QMessageBox::question(this, tr("Delete macro"),
