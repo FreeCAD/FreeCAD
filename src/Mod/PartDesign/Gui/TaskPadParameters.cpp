@@ -406,6 +406,7 @@ void TaskPadParameters::apply()
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u", cname, getMode());
     QString facename = getFaceName();
 
+    // TODO get rid of this if (2015-12-05, Fat-Zer)
     if (!facename.isEmpty()) {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s",
                 cname, facename.toLatin1().data());
@@ -426,26 +427,9 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj)
     : TaskDlgSketchBasedParameters(PadView)
 {
     assert(vp);
-    parameter  = new TaskPadParameters(static_cast<ViewProviderPad*>(vp));
-
-    Content.push_back(parameter);
-}
-
-TaskDlgPadParameters::~TaskDlgPadParameters()
-{
-
+    Content.push_back ( new TaskPadParameters(PadView ) );
 }
 
 //==== calls from the TaskView ===============================================================
-
-bool TaskDlgPadParameters::accept()
-{
-    // save the history
-    parameter->saveHistory();
-    parameter->apply();
-
-    return TaskDlgSketchBasedParameters::accept();
-}
-
 
 #include "moc_TaskPadParameters.cpp"

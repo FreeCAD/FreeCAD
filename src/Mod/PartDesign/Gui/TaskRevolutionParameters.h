@@ -53,7 +53,7 @@ public:
     TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = 0);
     ~TaskRevolutionParameters();
 
-    void apply();
+    virtual void apply() override;
 
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
@@ -111,17 +111,9 @@ class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
 
 public:
     TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
-    ~TaskDlgRevolutionParameters();
 
     ViewProvider* getRevolutionView() const
     { return vp; }
-
-public:    
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-
-protected:
-    TaskRevolutionParameters  *parameter;
 };
 
 } //namespace PartDesignGui

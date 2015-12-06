@@ -52,9 +52,8 @@ public:
     TaskPocketParameters(ViewProviderPocket *PocketView, QWidget *parent = 0, bool newObj=false);
     ~TaskPocketParameters();
 
-    void apply();
-
-    void saveHistory(void);
+    virtual void saveHistory() override;
+    virtual void apply() override;
 
 private Q_SLOTS:
     void onLengthChanged(double);
@@ -92,18 +91,9 @@ class TaskDlgPocketParameters : public TaskDlgSketchBasedParameters
 
 public:
     TaskDlgPocketParameters(ViewProviderPocket *PocketView);
-    ~TaskDlgPocketParameters();
 
     ViewProviderPocket* getPocketView() const
     { return static_cast<ViewProviderPocket*>(vp); }
-
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-
-protected:
-    TaskPocketParameters  *parameter;
 };
 
 } //namespace PartDesignGui
