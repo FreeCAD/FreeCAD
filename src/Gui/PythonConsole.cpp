@@ -1196,7 +1196,7 @@ void PythonConsole::onClearConsole()
 void PythonConsole::onSaveHistoryAs()
 {
     QString cMacroPath = QString::fromUtf8(getDefaultParameter()->GetGroup( "Macro" )->
-        GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str()).c_str());
+        GetASCII("MacroPath",App::Application::getUserMacroDir().c_str()).c_str());
     QString fn = FileDialog::getSaveFileName(this, tr("Save History"), cMacroPath,
         QString::fromLatin1("%1 (*.FCMacro *.py)").arg(tr("Macro Files")));
     if (!fn.isEmpty()) {

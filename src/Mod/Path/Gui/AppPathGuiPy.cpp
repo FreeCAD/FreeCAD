@@ -63,7 +63,7 @@ static PyObject * open(PyObject *self, PyObject *args)
         path += "Mod/Path/PathScripts/";
         QDir dir1(QString::fromUtf8(path.c_str()), QString::fromLatin1("*_pre.py"));
         std::string cMacroPath = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-            ->GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str());
+            ->GetASCII("MacroPath",App::Application::getUserMacroDir().c_str());
         QDir dir2(QString::fromUtf8(cMacroPath.c_str()), QString::fromLatin1("*_pre.py"));
         QFileInfoList list = dir1.entryInfoList();
         list << dir2.entryInfoList();
@@ -124,7 +124,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
         path += "Mod/Path/PathScripts/";
         QDir dir1(QString::fromUtf8(path.c_str()), QString::fromLatin1("*_pre.py"));
         std::string cMacroPath = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-            ->GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str());
+            ->GetASCII("MacroPath",App::Application::getUserMacroDir().c_str());
         QDir dir2(QString::fromUtf8(cMacroPath.c_str()), QString::fromLatin1("*_pre.py"));
         QFileInfoList list = dir1.entryInfoList();
         list << dir2.entryInfoList();
@@ -194,7 +194,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
         path += "Mod/Path/PathScripts/";
         QDir dir1(QString::fromUtf8(path.c_str()), QString::fromLatin1("*_post.py"));
         std::string cMacroPath = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-            ->GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str());
+            ->GetASCII("MacroPath",App::Application::getUserMacroDir().c_str());
         QDir dir2(QString::fromUtf8(cMacroPath.c_str()), QString::fromLatin1("*_post.py"));
         QFileInfoList list = dir1.entryInfoList();
         list << dir2.entryInfoList();

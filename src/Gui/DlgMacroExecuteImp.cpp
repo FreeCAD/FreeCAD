@@ -79,7 +79,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     this->setupUi(this);
     // retrieve the macro path from parameter or use the user data as default
     std::string path = getWindowParameter()->GetASCII("MacroPath",
-        App::Application::getUserAppDataDir().c_str());
+        App::Application::getUserMacroDir().c_str());
     this->macroPath = QString::fromUtf8(path.c_str());
     fileChooser->setFileName(this->macroPath);
 

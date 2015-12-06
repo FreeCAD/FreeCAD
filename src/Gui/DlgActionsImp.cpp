@@ -62,7 +62,7 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
     // search for all macros
     std::string cMacroPath = App::GetApplication().
         GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-        ->GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str());
+        ->GetASCII("MacroPath",App::Application::getUserMacroDir().c_str());
 
     QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro *.py"));
     actionMacros->insertItems(0, d.entryList());

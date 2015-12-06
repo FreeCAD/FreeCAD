@@ -522,6 +522,12 @@ std::string Application::getUserAppDataDir()
     return mConfig["UserAppData"];
 }
 
+std::string Application::getUserMacroDir()
+{
+    std::string path("Macro/");
+    return mConfig["UserAppData"] + path;
+}
+
 std::string Application::getResourceDir()
 {
 #ifdef RESOURCEDIR
