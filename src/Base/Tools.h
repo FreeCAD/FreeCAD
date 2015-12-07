@@ -137,6 +137,7 @@ public:
     ~StopWatch();
 
     void start();
+    int restart();
     int elapsed();
     std::string toString(int ms) const;
 
