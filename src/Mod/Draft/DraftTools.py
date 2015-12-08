@@ -2573,16 +2573,28 @@ class Offset(Modifier):
     def numericRadius(self,rad):
         '''this function gets called by the toolbar when
         valid radius have been entered there'''
+        #print "dvec:",self.dvec
+        #print "rad:",rad
         if self.dvec:
-            self.dvec.normalize()
-            self.dvec.multiply(rad)
+            if isinstance(self.dvec,float):
+                if self.mode == "Circle":
+                    r1 = self.shape.Edges[0].Curve.Radius
+                    r2 = self.ghost.getRadius()
+                    if r2 >= r1:
+                        rad = r1 + rad
+                    else:
+                        rad = r1 - rad
+                    d = str(rad)
+                else:
+                    print "Draft.Offset error: Unhandled case"
+            else:
+                self.dvec.normalize()
+                self.dvec.multiply(rad)
+                d = DraftVecUtils.toString(self.dvec)
             copymode = False
             occmode = self.ui.occOffset.isChecked()
-            if self.ui.isCopy.isChecked(): copymode = True
-            if isinstance(self.dvec,float):
-                d = str(self.dvec)
-            else:
-                d = DraftVecUtils.toString(self.dvec)
+            if self.ui.isCopy.isChecked(): 
+                copymode = True
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Offset"),
                         ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')',
