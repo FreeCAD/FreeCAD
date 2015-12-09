@@ -616,8 +616,12 @@ class _Structure(ArchComponent.Component):
                         base = base.extrude(normal)
                     elif (len(base.Wires) == 1):
                         if base.Wires[0].isClosed():
-                            base = Part.Face(base.Wires[0])
-                            base = base.extrude(normal)
+                            try:
+                                base = Part.Face(base.Wires[0])
+                                base = base.extrude(normal)
+                            except Part.OCCError:
+                                FreeCAD.Console.PrintError(obj.Label+" : "+str(translate("Arch","Unable to extrude the base shape\n")))
+                                return
 
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
