@@ -255,7 +255,7 @@ PyObject* FemMeshPy::addFace(PyObject *args)
     int n1,n2,n3;
     if (PyArg_ParseTuple(args, "iii",&n1,&n2,&n3))
     {
-        // old form, debrekadet
+        // old form, deprecated
         try {
             const SMDS_MeshNode* node1 = meshDS->FindNode(n1);
             const SMDS_MeshNode* node2 = meshDS->FindNode(n2);
