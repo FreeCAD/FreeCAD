@@ -1903,11 +1903,13 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 void Document::recomputeFeature(DocumentObject* Feat)
 {
      // delete recompute log
-    for( std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
+    for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
         delete *it;
     _RecomputeLog.clear();
 
-    _recomputeFeature(Feat);
+    // verify that the feature is (active) part of the document
+    if (Feat->getNameInDocument())
+        _recomputeFeature(Feat);
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
@@ -1928,7 +1930,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
     pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
+    if (!d->rollback) {
         // Transaction stuff
         if (d->activeTransaction)
             d->activeTransaction->addObjectNew(pcObject);
