@@ -172,6 +172,7 @@ bool ExpressionBinding::apply()
     Property * prop(path.getProperty());
 
     assert(prop != 0);
+    Q_UNUSED(prop);
 
     DocumentObject * docObj(path.getDocumentObject());
 
