@@ -620,7 +620,7 @@ void  MatrixPy::setA34(Py::Float arg)
 
 Py::Float MatrixPy::getA41(void) const
 {
-    double val = (*this->getMatrixPtr())[2][0];
+    double val = (*this->getMatrixPtr())[3][0];
     return Py::Float(val);
 }
 
