@@ -4152,7 +4152,8 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyLength","Length","Draft","The length of this line")
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed") 
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed")
+        obj.addProperty("App::PropertyInteger","Subdivisions","Draft","The number of subdivisions of each edge") 
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
 
@@ -4186,7 +4187,23 @@ class _Wire(_DraftObject):
                 if not obj.Closed: obj.Closed = True
                 obj.Points.pop()
             if obj.Closed and (len(obj.Points) > 2):
-                shape = Part.makePolygon(obj.Points+[obj.Points[0]])
+                pts = obj.Points
+                if hasattr(obj,"Subdivisions"):
+                    if obj.Subdivisions > 0:
+                        npts = []
+                        for i in range(len(pts)):
+                            p1 = pts[i]
+                            npts.append(pts[i])
+                            if i == len(pts)-1:
+                                p2 = pts[0]
+                            else:
+                                p2 = pts[i+1]
+                            v = p2.sub(p1)
+                            v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
+                            for j in range(obj.Subdivisions):
+                                npts.append(p1.add(FreeCAD.Vector(v).multiply(j+1)))
+                        pts = npts
+                shape = Part.makePolygon(pts+[pts[0]])
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
                         w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
@@ -4206,11 +4223,25 @@ class _Wire(_DraftObject):
                 lp = obj.Points[0]
                 for p in pts:
                     if not DraftVecUtils.equals(lp,p):
-                        edges.append(Part.Line(lp,p).toShape())
+                        if hasattr(obj,"Subdivisions"):
+                            if obj.Subdivisions > 0:
+                                npts = []
+                                v = p.sub(lp)
+                                v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
+                                edges.append(Part.Line(lp,lp.add(v)).toShape())
+                                lv = lp.add(v)
+                                for j in range(obj.Subdivisions):
+                                    edges.append(Part.Line(lv,lv.add(v)).toShape())
+                                    lv = lv.add(v)
+                            else:
+                                edges.append(Part.Line(lp,p).toShape())
+                        else:
+                            edges.append(Part.Line(lp,p).toShape())
                         lp = p
                 try:
                     shape = Part.Wire(edges)
                 except Part.OCCError:
+                    print "Error wiring edges"
                     shape = None
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
