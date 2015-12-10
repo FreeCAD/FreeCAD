@@ -32,6 +32,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 #include <App/ObjectIdentifier.h>
 #include <App/DocumentObject.h>
 
@@ -423,6 +424,13 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
     if (c0.isArray() && path.numSubComponents() == 1) {
         if (c0.getIndex() >= _lValueList.size())
             throw Base::Exception("Array out of bounds");
+        switch (_lValueList[c0.getIndex()]->Type) {
+        case Angle:
+            dvalue = Base::toRadians<double>(dvalue);
+            break;
+        default:
+            break;
+        }
         aboutToSetValue();
         _lValueList[c0.getIndex()]->setValue(dvalue);
         hasSetValue();
@@ -433,6 +441,13 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
 
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             if ((*it)->Name == c1.getName()) {
+                switch (_lValueList[c0.getIndex()]->Type) {
+                case Angle:
+                    dvalue = Base::toRadians<double>(dvalue);
+                    break;
+                default:
+                    break;
+                }
                 aboutToSetValue();
                 _lValueList[it - _lValueList.begin()]->setValue(dvalue);
                 hasSetValue();
