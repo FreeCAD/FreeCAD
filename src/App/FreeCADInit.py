@@ -52,6 +52,8 @@ def InitApplications():
 	HomeMod = os.path.realpath(HomeMod)
 	MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
 	MacroMod = os.path.realpath(MacroDir+"/Mod")
+	SystemWideMacroDir = FreeCAD.getHomePath()+'Macro'
+	SystemWideMacroDir = os.path.realpath(SystemWideMacroDir)
 
 	#print FreeCAD.getHomePath()
 	if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
@@ -130,6 +132,8 @@ def InitApplications():
 		Log("   " + i + "\n")
 	# add MacroDir to path (RFE #0000504)
 	sys.path.append(MacroDir)
+	# add SystemWideMacroDir to path
+	sys.path.append(SystemWideMacroDir)
 	# add special path for MacOSX (bug #0000307)
 	import platform
 	if len(platform.mac_ver()[0]) > 0:
