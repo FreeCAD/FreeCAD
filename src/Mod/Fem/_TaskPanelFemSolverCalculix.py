@@ -144,14 +144,10 @@ class _TaskPanelFemSolverCalculix:
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemTools()
         fea.reset_all()
-        frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
-        if os.path.isfile(frd_result_file):
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            ccxFrdReader.importFrd(frd_result_file, FemGui.getActiveAnalysis())
-            QApplication.restoreOverrideCursor()
-            self.femConsoleMessage("Loading results done!", "#00AA00")
-        else:
-            self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
+        fea.inp_file_name = self.inp_file_name
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        fea.load_results()
+        QApplication.restoreOverrideCursor()
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def getStandardButtons(self):
