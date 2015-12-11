@@ -26,6 +26,9 @@
 #	include <cassert>
 #endif
 
+#include <limits>
+#include <iomanip>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
 #include "Application.h"
@@ -912,9 +915,9 @@ void ObjectIdentifier::setValue(const boost::any &value) const
     ss << getPythonAccessor() + " = ";
 
     if (value.type() == typeid(Base::Quantity))
-        ss << boost::any_cast<Base::Quantity>(value).getValue();
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<Base::Quantity>(value).getValue();
     else if (value.type() == typeid(double))
-        ss << boost::any_cast<double>(value);
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<double>(value);
     else if (value.type() == typeid(char*))
         ss << '\'' << Base::Tools::escapedUnicodeFromUtf8(boost::any_cast<char*>(value)) << '\'';
     else if (value.type() == typeid(const char*))
