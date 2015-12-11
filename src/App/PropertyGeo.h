@@ -263,6 +263,8 @@ public:
     /// Get valid paths for this property; used by auto completer
     void getPaths(std::vector<ObjectIdentifier> &paths) const;
 
+    void setPathValue(const ObjectIdentifier &path, const boost::any &value);
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }
