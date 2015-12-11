@@ -5160,14 +5160,27 @@ class _Clone(_DraftObject):
                     return obj.Objects[0].Proxy.getSubVolume(obj.Objects[0],placement)
         return None
 
-class _ViewProviderClone(_ViewProviderDraftAlt):
+class _ViewProviderClone:
     "a view provider that displays a Clone icon instead of a Draft icon"
     
     def __init__(self,vobj):
-        _ViewProviderDraftAlt.__init__(self,vobj)
+        vobj.Proxy = self
 
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
+        
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+        
+    def getDisplayModes(self, vobj):
+        modes=[]
+        return modes
+
+    def setDisplayMode(self, mode):
+        return mode
         
 class _ViewProviderDraftArray(_ViewProviderDraft):
     "a view provider that displays a Array icon instead of a Draft icon"
