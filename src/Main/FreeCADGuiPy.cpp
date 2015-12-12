@@ -120,8 +120,10 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
     }
 
     if (!thr) {
-        if (!setupMainWindow())
+        if (!setupMainWindow()) {
+            PyErr_SetString(PyExc_RuntimeError, "Cannot create main window\n");
             return NULL;
+        }
     }
 
     Py_INCREF(Py_None);
@@ -248,9 +250,18 @@ QWidget* setupMainWindow()
     }
 
     if (!Gui::MainWindow::getInstance()) {
+        static bool hasMainWindow = false;
+        if (hasMainWindow) {
+            // if a main window existed and has been deleted it's not supported
+            // to re-create it
+            return 0;
+        }
+
         Base::PyGILStateLocker lock;
         PyObject* input = PySys_GetObject("stdin");
         Gui::MainWindow *mw = new Gui::MainWindow();
+        hasMainWindow = true;
+
         QIcon icon = qApp->windowIcon();
         if (icon.isNull())
             qApp->setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
