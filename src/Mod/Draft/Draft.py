@@ -3589,9 +3589,11 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 self.font.size = vobj.FontSize.Value
             if hasattr(self,"font3d"):
                 self.font3d.size = vobj.FontSize.Value*100
+            vobj.Object.touch()
         elif (prop == "FontName") and hasattr(vobj,"FontName"):
             if hasattr(self,"font") and hasattr(self,"font3d"):
                 self.font.name = self.font3d.name = str(vobj.FontName)
+                vobj.Object.touch()
         elif (prop == "LineColor") and hasattr(vobj,"LineColor"):
             if hasattr(self,"color"):
                 c = vobj.LineColor
@@ -3640,6 +3642,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 self.marks.addChild(s2)      
                 self.node.insertChild(self.marks,2)
                 self.node3d.insertChild(self.marks,2)
+                vobj.Object.touch()
         else:
             self.updateData(vobj.Object,"Start")
 
@@ -3931,9 +3934,11 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 self.font.size = vobj.FontSize.Value
             if hasattr(self,"font3d"):
                 self.font3d.size = vobj.FontSize.Value*100
+            vobj.Object.touch()
         elif prop == "FontName":
             if hasattr(self,"font") and hasattr(self,"font3d"):
                 self.font.name = self.font3d.name = str(vobj.FontName)
+                vobj.Object.touch()
         elif prop == "LineColor":
             if hasattr(self,"color"):
                 c = vobj.LineColor
@@ -3977,6 +3982,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 self.marks.addChild(s2)      
                 self.node.insertChild(self.marks,2)
                 self.node3d.insertChild(self.marks,2)
+                vobj.Object.touch()
         else:
             self.updateData(vobj.Object, None)
 
