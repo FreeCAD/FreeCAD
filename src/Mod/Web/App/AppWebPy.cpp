@@ -109,7 +109,11 @@ static PyObject * registerServerFirewall(PyObject *self, PyObject *args)
         return NULL;
 
     PY_TRY {
-        Web::Firewall::setInstance(new Web::FirewallPython(Py::Object(obj)));
+        Py::Object pyobj(obj);
+        if (pyobj.isNone())
+            Web::Firewall::setInstance(0);
+        else
+            Web::Firewall::setInstance(new Web::FirewallPython(pyobj));
     } PY_CATCH;
 
     Py_Return;
