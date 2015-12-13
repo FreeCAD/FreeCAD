@@ -4046,34 +4046,76 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.addProperty("App::PropertyInteger","Rows","Draft","Horizontal subdivisions of this rectange")
+        obj.addProperty("App::PropertyInteger","Columns","Draft","Vertical subdivisions of this rectange")
         obj.MakeFace = getParam("fillmode",True) 
         obj.Length=1
         obj.Height=1
+        obj.Rows=1
+        obj.Columns=1
 
     def execute(self, obj):
         if (obj.Length.Value != 0) and (obj.Height.Value != 0):
             import Part, DraftGeomUtils
             plm = obj.Placement
-            p1 = Vector(0,0,0)
-            p2 = Vector(p1.x+obj.Length.Value,p1.y,p1.z)
-            p3 = Vector(p1.x+obj.Length.Value,p1.y+obj.Height.Value,p1.z)
-            p4 = Vector(p1.x,p1.y+obj.Height.Value,p1.z)
-            shape = Part.makePolygon([p1,p2,p3,p4,p1])
-            if "ChamferSize" in obj.PropertiesList:
-                if obj.ChamferSize.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,chamfer=True)
-                    if w:
-                        shape = w  
-            if "FilletRadius" in obj.PropertiesList:
-                if obj.FilletRadius.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
-                    if w:
-                        shape = w
-            if hasattr(obj,"MakeFace"):
-                if obj.MakeFace:
+            shape = None
+            if hasattr(obj,"Rows") and hasattr(obj,"Columns"):
+                if obj.Rows > 1:
+                    rows = obj.Rows
+                else:
+                    rows = 1
+                if obj.Columns > 1:
+                    columns = obj.Columns
+                else:
+                    columns = 1
+                if (rows > 1) or (columns > 1):
+                    shapes = []
+                    l = obj.Length.Value/columns
+                    h = obj.Height.Value/rows
+                    for i in range(columns):
+                        for j in range(rows):
+                            p1 = Vector(i*l,j*h,0)
+                            p2 = Vector(p1.x+l,p1.y,p1.z)
+                            p3 = Vector(p1.x+l,p1.y+h,p1.z)
+                            p4 = Vector(p1.x,p1.y+h,p1.z)
+                            p = Part.makePolygon([p1,p2,p3,p4,p1])
+                            if "ChamferSize" in obj.PropertiesList:
+                                if obj.ChamferSize.Value != 0:
+                                    w = DraftGeomUtils.filletWire(p,obj.ChamferSize.Value,chamfer=True)
+                                    if w:
+                                        p = w  
+                            if "FilletRadius" in obj.PropertiesList:
+                                if obj.FilletRadius.Value != 0:
+                                    w = DraftGeomUtils.filletWire(p,obj.FilletRadius.Value)
+                                    if w:
+                                        p = w
+                            if hasattr(obj,"MakeFace"):
+                                if obj.MakeFace:
+                                    p = Part.Face(p)
+                            shapes.append(p)
+                    if shapes:
+                        shape = Part.makeCompound(shapes)
+            if not shape:
+                p1 = Vector(0,0,0)
+                p2 = Vector(p1.x+obj.Length.Value,p1.y,p1.z)
+                p3 = Vector(p1.x+obj.Length.Value,p1.y+obj.Height.Value,p1.z)
+                p4 = Vector(p1.x,p1.y+obj.Height.Value,p1.z)
+                shape = Part.makePolygon([p1,p2,p3,p4,p1])
+                if "ChamferSize" in obj.PropertiesList:
+                    if obj.ChamferSize.Value != 0:
+                        w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,chamfer=True)
+                        if w:
+                            shape = w  
+                if "FilletRadius" in obj.PropertiesList:
+                    if obj.FilletRadius.Value != 0:
+                        w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
+                        if w:
+                            shape = w
+                if hasattr(obj,"MakeFace"):
+                    if obj.MakeFace:
+                        shape = Part.Face(shape)
+                else:
                     shape = Part.Face(shape)
-            else:
-                shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
 
