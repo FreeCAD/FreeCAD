@@ -31,6 +31,7 @@
 #include "PropertyExpressionEngine.h"
 #include "PropertyStandard.h"
 #include "PropertyUnits.h"
+#include <CXX/Objects.hxx>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
@@ -738,7 +739,14 @@ void PropertyExpressionEngine::renameObjectIdentifiers(const std::map<ObjectIden
 
 PyObject *PropertyExpressionEngine::getPyObject(void)
 {
-    Py_Return;
+    Py::List list;
+    for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+        Py::Tuple tuple(2);
+        tuple.setItem(0, Py::String(it->first.toString()));
+        tuple.setItem(1, Py::String(it->second.expression->toString()));
+        list.append(tuple);
+    }
+    return Py::new_reference_to(list);
 }
 
 void PropertyExpressionEngine::setPyObject(PyObject *)
