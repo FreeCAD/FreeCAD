@@ -2003,6 +2003,10 @@ QVariant PropertyStringListItem::editorData(QWidget *editor) const
 QVariant PropertyStringListItem::toString(const QVariant& prop) const
 {
     QStringList list = prop.toStringList();
+    if (list.size() > 10) {
+        list = list.mid(0, 10);
+        list.append(QLatin1String("..."));
+    }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
 
     return QVariant(text);
@@ -2072,6 +2076,10 @@ QVariant PropertyFloatListItem::editorData(QWidget *editor) const
 QVariant PropertyFloatListItem::toString(const QVariant& prop) const
 {
     QStringList list = prop.toStringList();
+    if (list.size() > 10) {
+        list = list.mid(0, 10);
+        list.append(QLatin1String("..."));
+    }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
 
     return QVariant(text);
@@ -2141,6 +2149,10 @@ QVariant PropertyIntegerListItem::editorData(QWidget *editor) const
 QVariant PropertyIntegerListItem::toString(const QVariant& prop) const
 {
     QStringList list = prop.toStringList();
+    if (list.size() > 10) {
+        list = list.mid(0, 10);
+        list.append(QLatin1String("..."));
+    }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
 
     return QVariant(text);
