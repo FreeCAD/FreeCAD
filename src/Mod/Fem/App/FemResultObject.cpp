@@ -45,6 +45,14 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corresponding mesh");
     ADD_PROPERTY_TYPE(Eigenmode,(0), "Fem",Prop_None,"Number of the eigenmode");
     ADD_PROPERTY_TYPE(EigenmodeFrequency,(0), "Fem",Prop_None,"Frequency of the eigenmode");
+
+    // make read-only for property editor
+    NodeNumbers.StatusBits.set(2, true);
+    DisplacementVectors.StatusBits.set(2, true);
+    DisplacementLengths.StatusBits.set(2, true);
+    StressValues.StatusBits.set(2, true);
+    Eigenmode.StatusBits.set(2, true);
+    EigenmodeFrequency.StatusBits.set(2, true);
 }
 
 FemResultObject::~FemResultObject()
