@@ -102,9 +102,24 @@ static PyObject * startServer(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+static PyObject * registerServerFirewall(PyObject *self, PyObject *args)
+{
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args, "O",&obj))
+        return NULL;
+
+    PY_TRY {
+        Web::Firewall::setInstance(new Web::FirewallPython(Py::Object(obj)));
+    } PY_CATCH;
+
+    Py_Return;
+}
+
 /* registration table  */
 struct PyMethodDef Web_methods[] = {
     {"startServer",startServer      ,METH_VARARGS,
      "startServer(address=127.0.0.1,port=0) -- Start a server."},
+    {"registerServerFirewall",registerServerFirewall      ,METH_VARARGS,
+     "registerServerFirewall(callable(string)) -- Register a firewall."},
     {NULL, NULL}        /* end of table marker */
 };
