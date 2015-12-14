@@ -4056,6 +4056,7 @@ class Shape2DView(Modifier):
             self.view.removeEventCallback("SoEvent",self.call)
         faces = []
         objs = []
+        vec = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
         sel = FreeCADGui.Selection.getSelectionEx()
         for s in sel:
             objs.append(s.Object)
@@ -4065,10 +4066,10 @@ class Shape2DView(Modifier):
         #print(objs,faces)
         if len(objs) == 1:
             if faces:
-                Draft.makeShape2DView(objs[0],facenumbers=faces)
+                Draft.makeShape2DView(objs[0],vec,facenumbers=faces)
                 return
         for o in objs:
-            Draft.makeShape2DView(o)
+            Draft.makeShape2DView(o,vec)
         self.finish()
 
 
