@@ -105,7 +105,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent* ev)
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QGLWidget* sharewidget, Qt::WFlags wflags)
+                               const QGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
     stack = new QStackedWidget(this);

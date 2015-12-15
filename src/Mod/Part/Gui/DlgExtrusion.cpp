@@ -52,7 +52,7 @@
 
 using namespace PartGui;
 
-DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WFlags fl)
+DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgExtrusion)
 {
     ui->setupUi(this);

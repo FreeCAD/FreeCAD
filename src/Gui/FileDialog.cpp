@@ -366,7 +366,7 @@ void FileDialog::setWorkingDirectory(const QString& dir)
 
 /* TRANSLATOR Gui::FileOptionsDialog */
 
-FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WFlags fl )
+FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
   : QFileDialog( parent, fl )
 {
     extensionButton = new QPushButton( this );

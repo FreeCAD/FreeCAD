@@ -79,7 +79,7 @@ bool UnitTestDialog::hasInstance()
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WFlags f)
+UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
   : QDialog(parent, f)
 {
     this->setupUi(this);

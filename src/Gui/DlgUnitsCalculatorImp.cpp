@@ -42,7 +42,7 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WFlags fl )
+DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
   : QDialog( parent, fl )
 {
     // create widgets

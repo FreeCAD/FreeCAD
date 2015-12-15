@@ -51,7 +51,7 @@ using namespace MeshGui;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WFlags fl)
+MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
 {
     this->setupUi(this);
@@ -246,7 +246,7 @@ bool SingleDlgRegularSolidImp::hasInstance()
  *  Constructs a SingleDlgRegularSolidImp which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  */
-SingleDlgRegularSolidImp::SingleDlgRegularSolidImp(QWidget* parent, Qt::WFlags fl)
+SingleDlgRegularSolidImp::SingleDlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
   : DlgRegularSolidImp(parent, fl)
 {
 }

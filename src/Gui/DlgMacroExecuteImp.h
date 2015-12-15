@@ -40,7 +40,7 @@ class DlgMacroExecuteImp : public QDialog, public Ui_DlgMacroExecute, public Gui
     Q_OBJECT
 
 public:
-    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DlgMacroExecuteImp();
 
     void accept();

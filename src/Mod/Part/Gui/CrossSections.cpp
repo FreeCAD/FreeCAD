@@ -119,7 +119,7 @@ private:
 };
 }
 
-CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WFlags fl)
+CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), bbox(bb)
 {
     ui = new Ui_CrossSections();

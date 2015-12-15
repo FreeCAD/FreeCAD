@@ -31,7 +31,7 @@ using namespace PointsGui;
 
 
 
-DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::WFlags fl )
+DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
   _FileName = FileName;

@@ -97,7 +97,7 @@ public:
     }
 };
 
-DlgRevolution::DlgRevolution(QWidget* parent, Qt::WFlags fl)
+DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationDialog(parent, fl), filter(0)
 {
     ui = new Ui_RevolutionComp(this);

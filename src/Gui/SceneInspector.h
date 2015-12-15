@@ -66,7 +66,7 @@ class DlgInspector : public QDialog
     Q_OBJECT
 
 public:
-    DlgInspector(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgInspector(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgInspector();
 
     void setNode(SoNode* node);

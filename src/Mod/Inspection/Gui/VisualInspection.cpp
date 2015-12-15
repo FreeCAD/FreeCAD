@@ -76,7 +76,7 @@ private:
  *  Constructs a VisualInspection as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
+VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);

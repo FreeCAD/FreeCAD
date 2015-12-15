@@ -48,7 +48,7 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::TextureMapping */
 
-TextureMapping::TextureMapping(QWidget* parent, Qt::WFlags fl)
+TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), grp(0), tex(0), env(0)
 {
     ui = new Ui_TextureMapping();

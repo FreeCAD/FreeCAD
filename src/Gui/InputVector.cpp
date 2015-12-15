@@ -219,7 +219,7 @@ void LocationWidget::on_direction_activated(int index)
 
 // ----------------------------------------------------------------------------
 
-LocationDialog::LocationDialog(QWidget* parent, Qt::WFlags fl)
+LocationDialog::LocationDialog(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
 }
