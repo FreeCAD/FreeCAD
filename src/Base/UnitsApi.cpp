@@ -123,7 +123,7 @@ QString UnitsApi::schemaTranslate(Base::Quantity quant,double &factor,QString &u
 //{
 //    return UserPrefSystem->toStrWithUserPrefs(t,Value);
 //    //double UnitValue = Value/UserPrefFactor[t];
-//    //return QString::fromAscii("%1 %2").arg(UnitValue).arg(UserPrefUnit[t]);
+//    //return QString::fromLatin1("%1 %2").arg(UnitValue).arg(UserPrefUnit[t]);
 //}
 //
 //void UnitsApi::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)

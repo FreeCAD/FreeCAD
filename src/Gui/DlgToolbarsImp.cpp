@@ -113,7 +113,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     workbenches.sort();
     index = 1;
     workbenchBox->addItem(QApplication::windowIcon(), tr("Global"));
-    workbenchBox->setItemData(0, QVariant(QString::fromAscii("Global")), Qt::UserRole);
+    workbenchBox->setItemData(0, QVariant(QString::fromLatin1("Global")), Qt::UserRole);
     for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         QPixmap px = Application::Instance->workbenchIcon(*it);
         QString mt = Application::Instance->workbenchMenuText(*it);
@@ -141,7 +141,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     on_categoryBox_activated(categoryBox->currentIndex());
     Workbench* w = WorkbenchManager::instance()->active();
     if (w) {
-        QString name = QString::fromAscii(w->name().c_str());
+        QString name = QString::fromLatin1(w->name().c_str());
         int index = workbenchBox->findData(name);
         workbenchBox->setCurrentIndex(index);
     }
@@ -301,7 +301,7 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
     CommandManager& rMgr = Application::Instance->commandManager();
     for (int i=0; i<toolbarTreeWidget->topLevelItemCount(); i++) {
         QTreeWidgetItem* toplevel = toolbarTreeWidget->topLevelItem(i);
-        QString groupName = QString::fromAscii("Custom_%1").arg(i+1);
+        QString groupName = QString::fromLatin1("Custom_%1").arg(i+1);
         QByteArray toolbarName = toplevel->text(0).toUtf8();
         ParameterGrp::handle hToolGrp = hGrp->GetGroup(groupName.toLatin1());
         hToolGrp->SetASCII("Name", toolbarName.constData());
@@ -468,7 +468,7 @@ void DlgCustomToolbars::on_moveActionDownButton_clicked()
 void DlgCustomToolbars::on_newButton_clicked()
 {
     bool ok;
-    QString text = QString::fromAscii("Custom%1").arg(toolbarTreeWidget->topLevelItemCount()+1);
+    QString text = QString::fromLatin1("Custom%1").arg(toolbarTreeWidget->topLevelItemCount()+1);
     text = QInputDialog::getText(this, tr("New toolbar"), tr("Toolbar name:"), QLineEdit::Normal, text, &ok);
     if (ok) {
         // Check for duplicated name

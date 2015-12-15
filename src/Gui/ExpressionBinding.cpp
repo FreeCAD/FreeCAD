@@ -120,8 +120,8 @@ std::string ExpressionBinding::getEscapedExpressionString() const
 
 QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 {
-    QString key = QString::fromAscii("%1_%2x%3")
-        .arg(QString::fromAscii(name))
+    QString key = QString::fromLatin1("%1_%2x%3")
+        .arg(QString::fromLatin1(name))
         .arg(size.width())
         .arg(size.height());
     QPixmap icon;

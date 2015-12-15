@@ -321,7 +321,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             Py::Object attr = obj.getAttr(attrname.as_string());
 
             CallTip tip;
-            QString str = QString::fromAscii(attrname.as_string().c_str());
+            QString str = QString::fromLatin1(attrname.as_string().c_str());
             tip.name = str;
 
             if (attr.isCallable()) {
@@ -387,7 +387,7 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
 
     for (std::map<std::string,App::Property*>::const_iterator It=Map.begin();It!=Map.end();++It) {
         CallTip tip;
-        QString str = QString::fromAscii(It->first.c_str());
+        QString str = QString::fromLatin1(It->first.c_str());
         tip.name = str;
         tip.type = CallTip::Property;
         QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It->second));

@@ -115,7 +115,7 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         }
         else {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap = QString::fromAscii("%1[*]").arg(cap);
+            cap = QString::fromLatin1("%1[*]").arg(cap);
             setWindowTitle(cap);
         }
     }

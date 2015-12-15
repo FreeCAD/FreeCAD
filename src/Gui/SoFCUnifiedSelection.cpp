@@ -373,7 +373,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                                            ,pp->getPoint()[1]
                                            ,pp->getPoint()[2]);
 
-                getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
 
                 if (Gui::Selection().setPreselect(documentName.c_str()
                                        ,objectName.c_str()
@@ -470,7 +470,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                                                        ,pp->getPoint()[1]
                                                        ,pp->getPoint()[2]);
 
-                            getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                            getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
                         }
                     }
                 }
@@ -508,7 +508,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                                                    ,pp->getPoint()[1]
                                                    ,pp->getPoint()[2]);
 
-                        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
                     }
                 }
 

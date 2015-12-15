@@ -118,13 +118,13 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
             QIcon px = view->getIcon();
             SingleSelectionItem* item1 = new SingleSelectionItem(ui->treeWidgetActual);
             item1->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item1->setData(0, Qt::UserRole, QString::fromAscii((*it)->getNameInDocument()));
+            item1->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
             item1->setCheckState(0, Qt::Unchecked);
             item1->setIcon(0, px);
 
             SingleSelectionItem* item2 = new SingleSelectionItem(ui->treeWidgetNominal);
             item2->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item2->setData(0, Qt::UserRole, QString::fromAscii((*it)->getNameInDocument()));
+            item2->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
             item2->setCheckState(0, Qt::Unchecked);
             item2->setIcon(0, px);
 

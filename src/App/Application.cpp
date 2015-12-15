@@ -1164,7 +1164,7 @@ void Application::initConfig(int argc, char ** argv)
     // Now it's time to read-in the file branding.xml if it exists
     Branding brand;
     QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
-    QFileInfo fi(binDir, QString::fromAscii("branding.xml"));
+    QFileInfo fi(binDir, QString::fromLatin1("branding.xml"));
     if (brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {

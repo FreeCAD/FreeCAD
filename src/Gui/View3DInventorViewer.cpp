@@ -1541,7 +1541,7 @@ void View3DInventorViewer::printDimension()
             unit = QLatin1String("nm");
         }
 
-        QString dim = QString::fromAscii("%1 x %2 %3")
+        QString dim = QString::fromLatin1("%1 x %2 %3")
                       .arg(fWidth / fFac,0,'f',2)
                       .arg(fHeight / fFac,0,'f',2)
                       .arg(unit);
@@ -2625,7 +2625,7 @@ SoPath* View3DInventorViewer::pickFilterCB(void* viewer, const SoPickedPoint* pp
                  ,pp->getPoint()[1]
                  ,pp->getPoint()[2]);
 
-        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
     }
 
     return pp->getPath();

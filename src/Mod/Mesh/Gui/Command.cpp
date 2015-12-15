@@ -1311,10 +1311,10 @@ void CmdMeshEvaluateSolid::activated(int iMsg)
         QString msg;
         if (mesh->Mesh.getValue().getKernel().HasOpenEdges())
             msg = QObject::tr("The mesh '%1' is not a solid.")
-                .arg(QString::fromAscii(mesh->Label.getValue()));
+                .arg(QString::fromLatin1(mesh->Label.getValue()));
         else
             msg = QObject::tr("The mesh '%1' is a solid.")
-                .arg(QString::fromAscii(mesh->Label.getValue()));
+                .arg(QString::fromLatin1(mesh->Label.getValue()));
         QMessageBox::information(Gui::getMainWindow(), QObject::tr("Solid Mesh"), msg);
     }
 }

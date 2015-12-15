@@ -253,8 +253,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -278,8 +278,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();

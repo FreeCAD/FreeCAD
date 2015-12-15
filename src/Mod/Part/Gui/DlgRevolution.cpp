@@ -164,7 +164,7 @@ void DlgRevolution::findShapes()
         // So allowed are: vertex, edge, wire, face, shell and compound
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
         item->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-        item->setData(0, Qt::UserRole, QString::fromAscii((*it)->getNameInDocument()));
+        item->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
         Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
         if (vp) item->setIcon(0, vp->getIcon());
     }
@@ -185,16 +185,16 @@ void DlgRevolution::accept()
     QString shape, type, name, solid;
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     if (ui->checkSolid->isChecked()) {
-        solid = QString::fromAscii("True");}
+        solid = QString::fromLatin1("True");}
     else {
-        solid = QString::fromAscii("False");}
+        solid = QString::fromLatin1("False");}
     for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
         shape = (*it)->data(0, Qt::UserRole).toString();
-        type = QString::fromAscii("Part::Revolution");
-        name = QString::fromAscii(activeDoc->getUniqueObjectName("Revolve").c_str());
+        type = QString::fromLatin1("Part::Revolution");
+        name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
         Base::Vector3d axis = this->getDirection();
 
-        QString code = QString::fromAscii(
+        QString code = QString::fromLatin1(
             "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
             "FreeCAD.ActiveDocument.%2.Source = FreeCAD.ActiveDocument.%3\n"
             "FreeCAD.ActiveDocument.%2.Axis = (%4,%5,%6)\n"

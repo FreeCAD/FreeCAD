@@ -84,8 +84,8 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
             }
             _pcSingleton->addPath(path);
         }
-        _pcSingleton->addPath(QString::fromAscii("%1/icons").arg(QString::fromUtf8(App::GetApplication().getHomePath())));
-        _pcSingleton->addPath(QString::fromAscii("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
+        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().getHomePath())));
+        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));
 
@@ -148,7 +148,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
     QStringList files, filters;
     QList<QByteArray> formats = QImageReader::supportedImageFormats();
     for (QList<QByteArray>::iterator it = formats.begin(); it != formats.end(); ++it)
-        filters << QString::fromAscii("*.%1").arg(QString::fromAscii(*it).toLower());
+        filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*it).toLower());
 
     QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
 #if QT_VERSION >= 0x040500
@@ -252,8 +252,8 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         if (!loadPixmap(fileName, icon)) {
             // Go through supported file formats
             for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                QString path = QString::fromAscii("%1.%2").arg(fileName).
-                    arg(QString::fromAscii((*fm).toLower().constData()));
+                QString path = QString::fromLatin1("%1.%2").arg(fileName).
+                    arg(QString::fromLatin1((*fm).toLower().constData()));
                 if (loadPixmap(path, icon)) {
                     break;
                 }
@@ -316,8 +316,8 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     QPalette pal = webView.palette();
     pal.setColor(QPalette::Background, Qt::transparent);
     webView.setPalette(pal);
-    webView.setContent(contents, QString::fromAscii("image/svg+xml"));
-    QString node = QString::fromAscii("document.rootElement.nodeName");
+    webView.setContent(contents, QString::fromLatin1("image/svg+xml"));
+    QString node = QString::fromLatin1("document.rootElement.nodeName");
     QWebFrame* frame = webView.page()->mainFrame();
     if (!frame) {
         return QPixmap();
@@ -328,8 +328,8 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
         return QPixmap();
     }
 
-    QString w = QString::fromAscii("document.rootElement.width.baseVal.value");
-    QString h = QString::fromAscii("document.rootElement.height.baseVal.value");
+    QString w = QString::fromLatin1("document.rootElement.width.baseVal.value");
+    QString h = QString::fromLatin1("document.rootElement.height.baseVal.value");
     double ww = frame->evaluateJavaScript(w).toDouble();
     double hh = frame->evaluateJavaScript(h).toDouble();
     if (ww == 0.0 || hh == 0.0)
@@ -361,7 +361,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     if (!frame) {
         return QPixmap();
     }
-    frame->setContent(contents, QString::fromAscii("image/svg+xml"));
+    frame->setContent(contents, QString::fromLatin1("image/svg+xml"));
     // Important to exclude user events here because otherwise
     // it may happen that an item the icon is created for gets
     // deleted in the meantime. This happens e.g. dragging over

@@ -717,7 +717,7 @@ void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, co
 
 bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &object, QString &sub)
 {
-    QStringList strings = input.split(QString::fromAscii("."));
+    QStringList strings = input.split(QString::fromLatin1("."));
     if (strings.size() != 3)
         return false;
     doc = strings.at(0);

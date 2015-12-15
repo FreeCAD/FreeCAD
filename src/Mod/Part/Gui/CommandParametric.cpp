@@ -58,7 +58,7 @@ void CmdPartCylinder::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cylinder\",\"Cylinder\")");
-    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCylinder","Cylinder"));
     doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
@@ -98,7 +98,7 @@ void CmdPartBox::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Box\",\"Box\")");
-    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartBox","Cube"));
     doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
@@ -138,7 +138,7 @@ void CmdPartSphere::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Sphere\",\"Sphere\")");
-    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartSphere","Sphere"));
     doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
@@ -178,7 +178,7 @@ void CmdPartCone::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cone\",\"Cone\")");
-    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCone","Cone"));
     doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
@@ -218,7 +218,7 @@ void CmdPartTorus::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Torus\",\"Torus\")");
-    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartTorus","Torus"));
     doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();

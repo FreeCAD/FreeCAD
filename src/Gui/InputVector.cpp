@@ -157,7 +157,7 @@ void LocationWidget::setDirection(const Base::Vector3d& dir)
     }
 
     // add a new item before the very last item
-    QString display = QString::fromAscii("(%1,%2,%3)")
+    QString display = QString::fromLatin1("(%1,%2,%3)")
         .arg(dir.x)
         .arg(dir.y)
         .arg(dir.z);

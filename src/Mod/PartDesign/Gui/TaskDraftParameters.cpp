@@ -398,7 +398,7 @@ bool TaskDlgDraftParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
     std::string neutralPlane = parameter->getPlane();

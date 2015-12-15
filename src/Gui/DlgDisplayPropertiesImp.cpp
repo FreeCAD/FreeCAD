@@ -406,7 +406,7 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* display = static_cast<App::PropertyEnumeration*>(prop);
-            QString activeMode = QString::fromAscii(display->getValueAsString());
+            QString activeMode = QString::fromLatin1(display->getValueAsString());
             int index = changeMode->findText(activeMode);
             if (index != -1) {
                 changeMode->setCurrentIndex(index);

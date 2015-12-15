@@ -381,14 +381,14 @@ void OCAFBrowser::load(QTreeWidget* theTree)
     root->setIcon(0, myGroupIcon);
     theTree->addTopLevelItem(root);
 
-    load(pDoc->GetData()->Root(), root, QString::fromAscii("0"));
+    load(pDoc->GetData()->Root(), root, QString::fromLatin1("0"));
 }
 
 void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QString& s)
 {
     Handle(TDataStd_Name) name;
     if (label.FindAttribute(TDataStd_Name::GetID(),name)) {
-        QString text = QString::fromAscii("%1 %2").arg(s).arg(QString::fromUtf8(toString(name->Get()).c_str()));
+        QString text = QString::fromLatin1("%1 %2").arg(s).arg(QString::fromUtf8(toString(name->Get()).c_str()));
         item->setText(0, text);
     }
 
@@ -468,13 +468,13 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
     //    //if (node->HasFather())
     //    //    ;
     //    QTreeWidgetItem* child = new QTreeWidgetItem();
-    //    child->setText(0, QString::fromAscii("TDataStd_TreeNode"));
+    //    child->setText(0, QString::fromLatin1("TDataStd_TreeNode"));
     //    item->addChild(child);
     //}
 
     int i=1;
     for (TDF_ChildIterator it(label); it.More(); it.Next(),i++) {
-        QString text = QString::fromAscii("%1:%2").arg(s).arg(i);
+        QString text = QString::fromLatin1("%1:%2").arg(s).arg(i);
         QTreeWidgetItem* child = new QTreeWidgetItem();
         child->setText(0, text);
         child->setIcon(0, myGroupIcon);
@@ -546,7 +546,7 @@ static PyObject * ocaf(PyObject *self, PyObject *args)
         if (!dlg) {
             dlg = new QDialog(Gui::getMainWindow());
             QTreeWidget* tree = new QTreeWidget();
-            tree->setHeaderLabel(QString::fromAscii("OCAF Browser"));
+            tree->setHeaderLabel(QString::fromLatin1("OCAF Browser"));
 
             QVBoxLayout *layout = new QVBoxLayout;
             layout->addWidget(tree);

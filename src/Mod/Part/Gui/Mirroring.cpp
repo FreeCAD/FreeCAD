@@ -94,7 +94,7 @@ void Mirroring::findShapes()
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     if (!activeGui) return;
 
-    this->document = QString::fromAscii(activeDoc->getName());
+    this->document = QString::fromLatin1(activeDoc->getName());
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
         (Part::Feature::getClassTypeId());
 
@@ -102,7 +102,7 @@ void Mirroring::findShapes()
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -135,7 +135,7 @@ bool Mirroring::accept()
     activeDoc->openTransaction("Mirroring");
 
     QString shape, label;
-    QRegExp rx(QString::fromAscii(" \\(Mirror #\\d+\\)$"));
+    QRegExp rx(QString::fromLatin1(" \\(Mirror #\\d+\\)$"));
     QList<QTreeWidgetItem *> items = ui->shapes->selectedItems();
     float normx=0, normy=0, normz=0;
     int index = ui->comboBox->currentIndex();
@@ -156,9 +156,9 @@ bool Mirroring::accept()
         int pos = label.indexOf(rx);
         if (pos > -1)
             label = label.left(pos);
-        label.append(QString::fromAscii(" (Mirror #%1)").arg(++count));
+        label.append(QString::fromLatin1(" (Mirror #%1)").arg(++count));
 
-        QString code = QString::fromAscii(
+        QString code = QString::fromLatin1(
             "__doc__=FreeCAD.getDocument(\"%1\")\n"
             "__doc__.addObject(\"Part::Mirroring\")\n"
             "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"

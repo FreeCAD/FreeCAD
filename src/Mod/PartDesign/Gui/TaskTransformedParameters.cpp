@@ -54,7 +54,7 @@ using namespace Gui;
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
-              QString::fromAscii((TransformedView->featureName + " parameters").c_str()),
+              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()),
               true,
               parent),
       TransformedView(TransformedView),
@@ -261,7 +261,7 @@ bool TaskDlgTransformedParameters::accept()
         Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

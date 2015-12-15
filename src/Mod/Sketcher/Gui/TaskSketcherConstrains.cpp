@@ -307,8 +307,8 @@ public:
 protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
-        QString key = QString::fromAscii("%1_%2x%3")
-            .arg(QString::fromAscii(name))
+        QString key = QString::fromLatin1("%1_%2x%3")
+            .arg(QString::fromLatin1(name))
             .arg(size.width())
             .arg(size.height());
         QPixmap icon;
@@ -559,8 +559,8 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
         if (strcmp(msg.pDocName,sketchView->getSketchObject()->getDocument()->getName())==0 &&
             strcmp(msg.pObjectName,sketchView->getSketchObject()->getNameInDocument())== 0) {
             if (msg.pSubName) {
-                QRegExp rx(QString::fromAscii("^Constraint(\\d+)$"));
-                QString expr = QString::fromAscii(msg.pSubName);
+                QRegExp rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QString expr = QString::fromLatin1(msg.pSubName);
                 int pos = expr.indexOf(rx);
                 if (pos > -1) {
                     bool ok;
@@ -669,8 +669,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
         catch (const Base::Exception & e) {
             Gui::Command::abortCommand();
 
-            QMessageBox::critical(Gui::MainWindow::getInstance(), QString::fromAscii("Error"),
-                                  QString::fromAscii(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+            QMessageBox::critical(Gui::MainWindow::getInstance(), QString::fromLatin1("Error"),
+                                  QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
         }
     }
 

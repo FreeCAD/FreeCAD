@@ -433,7 +433,7 @@ void FileOptionsDialog::accept()
         if (ext.isEmpty())
             setDefaultSuffix(suf);
         else if (ext.toLower() != suf.toLower()) {
-            fn = QString::fromAscii("%1.%2").arg(fn).arg(suf);
+            fn = QString::fromLatin1("%1.%2").arg(fn).arg(suf);
             selectFile(fn);
         }
     }
@@ -709,7 +709,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
             module = module.left(pos);
         }
 
-        button->setText(QString::fromAscii("%1 (%2)").arg(filter).arg(module));
+        button->setText(QString::fromLatin1("%1 (%2)").arg(filter).arg(module));
         button->setObjectName(it.value());
         gridLayout1->addWidget(button, index, 0, 1, 1);
         group->addButton(button, index);
@@ -784,7 +784,7 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
         std::map<std::string, std::string>::const_iterator it;
         it = filterList.find((const char*)filter.toUtf8());
         if (it != filterList.end()) {
-            QString module = QString::fromAscii(it->second.c_str());
+            QString module = QString::fromLatin1(it->second.c_str());
             for (QStringList::const_iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
                 dict[*it] = module;
             }
@@ -808,10 +808,10 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
 
         fileExtension[ext].push_back(*it);
         for (std::map<std::string, std::string>::iterator jt = filters.begin(); jt != filters.end(); ++jt)
-            filetypeHandler[ext][QString::fromUtf8(jt->first.c_str())] = QString::fromAscii(jt->second.c_str());
+            filetypeHandler[ext][QString::fromUtf8(jt->first.c_str())] = QString::fromLatin1(jt->second.c_str());
         // set the default module handler
         if (!filters.empty())
-            dict[*it] = QString::fromAscii(filters.begin()->second.c_str());
+            dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
     for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 
@@ -846,7 +846,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
         std::map<std::string, std::string>::const_iterator it;
         it = filterList.find((const char*)filter.toUtf8());
         if (it != filterList.end()) {
-            QString module = QString::fromAscii(it->second.c_str());
+            QString module = QString::fromLatin1(it->second.c_str());
             for (QStringList::const_iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
                 dict[*it] = module;
             }
@@ -870,10 +870,10 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
 
         fileExtension[ext].push_back(*it);
         for (std::map<std::string, std::string>::iterator jt = filters.begin(); jt != filters.end(); ++jt)
-            filetypeHandler[ext][QString::fromUtf8(jt->first.c_str())] = QString::fromAscii(jt->second.c_str());
+            filetypeHandler[ext][QString::fromUtf8(jt->first.c_str())] = QString::fromLatin1(jt->second.c_str());
         // set the default module handler
         if (!filters.empty())
-            dict[*it] = QString::fromAscii(filters.begin()->second.c_str());
+            dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
     for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 

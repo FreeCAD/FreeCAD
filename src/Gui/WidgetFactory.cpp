@@ -676,8 +676,8 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
         }
     }
 
-    QWidget* widget = loader.createWidget(QString::fromAscii(className.c_str()), parent,
-        QString::fromAscii(objectName.c_str()));
+    QWidget* widget = loader.createWidget(QString::fromLatin1(className.c_str()), parent,
+        QString::fromLatin1(objectName.c_str()));
     if (!widget) {
         std::string err = "No such widget class '";
         err += className;
@@ -1041,7 +1041,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
     QList<QWidget*>::const_iterator it = list.begin();
     QObject *obj;
-    QString sigStr = QString::fromAscii("2%1").arg(QString::fromAscii(signal));
+    QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
 
     while ( it != list.end() ) {
         obj = *it;
@@ -1209,7 +1209,7 @@ PyObject *PyResource::setValue(PyObject *args)
 
     QVariant v;
     if (PyString_Check(psValue)) {
-        v = QString::fromAscii(PyString_AsString(psValue));
+        v = QString::fromLatin1(PyString_AsString(psValue));
     }
     else if (PyInt_Check(psValue)) {
         int val = PyInt_AsLong(psValue);
@@ -1231,7 +1231,7 @@ PyObject *PyResource::setValue(PyObject *args)
                 continue;
 
             char* pItem = PyString_AsString(item);
-            str.append(QString::fromAscii(pItem));
+            str.append(QString::fromLatin1(pItem));
         }
 
         v = str;
