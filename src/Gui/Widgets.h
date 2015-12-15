@@ -147,7 +147,7 @@ class GuiExport CheckListDialog : public QDialog
   Q_OBJECT
 
 public:
-  CheckListDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+  CheckListDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
   ~CheckListDialog();
 
   void setCheckableItems( const QStringList& items );
@@ -225,7 +225,7 @@ class GuiExport UrlLabel : public QLabel
   Q_PROPERTY( QString  url    READ url   WRITE setUrl)
 
 public:
-  UrlLabel ( QWidget * parent = 0, Qt::WFlags f = 0 );
+  UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = 0 );
   virtual ~UrlLabel();
 
   QString url() const;

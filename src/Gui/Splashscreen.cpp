@@ -150,7 +150,7 @@ private:
 /**
  * Constructs a splash screen that will display the pixmap.
  */
-SplashScreen::SplashScreen(  const QPixmap & pixmap , Qt::WFlags f )
+SplashScreen::SplashScreen(  const QPixmap & pixmap , Qt::WindowFlags f )
     : QSplashScreen(pixmap, f)
 {
     // write the messages to splasher

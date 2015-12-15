@@ -45,7 +45,7 @@ using namespace Gui::Dialog;
  */
 DlgEditFileIncludePropertyExternal::
 DlgEditFileIncludePropertyExternal(App::PropertyFileIncluded& Prop,
-                                   QWidget* parent, Qt::WFlags fl)
+                                   QWidget* parent, Qt::WindowFlags fl)
     : DlgRunExternal(parent, fl), Prop(Prop)
 {
 

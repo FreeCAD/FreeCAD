@@ -46,7 +46,7 @@ QList<QByteArray> DlgCustomizeImp::_pages;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WFlags fl)
+DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
     setModal(false);

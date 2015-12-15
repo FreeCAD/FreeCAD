@@ -446,7 +446,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-CheckListDialog::CheckListDialog( QWidget* parent, Qt::WFlags fl )
+CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
     ui.setupUi(this);
@@ -709,7 +709,7 @@ void ColorButton::onRejected()
 
 // ------------------------------------------------------------------------------
 
-UrlLabel::UrlLabel(QWidget * parent, Qt::WFlags f)
+UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
   : QLabel(parent, f)
 {
     _url = QString::fromLatin1("http://localhost");

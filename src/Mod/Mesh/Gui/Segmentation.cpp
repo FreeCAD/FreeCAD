@@ -41,7 +41,7 @@
 
 using namespace MeshGui;
 
-Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WFlags fl)
+Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl), myMesh(mesh)
 {
     ui = new Ui_Segmentation;

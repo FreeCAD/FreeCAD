@@ -172,7 +172,7 @@ void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WFlags fl)
+DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), d(new Private())
 {
     this->setupUi(this);
@@ -1166,7 +1166,7 @@ bool DockEvaluateMeshImp::hasInstance()
  *  Constructs a DockEvaluateMeshImp which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  */
-DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WFlags fl )
+DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WindowFlags fl )
   : DlgEvaluateMeshImp( parent, fl )
 {
     // embed this dialog into a dockable widget container

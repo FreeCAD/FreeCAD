@@ -80,7 +80,7 @@ class GuiExport LocationDialog : public QDialog
     Q_OBJECT
 
 protected:
-    LocationDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
+    LocationDialog(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     virtual ~LocationDialog();
 
 protected:
@@ -113,7 +113,7 @@ template <class Ui>
 class LocationInterface : public LocationDialog, public Ui
 {
 public:
-    LocationInterface(QWidget* parent = 0, Qt::WFlags fl = 0)  : LocationDialog(parent, fl)
+    LocationInterface(QWidget* parent = 0, Qt::WindowFlags fl = 0)  : LocationDialog(parent, fl)
     {
         this->setupUi(this);
         this->retranslate();
@@ -359,7 +359,7 @@ template <class Ui>
 class LocationDialogComp : public LocationDialog
 {
 public:
-    LocationDialogComp(QWidget* parent = 0, Qt::WFlags fl = 0)
+    LocationDialogComp(QWidget* parent = 0, Qt::WindowFlags fl = 0)
       : LocationDialog(parent, fl), ui(this)
     {
     }

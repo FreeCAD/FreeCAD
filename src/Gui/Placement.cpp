@@ -76,7 +76,7 @@ public:
 
 /* TRANSLATOR Gui::Dialog::Placement */
 
-Placement::Placement(QWidget* parent, Qt::WFlags fl)
+Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationDialog(parent, fl)
 {
     propertyName = "Placement"; // default name
@@ -492,7 +492,7 @@ void Placement::changeEvent(QEvent *e)
 
 /* TRANSLATOR Gui::Dialog::DockablePlacement */
 
-DockablePlacement::DockablePlacement(QWidget* parent, Qt::WFlags fl) : Placement(parent, fl)
+DockablePlacement::DockablePlacement(QWidget* parent, Qt::WindowFlags fl) : Placement(parent, fl)
 {
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     QDockWidget* dw = pDockMgr->addDockWindow(QT_TR_NOOP("Placement"),

@@ -41,7 +41,7 @@ class GuiExport AbstractSplitView : public MDIView, public ParameterGrp::Observe
     TYPESYSTEM_HEADER();
 
 public:
-    AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
+    AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0);
     ~AbstractSplitView();
 
     virtual const char *getName(void) const;
@@ -74,7 +74,7 @@ class GuiExport SplitView3DInventor : public AbstractSplitView
     TYPESYSTEM_HEADER();
 
 public:
-    SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
+    SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0);
     ~SplitView3DInventor();
 };
 

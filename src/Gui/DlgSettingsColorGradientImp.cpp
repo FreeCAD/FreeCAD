@@ -43,7 +43,7 @@ using namespace Gui::Dialog;
  *  Constructs a DlgSettingsColorGradientImp as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::WFlags fl )
+DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::WindowFlags fl )
   : QDialog( parent, fl )
 {
     this->setupUi(this);

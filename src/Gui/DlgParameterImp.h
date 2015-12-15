@@ -42,7 +42,7 @@ class DlgParameterImp : public QDialog, public Ui_DlgParameter
     Q_OBJECT
 
 public:
-    DlgParameterImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DlgParameterImp();
 
     void accept();

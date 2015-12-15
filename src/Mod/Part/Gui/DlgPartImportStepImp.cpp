@@ -41,7 +41,7 @@ using namespace PartGui;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-DlgPartImportStepImp::DlgPartImportStepImp( QWidget* parent, Qt::WFlags fl )
+DlgPartImportStepImp::DlgPartImportStepImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
     this->setupUi(this);

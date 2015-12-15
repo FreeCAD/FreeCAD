@@ -106,7 +106,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
 
 /* TRANSLATOR Gui::Dialog::DlgInspector */
 
-DlgInspector::DlgInspector(QWidget* parent, Qt::WFlags fl)
+DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_SceneInspector())
 {
     ui->setupUi(this);

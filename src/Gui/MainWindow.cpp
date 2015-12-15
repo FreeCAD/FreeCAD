@@ -236,7 +236,7 @@ protected:
 
 /* TRANSLATOR Gui::MainWindow */
 
-MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
+MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
   : QMainWindow( parent, f/*WDestructiveClose*/ )
 {
     d = new MainWindowP;
