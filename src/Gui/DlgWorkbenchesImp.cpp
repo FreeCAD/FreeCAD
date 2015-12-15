@@ -245,14 +245,14 @@ void DlgWorkbenchesImp::save_workbenches()
             enabled_wbs.append(name + QString::fromAscii(","));
         }
     }
-    hGrp->SetASCII("Enabled", enabled_wbs.toAscii());
+    hGrp->SetASCII("Enabled", enabled_wbs.toLatin1());
 
     for (int i = 0; i < lw_disabled_workbenches->count(); i++) {
         QVariant item_data = lw_disabled_workbenches->item(i)->data(Qt::UserRole);
         QString name = item_data.toString();
         disabled_wbs.append(name + QString::fromAscii(","));
     }
-    hGrp->SetASCII("Disabled", disabled_wbs.toAscii());
+    hGrp->SetASCII("Disabled", disabled_wbs.toLatin1());
 }
 
 #include "moc_DlgWorkbenchesImp.cpp"

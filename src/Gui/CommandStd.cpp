@@ -90,7 +90,7 @@ void StdCmdWorkbench::activated(int i)
     try {
         Workbench* w = WorkbenchManager::instance()->active();
         QList<QAction*> items = static_cast<WorkbenchGroup*>(_pcAction)->actions();
-        std::string switch_to = (const char*)items[i]->objectName().toAscii();
+        std::string switch_to = (const char*)items[i]->objectName().toLatin1();
         if (w) {
             std::string current_w = w->name();
             if (switch_to == current_w)

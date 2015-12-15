@@ -116,7 +116,7 @@ void ButtonModel::insertButtonRows(int number)
     {
         QString groupName;
         groupName.setNum(index);
-        Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(groupName.toAscii());//builds the group.
+        Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(groupName.toLatin1());//builds the group.
         newGroup->SetASCII("Command", "");
     }
     endInsertRows();
@@ -126,14 +126,14 @@ void ButtonModel::insertButtonRows(int number)
 void ButtonModel::setCommand(int row, QString command)
 {
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
-    groupVector.at(row)->SetASCII("Command", command.toAscii());
+    groupVector.at(row)->SetASCII("Command", command.toLatin1());
 }
 
 void ButtonModel::goButtonPress(int number)
 {
     QString numberString;
     numberString.setNum(number);
-    if (!spaceballButtonGroup()->HasGroup(numberString.toAscii()))
+    if (!spaceballButtonGroup()->HasGroup(numberString.toLatin1()))
         insertButtonRows(number);
 }
 
@@ -439,7 +439,7 @@ void CommandModel::groupCommands(const QString& groupName)
     CommandNode *parentNode = new CommandNode(CommandNode::GroupType);
     parentNode->parent = rootNode;
     rootNode->children.push_back(parentNode);
-    std::vector <Command*> commands = Application::Instance->commandManager().getGroupCommands(groupName.toAscii());
+    std::vector <Command*> commands = Application::Instance->commandManager().getGroupCommands(groupName.toLatin1());
     for (std::vector <Command*>::iterator it = commands.begin(); it != commands.end(); ++it)
     {
         CommandNode *childNode = new CommandNode(CommandNode::CommandType);

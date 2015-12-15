@@ -319,8 +319,8 @@ bool InteractiveInterpreter::push(const char* line)
     d->buffer.append(QString::fromAscii(line));
     QString source = d->buffer.join(QLatin1String("\n"));
     try {
-        // Source is already UTF-8, so we can use toAscii()
-        bool more = runSource(source.toAscii());
+        // Source is already UTF-8, so we can use toLatin1()
+        bool more = runSource(source.toLatin1());
         if (!more)
             d->buffer.clear();
         return more;

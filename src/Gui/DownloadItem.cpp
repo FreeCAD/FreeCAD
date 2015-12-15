@@ -367,12 +367,12 @@ void DownloadItem::open()
         if (doc) {
             for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
                 Gui::Application::Instance->importFrom(it.key().toUtf8(),
-                    doc->getDocument()->getName(), it.value().toAscii());
+                    doc->getDocument()->getName(), it.value().toLatin1());
             }
         }
         else {
             for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-                Gui::Application::Instance->open(it.key().toUtf8(), it.value().toAscii());
+                Gui::Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
             }
         }
     }

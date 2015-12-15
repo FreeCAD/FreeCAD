@@ -223,7 +223,7 @@ bool Tessellation::accept()
         return false;
     }
 
-    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toAscii());
+    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toLatin1());
     if (!activeDoc) {
         QMessageBox::critical(this, windowTitle(),
             tr("No such document '%1'.").arg(this->document));

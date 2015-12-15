@@ -56,7 +56,7 @@ std::vector<App::DocumentObject*> FeaturePickDialog::getFeatures() {
     std::vector<App::DocumentObject*> result;
 
     for (std::vector<QString>::const_iterator s = features.begin(); s != features.end(); ++s)
-        result.push_back(App::GetApplication().getActiveDocument()->getObject(s->toAscii().data()));
+        result.push_back(App::GetApplication().getActiveDocument()->getObject(s->toLatin1().data()));
 
     return result;
 }

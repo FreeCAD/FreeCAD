@@ -740,7 +740,7 @@ void UrlLabel::mouseReleaseEvent (QMouseEvent *)
         PyObject* dict = PyModule_GetDict(module);
         PyObject* func = PyDict_GetItemString(dict, "open");
         if (func) {
-            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toAscii());
+            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
             PyObject* result = PyEval_CallObject(func,args);
             // decrement the args and module reference
             Py_XDECREF(result);

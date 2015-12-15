@@ -121,7 +121,7 @@ void DlgGeneralImp::saveSettings()
     QVariant data = AutoloadModuleCombo->itemData(index);
     QString startWbName = data.toString();
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                          SetASCII("AutoloadModule", startWbName.toAscii());
+                          SetASCII("AutoloadModule", startWbName.toLatin1());
     
     AutoloadTabCombo->onSave();
     RecentFiles->onSave();
@@ -133,7 +133,7 @@ void DlgGeneralImp::saveSettings()
     setRecentFileSize();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale::system().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str();
+    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     QByteArray current = Languages->itemData(Languages->currentIndex()).toByteArray();
     if (current != language)
     {
@@ -216,7 +216,7 @@ void DlgGeneralImp::loadSettings()
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale::system().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str();
+    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     int index = 1;
     Languages->addItem(QString::fromAscii("English"), QByteArray("English"));
     TStringMap list = Translator::instance()->supportedLocales();

@@ -212,9 +212,9 @@ void DlgRevolution::accept()
             .arg(ui->angle->value(),0,'f',2)
             .arg(solid)
             ;
-        Gui::Application::Instance->runPythonCode((const char*)code.toAscii());
-        QByteArray to = name.toAscii();
-        QByteArray from = shape.toAscii();
+        Gui::Application::Instance->runPythonCode((const char*)code.toLatin1());
+        QByteArray to = name.toLatin1();
+        QByteArray from = shape.toLatin1();
         Gui::Command::copyVisual(to, "ShapeColor", from);
         Gui::Command::copyVisual(to, "LineColor", from);
         Gui::Command::copyVisual(to, "PointColor", from);

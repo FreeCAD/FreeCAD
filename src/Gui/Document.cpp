@@ -891,7 +891,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     writer.incInd(); // indentation for camera settings
     writer.Stream() << writer.ind() << "<Camera settings=\"" 
-                    << (const char*)viewPos.toAscii() <<"\"/>" << std::endl;
+                    << (const char*)viewPos.toLatin1() <<"\"/>" << std::endl;
     writer.decInd(); // indentation for camera settings
     writer.Stream() << "</Document>" << std::endl;
 }

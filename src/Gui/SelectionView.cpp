@@ -195,9 +195,9 @@ void SelectionView::select(QListWidgetItem* item)
     elements[1] = elements[1].split(QString::fromAscii(" "))[0];
     //Gui::Selection().clearSelection();
     Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
-    //Gui::Selection().addSelection(elements[0].toAscii(),elements[1].toAscii(),0);
+    //Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
     QString cmd = QString::fromAscii("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
 }
 
 void SelectionView::deselect(void)
@@ -208,9 +208,9 @@ void SelectionView::deselect(void)
     QStringList elements = item->text().split(QString::fromAscii("."));
     // remove possible space from object name followed by label
     elements[1] = elements[1].split(QString::fromAscii(" "))[0];
-    //Gui::Selection().rmvSelection(elements[0].toAscii(),elements[1].toAscii(),0);
+    //Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
     QString cmd = QString::fromAscii("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
 }
 
 void SelectionView::zoom(void)
@@ -235,14 +235,14 @@ void SelectionView::toPython(void)
     elements[1] = elements[1].split(QString::fromAscii(" "))[0];
 
     QString cmd = QString::fromAscii("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     if (elements.length() > 2) {
         elements[2] = elements[2].split(QString::fromAscii(" "))[0];
         if ( elements[2].contains(QString::fromAscii("Face")) || elements[2].contains(QString::fromAscii("Edge")) ) {
             cmd = QString::fromAscii("shp = App.getDocument(\"%1\").getObject(\"%2\").Shape").arg(elements[0]).arg(elements[1]);
-            Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+            Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             cmd = QString::fromAscii("elt = App.getDocument(\"%1\").getObject(\"%2\").Shape.%3").arg(elements[0]).arg(elements[1]).arg(elements[2]);
-            Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+            Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         }
     }
 }

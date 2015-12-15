@@ -263,7 +263,7 @@ ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
     Justification.setEnums(JustificationEnums);
     QFont fn;
     ADD_PROPERTY(FontSize,(fn.pointSize()));
-    ADD_PROPERTY(FontName,((const char*)fn.family().toAscii()));
+    ADD_PROPERTY(FontName,((const char*)fn.family().toLatin1()));
     ADD_PROPERTY(Frame,(true));
 
     pColor = new SoBaseColor();

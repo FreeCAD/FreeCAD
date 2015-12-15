@@ -201,7 +201,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Edge");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -253,7 +253,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Face");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -305,7 +305,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Face");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -358,7 +358,7 @@ void ShapeBuilderWidget::createShellFromFace()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Shell");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -398,7 +398,7 @@ void ShapeBuilderWidget::createSolidFromShell()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Solid");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {

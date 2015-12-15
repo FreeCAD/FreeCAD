@@ -469,7 +469,7 @@ void TextBrowser::dropEvent(QDropEvent  * e)
     dataStream >> action;
 
     CommandManager& rclMan = Application::Instance->commandManager();
-    Command* pCmd = rclMan.getCommandByName(action.toAscii());
+    Command* pCmd = rclMan.getCommandByName(action.toLatin1());
     if ( pCmd ) {
       QString info = pCmd->getAction()->whatsThis();
       if ( !info.isEmpty() ) {

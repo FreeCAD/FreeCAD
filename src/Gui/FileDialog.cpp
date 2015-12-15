@@ -799,11 +799,11 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
     for (QStringList::const_iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
         QFileInfo fi(*it);
         QString ext = fi.completeSuffix().toLower();
-        std::map<std::string, std::string> filters = App::GetApplication().getExportFilters(ext.toAscii());
+        std::map<std::string, std::string> filters = App::GetApplication().getExportFilters(ext.toLatin1());
         
         if (filters.empty()) {
             ext = fi.suffix().toLower();
-            filters = App::GetApplication().getExportFilters(ext.toAscii());
+            filters = App::GetApplication().getExportFilters(ext.toLatin1());
         }
 
         fileExtension[ext].push_back(*it);
@@ -861,11 +861,11 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
     for (QStringList::const_iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
         QFileInfo fi(*it);
         QString ext = fi.completeSuffix().toLower();
-        std::map<std::string, std::string> filters = App::GetApplication().getImportFilters(ext.toAscii());
+        std::map<std::string, std::string> filters = App::GetApplication().getImportFilters(ext.toLatin1());
         
         if (filters.empty()) {
             ext = fi.suffix().toLower();
-            filters = App::GetApplication().getImportFilters(ext.toAscii());
+            filters = App::GetApplication().getImportFilters(ext.toLatin1());
         }
 
         fileExtension[ext].push_back(*it);

@@ -226,7 +226,7 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     }
 
     // search for the command in the manager
-    QByteArray actionName = newActionName().toAscii();
+    QByteArray actionName = newActionName().toLatin1();
     CommandManager& rclMan = Application::Instance->commandManager();
     MacroCommand* macro = new MacroCommand(actionName);
     rclMan.addCommand( macro );
@@ -260,12 +260,12 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
-        macro->setPixmap(m_sPixmap.toAscii());
+        macro->setPixmap(m_sPixmap.toLatin1());
     pixmapLabel->clear();
     m_sPixmap = QString::null;
 
     if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toAscii());
+        macro->setAccel(actionAccel->text().toLatin1());
     }
     actionAccel->clear();
 
@@ -315,12 +315,12 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
     actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
-        macro->setPixmap(m_sPixmap.toAscii());
+        macro->setPixmap(m_sPixmap.toLatin1());
     pixmapLabel->clear();
     m_sPixmap = QString::null;
 
     if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toAscii());
+        macro->setAccel(actionAccel->text().toLatin1());
     }
     actionAccel->clear();
 
