@@ -1444,10 +1444,10 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
             if (info.isSymLink())
                 info.setFile(info.readLink());
             std::vector<std::string> module = App::GetApplication()
-                .getImportModules(info.completeSuffix().toAscii());
+                .getImportModules(info.completeSuffix().toLatin1());
             if (module.empty()) {
                 module = App::GetApplication()
-                    .getImportModules(info.suffix().toAscii());
+                    .getImportModules(info.suffix().toLatin1());
             }
             if (!module.empty()) {
                 // ok, we support files with this extension
@@ -1483,7 +1483,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
     // load the files with the associated modules
     for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
         // if the passed document name doesn't exist the module should create it, if needed
-        Application::Instance->importFrom(it.key().toUtf8(), docName, it.value().toAscii());
+        Application::Instance->importFrom(it.key().toUtf8(), docName, it.value().toLatin1());
     }
 }
 
@@ -1576,7 +1576,7 @@ void MainWindow::customEvent(QEvent* e)
                 if (d) {
                     ViewProviderExtern *view = new ViewProviderExtern();
                     try {
-                        view->setModeByString("1",msg.toAscii().constData());
+                        view->setModeByString("1",msg.toLatin1().constData());
                         d->setAnnotationViewProvider("Vdbg",view);
                     }
                     catch (...) {

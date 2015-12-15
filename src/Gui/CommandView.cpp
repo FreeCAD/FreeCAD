@@ -287,7 +287,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         QList<QAction*> acts = pcAction->actions();
         QString data = acts[iMsg]->toolTip();
         QString send = QString::fromAscii("SetCamera %1").arg(data);
-        getGuiApplication()->sendMsgToActiveView(send.toAscii());
+        getGuiApplication()->sendMsgToActiveView(send.toLatin1());
     }
 }
 
@@ -323,7 +323,7 @@ void StdCmdFreezeViews::onSaveViews()
                 }
             }
 
-            str << "    <Camera settings=\"" << viewPos.toAscii().constData() << "\"/>" << endl;
+            str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>" << endl;
         }
 
         str << "  </Views>" << endl;
@@ -364,7 +364,7 @@ void StdCmdFreezeViews::onRestoreViews()
     if (!xmlDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn)) {
         std::cerr << "Parse error in XML content at line " << errorLine
                   << ", column " << errorColumn << ": "
-                  << (const char*)errorStr.toAscii() << std::endl;
+                  << (const char*)errorStr.toLatin1() << std::endl;
         return;
     }
 
@@ -1520,7 +1520,7 @@ void StdViewScreenShot::activated(int iMsg)
                 }
             }
 
-            hExt->SetASCII("OffscreenImageFormat", (const char*)format.toAscii());
+            hExt->SetASCII("OffscreenImageFormat", (const char*)format.toLatin1());
 
             // which background chosen
             const char* background;

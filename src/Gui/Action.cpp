@@ -719,7 +719,7 @@ void RecentFilesAction::activateFile(int id)
         // invokes appendFile()
         SelectModule::Dict dict = SelectModule::importHandler(filename);
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            Application::Instance->open(it.key().toUtf8(), it.value().toAscii());
+            Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
             break;
         }
     }
@@ -773,7 +773,7 @@ void RecentFilesAction::save()
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty())
             break;
-        hGrp->SetASCII(key.toAscii(), value.toUtf8());
+        hGrp->SetASCII(key.toLatin1(), value.toUtf8());
     }
 }
 

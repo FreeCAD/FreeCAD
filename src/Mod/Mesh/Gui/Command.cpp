@@ -468,7 +468,7 @@ void CmdMeshExport::activated(int iMsg)
         QObject::tr("Export mesh"), dir, filter.join(QLatin1String(";;")), &format);
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
-        QByteArray extension = fi.suffix().toAscii();
+        QByteArray extension = fi.suffix().toLatin1();
         for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it) {
             if (it->first == format) {
                 extension = it->second;

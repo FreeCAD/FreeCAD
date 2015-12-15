@@ -146,7 +146,7 @@ QByteArray OnlineDocumentation::loadResource(const QString& filename) const
         std::string path = App::GetApplication().getHomePath();
         path += "/doc/docs.zip";
         zipios::ZipFile zip(path);
-        zipios::ConstEntryPointer entry = zip.getEntry((const char*)fn.toAscii());
+        zipios::ConstEntryPointer entry = zip.getEntry((const char*)fn.toLatin1());
         std::istream* str = zip.getInputStream(entry);
 
         // set size of the array so that no re-allocation is needed when reading from the stream

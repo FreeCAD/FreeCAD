@@ -182,7 +182,7 @@ QString CallTipsList::extractContext(const QString& line) const
     int index = len-1;
     for (int i=0; i<len; i++) {
         int pos = len-1-i;
-        const char ch = line.at(pos).toAscii();
+        const char ch = line.at(pos).toLatin1();
         if ((ch >= 48 && ch <= 57)  ||  // Numbers
             (ch >= 65 && ch <= 90)  ||  // Uppercase letters
             (ch >= 97 && ch <= 122) ||  // Lowercase letters
@@ -208,13 +208,13 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         Py::Dict dict = module.getDict();
         QString modname = items.front();
         items.pop_front();
-        if (!dict.hasKey(std::string(modname.toAscii())))
+        if (!dict.hasKey(std::string(modname.toLatin1())))
             return tips; // unknown object
 
         // get the Python object we need
-        Py::Object obj = dict.getItem(std::string(modname.toAscii()));
+        Py::Object obj = dict.getItem(std::string(modname.toLatin1()));
         while (!items.isEmpty()) {
-            QByteArray name = items.front().toAscii();
+            QByteArray name = items.front().toLatin1();
             std::string attr = name.constData();
             items.pop_front();
             if (obj.hasAttr(attr))

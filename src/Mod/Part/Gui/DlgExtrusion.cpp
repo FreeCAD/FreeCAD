@@ -187,7 +187,7 @@ void DlgExtrusion::apply()
         bool makeSolid = ui->makeSolid->isChecked();
 
         // inspect geometry
-        App::DocumentObject* obj = activeDoc->getObject((const char*)shape.toAscii());
+        App::DocumentObject* obj = activeDoc->getObject((const char*)shape.toLatin1());
         if (!obj || !obj->isDerivedFrom(Part::Feature::getClassTypeId())) continue;
         Part::Feature* fea = static_cast<Part::Feature*>(obj);
         const TopoDS_Shape& data = fea->Shape.getValue();
@@ -227,9 +227,9 @@ void DlgExtrusion::apply()
             .arg(makeSolid ? QLatin1String("True") : QLatin1String("False"))
             .arg(angle)
             .arg(label);
-        Gui::Application::Instance->runPythonCode((const char*)code.toAscii());
-        QByteArray to = name.toAscii();
-        QByteArray from = shape.toAscii();
+        Gui::Application::Instance->runPythonCode((const char*)code.toLatin1());
+        QByteArray to = name.toLatin1();
+        QByteArray from = shape.toLatin1();
         Gui::Command::copyVisual(to, "ShapeColor", from);
         Gui::Command::copyVisual(to, "LineColor", from);
         Gui::Command::copyVisual(to, "PointColor", from);

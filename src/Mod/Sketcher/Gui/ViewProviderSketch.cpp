@@ -2817,7 +2817,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
     }
 
     edit->combinedConstrBoxes[idString] = boundingBoxes;
-    thisInfo->string.setValue(idString.toAscii().data());
+    thisInfo->string.setValue(idString.toLatin1().data());
     sendConstraintIconToCoin(compositeIcon, thisDest);
 }
 
@@ -2835,7 +2835,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     // Constants to help create constraint icons
     QString joinStr = QString::fromAscii(", ");
 
-    QImage icon = Gui::BitmapFactory().pixmap(type.toAscii()).toImage();
+    QImage icon = Gui::BitmapFactory().pixmap(type.toLatin1()).toImage();
 
     QFont font = QApplication::font();
     font.setPixelSize(11);
@@ -2918,7 +2918,7 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
                                     QList<QColor>() << color,
                                     i.iconRotation);
 
-    i.infoPtr->string.setValue(QString::number(i.constraintId).toAscii().data());
+    i.infoPtr->string.setValue(QString::number(i.constraintId).toLatin1().data());
     sendConstraintIconToCoin(image, i.destination);
 }
 

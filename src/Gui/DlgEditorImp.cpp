@@ -125,7 +125,7 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     this->displayItems->header()->hide();
     for (QVector<QPair<QString, unsigned long> >::ConstIterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
         QTreeWidgetItem* item = new QTreeWidgetItem(this->displayItems);
-        item->setText(0, tr((*it).first.toAscii()));
+        item->setText(0, tr((*it).first.toLatin1()));
     }
     pythonSyntax = new PythonSyntaxHighlighter(textEdit1);
     pythonSyntax->setDocument(textEdit1->document());
@@ -173,10 +173,10 @@ void DlgSettingsEditorImp::saveSettings()
     // Saves the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
     for (QVector<QPair<QString, unsigned long> >::ConstIterator it = d->colormap.begin(); it != d->colormap.end(); ++it)
-        hGrp->SetUnsigned((*it).first.toAscii(), (*it).second);
+        hGrp->SetUnsigned((*it).first.toLatin1(), (*it).second);
 
     hGrp->SetInt( "FontSize", fontSize->value() );
-    hGrp->SetASCII( "Font", fontFamily->currentText().toAscii() );
+    hGrp->SetASCII( "Font", fontFamily->currentText().toLatin1() );
 }
 
 void DlgSettingsEditorImp::loadSettings()
@@ -203,7 +203,7 @@ void DlgSettingsEditorImp::loadSettings()
     // Restores the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
     for (QVector<QPair<QString, unsigned long> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it){
-        unsigned long col = hGrp->GetUnsigned((*it).first.toAscii(), (*it).second);
+        unsigned long col = hGrp->GetUnsigned((*it).first.toLatin1(), (*it).second);
         (*it).second = col;
         QColor color;
         color.setRgb((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
@@ -234,7 +234,7 @@ void DlgSettingsEditorImp::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         int index = 0;
         for (QVector<QPair<QString, unsigned long> >::ConstIterator it = d->colormap.begin(); it != d->colormap.end(); ++it)
-            this->displayItems->topLevelItem(index++)->setText(0, tr((*it).first.toAscii()));
+            this->displayItems->topLevelItem(index++)->setText(0, tr((*it).first.toLatin1()));
         this->retranslateUi(this);
     } else {
         QWidget::changeEvent(e);

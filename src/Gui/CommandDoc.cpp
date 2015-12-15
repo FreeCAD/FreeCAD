@@ -145,7 +145,7 @@ void StdCmdOpen::activated(int iMsg)
     }
     else {
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            getGuiApplication()->open(it.key().toUtf8(), it.value().toAscii());
+            getGuiApplication()->open(it.key().toUtf8(), it.value().toLatin1());
         }
     }
 }
@@ -215,7 +215,7 @@ void StdCmdImport::activated(int iMsg)
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->importFrom(it.key().toUtf8(),
                 getActiveGuiDocument()->getDocument()->getName(),
-                it.value().toAscii());
+                it.value().toLatin1());
         }
 
         if (emptyDoc) {
@@ -288,7 +288,7 @@ void StdCmdExport::activated(int iMsg)
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->exportTo(it.key().toUtf8(),
                 getActiveGuiDocument()->getDocument()->getName(),
-                it.value().toAscii());
+                it.value().toLatin1());
         }
     }
 }

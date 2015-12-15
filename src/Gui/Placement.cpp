@@ -230,7 +230,7 @@ void Placement::applyPlacement(const QString& data, bool incremental)
                         .arg(data);
                 }
 
-                Application::Instance->runPythonCode((const char*)cmd.toAscii());
+                Application::Instance->runPythonCode((const char*)cmd.toLatin1());
             }
         }
 

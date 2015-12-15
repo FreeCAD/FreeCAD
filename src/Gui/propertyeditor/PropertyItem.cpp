@@ -2428,8 +2428,8 @@ LinkSelection::~LinkSelection()
 void LinkSelection::select()
 {
     Gui::Selection().clearSelection();
-    Gui::Selection().addSelection((const char*)link[0].toAscii(),
-                                  (const char*)link[1].toAscii());
+    Gui::Selection().addSelection((const char*)link[0].toLatin1(),
+                                  (const char*)link[1].toLatin1());
     this->deleteLater();
 }
 

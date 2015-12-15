@@ -118,7 +118,7 @@ void NetworkRetriever::testFailure()
     if ( wget->state() == QProcess::Running )
     {
         d->fail = false;
-        Base::Console().Message( tr("Download started...\n").toAscii() );
+        Base::Console().Message( tr("Download started...\n").toLatin1() );
     }
 }
 
@@ -264,7 +264,7 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
         {
             if ( dir.mkdir( d->dir ) == false)
             {
-                Base::Console().Error("Directory '%s' could not be created.", (const char*)d->dir.toAscii());
+                Base::Console().Error("Directory '%s' could not be created.", (const char*)d->dir.toLatin1());
                 return true; // please, no error message
             }
         }
@@ -489,7 +489,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         QString path = QString::fromUtf8(App::GetApplication().getHomePath());
         path += QString::fromAscii("/doc/");
         ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OnlineHelp");
-        path = QString::fromUtf8(hURLGrp->GetASCII( "DownloadLocation", path.toAscii() ).c_str());
+        path = QString::fromUtf8(hURLGrp->GetASCII( "DownloadLocation", path.toLatin1() ).c_str());
 
         while (loop > 0) {
             loop--;

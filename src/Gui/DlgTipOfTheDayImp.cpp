@@ -104,7 +104,7 @@ void DlgTipOfTheDayImp::onResponseHeaderReceived(const QHttpResponseHeader & res
 {
     if (responseHeader.statusCode() != 200) {
         QString msg = tr("Download failed: %1\n").arg(responseHeader.reasonPhrase());
-        Base::Console().Log(msg.toAscii());
+        Base::Console().Log(msg.toLatin1());
         _http->abort();
     }
 }
@@ -143,7 +143,7 @@ void DlgTipOfTheDayImp::onStateChanged (int state)
             break;
         case QHttp::Closing:
         case QHttp::Unconnected:
-            Base::Console().Log("%s\n",(const char*)_http->errorString().toAscii());
+            Base::Console().Log("%s\n",(const char*)_http->errorString().toLatin1());
             break;
         default:
             break;

@@ -623,7 +623,7 @@ const char* Command::keySequenceToAccel(int sk) const
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
-    QByteArray data = qs.toAscii();
+    QByteArray data = qs.toLatin1();
 #if defined (_MSC_VER)
     return _strdup((const char*)data);
 #else

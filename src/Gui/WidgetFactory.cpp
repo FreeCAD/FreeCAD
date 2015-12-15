@@ -549,8 +549,8 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
     if (this->cw.contains(className))
         return QUiLoader::createWidget(className, parent, name);
     QWidget* w = 0;
-    if (WidgetFactory().CanProduce((const char*)className.toAscii()))
-        w = WidgetFactory().createWidget((const char*)className.toAscii(), parent);
+    if (WidgetFactory().CanProduce((const char*)className.toLatin1()))
+        w = WidgetFactory().createWidget((const char*)className.toLatin1(), parent);
     if (w) w->setObjectName(name);
     return w;
 }
@@ -1055,7 +1055,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     if (objS) {
         SignalConnect* sc = new SignalConnect(this, cb);
         mySingals.push_back(sc);
-        return QObject::connect(objS, sigStr.toAscii(), sc, SLOT ( onExecute() )  );
+        return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
     }
     else
         qWarning( "'%s' does not exist.\n", sender );
@@ -1165,14 +1165,14 @@ PyObject *PyResource::value(PyObject *args)
             int nSize = str.count();
             PyObject* slist = PyList_New(nSize);
             for (int i=0; i<nSize;++i) {
-                PyObject* item = PyString_FromString(str[i].toAscii());
+                PyObject* item = PyString_FromString(str[i].toLatin1());
                 PyList_SetItem(slist, i, item);
             }
         }   break;
     case QVariant::ByteArray:
         break;
     case QVariant::String:
-        pItem = PyString_FromString(v.toString().toAscii());
+        pItem = PyString_FromString(v.toString().toLatin1());
         break;
     case QVariant::Double:
         pItem = PyFloat_FromDouble(v.toDouble());

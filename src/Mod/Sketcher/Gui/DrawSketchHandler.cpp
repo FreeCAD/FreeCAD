@@ -568,7 +568,7 @@ void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstrain
         }
 
         if (!iconType.isEmpty()) {
-            QPixmap icon = Gui::BitmapFactory().pixmap(iconType.toAscii()).scaledToWidth(iconSize);
+            QPixmap icon = Gui::BitmapFactory().pixmap(iconType.toLatin1()).scaledToWidth(iconSize);
             qp.drawPixmap(QPoint(baseIcon.width() + i * iconSize, baseIcon.height() - iconSize), icon);
         }
     }
