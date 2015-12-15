@@ -229,17 +229,17 @@ Action * StdCmdFreezeViews::createAction(void)
     // add the action items
     saveView = pcAction->addAction(QObject::tr("Save views..."));
     pcAction->addAction(QObject::tr("Load views..."));
-    pcAction->addAction(QString::fromAscii(""))->setSeparator(true);
+    pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
     freezeView = pcAction->addAction(QObject::tr("Freeze view"));
-    freezeView->setShortcut(QString::fromAscii(sAccel));
+    freezeView->setShortcut(QString::fromLatin1(sAccel));
     clearView = pcAction->addAction(QObject::tr("Clear views"));
-    separator = pcAction->addAction(QString::fromAscii(""));
+    separator = pcAction->addAction(QString::fromLatin1(""));
     separator->setSeparator(true);
     offset = pcAction->actions().count();
 
     // allow up to 50 views
     for (int i=0; i<maxViews; i++)
-        pcAction->addAction(QString::fromAscii(""))->setVisible(false);
+        pcAction->addAction(QString::fromLatin1(""))->setVisible(false);
 
     return pcAction;
 }
@@ -266,7 +266,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index+1);
                 (*it)->setText(viewnr);
-                (*it)->setToolTip(QString::fromAscii(ppReturn));
+                (*it)->setToolTip(QString::fromLatin1(ppReturn));
                 (*it)->setVisible(true);
                 if (index < 9) {
                     int accel = Qt::CTRL+Qt::Key_1;
@@ -286,7 +286,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         // Activate a view
         QList<QAction*> acts = pcAction->actions();
         QString data = acts[iMsg]->toolTip();
-        QString send = QString::fromAscii("SetCamera %1").arg(data);
+        QString send = QString::fromLatin1("SetCamera %1").arg(data);
         getGuiApplication()->sendMsgToActiveView(send.toLatin1());
     }
 }
@@ -316,10 +316,10 @@ void StdCmdFreezeViews::onSaveViews()
             // remove the first line because it's a comment like '#Inventor V2.1 ascii'
             QString viewPos;
             if ( !data.isEmpty() ) {
-                QStringList lines = data.split(QString::fromAscii("\n"));
+                QStringList lines = data.split(QString::fromLatin1("\n"));
                 if ( lines.size() > 1 ) {
                     lines.pop_front();
-                    viewPos = lines.join(QString::fromAscii(" "));
+                    viewPos = lines.join(QString::fromLatin1(" "));
                 }
             }
 
@@ -376,18 +376,18 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 
     bool ok;
-    int scheme = root.attribute(QString::fromAscii("SchemaVersion")).toInt(&ok);
+    int scheme = root.attribute(QString::fromLatin1("SchemaVersion")).toInt(&ok);
     if (!ok) return;
     // SchemeVersion "1"
     if (scheme == 1) {
         // read the views, ignore the attribute 'Count'
-        QDomElement child = root.firstChildElement(QString::fromAscii("Views"));
-        QDomElement views = child.firstChildElement(QString::fromAscii("Camera"));
+        QDomElement child = root.firstChildElement(QString::fromLatin1("Views"));
+        QDomElement views = child.firstChildElement(QString::fromLatin1("Camera"));
         QStringList cameras;
         while (!views.isNull()) {
-            QString setting = views.attribute(QString::fromAscii("settings"));
+            QString setting = views.attribute(QString::fromLatin1("settings"));
             cameras << setting;
-            views = views.nextSiblingElement(QString::fromAscii("Camera"));
+            views = views.nextSiblingElement(QString::fromLatin1("Camera"));
         }
 
         // use this rather than the attribute 'Count' because it could be
@@ -1468,12 +1468,12 @@ void StdViewScreenShot::activated(int iMsg)
 
         Base::Reference<ParameterGrp> hExt = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                    ->GetGroup("Preferences")->GetGroup("General");
-        QString ext = QString::fromAscii(hExt->GetASCII("OffscreenImageFormat").c_str());
+        QString ext = QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
 
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QString::fromAscii("%1 %2 (*.%3)").arg((*it).toUpper()).
+            filter << QString::fromLatin1("%1 %2 (*.%3)").arg((*it).toUpper()).
                 arg(QObject::tr("files")).arg((*it).toLower());
             if (ext == *it)
                 selFilter = filter.last();

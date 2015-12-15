@@ -85,7 +85,7 @@ void CommandIconView::startDrag ( Qt::DropActions supportedActions )
     }
 
     QMimeData *mimeData = new QMimeData;
-    mimeData->setData(QString::fromAscii("text/x-action-items"), itemData);
+    mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
 
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
@@ -405,7 +405,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 	    txtLine.clear();
 	    break;
 	default:
-            txtLine += QString::fromAscii(",");
+            txtLine += QString::fromLatin1(",");
 	    break;
     }
     
@@ -712,7 +712,7 @@ void ColorButton::onRejected()
 UrlLabel::UrlLabel(QWidget * parent, Qt::WFlags f)
   : QLabel(parent, f)
 {
-    _url = QString::fromAscii("http://localhost");
+    _url = QString::fromLatin1("http://localhost");
     setToolTip(this->_url);
 }
 

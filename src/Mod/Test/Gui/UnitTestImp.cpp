@@ -85,7 +85,7 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WFlags f)
     this->setupUi(this);
     // As it doesn't seem to be able to change the "Highlight" color for the active colorgroup
     // we force e.g. the "Motif" style only for the progressbar to change the color to green or red.
-    this->progressBar->setStyle(QStyleFactory::create(QString::fromAscii("Motif")));
+    this->progressBar->setStyle(QStyleFactory::create(QString::fromLatin1("Motif")));
     setProgressColor(QColor(40,210,43)); // a darker green
 
     // red items

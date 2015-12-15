@@ -257,7 +257,7 @@ bool TaskDlgFemConstraintPressure::accept()
             name.c_str(), parameterPressure->getReverse() ? "True" : "False");
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

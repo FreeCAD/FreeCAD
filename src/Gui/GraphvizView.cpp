@@ -165,9 +165,9 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
 #endif
     bool pathChanged = false;
 #ifdef FC_OS_WIN32
-    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+    QString exe = QString::fromLatin1("\"%1/dot\"").arg(path);
 #else
-    QString exe = QString::fromAscii("%1/dot").arg(path);
+    QString exe = QString::fromLatin1("%1/dot").arg(path);
 #endif
     proc->setEnvironment(QProcess::systemEnvironment());
     do {
@@ -190,9 +190,9 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
             }
             pathChanged = true;
 #ifdef FC_OS_WIN32
-            exe = QString::fromAscii("\"%1/dot\"").arg(path);
+            exe = QString::fromLatin1("\"%1/dot\"").arg(path);
 #else
-            exe = QString::fromAscii("%1/dot").arg(path);
+            exe = QString::fromLatin1("%1/dot").arg(path);
 #endif
         }
         else {
@@ -266,9 +266,9 @@ QByteArray GraphvizView::exportGraph(const QString& format)
 #endif
 
 #ifdef FC_OS_WIN32
-    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+    QString exe = QString::fromLatin1("\"%1/dot\"").arg(path);
 #else
-    QString exe = QString::fromAscii("%1/dot").arg(path);
+    QString exe = QString::fromLatin1("%1/dot").arg(path);
 #endif
     proc.setEnvironment(QProcess::systemEnvironment());
     proc.start(exe, args);

@@ -218,12 +218,12 @@ void DlgGeneralImp::loadSettings()
     QString lang = QLocale::languageToString(QLocale::system().language());
     QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     int index = 1;
-    Languages->addItem(QString::fromAscii("English"), QByteArray("English"));
+    Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
     TStringMap list = Translator::instance()->supportedLocales();
     for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
-        QLocale locale(QString::fromAscii(it->second.c_str()));
+        QLocale locale(QString::fromLatin1(it->second.c_str()));
         QByteArray lang = it->first.c_str();
-        QString langname = QString::fromAscii(lang.constData());
+        QString langname = QString::fromLatin1(lang.constData());
 #if QT_VERSION >= 0x040800
         QString native = locale.nativeLanguageName();
         if (!native.isEmpty()) {
@@ -254,8 +254,8 @@ void DlgGeneralImp::loadSettings()
     QMap<QString, QString> cssFiles;
     QDir dir;
     QStringList filter;
-    filter << QString::fromAscii("*.qss");
-    filter << QString::fromAscii("*.css");
+    filter << QString::fromLatin1("*.qss");
+    filter << QString::fromLatin1("*.css");
     QFileInfoList fileNames;
 
     // read from user, resource and built-in directory
@@ -271,12 +271,12 @@ void DlgGeneralImp::loadSettings()
     }
 
     // now add all unique items
-    this->StyleSheets->addItem(tr("No style sheet"), QString::fromAscii(""));
+    this->StyleSheets->addItem(tr("No style sheet"), QString::fromLatin1(""));
     for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
         this->StyleSheets->addItem(it.key(), it.value());
     }
 
-    this->selectedStyleSheet = QString::fromAscii(hGrp->GetASCII("StyleSheet").c_str());
+    this->selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
     index = this->StyleSheets->findData(this->selectedStyleSheet);
     if (index > -1) this->StyleSheets->setCurrentIndex(index);
 }

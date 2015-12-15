@@ -270,7 +270,7 @@ QWidget* setupMainWindow()
         if (!appName.isEmpty())
             mw->setWindowTitle(appName);
         else
-            mw->setWindowTitle(QString::fromAscii(App::Application::Config()["ExeName"].c_str()));
+            mw->setWindowTitle(QString::fromLatin1(App::Application::Config()["ExeName"].c_str()));
 
         if (!SoDB::isInitialized()) {
             // init the Inventor subsystem
@@ -302,7 +302,7 @@ QWidget* setupMainWindow()
         // if the auto workbench is not visible then force to use the default workbech
         // and replace the wrong entry in the parameters
         QStringList wb = Gui::Application::Instance->workbenches();
-        if (!wb.contains(QString::fromAscii(start.c_str()))) {
+        if (!wb.contains(QString::fromLatin1(start.c_str()))) {
             start = App::Application::Config()["StartWorkbench"];
             App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                                   SetASCII("AutoloadModule", start.c_str());

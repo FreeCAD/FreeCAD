@@ -80,7 +80,7 @@ openBrowserHTML(PyObject *self, PyObject *args)
             WebGui::BrowserView* pcBrowserView = 0;
             pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
             pcBrowserView->resize(400, 300);
-            pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromAscii(BaseUrl)),QString::fromUtf8(TabName));
+            pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)),QString::fromUtf8(TabName));
             Gui::getMainWindow()->addWindow(pcBrowserView);
         }
         else {

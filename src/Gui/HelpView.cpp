@@ -208,7 +208,7 @@ QVariant TextBrowser::loadFileResource(int type, const QUrl& name)
     data = file.readAll();
     file.close();
   } else if (type == QTextDocument::HtmlResource) {
-      data = QString::fromAscii(
+      data = QString::fromLatin1(
       "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\">"
       "<html>"
       "<head>"
@@ -306,7 +306,7 @@ QVariant TextBrowser::loadHttpResource(int type, const QUrl& name)
     return d->http->readAll();
   } else {
     if (type == QTextDocument::HtmlResource) {
-        data = QString::fromAscii(
+        data = QString::fromLatin1(
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\">"
         "<html>"
         "<head>"
@@ -474,7 +474,7 @@ void TextBrowser::dropEvent(QDropEvent  * e)
       QString info = pCmd->getAction()->whatsThis();
       if ( !info.isEmpty() ) {
         // cannot show help to this command
-        info = QString::fromAscii(
+        info = QString::fromLatin1(
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"
         "<html>"
         "<body bgcolor=white text=black alink=red link=darkblue vlink=darkmagenta>"
@@ -482,7 +482,7 @@ void TextBrowser::dropEvent(QDropEvent  * e)
         "</body>"
         "</html>" ).arg( info );
       } else {
-        info = QString::fromAscii(
+        info = QString::fromLatin1(
         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"
         "<html>"
         "<body bgcolor=white text=black alink=red link=darkblue vlink=darkmagenta>"
