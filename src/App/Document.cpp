@@ -2162,7 +2162,7 @@ DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
 
     MergeDocuments md(this);
     if (recursive) {
-        objs = getDependencyList(objs);
+        objs = obj->getDocument()->getDependencyList(objs);
     }
 
     unsigned int memsize=1000; // ~ for the meta-information
