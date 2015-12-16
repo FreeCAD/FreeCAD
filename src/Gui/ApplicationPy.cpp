@@ -901,14 +901,48 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
     if (!PyArg_ParseTuple(args, "sO|s", &pName,&pcCmdObj,&pSource))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception 
 
+    // get the call stack to find the Python module name
+    //
+    std::string module, group;
     try {
         Base::PyGILStateLocker lock;
+        Py::Module mod(PyImport_ImportModule("inspect"), true);
+        Py::Callable inspect(mod.getAttr("stack"));
+        Py::Tuple args;
+        Py::List list(inspect.apply(args));
+        args = list.getItem(0);
+        // usually this is the file name of the calling script
+        module = args.getItem(1).as_string();
+        Base::FileInfo fi(module);
+        module = fi.fileNamePure();
+        group = module;
+        std::string::size_type len = group.size();
+        if (len > 3 && group.substr(len-3) == "Gui")
+            group = group.substr(0,len-3);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+
+    try {
+        Base::PyGILStateLocker lock;
+
         Py::Object cmd(pcCmdObj);
         if (cmd.hasAttr("GetCommands")) {
-            Application::Instance->commandManager().addCommand(new PythonGroupCommand(pName, pcCmdObj));
+            Command* cmd = new PythonGroupCommand(pName, pcCmdObj);
+            if (!module.empty()) {
+                cmd->setAppModuleName(module.c_str());
+                cmd->setGroupName(group.c_str());
+            }
+            Application::Instance->commandManager().addCommand(cmd);
         }
         else {
-            Application::Instance->commandManager().addCommand(new PythonCommand(pName, pcCmdObj, pSource));
+            Command* cmd = new PythonCommand(pName, pcCmdObj, pSource);
+            if (!module.empty()) {
+                cmd->setAppModuleName(module.c_str());
+                cmd->setGroupName(group.c_str());
+            }
+            Application::Instance->commandManager().addCommand(cmd);
         }
     }
     catch (const Base::Exception& e) {

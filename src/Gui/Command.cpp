@@ -367,6 +367,24 @@ std::string Command::getUniqueObjectName(const char *BaseName) const
     return getActiveGuiDocument()->getDocument()->getUniqueObjectName(BaseName);
 }
 
+void Command::setAppModuleName(const char* s)
+{
+#if defined (_MSC_VER)
+    this->sAppModule = _strdup(s);
+#else
+    this->sAppModule = strdup(s);
+#endif
+}
+
+void Command::setGroupName(const char* s)
+{
+#if defined (_MSC_VER)
+    this->sGroup = _strdup(s);
+#else
+    this->sGroup = strdup(s);
+#endif
+}
+
 
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling
