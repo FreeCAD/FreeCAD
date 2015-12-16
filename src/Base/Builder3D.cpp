@@ -393,6 +393,27 @@ void InventorBuilder::addMaterial(float color_r,float color_g,float color_b)
     result << Base::blanks(indent) << "} " << std::endl;
 }
 
+void InventorBuilder::beginMaterial()
+{
+    result << Base::blanks(indent) << "Material { " << std::endl;
+    indent +=2;
+    result << Base::blanks(indent) << "diffuseColor [" << std::endl;
+    indent +=2;
+}
+
+void InventorBuilder::endMaterial()
+{
+    indent -=2;
+    result << Base::blanks(indent) << "]" << std::endl;
+    indent -=2;
+    result << Base::blanks(indent) << "}" << std::endl;
+}
+
+void InventorBuilder::addColor(float color_r,float color_g,float color_b)
+{
+    result << color_r << " " << color_g << " " << color_b << std::endl;
+}
+
 void InventorBuilder::addMaterialBinding(const char* bind)
 {
     result << Base::blanks(indent) << "MaterialBinding { value "
