@@ -175,6 +175,8 @@ public:
      * \param str - text set to the label node
      */
     void addLabel(const char* str);
+    /** @name Appearance handling */
+    //@{
     /*!
      * \brief Sets a base color node. The colors are in the range [0, 1].
      * \param color_r - red color
@@ -189,6 +191,22 @@ public:
      * \param color_b - blue color
      */
     void addMaterial(float color_r,float color_g,float color_b);
+    /*!
+     * \brief Starts a material node. The node must be closed with \ref endMaterial
+     * and the colors must be added with \ref addColor().
+     */
+    void beginMaterial();
+    /*!
+     * \brief Closes a material node.
+     */
+    void endMaterial();
+    /*!
+     * \brief Adds a color to a material node. The colors are in the range [0, 1].
+     * \param color_r - red color
+     * \param color_g - green color
+     * \param color_b - blue color
+     */
+    void addColor(float color_r,float color_g,float color_b);
     /*!
      * \brief Sets a material binding node.
      * \param binding - binding of the material. Allowed values are:
@@ -210,6 +228,7 @@ public:
      * \param crease - the crease angle in radians
      */
     void addShapeHints(float crease=0.0f);
+    //@}
 
     /** @name Add coordinates */
     //@{
