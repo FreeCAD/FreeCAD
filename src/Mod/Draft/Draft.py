@@ -2567,7 +2567,7 @@ def makeFacebinder(selectionset,name="Facebinder"):
     fb = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Facebinder(fb)
     if gui:
-        _ViewProviderDraft(fb.ViewObject)
+        _ViewProviderFacebinder(fb.ViewObject)
     faces = []
     fb.Proxy.addSubobjects(fb,selectionset)
     return fb
@@ -5422,6 +5422,24 @@ class _Facebinder(_DraftObject):
                             objs.append((o.Object,el))
         obj.Faces = objs
         self.execute(obj)
+        
+        
+class _ViewProviderFacebinder(_ViewProviderDraft):
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+        
+    def setEdit(self,vobj,mode):
+        import DraftGui
+        taskd = DraftGui.FacebinderTaskPanel()
+        taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self,vobj,mode):
+        FreeCADGui.Control.closeDialog()
+        return False        
+
 
 class _VisGroup:
     "The VisGroup object"
