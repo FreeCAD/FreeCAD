@@ -36,6 +36,7 @@
 
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/TranscodingException.hpp>
+#include <boost/regex.hpp>
 
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -911,14 +912,20 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
         Py::Tuple args;
         Py::List list(inspect.apply(args));
         args = list.getItem(0);
+
         // usually this is the file name of the calling script
         module = args.getItem(1).as_string();
         Base::FileInfo fi(module);
         module = fi.fileNamePure();
         group = module;
-        std::string::size_type len = group.size();
-        if (len > 3 && group.substr(len-3) == "Gui")
-            group = group.substr(0,len-3);
+
+        // check if the group name ends with 'Gui', 'Tools', 'Commands', ...
+        // and if yes remove the suffix
+        boost::regex rx("^(\\w+)(Gui|Tools|Commands|Feature)$");
+        boost::smatch what;
+        if (boost::regex_search(group, what, rx)) {
+            group = what[1];
+        }
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -932,6 +939,8 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
             Command* cmd = new PythonGroupCommand(pName, pcCmdObj);
             if (!module.empty()) {
                 cmd->setAppModuleName(module.c_str());
+            }
+            if (!group.empty()) {
                 cmd->setGroupName(group.c_str());
             }
             Application::Instance->commandManager().addCommand(cmd);
@@ -940,6 +949,8 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
             Command* cmd = new PythonCommand(pName, pcCmdObj, pSource);
             if (!module.empty()) {
                 cmd->setAppModuleName(module.c_str());
+            }
+            if (!group.empty()) {
                 cmd->setGroupName(group.c_str());
             }
             Application::Instance->commandManager().addCommand(cmd);
