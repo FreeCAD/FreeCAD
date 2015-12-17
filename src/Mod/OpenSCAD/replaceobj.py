@@ -32,10 +32,16 @@ def replaceobj(parent,oldchild,newchild):
     for propname in parent.PropertiesList:
         propvalue=parent.getPropertyByName(propname)
         if type(propvalue) == list:
+            bModified = False
             for dontcare in range(propvalue.count(oldchild)):
                 propvalue[propvalue.index(oldchild)] = newchild
-            setattr(parent,propname,propvalue)
-            #print propname, parent.getPropertyByName(propname)
+                bModified = True
+            if bModified:
+                if propname == "ExpressionEngine":
+                    # fixme: proper handling?
+                    FreeCAD.Console.PrintWarning("Expressions in "+parent.Name+" need to be modified, but they were not. Please do that manually.")
+                    continue
+                setattr(parent,propname,propvalue)
         else:
             if propvalue == oldchild:
                 setattr(parent,propname,newchild)
