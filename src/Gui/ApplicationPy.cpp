@@ -914,17 +914,20 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
         args = list.getItem(0);
 
         // usually this is the file name of the calling script
-        module = args.getItem(1).as_string();
-        Base::FileInfo fi(module);
+        std::string file = args.getItem(1).as_string();
+        Base::FileInfo fi(file);
+        // convert backslashes to slashes
+        file = fi.filePath();
         module = fi.fileNamePure();
-        group = module;
 
-        // check if the group name ends with 'Gui', 'Tools', 'Commands', ...
-        // and if yes remove the suffix
-        boost::regex rx("^(\\w+)(Gui|Tools|Commands|Feature)$");
+        // for the group name get the directory name after 'Mod'
+        boost::regex rx("/Mod/(\\w+)/");
         boost::smatch what;
-        if (boost::regex_search(group, what, rx)) {
+        if (boost::regex_search(file, what, rx)) {
             group = what[1];
+        }
+        else {
+            group = module;
         }
     }
     catch (Py::Exception& e) {
