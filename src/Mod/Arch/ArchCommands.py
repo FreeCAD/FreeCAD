@@ -498,11 +498,15 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
             return newobj
     return None
 
-def removeCurves(shape,tolerance=5):
-    '''removeCurves(shape,tolerance=5): replaces curved faces in a shape
-    with faceted segments'''
+def removeCurves(shape,dae=False,tolerance=5):
+    '''removeCurves(shape,dae,tolerance=5): replaces curved faces in a shape
+    with faceted segments. If dae is True, DAE triangulation options are used'''
     import Mesh
-    t = shape.cleaned().tessellate(tolerance)
+    if dae:
+        import importDAE
+        t = importDAE.triangulate(shape.cleaned())
+    else:
+        t = shape.cleaned().tessellate(tolerance)
     m = Mesh.Mesh(t)
     return getShapeFromMesh(m)
 
