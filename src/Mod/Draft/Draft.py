@@ -1672,7 +1672,10 @@ def getDXF(obj,direction=None):
     elif obj.isDerivedFrom("Part::Feature"):
         # TODO do this the Draft way, for ex. using polylines and rectangles
         import Drawing
-        if not direction: direction = FreeCAD.Vector(0,0,-1)
+        if not direction: 
+            direction = FreeCAD.Vector(0,0,-1)
+        if DraftVecUtils.isNull(direction):
+            direction = FreeCAD.Vector(0,0,-1)
         result += Drawing.projectToDXF(obj.Shape,direction)
         
     else:
@@ -4522,7 +4525,7 @@ class _DrawingView(_DraftObject):
                 if o.ViewObject.isVisible():
                     result += getDXF(o,obj.Direction)
         else:
-            result += getDXF(o,obj.Direction)
+            result += getDXF(obj.Source,obj.Direction)
         return result
 
 class _BSpline(_DraftObject):

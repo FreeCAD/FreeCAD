@@ -478,6 +478,29 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_5">
+          <property name="toolTip">
+           <string>if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</string>
+          </property>
+          <property name="text">
+           <string>Export Drawing Views as blocks</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfExportBlocks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
