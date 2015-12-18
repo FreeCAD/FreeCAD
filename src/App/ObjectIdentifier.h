@@ -186,9 +186,9 @@ public:
 
     const String getDocumentObjectName() const;
 
-    void renameDocumentObject(const std::string & oldName, const std::string & newName);
+    bool renameDocumentObject(const std::string & oldName, const std::string & newName);
 
-    void renameDocument(const std::string &oldName, const std::string &newName);
+    bool renameDocument(const std::string &oldName, const std::string &newName);
 
     App::Document *getDocument(String name = String()) const;
 
