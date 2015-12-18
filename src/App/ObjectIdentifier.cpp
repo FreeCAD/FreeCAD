@@ -316,21 +316,30 @@ std::string ObjectIdentifier::toEscapedString() const
  * @param newName New name of document object
  */
 
-void ObjectIdentifier::renameDocumentObject(const std::string &oldName, const std::string &newName)
+bool ObjectIdentifier::renameDocumentObject(const std::string &oldName, const std::string &newName)
 {
-    if (documentObjectNameSet && documentObjectName == oldName) {        
+    if (oldName == newName)
+        return false;
+
+    if (documentObjectNameSet && documentObjectName == oldName) {
         if (ExpressionParser::isTokenAnIndentifier(newName))
             documentObjectName = newName;
         else
             documentObjectName = ObjectIdentifier::String(newName, true);
+
+        resolve();
+        return true;
     }
     else if (propertyIndex == 1 && documentObjectName == oldName) {
         if (ExpressionParser::isTokenAnIndentifier(newName))
             components[0].name = newName;
         else
             components[0].name = ObjectIdentifier::String(newName, true);
+
+        resolve();
+        return true;
     }
-    resolve();
+    return false;
 }
 
 /**
@@ -339,13 +348,18 @@ void ObjectIdentifier::renameDocumentObject(const std::string &oldName, const st
  * @param newName New name of document
  */
 
-void ObjectIdentifier::renameDocument(const std::string &oldName, const std::string &newName)
+bool ObjectIdentifier::renameDocument(const std::string &oldName, const std::string &newName)
 {
+    if (oldName == newName)
+        return false;
+
     if (documentName == oldName) {
         documentName = newName;
+        resolve();
+        return true;
     }
 
-    resolve();
+    return false;
 }
 
 /**

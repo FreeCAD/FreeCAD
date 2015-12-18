@@ -349,9 +349,9 @@ public:
 
     void setPath(const ObjectIdentifier & path);
 
-    void renameDocumentObject(const std::string & oldName, const std::string & newName);
+    bool renameDocumentObject(const std::string & oldName, const std::string & newName);
 
-    void renameDocument(const std::string &oldName, const std::string &newName);
+    bool renameDocument(const std::string &oldName, const std::string &newName);
 
     const App::Property *getProperty() const;
 
