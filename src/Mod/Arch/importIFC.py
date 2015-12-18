@@ -832,8 +832,8 @@ def export(exportList,filename):
         if b:
             clones.setdefault(b.Name,[]).append(o.Name)
             
-    print "clones table: ",clones
-    print objectslist
+    #print "clones table: ",clones
+    #print objectslist
 
     # products
     for obj in objectslist:
@@ -1170,7 +1170,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 dataset = fcshape.Solids
             else:
                 dataset = fcshape.Shells
-                print "Warning! object contains no solids"
+                if DEBUG: print "Warning! object contains no solids"
             for fcsolid in dataset:
                 fcsolid.scale(0.001) # to meters
                 faces = []
@@ -1183,9 +1183,15 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 curves = True
                                 break
                 if curves:
-                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcClassicTriangulation",False):
+                    joinfacets = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcJoinCoplanarFacets",False)
+                    usedae = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcUseDaeOptions",False)
+                    if not joinfacets:
                         shapetype = "triangulated"
-                        tris = fcsolid.tessellate(tessellation)
+                        if usedae:
+                            import importDAE
+                            tris = importDAE.triangulate(fcsolid)
+                        else:
+                            tris = fcsolid.tessellate(tessellation)
                         for tri in tris[1]:
                             pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
                             loop =  ifcfile.createIfcPolyLoop(pts)
@@ -1194,7 +1200,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             faces.append(face)
                             fcsolid = Part.Shape() # empty shape so below code is not executed
                     else:
-                        fcsolid = Arch.removeCurves(fcsolid)
+                        fcsolid = Arch.removeCurves(fcsolid,dae=usedae)
+                        if not fcsolid:
+                            if DEBUG: print "Error: Unable to triangulate shape"
+                            fcsolid = Part.Shape()
                     
                 for fcface in fcsolid.Faces:
                     loops = []
