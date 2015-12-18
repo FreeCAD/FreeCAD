@@ -32,6 +32,7 @@
 #include "PropertyStandard.h"
 #include "PropertyUnits.h"
 #include <CXX/Objects.hxx>
+#include <boost/bind.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
@@ -40,6 +41,9 @@ using namespace App;
 using namespace Base;
 using namespace boost;
 
+typedef boost::function<void ()> aboutToSetValueFunc;
+typedef boost::function<void ()> hasSetValueFunc;
+
 /**
  * @brief The RelabelDocumentObjectExpressionVisitor class is a functor class used to rename variables in an expression.
  */
@@ -47,11 +51,20 @@ using namespace boost;
 class RelabelDocumentObjectExpressionVisitor : public ExpressionVisitor {
 public:
 
-    RelabelDocumentObjectExpressionVisitor(const std::string & _oldName, const std::string & _newName)
-        : oldName(_oldName)
+    RelabelDocumentObjectExpressionVisitor(aboutToSetValueFunc _aboutToSetValue, hasSetValueFunc _hasSetValue, const std::string & _oldName, const std::string & _newName)
+        : aboutToSetValue(_aboutToSetValue)
+        , hasSetValue(_hasSetValue)
+        , oldName(_oldName)
         , newName(_newName)
+        , changed(0)
     {
     }
+
+    ~RelabelDocumentObjectExpressionVisitor() {
+        if (changed > 0)
+            hasSetValue();
+    }
+
 
     /**
      * @brief Visit each node in the expression, and if it is a VariableExpression object, incoke renameDocumentObject in it.
@@ -61,13 +74,24 @@ public:
     void visit(Expression * node) {
         VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
 
-        if (expr)
-            expr->renameDocumentObject(oldName, newName);
+        if (expr) {
+            if (expr->renameDocumentObject(oldName, newName)) {
+                if (!changed) {
+                    aboutToSetValue();
+                    ++changed;
+                }
+            }
+        }
     }
 
+    int getChanged() const { return changed; }
+
 private:
+    aboutToSetValueFunc aboutToSetValue;
+    hasSetValueFunc hasSetValue;
     std::string oldName; /**< Document object name to replace  */
     std::string newName; /**< New document object name */
+    int changed;
 };
 
 TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::Property);
@@ -271,16 +295,18 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
     std::clog << "Object " << obj.getOldLabel() << " renamed to " << obj.Label.getValue() << std::endl;
 #endif
 
-    RelabelDocumentObjectExpressionVisitor v(obj.getOldLabel(), obj.Label.getStrValue());
-
-    aboutToSetValue();
+    RelabelDocumentObjectExpressionVisitor v(boost::bind( &PropertyExpressionEngine::aboutToSetValue, this),
+                                             boost::bind( &PropertyExpressionEngine::hasSetValue, this),
+                                             obj.getOldLabel(), obj.Label.getStrValue());
 
     for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
-        it->second.expression->visit(v);
-        expressionChanged(it->first);
-    }
+        int changed = v.getChanged();
 
-    hasSetValue();
+        it->second.expression->visit(v);
+
+        if (changed != v.getChanged())
+            expressionChanged(it->first);
+    }
 }
 
 /**
