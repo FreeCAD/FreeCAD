@@ -80,7 +80,7 @@ class AmfExporter : public Exporter
 {
     public:
         /// Writes AMF header
-        AmfExporter(std::string fileName);
+        AmfExporter(std::string fileName, bool compress = true);
 
         /// Writes AMF footer
         ~AmfExporter();
