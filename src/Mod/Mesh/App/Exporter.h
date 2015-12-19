@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_AMFEXPORTER_H
-#define MESH_AMFEXPORTER_H
+#ifndef MESH_EXPORTER_H
+#define MESH_EXPORTER_H
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -117,4 +117,4 @@ class AmfExporter : public Exporter
 };  // class AmfExporter
 
 } // namespace Mesh
-#endif // MESH_AMFEXPORTER_H
+#endif // MESH_EXPORTER_H

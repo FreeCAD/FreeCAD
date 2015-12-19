@@ -27,7 +27,7 @@
     #include <vector>
 #endif  //  #ifndef _PreComp_
 
-#include "AmfExport.h"
+#include "Exporter.h"
 
 #include "Core/Iterator.h"
 
