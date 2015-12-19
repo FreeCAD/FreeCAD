@@ -302,3 +302,7 @@ void DocumentObjectObserver::slotChangedObject(const App::DocumentObject&,
                                                const App::Property&)
 {
 }
+
+void DocumentObjectObserver::cancelObservation()
+{
+}
