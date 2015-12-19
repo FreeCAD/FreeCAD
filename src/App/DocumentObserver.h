@@ -202,7 +202,11 @@ private:
     virtual void slotDeletedObject(const App::DocumentObject& Obj);
     /** The property of an observed object has changed */
     virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    virtual void cancelObservation() = 0;
+    /** This method gets called when all observed objects are deleted or the whole document is deleted.
+      * This method can be re-implemented to perform an extra step like closing a dialog tht observes
+      * a document.
+      */
+    virtual void cancelObservation();
 
 private:
     std::set<App::DocumentObject*> _objects;
