@@ -140,7 +140,7 @@ def removeComponents(objectsList,host=None):
             for o in objectsList:
                 if not o in s:
                     s.append(o)
-                    fixDAG(o)
+                    #fixDAG(o)
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
                             o.ViewObject.hide()

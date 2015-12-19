@@ -431,10 +431,13 @@ class _CommandWindow:
                 FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
                 if host:
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
+                    # make a new object to avoid circular references
+                    FreeCADGui.doCommand("host=Arch.make"+Draft.getType(host)+"(FreeCAD.ActiveDocument."+host.Name+")")
+                    FreeCADGui.doCommand("Arch.removeComponents(win,host)")
                     siblings = host.Proxy.getSiblings(host)
                     for sibling in siblings:
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+                        FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
+                        FreeCADGui.doCommand("Arch.removeComponents(win,host)")
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return
@@ -474,10 +477,12 @@ class _CommandWindow:
         FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
         if obj:
             if Draft.getType(obj) in AllowedHosts:
-                FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
+                FreeCADGui.doCommand("host=Arch.make"+Draft.getType(obj)+"(FreeCAD.ActiveDocument."+obj.Name+")")
+                FreeCADGui.doCommand("Arch.removeComponents(win,host)")
                 siblings = obj.Proxy.getSiblings(obj)
                 for sibling in siblings:
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+                    FreeCADGui.doCommand("host=Arch.make"+Draft.getType(sibling)+"(FreeCAD.ActiveDocument."+sibling.Name+")")
+                    FreeCADGui.doCommand("Arch.removeComponents(win,host)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return
