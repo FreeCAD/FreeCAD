@@ -56,9 +56,11 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         obj.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
-        a = baseobj.Armatures
+        import Arch
+        host = getattr(Arch,"make"+Draft.getType(baseobj))(baseobj)
+        a = host.Armatures
         a.append(obj)
-        baseobj.Armatures = a
+        host.Armatures = a
     if diameter:
         obj.Diameter = diameter
     else:
@@ -70,7 +72,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
-    ArchCommands.fixDAG(obj)
+    #ArchCommands.fixDAG(obj)
     return obj
 
 
