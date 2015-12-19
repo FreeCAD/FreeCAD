@@ -51,7 +51,7 @@
 #include "WildMagic4/Wm4ContBox3.h"
 
 #include "Mesh.h"
-#include "AmfExport.h"
+#include "Exporter.h"
 #include "FeatureMeshImport.h"
 #include <Mod/Mesh/App/MeshPy.h>
 
