@@ -52,7 +52,9 @@ public Q_SLOTS:
     void on_editButton_clicked();
 
 protected Q_SLOTS:
-    void on_macroListBox_currentItemChanged(QTreeWidgetItem*);
+    void on_userMacroListBox_currentItemChanged(QTreeWidgetItem*);
+    void on_systemMacroListBox_currentItemChanged(QTreeWidgetItem*);
+    void on_tabMacroWidget_currentChanged(int index);
 
 protected:
     void fillUpList(void);
