@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+# include <memory>
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -302,10 +303,12 @@ private:
 
         auto exportFormat( MeshOutput::GetFormat(EncodedName.c_str()) );
 
-        // TODO: Make a similar exporter class to replace global_mesh with
-        AmfExporter *exporter(nullptr);
+        std::unique_ptr<Exporter> exporter;
         if (exportFormat == MeshIO::AMF) {
-            exporter = new AmfExporter(EncodedName.c_str());
+            exporter.reset( new AmfExporter(EncodedName) );
+        } else {
+            // TODO: How do we handle unknown exportFormats?
+            exporter.reset( new MergeExporter(EncodedName, exportFormat) );
         }
 
         Base::Type meshId = Base::Type::fromName("Mesh::Feature");
@@ -315,106 +318,18 @@ private:
         for (auto it : list) {
             PyObject* item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                auto countFacets( global_mesh.countFacets() );
+                App::DocumentObject* obj( static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr() );
 
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
-                    const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
-                    MeshCore::MeshKernel kernel = mesh.getKernel();
-                    kernel.Transform(mesh.getTransform());
-
-                    if (exporter) {
-                        exporter->addObject(kernel);
-                    } else {
-                        if (countFacets == 0)
-                            global_mesh.setKernel(kernel);
-                        else
-                            global_mesh.addMesh(kernel);
-                    }
-
-                    // if the mesh already has persistent segments then use them instead
-                    unsigned long numSegm = mesh.countSegments();
-                    unsigned long canSave = 0;
-                    for (unsigned long i=0; i<numSegm; i++) {
-                        if (mesh.getSegment(i).isSaved())
-                            canSave++;
-                    }
-
-                    if (canSave > 0) {
-                        for (unsigned long i=0; i<numSegm; i++) {
-                            const Segment& segm = mesh.getSegment(i);
-                            if (segm.isSaved()) {
-                                std::vector<unsigned long> indices = segm.getIndices();
-                                std::for_each(indices.begin(), indices.end(), add_offset(countFacets));
-                                Segment new_segm(&global_mesh, indices, true);
-                                new_segm.setName(segm.getName());
-                                global_mesh.addSegment(new_segm);
-                            }
-                        }
-                    }
-                    else {
-                        // now create a segment for the added mesh
-                        std::vector<unsigned long> indices;
-                        indices.resize(global_mesh.countFacets() - countFacets);
-                        std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
-                        Segment segm(&global_mesh, indices, true);
-                        segm.setName(obj->Label.getValue());
-                        global_mesh.addSegment(segm);
-                    }
-                } // if (obj->getTypeId().isDerivedFrom(meshId))
-                else if (obj->getTypeId().isDerivedFrom(partId)) {
-                    App::Property* shape = obj->getPropertyByName("Shape");
-
-                    if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-                        Base::Reference<MeshObject> mesh(new MeshObject());
-                        std::vector<Base::Vector3d> aPoints;
-                        std::vector<Data::ComplexGeoData::Facet> aTopo;
-                        const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData();
-                        if (data) {
-                            data->getFaces(aPoints, aTopo, fTolerance);
-                            mesh->addFacets(aTopo, aPoints);
-
-                            if (exporter) {
-                                // TODO: Figure out Tranform-constellation-iterator interaction
-                                MeshCore::MeshKernel kernel = mesh->getKernel();
-                                kernel.Transform(mesh->getTransform());
-                                exporter->addObject(kernel);
-                           //     delete mesh;
-                            } else {
-                                if (countFacets == 0)
-                                    global_mesh = *mesh;
-                                else
-                                    global_mesh.addMesh(*mesh);
-                            }
-
-                            // now create a segment for the added mesh
-                            std::vector<unsigned long> indices;
-                            indices.resize(global_mesh.countFacets() - countFacets);
-                            std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
-                            Segment segm(&global_mesh, indices, true);
-                            segm.setName(obj->Label.getValue());
-                            global_mesh.addSegment(segm);
-                        }
-                    }
-                }
-                else {
+                    exporter->addMesh( static_cast<Mesh::Feature*>(obj) );
+                } else if (obj->getTypeId().isDerivedFrom(partId)) {
+                    exporter->addShape( obj->getPropertyByName("Shape"), fTolerance );
+                } else {
                     Base::Console().Message("'%s' is not a mesh or shape, export will be ignored.\n", obj->Label.getValue());
                 }
             }
         }
-
-        if (exporter) {
-            delete exporter;
-        } else {
-            // if we have more than one segment set the 'save' flag
-            if (global_mesh.countSegments() > 1) {
-                for (unsigned long i = 0; i < global_mesh.countSegments(); ++i) {
-                    global_mesh.getSegment(i).save(true);
-                }
-            }
-            // export mesh compound
-            global_mesh.save(EncodedName.c_str());
-        }
+        exporter.reset();   // deletes Exporter, mesh file is written by destructor
 
         return Py::None();
     }
