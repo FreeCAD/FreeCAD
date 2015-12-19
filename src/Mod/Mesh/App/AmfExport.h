@@ -23,40 +23,77 @@
 #ifndef MESH_AMFEXPORTER_H
 #define MESH_AMFEXPORTER_H
 
-#include "Core/MeshKernel.h"
-
+#include "PreCompiled.h"
 #ifndef _PreComp_
     #include <ostream>
 #endif  //  #ifndef _PreComp_
 
+#include <App/Property.h>
+
+#include "MeshFeature.h"
+#include "Core/MeshIO.h"
+#include "Core/MeshKernel.h"
+
 namespace Mesh
 {
 
-/// Used for exporting Additive Manufacturing Format (AMF) files
+/// Virtual base class for exporting meshes
+/*!
+ * Constructors of derived classes are expected to be required, for passing
+ * in the name of output file.
+ *
+ * Objects are added using the addMesh(), addShape(), etc.
+ *
+ * If objects are meant to be combined into a single file, then the file should
+ * be saved from the derived class' destructor.
+ */
+class Exporter
+{
+    public:
+        virtual bool addMesh(Mesh::Feature *meshFeat) = 0;
+        virtual bool addShape(App::Property *shape, float tol) = 0;
+        virtual ~Exporter() {};
+};
+
+/// Creates a single mesh, in a file, from one or more objects
+class MergeExporter : public Exporter
+{
+    public:
+        MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
+        ~MergeExporter();
+
+        /// Directly adds a mesh
+        bool addMesh(Mesh::Feature *meshFeat);
+        /// Converts the a Part::Feature to a mesh, adds that mesh
+        bool addShape(App::Property *shape, float tol);
+    protected:
+        MeshObject mergingMesh;
+        std::string fName;
+};
+
+/// Used for exporting to Additive Manufacturing File (AMF) format
 /*!
  * The constructor and destructor write the beginning and end of the AMF,
- * addObject() is used to add... objects!
+ * add____() is used to add geometry
  */
-class AmfExporter
+class AmfExporter : public Exporter
 {
     public:
         /// Writes AMF header
-        AmfExporter(const char *fileName);
+        AmfExporter(std::string fileName);
 
         /// Writes AMF footer
         ~AmfExporter();
 
-        /// Writes an object tag with data from passed-in mesh
-        /*!
-         * \return -1 on error, or the index of the object in AMF file
-         */
-        int addObject(const MeshCore::MeshKernel &meshKernel);
+        bool addMesh(Mesh::Feature *meshFeat);
+        bool addMesh(const MeshCore::MeshKernel &kernel);
+        bool addShape(App::Property *shape, float tol);
         
     private:
         std::ostream *outputStreamPtr;
         int nextObjectIndex;
 
-    /// Helper for putting Base::Vector3f objects into a std::map in addObject()
+    /// Helper for putting Base::Vector3f objects into a std::map in addMesh()
     class VertLess
     {
         public:

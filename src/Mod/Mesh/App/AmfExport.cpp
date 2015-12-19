@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+    #include <algorithm>
     #include <map>
     #include <vector>
 #endif  //  #ifndef _PreComp_
@@ -35,14 +35,119 @@
 #include "Base/FileInfo.h"
 #include "Base/Sequencer.h"
 #include "Base/Stream.h"
+#include "Base/Tools.h"
 
 using namespace Mesh;
+using namespace MeshCore;
 
-AmfExporter::AmfExporter(const char *fileName) :
+
+MergeExporter::MergeExporter(std::string fileName, MeshIO::Format fmt)
+    :fName(fileName)
+{
+}
+
+MergeExporter::~MergeExporter()
+{
+    // if we have more than one segment set the 'save' flag
+    if (mergingMesh.countSegments() > 1) {
+        for (unsigned long i = 0; i < mergingMesh.countSegments(); ++i) {
+            mergingMesh.getSegment(i).save(true);
+        }
+    }
+
+    mergingMesh.save(fName.c_str());
+}
+
+
+bool MergeExporter::addMesh(Mesh::Feature *meshFeat)
+{
+    const MeshObject &mesh( meshFeat->Mesh.getValue() );
+
+    MeshCore::MeshKernel kernel( mesh.getKernel() );
+    kernel.Transform(mesh.getTransform());
+
+    auto countFacets( mergingMesh.countFacets() );
+    if (countFacets == 0) {
+        mergingMesh.setKernel(kernel);
+    } else {
+        mergingMesh.addMesh(kernel);
+    }
+
+    // if the mesh already has persistent segments then use them instead
+    unsigned long numSegm = mesh.countSegments();
+    unsigned long canSave = 0;
+    for (unsigned long i=0; i<numSegm; i++) {
+        if (mesh.getSegment(i).isSaved())
+            canSave++;
+    }
+
+    if (canSave > 0) {
+        for (unsigned long i=0; i<numSegm; i++) {
+            const Segment& segm = mesh.getSegment(i);
+            if (segm.isSaved()) {
+                std::vector<unsigned long> indices = segm.getIndices();
+                std::for_each( indices.begin(), indices.end(),
+                               [countFacets] (unsigned long &v) {
+                                   v += countFacets;
+                               } );
+                Segment new_segm(&mergingMesh, indices, true);
+                new_segm.setName(segm.getName());
+                mergingMesh.addSegment(new_segm);
+            }
+        }
+    } else {
+        // now create a segment for the added mesh
+        std::vector<unsigned long> indices;
+        indices.resize(mergingMesh.countFacets() - countFacets);
+        std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+        Segment segm(&mergingMesh, indices, true);
+        // TODO: pass in the object? segm.setName(obj->Label.getValue());
+        mergingMesh.addSegment(segm);
+    }
+
+    return true;
+}
+
+bool MergeExporter::addShape(App::Property *shape, float tol)
+{
+    if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+        Base::Reference<MeshObject> mesh(new MeshObject());
+
+        auto countFacets( mergingMesh.countFacets() );
+
+        auto geoData( static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData() );
+        if (geoData) {
+            std::vector<Base::Vector3d> aPoints;
+            std::vector<Data::ComplexGeoData::Facet> aTopo;
+            geoData->getFaces(aPoints, aTopo, tol);
+
+            mesh->addFacets(aTopo, aPoints);
+            if (countFacets == 0)
+                mergingMesh = *mesh;
+            else
+                mergingMesh.addMesh(*mesh);
+        } else {
+            return false;
+        }
+
+        // now create a segment for the added mesh
+        std::vector<unsigned long> indices;
+        indices.resize(mergingMesh.countFacets() - countFacets);
+        std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+        Segment segm(&mergingMesh, indices, true);
+        // TODO: pass in the object? segm.setName(obj->Label.getValue());
+        mergingMesh.addSegment(segm);
+        
+        return true;
+    }
+    return false;
+}
+
+AmfExporter::AmfExporter(std::string fileName) :
     outputStreamPtr(nullptr), nextObjectIndex(0)
 {
     // ask for write permission
-    Base::FileInfo fi(fileName);
+    Base::FileInfo fi(fileName.c_str());
     Base::FileInfo di(fi.dirPath().c_str());
     if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable())
         throw Base::FileException("No write permission for file", fileName);
@@ -71,20 +176,54 @@ AmfExporter::~AmfExporter()
     }
 }
 
+bool AmfExporter::addShape(App::Property *shape, float tol)
+{
+    // TODO: Add meta info, look into a different way to extract mesh with vertex normals
+    if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+        Base::Reference<MeshObject> mesh(new MeshObject());
 
-int AmfExporter::addObject(const MeshCore::MeshKernel &meshKernel)
+        auto geoData( static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData() );
+        if (geoData) {
+            std::vector<Base::Vector3d> aPoints;
+            std::vector<Data::ComplexGeoData::Facet> aTopo;
+            geoData->getFaces(aPoints, aTopo, tol);
+
+            mesh->addFacets(aTopo, aPoints);
+        } else {
+            return false;
+        }
+
+        MeshCore::MeshKernel kernel = mesh->getKernel();
+        kernel.Transform(mesh->getTransform());
+
+        return addMesh(kernel);
+    }
+    return false;
+}
+
+bool AmfExporter::addMesh(Mesh::Feature *meshFeat)
+{
+    // TODO: Add name, colour, etc. from the mesh feature
+    const MeshObject &mesh( meshFeat->Mesh.getValue() );
+    MeshCore::MeshKernel kernel( mesh.getKernel() );
+    kernel.Transform(mesh.getTransform());
+
+    return addMesh(kernel);
+}
+
+bool AmfExporter::addMesh(const MeshCore::MeshKernel &kernel)
 {
     if (!outputStreamPtr || outputStreamPtr->bad()) {
-        return -1;
+        return false;
     }
 
-    auto numFacets( meshKernel.CountFacets() );
+    auto numFacets( kernel.CountFacets() );
 
     if (numFacets == 0) {
-        return -1;
+        return false;
     }
 
-    MeshCore::MeshFacetIterator clIter(meshKernel), clEnd(meshKernel);
+    MeshCore::MeshFacetIterator clIter(kernel), clEnd(kernel);
 
     Base::SequencerLauncher seq("Saving...", 2 * numFacets + 1);
 
@@ -156,6 +295,7 @@ int AmfExporter::addObject(const MeshCore::MeshKernel &meshKernel)
                      << "\t\t</mesh>\n"
                      << "\t</object>\n";
 
-    return nextObjectIndex++;
+    ++nextObjectIndex;
+    return true;
 }
 
