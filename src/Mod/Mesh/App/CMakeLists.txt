@@ -316,8 +316,8 @@ SET(Mesh_SRCS
     ${Mesh_XML_SRCS}
     AppMesh.cpp
     AppMeshPy.cpp
-    AmfExport.cpp
-    AmfExport.h
+    Exporter.cpp
+    Exporter.h
     Facet.cpp
     Facet.h
     FacetPyImp.cpp
