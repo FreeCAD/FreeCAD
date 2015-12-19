@@ -295,6 +295,12 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
     std::clog << "Object " << obj.getOldLabel() << " renamed to " << obj.Label.getValue() << std::endl;
 #endif
 
+    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+
+    /* In a document object, and on undo stack? */
+    if (!docObj || docObj->getNameInDocument() == 0)
+        return;
+
     RelabelDocumentObjectExpressionVisitor v(boost::bind( &PropertyExpressionEngine::aboutToSetValue, this),
                                              boost::bind( &PropertyExpressionEngine::hasSetValue, this),
                                              obj.getOldLabel(), obj.Label.getStrValue());
