@@ -168,7 +168,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     dlg.setAcceptMode(QFileDialog::AcceptSave);
     dlg.setDirectory(dirName);
     dlg.setOptions(options);
-    dlg.setFilters(filter.split(QLatin1String(";;")));
+    dlg.setNameFilters(filter.split(QLatin1String(";;")));
     dlg.onSelectedFilter(dlg.selectedFilter());
     dlg.setNameFilterDetailsVisible(true);
     dlg.setConfirmOverwrite(true);
@@ -247,7 +247,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     dlg.setAcceptMode(QFileDialog::AcceptOpen);
     dlg.setDirectory(dirName);
     dlg.setOptions(options);
-    dlg.setFilters(filter.split(QLatin1String(";;")));
+    dlg.setNameFilters(filter.split(QLatin1String(";;")));
     dlg.setNameFilterDetailsVisible(true);
     if (dlg.exec() == QDialog::Accepted) {
         if (selectedFilter)
@@ -305,7 +305,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     dlg.setAcceptMode(QFileDialog::AcceptOpen);
     dlg.setDirectory(dirName);
     dlg.setOptions(options);
-    dlg.setFilters(filter.split(QLatin1String(";;")));
+    dlg.setNameFilters(filter.split(QLatin1String(";;")));
     dlg.setNameFilterDetailsVisible(true);
     if (dlg.exec() == QDialog::Accepted) {
         if (selectedFilter)
@@ -412,7 +412,7 @@ void FileOptionsDialog::accept()
         if (!ok) {
             filter = tr("All files (*.*)");
             filters << filter;
-            setFilters(filters);
+            setNameFilters(filters);
         }
 
         // empty the line edit
