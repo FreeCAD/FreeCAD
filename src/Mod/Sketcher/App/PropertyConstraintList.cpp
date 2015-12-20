@@ -422,9 +422,11 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
         throw std::bad_cast();
 
     if (c0.isArray() && path.numSubComponents() == 1) {
+        int index = c0.getIndex();
+
         if (c0.getIndex() >= _lValueList.size())
             throw Base::Exception("Array out of bounds");
-        switch (_lValueList[c0.getIndex()]->Type) {
+        switch (_lValueList[index]->Type) {
         case Angle:
             dvalue = Base::toRadians<double>(dvalue);
             break;
@@ -432,7 +434,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
             break;
         }
         aboutToSetValue();
-        _lValueList[c0.getIndex()]->setValue(dvalue);
+        _lValueList[index]->setValue(dvalue);
         hasSetValue();
         return;
     }
@@ -440,8 +442,10 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
 
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            int index = it - _lValueList.begin();
+
             if ((*it)->Name == c1.getName()) {
-                switch (_lValueList[c0.getIndex()]->Type) {
+                switch (_lValueList[index]->Type) {
                 case Angle:
                     dvalue = Base::toRadians<double>(dvalue);
                     break;
@@ -449,7 +453,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
                     break;
                 }
                 aboutToSetValue();
-                _lValueList[it - _lValueList.begin()]->setValue(dvalue);
+                _lValueList[index]->setValue(dvalue);
                 hasSetValue();
                 return;
             }
