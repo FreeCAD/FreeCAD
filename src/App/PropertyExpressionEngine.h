@@ -118,6 +118,8 @@ public:
     size_t numExpressions() const;
 
     void slotObjectRenamed(const App::DocumentObject & obj);
+
+    void slotObjectDeleted(const DocumentObject &obj);
     
     ///signal called when a expression was changed 
     boost::signal<void (const App::ObjectIdentifier &)> expressionChanged; 

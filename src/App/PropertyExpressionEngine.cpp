@@ -94,6 +94,34 @@ private:
     int changed;
 };
 
+class ObjectDeletedExpressionVisitor : public ExpressionVisitor {
+public:
+
+    ObjectDeletedExpressionVisitor(const App::DocumentObject * _obj)
+        : obj(_obj)
+        , found(false)
+    {
+    }
+
+    /**
+     * @brief Visit each node in the expression, and if it is a VariableExpression object check if it references obj
+     * @param node Node to visit
+     */
+
+    void visit(Expression * node) {
+        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+
+        if (expr && expr->getPath().getDocumentObject() == obj)
+            found = true;
+    }
+
+    bool isFound() const { return found; }
+
+private:
+    const App::DocumentObject * obj;
+    bool found;
+};
+
 TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::Property);
 
 /**
@@ -312,6 +340,26 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
 
         if (changed != v.getChanged())
             expressionChanged(it->first);
+    }
+}
+
+void PropertyExpressionEngine::slotObjectDeleted(const DocumentObject &obj)
+{
+    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+
+    /* In a document object, and on undo stack? */
+    if (!docObj || docObj->getNameInDocument() == 0)
+        return;
+
+    ObjectDeletedExpressionVisitor v(&obj);
+
+    for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
+        it->second.expression->visit(v);
+
+        if (v.isFound()) {
+            touch(); // Touch to force recompute; that will trigger a proper error
+            return;
+        }
     }
 }
 
