@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
     #include <algorithm>
-    #include <map>
     #include <vector>
+    #include <boost/algorithm/string/replace.hpp>
 #endif  //  #ifndef _PreComp_
 
 #include "Exporter.h"
@@ -42,6 +42,17 @@
 using namespace Mesh;
 using namespace MeshCore;
 
+//static
+std::string Exporter::xmlEscape(const std::string &input)
+{
+    std::string out(input);
+    boost::replace_all(out, "&", "&amp;");
+    boost::replace_all(out, "\"", "&quot;");
+    boost::replace_all(out, "'", "&apos;");
+    boost::replace_all(out, "<", "&lt;");
+    boost::replace_all(out, ">", "&gt;");
+    return out;
+}
 
 MergeExporter::MergeExporter(std::string fileName, MeshIO::Format fmt)
     :fName(fileName)
@@ -110,8 +121,9 @@ bool MergeExporter::addMesh(Mesh::Feature *meshFeat)
     return true;
 }
 
-bool MergeExporter::addShape(App::Property *shape, float tol)
+bool MergeExporter::addPart(App::DocumentObject *obj, float tol)
 {
+    auto *shape(obj->getPropertyByName("Shape"));
     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
         Base::Reference<MeshObject> mesh(new MeshObject());
 
@@ -145,7 +157,9 @@ bool MergeExporter::addShape(App::Property *shape, float tol)
     return false;
 }
 
-AmfExporter::AmfExporter(std::string fileName, bool compress) :
+AmfExporter::AmfExporter( std::string fileName,
+                          const std::map<std::string, std::string> &meta,
+                          bool compress ) :
     outputStreamPtr(nullptr), nextObjectIndex(0)
 {
     // ask for write permission
@@ -173,6 +187,10 @@ AmfExporter::AmfExporter(std::string fileName, bool compress) :
     if (outputStreamPtr) {
         *outputStreamPtr << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                          << "<amf unit=\"millimeter\">\n";
+        for (auto const &metaEntry : meta) {
+            *outputStreamPtr << "\t<metadata type=\"" << metaEntry.first
+                             << "\">" << metaEntry.second << "</metadata>\n";
+        }
     }
 }
 
@@ -193,9 +211,10 @@ AmfExporter::~AmfExporter()
     }
 }
 
-bool AmfExporter::addShape(App::Property *shape, float tol)
+bool AmfExporter::addPart(App::DocumentObject *obj, float tol)
 {
-    // TODO: Add meta info, look into a different way to extract mesh with vertex normals
+    auto *shape(obj->getPropertyByName("Shape"));
+    // TODO: Look into a different way to extract mesh with vertex normals
     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
         Base::Reference<MeshObject> mesh(new MeshObject());
 
@@ -213,7 +232,10 @@ bool AmfExporter::addShape(App::Property *shape, float tol)
         MeshCore::MeshKernel kernel = mesh->getKernel();
         kernel.Transform(mesh->getTransform());
 
-        return addMesh(kernel);
+        std::map<std::string, std::string> meta;
+        meta["name"] = xmlEscape(obj->Label.getStrValue());
+
+        return addMesh(kernel, meta);
     }
     return false;
 }
@@ -225,10 +247,14 @@ bool AmfExporter::addMesh(Mesh::Feature *meshFeat)
     MeshCore::MeshKernel kernel( mesh.getKernel() );
     kernel.Transform(mesh.getTransform());
 
-    return addMesh(kernel);
+    std::map<std::string, std::string> meta;
+    meta["name"] = xmlEscape(meshFeat->Label.getStrValue());
+
+    return addMesh(kernel, meta);
 }
 
-bool AmfExporter::addMesh(const MeshCore::MeshKernel &kernel)
+bool AmfExporter::addMesh(const MeshCore::MeshKernel &kernel,
+                          const std::map<std::string, std::string> &meta)
 {
     if (!outputStreamPtr || outputStreamPtr->bad()) {
         return false;
@@ -244,8 +270,13 @@ bool AmfExporter::addMesh(const MeshCore::MeshKernel &kernel)
 
     Base::SequencerLauncher seq("Saving...", 2 * numFacets + 1);
 
-    *outputStreamPtr << "\t<object id=\"" << nextObjectIndex << "\">\n"
-                     << "\t\t<mesh>\n"
+    *outputStreamPtr << "\t<object id=\"" << nextObjectIndex << "\">\n";
+
+    for (auto const &metaEntry : meta) {
+        *outputStreamPtr << "\t\t<metadata type=\"" << metaEntry.first
+                         << "\">" << metaEntry.second << "</metadata>\n";
+    }
+    *outputStreamPtr << "\t\t<mesh>\n"
                      << "\t\t\t<vertices>\n";
 
     const MeshCore::MeshGeomFacet *facet;
