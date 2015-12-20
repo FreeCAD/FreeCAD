@@ -27,6 +27,10 @@
 #include "View.h"
 #include <QMainWindow>
 
+QT_BEGIN_NAMESPACE
+class QPrinter;
+QT_END_NAMESPACE
+
 namespace Gui 
 {
 class Document;
