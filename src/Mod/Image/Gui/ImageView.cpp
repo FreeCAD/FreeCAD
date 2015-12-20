@@ -123,7 +123,7 @@ void ImageView::enableStatusBar(bool Enable)
 // Enable or disable the toolbar
 void ImageView::enableToolBar(bool Enable)
 {
-  _pStdToolBar->setShown(Enable);
+  _pStdToolBar->setVisible(Enable);
 }
 
 // Enable or disable the mouse events

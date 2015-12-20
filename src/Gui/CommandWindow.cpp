@@ -375,7 +375,7 @@ Action * StdCmdStatusBar::createAction(void)
 
 void StdCmdStatusBar::activated(int iMsg)
 {
-    getMainWindow()->statusBar()->setShown(iMsg != 0);
+    getMainWindow()->statusBar()->setVisible(iMsg != 0);
 }
 
 bool StdCmdStatusBar::isActive()
