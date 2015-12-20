@@ -466,6 +466,12 @@ class _Wall(ArchComponent.Component):
                     base = obj.Base.Shape.copy()
                 elif obj.Base.Shape.Edges:
                     # case 3: the base is flat, we need to extrude it
+                    if not obj.Base.Shape.Faces:
+                        # set the length property
+                        if hasattr(obj.Base.Shape,"Length"):
+                            l = obj.Base.Shape.Length
+                            if obj.Length != l:
+                                obj.Length = l
                     profiles = self.getProfiles(obj)
                     if profiles:
                         normal.multiply(height)
