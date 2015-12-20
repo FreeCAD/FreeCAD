@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <memory>
+# include <map>
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -305,7 +306,13 @@ private:
 
         std::unique_ptr<Exporter> exporter;
         if (exportFormat == MeshIO::AMF) {
-            exporter.reset( new AmfExporter(EncodedName) );
+        std::map<std::string, std::string> meta;
+        meta["cad"] = App::Application::Config()["ExeName"] + " " +
+                      App::Application::Config()["ExeVersion"];
+        meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"] =
+                      App::Application::Config()["BuildRevisionHash"];
+
+        exporter.reset( new AmfExporter(EncodedName, meta) );
         } else {
             // TODO: How do we handle unknown exportFormats?
             exporter.reset( new MergeExporter(EncodedName, exportFormat) );
@@ -323,7 +330,7 @@ private:
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
                     exporter->addMesh( static_cast<Mesh::Feature*>(obj) );
                 } else if (obj->getTypeId().isDerivedFrom(partId)) {
-                    exporter->addShape( obj->getPropertyByName("Shape"), fTolerance );
+                    exporter->addPart( obj, fTolerance );
                 } else {
                     Base::Console().Message("'%s' is not a mesh or shape, export will be ignored.\n", obj->Label.getValue());
                 }

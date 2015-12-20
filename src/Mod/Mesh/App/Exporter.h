@@ -25,6 +25,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+    #include <map>
     #include <ostream>
 #endif  //  #ifndef _PreComp_
 
@@ -42,7 +43,7 @@ namespace Mesh
  * Constructors of derived classes are expected to be required, for passing
  * in the name of output file.
  *
- * Objects are added using the addMesh(), addShape(), etc.
+ * Objects are added using the addMesh(), addPart(), etc.
  *
  * If objects are meant to be combined into a single file, then the file should
  * be saved from the derived class' destructor.
@@ -51,8 +52,13 @@ class Exporter
 {
     public:
         virtual bool addMesh(Mesh::Feature *meshFeat) = 0;
-        virtual bool addShape(App::Property *shape, float tol) = 0;
+        virtual bool addPart(App::DocumentObject *obj, float tol) = 0;
         virtual ~Exporter() {};
+
+    protected:
+        /// Does some simple escaping of characters for XML-type exports
+        //TODO: Use xerces or something instead?
+        static std::string xmlEscape(const std::string &input);
 };
 
 /// Creates a single mesh, in a file, from one or more objects
@@ -65,7 +71,7 @@ class MergeExporter : public Exporter
         /// Directly adds a mesh
         bool addMesh(Mesh::Feature *meshFeat);
         /// Converts the a Part::Feature to a mesh, adds that mesh
-        bool addShape(App::Property *shape, float tol);
+        bool addPart(App::DocumentObject *obj, float tol);
     protected:
         MeshObject mergingMesh;
         std::string fName;
@@ -80,14 +86,24 @@ class AmfExporter : public Exporter
 {
     public:
         /// Writes AMF header
-        AmfExporter(std::string fileName, bool compress = true);
+        /*!
+         * meta information passed in is applied at the <amf> tag level
+         */
+        AmfExporter(std::string fileName,
+                    const std::map<std::string, std::string> &meta,
+                    bool compress = false);
 
         /// Writes AMF footer
         ~AmfExporter();
 
         bool addMesh(Mesh::Feature *meshFeat);
-        bool addMesh(const MeshCore::MeshKernel &kernel);
-        bool addShape(App::Property *shape, float tol);
+
+        /*!
+         * meta is included for the AMF object created
+         */
+        bool addMesh(const MeshCore::MeshKernel &kernel,
+                     const std::map<std::string, std::string> &meta);
+        bool addPart(App::DocumentObject *obj, float tol);
         
     private:
         std::ostream *outputStreamPtr;
