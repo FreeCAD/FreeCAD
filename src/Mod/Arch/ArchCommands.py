@@ -1136,7 +1136,7 @@ class _CommandCheck:
         else:
             FreeCADGui.Selection.clearSelection()
             for i in result:
-                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+i[1])
+                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+i[1].decode("utf8"))
                 FreeCADGui.Selection.addSelection(i[0])
 
 
