@@ -1540,7 +1540,7 @@ void CmdMeshFillupHoles::activated(int iMsg)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     bool ok;
-    int FillupHolesOfLength = QInputDialog::getInteger(Gui::getMainWindow(), QObject::tr("Fill holes"),
+    int FillupHolesOfLength = QInputDialog::getInt(Gui::getMainWindow(), QObject::tr("Fill holes"),
                                 QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok);
     if (!ok) return;
     openCommand("Fill up holes");
