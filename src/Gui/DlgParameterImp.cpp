@@ -662,7 +662,7 @@ void ParameterValue::onCreateIntItem()
         }
     }
 
-    int val = QInputDialog::getInteger(this, QObject::tr("New integer item"), QObject::tr("Enter your number:"), 
+    int val = QInputDialog::getInt(this, QObject::tr("New integer item"), QObject::tr("Enter your number:"),
                                        0, -2147483647, 2147483647, 1, &ok);
 
     if ( ok )
@@ -946,7 +946,7 @@ ParameterInt::~ParameterInt()
 void ParameterInt::changeValue()
 {
     bool ok;
-    int num = QInputDialog::getInteger(treeWidget(), QObject::tr("Change value"), QObject::tr("Enter your number:"), 
+    int num = QInputDialog::getInt(treeWidget(), QObject::tr("Change value"), QObject::tr("Enter your number:"),
                                        text(2).toInt(), -2147483647, 2147483647, 1, &ok);
     if ( ok )
     {
