@@ -351,7 +351,7 @@ void ViewProviderSketch::purgeHandler(void)
     viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
 
     SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
@@ -4612,9 +4612,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     viewer->setCameraOrientation(rot);
 
-    viewer->setEditing(TRUE);
+    viewer->setEditing(true);
     SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
     
     viewer->addGraphicsItem(rubberband);
     rubberband->setViewer(viewer);
@@ -4623,9 +4623,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
     viewer->removeGraphicsItem(rubberband);
-    viewer->setEditing(FALSE);
+    viewer->setEditing(false);
     SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 }
 
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbString &text)

@@ -46,7 +46,7 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgGeneralImp::DlgGeneralImp( QWidget* parent )
   : PreferencePage( parent ), watched(0)

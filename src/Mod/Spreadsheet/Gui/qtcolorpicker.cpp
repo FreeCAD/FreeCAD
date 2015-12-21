@@ -480,7 +480,7 @@ void QtColorPicker::insertColor(const QColor &color, const QString &text, int in
 /*! \property QtColorPicker::colorDialog
     \brief Whether the ellipsis "..." (more) button is available.
 
-    If this property is set to TRUE, the color grid popup will include
+    If this property is set to true, the color grid popup will include
     a "More" button (signified by an ellipsis, "...") which pops up a
     QColorDialog when clicked. The user will then be able to select
     any custom color they like.

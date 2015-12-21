@@ -56,7 +56,7 @@ std::list<DlgPreferencesImp::TGroupPages> DlgPreferencesImp::_pages;
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgPreferencesImp::DlgPreferencesImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog(parent, fl), ui(new Ui_DlgPreferences), canEmbedScrollArea(true)

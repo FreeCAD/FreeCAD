@@ -95,8 +95,8 @@ TextBrowser::TextBrowser(QWidget * parent)
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-  setAcceptDrops( TRUE );
-  viewport()->setAcceptDrops( TRUE );
+  setAcceptDrops( true );
+  viewport()->setAcceptDrops( true );
 
   connect( d->http, SIGNAL(done(bool)), this, SLOT(done(bool)));
   connect( d->http, SIGNAL(stateChanged(int)), this, SLOT(onStateChanged(int)));

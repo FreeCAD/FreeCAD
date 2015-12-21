@@ -69,7 +69,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD  ul_reason_for_call, LPVOID lpReserv
         break;
     }
 
-    return TRUE;
+    return true;
 }
 #elif defined(FC_OS_LINUX)
 # ifndef GNU_SOURCE

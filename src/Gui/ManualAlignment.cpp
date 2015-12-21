@@ -489,7 +489,7 @@ public:
         rot_cam1 = rot;
 
         // copy the values
-        cam2->enableNotify(FALSE);
+        cam2->enableNotify(false);
         cam2->nearDistance = cam1->nearDistance;
         cam2->farDistance = cam1->farDistance;
         cam2->focalDistance = cam1->focalDistance;
@@ -512,7 +512,7 @@ public:
                 static_cast<SoOrthographicCamera*>(cam1)->height;
         }
 
-        cam2->enableNotify(TRUE);
+        cam2->enableNotify(true);
     }
     static
     void syncCameraCB(void * data, SoSensor * s)

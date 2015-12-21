@@ -106,7 +106,7 @@ inline bool MeshHelpPoint::operator < (const MeshHelpPoint &rclObj) const
 //     if (fabs(_clPt.y - rclObj._clPt.y) < MeshDefinitions::_fMinPointDistanceD1)
 //     {
 //       if (fabs(_clPt.z - rclObj._clPt.z) < MeshDefinitions::_fMinPointDistanceD1)
-//         return FALSE;
+//         return false;
 //       else
 //         return _clPt.z < rclObj._clPt.z;
 //     }
@@ -136,15 +136,15 @@ inline bool MeshHelpPoint::operator == (const MeshHelpPoint &rclObj) const
     if (fabs(_clPt.y - rclObj._clPt.y) < (MeshDefinitions::_fMinPointDistanceD1 + 1.0e-2f))
     {
       if (fabs(_clPt.z - rclObj._clPt.z) < (MeshDefinitions::_fMinPointDistanceD1 + 1.0e-2f))
-        return TRUE;
+        return true;
       else
-        return FALSE;
+        return false;
     }
     else
-      return FALSE;
+      return false;
   }
   else
-    return FALSE;
+    return false;
 */
 }
 

@@ -192,7 +192,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press //the button was pressed (if false -> released)
-                = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+                = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (button) {
         case SoMouseButtonEvent::BUTTON1:
             this->button1down = press;
@@ -268,7 +268,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //----------all this were preparations. Now comes the event handling! ----------
 
-    SbBool processed = FALSE;//a return value for the  BlahblahblahNavigationStyle::processSoEvent
+    SbBool processed = false;//a return value for the  BlahblahblahNavigationStyle::processSoEvent
     bool propagated = false;//an internal flag indicating that the event has been already passed to inherited, to suppress the automatic doing of this at the end.
     //goto finalize = return processed. Might be important to do something before done (none now).
 
@@ -282,10 +282,10 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Mode-independent keyboard handling
     if (evIsKeyboard) {
         const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
-        const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+        const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
-            processed = TRUE;
+            processed = true;
             if(!press){
                 SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                 if(!ret){
@@ -306,7 +306,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
         if (event)
             this->processMotionEvent(event);
-        processed = TRUE;
+        processed = true;
     }
     if (processed)
         goto finalize;
@@ -321,7 +321,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         //keyboard
         if (evIsKeyboard) {
             const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
-            const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+            const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
             switch(event->getKey()){
             case SoKeyboardEvent::S:
@@ -335,15 +335,15 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 break;
             case SoKeyboardEvent::PAGE_UP:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), TRUE, posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
                 }
-                processed = TRUE;
+                processed = true;
                 break;
             case SoKeyboardEvent::PAGE_DOWN:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), FALSE, posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
                 }
-                processed = TRUE;
+                processed = true;
                 break;
             default:
                 break;
@@ -358,7 +358,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             const SbBool press //the button was pressed (if false -> released)
-                    = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+                    = event->getState() == SoButtonEvent::DOWN ? true : false;
             switch(button){
             case SoMouseButtonEvent::BUTTON1:
             case SoMouseButtonEvent::BUTTON2:
@@ -399,7 +399,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
             break;
             case SoMouseButtonEvent::BUTTON3://press the wheel
-                processed = TRUE;
+                processed = true;
                 if(press){
                     SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                     if(!ret){
@@ -409,12 +409,12 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
                 break;
             case SoMouseButtonEvent::BUTTON4: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), TRUE, posn);
-                processed = TRUE;
+                doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
+                processed = true;
                 break;
             case SoMouseButtonEvent::BUTTON5: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), FALSE, posn);
-                processed = TRUE;
+                doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
+                processed = true;
                 break;
             }
         }
@@ -479,7 +479,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             //const SbBool press //the button was pressed (if false -> released)
-            //        = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+            //        = event->getState() == SoButtonEvent::DOWN ? true : false;
             switch(button){
             case SoMouseButtonEvent::BUTTON1:
             case SoMouseButtonEvent::BUTTON2:
@@ -502,23 +502,23 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             //const SoLocation2Event * const event = (const SoLocation2Event *) ev;
             if (curmode == NavigationStyle::ZOOMING) {//doesn't happen
                 this->zoomByCursor(posn, prevnormalized);
-                processed = TRUE;
+                processed = true;
             } else if (curmode == NavigationStyle::PANNING) {
                 panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
-                processed = TRUE;
+                processed = true;
             } else if (curmode == NavigationStyle::DRAGGING) {
                 if (comboAfter & BUTTON1DOWN && comboAfter & BUTTON2DOWN) {
                     //two mouse buttons down - tilting!
                     NavigationStyle::doRotate(viewer->getSoRenderManager()->getCamera(),
                                               (posn - prevnormalized)[0]*(-2),
                                               SbVec2f(0.5,0.5));
-                    processed = TRUE;
+                    processed = true;
                 } else {//one mouse button - normal spinning
                     //this will also handle the single-finger drag (there's no gesture used, pseudomouse is enough)
                     //this->addToLog(event->getPosition(), event->getTime());
                     this->spin_simplified(viewer->getSoRenderManager()->getCamera(),
                                           posn, prevnormalized);
-                    processed = TRUE;
+                    processed = true;
                 }
             }
         }
@@ -564,7 +564,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         if (evIsButton) {
             const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
-            const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+            const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
             if (button == SoMouseButtonEvent::BUTTON1 && press) {
                 this->seekToPoint(pos); // implicitly calls interactiveCountInc()
                 this->setViewingMode(NavigationStyle::SEEK_MODE);

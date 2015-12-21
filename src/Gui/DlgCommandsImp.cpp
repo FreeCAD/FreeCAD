@@ -58,7 +58,7 @@ struct GroupMap_find {
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
   : CustomizeActionPage(parent)
