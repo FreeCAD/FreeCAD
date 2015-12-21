@@ -64,7 +64,7 @@ struct GroupMap_find {
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     : CustomizeActionPage(parent), type(t)
@@ -645,7 +645,7 @@ void DlgCustomToolbars::changeEvent(QEvent *e)
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgCustomToolbarsImp::DlgCustomToolbarsImp( QWidget* parent )
     : DlgCustomToolbars(DlgCustomToolbars::Toolbar, parent)
@@ -894,7 +894,7 @@ void DlgCustomToolbarsImp::changeEvent(QEvent *e)
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgCustomToolBoxbarsImp::DlgCustomToolBoxbarsImp( QWidget* parent )
     : DlgCustomToolbars(DlgCustomToolbars::Toolboxbar, parent)

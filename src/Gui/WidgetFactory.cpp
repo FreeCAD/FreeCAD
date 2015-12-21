@@ -842,14 +842,14 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     setWindowTitle( templChild->objectName() );
     setObjectName( templChild->objectName() );
 
-    setSizeGripEnabled( TRUE );
+    setSizeGripEnabled( true );
     MyDialogLayout = new QGridLayout(this);
 
     buttonOk = new QPushButton(this);
     buttonOk->setObjectName(QLatin1String("buttonOK"));
     buttonOk->setText( tr( "&OK" ) );
-    buttonOk->setAutoDefault( TRUE );
-    buttonOk->setDefault( TRUE );
+    buttonOk->setAutoDefault( true );
+    buttonOk->setDefault( true );
 
     MyDialogLayout->addWidget( buttonOk, 1, 0 );
     QSpacerItem* spacer = new QSpacerItem( 210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
@@ -858,7 +858,7 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     buttonCancel = new QPushButton(this);
     buttonCancel->setObjectName(QLatin1String("buttonCancel"));
     buttonCancel->setText( tr( "&Cancel" ) );
-    buttonCancel->setAutoDefault( TRUE );
+    buttonCancel->setAutoDefault( true );
 
     MyDialogLayout->addWidget( buttonCancel, 1, 2 );
 
@@ -1029,8 +1029,8 @@ void PyResource::load( const char* name )
 /**
  * Makes a connection between the sender widget \a sender and its signal \a signal
  * of the created resource and Python callback function \a cb.
- * If the sender widget does not exist or no resource has been loaded this method returns FALSE, 
- * otherwise it returns TRUE.
+ * If the sender widget does not exist or no resource has been loaded this method returns false, 
+ * otherwise it returns true.
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 {

@@ -2147,7 +2147,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
     SoNode* root = view->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 
     std::vector<SbVec2f> picked = view->getGLPolygon();
     SoCamera* cam = view->getSoRenderManager()->getCamera();
@@ -2202,7 +2202,7 @@ void StdBoxSelection::activated(int iMsg)
             viewer->startSelection(View3DInventorViewer::Rubberband);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
             SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
         }
     }
 }

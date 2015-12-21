@@ -317,9 +317,9 @@ static int getWordSizeOfOS()
 
     // determine if 32-bit process running on 64-bit windows in WOW64 emulation
     // or 32-bit process running on 32-bit windows
-    // default bIsWow64 to FALSE for 32-bit process on 32-bit windows
+    // default bIsWow64 to false for 32-bit process on 32-bit windows
 
-    BOOL bIsWow64 = FALSE; // must default to FALSE
+    BOOL bIsWow64 = false; // must default to false
     typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
 
     LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(

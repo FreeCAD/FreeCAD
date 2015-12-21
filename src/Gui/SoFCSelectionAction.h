@@ -300,7 +300,7 @@ public:
 
     virtual void apply(SoNode * node);
     virtual void apply(SoPath * path);
-    virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+    virtual void apply(const SoPathList & pathlist, SbBool obeysrules = false);
     void setVisible(SbBool b) { hlVisible = b; }
     SbBool isVisible() const { return hlVisible; }
     void setColor(const SbColor & color);

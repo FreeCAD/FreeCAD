@@ -472,7 +472,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
             else {
                 // the nearest picked point was not part of the view provider
                 SoRayPickAction action(view->getSoRenderManager()->getViewportRegion());
-                action.setPickAll(TRUE);
+                action.setPickAll(true);
                 action.setPoint(mbe->getPosition());
                 action.apply(view->getSoRenderManager()->getSceneGraph());
 

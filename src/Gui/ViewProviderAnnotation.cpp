@@ -414,7 +414,7 @@ bool ViewProviderAnnotationLabel::setEdit(int ModNum)
 {
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
-    sa.setSearchingAll(FALSE);
+    sa.setSearchingAll(false);
     sa.setNode(this->pTextTranslation);
     sa.apply(pcRoot);
     SoPath * path = sa.getPath();

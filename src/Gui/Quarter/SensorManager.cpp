@@ -68,7 +68,7 @@ SensorManager::SensorManager(void)
   this->timerEpsilon = 1.0 / 5000.0;
 
   SoDB::setRealTimeInterval(1.0 / 25.0);
-  SoRenderManager::enableRealTimeUpdate(FALSE);
+  SoRenderManager::enableRealTimeUpdate(false);
 }
 
 SensorManager::~SensorManager()
@@ -147,7 +147,7 @@ void
 SensorManager::idleTimeout(void)
 {
   SoDB::getSensorManager()->processTimerQueue();
-  SoDB::getSensorManager()->processDelayQueue(TRUE);
+  SoDB::getSensorManager()->processDelayQueue(true);
   this->sensorQueueChanged();
 }
 
@@ -162,7 +162,7 @@ void
 SensorManager::delayTimeout(void)
 {
   SoDB::getSensorManager()->processTimerQueue();
-  SoDB::getSensorManager()->processDelayQueue(FALSE);
+  SoDB::getSensorManager()->processDelayQueue(false);
   this->sensorQueueChanged();
 }
 

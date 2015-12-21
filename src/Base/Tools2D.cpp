@@ -107,16 +107,16 @@ bool BoundBox2D::Intersect(const Line2D &rclLine) const
 bool BoundBox2D::Intersect(const BoundBox2D &rclBB) const
 {
 //// compare bb2-points to this
-//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMinY))) return TRUE;
-//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMinY))) return TRUE;
-//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMaxY))) return TRUE;
-//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMaxY))) return TRUE;
+//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMinY))) return true;
+//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMinY))) return true;
+//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMaxY))) return true;
+//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMaxY))) return true;
 //
 //// compare this-points to bb2
-//if (rclBB.Contains (Vector2D (fMinX, fMinY))) return TRUE;
-//if (rclBB.Contains (Vector2D (fMaxX, fMinY))) return TRUE;
-//if (rclBB.Contains (Vector2D (fMaxX, fMaxY))) return TRUE;
-//if (rclBB.Contains (Vector2D (fMinX, fMaxY))) return TRUE;
+//if (rclBB.Contains (Vector2D (fMinX, fMinY))) return true;
+//if (rclBB.Contains (Vector2D (fMaxX, fMinY))) return true;
+//if (rclBB.Contains (Vector2D (fMaxX, fMaxY))) return true;
+//if (rclBB.Contains (Vector2D (fMinX, fMaxY))) return true;
 
   if (fMinX       < rclBB.fMaxX  &&
       rclBB.fMinX < fMaxX        &&
@@ -222,7 +222,7 @@ bool Line2D::Intersect (const Line2D& rclLine, Vector2D &rclV) const
     rclV.fY = m1 * rclV.fX + b1;  
   }
   
-  return true;    /*** RETURN TRUE (intersection) **********/
+  return true;    /*** RETURN true (intersection) **********/
 }
 
 bool Line2D::Intersect (const Vector2D &rclV, double eps) const
