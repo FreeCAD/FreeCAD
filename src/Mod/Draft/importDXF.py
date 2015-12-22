@@ -1568,7 +1568,8 @@ def getArcData(edge):
         #print p2
         # we can use Z check since arcs getting here will ALWAYS be in XY plane
         # Z can be 0 if the arc is 180 deg
-        if (v1.cross(v2).z >= 0) or (edge.Curve.Axis.z > 0):
+        #if (v1.cross(v2).z >= 0) or (edge.Curve.Axis.z > 0):
+        if edge.Curve.Axis.z > 0:
             #clockwise
             ang1 = -DraftVecUtils.angle(v1)
             ang2 = -DraftVecUtils.angle(v2)
@@ -1896,6 +1897,12 @@ def exportPage(page,filename):
         template += "0\nEOF"
     blocks = ""
     entities = ""
+    r12 = False
+    ver = re.findall("\$ACADVER\n.*?\n(.*?)\n",template)
+    if ver:
+        # at the moment this is not used. TODO: if r12, do not print ellipses or splines
+        if ver[0].upper() in ["AC1009","AC1010","AC1011","AC1012","AC1013"]:
+            r12 = True
     for view in page.Group:
         b,e = getViewDXF(view)
         blocks += b
