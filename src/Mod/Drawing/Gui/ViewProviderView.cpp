@@ -127,6 +127,18 @@ void ViewProviderDrawingView::updateData(const App::Property*)
 {
 }
 
+// Python viewprovider -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(DrawingGui::ViewProviderDrawingViewPython, DrawingGui::ViewProviderDrawingView)
+/// @endcond
+
+// explicit template instantiation
+template class DrawingGuiExport ViewProviderPythonFeatureT<DrawingGui::ViewProviderDrawingView>;
+}
+
+
 // ----------------------------------------------------------------------------
 
 PROPERTY_SOURCE(DrawingGui::ViewProviderDrawingClip, Gui::ViewProviderDocumentObjectGroup)
