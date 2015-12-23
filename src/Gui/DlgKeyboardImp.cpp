@@ -147,7 +147,7 @@ void DlgCustomKeyboardImp::on_commandTreeWidget_currentItemChanged(QTreeWidgetIt
             if (ks.isEmpty())
                 accelLineEditShortcut->setText( tr("none") );
             else
-                accelLineEditShortcut->setText(ks);
+                accelLineEditShortcut->setText(ks.toString(QKeySequence::NativeText));
 
             buttonAssign->setEnabled(!editShortcut->text().isEmpty() && (ks != ks3));
             buttonReset->setEnabled((ks != ks2));
@@ -156,7 +156,7 @@ void DlgCustomKeyboardImp::on_commandTreeWidget_currentItemChanged(QTreeWidgetIt
             if (ks.isEmpty())
                 accelLineEditShortcut->setText( tr("none") );
             else
-                accelLineEditShortcut->setText(ks);
+                accelLineEditShortcut->setText(ks.toString(QKeySequence::NativeText));
             buttonAssign->setEnabled(false);
             buttonReset->setEnabled(false);
         }
@@ -218,7 +218,7 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
     if (cmd && cmd->getAction()) {
         Action* action = cmd->getAction();
         QKeySequence shortcut = editShortcut->text();
-        action->setShortcut(shortcut);
+        action->setShortcut(shortcut.toString(QKeySequence::NativeText));
         accelLineEditShortcut->setText(editShortcut->text());
         editShortcut->clear();
 
@@ -274,7 +274,7 @@ void DlgCustomKeyboardImp::on_buttonReset_clicked()
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && cmd->getAction()) {
       cmd->getAction()->setShortcut(QString::fromLatin1(cmd->getAccel()));
-        QString txt = cmd->getAction()->shortcut();
+        QString txt = cmd->getAction()->shortcut().toString(QKeySequence::NativeText);
         accelLineEditShortcut->setText((txt.isEmpty() ? tr("none") : txt));
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
         hGrp->RemoveASCII(name.constData());
@@ -290,7 +290,8 @@ void DlgCustomKeyboardImp::on_buttonResetAll_clicked()
     std::vector<Command*> cmds = cCmdMgr.getAllCommands();
     for (std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it) {
         if ((*it)->getAction()) {
-          (*it)->getAction()->setShortcut(QKeySequence(QString::fromLatin1((*it)->getAccel())));
+          (*it)->getAction()->setShortcut(QKeySequence(QString::fromLatin1((*it)->getAccel()))
+                                          .toString(QKeySequence::NativeText));
         }
     }
 
