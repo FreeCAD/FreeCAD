@@ -2769,7 +2769,7 @@ class Trimex(Modifier):
             self.ctrl = hasMod(arg,MODSNAP)
             if self.extrudeMode:
                 arg["ShiftDown"] = False
-            if hasattr(FreeCADGui,"Snapper"):
+            elif hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setSelectMode(not self.ctrl)
             wp = not(self.extrudeMode and self.shift)
             self.point,cp,info = getPoint(self,arg,workingplane=wp)
