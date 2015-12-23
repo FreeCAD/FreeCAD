@@ -774,6 +774,7 @@ class _StructuralSystem(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLinkList","Axes","Arch",translate("Arch","Axes systems this structure is built on"))
         obj.addProperty("App::PropertyIntegerList","Exclude","Arch",translate("Arch","The element numbers to exclude when this structure is based on axes"))
+        obj.addProperty("App::PropertyBool","Align","Arch","If true the element are aligned with axes").Align = False
         self.Type = "StructuralSystem"
 
     def execute(self,obj):
@@ -794,7 +795,13 @@ class _StructuralSystem(ArchComponent.Component):
 
                 # applying axes
                 pts = self.getAxisPoints(obj)
-                apl = self.getAxisPlacement(obj)
+                if hasattr(obj,"Align"):
+                    if obj.Align == False :
+                        apl = self.getAxisPlacement(obj)
+                    if obj.Align == True :
+                        apl = None
+                else :
+                    apl = self.getAxisPlacement(obj)
 
                 if pts:
                     fsh = []
@@ -830,8 +837,19 @@ class _StructuralSystem(ArchComponent.Component):
         import DraftGeomUtils
         pts = []
         if len(obj.Axes) == 1:
-            for e in obj.Axes[0].Shape.Edges:
-                pts.append(e.Vertexes[0].Point)
+            if hasattr(obj,"Align"):
+                if obj.Align == True :
+                    p0 = obj.Axes[0].Shape.Edges[0].Vertexes[1].Point
+                    for e in obj.Axes[0].Shape.Edges:
+                        p = e.Vertexes[1].Point
+                        p = p.sub(p0)
+                        pts.append(p)
+                else:
+                    for e in obj.Axes[0].Shape.Edges:
+                        pts.append(e.Vertexes[0].Point)
+            else:
+                for e in obj.Axes[0].Shape.Edges:
+                        pts.append(e.Vertexes[0].Point)
         elif len(obj.Axes) >= 2:
             set1 = obj.Axes[0].Shape.Edges
             set2 = obj.Axes[1].Shape.Edges
