@@ -2097,7 +2097,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         vobj = obj.ViewObject
         lorig = getLineStyle()
         fill = 'none'
-        invpl = obj.Placement.inverse()
         rad = vobj.BubbleSize.Value/2
         n = 0
         for e in obj.Shape.Edges:
@@ -2112,11 +2111,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     pos = [vobj.BubblePosition]
             for p in pos:
                 if p == "Start":
-                    p1 = invpl.multVec(e.Vertexes[0].Point)
-                    p2 = invpl.multVec(e.Vertexes[1].Point)
+                    p1 = e.Vertexes[0].Point
+                    p2 = e.Vertexes[1].Point
                 else:
-                    p1 = invpl.multVec(e.Vertexes[1].Point)
-                    p2 = invpl.multVec(e.Vertexes[0].Point)
+                    p1 = e.Vertexes[1].Point
+                    p2 = e.Vertexes[0].Point
                 dv = p2.sub(p1)
                 dv.normalize()
                 center = p2.add(dv.scale(rad,rad,rad))
