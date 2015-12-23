@@ -2094,31 +2094,44 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
+        vobj = obj.ViewObject
         lorig = getLineStyle()
         fill = 'none'
-        invpl = obj.Placement.inverse()
+        rad = vobj.BubbleSize.Value/2
         n = 0
         for e in obj.Shape.Edges:
             lstyle = lorig
             svg += getPath([e])
-            p1 = invpl.multVec(e.Vertexes[0].Point)
-            p2 = invpl.multVec(e.Vertexes[1].Point)
-            dv = p2.sub(p1)
-            dv.normalize()
-            rad = obj.ViewObject.BubbleSize
-            center = p2.add(dv.scale(rad,rad,rad))
             lstyle = "none"
-            svg += getCircle(Part.makeCircle(rad,center))
-            svg += '<text fill="' + stroke + '" '
-            svg += 'font-size="' + str(rad) + '" '
-            svg += 'style="text-anchor:middle;'
-            svg += 'text-align:center;'
-            svg += 'font-family: sans;" '
-            svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
-            svg += 'scale(1,-1)"> '
-            svg += '<tspan>' + obj.ViewObject.Proxy.getNumber(n) + '</tspan>\n'
-            svg += '</text>\n'
-            n += 1
+            pos = ["Start"]
+            if hasattr(vobj,"BubblePosition"):
+                if vobj.BubblePosition == "Both":
+                    pos = ["Start","End"]
+                else:
+                    pos = [vobj.BubblePosition]
+            for p in pos:
+                if p == "Start":
+                    p1 = e.Vertexes[0].Point
+                    p2 = e.Vertexes[1].Point
+                else:
+                    p1 = e.Vertexes[1].Point
+                    p2 = e.Vertexes[0].Point
+                dv = p2.sub(p1)
+                dv.normalize()
+                center = p2.add(dv.scale(rad,rad,rad))
+                svg += getCircle(Part.makeCircle(rad,center))
+                if hasattr(vobj.Proxy,"bubbletexts"):
+                    if len (vobj.Proxy.bubbletexts) >= n:
+                        svg += '<text fill="' + stroke + '" '
+                        svg += 'font-size="' + str(rad) + '" '
+                        svg += 'style="text-anchor:middle;'
+                        svg += 'text-align:center;'
+                        svg += 'font-family: sans;" '
+                        svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
+                        svg += 'scale(1,-1)"> '
+                        svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
+                        svg += '</text>\n'
+                        n += 1
             
     elif getType(obj) == "Space":
         "returns an SVG fragment for the text of a space"

@@ -384,7 +384,7 @@ class _ArchDrawingView:
                             import ArchVRM, WorkingPlane
                             wp = WorkingPlane.plane()
                             wp.setFromPlacement(obj.Source.Placement)
-                            wp.inverse()
+                            #wp.inverse()
                             render = ArchVRM.Renderer()
                             render.setWorkingPlane(wp)
                             render.addObjects(objs)
@@ -392,12 +392,14 @@ class _ArchDrawingView:
                                 render.cut(obj.Source.Shape,obj.ShowCut)
                             else:
                                 render.cut(obj.Source.Shape)
+                            self.svg += '<g transform="scale(1,-1)">\n'
                             self.svg += render.getViewSVG(linewidth="LWPlaceholder")
                             self.svg += fillpattern
                             self.svg += render.getSectionSVG(linewidth="SWPlaceholder",fillpattern="sectionfill")
                             if hasattr(obj,"ShowCut"):
                                 if obj.ShowCut:
                                     self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
+                            self.svg += '</g>\n'
                             # print render.info()
 
                         else:
