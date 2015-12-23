@@ -42,6 +42,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_MOC_HDRS
     DlgSettingsFemImp.h
+    PropertyFemMeshItem.h
     TaskObjectName.h
     TaskCreateNodeSet.h
     TaskDlgCreateNodeSet.h
@@ -187,6 +188,8 @@ SET(FemGui_SRCS_Module
     Resources/Fem.qrc
     PreCompiled.cpp
     PreCompiled.h
+    PropertyFemMeshItem.cpp
+    PropertyFemMeshItem.h
     Workbench.cpp
     Workbench.h
 )
