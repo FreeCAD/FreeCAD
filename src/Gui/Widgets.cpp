@@ -80,7 +80,7 @@ void CommandIconView::startDrag ( Qt::DropActions supportedActions )
     dataStream << items.count();
     for (QList<QListWidgetItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
         if (it == items.begin())
-            pixmap = qVariantValue<QPixmap>((*it)->data(Qt::UserRole));
+            pixmap = ((*it)->data(Qt::UserRole)).value<QPixmap>();
         dataStream << (*it)->text();
     }
 

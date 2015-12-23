@@ -643,7 +643,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     cursor.insertText( text );
 
     // get CallTip from item's UserRole-data
-    const CallTip &callTip = qVariantValue<CallTip>( item->data(Qt::UserRole) );
+    const CallTip &callTip = item->data(Qt::UserRole).value<CallTip>();
 
     // if call completion enabled and we've something callable (method or class constructor) ...
     if (this->doCallCompletion
