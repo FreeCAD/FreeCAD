@@ -431,7 +431,7 @@ protected:
 class MacroCommand: public Command
 {
 public:
-    MacroCommand(const char* name);
+    MacroCommand(const char* name, bool system = false);
     virtual ~MacroCommand();
 
 protected:
@@ -467,6 +467,7 @@ public:
 
 protected:
     const char* sScriptName;
+    bool systemMacro;
 };
 
 /** The CommandManager class

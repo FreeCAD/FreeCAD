@@ -701,11 +701,11 @@ void Command::updateAction(int)
 
 /* TRANSLATOR Gui::MacroCommand */
 
-MacroCommand::MacroCommand(const char* name)
+MacroCommand::MacroCommand(const char* name, bool system)
 #if defined (_MSC_VER)
-  : Command( _strdup(name) )
+  : Command( _strdup(name) ), systemMacro(system)
 #else
-  : Command( strdup(name) )
+  : Command( strdup(name) ), systemMacro(system)
 #endif
 {
     sGroup = QT_TR_NOOP("Macros");
@@ -720,11 +720,22 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
-    std::string cMacroPath = App::GetApplication().GetParameterGroupByPath
+    QDir d;
+    
+    if(!systemMacro) {
+	std::string cMacroPath;
+	
+	cMacroPath = App::GetApplication().GetParameterGroupByPath
                              ("User parameter:BaseApp/Preferences/Macro")->GetASCII("MacroPath",
                                      App::Application::getUserMacroDir().c_str());
-
-    QDir d(QString::fromUtf8(cMacroPath.c_str()));
+			     
+	d = QDir(QString::fromUtf8(cMacroPath.c_str()));
+    }
+    else {
+	QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+	d = QDir(dirstr);
+    }
+    
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
     if (!fi.exists()) {
         QMessageBox::critical(Gui::getMainWindow(),
@@ -795,6 +806,9 @@ void MacroCommand::load()
             if ((*it)->GetASCII("Pixmap", "nix") != "nix")
                 macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
             macro->setAccel       ( (*it)->GetASCII( "Accel",0    ).c_str() );
+	    
+	    macro->systemMacro = (*it)->GetBool("System", false);
+	    
             Application::Instance->commandManager().addCommand( macro );
         }
     }
@@ -817,6 +831,7 @@ void MacroCommand::save()
             hMacro->SetASCII( "Statustip", macro->getStatusTip  () );
             hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
             hMacro->SetASCII( "Accel",     macro->getAccel      () );
+	    hMacro->SetBool( "System",     macro->systemMacro );
         }
     }
 }
