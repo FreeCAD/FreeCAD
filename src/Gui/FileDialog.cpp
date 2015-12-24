@@ -419,7 +419,7 @@ void FileOptionsDialog::accept()
         filename->blockSignals(true);
         filename->clear();
         filename->blockSignals(false);
-        selectFilter(filter);
+        selectNameFilter(filter);
 
         return;
     }
