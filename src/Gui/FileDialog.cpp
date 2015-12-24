@@ -396,7 +396,7 @@ void FileOptionsDialog::accept()
         QFileInfo fi(fn);
         QString ext = fi.suffix();
         ext.prepend(QLatin1String("*."));
-        QStringList filters = this->filters();
+        QStringList filters = this->nameFilters();
         bool ok=false;
         // Compare the given suffix with the suffixes of all filters
         QString filter;
