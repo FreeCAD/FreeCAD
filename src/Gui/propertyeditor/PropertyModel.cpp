@@ -211,6 +211,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     // fill up the listview with the properties
     rootItem->reset();
 
+    beginResetModel();
+
     // sort the properties into their groups
     std::map<std::string, std::vector<std::vector<App::Property*> > > propGroup;
     PropertyModel::PropertyList::const_iterator jt;
@@ -259,7 +261,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         }
     }
 
-    reset();
+    endResetModel();
+//    reset();
 }
 
 void PropertyModel::updateProperty(const App::Property& prop)
