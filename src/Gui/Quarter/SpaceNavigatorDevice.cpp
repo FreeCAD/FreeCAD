@@ -36,8 +36,8 @@
 
 #include <Quarter/devices/SpaceNavigatorDevice.h>
 
-#include <QtGui/QApplication>
-#include <QtGui/QWidget>
+#include <QApplication>
+#include <QWidget>
 #include <QtCore/QEvent>
 
 #include <Inventor/events/SoEvent.h>

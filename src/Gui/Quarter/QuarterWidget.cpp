@@ -57,7 +57,7 @@
 #include <QtCore/QEvent>
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
-#include <QtGui/QAction>
+#include <QAction>
 #include <QPaintEvent>
 #include <QResizeEvent>
 
