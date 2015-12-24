@@ -44,6 +44,7 @@
 # include <QStackedWidget>
 # include <QTimer>
 # include <QUrl>
+# include <QMimeData>
 # include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
