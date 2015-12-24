@@ -37,6 +37,7 @@
 # include <QTextDocumentFragment>
 # include <QTextStream>
 # include <QUrl>
+# include <QMimeData>
 #endif
 
 #include "PythonConsole.h"
