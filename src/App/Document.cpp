@@ -1274,6 +1274,7 @@ Document::importObjects(Base::XMLReader& reader)
     // reset all touched
     for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it) {
         (*it)->onDocumentRestored();
+        (*it)->ExpressionEngine.onDocumentRestored();
         (*it)->purgeTouched();
     }
     return objs;
@@ -1488,6 +1489,7 @@ void Document::restore (void)
     for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
         It->second->connectRelabelSignals();
         It->second->onDocumentRestored();
+        It->second->ExpressionEngine.onDocumentRestored();
         It->second->purgeTouched();
     }
 

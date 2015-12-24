@@ -130,6 +130,7 @@ TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::Property);
 
 PropertyExpressionEngine::PropertyExpressionEngine()
     : Property()
+    , AtomicPropertyChangeInterface()
     , running(false)
     , validator(0)
 {
@@ -172,7 +173,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
 {
     const PropertyExpressionEngine * fromee = static_cast<const PropertyExpressionEngine*>(&from);
 
-    aboutToSetValue();
+    AtomicPropertyChange signaller(*this);
     expressions.clear();
 
     for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it) {
@@ -181,8 +182,6 @@ void PropertyExpressionEngine::Paste(const Property &from)
     }
 
     validator = fromee->validator;
-
-    hasSetValue();
 }
 
 void PropertyExpressionEngine::Save(Base::Writer &writer) const
@@ -206,6 +205,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
 
     int count = reader.getAttributeAsFloat("count");
 
+    restoredExpressions.clear();
     for (int i = 0; i < count; ++i) {
         DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
@@ -214,7 +214,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
         boost::shared_ptr<Expression> expression(ExpressionParser::parse(docObj, reader.getAttribute("expression")));
         const char * comment = reader.hasAttribute("comment") ? reader.getAttribute("comment") : 0;
 
-        setValue(path, expression, comment);
+        restoredExpressions[path] = ExpressionInfo(expression, comment);
     }
 
     reader.readEndElement("ExpressionEngine");
@@ -363,6 +363,14 @@ void PropertyExpressionEngine::slotObjectDeleted(const DocumentObject &obj)
     }
 }
 
+void PropertyExpressionEngine::onDocumentRestored()
+{
+    AtomicPropertyChange signaller(*this);
+
+    for (ExpressionMap::iterator it = restoredExpressions.begin(); it != restoredExpressions.end(); ++it)
+        setValue(it->first, it->second.expression, it->second.comment.size() > 0 ? it->second.comment.c_str() : 0);
+}
+
 /**
  * @brief Get expression for \a path.
  * @param path ObjectIndentifier to query for.
@@ -408,16 +416,14 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         if (error.size() > 0)
             throw Base::Exception(error.c_str());
 
-        aboutToSetValue();
+        AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr, comment);
         expressionChanged(usePath);
-        hasSetValue();
     }
     else {
-        aboutToSetValue();
+        AtomicPropertyChange signaller(*this);
         expressions.erase(usePath);
         expressionChanged(usePath);
-        hasSetValue();
     }
 }
 
