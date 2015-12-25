@@ -3594,9 +3594,10 @@ int System::diagnose(Algorithm alg)
             std::vector<Constraint *> clistTmp;
             clistTmp.reserve(clist.size());
             for (std::vector<Constraint *>::iterator constr=clist.begin();
-                 constr != clist.end(); ++constr)
+                constr != clist.end(); ++constr) {
                 if (skipped.count(*constr) == 0)
                     clistTmp.push_back(*constr);
+            }
 
             SubSystem *subSysTmp = new SubSystem(clistTmp, plist);
             int res = solve(subSysTmp,true,alg,true);
