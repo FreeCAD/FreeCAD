@@ -3369,6 +3369,15 @@ int System::diagnose(Algorithm alg)
         return dofs;
     }
 
+    // When adding an external geometry or a constraint on an external geometry the array 'plist' is empty.
+    // So, we must abort here because otherwise we would create an invalid matrix and make the application
+    // eventually crash. This fixes issues #0002372/#0002373.
+    if (plist.empty()) {
+        hasDiagnosis = true;
+        dofs = plist.size();
+        return dofs;
+    }
+
     redundant.clear();
     conflictingTags.clear();
     redundantTags.clear();
