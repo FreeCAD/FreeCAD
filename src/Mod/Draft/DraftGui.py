@@ -1337,7 +1337,8 @@ class DraftToolBar:
 
     def undoSegment(self):
         "undo last line segment"
-        self.sourceCmd.undolast()
+        if hasattr(self.sourceCmd,"undolast"):
+            self.sourceCmd.undolast()
 
     def checkSpecialChars(self,txt):
         '''
@@ -1345,7 +1346,7 @@ class DraftToolBar:
         treated as shortcuts
         '''
         spec = False
-        if txt.endswith(" ") or txt.endswith("r"):
+        if txt.endswith("r"):
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
@@ -1391,7 +1392,7 @@ class DraftToolBar:
             self.constrain("angle")
             self.displayPoint()
             spec = True
-        elif txt.endswith("c"):
+        elif txt.endswith("o"):
             if self.closeButton.isVisible():
                 self.closeLine()
             elif self.isCopy.isVisible():
@@ -1403,6 +1404,8 @@ class DraftToolBar:
             for i in [self.xValue,self.yValue,self.zValue]:
                 if (i.property("text") == txt):
                     i.setProperty("text",txt[:-1])
+                    i.setFocus()
+                    i.selectAll()
 
     def storeCurrentText(self,qstr):
         self.currEditText = self.textValue.text()
@@ -1478,7 +1481,13 @@ class DraftToolBar:
             else:
                 if dp:
                     self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
-
+                    
+            # set length and angle
+            if last and dp and plane:
+                self.lengthValue.setText(displayExternal(dp.Length,self.DECIMALS,'Length'))
+                a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
+                self.angleValue.setText(displayExternal(a,self.DECIMALS,'Angle'))
+                
             # set masks
             if (mask == "x") or (self.mask == "x"):
                 self.xValue.setEnabled(True)
@@ -1504,12 +1513,6 @@ class DraftToolBar:
                 self.zValue.setEnabled(True)
                 self.xValue.setFocus()
                 self.xValue.selectAll()
-                
-            # set length and angle
-            if last and dp and plane:
-                self.lengthValue.setText(displayExternal(dp.Length,self.DECIMALS,'Length'))
-                a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
-                self.angleValue.setText(displayExternal(a,self.DECIMALS,'Angle'))
                 
             
     def getDefaultColor(self,type,rgb=False):
