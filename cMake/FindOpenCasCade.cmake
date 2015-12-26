@@ -67,6 +67,11 @@ else(OCE_FOUND) #look for OpenCASCADE
   endif(WIN32)
   if(OCC_LIBRARY)
     GET_FILENAME_COMPONENT(OCC_LIBRARY_DIR ${OCC_LIBRARY} PATH)
+    IF(NOT OCC_INCLUDE_DIR)
+      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+        ${OCC_LIBRARY_DIR}/../inc
+      )
+    ENDIF()
   endif(OCC_LIBRARY)
 endif(OCE_FOUND)
 
