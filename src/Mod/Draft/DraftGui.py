@@ -1717,6 +1717,8 @@ class DraftToolBar:
         self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
         self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
         self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
+        self.xValue.setFocus()
+        self.xValue.selectAll()
         
     def changeAngleValue(self,d):
         v = FreeCAD.Vector(self.x,self.y,self.z)
@@ -1726,6 +1728,8 @@ class DraftToolBar:
         self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
         self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
         self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
+        self.xValue.setFocus()
+        self.xValue.selectAll()
         
     def toggleAngle(self,bool):
         self.alock = self.angleLock.isChecked()
