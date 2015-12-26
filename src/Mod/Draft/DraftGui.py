@@ -1487,6 +1487,12 @@ class DraftToolBar:
                 self.lengthValue.setText(displayExternal(dp.Length,self.DECIMALS,'Length'))
                 a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
                 self.angleValue.setText(displayExternal(a,self.DECIMALS,'Angle'))
+                if not mask:
+                    # automask
+                    if a in [0,180,-180]:
+                        mask = "x"
+                    elif a in [90,270,-90]:
+                        mask = "y"
                 
             # set masks
             if (mask == "x") or (self.mask == "x"):
