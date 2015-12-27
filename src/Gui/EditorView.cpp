@@ -51,6 +51,7 @@
 
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/Exception.h>
 
 using namespace Gui;
 namespace Gui {
@@ -559,7 +560,15 @@ void PythonEditorView::executeScript()
     // always save the macro when it is modified
     if (EditorView::onHasMsg("Save"))
         EditorView::onMsg("Save", 0);
-    Application::Instance->macroManager()->run(Gui::MacroManager::File,fileName().toUtf8());
+    try {
+        Application::Instance->macroManager()->run(Gui::MacroManager::File,fileName().toUtf8());
+    }
+    catch (const Base::SystemExitException&) {
+        // handle SystemExit exceptions
+        Base::PyGILStateLocker locker;
+        Base::PyException e;
+        e.ReportException();
+    }
 }
 
 void PythonEditorView::startDebug()

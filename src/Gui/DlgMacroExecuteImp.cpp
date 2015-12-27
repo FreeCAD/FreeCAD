@@ -40,6 +40,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Interpreter.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -118,10 +119,18 @@ void DlgMacroExecuteImp::accept()
     QDialog::accept();
     QDir dir(this->macroPath);
     QFileInfo fi(dir, item->text(0));
-    Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
-    // after macro run recalculate the document
-    if (Application::Instance->activeDocument())
-        Application::Instance->activeDocument()->getDocument()->recompute();
+    try {
+        Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
+        // after macro run recalculate the document
+        if (Application::Instance->activeDocument())
+            Application::Instance->activeDocument()->getDocument()->recompute();
+    }
+    catch (const Base::SystemExitException&) {
+        // handle SystemExit exceptions
+        Base::PyGILStateLocker locker;
+        Base::PyException e;
+        e.ReportException();
+    }
 }
 
 /**
