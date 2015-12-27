@@ -31,7 +31,11 @@
 
 namespace Sketcher
 {
-
+/*!
+ Important note: New constraint types must be always added at the end but before 'NumConstraintTypes'.
+ This is mandatory in order to keep the handling of constraint types upward compatible which means that
+ this program version ignores later introduced constraint types when reading them from a project file.
+ */
 enum ConstraintType {
     None = 0,
     Coincident = 1,
@@ -49,7 +53,8 @@ enum ConstraintType {
     PointOnObject = 13,
     Symmetric = 14,
     InternalAlignment = 15,
-    SnellsLaw = 16
+    SnellsLaw = 16,
+    NumConstraintTypes // must be the last item!
 };
 
 enum InternalAlignmentType {
