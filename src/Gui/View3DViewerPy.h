@@ -51,22 +51,21 @@ public:
     Py::Object repr();
     Py::Object getattr(const char *);
     int setattr(const char *, const Py::Object &);
-    
+
     //exposed methods
     Py::Object getSoEventManager(const Py::Tuple&);
     Py::Object getSoRenderManager(const Py::Tuple&);
-    
+
     Py::Object seekToPoint(const Py::Tuple&);
     Py::Object setFocalDistance(const Py::Tuple& args);
-    Py::Object getFocalDistance(const Py::Tuple& args);    
-    
+    Py::Object getFocalDistance(const Py::Tuple& args);
+
 
 private:
-    private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
-    
+
 private:
     std::list<PyObject*> callbacks;
     View3DInventorViewer* _viewer;
