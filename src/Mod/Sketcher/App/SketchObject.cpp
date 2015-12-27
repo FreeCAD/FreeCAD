@@ -511,6 +511,41 @@ void SketchObject::acceptGeometry()
     rebuildVertexIndex();
 }
 
+bool SketchObject::isSupportedGeometry(const Part::Geometry *geo) const
+{
+    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        return true;
+    }
+    if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
+        Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
+        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
+        if (!circle.IsNull() || !ellipse.IsNull()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::vector<Part::Geometry *> SketchObject::supportedGeometry(const std::vector<Part::Geometry *> &geoList) const
+{
+    std::vector<Part::Geometry *> supportedGeoList;
+    supportedGeoList.reserve(geoList.size());
+    // read-in geometry that the sketcher cannot handle
+    for (std::vector<Part::Geometry*>::const_iterator it = geoList.begin(); it != geoList.end(); ++it) {
+        if (isSupportedGeometry(*it)) {
+            supportedGeoList.push_back(*it);
+        }
+    }
+
+    return supportedGeoList;
+}
+
 int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction/*=false*/)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
@@ -3751,6 +3786,15 @@ void SketchObject::Restore(XMLReader &reader)
 
 void SketchObject::onChanged(const App::Property* prop)
 {
+    if (isRestoring() && prop == &Geometry) {
+        std::vector<Part::Geometry*> geom = Geometry.getValues();
+        std::vector<Part::Geometry*> supportedGeom = supportedGeometry(geom);
+        // To keep upward compatibility ignore unsupported geometry types
+        if (supportedGeom.size() != geom.size()) {
+            Geometry.setValues(supportedGeom);
+            return;
+        }
+    }
     if (prop == &Geometry || prop == &Constraints) {
         Constraints.checkGeometry(getCompleteGeometry());
     }

@@ -2309,7 +2309,7 @@ void ViewProviderSketch::updateColor(void)
         bool hasMaterial = false;
 
         SoMaterial *m = 0;
-        if (!hasDatumLabel && type != Sketcher::Coincident && type !=InternalAlignment) {
+        if (!hasDatumLabel && type != Sketcher::Coincident && type != Sketcher::InternalAlignment) {
             hasMaterial = true;
             m = dynamic_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
         }
@@ -3187,6 +3187,7 @@ Restart:
         if ((*it)->Type != edit->vConstrType[i]) {
             // clearing the type vector will force a rebuild of the visual nodes
             edit->vConstrType.clear();
+            //TODO: The 'goto' here is unsafe as it can happen that we cause an endless loop (see bug #0001956).
             goto Restart;
         }
         try{//because calculateNormalAtPoint, used in there, can throw

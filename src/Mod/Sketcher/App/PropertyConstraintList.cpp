@@ -288,7 +288,14 @@ void PropertyConstraintList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         Constraint *newC = new Constraint();
         newC->Restore(reader);
-        values.push_back(newC);
+        // To keep upward compatibility ignore unknown constraint types
+        if (newC->Type < Sketcher::NumConstraintTypes) {
+            values.push_back(newC);
+        }
+        else {
+            // reading a new constraint type which this version cannot handle
+            delete newC;
+        }
     }
 
     reader.readEndElement("ConstraintList");
