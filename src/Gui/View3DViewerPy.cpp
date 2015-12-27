@@ -179,8 +179,8 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
 Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))   
-        throw Py::Exception();                        
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+        throw Py::Exception();
 
    try {
         const Py::Tuple tuple(object);
