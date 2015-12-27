@@ -625,7 +625,7 @@ class DraftToolBar:
         self.finishButton.setText(translate("draft", "&Finish"))
         self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation (F)"))
         self.continueCmd.setToolTip(translate("draft", "If checked, command will not finish until you press the command button again"))
-        self.continueCmd.setText(translate("draft", "Con&tinue"))
+        self.continueCmd.setText(translate("draft", "Co&ntinue"))
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
         self.addButton.setToolTip(translate("draft", "Add points to the current object"))
@@ -635,7 +635,7 @@ class DraftToolBar:
         self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         self.undoButton.setText(translate("draft", "&Undo"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment (CTRL+Z)"))
-        self.closeButton.setText(translate("draft", "&Close"))
+        self.closeButton.setText(translate("draft", "Cl&ose"))
         self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line (C)"))
         self.wipeButton.setText(translate("draft", "&Wipe"))
         self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
@@ -654,7 +654,7 @@ class DraftToolBar:
         self.currentViewButton.setToolTip(translate("draft", "Select plane perpendicular to the current view"))
         self.resetPlaneButton.setText(translate("draft", "Auto"))
         self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
-        self.isCopy.setText(translate("draft", "&Copy"))
+        self.isCopy.setText(translate("draft", "C&opy"))
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved (C)"))
         self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
         self.labelSString.setText(translate("draft", "String"))
@@ -1397,7 +1397,8 @@ class DraftToolBar:
                 self.closeLine()
             elif self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
-            elif self.continueCmd.isVisible():
+        elif txt.endswith("n"):
+            if self.continueCmd.isVisible():
                 self.continueCmd.setChecked(not self.continueCmd.isChecked())
             spec = True
         if spec:
