@@ -211,7 +211,7 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             if (count < editText.size()) {
                 // change values of editable texts
                 boost::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
-                boost::re_detail::string_out_iterator<std::string > out(newfragment);
+                std::back_insert_iterator<std::string> out(newfragment);
                 boost::regex_replace(out, begin, what[0].second, e2, "$1>"+editText[count]+"$3");
             }
             count++;
