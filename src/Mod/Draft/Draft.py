@@ -3216,7 +3216,7 @@ class _ViewProviderDraft:
 
     def onChanged(self, vobj, prop):
         # treatment of patterns and image textures
-        if prop in ["TextureImage","Pattern"]:
+        if prop in ["TextureImage","Pattern","DiffuseColor"]:
             if hasattr(self.Object,"Shape"):
                 if self.Object.Shape.Faces:
                     from pivy import coin
