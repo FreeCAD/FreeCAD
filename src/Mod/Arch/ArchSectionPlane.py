@@ -270,9 +270,14 @@ class _ViewProviderSectionPlane:
                     norm = vobj.Object.Proxy.getNormal(vobj.Object)
                     mp = vobj.Object.Shape.CenterOfMass
                     mp = DraftVecUtils.project(mp,norm)
-                    dist = mp.Length + 0.1 # to not clip exactly on the section object
+                    dist = mp.Length #- 0.1 # to not clip exactly on the section object
                     norm = norm.negative()
-                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),-dist)
+                    if mp.getAngle(norm) > 1:
+                        dist += 1
+                        dist = -dist
+                    else:
+                        dist -= 0.1
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip,0)
                 else:
