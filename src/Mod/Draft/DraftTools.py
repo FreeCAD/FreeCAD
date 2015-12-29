@@ -4319,7 +4319,7 @@ class ToggleGrid():
     "The Draft ToggleGrid command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Snap_Grid',
+        return {'Pixmap'  : 'Draft_Grid',
                 'Accel' : "G,R",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off")}

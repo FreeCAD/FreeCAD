@@ -1074,6 +1074,16 @@ class Snapper:
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
+        # grid button
+        gridbutton = QtGui.QPushButton(None)
+        gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
+        gridbutton.setIconSize(QtCore.QSize(isize, isize))
+        gridbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
+        gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
+        gridbutton.setObjectName("GridButton")
+        QtCore.QObject.connect(gridbutton,QtCore.SIGNAL("clicked()"),self.toggleGrid)
+        self.toolbar.addWidget(gridbutton)
+        # master button
         self.masterbutton = QtGui.QPushButton(None)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
         self.masterbutton.setIconSize(QtCore.QSize(isize, isize))
@@ -1123,6 +1133,9 @@ class Snapper:
                     c += 1
         if not Draft.getParam("showSnapBar",True):
             self.toolbar.hide()
+            
+    def toggleGrid(self):
+        FreeCADGui.runCommand("Draft_ToggleGrid")
 
     def saveSnapModes(self):
         "saves the snap modes for next sessions"
