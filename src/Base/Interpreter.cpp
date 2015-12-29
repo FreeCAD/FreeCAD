@@ -159,7 +159,10 @@ std::string InterpreterSingleton::runString(const char *sCmd)
 
     presult = PyRun_String(sCmd, Py_file_input, dict, dict); /* eval direct */
     if (!presult) {
-        throw PyException();
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
     }
 
     PyObject* repr = PyObject_Repr(presult);
