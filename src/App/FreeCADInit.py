@@ -36,7 +36,7 @@ import FreeCAD
 
 def InitApplications():
 	try:
-		import sys,os
+		import sys,os,traceback,cStringIO
 	except ImportError:
 		FreeCAD.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
@@ -96,7 +96,12 @@ def InitApplications():
 					exec open(InstallFile).read()
 				except Exception, inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
-					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Log('-'*100+'\n')
+					output=cStringIO.StringIO()
+					traceback.print_exc(file=output)
+					Log(output.getvalue())
+					Log('-'*100+'\n')
+					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
