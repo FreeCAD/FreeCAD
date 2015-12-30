@@ -345,8 +345,8 @@ Mesh.show(m)
         int width;
         int height;
 
-        static char* kwds_greedy[] = {"Points", "Width", "Height", NULL};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|ii", kwds_greedy,
+        static char* kwds_view[] = {"Points", "Width", "Height", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|ii", kwds_view,
                                         &(Points::PointsPy::Type), &pts,
                                         &width, &height))
             throw Py::Exception();
