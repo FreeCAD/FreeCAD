@@ -60,7 +60,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem *reconstruct = new Gui::MenuItem();
     reconstruct->setCommand("Surface reconstruction");
-    *reconstruct << "Reen_PoissonReconstruction";
+    *reconstruct << "Reen_PoissonReconstruction"
+                 << "Reen_ViewTriangulation";
     *reen << reconstruct;
 
     return root;

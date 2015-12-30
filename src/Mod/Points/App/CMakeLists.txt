@@ -47,6 +47,8 @@ SET(Points_SRCS
     Properties.h
     PropertyPointKernel.cpp
     PropertyPointKernel.h
+    ViewFeature.cpp
+    ViewFeature.h
 )
 
 add_library(Points SHARED ${Points_SRCS})
