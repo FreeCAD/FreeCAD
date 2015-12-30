@@ -263,6 +263,7 @@ public:
 
         switch (constraint->Type) {
         case Sketcher::None:
+        case Sketcher::NumConstraintTypes:
             assert( false );
             return false;
         case Sketcher::Horizontal:
