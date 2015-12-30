@@ -31,8 +31,6 @@ generate_from_xml(PointsPy)
 SET(Points_SRCS
     AppPoints.cpp
     AppPointsPy.cpp
-    FeaturePointsImportAscii.cpp
-    FeaturePointsImportAscii.h
     Points.cpp
     Points.h
     PointsPy.xml
