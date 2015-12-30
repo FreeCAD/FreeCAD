@@ -44,7 +44,7 @@
 #include "Points.h"
 #include "PointsPy.h"
 #include "PointsAlgos.h"
-#include "FeaturePointsImportAscii.h"
+#include "PointsFeature.h"
 
 using namespace Points;
 
