@@ -3229,6 +3229,8 @@ class _ViewProviderDraft:
                         if hasattr(vobj,"Pattern"):
                             if str(vobj.Pattern) in list(svgpatterns().keys()):
                                 path = svgpatterns()[vobj.Pattern][1]
+                            else:
+                                path = "None"
                     if path and vobj.RootNode:
                         if vobj.RootNode.getChildren().getLength() > 2:
                             if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
