@@ -912,6 +912,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case None:
+    case NumConstraintTypes:
         break;
     }
 

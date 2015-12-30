@@ -3899,6 +3899,7 @@ Restart:
                 case Coincident: // nothing to do for coincident
                 case None:
                 case InternalAlignment:
+                case NumConstraintTypes:
                     break;
             }
 
