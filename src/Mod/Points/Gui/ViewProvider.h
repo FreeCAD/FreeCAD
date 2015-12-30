@@ -38,18 +38,18 @@ class SoNormal;
 class SoEventCallback;
 
 namespace App {
-  class PropertyColorList;
+    class PropertyColorList;
 }
 
 namespace Gui {
-  class SoFCSelection;
+    class SoFCSelection;
 }
 
 namespace Points {
-  class PropertyGreyValueList;
-  class PropertyNormalList;
-  class PointKernel;
-  class Feature;
+    class PropertyGreyValueList;
+    class PropertyNormalList;
+    class PointKernel;
+    class Feature;
 }
 
 namespace PointsGui {
