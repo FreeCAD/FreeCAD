@@ -161,8 +161,18 @@ public:
 
     /** @name Object handling  */
     //@{
-    /// Add a feature of sType with sName (ASCII) to this document and set it active. Unicode names are set through the Label propery
+    /** Add a feature of sType with sName (ASCII) to this document and set it active.
+     * Unicode names are set through the Label property.
+     */
     DocumentObject *addObject(const char* sType, const char* pObjectName=0);
+    /** Add an existing feature with sName (ASCII) to this document and set it active.
+     * Unicode names are set through the Label property.
+     * This is an overloaded function of the function above and can be used to create
+     * a feature outside and add it to the document afterwards.
+     * \note The passed feature must not yet be added to a document, otherwise an exception
+     * is raisedd.
+     */
+    void addObject(DocumentObject*, const char* pObjectName=0);
     /// Remove a feature out of the document
     void remObject(const char* sName);
     /** Copy an object from another document to this document
