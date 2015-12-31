@@ -720,6 +720,16 @@ bool MeshInput::LoadPLY (std::istream &inp)
     if (num_z != 1)
         return false;
 
+    for (std::vector<std::pair<std::string, Ply::Number> >::iterator it = 
+        vertex_props.begin(); it != vertex_props.end(); ++it) {
+        if (it->first == "diffuse_red")
+            it->first = "red";
+        else if (it->first == "diffuse_green")
+            it->first = "green";
+        else if (it->first == "diffuse_blue")
+            it->first = "blue";
+    }
+
     // check if valid colors are set
     std::size_t num_r = std::count_if(vertex_props.begin(), vertex_props.end(), 
                     std::bind2nd(property, "red"));

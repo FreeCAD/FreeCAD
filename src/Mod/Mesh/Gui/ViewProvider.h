@@ -50,6 +50,7 @@ class SbPlane;
 
 namespace App {
   class Color;
+  class PropertyColorList;
 }
 
 namespace Base {
@@ -122,6 +123,7 @@ public:
     App::PropertyColor LineColor;
 
     virtual void attach(App::DocumentObject *);
+    virtual void updateData(const App::Property*);
     virtual bool useNewSelectionModel(void) const {return false;}
     Gui::SoFCSelection* getHighlightNode() const { return pcHighlight; }
     virtual QIcon getIcon() const;
@@ -173,6 +175,9 @@ protected:
     void unhighlightSelection();
     void highlightComponents();
     void setHighlightedComponents(bool);
+    App::PropertyColorList* getColorProperty() const;
+    void tryColorPerVertex();
+    void setColorPerVertex(const App::PropertyColorList*);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;

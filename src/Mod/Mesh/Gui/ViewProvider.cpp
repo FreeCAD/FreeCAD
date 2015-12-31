@@ -498,6 +498,13 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
 }
 
+void ViewProviderMesh::updateData(const App::Property* prop)
+{
+    Gui::ViewProviderGeometryObject::updateData(prop);
+    //if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    //}
+}
+
 QIcon ViewProviderMesh::getIcon() const
 {
 #if 1
@@ -531,16 +538,70 @@ QIcon ViewProviderMesh::getIcon() const
 #endif
 }
 
+App::PropertyColorList* ViewProviderMesh::getColorProperty() const
+{
+    if (pcObject) {
+        std::map<std::string,App::Property*> Map;
+        pcObject->getPropertyMap(Map);
+        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
+            Base::Type type = it->second->getTypeId();
+            if (type == App::PropertyColorList::getClassTypeId()) {
+                App::PropertyColorList* colors = static_cast<App::PropertyColorList*>(it->second);
+                return colors;
+            }
+        }
+    }
+
+    return 0; // no such property found
+}
+
+void ViewProviderMesh::tryColorPerVertex()
+{
+    App::PropertyColorList* colors = getColorProperty();
+    if (colors) {
+        const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+        const Mesh::MeshObject& mesh = meshProp.getValue();
+        int numPoints = static_cast<int>(mesh.countPoints());
+
+        if (colors->getSize() == numPoints) {
+            setColorPerVertex(colors);
+        }
+    }
+}
+
+void ViewProviderMesh::setColorPerVertex(const App::PropertyColorList* prop)
+{
+    pcMatBinding->value = SoMaterialBinding::PER_VERTEX;
+    const std::vector<App::Color>& val = prop->getValues();
+
+    pcShapeMaterial->diffuseColor.setNum(val.size());
+    SbColor* col = pcShapeMaterial->diffuseColor.startEditing();
+
+    std::size_t i=0;
+    for (std::vector<App::Color>::const_iterator it = val.begin(); it != val.end(); ++it) {
+        col[i++].setValue(it->r, it->g, it->b);
+    }
+
+    pcShapeMaterial->diffuseColor.finishEditing();
+}
+
 void ViewProviderMesh::setDisplayMode(const char* ModeName)
 {
-    if (strcmp("Shaded",ModeName)==0)
+    if (strcmp("Shaded",ModeName)==0) {
         setDisplayMaskMode("Flat");
-    else if (strcmp("Points",ModeName)==0)
+    }
+    else if (strcmp("Points",ModeName)==0) {
         setDisplayMaskMode("Point");
-    else if (strcmp("Flat Lines",ModeName)==0)
+    }
+    else if (strcmp("Flat Lines",ModeName)==0) {
         setDisplayMaskMode("FlatWireframe");
-    else if (strcmp("Wireframe",ModeName)==0)
+    }
+    else if (strcmp("Wireframe",ModeName)==0) {
         setDisplayMaskMode("Wireframe");
+    }
+    else if (strcmp("Colors",ModeName)==0) {
+        tryColorPerVertex();
+    }
 
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
@@ -554,6 +615,8 @@ std::vector<std::string> ViewProviderMesh::getDisplayModes(void) const
     StrList.push_back("Wireframe");
     StrList.push_back("Flat Lines");
     StrList.push_back("Points");
+    if (getColorProperty())
+        StrList.push_back("Colors");
 
     return StrList;
 }
@@ -1799,7 +1862,7 @@ void ViewProviderIndexedFaceSet::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderIndexedFaceSet::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         ViewProviderMeshBuilder builder;
         builder.createMesh(prop, pcMeshCoord, pcMeshFaces);
@@ -1884,7 +1947,7 @@ void ViewProviderMeshObject::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderMeshObject::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         const Mesh::PropertyMeshKernel* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop);
         this->pcMeshNode->mesh.setValue(mesh->getValuePtr());
