@@ -83,6 +83,7 @@ void MeshExport initMesh()
     Mesh::MeshObject            ::init();
 
     Mesh::Feature               ::init();
+    Mesh::FeatureCustom         ::init();
     Mesh::FeaturePython         ::init();
     Mesh::Import                ::init();
     Mesh::Export                ::init();
