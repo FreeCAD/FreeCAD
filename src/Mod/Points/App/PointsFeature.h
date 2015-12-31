@@ -25,6 +25,7 @@
 #define POINTS_FEATURE_H
 
 #include <App/GeoFeature.h>
+#include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
@@ -75,6 +76,7 @@ public:
     PropertyPointKernel Points; /**< The point kernel property. */
 };
 
+typedef App::FeatureCustomT<Feature> FeatureCustom;
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
 } //namespace Points

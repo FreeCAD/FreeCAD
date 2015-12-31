@@ -61,6 +61,7 @@ void PointsExport initPoints()
 
     // add data types
     Points::Feature               ::init();
+    Points::FeatureCustom         ::init();
     Points::FeaturePython         ::init();
     Points::ViewFeature           ::init();
 }
