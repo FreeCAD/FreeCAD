@@ -1,0 +1,6 @@
+{
+    "policy_groups": [
+        "networking"
+    ],
+    "policy_version": 1.1
+}
