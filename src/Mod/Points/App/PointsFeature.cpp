@@ -93,6 +93,17 @@ void Feature::onChanged(const App::Property* prop)
 
 namespace App {
 /// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Points::FeatureCustom, Points::Feature)
+/// @endcond
+
+// explicit template instantiation
+template class PointsExport FeatureCustomT<Points::Feature>;
+}
+
+// ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Points::FeaturePython, Points::Feature)
 template<> const char* Points::FeaturePython::getViewProviderName(void) const {
     return "PointsGui::ViewProviderPython";
