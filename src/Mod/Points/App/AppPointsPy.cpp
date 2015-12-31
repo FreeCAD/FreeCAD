@@ -45,6 +45,7 @@
 #include "PointsPy.h"
 #include "PointsAlgos.h"
 #include "PointsFeature.h"
+#include "Properties.h"
 
 using namespace Points;
 
@@ -77,18 +78,48 @@ open(PyObject *self, PyObject *args)
         }
 #ifdef HAVE_PCL_IO
         else if (file.hasExtension("ply")) {
-            // create new document import
+            PlyReader reader;
+            reader.read(EncodedName);
+
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
-            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
-            Points::PointKernel pkTemp;
+            if (reader.hasProperties()) {
+                Points::FeatureCustom *pcFeature = new Points::FeatureCustom();
+                pcFeature->Points.setValue(reader.getPoints());
+                // add gray values
+                if (reader.hasIntensities()) {
+                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity"));
+                    if (prop) {
+                        prop->setValues(reader.getIntensities());
+                    }
+                }
+                // add colors
+                if (reader.hasColors()) {
+                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                        (pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                    if (prop) {
+                        prop->setValues(reader.getColors());
+                    }
+                }
+                // add normals
+                if (reader.hasNormals()) {
+                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                    if (prop) {
+                        prop->setValues(reader.getNormals());
+                    }
+                }
 
-            // pcl test
-            pcl::PointCloud<pcl::PointXYZ> cloud_in;
-            pcl::io::loadPLYFile<pcl::PointXYZ>(EncodedName.c_str(),cloud_in); 
-
-            for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
-                pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
-            pcFeature->Points.setValue( pkTemp );
+                // delayed adding of the points feature
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
+                pcDoc->recomputeFeature(pcFeature);
+            }
+            else {
+                Points::Feature *pcFeature = static_cast<Points::Feature*>
+                    (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
+                pcFeature->Points.setValue(reader.getPoints());
+                pcDoc->recomputeFeature(pcFeature);
+            }
         }
 #endif
         else {
@@ -136,16 +167,47 @@ insert(PyObject *self, PyObject *args)
                 pcDoc = App::GetApplication().newDocument(DocName);
             }
 
-            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
-            Points::PointKernel pkTemp;
+            PlyReader reader;
+            reader.read(EncodedName);
 
-            // pcl test
-            pcl::PointCloud<pcl::PointXYZ> cloud_in;
-            pcl::io::loadPLYFile<pcl::PointXYZ>(EncodedName.c_str(),cloud_in); 
+            if (reader.hasProperties()) {
+                Points::FeatureCustom *pcFeature = new Points::FeatureCustom();
+                pcFeature->Points.setValue(reader.getPoints());
+                // add gray values
+                if (reader.hasIntensities()) {
+                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity"));
+                    if (prop) {
+                        prop->setValues(reader.getIntensities());
+                    }
+                }
+                // add colors
+                if (reader.hasColors()) {
+                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                        (pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                    if (prop) {
+                        prop->setValues(reader.getColors());
+                    }
+                }
+                // add normals
+                if (reader.hasNormals()) {
+                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                    if (prop) {
+                        prop->setValues(reader.getNormals());
+                    }
+                }
 
-            for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
-                pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
-            pcFeature->Points.setValue( pkTemp );
+                // delayed adding of the points feature
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
+                pcDoc->recomputeFeature(pcFeature);
+            }
+            else {
+                Points::Feature *pcFeature = static_cast<Points::Feature*>
+                    (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
+                pcFeature->Points.setValue(reader.getPoints());
+                pcDoc->recomputeFeature(pcFeature);
+            }
         }
 #endif
         else {
