@@ -101,10 +101,11 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         }
     }
 
-    if (!img.isNull()) {
-        QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    if (!img.isNull())
         px = BitmapFactory().merge(QPixmap::fromImage(img),px,BitmapFactoryInst::BottomRight);
 
+    if (!px.isNull()) {
         // according to specification add some meta-information to the image
         uint mt = QDateTime::currentDateTime().toTime_t();
         QString mtime = QString::fromAscii("%1").arg(mt);
