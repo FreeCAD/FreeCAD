@@ -1923,7 +1923,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
         delete base;
         std::stringstream str;
         str << "'" << sType << "' is not a document object type";
-        throw Base::Exception(str.str());
+        throw Base::TypeError(str.str());
     }
 
     App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(base);
@@ -1966,6 +1966,48 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
 
     // return the Object
     return pcObject;
+}
+
+void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
+{
+    if (pcObject->getDocument()) {
+        throw Base::RuntimeError("Document object is already added to a document");
+    }
+
+    pcObject->setDocument(this);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback) {
+        // Transaction stuff
+        if (d->activeTransaction)
+            d->activeTransaction->addObjectNew(pcObject);
+        // Undo stuff
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->addObjectDel(pcObject);
+    }
+
+    // get unique name
+    string ObjectName;
+    if (pObjectName && pObjectName[0] != '\0')
+        ObjectName = getUniqueObjectName(pObjectName);
+    else
+        ObjectName = getUniqueObjectName(pcObject->getTypeId().getName());
+
+    d->activeObject = pcObject;
+
+    // insert in the name map
+    d->objectMap[ObjectName] = pcObject;
+    // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
+    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
+    // insert in the vector
+    d->objectArray.push_back(pcObject);
+
+    pcObject->Label.setValue( ObjectName );
+
+    // mark the object as new (i.e. set status bit 2) and send the signal
+    pcObject->StatusBits.set(2);
+    signalNewObject(*pcObject);
+    signalActivatedObject(*pcObject);
 }
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
