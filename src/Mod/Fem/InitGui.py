@@ -4,7 +4,6 @@
 # Gathering all the information to start FreeCAD
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
-
 #***************************************************************************
 #*   (c) Juergen Riegel (juergen.riegel@web.de) 2009                       *
 #*                                                                         *
@@ -41,7 +40,6 @@ class FemWorkbench (Workbench):
         # load the module
         import Fem
         import FemGui
-
         import _CommandMechanicalShowResult
         import _CommandQuickAnalysis
         import _CommandPurgeFemResults
@@ -52,6 +50,7 @@ class FemWorkbench (Workbench):
         import _CommandFemBeamSection
         import _CommandMechanicalMaterial
         import _CommandFemSolverCalculix
+        import FemPrescribedDisplacement
 
         import subprocess
         from platform import system
@@ -87,6 +86,16 @@ class FemWorkbench (Workbench):
         else:
             FreeCAD.Console.PrintError("Setting working directory \'{}\' for ccx failed!\n")
 
+
+        '''
+        def ContextMenu(self, recipient):
+            selection = [s  for s in FreeCADGui.Selection.getSelection() if s.Document == FreeCAD.ActiveDocument ]
+            if len(selection) == 1:
+                obj = selection[0]
+                if hasattr(obj,'Content'):
+                    if 'PrescribedDisplacement' in obj.Content:
+                        self.appendContextMenu("Edit Constaint", "PrescribedDispEdit")
+        '''
 
     def GetClassName(self):
         return "FemGui::Workbench"

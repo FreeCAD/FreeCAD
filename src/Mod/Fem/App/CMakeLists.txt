@@ -104,6 +104,7 @@ SET(FemScripts_SRCS
     FemAnalysis.py
     FemCommands.py
     FemBeamSection.py
+    FemPrescribedDisplacement.py
     FemShellThickness.py
     FemSolverCalculix.py
     FemTools.py
@@ -112,10 +113,12 @@ SET(FemScripts_SRCS
     TestFem.py
 
     TaskPanelFemBeamSection.ui
+    TaskPanelFemPrescribedDisplacement.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui
     TaskPanelMechanicalMaterial.ui
     TaskPanelShowDisplacement.ui
+
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 

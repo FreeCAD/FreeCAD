@@ -1,0 +1,15 @@
+{
+    "name": "com.ubuntu.developer.username.deformationdec",
+    "description": "description of deformationdec",
+    "framework": "ubuntu-sdk-14.04-qml",
+    "architecture": "all",
+    "title": "deformationdec",
+    "hooks": {
+        "deformationdec": {
+            "apparmor": "deformationdec.json",
+            "desktop": "deformationdec.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": ""
+}

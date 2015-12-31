@@ -4,6 +4,7 @@
         <file>icons/fem-fem-mesh-create-node-by-poly.svg</file>
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-solver.svg</file>
+        <file>icons/fem-constraint-displacement.svg</file>
         <file>icons/fem-constraint-force.svg</file>
         <file>icons/fem-constraint-fixed.svg</file>
         <file>icons/fem-constraint-pressure.svg</file>
