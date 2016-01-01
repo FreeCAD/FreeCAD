@@ -571,7 +571,7 @@ void ViewProviderMesh::tryColorPerVertex()
 
 void ViewProviderMesh::setColorPerVertex(const App::PropertyColorList* prop)
 {
-    pcMatBinding->value = SoMaterialBinding::PER_VERTEX;
+    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
     const std::vector<App::Color>& val = prop->getValues();
 
     pcShapeMaterial->diffuseColor.setNum(val.size());
