@@ -71,7 +71,7 @@ FemPostPlaneFunction::FemPostPlaneFunction(void): FemPostFunction() {
     ADD_PROPERTY(Origin,(Base::Vector3d(0.0,0.0,0.0)));
     ADD_PROPERTY(Normal,(Base::Vector3d(0.0,0.0,1.0)));
     
-    m_plane = vtkPlane::New();
+    m_plane = vtkSmartPointer<vtkPlane>::New();
     m_implicit = m_plane;
     
     m_plane->SetOrigin(0., 0., 0.);
@@ -107,7 +107,7 @@ FemPostSphereFunction::FemPostSphereFunction(void): FemPostFunction() {
     ADD_PROPERTY(Radius,(5));
     ADD_PROPERTY(Center,(Base::Vector3d(1.0,0.0,0.0)));
     
-    m_sphere = vtkSphere::New();
+    m_sphere = vtkSmartPointer<vtkSphere>::New();
     m_implicit = m_sphere;
 
     m_sphere->SetCenter(0., 0., 0.);

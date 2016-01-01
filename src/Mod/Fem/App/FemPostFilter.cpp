@@ -110,13 +110,13 @@ FemPostClipFilter::FemPostClipFilter(void) : FemPostFilter() {
     ADD_PROPERTY_TYPE(CutCells, (false), "Clip", App::Prop_None, "Decides if cells are cuttet and interpolated or if the cells are kept as a whole"); 
     
     FilterPipeline clip;  
-    m_clipper           = vtkTableBasedClipDataSet::New();
+    m_clipper           = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
     clip.source         = m_clipper;
     clip.target         = m_clipper;
     addFilterPipeline(clip, "clip");
     
     FilterPipeline extr;
-    m_extractor         = vtkExtractGeometry::New();
+    m_extractor         = vtkSmartPointer<vtkExtractGeometry>::New();
     extr.source         = m_extractor;
     extr.target         = m_extractor;
     addFilterPipeline(extr, "extract");
@@ -179,7 +179,7 @@ FemPostScalarClipFilter::FemPostScalarClipFilter(void) : FemPostFilter() {
     Value.setConstraints(&m_constraints);
        
     FilterPipeline clip;  
-    m_clipper           = vtkTableBasedClipDataSet::New();
+    m_clipper           = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
     clip.source         = m_clipper;
     clip.target         = m_clipper;
     addFilterPipeline(clip, "clip");
@@ -277,7 +277,7 @@ FemPostWarpVectorFilter::FemPostWarpVectorFilter(void): FemPostFilter() {
     ADD_PROPERTY_TYPE(Vector, (long(0)), "Warp", App::Prop_None, "The field added to the node position");
        
     FilterPipeline warp;  
-    m_warp              = vtkWarpVector::New();
+    m_warp              = vtkSmartPointer<vtkWarpVector>::New();
     warp.source         = m_warp;
     warp.target         = m_warp;
     addFilterPipeline(warp, "warp");
@@ -354,7 +354,7 @@ FemPostCutFilter::FemPostCutFilter(void) : FemPostFilter() {
     ADD_PROPERTY_TYPE(Function, (0), "Cut", App::Prop_None, "The function object which defines the clip cut function");
     
     FilterPipeline clip;  
-    m_cutter            = vtkCutter::New();
+    m_cutter            = vtkSmartPointer<vtkCutter>::New();
     clip.source         = m_cutter;
     clip.target         = m_cutter;
     addFilterPipeline(clip, "cut");
