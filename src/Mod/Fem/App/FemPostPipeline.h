@@ -72,6 +72,14 @@ protected:
     
 private:
     static const char* ModeEnums[];
+    
+    template<class TReader> void readXMLFile(std::string file) {
+    
+        vtkSmartPointer<TReader> reader = vtkSmartPointer<TReader>::New();
+        reader->SetFileName(file.c_str());
+        reader->Update();
+        Data.setValue(reader->GetOutput());
+    }
 };
 
 } //namespace Fem
