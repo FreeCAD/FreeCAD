@@ -56,13 +56,11 @@ const char* FemPostPipeline::ModeEnums[]= {"Serial","Parallel",NULL};
 FemPostPipeline::FemPostPipeline()
 {
     ADD_PROPERTY_TYPE(Filter, (0), "Pipeline", App::Prop_None, "The filter used in in this pipeline");
-    ADD_PROPERTY_TYPE(Function, (0), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
+    ADD_PROPERTY_TYPE(Functions, (0), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
     ADD_PROPERTY_TYPE(Mode,(long(0)), "Pipeline", App::Prop_None, "Selects the pipeline data transition mode. In serial every filter" 
                                                               "gets the output of the previous one as input, in parrallel every"
                                                               "filter gets the pipelien source as input.");     
     Mode.setEnums(ModeEnums);
-    
-    source = vtkUnstructuredGrid::New();
 }
 
 FemPostPipeline::~FemPostPipeline()
@@ -76,21 +74,11 @@ short FemPostPipeline::mustExecute(void) const
 
 DocumentObjectExecReturn* FemPostPipeline::execute(void) {
 
-//     Base::Console().Message("Pipeline analysis: \n");
-//     Base::Console().Message("Data Type: %i\n", source->GetDataObjectType());
-// 
-//     if(source->GetDataObjectType() == VTK_STRUCTURED_GRID  ) {
-//         vtkStructuredGrid*  poly = static_cast<vtkStructuredGrid*>(source.GetPointer());
-//         vtkPointData* point = poly->GetPointData();
-//         Base::Console().Message("Point components: %i\n", point->GetNumberOfComponents());
-//         Base::Console().Message("Point arrays: %i\n", point->GetNumberOfArrays());
-//         Base::Console().Message("Point tuples: %i\n", point->GetNumberOfTuples());
-//         
-//         vtkCellData* cell = poly->GetCellData();
-//         Base::Console().Message("Cell components: %i\n", cell->GetNumberOfComponents());
-//         Base::Console().Message("Cell arrays: %i\n", cell->GetNumberOfArrays());
-//         Base::Console().Message("Point tuples: %i\n", cell->GetNumberOfTuples());
-//     }
+
+    //if we are in serial mode we just copy over the data of the last filter,
+    //but if we are in parallel we need to combine all filter results
+    
+    
     
     return Fem::FemPostObject::execute();
 }
@@ -98,9 +86,14 @@ DocumentObjectExecReturn* FemPostPipeline::execute(void) {
 
 bool FemPostPipeline::canRead(Base::FileInfo File) {
 
-    if (File.hasExtension("vtk") )
+    if (File.hasExtension("vtk") ||
+        File.hasExtension("vtp") ||
+        File.hasExtension("vts") ||
+        File.hasExtension("vtr") ||
+        File.hasExtension("vtu") ||
+        File.hasExtension("vti"))
         return true;
-    
+  
     return false;
 }
 
@@ -111,21 +104,16 @@ void FemPostPipeline::read(Base::FileInfo File) {
     if (!File.isReadable())
         throw Base::Exception("File to load not existing or not readable");
     
-    if (File.hasExtension("vtk") ) {
+    if (canRead(File)) {
         
         vtkSmartPointer<vtkDataSetReader> reader = vtkSmartPointer<vtkDataSetReader>::New();
         reader->SetFileName(File.filePath().c_str());
         reader->Update();
-        source = reader->GetOutput();
-        
+        Data.setValue(reader->GetOutput());        
     }
     else{
         throw Base::Exception("Unknown extension");
     }
-    
-    polyDataSource = vtkGeometryFilter::New();
-    polyDataSource->SetInputData(source);
-    polyDataSource->Update();
 }
 
 
@@ -151,26 +139,53 @@ void FemPostPipeline::onChanged(const Property* prop)
         std::vector<App::DocumentObject*>::iterator it = objs.begin();
         FemPostFilter* filter = static_cast<FemPostFilter*>(*it);
         
-        //the first one is always connected to the pipeline
-        if(!filter->hasInputDataConnected() || filter->getConnectedInputData() != getSource())
-            filter->connectInputData(getSource());
+        //If we have a Input we need to ensure our filters are connected correctly
+        if(Input.getValue()) {
         
-        //all the others need to be connected to the previous filter or the source, dependend on the mode
-        ++it;
-        for(; it != objs.end(); ++it) {
-            FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
+            //the first filter is always connected to the input
+            if(filter->Input.getValue() != Input.getValue())
+                filter->Input.setValue(Input.getValue());
             
-            if(Mode.getValue() == 0) {
-                if(!nextFilter->hasInputAlgorithmConnected() || nextFilter->getConnectedInputAlgorithm() != filter->getOutputAlgorithm())
-                    nextFilter->connectInputAlgorithm(filter->getOutputAlgorithm());
-            }
-            else {
-                if(!nextFilter->hasInputDataConnected() || nextFilter->getConnectedInputData() != getSource())
-                    nextFilter->connectInputData(getSource());
-            }
+            //all the others need to be connected to the previous filter or the source, dependend on the mode
+            ++it;
+            for(; it != objs.end(); ++it) {
+                FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
+                
+                if(Mode.getValue() == 0) { //serial mode
+                    if( nextFilter->Input.getValue() != filter)
+                        nextFilter->Input.setValue(filter);
+                }
+                else { //Parallel mode
+                    if( nextFilter->Input.getValue() != Input.getValue())
+                        nextFilter->Input.setValue(Input.getValue());
+                }
+                
+                filter = nextFilter;
+            };
+        }
+        //if we have no input the filters are responsible of grabbing the pipeline data themself
+        else {
+            //the first filter must always grab the data
+            if(filter->Input.getValue() != NULL)
+                filter->Input.setValue(NULL);
             
-            filter = nextFilter;
-        };
+            //all the others need to be connected to the previous filter or grab the data, dependend on mode
+            ++it;
+            for(; it != objs.end(); ++it) {
+                FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
+                
+                if(Mode.getValue() == 0) { //serial mode
+                    if( nextFilter->Input.getValue() != filter)
+                        nextFilter->Input.setValue(filter);
+                }
+                else { //Parallel mode
+                    if( nextFilter->Input.getValue() != NULL)
+                        nextFilter->Input.setValue(NULL);
+                }
+                
+                filter = nextFilter;
+            };
+        }
     }
     
     App::GeoFeature::onChanged(prop);
@@ -185,11 +200,21 @@ FemPostObject* FemPostPipeline::getLastPostObject() {
     return static_cast<FemPostObject*>(Filter.getValues().back());
 }
 
+bool FemPostPipeline::holdsPostObject(FemPostObject* obj) {
+
+    std::vector<App::DocumentObject*>::const_iterator it = Filter.getValues().begin();
+    for(; it != Filter.getValues().end(); ++it) {
+        
+        if(*it == obj)
+            return true;
+    }
+    return false;        
+}
+
 
 void FemPostPipeline::load(FemResultObject* res) {
 
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkUnstructuredGrid::New();
-    source = grid;
     
     //first copy the mesh over
     //########################
@@ -329,15 +354,11 @@ void FemPostPipeline::load(FemResultObject* res) {
         
         for(std::vector<Base::Vector3d>::const_iterator it=vec.begin(); it!=vec.end(); ++it) {
             double tuple[] = {it->x, it->y, it->z};
-                    Base::Console().Message("disp mag; %f\n", it->Length());
             data->InsertNextTuple(tuple);
         }
         
         grid->GetPointData()->AddArray(data);
     }
     
-      
-    polyDataSource = vtkGeometryFilter::New();
-    polyDataSource->SetInputData(source);
-    polyDataSource->Update();
+    Data.setValue(grid);
 }

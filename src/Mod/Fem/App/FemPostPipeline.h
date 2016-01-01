@@ -35,7 +35,7 @@
 namespace Fem
 {
 
-class AppFemExport FemPostPipeline : public Fem::FemPostObject
+class AppFemExport FemPostPipeline : public Fem::FemPostFilter
 {
     PROPERTY_HEADER(Fem::FemPostPipeline);
 
@@ -45,7 +45,7 @@ public:
     virtual ~FemPostPipeline();
     
     App::PropertyLinkList       Filter;
-    App::PropertyLink           Function;
+    App::PropertyLink           Functions;
     App::PropertyEnumeration    Mode;
     
     short mustExecute(void) const;
@@ -64,14 +64,13 @@ public:
     void load(FemResultObject* res);
     
     //Pipeline handling
-    vtkSmartPointer<vtkDataSet> getSource() {return source;};
     FemPostObject* getLastPostObject();
+    bool           holdsPostObject(FemPostObject* obj);
     
 protected:
     virtual void onChanged(const App::Property* prop);
     
 private:
-    vtkSmartPointer<vtkDataSet> source;
     static const char* ModeEnums[];
 };
 

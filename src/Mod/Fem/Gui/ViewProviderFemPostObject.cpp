@@ -93,6 +93,20 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_drawStyle->ref();
     m_seperator = new SoSeparator();
     m_seperator->ref();
+    
+    //create the vtk algorithms we use for visualisation
+    m_outline   = vtkOutlineCornerFilter::New();
+    m_points = vtkVertexGlyphFilter::New();
+    m_surface = vtkGeometryFilter::New();
+    m_wireframe = vtkExtractEdges::New();
+    m_surfaceEdges = vtkAppendPolyData::New();
+    m_surfaceEdges->AddInputConnection(m_surface->GetOutputPort());
+    m_surfaceEdges->AddInputConnection(m_wireframe->GetOutputPort());
+        
+    m_lookup = vtkLookupTable::New();
+    m_lookup->SetRampToLinear();
+      
+    m_currentAlgorithm = m_outline;
 }
 
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
@@ -147,15 +161,12 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
 {
-    if(!setupPipeline())
-        return;
-
     if (strcmp("Outline",ModeName)==0)
         m_currentAlgorithm = m_outline;
     else if (strcmp("Surface with Edges",ModeName)==0)
         m_currentAlgorithm = m_surfaceEdges;
     else if (strcmp("Surface",ModeName)==0)
-        m_currentAlgorithm = static_cast<Fem::FemPostObject*>(getObject())->getPolyAlgorithm();
+        m_currentAlgorithm = m_surface;
     else if (strcmp("Wireframe",ModeName)==0)
         m_currentAlgorithm = m_wireframe;
     else if (strcmp("Nodes",ModeName)==0)
@@ -256,9 +267,6 @@ void ViewProviderFemPostObject::updateProperties() {
 }
 
 void ViewProviderFemPostObject::update3D() {
-    
-    if(!setupPipeline())
-        return;
     
     vtkPolyData* pd = m_currentAlgorithm->GetOutput();  
     
@@ -468,41 +476,23 @@ void ViewProviderFemPostObject::WriteTransperency() {
 
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
     
-    if( strcmp(p->getName(), "ModificationTime") == 0 && setupPipeline() ) {
+    if( strcmp(p->getName(), "Data") == 0 ) {
         update();
     }
 }
 
 bool ViewProviderFemPostObject::setupPipeline() {
     
-    if(!static_cast<Fem::FemPostObject*>(getObject())->providesPolyData())
+    vtkDataObject* data = static_cast<Fem::FemPostObject*>(getObject())->Data.getValue();
+    
+    if(!data)
         return false;
     
-    if(!m_currentAlgorithm) {
         
-        vtkSmartPointer<vtkPolyDataAlgorithm> algorithm = static_cast<Fem::FemPostObject*>(getObject())->getPolyAlgorithm();
-        
-        m_outline   = vtkOutlineCornerFilter::New();
-        m_outline->SetInputConnection(algorithm->GetOutputPort());
-        
-        m_points = vtkVertexGlyphFilter::New();
-        m_points->SetInputConnection(algorithm->GetOutputPort());
-        
-        m_surface = vtkGeometryFilter::New();
-        m_surface->SetInputConnection(algorithm->GetOutputPort());
-        
-        m_wireframe = vtkExtractEdges::New();
-        m_wireframe->SetInputConnection(algorithm->GetOutputPort());
-        
-        m_surfaceEdges = vtkAppendPolyData::New();
-        m_surfaceEdges->AddInputConnection(m_surface->GetOutputPort());
-        m_surfaceEdges->AddInputConnection(m_wireframe->GetOutputPort());
-        
-        m_lookup = vtkLookupTable::New();
-        m_lookup->SetRampToLinear();
-        
-        m_currentAlgorithm = m_outline;
-    }
+    m_outline->SetInputData(data);
+    m_surface->SetInputData(data);
+    m_wireframe->SetInputData(data);
+    m_points->SetInputData(data);
     
     return true;
 }
@@ -513,7 +503,6 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     if(m_blockPropertyChanges)
         return;
     
-    Base::Console().Message("On Changed: %s\n", prop->getName());    
     if(prop == &Field && setupPipeline()) {
         updateProperties();
         WriteColorData();
