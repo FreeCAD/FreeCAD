@@ -289,13 +289,13 @@ void TaskPostClip::collectImplicitFunctions() {
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Function.getValue() && 
-           pipeline->Function.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        if(pipeline->Functions.getValue() && 
+           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
             
             ui->FunctionBox->clear();
             QStringList items;
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Function.getValue())->Functions.getValues();
+                                                            pipeline->Functions.getValue())->Functions.getValues();
             for(std::size_t i=0; i<funcs.size(); ++i)
                 items.push_back(QString::fromAscii(funcs[i]->getNameInDocument()));
            
@@ -317,11 +317,11 @@ void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx) {
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Function.getValue() && 
-           pipeline->Function.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        if(pipeline->Functions.getValue() && 
+           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
             
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Function.getValue())->Functions.getValues();
+                                                            pipeline->Functions.getValue())->Functions.getValues();
             if(idx>=0)
                 static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(funcs[idx]);
             else 
@@ -581,13 +581,13 @@ void TaskPostCut::collectImplicitFunctions() {
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Function.getValue() && 
-           pipeline->Function.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        if(pipeline->Functions.getValue() && 
+           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
             
             ui->FunctionBox->clear();
             QStringList items;
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Function.getValue())->Functions.getValues();
+                                                            pipeline->Functions.getValue())->Functions.getValues();
             for(std::size_t i=0; i<funcs.size(); ++i)
                 items.push_back(QString::fromAscii(funcs[i]->getNameInDocument()));
            
@@ -609,11 +609,11 @@ void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Function.getValue() && 
-           pipeline->Function.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        if(pipeline->Functions.getValue() && 
+           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
             
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Function.getValue())->Functions.getValues();
+                                                            pipeline->Functions.getValue())->Functions.getValues();
             if(idx>=0)
                 static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(funcs[idx]);
             else 

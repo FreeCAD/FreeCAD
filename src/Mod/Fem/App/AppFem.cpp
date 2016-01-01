@@ -59,6 +59,7 @@
 #include "FemPostPipeline.h"
 #include "FemPostFilter.h"
 #include "FemPostFunction.h"
+#include "PropertyPostDataObject.h"
 #endif
 
 namespace Fem {
@@ -163,5 +164,6 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostFunctionProvider    ::init();
     Fem::FemPostPlaneFunction       ::init();
     Fem::FemPostSphereFunction      ::init();
+    Fem::PropertyPostDataObject     ::init();
 #endif
 }

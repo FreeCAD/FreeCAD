@@ -31,6 +31,7 @@
 #include <vtkImplicitFunction.h>
 #include <vtkPlane.h>
 #include <vtkSphere.h>
+#include <vtkBoundingBox.h>
 
 namespace Fem
 {

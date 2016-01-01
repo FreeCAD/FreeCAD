@@ -930,14 +930,14 @@ void CmdFemPostFunctions::activated(int iMsg)
         
         //check if the pipeline has a filter provider and add one if needed
         Fem::FemPostFunctionProvider* provider;
-        if(!pipeline->Function.getValue() || pipeline->Function.getValue()->getTypeId() != Fem::FemPostFunctionProvider::getClassTypeId()) {
+        if(!pipeline->Functions.getValue() || pipeline->Functions.getValue()->getTypeId() != Fem::FemPostFunctionProvider::getClassTypeId()) {
             std::string FuncName = getUniqueObjectName("Functions");
             doCommand(Doc,"App.ActiveDocument.addObject('Fem::FemPostFunctionProvider','%s')", FuncName.c_str());
-            doCommand(Doc,"App.ActiveDocument.%s.Function = App.ActiveDocument.%s", pipeline->getNameInDocument(), FuncName.c_str());
+            doCommand(Doc,"App.ActiveDocument.%s.Functions = App.ActiveDocument.%s", pipeline->getNameInDocument(), FuncName.c_str());
             provider = static_cast<Fem::FemPostFunctionProvider*>(getDocument()->getObject(FuncName.c_str()));
         }
         else 
-            provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Function.getValue());
+            provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue());
         
         //build the object
         std::string FeatName = getUniqueObjectName(name.c_str());       

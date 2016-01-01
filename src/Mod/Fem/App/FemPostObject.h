@@ -25,10 +25,9 @@
 #define Fem_FemPostObject_H
 
 #include <App/GeoFeature.h>
-
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataAlgorithm.h>
+#include "PropertyPostDataObject.h"
 #include <vtkBoundingBox.h>
+
 
 namespace Fem
 {
@@ -43,33 +42,9 @@ public:
     FemPostObject(void);
     virtual ~FemPostObject();
     
-    App::PropertyInteger ModificationTime;
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemPostObject";
-    }
+    Fem::PropertyPostDataObject Data;
     
-    short mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
-    
-    //bounding box handling. By default the bounding box is calcualted from the poly data output 
-    //which is visualized
-    virtual vtkBoundingBox getBoundingBox() {return m_boundingBox;};
-    
-    //poly data algorithm handling
-    virtual bool                          providesPolyData() {return getPolyAlgorithm()!=NULL;};      
-    vtkSmartPointer<vtkPolyDataAlgorithm> getPolyAlgorithm() {return polyDataSource;};
-    
-
-protected:
-    virtual void onChanged(const App::Property* prop);
-    
-    //members
-    vtkSmartPointer<vtkPolyDataAlgorithm> polyDataSource;
-    
-private:
-    vtkBoundingBox m_boundingBox;
+    vtkBoundingBox getBoundingBox();
 };
 
 } //namespace Fem
