@@ -157,7 +157,7 @@ ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
     m_geometrySeperator->unref();
     m_manip->unref();
     m_scale->unref();
-    m_transform->unref();
+    //transfom us unrefed when it is replaced by the dragger
 }
 
 void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
@@ -492,8 +492,6 @@ ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction() {
 }
 
 ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() {
-
-    m_sphereNode->unref();
 }
 
 SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator() {

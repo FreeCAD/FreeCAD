@@ -164,6 +164,7 @@ public:
         return "FemGui::ViewProviderFemPostCut";
     }
     virtual short int mustExecute(void) const;
+    virtual App::DocumentObjectExecReturn* execute(void);
     
 protected:
     virtual void onChanged(const App::Property* prop);
