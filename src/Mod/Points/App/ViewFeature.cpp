@@ -70,8 +70,8 @@ ViewFeature::ViewFeature()
     ADD_PROPERTY_TYPE(Height,(0), "View", type, "The height of the point view");
     ADD_PROPERTY_TYPE(Direction ,(Base::Vector3d(0,0,1)), "View", type, "The direction of the point view");
 
-    Width.StatusBits.set(2, true);
-    Height.StatusBits.set(2, true);
+    Width.setStatus(App::Property::ReadOnly, true);
+    Height.setStatus(App::Property::ReadOnly, true);
 }
 
 ViewFeature::~ViewFeature()
