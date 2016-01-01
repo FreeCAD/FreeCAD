@@ -176,7 +176,6 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         std::string alias;
         if (cell->getAlias(alias))
             return QVariant(Base::Tools::fromStdString(alias));
-        return QVariant();
     }
 #endif
 
