@@ -625,21 +625,33 @@ void ObjectIdentifier::resolve() const
 
 Document * ObjectIdentifier::getDocument(String name) const
 {
-    App::Document * doc = 0;
-    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-
     if (name.getString().size() == 0)
         name = getDocumentName();
 
+    App::Document * docById = App::GetApplication().getDocument(name);
+    App::Document * docByLabel = 0;
+    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+
     for (std::vector<App::Document*>::const_iterator i = docs.begin(); i != docs.end(); ++i) {
         if ((*i)->Label.getValue() == name.getString()) {
-            if (doc != 0)
+            /* Multiple hits for same label? */
+            if (docByLabel != 0)
                 return 0;
-            doc = *i;
+            docByLabel = *i;
         }
     }
 
-    return doc;
+    /* Not found on id? */
+    if (docById == 0)
+        return docByLabel; // Either not found at all, or on label
+    else {
+        /* Not found on label? */
+        if (docByLabel == 0) /* Then return doc by id */
+            return docById;
+
+        /* docByLabel and docById could be equal; that is ok */
+        return docByLabel == docById ? docById : 0;
+    }
 }
 
 /**
