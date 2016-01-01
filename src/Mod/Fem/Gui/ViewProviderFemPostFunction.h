@@ -235,9 +235,6 @@ public:
 protected:
     virtual void draggerUpdate(SoDragger* mat);
     virtual void updateData(const App::Property*);
-
-private:
-    SoSphere* m_sphereNode;
 };
 
 } //namespace FemGui

@@ -391,3 +391,12 @@ short int FemPostCutFilter::mustExecute(void) const {
     else return App::DocumentObject::mustExecute();
 }
 
+DocumentObjectExecReturn* FemPostCutFilter::execute(void) {
+    
+    if(!m_cutter->GetCutFunction())
+        return StdReturn;
+    
+    return Fem::FemPostFilter::execute();
+}
+
+
