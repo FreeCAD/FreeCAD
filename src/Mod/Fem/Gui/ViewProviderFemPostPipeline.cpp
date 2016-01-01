@@ -51,7 +51,6 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren(v
         children.push_back(pipeline->Functions.getValue());
     
     children.insert(children.end(), pipeline->Filter.getValues().begin(), pipeline->Filter.getValues().end());   
-    Base::Console().Message("claim children pipeline: %i\n", children.size());
     return children;
 }
 
@@ -63,10 +62,7 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
     FemGui::ViewProviderFemPostObject::onChanged(prop);
     
-    if(strcmp(prop->getName(), "ModificationTime") == 0) {
-        updateFunctionSize();        
-    }
-    else if(strcmp(prop->getName(), "Function") == 0) {
+    if(strcmp(prop->getName(), "Function") == 0) {
         updateFunctionSize();        
     }
 
