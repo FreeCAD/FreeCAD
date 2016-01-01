@@ -574,7 +574,7 @@ void ObjectIdentifier::resolve() const
         }
     }
 
-    documentName = String(doc->Label.getValue());
+    documentName = String(doc->getName());
 
     /* Document object name specified? */
     if (documentObjectNameSet) {
