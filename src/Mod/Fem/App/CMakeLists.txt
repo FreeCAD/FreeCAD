@@ -202,6 +202,8 @@ SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
 if(BUILD_FEM_VTK) 
     SET(FemPost_SRCS
+        PropertyPostDataObject.h
+        PropertyPostDataObject.cpp
         FemPostObject.h
         FemPostObject.cpp
         FemPostPipeline.h

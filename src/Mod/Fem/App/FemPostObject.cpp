@@ -42,38 +42,21 @@ PROPERTY_SOURCE(Fem::FemPostObject, App::GeoFeature)
 
 FemPostObject::FemPostObject()
 {
-    ADD_PROPERTY(ModificationTime,(0));
+    ADD_PROPERTY(Data,(0));
 }
 
 FemPostObject::~FemPostObject()
 {
 }
 
-short FemPostObject::mustExecute(void) const
-{
-    return 1;
-}
+vtkBoundingBox FemPostObject::getBoundingBox() {
 
-DocumentObjectExecReturn* FemPostObject::execute(void) {
-       
-    if(providesPolyData()) {
-        polyDataSource->Update();
-        vtkSmartPointer<vtkPolyData> poly = polyDataSource->GetOutput();
-        
-        if(static_cast<unsigned long>(ModificationTime.getValue()) != poly->GetMTime()) {
-            
-            //update the bounding box
-            m_boundingBox = vtkBoundingBox(poly->GetBounds());
-            
-            //update the modification time to let the viewprovider know something changed
-            ModificationTime.setValue(static_cast<long>(poly->GetMTime()));   
-        }
-    }
+    vtkBoundingBox box;
     
-    return DocumentObject::StdReturn;
-}
-
-void FemPostObject::onChanged(const Property* prop)
-{
-    App::GeoFeature::onChanged(prop);
+    if(Data.getValue() && Data.getValue()->IsA("vtkDataSet"))
+        box.AddBounds(vtkDataSet::SafeDownCast(Data.getValue())->GetBounds());
+    
+    //TODO: add calculation of multiblock and Multipiece datasets
+    
+    return box;
 }

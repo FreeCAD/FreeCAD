@@ -1,4 +1,4 @@
-<<<<<<< 559b38429c3ec5bcad9eced553e5d7ca544cb55e
+<<<<<<< 43b51b168bc838480fd6a0a4b9f67e0bf864a560
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
@@ -159,6 +159,7 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostClipFilter          ::init();
     Fem::FemPostScalarClipFilter    ::init();
     Fem::FemPostWarpVectorFilter    ::init();
+    Fem::FemPostCutFilter           ::init();
     Fem::FemPostFunction            ::init();
     Fem::FemPostFunctionProvider    ::init();
     Fem::FemPostPlaneFunction       ::init();
@@ -227,6 +228,7 @@ PyMODINIT_FUNC initFem()
 #include "FemPostPipeline.h"
 #include "FemPostFilter.h"
 #include "FemPostFunction.h"
+#include "PropertyPostDataObject.h"
 #endif
 
 namespace Fem {
@@ -331,6 +333,7 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostFunctionProvider    ::init();
     Fem::FemPostPlaneFunction       ::init();
     Fem::FemPostSphereFunction      ::init();
+    Fem::PropertyPostDataObject     ::init();
 #endif
 }
->>>>>>> Add cut filter
+>>>>>>> FreeCADify the vtk post processing

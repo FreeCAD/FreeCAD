@@ -1,4 +1,4 @@
-<<<<<<< 90bd13697472f7f895b8e12b9d1050220d69f763
+<<<<<<< 43b51b168bc838480fd6a0a4b9f67e0bf864a560
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
@@ -947,6 +947,22 @@ void CmdFemPostFunctions::activated(int iMsg)
         doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
         doCommand(Doc,"App.ActiveDocument.%s.Functions = __list__", provider->getNameInDocument());
         doCommand(Doc,"del __list__");
+        
+        //set the default values, for this get the bounding box
+        vtkBoundingBox box = pipeline->getBoundingBox();
+        
+        double center[3];
+        box.GetCenter(center);
+        
+        if (iMsg==0) 
+            doCommand(Doc,"App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)", FeatName.c_str(), center[0], 
+                                    center[1], center[2]);
+        else if (iMsg==1) {
+            doCommand(Doc,"App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", FeatName.c_str(), center[0],
+                      center[1] + box.GetLength(1)/2, center[2] + box.GetLength(2)/2);
+            doCommand(Doc,"App.ActiveDocument.%s.Radius = %f", FeatName.c_str(), box.GetDiagonalLength()/2);
+        }
+            
         
         this->updateActive();
         //most of the times functions are added inside of a filter, make sure this still works
@@ -2072,14 +2088,14 @@ void CmdFemPostFunctions::activated(int iMsg)
         
         //check if the pipeline has a filter provider and add one if needed
         Fem::FemPostFunctionProvider* provider;
-        if(!pipeline->Function.getValue() || pipeline->Function.getValue()->getTypeId() != Fem::FemPostFunctionProvider::getClassTypeId()) {
+        if(!pipeline->Functions.getValue() || pipeline->Functions.getValue()->getTypeId() != Fem::FemPostFunctionProvider::getClassTypeId()) {
             std::string FuncName = getUniqueObjectName("Functions");
             doCommand(Doc,"App.ActiveDocument.addObject('Fem::FemPostFunctionProvider','%s')", FuncName.c_str());
-            doCommand(Doc,"App.ActiveDocument.%s.Function = App.ActiveDocument.%s", pipeline->getNameInDocument(), FuncName.c_str());
+            doCommand(Doc,"App.ActiveDocument.%s.Functions = App.ActiveDocument.%s", pipeline->getNameInDocument(), FuncName.c_str());
             provider = static_cast<Fem::FemPostFunctionProvider*>(getDocument()->getObject(FuncName.c_str()));
         }
         else 
-            provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Function.getValue());
+            provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue());
         
         //build the object
         std::string FeatName = getUniqueObjectName(name.c_str());       
@@ -2296,4 +2312,4 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);
 #endif
 }
->>>>>>> Update function manipulators
+>>>>>>> FreeCADify the vtk post processing

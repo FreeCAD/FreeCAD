@@ -47,8 +47,8 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren(v
     Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
     std::vector<App::DocumentObject*> children;
     
-    if(pipeline->Function.getValue())
-        children.push_back(pipeline->Function.getValue());
+    if(pipeline->Functions.getValue())
+        children.push_back(pipeline->Functions.getValue());
     
     children.insert(children.end(), pipeline->Filter.getValues().begin(), pipeline->Filter.getValues().end());   
     Base::Console().Message("claim children pipeline: %i\n", children.size());
@@ -77,14 +77,14 @@ void ViewProviderFemPostPipeline::updateFunctionSize() {
     //we need to get the bounding box and set the function  provider size
     Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
     
-    if(!obj->Function.getValue() || !obj->Function.getValue()->isDerivedFrom(Fem::FemPostFunctionProvider::getClassTypeId()))
+    if(!obj->Functions.getValue() || !obj->Functions.getValue()->isDerivedFrom(Fem::FemPostFunctionProvider::getClassTypeId()))
         return;
     
     //get the functtion provider 
     FemGui::ViewProviderFemPostFunctionProvider* vp = static_cast<FemGui::ViewProviderFemPostFunctionProvider*>(
-                                                    Gui::Application::Instance->getViewProvider(obj->Function.getValue()));
+                                                    Gui::Application::Instance->getViewProvider(obj->Functions.getValue()));
             
-    if(obj->providesPolyData()) {
+    if(obj->Data.getValue() && obj->Data.getValue()->IsA("vtkDataSet")) {
         vtkBoundingBox box = obj->getBoundingBox();
         
         vp->SizeX.setValue(box.GetLength(0)*1.2);
