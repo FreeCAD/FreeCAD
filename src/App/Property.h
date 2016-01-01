@@ -52,6 +52,18 @@ class AppExport Property : public Base::Persistence
     TYPESYSTEM_HEADER();
 
 public:
+    enum Status
+    {
+        Touched = 0, // touched property
+        Immutable = 1, // can't modify property
+        ReadOnly = 2, // for property editor
+        Hidden = 3, // for property editor
+        User1 = 28, // user-defined status
+        User2 = 29, // user-defined status
+        User3 = 30, // user-defined status
+        User4 = 31  // user-defined status
+    };
+
     Property();
     virtual ~Property();
 
@@ -99,12 +111,30 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    /** Property status handling
+     */
+    //@{
     /// Set the property touched
     void touch();
     /// Test if this property is touched 
-    bool isTouched(void) const {return StatusBits.test(0);}
+    inline bool isTouched(void) const {
+        return StatusBits.test(0);
+    }
     /// Reset this property touched 
-    void purgeTouched(void){StatusBits.reset(0);}
+    inline void purgeTouched(void) {
+        StatusBits.reset(0);
+    }
+    /// return the status bits
+    inline unsigned long getStatus() const {
+        return StatusBits.to_ulong();
+    }
+    inline bool testStatus(Status pos) const {
+        return StatusBits.test(static_cast<size_t>(pos));
+    }
+    inline void setStatus(Status pos, bool on) {
+        StatusBits.set(static_cast<size_t>(pos), on);
+    }
+    //@}
 
     /// Returns a new copy of the property (mainly for Undo/Redo and transactions)
     virtual Property *Copy(void) const = 0;
@@ -116,17 +146,17 @@ public:
 
     friend class PropertyContainer;
 
+protected:
     /** Status bits of the property
      * The first 8 bits are used for the base system the rest can be used in
      * descendent classes to to mark special stati on the objects.
      * The bits and their meaning are listed below:
      * 0 - object is marked as 'touched'
      * 1 - object is marked as 'immutable'
-     * 2 - object is marked as 'read-ony' (for property editor)
+     * 2 - object is marked as 'read-only' (for property editor)
      * 3 - object is marked as 'hidden' (for property editor)
      */
     std::bitset<32> StatusBits;
-
 
 protected:
     /// Gets called by all setValue() methods after the value has changed

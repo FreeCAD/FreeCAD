@@ -52,7 +52,7 @@ public:
     {
         if (elem.first == propertyname) {
             //  flag set that property is read-only or hidden
-            if (elem.second->StatusBits.test(2) || elem.second->StatusBits.test(3))
+            if (elem.second->testStatus(App::Property::ReadOnly) || elem.second->testStatus(App::Property::Hidden))
                 return false;
             App::PropertyContainer* parent = elem.second->getContainer();
             if (parent) {

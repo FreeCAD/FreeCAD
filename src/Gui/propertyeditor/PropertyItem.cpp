@@ -116,7 +116,7 @@ void PropertyItem::updateData()
         it != propertyItems.end(); ++it) {
         App::PropertyContainer* parent = (*it)->getContainer();
         if (parent)
-            ro &= (parent->isReadOnly(*it) || (*it)->StatusBits.test(2));
+            ro &= (parent->isReadOnly(*it) || (*it)->testStatus(App::Property::ReadOnly));
     }
     this->setReadOnly(ro);
 }
@@ -318,7 +318,7 @@ void PropertyItem::setPropertyValue(const QString& value)
     for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
         it != propertyItems.end(); ++it) {
         App::PropertyContainer* parent = (*it)->getContainer();
-        if (parent && !parent->isReadOnly(*it) && !(*it)->StatusBits.test(2)) {
+        if (parent && !parent->isReadOnly(*it) && !(*it)->testStatus(App::Property::ReadOnly)) {
             QString cmd = QString::fromAscii("%1 = %2").arg(pythonIdentifier(*it)).arg(value);
             Gui::Application::Instance->runPythonCode((const char*)cmd.toUtf8());
         }

@@ -128,7 +128,7 @@ void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::P
 void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (parent->isHidden(&prop) || prop.StatusBits.test(3))
+    if (parent->isHidden(&prop) || prop.testStatus(App::Property::Hidden))
         return;
 
     if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -205,7 +205,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                 nameType.propName = ob->getPropertyName(*pt);
                 nameType.propId = (*pt)->getTypeId().getKey();
 
-                if (!ob->isHidden(*pt) && !(*pt)->StatusBits.test(3)) {
+                if (!ob->isHidden(*pt) && !(*pt)->testStatus(App::Property::Hidden)) {
                     std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
                     if (pi != propDataMap.end()) {
                         pi->propList.push_back(*pt);
@@ -225,7 +225,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                 nameType.propName = pt->first;
                 nameType.propId = pt->second->getTypeId().getKey();
 
-                if (!vp->isHidden(pt->second) && !pt->second->StatusBits.test(3)) {
+                if (!vp->isHidden(pt->second) && !pt->second->testStatus(App::Property::Hidden)) {
                     std::vector<PropInfo>::iterator pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
                     if (pi != propViewMap.end()) {
                         pi->propList.push_back(pt->second);

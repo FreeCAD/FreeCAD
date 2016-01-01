@@ -47,12 +47,12 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(EigenmodeFrequency,(0), "Fem",Prop_None,"Frequency of the eigenmode");
 
     // make read-only for property editor
-    NodeNumbers.StatusBits.set(2, true);
-    DisplacementVectors.StatusBits.set(2, true);
-    DisplacementLengths.StatusBits.set(2, true);
-    StressValues.StatusBits.set(2, true);
-    Eigenmode.StatusBits.set(2, true);
-    EigenmodeFrequency.StatusBits.set(2, true);
+    NodeNumbers.setStatus(App::Property::ReadOnly, true);
+    DisplacementVectors.setStatus(App::Property::ReadOnly, true);
+    DisplacementLengths.setStatus(App::Property::ReadOnly, true);
+    StressValues.setStatus(App::Property::ReadOnly, true);
+    Eigenmode.setStatus(App::Property::ReadOnly, true);
+    EigenmodeFrequency.setStatus(App::Property::ReadOnly, true);
 }
 
 FemResultObject::~FemResultObject()
