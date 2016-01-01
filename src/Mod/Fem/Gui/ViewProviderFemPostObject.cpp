@@ -91,6 +91,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_lines->ref();
     m_drawStyle = new SoDrawStyle();
     m_drawStyle->ref();
+    m_drawStyle->lineWidth.setValue(2);
+    m_drawStyle->pointSize.setValue(3);
     m_seperator = new SoSeparator();
     m_seperator->ref();
     
@@ -129,30 +131,17 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
     
-    // flat
-    SoGroup* pcFlatRoot = new SoGroup();
     // face nodes
-    pcFlatRoot->addChild(m_coordinates);
-    pcFlatRoot->addChild(m_shapeHints);
-    pcFlatRoot->addChild(m_material);
-    pcFlatRoot->addChild(m_materialBinding);
-    pcFlatRoot->addChild(m_faces);
-
-    // line
-    SoGroup* pcWireRoot = new SoGroup();
-    pcWireRoot->addChild(m_coordinates);
-    pcWireRoot->addChild(m_drawStyle);
-    pcWireRoot->addChild(m_lines);
-
-    // Points
-    SoGroup* pcPointsRoot = new SoSeparator();
-    pcPointsRoot->addChild(m_coordinates);
-    pcPointsRoot->addChild(m_markers);
+    m_seperator->addChild(m_shapeHints);
+    m_seperator->addChild(m_drawStyle);
+    m_seperator->addChild(m_materialBinding);
+    m_seperator->addChild(m_material);
+    m_seperator->addChild(m_coordinates);
+    m_seperator->addChild(m_markers);
+    m_seperator->addChild(m_lines);
+    m_seperator->addChild(m_faces);
  
     //all 
-    m_seperator->addChild(pcFlatRoot);
-    m_seperator->addChild(pcWireRoot);
-    m_seperator->addChild(pcPointsRoot);
     addDisplayMaskMode(m_seperator, "Default");
     setDisplayMaskMode("Default");
     
@@ -291,7 +280,6 @@ void ViewProviderFemPostObject::update3D() {
     // write out polys if any
     if (pd->GetNumberOfPolys() > 0) {
         
-        Base::Console().Message("render polys: %i\n", pd->GetNumberOfPolys());
         m_faces->coordIndex.startEditing();
         int soidx = 0;
         cells = pd->GetPolys();
@@ -314,7 +302,6 @@ void ViewProviderFemPostObject::update3D() {
   // write out tstrips if any
   if (pd->GetNumberOfStrips() > 0) {
       
-      Base::Console().Message("render strips\n");
       int soidx = 0;
       cells = pd->GetStrips();
       m_triangleStrips->coordIndex.startEditing();
@@ -336,7 +323,6 @@ void ViewProviderFemPostObject::update3D() {
   // write out lines if any
   if (pd->GetNumberOfLines() > 0) {
 
-        Base::Console().Message("render lines: %i\n", pd->GetNumberOfLines());
         int soidx = 0;
         cells = pd->GetLines();
         m_lines->coordIndex.startEditing();
@@ -357,7 +343,6 @@ void ViewProviderFemPostObject::update3D() {
   // write out verts if any
   if (pd->GetNumberOfVerts() > 0){
       
-        Base::Console().Message("render verts: %i\n", pd->GetNumberOfVerts());
         int soidx = 0;
         cells = pd->GetVerts();
         m_markers->coordIndex.startEditing();
@@ -381,9 +366,6 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     if(!points)
         return;
 
-    Base::Console().Message("render points: %i", points->GetNumberOfPoints());
-    Base::Console().Message("\n");
-
     m_coordinates->point.startEditing();
     m_coordinates->point.setNum(points->GetNumberOfPoints());
     for (i = 0; i < points->GetNumberOfPoints(); i++) {
@@ -395,7 +377,6 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     // write out the point normal data
     if (normals) {
         
-        Base::Console().Message("Write normals: %i\n", normals->GetNumberOfTuples());
         m_normals->vector.startEditing();
         m_normals->vector.setNum(normals->GetNumberOfTuples());
         for (i = 0; i < normals->GetNumberOfTuples(); i++) {
@@ -464,12 +445,7 @@ void ViewProviderFemPostObject::WriteColorData() {
 void ViewProviderFemPostObject::WriteTransperency() {
     
     float trans = float(Transperency.getValue()) / 100.;
-    
-    m_material->transparency.startEditing();
-    for(int i=0; i<m_material->diffuseColor.getNum(); ++i)
-        m_material->transparency.set1Value(i, trans);
-    
-    m_material->transparency.finishEditing();
+    m_material->transparency.setValue(trans);
 }
 
 

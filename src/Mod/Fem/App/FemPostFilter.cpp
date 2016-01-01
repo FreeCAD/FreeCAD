@@ -67,7 +67,6 @@ void FemPostFilter::setActiveFilterPipeline(std::string name) {
 
 DocumentObjectExecReturn* FemPostFilter::execute(void) {
     
-    Base::Console().Message("Recalculate filter\n");
     if(!m_pipelines.empty() && !m_activePipeline.empty()) {
     
         FemPostFilter::FilterPipeline& pipe = m_pipelines[m_activePipeline];
@@ -76,7 +75,6 @@ DocumentObjectExecReturn* FemPostFilter::execute(void) {
         
         Data.setValue(pipe.target->GetOutputDataObject(0));
     }
-    Base::Console().Message("Done Recalculate filter\n");
     return StdReturn;
 }
 
@@ -165,6 +163,13 @@ short int FemPostClipFilter::mustExecute(void) const {
     else return App::DocumentObject::mustExecute();
 }
 
+DocumentObjectExecReturn* FemPostClipFilter::execute(void) {
+    
+    if(!m_extractor->GetImplicitFunction())
+        return StdReturn;
+    
+    return Fem::FemPostFilter::execute();
+}
 
 
 

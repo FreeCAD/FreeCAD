@@ -48,6 +48,7 @@
 #include <vtkQuad.h>
 #include <vtkImageData.h>
 #include <vtkRectilinearGrid.h>
+#include <vtkAppendFilter.h>
 #include <vtkXMLUnstructuredGridReader.h>
 #include <vtkXMLPolyDataReader.h>
 #include <vtkXMLStructuredGridReader.h>
@@ -76,15 +77,42 @@ FemPostPipeline::~FemPostPipeline()
 
 short FemPostPipeline::mustExecute(void) const
 {
-    return 1;
+    if(Mode.isTouched())
+        return 1;
+    
+    return FemPostFilter::mustExecute();
 }
 
 DocumentObjectExecReturn* FemPostPipeline::execute(void) {
 
-
+    //if we are the toplevel pipeline our data object is not created by filters, we are the main source!
+    if(!Input.getValue())
+        return StdReturn;
+    
+    //now if we are a filter than our data object is created by the filter we hold
+    
     //if we are in serial mode we just copy over the data of the last filter,
     //but if we are in parallel we need to combine all filter results
+    if(Mode.getValue() == 0) {
     
+        //serial
+        Data.setValue(getLastPostObject()->Data.getValue());
+    }
+    else {
+        
+        //parallel. go through all filters and append the result 
+        const std::vector<App::DocumentObject*>& filters = Filter.getValues();
+        std::vector<App::DocumentObject*>::const_iterator it = filters.begin();
+        
+        vtkSmartPointer<vtkAppendFilter> append = vtkSmartPointer<vtkAppendFilter>::New();
+        for(;it != filters.end(); ++it) {
+            
+            append->AddInputDataObject(static_cast<FemPostObject*>(*it)->Data.getValue());
+        }
+        
+        append->Update();
+        Data.setValue(append->GetOutputDataObject(0));
+    }
     
     
     return Fem::FemPostObject::execute();

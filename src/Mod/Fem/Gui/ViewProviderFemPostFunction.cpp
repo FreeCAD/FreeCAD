@@ -249,7 +249,6 @@ void ViewProviderFemPostFunction::dragFinishCallback(void *data, SoDragger *)
 
 void ViewProviderFemPostFunction::dragMotionCallback(void *data, SoDragger *drag)
 {
-    Base::Console().Message("dragger callback\n");
     ViewProviderFemPostFunction* that = reinterpret_cast<ViewProviderFemPostFunction*>(data);
     that->draggerUpdate(drag);
     
@@ -346,8 +345,6 @@ ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction() {
 
 void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
 
-    Base::Console().Message("dragger udate\n");
-
     Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
     SoCenterballDragger* dragger = static_cast<SoCenterballDragger*>(m);
     
@@ -360,18 +357,10 @@ void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
     func->Origin.setValue(center[0], center[1], center[2]);
     func->Normal.setValue(norm[0],norm[1],norm[2]);
     
-    SbVec3f c = static_cast<SoCenterballManip*>(getManipulator())->center.getValue();
     SbVec3f t = static_cast<SoCenterballManip*>(getManipulator())->translation.getValue();
-    SbVec3f s = static_cast<SoCenterballManip*>(getManipulator())->scaleFactor.getValue();
     SbVec3f rt, irt;
     dragger->rotation.getValue().multVec(t,rt);
     dragger->rotation.getValue().inverse().multVec(t,irt);
-    Base::Console().Message("Center:            %f, %f, %f\n", c[0], c[1], c[2]);
-    Base::Console().Message("Translation:       %f, %f, %f\n", t[0], t[1], t[2]);
-    Base::Console().Message("Rot Translation:   %f, %f, %f\n", rt[0], rt[1], rt[2]);
-    Base::Console().Message("I Rot Translation: %f, %f, %f\n", irt[0], irt[1], irt[2]);
-    Base::Console().Message("Normal             %f, %f, %f\n", norm[0], norm[1], norm[2]);
-    Base::Console().Message("Scale              %f, %f, %f\n", s[0], s[1], s[2]);
 }
 
 void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
@@ -382,9 +371,7 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
                
         Base::Vector3d trans = func->Origin.getValue();
         Base::Vector3d norm = func->Normal.getValue();
-        Base::Console().Message("Translation: %f, %f, %f\n", trans.x, trans.y, trans.z);
-        Base::Console().Message("Normal       %f, %f, %f\n", norm.x, norm.y, norm.z);
-        
+       
         norm = norm / norm.Length();
         SbRotation rot(SbVec3f(0.,0.,1.), SbVec3f(norm.x, norm.y, norm.z));
         
@@ -393,9 +380,6 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
         translate.setTranslate(SbVec3f(trans.x, trans.y, trans.z));
         t.multRight(translate);
         getManipulator()->setMatrix(t);
-
-        Base::Console().Message("Matrix:\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n\n", t[0][0], t[0][1], t[0][2], t[0][3],
-                                t[1][0], t[1][1], t[1][2], t[1][3], t[2][0], t[2][1], t[2][2], t[2][3], t[3][0], t[3][1], t[3][2], t[3][3]);
     }
     Gui::ViewProviderDocumentObject::updateData(p);
 }
@@ -532,8 +516,6 @@ SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator() {
 
 
 void ViewProviderFemPostSphereFunction::draggerUpdate(SoDragger* m) {
-
-    Base::Console().Message("dragger udate\n");
 
     Fem::FemPostSphereFunction* func = static_cast<Fem::FemPostSphereFunction*>(getObject());
     SoHandleBoxDragger* dragger = static_cast<SoHandleBoxDragger*>(m);
