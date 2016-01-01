@@ -84,7 +84,6 @@ FemPostPlaneFunction::~FemPostPlaneFunction() {
 
 void FemPostPlaneFunction::onChanged(const Property* prop) {
     
-    Base::Console().Message("Changed origin and normal\n");
     if(prop == &Origin) {
         const Base::Vector3d& vec = Origin.getValue();
         m_plane->SetOrigin(vec[0], vec[1], vec[2]);
