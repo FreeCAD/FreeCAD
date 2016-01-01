@@ -95,15 +95,15 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_seperator->ref();
     
     //create the vtk algorithms we use for visualisation
-    m_outline   = vtkOutlineCornerFilter::New();
-    m_points = vtkVertexGlyphFilter::New();
-    m_surface = vtkGeometryFilter::New();
-    m_wireframe = vtkExtractEdges::New();
-    m_surfaceEdges = vtkAppendPolyData::New();
+    m_outline   = vtkSmartPointer<vtkOutlineCornerFilter>::New();
+    m_points = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    m_surface = vtkSmartPointer<vtkGeometryFilter>::New();
+    m_wireframe = vtkSmartPointer<vtkExtractEdges>::New();
+    m_surfaceEdges = vtkSmartPointer<vtkAppendPolyData>::New();
     m_surfaceEdges->AddInputConnection(m_surface->GetOutputPort());
     m_surfaceEdges->AddInputConnection(m_wireframe->GetOutputPort());
         
-    m_lookup = vtkLookupTable::New();
+    m_lookup = vtkSmartPointer<vtkLookupTable>::New();
     m_lookup->SetRampToLinear();
       
     m_currentAlgorithm = m_outline;

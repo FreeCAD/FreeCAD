@@ -46,6 +46,13 @@
 #include <vtkTriangle.h>
 #include <vtkQuadraticTriangle.h>
 #include <vtkQuad.h>
+#include <vtkImageData.h>
+#include <vtkRectilinearGrid.h>
+#include <vtkXMLUnstructuredGridReader.h>
+#include <vtkXMLPolyDataReader.h>
+#include <vtkXMLStructuredGridReader.h>
+#include <vtkXMLRectilinearGridReader.h>
+#include <vtkXMLImageDataReader.h>
 
 using namespace Fem;
 using namespace App;
@@ -97,23 +104,26 @@ bool FemPostPipeline::canRead(Base::FileInfo File) {
     return false;
 }
 
-
 void FemPostPipeline::read(Base::FileInfo File) {
    
     // checking on the file
     if (!File.isReadable())
         throw Base::Exception("File to load not existing or not readable");
     
-    if (canRead(File)) {
-        
-        vtkSmartPointer<vtkDataSetReader> reader = vtkSmartPointer<vtkDataSetReader>::New();
-        reader->SetFileName(File.filePath().c_str());
-        reader->Update();
-        Data.setValue(reader->GetOutput());        
-    }
-    else{
+    if (File.hasExtension("vtu")) 
+        readXMLFile<vtkXMLUnstructuredGridReader>(File.filePath());
+    else if (File.hasExtension("vtp"))
+        readXMLFile<vtkXMLPolyDataReader>(File.filePath());
+    else if (File.hasExtension("vts"))
+        readXMLFile<vtkXMLStructuredGridReader>(File.filePath());
+    else if (File.hasExtension("vtr"))
+        readXMLFile<vtkXMLRectilinearGridReader>(File.filePath());
+    else if (File.hasExtension("vti"))
+        readXMLFile<vtkXMLImageDataReader>(File.filePath());
+    else if (File.hasExtension("vtk"))
+        readXMLFile<vtkDataSetReader>(File.filePath());       
+    else
         throw Base::Exception("Unknown extension");
-    }
 }
 
 
@@ -214,7 +224,7 @@ bool FemPostPipeline::holdsPostObject(FemPostObject* obj) {
 
 void FemPostPipeline::load(FemResultObject* res) {
 
-    vtkSmartPointer<vtkUnstructuredGrid> grid = vtkUnstructuredGrid::New();
+    vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     
     //first copy the mesh over
     //########################
@@ -228,7 +238,7 @@ void FemPostPipeline::load(FemResultObject* res) {
     const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
     
     //start with the nodes
-    vtkSmartPointer<vtkPoints> points = vtkPoints::New();
+    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
     SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
     
     points->SetNumberOfPoints(info.NbNodes());
@@ -238,7 +248,7 @@ void FemPostPipeline::load(FemResultObject* res) {
         points->SetPoint(node->GetID()-1, coords);      
     }
     grid->SetPoints(points);
-    
+ 
     //start with 2d elements
     vtkSmartPointer<vtkCellArray> triangleArray = vtkSmartPointer<vtkCellArray>::New();
     vtkSmartPointer<vtkCellArray> quadTriangleArray = vtkSmartPointer<vtkCellArray>::New();
@@ -250,7 +260,7 @@ void FemPostPipeline::load(FemResultObject* res) {
 
         //triangle
         if(aFace->NbNodes() == 3) {
-            vtkSmartPointer<vtkTriangle> tria = vtkTriangle::New(); 
+            vtkSmartPointer<vtkTriangle> tria = vtkSmartPointer<vtkTriangle>::New(); 
             tria->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID()-1);
             tria->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID()-1);
             tria->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID()-1);
@@ -259,7 +269,7 @@ void FemPostPipeline::load(FemResultObject* res) {
         }
         //quad
         else if(aFace->NbNodes() == 4) {
-            vtkSmartPointer<vtkQuad> quad = vtkQuad::New(); 
+            vtkSmartPointer<vtkQuad> quad = vtkSmartPointer<vtkQuad>::New(); 
             quad->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID()-1);
             quad->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID()-1);
             quad->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID()-1);
@@ -267,7 +277,7 @@ void FemPostPipeline::load(FemResultObject* res) {
             quadArray->InsertNextCell(quad);
         }
         else if (aFace->NbNodes() == 6) {
-            vtkSmartPointer<vtkQuadraticTriangle> tria = vtkQuadraticTriangle::New(); 
+            vtkSmartPointer<vtkQuadraticTriangle> tria = vtkSmartPointer<vtkQuadraticTriangle>::New(); 
             tria->GetPointIds()->SetId(0, aFace->GetNode(0)->GetID()-1);
             tria->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID()-1);
             tria->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID()-1);
@@ -291,14 +301,13 @@ void FemPostPipeline::load(FemResultObject* res) {
     vtkSmartPointer<vtkCellArray> tetraArray = vtkSmartPointer<vtkCellArray>::New();
     vtkSmartPointer<vtkCellArray> quadTetraArray = vtkSmartPointer<vtkCellArray>::New();
     
-    tetraArray->SetNumberOfCells(info.NbTetras());
     SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
     for (;aVolIter->more();) {
         const SMDS_MeshVolume* aVol = aVolIter->next();
 
         //tetrahedra
         if(aVol->NbNodes() == 4) {
-            vtkSmartPointer<vtkTetra> tetra = vtkTetra::New();        
+            vtkSmartPointer<vtkTetra> tetra = vtkSmartPointer<vtkTetra>::New();        
             tetra->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
             tetra->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
             tetra->GetPointIds()->SetId(2, aVol->GetNode(2)->GetID()-1);
@@ -309,7 +318,7 @@ void FemPostPipeline::load(FemResultObject* res) {
         //quadratic tetrahedra
         else if( aVol->NbNodes() == 10) {
             
-            vtkSmartPointer<vtkQuadraticTetra> tetra = vtkQuadraticTetra::New();        
+            vtkSmartPointer<vtkQuadraticTetra> tetra = vtkSmartPointer<vtkQuadraticTetra>::New();        
             tetra->GetPointIds()->SetId(0, aVol->GetNode(0)->GetID()-1);
             tetra->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID()-1);
             tetra->GetPointIds()->SetId(2, aVol->GetNode(2)->GetID()-1);
@@ -330,13 +339,13 @@ void FemPostPipeline::load(FemResultObject* res) {
     if(quadTetraArray->GetNumberOfCells()>0)
         grid->SetCells(VTK_QUADRATIC_TETRA, quadTetraArray);
     
-    
+   
     //Now copy the point data over
     //############################
     
     if(!res->StressValues.getValues().empty()) {
         const std::vector<double>& vec = res->StressValues.getValues();
-        vtkSmartPointer<vtkDoubleArray> data = vtkDoubleArray::New();
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Stress");
         
@@ -348,7 +357,7 @@ void FemPostPipeline::load(FemResultObject* res) {
     
     if(!res->StressValues.getValues().empty()) {
         const std::vector<Base::Vector3d>& vec = res->DisplacementVectors.getValues();
-        vtkSmartPointer<vtkDoubleArray> data = vtkDoubleArray::New();
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfComponents(3);
         data->SetName("Displacement");
         
