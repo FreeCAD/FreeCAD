@@ -191,6 +191,54 @@ public:
     virtual int getSize(void) const =0;   
 };
 
+/** A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties.
+ *
+ * A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties, and
+ * only invoke it the first and last time it is needed. This is useful in cases where you want to change multiple
+ * values in a property "atomically", using possibly multiple primitive functions that normally would trigger
+ * aboutToSetValue/hasSetValue calls on their own.
+ *
+ * To use, inherit privately from the AtomicPropertyChangeInterface class, using your class name as the template argument.
+ * In all cases where you normally would call aboutToSetValue/hasSetValue before and after a change, create
+ * an AtomicPropertyChange object before you do the change. Depending on a counter in the main property, the constructor might
+ * invoke aboutToSetValue. When the AtomicPropertyChange object is destructed, it might call hasSetValue if it is found
+ * necessary to do (i.e last item on the AtomicPropertyChange stack). This makes it easy to match the calls, and it is also
+ * exception safe in the sense that the destructors are guaranteed to be called during unwinding and exception
+ * handling, making the calls to boutToSetValue and hasSetValue balanced.
+ *
+ */
+
+template<class P> class AtomicPropertyChangeInterface {
+protected:
+    AtomicPropertyChangeInterface() : signalCounter(0) { }
+
+    class AtomicPropertyChange {
+    public:
+        AtomicPropertyChange(P & prop) : mProp(prop) {
+            // Signal counter == 0? Then we need to invoke the aboutToSetValue in the property.
+            if (mProp.signalCounter == 0)
+                mProp.aboutToSetValue();
+
+            mProp.signalCounter++;
+        }
+
+        ~AtomicPropertyChange() {
+            mProp.signalCounter--;
+
+            // Signal counter == 0? Then we need to invoke the hasSetValue in the property.
+            if (mProp.signalCounter == 0)
+                   mProp.hasSetValue();
+        }
+
+    private:
+        P & mProp; /**< Referenced to property we work on */
+    };
+
+private:
+
+    int signalCounter; /**< Counter for invoking transaction start/stop */
+};
+
 } // namespace App
 
 #endif // APP_PROPERTY_H
