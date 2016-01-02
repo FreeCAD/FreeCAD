@@ -307,7 +307,9 @@ void SheetView::updateCell(const App::Property *prop)
         CellAddress address;
 
         sheet->getCellAddress(prop, address);
-        updateContentLine();
+
+        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
+            updateContentLine();
     }
     catch (...) {
         // Property is not a cell
