@@ -188,7 +188,8 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     //of course only if thisObj is in a body, as otherwise the old workflow would not 
     //be supportet
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
-    if(body) {
+    bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
+    if(!originfeature && body) {
         PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
         if(!selBody || body != selBody) {
             
