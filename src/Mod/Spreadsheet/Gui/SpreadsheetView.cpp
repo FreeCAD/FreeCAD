@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015-2016        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -98,6 +98,8 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
+
+    connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
 
     QPalette palette = ui->cells->palette();
     palette.setColor(QPalette::Base, QColor(255, 255, 255));
@@ -244,6 +246,16 @@ void SheetView::rowResizeFinished()
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     blockSignals(false);
     newRowSizes.clear();
+}
+
+void SheetView::modelUpdated(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+    const QModelIndex & current = ui->cells->currentIndex();
+
+    if (current < topLeft || bottomRight < current)
+        return;
+
+    updateContentLine();
 }
 
 void SheetView::columnResized(int col, int oldSize, int newSize)
