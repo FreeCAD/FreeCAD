@@ -47,7 +47,7 @@ public:
     public:
 
         // Constructor
-        String(const std::string & s = "", bool _isRealString = false) : str(s), isString(_isRealString) { }
+        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false) : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) { }
 
         // Accessors
 
@@ -56,6 +56,8 @@ public:
 
         /** Return true is string need to be quoted */
         bool isRealString() const { return isString; }
+
+        bool isForceIdentifier() const { return forceIdentifier; }
 
         /** Returns a possibly quoted string */
         std::string toString() const;
@@ -80,6 +82,8 @@ public:
 
         std::string str;
         bool isString;
+        bool forceIdentifier;
+
     };
 
     /**
@@ -227,7 +231,7 @@ protected:
 
     void resolve() const;
 
-    App::DocumentObject *getDocumentObject(const App::Document *doc, const std::string &name) const;
+    App::DocumentObject *getDocumentObject(const App::Document *doc, const String &name) const;
 
     const App::PropertyContainer * owner;
     bool documentNameSet;
