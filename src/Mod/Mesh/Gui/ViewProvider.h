@@ -119,6 +119,7 @@ public:
     App::PropertyFloatConstraint PointSize;
     App::PropertyFloatConstraint CreaseAngle;
     App::PropertyBool OpenEdges;
+    App::PropertyBool Coloring;
     App::PropertyEnumeration Lighting;
     App::PropertyColor LineColor;
 
@@ -176,7 +177,7 @@ protected:
     void highlightComponents();
     void setHighlightedComponents(bool);
     App::PropertyColorList* getColorProperty() const;
-    void tryColorPerVertex();
+    void tryColorPerVertex(bool);
     void setColorPerVertex(const App::PropertyColorList*);
 
     virtual SoShape* getShapeNode() const;
