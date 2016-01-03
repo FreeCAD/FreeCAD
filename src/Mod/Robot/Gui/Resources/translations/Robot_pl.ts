@@ -94,7 +94,7 @@
 <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-        <location line="+63"/>
+        <location line="+60"/>
         <source>Robot</source>
         <translation>Robot</translation>
     </message>
@@ -368,8 +368,8 @@
         <location line="+49"/>
         <location line="+100"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-52"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-49"/>
+        <location line="+62"/>
         <location filename="../../CommandInsertRobot.cpp" line="+181"/>
         <location filename="../../CommandTrajectory.cpp" line="-276"/>
         <location line="+56"/>
@@ -381,8 +381,8 @@
     <message>
         <location line="-28"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-61"/>
+        <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
         <translation>Wybierz jednego robota i jedną trajektorię.</translation>
@@ -398,20 +398,28 @@
         <translation>Potrzebujesz do symulacji co najmniej dwóch punktów w trajektorii.</translation>
     </message>
     <message>
-        <location filename="../../CommandExport.cpp" line="-43"/>
-        <location line="+65"/>
         <source>KRL file(*.src)</source>
-        <translation>Plik KRL (*. src)</translation>
+        <translation type="obsolete">Plik KRL (*. src)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
         <source>All Files (*.*)</source>
-        <translation>Wszystkie pliki (*.*)</translation>
+        <translation type="obsolete">Wszystkie pliki (*.*)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-40"/>
+        <location line="+62"/>
+        <source>KRL file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
         <source>Export program</source>
         <translation>Eksport programu</translation>
     </message>

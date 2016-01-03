@@ -133,6 +133,25 @@
     </message>
 </context>
 <context>
+    <name>DlgExpressionInput</name>
+    <message>
+        <source>Formula editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
@@ -1406,7 +1425,7 @@ This file already exists.</source>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
         <source>HTML files (*.html *.htm)</source>
-        <translation type="unfinished">HTML ファイル (*.htm *.html)</translation>
+        <translation type="obsolete">HTML ファイル (*.htm *.html)</translation>
     </message>
     <message>
         <source>Access denied</source>
@@ -1417,6 +1436,10 @@ This file already exists.</source>
 
 Specify another directory, please.</source>
         <translation type="unfinished">&apos;%1&apos;にアクセス拒否されました 別のディレクトリを指定してください。</translation>
+    </message>
+    <message>
+        <source>HTML files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1489,6 +1512,18 @@ Specify another directory, please.</source>
     <message>
         <source>Wrong parameter</source>
         <translation type="unfinished">間違ったパラメーター</translation>
+    </message>
+    <message>
+        <source>Clear user settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to clear all your user settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you agree all your settings will be cleared.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1570,7 +1605,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
-        <translation type="unfinished">プロジェクトファイル (*.fcstd)</translation>
+        <translation type="obsolete">プロジェクトファイル (*.fcstd)</translation>
     </message>
     <message>
         <source>Destination</source>
@@ -1587,7 +1622,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Document.xml</source>
-        <translation type="unfinished">Document.xml</translation>
+        <translation type="obsolete">Document.xml</translation>
     </message>
     <message>
         <source>Create</source>
@@ -1612,6 +1647,10 @@ Specify another directory, please.</source>
     <message>
         <source>No destination is defined.</source>
         <translation type="unfinished">コピー先が定義されていません。</translation>
+    </message>
+    <message>
+        <source>Project file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2937,7 +2976,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>XML (*.FCParam)</source>
-        <translation type="unfinished">XML (*.FCParam)</translation>
+        <translation type="obsolete">XML (*.FCParam)</translation>
     </message>
     <message>
         <source>Import parameter from file</source>
@@ -3297,7 +3336,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="unfinished">テキストファイル (*.txt * .log)</translation>
+        <translation type="obsolete">テキストファイル (*.txt * .log)</translation>
     </message>
     <message>
         <source>Go to end</source>
@@ -3310,6 +3349,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Redirect Python errors</source>
         <translation type="unfinished">Pythonのエラーをリダイレクト</translation>
+    </message>
+    <message>
+        <source>Plain Text Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3480,7 +3523,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="unfinished">FreeCADマクロ(*.FCMacro); Python(*.py)</translation>
+        <translation type="obsolete">FreeCADマクロ(*.FCMacro); Python(*.py)</translation>
     </message>
     <message>
         <source>Export PDF</source>
@@ -3488,7 +3531,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">PDFファイル(*.pdf)</translation>
+        <translation type="obsolete">PDFファイル(*.pdf)</translation>
     </message>
     <message>
         <source>untitled[*]</source>
@@ -3509,6 +3552,14 @@ Do you want to save your changes?</source>
     <message>
         <source>Formatted</source>
         <translation type="unfinished">フォーマット済み</translation>
+    </message>
+    <message>
+        <source>FreeCAD macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3590,31 +3641,55 @@ Do you want to save your changes?</source>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG形式 (*.png)</translation>
+        <translation type="obsolete">PNG形式 (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">ビットマップ形式 (*.bmp)</translation>
+        <translation type="obsolete">ビットマップ形式 (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF形式 (*.gif)</translation>
+        <translation type="obsolete">GIF形式 (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPEG形式 (*.jpg)</translation>
+        <translation type="obsolete">JPEG形式 (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG形式 (*.svg)</translation>
+        <translation type="obsolete">SVG形式 (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF形式 (*.pdf)</translation>
+        <translation type="obsolete">PDF形式 (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
         <translation type="unfinished">グラフをエクスポート</translation>
+    </message>
+    <message>
+        <source>PNG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3705,6 +3780,14 @@ Do you want to save your changes?</source>
     <message>
         <source>Macros</source>
         <translation type="unfinished">マクロ</translation>
+    </message>
+    <message>
+        <source>Macro file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No such macro file: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3835,6 +3918,25 @@ How do you want to proceed?</source>
     <message>
         <source>No point was found on model</source>
         <translation type="unfinished">モデルにおいて、点が見つかりません</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::MayaGestureNavigationStyle</name>
+    <message>
+        <source>Tap. Or click left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3988,7 +4090,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="unfinished">マクロファイル (*.FCMacro *.py)</translation>
+        <translation type="obsolete">マクロファイル (*.FCMacro *.py)</translation>
     </message>
     <message>
         <source>Insert file name</source>
@@ -3996,7 +4098,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation type="unfinished">すべてのファイル (*.*)</translation>
+        <translation type="obsolete">すべてのファイル (*.*)</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
@@ -4021,6 +4123,14 @@ Do you want to exit without saving your data?</source>
     <message>
         <source>Clear console</source>
         <translation type="unfinished">コンソールをクリア</translation>
+    </message>
+    <message>
+        <source>Macro Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4288,7 +4398,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">PDFファイル(*.pdf)</translation>
+        <translation type="obsolete">PDFファイル(*.pdf)</translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening file failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4526,7 +4648,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Frozen views (*.cam)</source>
-        <translation type="unfinished">固定ビュー(*.cam)</translation>
+        <translation type="obsolete">固定ビュー(*.cam)</translation>
     </message>
     <message>
         <source>Restore views</source>
@@ -4784,7 +4906,7 @@ Be aware the point where you click matters.</source>
     <message>
         <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="unfinished">ドキュメント編集モードです。現時点では閉じることができません。編集を終了するかタスクパネルでの編集をキャンセルする必要があります。</translation>
+        <translation type="obsolete">ドキュメント編集モードです。現時点では閉じることができません。編集を終了するかタスクパネルでの編集をキャンセルする必要があります。</translation>
     </message>
     <message>
         <source>Do you want to close this dialog?</source>
@@ -4801,6 +4923,18 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
         <source>Save a copy of the document under new filename...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frozen views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">ドキュメント</translation>
     </message>
 </context>
 <context>
@@ -5133,11 +5267,19 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Vie&amp;ws</source>
-        <translation type="unfinished">ビュー(&amp;w)</translation>
+        <translation type="obsolete">ビュー(&amp;w)</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation type="unfinished">ウィンドウを切り替える</translation>
+        <translation type="obsolete">ウィンドウを切り替える</translation>
+    </message>
+    <message>
+        <source>Panels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of available dock panels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

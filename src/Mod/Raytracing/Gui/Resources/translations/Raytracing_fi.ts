@@ -26,7 +26,7 @@
 <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+204"/>
+        <location line="+206"/>
         <source>Raytracing</source>
         <translation type="unfinished">Säteenseuranta</translation>
     </message>
@@ -54,7 +54,7 @@
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-338"/>
+        <location line="-340"/>
         <source>Raytracing</source>
         <translation>Säteenseuranta</translation>
     </message>
@@ -112,7 +112,7 @@
 <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+201"/>
+        <location line="+203"/>
         <source>Raytracing</source>
         <translation type="unfinished">Säteenseuranta</translation>
     </message>
@@ -148,7 +148,7 @@
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-734"/>
+        <location line="-736"/>
         <source>Raytracing</source>
         <translation>Säteenseuranta</translation>
     </message>
@@ -203,12 +203,12 @@
         <location line="-79"/>
         <location line="+139"/>
         <location line="+93"/>
-        <location line="+395"/>
+        <location line="+397"/>
         <source>No perspective camera</source>
         <translation>Ei perspektiivi-kameraa</translation>
     </message>
     <message>
-        <location line="-626"/>
+        <location line="-628"/>
         <location line="+139"/>
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
@@ -246,7 +246,7 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Kirjoita aktiivinen 3D näkymä kameran ja kaikkien sen sisällön kanssa povray-tiedostoon</translation>
     </message>
     <message>
-        <location line="+505"/>
+        <location line="+507"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
         <translation type="unfinished">Nykyisessä näkymässä kamera ei ole näkökulman mukainen ja siten POV-Ray kuva saattaa myöhemmin näyttää erilaiselta kuin odotat. 
@@ -260,43 +260,35 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Povray(*.POV)</translation>
     </message>
     <message>
+        <source>POV-Ray (*.pov)</source>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
+    </message>
+    <message>
+        <source>All Files (*.*)</source>
+        <translation type="obsolete">Kaikki tiedostot (*.*)</translation>
+    </message>
+    <message>
         <location line="-591"/>
         <location line="+51"/>
-        <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
-    </message>
-    <message>
-        <location line="-50"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+281"/>
-        <location line="+109"/>
-        <source>All Files (*.*)</source>
-        <translation>Kaikki tiedostot (*.*)</translation>
-    </message>
-    <message>
-        <location line="-502"/>
-        <location line="+51"/>
         <location line="+63"/>
-        <location line="+281"/>
+        <location line="+283"/>
         <source>Export page</source>
         <translation>Vie sivu</translation>
     </message>
     <message>
-        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="-103"/>
         <location line="+87"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Wrong selection</source>
         <translation>Väärä valinta</translation>
     </message>
     <message>
-        <location line="-396"/>
+        <location line="-398"/>
         <source>Select a Part object.</source>
         <translation>Valitse osa-objekti.</translation>
     </message>
@@ -318,13 +310,18 @@ Haluatko jatkaa?</translation>
     </message>
     <message>
         <location line="+64"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Select one Raytracing project object.</source>
         <translation type="unfinished">EValitse ykis sädeseuranta -projektin kohde.</translation>
     </message>
     <message>
-        <location line="-234"/>
+        <location line="-308"/>
+        <source>Luxrender</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
         <translation type="unfinished">POV-Ray ei löydy</translation>
@@ -340,12 +337,7 @@ Haluatko jatkaa?</translation>
         <translation type="unfinished">Korjaa kansio POV-Ray executable -ohjelmille asetuksista.</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Rendered image (*.bmp *.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
+        <location line="+74"/>
         <source>Lux project file missing</source>
         <translation type="unfinished">Lux projektin tiedosto puuttuu</translation>
     </message>
@@ -361,7 +353,24 @@ Haluatko jatkaa?</translation>
         <translation type="unfinished">Luxrender ei löydy</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-482"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+279"/>
+        <source>POV-Ray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-391"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+283"/>
+        <location line="+109"/>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
         <translation type="unfinished">Aseta kansio luxrender tai luxconsole -suoritettavien ohjelmien  asetuksissa.</translation>
     </message>
@@ -385,11 +394,12 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Kuvalaskenta/renderöinti kuva (*.bmp)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">kuvalaskettu/renderöity kuva (*.png)</translation>
+        <translation type="obsolete">kuvalaskettu/renderöity kuva (*.png)</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
         <translation type="unfinished">kuvalaskettu/renderöity kuva</translation>

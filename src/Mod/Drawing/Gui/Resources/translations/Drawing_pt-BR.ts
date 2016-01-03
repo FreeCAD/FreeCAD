@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+475"/>
+        <location filename="../../Command.cpp" line="+476"/>
         <source>Drawing</source>
         <translation>Desenho</translation>
     </message>
@@ -198,9 +198,28 @@
     </message>
 </context>
 <context>
+    <name>CmdDrawingSpreadsheetView</name>
+    <message>
+        <location line="+62"/>
+        <source>Drawing</source>
+        <translation type="unfinished">Desenho</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Spreadsheet View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <source>Inserts a view of a selected spreadsheet in the active drawing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdDrawingSymbol</name>
     <message>
-        <location line="-110"/>
+        <location line="-176"/>
         <source>Drawing</source>
         <translation type="unfinished">Desenho</translation>
     </message>
@@ -269,9 +288,13 @@
         <translation>Exportar PDF</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>PDF file (*.pdf)</source>
-        <translation>Arquivo PDF (*.pdf)</translation>
+        <translation type="obsolete">Arquivo PDF (*.pdf)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -331,6 +354,16 @@ Do you want to continue?</source>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished">A impressora usa um tamanho de papel diferente do que o desenho. Deseja continuar?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Opening file failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -735,21 +768,20 @@ Do you want to continue?</source>
         <translation type="obsolete">Visualizador de desenho</translation>
     </message>
     <message>
-        <location line="-518"/>
-        <location line="+519"/>
         <source>Scalable Vector Graphics (*.svg *.svgz)</source>
-        <translation>Scalable Vector Graphics (*.svg *.svgz)</translation>
+        <translation type="obsolete">Scalable Vector Graphics (*.svg *.svgz)</translation>
     </message>
     <message>
-        <location line="-267"/>
+        <location line="-266"/>
         <location line="+78"/>
         <location line="+49"/>
         <location line="+186"/>
+        <location line="+116"/>
         <source>Wrong selection</source>
         <translation>Seleção errada</translation>
     </message>
     <message>
-        <location line="-312"/>
+        <location line="-428"/>
         <source>Select a Part object.</source>
         <translation>Selecione um objeto Peça</translation>
     </message>
@@ -766,25 +798,34 @@ Do you want to continue?</source>
         <translation type="obsolete">Crie uma página para inserir as vistas.</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-253"/>
+        <location line="+519"/>
+        <location line="+52"/>
+        <source>Scalable Vector Graphic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-310"/>
         <location line="+78"/>
         <location line="+80"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+175"/>
         <source>No page found</source>
         <translation type="unfinished">Nenhuma página encontrada</translation>
     </message>
     <message>
-        <location line="-250"/>
+        <location line="-425"/>
         <location line="+78"/>
         <location line="+80"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+175"/>
         <source>Create a page first.</source>
         <translation type="unfinished">Primeiro, crie uma página.</translation>
     </message>
     <message>
-        <location line="-182"/>
+        <location line="-357"/>
         <source>Select exactly one Part object.</source>
         <translation type="unfinished">Selecione exatamente uma peça.</translation>
     </message>
@@ -795,26 +836,34 @@ Do you want to continue?</source>
         <translation>Selecione um objeto de tipo Página.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+110"/>
+        <source>Select exactly one Spreadsheet object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished">SVG (*.svg)</translation>
+        <translation type="obsolete">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
         <translation type="obsolete">SVG (*.svg)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>All Files (*.*)</source>
-        <translation>Todos os arquivos (*.*)</translation>
+        <translation type="obsolete">Todos os arquivos (*.*)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-108"/>
         <source>Export page</source>
         <translation>Exportar uma página</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+155"/>
+        <location filename="../../ViewProviderPage.cpp" line="+152"/>
         <source>Show drawing</source>
         <translation>Mostrar o desenho</translation>
     </message>

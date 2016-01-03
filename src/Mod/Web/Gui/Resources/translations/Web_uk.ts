@@ -127,11 +127,12 @@
     <name>QObject</name>
     <message>
         <location filename="../../AppWebGuiPy.cpp" line="49"/>
+        <location filename="../../BrowserView.cpp" line="348"/>
         <source>Browser</source>
         <translation type="unfinished">Браузер</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="204"/>
+        <location filename="../../BrowserView.cpp" line="244"/>
         <source>File does not exist!</source>
         <translation type="unfinished">Файл не існує!</translation>
     </message>
@@ -139,12 +140,12 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="199"/>
+        <location filename="../../BrowserView.cpp" line="239"/>
         <source>Error</source>
         <translation type="unfinished">Помилка</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="279"/>
+        <location filename="../../BrowserView.cpp" line="319"/>
         <source>Loading %1...</source>
         <translation type="unfinished">Завантаження %1...</translation>
     </message>
@@ -152,9 +153,14 @@
 <context>
     <name>WebGui::WebView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="100"/>
+        <location filename="../../BrowserView.cpp" line="121"/>
         <source>Open in External Browser</source>
         <translation type="unfinished">Відкрити у зовнішньому браузері</translation>
+    </message>
+    <message>
+        <location filename="../../BrowserView.cpp" line="125"/>
+        <source>Open in new window</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
