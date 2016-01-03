@@ -46,6 +46,7 @@ public:
 
     virtual bool doubleClicked(void);
     void updateData(const App::Property*);
+    void onChanged(const App::Property* prop);
 
 protected:
     virtual bool setEdit(int ModNum);

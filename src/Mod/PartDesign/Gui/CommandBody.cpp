@@ -461,9 +461,6 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     }
 
     openCommand("Move tip to selected feature");
-    if (oldTip) {
-        doCommand(Gui, "Gui.activeDocument().hide(\"%s\")", oldTip->getNameInDocument() );
-    }
 
     if (selFeature == body) {
         doCommand(Doc,"App.activeDocument().%s.Tip = None", body->getNameInDocument());
