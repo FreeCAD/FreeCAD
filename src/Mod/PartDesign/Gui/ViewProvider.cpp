@@ -31,6 +31,7 @@
 #include <Gui/MDIView.h>
 #include <Gui/Control.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Base/Exception.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -167,6 +168,34 @@ void ViewProvider::updateData(const App::Property* prop)
 
     inherited::updateData(prop);
 }
+
+void ViewProvider::onChanged(const App::Property* prop) {
+    
+    //if the object is inside of a body we make sure it is the only visible one on activation
+    if(prop == &Visibility && Visibility.getValue()) {
+    
+        Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
+        if(body) {
+            
+            //hide all features in the body other than this object
+            for(App::DocumentObject* obj : body->Model.getValues()) {
+             
+                if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
+                   Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(obj);
+                   if(!vp) 
+                       return;
+                   
+                   Gui::ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
+                   if(vpd && vpd->Visibility.getValue())
+                       vpd->Visibility.setValue(false);
+                }
+            }            
+        }
+    }
+    
+    PartGui::ViewProviderPartExt::onChanged(prop);
+}
+
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
 {
