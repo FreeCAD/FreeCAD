@@ -2557,11 +2557,6 @@ MeshPointFacetAdjacency::MeshPointFacetAdjacency(std::size_t p, MeshFacetArray& 
 
 MeshPointFacetAdjacency::~MeshPointFacetAdjacency()
 {
-    std::size_t numPoints = pointFacetAdjacency.size();
-    for (std::size_t i = 0; i < numPoints; i++) {
-        pointFacetAdjacency[i].swap(std::vector<std::size_t>());
-    }
-    pointFacetAdjacency.clear();
 }
 
 void MeshPointFacetAdjacency::Build()
@@ -2578,7 +2573,7 @@ void MeshPointFacetAdjacency::Build()
         pointFacetAdjacency[i].reserve(numFacetAdjacency[i]);
 
     std::size_t numFacets = facets.size();
-    for (int i = 0; i < numFacets; i++) {
+    for (std::size_t i = 0; i < numFacets; i++) {
         for (int j = 0; j < 3; j++) {
             pointFacetAdjacency[facets[i]._aulPoints[j]].push_back(i);
         }
@@ -2588,7 +2583,6 @@ void MeshPointFacetAdjacency::Build()
 void MeshPointFacetAdjacency::SetFacetNeighbourhood()
 {
     std::size_t numFacets = facets.size();
-    std::size_t index = 0;
     for (std::size_t index = 0; index < numFacets; index++) {
         MeshFacet& facet1 = facets[index];
         for (int i = 0; i < 3; i++) {
