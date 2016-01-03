@@ -35,6 +35,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
 
 
 #include "DrawingView.h"
@@ -727,6 +728,54 @@ bool CmdDrawingDraftView::isActive(void)
 }
 
 
+//===========================================================================
+// Drawing_Spreadheet_View
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingSpreadsheetView);
+
+CmdDrawingSpreadsheetView::CmdDrawingSpreadsheetView()
+  : Command("Drawing_SpreadsheetView")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("&Spreadsheet View");
+    sToolTipText  = QT_TR_NOOP("Inserts a view of a selected spreadsheet in the active drawing");
+    sWhatsThis    = "Drawing_SpreadsheetView";
+    sStatusTip    = QT_TR_NOOP("Inserts a view of a selected spreadsheet in the active drawing");
+    sPixmap       = "actions/drawing-spreadsheet";
+}
+
+void CmdDrawingSpreadsheetView::activated(int iMsg)
+{
+    const std::vector<App::DocumentObject*> spreads = getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
+    if (spreads.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly one Spreadsheet object."));
+        return;
+    }
+    const std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+            QObject::tr("Create a page first."));
+        return;
+    }
+    std::string SpreadName = spreads.front()->getNameInDocument();
+    std::string PageName = pages.front()->getNameInDocument();
+    openCommand("Create spreadsheet view");
+    std::string FeatName = getUniqueObjectName("View");
+    doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewSpreadsheet','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SpreadName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdDrawingSpreadsheetView::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
 
 void CreateDrawingCommands(void)
 {
@@ -744,4 +793,5 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
     rcCmdMgr.addCommand(new CmdDrawingDraftView());
+    rcCmdMgr.addCommand(new CmdDrawingSpreadsheetView());
 }
