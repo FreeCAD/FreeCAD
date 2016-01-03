@@ -1178,47 +1178,47 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     </message>
     <message>
         <source>Binary STL (*.stl)</source>
-        <translation>Binarni STL (*.STL)</translation>
+        <translation type="obsolete">Binarni STL (*.STL)</translation>
     </message>
     <message>
         <source>ASCII STL (*.ast)</source>
-        <translation>ASCII STL (*.AST)</translation>
+        <translation type="obsolete">ASCII STL (*.AST)</translation>
     </message>
     <message>
         <source>Binary Mesh (*.bms)</source>
-        <translation>Binarni MESH (*.BMS)</translation>
+        <translation type="obsolete">Binarni MESH (*.BMS)</translation>
     </message>
     <message>
         <source>Alias Mesh (*.obj)</source>
-        <translation>Alias MESH (*.obj)</translation>
+        <translation type="obsolete">Alias MESH (*.obj)</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii (*.iv)</source>
-        <translation>Izumitelj V2.1 ASCII (*.iv)</translation>
+        <translation type="obsolete">Izumitelj V2.1 ASCII (*.iv)</translation>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation>Sve datoteke (*.*)</translation>
+        <translation type="obsolete">Sve datoteke (*.*)</translation>
     </message>
     <message>
         <source>ASCII STL (*.stl)</source>
-        <translation>ASCII STL (*.STL)</translation>
+        <translation type="obsolete">ASCII STL (*.STL)</translation>
     </message>
     <message>
         <source>VRML V2.0 (*.wrl *.vrml)</source>
-        <translation>VRML V2.0 (*.wrl *.vrml)</translation>
+        <translation type="obsolete">VRML V2.0 (*.wrl *.vrml)</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0 (*.wrz)</source>
-        <translation>Komprimirani VRML 2.0 (*.wrz)</translation>
+        <translation type="obsolete">Komprimirani VRML 2.0 (*.wrz)</translation>
     </message>
     <message>
         <source>Nastran (*.nas *.bdf)</source>
-        <translation>Nastran (*.NAS *.BDF)</translation>
+        <translation type="obsolete">Nastran (*.NAS *.BDF)</translation>
     </message>
     <message>
         <source>Python module def (*.py)</source>
-        <translation>Python modul (*.py)</translation>
+        <translation type="obsolete">Python modul (*.py)</translation>
     </message>
     <message>
         <source>Meshing Tolerance</source>
@@ -1246,7 +1246,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2 Faces: %3]</source>
-        <translation>[Vrhovi: %1, Rubovi: %2 Površine: %3]</translation>
+        <translation type="obsolete">[Vrhovi: %1, Rubovi: %2 Površine: %3]</translation>
     </message>
     <message>
         <source>Leave info mode</source>
@@ -1270,11 +1270,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Stanford Polygon (*.ply)</source>
-        <translation>Stanford Poligon (*.ply)</translation>
+        <translation type="obsolete">Stanford Poligon (*.ply)</translation>
     </message>
     <message>
         <source>Object File Format (*.off)</source>
-        <translation>Object File Format (*.off)</translation>
+        <translation type="obsolete">Object File Format (*.off)</translation>
     </message>
     <message>
         <source>Standford Polygon (*.ply)</source>
@@ -1294,15 +1294,75 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-        <translation>Sve MESH datoteke (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
+        <translation type="obsolete">Sve MESH datoteke (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
         <source>X3D Extensible 3D (*.x3d)</source>
-        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
+        <translation type="obsolete">X3D Extensible 3D (*.x3d)</translation>
     </message>
     <message>
         <source>Display components</source>
         <translation type="unfinished">Display components</translation>
+    </message>
+    <message>
+        <source>All Mesh Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Binary STL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASCII STL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Binary Mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias Mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object File Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inventor V2.1 ascii</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stanford Polygon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X3D Extensible 3D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>VRML V2.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compressed VRML 2.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nastran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Python module def</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

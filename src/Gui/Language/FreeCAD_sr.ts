@@ -133,6 +133,25 @@
     </message>
 </context>
 <context>
+    <name>DlgExpressionInput</name>
+    <message>
+        <source>Formula editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
@@ -1404,7 +1423,7 @@ This file already exists.</source>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
         <source>HTML files (*.html *.htm)</source>
-        <translation type="unfinished">ХТМЛ датотеке (*. хтмл *. хтм)</translation>
+        <translation type="obsolete">ХТМЛ датотеке (*. хтмл *. хтм)</translation>
     </message>
     <message>
         <source>Access denied</source>
@@ -1416,6 +1435,10 @@ This file already exists.</source>
 Specify another directory, please.</source>
         <translation type="unfinished">Приступ одбијен &quot;% 1&quot; 
 Молим Вас наведите неки други директоријум.</translation>
+    </message>
+    <message>
+        <source>HTML files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1488,6 +1511,18 @@ Specify another directory, please.</source>
     <message>
         <source>Wrong parameter</source>
         <translation type="unfinished">Погрешан параметар</translation>
+    </message>
+    <message>
+        <source>Clear user settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to clear all your user settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you agree all your settings will be cleared.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1569,7 +1604,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
-        <translation type="unfinished">Датотека пројекта (*.fcstd)</translation>
+        <translation type="obsolete">Датотека пројекта (*.fcstd)</translation>
     </message>
     <message>
         <source>Destination</source>
@@ -1585,7 +1620,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Document.xml</source>
-        <translation type="unfinished">Документ.xml</translation>
+        <translation type="obsolete">Документ.xml</translation>
     </message>
     <message>
         <source>Create</source>
@@ -1610,6 +1645,10 @@ Specify another directory, please.</source>
     <message>
         <source>No destination is defined.</source>
         <translation type="unfinished">Одредиште није дефинисано.</translation>
+    </message>
+    <message>
+        <source>Project file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2935,7 +2974,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>XML (*.FCParam)</source>
-        <translation type="unfinished">XML (*.FCParam)</translation>
+        <translation type="obsolete">XML (*.FCParam)</translation>
     </message>
     <message>
         <source>Import parameter from file</source>
@@ -3295,7 +3334,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="unfinished">Plain Text Files (*.txt *.log)</translation>
+        <translation type="obsolete">Plain Text Files (*.txt *.log)</translation>
     </message>
     <message>
         <source>Go to end</source>
@@ -3308,6 +3347,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Redirect Python errors</source>
         <translation type="unfinished">Преуcмери Python грешке</translation>
+    </message>
+    <message>
+        <source>Plain Text Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3478,7 +3521,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="unfinished">FreeCAD макро (*.FCMacro);;Python (*.py)</translation>
+        <translation type="obsolete">FreeCAD макро (*.FCMacro);;Python (*.py)</translation>
     </message>
     <message>
         <source>Export PDF</source>
@@ -3486,7 +3529,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">PDF датотека (*.pdf)</translation>
+        <translation type="obsolete">PDF датотека (*.pdf)</translation>
     </message>
     <message>
         <source>untitled[*]</source>
@@ -3507,6 +3550,14 @@ Do you want to save your changes?</source>
     <message>
         <source>Formatted</source>
         <translation type="unfinished">Форматирано</translation>
+    </message>
+    <message>
+        <source>FreeCAD macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3588,31 +3639,55 @@ Do you want to save your changes?</source>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG формат (*.png)</translation>
+        <translation type="obsolete">PNG формат (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap формат (*.bmp)</translation>
+        <translation type="obsolete">Bitmap формат (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF формат (*.gif)</translation>
+        <translation type="obsolete">GIF формат (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG формат (*.jpg)</translation>
+        <translation type="obsolete">JPG формат (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG формат (*.svg)</translation>
+        <translation type="obsolete">SVG формат (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF формат (*.pdf)</translation>
+        <translation type="obsolete">PDF формат (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
         <translation type="unfinished">Извези графикон</translation>
+    </message>
+    <message>
+        <source>PNG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3703,6 +3778,14 @@ Do you want to save your changes?</source>
     <message>
         <source>Macros</source>
         <translation type="unfinished">Макронаредбе</translation>
+    </message>
+    <message>
+        <source>Macro file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No such macro file: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3837,6 +3920,25 @@ How do you want to proceed?</source>
     <message>
         <source>No point was found on model</source>
         <translation type="unfinished">Ниједна тачка није пронађена на моделу</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::MayaGestureNavigationStyle</name>
+    <message>
+        <source>Tap. Or click left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3991,7 +4093,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="unfinished">Macro Files (*.FCMacro *.py)</translation>
+        <translation type="obsolete">Macro Files (*.FCMacro *.py)</translation>
     </message>
     <message>
         <source>Insert file name</source>
@@ -3999,7 +4101,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation type="unfinished">Све Датотеке (*.*)</translation>
+        <translation type="obsolete">Све Датотеке (*.*)</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
@@ -4024,6 +4126,14 @@ Do you want to exit without saving your data?</source>
     <message>
         <source>Clear console</source>
         <translation type="unfinished">Clear console</translation>
+    </message>
+    <message>
+        <source>Macro Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4291,7 +4401,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">PDF датотека (*.pdf)</translation>
+        <translation type="obsolete">PDF датотека (*.pdf)</translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening file failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4529,7 +4651,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Frozen views (*.cam)</source>
-        <translation type="unfinished">Замрзнути погледи (*.cam)</translation>
+        <translation type="obsolete">Замрзнути погледи (*.cam)</translation>
     </message>
     <message>
         <source>Restore views</source>
@@ -4790,7 +4912,7 @@ Be aware the point where you click matters.</source>
     <message>
         <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="unfinished">Документ је у фази уређивања,па cе тренутно не може затворити.
+        <translation type="obsolete">Документ је у фази уређивања,па cе тренутно не може затворити.
 Морате завршити,или отказати уређивање у панелу задатака.</translation>
     </message>
     <message>
@@ -4808,6 +4930,18 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
         <source>Save a copy of the document under new filename...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frozen views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Документ</translation>
     </message>
 </context>
 <context>
@@ -5140,11 +5274,19 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Vie&amp;ws</source>
-        <translation type="unfinished">Пер&amp;cпективе</translation>
+        <translation type="obsolete">Пер&amp;cпективе</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation type="unfinished">Toggles this window</translation>
+        <translation type="obsolete">Toggles this window</translation>
+    </message>
+    <message>
+        <source>Panels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of available dock panels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -152,6 +152,21 @@
     </message>
 </context>
 <context>
+    <name>CmdSpreadsheetSetAlias</name>
+    <message>
+        <source>Spreadsheet</source>
+        <translation type="unfinished">Hoja de cálculo</translation>
+    </message>
+    <message>
+        <source>Set alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set alias for selected cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
         <source>Spreadsheet</source>

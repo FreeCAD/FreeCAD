@@ -133,6 +133,25 @@
     </message>
 </context>
 <context>
+    <name>DlgExpressionInput</name>
+    <message>
+        <source>Formula editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
@@ -1406,7 +1425,7 @@ Tämä tiedosto on jo olemassa.</translation>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
         <source>HTML files (*.html *.htm)</source>
-        <translation type="unfinished">HTML-tiedostot (*.html *.htm)</translation>
+        <translation type="obsolete">HTML-tiedostot (*.html *.htm)</translation>
     </message>
     <message>
         <source>Access denied</source>
@@ -1419,6 +1438,10 @@ Specify another directory, please.</source>
         <translation type="unfinished">Pääsy estetty &apos;%1&apos;:een.
 
 Määritä toinen hakemisto, ole hyvä.</translation>
+    </message>
+    <message>
+        <source>HTML files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1491,6 +1514,18 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
         <source>Wrong parameter</source>
         <translation type="unfinished">Väärä parametri</translation>
+    </message>
+    <message>
+        <source>Clear user settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to clear all your user settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you agree all your settings will be cleared.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1572,7 +1607,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
-        <translation type="unfinished">Projektitiedosto (*.fcstd)</translation>
+        <translation type="obsolete">Projektitiedosto (*.fcstd)</translation>
     </message>
     <message>
         <source>Destination</source>
@@ -1588,7 +1623,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
     <message>
         <source>Document.xml</source>
-        <translation type="unfinished">dokumentti.xml</translation>
+        <translation type="obsolete">dokumentti.xml</translation>
     </message>
     <message>
         <source>Create</source>
@@ -1613,6 +1648,10 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
         <source>No destination is defined.</source>
         <translation type="unfinished">Kohdetta ei ole määritelty.</translation>
+    </message>
+    <message>
+        <source>Project file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2936,7 +2975,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>XML (*.FCParam)</source>
-        <translation type="unfinished">XML (*.FCParam)</translation>
+        <translation type="obsolete">XML (*.FCParam)</translation>
     </message>
     <message>
         <source>Import parameter from file</source>
@@ -3296,7 +3335,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="unfinished">Teksti-tiedostot (*.txt *.log)</translation>
+        <translation type="obsolete">Teksti-tiedostot (*.txt *.log)</translation>
     </message>
     <message>
         <source>Go to end</source>
@@ -3309,6 +3348,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Redirect Python errors</source>
         <translation type="unfinished">Uudelleen ohjaa Pythonin virhetulosteet</translation>
+    </message>
+    <message>
+        <source>Plain Text Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3479,7 +3522,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="unfinished">FreeCAD makro (*.FCMacro);;Python (*.py)</translation>
+        <translation type="obsolete">FreeCAD makro (*.FCMacro);;Python (*.py)</translation>
     </message>
     <message>
         <source>Export PDF</source>
@@ -3487,7 +3530,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">PDF-tiedosto (*.pdf)</translation>
+        <translation type="obsolete">PDF-tiedosto (*.pdf)</translation>
     </message>
     <message>
         <source>untitled[*]</source>
@@ -3508,6 +3551,14 @@ Do you want to save your changes?</source>
     <message>
         <source>Formatted</source>
         <translation type="unfinished">Alustettu</translation>
+    </message>
+    <message>
+        <source>FreeCAD macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3589,31 +3640,55 @@ Do you want to save your changes?</source>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG-muodossa (*.png)</translation>
+        <translation type="obsolete">PNG-muodossa (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bittikarttamuoto (*.bmp)</translation>
+        <translation type="obsolete">Bittikarttamuoto (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF-muodossa (*.gif)</translation>
+        <translation type="obsolete">GIF-muodossa (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG-muodossa (*.jpg)</translation>
+        <translation type="obsolete">JPG-muodossa (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG-muodossa (*.svg)</translation>
+        <translation type="obsolete">SVG-muodossa (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF-muodossa (*.pdf)</translation>
+        <translation type="obsolete">PDF-muodossa (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
         <translation type="unfinished">Vie kaavio</translation>
+    </message>
+    <message>
+        <source>PNG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3704,6 +3779,14 @@ Do you want to save your changes?</source>
     <message>
         <source>Macros</source>
         <translation type="unfinished">Makrot</translation>
+    </message>
+    <message>
+        <source>Macro file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No such macro file: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3837,6 +3920,25 @@ How do you want to proceed?</source>
     <message>
         <source>No point was found on model</source>
         <translation type="unfinished">Yhtään pistettä ei löytynyt mallista</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::MayaGestureNavigationStyle</name>
+    <message>
+        <source>Tap. Or click left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3990,7 +4092,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="unfinished">Makro-tiedostot (*.FCMacro *.py)</translation>
+        <translation type="obsolete">Makro-tiedostot (*.FCMacro *.py)</translation>
     </message>
     <message>
         <source>Insert file name</source>
@@ -3998,7 +4100,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation type="unfinished">Kaikki tiedostot (*.*)</translation>
+        <translation type="obsolete">Kaikki tiedostot (*.*)</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
@@ -4023,6 +4125,14 @@ Do you want to exit without saving your data?</source>
     <message>
         <source>Clear console</source>
         <translation type="unfinished">Tyhjennä konsoli</translation>
+    </message>
+    <message>
+        <source>Macro Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4290,7 +4400,19 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">PDF-tiedosto (*.pdf)</translation>
+        <translation type="obsolete">PDF-tiedosto (*.pdf)</translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening file failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4528,7 +4650,7 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
         <source>Frozen views (*.cam)</source>
-        <translation type="unfinished">Jäädytetyt näkymät (*.cam)</translation>
+        <translation type="obsolete">Jäädytetyt näkymät (*.cam)</translation>
     </message>
     <message>
         <source>Restore views</source>
@@ -4787,7 +4909,7 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     <message>
         <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="unfinished">Asiakirja on muokkaustilassa eikä sitä voida täten tällä hetkellä sulkea.
+        <translation type="obsolete">Asiakirja on muokkaustilassa eikä sitä voida täten tällä hetkellä sulkea.
 Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudussa.</translation>
     </message>
     <message>
@@ -4805,6 +4927,18 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     <message>
         <source>Save a copy of the document under new filename...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frozen views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Asiakirja</translation>
     </message>
 </context>
 <context>
@@ -5137,11 +5271,19 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>Vie&amp;ws</source>
-        <translation type="unfinished">Näky&amp;mät</translation>
+        <translation type="obsolete">Näky&amp;mät</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation type="unfinished">Näytä tai piilota tämä ikkuna</translation>
+        <translation type="obsolete">Näytä tai piilota tämä ikkuna</translation>
+    </message>
+    <message>
+        <source>Panels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of available dock panels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
