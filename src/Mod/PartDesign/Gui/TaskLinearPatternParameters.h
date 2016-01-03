@@ -98,10 +98,6 @@ class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
 public:
     TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
     virtual ~TaskDlgLinearPatternParameters() {}
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
 };
 
 } //namespace PartDesignGui

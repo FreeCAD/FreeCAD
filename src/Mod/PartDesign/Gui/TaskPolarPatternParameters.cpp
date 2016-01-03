@@ -391,11 +391,6 @@ void TaskPolarPatternParameters::apply()
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
     ui->polarAngle->apply();
     ui->spinOccurrences->apply();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (!TransformedView->getObject()->isValid())
-        throw Base::Exception(TransformedView->getObject()->getStatusString());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
@@ -409,15 +404,6 @@ TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(ViewProviderPolarPa
     parameter = new TaskPolarPatternParameters(PolarPatternView);
 
     Content.push_back(parameter);
-}
-//==== calls from the TaskView ===============================================================
-
-bool TaskDlgPolarPatternParameters::accept()
-{
-
-        parameter->apply();
-
-    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskPolarPatternParameters.cpp"

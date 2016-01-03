@@ -233,11 +233,6 @@ void TaskScaledParameters::apply()
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(), getFactor());
     ui->spinOccurrences->apply();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (!TransformedView->getObject()->isValid())
-        throw Base::Exception(TransformedView->getObject()->getStatusString());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
