@@ -280,6 +280,7 @@ endif(BUILD_RAYTRACING)
 #inferred from cmakelists.txt. appears to be working.
 if(BUILD_DRAWING)
   set(BUILD_PART ON)
+  set(BUILD_SPREADSHEET ON)
 endif(BUILD_DRAWING)
 
 #inferred from cmakelists.txt. appears to be working.
