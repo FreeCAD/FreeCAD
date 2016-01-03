@@ -82,6 +82,9 @@ bool TaskDlgFeatureParameters::accept() {
         // Iterate over parameter dialogs and apply all parameters from them
         for ( QWidget *wgt : Content ) {
             TaskFeatureParameters *param = qobject_cast<TaskFeatureParameters *> (wgt);
+            if(!param)
+                continue;
+            
             param->saveHistory ();
             param->apply ();
         }

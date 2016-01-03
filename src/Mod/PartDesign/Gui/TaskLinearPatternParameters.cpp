@@ -396,12 +396,6 @@ void TaskLinearPatternParameters::apply()
 
     ui->spinLength->apply();
     ui->spinOccurrences->apply();
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (!TransformedView->getObject()->isValid())
-        throw Base::Exception(TransformedView->getObject()->getStatusString());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
@@ -415,16 +409,6 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(ViewProviderLinea
     parameter = new TaskLinearPatternParameters(LinearPatternView);
 
     Content.push_back(parameter);
-}
-
-//==== calls from the TaskView ===============================================================
-
-bool TaskDlgLinearPatternParameters::accept()
-{
-
-    parameter->apply();
-
-    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskLinearPatternParameters.cpp"
