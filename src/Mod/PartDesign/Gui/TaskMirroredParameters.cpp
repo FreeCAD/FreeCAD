@@ -134,17 +134,17 @@ void TaskMirroredParameters::setupUI()
 
     App::DocumentObject* sketch = getSketchObject();
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-        this->fillAxisCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
+        this->fillPlanesCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
     }
 
-    //show the parts coordinate system axis for selection
+    //show the parts coordinate system planes for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
     if(body) {
         try {
             App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, false);
+            vpOrigin->setTemporaryVisibility(false, true);
         } catch (const Base::Exception &ex) {
             Base::Console().Error ("%s\n", ex.what () );
         }
