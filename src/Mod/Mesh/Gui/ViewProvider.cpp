@@ -238,6 +238,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     ADD_PROPERTY(CreaseAngle,(0.0f));
     CreaseAngle.setConstraints(&angleRange);
     ADD_PROPERTY(OpenEdges,(false));
+    ADD_PROPERTY(Coloring,(false));
     ADD_PROPERTY(Lighting,(1));
     Lighting.setEnums(LightingEnums);
     ADD_PROPERTY(LineColor,(0,0,0));
@@ -309,6 +310,8 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 
     if (hGrp->GetBool("ShowBoundingBox", false))
         pcHighlight->style = Gui::SoFCSelection::BOX;
+
+    Coloring.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderMesh::~ViewProviderMesh()
@@ -390,6 +393,9 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     else if (prop == &LineColor) {
         const App::Color& c = LineColor.getValue();
         pLineColor->diffuseColor.setValue(c.r,c.g,c.b);
+    }
+    else if (prop == &Coloring) {
+        tryColorPerVertex(Coloring.getValue());
     }
     else {
         // Set the inverse color for open edges
@@ -496,6 +502,10 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcFlatWireRoot->addChild(pcMatBinding);
     pcFlatWireRoot->addChild(getShapeNode());
     addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
+
+    if (getColorProperty()) {
+        Coloring.setStatus(App::Property::Hidden, false);
+    }
 }
 
 void ViewProviderMesh::updateData(const App::Property* prop)
@@ -503,6 +513,9 @@ void ViewProviderMesh::updateData(const App::Property* prop)
     Gui::ViewProviderGeometryObject::updateData(prop);
     //if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
     //}
+    if (prop->getTypeId() == App::PropertyColorList::getClassTypeId()) {
+        Coloring.setStatus(App::Property::Hidden, false);
+    }
 }
 
 QIcon ViewProviderMesh::getIcon() const
@@ -555,17 +568,24 @@ App::PropertyColorList* ViewProviderMesh::getColorProperty() const
     return 0; // no such property found
 }
 
-void ViewProviderMesh::tryColorPerVertex()
+void ViewProviderMesh::tryColorPerVertex(bool on)
 {
-    App::PropertyColorList* colors = getColorProperty();
-    if (colors) {
-        const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
-        const Mesh::MeshObject& mesh = meshProp.getValue();
-        int numPoints = static_cast<int>(mesh.countPoints());
+    if (on) {
+        App::PropertyColorList* colors = getColorProperty();
+        if (colors) {
+            const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+            const Mesh::MeshObject& mesh = meshProp.getValue();
+            int numPoints = static_cast<int>(mesh.countPoints());
 
-        if (colors->getSize() == numPoints) {
-            setColorPerVertex(colors);
+            if (colors->getSize() == numPoints) {
+                setColorPerVertex(colors);
+            }
         }
+    }
+    else {
+        pcMatBinding->value = SoMaterialBinding::OVERALL;
+        const App::Color& c = ShapeColor.getValue();
+        pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
     }
 }
 
@@ -599,9 +619,6 @@ void ViewProviderMesh::setDisplayMode(const char* ModeName)
     else if (strcmp("Wireframe",ModeName)==0) {
         setDisplayMaskMode("Wireframe");
     }
-    else if (strcmp("Colors",ModeName)==0) {
-        tryColorPerVertex();
-    }
 
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
@@ -615,8 +632,6 @@ std::vector<std::string> ViewProviderMesh::getDisplayModes(void) const
     StrList.push_back("Wireframe");
     StrList.push_back("Flat Lines");
     StrList.push_back("Points");
-    if (getColorProperty())
-        StrList.push_back("Colors");
 
     return StrList;
 }
