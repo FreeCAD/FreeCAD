@@ -1607,7 +1607,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
 
     if (newFacets.empty())
         return; // nothing to do
- 
+
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
     Mesh::MeshObject* kernel = fea->Mesh.startEditing();
@@ -1621,6 +1621,30 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
     // Get the attached mesh property
     Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
     Mesh::MeshObject* kernel = meshProp.startEditing();
+
+    // get the colour property if there
+    App::PropertyColorList* prop = getColorProperty();
+    if (prop && prop->getSize() == static_cast<int>(kernel->countPoints())) {
+        std::vector<unsigned long> pointDegree;
+        unsigned long invalid = kernel->getPointDegree(facets, pointDegree);
+        if (invalid > 0) {
+            // switch off coloring mode
+            Coloring.setValue(false);
+
+            const std::vector<App::Color>& colors = prop->getValues();
+            std::vector<App::Color> valid_colors;
+            valid_colors.reserve(kernel->countPoints() - invalid);
+            std::size_t numPoints = pointDegree.size();
+            for (std::size_t index = 0; index < numPoints; index++) {
+                if (pointDegree[index] > 0) {
+                    valid_colors.push_back(colors[index]);
+                }
+            }
+
+            prop->setValues(valid_colors);
+        }
+    }
+
     //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
     kernel->deleteFacets(facets);
     meshProp.finishEditing();
