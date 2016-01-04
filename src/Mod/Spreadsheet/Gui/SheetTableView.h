@@ -27,7 +27,6 @@
 #include <QHeaderView>
 #include <QKeyEvent>
 #include <boost/signals/connection.hpp>
-#include "PreCompiled.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/Utils.h>
 

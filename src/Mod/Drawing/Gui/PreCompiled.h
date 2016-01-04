@@ -32,10 +32,12 @@
 # define DrawingExport      __declspec(dllimport)
 # define PartExport         __declspec(dllimport)
 # define DrawingGuiExport   __declspec(dllexport)
+# define SpreadsheetExport  __declspec(dllimport)
 #else // for Linux
 # define DrawingExport
 # define PartExport
 # define DrawingGuiExport
+# define SpreadsheetExport
 #endif
 
 #ifdef _MSC_VER

@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+
+#include "PreCompiled.h"
 #include "PropertiesDialog.h"
 #include <Base/Tools.h>
 #include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
@@ -175,7 +177,7 @@ void PropertiesDialog::styleChanged()
 
 void PropertiesDialog::displayUnitChanged(const QString & text)
 {
-    if (text == "") {
+    if (text.isEmpty()) {
         displayUnit = DisplayUnit();
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
         return;
@@ -202,7 +204,7 @@ void PropertiesDialog::aliasChanged(const QString & text)
 {
     QPalette palette = ui->alias->palette();
 
-    if (text.indexOf(QRegExp("^[A-Za-z][_A-Za-z0-9]*$")) >= 0) {
+    if (text.indexOf(QRegExp(QString::fromLatin1("^[A-Za-z][_A-Za-z0-9]*$"))) >= 0) {
         try {
             CellAddress address(text.toUtf8().constData());
 
@@ -217,7 +219,7 @@ void PropertiesDialog::aliasChanged(const QString & text)
         }
     }
     else {
-        if (text == "") {
+        if (text.isEmpty()) {
             aliasOk = true;
             palette.setColor(QPalette::Text, Qt::black);
         }
