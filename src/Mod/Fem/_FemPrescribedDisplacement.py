@@ -131,7 +131,7 @@ class TaskPanelPrescribedDisplacement:
         self.obj = obj
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath()+ "Mod/Fem/Resources/TaskFemConstraintDisplacement.ui")
         self.form = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/FemPrescribedDisplacement.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemPrescribedDisplacement.ui")
         # Store initial value in case of cancel
         self.setIntialValues()
         self.xOld = self.obj.xDisplacement

@@ -84,6 +84,7 @@ SET(FemScripts_SRCS
     _FemBeamSection.py
     _FemShellThickness.py
     _FemSolverCalculix.py
+    _FemPrescribedDisplacement.py
     _MechanicalMaterial.py
     _TaskPanelFemBeamSection.py
     _TaskPanelFemShellThickness.py
@@ -95,6 +96,7 @@ SET(FemScripts_SRCS
     _ViewProviderFemShellThickness.py
     _ViewProviderFemSolverCalculix.py
     _ViewProviderMechanicalMaterial.py
+    _ViewProviderFemPrescribedDisplacement.py
     ccxDatReader.py
     ccxFrdReader.py
     ccxInpWriter.py

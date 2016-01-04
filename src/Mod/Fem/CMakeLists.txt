@@ -68,6 +68,8 @@ INSTALL(
 
         FemPrescribedDisplacement.py
         TaskPanelFemPrescribedDisplacement.ui
+	_FemPrescribedDisplacement.py
+	_ViewProviderFemPrescribedDisplacement.py
 
     DESTINATION
         Mod/Fem
