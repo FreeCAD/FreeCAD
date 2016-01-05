@@ -179,7 +179,8 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
                     assert(0);
                 celltext = field.str();
             }
-            // get colors, style and span
+            // get colors, style, alignment and span
+            int alignment;
             std::string bcolor = "none";
             std::string fcolor = "#" + hr.str() + hg.str() + hb.str();
             std::string textstyle = "";
@@ -225,14 +226,20 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
                         }
                     }
                 }
+                cell->getAlignment(alignment);
             }
             // skip cell if found in skiplist
             if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\"" << cellwidth 
-                       << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:" 
-                       << LineWidth.getValue()/Scale.getValue() << ";stroke:#" << hr.str() << hg.str() << hb.str() << ";\" />" << endl
-                       << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + FontSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" 
-                       << Font.getValue() << "\"" << " font-size=\"" << FontSize.getValue() << "\""
+                       << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:"
+                       << LineWidth.getValue()/Scale.getValue() << ";stroke:#" << hr.str() << hg.str() << hb.str() << ";\" />" << endl;
+                if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
+                    result << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + FontSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
+                if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
+                    result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\"" << coloffset + cellwidth/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
+                if (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)
+                    result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\"" << coloffset + (cellwidth - FontSize.getValue()/2) << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
+                result << Font.getValue() << "\"" << " font-size=\"" << FontSize.getValue() << "\""
                        << " fill=\"" << fcolor << "\">" << celltext << "</text>" << endl;
             }
             rowoffset = rowoffset + cellheight;
