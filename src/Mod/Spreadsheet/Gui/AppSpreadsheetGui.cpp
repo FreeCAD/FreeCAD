@@ -23,12 +23,6 @@
 #include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
 
-#if QT_VERSION >= 0x050000
-#include "qrc_Spreadsheet.cpp"
-#else
-#include "qrc_Spreadsheet.cxx"
-#endif
-
 // use a different name to CreateCommand()
 void CreateSpreadsheetCommands(void);
 

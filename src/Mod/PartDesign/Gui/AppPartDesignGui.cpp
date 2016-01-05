@@ -45,8 +45,6 @@
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
 
-//#include "resources/qrc_PartDesign.cpp"
-
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
 
