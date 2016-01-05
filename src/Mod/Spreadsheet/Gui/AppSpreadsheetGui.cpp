@@ -22,7 +22,6 @@
 #include "Workbench.h"
 #include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
-#include "qrc_Spreadsheet.cxx"
 
 // use a different name to CreateCommand()
 void CreateSpreadsheetCommands(void);

@@ -56,9 +56,9 @@ std::list<DlgPreferencesImp::TGroupPages> DlgPreferencesImp::_pages;
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgPreferencesImp::DlgPreferencesImp( QWidget* parent, Qt::WFlags fl )
+DlgPreferencesImp::DlgPreferencesImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog(parent, fl), ui(new Ui_DlgPreferences), canEmbedScrollArea(true)
 {
     ui->setupUi(this);
@@ -258,7 +258,7 @@ void DlgPreferencesImp::applyChanges()
                 catch (const Base::Exception& e) {
                     ui->listBox->setCurrentRow(i);
                     tabWidget->setCurrentIndex(j);
-                    QMessageBox::warning(this, tr("Wrong parameter"), QString::fromAscii(e.what()));
+                    QMessageBox::warning(this, tr("Wrong parameter"), QString::fromLatin1(e.what()));
                     throw;
                 }
             }

@@ -106,7 +106,7 @@ class RotTransDragger : public SoDragger
    // and on the new copy at the start/end of SoBaseKit::copy()
    // Returns the state of the node when this was called.
    virtual SbBool setUpConnections( SbBool onOff, 
-                        SbBool doItAlways = FALSE);
+                        SbBool doItAlways = false);
 
    // This allows us to specify that certain parts do not
    // write out. We'll use this on the antiSquish and

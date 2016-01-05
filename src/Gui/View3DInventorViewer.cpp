@@ -332,16 +332,16 @@ public:
 // *************************************************************************
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
-      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
-      allowredir(FALSE), overrideMode("As Is"), _viewerPy(0)
+      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
+      allowredir(false), overrideMode("As Is"), _viewerPy(0)
 {
     init();
 }
 
 View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* parent, const QGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), editViewProvider(0), navigation(0),
-      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
-      allowredir(FALSE), overrideMode("As Is"), _viewerPy(0)
+      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
+      allowredir(false), overrideMode("As Is"), _viewerPy(0)
 {
     init();
 }
@@ -352,7 +352,7 @@ void View3DInventorViewer::init()
 
     // Coin should not clear the pixel-buffer, so the background image
     // is not removed.
-    this->setClearWindow(FALSE);
+    this->setClearWindow(false);
 
     // setting up the defaults for the spin rotation
     initialize();
@@ -369,7 +369,7 @@ void View3DInventorViewer::init()
     backlight->ref();
     backlight->setName("backlight");
     backlight->direction.setValue(-hl->direction.getValue());
-    backlight->on.setValue(FALSE); // by default off
+    backlight->on.setValue(false); // by default off
 
     // Set up background scenegraph with image in it.
     backgroundroot = new SoSeparator;
@@ -574,7 +574,7 @@ void View3DInventorViewer::initialize()
     navigation = new CADNavigationStyle();
     navigation->setViewer(this);
 
-    this->axiscrossEnabled = TRUE;
+    this->axiscrossEnabled = true;
     this->axiscrossSize = 10;
 }
 
@@ -1541,7 +1541,7 @@ void View3DInventorViewer::printDimension()
             unit = QLatin1String("nm");
         }
 
-        QString dim = QString::fromAscii("%1 x %2 %3")
+        QString dim = QString::fromLatin1("%1 x %2 %3")
                       .arg(fWidth / fFac,0,'f',2)
                       .arg(fHeight / fFac,0,'f',2)
                       .arg(unit);
@@ -2123,7 +2123,7 @@ void View3DInventorViewer::viewSelection()
   Decide if it should be possible to start a spin animation of the
   model in the viewer by releasing the mouse button while dragging.
 
-  If the \a enable flag is \c FALSE and we're currently animating, the
+  If the \a enable flag is \c false and we're currently animating, the
   spin will be stopped.
 */
 void
@@ -2625,7 +2625,7 @@ SoPath* View3DInventorViewer::pickFilterCB(void* viewer, const SoPickedPoint* pp
                  ,pp->getPoint()[1]
                  ,pp->getPoint()[2]);
 
-        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
     }
 
     return pp->getPath();

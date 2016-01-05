@@ -117,7 +117,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     for (std::vector<App::DocumentObject*>::const_iterator i = transformFeatures.begin(); i != transformFeatures.end(); i++)
     {
         if ((*i) != NULL)
-            ui->listTransformFeatures->addItem(QString::fromAscii((*i)->Label.getValue()));
+            ui->listTransformFeatures->addItem(QString::fromLatin1((*i)->Label.getValue()));
     }
     if (transformFeatures.size() > 0) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -135,7 +135,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
         if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
             break;
         }
     }
@@ -146,7 +146,7 @@ void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChange
 {
     if (originalSelected(msg)) {
         App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
-        ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
+        ui->lineOriginal->setText(QString::fromLatin1(selectedObject->getNameInDocument()));
     }
 }
 
@@ -302,12 +302,12 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
         // Note: Inserts always happen before the specified iterator so in order to append at the
         // end we need to use push_back() and append()
         transformFeatures.push_back(newFeature);
-        ui->listTransformFeatures->addItem(QString::fromAscii(newFeature->Label.getValue()));
+        ui->listTransformFeatures->addItem(QString::fromLatin1(newFeature->Label.getValue()));
         ui->listTransformFeatures->setCurrentRow(row+1, QItemSelectionModel::ClearAndSelect);
     } else {
         // Note: The feature tree always seems to append to the end, no matter what we say here
         transformFeatures.insert(transformFeatures.begin() + row + 1, newFeature);
-        ui->listTransformFeatures->insertItem(row + 1, QString::fromAscii(newFeature->Label.getValue()));
+        ui->listTransformFeatures->insertItem(row + 1, QString::fromLatin1(newFeature->Label.getValue()));
         ui->listTransformFeatures->setCurrentRow(row + 1, QItemSelectionModel::ClearAndSelect);
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);
@@ -444,7 +444,7 @@ bool TaskDlgMultiTransformParameters::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

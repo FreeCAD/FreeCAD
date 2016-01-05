@@ -1568,7 +1568,7 @@ void CmdSketcherCompCopy::activated(int iMsg)
     
     assert(iMsg < a.size());
     pcAction->setIcon(a[iMsg]->icon());
-    pcAction->setShortcut(QString::fromAscii("CTRL+C"));
+    pcAction->setShortcut(QString::fromLatin1("CTRL+C"));
 }
 
 Gui::Action * CmdSketcherCompCopy::createAction(void)
@@ -1589,7 +1589,7 @@ Gui::Action * CmdSketcherCompCopy::createAction(void)
     int defaultId = 0;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
     
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     
     return pcAction;
 }

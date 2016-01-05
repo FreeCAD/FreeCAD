@@ -497,12 +497,12 @@ QString ImageView::createStatusBarText()
     {
         double grey_value;
         if (_pGLImageBox->getImageSample(pixX, pixY, 0, grey_value) == 0)
-            txt = QString::fromAscii("x,y = %1,%2  |  %3 = %4  |  %5 = %6")
+            txt = QString::fromLatin1("x,y = %1,%2  |  %3 = %4  |  %5 = %6")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg(tr("grey")).arg((int)grey_value)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
     }
     else if ((colorFormat == IB_CF_RGB24) || 
@@ -512,10 +512,10 @@ QString ImageView::createStatusBarText()
         if ((_pGLImageBox->getImageSample(pixX, pixY, 0, red) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
@@ -527,10 +527,10 @@ QString ImageView::createStatusBarText()
         if ((_pGLImageBox->getImageSample(pixX, pixY, 0, blue) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
@@ -543,10 +543,10 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue).arg((int)alpha)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
@@ -559,10 +559,10 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue).arg((int)alpha)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);

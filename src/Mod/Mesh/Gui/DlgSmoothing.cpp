@@ -112,7 +112,7 @@ void DlgSmoothing::on_checkBoxSelection_toggled(bool on)
 
 // ------------------------------------------------
 
-SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WFlags fl)
+SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
     widget = new DlgSmoothing(this);

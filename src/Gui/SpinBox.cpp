@@ -157,9 +157,9 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -255,7 +255,7 @@ void UIntSpinBox::bind(const App::ObjectIdentifier &_path)
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
 
     iconLabel->show();
 }
@@ -272,7 +272,7 @@ void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 }
 
@@ -362,7 +362,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 
 }
@@ -419,9 +419,9 @@ IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent) {
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -446,7 +446,7 @@ void IntSpinBox::bind(const ObjectIdentifier& _path) {
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
 
     iconLabel->show();
 }
@@ -463,7 +463,7 @@ void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 }
 
@@ -537,7 +537,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 
 }
@@ -594,9 +594,9 @@ DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent) {
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -621,7 +621,7 @@ void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
 
     iconLabel->show();
 }
@@ -638,7 +638,7 @@ void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 }
 
@@ -712,7 +712,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 
 }

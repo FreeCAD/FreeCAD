@@ -52,9 +52,9 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WFlags fl )
+DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ), WindowParameter( "Macro" )
 {
     this->setupUi(this);
@@ -157,7 +157,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     if (!item) return;
 
     QDir dir(this->macroPath);
-    QString file = QString::fromAscii("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
+    QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
 
     Application::Instance->open(file.toUtf8(), "FreeCADGui");
     close();
@@ -194,7 +194,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fi.absoluteFilePath());
-            edit->setWindowTitle(QString::fromAscii("%1[*]").arg(fn));
+            edit->setWindowTitle(QString::fromLatin1("%1[*]").arg(fn));
             edit->resize(400, 300);
             getMainWindow()->addWindow(edit);
             close();

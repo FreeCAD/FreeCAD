@@ -52,7 +52,6 @@
 #include "ViewProviderFemConstraintPulley.h"
 #include "ViewProviderResult.h"
 #include "Workbench.h"
-//#include "resources/qrc_Fem.cpp"
 
 // use a different name to CreateCommand()
 void CreateFemCommands(void);

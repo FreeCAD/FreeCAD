@@ -44,7 +44,7 @@ using namespace Gui;
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView);
 
 
-MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WFlags wflags)
+MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
   : QMainWindow(parent, wflags), BaseView(pcDocument),currentMode(Child), wstate(Qt::WindowNoState)
 {
     setAttribute(Qt::WA_DeleteOnClose);
@@ -115,7 +115,7 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         }
         else {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap = QString::fromAscii("%1[*]").arg(cap);
+            cap = QString::fromLatin1("%1[*]").arg(cap);
             setWindowTitle(cap);
         }
     }

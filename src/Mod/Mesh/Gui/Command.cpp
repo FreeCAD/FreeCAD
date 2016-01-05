@@ -468,7 +468,7 @@ void CmdMeshExport::activated(int iMsg)
         QObject::tr("Export mesh"), dir, filter.join(QLatin1String(";;")), &format);
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
-        QByteArray extension = fi.suffix().toAscii();
+        QByteArray extension = fi.suffix().toLatin1();
         for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it) {
             if (it->first == format) {
                 extension = it->second;
@@ -1311,10 +1311,10 @@ void CmdMeshEvaluateSolid::activated(int iMsg)
         QString msg;
         if (mesh->Mesh.getValue().getKernel().HasOpenEdges())
             msg = QObject::tr("The mesh '%1' is not a solid.")
-                .arg(QString::fromAscii(mesh->Label.getValue()));
+                .arg(QString::fromLatin1(mesh->Label.getValue()));
         else
             msg = QObject::tr("The mesh '%1' is a solid.")
-                .arg(QString::fromAscii(mesh->Label.getValue()));
+                .arg(QString::fromLatin1(mesh->Label.getValue()));
         QMessageBox::information(Gui::getMainWindow(), QObject::tr("Solid Mesh"), msg);
     }
 }

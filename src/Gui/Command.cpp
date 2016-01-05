@@ -623,7 +623,7 @@ const char* Command::keySequenceToAccel(int sk) const
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
-    QByteArray data = qs.toAscii();
+    QByteArray data = qs.toLatin1();
 #if defined (_MSC_VER)
     return _strdup((const char*)data);
 #else
@@ -676,7 +676,7 @@ Action * Command::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this,getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
@@ -751,7 +751,7 @@ Action * MacroCommand::createAction(void)
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
 
     QString accel = pcAction->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
@@ -959,7 +959,7 @@ Action * PythonCommand::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(getAccel()));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));

@@ -488,7 +488,7 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu *editMenu = lineEdit()->createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
-    QMenu* menu = new QMenu(QString::fromAscii("PrefQuantitySpinBox"));
+    QMenu* menu = new QMenu(QString::fromLatin1("PrefQuantitySpinBox"));
 
     menu->addMenu(editMenu);
     menu->addSeparator();

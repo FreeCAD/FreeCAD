@@ -41,9 +41,9 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f'.
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent, Qt::WFlags fl)
+DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), material(mat)
 {
     this->setupUi(this);

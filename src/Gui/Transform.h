@@ -71,7 +71,7 @@ class GuiExport Transform : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Transform(QWidget* parent = 0, Qt::WFlags fl = 0);
+    Transform(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~Transform();
     void accept();
     void reject();

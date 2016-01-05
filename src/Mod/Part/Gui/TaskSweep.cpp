@@ -180,7 +180,7 @@ void SweepWidget::findShapes()
             shape.ShapeType() == TopAbs_EDGE ||
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -275,14 +275,14 @@ bool SweepWidget::accept()
 
     QString list, solid, frenet;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromAscii("True");
+        solid = QString::fromLatin1("True");
     else
-        solid = QString::fromAscii("False");
+        solid = QString::fromLatin1("False");
 
     if (d->ui.checkFrenet->isChecked())
-        frenet = QString::fromAscii("True");
+        frenet = QString::fromLatin1("True");
     else
-        frenet = QString::fromAscii("False");
+        frenet = QString::fromLatin1("False");
 
     QTextStream str(&list);
 
@@ -305,7 +305,7 @@ bool SweepWidget::accept()
     try {
         Gui::WaitCursor wc;
         QString cmd;
-        cmd = QString::fromAscii(
+        cmd = QString::fromLatin1(
             "App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
             "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%5').ActiveObject.Spine=%2\n"
@@ -316,12 +316,12 @@ bool SweepWidget::accept()
             .arg(QLatin1String(selection.c_str()))
             .arg(solid)
             .arg(frenet)
-            .arg(QString::fromAscii(d->document.c_str()));
+            .arg(QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) throw Base::Exception("Document doesn't exist anymore");
         doc->openCommand("Sweep");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {
@@ -332,7 +332,7 @@ bool SweepWidget::accept()
         doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

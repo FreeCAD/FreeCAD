@@ -175,16 +175,16 @@ int main( int argc, char ** argv )
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-        QString msg = QString::fromAscii(e.what());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromLatin1(e.what());
         QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
         QMessageBox::critical(0, appName, s);
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-        QString msg = QString::fromAscii(e.what());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromLatin1(e.what());
         QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
         QMessageBox::information(0, appName, s);
         exit(0);
@@ -192,13 +192,13 @@ int main( int argc, char ** argv )
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg;
         msg = QObject::tr("While initializing %1 the  following exception occurred: '%2'\n\n"
                           "Python is searching for its files in the following directories:\n%3\n\n"
                           "Python version information:\n%4\n")
                           .arg(appName).arg(QString::fromUtf8(e.what()))
-                          .arg(QString::fromUtf8(Py_GetPath())).arg(QString::fromAscii(Py_GetVersion()));
+                          .arg(QString::fromUtf8(Py_GetPath())).arg(QString::fromLatin1(Py_GetVersion()));
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
             msg += QObject::tr("\nThe environment variable PYTHONHOME is set to '%1'.")
@@ -215,7 +215,7 @@ int main( int argc, char ** argv )
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg = QObject::tr("Unknown runtime error occurred while initializing %1.\n\n"
                                   "Please contact the application's support team for more information.\n\n").arg(appName);
         QMessageBox::critical(0, QObject::tr("Initialization of %1 failed").arg(appName), msg);
@@ -328,7 +328,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     MINIDUMP_EXCEPTION_INFORMATION stMDEI; 
     stMDEI.ThreadId = GetCurrentThreadId(); 
     stMDEI.ExceptionPointers = pEx; 
-    stMDEI.ClientPointers = TRUE; 
+    stMDEI.ClientPointers = true; 
     // try to create an miniDump: 
     if (s_pMDWD( 
       GetCurrentProcess(), 

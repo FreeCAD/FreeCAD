@@ -158,9 +158,9 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
 {
     m_interactionnesting = 0;
     m_seekdistance = 50.0f;
-    m_seekdistanceabs = FALSE;
+    m_seekdistanceabs = false;
     m_seekperiod = 2.0f;
-    m_inseekmode = FALSE;
+    m_inseekmode = false;
     m_storedcamera = 0;
 
     m_seeksensor = new SoTimerSensor(SoQTQuarterAdaptor::seeksensorCB, (void*)this);
@@ -363,7 +363,7 @@ SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode(void) const
 
 SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage(void) const
 {
-    return m_seekdistanceabs ? FALSE : TRUE;
+    return m_seekdistanceabs ? false : true;
 }
 
 SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s screenpos)
@@ -377,16 +377,16 @@ SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s scree
     SoPickedPoint* picked = rpaction.getPickedPoint();
 
     if(!picked) {
-        this->interactiveCountInc(); // decremented in setSeekMode(FALSE)
-        this->setSeekMode(FALSE);
-        return FALSE;
+        this->interactiveCountInc(); // decremented in setSeekMode(false)
+        this->setSeekMode(false);
+        return false;
     }
 
     SbVec3f hitpoint;
     hitpoint = picked->getPoint();
 
     this->seekToPoint(hitpoint);
-    return TRUE;
+    return true;
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec3f& scenepos)
@@ -455,13 +455,13 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekTime(const float seconds)
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekValueAsPercentage(const SbBool on)
 {
-    m_seekdistanceabs = on ? FALSE : TRUE;
+    m_seekdistanceabs = on ? false : true;
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCameraCoordinateSystem(SoCamera* camera, SoNode* root, SbMatrix& matrix, SbMatrix& inverse)
 {
     searchaction.reset();
-    searchaction.setSearchingAll(TRUE);
+    searchaction.setSearchingAll(true);
     searchaction.setInterest(SoSearchAction::FIRST);
     searchaction.setNode(camera);
     searchaction.apply(root);
@@ -500,7 +500,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor
                           thisp->m_cameraendorient,
                           t);
 
-    if(end) thisp->setSeekMode(FALSE);
+    if(end) thisp->setSeekMode(false);
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition(void)
@@ -643,19 +643,19 @@ bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* eve
 
             case SoKeyboardEvent::LEFT_ARROW:
                 moveCameraScreen(SbVec2f(-0.1f, 0.0f));
-                return TRUE;
+                return true;
 
             case SoKeyboardEvent::UP_ARROW:
                 moveCameraScreen(SbVec2f(0.0f, 0.1f));
-                return TRUE;
+                return true;
 
             case SoKeyboardEvent::RIGHT_ARROW:
                 moveCameraScreen(SbVec2f(0.1f, 0.0f));
-                return TRUE;
+                return true;
 
             case SoKeyboardEvent::DOWN_ARROW:
                 moveCameraScreen(SbVec2f(0.0f, -0.1f));
-                return TRUE;
+                return true;
 
             default:
                 break;

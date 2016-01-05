@@ -107,7 +107,7 @@ void TaskMirroredParameters::setupUI()
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
             break;
         }
     }
@@ -136,7 +136,7 @@ void TaskMirroredParameters::updateUI()
     for (int i=ui->comboPlane->count()-1; i >= 2; i--)
         ui->comboPlane->removeItem(i);
     for (int i=ui->comboPlane->count(); i < maxcount; i++)
-        ui->comboPlane->addItem(QString::fromAscii("Sketch axis %1").arg(i-2));
+        ui->comboPlane->addItem(QString::fromLatin1("Sketch axis %1").arg(i-2));
 
     bool undefined = false;
     if (mirrorPlaneFeature != NULL && !mirrorPlanes.empty()) {
@@ -151,7 +151,7 @@ void TaskMirroredParameters::updateUI()
             else
                 undefined = true;
         } else if (mirrorPlaneFeature != NULL && !mirrorPlanes.empty()) {
-            ui->comboPlane->addItem(QString::fromAscii(mirrorPlanes.front().c_str()));
+            ui->comboPlane->addItem(QString::fromLatin1(mirrorPlanes.front().c_str()));
             ui->comboPlane->setCurrentIndex(maxcount);
         }
     } else {
@@ -179,7 +179,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
 
         std::string subName(msg.pSubName);
         if (originalSelected(msg)) {
-            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
+            ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
         } else if (referenceSelectionMode &&
                    (subName.size() > 4 && subName.substr(0,4) == "Face")) {
 
@@ -203,7 +203,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
                 for (int i=ui->comboPlane->count()-1; i >= maxcount; i--)
                     ui->comboPlane->removeItem(i);
 
-                ui->comboPlane->addItem(QString::fromAscii(subName.c_str()));
+                ui->comboPlane->addItem(QString::fromLatin1(subName.c_str()));
                 ui->comboPlane->setCurrentIndex(maxcount);
                 ui->comboPlane->addItem(tr("Select reference..."));
             }
@@ -359,7 +359,7 @@ bool TaskDlgMirroredParameters::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

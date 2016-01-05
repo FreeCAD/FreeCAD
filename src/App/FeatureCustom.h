@@ -161,6 +161,12 @@ protected:
     virtual void onChanged(const Property* prop) {
         FeatureT::onChanged(prop);
     }
+    virtual void onDocumentRestored() {
+        FeatureT::onDocumentRestored();
+    }
+    virtual void onSettingDocument() {
+        FeatureT::onSettingDocument();
+    }
 
 private:
     DynamicProperty* props;
