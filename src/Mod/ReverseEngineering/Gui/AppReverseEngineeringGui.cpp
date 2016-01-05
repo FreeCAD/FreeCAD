@@ -34,8 +34,6 @@
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
-//#include "resources/qrc_ReverseEngineering.cpp"
-
 // use a different name to CreateCommand()
 void CreateReverseEngineeringCommands(void);
 

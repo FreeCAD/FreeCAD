@@ -36,7 +36,6 @@
 #include "ViewProviderTrajectoryDressUp.h"
 #include "ViewProviderTrajectoryCompound.h"
 #include "Workbench.h"
-//#include "resources/qrc_Robot.cpp"
 
 // use a different name to CreateCommand()
 void CreateRobotCommands(void);
