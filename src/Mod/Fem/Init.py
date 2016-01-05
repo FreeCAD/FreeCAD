@@ -26,6 +26,9 @@
 #***************************************************************************/
 
 
+import FreeCAD
+
+
 FreeCAD.addExportType("TetGen file (*.poly)", "convert2TetGen")
 FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)", "Fem")
 FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)", "Fem")

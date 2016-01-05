@@ -26,7 +26,6 @@ __url__ = "http://www.freecadweb.org"
 
 from FemTools import FemTools
 import FreeCAD
-import ccxFrdReader
 import os
 import time
 

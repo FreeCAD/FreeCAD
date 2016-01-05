@@ -44,7 +44,7 @@ class _CommandSolverJobControl(FemCommands):
 
     def Activated(self):
         solver_obj = FreeCADGui.Selection.getSelection()[0]
-        FreeCADGui.ActiveDocument.setEdit(solver_obj,0)
+        FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
 
 
 if FreeCAD.GuiUp:
