@@ -86,7 +86,7 @@ void SoFCControlPoints::GLRender(SoGLRenderAction *action)
         if (!points) return;
 
         SoMaterialBundle mb(action);
-        SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+        SoTextureCoordinateBundle tb(action, true, false);
         SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
         mb.sendFirst();  // make sure we have the correct material
 

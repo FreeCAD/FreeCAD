@@ -89,7 +89,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     for (int i=ui->axis->count()-1; i >= count+2; i--)
         ui->axis->removeItem(i);
     for (int i=ui->axis->count(); i < count+2; i++)
-        ui->axis->addItem(QString::fromAscii("Sketch axis %1").arg(i-2));
+        ui->axis->addItem(QString::fromLatin1("Sketch axis %1").arg(i-2));
 
     int pos=-1;
 
@@ -106,7 +106,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     }
 
     if (pos < 0 || pos >= ui->axis->count()) {
-        ui->axis->addItem(QString::fromAscii("Undefined"));
+        ui->axis->addItem(QString::fromLatin1("Undefined"));
         pos = ui->axis->count()-1;
     }
 

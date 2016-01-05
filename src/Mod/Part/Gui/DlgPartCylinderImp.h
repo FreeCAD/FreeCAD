@@ -33,7 +33,7 @@ class DlgPartCylinderImp : public Gui::LocationInterface<Ui_DlgPartCylinder>
     Q_OBJECT
 
 public:
-    DlgPartCylinderImp(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgPartCylinderImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgPartCylinderImp();
 };
 

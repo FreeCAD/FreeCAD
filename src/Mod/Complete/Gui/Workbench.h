@@ -28,7 +28,7 @@
 
 #include <Gui/Workbench.h>
 
-#define QSTRING(x) QString::fromAscii(x)
+#define QSTRING(x) QString::fromLatin1(x)
 
 extern QList<QString> mods;
 

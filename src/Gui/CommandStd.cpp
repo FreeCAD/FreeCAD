@@ -90,7 +90,7 @@ void StdCmdWorkbench::activated(int i)
     try {
         Workbench* w = WorkbenchManager::instance()->active();
         QList<QAction*> items = static_cast<WorkbenchGroup*>(_pcAction)->actions();
-        std::string switch_to = (const char*)items[i]->objectName().toAscii();
+        std::string switch_to = (const char*)items[i]->objectName().toLatin1();
         if (w) {
             std::string current_w = w->name();
             if (switch_to == current_w)
@@ -124,7 +124,7 @@ Action * StdCmdWorkbench::createAction(void)
     Action *pcAction;
 
     pcAction = new WorkbenchGroup(this,getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
@@ -206,7 +206,7 @@ Action * StdCmdAbout::createAction(void)
         QCoreApplication::CodecForTr).arg(exe));
     pcAction->setWhatsThis(QLatin1String(sWhatsThis));
     pcAction->setIcon(QApplication::windowIcon());
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     //Prevent Qt from using AboutRole -- fixes issue #0001485
     pcAction->setMenuRole(QAction::ApplicationSpecificRole);
 

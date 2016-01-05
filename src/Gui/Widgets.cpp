@@ -85,7 +85,7 @@ void CommandIconView::startDrag ( Qt::DropActions supportedActions )
     }
 
     QMimeData *mimeData = new QMimeData;
-    mimeData->setData(QString::fromAscii("text/x-action-items"), itemData);
+    mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
 
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
@@ -405,7 +405,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 	    txtLine.clear();
 	    break;
 	default:
-            txtLine += QString::fromAscii(",");
+            txtLine += QString::fromLatin1(",");
 	    break;
     }
     
@@ -444,9 +444,9 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-CheckListDialog::CheckListDialog( QWidget* parent, Qt::WFlags fl )
+CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
     ui.setupUi(this);
@@ -709,10 +709,10 @@ void ColorButton::onRejected()
 
 // ------------------------------------------------------------------------------
 
-UrlLabel::UrlLabel(QWidget * parent, Qt::WFlags f)
+UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
   : QLabel(parent, f)
 {
-    _url = QString::fromAscii("http://localhost");
+    _url = QString::fromLatin1("http://localhost");
     setToolTip(this->_url);
 }
 
@@ -740,7 +740,7 @@ void UrlLabel::mouseReleaseEvent (QMouseEvent *)
         PyObject* dict = PyModule_GetDict(module);
         PyObject* func = PyDict_GetItemString(dict, "open");
         if (func) {
-            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toAscii());
+            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
             PyObject* result = PyEval_CallObject(func,args);
             // decrement the args and module reference
             Py_XDECREF(result);

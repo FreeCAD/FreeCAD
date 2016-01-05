@@ -273,7 +273,7 @@ namespace geoff_geometry {
 	two lines P1P2 and P3P4. Calculate also the values of mua and mub where
 	Pa = P1 + t1 (P2 - P1)
 	Pb = P3 + t2 (P4 - P3)
-	Return FALSE if no solution exists.       P Bourke method.
+	Return false if no solution exists.       P Bourke method.
 		Input this 1st line
 		Input l2   2nd line
 		Output lshort shortest line between lines (if lshort.ok == false, the line intersect at a point lshort.p0)

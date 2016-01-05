@@ -76,7 +76,7 @@ private:
  *  Constructs a VisualInspection as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
+VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
@@ -118,13 +118,13 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
             QIcon px = view->getIcon();
             SingleSelectionItem* item1 = new SingleSelectionItem(ui->treeWidgetActual);
             item1->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item1->setData(0, Qt::UserRole, QString::fromAscii((*it)->getNameInDocument()));
+            item1->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
             item1->setCheckState(0, Qt::Unchecked);
             item1->setIcon(0, px);
 
             SingleSelectionItem* item2 = new SingleSelectionItem(ui->treeWidgetNominal);
             item2->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item2->setData(0, Qt::UserRole, QString::fromAscii((*it)->getNameInDocument()));
+            item2->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
             item2->setCheckState(0, Qt::Unchecked);
             item2->setIcon(0, px);
 
@@ -221,15 +221,15 @@ void VisualInspection::accept()
             if (sel->checkState(0) == Qt::Checked) {
                 QString actualName = sel->data(0, Qt::UserRole).toString();
                 Gui::Application::Instance->runCommand(
-                    true, "App_activeDocument___InspectionGroup.newObject(\"Inspection::Feature\",\"%s_Inspect\")", (const char*)actualName.toAscii());
+                    true, "App_activeDocument___InspectionGroup.newObject(\"Inspection::Feature\",\"%s_Inspect\")", (const char*)actualName.toLatin1());
                 Gui::Application::Instance->runCommand(
                     true, "App.ActiveDocument.ActiveObject.Actual=App.ActiveDocument.%s\n"
                           "App_activeDocument___activeObject___Nominals=list()\n"
                           "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
-                          "App.ActiveDocument.ActiveObject.Thickness=%.3f\n", (const char*)actualName.toAscii(), searchRadius, thickness);
+                          "App.ActiveDocument.ActiveObject.Thickness=%.3f\n", (const char*)actualName.toLatin1(), searchRadius, thickness);
                 for (QStringList::Iterator it = nominalNames.begin(); it != nominalNames.end(); ++it) {
                     Gui::Application::Instance->runCommand(
-                        true, "App_activeDocument___activeObject___Nominals.append(App.ActiveDocument.%s)\n", (const char*)(*it).toAscii());
+                        true, "App_activeDocument___activeObject___Nominals.append(App.ActiveDocument.%s)\n", (const char*)(*it).toLatin1());
                 }
                 Gui::Application::Instance->runCommand(
                     true, "App.ActiveDocument.ActiveObject.Nominals=App_activeDocument___activeObject___Nominals\n"
@@ -249,7 +249,7 @@ void VisualInspection::accept()
             if (sel->checkState(0) == Qt::Checked) {
                 Gui::Application::Instance->runCommand(
                     true, "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
-                        , (const char*)sel->data(0, Qt::UserRole).toString().toAscii());
+                        , (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
             }
         }
 
@@ -258,7 +258,7 @@ void VisualInspection::accept()
             if (sel->checkState(0) == Qt::Checked) {
                 Gui::Application::Instance->runCommand(
                     true, "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
-                        , (const char*)sel->data(0, Qt::UserRole).toString().toAscii());
+                        , (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
             }
         }
     }

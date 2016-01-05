@@ -351,7 +351,7 @@ void ViewProviderSketch::purgeHandler(void)
     viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
 
     SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
@@ -1510,7 +1510,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             //        temp += ".";
             //        temp += it->SubName;
             //    }
-            //    new QListWidgetItem(QString::fromAscii(temp.c_str()), selectionView);
+            //    new QListWidgetItem(QString::fromLatin1(temp.c_str()), selectionView);
             //}
         }
         else if (msg.Type == Gui::SelectionChanges::SetPreselect) {
@@ -1580,7 +1580,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                     }
                 }
                 if(constrIds) {
-                    QString constrIdsStr = QString::fromAscii(constrIds->string.getValue().getString());
+                    QString constrIdsStr = QString::fromLatin1(constrIds->string.getValue().getString());
                     if(edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
                         // If it's a combined constraint icon
 
@@ -1602,7 +1602,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         }
                     } else {
                         // It's a constraint icon, not a combined one
-                        QStringList constrIdStrings = constrIdsStr.split(QString::fromAscii(","));
+                        QStringList constrIdStrings = constrIdsStr.split(QString::fromLatin1(","));
                         while(!constrIdStrings.empty())
                             constrIndices.insert(constrIdStrings.takeAt(0).toInt());
                     }
@@ -2398,23 +2398,23 @@ QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
     /*! TODO: Consider pushing this functionality up into Constraint */
     switch(constraint->Type) {
     case Horizontal:
-        return QString::fromAscii("small/Constraint_Horizontal_sm");
+        return QString::fromLatin1("small/Constraint_Horizontal_sm");
     case Vertical:
-        return QString::fromAscii("small/Constraint_Vertical_sm");
+        return QString::fromLatin1("small/Constraint_Vertical_sm");
     case PointOnObject:
-        return QString::fromAscii("small/Constraint_PointOnObject_sm");
+        return QString::fromLatin1("small/Constraint_PointOnObject_sm");
     case Tangent:
-        return QString::fromAscii("small/Constraint_Tangent_sm");
+        return QString::fromLatin1("small/Constraint_Tangent_sm");
     case Parallel:
-        return QString::fromAscii("small/Constraint_Parallel_sm");
+        return QString::fromLatin1("small/Constraint_Parallel_sm");
     case Perpendicular:
-        return QString::fromAscii("small/Constraint_Perpendicular_sm");
+        return QString::fromLatin1("small/Constraint_Perpendicular_sm");
     case Equal:
-        return QString::fromAscii("small/Constraint_EqualLength_sm");
+        return QString::fromLatin1("small/Constraint_EqualLength_sm");
     case Symmetric:
-        return QString::fromAscii("small/Constraint_Symmetric_sm");
+        return QString::fromLatin1("small/Constraint_Symmetric_sm");
     case SnellsLaw:
-        return QString::fromAscii("small/Constraint_SnellsLaw_sm");
+        return QString::fromLatin1("small/Constraint_SnellsLaw_sm");
     default:
         return QString();
     }
@@ -2582,7 +2582,7 @@ void ViewProviderSketch::drawConstraintIcons()
             if((*it)->Name.empty())
                 thisIcon.label = QString::number(constrId + 1);
             else
-                thisIcon.label = QString::fromAscii((*it)->Name.c_str());
+                thisIcon.label = QString::fromLatin1((*it)->Name.c_str());
             iconQueue.push_back(thisIcon);
 
             // Note that the second translation is meant to be applied after the first.
@@ -2602,7 +2602,7 @@ void ViewProviderSketch::drawConstraintIcons()
             if ((*it)->Name.empty())
                 thisIcon.label = QString();
             else
-                thisIcon.label = QString::fromAscii((*it)->Name.c_str());
+                thisIcon.label = QString::fromLatin1((*it)->Name.c_str());
 
         iconQueue.push_back(thisIcon);
     }
@@ -2711,7 +2711,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
         maxColorPriority = constrColorPriority(i->constraintId);
 
         if(idString.length())
-            idString.append(QString::fromAscii(","));
+            idString.append(QString::fromLatin1(","));
         idString.append(QString::number(i->constraintId));
 
         if((avPos - i->position).length() < closest) {
@@ -2742,7 +2742,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
                 iconColor= constrColor(i->constraintId);
             }
 
-            idString.append(QString::fromAscii(",") +
+            idString.append(QString::fromLatin1(",") +
                             QString::number(i->constraintId));
 
             i = iconQueue.erase(i);
@@ -2817,7 +2817,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
     }
 
     edit->combinedConstrBoxes[idString] = boundingBoxes;
-    thisInfo->string.setValue(idString.toAscii().data());
+    thisInfo->string.setValue(idString.toLatin1().data());
     sendConstraintIconToCoin(compositeIcon, thisDest);
 }
 
@@ -2833,9 +2833,9 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
                                             int *vPad)
 {
     // Constants to help create constraint icons
-    QString joinStr = QString::fromAscii(", ");
+    QString joinStr = QString::fromLatin1(", ");
 
-    QImage icon = Gui::BitmapFactory().pixmap(type.toAscii()).toImage();
+    QImage icon = Gui::BitmapFactory().pixmap(type.toLatin1()).toImage();
 
     QFont font = QApplication::font();
     font.setPixelSize(11);
@@ -2918,7 +2918,7 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
                                     QList<QColor>() << color,
                                     i.iconRotation);
 
-    i.infoPtr->string.setValue(QString::number(i.constraintId).toAscii().data());
+    i.infoPtr->string.setValue(QString::number(i.constraintId).toLatin1().data());
     sendConstraintIconToCoin(image, i.destination);
 }
 
@@ -4612,9 +4612,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     viewer->setCameraOrientation(rot);
 
-    viewer->setEditing(TRUE);
+    viewer->setEditing(true);
     SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
     
     viewer->addGraphicsItem(rubberband);
     rubberband->setViewer(viewer);
@@ -4623,9 +4623,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
     viewer->removeGraphicsItem(rubberband);
-    viewer->setEditing(FALSE);
+    viewer->setEditing(false);
     SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 }
 
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbString &text)

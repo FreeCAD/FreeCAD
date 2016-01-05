@@ -119,7 +119,7 @@ private:
 };
 }
 
-CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WFlags fl)
+CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), bbox(bb)
 {
     ui = new Ui_CrossSections();
@@ -240,28 +240,28 @@ void CrossSections::apply()
         App::Document* doc = (*it)->getDocument();
         std::string s = (*it)->getNameInDocument();
         s += "_cs";
-        app->runPythonCode(QString::fromAscii(
+        app->runPythonCode(QString::fromLatin1(
             "wires=list()\n"
             "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
             .arg(QLatin1String(doc->getName()))
-            .arg(QLatin1String((*it)->getNameInDocument())).toAscii());
+            .arg(QLatin1String((*it)->getNameInDocument())).toLatin1());
 
         for (std::vector<double>::iterator jt = d.begin(); jt != d.end(); ++jt) {
-            app->runPythonCode(QString::fromAscii(
+            app->runPythonCode(QString::fromLatin1(
                 "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
                 "    wires.append(i)\n"
-                ).arg(a).arg(b).arg(c).arg(*jt).toAscii());
+                ).arg(a).arg(b).arg(c).arg(*jt).toLatin1());
             seq.next();
         }
 
-        app->runPythonCode(QString::fromAscii(
+        app->runPythonCode(QString::fromLatin1(
             "comp=Part.Compound(wires)\n"
             "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
             "slice.Shape=comp\n"
             "slice.purgeTouched()\n"
             "del slice,comp,wires,shape")
             .arg(QLatin1String(doc->getName()))
-            .arg(QLatin1String(s.c_str())).toAscii());
+            .arg(QLatin1String(s.c_str())).toLatin1());
 
         seq.next();
     }

@@ -63,25 +63,25 @@ public:
     MeshInfoWatcher() : TaskWatcher(0)
     {
         labelPoints = new QLabel();
-        labelPoints->setText(QString::fromAscii("Number of points:"));
+        labelPoints->setText(QString::fromLatin1("Number of points:"));
 
         labelFacets = new QLabel();
-        labelFacets->setText(QString::fromAscii("Number of facets:"));
+        labelFacets->setText(QString::fromLatin1("Number of facets:"));
 
         numPoints = new QLabel();
         numFacets = new QLabel();
 
         labelMin = new QLabel();
-        labelMin->setText(QString::fromAscii("Minumum bound:"));
+        labelMin->setText(QString::fromLatin1("Minumum bound:"));
 
         labelMax = new QLabel();
-        labelMax->setText(QString::fromAscii("Maximum bound:"));
+        labelMax->setText(QString::fromLatin1("Maximum bound:"));
 
         numMin = new QLabel();
         numMax = new QLabel();
 
         QGroupBox* box = new QGroupBox();
-        box->setTitle(QString::fromAscii("Mesh info box"));
+        box->setTitle(QString::fromLatin1("Mesh info box"));
         //box->setAutoFillBackground(true);
         QGridLayout* grid = new QGridLayout(box);
         grid->addWidget(labelPoints, 0, 0);
@@ -95,7 +95,7 @@ public:
         grid->addWidget(numMax, 3, 1);
 
         Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-            QPixmap(), QString::fromAscii("Mesh info"), false, 0);
+            QPixmap(), QString::fromLatin1("Mesh info"), false, 0);
         taskbox->groupLayout()->addWidget(box);
         Content.push_back(taskbox);
     }
@@ -117,16 +117,16 @@ public:
         if (countPoints > 0) {
             numPoints->setText(QString::number(countPoints));
             numFacets->setText(QString::number(countFacets));
-            numMin->setText(QString::fromAscii("X: %1\tY: %2\tZ: %3")
+            numMin->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
                 .arg(bbox.MinX).arg(bbox.MinX).arg(bbox.MinX));
-            numMax->setText(QString::fromAscii("X: %1\tY: %2\tZ: %3")
+            numMax->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
                 .arg(bbox.MaxX).arg(bbox.MaxX).arg(bbox.MaxX));
         }
         else {
-            numPoints->setText(QString::fromAscii(""));
-            numFacets->setText(QString::fromAscii(""));
-            numMin->setText(QString::fromAscii(""));
-            numMax->setText(QString::fromAscii(""));
+            numPoints->setText(QString::fromLatin1(""));
+            numFacets->setText(QString::fromLatin1(""));
+            numMin->setText(QString::fromLatin1(""));
+            numMax->setText(QString::fromLatin1(""));
         }
     }
 

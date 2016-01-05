@@ -36,7 +36,7 @@ class DlgPointsReadImp : public QDialog, public Ui_DlgPointsRead
   Q_OBJECT
 
 public:
-  DlgPointsReadImp(const char *FileName, QWidget* parent = 0, Qt::WFlags fl = 0 );
+  DlgPointsReadImp(const char *FileName, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
   ~DlgPointsReadImp();
 
 private:

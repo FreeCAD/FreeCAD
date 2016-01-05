@@ -131,14 +131,14 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action)
     if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->highlightColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
 
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
 
-    this->getVertexData(state, coords, normals, FALSE);
+    this->getVertexData(state, coords, normals, false);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
@@ -161,16 +161,16 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action)
     if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->selectionColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
 
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
     const int32_t * cindices;
     int numcindices;
 
-    this->getVertexData(state, coords, normals, FALSE);
+    this->getVertexData(state, coords, normals, false);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material

@@ -43,7 +43,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
 
-AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
 {
     // important for highlighting 
@@ -114,8 +114,8 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -143,8 +143,8 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -371,7 +371,7 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
 
-SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : AbstractSplitView(pcDocument,parent, wflags)
 {
     QSplitter* mainSplitter=0;

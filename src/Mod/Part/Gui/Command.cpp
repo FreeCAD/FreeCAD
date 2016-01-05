@@ -703,11 +703,11 @@ CmdPartImport::CmdPartImport()
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QString::fromAscii("STEP (*.stp *.step)");
-    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
-    filter << QString::fromAscii("IGES (*.igs *.iges)");
-    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
-    filter << QString::fromAscii("BREP (*.brp *.brep)");
+    filter << QString::fromLatin1("STEP (*.stp *.step)");
+    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
+    filter << QString::fromLatin1("IGES (*.igs *.iges)");
+    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
+    filter << QString::fromLatin1("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -762,11 +762,11 @@ CmdPartExport::CmdPartExport()
 void CmdPartExport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QString::fromAscii("STEP (*.stp *.step)");
-    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
-    filter << QString::fromAscii("IGES (*.igs *.iges)");
-    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
-    filter << QString::fromAscii("BREP (*.brp *.brep)");
+    filter << QString::fromLatin1("STEP (*.stp *.step)");
+    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
+    filter << QString::fromLatin1("IGES (*.igs *.iges)");
+    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
+    filter << QString::fromLatin1("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -820,8 +820,8 @@ void CmdPartImportCurveNet::activated(int iMsg)
     if (!fn.isEmpty()) {
         QFileInfo fi; fi.setFile(fn);
         openCommand("Part Import Curve Net");
-        doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toAscii());
-        doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toAscii());
+        doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toLatin1());
+        doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toLatin1());
         commitCommand();
         updateActive();
     }
@@ -866,7 +866,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                     (*it)->Label.getValue());
             }
             else if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
-                str = QString::fromAscii(
+                str = QString::fromLatin1(
                     "__s__=App.ActiveDocument.%1.Shape.Faces\n"
                     "__s__=Part.Solid(Part.Shell(__s__))\n"
                     "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
@@ -878,7 +878,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                     .arg(QLatin1String((*it)->Label.getValue()));
             }
             else if (type == TopAbs_SHELL) {
-                str = QString::fromAscii(
+                str = QString::fromLatin1(
                     "__s__=App.ActiveDocument.%1.Shape\n"
                     "__s__=Part.Solid(__s__)\n"
                     "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
@@ -896,7 +896,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
             try {
                 if (!str.isEmpty())
-                    doCommand(Doc, (const char*)str.toAscii());
+                    doCommand(Doc, (const char*)str.toLatin1());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Cannot convert %s because %s.\n",
@@ -937,7 +937,7 @@ void CmdPartReverseShape::activated(int iMsg)
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
-            QString str = QString::fromAscii(
+            QString str = QString::fromLatin1(
                 "__s__=App.ActiveDocument.%1.Shape.copy()\n"
                 "__s__.reverse()\n"
                 "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_rev\")\n"
@@ -950,7 +950,7 @@ void CmdPartReverseShape::activated(int iMsg)
 
             try {
                 if (!str.isEmpty())
-                    doCommand(Doc, (const char*)str.toAscii());
+                    doCommand(Doc, (const char*)str.toLatin1());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Cannot convert %s because %s.\n",

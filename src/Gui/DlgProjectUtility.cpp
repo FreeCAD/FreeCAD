@@ -108,7 +108,7 @@ std::string DlgProjectUtility::doctools =
 
 /* TRANSLATOR Gui::Dialog::DlgProjectUtility */
 
-DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WFlags fl)
+DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgProjectUtility)
 {
     ui->setupUi(this);

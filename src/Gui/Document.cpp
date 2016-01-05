@@ -882,7 +882,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
         d->_pcAppWnd->sendMsgToActiveView("GetCamera",&ppReturn);
   
         // remove the first line because it's a comment like '#Inventor V2.1 ascii'
-        QStringList lines = QString(QString::fromAscii(ppReturn)).split(QLatin1String("\n"));
+        QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
         if (lines.size() > 1) {
             lines.pop_front();
             viewPos = lines.join(QLatin1String(" "));
@@ -891,7 +891,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     writer.incInd(); // indentation for camera settings
     writer.Stream() << writer.ind() << "<Camera settings=\"" 
-                    << (const char*)viewPos.toAscii() <<"\"/>" << std::endl;
+                    << (const char*)viewPos.toLatin1() <<"\"/>" << std::endl;
     writer.decInd(); // indentation for camera settings
     writer.Stream() << "</Document>" << std::endl;
 }
@@ -1039,7 +1039,7 @@ void Document::createView(const Base::Type& typeId)
             view3D->getViewer()->addViewProvider(It2->second);
 
         const char* name = getDocument()->Label.getValue();
-        QString title = QString::fromAscii("%1 : %2[*]")
+        QString title = QString::fromLatin1("%1 : %2[*]")
             .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
 
         view3D->setWindowTitle(title);

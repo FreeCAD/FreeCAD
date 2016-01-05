@@ -32,7 +32,6 @@
 #include "Workbench.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderView.h"
-//#include "resources/qrc_Drawing.cpp"
 
 // use a different name to CreateCommand()
 void CreateDrawingCommands(void);

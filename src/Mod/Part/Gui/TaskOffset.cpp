@@ -162,7 +162,7 @@ bool OffsetWidget::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

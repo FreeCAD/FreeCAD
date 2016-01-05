@@ -171,7 +171,7 @@ TStringList Translator::supportedLanguages() const
     QDir dir(QLatin1String(":/translations"));
     for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
         it != d->mapLanguageTopLevelDomain.end(); ++it) {
-        QString filter = QString::fromAscii("*_%1.qm").arg(QLatin1String(it->second.c_str()));
+        QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(it->second.c_str()));
         QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
         if (!fileNames.isEmpty())
             languages.push_back(it->first);
@@ -187,7 +187,7 @@ TStringMap Translator::supportedLocales() const
     QDir dir(QLatin1String(":/translations"));
     for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
         it != d->mapLanguageTopLevelDomain.end(); ++it) {
-        QString filter = QString::fromAscii("*_%1.qm").arg(QLatin1String(it->second.c_str()));
+        QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(it->second.c_str()));
         QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
         if (!fileNames.isEmpty())
             languages[it->first] = it->second;
@@ -239,7 +239,7 @@ void Translator::addPath(const QString& path)
 
 void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
-    QString filter = QString::fromAscii("*_%1.qm").arg(QLatin1String(locale));
+    QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(locale));
     QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
     for (QStringList::Iterator it = fileNames.begin(); it != fileNames.end(); ++it){
         bool ok=false;

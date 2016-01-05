@@ -119,7 +119,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
         // translation and center fields are overridden.
         SoSearchAction sa;
         sa.setInterest(SoSearchAction::FIRST);
-        sa.setSearchingAll(FALSE);
+        sa.setSearchingAll(false);
         sa.setNode(trans);
         sa.apply(pcEditNode);
         SoPath * path = sa.getPath();

@@ -100,7 +100,7 @@ void ToolBox::removeItem ( int index )
 }
 
 /**
- * If \a enabled is TRUE then the item at position \a index is enabled; otherwise item \a index is disabled.
+ * If \a enabled is true then the item at position \a index is enabled; otherwise item \a index is disabled.
  */
 void ToolBox::setItemEnabled ( int index, bool enabled )
 {
@@ -108,7 +108,7 @@ void ToolBox::setItemEnabled ( int index, bool enabled )
 }
 
 /**
- * Returns TRUE if the item at position \a index is enabled; otherwise returns FALSE.
+ * Returns true if the item at position \a index is enabled; otherwise returns false.
  */
 bool ToolBox::isItemEnabled ( int index ) const
 {

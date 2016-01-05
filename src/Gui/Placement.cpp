@@ -76,7 +76,7 @@ public:
 
 /* TRANSLATOR Gui::Dialog::Placement */
 
-Placement::Placement(QWidget* parent, Qt::WFlags fl)
+Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationDialog(parent, fl)
 {
     propertyName = "Placement"; // default name
@@ -217,20 +217,20 @@ void Placement::applyPlacement(const QString& data, bool incremental)
             if (jt != props.end()) {
                 QString cmd;
                 if (incremental)
-                    cmd = QString::fromAscii(
+                    cmd = QString::fromLatin1(
                         "App.getDocument(\"%1\").%2.Placement=%3.multiply(App.getDocument(\"%1\").%2.Placement)")
                         .arg(QLatin1String((*it)->getDocument()->getName()))
                         .arg(QLatin1String((*it)->getNameInDocument()))
                         .arg(data);
                 else {
-                    cmd = QString::fromAscii(
+                    cmd = QString::fromLatin1(
                         "App.getDocument(\"%1\").%2.Placement=%3")
                         .arg(QLatin1String((*it)->getDocument()->getName()))
                         .arg(QLatin1String((*it)->getNameInDocument()))
                         .arg(data);
                 }
 
-                Application::Instance->runPythonCode((const char*)cmd.toAscii());
+                Application::Instance->runPythonCode((const char*)cmd.toLatin1());
             }
         }
 
@@ -399,7 +399,7 @@ void Placement::setPlacementData(const Base::Placement& p)
 
     if (newitem) {
         // add a new item before the very last item
-        QString display = QString::fromAscii("(%1,%2,%3)")
+        QString display = QString::fromLatin1("(%1,%2,%3)")
             .arg(dir.x)
             .arg(dir.y)
             .arg(dir.z);
@@ -448,7 +448,7 @@ QString Placement::getPlacementString() const
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        cmd = QString::fromAscii(
+        cmd = QString::fromLatin1(
             "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
             .arg(ui->xPos->value().getValue())
             .arg(ui->yPos->value().getValue())
@@ -462,7 +462,7 @@ QString Placement::getPlacementString() const
             .arg(ui->zCnt->value().getValue());
     }
     else if (index == 1) {
-        cmd = QString::fromAscii(
+        cmd = QString::fromLatin1(
             "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
             .arg(ui->xPos->value().getValue())
             .arg(ui->yPos->value().getValue())
@@ -492,7 +492,7 @@ void Placement::changeEvent(QEvent *e)
 
 /* TRANSLATOR Gui::Dialog::DockablePlacement */
 
-DockablePlacement::DockablePlacement(QWidget* parent, Qt::WFlags fl) : Placement(parent, fl)
+DockablePlacement::DockablePlacement(QWidget* parent, Qt::WindowFlags fl) : Placement(parent, fl)
 {
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     QDockWidget* dw = pDockMgr->addDockWindow(QT_TR_NOOP("Placement"),

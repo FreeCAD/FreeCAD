@@ -46,7 +46,7 @@ QListWidgetCustom::~QListWidgetCustom()
 void QListWidgetCustom::dragMoveEvent(QDragMoveEvent *e)
 {
     if (e->source() != 0) {
-        const QString disabled_wbs = QString::fromAscii("disabled workbenches");
+        const QString disabled_wbs = QString::fromLatin1("disabled workbenches");
         if (e->source()->accessibleName() == disabled_wbs) {
             if (e->source() == this) {
                 e->ignore();

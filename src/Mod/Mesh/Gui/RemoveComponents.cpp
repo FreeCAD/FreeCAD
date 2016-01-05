@@ -35,7 +35,7 @@
 using namespace MeshGui;
 
 
-RemoveComponents::RemoveComponents(QWidget* parent, Qt::WFlags fl)
+RemoveComponents::RemoveComponents(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
 {
     ui = new Ui_RemoveComponents;
@@ -157,7 +157,7 @@ void RemoveComponents::reject()
 
 // -------------------------------------------------
 
-RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WFlags fl)
+RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
     widget = new RemoveComponents(this);
