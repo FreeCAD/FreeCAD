@@ -37,9 +37,8 @@ class _FemSolverCalculix():
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to  this object
 
-        obj.addProperty("App::PropertyString", "SolverType", "Base", "Type of the solver")
+        obj.addProperty("App::PropertyString", "SolverType", "Base", "Type of the solver", 1)  # the 1 set the property to ReadOnly
         obj.SolverType = str(self.Type)
-        obj.setEditorMode("SolverType", 1)
 
         fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
