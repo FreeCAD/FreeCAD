@@ -1780,6 +1780,7 @@ def writeMesh(ob,dxfobject):
 def export(objectslist,filename,nospline=False,lwPoly=False):
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs lwPoly=True for OpenSCAD DXF"
     readPreferences()
+    getDXFlibs()
     if dxfLibrary:
         global exportList
         exportList = objectslist
