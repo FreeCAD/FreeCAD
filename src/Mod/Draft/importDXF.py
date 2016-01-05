@@ -54,6 +54,14 @@ if gui:
         draftui = FreeCADGui.draftToolBar
     except (AttributeError,NameError):
         draftui = None
+        
+dxfReader = None
+dxfColorMap = None
+dxfLibrary = None
+
+if open.__module__ == '__builtin__':
+    pythonopen = open # to distinguish python built-in open function from the one declared here
+
 
 def errorDXFLib(gui):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -107,32 +115,33 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
             FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
             FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 
-# check dxfLibrary version
-try:
-    if FreeCAD.ConfigGet("UserAppData") not in sys.path:
-        sys.path.append(FreeCAD.ConfigGet("UserAppData"))
-    import dxfLibrary
-    import dxfColorMap
-    import dxfReader
-except ImportError:
-    libsok = False
-    FreeCAD.Console.PrintWarning("DXF libraries not found. Trying to download...\n")
-else:
-    if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
-        libsok = True
-    else:
-        FreeCAD.Console.PrintWarning("DXF libraries need to be updated. Trying to download...\n")
-        libsok = False
-if not libsok:
-    errorDXFLib(gui)
-    try:
-        import dxfColorMap, dxfLibrary, dxfReader
-    except ImportError:
-        dxfReader = None
-        dxfLibrary = None
 
-if open.__module__ == '__builtin__':
-    pythonopen = open # to distinguish python built-in open function from the one declared here
+def getDXFlibs():
+    "loads the DXF python libraries"
+    try:
+        if FreeCAD.ConfigGet("UserAppData") not in sys.path:
+            sys.path.append(FreeCAD.ConfigGet("UserAppData"))
+        global dxfLibrary,dxfColorMap,dxfReader
+        import dxfLibrary
+        import dxfColorMap
+        import dxfReader
+    except ImportError:
+        libsok = False
+        FreeCAD.Console.PrintWarning("DXF libraries not found. Trying to download...\n")
+    else:
+        if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
+            libsok = True
+        else:
+            FreeCAD.Console.PrintWarning("DXF libraries need to be updated. Trying to download...\n")
+            libsok = False
+    if not libsok:
+        errorDXFLib(gui)
+        try:
+            import dxfColorMap, dxfLibrary, dxfReader
+        except ImportError:
+            dxfReader = None
+            dxfLibrary = None
+            FreeCAD.Console.PrintWarning("DXF libraries not available. Aborting.\n")
 
 def prec():
     "returns the current Draft precision level"
@@ -1483,6 +1492,7 @@ def open(filename):
     "called when freecad opens a file."
     readPreferences()
     if dxfUseLegacyImporter:
+        getDXFlibs()
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
             if isinstance(docname,unicode): 
@@ -1514,6 +1524,7 @@ def insert(filename,docname):
         doc=FreeCAD.newDocument(docname)
     FreeCAD.setActiveDocument(docname)
     if dxfUseLegacyImporter:
+        getDXFlibs()
         if dxfReader:
             groupname = os.path.splitext(os.path.basename(filename))[0]
             importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
