@@ -469,7 +469,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
                     m.EigenmodeFrequency = mode_frequencies[m.Eigenmode - 1]['frequency']
-                    m.setEditorMode("EigenmodeFrequency", 1)
 
     def use_results(self, results_name=None):
         for m in self.analysis.Member:
