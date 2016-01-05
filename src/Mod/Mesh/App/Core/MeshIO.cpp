@@ -2422,9 +2422,9 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 
         rstrOut << "      ]\n    }\n";
         if (_material->binding == MeshIO::PER_VERTEX)
-            rstrOut << "    colorPerVertex true\n";
+            rstrOut << "    colorPerVertex TRUE\n";
         else
-            rstrOut << "    colorPerVertex false\n";
+            rstrOut << "    colorPerVertex FALSE\n";
     }
 
     // write face index
