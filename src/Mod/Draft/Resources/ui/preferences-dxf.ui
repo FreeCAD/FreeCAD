@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>506</width>
-    <height>560</height>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -279,26 +279,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
-          <property name="toolTip">
-           <string>If this is checked, the exported objects will be projected to reflect the current view direction</string>
-          </property>
-          <property name="text">
-           <string>Project exported objects along current view direction</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxfproject</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
@@ -493,6 +473,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfExportBlocks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
+          <property name="toolTip">
+           <string>If this is checked, the exported objects will be projected to reflect the current view direction</string>
+          </property>
+          <property name="text">
+           <string>Project exported objects along current view direction</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfproject</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
