@@ -440,8 +440,8 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
 #else
         Py_SetProgramName(argv[0]);
 #endif
-        PyEval_InitThreads();
         Py_Initialize();
+        PyEval_InitThreads();
 #if PY_MAJOR_VERSION >= 3
         size_t size = argc;
         wchar_t **_argv = new wchar_t*[size];

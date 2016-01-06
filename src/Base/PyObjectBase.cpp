@@ -192,9 +192,11 @@ PyObject *PyObjectBase::_getattro(PyObject *attro)
 {
     char *attr;
 #if PY_MAJOR_VERSION >= 3
-    attr = PyUnicode_AsUTF8(attro);
+    if (PyUnicode_Check(attro))
+        attr = PyUnicode_AsUTF8(attro);
 #else
-    attr = PyString_AsString(attro);
+    if (PyString_Check(attro))
+        attr = PyString_AsString(attro);
 #endif
     if (streq(attr, "__class__")) {
         // Note: We must return the type object here, 
