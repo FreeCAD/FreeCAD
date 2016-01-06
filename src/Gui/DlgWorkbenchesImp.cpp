@@ -51,9 +51,13 @@ DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
     this->setupUi(this);
     set_lw_properties(lw_enabled_workbenches);
     set_lw_properties(lw_disabled_workbenches);
-    const QString lw_disabled_name = QString::fromLatin1("disabled workbenches");
-    lw_disabled_workbenches->setAccessibleName(lw_disabled_name);
+    lw_disabled_workbenches->setProperty("OnlyAcceptFrom",
+        QStringList() << lw_enabled_workbenches->objectName());
     lw_disabled_workbenches->setSortingEnabled(true);
+
+    lw_enabled_workbenches->setProperty("OnlyAcceptFrom",
+        QStringList() << lw_enabled_workbenches->objectName()
+                      << lw_disabled_workbenches->objectName());
 
     QStringList enabled_wbs_list = load_enabled_workbenches();
     QStringList disabled_wbs_list = load_disabled_workbenches();
