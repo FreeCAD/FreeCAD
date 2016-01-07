@@ -444,8 +444,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
         # detect if this object is sharing its shape
         clone = None
         store = None
-        if product.Representation and MERGE_MODE_ARCH == 0 and archobj:
-            for s in product.Representation.Representations:
+        prepr = None
+        try:
+            prepr = product.Representation
+        except:
+            if DEBUG: print " ERROR unable to get object representation",
+        if prepr and (MERGE_MODE_ARCH == 0) and archobj:
+            for s in prepr.Representations:
                 if s.RepresentationIdentifier.upper() == "BODY":
                     if s.Items[0].is_a("IfcMappedItem"):
                         bid = s.Items[0].MappingSource.id()
