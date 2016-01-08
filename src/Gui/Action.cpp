@@ -535,8 +535,8 @@ void WorkbenchGroup::setWorkbenchData(int i, const QString& wb)
     workbenches[i]->setToolTip(tip);
     workbenches[i]->setStatusTip(tr("Select the '%1' workbench").arg(name));
     workbenches[i]->setVisible(true);
-    if (i < 10)
-        workbenches[i]->setShortcut(QKeySequence(QString::fromUtf8("W,%1").arg(i)));
+    if (i < 9)
+        workbenches[i]->setShortcut(QKeySequence(QString::fromUtf8("W,%1").arg(i+1)));
 }
 
 void WorkbenchGroup::refreshWorkbenchList()
