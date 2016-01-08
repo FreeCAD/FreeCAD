@@ -241,9 +241,11 @@ int PyObjectBase::_setattro(PyObject *attro, PyObject *value)
 {
     char *attr;
 #if PY_MAJOR_VERSION >= 3
-    attr = PyUnicode_AsUTF8(attro);
+    if (PyUnicode_Check(attro))
+        attr = PyUnicode_AsUTF8(attro);
 #else
-    attr = PyString_AsString(attro);
+    if (PyString_Check(attro))
+        attr = PyString_AsString(attro);
 #endif
     if (streq(attr,"softspace"))
         return -1; // filter out softspace

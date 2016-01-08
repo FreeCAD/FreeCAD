@@ -155,7 +155,7 @@ public:                                                     \
     if (rvalue == NULL)                                      \
     {                                                        \
         PyErr_Clear();                                       \
-        return Parent::_getattro(rvalue);                    \
+        return Parent::_getattro(attro);                    \
     }                                                        \
     else                                                     \
         return rvalue;                                       \
