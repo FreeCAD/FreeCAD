@@ -208,10 +208,16 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     lastHasConflict = solvedSketch.hasConflicts();
     
     int err=0;
-    if (lastDoF < 0) // over-constrained sketch
+    if (lastDoF < 0) { // over-constrained sketch
         err = -3;
-    else if (lastHasConflict) // conflicting constraints
+        // if lastDoF<0, then an over-constrained situation has ensued.
+        // Geometry is not to be updated, as geometry can not follow the constraints.
+        // However, solver information must be updated.
+        this->Constraints.touch();
+    }
+    else if (lastHasConflict) { // conflicting constraints
         err = -3;
+    }
     else {
         lastSolverStatus=solvedSketch.solve();
         if (lastSolverStatus != 0){ // solving
