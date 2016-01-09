@@ -32,6 +32,7 @@ SET(Arch_SRCS
     ArchServer.py
     ArchMaterial.py
     ArchSchedule.py
+    ArchProfile.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
@@ -51,4 +52,13 @@ INSTALL(
         ${Arch_SRCS}
         ${Arch_QRC_SRCS}
     DESTINATION Mod/Arch
+)
+
+INSTALL(
+    DIRECTORY
+        Presets
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/Arch
+    FILES_MATCHING 
+        PATTERN "*.csv*"
 )
