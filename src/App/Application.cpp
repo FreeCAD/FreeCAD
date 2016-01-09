@@ -203,7 +203,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 #if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef ConsoleModuleDef = {PyModuleDef_HEAD_INIT, "__FreeCADConsole__", Console_doc, -1, ConsoleSingleton::Methods};
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
-    _PyImport_FixupBuiltin(pConsoleModule, "__FreeCADConsole__");
 #else
     PyObject* pConsoleModule = Py_InitModule3("__FreeCADConsole__", ConsoleSingleton::Methods, Console_doc);
 #endif
@@ -1355,8 +1354,13 @@ void Application::initApplication(void)
 
     // starting the init script
     Console().Log("Run App init script\n");
-    Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
-    Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+    try {
+        Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
+        Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+    }
 }
 
 std::list<std::string> Application::getCmdLineFiles()
