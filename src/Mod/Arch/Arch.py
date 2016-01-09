@@ -45,6 +45,7 @@ from ArchFloor import *
 from ArchSite import *
 from ArchBuilding import *
 from ArchStructure import *
+from ArchProfile import *
 from ArchCommands import *
 from ArchSectionPlane import *
 from ArchWindow import *
