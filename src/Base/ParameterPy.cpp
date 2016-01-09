@@ -186,7 +186,7 @@ Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
 
     _cParamGrp->insert(pstr);
     return Py::None();
-}
+} 
 
 Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
 {
@@ -236,7 +236,7 @@ Py::Object ParameterGrpPy::getBool(const Py::Tuple& args)
         throw Py::Exception();
 
     return Py::Boolean(_cParamGrp->GetBool(pstr,Bool!=0));
-}
+} 
 
 Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
 {
@@ -247,7 +247,7 @@ Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
 
     _cParamGrp->SetInt(pstr,Int);
     return Py::None(); 
-}
+} 
 
 Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
 {
@@ -347,7 +347,7 @@ Py::Object ParameterGrpPy::remUnsigned(const Py::Tuple& args)
 
     _cParamGrp->RemoveUnsigned(pstr);
     return Py::None();
-}
+} 
 
 Py::Object ParameterGrpPy::remBool(const Py::Tuple& args)
 {
@@ -357,7 +357,7 @@ Py::Object ParameterGrpPy::remBool(const Py::Tuple& args)
 
     _cParamGrp->RemoveBool(pstr);
     return Py::None();
-}
+} 
 
 Py::Object ParameterGrpPy::remGroup(const Py::Tuple& args)
 {
@@ -367,7 +367,7 @@ Py::Object ParameterGrpPy::remGroup(const Py::Tuple& args)
 
     _cParamGrp->RemoveGrp(pstr);
     return Py::None();
-}
+} 
 
 Py::Object ParameterGrpPy::remFloat(const Py::Tuple& args)
 {
@@ -377,7 +377,7 @@ Py::Object ParameterGrpPy::remFloat(const Py::Tuple& args)
 
     _cParamGrp->RemoveFloat(pstr);
     return Py::None();
-}
+} 
 
 Py::Object ParameterGrpPy::remString(const Py::Tuple& args)
 {
@@ -387,7 +387,7 @@ Py::Object ParameterGrpPy::remString(const Py::Tuple& args)
 
     _cParamGrp->RemoveASCII(pstr);
     return Py::None();
-}
+} 
 
 Py::Object ParameterGrpPy::clear(const Py::Tuple& args)
 {
@@ -396,7 +396,7 @@ Py::Object ParameterGrpPy::clear(const Py::Tuple& args)
 
     _cParamGrp->Clear();
     return Py::None();
-}
+} 
 
 Py::Object ParameterGrpPy::isEmpty(const Py::Tuple& args)
 {
@@ -404,7 +404,7 @@ Py::Object ParameterGrpPy::isEmpty(const Py::Tuple& args)
         throw Py::Exception();
 
     return Py::Boolean(_cParamGrp->IsEmpty());
-}
+} 
 
 Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
 {
@@ -413,7 +413,7 @@ Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
         throw Py::Exception();
 
     return Py::Boolean(_cParamGrp->HasGroup(pstr));
-}
+} 
 
 Py::Object ParameterGrpPy::notify(const Py::Tuple& args)
 {
