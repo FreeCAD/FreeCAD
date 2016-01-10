@@ -408,12 +408,12 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
-        string = _PyUnicode_AsString(output);
+        string = PyUnicode_AsUTF8(output);
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
-            string = _PyUnicode_AsString(unicode);
+            string = PyUnicode_AsUTF8(unicode);
     }
 #else
     const char* string=0;
@@ -454,12 +454,12 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
-        string = _PyUnicode_AsString(output);
+        string = PyUnicode_AsUTF8(output);
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
-            string = _PyUnicode_AsString(unicode);
+            string = PyUnicode_AsUTF8(unicode);
     }
 #else
     const char* string=0;
@@ -500,12 +500,12 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
-        string = _PyUnicode_AsString(output);
+        string = PyUnicode_AsUTF8(output);
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
-            string = _PyUnicode_AsString(unicode);
+            string = PyUnicode_AsUTF8(unicode);
     }
 #else
     const char* string=0;
@@ -546,12 +546,12 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
     const char* string=0;
     PyObject* unicode=0;
     if (PyUnicode_Check(output)) {
-        string = _PyUnicode_AsString(output);
+        string = PyUnicode_AsUTF8(output);
     }
     else {
         unicode = PyObject_Str(output);
         if (unicode)
-            string = _PyUnicode_AsString(unicode);
+            string = PyUnicode_AsUTF8(unicode);
     }
 #else
     const char* string=0;

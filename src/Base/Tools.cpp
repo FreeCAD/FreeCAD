@@ -156,7 +156,7 @@ std::string Base::Tools::escapedUnicodeFromUtf8(const char *s)
 
     if (escaped) {
 #if PY_MAJOR_VERSION >= 3
-        escapedstr = std::string(PyUnicode_AsUTF8(escaped));
+        escapedstr = std::string(PyBytes_AsString(escaped));
 #else
         escapedstr = std::string(PyString_AsString(escaped));
 #endif
