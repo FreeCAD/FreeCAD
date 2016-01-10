@@ -49,6 +49,7 @@ SET(PathScripts_SRCS
     PathScripts/DlgSettingsPath.ui
     PathScripts/PathKurveUtils.py
     PathScripts/PathKurve.py
+    PathScripts/slic3r_pre.py
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
