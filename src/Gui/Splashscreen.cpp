@@ -261,6 +261,10 @@ static QString getOperatingSystem()
         case QSysInfo::WV_WINDOWS8_1:
             return QString::fromLatin1("Windows 8.1");
 #endif
+#if QT_VERSION >= 0x040807
+        case QSysInfo::WV_WINDOWS10:
+            return QString::fromLatin1("Windows 10");
+#endif
         default:
             return QString::fromLatin1("Windows");
     }
