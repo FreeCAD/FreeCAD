@@ -34,6 +34,11 @@ SET(Arch_SRCS
     ArchSchedule.py
     ArchProfile.py
 )
+
+SET(Arch_presets
+    Presets/profiles.csv
+)
+
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
 ADD_CUSTOM_TARGET(Arch ALL
@@ -41,6 +46,12 @@ ADD_CUSTOM_TARGET(Arch ALL
 )
 
 fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
+
+fc_target_copy_resource(Arch
+    ${CMAKE_SOURCE_DIR}/src/Mod/Arch
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch
+    ${Arch_presets}
+)
 
 fc_target_copy_resource(Arch
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -59,6 +70,5 @@ INSTALL(
         Presets
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/Arch
-    FILES_MATCHING 
-        PATTERN "*.csv*"
+	FILES_MATCHING PATTERN "*.csv*"
 )
