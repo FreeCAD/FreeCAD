@@ -941,9 +941,9 @@ def export(exportList,filename):
                         val = "(".join(r[1:])
                         val = val.strip("'")
                         val = val.strip('"')
-                        if DEBUG: print "      property ",key," : ",str(val), " (", str(tp), ")"
+                        if DEBUG: print "      property ",key," : ",val.encode("utf8"), " (", str(tp), ")"
                         if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
-                            val = str(val)
+                            val = val.encode("utf8")
                         elif tp == "IfcBoolean":
                             if val == ".T.":
                                 val = True
