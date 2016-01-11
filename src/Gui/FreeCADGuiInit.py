@@ -98,7 +98,13 @@ class NoneWorkbench ( Workbench ):
 		return "Gui::NoneWorkbench"
 
 def InitApplications():
-	import os,traceback,cStringIO
+	import sys,os,traceback
+	try:
+		# Python3
+		import io as cStringIO
+	except ImportError:
+		# Python2
+		import cStringIO
 	# Searching modules dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
 	# (additional module paths are already cached)
 	ModDirs = FreeCAD.__path__
