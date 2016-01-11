@@ -257,6 +257,14 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     gp_Pnt m = c.Value((l+f)/2.0);
     gp_Pnt e = c.Value(l);
 
+    // If the minor radius is very small compared to the major radius
+    // the geometry actually degenerates to a line
+    double ratio = std::min(r1,r2)/std::max(r1,r2);
+    if (ratio < 0.001) {
+        printGeneric(c, id, out);
+        return;
+    }
+
     gp_Vec v1(m,s);
     gp_Vec v2(m,e);
     gp_Vec v3(0,0,1);
