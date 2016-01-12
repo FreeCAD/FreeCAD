@@ -2508,7 +2508,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.x = *center.x;
             *p0.y = *center.y;
 
-            //GCSsys.addConstraintP2PCoincident(p0,center,-1);
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == start || pos == end) {
             
             MoveParameters.resize(4); // x,y,cx,cy
@@ -2520,16 +2520,16 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
 
-                //GCSsys.addConstraintP2PCoincident(p0,p,-1);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             } 
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
 
-            //int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
-            //GCSsys.rescaleConstraint(i-1, 0.01);
-            //GCSsys.rescaleConstraint(i, 0.01);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
+            GCSsys.rescaleConstraint(i-1, 0.01);
+            GCSsys.rescaleConstraint(i, 0.01);
 
         }
     } else if (Geoms[geoId].type == Arc) {
