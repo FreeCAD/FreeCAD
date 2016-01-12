@@ -2216,7 +2216,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             if (pnt0Inside && pnt1Inside) {
                 double startangle, endangle;
 
-                aoh->getRange(startangle, endangle);
+                aoh->getRange(startangle, endangle, /*emulateCCW=*/true);
 
                 if (startangle > endangle) // if arc is reversed
                     std::swap(startangle, endangle);
@@ -3191,7 +3191,7 @@ void ViewProviderSketch::draw(bool temp)
             Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(aoh->handle());
 
             double startangle, endangle;
-            aoh->getRange(startangle, endangle);
+            aoh->getRange(startangle, endangle, /*emulateCCW=*/true);
             if (startangle > endangle) // if arc is reversed
                 std::swap(startangle, endangle);
 
