@@ -3572,7 +3572,7 @@ public:
         else if(Mode==STATUS_SEEK_Second) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
-            EditCurve.resize(31);
+            EditCurve.resize(34);
             Mode = STATUS_SEEK_Third;
         }
         else if(Mode==STATUS_SEEK_Third) {
