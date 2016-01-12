@@ -399,9 +399,12 @@ public:
     void setMinorRadius(double Radius);
     double getAngleXU(void) const;
     void setAngleXU(double angle);
+    Base::Vector3d getMajorAxisDir() const;
+    void setMajorAxisDir(Base::Vector3d newdir);
+    bool isReversedInXY() const;    
     
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
+    void getRange(double& u, double& v, bool emulateCCWXY) const;
+    void setRange(double u, double v, bool emulateCCWXY);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

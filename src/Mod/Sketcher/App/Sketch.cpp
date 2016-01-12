@@ -490,14 +490,14 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, 
     Base::Vector3d endPnt   = aoh->getEndPoint();
     double radmaj         = aoh->getMajorRadius();
     double radmin         = aoh->getMinorRadius();
-    double phi            = aoh->getAngleXU();
+    Base::Vector3d radmajdir = aoh->getMajorAxisDir();
     
     double dist_C_F = sqrt(radmaj*radmaj+radmin*radmin);
     // solver parameters
-    Base::Vector3d focus1 = center+dist_C_F*Vector3d(cos(phi), sin(phi),0); //+x
+    Base::Vector3d focus1 = center+dist_C_F*radmajdir; //+x
     
     double startAngle, endAngle;
-    aoh->getRange(startAngle, endAngle);
+    aoh->getRange(startAngle, endAngle,/*emulateCCW=*/true);
 
     GCS::Point p1, p2, p3;
     
@@ -529,8 +529,8 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, 
     Points.push_back(p3);    
     
     // add the radius parameters
-    params.push_back(new double(radmaj));
-    double *rmaj = params[params.size()-1];
+    params.push_back(new double(radmin));
+    double *rmin = params[params.size()-1];
     params.push_back(new double(startAngle));
     double *a1 = params[params.size()-1];
     params.push_back(new double(endAngle));
@@ -541,9 +541,9 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, 
     a.start      = p1;
     a.end        = p2;
     a.center     = p3;
-    a.focus.x    = f1X;
-    a.focus.y    = f1Y;
-    a.radmaj     = rmaj;
+    a.focus1.x    = f1X;
+    a.focus1.y    = f1Y;
+    a.radmin     = rmin;
     a.startAngle = a1;
     a.endAngle   = a2;
     def.index = ArcsOfHyperbola.size();
@@ -553,8 +553,8 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, 
     Geoms.push_back(def);
 
     // arcs require an ArcRules constraint for the end points
-    /*if (!fixed)
-        GCSsys.addConstraintArcOfHyperbolaRules(a);*/
+    if (!fixed)
+        GCSsys.addConstraintArcOfHyperbolaRules(a);
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
@@ -2167,13 +2167,11 @@ bool Sketch::updateGeometry()
                 GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
-                Base::Vector3d f1 = Vector3d(*myArc.focus.x, *myArc.focus.y, 0.0);
-                double radmaj = *myArc.radmaj;
+                Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
+                double radmin = *myArc.radmin;
                 
                 Base::Vector3d fd=f1-center;
-                double radmin = sqrt(fd*fd-radmaj*radmaj);
-                                
-                double phi = atan2(fd.y,fd.x);
+                double radmaj = sqrt(fd*fd-radmin*radmin); 
                 
                 aoh->setCenter(center);
                 if ( radmaj >= aoh->getMinorRadius() ){
@@ -2183,8 +2181,8 @@ bool Sketch::updateGeometry()
                     aoh->setMinorRadius(radmin);
                     aoh->setMajorRadius(radmaj);
                 }
-                aoh->setAngleXU(phi);
-                aoh->setRange(*myArc.startAngle, *myArc.endAngle);
+                aoh->setMajorAxisDir(fd);
+                aoh->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             }
         } catch (Base::Exception e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
