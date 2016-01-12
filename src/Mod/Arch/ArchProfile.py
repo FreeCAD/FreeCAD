@@ -40,7 +40,7 @@ __url__ = "http://www.freecadweb.org"
 # Presets in the form: Class, Name, Profile type, [profile data]
 # Search for profiles.csv in data/Mod/Arch/Presets and in the same folder as this file
 profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","profiles.csv"),
-                os.path.join(os.path.basedir(__file__),"Presets","profiles.csv")]
+                os.path.join(os.path.dirname(__file__),"Presets","profiles.csv")]
 
 def readPresets():
     Presets=[None]
