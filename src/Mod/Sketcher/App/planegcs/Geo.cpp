@@ -318,9 +318,11 @@ double Hyperbola::getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, do
 {
     double cf, dcf;
     cf = f1.subtr(center).length(dcf);
-    DeriVector2 hack (b, cf,
-                      db, dcf);//hack = a nonsense vector to calculate major radius with derivatives, useful just because the calculation formula is the same as  vector length formula
-    return hack.length(ret_dRadMaj);
+    double a, da;
+    a = sqrt(cf*cf - b*b);
+    da = (dcf*cf - db*b)/a;
+    ret_dRadMaj = da;
+    return a;
 }
 
 //returns major radius. The derivative by derivparam is returned into ret_dRadMaj argument.
