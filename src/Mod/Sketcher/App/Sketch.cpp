@@ -735,6 +735,9 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
         case ArcOfEllipse:
             return &ArcsOfEllipse[Geoms[geoId].index];
         break;
+        case ArcOfHyperbola:
+            return &ArcsOfHyperbola[Geoms[geoId].index];
+            break;        
         default:
             return 0;
     };
@@ -1764,6 +1767,12 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2)
             GCSsys.addConstraintPointOnEllipse(p1, a, tag);
             return ConstraintsCounter;
         }
+        else if (Geoms[geoId2].type == ArcOfHyperbola) {
+            GCS::ArcOfHyperbola &a = ArcsOfHyperbola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnHyperbolicArc(p1, a, tag);
+            return ConstraintsCounter;
+        }        
     }
     return -1;
 }
