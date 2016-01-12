@@ -3503,7 +3503,17 @@ Restart:
                                     angle1 = atan2(majdir.y, majdir.x);
                                     angle1plus = (startangle + endangle)/2;
                                     midpos1 = aoe->getCenter();
-                                } else
+                                } else if (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                                    const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola *>(geo1);
+                                    r1a = aoh->getMajorRadius();
+                                    r1b = aoh->getMinorRadius();
+                                    double startangle, endangle;
+                                    aoh->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = aoh->getMajorAxisDir();
+                                    angle1 = atan2(majdir.y, majdir.x);
+                                    angle1plus = (startangle + endangle)/2;
+                                    midpos1 = aoh->getCenter();
+                                }else
                                     break;
 
                                 if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -3536,11 +3546,22 @@ Restart:
                                     angle2 = atan2(majdir.y, majdir.x);
                                     angle2plus = (startangle + endangle)/2;
                                     midpos2 = aoe->getCenter();
+                                } else if (geo2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                                    const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola *>(geo2);
+                                    r2a = aoh->getMajorRadius();
+                                    r2b = aoh->getMinorRadius();
+                                    double startangle, endangle;
+                                    aoh->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = aoh->getMajorAxisDir();
+                                    angle2 = atan2(majdir.y, majdir.x);
+                                    angle2plus = (startangle + endangle)/2;
+                                    midpos2 = aoh->getCenter();
                                 } else
                                     break;
 
                                 if( geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
-                                    geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ){
+                                    geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                                    geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
 
                                     Base::Vector3d majDir, minDir, rvec;
                                     majDir = Base::Vector3d(cos(angle1),sin(angle1),0);//direction of major axis of ellipse
@@ -3559,7 +3580,8 @@ Restart:
 
 
                                 if( geo2->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
-                                    geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ) {
+                                    geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                                    geo2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
 
                                     Base::Vector3d majDir, minDir, rvec;
                                     majDir = Base::Vector3d(cos(angle2),sin(angle2),0);//direction of major axis of ellipse
