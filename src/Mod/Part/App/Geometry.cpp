@@ -2166,10 +2166,6 @@ void GeomArcOfHyperbola::getRange(double& u, double& v, bool emulateCCWXY) const
         if(isReversedInXY()){
             std::swap(u,v);
             u = -u; v = -v;
-            if (v < u)
-                v += 2*M_PI;
-            if (v-u > 2*M_PI)
-                v -= 2*M_PI;
         }
     }
 }
