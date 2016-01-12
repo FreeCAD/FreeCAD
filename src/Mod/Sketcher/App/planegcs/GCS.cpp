@@ -751,12 +751,20 @@ int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId)
 
 int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId)
 {
-    //addConstraintEqual(e1.radmaj, e2.radmaj, tagId);
     addConstraintEqual(e1.radmin, e2.radmin, tagId);
 
-    Constraint *constr = new ConstraintEqualMajorAxesEllipse(e1,e2);
+    Constraint *constr = new ConstraintEqualMajorAxesConic(&e1,&e2);
     constr->setTag(tagId);
     return addConstraint(constr);
+}
+
+int System::addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId)
+{
+    addConstraintEqual(a1.radmin, a2.radmin, tagId);
+    
+    Constraint *constr = new ConstraintEqualMajorAxesConic(&a1,&a2);
+    constr->setTag(tagId);
+    return addConstraint(constr);    
 }
 
 int System::addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId)
