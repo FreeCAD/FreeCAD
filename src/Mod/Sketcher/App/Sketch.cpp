@@ -1711,6 +1711,16 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         }
     }
     
+    if (Geoms[geoId2].type == ArcOfHyperbola) {
+        if (Geoms[geoId1].type == ArcOfHyperbola) {
+            GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+            GCS::ArcOfHyperbola &a2 = ArcsOfHyperbola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintEqualRadii(a1, a2, tag);
+            return ConstraintsCounter;
+        }
+    }
+    
     if (Geoms[geoId1].type == Ellipse) {
         GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
         if (Geoms[geoId2].type == ArcOfEllipse) {
