@@ -183,26 +183,38 @@ namespace GCS
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfEllipse* Copy();
     };
-
-    class ArcOfHyperbola: public Curve
+    
+    class Hyperbola: public Curve
     {
     public:
-        ArcOfHyperbola(){startAngle=0;endAngle=0;radmaj = 0;}
+        Hyperbola(){ radmin = 0;}
+        virtual ~Hyperbola(){}
+        Point center; 
+        Point focus1;
+        double *radmin;
+        double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
+        double getRadMaj(double* derivparam, double &ret_dRadMaj);
+        double getRadMaj();
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+        virtual int PushOwnParams(VEC_pD &pvec);
+        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
+        virtual Hyperbola* Copy();
+    };    
+
+    class ArcOfHyperbola: public Hyperbola
+    {
+    public:
+        ArcOfHyperbola(){startAngle=0;endAngle=0;radmin = 0;}
         virtual ~ArcOfHyperbola(){}
 	// parameters
         double *startAngle;
         double *endAngle;
-        double *radmaj;
         Point start;
         Point end;
-        Point center;
-	Point focus;
 	// interface helpers
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfHyperbola* Copy();
-	// Curve interface
-        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
     };
 
 } //namespace GCS

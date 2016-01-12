@@ -1423,6 +1423,218 @@ double ConstraintEllipticalArcRangeToEndPoints::maxStep(MAP_pD_D &dir, double li
     return lim;
 }
 
+// HyperbolicArcRangeToEndPoints
+ConstraintHyperbolicArcRangeToEndPoints::ConstraintHyperbolicArcRangeToEndPoints(Point &p, ArcOfHyperbola &a, double *angle_t)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(angle_t);
+    e = a;
+    e.PushOwnParams(pvec);
+    origpvec = pvec;
+    rescale();
+}
+
+void ConstraintHyperbolicArcRangeToEndPoints::ReconstructGeomPointers()
+{
+    int i=0;
+    p.x=pvec[i]; i++;
+    p.y=pvec[i]; i++;
+    i++;//we have an inline function for the angle
+    e.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintHyperbolicArcRangeToEndPoints::getTypeId()
+{
+    return HyperbolicArcRangeToEndPoints;
+}
+
+void ConstraintHyperbolicArcRangeToEndPoints::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+void ConstraintHyperbolicArcRangeToEndPoints::errorgrad(double *err, double *grad, double *param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+    
+    DeriVector2 c(e.center, param);
+    DeriVector2 f1(e.focus1, param);
+    DeriVector2 emaj = f1.subtr(c).getNormalized();
+    DeriVector2 emin = emaj.rotate90ccw();
+    double b, db;
+    b = *e.radmin; db = e.radmin==param ? 1.0 : 0.0;
+    double a, da;
+    a = e.getRadMaj(c,f1,b,db,da);
+    
+    DeriVector2 multimaj = emaj.multD(b, db);//a vector to muptiply pc by to yield an x for atan2. This is a minor radius drawn along major axis.
+    DeriVector2 multimin = emin.multD(a, da);//to yield y for atan2
+    
+    DeriVector2 pv(p, param);
+    DeriVector2 pc = pv.subtr(c); //point referenced to ellipse's center
+    
+    double x, dx, y, dy;//distorted coordinates of point in ellipse's coordinates, to be fed to atan2 to yiels a t-parameter (called "angle" here)
+    x = pc.scalarProd(multimaj, &dx);
+    y = pc.scalarProd(multimin, &dy);
+    double xylen2 = x*x + y*y ;//square of length of (x,y)
+    
+    double si, co;
+    si = sin(*angle()); co = cos(*angle());
+    
+    double dAngle = param==angle() ? 1.0 : 0.0;
+    
+    if (err)
+        *err = atan2(-si*x+co*y, co*x+si*y);//instead of calculating atan2(y,x) and subtracting angle, we rotate (x,y) by -angle and calculate atan2 of the result. Hopefully, this will not force angles to zero when x,y happen to be zero. Plus, one atan2 is cheaper to compute than two atan2's.
+        if (grad)
+            *grad = -dAngle + ( -dx*y / xylen2  +  dy*x / xylen2 );
+        
+}
+
+double ConstraintHyperbolicArcRangeToEndPoints::error()
+{
+    double err;
+    errorgrad(&err,0,0);
+    return scale * err;
+}
+
+double ConstraintHyperbolicArcRangeToEndPoints::grad(double *param)
+{
+    //first of all, check that we need to compute anything.
+    if ( findParamInPvec(param) == -1  ) return 0.0;
+    
+    double deriv;
+    errorgrad(0, &deriv, param);
+    
+    return deriv*scale;
+}    
+
+double ConstraintHyperbolicArcRangeToEndPoints::maxStep(MAP_pD_D &dir, double lim)
+{
+    // step(angle()) <= pi/18 = 10°
+    MAP_pD_D::iterator it = dir.find(angle());
+    if (it != dir.end()) {
+        double step = std::abs(it->second);
+        if (step > M_PI/18.)
+            lim = std::min(lim, (M_PI/18.) / step);
+    }
+    return lim;
+}
+
+// ConstraintPointOnHyperbola
+ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point &p, Hyperbola &e)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(e.center.x);
+    pvec.push_back(e.center.y);
+    pvec.push_back(e.focus1.x);
+    pvec.push_back(e.focus1.y);
+    pvec.push_back(e.radmin);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point &p, ArcOfHyperbola &e)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(e.center.x);
+    pvec.push_back(e.center.y);
+    pvec.push_back(e.focus1.x);
+    pvec.push_back(e.focus1.y);
+    pvec.push_back(e.radmin);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintPointOnHyperbola::getTypeId()
+{
+    return PointOnHyperbola;
+}
+
+void ConstraintPointOnHyperbola::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+double ConstraintPointOnHyperbola::error()
+{    
+    double X_0 = *p1x();
+    double Y_0 = *p1y();
+    double X_c = *cx();
+    double Y_c = *cy();     
+    double X_F1 = *f1x();
+    double Y_F1 = *f1y();
+    double b = *rmin();
+    
+    // Full sage worksheet at:
+    // http://forum.freecadweb.org/viewtopic.php?f=10&t=8038&p=110447#p110447
+    //
+    // Err = |PF2| - |PF1| - 2*a
+    // sage code:
+    // C = vector([X_c,Y_c])
+    // F2 = C+(C-F1)
+    // X_F2 = F2[0]
+    // Y_F2 = F2[1]
+    // a = sqrt((F1-C)*(F1-C)-b*b);
+    // show(a)
+    // DM=sqrt((P-F2)*(P-F2))-sqrt((P-F1)*(P-F1))-2*a
+    // show(DM.simplify_radical())
+    double err=-sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2)) + sqrt(pow(X_0
+        + X_F1 - 2*X_c, 2) + pow(Y_0 + Y_F1 - 2*Y_c, 2)) - 2*sqrt(-pow(b, 2) +
+        pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2));
+    return scale * err;
+}
+
+double ConstraintPointOnHyperbola::grad(double *param)
+{
+    double deriv=0.;
+    if (param == p1x() || param == p1y() ||
+        param == f1x() || param == f1y() ||
+        param == cx() || param == cy() ||
+        param == rmin()) {
+        
+        double X_0 = *p1x();
+        double Y_0 = *p1y();
+        double X_c = *cx();
+        double Y_c = *cy();
+        double X_F1 = *f1x();
+        double Y_F1 = *f1y();
+        double b = *rmin();
+        
+        if (param == p1x())
+            deriv += -(X_0 - X_F1)/sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2)) +
+                (X_0 + X_F1 - 2*X_c)/sqrt(pow(X_0 + X_F1 - 2*X_c, 2) + pow(Y_0 + Y_F1 -
+                2*Y_c, 2));
+        if (param == p1y())
+            deriv += -(Y_0 - Y_F1)/sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2)) +
+                (Y_0 + Y_F1 - 2*Y_c)/sqrt(pow(X_0 + X_F1 - 2*X_c, 2) + pow(Y_0 + Y_F1 -
+                2*Y_c, 2));
+        if (param == f1x())
+            deriv += (X_0 - X_F1)/sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2)) -
+                2*(X_F1 - X_c)/sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
+                2)) + (X_0 + X_F1 - 2*X_c)/sqrt(pow(X_0 + X_F1 - 2*X_c, 2) + pow(Y_0 +
+                Y_F1 - 2*Y_c, 2));
+        if (param == f1y())
+            deriv +=(Y_0 - Y_F1)/sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2)) -
+                2*(Y_F1 - Y_c)/sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
+                2)) + (Y_0 + Y_F1 - 2*Y_c)/sqrt(pow(X_0 + X_F1 - 2*X_c, 2) + pow(Y_0 +
+                Y_F1 - 2*Y_c, 2));
+        if (param == cx())
+            deriv += 2*(X_F1 - X_c)/sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1
+                - Y_c, 2)) - 2*(X_0 + X_F1 - 2*X_c)/sqrt(pow(X_0 + X_F1 - 2*X_c, 2) +
+                pow(Y_0 + Y_F1 - 2*Y_c, 2));
+        if (param == cy())
+            deriv +=2*(Y_F1 - Y_c)/sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1
+                - Y_c, 2)) - 2*(Y_0 + Y_F1 - 2*Y_c)/sqrt(pow(X_0 + X_F1 - 2*X_c, 2) +
+                pow(Y_0 + Y_F1 - 2*Y_c, 2));
+        if (param == rmin())
+            deriv += 2*b/sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,2));
+        }
+        return scale * deriv;
+}
+
 // ConstraintAngleViaPoint
 ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle)
 {

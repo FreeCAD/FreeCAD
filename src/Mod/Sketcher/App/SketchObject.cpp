@@ -1731,7 +1731,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola*>(geo);
         Base::Vector3d center = aoh->getCenter();
         double startAngle, endAngle;
-        aoh->getRange(startAngle, endAngle);
+        aoh->getRange(startAngle, endAngle, /*emulateCCW=*/true);
         double dir = (startAngle < endAngle) ? 1 : -1; // this is always == 1
         double arcLength = (endAngle - startAngle)*dir;
         double theta0 = Base::fmod(
@@ -1762,8 +1762,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     Part::GeomArcOfHyperbola *aoh1 = dynamic_cast<Part::GeomArcOfHyperbola*>(geomlist[GeoId]);
                     Part::GeomArcOfHyperbola *aoh2 = dynamic_cast<Part::GeomArcOfHyperbola*>(geomlist[newGeoId]);
-                    aoh1->setRange(startAngle, startAngle + theta1);
-                    aoh2->setRange(startAngle + theta2, endAngle);
+                    aoh1->setRange(startAngle, startAngle + theta1, /*emulateCCW=*/true);
+                    aoh2->setRange(startAngle + theta2, endAngle, /*emulateCCW=*/true);
 
                     // constrain the trimming points on the corresponding geometries
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
@@ -1862,7 +1862,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 if (theta1 > theta0) { // trim arc start
                     delConstraintOnPoint(GeoId, start, false);
                     Part::GeomArcOfHyperbola *aoe1 = dynamic_cast<Part::GeomArcOfHyperbola*>(geomlist[GeoId]);
-                    aoe1->setRange(startAngle + theta1, endAngle);
+                    aoe1->setRange(startAngle + theta1, endAngle, /*emulateCCW=*/true);
                     // constrain the trimming point on the corresponding geometry
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
@@ -1880,7 +1880,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 else { // trim arc end
                     delConstraintOnPoint(GeoId, end, false);
                     Part::GeomArcOfHyperbola *aoe1 = dynamic_cast<Part::GeomArcOfHyperbola*>(geomlist[GeoId]);
-                    aoe1->setRange(startAngle, startAngle + theta1);
+                    aoe1->setRange(startAngle, startAngle + theta1, /*emulateCCW=*/true);
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
                     newConstr->First = GeoId;

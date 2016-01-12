@@ -301,17 +301,82 @@ ArcOfEllipse* ArcOfEllipse::Copy()
     return crv;
 }
 
-//---------------arc of hyperbola
+//---------------hyperbola
+
+//this function is exposed to allow reusing pre-filled derivectors in constraints code
+double Hyperbola::getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj)
+{
+    double cf, dcf;
+    cf = f1.subtr(center).length(dcf);
+    DeriVector2 hack (b, cf,
+                      db, dcf);//hack = a nonsense vector to calculate major radius with derivatives, useful just because the calculation formula is the same as  vector length formula
+    return hack.length(ret_dRadMaj);
+}
+
+//returns major radius. The derivative by derivparam is returned into ret_dRadMaj argument.
+double Hyperbola::getRadMaj(double *derivparam, double &ret_dRadMaj)
+{
+    DeriVector2 c(center, derivparam);
+    DeriVector2 f1(focus1, derivparam);
+    return getRadMaj(c, f1, *radmin, radmin==derivparam ? 1.0 : 0.0, ret_dRadMaj);
+}
+
+//returns the major radius (plain value, no derivatives)
+double Hyperbola::getRadMaj()
+{
+    double dradmaj;//dummy
+    return getRadMaj(0,dradmaj);
+}
+
+DeriVector2 Hyperbola::CalculateNormal(Point &p, double* derivparam)
+{
+    //fill some vectors in
+    DeriVector2 cv (center, derivparam);
+    DeriVector2 f1v (focus1, derivparam);
+    DeriVector2 pv (p, derivparam);
+    
+    //calculation.
+    //focus2:
+    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0); // 2*cv - f1v
+    
+    //pf1, pf2 = vectors from p to focus1,focus2
+    DeriVector2 pf1 = f1v.subtr(pv).mult(-1.0);  // <--- differs from ellipse normal calculation code by inverting this vector
+    DeriVector2 pf2 = f2v.subtr(pv);
+    //return sum of normalized pf2, pf2
+    DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
+    
+    return ret;
+}
+
+int Hyperbola::PushOwnParams(VEC_pD &pvec)
+{
+    int cnt=0;
+    pvec.push_back(center.x); cnt++;
+    pvec.push_back(center.y); cnt++;
+    pvec.push_back(focus1.x); cnt++;
+    pvec.push_back(focus1.y); cnt++;
+    pvec.push_back(radmin); cnt++;
+    return cnt;
+}
+void Hyperbola::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
+{
+    center.x=pvec[cnt]; cnt++;
+    center.y=pvec[cnt]; cnt++;
+    focus1.x=pvec[cnt]; cnt++;
+    focus1.y=pvec[cnt]; cnt++;
+    radmin=pvec[cnt]; cnt++;
+}
+Hyperbola* Hyperbola::Copy()
+{
+    Hyperbola* crv = new Hyperbola(*this);
+    return crv;
+}
+
+//--------------- arc of hyperbola
 int ArcOfHyperbola::PushOwnParams(VEC_pD &pvec)
 {
     int cnt=0;
-    // hyperbola
-    pvec.push_back(center.x); cnt++;
-    pvec.push_back(center.y); cnt++;
-    pvec.push_back(focus.x); cnt++;
-    pvec.push_back(focus.y); cnt++;
-    pvec.push_back(radmaj); cnt++;
-    // arc
+    cnt += Hyperbola::PushOwnParams(pvec);
     pvec.push_back(start.x); cnt++;
     pvec.push_back(start.y); cnt++;
     pvec.push_back(end.x); cnt++;
@@ -323,13 +388,7 @@ int ArcOfHyperbola::PushOwnParams(VEC_pD &pvec)
 }
 void ArcOfHyperbola::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
 {
-    // hyperbola
-    center.x=pvec[cnt]; cnt++;
-    center.y=pvec[cnt]; cnt++;
-    focus.x=pvec[cnt]; cnt++;
-    focus.y=pvec[cnt]; cnt++;
-    radmaj=pvec[cnt]; cnt++;
-    //arc
+    Hyperbola::ReconstructOnNewPvec(pvec,cnt);
     start.x=pvec[cnt]; cnt++;
     start.y=pvec[cnt]; cnt++;
     end.x=pvec[cnt]; cnt++;
@@ -342,18 +401,5 @@ ArcOfHyperbola* ArcOfHyperbola::Copy()
     ArcOfHyperbola* crv = new ArcOfHyperbola(*this);
     return crv;
 }
-
-DeriVector2 ArcOfHyperbola::CalculateNormal(Point &p, double* derivparam)
-{
-    //fill some vectors in
-    DeriVector2 cv (center, derivparam);
-    DeriVector2 fv (focus, derivparam);
-    DeriVector2 pv (p, derivparam);
-    
-    DeriVector2 ret = fv;
-    
-    return ret;
-}
-
 
 }//namespace GCS
