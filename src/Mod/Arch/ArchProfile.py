@@ -38,30 +38,32 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # Presets in the form: Class, Name, Profile type, [profile data]
-# Loaded from Mod/Arch/Data/beams.csv
-profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","profiles.csv")]
+# Search for profiles.csv in data/Mod/Arch/Presets and in the same folder as this file
+profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","profiles.csv"),
+                os.path.join(os.path.basedir(__file__),"Presets","profiles.csv")]
 
 def readPresets():
     Presets=[None]
     for profilefile in profilefiles:
-        try:
-            with open(profilefile, 'rb') as csvfile:
-                beamreader = csv.reader(csvfile)
-                bid=1 #Unique index
-                for row in beamreader:
-                    if row[0].startswith("#"):
-                        continue
-                    try:
-                        r=[bid, row[0], row[1], row[2]]
-                        for i in range(3,len(row)):
-                            r=r+[float(row[i])]
-                        if not r in Presets:
-                            Presets.append(r)
-                        bid=bid+1
-                    except ValueError:
-                        print "Skipping bad line: "+str(row)
-        except IOError:
-            print "Could not open ",profilefile
+        if os.path.exists(profilefile):
+            try:
+                with open(profilefile, 'rb') as csvfile:
+                    beamreader = csv.reader(csvfile)
+                    bid=1 #Unique index
+                    for row in beamreader:
+                        if row[0].startswith("#"):
+                            continue
+                        try:
+                            r=[bid, row[0], row[1], row[2]]
+                            for i in range(3,len(row)):
+                                r=r+[float(row[i])]
+                            if not r in Presets:
+                                Presets.append(r)
+                            bid=bid+1
+                        except ValueError:
+                            print "Skipping bad line: "+str(row)
+            except IOError:
+                print "Could not open ",profilefile
     return Presets
 
 def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
