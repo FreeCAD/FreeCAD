@@ -61,7 +61,9 @@ namespace GCS
         EqualMajorAxesEllipse = 16,
         EllipticalArcRangeToEndPoints = 17,
         AngleViaPoint = 18,
-        Snell = 19
+        Snell = 19,
+        HyperbolicArcRangeToEndPoints = 20,
+        PointOnHyperbola = 21
     };
     
     enum InternalAlignmentType {
@@ -450,6 +452,46 @@ namespace GCS
         virtual double error();
         virtual double grad(double *);
         virtual double maxStep(MAP_pD_D &dir, double lim=1.);
+    };
+    
+    class ConstraintHyperbolicArcRangeToEndPoints : public Constraint
+    {
+    private:
+        inline double* angle() { return pvec[2]; }
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        Hyperbola e;
+        Point p;
+    public:
+        ConstraintHyperbolicArcRangeToEndPoints(Point &p, ArcOfHyperbola &a, double *angle_t);
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+        virtual double maxStep(MAP_pD_D &dir, double lim=1.);
+    };
+    
+    // PointOnHyperbola
+    class ConstraintPointOnHyperbola : public Constraint
+    {
+    private:
+        inline double* p1x() { return pvec[0]; }
+        inline double* p1y() { return pvec[1]; }
+        inline double* cx() { return pvec[2]; }
+        inline double* cy() { return pvec[3]; }
+        inline double* f1x() { return pvec[4]; }
+        inline double* f1y() { return pvec[5]; }
+        inline double* rmin() { return pvec[6]; }
+    public:
+        ConstraintPointOnHyperbola(Point &p, Hyperbola &e);
+        ConstraintPointOnHyperbola(Point &p, ArcOfHyperbola &a);
+        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        inline ConstraintPointOnHyperbola(){}
+        #endif
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
     };
     
     class ConstraintAngleViaPoint : public Constraint
