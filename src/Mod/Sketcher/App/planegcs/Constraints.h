@@ -25,6 +25,7 @@
 
 #include "Geo.h"
 #include "Util.h"
+#include <boost/graph/graph_concepts.hpp>
 
 //#define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debuging code intended to extract information to file bug reports against Eigen, not for production code
 
@@ -58,7 +59,7 @@ namespace GCS
         PointOnEllipse = 13,
         TangentEllipseLine = 14,
         InternalAlignmentPoint2Ellipse = 15,
-        EqualMajorAxesEllipse = 16,
+        EqualMajorAxesConic = 16,
         EllipticalArcRangeToEndPoints = 17,
         AngleViaPoint = 18,
         Snell = 19,
@@ -422,14 +423,15 @@ namespace GCS
         InternalAlignmentType AlignmentType;
     };
     
-    class ConstraintEqualMajorAxesEllipse : public Constraint
+    class ConstraintEqualMajorAxesConic : public Constraint
     {
     private:
-        Ellipse e1, e2;
+        MajorRadiusConic * e1;
+        MajorRadiusConic * e2;
         void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
         void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
     public:
-        ConstraintEqualMajorAxesEllipse(Ellipse &e1, Ellipse &e2);
+        ConstraintEqualMajorAxesConic(MajorRadiusConic * a1, MajorRadiusConic * a2);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();

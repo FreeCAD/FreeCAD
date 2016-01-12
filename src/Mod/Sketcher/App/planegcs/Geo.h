@@ -149,7 +149,17 @@ namespace GCS
         virtual Arc* Copy();
     };
     
-    class Ellipse: public Curve
+    class MajorRadiusConic: public Curve
+    {
+    public:
+        virtual ~MajorRadiusConic(){}
+        virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) = 0;
+        virtual double getRadMaj(double* derivparam, double &ret_dRadMaj) = 0;
+        virtual double getRadMaj() = 0;
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;
+    };
+    
+    class Ellipse: public MajorRadiusConic
     {
     public:
         Ellipse(){ radmin = 0;}
@@ -157,9 +167,9 @@ namespace GCS
         Point center; 
         Point focus1;
         double *radmin;
-        double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
-        double getRadMaj(double* derivparam, double &ret_dRadMaj);
-        double getRadMaj();
+        virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
+        virtual double getRadMaj(double* derivparam, double &ret_dRadMaj);
+        virtual double getRadMaj();
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
@@ -184,7 +194,7 @@ namespace GCS
         virtual ArcOfEllipse* Copy();
     };
     
-    class Hyperbola: public Curve
+    class Hyperbola: public MajorRadiusConic
     {
     public:
         Hyperbola(){ radmin = 0;}
@@ -192,9 +202,9 @@ namespace GCS
         Point center; 
         Point focus1;
         double *radmin;
-        double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
-        double getRadMaj(double* derivparam, double &ret_dRadMaj);
-        double getRadMaj();
+        virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
+        virtual double getRadMaj(double* derivparam, double &ret_dRadMaj);
+        virtual double getRadMaj();
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
