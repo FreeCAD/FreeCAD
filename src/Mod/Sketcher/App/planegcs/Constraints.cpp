@@ -1247,56 +1247,56 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
 }
 
 //  ConstraintEqualMajorAxesEllipse
-ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(Ellipse &e1, Ellipse &e2)
+ConstraintEqualMajorAxesConic:: ConstraintEqualMajorAxesConic(MajorRadiusConic * a1, MajorRadiusConic * a2)
 {
-    this->e1 = e1;
-    this->e1.PushOwnParams(pvec);
-    this->e2 = e2;
-    this->e2.PushOwnParams(pvec);
+    this->e1 = a1;
+    this->e1->PushOwnParams(pvec);
+    this->e2 = a2;
+    this->e2->PushOwnParams(pvec);
     origpvec = pvec;
     pvecChangedFlag = true;
     rescale();
 }
 
-void ConstraintEqualMajorAxesEllipse::ReconstructGeomPointers()
+void ConstraintEqualMajorAxesConic::ReconstructGeomPointers()
 {
     int i =0;
-    e1.ReconstructOnNewPvec(pvec, i);
-    e2.ReconstructOnNewPvec(pvec, i);
+    e1->ReconstructOnNewPvec(pvec, i);
+    e2->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
 }
 
-ConstraintType ConstraintEqualMajorAxesEllipse::getTypeId()
+ConstraintType ConstraintEqualMajorAxesConic::getTypeId()
 {
-    return EqualMajorAxesEllipse;
+    return EqualMajorAxesConic;
 }
 
-void ConstraintEqualMajorAxesEllipse::rescale(double coef)
+void ConstraintEqualMajorAxesConic::rescale(double coef)
 {
     scale = coef * 1;
 }
 
-void ConstraintEqualMajorAxesEllipse::errorgrad(double *err, double *grad, double *param)
+void ConstraintEqualMajorAxesConic::errorgrad(double *err, double *grad, double *param)
 {
     if (pvecChangedFlag) ReconstructGeomPointers();
     double a1, da1;
-    a1 = e1.getRadMaj(param, da1);
+    a1 = e1->getRadMaj(param, da1);
     double a2, da2;
-    a2 = e2.getRadMaj(param, da2);
+    a2 = e2->getRadMaj(param, da2);
     if (err)
         *err = a2 - a1;
     if (grad)
         *grad = da2 - da1;
 }
 
-double ConstraintEqualMajorAxesEllipse::error()
+double ConstraintEqualMajorAxesConic::error()
 {    
     double err;
     errorgrad(&err,0,0);
     return scale * err;
 }
 
-double ConstraintEqualMajorAxesEllipse::grad(double *param)
+double ConstraintEqualMajorAxesConic::grad(double *param)
 {
     //first of all, check that we need to compute anything.
     if ( findParamInPvec(param) == -1  ) return 0.0;
