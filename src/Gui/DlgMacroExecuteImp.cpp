@@ -108,7 +108,7 @@ void DlgMacroExecuteImp::fillUpList(void)
 
     // fill up with the directory
     userMacroListBox->clear();
-    for (int i=0; i<dir.count(); i++ ) {
+    for (unsigned int i=0; i<dir.count(); i++ ) {
         MacroItem* item = new MacroItem(userMacroListBox,false);
         item->setText(0, dir[i]);
     }
@@ -118,7 +118,7 @@ void DlgMacroExecuteImp::fillUpList(void)
 
     systemMacroListBox->clear();
     if (dir.exists()) {
-        for (int i=0; i<dir.count(); i++ ) {
+        for (unsigned int i=0; i<dir.count(); i++ ) {
             MacroItem* item = new MacroItem(systemMacroListBox,true);
             item->setText(0, dir[i]);
         }
@@ -134,13 +134,11 @@ void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem*
         LineEditMacroName->setText(item->text(0));
 
         executeButton->setEnabled(true);
-        editButton->setEnabled(true);
         deleteButton->setEnabled(true);
         createButton->setEnabled(true);
     }
     else {
         executeButton->setEnabled(false);
-        editButton->setEnabled(false);
         deleteButton->setEnabled(false);
         createButton->setEnabled(true);
     }
@@ -152,13 +150,11 @@ void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetIte
         LineEditMacroName->setText(item->text(0));
 
         executeButton->setEnabled(true);
-        editButton->setEnabled(false);
         deleteButton->setEnabled(false);
         createButton->setEnabled(false);
     }
     else {
         executeButton->setEnabled(false);
-        editButton->setEnabled(false);
         deleteButton->setEnabled(false);
         createButton->setEnabled(false);
     }
@@ -172,13 +168,11 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
         item = userMacroListBox->currentItem();
         if (item) {
             executeButton->setEnabled(true);
-            editButton->setEnabled(true);
             deleteButton->setEnabled(true);
             createButton->setEnabled(true);
         }
         else {
             executeButton->setEnabled(false);
-            editButton->setEnabled(false);
             deleteButton->setEnabled(false);
             createButton->setEnabled(true);
         }
@@ -188,13 +182,11 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
 
         if (item) {
             executeButton->setEnabled(true);
-            editButton->setEnabled(false);
             deleteButton->setEnabled(false);
             createButton->setEnabled(false);
         }
         else {
             executeButton->setEnabled(false);
-            editButton->setEnabled(false);
             deleteButton->setEnabled(false);
             createButton->setEnabled(false);
         }
@@ -204,7 +196,7 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
         LineEditMacroName->setText(item->text(0));
     }
     else {
-        LineEditMacroName->setText(QString::fromLatin1(""));
+        LineEditMacroName->clear();
     }
 }
 
@@ -270,27 +262,45 @@ void DlgMacroExecuteImp::on_fileChooser_fileNameChanged(const QString& fn)
     }
 }
 
-/** 
+/**
  * Opens the macro file in an editor.
  */
 void DlgMacroExecuteImp::on_editButton_clicked()
 {
-    QTreeWidgetItem* item = userMacroListBox->currentItem();
+    QDir dir;
+    QTreeWidgetItem* item = 0;
+
+    int index = tabMacroWidget->currentIndex();
+    if (index == 0) { //user-specific
+        item = userMacroListBox->currentItem();
+        dir.setPath(this->macroPath);
+    }
+    else {
+        //index == 1 system-wide
+        item = systemMacroListBox->currentItem();
+        dir.setPath(QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro"));
+    }
+
     if (!item)
         return;
 
     MacroItem * mitem = static_cast<MacroItem *>(item);
 
+    QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
+    PythonEditor* editor = new PythonEditor();
+    editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
+    PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+    edit->open(file);
+    edit->resize(400, 300);
+    getMainWindow()->addWindow(edit);
+
     if (mitem->systemWide) {
-        QMessageBox::critical(qApp->activeWindow(), QObject::tr("Delete macro"),
-                              QObject::tr("Not allowed to edit system-wide macros"));
-        return;
+        editor->setReadOnly(true);
+        QString shownName;
+        shownName = QString::fromLatin1("%1[*] - [%2]").arg(item->text(0)).arg(tr("Read-only"));
+        edit->setWindowTitle(shownName);
     }
 
-    QDir dir(this->macroPath);
-    QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
-
-    Application::Instance->open(file.toUtf8(), "FreeCADGui");
     close();
 }
 
