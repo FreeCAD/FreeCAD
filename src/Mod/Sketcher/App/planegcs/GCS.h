@@ -182,9 +182,8 @@ namespace GCS
         int addConstraintPointOnCircle(Point &p, Circle &c, int tagId=0);
         int addConstraintPointOnEllipse(Point &p, Ellipse &e, int tagId=0);
         int addConstraintPointOnHyperbolicArc(Point &p, ArcOfHyperbola &e, int tagId=0);
-        int addConstraintEllipticalArcRangeToEndPoints(Point &p, ArcOfEllipse &a, double *angle, int tagId=0);
         int addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId=0);
-        int addConstraintHyperbolicArcRangeToEndPoints(Point &p, ArcOfHyperbola &a, double *angle, int tagId=0);
+        int addConstraintCurveValue(Point &p, Curve &a, double *u, int tagId=0);
         int addConstraintArcOfHyperbolaRules(ArcOfHyperbola &a, int tagId=0);        
         int addConstraintPointOnArc(Point &p, Arc &a, int tagId=0);
         int addConstraintPerpendicularLine2Arc(Point &p1, Point &p2, Arc &a,
