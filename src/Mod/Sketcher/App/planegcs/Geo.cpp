@@ -105,6 +105,15 @@ DeriVector2 Line::CalculateNormal(Point &p, double* derivparam)
     return p2v.subtr(p1v).rotate90ccw();
 }
 
+DeriVector2 Line::Value(double u, double du, double* derivparam)
+{
+    DeriVector2 p1v(p1, derivparam);
+    DeriVector2 p2v(p2, derivparam);
+
+    DeriVector2 line_vec = p2v.subtr(p1v);
+    return p1v.sum(line_vec.multD(u,du));
+}
+
 int Line::PushOwnParams(VEC_pD &pvec)
 {
     int cnt=0;
@@ -136,6 +145,21 @@ DeriVector2 Circle::CalculateNormal(Point &p, double* derivparam)
     DeriVector2 pv (p, derivparam);
 
     return cv.subtr(pv);
+}
+
+DeriVector2 Circle::Value(double u, double du, double* derivparam)
+{
+    //(x,y) = center + cos(u)*(r,0) + sin(u)*(0,r)
+
+    DeriVector2 cv (center, derivparam);
+    double r, dr;
+    r = *(this->rad);  dr = (derivparam == this->rad) ? 1.0 : 0.0;
+    DeriVector2 ex (r,0.0,dr,0.0);
+    DeriVector2 ey = ex.rotate90ccw();
+    double si, dsi, co, dco;
+    si = std::sin(u); dsi = du*std::cos(u);
+    co = std::cos(u); dco = du*(-std::sin(u));
+    return cv.sum(ex.multD(co,dco).sum(ey.multD(si,dsi)));
 }
 
 int Circle::PushOwnParams(VEC_pD &pvec)
@@ -253,7 +277,40 @@ DeriVector2 Ellipse::CalculateNormal(Point &p, double* derivparam)
         }
     #endif
 
+        return ret;
+}
+
+DeriVector2 Ellipse::Value(double u, double du, double* derivparam)
+{
+    //In local coordinate system, value() of ellipse is:
+    //(a*cos(u), b*sin(u))
+    //In global, it is (vector formula):
+    //center + a_vec*cos(u) + b_vec*sin(u).
+    //That's what is being computed here.
+
+    // <construct a_vec, b_vec>
+    DeriVector2 c(this->center, derivparam);
+    DeriVector2 f1(this->focus1, derivparam);
+
+    DeriVector2 emaj = f1.subtr(c).getNormalized();
+    DeriVector2 emin = emaj.rotate90ccw();
+    double b, db;
+    b = *(this->radmin); db = this->radmin==derivparam ? 1.0 : 0.0;
+    double a, da;
+    a = this->getRadMaj(c,f1,b,db,da);
+    DeriVector2 a_vec = emaj.multD(a,da);
+    DeriVector2 b_vec = emin.multD(b,db);
+    // </construct a_vec, b_vec>
+
+    // sin, cos with derivatives:
+    double co, dco, si, dsi;
+    co = std::cos(u); dco = -std::sin(u)*du;
+    si = std::sin(u); dsi = std::cos(u)*du;
+
+    DeriVector2 ret; //point of ellipse at parameter value of u, in global coordinates
+    ret = a_vec.multD(co,dco).sum(b_vec.multD(si,dsi)).sum(c);
     return ret;
+
 }
 
 int Ellipse::PushOwnParams(VEC_pD &pvec)
