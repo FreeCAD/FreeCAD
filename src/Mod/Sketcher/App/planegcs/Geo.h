@@ -124,6 +124,7 @@ namespace GCS
         Point p1;
         Point p2;
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+        DeriVector2 Value(double u, double du, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Line* Copy();
@@ -137,6 +138,7 @@ namespace GCS
         Point center;
         double *rad;
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+        DeriVector2 Value(double u, double du, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Circle* Copy();
@@ -180,6 +182,7 @@ namespace GCS
         virtual double getRadMaj(double* derivparam, double &ret_dRadMaj);
         virtual double getRadMaj();
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+        DeriVector2 Value(double u, double du, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Ellipse* Copy();
