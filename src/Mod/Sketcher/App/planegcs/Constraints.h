@@ -63,7 +63,7 @@ namespace GCS
         EllipticalArcRangeToEndPoints = 17,
         AngleViaPoint = 18,
         Snell = 19,
-        HyperbolicArcRangeToEndPoints = 20,
+        CurveValue = 20,
         PointOnHyperbola = 21
     };
     
@@ -436,24 +436,6 @@ namespace GCS
         virtual void rescale(double coef=1.);
         virtual double error();
         virtual double grad(double *);
-    };
-    
-    // EllipticalArcRangeToEndPoints
-    class ConstraintEllipticalArcRangeToEndPoints : public Constraint
-    {
-    private:
-        inline double* angle() { return pvec[2]; }
-        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
-        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
-        Ellipse e;
-        Point p;
-    public:
-        ConstraintEllipticalArcRangeToEndPoints(Point &p, ArcOfEllipse &a, double *angle_t);
-        virtual ConstraintType getTypeId();
-        virtual void rescale(double coef=1.);
-        virtual double error();
-        virtual double grad(double *);
-        virtual double maxStep(MAP_pD_D &dir, double lim=1.);
     };
     
     class ConstraintCurveValue : public Constraint
