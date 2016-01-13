@@ -43,6 +43,7 @@ PROPERTY_SOURCE(PartDesign::ShapeBinder, Part::Feature)
 ShapeBinder::ShapeBinder()
 {
     ADD_PROPERTY_TYPE(Support, (0,0), "",(App::PropertyType)(App::Prop_None),"Support of the geometry");
+    Placement.StatusBits.set(3, true);
 }
 
 ShapeBinder::~ShapeBinder()
@@ -65,6 +66,7 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
 
         ShapeBinder::getFilterdReferences(&Support, obj, subs);
         Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
+        Placement.setValue(obj->Placement.getValue());
     }
 
     return Part::Feature::execute();
