@@ -1307,123 +1307,7 @@ double ConstraintEqualMajorAxesConic::grad(double *param)
     return deriv * scale;
 }
 
-// EllipticalArcRangeToEndPoints
-ConstraintEllipticalArcRangeToEndPoints::ConstraintEllipticalArcRangeToEndPoints(Point &p, ArcOfEllipse &a, double *angle_t)
-{
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(angle_t);
-    e = a;
-    e.PushOwnParams(pvec);
-    origpvec = pvec;
-    rescale();
-}
-
-void ConstraintEllipticalArcRangeToEndPoints::ReconstructGeomPointers()
-{
-    int i=0;
-    p.x=pvec[i]; i++;
-    p.y=pvec[i]; i++;
-    i++;//we have an inline function for the angle
-    e.ReconstructOnNewPvec(pvec, i);
-    pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEllipticalArcRangeToEndPoints::getTypeId()
-{
-    return EllipticalArcRangeToEndPoints;
-}
-
-void ConstraintEllipticalArcRangeToEndPoints::rescale(double coef)
-{
-    scale = coef * 1;
-}
-
-void ConstraintEllipticalArcRangeToEndPoints::errorgrad(double *err, double *grad, double *param)
-{
-    if (pvecChangedFlag) ReconstructGeomPointers();
-
-    DeriVector2 c(e.center, param);
-    DeriVector2 f1(e.focus1, param);
-    DeriVector2 emaj = f1.subtr(c).getNormalized();
-    DeriVector2 emin = emaj.rotate90ccw();
-    double b, db;
-    b = *e.radmin; db = e.radmin==param ? 1.0 : 0.0;
-    double a, da;
-    a = e.getRadMaj(c,f1,b,db,da);
-
-    DeriVector2 multimaj = emaj.multD(b, db);//a vector to muptiply pc by to yield an x for atan2. This is a minor radius drawn along major axis.
-    DeriVector2 multimin = emin.multD(a, da);//to yield y for atan2
-
-    DeriVector2 pv(p, param);
-    DeriVector2 pc = pv.subtr(c); //point referenced to ellipse's center
-
-    double x, dx, y, dy;//distorted coordinates of point in ellipse's coordinates, to be fed to atan2 to yiels a t-parameter (called "angle" here)
-    x = pc.scalarProd(multimaj, &dx);
-    y = pc.scalarProd(multimin, &dy);
-    double xylen2 = x*x + y*y ;//square of length of (x,y)
-
-    double si, co;
-    si = sin(*angle()); co = cos(*angle());
-
-    double dAngle = param==angle() ? 1.0 : 0.0;
-
-    if (err)
-        *err = atan2(-si*x+co*y, co*x+si*y);//instead of calculating atan2(y,x) and subtracting angle, we rotate (x,y) by -angle and calculate atan2 of the result. Hopefully, this will not force angles to zero when x,y happen to be zero. Plus, one atan2 is cheaper to compute than two atan2's.
-    if (grad)
-        *grad = -dAngle + ( -dx*y / xylen2  +  dy*x / xylen2 );
-
-}
-
-double ConstraintEllipticalArcRangeToEndPoints::error()
-{
-    double err;
-    errorgrad(&err,0,0);
-    return scale * err;
-}
-
-double ConstraintEllipticalArcRangeToEndPoints::grad(double *param)
-{
-    //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
-
-    double deriv;
-    errorgrad(0, &deriv, param);
-
-    //use numeric for testing
-    #if 0
-        double const eps = 0.00001;
-        double oldparam = *param;
-        double v0 = this->error();
-        *param += eps;
-        double vr = this->error();
-        *param = oldparam - eps;
-        double vl = this->error();
-        *param = oldparam;
-        //If not nasty, real derivative should be between left one and right one
-        double numretl = (v0-vl)/eps;
-        double numretr = (vr-v0)/eps;
-        assert(deriv <= std::max(numretl,numretr) );
-        assert(deriv >= std::min(numretl,numretr) );
-    #endif
-
-
-    return deriv*scale;
-}    
-
-double ConstraintEllipticalArcRangeToEndPoints::maxStep(MAP_pD_D &dir, double lim)
-{
-    // step(angle()) <= pi/18 = 10°
-    MAP_pD_D::iterator it = dir.find(angle());
-    if (it != dir.end()) {
-        double step = std::abs(it->second);
-        if (step > M_PI/18.)
-            lim = std::min(lim, (M_PI/18.) / step);
-    }
-    return lim;
-}
-
-// HyperbolicArcRangeToEndPoints
+// ConstraintCurveValue
 ConstraintCurveValue::ConstraintCurveValue(Point &p, double* pcoord, Curve& crv, double *u)
 {
     pvec.push_back(p.x);
@@ -1455,7 +1339,7 @@ void ConstraintCurveValue::ReconstructGeomPointers()
 
 ConstraintType ConstraintCurveValue::getTypeId()
 {
-    return HyperbolicArcRangeToEndPoints;
+    return CurveValue;
 }
 
 void ConstraintCurveValue::rescale(double coef)
