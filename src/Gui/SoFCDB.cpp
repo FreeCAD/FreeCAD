@@ -26,6 +26,7 @@
 # include <Inventor/actions/SoToVRML2Action.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/VRMLnodes/SoVRMLParent.h>
+# include <Inventor/SbString.h>
 #endif
 
 #include <Base/FileInfo.h>
@@ -217,6 +218,7 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
     SoToVRML2Action tovrml2;
     tovrml2.apply(node);
     SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
+    vrmlRoot->setInstancePrefix(SbString("o"));
     vrmlRoot->ref();
     std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
     vrmlRoot->unref(); // release the memory as soon as possible
