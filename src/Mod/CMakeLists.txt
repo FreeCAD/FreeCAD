@@ -129,3 +129,7 @@ endif(BUILD_PATH)
 if(BUILD_SHOW)
     add_subdirectory(Show)
 endif(BUILD_SHOW)
+
+if(BUILD_TECHDRAW)
+    add_subdirectory(TechDraw)
+endif(BUILD_TECHDRAW)
