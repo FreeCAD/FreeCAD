@@ -34,6 +34,7 @@ include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
+
 #if(CMAKE_CFG_INTDIR STREQUAL .)
     # No Debug/Release output paths
     set(DEBUG_MAIN_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
@@ -208,6 +209,7 @@ OPTION(BUILD_SKETCHER "Build the FreeCAD sketcher module" ON)
 OPTION(BUILD_SPREADSHEET "Build the FreeCAD spreadsheet module" ON)
 OPTION(BUILD_START "Build the FreeCAD start module" ON)
 OPTION(BUILD_TEST "Build the FreeCAD test module" ON)
+OPTION(BUILD_TECHDRAW "Build the FreeCAD Technical Drawing module" ON)
 OPTION(BUILD_WEB "Build the FreeCAD web module" ON)
 OPTION(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
 
@@ -235,7 +237,6 @@ if (FREECAD_BUILD_DEBIAN)
     # A Debian package for SMESH doesn't exist
     #set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
-
 if(BUILD_MESH_PART OR BUILD_FEM)
     set(BUILD_SMESH ON)
 endif()
