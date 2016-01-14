@@ -1,0 +1,506 @@
+/***************************************************************************
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+#include "PreCompiled.h"
+
+#ifndef _PreComp_
+# include <sstream>
+# include <cstring>
+# include <cstdlib>
+# include <exception>
+# include <boost/regex.hpp>
+# include <QString>
+# include <QStringList>
+# include <QRegExp>
+#endif
+
+#include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Parameter.h>
+
+#include <Mod/Measure/App/Measurement.h>
+
+#include "DrawViewPart.h"
+#include "DrawViewDimension.h"
+#include "DrawUtil.h"
+
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+
+using namespace TechDraw;
+
+//===========================================================================
+// DrawViewDimension
+//===========================================================================
+
+PROPERTY_SOURCE(TechDraw::DrawViewDimension, TechDraw::DrawView)
+
+const char* DrawViewDimension::TypeEnums[]= {"Distance",
+                                                "DistanceX",
+                                                "DistanceY",
+                                                "DistanceZ",
+                                                "Radius",
+                                                "Diameter",
+                                                "Angle",
+                                                NULL};
+
+const char* DrawViewDimension::ProjTypeEnums[]= {"True",
+                                                    "Projected",
+                                                    NULL};
+
+enum RefType{
+        invalidRef,
+        oneEdge,
+        twoEdge,
+        twoVertex
+    };
+
+DrawViewDimension::DrawViewDimension(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+
+    ADD_PROPERTY_TYPE(References,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Supporting References");
+    ADD_PROPERTY_TYPE(Precision,(2)   ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Precision");
+    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Dimension",App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize,(4)    ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
+    ADD_PROPERTY_TYPE(CentreLines,(0) ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Center Lines");
+    ADD_PROPERTY_TYPE(ProjDirection ,(0.,0.,1.0), "Dimension",App::Prop_None,"Projection normal direction");
+    ADD_PROPERTY_TYPE(FormatSpec,("%value%") ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Format");
+
+    Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
+    ADD_PROPERTY(Type,((long)0));
+
+    ProjectionType.setEnums(ProjTypeEnums);
+    ADD_PROPERTY(ProjectionType, ((long)0));                           //True or Projected measurement
+
+    //hide the DrawView properties that don't apply to Dimensions
+    //App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
+    int bitReadOnly = 2;
+    int bitHidden = 3;
+    ScaleType.StatusBits.set(bitReadOnly, true);
+    ScaleType.StatusBits.set(bitHidden, true);
+    Scale.StatusBits.set(bitReadOnly, true);
+    Scale.StatusBits.set(bitHidden,true);
+    Rotation.StatusBits.set(bitReadOnly, true);
+    Rotation.StatusBits.set(bitHidden, true);
+    //TODO: hide Dimension X,Y?
+
+    measurement = new Measure::Measurement();
+}
+
+DrawViewDimension::~DrawViewDimension()
+{
+    delete measurement;
+    measurement = 0;
+}
+
+void DrawViewDimension::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &References  ||
+            prop == &Precision   ||
+            prop == &Font        ||
+            prop == &Fontsize    ||
+            prop == &CentreLines ||
+            prop == &FormatSpec) {
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+        if (prop == &ProjectionType) {
+            const std::vector<std::string> &subElements = References.getSubValues();
+            if (subElements.empty()) {
+                Base::Console().Log("INFO - DrawViewDimension::onChanged - no References yet\n");
+                return;
+            }
+            std::vector<std::string>::const_iterator subIt = subElements.begin();
+            bool trueAllowed = true;
+            for(; subIt != subElements.end(); subIt++) {
+                std::string geomType = DrawUtil::getGeomTypeFromName((*subIt));
+                int refIndex = DrawUtil::getIndexFromName((*subIt));
+                int ref = get3DRef(refIndex,geomType);
+                if (ref < 0) {                                             //-1 => no reference
+                    trueAllowed = false;
+                    break;
+                }
+            }
+            if (ProjectionType.isValue("True") && !trueAllowed) {
+                Base::Console().Warning("Dimension %s missing Reference to 3D model. Must be Projected.\n", getNameInDocument());
+                ProjectionType.setValue("Projected");
+            }
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    DrawView::onChanged(prop);
+    }
+}
+
+short DrawViewDimension::mustExecute() const
+{
+    bool result = 0;
+    if (References.isTouched() ||
+        Type.isTouched() ||
+        ProjectionType.isTouched()) {
+        result =  1;
+    } else {
+        result = 0;
+    }
+    return result;
+}
+
+App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
+{
+    //Clear the previous measurement made
+    measurement->clear();
+
+    if (ProjectionType.isValue("True")) {
+        //Update Dimension.measurement with 3D References
+        const std::vector<std::string> &subElements = References.getSubValues();
+        ProjDirection.setValue(getViewPart()->Direction.getValue());
+        XAxisDirection.setValue(getViewPart()->XAxisDirection.getValue());
+        //Overall assumption is that the dimensions are only allowed for one view
+        App::DocumentObject *docObj = getViewPart()->Source.getValue();
+        std::vector<std::string>::const_iterator subEl = subElements.begin();
+        for(; subEl != subElements.end(); subEl++) {
+            //figure out which 3D geometry belongs to the 2D geometry in Dimension.References
+            //and update the Measurement.References
+            std::string geomType = DrawUtil::getGeomTypeFromName((*subEl));
+            int refIndex = DrawUtil::getIndexFromName((*subEl));
+            int ref = get3DRef(refIndex,geomType);
+            std::string newName = DrawUtil::makeGeomName(geomType, ref);
+            if (ref < 0) {
+                Base::Console().Log("INFO - FVD::execute - no 3D ref yet. Probably loading document.\n");
+            } else {
+                measurement->addReference(docObj,newName.c_str());
+            }
+        }
+    }
+    //TODO: if ProjectionType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
+
+    return App::DocumentObject::StdReturn;
+}
+
+std::string  DrawViewDimension::getFormatedValue() const
+{
+    QString str = QString::fromUtf8(FormatSpec.getStrValue().c_str());
+
+    QRegExp rx(QString::fromAscii("%(\\w+)%"));                        //any word bracketed by %
+    QStringList list;
+    int pos = 0;
+
+    while ((pos = rx.indexIn(str, pos)) != -1) {
+        list << rx.cap(0);
+        pos += rx.matchedLength();
+    }
+
+    for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it) {
+        if(*it == QString::fromAscii("%value%")){
+            double val = std::abs(getDimValue());
+            str.replace(*it, QString::number(val, 'f', Precision.getValue()) );
+        } else {                                                       //insert new placeholder replacement logic here
+            str.replace(*it, QString::fromAscii(""));
+        }
+    }
+
+    return str.toStdString();
+}
+
+double DrawViewDimension::getDimValue() const
+{
+    double result = 0.0;
+    if (!getViewPart()->hasGeometry()) {                               //happens when loading saved document
+        return result;
+    }
+    if (ProjectionType.isValue("True")) {
+        // True Values
+        if (!measurement->hasReferences()) {
+            return result;
+        }
+        if(Type.isValue("Distance")) {
+            //TODO: measurement->length() is the sum of the lengths of the edges in the References. is this what we want here?
+            //return measurement->length();
+            result = measurement->delta().Length();
+        } else if(Type.isValue("DistanceX")){
+            Base::Vector3d delta = measurement->delta();
+            result = delta.x;
+        } else if(Type.isValue("DistanceY")){
+            Base::Vector3d delta = measurement->delta();
+            result = delta.y;
+        } else if(Type.isValue("DistanceZ")){
+            Base::Vector3d delta = measurement->delta();
+            result = delta.z;
+        } else if(Type.isValue("Radius")){
+            result =  measurement->radius();
+        } else if(Type.isValue("Diameter")){
+            result =  measurement->radius() * 2.0;
+        } else if(Type.isValue("Angle")){
+            result = measurement->angle();
+        } else {
+            throw Base::Exception("getDimValue() - Unknown Dimension Type (1)");
+        }
+    } else {
+        // Projected Values
+        const std::vector<App::DocumentObject*> &objects = References.getValues();
+        const std::vector<std::string> &subElements      = References.getSubValues();
+        if (Type.isValue("Distance") && getRefType() == oneEdge) {
+            //TODO: Check for straight line Edge?
+            int idx = DrawUtil::getIndexFromName(subElements[0]);
+            DrawingGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+            DrawingGeometry::Generic* gen = static_cast<DrawingGeometry::Generic*>(geom);
+            Base::Vector2D start = gen->points[0];
+            Base::Vector2D end = gen->points[1];
+            Base::Vector2D line = end - start;
+            result = line.Length() / getViewPart()->Scale.getValue();
+        } else if (Type.isValue("Distance") && getRefType() == twoEdge) {
+            //only works for straight line edges
+            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+            DrawingGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
+            DrawingGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+            DrawingGeometry::Generic* gen0 = static_cast<DrawingGeometry::Generic*>(geom0);
+            DrawingGeometry::Generic* gen1 = static_cast<DrawingGeometry::Generic*>(geom1);
+            Base::Vector2D s0 = gen0->points[0];
+            Base::Vector2D e0 = gen0->points[1];
+            Base::Vector2D s1 = gen1->points[0];
+            Base::Vector2D e1 = gen1->points[1];
+            result = dist2Segs(s0,e0,s1,e1) / getViewPart()->Scale.getValue();
+        } else if (Type.isValue("Distance") && getRefType() == twoVertex) {
+            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+            DrawingGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+            DrawingGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+            Base::Vector2D start = v0->pnt;
+            Base::Vector2D end = v1->pnt;
+            Base::Vector2D line = end - start;
+            result = line.Length() / getViewPart()->Scale.getValue();
+        } else if (Type.isValue("DistanceX") && getRefType() == oneEdge) {
+            int idx = DrawUtil::getIndexFromName(subElements[0]);
+            DrawingGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+            DrawingGeometry::Generic* gen = static_cast<DrawingGeometry::Generic*>(geom);
+            Base::Vector2D start = gen->points[0];
+            Base::Vector2D end = gen->points[1];
+            Base::Vector2D line = end - start;
+            return fabs(line.fX) / getViewPart()->Scale.getValue();
+        } else if (Type.isValue("DistanceY") && getRefType() == oneEdge) {
+            int idx = DrawUtil::getIndexFromName(subElements[0]);
+            DrawingGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+            DrawingGeometry::Generic* gen = static_cast<DrawingGeometry::Generic*>(geom);
+            Base::Vector2D start = gen->points[0];
+            Base::Vector2D end = gen->points[1];
+            Base::Vector2D line = end - start;
+            result = fabs(line.fY) / getViewPart()->Scale.getValue();
+        } else if (Type.isValue("DistanceX") && getRefType() == twoVertex) {
+            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+            DrawingGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+            DrawingGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+            Base::Vector2D start = v0->pnt;
+            Base::Vector2D end = v1->pnt;
+            Base::Vector2D line = end - start;
+            result = fabs(line.fX) / getViewPart()->Scale.getValue();
+        } else if (Type.isValue("DistanceY") && getRefType() == twoVertex) {
+            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+            DrawingGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+            DrawingGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+            Base::Vector2D start = v0->pnt;
+            Base::Vector2D end = v1->pnt;
+            Base::Vector2D line = end - start;
+            result = fabs(line.fY) / getViewPart()->Scale.getValue();
+        } else if(Type.isValue("Radius")){
+            //only 1 reference for a Radius
+            int idx = DrawUtil::getIndexFromName(subElements[0]);
+            DrawingGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+            DrawingGeometry::Circle* circle = static_cast<DrawingGeometry::Circle*> (base);
+            result = circle->radius / getViewPart()->Scale.getValue();            //Projected BaseGeom is scaled for drawing
+        } else if(Type.isValue("Diameter")){
+            //only 1 reference for a Diameter
+            int idx = DrawUtil::getIndexFromName(subElements[0]);
+            DrawingGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+            DrawingGeometry::Circle* circle = static_cast<DrawingGeometry::Circle*> (base);
+            result = (circle->radius  * 2.0) / getViewPart()->Scale.getValue();   //Projected BaseGeom is scaled for drawing
+        } else if(Type.isValue("Angle")){
+            // Must project lines to 2D so cannot use measurement framework this time
+            //Relcalculate the measurement based on references stored.
+            //WF: why not use projected geom in GeomObject and Vector2D.GetAngle? intersection pt & direction issues?
+            //TODO: do we need to distinguish inner vs outer angle? -wf
+//            if(subElements.size() != 2) {
+//                throw Base::Exception("FVD - Two references required for angle measurement");
+//            }
+            if (getRefType() != twoEdge) {
+                throw Base::Exception("FVD - Two edge references required for angle measurement");
+            }
+            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+            TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(objects[0]);
+            DrawingGeometry::BaseGeom* edge0 = viewPart->getProjEdgeByIndex(idx0);
+            DrawingGeometry::BaseGeom* edge1 = viewPart->getProjEdgeByIndex(idx1);
+
+            // Only can find angles with straight line edges
+            if(edge0->geomType == DrawingGeometry::GENERIC &&
+               edge1->geomType == DrawingGeometry::GENERIC) {
+                DrawingGeometry::Generic *gen1 = static_cast<DrawingGeometry::Generic *>(edge0);
+                DrawingGeometry::Generic *gen2 = static_cast<DrawingGeometry::Generic *>(edge1);
+
+                Base::Vector3d p1S(gen1->points.at(0).fX, gen1->points.at(0).fY, 0.);
+                Base::Vector3d p1E(gen1->points.at(1).fX, gen1->points.at(1).fY, 0.);
+
+                Base::Vector3d p2S(gen2->points.at(0).fX, gen2->points.at(0).fY, 0.);
+                Base::Vector3d p2E(gen2->points.at(1).fX, gen2->points.at(1).fY, 0.);
+
+                Base::Vector3d dir1 = p1E - p1S;
+                Base::Vector3d dir2 = p2E - p2S;
+
+                // Line Intersetion (taken from ViewProviderSketch.cpp)
+                double det = dir1.x*dir2.y - dir1.y*dir2.x;
+                if ((det > 0 ? det : -det) < 1e-10)
+                    throw Base::Exception("Invalid selection - Det = 0");
+
+                double c1 = dir1.y*gen1->points.at(0).fX - dir1.x*gen1->points.at(0).fY;
+                double c2 = dir2.y*gen2->points.at(1).fX - dir2.x*gen2->points.at(1).fY;
+                double x = (dir1.x*c2 - dir2.x*c1)/det;
+                double y = (dir1.y*c2 - dir2.y*c1)/det;
+
+                // Intersection point
+                Base::Vector3d p0 = Base::Vector3d(x,y,0);
+
+                Base::Vector3d lPos((double) X.getValue(), (double) Y.getValue(), 0.);
+                //Base::Vector3d delta = lPos - p0;
+
+                // Create vectors point towards intersection always
+                Base::Vector3d a = -p0, b = -p0;
+                a += ((p1S - p0).Length() < FLT_EPSILON) ? p1E : p1S;
+                b += ((p2S - p0).Length() < FLT_EPSILON) ? p2E : p2S;
+
+                double angle2 = atan2( a.x*b.y - a.y*b.x, a.x*b.x + a.y*b.y );
+                result = angle2 * 180. / M_PI;
+            } else {
+                throw Base::Exception("getDimValue() - Unknown Dimension Type (2)");
+            }
+        }  //endif Angle
+    } //endif Projected
+    return result;
+}
+
+DrawViewPart* DrawViewDimension::getViewPart() const
+{
+    return dynamic_cast<TechDraw::DrawViewPart * >(References.getValues().at(0));
+}
+
+int DrawViewDimension::getRefType() const
+{
+    int refType = invalidRef;
+    const std::vector<std::string> &subElements      = References.getSubValues();
+    if ((subElements.size() == 1) &&
+        (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge")) {
+        refType = oneEdge;
+    } else if (subElements.size() == 2) {
+        if ((DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") &&
+            (DrawUtil::getGeomTypeFromName(subElements[1]) == "Edge")) {
+            refType = twoEdge;
+        } else if ((DrawUtil::getGeomTypeFromName(subElements[0]) == "Vertex") &&
+                   (DrawUtil::getGeomTypeFromName(subElements[1]) == "Vertex")) {
+            refType = twoVertex;
+        }
+    //} else add different types here - Vertex-Edge, Vertex-Face, ...
+    }
+    return refType;
+}
+
+int DrawViewDimension::get3DRef(int refIndex, std::string geomType) const
+{
+    int ref = -1;
+    if (geomType.compare("Edge") == 0) {
+        ref = getViewPart()->getEdgeRefByIndex(refIndex);
+    } else if (geomType.compare("Vertex") == 0) {
+        ref = getViewPart()->getVertexRefByIndex(refIndex);
+    }
+    return ref;
+}
+
+void DrawViewDimension::dumpRefs(char* text) const
+{
+    Base::Console().Message("DUMP - %s\n",text);
+    const std::vector<App::DocumentObject*> &objects = References.getValues();
+    const std::vector<std::string> &subElements = References.getSubValues();
+    std::vector<App::DocumentObject*>::const_iterator objIt = objects.begin();
+    std::vector<std::string>::const_iterator subIt = subElements.begin();
+    int i = 0;
+    for( ;objIt != objects.end();objIt++,subIt++,i++) {
+        Base::Console().Message("DUMP - ref: %d object: %s subElement: %s\n",i,(*objIt)->getNameInDocument(),(*subIt).c_str());
+    }
+}
+
+double DrawViewDimension::dist2Segs(Base::Vector2D s1,
+                                       Base::Vector2D e1,
+                                       Base::Vector2D s2,
+                                       Base::Vector2D e2) const
+{
+    gp_Pnt start(s1.fX,s1.fY,0.0);
+    gp_Pnt end(e1.fX,e1.fY,0.0);
+    TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(start);
+    TopoDS_Vertex v2 = BRepBuilderAPI_MakeVertex(end);
+    BRepBuilderAPI_MakeEdge makeEdge1(v1,v2);
+    TopoDS_Edge edge1 = makeEdge1.Edge();
+
+    start = gp_Pnt(s2.fX,s2.fY,0.0);
+    end = gp_Pnt(e2.fX,e2.fY,0.0);
+    v1 = BRepBuilderAPI_MakeVertex(start);
+    v2 = BRepBuilderAPI_MakeVertex(end);
+    BRepBuilderAPI_MakeEdge makeEdge2(v1,v2);
+    TopoDS_Edge edge2 = makeEdge2.Edge();
+
+    BRepExtrema_DistShapeShape extss(edge1, edge2);
+    if (!extss.IsDone()) {
+        throw Base::Exception("FVD - BRepExtrema_DistShapeShape failed");
+    }
+    int count = extss.NbSolution();
+    double minDist = 0.0;
+    if (count != 0) {
+        minDist = extss.Value();
+    } //TODO: else { explode }
+
+    return minDist;
+}
+
+bool DrawViewDimension::hasReferences(void) const
+{
+    bool result = false;
+    const std::vector<App::DocumentObject*> &refs = References.getValues();
+    if (refs.empty()) {
+        result = false;
+    } else {
+        result = true;
+    }
+    return result;
+}
