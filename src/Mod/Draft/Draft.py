@@ -1132,8 +1132,9 @@ def extrude(obj,vector,solid=False):
     newobj.Base = obj
     newobj.Dir = vector
     newobj.Solid = solid
-    obj.ViewObject.Visibility = False
-    formatObject(newobj,obj)
+    if gui:
+        obj.ViewObject.Visibility = False
+        formatObject(newobj,obj)
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
