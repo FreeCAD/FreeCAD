@@ -142,10 +142,18 @@ void CmdPartDesignBody::activated(int iMsg)
             baseFeature = features[0];
             if ( baseFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) &&
                     PartDesign::Body::findBodyOf ( baseFeature ) ) {
-                // Prevent creatung bodies based on features already belonging to other bodies
+                // Prevent creating bodies based on features already belonging to other bodies
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
                         QObject::tr("Body can't be based on a PartDesign feature."));
-                return;
+                baseFeature = nullptr;
+
+            }
+            
+            if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
+                // Prevent creating bodies based on bodies
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
+                        QObject::tr("Body can't be based on annother body."));
+                baseFeature = nullptr;
 
             }
 
