@@ -157,6 +157,27 @@ Cell *PropertySheet::getValue(CellAddress key)
         return i->second;
 }
 
+const Cell *PropertySheet::getValue(CellAddress key) const
+{
+    std::map<CellAddress, Cell*>::const_iterator i = data.find(key);
+
+    if (i == data.end())
+        return 0;
+    else
+        return i->second;
+}
+
+
+const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
+{
+    std::map<std::string, CellAddress>::const_iterator it = revAliasProp.find(alias);
+
+    if (it != revAliasProp.end())
+        return getValue(it->second);
+    else
+        return 0;
+}
+
 std::set<CellAddress> PropertySheet::getUsedCells() const
 {
     std::set<CellAddress> usedSet;

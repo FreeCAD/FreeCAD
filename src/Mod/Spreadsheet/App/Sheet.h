@@ -140,6 +140,8 @@ public:
 
     void setAlias(CellAddress address, const std::string & alias);
 
+    std::string getAddressFromAlias(const std::string & alias) const;
+
     void setSpans(CellAddress address, int rows, int columns);
 
     std::set<std::string> dependsOn(CellAddress address) const;
