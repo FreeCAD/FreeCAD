@@ -83,6 +83,8 @@ public:
     { return this->_Points; }
     void setBasicPoints(const std::vector<value_type>& pts)
     { this->_Points = pts; }
+    void swap(std::vector<value_type>& pts)
+    { this->_Points.swap(pts); }
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
 
