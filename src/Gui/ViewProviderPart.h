@@ -44,6 +44,7 @@ public:
     QIcon getIcon(void) const;
 
     virtual bool doubleClicked(void);
+    virtual bool canDropObject(App::DocumentObject*) const;
 protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
