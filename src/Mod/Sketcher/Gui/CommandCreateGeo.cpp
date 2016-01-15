@@ -3663,6 +3663,8 @@ public:
             
             int currentgeoid = getHighestCurveIndex();
 
+            try {
+
             Gui::Command::openCommand("Add sketch arc of hyperbola");
 
             //Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it to balance
@@ -3677,43 +3679,14 @@ public:
                     minAxisPoint.fX, minAxisPoint.fY,
                     centerPoint.fX, centerPoint.fY,
                     startAngle, endAngle); 
-            /*
+
             currentgeoid++;
-            
-            try {                 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1,currentgeoid); // constrain major axis
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2,currentgeoid); // constrain minor axis
 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    focus1P.x,focus1P.y);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+3,Sketcher::start,currentgeoid);
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid);
 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    focus2P.x,focus2P.y);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+4,Sketcher::start,currentgeoid);     
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -3721,7 +3694,7 @@ public:
                 Gui::Command::updateActive();
                 return false;
             }
-            */
+            
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
             
