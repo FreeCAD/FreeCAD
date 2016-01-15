@@ -225,6 +225,10 @@ namespace GCS
         int addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId=0);
         int addConstraintInternalAlignmentEllipseFocus1(Ellipse &e, Point &p1, int tagId=0);
         int addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, int tagId=0);
+        int addConstraintInternalAlignmentPoint2Hyperbola(Hyperbola &e, Point &p1, InternalAlignmentType alignmentType, int tagId=0);
+        int addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId=0);
+        int addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId=0);
+        int addConstraintInternalAlignmentHyperbolaFocus(Hyperbola &e, Point &p1, int tagId=0);
 
         double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
         double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);
