@@ -110,6 +110,11 @@
         <UserDocu>Set alias for cell address</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getAlias">
+      <Documentation>
+        <UserDocu>Get alias for cell address</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getCellFromAlias">
       <Documentation>
         <UserDocu>Get cell address given an alias</UserDocu>

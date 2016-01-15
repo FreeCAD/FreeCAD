@@ -473,6 +473,31 @@ PyObject* SheetPy::setAlias(PyObject *args)
     }
 }
 
+PyObject* SheetPy::getAlias(PyObject *args)
+{
+    const char * strAddress;
+
+    if (!PyArg_ParseTuple(args, "s:getAlias", &strAddress))
+        return 0;
+
+    try {
+        CellAddress address(strAddress);
+        const Cell * cell = getSheetPtr()->getCell(address);
+        std::string alias;
+
+        if (cell && cell->getAlias(alias))
+            return Py::new_reference_to( Py::String( alias ) );
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+}
+
 PyObject* SheetPy::getCellFromAlias(PyObject *args)
 {
     const char * alias;
