@@ -28,12 +28,12 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-# define DrawingExport  __declspec(dllexport)
+# define TechDrawExport  __declspec(dllexport)
 # define PartExport     __declspec(dllimport)
 # define MeasureExport  __declspec(dllimport)
 # define MeshExport     __declspec(dllimport)
 #else // for Linux
-# define DrawingExport
+# define TechDrawExport
 # define MeasureExport
 # define PartExport 
 # define MeshExport   

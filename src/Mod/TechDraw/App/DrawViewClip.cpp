@@ -165,5 +165,5 @@ template<> const char* TechDraw::DrawViewClipPython::getViewProviderName(void) c
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawViewClip>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawViewClip>;
 }

@@ -36,7 +36,7 @@ class Measurement;
 namespace TechDraw
 {
 
-class DrawingExport DrawViewDimension : public TechDraw::DrawView
+class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawViewDimension);
 

@@ -34,7 +34,7 @@
 namespace TechDraw
 {
 
-class DrawingExport DrawHatch : public TechDraw::DrawView
+class TechDrawExport DrawHatch : public TechDraw::DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawHatch);
 

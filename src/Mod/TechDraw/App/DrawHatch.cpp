@@ -108,5 +108,5 @@ template<> const char* TechDraw::DrawHatchPython::getViewProviderName(void) cons
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawHatch>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawHatch>;
 }

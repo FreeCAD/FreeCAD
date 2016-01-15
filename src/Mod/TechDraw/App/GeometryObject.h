@@ -43,7 +43,7 @@ namespace TechDrawGeometry
 class BaseGeom;
 /** Algo class for projecting shapes and creating SVG output of it
  */
-class DrawingExport GeometryObject
+class TechDrawExport GeometryObject
 {
 public:
     /// Constructor
@@ -66,11 +66,11 @@ public:
     const std::vector<int> & getEdgeRefs()   const { return edgeReferences; };
     const std::vector<int> & getFaceRefs()   const { return faceReferences; };
 
-    DrawingGeometry::BaseGeom * projectEdge(const TopoDS_Shape &edge,
+    TechDrawGeometry::BaseGeom * projectEdge(const TopoDS_Shape &edge,
                                             const TopoDS_Shape &support,
                                             const Base::Vector3d &direction,
                                             const Base::Vector3d &projXAxis) const;
-    DrawingGeometry::Vertex   * projectVertex(const TopoDS_Shape &vert,
+    TechDrawGeometry::Vertex   * projectVertex(const TopoDS_Shape &vert,
                                               const TopoDS_Shape &support,
                                               const Base::Vector3d &direction,
                                               const Base::Vector3d &projXAxis) const;
@@ -79,7 +79,7 @@ public:
                          const TopoDS_Shape   &support,
                          const Base::Vector3d &direction,
                          const Base::Vector3d &xaxis,
-                         std::vector<DrawingGeometry::Face *> &result) const;
+                         std::vector<TechDrawGeometry::Face *> &result) const;
 
     /// Process 3D shape to get 2D geometry
     /*!
@@ -128,7 +128,7 @@ protected:
                       const TopoDS_Shape &S,
                       bool visible,
                       ExtractionType extractionType,
-                      std::vector<DrawingGeometry::Face *> &projFaces,
+                      std::vector<TechDrawGeometry::Face *> &projFaces,
                       std::vector<int> &faceRefs) const;
 
     int calculateGeometry(const TopoDS_Shape &input, ExtractionType extractionType, std::vector<BaseGeom *> &geoms) const;

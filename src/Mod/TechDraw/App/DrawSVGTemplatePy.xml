@@ -5,10 +5,10 @@
     Name="DrawSVGTemplatePy"
     Twin="DrawSVGTemplate"
     TwinPointer="DrawSVGTemplate"
-    Include="Mod/Drawing/App/DrawSVGTemplate.h"
-    Namespace="Drawing"
+    Include="Mod/TechDraw/App/DrawSVGTemplate.h"
+    Namespace="TechDraw"
     FatherInclude="DrawTemplatePy.h"
-    FatherNamespace="Drawing">
+    FatherNamespace="TechDraw">
     <Documentation>
       <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
       <UserDocu>Feature for creating and manipulating Drawing SVG Templates</UserDocu>

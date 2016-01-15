@@ -39,7 +39,7 @@ namespace TechDraw
  * Class super-container for managing a collection of DrawProjGroupItem
  * Page Features
  */
-class DrawingExport DrawProjGroup : public TechDraw::DrawViewCollection
+class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 {
     PROPERTY_HEADER(TechDraw::DrawProjGroup);
 

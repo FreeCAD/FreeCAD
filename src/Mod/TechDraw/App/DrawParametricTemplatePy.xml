@@ -5,10 +5,10 @@
     Name="DrawParametricTemplatePy"
     Twin="DrawParametricTemplate"
     TwinPointer="DrawParametricTemplate"
-    Include="Mod/Drawing/App/DrawParametricTemplate.h"
-    Namespace="Drawing"
+    Include="Mod/TechDraw/App/DrawParametricTemplate.h"
+    Namespace="TechDraw"
     FatherInclude="DrawTemplatePy.h"
-    FatherNamespace="Drawing">
+    FatherNamespace="TechDraw">
     <Documentation>
       <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
       <UserDocu>Feature for creating and manipulating Drawing Templates</UserDocu>

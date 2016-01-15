@@ -142,5 +142,5 @@ template<> const char* TechDraw::DrawViewSymbolPython::getViewProviderName(void)
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawViewSymbol>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawViewSymbol>;
 }

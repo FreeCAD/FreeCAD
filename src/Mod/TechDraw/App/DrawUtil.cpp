@@ -47,7 +47,7 @@ namespace DrawUtil {
 // convenient utility functions for Drawing Module
 //==============================================================================
 extern "C" {
-int DrawingExport getIndexFromName(std::string geomName)
+int TechDrawExport getIndexFromName(std::string geomName)
 {
    boost::regex re("\\d+$");                                           //one of more digits at end of string
    boost::match_results<std::string::const_iterator> what;
@@ -69,7 +69,7 @@ int DrawingExport getIndexFromName(std::string geomName)
    }
 }
 
-std::string DrawingExport getGeomTypeFromName(std::string geomName)
+std::string TechDrawExport getGeomTypeFromName(std::string geomName)
 {
    boost::regex re("^[a-zA-Z]*");                                           //one or more letters at start of string
    boost::match_results<std::string::const_iterator> what;
@@ -90,7 +90,7 @@ std::string DrawingExport getGeomTypeFromName(std::string geomName)
    }
 }
 
-std::string DrawingExport makeGeomName(std::string geomType, int index)
+std::string TechDrawExport makeGeomName(std::string geomType, int index)
 {
     std::stringstream newName;
     newName << geomType << index;

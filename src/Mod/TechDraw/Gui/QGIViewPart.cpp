@@ -110,13 +110,13 @@ void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart *obj)
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
 }
 
-QPainterPath QGIViewPart::drawPainterPath(DrawingGeometry::BaseGeom *baseGeom) const
+QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const
 {
     QPainterPath path;
 
     switch(baseGeom->geomType) {
-        case DrawingGeometry::CIRCLE: {
-          DrawingGeometry::Circle *geom = static_cast<DrawingGeometry::Circle *>(baseGeom);
+        case TechDrawGeometry::CIRCLE: {
+          TechDrawGeometry::Circle *geom = static_cast<TechDrawGeometry::Circle *>(baseGeom);
 
           double x = geom->center.fX - geom->radius;
           double y = geom->center.fY - geom->radius;
@@ -125,8 +125,8 @@ QPainterPath QGIViewPart::drawPainterPath(DrawingGeometry::BaseGeom *baseGeom) c
           //Base::Console().Message("TRACE -drawPainterPath - making an CIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
 
         } break;
-        case DrawingGeometry::ARCOFCIRCLE: {
-          DrawingGeometry::AOC  *geom = static_cast<DrawingGeometry::AOC *>(baseGeom);
+        case TechDrawGeometry::ARCOFCIRCLE: {
+          TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
 
           //double x = geom->center.fX - geom->radius;
           //double y = geom->center.fY - geom->radius;
@@ -135,8 +135,8 @@ QPainterPath QGIViewPart::drawPainterPath(DrawingGeometry::BaseGeom *baseGeom) c
                   geom->startPnt.fX, geom->startPnt.fY);
           //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFCIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
         } break;
-        case DrawingGeometry::ELLIPSE: {
-          DrawingGeometry::Ellipse *geom = static_cast<DrawingGeometry::Ellipse *>(baseGeom);
+        case TechDrawGeometry::ELLIPSE: {
+          TechDrawGeometry::Ellipse *geom = static_cast<TechDrawGeometry::Ellipse *>(baseGeom);
 
           // Calculate start and end points as ellipse with theta = 0 and pi
           double startX = geom->center.fX + geom->major * cos(geom->angle),
@@ -152,8 +152,8 @@ QPainterPath QGIViewPart::drawPainterPath(DrawingGeometry::BaseGeom *baseGeom) c
 
           //Base::Console().Message("TRACE -drawPainterPath - making an ELLIPSE @(%.3f,%.3f) R1:%.3f R2:%.3f\n",x, y, geom->major, geom->minor);
         } break;
-        case DrawingGeometry::ARCOFELLIPSE: {
-          DrawingGeometry::AOE *geom = static_cast<DrawingGeometry::AOE *>(baseGeom);
+        case TechDrawGeometry::ARCOFELLIPSE: {
+          TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
 
           pathArc(path, geom->major, geom->minor, geom->angle, geom->largeArc, geom->cw,
                         geom->endPnt.fX, geom->endPnt.fY,
@@ -161,10 +161,10 @@ QPainterPath QGIViewPart::drawPainterPath(DrawingGeometry::BaseGeom *baseGeom) c
           //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFELLIPSE R1:%.3f R2:%.3f From: (%.3f,%.3f) To: (%.3f,%.3f)\n",geom->major, geom->minor,geom->startPnt.fX, geom->startPnt.fY,geom->endPnt.fX, geom->endPnt.fY);
 
         } break;
-        case DrawingGeometry::BSPLINE: {
-          DrawingGeometry::BSpline *geom = static_cast<DrawingGeometry::BSpline *>(baseGeom);
+        case TechDrawGeometry::BSPLINE: {
+          TechDrawGeometry::BSpline *geom = static_cast<TechDrawGeometry::BSpline *>(baseGeom);
 
-          std::vector<DrawingGeometry::BezierSegment>::const_iterator it = geom->segments.begin();
+          std::vector<TechDrawGeometry::BezierSegment>::const_iterator it = geom->segments.begin();
 
           // Move painter to the beginning of our first segment
           path.moveTo(it->pnts[0].fX, it->pnts[0].fY);
@@ -191,8 +191,8 @@ QPainterPath QGIViewPart::drawPainterPath(DrawingGeometry::BaseGeom *baseGeom) c
               }
           }
         } break;
-        case DrawingGeometry::GENERIC: {
-          DrawingGeometry::Generic *geom = static_cast<DrawingGeometry::Generic *>(baseGeom);
+        case TechDrawGeometry::GENERIC: {
+          TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(baseGeom);
 
           path.moveTo(geom->points[0].fX, geom->points[0].fY);
           std::vector<Base::Vector2D>::const_iterator it = geom->points.begin();
@@ -286,18 +286,18 @@ void QGIViewPart::drawViewPart()
 
 #if MOD_TECHDRAW_HANDLE_FACES
     // Draw Faces
-    const std::vector<DrawingGeometry::Face *> &faceGeoms = part->getFaceGeometry();
+    const std::vector<TechDrawGeometry::Face *> &faceGeoms = part->getFaceGeometry();
     const std::vector<int> &faceRefs = part->getFaceReferences();
-    std::vector<DrawingGeometry::Face *>::const_iterator fit = faceGeoms.begin();
+    std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
     QGIFace* face;
     QPen facePen;
     for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
-        std::vector<DrawingGeometry::Wire *> faceWires = (*fit)->wires;
+        std::vector<TechDrawGeometry::Wire *> faceWires = (*fit)->wires;
         QPainterPath facePath;
-        for(std::vector<DrawingGeometry::Wire *>::iterator wire = faceWires.begin(); wire != faceWires.end(); wire++) {
+        for(std::vector<TechDrawGeometry::Wire *>::iterator wire = faceWires.begin(); wire != faceWires.end(); wire++) {
             QPainterPath wirePath;
             QPointF shapePos;
-            for(std::vector<DrawingGeometry::BaseGeom *>::iterator baseGeom = (*wire)->geoms.begin();
+            for(std::vector<TechDrawGeometry::BaseGeom *>::iterator baseGeom = (*wire)->geoms.begin();
                 baseGeom != (*wire)->geoms.end();
                 baseGeom++) {
                 QPainterPath edgePath = drawPainterPath(*baseGeom);
@@ -318,9 +318,9 @@ void QGIViewPart::drawViewPart()
         //_dumpPath(faceId.str().c_str(),facePath);
 
         QGIFace *fitem = new QGIFace(-1);
-        // TODO: DrawingGeometry::Face has no easy method of determining hidden/visible???
+        // TODO: TechDrawGeometry::Face has no easy method of determining hidden/visible???
         // Hide any edges that are hidden if option is set.
-//      if((*fit)->extractType == DrawingGeometry::WithHidden && !part->ShowHiddenLines.getValue())
+//      if((*fit)->extractType == TechDrawGeometry::WithHidden && !part->ShowHiddenLines.getValue())
 //          graphicsItem->hide();
         addToGroup(fitem);
         fitem->setPos(0.0,0.0);
@@ -341,12 +341,12 @@ void QGIViewPart::drawViewPart()
             TechDraw::DrawHatch* feat = (*itHatch);
             const std::vector<std::string> &edgeNames = feat->Edges.getSubValues();
             std::vector<std::string>::const_iterator itEdge = edgeNames.begin();
-            std::vector<DrawingGeometry::BaseGeom*> unChained;
+            std::vector<TechDrawGeometry::BaseGeom*> unChained;
 
             //get all edge geometries for this hatch
             for (; itEdge != edgeNames.end(); itEdge++) {
                 int idxEdge = DrawUtil::getIndexFromName((*itEdge));
-                DrawingGeometry::BaseGeom* edgeGeom = viewPart->getProjEdgeByIndex(idxEdge);
+                TechDrawGeometry::BaseGeom* edgeGeom = viewPart->getProjEdgeByIndex(idxEdge);
                 if (!edgeGeom) {
                     Base::Console().Log("Error - qgivp::drawViewPart - edgeGeom: %d is NULL\n",idxEdge);
                 }
@@ -354,10 +354,10 @@ void QGIViewPart::drawViewPart()
             }
 
             //chain edges tail to nose into a closed region
-            std::vector<DrawingGeometry::BaseGeom*> chained = DrawingGeometry::chainGeoms(unChained);
+            std::vector<TechDrawGeometry::BaseGeom*> chained = TechDrawGeometry::chainGeoms(unChained);
 
             //iterate through the chain to make QPainterPath
-            std::vector<DrawingGeometry::BaseGeom*>::iterator itChain = chained.begin();
+            std::vector<TechDrawGeometry::BaseGeom*>::iterator itChain = chained.begin();
             QPainterPath hatchPath;
             for (; itChain != chained.end(); itChain++) {
                 QPainterPath subPath;
@@ -382,27 +382,27 @@ void QGIViewPart::drawViewPart()
     }
 
     // Draw Edges
-    const std::vector<DrawingGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
+    const std::vector<TechDrawGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
     const std::vector<int> &refs = viewPart->getEdgeReferences();
-    std::vector<DrawingGeometry::BaseGeom *>::const_iterator it = geoms.begin();
+    std::vector<TechDrawGeometry::BaseGeom *>::const_iterator it = geoms.begin();
     QGIEdge* item;
 
     for(int i = 0 ; it != geoms.end(); ++it, i++) {
         //TODO: investigate if an Edge can be both Hidden and Smooth???
-        if(((*it)->extractType == DrawingGeometry::Plain)  ||
-          (((*it)->extractType == DrawingGeometry::WithHidden) && viewPart->ShowHiddenLines.getValue()) ||
-          ((*it)->extractType == DrawingGeometry::WithSmooth)) {
-//          (((*it)->extractType == DrawingGeometry::WithSmooth) && part->ShowSmoothLines.getValue())) {
+        if(((*it)->extractType == TechDrawGeometry::Plain)  ||
+          (((*it)->extractType == TechDrawGeometry::WithHidden) && viewPart->ShowHiddenLines.getValue()) ||
+          ((*it)->extractType == TechDrawGeometry::WithSmooth)) {
+//          (((*it)->extractType == TechDrawGeometry::WithSmooth) && part->ShowSmoothLines.getValue())) {
             //item = new QGIEdge(refs.at(i));
             item = new QGIEdge(i);
             item->setReference(refs.at(i));
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);
             item->setStrokeWidth(lineWidth);
-            if((*it)->extractType == DrawingGeometry::WithHidden) {
+            if((*it)->extractType == TechDrawGeometry::WithHidden) {
                 item->setStrokeWidth(lineWidthHid);
                 item->setHiddenEdge(true);
-            } else if((*it)->extractType == DrawingGeometry::WithSmooth) {
+            } else if((*it)->extractType == TechDrawGeometry::WithSmooth) {
                 item->setSmoothEdge(true);
             }
             item->setPath(drawPainterPath(*it));
@@ -419,9 +419,9 @@ void QGIViewPart::drawViewPart()
     }
 
     // Draw Vertexs:
-    const std::vector<DrawingGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
+    const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     const std::vector<int> &vertRefs                    = viewPart->getVertexReferences();
-    std::vector<DrawingGeometry::Vertex *>::const_iterator vert = verts.begin();
+    std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
 
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         QGIVertex *item = new QGIVertex(i);

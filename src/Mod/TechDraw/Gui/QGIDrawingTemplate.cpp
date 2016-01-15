@@ -97,9 +97,9 @@ void QGIDrawingTemplate::draw()
     // Clear the previous geometry stored
 
     // Get a list of geometry and iterate
-    const std::vector<DrawingGeometry::BaseGeom *> &geoms =  tmplte->getGeometry();
+    const std::vector<TechDrawGeometry::BaseGeom *> &geoms =  tmplte->getGeometry();
 
-    std::vector<DrawingGeometry::BaseGeom *>::const_iterator it = geoms.begin();
+    std::vector<TechDrawGeometry::BaseGeom *>::const_iterator it = geoms.begin();
 
     QPainterPath path;
 
@@ -107,9 +107,9 @@ void QGIDrawingTemplate::draw()
     // iterate through all the geometries
     for(; it != geoms.end(); ++it) {
         switch((*it)->geomType) {
-          case DrawingGeometry::GENERIC: {
+          case TechDrawGeometry::GENERIC: {
 
-            DrawingGeometry::Generic *geom = static_cast<DrawingGeometry::Generic *>(*it);
+            TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(*it);
 
             path.moveTo(geom->points[0].fX, geom->points[0].fY);
             std::vector<Base::Vector2D>::const_iterator it = geom->points.begin();

@@ -62,7 +62,7 @@
 
 #include "Geometry.h"
 #include "DrawViewPart.h"
-#include "ProjectionAlgos.h"
+//#include "ProjectionAlgos.h"
 #include "DrawHatch.h"
 //#include "DrawViewDimension.h"
 
@@ -96,7 +96,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"X-Axis direction");
     //ADD_PROPERTY_TYPE(HatchAreas ,(0),vgroup,App::Prop_None,"Hatched areas of this view");
 
-    geometryObject = new DrawingGeometry::GeometryObject();
+    geometryObject = new TechDrawGeometry::GeometryObject();
 }
 
 DrawViewPart::~DrawViewPart()
@@ -233,7 +233,7 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     return result;
 }
 
-const std::vector<DrawingGeometry::Vertex *> & DrawViewPart::getVertexGeometry() const
+const std::vector<TechDrawGeometry::Vertex *> & DrawViewPart::getVertexGeometry() const
 {
     return geometryObject->getVertexGeometry();
 }
@@ -243,7 +243,7 @@ const std::vector<int> & DrawViewPart::getVertexReferences() const
     return geometryObject->getVertexRefs();
 }
 
-const std::vector<DrawingGeometry::Face *> & DrawViewPart::getFaceGeometry() const
+const std::vector<TechDrawGeometry::Face *> & DrawViewPart::getFaceGeometry() const
 {
     return geometryObject->getFaceGeometry();
 }
@@ -253,7 +253,7 @@ const std::vector<int> & DrawViewPart::getFaceReferences() const
     return geometryObject->getFaceRefs();
 }
 
-const std::vector<DrawingGeometry::BaseGeom  *> & DrawViewPart::getEdgeGeometry() const
+const std::vector<TechDrawGeometry::BaseGeom  *> & DrawViewPart::getEdgeGeometry() const
 {
     return geometryObject->getEdgeGeometry();
 }
@@ -264,7 +264,7 @@ const std::vector<int> & DrawViewPart::getEdgeReferences() const
 }
 
 //! project Source Edge(idx) to 2D BaseGeom
-DrawingGeometry::BaseGeom *DrawViewPart::getCompleteEdge(int idx) const
+TechDrawGeometry::BaseGeom *DrawViewPart::getCompleteEdge(int idx) const
 {
    //NOTE: idx is in fact a Reference to an Edge in Source
    //returns projection of ref'd Edge as BaseGeom. Why not just use existing BaseGeom(idx)?
@@ -282,7 +282,7 @@ DrawingGeometry::BaseGeom *DrawViewPart::getCompleteEdge(int idx) const
     const TopoDS_Shape &support = static_cast<Part::Feature*>(link)->Shape.getValue();
     //TODO: make sure prjShape gets deleted
 
-    DrawingGeometry::BaseGeom* prjShape = 0;
+    TechDrawGeometry::BaseGeom* prjShape = 0;
     try {
         prjShape = geometryObject->projectEdge(shape, support, Direction.getValue(), _getValidXDir(this));
     }
@@ -303,7 +303,7 @@ DrawingGeometry::BaseGeom *DrawViewPart::getCompleteEdge(int idx) const
 }
 
 //! project Source Vertex(idx) to 2D geometry
-DrawingGeometry::Vertex * DrawViewPart::getVertex(int idx) const
+TechDrawGeometry::Vertex * DrawViewPart::getVertex(int idx) const
 {
    //## Get the Part Link ##/
     App::DocumentObject* link = Source.getValue();
@@ -318,20 +318,20 @@ DrawingGeometry::Vertex * DrawViewPart::getVertex(int idx) const
 
     const TopoDS_Shape &support = static_cast<Part::Feature*>(link)->Shape.getValue();
     //TODO: Make sure prjShape gets deleted
-    DrawingGeometry::Vertex *prjShape = geometryObject->projectVertex(shape, support, Direction.getValue(), _getValidXDir(this));
+    TechDrawGeometry::Vertex *prjShape = geometryObject->projectVertex(shape, support, Direction.getValue(), _getValidXDir(this));
     //Base::Console().Log("vert %f, %f \n", prjShape->pnt.fX,  prjShape->pnt.fY);
     return prjShape;
 }
 
-DrawingGeometry::Vertex* DrawViewPart::getVertexGeomByRef(int ref) const
+TechDrawGeometry::Vertex* DrawViewPart::getVertexGeomByRef(int ref) const
 {
-    const std::vector<DrawingGeometry::Vertex *> &verts = getVertexGeometry();
+    const std::vector<TechDrawGeometry::Vertex *> &verts = getVertexGeometry();
     if (verts.empty()) {
         Base::Console().Log("INFO - getVertexGeomByRef(%d) - no Vertex Geometry. Probably restoring?\n",ref);
         return NULL;
     }
     const std::vector<int> &vertRefs                    = getVertexReferences();
-    std::vector<DrawingGeometry::Vertex *>::const_iterator vert = verts.begin();
+    std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
     bool found = false;
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         if (vertRefs[i] == ref) {
@@ -349,15 +349,15 @@ DrawingGeometry::Vertex* DrawViewPart::getVertexGeomByRef(int ref) const
 }
 
 //! returns existing BaseGeom of Edge with 3D Reference = ref
-DrawingGeometry::BaseGeom* DrawViewPart::getEdgeGeomByRef(int ref) const
+TechDrawGeometry::BaseGeom* DrawViewPart::getEdgeGeomByRef(int ref) const
 {
-    const std::vector<DrawingGeometry::BaseGeom *> &geoms = getEdgeGeometry();
+    const std::vector<TechDrawGeometry::BaseGeom *> &geoms = getEdgeGeometry();
     if (geoms.empty()) {
         Base::Console().Log("INFO - getEdgeGeomByRef(%d) - no Edge Geometry. Probably restoring?\n",ref);
         return NULL;
     }
     const std::vector<int> &refs = getEdgeReferences();
-    std::vector<DrawingGeometry::BaseGeom*>::const_iterator it = geoms.begin();
+    std::vector<TechDrawGeometry::BaseGeom*>::const_iterator it = geoms.begin();
     bool found = false;
     for(int i = 0 ; it != geoms.end(); ++it, i++) {
         if (refs[i] == ref) {
@@ -375,9 +375,9 @@ DrawingGeometry::BaseGeom* DrawViewPart::getEdgeGeomByRef(int ref) const
 }
 
 //! returns existing BaseGeom of 2D Edge(idx)
-DrawingGeometry::BaseGeom* DrawViewPart::getProjEdgeByIndex(int idx) const
+TechDrawGeometry::BaseGeom* DrawViewPart::getProjEdgeByIndex(int idx) const
 {
-    const std::vector<DrawingGeometry::BaseGeom *> &geoms = getEdgeGeometry();
+    const std::vector<TechDrawGeometry::BaseGeom *> &geoms = getEdgeGeometry();
     if (geoms.empty()) {
         Base::Console().Log("INFO - getProjEdgeByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
         return NULL;
@@ -386,9 +386,9 @@ DrawingGeometry::BaseGeom* DrawViewPart::getProjEdgeByIndex(int idx) const
 }
 
 //! returns existing geometry of 2D Vertex(idx)
-DrawingGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
+TechDrawGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
 {
-    const std::vector<DrawingGeometry::Vertex *> &geoms = getVertexGeometry();
+    const std::vector<TechDrawGeometry::Vertex *> &geoms = getVertexGeometry();
     if (geoms.empty()) {
         Base::Console().Log("INFO - getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
         return NULL;
@@ -424,8 +424,8 @@ Base::BoundBox3d DrawViewPart::getBoundingBox() const
 bool DrawViewPart::hasGeometry(void) const
 {
     bool result = false;
-    const std::vector<DrawingGeometry::Vertex*> &verts = getVertexGeometry();
-    const std::vector<DrawingGeometry::BaseGeom*> &edges = getEdgeGeometry();
+    const std::vector<TechDrawGeometry::Vertex*> &verts = getVertexGeometry();
+    const std::vector<TechDrawGeometry::BaseGeom*> &edges = getEdgeGeometry();
     if (verts.empty() &&
         edges.empty() ) {
         result = false;
@@ -467,5 +467,5 @@ template<> const char* TechDraw::DrawViewPartPython::getViewProviderName(void) c
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawViewPart>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawViewPart>;
 }

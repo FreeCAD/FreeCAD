@@ -49,7 +49,7 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewAnnotation, TechDraw::DrawView)
 
 
-DrawViewAnnotation::DrawViewAnnotation(void) 
+DrawViewAnnotation::DrawViewAnnotation(void)
 {
     static const char *vgroup = "Annotation";
 
@@ -62,9 +62,11 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the text");
 
     ADD_PROPERTY_TYPE(TextSize,(8),vgroup,App::Prop_None,"The size of the text in mm");
-    
-    Scale.StatusBits.set(3);         //hide scale.  n/a for Annotation
-    ScaleType.StatusBits.set(3);
+
+    //Scale.StatusBits.set(3);         //hide scale.  n/a for Annotation
+    //ScaleType.StatusBits.set(3);
+    Scale.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
 }
 
 DrawViewAnnotation::~DrawViewAnnotation()
@@ -87,5 +89,5 @@ template<> const char* TechDraw::DrawViewAnnotationPython::getViewProviderName(v
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawViewAnnotation>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawViewAnnotation>;
 }

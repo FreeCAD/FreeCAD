@@ -37,7 +37,7 @@ namespace TechDraw
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport DrawViewSection : public DrawViewPart
+class TechDrawExport DrawViewSection : public DrawViewPart
 {
     PROPERTY_HEADER(Part::DrawViewSection);
 
@@ -65,7 +65,7 @@ public:
     }
 
 public:
-    void getSectionSurface(std::vector<DrawingGeometry::Face *> &sectionFace) const;
+    void getSectionSurface(std::vector<TechDrawGeometry::Face *> &sectionFace) const;
 
 protected:
     TopoDS_Shape result;

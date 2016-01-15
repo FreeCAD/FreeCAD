@@ -91,7 +91,7 @@ protected:
                                      double x, double y,
                                      double curx, double cury) const;
 
-    QPainterPath drawPainterPath(DrawingGeometry::BaseGeom *baseGeom) const;
+    QPainterPath drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const;
     std::vector <TechDraw::DrawHatch *> getHatchesForView(TechDraw::DrawViewPart* viewPart);
     void drawViewPart();
 

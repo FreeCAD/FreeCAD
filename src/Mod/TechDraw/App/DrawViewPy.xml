@@ -5,8 +5,8 @@
     Name="DrawViewPy"
     Twin="DrawView"
     TwinPointer="DrawView"
-    Include="Mod/Drawing/App/DrawView.h"
-    Namespace="Drawing"
+    Include="Mod/TechDraw/App/DrawView.h"
+    Namespace="TechDraw"
     FatherInclude="App/DocumentObjectPy.h"
     FatherNamespace="App">
     <Documentation>

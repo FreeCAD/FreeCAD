@@ -117,7 +117,7 @@ App::DocumentObjectExecReturn *DrawParametricTemplate::execute(void)
 
 int DrawParametricTemplate::drawLine(double x1, double y1, double x2, double y2)
 {
-    DrawingGeometry::Generic *line = new DrawingGeometry::Generic();
+    TechDrawGeometry::Generic *line = new TechDrawGeometry::Generic();
 
     line->points.push_back(Base::Vector2D(x1, y1));
     line->points.push_back(Base::Vector2D(x2, y2));
@@ -128,7 +128,7 @@ int DrawParametricTemplate::drawLine(double x1, double y1, double x2, double y2)
 
 int DrawParametricTemplate::clearGeometry()
 {
-    for(std::vector<DrawingGeometry::BaseGeom *>::iterator it = geom.begin(); it != geom.end(); ++it) {
+    for(std::vector<TechDrawGeometry::BaseGeom *>::iterator it = geom.begin(); it != geom.end(); ++it) {
         delete *it;
         *it = 0;
     }
@@ -147,5 +147,5 @@ template<> const char* TechDraw::DrawParametricTemplatePython::getViewProviderNa
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawParametricTemplate>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawParametricTemplate>;
 }

@@ -33,7 +33,7 @@
 namespace TechDraw
 {
 
-class DrawingExport DrawPage: public App::DocumentObject
+class TechDrawExport DrawPage: public App::DocumentObject
 {
     PROPERTY_HEADER(TechDraw::DrawPage);
 

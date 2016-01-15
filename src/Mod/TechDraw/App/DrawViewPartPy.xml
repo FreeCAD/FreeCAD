@@ -5,10 +5,10 @@
     Name="DrawViewPartPy"
     Twin="DrawViewPart"
     TwinPointer="DrawViewPart"
-    Include="Mod/Drawing/App/DrawViewPart.h"
-    Namespace="Drawing"
-    FatherInclude="Mod/Drawing/App/DrawViewPy.h"
-    FatherNamespace="Drawing">
+    Include="Mod/TechDraw/App/DrawViewPart.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPy.h"
+    FatherNamespace="TechDraw">
     <Documentation>
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>Feature for creating and manipulating Drawing Part Views</UserDocu>

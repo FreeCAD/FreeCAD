@@ -357,5 +357,5 @@ template<> const char* TechDraw::DrawSVGTemplatePython::getViewProviderName(void
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawSVGTemplate>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawSVGTemplate>;
 }

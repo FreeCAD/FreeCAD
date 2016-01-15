@@ -38,7 +38,7 @@ namespace TechDraw
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport DrawParametricTemplate: public TechDraw::DrawTemplate
+class TechDrawExport DrawParametricTemplate: public TechDraw::DrawTemplate
 {
     PROPERTY_HEADER(TechDraw::DrawParametricTemplate);
 
@@ -67,7 +67,7 @@ public:
     virtual unsigned int getMemSize(void) const;
 
 public:
-    std::vector<DrawingGeometry::BaseGeom *> getGeometry() { return geom; }
+    std::vector<TechDrawGeometry::BaseGeom *> getGeometry() { return geom; }
     int clearGeometry();
 
     // Template Drawing Methods
@@ -80,7 +80,7 @@ protected:
     void onChanged(const App::Property* prop);
 
 protected:
-    std::vector<DrawingGeometry::BaseGeom *> geom;
+    std::vector<TechDrawGeometry::BaseGeom *> geom;
 
 private:
     static const char* OrientationEnums[];

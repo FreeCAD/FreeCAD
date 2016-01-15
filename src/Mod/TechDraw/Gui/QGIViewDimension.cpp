@@ -360,14 +360,14 @@ void QGIViewDimension::draw()
         if((dim->References.getValues().size() == 1) &&
            (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge")) {
             int idx = DrawUtil::getIndexFromName(SubNames[0]);
-            DrawingGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
+            TechDrawGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
             if (!geom) {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
                                     idx,refObj->getEdgeGeometry().size());
                 return;
             }
-            if (geom->geomType == DrawingGeometry::GENERIC) {
-                DrawingGeometry::Generic *gen = static_cast<DrawingGeometry::Generic *>(geom);
+            if (geom->geomType == TechDrawGeometry::GENERIC) {
+                TechDrawGeometry::Generic *gen = static_cast<TechDrawGeometry::Generic *>(geom);
                 Base::Vector2D pnt1 = gen->points.at(0);
                 Base::Vector2D pnt2 = gen->points.at(1);
                 distStart = Base::Vector3d(pnt1.fX, pnt1.fY, 0.);
@@ -380,8 +380,8 @@ void QGIViewDimension::draw()
                   DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
             int idx0 = DrawUtil::getIndexFromName(SubNames[0]);
             int idx1 = DrawUtil::getIndexFromName(SubNames[1]);
-            DrawingGeometry::Vertex *v0 = refObj->getProjVertexByIndex(idx0);
-            DrawingGeometry::Vertex *v1 = refObj->getProjVertexByIndex(idx1);
+            TechDrawGeometry::Vertex *v0 = refObj->getProjVertexByIndex(idx0);
+            TechDrawGeometry::Vertex *v1 = refObj->getProjVertexByIndex(idx1);
             if (!v0 || !v1) {
                 //Ugh. this is probably because the document is restoring. check log.
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
@@ -395,17 +395,17 @@ void QGIViewDimension::draw()
             DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int idx0 = DrawUtil::getIndexFromName(SubNames[0]);
             int idx1 = DrawUtil::getIndexFromName(SubNames[1]);
-            DrawingGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
-            DrawingGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
+            TechDrawGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
+            TechDrawGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
             if (!geom0 || !geom1) {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
                                     idx0,idx1,refObj->getEdgeGeometry().size());
                 return;
             }
-            if ( (geom0->geomType == DrawingGeometry::GENERIC) &&
-                 (geom1->geomType == DrawingGeometry::GENERIC) ){
-                DrawingGeometry::Generic *gen0 = static_cast<DrawingGeometry::Generic *>(geom0);
-                DrawingGeometry::Generic *gen1 = static_cast<DrawingGeometry::Generic *>(geom1);
+            if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
+                 (geom1->geomType == TechDrawGeometry::GENERIC) ){
+                TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
+                TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
                 Base::Vector2D pnt1, pnt2;
                 Base::Vector3d edge1Start, edge1End, edge2Start, edge2End;
                 pnt1 = gen0->points.at(0);
@@ -599,16 +599,16 @@ void QGIViewDimension::draw()
         if(dim->References.getValues().size() == 1 &&
            DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
             int idx = DrawUtil::getIndexFromName(SubNames[0]);
-            DrawingGeometry::BaseGeom *geom = refObj->getProjEdgeByIndex(idx);
+            TechDrawGeometry::BaseGeom *geom = refObj->getProjEdgeByIndex(idx);
             if(!geom)  {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
                                         idx,refObj->getEdgeGeometry().size());
                 return;
                 //throw Base::Exception("Edge couldn't be found for diameter dimension");
             }
-            if( (geom->geomType == DrawingGeometry::CIRCLE) ||
-                (geom->geomType == DrawingGeometry::ARCOFCIRCLE) ) {
-                DrawingGeometry::Circle *circ = static_cast<DrawingGeometry::Circle *>(geom);
+            if( (geom->geomType == TechDrawGeometry::CIRCLE) ||
+                (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) ) {
+                TechDrawGeometry::Circle *circ = static_cast<TechDrawGeometry::Circle *>(geom);
                 radius = circ->radius;
                 centre = Base::Vector3d (circ->center.fX, circ->center.fY, 0);
             } else {
@@ -864,19 +864,19 @@ void QGIViewDimension::draw()
         if(dim->References.getValues().size() == 1 &&
            DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
             int idx = DrawUtil::getIndexFromName(SubNames[0]);
-            DrawingGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
+            TechDrawGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
             if(!geom)  {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
                                         idx,refObj->getEdgeGeometry().size());
                 return;
             }
-            if (geom->geomType == DrawingGeometry::CIRCLE) {
-                DrawingGeometry::Circle *circ = static_cast<DrawingGeometry::Circle *>(geom);
+            if (geom->geomType == TechDrawGeometry::CIRCLE) {
+                TechDrawGeometry::Circle *circ = static_cast<TechDrawGeometry::Circle *>(geom);
                 radius = circ->radius;
                 curveCenter = Base::Vector3d(circ->center.fX,circ->center.fY,0.0);
                 pointOnCurve = Base::Vector3d(curveCenter.x + radius, curveCenter.y,0.0);
-            } else if (geom->geomType == DrawingGeometry::ARCOFCIRCLE) {
-                DrawingGeometry::AOC *circ = static_cast<DrawingGeometry::AOC *>(geom);
+            } else if (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) {
+                TechDrawGeometry::AOC *circ = static_cast<TechDrawGeometry::AOC *>(geom);
                 radius = circ->radius;
                 curveCenter = Base::Vector3d(circ->center.fX,circ->center.fY,0.0);
                 pointOnCurve = Base::Vector3d(circ->midPnt.fX, circ->midPnt.fY,0.0);
@@ -976,17 +976,17 @@ void QGIViewDimension::draw()
            DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int idx0 = DrawUtil::getIndexFromName(SubNames[0]);
             int idx1 = DrawUtil::getIndexFromName(SubNames[1]);
-            DrawingGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
-            DrawingGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
+            TechDrawGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
+            TechDrawGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
             if (!geom0 || !geom1) {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
                                         idx0,idx1,refObj->getEdgeGeometry().size());
                 return;
             }
-            if ( (geom0->geomType == DrawingGeometry::GENERIC) &&
-                 (geom1->geomType == DrawingGeometry::GENERIC) ) {
-                DrawingGeometry::Generic *gen0 = static_cast<DrawingGeometry::Generic *>(geom0);
-                DrawingGeometry::Generic *gen1 = static_cast<DrawingGeometry::Generic *>(geom1);
+            if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
+                 (geom1->geomType == TechDrawGeometry::GENERIC) ) {
+                TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
+                TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
 
                 // Get Points for line
                 Base::Vector2D pnt1, pnt2;

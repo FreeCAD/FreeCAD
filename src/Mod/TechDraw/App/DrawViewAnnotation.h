@@ -40,7 +40,7 @@ namespace TechDraw
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport DrawViewAnnotation : public TechDraw::DrawView
+class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawViewAnnotation);
 
