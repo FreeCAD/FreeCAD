@@ -55,7 +55,7 @@ ViewProviderOriginFeature::ViewProviderOriginFeature () {
             "Visual size of the feature" );
 
     ShapeColor.setValue ( 50./255, 150./255, 250./255 ); // Set default color for origin (light-blue)
-    BoundingBox.StatusBits.set (3, true) ; // Hide Boundingbox from the user due to it doesn't make sence
+    BoundingBox.setStatus(App::Property::Hidden, true); // Hide Boundingbox from the user due to it doesn't make sence
 
     // Create node for scaling the origin
     pScale = new SoScale ();

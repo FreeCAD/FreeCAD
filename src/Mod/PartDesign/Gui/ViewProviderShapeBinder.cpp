@@ -48,16 +48,16 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     sPixmap = "PartDesign_ShapeBinder.svg";
 
     //make the viewprovider more datum like
-    AngularDeflection.StatusBits.set(3, true);
-    Deviation.StatusBits.set(3, true);
-    DrawStyle.StatusBits.set(3, true);
-    Lighting.StatusBits.set(3, true);
-    LineColor.StatusBits.set(3, true);
-    LineWidth.StatusBits.set(3, true);
-    PointColor.StatusBits.set(3, true);
-    PointSize.StatusBits.set(3, true);
-    ShapeColor.StatusBits.set(3, true);
-    Transparency.StatusBits.set(3, true);
+    AngularDeflection.setStatus(App::Property::Hidden, true);
+    Deviation.setStatus(App::Property::Hidden, true);
+    DrawStyle.setStatus(App::Property::Hidden, true);
+    Lighting.setStatus(App::Property::Hidden, true);
+    LineColor.setStatus(App::Property::Hidden, true);
+    LineWidth.setStatus(App::Property::Hidden, true);
+    PointColor.setStatus(App::Property::Hidden, true);
+    PointSize.setStatus(App::Property::Hidden, true);
+    ShapeColor.setStatus(App::Property::Hidden, true);
+    Transparency.setStatus(App::Property::Hidden, true);
 
     //get the datum coloring sheme
     ShapeColor.setValue(App::Color(0.9f, 0.9f, 0.13f, 0.5f));
