@@ -1300,19 +1300,33 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double *err, double *
     DeriVector2 poa;//point to align to
     bool by_y_not_by_x = false;//a flag to indicate if the alignment error function is for y (false - x, true - y).
 
-    poa = c.sum(emaj.multD(a, da));
-
     switch(AlignmentType){
         case HyperbolaPositiveMajorX:
         case HyperbolaPositiveMajorY:
+            poa = c.sum(emaj.multD(a, da));
             by_y_not_by_x = AlignmentType == HyperbolaPositiveMajorY;
             break;
+        case HyperbolaNegativeMajorX:
+        case HyperbolaNegativeMajorY:
+            poa = c.sum(emaj.multD(-a, -da));
+            by_y_not_by_x = AlignmentType == HyperbolaNegativeMajorY;
+            break;            
         case HyperbolaPositiveMinorX:
         case HyperbolaPositiveMinorY:
         {
-            DeriVector2 A(poa.x,poa.y);
+            DeriVector2 pa = c.sum(emaj.multD(a, da));
+            DeriVector2 A(pa.x,pa.y);
             poa = A.sum(emin.multD(b, db));
             by_y_not_by_x = AlignmentType == HyperbolaPositiveMinorY;
+            break;
+        }
+        case HyperbolaNegativeMinorX:
+        case HyperbolaNegativeMinorY:
+        {
+            DeriVector2 pa = c.sum(emaj.multD(a, da));
+            DeriVector2 A(pa.x,pa.y);
+            poa = A.sum(emin.multD(-b, -db));
+            by_y_not_by_x = AlignmentType == HyperbolaNegativeMinorY;
             break;
         }
         default:
