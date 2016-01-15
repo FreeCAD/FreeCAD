@@ -441,14 +441,21 @@ PyObject* SheetPy::setAlias(PyObject *args)
 {
     CellAddress address;
     const char * strAddress;
-    const char * value;
+    PyObject * value;
 
-    if (!PyArg_ParseTuple(args, "ss:setAlias", &strAddress, &value))
+    if (!PyArg_ParseTuple(args, "sO:setAlias", &strAddress, &value))
         return 0;
 
     try {
         address = stringToAddress(strAddress);
-        getSheetPtr()->setAlias(address, value);
+
+        if (PyString_Check(value))
+            getSheetPtr()->setAlias(address, PyString_AsString(value));
+        else if (value == Py_None)
+            getSheetPtr()->setAlias(address, "");
+        else
+            throw Base::TypeError("String or None expected");
+
         Py_Return;
     }
     catch (const Base::Exception & e) {
