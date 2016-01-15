@@ -64,7 +64,8 @@ namespace GCS
         AngleViaPoint = 18,
         Snell = 19,
         CurveValue = 20,
-        PointOnHyperbola = 21
+        PointOnHyperbola = 21,
+        InternalAlignmentPoint2Hyperbola = 22,
     };
     
     enum InternalAlignmentType {
@@ -77,7 +78,11 @@ namespace GCS
         EllipseNegativeMinorX = 6,
         EllipseNegativeMinorY = 7,
         EllipseFocus2X = 8,
-        EllipseFocus2Y = 9
+        EllipseFocus2Y = 9,
+        HyperbolaPositiveMajorX = 10,
+        HyperbolaPositiveMajorY = 11,
+        HyperbolaPositiveMinorX = 12,
+        HyperbolaPositiveMinorY = 13
     };
 
     class Constraint
@@ -422,7 +427,23 @@ namespace GCS
         Point p;
         InternalAlignmentType AlignmentType;
     };
-    
+
+    class ConstraintInternalAlignmentPoint2Hyperbola : public Constraint
+    {
+    public:
+        ConstraintInternalAlignmentPoint2Hyperbola(Hyperbola &e, Point &p1, InternalAlignmentType alignmentType);
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    private:
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        Hyperbola e;
+        Point p;
+        InternalAlignmentType AlignmentType;
+    };
+
     class ConstraintEqualMajorAxesConic : public Constraint
     {
     private:
