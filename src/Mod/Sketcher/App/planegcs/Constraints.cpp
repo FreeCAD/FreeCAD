@@ -1246,6 +1246,106 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
 
 }
 
+// ConstraintInternalAlignmentPoint2Hyperbola
+ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyperbola(Hyperbola &e, Point &p1, InternalAlignmentType alignmentType)
+{
+    this->p = p1;
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    this->e = e;
+    this->e.PushOwnParams(pvec);
+    this->AlignmentType = alignmentType;
+    origpvec = pvec;
+    rescale();
+}
+
+void ConstraintInternalAlignmentPoint2Hyperbola::ReconstructGeomPointers()
+{
+    int i = 0;
+    p.x = pvec[i]; i++;
+    p.y = pvec[i]; i++;
+    e.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintInternalAlignmentPoint2Hyperbola::getTypeId()
+{
+    return InternalAlignmentPoint2Hyperbola;
+}
+
+void ConstraintInternalAlignmentPoint2Hyperbola::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double *err, double *grad, double *param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+
+    //todo: prefill only what's needed, not everything
+
+    DeriVector2 c(e.center, param);
+    DeriVector2 f1(e.focus1, param);
+    DeriVector2 emaj = f1.subtr(c).getNormalized();
+    DeriVector2 emin = emaj.rotate90ccw();
+    DeriVector2 pv (p, param);
+
+    double b, db;//minor radius
+    b = *e.radmin; db = (e.radmin == param) ? 1.0 : 0.0;
+
+    //major radius
+    double a, da;
+    a = e.getRadMaj(c,f1,b,db,da);
+
+    DeriVector2 poa;//point to align to
+    bool by_y_not_by_x = false;//a flag to indicate if the alignment error function is for y (false - x, true - y).
+
+    poa = c.sum(emaj.multD(a, da));
+
+    switch(AlignmentType){
+        case HyperbolaPositiveMajorX:
+        case HyperbolaPositiveMajorY:
+            by_y_not_by_x = AlignmentType == HyperbolaPositiveMajorY;
+            break;
+        case HyperbolaPositiveMinorX:
+        case HyperbolaPositiveMinorY:
+        {
+            DeriVector2 A(poa.x,poa.y);
+            poa = A.sum(emin.multD(b, db));
+            by_y_not_by_x = AlignmentType == HyperbolaPositiveMinorY;
+            break;
+        }
+        default:
+            //shouldn't happen
+            poa = pv;//align to the point itself, doing nothing essentially
+    }
+
+    if(err)
+        *err = by_y_not_by_x ? pv.y - poa.y : pv.x - poa.x;
+    if(grad)
+        *grad = by_y_not_by_x ? pv.dy - poa.dy : pv.dx - poa.dx;
+}
+
+double ConstraintInternalAlignmentPoint2Hyperbola::error()
+{
+    double err;
+    errorgrad(&err,0,0);
+    return scale * err;
+
+}
+
+double ConstraintInternalAlignmentPoint2Hyperbola::grad(double *param)
+{
+    //first of all, check that we need to compute anything.
+    if ( findParamInPvec(param) == -1  ) return 0.0;
+
+    double deriv;
+    errorgrad(0, &deriv, param);
+
+    return deriv*scale;
+
+}
+
 //  ConstraintEqualMajorAxesEllipse
 ConstraintEqualMajorAxesConic:: ConstraintEqualMajorAxesConic(MajorRadiusConic * a1, MajorRadiusConic * a2)
 {
