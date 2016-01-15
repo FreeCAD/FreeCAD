@@ -477,7 +477,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 
     cell->setAlias(alias);
 
-    if (oldAlias.size() > 0) {
+    if (oldAlias.size() > 0 && alias.size() > 0) {
         std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
 
         m[App::ObjectIdentifier(owner, oldAlias)] = App::ObjectIdentifier(owner, alias);
