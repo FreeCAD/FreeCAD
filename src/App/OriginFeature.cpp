@@ -41,7 +41,7 @@ OriginFeature::OriginFeature()
     ADD_PROPERTY_TYPE ( Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin" ) ;
 
     // Set placement to read-only
-    Placement.StatusBits.set(3, true);
+    Placement.setStatus(Property::Hidden, true);
 }
 
 OriginFeature::~OriginFeature()

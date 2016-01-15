@@ -43,7 +43,7 @@ ViewProviderDatumPoint::ViewProviderDatumPoint()
 
     // SoMarkerSet won't be drawn if transparency is nonzero, so disabble it
     Transparency.setValue (0);
-    Transparency.StatusBits.set ( 3, true ); //< make transparency hidden
+    Transparency.setStatus(App::Property::Hidden, true); //< make transparency hidden
 }
 
 ViewProviderDatumPoint::~ViewProviderDatumPoint()

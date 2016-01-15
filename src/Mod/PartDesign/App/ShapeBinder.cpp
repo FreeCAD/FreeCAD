@@ -43,7 +43,7 @@ PROPERTY_SOURCE(PartDesign::ShapeBinder, Part::Feature)
 ShapeBinder::ShapeBinder()
 {
     ADD_PROPERTY_TYPE(Support, (0,0), "",(App::PropertyType)(App::Prop_None),"Support of the geometry");
-    Placement.StatusBits.set(3, true);
+    Placement.setStatus(App::Property::Hidden, true);
 }
 
 ShapeBinder::~ShapeBinder()
