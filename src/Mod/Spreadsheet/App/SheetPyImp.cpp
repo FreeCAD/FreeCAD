@@ -67,10 +67,19 @@ PyObject* SheetPy::set(PyObject *args)
         return 0;
 
     try {
-        Range rangeIter(address);
-        do {
-            getSheetPtr()->setCell(rangeIter.address().c_str(), contents);
-        } while (rangeIter.next());
+        Sheet * sheet = getSheetPtr();
+        std::string cellAddress = sheet->getAddressFromAlias(address).c_str();
+
+        /* Check to see if address is really an alias first */
+        if (cellAddress.size() > 0)
+            sheet->setCell(cellAddress.c_str(), contents);
+        else {
+            Range rangeIter(address);
+
+            do {
+                sheet->setCell(rangeIter.address().c_str(), contents);
+            } while (rangeIter.next());
+        }
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
