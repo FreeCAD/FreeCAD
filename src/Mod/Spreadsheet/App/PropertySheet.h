@@ -81,6 +81,10 @@ public:
 
     Cell * getValue(CellAddress key);
 
+    const Cell * getValue(CellAddress key) const;
+
+    const Cell * getValueFromAlias(const std::string &alias) const;
+
     std::set<CellAddress> getUsedCells() const;
 
     Sheet * sheet() const { return owner; }

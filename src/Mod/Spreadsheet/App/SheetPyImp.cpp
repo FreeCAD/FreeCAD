@@ -457,6 +457,29 @@ PyObject* SheetPy::setAlias(PyObject *args)
     }
 }
 
+PyObject* SheetPy::getCellFromAlias(PyObject *args)
+{
+    const char * alias;
+
+    if (!PyArg_ParseTuple(args, "s:getAlias", &alias))
+        return 0;
+
+    try {
+        std::string address = getSheetPtr()->getAddressFromAlias(alias);
+
+        if (address.size() > 0)
+            return Py::new_reference_to( Py::String( address ) );
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+}
+
 PyObject* SheetPy::getDisplayUnit(PyObject *args)
 {
     const char * strAddress;
