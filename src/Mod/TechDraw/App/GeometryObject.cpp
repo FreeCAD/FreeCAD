@@ -211,7 +211,7 @@ void GeometryObject::drawEdge(HLRBRep_EdgeData& ed, TopoDS_Shape& Result, const 
 }
 
 //! only ever called from FVP::getVertex
-DrawingGeometry::Vertex * GeometryObject::projectVertex(const TopoDS_Shape &vert,
+TechDrawGeometry::Vertex * GeometryObject::projectVertex(const TopoDS_Shape &vert,
                                                         const TopoDS_Shape &support,
                                                         const Base::Vector3d &direction,
                                                         const Base::Vector3d &projXAxis) const
@@ -242,7 +242,7 @@ DrawingGeometry::Vertex * GeometryObject::projectVertex(const TopoDS_Shape &vert
     // If the index was found and is unique, the point is projected using the HLR Projector Algorithm
     gp_Pnt2d prjPnt;
     projector.Project(BRep_Tool::Pnt(refVert), prjPnt);
-    DrawingGeometry::Vertex *myVert = new Vertex(prjPnt.X(), prjPnt.Y());
+    TechDrawGeometry::Vertex *myVert = new Vertex(prjPnt.X(), prjPnt.Y());
     return myVert;
 }
 
@@ -251,7 +251,7 @@ void GeometryObject::projectSurfaces(const TopoDS_Shape &face,
                                      const TopoDS_Shape &support,
                                      const Base::Vector3d &direction,
                                      const Base::Vector3d &xaxis,
-                                     std::vector<DrawingGeometry::Face *> &projFaces) const
+                                     std::vector<TechDrawGeometry::Face *> &projFaces) const
 {
     if(face.IsNull())
         throw Base::Exception("Projected shape is null");
@@ -580,7 +580,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
 }
 
 //! only ever called from fvp::getCompleteEdge
-DrawingGeometry::BaseGeom * GeometryObject::projectEdge(const TopoDS_Shape &edge,
+TechDrawGeometry::BaseGeom * GeometryObject::projectEdge(const TopoDS_Shape &edge,
                                                         const TopoDS_Shape &support,
                                                         const Base::Vector3d &direction,
                                                         const Base::Vector3d &projXAxis) const
@@ -619,7 +619,7 @@ DrawingGeometry::BaseGeom * GeometryObject::projectEdge(const TopoDS_Shape &edge
         projector.Project(p1, pnt1);
         projector.Project(p2, pnt2);
 
-        DrawingGeometry::Generic *line = new DrawingGeometry::Generic();
+        TechDrawGeometry::Generic *line = new TechDrawGeometry::Generic();
 
         line->points.push_back(Base::Vector2D(pnt1.X(), pnt1.Y()));
         line->points.push_back(Base::Vector2D(pnt2.X(), pnt2.Y()));
@@ -633,11 +633,11 @@ DrawingGeometry::BaseGeom * GeometryObject::projectEdge(const TopoDS_Shape &edge
 
         curve.Projector(&projector);
 
-        DrawingGeometry::BaseGeom *result = 0;
+        TechDrawGeometry::BaseGeom *result = 0;
         switch(HLRBRep_BCurveTool::GetType(curve.Curve()))
         {
         case GeomAbs_Line: {
-              DrawingGeometry::Generic *line = new DrawingGeometry::Generic();
+              TechDrawGeometry::Generic *line = new TechDrawGeometry::Generic();
 
               gp_Pnt2d pnt1 = curve.Value(curve.FirstParameter());
               gp_Pnt2d pnt2 = curve.Value(curve.LastParameter());
@@ -648,7 +648,7 @@ DrawingGeometry::BaseGeom * GeometryObject::projectEdge(const TopoDS_Shape &edge
               result = line;
             }break;
         case GeomAbs_Circle: {
-              DrawingGeometry::Circle *circle = new DrawingGeometry::Circle();
+              TechDrawGeometry::Circle *circle = new TechDrawGeometry::Circle();
                 gp_Circ2d prjCirc = curve.Circle();
 
                 double f = curve.FirstParameter();
@@ -726,7 +726,7 @@ void GeometryObject::extractFaces(HLRBRep_Algo *myAlgo,
                                   const TopoDS_Shape &S,
                                   bool visible,
                                   ExtractionType extractionType,
-                                  std::vector<DrawingGeometry::Face *> &projFaces,
+                                  std::vector<TechDrawGeometry::Face *> &projFaces,
                                   std::vector<int> &faceRefs) const
 {
 #if MOD_TECHDRAW_HANDLE_FACES
@@ -783,7 +783,7 @@ void GeometryObject::extractFaces(HLRBRep_Algo *myAlgo,
         std::vector<TopoDS_Wire> possibleFaceWires;
         createWire(face, possibleFaceWires);
 
-        DrawingGeometry::Face *myFace = NULL;
+        TechDrawGeometry::Face *myFace = NULL;
 
         // Process each wire - if we can make at least one face with it, then
         // send it down the road toward rendering
@@ -794,9 +794,9 @@ void GeometryObject::extractFaces(HLRBRep_Algo *myAlgo,
             BRepBuilderAPI_MakeFace testFace(*wireIt);
             if (testFace.IsDone()) {
                 if (myFace == NULL) {
-                   myFace = new DrawingGeometry::Face();
+                   myFace = new TechDrawGeometry::Face();
                 }
-                DrawingGeometry::Wire *genWire = new DrawingGeometry::Wire();
+                TechDrawGeometry::Wire *genWire = new TechDrawGeometry::Wire();
 
                 // See createWire regarding BRepTools_WireExplorer vs TopExp_Explorer
                 BRepTools_WireExplorer explr(*wireIt);
@@ -1317,20 +1317,20 @@ void GeometryObject::extractGeometry(const TopoDS_Shape &input,
     const std::vector<BaseGeom *> &edgeGeom = getEdgeGeometry();
     std::vector<BaseGeom*>::const_iterator iEdge = edgeGeom.begin();
     for (; iEdge != edgeGeom.end(); iEdge++) {
-        if ((*iEdge)->extractType == DrawingGeometry::WithHidden) {               //only use visible edges
+        if ((*iEdge)->extractType == TechDrawGeometry::WithHidden) {               //only use visible edges
             continue;
         }
         std::vector<Base::Vector2D> ends = (*iEdge)->findEndPoints();
         if (!ends.empty()) {
             if (!findVertex(ends[0])) {
                 Vertex* v0 = new Vertex(ends[0]);
-                v0->extractType = DrawingGeometry::Plain;
+                v0->extractType = TechDrawGeometry::Plain;
                 vertexGeom.push_back(v0);
                 vertexReferences.push_back(-1);
             }
             if (!findVertex(ends[1])) {
                 Vertex* v1 = new Vertex(ends[1]);
-                v1->extractType = DrawingGeometry::Plain;
+                v1->extractType = TechDrawGeometry::Plain;
                 vertexGeom.push_back(v1);
                 vertexReferences.push_back(-1);
             }

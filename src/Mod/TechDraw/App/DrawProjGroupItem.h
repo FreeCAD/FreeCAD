@@ -33,7 +33,7 @@ namespace TechDraw
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport DrawProjGroupItem : public TechDraw::DrawViewPart
+class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 {
     PROPERTY_HEADER(TechDraw::DrawProjGroupItem);
 

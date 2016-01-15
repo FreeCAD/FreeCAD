@@ -34,7 +34,7 @@ class DrawPage;
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport DrawView : public App::DocumentObject
+class TechDrawExport DrawView : public App::DocumentObject
 {
     PROPERTY_HEADER(TechDraw::DrawView);
 
@@ -58,7 +58,7 @@ public:
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onDocumentRestored();
     //@}
-    
+
     bool isInClip();
 
     /// returns the type name of the ViewProvider

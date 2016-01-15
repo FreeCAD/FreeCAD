@@ -118,35 +118,35 @@ std::vector<Base::Vector2D> BaseGeom::findEndPoints()
 {
     std::vector<Base::Vector2D> result;
     switch(this->geomType) {
-        case DrawingGeometry::CIRCLE: {
-          DrawingGeometry::Circle *geom = static_cast<DrawingGeometry::Circle *>(this);
+        case TechDrawGeometry::CIRCLE: {
+          TechDrawGeometry::Circle *geom = static_cast<TechDrawGeometry::Circle *>(this);
           double x = geom->center.fX + geom->radius;
           result.push_back(Base::Vector2D(x,geom->center.fY));
           result.push_back(Base::Vector2D(x,geom->center.fY));
         } break;
-        case DrawingGeometry::ARCOFCIRCLE: {
-          DrawingGeometry::AOC  *geom = static_cast<DrawingGeometry::AOC *>(this);
+        case TechDrawGeometry::ARCOFCIRCLE: {
+          TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(this);
           result.push_back(geom->startPnt);
           result.push_back(geom->endPnt);
         } break;
-        case DrawingGeometry::ELLIPSE: {
-          DrawingGeometry::Ellipse *geom = static_cast<DrawingGeometry::Ellipse *>(this);
+        case TechDrawGeometry::ELLIPSE: {
+          TechDrawGeometry::Ellipse *geom = static_cast<TechDrawGeometry::Ellipse *>(this);
           result.push_back(geom->center + Base::Vector2D(geom->major * cos(geom->angle), geom->major * sin(geom->angle)));
           result.push_back(geom->center + Base::Vector2D(geom->major * cos(geom->angle), geom->major * sin(geom->angle)));
         } break;
-        case DrawingGeometry::ARCOFELLIPSE: {
-          DrawingGeometry::AOE *geom = static_cast<DrawingGeometry::AOE *>(this);
+        case TechDrawGeometry::ARCOFELLIPSE: {
+          TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(this);
           result.push_back(geom->startPnt);
           result.push_back(geom->endPnt);
         } break;
-        case DrawingGeometry::BSPLINE: {
-          DrawingGeometry::BSpline *geom = static_cast<DrawingGeometry::BSpline *>(this);
+        case TechDrawGeometry::BSPLINE: {
+          TechDrawGeometry::BSpline *geom = static_cast<TechDrawGeometry::BSpline *>(this);
           result.push_back(geom->segments.front().pnts[0]);
-          DrawingGeometry::BezierSegment tempSeg = geom->segments.back();
+          TechDrawGeometry::BezierSegment tempSeg = geom->segments.back();
           result.push_back(tempSeg.pnts[tempSeg.poles - 1]);
         } break;
-        case DrawingGeometry::GENERIC: {
-          DrawingGeometry::Generic *geom = static_cast<DrawingGeometry::Generic *>(this);
+        case TechDrawGeometry::GENERIC: {
+          TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(this);
           result.push_back(geom->points.front());
           result.push_back(geom->points.back());
         } break;
@@ -380,13 +380,13 @@ bool BSpline::isLine()
     return result;
 }
 
-//****  DrawingGeometry utility funtions
+//****  TechDrawGeometry utility funtions
 
 extern "C" {
 //! return a vector of BaseGeom*'s in tail to nose order
-std::vector<DrawingGeometry::BaseGeom*> DrawingExport chainGeoms(std::vector<DrawingGeometry::BaseGeom*> geoms)
+std::vector<TechDrawGeometry::BaseGeom*> TechDrawExport chainGeoms(std::vector<TechDrawGeometry::BaseGeom*> geoms)
 {
-    std::vector<DrawingGeometry::BaseGeom*> result;
+    std::vector<TechDrawGeometry::BaseGeom*> result;
     std::vector<bool> used(geoms.size(),false);
     double tolerance = 0.0;
 
@@ -403,7 +403,7 @@ std::vector<DrawingGeometry::BaseGeom*> DrawingExport chainGeoms(std::vector<Dra
         for (unsigned int i = 1; i < geoms.size(); i++) {              //do size-1 more edges
             getNextReturn next = nextGeom(atPoint,geoms,used,tolerance);
             if (next.index) {                                          //found an unused edge with vertex == atPoint
-                DrawingGeometry::BaseGeom* nextEdge = geoms.at(next.index);
+                TechDrawGeometry::BaseGeom* nextEdge = geoms.at(next.index);
                 used[next.index] = true;
                 nextEdge->reversed = next.reversed;
                 result.push_back(nextEdge);
@@ -422,13 +422,13 @@ std::vector<DrawingGeometry::BaseGeom*> DrawingExport chainGeoms(std::vector<Dra
 }
 
 //! find an unused geom starts or ends at atPoint. returns index[1:geoms.size()),reversed [true,false]
-getNextReturn DrawingExport nextGeom(Base::Vector2D atPoint,
-                       std::vector<DrawingGeometry::BaseGeom*> geoms,
+getNextReturn TechDrawExport nextGeom(Base::Vector2D atPoint,
+                       std::vector<TechDrawGeometry::BaseGeom*> geoms,
                        std::vector<bool> used,
                        double tolerance)
 {
     getNextReturn result(0,false);
-    std::vector<DrawingGeometry::BaseGeom*>::iterator itGeom = geoms.begin();
+    std::vector<TechDrawGeometry::BaseGeom*>::iterator itGeom = geoms.begin();
     for (; itGeom != geoms.end(); itGeom++) {
         unsigned int index = itGeom - geoms.begin();
         if (used[index]) {

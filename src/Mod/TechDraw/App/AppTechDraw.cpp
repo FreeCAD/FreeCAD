@@ -29,7 +29,7 @@
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
 #include "DrawViewSymbol.h"
-#include "DrawProjection.h"
+//#include "DrawProjection.h"
 #include "DrawViewClip.h"
 #include "DrawHatch.h"
 
@@ -41,7 +41,7 @@ PyDoc_STRVAR(module_drawing_doc,
 
 /* Python entry */
 extern "C" {
-void DrawingExport initDrawing()
+void TechDrawExport initDrawing()
 {
     // load dependent module
     try {
@@ -65,7 +65,7 @@ void DrawingExport initDrawing()
     TechDraw::DrawView            ::init();
     TechDraw::DrawViewCollection  ::init();
     TechDraw::DrawViewPart        ::init();
-    TechDraw::DrawProjection      ::init();
+    //TechDraw::DrawProjection      ::init();
     TechDraw::DrawViewAnnotation  ::init();
     TechDraw::DrawViewSymbol      ::init();
 

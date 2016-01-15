@@ -35,7 +35,7 @@ namespace TechDraw
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport DrawSVGTemplate: public TechDraw::DrawTemplate
+class TechDrawExport DrawSVGTemplate: public TechDraw::DrawTemplate
 {
     PROPERTY_HEADER(TechDraw::DrawSVGTemplate);
 

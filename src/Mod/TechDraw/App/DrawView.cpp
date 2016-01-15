@@ -57,7 +57,7 @@ PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
 
 
 
-DrawView::DrawView(void) 
+DrawView::DrawView(void)
 {
     static const char *group = "Drawing view";
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
@@ -94,7 +94,8 @@ App::DocumentObjectExecReturn *DrawView::recompute(void)
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
     if (ScaleType.isValue("Document")) {
-        Scale.StatusBits.set(2, true);
+        Scale.setStatus(App::Property::ReadOnly,true);
+        //Scale.StatusBits.set(2, true);
 
         TechDraw::DrawPage *page = findParentPage();
         if(page) {
@@ -104,7 +105,8 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
             }
         }
     } else if (ScaleType.isValue("Custom")) {
-        Scale.StatusBits.set(2, false);
+        Scale.setStatus(App::Property::ReadOnly,false);
+        //Scale.StatusBits.set(2, false);
         //TODO: need to ?recompute? ?redraw? to get this to stick.  Mantis #1941
         //TODO: try Gui::Selection to force update
         //currently need to lose focus and re-get focus to make Scale editable.
@@ -179,5 +181,5 @@ template<> const char* TechDraw::DrawViewPython::getViewProviderName(void) const
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawView>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawView>;
 }

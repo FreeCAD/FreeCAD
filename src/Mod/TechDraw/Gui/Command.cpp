@@ -841,9 +841,9 @@ bool CmdDrawingSymbol::isActive(void)
 // Drawing_ExportPage
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingExportPage);
+DEF_STD_CMD_A(CmdTechDrawExportPage);
 
-CmdDrawingExportPage::CmdDrawingExportPage()
+CmdTechDrawExportPage::CmdTechDrawExportPage()
   : Command("Drawing_ExportPage")
 {
     // seting the
@@ -855,7 +855,7 @@ CmdDrawingExportPage::CmdDrawingExportPage()
     sPixmap       = "actions/saveSVG";
 }
 
-void CmdDrawingExportPage::activated(int iMsg)
+void CmdTechDrawExportPage::activated(int iMsg)
 {
     std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()) {                                   // no Pages in Selection
@@ -890,7 +890,7 @@ void CmdDrawingExportPage::activated(int iMsg)
 
 }
 
-bool CmdDrawingExportPage::isActive(void)
+bool CmdTechDrawExportPage::isActive(void)
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -976,7 +976,7 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingClipPlus());
     rcCmdMgr.addCommand(new CmdDrawingClipMinus());
     rcCmdMgr.addCommand(new CmdDrawingSymbol());
-    rcCmdMgr.addCommand(new CmdDrawingExportPage());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
     rcCmdMgr.addCommand(new CmdDrawingDraftView());
 }

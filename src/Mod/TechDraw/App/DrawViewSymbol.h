@@ -34,7 +34,7 @@ namespace TechDraw
 {
 
 
-class DrawingExport DrawViewSymbol : public TechDraw::DrawView
+class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawViewSymbol);
 

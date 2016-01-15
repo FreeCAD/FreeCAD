@@ -73,7 +73,7 @@ void QGIViewSection::drawSectionFace()
     //Base::Console().Log("drawing section face\n");
 
     // Get the section face from the feature
-    std::vector<DrawingGeometry::Face *> faceGeoms;
+    std::vector<TechDrawGeometry::Face *> faceGeoms;
     part->getSectionSurface(faceGeoms);
     if (faceGeoms.empty()) {
         Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No Face available. Check Section plane.\n");
@@ -82,19 +82,19 @@ void QGIViewSection::drawSectionFace()
 
 #if MOD_TECHDRAW_HANDLE_FACES
     // Draw Faces
-    std::vector<DrawingGeometry::Face *>::const_iterator fit = faceGeoms.begin();
+    std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
 
     QGI *graphicsItem = 0;
     QPen facePen;
 
 //TODO: check if this is the same logic as QGIVPart
     for(int i = 0 ; fit != faceGeoms.end(); ++fit, i++) {
-        std::vector<DrawingGeometry::Wire *> faceWires = (*fit)->wires;
+        std::vector<TechDrawGeometry::Wire *> faceWires = (*fit)->wires;
         QPainterPath facePath;
-        for(std::vector<DrawingGeometry::Wire *>::iterator wire = faceWires.begin(); wire != faceWires.end(); ++wire) {
+        for(std::vector<TechDrawGeometry::Wire *>::iterator wire = faceWires.begin(); wire != faceWires.end(); ++wire) {
             QPainterPath wirePath;
             QPointF shapePos;
-            for(std::vector<DrawingGeometry::BaseGeom *>::iterator baseGeom = (*wire)->geoms.begin(); baseGeom != (*wire)->geoms.end(); ++baseGeom) {
+            for(std::vector<TechDrawGeometry::BaseGeom *>::iterator baseGeom = (*wire)->geoms.begin(); baseGeom != (*wire)->geoms.end(); ++baseGeom) {
                 //Save the start Position
                 QPainterPath edgePath = drawPainterPath(*baseGeom);
 
@@ -124,7 +124,7 @@ void QGIViewSection::drawSectionFace()
 
         if(graphicsItem) {
             // Hide any edges that are hidden if option is set.
-            //             if((*fit)->extractType == DrawingGeometry::WithHidden && !part->ShowHiddenLines.getValue())
+            //             if((*fit)->extractType == TechDrawGeometry::WithHidden && !part->ShowHiddenLines.getValue())
             //                 graphicsItem->hide();
 
             addToGroup(graphicsItem);

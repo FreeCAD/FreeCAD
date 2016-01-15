@@ -3,8 +3,8 @@ lib_LTLIBRARIES=libDrawing.la Drawing.la
 
 libDrawing_la_SOURCES=\
 		AppDrawingPy.cpp \
-		DrawingExport.cpp \
-		DrawingExport.h \
+		TechDrawExport.cpp \
+		TechDrawExport.h \
 		DrawPage.cpp \
 		DrawPage.h \
 		DrawProjection.cpp \
@@ -29,7 +29,7 @@ libDrawing_la_SOURCES=\
 libDrawing_la_LDFLAGS = -L../../../Base -L../../../App -L../../../Mod/Part/App \
 		-L$(OCC_LIB) $(all_libraries) \
 		-version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
-libDrawing_la_CPPFLAGS = -DDrawingExport=
+libDrawing_la_CPPFLAGS = -DTechDrawExport=
 
 libDrawing_la_LIBADD   = \
 		@BOOST_REGEX_LIB@ @BOOST_SYSTEM_LIB@ \

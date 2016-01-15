@@ -41,7 +41,7 @@ namespace TechDraw
 
 /** Base class of all View Features in the drawing module
  */
-class DrawingExport DrawViewPart : public DrawView
+class TechDrawExport DrawViewPart : public DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawViewPart);
 
@@ -64,21 +64,21 @@ public:
     //int removeHatch(App::DocumentObject *docObj);
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
 
-    const std::vector<DrawingGeometry::Vertex *> & getVertexGeometry() const;
-    const std::vector<DrawingGeometry::BaseGeom  *> & getEdgeGeometry() const;
-    const std::vector<DrawingGeometry::Face *> & getFaceGeometry() const;
+    const std::vector<TechDrawGeometry::Vertex *> & getVertexGeometry() const;
+    const std::vector<TechDrawGeometry::BaseGeom  *> & getEdgeGeometry() const;
+    const std::vector<TechDrawGeometry::Face *> & getFaceGeometry() const;
     bool hasGeometry(void) const;
 
-    DrawingGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
-    DrawingGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
+    TechDrawGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
+    TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
 
     int getEdgeRefByIndex(int idx) const;                                       //get reference to Source edge for Projected edge idx
     int getVertexRefByIndex(int idx) const;                                     //get reference to Source Vertex for Projected Vertex idx
 
-    DrawingGeometry::BaseGeom * getCompleteEdge(int idx) const;                 //project source edge idx
-    DrawingGeometry::Vertex   * getVertex(int idx) const;                       //project source vertex
-    DrawingGeometry::Vertex*    getVertexGeomByRef(int ref) const;
-    DrawingGeometry::BaseGeom*  getEdgeGeomByRef(int ref) const;
+    TechDrawGeometry::BaseGeom * getCompleteEdge(int idx) const;                 //project source edge idx
+    TechDrawGeometry::Vertex   * getVertex(int idx) const;                       //project source vertex
+    TechDrawGeometry::Vertex*    getVertexGeomByRef(int ref) const;
+    TechDrawGeometry::BaseGeom*  getEdgeGeomByRef(int ref) const;
 
     /// Get References for geometric features
     const std::vector<int> & getVertexReferences() const;
@@ -105,7 +105,7 @@ public:
 protected:
     void onChanged(const App::Property* prop);
 
-    DrawingGeometry::GeometryObject *geometryObject;
+    TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
 private:

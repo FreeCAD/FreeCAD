@@ -36,8 +36,6 @@ generate_from_xml(DrawViewSymbolPy)
 SET(Draw_SRCS
     DrawPage.cpp
     DrawPage.h
-    DrawProjection.cpp
-    DrawProjection.h
     DrawView.cpp
     DrawView.h
     DrawViewPart.cpp

@@ -34,7 +34,7 @@ namespace TechDraw
 
 /** Base class for collection of view objects
  */
-class DrawingExport DrawViewCollection : public DrawView
+class TechDrawExport DrawViewCollection : public DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawViewCollection);
 

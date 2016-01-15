@@ -121,7 +121,7 @@ protected:
     QGI *centreLines;
 
     std::vector<QGI *> arw;                                  //arrowheads
-    std::vector<DrawingGeometry::BaseGeom *> projGeom;
+    std::vector<TechDrawGeometry::BaseGeom *> projGeom;
     QPen pen;
     QColor m_colNormal;
     QColor m_colPre;

@@ -275,8 +275,8 @@ double DrawViewDimension::getDimValue() const
         if (Type.isValue("Distance") && getRefType() == oneEdge) {
             //TODO: Check for straight line Edge?
             int idx = DrawUtil::getIndexFromName(subElements[0]);
-            DrawingGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-            DrawingGeometry::Generic* gen = static_cast<DrawingGeometry::Generic*>(geom);
+            TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+            TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
             Base::Vector2D start = gen->points[0];
             Base::Vector2D end = gen->points[1];
             Base::Vector2D line = end - start;
@@ -285,10 +285,10 @@ double DrawViewDimension::getDimValue() const
             //only works for straight line edges
             int idx0 = DrawUtil::getIndexFromName(subElements[0]);
             int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            DrawingGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
-            DrawingGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
-            DrawingGeometry::Generic* gen0 = static_cast<DrawingGeometry::Generic*>(geom0);
-            DrawingGeometry::Generic* gen1 = static_cast<DrawingGeometry::Generic*>(geom1);
+            TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
+            TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+            TechDrawGeometry::Generic* gen0 = static_cast<TechDrawGeometry::Generic*>(geom0);
+            TechDrawGeometry::Generic* gen1 = static_cast<TechDrawGeometry::Generic*>(geom1);
             Base::Vector2D s0 = gen0->points[0];
             Base::Vector2D e0 = gen0->points[1];
             Base::Vector2D s1 = gen1->points[0];
@@ -297,24 +297,24 @@ double DrawViewDimension::getDimValue() const
         } else if (Type.isValue("Distance") && getRefType() == twoVertex) {
             int idx0 = DrawUtil::getIndexFromName(subElements[0]);
             int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            DrawingGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-            DrawingGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+            TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+            TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
             Base::Vector2D start = v0->pnt;
             Base::Vector2D end = v1->pnt;
             Base::Vector2D line = end - start;
             result = line.Length() / getViewPart()->Scale.getValue();
         } else if (Type.isValue("DistanceX") && getRefType() == oneEdge) {
             int idx = DrawUtil::getIndexFromName(subElements[0]);
-            DrawingGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-            DrawingGeometry::Generic* gen = static_cast<DrawingGeometry::Generic*>(geom);
+            TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+            TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
             Base::Vector2D start = gen->points[0];
             Base::Vector2D end = gen->points[1];
             Base::Vector2D line = end - start;
             return fabs(line.fX) / getViewPart()->Scale.getValue();
         } else if (Type.isValue("DistanceY") && getRefType() == oneEdge) {
             int idx = DrawUtil::getIndexFromName(subElements[0]);
-            DrawingGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-            DrawingGeometry::Generic* gen = static_cast<DrawingGeometry::Generic*>(geom);
+            TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+            TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
             Base::Vector2D start = gen->points[0];
             Base::Vector2D end = gen->points[1];
             Base::Vector2D line = end - start;
@@ -322,8 +322,8 @@ double DrawViewDimension::getDimValue() const
         } else if (Type.isValue("DistanceX") && getRefType() == twoVertex) {
             int idx0 = DrawUtil::getIndexFromName(subElements[0]);
             int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            DrawingGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-            DrawingGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+            TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+            TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
             Base::Vector2D start = v0->pnt;
             Base::Vector2D end = v1->pnt;
             Base::Vector2D line = end - start;
@@ -331,8 +331,8 @@ double DrawViewDimension::getDimValue() const
         } else if (Type.isValue("DistanceY") && getRefType() == twoVertex) {
             int idx0 = DrawUtil::getIndexFromName(subElements[0]);
             int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            DrawingGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-            DrawingGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+            TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+            TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
             Base::Vector2D start = v0->pnt;
             Base::Vector2D end = v1->pnt;
             Base::Vector2D line = end - start;
@@ -340,14 +340,14 @@ double DrawViewDimension::getDimValue() const
         } else if(Type.isValue("Radius")){
             //only 1 reference for a Radius
             int idx = DrawUtil::getIndexFromName(subElements[0]);
-            DrawingGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
-            DrawingGeometry::Circle* circle = static_cast<DrawingGeometry::Circle*> (base);
+            TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+            TechDrawGeometry::Circle* circle = static_cast<TechDrawGeometry::Circle*> (base);
             result = circle->radius / getViewPart()->Scale.getValue();            //Projected BaseGeom is scaled for drawing
         } else if(Type.isValue("Diameter")){
             //only 1 reference for a Diameter
             int idx = DrawUtil::getIndexFromName(subElements[0]);
-            DrawingGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
-            DrawingGeometry::Circle* circle = static_cast<DrawingGeometry::Circle*> (base);
+            TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
+            TechDrawGeometry::Circle* circle = static_cast<TechDrawGeometry::Circle*> (base);
             result = (circle->radius  * 2.0) / getViewPart()->Scale.getValue();   //Projected BaseGeom is scaled for drawing
         } else if(Type.isValue("Angle")){
             // Must project lines to 2D so cannot use measurement framework this time
@@ -363,14 +363,14 @@ double DrawViewDimension::getDimValue() const
             int idx0 = DrawUtil::getIndexFromName(subElements[0]);
             int idx1 = DrawUtil::getIndexFromName(subElements[1]);
             TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(objects[0]);
-            DrawingGeometry::BaseGeom* edge0 = viewPart->getProjEdgeByIndex(idx0);
-            DrawingGeometry::BaseGeom* edge1 = viewPart->getProjEdgeByIndex(idx1);
+            TechDrawGeometry::BaseGeom* edge0 = viewPart->getProjEdgeByIndex(idx0);
+            TechDrawGeometry::BaseGeom* edge1 = viewPart->getProjEdgeByIndex(idx1);
 
             // Only can find angles with straight line edges
-            if(edge0->geomType == DrawingGeometry::GENERIC &&
-               edge1->geomType == DrawingGeometry::GENERIC) {
-                DrawingGeometry::Generic *gen1 = static_cast<DrawingGeometry::Generic *>(edge0);
-                DrawingGeometry::Generic *gen2 = static_cast<DrawingGeometry::Generic *>(edge1);
+            if(edge0->geomType == TechDrawGeometry::GENERIC &&
+               edge1->geomType == TechDrawGeometry::GENERIC) {
+                TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(edge0);
+                TechDrawGeometry::Generic *gen2 = static_cast<TechDrawGeometry::Generic *>(edge1);
 
                 Base::Vector3d p1S(gen1->points.at(0).fX, gen1->points.at(0).fY, 0.);
                 Base::Vector3d p1E(gen1->points.at(1).fX, gen1->points.at(1).fY, 0.);

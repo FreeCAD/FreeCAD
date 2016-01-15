@@ -44,7 +44,7 @@ enum GeomType {
     GENERIC
 };
 
-class DrawingExport BaseGeom
+class TechDrawExport BaseGeom
 {
 public:
    BaseGeom();
@@ -58,7 +58,7 @@ public:
     Base::Vector2D getEndPoint();
 };
 
-class DrawingExport Circle: public BaseGeom
+class TechDrawExport Circle: public BaseGeom
 {
 public:
   Circle(const BRepAdaptor_Curve &c);
@@ -69,7 +69,7 @@ public:
   double radius;
 };
 
-class DrawingExport Ellipse: public BaseGeom
+class TechDrawExport Ellipse: public BaseGeom
 {
 public:
   Ellipse(const BRepAdaptor_Curve &c);
@@ -83,7 +83,7 @@ public:
   double angle;
 };
 
-class DrawingExport AOE: public Ellipse
+class TechDrawExport AOE: public Ellipse
 {
 public:
   AOE(const BRepAdaptor_Curve &c);
@@ -102,7 +102,7 @@ public:
   bool largeArc;
 };
 
-class DrawingExport AOC: public Circle
+class TechDrawExport AOC: public Circle
 {
 public:
   AOC(const BRepAdaptor_Curve &c);
@@ -139,7 +139,7 @@ struct BezierSegment
     Base::Vector2D pnts[4];
 };
 
-class DrawingExport BSpline: public BaseGeom
+class TechDrawExport BSpline: public BaseGeom
 {
 public:
   BSpline(const BRepAdaptor_Curve &c);
@@ -162,7 +162,7 @@ public:
 };
 
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
-struct DrawingExport Wire
+struct TechDrawExport Wire
 {
   Wire();
   ~Wire();
@@ -170,7 +170,7 @@ struct DrawingExport Wire
 };
 
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
-struct DrawingExport Face
+struct TechDrawExport Face
 {
   Face();
   ~Face();
@@ -178,7 +178,7 @@ struct DrawingExport Face
 };
 
 /// Simple vertex
-struct DrawingExport Vertex
+struct TechDrawExport Vertex
 {
   Vertex(double x, double y) { pnt = Base::Vector2D(x, y); }
   Vertex(Base::Vector2D v) { pnt = v; }
@@ -190,7 +190,7 @@ struct DrawingExport Vertex
 //*** utility functions
 extern "C" {
 
-struct DrawingExport getNextReturn {
+struct TechDrawExport getNextReturn {
     unsigned int index;
     bool reversed;
     explicit getNextReturn(int i = 0, bool r = false) :
@@ -199,9 +199,9 @@ struct DrawingExport getNextReturn {
         {}
 };
 
-std::vector<DrawingGeometry::BaseGeom*> chainGeoms(std::vector<DrawingGeometry::BaseGeom*> geoms);
+std::vector<TechDrawGeometry::BaseGeom*> chainGeoms(std::vector<TechDrawGeometry::BaseGeom*> geoms);
 getNextReturn nextGeom(Base::Vector2D atPoint,
-                              std::vector<DrawingGeometry::BaseGeom*> geoms,
+                              std::vector<TechDrawGeometry::BaseGeom*> geoms,
                               std::vector<bool> used,
                               double tolerance);
 

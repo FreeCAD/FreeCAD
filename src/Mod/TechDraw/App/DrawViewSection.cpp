@@ -74,7 +74,7 @@
 #include <Mod/Part/App/Geometry.h>
 
 #include "DrawViewSection.h"
-#include "ProjectionAlgos.h"
+//#include "ProjectionAlgos.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -93,7 +93,7 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,group,App::Prop_None,"Section Plane Origin");
     ADD_PROPERTY_TYPE(ShowCutSurface ,(true),group,App::Prop_None,"Show the cut surface");
 
-    geometryObject = new DrawingGeometry::GeometryObject();
+    geometryObject = new TechDrawGeometry::GeometryObject();
 }
 
 DrawViewSection::~DrawViewSection()
@@ -236,7 +236,7 @@ gp_Pln DrawViewSection::getSectionPlane() const
 
 //! tries to find the intersection of the section plane with the part???
 //face logic is turned off in GeometryObject, so this won't work now.
-void DrawViewSection::getSectionSurface(std::vector<DrawingGeometry::Face *> &sectionFace) const {
+void DrawViewSection::getSectionSurface(std::vector<TechDrawGeometry::Face *> &sectionFace) const {
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if(result.IsNull()){
@@ -278,5 +278,5 @@ template<> const char* TechDraw::DrawViewSectionPython::getViewProviderName(void
 /// @endcond
 
 // explicit template instantiation
-template class DrawingExport FeaturePythonT<TechDraw::DrawViewSection>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawViewSection>;
 }

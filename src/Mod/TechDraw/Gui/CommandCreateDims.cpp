@@ -796,7 +796,7 @@ int _isValidSingleEdge(Gui::Command* cmd, bool trueDim) {
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
         if (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
             int GeoId = DrawUtil::getIndexFromName(SubNames[0]);
-            DrawingGeometry::BaseGeom* geom = NULL;
+            TechDrawGeometry::BaseGeom* geom = NULL;
             if (trueDim) {
                 int ref = objFeat->getEdgeRefByIndex(GeoId);
                 geom = objFeat->getCompleteEdge(ref);                  //project edge onto its shape to get 2D geom
@@ -808,8 +808,8 @@ int _isValidSingleEdge(Gui::Command* cmd, bool trueDim) {
                 return isInvalid;
             }
 
-            if(geom->geomType == DrawingGeometry::GENERIC) {
-                DrawingGeometry::Generic* gen1 = static_cast<DrawingGeometry::Generic *>(geom);
+            if(geom->geomType == TechDrawGeometry::GENERIC) {
+                TechDrawGeometry::Generic* gen1 = static_cast<TechDrawGeometry::Generic *>(geom);
                 if(gen1->points.size() > 2) {                                   //the edge is a polyline
                     return isInvalid;
                 }
@@ -821,12 +821,12 @@ int _isValidSingleEdge(Gui::Command* cmd, bool trueDim) {
                 } else {
                     edgeType = isDiagonal;
                 }
-            } else if (geom->geomType == DrawingGeometry::CIRCLE ||
-                       geom->geomType == DrawingGeometry::ELLIPSE ||
-                       geom->geomType == DrawingGeometry::ARCOFCIRCLE ||
-                       geom->geomType == DrawingGeometry::ARCOFELLIPSE ) {
+            } else if (geom->geomType == TechDrawGeometry::CIRCLE ||
+                       geom->geomType == TechDrawGeometry::ELLIPSE ||
+                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ||
+                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE ) {
                 edgeType = isCircle;
-            } else if (geom->geomType == DrawingGeometry::BSPLINE) {
+            } else if (geom->geomType == TechDrawGeometry::BSPLINE) {
                 edgeType = isCurve;
             } else {
                 edgeType = isInvalid;
@@ -862,8 +862,8 @@ int _isValidEdgeToEdge(Gui::Command* cmd, bool trueDim) {
             DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int GeoId0 = DrawUtil::getIndexFromName(SubNames[0]);
             int GeoId1 = DrawUtil::getIndexFromName(SubNames[1]);
-            DrawingGeometry::BaseGeom* geom0 = NULL;
-            DrawingGeometry::BaseGeom* geom1 = NULL;
+            TechDrawGeometry::BaseGeom* geom0 = NULL;
+            TechDrawGeometry::BaseGeom* geom1 = NULL;
             if (trueDim) {
                 int ref0 = objFeat0->getEdgeRefByIndex(GeoId0);
                 int ref1 = objFeat0->getEdgeRefByIndex(GeoId1);
@@ -878,10 +878,10 @@ int _isValidEdgeToEdge(Gui::Command* cmd, bool trueDim) {
                 return isInvalid;
             }
 
-            if(geom0->geomType == DrawingGeometry::GENERIC &&
-               geom1->geomType == DrawingGeometry::GENERIC) {
-                DrawingGeometry::Generic *gen0 = static_cast<DrawingGeometry::Generic *>(geom0);
-                DrawingGeometry::Generic *gen1 = static_cast<DrawingGeometry::Generic *>(geom1);
+            if(geom0->geomType == TechDrawGeometry::GENERIC &&
+               geom1->geomType == TechDrawGeometry::GENERIC) {
+                TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
+                TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
                 if(gen0->points.size() > 2 ||
                    gen1->points.size() > 2) {                          //the edge is a polyline
                     return isInvalid;

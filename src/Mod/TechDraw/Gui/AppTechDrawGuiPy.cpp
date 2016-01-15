@@ -47,8 +47,8 @@ using namespace TechDrawGui;
 
 
 /* module functions */
-static PyObject * 
-open(PyObject *self, PyObject *args) 
+static PyObject *
+open(PyObject *self, PyObject *args)
 {
     char* Name;
     if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
@@ -77,7 +77,7 @@ open(PyObject *self, PyObject *args)
         }
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 /* module functions */
@@ -112,10 +112,10 @@ importer(PyObject *self, PyObject *args)
         }
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
-static PyObject * 
+static PyObject *
 exporter(PyObject *self, PyObject *args)
 {
     PyObject* object;
@@ -177,13 +177,13 @@ exporter(PyObject *self, PyObject *args)
                                     Base::Vector3d dir = view->Direction.getValue();
                                     bool hidden = view->ShowHiddenLines.getValue();
                                     bool smooth = view->ShowSmoothLines.getValue();
-                                    TechDraw::ProjectionAlgos::ExtractionType type = TechDraw::ProjectionAlgos::Plain;
-                                    if (hidden) type = (TechDraw::ProjectionAlgos::ExtractionType)(type|TechDraw::ProjectionAlgos::WithHidden);
-                                    if (smooth) type = (TechDraw::ProjectionAlgos::ExtractionType)(type|TechDraw::ProjectionAlgos::WithSmooth);
+                                    Drawing::ProjectionAlgos::ExtractionType type = Drawing::ProjectionAlgos::Plain;
+                                    if (hidden) type = (Drawing::ProjectionAlgos::ExtractionType)(type|Drawing::ProjectionAlgos::WithHidden);
+                                    if (smooth) type = (Drawing::ProjectionAlgos::ExtractionType)(type|Drawing::ProjectionAlgos::WithSmooth);
                                     float scale = view->Scale.getValue();
                                     float tol = view->Tolerance.getValue();
 
-                                    TechDraw::ProjectionAlgos project(shape, dir);
+                                    Drawing::ProjectionAlgos project(shape, dir);
                                     str_out << project.getDXF(type, scale, tol);
                                     break; // TODO: How to add several shapes?
                                 }
