@@ -1898,9 +1898,14 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
 
     SbVec3f campos = cam->position.getValue();
     SbRotation camrot = cam->orientation.getValue();
-    SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
+    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    SoGetBoundingBoxAction action(vp);
     action.apply(this->getSoRenderManager()->getSceneGraph());
     SbBox3f box = action.getBoundingBox();
+
+#if (COIN_MAJOR_VERSION >= 3)
+    float aspectRatio = vp.getViewportAspectRatio();
+#endif
 
     if (box.isEmpty())
         return;
@@ -1918,6 +1923,11 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     if (cam->isOfType(SoOrthographicCamera::getClassTypeId())) {
         isOrthographic = true;
         height = static_cast<SoOrthographicCamera*>(cam)->height.getValue();
+#if (COIN_MAJOR_VERSION >= 3)
+        if (aspectRatio < 1.0f)
+            diff = sphere.getRadius() * 2 - height * aspectRatio;
+        else
+#endif
         diff = sphere.getRadius() * 2 - height;
         pos = (box.getCenter() - direction * sphere.getRadius());
     }
@@ -1936,7 +1946,8 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
         float s = float(i)/float(steps);
 
         if (isOrthographic) {
-            static_cast<SoOrthographicCamera*>(cam)->height.setValue(height + diff * s);
+            float camHeight = height + diff * s;
+            static_cast<SoOrthographicCamera*>(cam)->height.setValue(camHeight);
         }
 
         SbVec3f curpos = campos * (1.0f-s) + pos * s;
