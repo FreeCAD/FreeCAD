@@ -2880,6 +2880,124 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         
         return incrgeo; //number of added elements
     }
+    else if(geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+        // First we search what has to be restored
+        bool major=false;
+        bool minor=false;
+        bool focus=false;
+
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+             it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::HyperbolaMajor:
+                        major=true;
+                        break;
+                    case Sketcher::HyperbolaMinor:
+                        minor=true;
+                        break;
+                    case Sketcher::HyperbolaFocus:
+                        focus=true;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+
+        int currentgeoid= getHighestCurveIndex();
+        int incrgeo= 0;
+
+        const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo);
+
+        Base::Vector3d center = aoh->getCenter();
+        double majord = aoh->getMajorRadius();
+        double minord = aoh->getMinorRadius();
+        Base::Vector3d majdir = aoh->getMajorAxisDir();
+
+        std::vector<Part::Geometry *> igeo;
+        std::vector<Constraint *> icon;
+
+        Base::Vector3d mindir = Vector3d(-majdir.y, majdir.x);
+
+        Base::Vector3d majorpositiveend = center + majord * majdir;
+        Base::Vector3d majornegativeend = center - majord * majdir;
+        Base::Vector3d minorpositiveend = center + minord * mindir;
+        Base::Vector3d minornegativeend = center - minord * mindir;
+
+        double df= sqrt(majord*majord+minord*minord);
+
+        Base::Vector3d focus1P = center + df * majdir;
+
+        /*if(!major)
+        {
+            Part::GeomLineSegment *lmajor = new Part::GeomLineSegment();
+            lmajor->setPoints(majorpositiveend,majornegativeend);
+            
+            igeo.push_back(lmajor);
+            
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::HyperbolaMajor;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->Second = GeoId;
+            
+            icon.push_back(newConstr);
+            incrgeo++;
+        }
+        if(!minor)
+        {
+            Part::GeomLineSegment *lminor = new Part::GeomLineSegment();
+            lminor->setPoints(minorpositiveend,minornegativeend);
+
+            igeo.push_back(lminor);
+
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::HyperbolaMinor;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->Second = GeoId;
+
+            icon.push_back(newConstr);
+            incrgeo++;
+        }*/
+        if(!focus)
+        {
+            Part::GeomPoint *pf1 = new Part::GeomPoint();
+            pf1->setPoint(focus1P);
+
+            igeo.push_back(pf1);
+
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::HyperbolaFocus;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->FirstPos = Sketcher::start;
+            newConstr->Second = GeoId;
+
+            icon.push_back(newConstr);
+            incrgeo++;
+        }
+
+        this->addGeometry(igeo,true);
+        this->addConstraints(icon);
+        
+        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
+            if (*it) 
+                delete *it;
+            
+            for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+                if (*it) 
+                    delete *it;
+                
+                icon.clear();
+            igeo.clear();
+        
+        return incrgeo; //number of added elements
+    }
     else
         return -1; // not supported type
 }
