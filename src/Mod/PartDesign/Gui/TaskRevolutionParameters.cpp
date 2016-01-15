@@ -247,6 +247,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
         getReferencedSelection(vp->getObject(), msg, selObj, axis);
+        if(!selObj)
+            return;
         propReferenceAxis->setValue(selObj, axis);
 
         recomputeFeature();

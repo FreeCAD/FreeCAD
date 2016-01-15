@@ -125,6 +125,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<std::string> planes;
             App::DocumentObject* selObj;
             getReferencedSelection(pcDraft, msg, selObj, planes);
+            if(!selObj)
+                return;
             pcDraft->NeutralPlane.setValue(selObj, planes);
             ui->linePlane->setText(getRefStr(selObj, planes));
 
@@ -136,6 +138,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<std::string> edges;
             App::DocumentObject* selObj;
             getReferencedSelection(pcDraft, msg, selObj, edges);
+            if(!selObj)
+                return;
             pcDraft->PullDirection.setValue(selObj, edges);
             ui->lineLine->setText(getRefStr(selObj, edges));
 
