@@ -305,6 +305,10 @@ public:
     int addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2);
     int addInternalAlignmentEllipseFocus1(int geoId1, int geoId2);
     int addInternalAlignmentEllipseFocus2(int geoId1, int geoId2);
+    /// add InternalAlignmentHyperbolaMajorRadius to a line and a hyperbola
+    int addInternalAlignmentHyperbolaMajorDiameter(int geoId1, int geoId2);
+    int addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2);
+    int addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2);
     //@}
 public:
     //This func is to be used during angle-via-point constraint creation. It calculates

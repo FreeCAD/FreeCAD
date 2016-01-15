@@ -991,6 +991,15 @@ int Sketch::addConstraint(const Constraint *constraint)
             case EllipseFocus2: 
                 rtn = addInternalAlignmentEllipseFocus2(constraint->First,constraint->Second);
                 break;
+            case HyperbolaMajor:
+                rtn = addInternalAlignmentHyperbolaMajorDiameter(constraint->First,constraint->Second);
+                break;
+            case HyperbolaMinor:
+                rtn = addInternalAlignmentHyperbolaMinorDiameter(constraint->First,constraint->Second);
+                break;
+            case HyperbolaFocus: 
+                rtn = addInternalAlignmentHyperbolaFocus(constraint->First,constraint->Second);
+                break;
             default:
                 break;
         }
@@ -1944,26 +1953,26 @@ int Sketch::addInternalAlignmentEllipseMajorDiameter(int geoId1, int geoId2)
 int Sketch::addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2)
 {
     std::swap(geoId1, geoId2);
-    
+
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
-    
+
     if (Geoms[geoId1].type != Ellipse && Geoms[geoId1].type != ArcOfEllipse)
         return -1;
     if (Geoms[geoId2].type != Line)
         return -1;
-    
+
     int pointId1 = getPointId(geoId2, start);
     int pointId2 = getPointId(geoId2, end);
-    
+
     if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
         pointId2 >= 0 && pointId2 < int(Points.size())) {
         GCS::Point &p1 = Points[pointId1];
         GCS::Point &p2 = Points[pointId2];
-    
+
         if(Geoms[geoId1].type == Ellipse) {
             GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
-            
+
             // constraints
             // 1. start point with ellipse -a
             // 2. end point with ellipse +a
@@ -1973,7 +1982,7 @@ int Sketch::addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2)
         }
         else {
             GCS::ArcOfEllipse &a1 = ArcsOfEllipse[Geoms[geoId1].index];
-            
+
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintInternalAlignmentEllipseMinorDiameter(a1, p1, p2, tag);
             return ConstraintsCounter;
@@ -1985,23 +1994,23 @@ int Sketch::addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2)
 int Sketch::addInternalAlignmentEllipseFocus1(int geoId1, int geoId2)
 {
     std::swap(geoId1, geoId2);
-    
+
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
-    
+
     if (Geoms[geoId1].type != Ellipse && Geoms[geoId1].type != ArcOfEllipse)
         return -1;
     if (Geoms[geoId2].type != Point)
         return -1;
-    
+
     int pointId1 = getPointId(geoId2, start);
-    
+
     if (pointId1 >= 0 && pointId1 < int(Points.size())) {
         GCS::Point &p1 = Points[pointId1];
-        
+
         if(Geoms[geoId1].type == Ellipse) {
             GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
-            
+
             // constraints
             // 1. start point with ellipse -a
             // 2. end point with ellipse +a
@@ -2011,7 +2020,7 @@ int Sketch::addInternalAlignmentEllipseFocus1(int geoId1, int geoId2)
         }
         else {
             GCS::ArcOfEllipse &a1 = ArcsOfEllipse[Geoms[geoId1].index];
-            
+
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintInternalAlignmentEllipseFocus1(a1, p1, tag);
             return ConstraintsCounter;
@@ -2055,6 +2064,95 @@ int Sketch::addInternalAlignmentEllipseFocus2(int geoId1, int geoId2)
             GCSsys.addConstraintInternalAlignmentEllipseFocus2(a1, p1, tag);
             return ConstraintsCounter;
         }
+    }
+    return -1;
+}
+
+
+int Sketch::addInternalAlignmentHyperbolaMajorDiameter(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfHyperbola)
+        return -1;
+    if (Geoms[geoId2].type != Line)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+    int pointId2 = getPointId(geoId2, end);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
+        pointId2 >= 0 && pointId2 < int(Points.size())) {
+
+        GCS::Point &p1 = Points[pointId1];
+        GCS::Point &p2 = Points[pointId2];
+
+        GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentHyperbolaMajorDiameter(a1, p1, p2, tag);
+        return ConstraintsCounter;
+    }
+
+    return -1;
+}
+
+int Sketch::addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfHyperbola)
+        return -1;
+    if (Geoms[geoId2].type != Line)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+    int pointId2 = getPointId(geoId2, end);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
+        pointId2 >= 0 && pointId2 < int(Points.size())) {
+
+        GCS::Point &p1 = Points[pointId1];
+        GCS::Point &p2 = Points[pointId2];
+
+        GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentHyperbolaMinorDiameter(a1, p1, p2, tag);
+        return ConstraintsCounter;
+    }
+
+    return -1;
+}
+
+int Sketch::addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfHyperbola)
+        return -1;
+    if (Geoms[geoId2].type != Point)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Point &p1 = Points[pointId1];
+
+        GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentHyperbolaFocus(a1, p1, tag);
+        return ConstraintsCounter;
     }
     return -1;
 }

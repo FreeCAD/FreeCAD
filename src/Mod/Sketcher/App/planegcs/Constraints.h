@@ -81,8 +81,12 @@ namespace GCS
         EllipseFocus2Y = 9,
         HyperbolaPositiveMajorX = 10,
         HyperbolaPositiveMajorY = 11,
-        HyperbolaPositiveMinorX = 12,
-        HyperbolaPositiveMinorY = 13
+        HyperbolaNegativeMajorX = 12,
+        HyperbolaNegativeMajorY = 13,
+        HyperbolaPositiveMinorX = 14,
+        HyperbolaPositiveMinorY = 15,
+        HyperbolaNegativeMinorX = 16,
+        HyperbolaNegativeMinorY = 17
     };
 
     class Constraint
