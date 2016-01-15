@@ -187,6 +187,8 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             App::DocumentObject* selObj;
             PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
             getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
+            if(!selObj)
+                return;
             // Note: ReferenceSelection has already checked the selection for validity
             if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
