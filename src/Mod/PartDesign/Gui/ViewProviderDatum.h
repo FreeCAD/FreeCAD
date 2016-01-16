@@ -27,6 +27,7 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
 
+class SoPickStyle;
 class SbBox3f;
 class SoGetBoundingBoxAction;
 
@@ -59,6 +60,14 @@ public:
     virtual std::string getElement(const SoDetail *) const;
     virtual SoDetail* getDetail(const char*) const;
 
+    /** 
+     * Enable/Disable the selectability of the datum
+     * This differs from the normal ViewProvider selectability in that, that with this enabled one 
+     * can  pick through the datum and select stuff behind it.
+     */
+    bool isPickable();
+    void setPickable(bool val);
+    
     /**
      * Update the visual size to match the given extents
      * @note should be reimplemented in the offspings
@@ -116,6 +125,7 @@ protected:
 
 private:
     SoSeparator* pShapeSep;
+    SoPickStyle* pPickStyle;
     std::string oldWb;
     App::DocumentObject* oldTip;
 
