@@ -231,7 +231,7 @@ protected:
 
     void resolve() const;
 
-    App::DocumentObject *getDocumentObject(const App::Document *doc, const String &name) const;
+    App::DocumentObject *getDocumentObject(const App::Document *doc, const String &name, bool &byIdentifier) const;
 
     const App::PropertyContainer * owner;
     bool documentNameSet;
