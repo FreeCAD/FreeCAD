@@ -204,33 +204,25 @@ void PropertiesDialog::aliasChanged(const QString & text)
 {
     QPalette palette = ui->alias->palette();
 
+    aliasOk = true;
+
+    if (sheet->getAddressFromAlias(Base::Tools::toStdString(text)).size() > 0)
+        aliasOk = false;
+
     if (text.indexOf(QRegExp(QString::fromLatin1("^[A-Za-z][_A-Za-z0-9]*$"))) >= 0) {
         try {
             CellAddress address(text.toUtf8().constData());
-
-            palette.setColor(QPalette::Text, Qt::red);
             aliasOk = false;
-            alias = "";
         }
-        catch (...) {
-            aliasOk = true;
-            palette.setColor(QPalette::Text, Qt::black);
-            alias = Base::Tools::toStdString(text);
-        }
+        catch (...) { }
     }
     else {
-        if (text.isEmpty()) {
-            aliasOk = true;
-            palette.setColor(QPalette::Text, Qt::black);
-        }
-        else {
+        if (!text.isEmpty())
             aliasOk = false;
-            ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-            palette.setColor(QPalette::Text, Qt::red);
-        }
-        alias = "";
     }
 
+    alias = aliasOk ? Base::Tools::toStdString(text) : "";
+    palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
     ui->alias->setPalette(palette);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
