@@ -2925,14 +2925,14 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
         Base::Vector3d majorpositiveend = center + majord * majdir;
         Base::Vector3d majornegativeend = center - majord * majdir;
-        Base::Vector3d minorpositiveend = center + minord * mindir;
-        Base::Vector3d minornegativeend = center - minord * mindir;
+        Base::Vector3d minorpositiveend = majorpositiveend + minord * mindir;
+        Base::Vector3d minornegativeend = majorpositiveend - minord * mindir;
 
         double df= sqrt(majord*majord+minord*minord);
 
         Base::Vector3d focus1P = center + df * majdir;
 
-        /*if(!major)
+        if(!major)
         {
             Part::GeomLineSegment *lmajor = new Part::GeomLineSegment();
             lmajor->setPoints(majorpositiveend,majornegativeend);
@@ -2954,7 +2954,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             lminor->setPoints(minorpositiveend,minornegativeend);
 
             igeo.push_back(lminor);
-
+            
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::InternalAlignment;
             newConstr->AlignmentType = Sketcher::HyperbolaMinor;
@@ -2962,8 +2962,9 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             newConstr->Second = GeoId;
 
             icon.push_back(newConstr);
+            
             incrgeo++;
-        }*/
+        }
         if(!focus)
         {
             Part::GeomPoint *pf1 = new Part::GeomPoint();
