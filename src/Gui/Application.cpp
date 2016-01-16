@@ -398,8 +398,18 @@ Application::Application(bool GUIenabled)
             );
         
 #if PY_MAJOR_VERSION >= 3
-        static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", FreeCADGui_doc, -1, Application::Methods};
-        PyObject* module = PyModule_Create(&FreeCADGuiModuleDef);
+        // if this returns a valid pointer then the 'FreeCADGui' Python module was loaded,
+        // otherwise the executable was launched
+        PyObject *module = PyImport_AddModule("FreeCADGui");
+        if (!module) {
+            static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", FreeCADGui_doc, -1, Application::Methods};
+            module = PyModule_Create(&FreeCADGuiModuleDef);
+            _PyImport_FixupBuiltin(module, "FreeCADGui");
+        }
+        else {
+            // extend the method list
+            PyModule_AddFunctions(module, Application::Methods);
+        }
 #else
         PyObject* module = Py_InitModule3("FreeCADGui", Application::Methods, FreeCADGui_doc);
 #endif

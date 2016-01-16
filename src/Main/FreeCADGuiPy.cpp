@@ -325,7 +325,6 @@ PyMODINIT_FUNC PyInit_FreeCADGui()
 PyMODINIT_FUNC initFreeCADGui()
 #endif
 {
-    PyObject* module;
     try {
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
@@ -334,9 +333,10 @@ PyMODINIT_FUNC initFreeCADGui()
         Gui::Application::initApplication();        
 #if PY_MAJOR_VERSION >= 3
         static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,"FreeCADGui", "FreeCAD GUI module\n", -1, FreeCADGui_methods};
-        module = PyModule_Create(&FreeCADGuiModuleDef);
+        PyObject* module = PyModule_Create(&FreeCADGuiModuleDef);
+        return module;
 #else
-        module = Py_InitModule3("FreeCADGui", FreeCADGui_methods, "FreeCAD GUI module\n");
+        Py_InitModule3("FreeCADGui", FreeCADGui_methods, "FreeCAD GUI module\n");
 #endif
     }
     catch (const Base::Exception& e) {
@@ -346,7 +346,7 @@ PyMODINIT_FUNC initFreeCADGui()
         PyErr_SetString(PyExc_ImportError, "Unknown runtime error occurred");
     }
 #if PY_MAJOR_VERSION >= 3
-    return module;
+    return 0;
 #endif
 }
 
