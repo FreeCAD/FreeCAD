@@ -85,7 +85,9 @@ ViewProviderDatum::ViewProviderDatum()
 {
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
-
+    pPickStyle = new SoPickStyle();
+    pPickStyle->ref();
+    
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
@@ -103,6 +105,7 @@ ViewProviderDatum::ViewProviderDatum()
 ViewProviderDatum::~ViewProviderDatum()
 {
     pShapeSep->unref();
+    pPickStyle->unref();
 }
 
 void ViewProviderDatum::attach(App::DocumentObject *obj)
@@ -125,15 +128,16 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     hints->vertexOrdering.setValue(SoShapeHints::COUNTERCLOCKWISE);
     SoDrawStyle* fstyle = new SoDrawStyle();
     fstyle->style = SoDrawStyle::FILLED;
-    SoPickStyle* pickStyle = new SoPickStyle();
-    pickStyle->style = SoPickStyle::SHAPE;
+    fstyle->lineWidth = 3;
+    fstyle->pointSize = 5;
+    pPickStyle->style = SoPickStyle::SHAPE;
     SoMaterialBinding* matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::OVERALL;
 
     SoSeparator* sep = new SoSeparator();
     sep->addChild(hints);
     sep->addChild(fstyle);
-    sep->addChild(pickStyle);
+    sep->addChild(pPickStyle);
     sep->addChild(matBinding);
     sep->addChild(pcShapeMaterial);
     sep->addChild(pShapeSep);
@@ -387,4 +391,17 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox (
 SbBox3f ViewProviderDatum::defaultBoundBox () {
     return SbBox3f ( -defaultSize, -defaultSize, -defaultSize,
             defaultSize, defaultSize, defaultSize );
+}
+
+bool ViewProviderDatum::isPickable() {
+
+    return bool(pPickStyle->style.getValue() == SoPickStyle::SHAPE);
+}
+
+void ViewProviderDatum::setPickable(bool val) {
+
+    if(val)
+        pPickStyle->style = SoPickStyle::SHAPE;
+    else
+        pPickStyle->style = SoPickStyle::UNPICKABLE;
 }

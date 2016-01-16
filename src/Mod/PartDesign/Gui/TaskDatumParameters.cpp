@@ -228,6 +228,8 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
         autoNext = true;
     else
         autoNext = false;
+    
+    DatumView->setPickable(false);
 }
 
 QString getShTypeText(eRefType type)
@@ -782,6 +784,8 @@ TaskDatumParameters::~TaskDatumParameters()
         }
     }
 
+    DatumView->setPickable(true);
+    
     delete ui;
 }
 
