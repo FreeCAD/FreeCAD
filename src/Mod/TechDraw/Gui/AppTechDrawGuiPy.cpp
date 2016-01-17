@@ -29,9 +29,9 @@
 #endif
 
 #include "MDIViewPage.h"
-#include <Mod/Drawing/App/DrawPage.h>
-#include <Mod/Drawing/App/DrawViewPart.h>
-#include <Mod/Drawing/App/ProjectionAlgos.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+//#include <Mod/Drawing/App/ProjectionAlgos.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>
@@ -45,7 +45,7 @@
 
 using namespace TechDrawGui;
 
-
+//TODO: TechDraw does not open/import/export SVG/DXF files.  Not sure what belongs here.
 /* module functions */
 static PyObject *
 open(PyObject *self, PyObject *args)
@@ -174,6 +174,7 @@ exporter(PyObject *self, PyObject *args)
                                 }
                                 TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
                                 if (!shape.IsNull()) {
+#if 0
                                     Base::Vector3d dir = view->Direction.getValue();
                                     bool hidden = view->ShowHiddenLines.getValue();
                                     bool smooth = view->ShowSmoothLines.getValue();
@@ -185,6 +186,7 @@ exporter(PyObject *self, PyObject *args)
 
                                     Drawing::ProjectionAlgos project(shape, dir);
                                     str_out << project.getDXF(type, scale, tol);
+#endif
                                     break; // TODO: How to add several shapes?
                                 }
                             }

@@ -41,14 +41,13 @@ set(TechDrawGui_MOC_HDRS
     QGIViewSymbol.h
     QGIViewClip.h
     TaskProjGroup.h
-    TemplateTextField.h
     DlgPrefsDrawingImp.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${TechDrawGui_MOC_SRCS})
 
-qt4_add_resources(TechDrawGui_SRCS Resources/Drawing.qrc)
+qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 
 set(TechDrawGui_UIC_SRCS
     DlgPrefsDrawing.ui
@@ -64,7 +63,7 @@ SET(TechDrawGui_SRCS
     Command.cpp
     CommandCreateDims.cpp
     CommandDecorate.cpp
-    Resources/Drawing.qrc
+    Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
@@ -173,19 +172,19 @@ add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${Tec
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
 
 fc_target_copy_resource(TechDrawGui
-    ${CMAKE_SOURCE_DIR}/src/Mod/Drawing
-    ${CMAKE_BINARY_DIR}/Mod/Drawing
+    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw
     InitGui.py)
 
 SET(TechDrawGuiIcon_SVG
     Resources/icons/preferences-drawing.svg
 )
 
-fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing" ${TechDrawGuiIcon_SVG})
+fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiIcon_SVG})
 
-INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/DrawingFem/Resources/icons")
+INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")
 
-SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/Drawing)
+SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDrawGui)
 
 INSTALL(TARGETS TechDrawGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

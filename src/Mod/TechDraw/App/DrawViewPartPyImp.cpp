@@ -1,7 +1,7 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Drawing/App/DrawViewPart.h"
+#include "Mod/TechDraw/App/DrawViewPart.h"
 
 // inclusion of the generated files (generated out of DrawViewPartPy.xml)
 #include "DrawViewPartPy.h"
