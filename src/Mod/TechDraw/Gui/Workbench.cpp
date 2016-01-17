@@ -76,8 +76,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "Drawing_NewDimension";
     //*part << "Drawing_DraftView";
     *draw << "Drawing_ExportPage";
-    *draw << "Separator";
-    *draw << "Drawing_ProjectShape";
+    //*draw << "Separator";
+    //*draw << "Drawing_ProjectShape";
 
     return root;
 }
@@ -163,9 +163,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("Drawing Decoration");
     *decor << "Drawing_NewHatch";
-
-//     *img << "Drawing_OpenBrowserView";
-//     *img << "Drawing_DraftView";
 
     return root;
 }
