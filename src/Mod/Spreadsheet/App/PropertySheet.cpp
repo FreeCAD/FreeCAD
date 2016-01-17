@@ -1059,9 +1059,6 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
     const char * docName = docObj->getDocument()->Label.getValue();
     const char * docObjName = docObj->getNameInDocument();
 
-    // Touch to force recompute
-    touch();
-
     // Recompute cells that depend on this cell
     std::string fullName = std::string(docName) + "#" + std::string(docObjName);
     std::map<std::string, std::set< CellAddress > >::const_iterator i = documentObjectToCellMap.find(fullName);
@@ -1069,6 +1066,9 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
     if (i == documentObjectToCellMap.end())
         return;
 
+    // Touch to force recompute
+    touch();
+    
     std::set<CellAddress> s = i->second;
     std::set<CellAddress>::const_iterator j = s.begin();
     std::set<CellAddress>::const_iterator end = s.end();
@@ -1084,11 +1084,11 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
 
 void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
 {
-    // Touch to force recompute
-    touch();
-
     if (documentObjectName.find(docObj) == documentObjectName.end())
         return;
+
+    // Touch to force recompute
+    touch();
 
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
@@ -1105,11 +1105,10 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
 
 void PropertySheet::renamedDocument(const App::Document * doc)
 {
-    // Touch to force recompute
-    touch();
-
     if (documentName.find(doc) == documentName.end())
         return;
+    // Touch to force recompute
+    touch();
 
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
@@ -1140,8 +1139,6 @@ void PropertySheet::recomputeDependants(const App::DocumentObject *docObj)
     const char * docName = docObj->getDocument()->Label.getValue();
     const char * docObjName = docObj->getNameInDocument();
 
-    // Touch to force recompute
-    touch();
 
     // Recompute cells that depend on this cell
     std::string fullName = std::string(docName) + "#" + std::string(docObjName);
@@ -1150,6 +1147,9 @@ void PropertySheet::recomputeDependants(const App::DocumentObject *docObj)
     if (i == documentObjectToCellMap.end())
         return;
 
+    // Touch to force recompute
+    touch();
+    
     std::set<CellAddress>::const_iterator j = i->second.begin();
     std::set<CellAddress>::const_iterator end = i->second.end();
 
