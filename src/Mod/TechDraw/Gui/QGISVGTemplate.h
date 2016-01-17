@@ -47,7 +47,7 @@ public:
     QGISVGTemplate(QGraphicsScene *);
     ~QGISVGTemplate();
 
-    enum {Type = QGI::UserType + 153};
+    enum {Type = QGraphicsItem::UserType + 153};
     int type() const { return Type; }
 
     /// Currently just frees up textFields

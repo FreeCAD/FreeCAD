@@ -46,7 +46,7 @@ using namespace TechDrawGui;
 
 QGCustomText::QGCustomText()
 {
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
 }
 
 void QGCustomText::centerAt(QPointF centerPos)

@@ -45,14 +45,14 @@ using namespace TechDrawGui;
 
 QGIViewCollection::QGIViewCollection(const QPoint &pos, QGraphicsScene *scene) :QGIView(pos, scene)
 {
-    setFlags(QGI::ItemIsSelectable);
+    setFlags(QGraphicsItem::ItemIsSelectable);
     setPos(pos);
 
     setHandlesChildEvents(false);
 
-    //setCacheMode(QGI::NoCache);
+    //setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
-    setFlag(QGI::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
 QGIViewCollection::~QGIViewCollection()
@@ -63,7 +63,7 @@ QGIViewCollection::~QGIViewCollection()
 QVariant QGIViewCollection::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 
-    return QGIGroup::itemChange(change, value);
+    return QGraphicsItemGroup::itemChange(change, value);
 }
 
 void QGIViewCollection::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -77,7 +77,7 @@ void QGIViewCollection::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         Gui::Command::commitCommand();
         //Gui::Command::updateActive();
     }
-    QGI::mouseReleaseEvent(event);
+    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void QGIViewCollection::updateView(bool update)

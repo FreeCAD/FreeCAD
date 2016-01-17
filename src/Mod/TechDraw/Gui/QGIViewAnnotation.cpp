@@ -27,7 +27,7 @@
 #include <QGraphicsScene>
 #include <QMouseEvent>
 #include <QGraphicsSceneHoverEvent>
-#include <QGI>
+#include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPainterPathStroker>
@@ -50,13 +50,13 @@
 
 using namespace TechDrawGui;
 
-QGIViewAnnotation::QGIViewAnnotation(const QPoint &pos, QGraphicsScene *scene) 
+QGIViewAnnotation::QGIViewAnnotation(const QPoint &pos, QGraphicsScene *scene)
                             :QGIView(pos, scene)
 {
     setHandlesChildEvents(false);
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
-    setFlag(QGI::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
 
     m_textItem = new QGCustomText();
     addToGroup(m_textItem);
@@ -124,7 +124,7 @@ void QGIViewAnnotation::drawAnnotation()
             ss << "\n" << *it ;
         }
     }
- 
+
     QFont font;
     font.setFamily(QString::fromUtf8(viewAnno->Font.getValue()));
     font.setPointSizeF(viewAnno->TextSize.getValue());           //scene units (mm), not points
@@ -146,4 +146,3 @@ QRectF QGIViewAnnotation::boundingRect() const
 }
 
 #include "moc_QGIViewAnnotation.cpp"
-

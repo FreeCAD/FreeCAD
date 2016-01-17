@@ -43,8 +43,8 @@
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 
-#include <Mod/Drawing/App/DrawHatch.h>
-#include <Mod/Drawing/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIView.h"
 #include "QGIHatch.h"
@@ -60,9 +60,9 @@ QGIHatch::QGIHatch(std::string parentHatch) :
     //m_fill(Qt::Dense6Pattern)
 {
     setHandlesChildEvents(false);
-    setFlag(QGI::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
     setAcceptHoverEvents(true);
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
@@ -111,7 +111,7 @@ QVariant QGIHatch::itemChange(GraphicsItemChange change, const QVariant &value)
             setPrettyNormal();
         }
     }
-    return QGI::itemChange(change, value);
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void QGIHatch::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

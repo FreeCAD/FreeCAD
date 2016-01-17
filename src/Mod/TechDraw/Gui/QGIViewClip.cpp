@@ -27,7 +27,7 @@
 #include <QGraphicsScene>
 #include <QMouseEvent>
 #include <QGraphicsSceneHoverEvent>
-#include <QGI>
+#include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPainterPathStroker>
@@ -54,10 +54,10 @@ QGIViewClip::QGIViewClip(const QPoint &pos, QGraphicsScene *scene)
                             :QGIView(pos, scene)
 {
     setHandlesChildEvents(false);
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
-    setFlag(QGI::ItemIsSelectable, true);
-    setFlag(QGI::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
 
     m_cliparea = new QGCustomClip();
     addToGroup(m_cliparea);
@@ -151,8 +151,8 @@ void QGIViewClip::drawClip()
     }
 
     //for all graphic views in qgigroup, remove from qgigroup the ones that aren't in ViewClip
-    QList<QGI *> qgItems = m_cliparea->childItems();
-    QList<QGI *>::iterator it = qgItems.begin();
+    QList<QGraphicsItem*> qgItems = m_cliparea->childItems();
+    QList<QGraphicsItem*>::iterator it = qgItems.begin();
     for (; it != qgItems.end(); it++) {
         QGIView* qv = dynamic_cast<QGIView*>((*it));
         if (qv) {
@@ -169,8 +169,8 @@ void QGIViewClip::drawClip()
 
 QGIView* QGIViewClip::getQGIVByName(std::string name)  //should probably be method in MDIViewPage??  but qgiv can't get drawingView? or QGVPage!
 {
-    QList<QGI *> qgItems = scene()->items();
-    QList<QGI *>::iterator it = qgItems.begin();
+    QList<QGraphicsItem*> qgItems = scene()->items();
+    QList<QGraphicsItem*>::iterator it = qgItems.begin();
     for (; it != qgItems.end(); it++) {
         QGIView* qv = dynamic_cast<QGIView*>((*it));
         if (qv) {

@@ -24,7 +24,7 @@
 #define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
 #include <Qt>
-#include <QGI>
+#include <QGraphicsItem>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -44,7 +44,7 @@ public:
     explicit QGIFace(int ref = -1);
     ~QGIFace() {}
 
-    enum {Type = QGI::UserType + 104};
+    enum {Type = QGraphicsItem::UserType + 104};
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 

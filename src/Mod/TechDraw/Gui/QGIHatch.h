@@ -24,7 +24,7 @@
 #define DRAWINGGUI_QGRAPHICSITEMHATCH_H
 
 #include <Qt>
-#include <QGI>
+#include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 #include <QBitmap>
 
@@ -55,7 +55,7 @@ public:
     explicit QGIHatch(std::string parentHatch);
     ~QGIHatch();
 
-    enum {Type = QGI::UserType + 122};
+    enum {Type = QGraphicsItem::UserType + 122};
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 

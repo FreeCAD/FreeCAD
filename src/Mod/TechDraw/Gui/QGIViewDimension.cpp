@@ -59,9 +59,9 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/Drawing/App/DrawViewDimension.h>
-#include <Mod/Drawing/App/DrawViewPart.h>
-#include <Mod/Drawing/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIViewDimension.h"
 #include "QGIArrow.h"
@@ -82,7 +82,7 @@ QGIDatumLabel::QGIDatumLabel(int ref, QGraphicsScene *scene  ) : reference(ref)
     posX = 0;
     posY = 0;
 
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setFlag(ItemSendsGeometryChanges, true);
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsSelectable, true);
@@ -114,7 +114,7 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
         Q_EMIT dragging();
     }
 
-    return QGI::itemChange(change, value);
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
@@ -154,7 +154,7 @@ void QGIDatumLabel::mouseReleaseEvent( QGraphicsSceneMouseEvent * event)
     if(scene() && this == scene()->mouseGrabberItem()) {
         Q_EMIT dragFinished();
     }
-    QGI::mouseReleaseEvent(event);
+    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 QGIViewDimension::QGIViewDimension(const QPoint &pos, QGraphicsScene *scene) :
@@ -162,8 +162,8 @@ QGIViewDimension::QGIViewDimension(const QPoint &pos, QGraphicsScene *scene) :
     hasHover(false)
 {
     setHandlesChildEvents(false);
-    setFlag(QGI::ItemIsMovable, false);
-    setCacheMode(QGI::NoCache);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setCacheMode(QGraphicsItem::NoCache);
 
     QGIDatumLabel *dlabel = new QGIDatumLabel();
     QGraphicsPathItem *arrws        = new QGraphicsPathItem();
@@ -548,7 +548,7 @@ void QGIViewDimension::draw()
 
         if(arw.size() != 2) {
             prepareGeometryChange();
-            for(std::vector<QGI *>::iterator it = arw.begin(); it != arw.end(); ++it) {
+            for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
                 removeFromGroup(*it);
                 delete (*it);
             }
@@ -803,7 +803,7 @@ void QGIViewDimension::draw()
         // Create Two Arrows always (but sometimes hide one!)
         if(arw.size() != 2) {
             prepareGeometryChange();
-            for(std::vector<QGI *>::iterator it = arw.begin(); it != arw.end(); ++it) {
+            for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
                 removeFromGroup(*it);
                 delete (*it);
             }
@@ -936,7 +936,7 @@ void QGIViewDimension::draw()
         QGIArrow *ar2;
         if(arw.size() != 2) {
             prepareGeometryChange();
-            for(std::vector<QGI *>::iterator it = arw.begin(); it != arw.end(); ++it) {
+            for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
                 removeFromGroup(*it);
                 delete (*it);
             }
@@ -1154,7 +1154,7 @@ void QGIViewDimension::draw()
                 // Add the arrows
                 if(arw.size() != 2) {
                     prepareGeometryChange();
-                    for(std::vector<QGI *>::iterator it = arw.begin(); it != arw.end(); ++it) {
+                    for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
                         removeFromGroup(*it);
                         delete (*it);
                     }

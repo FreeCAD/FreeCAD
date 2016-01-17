@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
 #define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
 
-# include <QGI>
+# include <QGraphicsItem>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -44,14 +44,14 @@ public:
     explicit QGIVertex(int index);
     ~QGIVertex() {}
 
-    enum {Type = QGI::UserType + 105};
+    enum {Type = QGraphicsItem::UserType + 105};
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
     int getReference() const { return reference; }
     void setReference(int ref) {reference = ref; }
     int getProjIndex() const { return projIndex; }
-    
+
     float getRadius() { return m_radius; }
     void setRadius(float r) { m_radius = r; }
     Qt::BrushStyle getFill() { return m_fill; }
@@ -67,7 +67,7 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    int projIndex;                                                     //index of vertex in Projection. must exist. 
+    int projIndex;                                                     //index of vertex in Projection. must exist.
     int reference;                                                     //index of vertex in DrawView Source. may not exist(-1).
 
     bool isHighlighted;
@@ -86,4 +86,3 @@ private:
 } // namespace MDIViewPageGui
 
 #endif // DRAWINGGUI_QGRAPHICSITEMVERTEX_H
-

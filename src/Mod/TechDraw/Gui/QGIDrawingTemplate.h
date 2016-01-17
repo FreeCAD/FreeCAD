@@ -46,7 +46,7 @@ public:
     QGIDrawingTemplate(QGraphicsScene *);
     ~QGIDrawingTemplate();
 
-    enum {Type = QGI::UserType + 151};
+    enum {Type = QGraphicsItem::UserType + 151};
     int type() const { return Type;}
 
     void clearContents();

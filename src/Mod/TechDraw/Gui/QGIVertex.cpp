@@ -45,10 +45,10 @@ QGIVertex::QGIVertex(int index) :
     m_radius(2),
     m_fill(Qt::SolidPattern)
 {
-    setCacheMode(QGI::NoCache);
-    setFlag(QGI::ItemIsSelectable, true);
-    setFlag(QGI::ItemSendsScenePositionChanges, true);
-    setFlag(QGI::ItemSendsGeometryChanges,true);
+    setCacheMode(QGraphicsItem::NoCache);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     setAcceptHoverEvents(true);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -73,7 +73,7 @@ QVariant QGIVertex::itemChange(GraphicsItemChange change, const QVariant &value)
             setPrettyNormal();
         }
     }
-    return QGI::itemChange(change, value);
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void QGIVertex::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

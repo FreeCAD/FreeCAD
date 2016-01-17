@@ -47,7 +47,7 @@ public:
     explicit QGIDatumLabel(int ref = -1, QGraphicsScene *scene = 0 );
     ~QGIDatumLabel() {}
 
-    enum {Type = QGI::UserType + 107};
+    enum {Type = QGraphicsItem::UserType + 107};
     int type() const { return Type;}
 
     void setLabelCenter();
@@ -87,7 +87,7 @@ class TechDrawGuiExport QGIViewDimension : public QGIView
     Q_OBJECT
 
 public:
-    enum {Type = QGI::UserType + 106};
+    enum {Type = QGraphicsItem::UserType + 106};
 
     explicit QGIViewDimension(const QPoint &position, QGraphicsScene *scene);
     ~QGIViewDimension();
@@ -116,11 +116,11 @@ protected:
 
 protected:
     bool hasHover;
-    QGI *datumLabel;                                         //dimension text
-    QGI *arrows;                                             //dimension lines + extension lines
-    QGI *centreLines;
+    QGraphicsItem*datumLabel;                                         //dimension text
+    QGraphicsItem*arrows;                                             //dimension lines + extension lines
+    QGraphicsItem*centreLines;
 
-    std::vector<QGI *> arw;                                  //arrowheads
+    std::vector<QGraphicsItem*> arw;                                  //arrowheads
     std::vector<TechDrawGeometry::BaseGeom *> projGeom;
     QPen pen;
     QColor m_colNormal;

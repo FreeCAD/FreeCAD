@@ -50,7 +50,7 @@ QGIFace::QGIFace(int ref) :
     m_fill(Qt::Dense3Pattern)
     //m_fill(Qt::Dense6Pattern)
 {
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -76,7 +76,7 @@ QVariant QGIFace::itemChange(GraphicsItemChange change, const QVariant &value)
             setPrettyNormal();
         }
     }
-    return QGI::itemChange(change, value);
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void QGIFace::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

@@ -46,18 +46,18 @@
 #include <Gui/FileDialog.h>
 #include <Gui/WaitCursor.h>
 
-#include <Mod/Drawing/App/Geometry.h>
-#include <Mod/Drawing/App/DrawPage.h>
-#include <Mod/Drawing/App/DrawTemplate.h>
-#include <Mod/Drawing/App/DrawSVGTemplate.h>
-#include <Mod/Drawing/App/DrawParametricTemplate.h>
-#include <Mod/Drawing/App/DrawViewCollection.h>
-#include <Mod/Drawing/App/DrawViewDimension.h>
-#include <Mod/Drawing/App/DrawProjGroup.h>
-#include <Mod/Drawing/App/DrawViewPart.h>
-#include <Mod/Drawing/App/DrawViewAnnotation.h>
-#include <Mod/Drawing/App/DrawViewSymbol.h>
-#include <Mod/Drawing/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawSVGTemplate.h>
+#include <Mod/TechDraw/App/DrawParametricTemplate.h>
+#include <Mod/TechDraw/App/DrawViewCollection.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/DrawViewClip.h>
 
 #include "ViewProviderPage.h"
 
@@ -100,7 +100,7 @@ QGVPage::QGVPage(ViewProviderDrawingPage *vp, QWidget *parent)
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     m_backgroundItem = new QGraphicsRectItem();
-    m_backgroundItem->setCacheMode(QGI::NoCache);
+    m_backgroundItem->setCacheMode(QGraphicsItem::NoCache);
     m_backgroundItem->setZValue(-999999);
 //     scene()->addItem(m_backgroundItem); // TODO IF SEGFAULTS WITH DRAW ENABLE THIS (REDRAWS ARE SLOWER :s)
 
@@ -451,9 +451,9 @@ void QGVPage::setViewOutline(bool enable)
 void QGVPage::toggleEdit(bool enable)
 {
 // TODO: needs fiddling to handle items that don't inherit QGIViewPart: Annotation, Symbol, Templates, Edges, Faces, Vertices,...
-    QList<QGI *> list = scene()->items();
+    QList<QGraphicsItem*> list = scene()->items();
 
-    for (QList<QGI *>::iterator it = list.begin(); it != list.end(); ++it) {
+    for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView) {
             QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(*it);
@@ -470,10 +470,10 @@ void QGVPage::toggleEdit(bool enable)
             //itemView->updateView(true);
         }
 
-        QGI *item = dynamic_cast<QGI *>(*it);
+        QGraphicsItem*item = dynamic_cast<QGraphicsItem*>(*it);
         if(item) {
-            //item->setCacheMode((enable) ? QGI::DeviceCoordinateCache : QGI::NoCache);
-            item->setCacheMode((enable) ? QGI::NoCache : QGI::NoCache);
+            //item->setCacheMode((enable) ? QGraphicsItem::DeviceCoordinateCache : QGraphicsItem::NoCache);
+            item->setCacheMode((enable) ? QGraphicsItem::NoCache : QGraphicsItem::NoCache);
             item->update();
         }
     }

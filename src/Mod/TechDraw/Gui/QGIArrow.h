@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
 #define DRAWINGGUI_QGRAPHICSITEMARROW_H
 
-# include <QGI>
+# include <QGraphicsItem>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -43,7 +43,7 @@ public:
     explicit QGIArrow(QGraphicsScene *scene = 0 );
     ~QGIArrow() {}
 
-    enum {Type = QGI::UserType + 109};
+    enum {Type = QGraphicsItem::UserType + 109};
     int type() const { return Type;}
 
 public:

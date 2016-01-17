@@ -46,7 +46,7 @@ public:
     explicit QGIViewAnnotation(const QPoint &position, QGraphicsScene *scene);
     ~QGIViewAnnotation();
 
-    enum {Type = QGI::UserType + 120};
+    enum {Type = QGraphicsItem::UserType + 120};
     int type() const { return Type;}
 
     void updateView(bool update = false);

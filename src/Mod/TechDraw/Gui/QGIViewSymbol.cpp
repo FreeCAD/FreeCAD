@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
-#include <QGI>
+#include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QMenu>
@@ -48,9 +48,9 @@ using namespace TechDrawGui;
 QGIViewSymbol::QGIViewSymbol(const QPoint &pos, QGraphicsScene *scene) :QGIView(pos, scene)
 {
     setHandlesChildEvents(false);
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
-    setFlag(QGI::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
 
     m_svgRender = new QSvgRenderer();
 

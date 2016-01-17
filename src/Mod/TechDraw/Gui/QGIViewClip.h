@@ -46,7 +46,7 @@ public:
     explicit QGIViewClip(const QPoint &position, QGraphicsScene *scene);
     ~QGIViewClip();
 
-    enum {Type = QGI::UserType + 123};
+    enum {Type = QGraphicsItem::UserType + 123};
     int type() const { return Type;}
 
     virtual void updateView(bool update = false);

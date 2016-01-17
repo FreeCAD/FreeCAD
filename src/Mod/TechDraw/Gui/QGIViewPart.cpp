@@ -61,9 +61,9 @@ QGIViewPart::QGIViewPart(const QPoint &pos, QGraphicsScene *scene)
                 :QGIView(pos, scene)
 {
     setHandlesChildEvents(false);
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
-    setFlag(QGI::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
@@ -79,8 +79,8 @@ QGIViewPart::~QGIViewPart()
 QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemSelectedHasChanged && scene()) {
-        QList<QGI *> items = childItems();
-        for(QList<QGI *>::iterator it = items.begin(); it != items.end(); ++it) {
+        QList<QGraphicsItem*> items = childItems();
+        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
             if(edge) {
@@ -98,7 +98,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &valu
 void QGIViewPart::tidy()
 {
     //Delete any leftover items
-    for(QList<QGI *>::iterator it = deleteItems.begin(); it != deleteItems.end(); ++it) {
+    for(QList<QGraphicsItem*>::iterator it = deleteItems.begin(); it != deleteItems.end(); ++it) {
         delete *it;
     }
     deleteItems.clear();
@@ -237,8 +237,8 @@ void QGIViewPart::updateView(bool update)
        viewPart->ShowHiddenLines.isTouched()) {
         // Remove all existing graphical representations (QGIxxxx)  otherwise BRect only grows, never shrinks?
         prepareGeometryChange();
-        QList<QGI *> items = childItems();
-        for(QList<QGI *>::iterator it = items.begin(); it != items.end(); ++it) {
+        QList<QGraphicsItem*> items = childItems();
+        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             if (dynamic_cast<QGIEdge *> (*it) ||
                 dynamic_cast<QGIFace *>(*it) ||
                 dynamic_cast<QGIVertex *>(*it) ||
@@ -253,8 +253,8 @@ void QGIViewPart::updateView(bool update)
         draw();
     } else if(viewPart->LineWidth.isTouched() ||
               viewPart->HiddenWidth.isTouched()) {
-        QList<QGI *> items = childItems();
-        for(QList<QGI *>::iterator it = items.begin(); it != items.end(); ++it) {
+        QList<QGraphicsItem*> items = childItems();
+        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge  && edge->getHiddenEdge()) {
                 edge->setStrokeWidth(viewPart->HiddenWidth.getValue() * lineScaleFactor);
@@ -328,7 +328,7 @@ void QGIViewPart::drawViewPart()
         //simplePath.setFillRule(Qt::WindingFill);
         //fitem->setPath(simplePath);
         fitem->setPath(facePath);
-        fitem->setFlag(QGI::ItemIsSelectable, true);
+        fitem->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
@@ -377,7 +377,7 @@ void QGIViewPart::drawViewPart()
             hatch->setFill(feat->HatchPattern.getValue());
             hatch->setColor(feat->HatchColor.getValue());
             //_dumpPath("hatchPath",hatchPath);
-            hatch->setFlag(QGI::ItemIsSelectable, true);
+            hatch->setFlag(QGraphicsItem::ItemIsSelectable, true);
         }
     }
 
@@ -406,7 +406,7 @@ void QGIViewPart::drawViewPart()
                 item->setSmoothEdge(true);
             }
             item->setPath(drawPainterPath(*it));
-            item->setFlag(QGI::ItemIsSelectable, true);
+            item->setFlag(QGraphicsItem::ItemIsSelectable, true);
             item->setAcceptHoverEvents(true);
 
             //debug a path
@@ -568,8 +568,8 @@ void QGIViewPart::pathArcSegment(QPainterPath &path,
 
 QGIEdge * QGIViewPart::findRefEdge(int idx)
 {
-    QList<QGI *> items = childItems();
-    for(QList<QGI *>::iterator it = items.begin(); it != items.end(); it++) {
+    QList<QGraphicsItem*> items = childItems();
+    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
         if(edge && edge->getReference() == idx)
             return edge;
@@ -579,8 +579,8 @@ QGIEdge * QGIViewPart::findRefEdge(int idx)
 
 QGIVertex * QGIViewPart::findRefVertex(int idx)
 {
-    QList<QGI *> items = childItems();
-    for(QList<QGI *>::iterator it = items.begin(); it != items.end(); it++) {
+    QList<QGraphicsItem*> items = childItems();
+    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
         if(vert && vert->getReference() == idx)
             return vert;
@@ -590,8 +590,8 @@ QGIVertex * QGIViewPart::findRefVertex(int idx)
 
 void QGIViewPart::toggleCache(bool state)
 {
-  QList<QGI *> items = childItems();
-    for(QList<QGI *>::iterator it = items.begin(); it != items.end(); it++) {
+  QList<QGraphicsItem*> items = childItems();
+    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         //(*it)->setCacheMode((state)? DeviceCoordinateCache : NoCache);        //TODO: fiddle cache settings if req'd for performance
         (*it)->setCacheMode((state)? NoCache : NoCache);
         (*it)->update();
@@ -600,8 +600,8 @@ void QGIViewPart::toggleCache(bool state)
 
 void QGIViewPart::toggleCosmeticLines(bool state)
 {
-  QList<QGI *> items = childItems();
-    for(QList<QGI *>::iterator it = items.begin(); it != items.end(); it++) {
+  QList<QGraphicsItem*> items = childItems();
+    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
         if(edge) {
             edge->setCosmetic(state);
@@ -611,8 +611,8 @@ void QGIViewPart::toggleCosmeticLines(bool state)
 
 void QGIViewPart::toggleVertices(bool state)
 {
-    QList<QGI *> items = childItems();
-    for(QList<QGI *>::iterator it = items.begin(); it != items.end(); it++) {
+    QList<QGraphicsItem*> items = childItems();
+    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
         if(vert) {
             if(state)

@@ -28,17 +28,17 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
-#include <Mod/Drawing/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
 
 #include "QGITemplate.h"
 
 using namespace TechDrawGui;
 
-QGITemplate::QGITemplate(QGraphicsScene *scene) : QGIGroup(),
+QGITemplate::QGITemplate(QGraphicsScene *scene) : QGraphicsItemGroup(),
                                                                       pageTemplate(0)
 {
     setHandlesChildEvents(false);
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setZValue(-1000); //Template is situated in background
 
     scene->addItem(this);
@@ -51,7 +51,7 @@ QGITemplate::~QGITemplate()
 
 QVariant QGITemplate::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    return QGIGroup::itemChange(change, value);
+    return QGraphicsItemGroup::itemChange(change, value);
 }
 
 void QGITemplate::setTemplate(TechDraw::DrawTemplate *obj)

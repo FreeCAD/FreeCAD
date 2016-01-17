@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGCUSTOMCLIP_H
 #define DRAWINGGUI_QGCUSTOMCLIP_H
 
-#include <QGI>
+#include <QGraphicsItem>
 #include <QPointF>
 #include <QRectF>
 
@@ -35,13 +35,13 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGCustomClip : public QGIGroup
+class TechDrawGuiExport QGCustomClip : public QGraphicsItemGroup
 {
 public:
     explicit QGCustomClip(void);
     ~QGCustomClip() {}
 
-    enum {Type = QGI::UserType + 132};
+    enum {Type = QGraphicsItem::UserType + 132};
     int type() const { return Type;}
     virtual QRectF boundingRect() const;
 

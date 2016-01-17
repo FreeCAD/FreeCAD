@@ -39,8 +39,8 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include <Mod/Drawing/App/DrawProjGroupItem.h>
-#include <Mod/Drawing/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "QGIProjGroup.h"
 
@@ -50,7 +50,7 @@ QGIProjGroup::QGIProjGroup(const QPoint &pos, QGraphicsScene *scene)
     :QGIViewCollection(pos, scene)
 {
     setPos(pos);
-    origin = new QGIGroup();
+    origin = new QGraphicsItemGroup();
     origin->setParentItem(this);
 
     // In place to ensure correct drawing and bounding box calculations
@@ -75,7 +75,7 @@ TechDraw::DrawProjGroup * QGIProjGroup::getDrawView(void) const
     return dynamic_cast<TechDraw::DrawProjGroup *>(obj);
 }
 
-bool QGIProjGroup::sceneEventFilter(QGI * watched, QEvent *event)
+bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
 // i want to handle events before the child item that would ordinarily receive them
     if(event->type() == QEvent::GraphicsSceneMousePress ||
@@ -113,7 +113,7 @@ bool QGIProjGroup::sceneEventFilter(QGI * watched, QEvent *event)
 QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if(change == ItemChildAddedChange && scene()) {
-         QGI *childItem = value.value<QGI*>();
+         QGraphicsItem*childItem = value.value<QGraphicsItem*>();
          QGIView* gView = dynamic_cast<QGIView *>(childItem);
          if(gView) {
             TechDraw::DrawView *fView = gView->getViewObject();
@@ -205,9 +205,9 @@ QGIView * QGIProjGroup::getAnchorQItem() const
     TechDraw::DrawView *anchorView = dynamic_cast<TechDraw::DrawView *>(anchorObj);
 
     // Locate the anchor view's qgraphicsitemview
-    QList<QGI *> list = childItems();
+    QList<QGraphicsItem*> list = childItems();
 
-    for (QList<QGI *>::iterator it = list.begin(); it != list.end(); ++it) {
+    for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
         QGIView *view = dynamic_cast<QGIView *>(*it);
         if(view && strcmp(view->getViewName(), anchorView->getNameInDocument()) == 0) {
               return view;

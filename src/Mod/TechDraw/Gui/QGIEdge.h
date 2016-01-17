@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
 #define DRAWINGGUI_QGRAPHICSITEMEDGE_H
 
-# include <QGI>
+# include <QGraphicsItem>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -44,7 +44,7 @@ public:
     explicit QGIEdge(int index);
     ~QGIEdge() {}
 
-    enum {Type = QGI::UserType + 103};
+    enum {Type = QGraphicsItem::UserType + 103};
 
     int type() const { return Type;}
     QRectF boundingRect() const;

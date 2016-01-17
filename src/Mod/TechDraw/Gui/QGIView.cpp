@@ -58,14 +58,14 @@ using namespace TechDrawGui;
 void _debugRect(char* text, QRectF r);
 
 QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
-    :QGIGroup(),
+    :QGraphicsItemGroup(),
      locked(false),
      borderVisible(true),
      m_innerView(false)
 {
-    setFlag(QGI::ItemIsSelectable,true);
-    setFlag(QGI::ItemSendsScenePositionChanges, true);
-    setFlag(QGI::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemIsSelectable,true);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     setAcceptHoverEvents(true);
     setPos(pos);
 
@@ -104,7 +104,7 @@ QGIView::~QGIView()
 
 }
 
-void QGIView::alignTo(QGI *item, const QString &alignment)
+void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
     alignHash.clear();
     alignHash.insert(alignment, item);
@@ -122,7 +122,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
         // TODO  find a better data structure for this
         if(alignHash.size() == 1) {
-            QGI *item = alignHash.begin().value();
+            QGraphicsItem*item = alignHash.begin().value();
             QString alignMode   = alignHash.begin().key();
 
             if(alignMode == QString::fromAscii("Vertical")) {
@@ -155,7 +155,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         drawBorder();
     }
 
-    return QGIGroup::itemChange(change, value);
+    return QGraphicsItemGroup::itemChange(change, value);
 }
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -163,13 +163,13 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
     if(locked) {
         event->ignore();
     } else {
-      QGI::mousePressEvent(event);
+      QGraphicsItem::mousePressEvent(event);
     }
 }
 
 void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-    QGI::mouseMoveEvent(event);
+    QGraphicsItem::mouseMoveEvent(event);
 }
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -185,7 +185,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             getViewObject()->Y.setValue(getYInClip(y()));
         }
     }
-    QGI::mouseReleaseEvent(event);
+    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -256,7 +256,7 @@ void QGIView::updateView(bool update)
     }
 
     if (update)
-        QGI::update();
+        QGraphicsItem::update();
 }
 
 const char * QGIView::getViewName() const
@@ -354,15 +354,15 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
          m_label->hide();
          m_border->hide();
     }
-    QGIGroup::paint(painter, &myOption, widget);
+    QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 
 QRectF QGIView::customChildrenBoundingRect() {
-    QList<QGI *> children = childItems();
-    int dimItemType = QGI::UserType + 106;
+    QList<QGraphicsItem*> children = childItems();
+    int dimItemType = QGraphicsItem::UserType + 106;
     QRectF result;
-    for (QList<QGI *>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->type() >= QGI::UserType) {
+    for (QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->type() >= QGraphicsItem::UserType) {
             if ((*it)->type() != dimItemType) {                         //Dimensions don't count towards bRect
                 result = result.united((*it)->boundingRect());
             }

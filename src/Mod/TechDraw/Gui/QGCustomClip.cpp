@@ -43,11 +43,11 @@ using namespace TechDrawGui;
 QGCustomClip::QGCustomClip()
 {
     setHandlesChildEvents(false);                //not sure if needs to handle events for Views in Group???
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
-    setFlag(QGI::ItemIsSelectable, false);
-    setFlag(QGI::ItemIsMovable, false);
-    setFlag(QGI::ItemClipsChildrenToShape, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
     m_rect = QRectF(0.,0.,10.,10.);
 }
 
@@ -93,7 +93,7 @@ void QGCustomClip::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    QGIGroup::paint (painter, &myOption, widget);
+    QGraphicsItemGroup::paint (painter, &myOption, widget);
 }
 
 QRectF QGCustomClip::boundingRect() const     //sb shape()?

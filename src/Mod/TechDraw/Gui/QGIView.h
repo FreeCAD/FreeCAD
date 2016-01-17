@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEW_H
 
-#include <QGIGroup>
+#include <QGraphicsItemGroup>
 #include <QObject>
 #include <App/PropertyLinks.h>
 
@@ -39,7 +39,7 @@ class DrawView;
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport  QGIView : public QObject, public QGIGroup
+class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 
@@ -47,7 +47,7 @@ public:
     QGIView(const QPoint &position, QGraphicsScene *scene);
     ~QGIView();
 
-    enum {Type = QGI::UserType + 101};
+    enum {Type = QGraphicsItem::UserType + 101};
     int type() const { return Type;}
 
     const char * getViewName() const;
@@ -64,7 +64,7 @@ public:
     void isInnerView(bool state) { m_innerView = state; }
     double getYInClip(double y);
 
-    void alignTo(QGI *, const QString &alignment);
+    void alignTo(QGraphicsItem*, const QString &alignment);
     void setLocked(bool state = true) { locked = true; }
 
     virtual void toggleCache(bool state);
@@ -90,7 +90,7 @@ protected:
     TechDraw::DrawView *viewObj;
     std::string viewName;
 
-    QHash<QString, QGI *> alignHash;
+    QHash<QString, QGraphicsItem*> alignHash;
     bool locked;
     bool borderVisible;
     bool m_innerView;                                                  //View is inside another View

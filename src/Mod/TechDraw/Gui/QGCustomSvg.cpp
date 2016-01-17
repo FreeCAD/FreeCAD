@@ -33,7 +33,7 @@ using namespace TechDrawGui;
 
 QGCustomSvg::QGCustomSvg()
 {
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
 }
 
 void QGCustomSvg::centerAt(QPointF centerPos)
