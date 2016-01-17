@@ -127,7 +127,9 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
 {
     if (ScaleType.isValue("Document")) {
         // Recalculate scale
-        Scale.StatusBits.set(App::Prop_ReadOnly);
+        //Scale.StatusBits.set(App::Prop_ReadOnly);
+        Scale.setStatus(App::Property::ReadOnly,true);
+
 
         const std::vector<App::DocumentObject *> &views = Views.getValues();
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
@@ -142,7 +144,8 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
         }
     } else if(strcmp(ScaleType.getValueAsString(), "Custom") == 0) {
         // Rebuild the view
-        Scale.StatusBits.set(App::Prop_ReadOnly, false);
+        //Scale.StatusBits.set(App::Prop_ReadOnly, false);
+        Scale.setStatus(App::Property::ReadOnly,false);
 
         const std::vector<App::DocumentObject *> &views = Views.getValues();
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {

@@ -55,14 +55,18 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     ADD_PROPERTY(Type, ((long)0));
 
     // Set Hidden
-    Direction.StatusBits.set(3);
+    //Direction.StatusBits.set(3);
+    Direction.setStatus(App::Property::Hidden,true);
 
     // Set Hidden
-    XAxisDirection.StatusBits.set(3);
+    //XAxisDirection.StatusBits.set(3);
+    XAxisDirection.setStatus(App::Property::Hidden,true);
 
     // Scale and ScaleType are Readonly
-    Scale.StatusBits.set(2);
-    ScaleType.StatusBits.set(2);
+    //Scale.StatusBits.set(2);
+    //ScaleType.StatusBits.set(2);
+    Scale.setStatus(App::Property::ReadOnly,true);
+    ScaleType.setStatus(App::Property::ReadOnly,true);
 }
 
 short DrawProjGroupItem::mustExecute() const

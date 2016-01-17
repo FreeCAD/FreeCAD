@@ -67,9 +67,12 @@ DrawSVGTemplate::DrawSVGTemplate()
     ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_Transient, "Template for the page");
 
     // Width and Height properties shouldn't be set by the user
-    Height.StatusBits.set(2);       // Read Only
-    Width.StatusBits.set(2);       // Read Only
-    Orientation.StatusBits.set(2); // Read Only
+    //Height.StatusBits.set(2);       // Read Only
+    //Width.StatusBits.set(2);       // Read Only
+    //Orientation.StatusBits.set(2); // Read Only
+    Height.setStatus(App::Property::ReadOnly,true);
+    Width.setStatus(App::Property::ReadOnly,true);
+    Orientation.setStatus(App::Property::ReadOnly,true);
 }
 
 DrawSVGTemplate::~DrawSVGTemplate()
