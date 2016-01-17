@@ -28,21 +28,29 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
 
 #include "StartConfiguration.h"
 
-extern struct PyMethodDef Start_methods[];
+namespace Start {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("Start")
+    {
+        initialize("This module is the Start module."); // register with Python
+    }
 
-PyDoc_STRVAR(module_Start_doc,
-"This module is the Start module.");
+    virtual ~Module() {}
 
+private:
+};
+} // namespace Start
 
 /* Python entry */
-extern "C" {
-void AppStartExport initStart()
+PyMODINIT_FUNC initStart()
 {
-    Py_InitModule3("Start", Start_methods, module_Start_doc);   /* mod name, table ptr */
+    new Start::Module();
     Base::Console().Log("Loading Start module... done\n");
 }
-
-} // extern "C"
