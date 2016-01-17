@@ -45,9 +45,9 @@
 
 # include <Mod/Part/App/PartFeature.h>
 
-# include <Mod/Drawing/App/DrawViewPart.h>
-# include <Mod/Drawing/App/DrawHatch.h>
-# include <Mod/Drawing/App/DrawPage.h>
+# include <Mod/TechDraw/App/DrawViewPart.h>
+# include <Mod/TechDraw/App/DrawHatch.h>
+# include <Mod/TechDraw/App/DrawPage.h>
 
 # include "MDIViewPage.h"
 # include "ViewProviderPage.h"

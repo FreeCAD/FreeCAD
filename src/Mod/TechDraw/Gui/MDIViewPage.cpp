@@ -77,18 +77,18 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/DrawPage.h>
-#include <Mod/Drawing/App/DrawView.h>
-#include <Mod/Drawing/App/DrawViewCollection.h>
-#include <Mod/Drawing/App/DrawProjGroup.h>
-#include <Mod/Drawing/App/DrawViewPart.h>
-#include <Mod/Drawing/App/DrawViewSection.h>
-#include <Mod/Drawing/App/DrawViewDimension.h>
-#include <Mod/Drawing/App/DrawTemplate.h>
-#include <Mod/Drawing/App/DrawViewAnnotation.h>
-#include <Mod/Drawing/App/DrawViewSymbol.h>
-#include <Mod/Drawing/App/DrawViewClip.h>
-#include <Mod/Drawing/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewCollection.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawHatch.h>
 
 #include "QGIDrawingTemplate.h"
 #include "QGIView.h"
@@ -208,7 +208,7 @@ void MDIViewPage::setDimensionGroups(void)
 {
     const std::vector<QGIView *> &allItems = m_view->getViews();
     std::vector<QGIView *>::const_iterator itInspect;
-    int dimItemType = QGI::UserType + 106;
+    int dimItemType = QGraphicsItem::UserType + 106;
 
     for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
         if (((*itInspect)->type() == dimItemType) && (!(*itInspect)->group())) {
@@ -356,7 +356,7 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
     if(edge) {
 
         // Find the parent view that this edges is contained within
-        QGI *parent = edge->parentItem();
+        QGraphicsItem*parent = edge->parentItem();
         if(!parent)
             return;
 
@@ -379,7 +379,7 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
     } else if(vert) {
               // Find the parent view that this edges is contained within
               //WF: sb Vertex??
-        QGI *parent = vert->parentItem();
+        QGraphicsItem*parent = vert->parentItem();
         if(!parent)
             return;
 
@@ -452,12 +452,12 @@ void MDIViewPage::selectionChanged()
     if(isSlectionBlocked)
       return;
 
-    QList<QGI *> selection = m_view->scene()->selectedItems();
+    QList<QGraphicsItem*> selection = m_view->scene()->selectedItems();
 
     bool block = blockConnection(true); // avoid to be notified by itself
 
     Gui::Selection().clearSelection();
-    for (QList<QGI *>::iterator it = selection.begin(); it != selection.end(); ++it) {
+    for (QList<QGraphicsItem*>::iterator it = selection.begin(); it != selection.end(); ++it) {
         // All selectable items must be of QGIView type
 
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
@@ -466,7 +466,7 @@ void MDIViewPage::selectionChanged()
             if(edge) {
 
                 // Find the parent view that this edges is contained within
-                QGI *parent = edge->parentItem();
+                QGraphicsItem*parent = edge->parentItem();
                 if(!parent)
                     return;
 
@@ -489,7 +489,7 @@ void MDIViewPage::selectionChanged()
             if(vert) {
               // Find the parent view that this edges is contained within
               //WF: sb Vertex
-                QGI *parent = vert->parentItem();
+                QGraphicsItem*parent = vert->parentItem();
                 if(!parent)
                     return;
 
@@ -512,7 +512,7 @@ void MDIViewPage::selectionChanged()
             if(dimLabel) {
                 // Find the parent view (dimLabel->dim->view)
 
-                QGI *dimParent = dimLabel->parentItem();
+                QGraphicsItem*dimParent = dimLabel->parentItem();
 
                 if(!dimParent)
                     return;

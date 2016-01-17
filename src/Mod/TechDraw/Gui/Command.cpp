@@ -49,19 +49,18 @@
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Drawing/App/DrawPage.h>
-#include <Mod/Drawing/App/DrawViewPart.h>
-#include <Mod/Drawing/App/DrawProjGroupItem.h>
-#include <Mod/Drawing/App/DrawProjGroup.h>
-#include <Mod/Drawing/App/DrawViewDimension.h>
-#include <Mod/Drawing/App/DrawViewClip.h>
-#include <Mod/Drawing/App/DrawViewAnnotation.h>
-#include <Mod/Drawing/App/DrawViewSymbol.h>
-#include <Mod/Drawing/Gui/QGVPage.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/Gui/QGVPage.h>
 
 
 #include "MDIViewPage.h"
-#include "TaskDialog.h"
 #include "TaskProjGroup.h"
 #include "ViewProviderPage.h"
 
@@ -75,39 +74,6 @@ bool isDrawingPageActive(Gui::Document *doc)
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(TechDrawGui::ViewProviderDrawingPage::getClassTypeId()))
             return true;
     return false;
-}
-
-//TODO: check if obsolete.
-//===========================================================================
-// CmdDrawingOpen
-//===========================================================================
-
-DEF_STD_CMD(CmdDrawingOpen);
-
-CmdDrawingOpen::CmdDrawingOpen()
-  : Command("Drawing_Open")
-{
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
-    sMenuText       = QT_TR_NOOP("Open SVG...");
-    sToolTipText    = QT_TR_NOOP("Open a scalable vector graphic");
-    sWhatsThis      = "Drawing_Open";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/document-new";
-}
-
-
-void CmdDrawingOpen::activated(int iMsg)
-{
-    // Reading an image
-    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null,
-        QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
-    if (!filename.isEmpty())
-    {
-        // load the file with the module
-        Command::doCommand(Command::Gui, "import Drawing, TechDrawGui");
-        Command::doCommand(Command::Gui, "TechDrawGui.open(unicode(\"%s\",\"utf-8\"))", (const char*)filename.toUtf8());
-    }
 }
 
 //===========================================================================
@@ -254,45 +220,6 @@ void CmdDrawingNewPage::activated(int iMsg)
             QLatin1String("Template file is invalid"));
     }
 }
-
-//TODO: check if obsolete
-//===========================================================================
-// Drawing_NewA3Landscape
-//===========================================================================
-
-DEF_STD_CMD_A(CmdDrawingNewA3Landscape);
-
-CmdDrawingNewA3Landscape::CmdDrawingNewA3Landscape()
-  : Command("Drawing_NewA3Landscape")
-{
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
-    sMenuText       = QT_TR_NOOP("Insert new A3 landscape drawing");
-    sToolTipText    = QT_TR_NOOP("Insert new A3 landscape drawing");
-    sWhatsThis      = "Drawing_NewA3Landscape";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-landscape-A3";
-}
-
-void CmdDrawingNewA3Landscape::activated(int iMsg)
-{
-    std::string FeatName = getUniqueObjectName("Page");
-
-    openCommand("Create page");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawPage','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Template = 'A3_Landscape.svg'",FeatName.c_str());
-//    doCommand(Doc,"App.activeDocument().recompute()");
-    commitCommand();
-}
-
-bool CmdDrawingNewA3Landscape::isActive(void)
-{
-    if (getActiveGuiDocument())
-        return true;
-    else
-        return false;
-}
-
 
 //===========================================================================
 // Drawing_NewView
@@ -511,43 +438,6 @@ bool CmdDrawingProjGroup::isActive(void)
     return true;
 }
 
-
-//===========================================================================
-// Drawing_OpenBrowserView
-//===========================================================================
-
-DEF_STD_CMD_A(CmdDrawingOpenBrowserView);
-
-CmdDrawingOpenBrowserView::CmdDrawingOpenBrowserView()
-  : Command("Drawing_OpenBrowserView")
-{
-    // seting the
-    sGroup        = QT_TR_NOOP("Drawing");
-    sMenuText     = QT_TR_NOOP("Open &browser view");
-    sToolTipText  = QT_TR_NOOP("Opens the selected page in a browser view");
-    sWhatsThis    = "Drawing_OpenBrowserView";
-    sStatusTip    = QT_TR_NOOP("Opens the selected page in a browser view");
-    sPixmap       = "actions/techdraw-openbrowser";
-}
-
-void CmdDrawingOpenBrowserView::activated(int iMsg)
-{
-    unsigned int n = getSelection().countObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (n != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one Page object."));
-        return;
-    }
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    doCommand(Doc,"PageName = App.activeDocument().%s.PageResult",Sel[0].FeatName);
-    doCommand(Doc,"import WebGui");
-    doCommand(Doc,"WebGui.openBrowser(PageName)");
-}
-
-bool CmdDrawingOpenBrowserView::isActive(void)
-{
-    return (getActiveGuiDocument() ? true : false);
-}
 
 //===========================================================================
 // Drawing_Annotation
@@ -895,88 +785,20 @@ bool CmdTechDrawExportPage::isActive(void)
     return (getActiveGuiDocument() ? true : false);
 }
 
-//===========================================================================
-// Drawing_ProjectShape
-//===========================================================================
-
-DEF_STD_CMD_A(CmdDrawingProjectShape);
-
-CmdDrawingProjectShape::CmdDrawingProjectShape()
-  : Command("Drawing_ProjectShape")
-{
-    // seting the
-    sGroup        = QT_TR_NOOP("Drawing");
-    sMenuText     = QT_TR_NOOP("Project shape...");
-    sToolTipText  = QT_TR_NOOP("Project shape onto a user-defined plane");
-    sStatusTip    = QT_TR_NOOP("Project shape onto a user-defined plane");
-    sWhatsThis    = "Drawing_ProjectShape";
-}
-
-void CmdDrawingProjectShape::activated(int iMsg)
-{
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (!dlg) {
-        dlg = new TechDrawGui::TaskProjection();
-        dlg->setButtonPosition(Gui::TaskView::TaskDialog::South);
-    }
-    Gui::Control().showDialog(dlg);
-}
-
-bool CmdDrawingProjectShape::isActive(void)
-{
-    int ct = Gui::Selection().countObjectsOfType(Part::Feature::getClassTypeId());
-    return (ct > 0 && !Gui::Control().activeDialog());
-}
-
-
-
-//===========================================================================
-// Drawing_Draft_View
-//===========================================================================
-
-DEF_STD_CMD_A(CmdDrawingDraftView);
-
-CmdDrawingDraftView::CmdDrawingDraftView()
-  : Command("Drawing_DraftView")
-{
-    // seting the
-    sGroup        = QT_TR_NOOP("Drawing");
-    sMenuText     = QT_TR_NOOP("&Draft View");
-    sToolTipText  = QT_TR_NOOP("Inserts a Draft view of the selected object(s) in the active drawing");
-    sWhatsThis    = "Drawing_DraftView";
-    sStatusTip    = QT_TR_NOOP("Inserts a Draft view of the selected object(s) in the active drawing");
-    sPixmap       = "actions/techdraw-draft-view";
-}
-
-void CmdDrawingDraftView::activated(int iMsg)
-{
-    addModule(Gui,"Draft");
-    doCommand(Gui,"Gui.runCommand(\"Draft_Drawing\")");
-}
-
-bool CmdDrawingDraftView::isActive(void)
-{
-    return (getActiveGuiDocument() ? true : false);
-}
 
 void CreateDrawingCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-//    rcCmdMgr.addCommand(new CmdDrawingOpen());
     rcCmdMgr.addCommand(new CmdDrawingNewPageDef());
     rcCmdMgr.addCommand(new CmdDrawingNewPage());
-    rcCmdMgr.addCommand(new CmdDrawingNewA3Landscape());
     rcCmdMgr.addCommand(new CmdDrawingNewView());
     rcCmdMgr.addCommand(new CmdDrawingNewViewSection());
     rcCmdMgr.addCommand(new CmdDrawingProjGroup());
-//    rcCmdMgr.addCommand(new CmdDrawingOpenBrowserView());
     rcCmdMgr.addCommand(new CmdDrawingAnnotation());
     rcCmdMgr.addCommand(new CmdDrawingClip());
     rcCmdMgr.addCommand(new CmdDrawingClipPlus());
     rcCmdMgr.addCommand(new CmdDrawingClipMinus());
     rcCmdMgr.addCommand(new CmdDrawingSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPage());
-    rcCmdMgr.addCommand(new CmdDrawingProjectShape());
-    rcCmdMgr.addCommand(new CmdDrawingDraftView());
 }
