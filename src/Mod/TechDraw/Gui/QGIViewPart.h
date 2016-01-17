@@ -53,7 +53,7 @@ public:
     explicit QGIViewPart(const QPoint &position, QGraphicsScene *scene);
     ~QGIViewPart();
 
-    enum {Type = QGI::UserType + 102};
+    enum {Type = QGraphicsItem::UserType + 102};
     int type() const { return Type;}
 
 
@@ -101,7 +101,7 @@ protected:
     QColor m_colHid;
 
 private:
-    QList<QGI *> deleteItems;
+    QList<QGraphicsItem*> deleteItems;
 };
 
 } // namespace MDIViewPageGui

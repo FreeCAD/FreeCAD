@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGCUSTOMTEXT_H
 #define DRAWINGGUI_QGCUSTOMTEXT_H
 
-#include <QGI>
+#include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>
 
@@ -41,7 +41,7 @@ public:
     explicit QGCustomText(void);
     ~QGCustomText() {}
 
-    enum {Type = QGI::UserType + 130};
+    enum {Type = QGraphicsItem::UserType + 130};
     int type() const { return Type;}
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );

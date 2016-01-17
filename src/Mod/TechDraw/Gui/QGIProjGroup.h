@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGIProjGroup_H
 #define DRAWINGGUI_QGIProjGroup_H
 
-#include <QGIGroup>
+#include <QGraphicsItemGroup>
 #include <QObject>
 #include <App/PropertyLinks.h>
 
@@ -50,7 +50,7 @@ public:
     QGIProjGroup(const QPoint &position, QGraphicsScene *scene);
     ~QGIProjGroup();
 
-    enum {Type = QGI::UserType + 113};
+    enum {Type = QGraphicsItem::UserType + 113};
     int type() const { return Type;}
 
     void alignTo(QGIProjGroup *, const QString &alignment);
@@ -62,7 +62,7 @@ Q_SIGNALS:
     void dirty();
 
 protected:
-    virtual bool sceneEventFilter(QGI * watched, QEvent *event);
+    virtual bool sceneEventFilter(QGraphicsItem* watched, QEvent *event);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     // Mouse handling
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event );
@@ -75,7 +75,7 @@ private:
     TechDraw::DrawProjGroup * getDrawView(void) const;
 
     QGraphicsRectItem * m_backgroundItem;
-    QGI *origin;
+    QGraphicsItem*origin;
     QPoint mousePos;
 };
 

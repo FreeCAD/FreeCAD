@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGCUSTOMRECT_H
 #define DRAWINGGUI_QGCUSTOMRECT_H
 
-#include <QGI>
+#include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>
 
@@ -41,7 +41,7 @@ public:
     explicit QGCustomRect(void);
     ~QGCustomRect() {}
 
-    enum {Type = QGI::UserType + 133};
+    enum {Type = QGraphicsItem::UserType + 133};
     int type() const { return Type;}
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );

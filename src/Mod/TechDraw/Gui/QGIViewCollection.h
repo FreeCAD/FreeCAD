@@ -23,7 +23,7 @@
 #ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 #define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 
-#include <QGIGroup>
+#include <QGraphicsItemGroup>
 #include <QObject>
 #include <App/PropertyLinks.h>
 
@@ -50,7 +50,7 @@ public:
     QGIViewCollection(const QPoint &position, QGraphicsScene *scene);
     ~QGIViewCollection();
 
-    enum {Type = QGI::UserType + 110};
+    enum {Type = QGraphicsItem::UserType + 110};
     int type() const { return Type;}
 
     virtual void updateView(bool update = false);

@@ -47,7 +47,7 @@ public:
 
     virtual void draw();
     void updateView(bool update = false);
-    enum {Type = QGI::UserType + 108};
+    enum {Type = QGraphicsItem::UserType + 108};
     int type() const { return Type;}
 
 Q_SIGNALS:

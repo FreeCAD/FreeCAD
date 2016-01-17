@@ -38,8 +38,8 @@
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 
-#include <Mod/Drawing/App/Geometry.h>
-#include <Mod/Drawing/App/DrawSVGTemplate.h>
+#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawSVGTemplate.h>
 
 #include "QGISVGTemplate.h"
 
@@ -53,8 +53,8 @@ QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene)
     m_svgItem = new QGraphicsSvgItem();
     m_svgItem->setSharedRenderer(m_svgRender);
 
-    m_svgItem->setFlags(QGI::ItemClipsToShape);
-    m_svgItem->setCacheMode(QGI::NoCache);
+    m_svgItem->setFlags(QGraphicsItem::ItemClipsToShape);
+    m_svgItem->setCacheMode(QGraphicsItem::NoCache);
 
     addToGroup(m_svgItem);
 }
@@ -68,7 +68,7 @@ QGISVGTemplate::~QGISVGTemplate()
 QVariant QGISVGTemplate::itemChange(GraphicsItemChange change,
                                               const QVariant &value)
 {
-    return QGIGroup::itemChange(change, value);
+    return QGraphicsItemGroup::itemChange(change, value);
 }
 
 

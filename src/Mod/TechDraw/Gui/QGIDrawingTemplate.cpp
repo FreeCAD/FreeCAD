@@ -40,8 +40,8 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include <Mod/Drawing/App/Geometry.h>
-#include <Mod/Drawing/App/DrawParametricTemplate.h>
+#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawParametricTemplate.h>
 
 #include "QGIDrawingTemplate.h"
 
@@ -68,7 +68,7 @@ QGIDrawingTemplate::~QGIDrawingTemplate()
 
 QVariant QGIDrawingTemplate::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    return QGIGroup::itemChange(change, value);
+    return QGraphicsItemGroup::itemChange(change, value);
 }
 
 

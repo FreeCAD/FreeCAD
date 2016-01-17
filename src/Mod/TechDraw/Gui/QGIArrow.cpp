@@ -46,7 +46,7 @@ QGIArrow::QGIArrow(QGraphicsScene *scene)
     }
 
     // Set Cache Mode
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
 
 }
 

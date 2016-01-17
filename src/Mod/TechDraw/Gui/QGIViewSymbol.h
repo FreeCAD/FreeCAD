@@ -49,7 +49,7 @@ public:
     explicit QGIViewSymbol(const QPoint &position, QGraphicsScene *scene);
     ~QGIViewSymbol();
 
-    enum {Type = QGI::UserType + 121};
+    enum {Type = QGraphicsItem::UserType + 121};
     int type() const { return Type;}
 
     void updateView(bool update = false);

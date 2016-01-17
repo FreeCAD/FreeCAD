@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 
-#include <QGIGroup>
+#include <QGraphicsItemGroup>
 #include <QObject>
 
 #include "TemplateTextField.h"
@@ -39,7 +39,7 @@ class DrawTemplate;
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGITemplate : public QObject, public QGIGroup
+class TechDrawGuiExport QGITemplate : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 
@@ -47,7 +47,7 @@ public:
     QGITemplate(QGraphicsScene *);
     ~QGITemplate();
 
-    enum {Type = QGI::UserType + 150};
+    enum {Type = QGraphicsItem::UserType + 150};
     int type() const { return Type;}
 
     void clearContents();

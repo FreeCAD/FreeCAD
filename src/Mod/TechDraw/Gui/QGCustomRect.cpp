@@ -43,7 +43,7 @@ using namespace TechDrawGui;
 
 QGCustomRect::QGCustomRect()
 {
-    setCacheMode(QGI::NoCache);
+    setCacheMode(QGraphicsItem::NoCache);
 }
 
 void QGCustomRect::centerAt(QPointF centerPos)

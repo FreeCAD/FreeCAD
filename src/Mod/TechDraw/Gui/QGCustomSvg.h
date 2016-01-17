@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGCUSTOMSVG_H
 #define DRAWINGGUI_QGCUSTOMSVG_H
 
-#include <QGI>
+#include <QGraphicsItem>
 #include <QGraphicsSvgItem>
 #include <QPointF>
 
@@ -41,7 +41,7 @@ public:
     explicit QGCustomSvg(void);
     ~QGCustomSvg() {}
 
-    enum {Type = QGI::UserType + 131};
+    enum {Type = QGraphicsItem::UserType + 131};
     int type() const { return Type;}
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );

@@ -45,10 +45,10 @@ using namespace TechDrawGui;
 QGIEdge::QGIEdge(int index) :
     projIndex(index)
 {
-    setCacheMode(QGI::NoCache);
-    setFlag(QGI::ItemIsSelectable, true);
-    setFlag(QGI::ItemSendsScenePositionChanges, true);
-    setFlag(QGI::ItemSendsGeometryChanges,true);
+    setCacheMode(QGraphicsItem::NoCache);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     setAcceptHoverEvents(true);
 
     strokeWidth = 1.;
@@ -100,7 +100,7 @@ QVariant QGIEdge::itemChange(GraphicsItemChange change, const QVariant &value)
             setPrettyNormal();
         }
     }
-    return QGI::itemChange(change, value);
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void QGIEdge::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

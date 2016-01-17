@@ -84,7 +84,7 @@ void QGIViewSection::drawSectionFace()
     // Draw Faces
     std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
 
-    QGI *graphicsItem = 0;
+    QGraphicsItem*graphicsItem = 0;
     QPen facePen;
 
 //TODO: check if this is the same logic as QGIVPart
@@ -120,7 +120,7 @@ void QGIViewSection::drawSectionFace()
         facePen.setColor(Qt::black);
         item->setPen(facePen);
         item->moveBy(x(), y());
-        graphicsItem = dynamic_cast<QGI *>(item);
+        graphicsItem = dynamic_cast<QGraphicsItem*>(item);
 
         if(graphicsItem) {
             // Hide any edges that are hidden if option is set.
@@ -128,7 +128,7 @@ void QGIViewSection::drawSectionFace()
             //                 graphicsItem->hide();
 
             addToGroup(graphicsItem);
-            graphicsItem->setFlag(QGI::ItemIsSelectable, true);
+            graphicsItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
         }
     }
 #endif
