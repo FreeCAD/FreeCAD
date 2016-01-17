@@ -55,8 +55,7 @@ private:
 
 
 /* Python entry */
-extern "C" {
-void _TEMPLATE_GuiExport init_TEMPLATE_Gui()
+PyMODINIT_FUNC init_TEMPLATE_Gui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -73,5 +72,3 @@ void _TEMPLATE_GuiExport init_TEMPLATE_Gui()
     new _TEMPLATE_Gui::Module();
     Base::Console().Log("Loading GUI of _TEMPLATE_ module... done\n");
 }
-
-} // extern "C"
