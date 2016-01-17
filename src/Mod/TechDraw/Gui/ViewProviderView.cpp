@@ -37,9 +37,9 @@
 #include <App/DocumentObject.h>
 #include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/DrawView.h>
-#include <Mod/Drawing/App/DrawViewClip.h>
-#include <Mod/Drawing/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawPage.h>
 #include "ViewProviderView.h"
 
 
@@ -52,7 +52,8 @@ ViewProviderView::ViewProviderView()
     sPixmap = "View";
 
     // Do not show in property editor
-    DisplayMode.StatusBits.set(3, true);
+    //DisplayMode.StatusBits.set(3, true);
+    DisplayMode.setStatus(App::Property::ReadOnly,true);
 }
 
 ViewProviderView::~ViewProviderView()

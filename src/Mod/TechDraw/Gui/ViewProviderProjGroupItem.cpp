@@ -44,7 +44,7 @@
 #include <Gui/SoFCSelection.h>
 
 
-#include <Mod/Drawing/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "ViewProviderProjGroupItem.h"
 

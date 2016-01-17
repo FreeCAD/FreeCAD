@@ -41,7 +41,7 @@
 //#include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawViewClip.h>
 #include "ViewProviderView.h"
 #include "ViewProviderViewClip.h"
 
@@ -55,7 +55,8 @@ ViewProviderDrawingClip::ViewProviderDrawingClip()
     sPixmap = "actions/techdraw-clip";
 
     // Do not show in property editor
-    DisplayMode.StatusBits.set(3, true);
+    //DisplayMode.StatusBits.set(3, true);
+    DisplayMode.setStatus(App::Property::ReadOnly,true);
 }
 
 ViewProviderDrawingClip::~ViewProviderDrawingClip()

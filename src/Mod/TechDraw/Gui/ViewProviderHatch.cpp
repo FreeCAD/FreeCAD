@@ -38,7 +38,7 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawHatch.h>
 #include "ViewProviderHatch.h"
 
 using namespace TechDrawGui;

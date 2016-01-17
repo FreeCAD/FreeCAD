@@ -58,12 +58,12 @@
 
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
-#include <Mod/Drawing/App/DrawPage.h>
-#include <Mod/Drawing/App/DrawView.h>
-#include <Mod/Drawing/App/DrawProjGroupItem.h>
-#include <Mod/Drawing/App/DrawViewDimension.h>
-#include <Mod/Drawing/App/DrawHatch.h>
-#include <Mod/Drawing/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 using namespace TechDrawGui;
 
@@ -84,8 +84,10 @@ ViewProviderDrawingPage::ViewProviderDrawingPage()
 //    ADD_PROPERTY(HintOffsetY,(10.0));
 
     // do not show this in the property editor
-    Visibility.StatusBits.set(3, true);
-    DisplayMode.StatusBits.set(3, true);
+    //Visibility.StatusBits.set(3, true);
+    //DisplayMode.StatusBits.set(3, true);
+    Visibility.setStatus(App::Property::Hidden,true);
+    DisplayMode.setStatus(App::Property::Hidden,true);
 }
 
 ViewProviderDrawingPage::~ViewProviderDrawingPage()
