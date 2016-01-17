@@ -109,7 +109,7 @@ MeasureType Measurement::getType()
     std::vector<std::string>::const_iterator subEl = subElements.begin();
 
     //
-    int dims = -1;
+    //int dims = -1;
     MeasureType mode;
 
     // Type of References
@@ -231,6 +231,7 @@ double Measurement::length() const
       throw Base::Exception("Measurement - length - Invalid References Provided");
   }
 
+  double result = 0.0;
   const std::vector<App::DocumentObject*> &objects = References.getValues();
   const std::vector<std::string> &subElements = References.getSubValues();
 
@@ -239,8 +240,8 @@ double Measurement::length() const
      measureType == PointToSurface)  {
 
       Base::Vector3d diff = this->delta();
-      return diff.Length();
-
+      //return diff.Length();
+      result = diff.Length();
   } else if(measureType == Edges) {
 
       double length = 0.f;
@@ -249,8 +250,8 @@ double Measurement::length() const
       std::vector<std::string>::const_iterator subEl = subElements.begin();
 
       for (;obj != objects.end(); ++obj, ++subEl) {
-          const Part::Feature *refObj = static_cast<const Part::Feature*>((*obj));
-          const Part::TopoShape& refShape = refObj->Shape.getShape();
+          //const Part::Feature *refObj = static_cast<const Part::Feature*>((*obj));
+          //const Part::TopoShape& refShape = refObj->Shape.getShape();
           // Get the length of one edge
           TopoDS_Shape shape = getShape(*obj, (*subEl).c_str());
           const TopoDS_Edge& edge = TopoDS::Edge(shape);
@@ -284,8 +285,10 @@ double Measurement::length() const
             }
           }
       }
-      return length;
+      result = length;
+      //return length;
   }
+  return result;
 }
 
 double Measurement::angle(const Base::Vector3d &param) const
@@ -313,7 +316,7 @@ double Measurement::angle(const Base::Vector3d &param) const
                 gp_Pnt pnt2 = curve1.Value(curve1.LastParameter());
                 gp_Dir dir1 = curve1.Line().Direction();
                 gp_Dir dir2 = curve2.Line().Direction();
-                
+
                 gp_Lin l1 = gp_Lin(pnt1,dir1);
                 gp_Lin l2 = gp_Lin(pnt2,dir2);
                 Standard_Real aRad = l1.Angle(l2);
@@ -450,8 +453,8 @@ Base::Vector3d Measurement::massCenter() const
         std::vector<std::string>::const_iterator subEl = subElements.begin();
 
         for (;obj != objects.end(); ++obj, ++subEl) {
-            const Part::Feature *refObj = static_cast<const Part::Feature*>((*obj));
-            const Part::TopoShape& refShape = refObj->Shape.getShape();
+            //const Part::Feature *refObj = static_cast<const Part::Feature*>((*obj));
+            //const Part::TopoShape& refShape = refObj->Shape.getShape();
 
             // Compute inertia properties
 
@@ -461,7 +464,7 @@ Base::Vector3d Measurement::massCenter() const
             // Get inertia properties
         }
 
-        double mass = gprops.Mass();
+        //double mass = gprops.Mass();
         gp_Pnt cog = gprops.CentreOfMass();
 
         return Base::Vector3d(cog.X(), cog.Y(), cog.Z());
