@@ -33,9 +33,9 @@
 class DrawingWorkbench (Workbench):
     "Drawing workbench object"
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Drawing/Resources/icons/preferences-drawing.svg"
-        self.__class__.MenuText = "Drawing"
-        self.__class__.ToolTip = "Drawing workbench"
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/TechDraw/Resources/icons/preferences-drawing.svg"
+        self.__class__.MenuText = "TechDraw"
+        self.__class__.ToolTip = "Technical Drawing workbench"
 
 
     def Initialize(self):
@@ -46,6 +46,3 @@ class DrawingWorkbench (Workbench):
 
 Gui.addWorkbench(DrawingWorkbench())
 
-# Append the open handler
-FreeCAD.addImportType("Drawing (*.svg *.svgz)","TechDrawGui")
-FreeCAD.addExportType("Drawing (*.svg *.svgz *.dxf)","TechDrawGui")

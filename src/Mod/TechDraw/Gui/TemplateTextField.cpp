@@ -33,7 +33,7 @@
 
 using namespace TechDrawGui;
 
-TemplateTextField::TemplateTextField(QGI *parent,
+TemplateTextField::TemplateTextField(QGraphicsItem*parent,
                                      TechDraw::DrawTemplate *myTmplte,
                                      const std::string &myFieldName)
     : QGraphicsRectItem(parent), tmplte(myTmplte), fieldNameStr(myFieldName)

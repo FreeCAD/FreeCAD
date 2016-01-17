@@ -45,7 +45,7 @@ namespace TechDrawGui
     class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
     {
         public:
-            TemplateTextField(QGI *parent,
+            TemplateTextField(QGraphicsItem*parent,
                               TechDraw::DrawTemplate *myTmplte,
                               const std::string &myFieldName);
 

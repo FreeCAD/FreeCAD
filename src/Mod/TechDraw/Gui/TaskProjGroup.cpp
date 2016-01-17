@@ -35,11 +35,11 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/Drawing/App/DrawPage.h>
-#include <Mod/Drawing/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include <Mod/Drawing/App/DrawProjGroupItem.h>
-#include <Mod/Drawing/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "TaskProjGroup.h"
 #include "ui_TaskProjGroup.h"
