@@ -17,7 +17,6 @@ qt4_add_resources(Web_QRC_SRCS Resources/Web.qrc)
 SET(WebGui_SRCS
     ${Web_QRC_SRCS}
     AppWebGui.cpp
-    AppWebGuiPy.cpp
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h
