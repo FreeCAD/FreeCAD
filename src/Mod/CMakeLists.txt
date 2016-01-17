@@ -131,5 +131,6 @@ if(BUILD_SHOW)
 endif(BUILD_SHOW)
 
 if(BUILD_TECHDRAW)
+    add_subdirectory(Measure)
     add_subdirectory(TechDraw)
 endif(BUILD_TECHDRAW)
