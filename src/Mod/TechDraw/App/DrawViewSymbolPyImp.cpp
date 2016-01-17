@@ -1,9 +1,9 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Drawing/App/DrawViewSymbol.h"
-#include "Mod/Drawing/App/DrawView.h"
-#include "Mod/Drawing/App/DrawViewPy.h"
+#include "Mod/TechDraw/App/DrawViewSymbol.h"
+#include "Mod/TechDraw/App/DrawView.h"
+#include "Mod/TechDraw/App/DrawViewPy.h"
 
 // inclusion of the generated files (generated out of DrawViewSymbolPy.xml)
 #include "DrawViewSymbolPy.h"

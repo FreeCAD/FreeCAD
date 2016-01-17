@@ -1,7 +1,7 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Drawing/App/DrawSVGTemplate.h"
+#include "Mod/TechDraw/App/DrawSVGTemplate.h"
 
 // inclusion of the generated files (generated out of DrawSVGTemplatePy.xml)
 #include "DrawSVGTemplatePy.h"

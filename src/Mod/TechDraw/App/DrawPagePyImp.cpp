@@ -2,8 +2,8 @@
 #include "PreCompiled.h"
 #include <Base/Console.h>
 
-#include "Mod/Drawing/App/DrawPage.h"
-#include "Mod/Drawing/App/DrawView.h"
+#include "Mod/TechDraw/App/DrawPage.h"
+#include "Mod/TechDraw/App/DrawView.h"
 #include "DrawViewPy.h"
 
 // inclusion of the generated files (generated out of DrawPagePy.xml)

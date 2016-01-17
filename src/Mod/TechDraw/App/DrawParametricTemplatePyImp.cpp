@@ -25,7 +25,7 @@
 # include <sstream>
 #endif
 
-#include "Mod/Drawing/App/DrawParametricTemplate.h"
+#include "Mod/TechDraw/App/DrawParametricTemplate.h"
 
 // inclusion of the generated files (generated out of DrawParametricTemplateSFPy.xml)
 #include "DrawParametricTemplatePy.h"
@@ -67,7 +67,7 @@ int DrawParametricTemplatePy::setCustomAttributes(const char* attr, PyObject* ob
 
 PyObject* DrawParametricTemplatePy::drawLine(PyObject *args)
 {
-    PyObject *pcObj;
+    //PyObject *pcObj;
     double x1, y1;
     double x2, y2;
 

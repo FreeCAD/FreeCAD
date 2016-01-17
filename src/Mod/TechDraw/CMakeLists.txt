@@ -10,19 +10,15 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
-        DrawingAlgos.py
-        DrawingExample.py
-        DrawingTests.py
-        DrawingPatterns.py
     DESTINATION
-        Mod/Drawing
+        Mod/TechDraw
 )
 
 INSTALL(
     DIRECTORY
         Templates
     DESTINATION
-        ${CMAKE_INSTALL_DATADIR}/Mod/Drawing
+        ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     FILES_MATCHING 
         PATTERN "*.svg*"
         PATTERN "*.dxf*"
