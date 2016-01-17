@@ -40,7 +40,7 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
 #include "ViewProviderTemplate.h"
 
 using namespace TechDrawGui;

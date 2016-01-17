@@ -41,7 +41,7 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawView.h>
 #include "ViewProviderViewSection.h"
 
 using namespace TechDrawGui;

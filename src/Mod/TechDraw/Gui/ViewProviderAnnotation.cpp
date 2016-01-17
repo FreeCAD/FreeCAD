@@ -38,7 +38,7 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include "ViewProviderAnnotation.h"
 
 using namespace TechDrawGui;

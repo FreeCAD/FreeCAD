@@ -49,7 +49,7 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/Drawing/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "TaskProjGroup.h"
 #include "ViewProviderProjGroup.h"
