@@ -53,7 +53,6 @@ SET(SpreadsheetGui_SRCS
 #   ${SpreadsheetGui_MOC_SRCS}
     ${SpreadsheetGui_QRC_SRCS}
     AppSpreadsheetGui.cpp
-    AppSpreadsheetGuiPy.cpp
     Command.cpp
     LineEdit.h
     LineEdit.cpp
