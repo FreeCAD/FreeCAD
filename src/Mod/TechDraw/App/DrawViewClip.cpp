@@ -67,12 +67,16 @@ DrawViewClip::DrawViewClip(void)
     ADD_PROPERTY_TYPE(Visible, (true),group,propType,"Control whether Clip is visible in page object");
 
     // hide N/A properties
-    int bitReadOnly = 2;
-    int bitHidden = 3;
-    ScaleType.StatusBits.set(bitReadOnly, true);
-    ScaleType.StatusBits.set(bitHidden, true);
-    Scale.StatusBits.set(bitReadOnly, true);
-    Scale.StatusBits.set(bitHidden,true);
+    //int bitReadOnly = 2;
+    //int bitHidden = 3;
+    //ScaleType.StatusBits.set(bitReadOnly, true);
+    //ScaleType.StatusBits.set(bitHidden, true);
+    //Scale.StatusBits.set(bitReadOnly, true);
+    //Scale.StatusBits.set(bitHidden,true);
+    ScaleType.setStatus(App::Property::ReadOnly,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::Property::ReadOnly,true);
+    Scale.setStatus(App::Property::Hidden,true);
 }
 
 DrawViewClip::~DrawViewClip()

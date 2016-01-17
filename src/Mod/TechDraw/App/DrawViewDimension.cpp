@@ -98,14 +98,20 @@ DrawViewDimension::DrawViewDimension(void)
 
     //hide the DrawView properties that don't apply to Dimensions
     //App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
-    int bitReadOnly = 2;
-    int bitHidden = 3;
-    ScaleType.StatusBits.set(bitReadOnly, true);
-    ScaleType.StatusBits.set(bitHidden, true);
-    Scale.StatusBits.set(bitReadOnly, true);
-    Scale.StatusBits.set(bitHidden,true);
-    Rotation.StatusBits.set(bitReadOnly, true);
-    Rotation.StatusBits.set(bitHidden, true);
+    //int bitReadOnly = 2;
+    //int bitHidden = 3;
+    //ScaleType.StatusBits.set(bitReadOnly, true);
+    //ScaleType.StatusBits.set(bitHidden, true);
+    //Scale.StatusBits.set(bitReadOnly, true);
+    //Scale.StatusBits.set(bitHidden,true);
+    //Rotation.StatusBits.set(bitReadOnly, true);
+    //Rotation.StatusBits.set(bitHidden, true);
+    ScaleType.setStatus(App::Property::ReadOnly,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::Property::ReadOnly,true);
+    Scale.setStatus(App::Property::Hidden,true);
+    Rotation.setStatus(App::Property::ReadOnly,true);
+    Rotation.setStatus(App::Property::Hidden,true);
     //TODO: hide Dimension X,Y?
 
     measurement = new Measure::Measurement();

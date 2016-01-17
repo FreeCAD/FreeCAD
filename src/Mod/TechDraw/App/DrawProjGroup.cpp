@@ -204,7 +204,10 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     if ( prop == &ProjectionType ||
          prop == &ScaleType ||
          prop == &viewOrientationMatrix ||
-         ((prop == &Scale) && !Scale.StatusBits.test(5)) ) {
+         ((prop == &Scale) &&
+         //!Scale.StatusBits.test(5)) ) {
+         !(Scale.testStatus(App::Property::ReadOnly) &&                //TODO: do we really care about property status here?
+           Scale.testStatus(App::Property::Hidden))) ) {
         if (!isRestoring()) {
             execute();
         }
@@ -578,7 +581,8 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
                     view->ScaleType.setValue("Custom");
                     view->Scale.setValue(autoScale);
                     view->Scale.touch();
-                    view->Scale.StatusBits.set(2);
+                    //view->Scale.StatusBits.set(2);
+                    view->Scale.setStatus(App::Property::ReadOnly,true);
                     view->touch();
                 }
             }
