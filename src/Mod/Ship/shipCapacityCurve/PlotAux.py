@@ -80,7 +80,7 @@ class Plot(object):
         ax.yaxis.set_label_position('right')
         # And X axis can be placed at top
         ax.xaxis.tick_top()
-        ax.spines['top'].set_color((0.0, 0.0, 0.0))
+        ax.spines['top'].set_color((0.0, 0.0, 1.0))
         ax.spines['bottom'].set_color('none')
         ax.xaxis.set_ticks_position('top')
         ax.xaxis.set_label_position('top')
@@ -89,11 +89,13 @@ class Plot(object):
         vols = Plot.plot(z, v, 'Capacity')
         vols.line.set_linestyle('-')
         vols.line.set_linewidth(2.0)
-        vols.line.set_color((0.0, 0.0, 0.0))
+        vols.line.set_color((0.0, 0.0, 1.0))
         Plot.xlabel(r'$z \; [\mathrm{m}]$')
         Plot.ylabel(r'$V \; [\mathrm{m}^3]$')
         ax.xaxis.label.set_fontsize(20)
         ax.yaxis.label.set_fontsize(20)
+        ax.xaxis.label.set_color((0.0, 0.0, 1.0))
+        ax.tick_params(axis='x', colors=(0.0, 0.0, 1.0))
         Plot.grid(True)
 
         # End
