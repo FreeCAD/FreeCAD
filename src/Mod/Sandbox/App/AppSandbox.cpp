@@ -146,24 +146,22 @@ public:
     Py::String m_value;
 };
 
-} // namespace Sandbox
-
 /* module functions */
 
-class SandboxModule : public Py::ExtensionModule<SandboxModule>
+class Module : public Py::ExtensionModule<Module>
 {
 
 public:
-    SandboxModule() : Py::ExtensionModule<SandboxModule>("Sandbox")
+    Module() : Py::ExtensionModule<Module>("Sandbox")
     {
         Sandbox::PythonBaseClass::init_type();
         Sandbox::DocumentProtectorPy::init_type();
         add_varargs_method("DocumentProtector",
-            &SandboxModule::new_DocumentProtector,
+            &Module::new_DocumentProtector,
             "DocumentProtector(Document)");
         Sandbox::DocumentObjectProtectorPy::init_type();
         add_varargs_method("DocumentObjectProtector",
-            &SandboxModule::new_DocumentObjectProtector,
+            &Module::new_DocumentObjectProtector,
             "DocumentObjectProtector(DocumentObject)");
         initialize("This module is the Sandbox module"); // register with Python
         
@@ -172,7 +170,7 @@ public:
         d["PythonBaseClass"] = x;
     }
     
-    virtual ~SandboxModule() {}
+    virtual ~Module() {}
 
 private:
     Py::Object new_DocumentProtector(const Py::Tuple& args)
@@ -193,18 +191,17 @@ private:
     }
 };
 
+} // namespace Sandbox
+
 
 /* Python entry */
-extern "C" {
-void SandboxAppExport initSandbox() {
+PyMODINIT_FUNC initSandbox() {
 
     Sandbox::DocumentProtector  ::init();
     Sandbox::SandboxObject      ::init();
 
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new SandboxModule;
+    (void)new Sandbox::Module;
     Base::Console().Log("Loading Sandbox module... done\n");
 }
-
-} // extern "C"
