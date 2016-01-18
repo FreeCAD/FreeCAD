@@ -30,7 +30,9 @@
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
-//#include "resources/qrc_ReverseEngineering.cpp"
+
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
 
 // use a different name to CreateCommand()
 void CreateReverseEngineeringCommands(void);
@@ -42,8 +44,20 @@ void loadReverseEngineeringResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef ReverseEngineeringGui_Import_methods[];
+namespace ReverseEngineeringGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("ReverseEngineeringGui")
+    {
+        initialize("This module is the ReverseEngineeringGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+} // namespace ReverseEngineeringGui
 
 
 /* Python entry */
@@ -55,7 +69,7 @@ void ReenGuiExport initReverseEngineeringGui()
         return;
     }
 
-    (void) Py_InitModule("ReverseEngineeringGui", ReverseEngineeringGui_Import_methods);   /* mod name, table ptr */
+    new ReverseEngineeringGui::Module();
     Base::Console().Log("Loading GUI of ReverseEngineering module... done\n");
 
     // instantiating the commands

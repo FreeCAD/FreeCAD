@@ -62,8 +62,6 @@ SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 SET(FeaturesSketchBased_SRCS
     FeatureSketchBased.cpp
     FeatureSketchBased.h
-    FeatureFace.cpp
-    FeatureFace.h
     FeaturePad.cpp
     FeaturePad.h
     FeaturePocket.cpp

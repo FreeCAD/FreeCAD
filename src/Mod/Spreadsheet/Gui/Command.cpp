@@ -82,8 +82,6 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.mergeCells('%s')", sheet->getNameInDocument(),
                                                 i->rangeString().c_str());
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.setPosition('%s')", sheet->getNameInDocument(),
-                                        ranges[0].address().c_str());
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }

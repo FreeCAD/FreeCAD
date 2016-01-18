@@ -54,6 +54,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintGear.h>
+#include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>
@@ -149,18 +150,18 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         if (selectionMode == seldir) {
             if (subName.substr(0,4) == "Face") {
-                BRepAdaptor_Surface surface(TopoDS::Face(ref));
-                if (surface.GetType() != GeomAbs_Plane) {
+                if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
                     return;
                 }
-            } else if (subName.substr(0,4) == "Edge") {
-                BRepAdaptor_Curve line(TopoDS::Edge(ref));
-                if (line.GetType() != GeomAbs_Line) {
+            }
+            else if (subName.substr(0,4) == "Edge") {
+                if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
                     return;
                 }
-            } else {
+            }
+            else {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
                 return;
             }
@@ -306,7 +307,7 @@ bool TaskDlgFemConstraintGear::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ForceAngle = %f",name.c_str(), parameterGear->getForceAngle());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

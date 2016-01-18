@@ -27,8 +27,10 @@
 
 #include "MeshKernel.h"
 #include "MeshIO.h"
+#include "Algorithm.h"
 #include "Builder.h"
 
+#include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -719,6 +721,16 @@ bool MeshInput::LoadPLY (std::istream &inp)
     if (num_z != 1)
         return false;
 
+    for (std::vector<std::pair<std::string, Ply::Number> >::iterator it = 
+        vertex_props.begin(); it != vertex_props.end(); ++it) {
+        if (it->first == "diffuse_red")
+            it->first = "red";
+        else if (it->first == "diffuse_green")
+            it->first = "green";
+        else if (it->first == "diffuse_blue")
+            it->first = "blue";
+    }
+
     // check if valid colors are set
     std::size_t num_r = std::count_if(vertex_props.begin(), vertex_props.end(), 
                     std::bind2nd(property, "red"));
@@ -950,12 +962,16 @@ bool MeshInput::LoadPLY (std::istream &inp)
     }
 
     this->_rclMesh.Clear(); // remove all data before
-    // Don't use Assign() because Merge() checks which points are really needed.
-    // This method sets already the correct neighbourhood
+#if 1
+    MeshCleanup(meshPoints,meshFacets).RemoveInvalids();
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(),meshFacets);
+    meshAdj.SetFacetNeighbourhood();
+    this->_rclMesh.Adopt(meshPoints,meshFacets);
+#else
     MeshKernel tmp;
     tmp.Adopt(meshPoints,meshFacets);
     this->_rclMesh.Merge(tmp);
-
+#endif
     return true;
 }
 
@@ -2075,99 +2091,67 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
     MeshPointIterator clPtIter(_rclMesh), clPtEnd(_rclMesh);
     clPtIter.Transform(this->_transform);
     const MeshGeomFacet* pclFacet;
-    unsigned long ulAllFacets = _rclMesh.CountFacets();
 
     Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
     rstrOut.precision(6);
     rstrOut.setf(std::ios::fixed | std::ios::showpoint);
 
     // Header info
-    rstrOut << "#Inventor V2.1 ascii\n" << std::endl;
-    rstrOut << "# Created by FreeCAD <http://www.freecadweb.org>" << std::endl;
-    rstrOut << "# Triangle mesh contains " << _rclMesh.CountPoints() << " vertices"
-            << " and " << _rclMesh.CountFacets() << " faces" << std::endl;
-    rstrOut << "Separator {\n" << std::endl;
-    rstrOut << "  Label {" << std::endl;
-    rstrOut << "    label \"Triangle mesh\"\n  }" << std::endl;
+    Base::InventorBuilder builder(rstrOut);
+    builder.beginSeparator();
+    builder.addInfo("Created by FreeCAD <http://www.freecadweb.org>");
+    std::stringstream str;
+    str << "Triangle mesh contains "
+        << _rclMesh.CountPoints()
+        << " vertices and "
+        << _rclMesh.CountFacets()
+        << " faces";
+    builder.addLabel(str.str().c_str());
 
     // write out the normals of the facets
-    rstrOut << "  Normal { " << std::endl;
-    rstrOut << "    vector [ ";
+    builder.beginNormal();
 
     clIter.Begin();
     clEnd.End();
 
-    pclFacet = &(*clIter);
-    rstrOut << pclFacet->GetNormal().x << "  "
-            << pclFacet->GetNormal().y << "  "
-            << pclFacet->GetNormal().z;
-    ++clIter;
-
     while (clIter < clEnd) {
         pclFacet = &(*clIter);
-        rstrOut << ",\n        "
-                << pclFacet->GetNormal().x << "  "
-                << pclFacet->GetNormal().y << "  "
-                << pclFacet->GetNormal().z;
+        builder.addPoint(pclFacet->GetNormal());
         ++clIter;
 
         seq.next(true); // allow to cancel
     }
 
-    rstrOut << " ]\n\n  }" << std::endl;
+    builder.endNormal();
 
     // coordinates of the vertices
-    rstrOut << "  NormalBinding {\n    value PER_FACE\n  }" << std::endl;
-    rstrOut << "  Coordinate3 {\n    point [ ";
+    builder.addNormalBinding("PER_FACE");
+
+    builder.beginPoints();
 
     clPtIter.Begin();
     clPtEnd.End();
 
-    rstrOut << clPtIter->x << "  "
-            << clPtIter->y << "  "
-            << clPtIter->z;
-    ++clPtIter;
-
     while (clPtIter < clPtEnd) {
-        rstrOut << ",\n        " 
-                << clPtIter->x << "  "
-                << clPtIter->y << "  "
-                << clPtIter->z;
+        builder.addPoint(*clPtIter);
         ++clPtIter;
         seq.next(true); // allow to cancel
     }
 
-    rstrOut << " ]\n\n  }" << std::endl;
+    builder.endPoints();
 
     // and finally the facets with their point indices
-    rstrOut << "  IndexedFaceSet {\n    coordIndex [ ";
-
-    const MeshFacet clFacet = _rclMesh.GetFacets()[0];
-    rstrOut << clFacet._aulPoints[0] << ", "
-            << clFacet._aulPoints[1] << ", "
-            << clFacet._aulPoints[2] << ", -1";
-
-    unsigned long i = 1;
-    while (i < ulAllFacets) {
-        // write two triples per line
-        const MeshFacet clFacet = _rclMesh.GetFacets()[i];
-        if ( i%2==0 ) {
-            rstrOut << ",\n        "
-                    << clFacet._aulPoints[0] << ", "
-                    << clFacet._aulPoints[1] << ", "
-                    << clFacet._aulPoints[2] << ", -1";
-        }
-        else {
-            rstrOut << ", "
-                    << clFacet._aulPoints[0] << ", "
-                    << clFacet._aulPoints[1] << ", "
-                    << clFacet._aulPoints[2] << ", -1";
-        }
-        ++i;
+    const MeshFacetArray& faces = _rclMesh.GetFacets();
+    std::vector<int> indices;
+    indices.reserve(4*faces.size());
+    for (MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
+        indices.push_back(static_cast<int>(it->_aulPoints[0]));
+        indices.push_back(static_cast<int>(it->_aulPoints[1]));
+        indices.push_back(static_cast<int>(it->_aulPoints[2]));
+        indices.push_back(-1);
     }
-
-    rstrOut << " ]\n\n  }" << std::endl;
-    rstrOut << "#End of triangle mesh \n}\n" << std::endl;
+    builder.addIndexedFaceSet(indices);
+    builder.endSeparator();
 
     return true;
 }
@@ -2468,4 +2452,159 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
     rstrOut << "}\n"; // close children and Transform
 
     return true;
+}
+
+// ----------------------------------------------------------------------------
+
+MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
+  : pointArray(p)
+  , facetArray(f)
+{
+}
+
+MeshCleanup::~MeshCleanup()
+{
+}
+
+void MeshCleanup::RemoveInvalids()
+{
+    // first mark all points as invalid
+    pointArray.SetFlag(MeshPoint::INVALID);
+    std::size_t numPoints = pointArray.size();
+
+    // Now go through the facets and invalidate facets with wrong indices
+    // If a facet is valid all its referenced points are validated again
+    // Points that are not referenced are still invalid and thus can be deleted
+    for (MeshFacetArray::_TIterator it = facetArray.begin(); it != facetArray.end(); ++it) {
+        for (int i=0; i<3; i++) {
+            // vertex index out of range
+            if (it->_aulPoints[i] >= numPoints) {
+                it->SetInvalid();
+                break;
+            }
+        }
+
+        // validate referenced points
+        if (it->IsValid()) {
+            pointArray[it->_aulPoints[0]].ResetInvalid();
+            pointArray[it->_aulPoints[1]].ResetInvalid();
+            pointArray[it->_aulPoints[2]].ResetInvalid();
+        }
+    }
+
+    // Remove the invalid items
+    RemoveInvalidFacets();
+    RemoveInvalidPoints();
+}
+
+void MeshCleanup::RemoveInvalidFacets()
+{
+    std::size_t countInvalidFacets = std::count_if(facetArray.begin(), facetArray.end(),
+                    std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+    if (countInvalidFacets > 0) {
+        MeshFacetArray copy_facets(facetArray.size() - countInvalidFacets);
+        // copy all valid facets to the new array
+        std::remove_copy_if(facetArray.begin(), facetArray.end(), copy_facets.begin(),
+            std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+        facetArray.swap(copy_facets);
+    }
+}
+
+void MeshCleanup::RemoveInvalidPoints()
+{
+    std::size_t countInvalidPoints = std::count_if(pointArray.begin(), pointArray.end(),
+                    std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+    if (countInvalidPoints > 0) {
+        // generate array of decrements
+        std::vector<unsigned long> decrements;
+        decrements.resize(pointArray.size());
+        unsigned long decr = 0;
+
+        MeshPointArray::_TIterator p_end = pointArray.end();
+        std::vector<unsigned long>::iterator decr_it = decrements.begin();
+        for (MeshPointArray::_TIterator p_it = pointArray.begin(); p_it != p_end; ++p_it, ++decr_it) {
+            *decr_it = decr;
+            if (!p_it->IsValid())
+                decr++;
+        }
+
+        // correct point indices of the facets
+        MeshFacetArray::_TIterator f_end = facetArray.end();
+        for (MeshFacetArray::_TIterator f_it = facetArray.begin(); f_it != f_end; ++f_it) {
+            f_it->_aulPoints[0] -= decrements[f_it->_aulPoints[0]];
+            f_it->_aulPoints[1] -= decrements[f_it->_aulPoints[1]];
+            f_it->_aulPoints[2] -= decrements[f_it->_aulPoints[2]];
+        }
+
+        // delete point, number of valid points
+        std::size_t validPoints = pointArray.size() - countInvalidPoints;
+        MeshPointArray copy_points(validPoints);
+        // copy all valid facets to the new array
+        std::remove_copy_if(pointArray.begin(), pointArray.end(), copy_points.begin(),
+            std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+        pointArray.swap(copy_points);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+MeshPointFacetAdjacency::MeshPointFacetAdjacency(std::size_t p, MeshFacetArray& f)
+  : numPoints(p)
+  , facets(f)
+{
+    Build();
+}
+
+MeshPointFacetAdjacency::~MeshPointFacetAdjacency()
+{
+}
+
+void MeshPointFacetAdjacency::Build()
+{
+    std::vector<std::size_t> numFacetAdjacency(numPoints);
+    for (MeshFacetArray::iterator it = facets.begin(); it != facets.end(); ++it) {
+        numFacetAdjacency[it->_aulPoints[0]]++;
+        numFacetAdjacency[it->_aulPoints[1]]++;
+        numFacetAdjacency[it->_aulPoints[2]]++;
+    }
+
+    pointFacetAdjacency.resize(numPoints);
+    for (std::size_t i = 0; i < numPoints; i++)
+        pointFacetAdjacency[i].reserve(numFacetAdjacency[i]);
+
+    std::size_t numFacets = facets.size();
+    for (std::size_t i = 0; i < numFacets; i++) {
+        for (int j = 0; j < 3; j++) {
+            pointFacetAdjacency[facets[i]._aulPoints[j]].push_back(i);
+        }
+    }
+}
+
+void MeshPointFacetAdjacency::SetFacetNeighbourhood()
+{
+    std::size_t numFacets = facets.size();
+    for (std::size_t index = 0; index < numFacets; index++) {
+        MeshFacet& facet1 = facets[index];
+        for (int i = 0; i < 3; i++) {
+            std::size_t n1 = facet1._aulPoints[i];
+            std::size_t n2 = facet1._aulPoints[(i+1)%3];
+
+            bool success = false;
+            const std::vector<std::size_t>& refFacets = pointFacetAdjacency[n1];
+            for (std::vector<std::size_t>::const_iterator it = refFacets.begin(); it != refFacets.end(); ++it) {
+                if (*it != index) {
+                    MeshFacet& facet2 = facets[*it];
+                    if (facet2.HasPoint(n2)) {
+                        facet1._aulNeighbours[i] = *it;
+                        success = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!success) {
+                facet1._aulNeighbours[i] = ULONG_MAX;
+            }
+        }
+    }
 }

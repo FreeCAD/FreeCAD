@@ -287,10 +287,10 @@ StdCmdDockViewMenu::StdCmdDockViewMenu()
   : Command("Std_DockViewMenu")
 {
     sGroup        = QT_TR_NOOP("View");
-    sMenuText     = QT_TR_NOOP("Vie&ws");
-    sToolTipText  = QT_TR_NOOP("Toggles this window");
-    sWhatsThis    = QT_TR_NOOP("Toggles this window");
-    sStatusTip    = QT_TR_NOOP("Toggles this window");
+    sMenuText     = QT_TR_NOOP("Panels");
+    sToolTipText  = QT_TR_NOOP("List of available dock panels");
+    sWhatsThis    = QT_TR_NOOP("List of available dock panels");
+    sStatusTip    = QT_TR_NOOP("List of available dock panels");
     eType         = 0;
 }
 
@@ -375,7 +375,7 @@ Action * StdCmdStatusBar::createAction(void)
 
 void StdCmdStatusBar::activated(int iMsg)
 {
-    getMainWindow()->statusBar()->setShown(iMsg != 0);
+    getMainWindow()->statusBar()->setVisible(iMsg != 0);
 }
 
 bool StdCmdStatusBar::isActive()

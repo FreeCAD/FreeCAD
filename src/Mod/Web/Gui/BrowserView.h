@@ -45,10 +45,18 @@ class WebGuiExport WebView : public QWebView
 
 public:
     WebView(QWidget *parent = 0);
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
-protected Q_SLOTS:
-    void openLinkInExternalBrowser(const QString& url);
+
+private Q_SLOTS:
+    void triggerContextMenuAction(int);
+
+Q_SIGNALS:
+    void openLinkInExternalBrowser(const QUrl& url);
+    void openLinkInNewWindow(const QUrl&);
 };
 
 /**
@@ -65,7 +73,7 @@ public:
 
     void load(const char* URL);
     void load(const QUrl & url);
-    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName=QString::fromAscii("Browser"));
+    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName=QString::fromLatin1("Browser"));
     void stop(void);
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
@@ -101,6 +109,8 @@ protected Q_SLOTS:
     bool chckHostAllowed(const QString& host);
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
+    void onOpenLinkInExternalBrowser(const QUrl& url);
+    void onOpenLinkInNewWindow(const QUrl&);
 
 private:
     WebView* view;

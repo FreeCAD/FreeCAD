@@ -176,7 +176,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADUtils.py" line="559"/>
+        <location filename="OpenSCADUtils.py" line="560"/>
         <source>Error all shapes must be either 2D or both must be 3D</source>
         <translation type="unfinished"></translation>
     </message>

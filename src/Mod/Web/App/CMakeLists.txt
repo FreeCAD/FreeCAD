@@ -22,7 +22,6 @@ SOURCE_GROUP("Moc" FILES ${Web_MOC_SRCS})
 
 SET(Web_SRCS
     AppWeb.cpp
-    AppWebPy.cpp
     PreCompiled.cpp
     PreCompiled.h
     Server.cpp

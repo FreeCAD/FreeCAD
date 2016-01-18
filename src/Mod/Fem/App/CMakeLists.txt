@@ -62,53 +62,76 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SET(Mod_SRCS
     AppFem.cpp
     AppFemPy.cpp
+    FemTools.cpp
+    FemTools.h
     PreCompiled.cpp
     PreCompiled.h
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 SET(FemScripts_SRCS
-    convert2TetGen.py
+    _CommandFemBeamSection.py
+    _CommandFemFromShape.py
+    _CommandFemShellThickness.py
+    _CommandFemSolverCalculix.py
+    _CommandMechanicalMaterial.py
+    _CommandMechanicalShowResult.py
+    _CommandNewMechanicalAnalysis.py
+    _CommandPurgeFemResults.py
+    _CommandQuickAnalysis.py
+    _CommandSolverJobControl.py
+    _FemAnalysis.py
+    _FemBeamSection.py
+    _FemShellThickness.py
+    _FemSolverCalculix.py
+    _MechanicalMaterial.py
+    _TaskPanelFemBeamSection.py
+    _TaskPanelFemShellThickness.py
+    _TaskPanelFemSolverCalculix.py
+    _TaskPanelMechanicalMaterial.py
+    _TaskPanelResultControl.py
+    _ViewProviderFemAnalysis.py
+    _ViewProviderFemBeamSection.py
+    _ViewProviderFemShellThickness.py
+    _ViewProviderFemSolverCalculix.py
+    _ViewProviderMechanicalMaterial.py
+    ccxDatReader.py
     ccxFrdReader.py
     ccxInpWriter.py
-    TestFem.py
-    FemShellThickness.py
-    FemShellThickness.ui
-    FemBeamSection.py
-    FemBeamSection.ui
-    FemTools.py
-    MechanicalAnalysis.ui
-    MechanicalAnalysis.py
-    MechanicalMaterial.ui
-    MechanicalMaterial.py
-    ShowDisplacement.ui
+    convert2TetGen.py
+    Init.py
+    InitGui.py
+    FemAnalysis.py
     FemCommands.py
-    _ResultControlTaskPanel.py
-    _JobControlTaskPanel.py
-    _ViewProviderFemAnalysis.py
-    _FemAnalysis.py
-    _CommandMechanicalShowResult.py
-    _CommandQuickAnalysis.py
-    _CommandPurgeFemResults.py
-    _CommandMechanicalJobControl.py
-    _CommandFemFromShape.py
-    _CommandNewMechanicalAnalysis.py
+    FemBeamSection.py
+    FemShellThickness.py
+    FemSolverCalculix.py
+    FemTools.py
+    MechanicalMaterial.py
+    SelectionObserverFem.py
+    TestFem.py
+
+    TaskPanelFemBeamSection.ui
+    TaskPanelFemShellThickness.ui
+    TaskPanelFemSolverCalculix.ui
+    TaskPanelMechanicalMaterial.ui
+    TaskPanelShowDisplacement.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
 SET(FemTests_SRCS
-    test_files/mesh_points.csv
-    test_files/mesh_volumes.csv
-    test_files/static_analysis.inp
-    test_files/frequency_analysis.inp
-    test_files/cube_frequency.inp
-    test_files/cube_frequency.dat
-    test_files/cube_frequency.frd
-    test_files/cube_frequency_expected_values
-    test_files/cube_static.inp
-    test_files/cube_static.dat
-    test_files/cube_static.frd
-    test_files/cube_static_expected_values
+    test_files/ccx/mesh_points.csv
+    test_files/ccx/mesh_volumes.csv
+    test_files/ccx/static_analysis.inp
+    test_files/ccx/frequency_analysis.inp
+    test_files/ccx/cube_frequency.inp
+    test_files/ccx/cube_frequency.dat
+    test_files/ccx/cube_frequency.frd
+    test_files/ccx/cube_frequency_expected_values
+    test_files/ccx/cube_static.inp
+    test_files/ccx/cube_static.dat
+    test_files/ccx/cube_static.frd
+    test_files/ccx/cube_static_expected_values
 )
 
 SET(FemBase_SRCS
@@ -124,6 +147,8 @@ SET(FemBase_SRCS
     FemMesh.h
     FemResultObject.cpp
     FemResultObject.h
+    FemSolverObject.cpp
+    FemSolverObject.h
     FemConstraint.cpp
     FemConstraint.h
     FemMeshProperty.cpp

@@ -63,7 +63,7 @@
 
 #include "Application.h"
 #include "AutoSaver.h"
-#include "GuiApplicationNativeEventAware.h"
+#include "GuiApplication.h"
 #include "MainWindow.h"
 #include "Document.h"
 #include "View.h"
@@ -336,7 +336,7 @@ Application::Application(bool GUIenabled)
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
         QString lang = QLocale::languageToString(QLocale::system().language());
-        Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str());
+        Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
         ParameterGrp::handle hUnits = App::GetApplication().GetParameterGroupByPath
@@ -1050,7 +1050,7 @@ bool Application::activateWorkbench(const char* name)
             ok = true; // already active
         // now try to create and activate the matching workbench object
         else if (WorkbenchManager::instance()->activate(name, type)) {
-            getMainWindow()->activateWorkbench(QString::fromAscii(name));
+            getMainWindow()->activateWorkbench(QString::fromLatin1(name));
             this->signalActivateWorkbench(name);
             ok = true;
         }
@@ -1095,7 +1095,7 @@ bool Application::activateWorkbench(const char* name)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        QString msg = QString::fromAscii(e.what());
+        QString msg = QString::fromLatin1(e.what());
         QRegExp rx;
         // ignore '<type 'exceptions.ImportError'>' prefixes
         rx.setPattern(QLatin1String("^\\s*<type 'exceptions.ImportError'>:\\s*"));
@@ -1105,7 +1105,7 @@ bool Application::activateWorkbench(const char* name)
             pos = rx.indexIn(msg);
         }
 
-        Base::Console().Error("%s\n", (const char*)msg.toAscii());
+        Base::Console().Error("%s\n", (const char*)msg.toLatin1());
         Base::Console().Log("%s\n", e.getStackTrace().c_str());
         if (!d->startingUp) {
             wc.restoreCursor();
@@ -1122,7 +1122,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
 {
     Base::PyGILStateLocker lock;
     // get the python workbench object from the dictionary
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toAscii());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // make a unique icon name
@@ -1196,7 +1196,7 @@ QString Application::workbenchToolTip(const QString& wb) const
 {
     // get the python workbench object from the dictionary
     Base::PyGILStateLocker lock;
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toAscii());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // get its ToolTip member if possible
@@ -1220,7 +1220,7 @@ QString Application::workbenchMenuText(const QString& wb) const
 {
     // get the python workbench object from the dictionary
     Base::PyGILStateLocker lock;
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toAscii());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // get its ToolTip member if possible
@@ -1251,13 +1251,13 @@ QStringList Application::workbenches(void) const
     const char* start = (st != config.end() ? st->second.c_str() : "<none>");
     QStringList hidden, extra;
     if (ht != config.end()) { 
-        QString items = QString::fromAscii(ht->second.c_str());
+        QString items = QString::fromLatin1(ht->second.c_str());
         hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
         if (hidden.isEmpty())
             hidden.push_back(QLatin1String(""));
     }
     if (et != config.end()) { 
-        QString items = QString::fromAscii(et->second.c_str());
+        QString items = QString::fromLatin1(et->second.c_str());
         extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
         if (extra.isEmpty())
             extra.push_back(QLatin1String(""));
@@ -1273,18 +1273,18 @@ QStringList Application::workbenches(void) const
         // add only allowed workbenches
         bool ok = true;
         if (!extra.isEmpty()&&ok) {
-            ok = (extra.indexOf(QString::fromAscii(wbName)) != -1);
+            ok = (extra.indexOf(QString::fromLatin1(wbName)) != -1);
         }
         if (!hidden.isEmpty()&&ok) {
-            ok = (hidden.indexOf(QString::fromAscii(wbName)) == -1);
+            ok = (hidden.indexOf(QString::fromLatin1(wbName)) == -1);
         }
     
         // okay the item is visible
         if (ok)
-            wb.push_back(QString::fromAscii(wbName));
+            wb.push_back(QString::fromLatin1(wbName));
         // also allow start workbench in case it is hidden
         else if (strcmp(wbName, start) == 0)
-            wb.push_back(QString::fromAscii(wbName));
+            wb.push_back(QString::fromLatin1(wbName));
     }
 
     return wb;
@@ -1536,113 +1536,36 @@ void Application::initTypes(void)
     Gui::PythonWorkbench                        ::init();
 }
 
-namespace Gui {
-/** Override QCoreApplication::notify() to fetch exceptions in Qt widgets
- * properly that are not handled in the event handler or slot.
- */
-class GUIApplication : public GUIApplicationNativeEventAware
-{
-    int systemExit;
-public:
-    GUIApplication(int & argc, char ** argv, int exitcode)
-        : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
-    {
-    }
-
-    /**
-     * Make forwarding events exception-safe and get more detailed information
-     * where an unhandled exception comes from.
-     */
-    bool notify (QObject * receiver, QEvent * event)
-    {
-        if (!receiver && event) {
-            Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
-                (int)event->type());
-        }
-        try {
-            if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
-                event->type() == Spaceball::MotionEvent::MotionEventType)
-                return processSpaceballEvent(receiver, event);
-            else
-                return QApplication::notify(receiver, event);
-        }
-        catch (const Base::SystemExitException&) {
-            qApp->exit(systemExit);
-            return true;
-        }
-        catch (const Base::Exception& e) {
-            Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                                  "The error message is: %s\n", e.what());
-        }
-        catch (const std::exception& e) {
-            Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
-                                  "The error message is: %s\n", e.what());
-        }
-        catch (...) {
-            Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n");
-        }
-
-        // Print some more information to the log file (if active) to ease bug fixing
-        if (receiver && event) {
-            try {
-                std::stringstream dump;
-                dump << "The event type " << (int)event->type() << " was sent to "
-                     << receiver->metaObject()->className() << "\n";
-                dump << "Object tree:\n";
-                if (receiver->isWidgetType()) {
-                    QWidget* w = qobject_cast<QWidget*>(receiver);
-                    while (w) {
-                        dump << "\t";
-                        dump << w->metaObject()->className();
-                        QString name = w->objectName();
-                        if (!name.isEmpty())
-                            dump << " (" << (const char*)name.toUtf8() << ")";
-                        w = w->parentWidget();
-                        if (w)
-                            dump << " is child of\n";
-                    }
-                    std::string str = dump.str();
-                    Base::Console().Log("%s",str.c_str());
-                }
-            }
-            catch (...) {
-                Base::Console().Log("Invalid recipient and/or event in GUIApplication::notify\n");
-            }
-        }
-
-        return true;
-    }
-    void commitData(QSessionManager &manager)
-    {
-        if (manager.allowsInteraction()) {
-            if (!Gui::getMainWindow()->close()) {
-                // cancel the shutdown
-                manager.release();
-                manager.cancel();
-            }
-        }
-        else {
-            // no user interaction allowed, thus close all documents and
-            // the main window
-            App::GetApplication().closeAllDocuments();
-            Gui::getMainWindow()->close();
-        }
-
-    }
-};
-}
-
 void Application::runApplication(void)
 {
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it;
+
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     int systemExit = 1000;
-    GUIApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+    GUISingleApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+
+    // check if a single or multiple instances can run
+    it = cfg.find("SingleInstance");
+    if (it != cfg.end() && mainApp.isRunning()) {
+        // send the file names to be opened to the server application so that this
+        // opens them
+        std::list<std::string> files = App::Application::getCmdLineFiles();
+        for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
+            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            msg.prepend("OpenFile:");
+            if (!mainApp.sendMessage(msg)) {
+                qWarning("Failed to send message to server");
+                break;
+            }
+        }
+        return;
+    }
+
     // set application icon and window title
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("Application");
     if (it != cfg.end()) {
         mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
@@ -1711,6 +1634,8 @@ void Application::runApplication(void)
     Application app(true);
     MainWindow mw;
     mw.setWindowTitle(mainApp.applicationName());
+    QObject::connect(&mainApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
+                     &mw, SLOT(processMessages(const QList<QByteArray> &)));
 
     ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
@@ -1793,7 +1718,7 @@ void Application::runApplication(void)
     // if the auto workbench is not visible then force to use the default workbech
     // and replace the wrong entry in the parameters
     QStringList wb = app.workbenches();
-    if (!wb.contains(QString::fromAscii(start.c_str()))) {
+    if (!wb.contains(QString::fromLatin1(start.c_str()))) {
         start = App::Application::Config()["StartWorkbench"];
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                               SetASCII("AutoloadModule", start.c_str());
@@ -1837,19 +1762,8 @@ void Application::runApplication(void)
 
     Instance->d->startingUp = false;
 
-#if 0
-    // processing all command line files
-    App::Application::processCmdLineFiles();
-
-    // Create new document?
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    if (hGrp->GetBool("CreateNewDoc", false)) {
-        App::GetApplication().newDocument();
-    }
-#else
     // gets called once we start the event loop
     QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
-#endif
 
     // run the Application event loop
     Base::Console().Log("Init: Entering event loop\n");
@@ -1891,11 +1805,11 @@ void Application::runApplication(void)
 void Application::checkForPreviousCrashes()
 {
     QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromAscii("*.lock"));
+    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
     tmp.setFilter(QDir::Files);
 
     QList<QFileInfo> restoreDocFiles;
-    QString exeName = QString::fromAscii(App::GetApplication().getExecutableName());
+    QString exeName = QString::fromLatin1(App::GetApplication().getExecutableName());
     QList<QFileInfo> locks = tmp.entryInfoList();
     for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
         QString bn = it->baseName();

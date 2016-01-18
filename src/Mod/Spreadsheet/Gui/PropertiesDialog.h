@@ -24,7 +24,6 @@
 #define PROPERTIESDIALOG_H
 
 #include <QDialog>
-#include "PreCompiled.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 namespace Ui {

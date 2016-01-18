@@ -173,7 +173,7 @@ void Tessellation::findShapes()
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     if (!activeGui) return;
 
-    this->document = QString::fromAscii(activeDoc->getName());
+    this->document = QString::fromLatin1(activeDoc->getName());
     std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
 
     double edgeLen = 0;
@@ -194,7 +194,7 @@ void Tessellation::findShapes()
             edgeLen = std::max<double>(edgeLen, bbox.LengthY());
             edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -223,7 +223,7 @@ bool Tessellation::accept()
         return false;
     }
 
-    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toAscii());
+    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toLatin1());
     if (!activeDoc) {
         QMessageBox::critical(this, windowTitle(),
             tr("No such document '%1'.").arg(this->document));
@@ -246,7 +246,7 @@ bool Tessellation::accept()
             QString cmd;
             if (method == 0) { // Standard
                 double devFace = ui->spinSurfaceDeviation->value();
-                cmd = QString::fromAscii(
+                cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                     "__mesh__.Mesh=Mesh.Mesh(__doc__.getObject(\"%2\").Shape.tessellate(%3))\n"
@@ -262,7 +262,7 @@ bool Tessellation::accept()
                 double maxEdge = ui->spinMaximumEdgeLength->value();
                 if (!ui->spinMaximumEdgeLength->isEnabled())
                     maxEdge = 0;
-                cmd = QString::fromAscii(
+                cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                     "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,MaxLength=%3)\n"
@@ -283,7 +283,7 @@ bool Tessellation::accept()
                 bool optimize = ui->checkOptimizeSurface->isChecked();
                 bool allowquad = ui->checkQuadDominated->isChecked();
                 if (fineness < 5) {
-                    cmd = QString::fromAscii(
+                    cmd = QString::fromLatin1(
                         "__doc__=FreeCAD.getDocument(\"%1\")\n"
                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                         "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,"
@@ -300,7 +300,7 @@ bool Tessellation::accept()
                         .arg(label);
                 }
                 else {
-                    cmd = QString::fromAscii(
+                    cmd = QString::fromLatin1(
                         "__doc__=FreeCAD.getDocument(\"%1\")\n"
                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                         "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,"

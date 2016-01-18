@@ -679,7 +679,7 @@ unsigned long MeshObject::getPointDegree(const std::vector<unsigned long>& indic
     unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(),
         std::bind2nd(std::equal_to<unsigned long>(), 0));
 
-    point_degree = pointDeg;
+    point_degree.swap(pointDeg);
     return countInvalids;
 }
 

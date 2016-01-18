@@ -223,6 +223,7 @@ protected: // attributes
     // Connections to track relabeling of document and document objects
     boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledDocumentConnection;
     boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledObjectConnection;
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onDeletedObjectConnection;
 
     /// Old label; used for renaming expressions
     std::string oldLabel;

@@ -27,6 +27,8 @@ __url__ =    "http://www.freecadweb.org"
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
 
+DEBUG = False
+
 if open.__module__ == '__builtin__':
     pyopen = open # because we'll redefine open below
 
@@ -318,7 +320,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     if DEBUG: print "done."
 
-    global ifcfile # keeping global for debugging purposes
+    #global ifcfile # keeping global for debugging purposes
     filename = decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
     from ifcopenshell import geom
@@ -328,12 +330,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
     settings.set(settings.USE_WORLD_COORDS,True)
     if SEPARATE_OPENINGS:
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
-    if MERGE_MODE_STRUCT != 3:
-        try:
-            settings.set(settings.INCLUDE_CURVES,True)
-        except:
-            FreeCAD.Console.PrintError("Set INCLUDE_CURVES failed. IfcOpenShell seams to be an Outdated Developer Version.\n")
-            FreeCAD.Console.PrintError("Import of StructuralAnalysisView Entities will not work!\n")
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
@@ -419,7 +415,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         if DEBUG: print count+1,"/",len(products)," creating object #",pid," : ",ptype,
         name = str(ptype[3:])
         if product.Name:
-            name = product.Name.decode("unicode_escape").encode("utf8")
+            name = product.Name.encode("utf8")
         if PREFIX_NUMBERS: name = "ID" + str(pid) + " " + name
         obj = None
         baseobj = None
@@ -427,8 +423,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
         shape = None
 
         archobj = True  # assume all objects not in structuralifcobjects are architecture
+        structobj = False
         if ptype in structuralifcobjects:
             archobj = False
+            structobj = True
             if DEBUG: print " (struct)",
         else:
             if DEBUG: print " (arch)",
@@ -448,8 +446,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
         # detect if this object is sharing its shape
         clone = None
         store = None
-        if product.Representation and MERGE_MODE_ARCH == 0 and archobj:
-            for s in product.Representation.Representations:
+        prepr = None
+        try:
+            prepr = product.Representation
+        except:
+            if DEBUG: print " ERROR unable to get object representation",
+        if prepr and (MERGE_MODE_ARCH == 0) and archobj:
+            for s in prepr.Representations:
                 if s.RepresentationIdentifier.upper() == "BODY":
                     if s.Items[0].is_a("IfcMappedItem"):
                         bid = s.Items[0].MappingSource.id()
@@ -459,6 +462,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             sharedobjects[bid] = None
                             store = bid
 
+        if structobj:
+            settings.set(settings.INCLUDE_CURVES,True)
+        else:
+            settings.set(settings.INCLUDE_CURVES,False)
         try:
             cr = ifcopenshell.geom.create_shape(settings,product)
             brep = cr.geometry.brep_data
@@ -474,10 +481,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
 
             if not shape.isNull():
-                if (MERGE_MODE_ARCH > 0 and archobj) or not archobj:
+                if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
                     if ptype == "IfcSpace": # do not add spaces to compounds
                         if DEBUG: print "skipping space ",pid
-                    elif not archobj:
+                    elif structobj:
                         structshapes[pid] = shape
                         if DEBUG: print shape.Solids," ",
                         baseobj = shape
@@ -594,7 +601,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     for p in properties[pid]:
                         o = ifcfile[p]
                         if o.is_a("IfcPropertySingleValue"):
-                            a[o.Name.decode("unicode_escape").encode("utf8")] = str(o.NominalValue)
+                            a[o.Name.encode("utf8")] = str(o.NominalValue)
                     obj.IfcAttributes = a
 
             # color
@@ -729,7 +736,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         if "IfcAnnotation" in SKIP: continue # preferences-set type skip list
         name = "Annotation"
         if annotation.Name:
-            name = annotation.Name.decode("unicode_escape").encode("utf8")
+            name = annotation.Name.encode("utf8")
         if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
         shapes2d = []
         for repres in annotation.Representation.Representations:
@@ -752,7 +759,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     for material in materials:
         name = "Material"
         if material.Name:
-            name = material.Name.decode("unicode_escape").encode("utf8")
+            name = material.Name.encode("utf8")
         if MERGE_MATERIALS and (name in fcmats.keys()):
             mat = fcmats[name]
         else:
@@ -832,8 +839,8 @@ def export(exportList,filename):
         if b:
             clones.setdefault(b.Name,[]).append(o.Name)
             
-    print "clones table: ",clones
-    print objectslist
+    #print "clones table: ",clones
+    #print objectslist
 
     # products
     for obj in objectslist:
@@ -908,16 +915,16 @@ def export(exportList,filename):
         if hasattr(obj,"Additions") and (shapetype == "extrusion"):
             for o in obj.Additions:
                 r2,p2,c2 = getRepresentation(ifcfile,context,o,forcebrep=True)
-                if DEBUG: print "      adding ",c2," : ",str(o.Label)
-                prod2 = ifcfile.createIfcBuildingElementProxy(ifcopenshell.guid.compress(uuid.uuid1().hex),history,str(o.Label),None,None,p2,r2,None,"ELEMENT")
+                if DEBUG: print "      adding ",c2," : ",o.Label
+                prod2 = ifcfile.createIfcBuildingElementProxy(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None,"ELEMENT")
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
 
         # subtractions
         if hasattr(obj,"Subtractions") and (shapetype == "extrusion"):
             for o in obj.Subtractions:
                 r2,p2,c2 = getRepresentation(ifcfile,context,o,forcebrep=True,subtraction=True)
-                if DEBUG: print "      subtracting ",c2," : ",str(o.Label)
-                prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,str(o.Label),None,None,p2,r2,None)
+                if DEBUG: print "      subtracting ",c2," : ",o.Label
+                prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None)
                 ifcfile.createIfcRelVoidsElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Subtraction','',product,prod2)
 
         # properties
@@ -934,9 +941,9 @@ def export(exportList,filename):
                         val = "(".join(r[1:])
                         val = val.strip("'")
                         val = val.strip('"')
-                        if DEBUG: print "      property ",key," : ",str(val), " (", str(tp), ")"
+                        if DEBUG: print "      property ",key," : ",val.encode("utf8"), " (", str(tp), ")"
                         if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
-                            val = str(val)
+                            val = val.encode("utf8")
                         elif tp == "IfcBoolean":
                             if val == ".T.":
                                 val = True
@@ -1170,11 +1177,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 dataset = fcshape.Solids
             else:
                 dataset = fcshape.Shells
-                print "Warning! object contains no solids"
+                if DEBUG: print "Warning! object contains no solids"
             for fcsolid in dataset:
                 fcsolid.scale(0.001) # to meters
                 faces = []
                 curves = False
+                shapetype = "brep"
                 for fcface in fcsolid.Faces:
                     for e in fcface.Edges:
                         if not isinstance(e.Curve,Part.Line):
@@ -1182,17 +1190,28 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 curves = True
                                 break
                 if curves:
-                    #shapetype = "triangulated"
-                    #tris = fcsolid.tessellate(tessellation)
-                    #for tri in tris[1]:
-                    #    pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
-                    #    loop =  ifcfile.createIfcPolyLoop(pts)
-                    #    bound = ifcfile.createIfcFaceOuterBound(loop,True)
-                    #    face =  ifcfile.createIfcFace([bound])
-                    #    faces.append(face)
-                    fcsolid = Arch.removeCurves(fcsolid)
-
-                shapetype = "brep"
+                    joinfacets = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcJoinCoplanarFacets",False)
+                    usedae = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcUseDaeOptions",False)
+                    if not joinfacets:
+                        shapetype = "triangulated"
+                        if usedae:
+                            import importDAE
+                            tris = importDAE.triangulate(fcsolid)
+                        else:
+                            tris = fcsolid.tessellate(tessellation)
+                        for tri in tris[1]:
+                            pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
+                            loop =  ifcfile.createIfcPolyLoop(pts)
+                            bound = ifcfile.createIfcFaceOuterBound(loop,True)
+                            face =  ifcfile.createIfcFace([bound])
+                            faces.append(face)
+                            fcsolid = Part.Shape() # empty shape so below code is not executed
+                    else:
+                        fcsolid = Arch.removeCurves(fcsolid,dae=usedae)
+                        if not fcsolid:
+                            if DEBUG: print "Error: Unable to triangulate shape"
+                            fcsolid = Part.Shape()
+                    
                 for fcface in fcsolid.Faces:
                     loops = []
                     verts = [v.Point for v in Part.Wire(Part.__sortEdges__(fcface.OuterWire.Edges)).Vertexes]
@@ -1220,9 +1239,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     face =  ifcfile.createIfcFace(loops)
                     faces.append(face)
 
-                shell = ifcfile.createIfcClosedShell(faces)
-                shape = ifcfile.createIfcFacetedBrep(shell)
-                shapes.append(shape)
+                if faces:
+                    shell = ifcfile.createIfcClosedShell(faces)
+                    shape = ifcfile.createIfcFacetedBrep(shell)
+                    shapes.append(shape)
 
     if shapes:
 

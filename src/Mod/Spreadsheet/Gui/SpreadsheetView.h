@@ -86,8 +86,8 @@ protected Q_SLOTS:
     void rowResized(int row, int oldSize, int newSize);
     void columnResizeFinished();
     void rowResizeFinished();
+    void modelUpdated(const QModelIndex & topLeft, const QModelIndex & bottomRight);
 protected:
-    void setPosition(Spreadsheet::CellAddress address);
     void updateContentLine();
     void setCurrentCell(QString str);
     void keyPressEvent(QKeyEvent *event);

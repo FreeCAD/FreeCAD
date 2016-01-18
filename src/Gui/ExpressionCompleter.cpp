@@ -43,9 +43,9 @@ ExpressionCompleter::ExpressionCompleter(const App::Document * currentDoc, const
 
     /* Create tree with full path to all objects */
     while (di != docs.end()) {
-        QStandardItem* docItem = new QStandardItem(QString::fromAscii((*di)->getName()));
+        QStandardItem* docItem = new QStandardItem(QString::fromLatin1((*di)->getName()));
 
-        docItem->setData(QString::fromAscii((*di)->getName()) + QString::fromAscii("#"), Qt::UserRole);
+        docItem->setData(QString::fromLatin1((*di)->getName()) + QString::fromLatin1("#"), Qt::UserRole);
         createModelForDocument(*di, docItem, forbidden);
 
         model->appendRow(docItem);
@@ -90,9 +90,9 @@ void ExpressionCompleter::createModelForDocument(const App::Document * doc, QSta
             continue;
         }
 
-        QStandardItem* docObjItem = new QStandardItem(QString::fromAscii((*doi)->getNameInDocument()));
+        QStandardItem* docObjItem = new QStandardItem(QString::fromLatin1((*doi)->getNameInDocument()));
 
-        docObjItem->setData(QString::fromAscii((*doi)->getNameInDocument()) + QString::fromAscii("."), Qt::UserRole);
+        docObjItem->setData(QString::fromLatin1((*doi)->getNameInDocument()) + QString::fromLatin1("."), Qt::UserRole);
         createModelForDocumentObject(*doi, docObjItem);
         parent->appendRow(docObjItem);
 
@@ -104,7 +104,7 @@ void ExpressionCompleter::createModelForDocument(const App::Document * doc, QSta
 
             docObjItem = new QStandardItem(QString::fromUtf8(label.c_str()));
 
-            docObjItem->setData( QString::fromUtf8(label.c_str()) + QString::fromAscii("."), Qt::UserRole);
+            docObjItem->setData( QString::fromUtf8(label.c_str()) + QString::fromLatin1("."), Qt::UserRole);
             createModelForDocumentObject(*doi, docObjItem);
             parent->appendRow(docObjItem);
         }
@@ -236,7 +236,8 @@ QStringList ExpressionCompleter::splitPath ( const QString & path ) const
 void ExpressionCompleter::slotUpdate(const QString & prefix)
 {
     using namespace boost::tuples;
-    std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(Base::Tools::toStdString(prefix));
+    int j = (prefix.size() > 0 && prefix.at(0) == QChar::fromAscii('=')) ? 1 : 0;
+    std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(Base::Tools::toStdString(prefix.mid(j)));
     std::string completionPrefix;
 
     if (tokens.size() == 0 || (prefix.size() > 0 && prefix[prefix.size() - 1] == QChar(32))) {

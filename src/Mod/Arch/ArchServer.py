@@ -22,9 +22,10 @@
 #***************************************************************************
 
 import FreeCAD,os
+from PySide import QtCore, QtGui
+
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
 else:
     def translate(ctxt,txt):
@@ -114,7 +115,8 @@ class _ArchGitDialog(QtGui.QDialog):
         self.label = QtGui.QLabel(self.groupBox)
         self.label.setObjectName("label")
         self.vl3.addWidget(self.label)
-        self.horizontalLayout = QtGui.QHBoxLayout(self.vl3)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.vl3.addLayout(self.horizontalLayout)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.radioButton_2 = QtGui.QRadioButton(self.groupBox)
         self.radioButton_2.setChecked(True)

@@ -24,20 +24,12 @@ __title__ = "Fem Analysis"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD
-from FemTools import FemTools
-
 
 class _FemAnalysis:
     "The FemAnalysis container object"
     def __init__(self, obj):
         self.Type = "FemAnalysis"
         obj.Proxy = self
-        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
-        obj.AnalysisType = FemTools.known_analysis_types
-        analysis_type = fem_prefs.GetInt("AnalysisType", 0)
-        obj.AnalysisType = FemTools.known_analysis_types[analysis_type]
 
     def execute(self, obj):
         return

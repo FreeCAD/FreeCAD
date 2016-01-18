@@ -281,10 +281,12 @@ public:
     //@{
     /// returns the name to which the command belongs
     const char* getAppModuleName(void) const {return sAppModule;}
+    void setAppModuleName(const char*);
     /// Get the command name
     const char* getName() const { return sName; }
     /// Get the name of the grouping of the command
     const char* getGroupName() const { return sGroup; }
+    void setGroupName(const char*);
     //@}
 
 protected:
@@ -429,7 +431,7 @@ protected:
 class MacroCommand: public Command
 {
 public:
-    MacroCommand(const char* name);
+    MacroCommand(const char* name, bool system = false);
     virtual ~MacroCommand();
 
 protected:
@@ -465,6 +467,7 @@ public:
 
 protected:
     const char* sScriptName;
+    bool systemMacro;
 };
 
 /** The CommandManager class

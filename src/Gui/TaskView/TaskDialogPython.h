@@ -75,16 +75,33 @@ public:
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
     virtual void modifyStandardButtons(QDialogButtonBox*);
 
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the document while it is open.
+    */
     virtual bool isAllowedAlterDocument(void) const;
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the 3d view while it is open.
+    */
     virtual bool isAllowedAlterView(void) const;
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the selection while it is open.
+    */
     virtual bool isAllowedAlterSelection(void) const;
     virtual bool needsFullSpace() const;
 
 public:
+    /// is called by the framework when the dialog is opened
     virtual void open();
+    /// is called by the framework if a button is clicked which has no accept or reject role
     virtual void clicked(int);
+    /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
+    /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
+    /// is called by the framework if the user press the help button 
     virtual void helpRequested();
     
 private:

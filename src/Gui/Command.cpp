@@ -367,6 +367,24 @@ std::string Command::getUniqueObjectName(const char *BaseName) const
     return getActiveGuiDocument()->getDocument()->getUniqueObjectName(BaseName);
 }
 
+void Command::setAppModuleName(const char* s)
+{
+#if defined (_MSC_VER)
+    this->sAppModule = _strdup(s);
+#else
+    this->sAppModule = strdup(s);
+#endif
+}
+
+void Command::setGroupName(const char* s)
+{
+#if defined (_MSC_VER)
+    this->sGroup = _strdup(s);
+#else
+    this->sGroup = strdup(s);
+#endif
+}
+
 
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling
@@ -605,7 +623,7 @@ const char* Command::keySequenceToAccel(int sk) const
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
-    QByteArray data = qs.toAscii();
+    QByteArray data = qs.toLatin1();
 #if defined (_MSC_VER)
     return _strdup((const char*)data);
 #else
@@ -658,7 +676,7 @@ Action * Command::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this,getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
@@ -683,11 +701,11 @@ void Command::updateAction(int)
 
 /* TRANSLATOR Gui::MacroCommand */
 
-MacroCommand::MacroCommand(const char* name)
+MacroCommand::MacroCommand(const char* name, bool system)
 #if defined (_MSC_VER)
-  : Command( _strdup(name) )
+  : Command( _strdup(name) ), systemMacro(system)
 #else
-  : Command( strdup(name) )
+  : Command( strdup(name) ), systemMacro(system)
 #endif
 {
     sGroup = QT_TR_NOOP("Macros");
@@ -702,11 +720,22 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
-    std::string cMacroPath = App::GetApplication().GetParameterGroupByPath
+    QDir d;
+    
+    if(!systemMacro) {
+	std::string cMacroPath;
+	
+	cMacroPath = App::GetApplication().GetParameterGroupByPath
                              ("User parameter:BaseApp/Preferences/Macro")->GetASCII("MacroPath",
-                                     App::Application::getUserAppDataDir().c_str());
-
-    QDir d(QString::fromUtf8(cMacroPath.c_str()));
+                                     App::Application::getUserMacroDir().c_str());
+			     
+	d = QDir(QString::fromUtf8(cMacroPath.c_str()));
+    }
+    else {
+	QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+	d = QDir(dirstr);
+    }
+    
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
     if (!fi.exists()) {
         QMessageBox::critical(Gui::getMainWindow(),
@@ -733,7 +762,7 @@ Action * MacroCommand::createAction(void)
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
 
     QString accel = pcAction->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
@@ -777,6 +806,9 @@ void MacroCommand::load()
             if ((*it)->GetASCII("Pixmap", "nix") != "nix")
                 macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
             macro->setAccel       ( (*it)->GetASCII( "Accel",0    ).c_str() );
+	    
+	    macro->systemMacro = (*it)->GetBool("System", false);
+	    
             Application::Instance->commandManager().addCommand( macro );
         }
     }
@@ -799,6 +831,7 @@ void MacroCommand::save()
             hMacro->SetASCII( "Statustip", macro->getStatusTip  () );
             hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
             hMacro->SetASCII( "Accel",     macro->getAccel      () );
+	    hMacro->SetBool( "System",     macro->systemMacro );
         }
     }
 }
@@ -941,7 +974,7 @@ Action * PythonCommand::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(getAccel()));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));

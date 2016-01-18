@@ -29,18 +29,21 @@ Git repository:     https://github.com/FreeCAD/FreeCAD
 Installing
 ----------
 
-Precompiled (installable) packages are usually available to you from 
-several sources and are described on the FreeCAD download page:
+Precompiled (installable) packages are available for Windows and Mac on the
+releases page at https://github.com/FreeCAD/FreeCAD/releases
 
-http://www.freecadweb.org/wiki/index.php?title=Download
+On most Linux distributions, FreeCAD is directly installable from the 
+software center application.
+
+Other options are described at http://www.freecadweb.org/wiki/index.php?title=Download
 
 Compiling
 ---------
 
-Compiling FreeCAD requires to install several libraries and their 
+Compiling FreeCAD requires installation of several libraries and their 
 development files such as OpenCasCADe, Coin and Qt, listed in the 
 pages below. Once this is done, FreeCAD can be simply compiled with 
-cMake. On windows, these libraries are bundled and offered by the 
+cMake. On Windows, these libraries are bundled and offered by the 
 FreeCAD team in a convenience package, on Linux they are usually found 
 in your distribution's repositories and on Mac OSX and other platforms 
 you will usually need to compile them yourself.
@@ -62,7 +65,7 @@ Usage & Getting help
 
 The FreeCAD documentation wiki contains a lot of documentation on 
 general FreeCAD usage, python scripting, and development. The following
-pages might help you to get started:
+pages might help you get started:
 
 Getting started:    http://www.freecadweb.org/wiki/?title=Getting_started
 
@@ -77,21 +80,5 @@ Scripting:          http://www.freecadweb.org/wiki/?title=Power_users_hub
 Development:        http://www.freecadweb.org/wiki/?title=Developer_hub
 
 The FreeCAD forum at http://forum.freecadweb.org is also a great place
-to find help and solve specific problems that you might encounter when
+to find help and solve specific problems you might encounter when
 learning to use FreeCAD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

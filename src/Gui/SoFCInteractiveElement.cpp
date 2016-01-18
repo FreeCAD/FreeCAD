@@ -113,7 +113,7 @@ void SoGLWidgetElement::pop(SoState * state, const SoElement * prevTopElement)
 
 SbBool SoGLWidgetElement::matches(const SoElement * element) const
 {
-    return TRUE;
+    return true;
 }
 
 SoElement * SoGLWidgetElement::copyMatchInfo(void) const
@@ -168,7 +168,7 @@ void SoGLRenderActionElement::pop(SoState * state, const SoElement * prevTopElem
 
 SbBool SoGLRenderActionElement::matches(const SoElement * element) const
 {
-    return TRUE;
+    return true;
 }
 
 SoElement * SoGLRenderActionElement::copyMatchInfo(void) const

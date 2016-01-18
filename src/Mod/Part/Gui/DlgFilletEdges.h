@@ -80,7 +80,7 @@ class DlgFilletEdges : public QWidget, public Gui::SelectionObserver
 public:
     enum FilletType { FILLET, CHAMFER };
 
-    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgFilletEdges();
     bool accept();
 
@@ -120,7 +120,7 @@ class FilletEdgesDialog : public QDialog
     Q_OBJECT
 
 public:
-    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = 0, Qt::WFlags fl = 0);
+    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~FilletEdgesDialog();
     void accept();
 
@@ -133,7 +133,7 @@ class DlgChamferEdges : public DlgFilletEdges
     Q_OBJECT
 
 public:
-    DlgChamferEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgChamferEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgChamferEdges();
 
 protected:

@@ -90,6 +90,8 @@ public:
 
     virtual ~AggregateFunctionExpression();
 
+    virtual Expression * copy() const;
+
     virtual App::Expression * eval() const;
 
     virtual std::string toString() const;

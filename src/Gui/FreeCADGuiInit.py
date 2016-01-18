@@ -98,7 +98,7 @@ class NoneWorkbench ( Workbench ):
 		return "Gui::NoneWorkbench"
 
 def InitApplications():
-	import sys,os
+	import sys,os,traceback,cStringIO
 	# Searching modules dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
 	# (additional module paths are already cached)
 	ModDirs = FreeCAD.__path__
@@ -113,7 +113,12 @@ def InitApplications():
 					exec open(InstallFile).read()
 				except Exception, inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
-					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Log('-'*100+'\n')
+					output=cStringIO.StringIO()
+					traceback.print_exc(file=output)
+					Log(output.getvalue())
+					Log('-'*100+'\n')
+					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
@@ -127,6 +132,7 @@ Log ('Init: Running FreeCADGuiInit.py start script...\n')
 # signal that the gui is up
 App.GuiUp = 1
 App.Gui = FreeCADGui
+FreeCADGui.Workbench = Workbench
 
 Gui.addWorkbench(NoneWorkbench())
 

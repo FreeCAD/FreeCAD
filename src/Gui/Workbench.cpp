@@ -277,16 +277,28 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
             else {
                 Command* pCmd = rMgr.getCommandByName(it2->first.c_str());
                 if (!pCmd) { // unknown command
-                    // try to find out the appropriate module name
-                    std::string pyMod = it2->second + "Gui";
+                    // first try the module name as is
+                    std::string pyMod = it2->second;
                     try {
                         Base::Interpreter().loadModule(pyMod.c_str());
+                        // Try again
+                        pCmd = rMgr.getCommandByName(it2->first.c_str());
                     }
                     catch(const Base::Exception&) {
                     }
+                }
 
-                    // Try again
-                    pCmd = rMgr.getCommandByName(it2->first.c_str());
+                // still not there?
+                if (!pCmd) {
+                    // add the 'Gui' suffix
+                    std::string pyMod = it2->second + "Gui";
+                    try {
+                        Base::Interpreter().loadModule(pyMod.c_str());
+                        // Try again
+                        pCmd = rMgr.getCommandByName(it2->first.c_str());
+                    }
+                    catch(const Base::Exception&) {
+                    }
                 }
 
                 if (pCmd) {
@@ -312,7 +324,7 @@ void Workbench::setupCustomShortcuts() const
                 // may be UTF-8 encoded
                 QString str = QString::fromUtf8(it->second.c_str());
                 QKeySequence shortcut = str;
-                cmd->getAction()->setShortcut(shortcut);
+                cmd->getAction()->setShortcut(shortcut.toString(QKeySequence::NativeText));
             }
         }
     }
@@ -575,7 +587,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     file->setCommand("File");
     *file << "Std_New" << "Std_Open" << "Std_Save" << "Std_Print" << "Separator" << "Std_Cut"
           << "Std_Copy" << "Std_Paste" << "Separator" << "Std_Undo" << "Std_Redo" << "Separator"
-          << "Std_Refresh" << "Separator" << "Std_Workbench" << "Std_WhatsThis";
+          << "Std_Refresh" << "Separator" << "Std_WhatsThis";
+
+    // Workbench switcher
+    ToolBarItem* wb = new ToolBarItem( root );
+    wb->setCommand("Workbench");
+    *wb << "Std_Workbench";
 
     // Macro
     ToolBarItem* macro = new ToolBarItem( root );
@@ -586,7 +603,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_DrawStyle" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
+    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
     return root;

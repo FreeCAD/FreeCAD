@@ -84,8 +84,6 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Cell contents");
     ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Column widths");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Row heights");
-    ADD_PROPERTY_TYPE(currRow, (0), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Current row");
-    ADD_PROPERTY_TYPE(currColumn, (0), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Current column");
 
     docDeps.setSize(0);
 
@@ -452,18 +450,6 @@ std::map<int, int> Sheet::getRowHeights() const
     return rowHeights.getValues();
 }
 
-/**
- * @brief Set selected position for property to \a address.
- * @param address Target position
- */
-
-void Sheet::setPosition(CellAddress address)
-{
-    currRow.setValue(address.row());
-    currColumn.setValue(address.col());
-    currRow.purgeTouched();
-    currColumn.purgeTouched();
-}
 
 /**
  * @brief Remove all aliases.
@@ -509,8 +495,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        floatProp = freecad_dynamic_cast<PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true));
-        floatProp->StatusBits.set(3);
+        floatProp = freecad_dynamic_cast<PropertyFloat>(props.addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient));
     }
     else
         floatProp = static_cast<PropertyFloat*>(prop);
@@ -541,9 +526,8 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true);
+        Property * p = props.addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient);
         quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
-        quantityProp->StatusBits.set(3);
     }
     else
        quantityProp = static_cast<PropertySpreadsheetQuantity*>(prop);
@@ -576,8 +560,7 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
             props.removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        stringProp = freecad_dynamic_cast<PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true));
-        stringProp->StatusBits.set(3);
+        stringProp = freecad_dynamic_cast<PropertyString>(props.addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_Transient));
     }
 
     propAddress[stringProp] = key;
@@ -614,7 +597,7 @@ void Sheet::updateAlias(CellAddress key)
         }
 
         if (!aliasProp)
-            aliasProp = props.addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_Transient, true, true);
+            aliasProp = props.addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_Transient);
 
         aliasProp->Paste(*prop);
     }
@@ -847,11 +830,6 @@ DocumentObjectExecReturn *Sheet::execute(void)
     //cells.clearDirty();
     rowHeights.clearDirty();
     columnWidths.clearDirty();
-
-    positionChanged(CellAddress(currRow.getValue(), currColumn.getValue()));
-
-    currRow.purgeTouched();
-    currColumn.purgeTouched();
 
     std::set<DocumentObject*> ds(cells.getDocDeps());
 

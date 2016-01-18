@@ -38,6 +38,7 @@
 #include <Base/QuantityPy.h>
 
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeSolidPy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeVertexPy.h>
@@ -254,7 +255,7 @@ PyObject* FemMeshPy::addFace(PyObject *args)
     int n1,n2,n3;
     if (PyArg_ParseTuple(args, "iii",&n1,&n2,&n3))
     {
-        // old form, debrekadet
+        // old form, deprecated
         try {
             const SMDS_MeshNode* node1 = meshDS->FindNode(n1);
             const SMDS_MeshNode* node2 = meshDS->FindNode(n2);
@@ -398,18 +399,41 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
                     if (!vol)
                         throw std::runtime_error("Failed to add Tet4 volume");
                     break;
+                case 5:
+                    vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],ElementId);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Pyra5 volume");
+                    break;
+                case 6:
+                    vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],ElementId);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Penta6 volume");
+                    break;
                 case 8:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Tet10 volume");
+                        throw std::runtime_error("Failed to add Hexa8 volume");
                     break;
                 case 10:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],ElementId);
                     if (!vol)
                         throw std::runtime_error("Failed to add Tet10 volume");
                     break;
+                case 13:
+                    vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],ElementId);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Pyra13 volume");
+                case 15:
+                    vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],Nodes[13],Nodes[14],ElementId);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Penta15 volume");
+                case 20:
+                    vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],Nodes[13],Nodes[14],Nodes[15],Nodes[16],Nodes[17],Nodes[18],Nodes[19],ElementId);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Hexa20 volume");
+                    break;
 
-                default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|18] are allowed"); //unknown face type
+                default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|15|20] are allowed"); //unknown volume type
             }
         }else{
             switch(Nodes.size()){
@@ -418,18 +442,43 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
                     if (!vol)
                         throw std::runtime_error("Failed to add Tet4 volume");
                     break;
+                case 5:
+                    vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4]);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Pyra5 volume");
+                    break;
+                case 6:
+                    vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5]);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Penta6 volume");
+                    break;
                 case 8:
                     vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7]);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Tet10 volume");
+                        throw std::runtime_error("Failed to add Hexa8 volume");
                     break;
                 case 10:
                     vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9]);
                     if (!vol)
                         throw std::runtime_error("Failed to add Tet10 volume");
                     break;
+                case 13:
+                    vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12]);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Pyra13 volume");
+                    break;
+                case 15:
+                    vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],Nodes[13],Nodes[14]);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Penta15 volume");
+                    break;
+                case 20:
+                    vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],Nodes[13],Nodes[14],Nodes[15],Nodes[16],Nodes[17],Nodes[18],Nodes[19]);
+                    if (!vol)
+                        throw std::runtime_error("Failed to add Hexa20 volume");
+                    break;
 
-                default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|18] are allowed"); //unknown face type
+                default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|15|20] are allowed"); //unknown volume type
             }
 
         }
@@ -440,7 +489,7 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
 
     PyErr_SetString(PyExc_TypeError, "addVolume accepts:\n"
         "-- int,int,int,int\n"
-        "-- [4|8|10 int],[int]\n");
+        "-- [4|5|6|8|10|13|15|20 int],[int]\n");
     return 0;
 
 }
@@ -607,6 +656,34 @@ PyObject* FemMeshPy::getNodeById(PyObject *args)
         return new Base::VectorPy( vec );
     }else{
         PyErr_SetString(Base::BaseExceptionFreeCADError, "No valid ID");
+        return 0;
+    }
+}
+
+PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeSolidPy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeSolidPy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Solid& fc = TopoDS::Solid(sh);
+        if (sh.IsNull()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Solid is empty");
+            return 0;
+        }
+        Py::List ret;
+        std::set<int> resultSet = getFemMeshPtr()->getNodesBySolid(fc);
+        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+            ret.append(Py::Int(*it));
+
+        return Py::new_reference_to(ret);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
 }

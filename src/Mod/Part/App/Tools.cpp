@@ -22,12 +22,27 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cassert>
 # include <gp_Pln.hxx>
 # include <gp_Lin.hxx>
+# include <Adaptor3d_HCurveOnSurface.hxx>
 # include <Geom_Plane.hxx>
+# include <GeomAdaptor_HCurve.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <Geom_Line.hxx>
+# include <Geom_Point.hxx>
+# include <GeomPlate_BuildPlateSurface.hxx>
+# include <GeomPlate_CurveConstraint.hxx>
+# include <GeomPlate_MakeApprox.hxx>
+# include <GeomPlate_PlateG0Criterion.hxx>
+# include <GeomPlate_PointConstraint.hxx>
 # include <Precision.hxx>
+# include <Standard_Mutex.hxx>
+# include <Standard_TypeMismatch.hxx>
+# include <TColStd_ListOfTransient.hxx>
+# include <TColStd_ListIteratorOfListOfTransient.hxx>
+# include <TColgp_SequenceOfXY.hxx>
+# include <TColgp_SequenceOfXYZ.hxx>
 #endif
 
 #include <Base/Vector3D.h>
@@ -80,4 +95,96 @@ bool Part::intersect(const gp_Pln& pln1, const gp_Pln& pln2, gp_Lin& lin)
     }
 
     return found;
+}
+
+/*! The objects in \a theBoundaries must be of the type Adaptor3d_HCurveOnSurface or
+GeomAdaptor_HCurve or Geom_Point indicating type of a constraint. Otherwise an exception
+Standard_TypeMismatch is thrown.
+
+If the \a theBoundaries list is empty then Standard_ConstructionError is thrown.
+
+If the algorithm fails it returns a null surface.
+\see http://opencascade.blogspot.com/2010/03/surface-modeling-part6.html
+*/
+Handle_Geom_Surface
+Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
+                         const Standard_Real theTol,
+                         const Standard_Integer theNbPnts,
+                         const Standard_Integer theNbIter,
+                         const Standard_Integer theMaxDeg)
+{
+    //constants for algorithm
+    const Standard_Integer aNbIter = theNbIter; //number of algorithm iterations
+    const Standard_Integer aNbPnts = theNbPnts; //sample points per each constraint
+    const Standard_Integer aDeg = 3; //requested surface degree ?
+    const Standard_Integer aMaxDeg = theMaxDeg;
+    const Standard_Integer aMaxSeg = 10000;
+    const Standard_Real aTol3d = 1.e-04;
+    const Standard_Real aTol2d = 1.e-05;
+    const Standard_Real anAngTol = 1.e-02; //angular
+    const Standard_Real aCurvTol = 1.e-01; //curvature
+
+    Handle(Geom_Surface) aRes;
+    GeomPlate_BuildPlateSurface aPlateBuilder (aDeg, aNbPnts, aNbIter, aTol2d, aTol3d, anAngTol, aCurvTol);
+
+    TColStd_ListIteratorOfListOfTransient anIt (theBoundaries);
+    if (anIt.More()) {
+        int i = 1;
+        for (; anIt.More(); anIt.Next(), i++) {
+            const Handle(Standard_Transient)& aCur = anIt.Value();
+            if (aCur.IsNull()) {
+                assert (0);
+                Standard_ConstructionError::Raise ("Tools::makeSurface()");
+            }
+            else if (aCur->IsKind (STANDARD_TYPE (Adaptor3d_HCurveOnSurface))) {
+                //G1 constraint
+                const Handle(Adaptor3d_HCurveOnSurface)& aHCOS = Handle(Adaptor3d_HCurveOnSurface)::DownCast (aCur);
+                Handle (GeomPlate_CurveConstraint) aConst = new GeomPlate_CurveConstraint (aHCOS, 1 /*GeomAbs_G1*/,aNbPnts, aTol3d, anAngTol, aCurvTol);
+                aPlateBuilder.Add (aConst);
+            }
+            else if (aCur->IsKind (STANDARD_TYPE (GeomAdaptor_HCurve))) {
+                //G0 constraint
+                const Handle(GeomAdaptor_HCurve)& aHC = Handle(GeomAdaptor_HCurve)::DownCast (aCur);
+                Handle (GeomPlate_CurveConstraint) aConst = new GeomPlate_CurveConstraint (aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
+                aPlateBuilder.Add (aConst);
+            }
+            else if (aCur->IsKind (STANDARD_TYPE (Geom_Point))) {
+                //Point constraint
+                const Handle(Geom_Point)& aGP = Handle(Geom_Point)::DownCast (aCur);
+                Handle(GeomPlate_PointConstraint) aConst = new GeomPlate_PointConstraint(aGP->Pnt(),0);
+                aPlateBuilder.Add(aConst);
+            }
+            else {
+                Standard_TypeMismatch::Raise ("Tools::makeSurface()");
+            }
+        }
+    }
+    else {
+        Standard_ConstructionError::Raise ("Tools::makeSurface()");
+    }
+
+    //construct
+    aPlateBuilder.Perform();
+
+    if (!aPlateBuilder.IsDone()) {
+        return aRes;
+    }
+
+    const Handle(GeomPlate_Surface)& aPlate = aPlateBuilder.Surface();
+    //approximation (see BRepFill_Filling - when no initial surface was given)
+    Standard_Real aDMax = aPlateBuilder.G0Error();
+    TColgp_SequenceOfXY aS2d;
+    TColgp_SequenceOfXYZ aS3d;
+    aPlateBuilder.Disc2dContour (4, aS2d);
+    aPlateBuilder.Disc3dContour (4, 0, aS3d);
+    Standard_Real aMax = Max (aTol3d, 10. * aDMax);
+    GeomPlate_PlateG0Criterion aCriterion (aS2d, aS3d, aMax);
+    {
+        //data races in AdvApp2Var used by GeomApprox_Surface, use global mutex
+        //Standard_Mutex::Sentry aSentry (theBSMutex);
+        GeomPlate_MakeApprox aMakeApprox (aPlate, aCriterion, aTol3d, aMaxSeg, aMaxDeg);
+        aRes = aMakeApprox.Surface();
+    }
+
+    return aRes;
 }

@@ -69,6 +69,8 @@ void FemAnalysis::onChanged(const Property* prop)
 }
 
 
+// Dummy class 'DocumentObject' in Fem namespace
+PROPERTY_SOURCE_ABSTRACT(Fem::DocumentObject, App::DocumentObject)
 
 // Python feature ---------------------------------------------------------
 
@@ -95,7 +97,7 @@ template class AppFemExport FeaturePythonT<Fem::FemAnalysis>;
 
 namespace App {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(Fem::FeaturePython, App::DocumentObject)
+PROPERTY_SOURCE_TEMPLATE(Fem::FeaturePython, Fem::DocumentObject)
 template<> const char* Fem::FeaturePython::getViewProviderName(void) const {
     return "Gui::ViewProviderPythonFeature";
 }
@@ -107,6 +109,6 @@ template<> PyObject* Fem::FeaturePython::getPyObject(void) {
     return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<App::DocumentObject>;
+template class AppFemExport FeaturePythonT<Fem::DocumentObject>;
 /// @endcond
 }

@@ -26,14 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Parameter.h>
-
 #include "ViewProviderBox.h"
-
-
-//#include "Tree.h"
-
+#include <Base/Parameter.h>
 
 
 using namespace PartGui;
@@ -45,7 +39,7 @@ using namespace std;
 
 PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPart)
 
-       
+
 ViewProviderBox::ViewProviderBox()
 {
   sPixmap = "Tree_Part_Box_Parametric.svg";

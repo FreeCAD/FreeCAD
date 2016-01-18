@@ -76,6 +76,8 @@ private:
     void onSelectionChanged(const SelectionChanges& msg);
     void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
+    void slotAppendDynamicProperty(const App::Property&);
+    void slotRemoveDynamicProperty(const App::Property&);
 
 private:
     struct PropInfo;
@@ -83,6 +85,8 @@ private:
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Connection connectPropData;
     Connection connectPropView;
+    Connection connectPropAppend;
+    Connection connectPropRemove;
     QTabWidget* tabs;
 };
 

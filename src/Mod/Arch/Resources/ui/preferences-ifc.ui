@@ -314,6 +314,46 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_4">
+          <property name="toolTip">
+           <string>Use triangulation options set in the DAE options page</string>
+          </property>
+          <property name="text">
+           <string>Use DAE triangulation options</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcUseDaeOptions</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_5">
+          <property name="toolTip">
+           <string>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</string>
+          </property>
+          <property name="text">
+           <string>Join coplanar facets when triangulating</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcJoinCoplanarFacets</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>

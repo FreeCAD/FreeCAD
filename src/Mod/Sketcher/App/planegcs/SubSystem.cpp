@@ -200,6 +200,11 @@ void SubSystem::setParams(Eigen::VectorXd &xIn)
         pvals[i] = xIn[i];
 }
 
+void SubSystem::getConstraintList(std::vector<Constraint *> &clist_)
+{
+    clist_= clist;
+}
+
 double SubSystem::error()
 {
     double err = 0.;

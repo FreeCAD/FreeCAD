@@ -172,7 +172,7 @@ PyObject* SheetPy::exportFile(PyObject *args)
     const char * quoteChar = "\"";
     const char * escapeChar = "\\";
 
-    if (!PyArg_ParseTuple(args, "s|sss:importFile", &filename, &delimiter, &quoteChar, &escapeChar))
+    if (!PyArg_ParseTuple(args, "s|sss:exportFile", &filename, &delimiter, &quoteChar, &escapeChar))
         return 0;
 
     if (getSheetPtr()->exportToFile(filename, delimiter[0], quoteChar[0], escapeChar[0]))
@@ -756,25 +756,6 @@ PyObject* SheetPy::getBackground(PyObject *args)
     else {
         Py_INCREF(Py_None);
         return Py_None;
-    }
-}
-
-PyObject* SheetPy::setPosition(PyObject *args)
-{
-    const char * strAddress;
-    CellAddress address;
-
-    if (!PyArg_ParseTuple(args, "s:setPosition", &strAddress))
-        return 0;
-
-    try {
-        address = stringToAddress(strAddress);
-        getSheetPtr()->setPosition(address);
-        Py_Return;
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
     }
 }
 

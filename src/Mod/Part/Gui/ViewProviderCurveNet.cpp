@@ -190,7 +190,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
         const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
-        const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+        const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
         // which button pressed?
         switch (button) {

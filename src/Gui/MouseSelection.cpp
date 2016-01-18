@@ -90,7 +90,7 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
 
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
         const SoMouseButtonEvent* const event = (const SoMouseButtonEvent*) ev;
-        const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+        const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
         if (press) {
             _clPoly.push_back(ev->getPosition());
@@ -311,7 +311,7 @@ int PolyPickerSelection::popupMenu()
 int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
 {
     const int button = e->getButton();
-    const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+    const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
 
     if (press) {
         switch(button)
@@ -501,7 +501,7 @@ int BrushSelection::popupMenu()
 int BrushSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
 {
     const int button = e->getButton();
-    const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+    const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
 
     if (press) {
         switch(button)
@@ -658,7 +658,7 @@ void RubberbandSelection::draw()
 int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
 {
     const int button = e->getButton();
-    const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+    const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
 
     int ret = Continue;
 

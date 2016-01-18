@@ -97,6 +97,26 @@ Constraint *Constraint::clone(void) const
     return new Constraint(*this);
 }
 
+Constraint *Constraint::copy(void) const
+{
+    Constraint *temp = new Constraint();
+    temp->Value = this->Value;
+    temp->Type = this->Type;
+    temp->AlignmentType = this->AlignmentType;
+    temp->Name = this->Name;
+    temp->First = this->First;
+    temp->FirstPos = this->FirstPos;
+    temp->Second = this->Second;
+    temp->SecondPos = this->SecondPos;
+    temp->Third = this->Third;
+    temp->ThirdPos = this->ThirdPos;
+    temp->LabelDistance = this->LabelDistance;
+    temp->LabelPosition = this->LabelPosition;
+    temp->isDriving = this->isDriving;
+    // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
+    return temp;
+}
+
 PyObject *Constraint::getPyObject(void)
 {
     return new ConstraintPy(new Constraint(*this));

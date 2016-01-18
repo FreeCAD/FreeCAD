@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
+import FreeCAD,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils,ArchComponent
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -270,9 +270,14 @@ class _ViewProviderSectionPlane:
                     norm = vobj.Object.Proxy.getNormal(vobj.Object)
                     mp = vobj.Object.Shape.CenterOfMass
                     mp = DraftVecUtils.project(mp,norm)
-                    dist = mp.Length + 0.1 # to not clip exactly on the section object
+                    dist = mp.Length #- 0.1 # to not clip exactly on the section object
                     norm = norm.negative()
-                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),-dist)
+                    if mp.getAngle(norm) > 1:
+                        dist += 1
+                        dist = -dist
+                    else:
+                        dist -= 0.1
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip,0)
                 else:
@@ -286,6 +291,20 @@ class _ViewProviderSectionPlane:
 
     def __setstate__(self,state):
         return None
+        
+    def setEdit(self,vobj,mode):
+        taskd = SectionPlaneTaskPanel()
+        taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self,vobj,mode):
+        FreeCADGui.Control.closeDialog()
+        return False
+        
+    def doubleClicked(self,vobj):
+        self.setEdit(vobj,None)
 
 class _ArchDrawingView:
     def __init__(self, obj):
@@ -324,9 +343,11 @@ class _ArchDrawingView:
                 svg = svg.replace('SWPlaceholder', str(linewidth*st) + 'px')
                 svg = svg.replace('DAPlaceholder', str(da))
                 if hasattr(self,"spaces"):
-                    if round(self.direction.getAngle(FreeCAD.Vector(0,0,1)),Draft.precision()) in [0,round(math.pi,Draft.precision())]:
+                    if self.spaces and round(self.direction.getAngle(FreeCAD.Vector(0,0,1)),Draft.precision()) in [0,round(math.pi,Draft.precision())]:
+                        svg += '<g transform="scale(1,-1)">'
                         for s in self.spaces:
                             svg += Draft.getSVG(s,scale=obj.Scale,fontsize=obj.FontSize.Value,direction=self.direction)
+                        svg += '</g>'
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
@@ -345,7 +366,7 @@ class _ArchDrawingView:
             if hasattr(obj,"Source"):
                 if obj.Source:
                     if obj.Source.Objects:
-                        objs = Draft.getGroupContents(obj.Source.Objects,walls=True)
+                        objs = Draft.getGroupContents(obj.Source.Objects,walls=True,addgroups=True)
                         objs = Draft.removeHidden(objs)
                         # separate spaces
                         self.spaces = []
@@ -368,7 +389,7 @@ class _ArchDrawingView:
                             import ArchVRM, WorkingPlane
                             wp = WorkingPlane.plane()
                             wp.setFromPlacement(obj.Source.Placement)
-                            wp.inverse()
+                            #wp.inverse()
                             render = ArchVRM.Renderer()
                             render.setWorkingPlane(wp)
                             render.addObjects(objs)
@@ -376,12 +397,14 @@ class _ArchDrawingView:
                                 render.cut(obj.Source.Shape,obj.ShowCut)
                             else:
                                 render.cut(obj.Source.Shape)
+                            self.svg += '<g transform="scale(1,-1)">\n'
                             self.svg += render.getViewSVG(linewidth="LWPlaceholder")
                             self.svg += fillpattern
                             self.svg += render.getSectionSVG(linewidth="SWPlaceholder",fillpattern="sectionfill")
                             if hasattr(obj,"ShowCut"):
                                 if obj.ShowCut:
                                     self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
+                            self.svg += '</g>\n'
                             # print render.info()
 
                         else:
@@ -508,6 +531,93 @@ class _ArchDrawingView:
                 result.append(Drawing.projectToDXF(self.hiddenshape,self.direction))
         return result
 
+class SectionPlaneTaskPanel:
+    '''A TaskPanel for all the section plane object'''
+    def __init__(self):
+        # the panel has a tree widget that contains categories
+        # for the subcomponents, such as additions, subtractions.
+        # the categories are shown only if they are not empty.
+
+        self.obj = None
+        self.form = QtGui.QWidget()
+        self.form.setObjectName("TaskPanel")
+        self.grid = QtGui.QGridLayout(self.form)
+        self.grid.setObjectName("grid")
+        self.title = QtGui.QLabel(self.form)
+        self.grid.addWidget(self.title, 0, 0, 1, 2)
+
+        # tree
+        self.tree = QtGui.QTreeWidget(self.form)
+        self.grid.addWidget(self.tree, 1, 0, 1, 2)
+        self.tree.setColumnCount(1)
+        self.tree.header().hide()
+
+        # buttons
+        self.addButton = QtGui.QPushButton(self.form)
+        self.addButton.setObjectName("addButton")
+        self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
+        self.grid.addWidget(self.addButton, 3, 0, 1, 1)
+
+        self.delButton = QtGui.QPushButton(self.form)
+        self.delButton.setObjectName("delButton")
+        self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
+        self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+
+        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
+        QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        self.update()
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok)
+
+    def getIcon(self,obj):
+        if hasattr(obj.ViewObject,"Proxy"):
+            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+        elif obj.isDerivedFrom("Sketcher::SketchObject"):
+            return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
+        else:
+            return QtGui.QIcon(":/icons/Tree_Part.svg")
+
+    def update(self):
+        'fills the treewidget'
+        self.tree.clear()
+        if self.obj:
+            for o in self.obj.Objects:
+                item = QtGui.QTreeWidgetItem(self.tree)
+                item.setText(0,o.Name)
+                item.setIcon(0,self.getIcon(o))
+        self.retranslateUi(self.form)
+
+    def addElement(self):
+        if self.obj:
+            for o in FreeCADGui.Selection.getSelection():
+                ArchComponent.addToComponent(self.obj,o,"Objects")
+            self.update()
+
+    def removeElement(self):
+        if self.obj:
+            it = self.tree.currentItem()
+            if it:
+                comp = FreeCAD.ActiveDocument.getObject(str(it.text(0)))
+                ArchComponent.removeFromComponent(self.obj,comp)
+            self.update()
+
+    def accept(self):
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def retranslateUi(self, TaskPanel):
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Objects", None, QtGui.QApplication.UnicodeUTF8))
+        self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
+        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane", None, QtGui.QApplication.UnicodeUTF8))
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

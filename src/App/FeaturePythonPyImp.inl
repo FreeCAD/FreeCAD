@@ -85,12 +85,12 @@ PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
     {"addProperty",
         (PyCFunction) staticCallback_addProperty,
         METH_VARARGS,
-        "addProperty(string, string) -- Add a generic property.\nThe first argument specifies the type, the second the\nname of the property.\n		"
+        "addProperty(string, string) -- Add a generic property.\nThe first argument specifies the type, the second the\nname of the property.\n"
     },
     {"removeProperty",
         (PyCFunction) staticCallback_removeProperty,
         METH_VARARGS,
-        "removeProperty(string) -- Remove a generic property.\nNote, you can only remove user-defined properties but not built-in ones.\n		"
+        "removeProperty(string) -- Remove a generic property.\nNote, you can only remove user-defined properties but not built-in ones.\n"
     },
     {"supportedProperties",
         (PyCFunction) staticCallback_supportedProperties,

@@ -28,9 +28,11 @@
 #include <gp_Vec.hxx>
 #include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
+#include <Handle_Geom_Surface.hxx>
 
 class gp_Lin;
 class gp_Pln;
+class TColStd_ListOfTransient;
 
 namespace Base {
 // Specialization for gp_Pnt
@@ -92,6 +94,17 @@ PartExport
 bool intersect(const gp_Pln& pln1, const gp_Pln& pln2, gp_Lin& lin);
 PartExport
 bool tangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1, gp_Pnt& c, gp_Dir& a);
+
+class PartExport Tools
+{
+public:
+    Handle_Geom_Surface makeSurface (const TColStd_ListOfTransient& theBoundaries,
+                                     const Standard_Real theTol,
+                                     const Standard_Integer theNbPnts,
+                                     const Standard_Integer theNbIter,
+                                     const Standard_Integer theMaxDeg);
+
+};
 
 } //namespace Part
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,6 +49,7 @@
 #include <boost/bind.hpp>
 
 #include <App/Document.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -140,6 +141,9 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     lastConflicting=solvedSketch.getConflicting();
     lastRedundant=solvedSketch.getRedundant();
     
+    lastSolveTime=0.0;
+    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
+    
     solverNeedsUpdate=false;
     
     if (lastDoF < 0) { // over-constrained sketch
@@ -204,14 +208,26 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     lastHasConflict = solvedSketch.hasConflicts();
     
     int err=0;
-    if (lastDoF < 0) // over-constrained sketch
+    if (lastDoF < 0) { // over-constrained sketch
         err = -3;
-    else if (lastHasConflict) // conflicting constraints
+        // if lastDoF<0, then an over-constrained situation has ensued.
+        // Geometry is not to be updated, as geometry can not follow the constraints.
+        // However, solver information must be updated.
+        this->Constraints.touch();
+    }
+    else if (lastHasConflict) { // conflicting constraints
         err = -3;
+    }
     else {
         lastSolverStatus=solvedSketch.solve();
-        if (lastSolverStatus != 0) // solving
+        if (lastSolverStatus != 0){ // solving
             err = -2;
+            // if solver failed, geometry was never updated, but invalid constraints were likely added before
+            // solving (see solve in addConstraint), so solver information is definitely invalid.
+            this->Constraints.touch();
+            
+        }
+            
     }
     
     lastHasRedundancies = solvedSketch.hasRedundancies();
@@ -362,6 +378,12 @@ int SketchObject::toggleDriving(int ConstrId)
     return 0;
 }
 
+int SketchObject::setUpSketch()
+{
+    return solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                             getExternalGeometryCount());
+}
+
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeoBeforeMoving)
 {
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
@@ -493,6 +515,41 @@ void SketchObject::acceptGeometry()
 {
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
+}
+
+bool SketchObject::isSupportedGeometry(const Part::Geometry *geo) const
+{
+    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        return true;
+    }
+    if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
+        Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
+        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
+        if (!circle.IsNull() || !ellipse.IsNull()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::vector<Part::Geometry *> SketchObject::supportedGeometry(const std::vector<Part::Geometry *> &geoList) const
+{
+    std::vector<Part::Geometry *> supportedGeoList;
+    supportedGeoList.reserve(geoList.size());
+    // read-in geometry that the sketcher cannot handle
+    for (std::vector<Part::Geometry*>::const_iterator it = geoList.begin(); it != geoList.end(); ++it) {
+        if (isSupportedGeometry(*it)) {
+            supportedGeoList.push_back(*it);
+        }
+    }
+
+    return supportedGeoList;
 }
 
 int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction/*=false*/)
@@ -1935,7 +1992,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                 if( (*it)->Type != Sketcher::DistanceX &&
                     (*it)->Type != Sketcher::DistanceY) {
 
-                    Constraint *constNew = (*it)->clone();        
+                    Constraint *constNew = (*it)->copy();        
 
                     constNew->First = geoIdMap[(*it)->First];
                     newconstrVals.push_back(constNew);
@@ -1956,7 +2013,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                         (*it)->Type ==  Sketcher::Equal ||
                         (*it)->Type ==  Sketcher::Radius ||
                         (*it)->Type ==  Sketcher::PointOnObject ){
-                            Constraint *constNew = (*it)->clone();
+                            Constraint *constNew = (*it)->copy();
 
                             constNew->First = geoIdMap[(*it)->First];
                             constNew->Second = geoIdMap[(*it)->Second];
@@ -1983,7 +2040,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                         std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
 
                         if(tit != geoIdList.end()) { // Third is also in the list
-                            Constraint *constNew = (*it)->clone();
+                            Constraint *constNew = (*it)->copy();
                             constNew->First = geoIdMap[(*it)->First];
                             constNew->Second = geoIdMap[(*it)->Second];
                             constNew->Third = geoIdMap[(*it)->Third];
@@ -2166,20 +2223,20 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                     (*it)->Type == Sketcher::Distance  ||
                                     (*it)->Type == Sketcher::Radius ) && clone ) {
                                     // Distances on a single Element are mapped to equality constraints in clone mode
-                                    Constraint *constNew = (*it)->clone();
+                                    Constraint *constNew = (*it)->copy();
                                     constNew->Type = Sketcher::Equal;
                                     constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
                                     newconstrVals.push_back(constNew);
                                 }
                                 else if ((*it)->Type == Sketcher::Angle && clone){
                                     // Angles on a single Element are mapped to parallel constraints in clone mode
-                                    Constraint *constNew = (*it)->clone();
+                                    Constraint *constNew = (*it)->copy();
                                     constNew->Type = Sketcher::Parallel;
                                     constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
                                     newconstrVals.push_back(constNew);
                                 }
                                 else {
-                                    Constraint *constNew = (*it)->clone();
+                                    Constraint *constNew = (*it)->copy();
                                     constNew->First = geoIdMap[(*it)->First];
                                     newconstrVals.push_back(constNew);
                                 }
@@ -2195,7 +2252,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                     (*it)->Type == Sketcher::DistanceY ||
                                     (*it)->Type == Sketcher::Distance) && ((*it)->First == (*it)->Second) && clone ) {
                                     // Distances on a two Elements, which must be points of the same line are mapped to equality constraints in clone mode
-                                    Constraint *constNew = (*it)->clone();
+                                    Constraint *constNew = (*it)->copy();
                                     constNew->Type = Sketcher::Equal;
                                     constNew->FirstPos = Sketcher::none;
                                     constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
@@ -2203,7 +2260,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                     newconstrVals.push_back(constNew);
                                 }
                                 else {
-                                    Constraint *constNew = (*it)->clone();
+                                    Constraint *constNew = (*it)->copy();
                                     constNew->First = geoIdMap[(*it)->First];
                                     constNew->Second = geoIdMap[(*it)->Second];
                                     newconstrVals.push_back(constNew);
@@ -2213,7 +2270,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                 std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
 
                                 if(tit != geoIdList.end()) { // Third is also in the list
-                                    Constraint *constNew = (*it)->clone();
+                                    Constraint *constNew = (*it)->copy();
                                     constNew->First = geoIdMap[(*it)->First];
                                     constNew->Second = geoIdMap[(*it)->Second];
                                     constNew->Third = geoIdMap[(*it)->Third];
@@ -3735,6 +3792,15 @@ void SketchObject::Restore(XMLReader &reader)
 
 void SketchObject::onChanged(const App::Property* prop)
 {
+    if (isRestoring() && prop == &Geometry) {
+        std::vector<Part::Geometry*> geom = Geometry.getValues();
+        std::vector<Part::Geometry*> supportedGeom = supportedGeometry(geom);
+        // To keep upward compatibility ignore unsupported geometry types
+        if (supportedGeom.size() != geom.size()) {
+            Geometry.setValues(supportedGeom);
+            return;
+        }
+    }
     if (prop == &Geometry || prop == &Constraints) {
         Constraints.checkGeometry(getCompleteGeometry());
     }
@@ -4015,6 +4081,13 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Sketcher::SketchObjectPython, Sketcher::SketchObject)
 template<> const char* Sketcher::SketchObjectPython::getViewProviderName(void) const {
     return "SketcherGui::ViewProviderPython";
+}
+template<> PyObject* Sketcher::SketchObjectPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<SketchObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

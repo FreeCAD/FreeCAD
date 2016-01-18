@@ -26,17 +26,11 @@
 #ifndef _PreComp_
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Parameter.h>
-
 #include "ViewProviderRuledSurface.h"
 #include <Mod/Part/App/PartFeatures.h>
 
 #include <Gui/Application.h>
-
-
-//#include "Tree.h"
-
+#include <Base/Parameter.h>
 
 
 using namespace PartGui;
@@ -48,7 +42,7 @@ using namespace std;
 
 PROPERTY_SOURCE(PartGui::ViewProviderRuledSurface, PartGui::ViewProviderPart)
 
-       
+
 ViewProviderRuledSurface::ViewProviderRuledSurface()
 {
   sPixmap = "Part_RuledSurface.svg";

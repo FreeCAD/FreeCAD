@@ -36,6 +36,7 @@
 #include "SpreadsheetView.h"
 
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/Range.h>
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
@@ -114,7 +115,6 @@ bool ViewProviderSheet::setEdit(int ModNum)
             view->viewAll();
         }
         Gui::getMainWindow()->setActiveWindow(this->view);
-        return true;
     }
     return false;
 }
@@ -158,10 +158,12 @@ bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
 
             if (selection.size() > 0) {
                 Gui::Command::openCommand("Clear cell(s)");
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = CellAddress((*it).row(), (*it).column()).toString();
+                std::vector<Range> ranges = sheetView->selectedRanges();
+                std::vector<Range>::const_iterator i = ranges.begin();
+
+                for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
-                                            address.c_str());
+                                            i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -179,7 +181,7 @@ SheetView *ViewProviderSheet::showSpreadsheetView()
             (this->pcObject->getDocument());
         view = new SheetView(doc, this->pcObject, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap(":icons/Spreadsheet.svg"));
-        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue()) + QString::fromAscii("[*]"));
+        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue()) + QString::fromLatin1("[*]"));
         Gui::getMainWindow()->addWindow(view);
         startEditing();
     }

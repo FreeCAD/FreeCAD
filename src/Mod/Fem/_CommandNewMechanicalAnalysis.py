@@ -45,13 +45,16 @@ class _CommandNewMechanicalAnalysis(FemCommands):
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
-        FreeCADGui.addModule("MechanicalAnalysis")
-        FreeCADGui.doCommand("MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')")
+        FreeCADGui.addModule("FemAnalysis")
+        FreeCADGui.addModule("FemSolverCalculix")
+        FreeCADGui.doCommand("FemAnalysis.makeFemAnalysis('MechanicalAnalysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
+        FreeCADGui.doCommand("FemSolverCalculix.makeFemSolverCalculix('CalculiX')")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()." + sel[0].Name + "]")
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
             if(sel[0].isDerivedFrom("Part::Feature")):
                 FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)

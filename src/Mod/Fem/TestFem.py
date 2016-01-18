@@ -27,7 +27,8 @@
 import Fem
 import FemTools
 import FreeCAD
-import MechanicalAnalysis
+import FemAnalysis
+import FemSolverCalculix
 import MechanicalMaterial
 import csv
 import tempfile
@@ -37,7 +38,7 @@ mesh_name = 'Mesh'
 
 home_path = FreeCAD.getHomePath()
 temp_dir = tempfile.gettempdir()
-test_file_dir = home_path + 'Mod/Fem/test_files'
+test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
 
 static_base_name = 'cube_static'
 frequency_base_name = 'cube_frequency'
@@ -52,7 +53,7 @@ mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
 
 
 def fcc_print(message):
-    FreeCAD.Console.PrintMessage(message + '\n')
+    FreeCAD.Console.PrintMessage('{} \n'.format(message))
 
 
 class FemTest(unittest.TestCase):
@@ -69,7 +70,11 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_analysis(self):
-        self.analysis = MechanicalAnalysis.makeMechanicalAnalysis('MechanicalAnalysis')
+        self.analysis = FemAnalysis.makeFemAnalysis('MechanicalAnalysis')
+        self.active_doc.recompute()
+
+    def create_new_solver(self):
+        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
         self.active_doc.recompute()
 
     def create_new_mesh(self):
@@ -115,15 +120,25 @@ class FemTest(unittest.TestCase):
         self.pressure_constraint.Pressure = 10.000000
         self.pressure_constraint.Reversed = True
 
+    def force_unix_line_ends(self, line_list):
+        new_line_list = []
+        for l in line_list:
+            if l.endswith("\r\n"):
+                l = l[:-2] + '\n'
+            new_line_list.append(l)
+        return new_line_list
+
     def compare_inp_files(self, file_name1, file_name2):
         file1 = open(file_name1, 'r')
         f1 = file1.readlines()
         file1.close()
+        lf1 = [l for l in f1 if not l.startswith('**   written ')]
+        lf1 = self.force_unix_line_ends(lf1)
         file2 = open(file_name2, 'r')
         f2 = file2.readlines()
         file2.close()
-        lf1 = [l for l in f1 if not l.startswith('**   written ')]
         lf2 = [l for l in f2 if not l.startswith('**   written ')]
+        lf2 = self.force_unix_line_ends(lf2)
         import difflib
         diff = difflib.unified_diff(lf1, lf2, n=0)
         result = ''
@@ -138,6 +153,7 @@ class FemTest(unittest.TestCase):
             sf = open(stat_file, 'r')
             sf_content = sf.readlines()
             sf.close()
+            sf_content = self.force_unix_line_ends(sf_content)
         stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
         stats = []
         for s in stat_types:
@@ -155,6 +171,11 @@ class FemTest(unittest.TestCase):
         fcc_print('Checking FEM new analysis...')
         self.create_new_analysis()
         self.assertTrue(self.analysis, "FemTest of new analysis failed")
+
+        fcc_print('Checking FEM new solver...')
+        self.create_new_solver()
+        self.assertTrue(self.solver_object, "FemTest of new solver failed")
+        self.analysis.Member = self.analysis.Member + [self.solver_object]
 
         fcc_print('Checking FEM new mesh...')
         self.create_new_mesh()
@@ -237,6 +258,11 @@ class FemTest(unittest.TestCase):
         fea.setup_working_dir(frequency_analysis_dir)
         self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
+
+        fcc_print('Setting eigenmode calculation parameters')
+        fea.set_eigenmode_parameters(number=10, limit_low=0.0, limit_high=1000000.0)
+        self.assertTrue(True if fea.eigenmode_parameters == (10, 0.0, 1000000.0) else False,
+                        "Setting eigenmode calculation parameters failed")
 
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
         error = fea.check_prerequisites()

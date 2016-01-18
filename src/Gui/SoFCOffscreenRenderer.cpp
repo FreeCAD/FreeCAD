@@ -286,7 +286,7 @@ std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
     com << " </View>\n" ; 
     com << " <Source>\n" ; 
     com << "  <Creator>Unknown</Creator>\n" ;  
-    com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toAscii().constData() << "</CreationDate>\n" ;  
+    com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toLatin1().constData() << "</CreationDate>\n" ;  
     com << "  <CreatingSystem>" << App::GetApplication().getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
     com << "  <PartNumber>Unknown</PartNumber>\n";
     com << "  <Revision>1.0</Revision>\n";
@@ -400,7 +400,7 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
         this->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
     }
 
-    this->didallocation = glrenderaction ? FALSE : TRUE;
+    this->didallocation = glrenderaction ? false : true;
     this->viewport = vpr;
 
     this->pixelbuffer = NULL;                // constructed later
@@ -492,7 +492,7 @@ SoQtOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 
     if (PRIVATE(this)->didallocation) { delete PRIVATE(this)->renderaction; }
     PRIVATE(this)->renderaction = action;
-    PRIVATE(this)->didallocation = FALSE;
+    PRIVATE(this)->didallocation = false;
 }
 
 /*!
@@ -534,7 +534,7 @@ void
 SoQtOffscreenRenderer::pre_render_cb(void * userdata, SoGLRenderAction * action)
 {
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-    action->setRenderingIsRemote(FALSE);
+    action->setRenderingIsRemote(false);
 }
 
 void
@@ -632,7 +632,7 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
     else if (base->isOfType(SoPath::getClassTypeId()))
         this->renderaction->apply((SoPath *)base);
     else  {
-        assert(FALSE && "Cannot apply to anything else than an SoNode or an SoPath");
+        assert(false && "Cannot apply to anything else than an SoNode or an SoPath");
     }
 
     this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
@@ -646,7 +646,7 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 
     this->renderaction->setCacheContext(oldcontext); // restore old
 
-    return TRUE;
+    return true;
 }
 
 /*!

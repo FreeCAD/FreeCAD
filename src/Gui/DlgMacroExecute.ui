@@ -1,60 +1,138 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>Gui::Dialog::DlgMacroExecute</class>
- <widget class="QDialog" name="Gui::Dialog::DlgMacroExecute" >
-  <property name="geometry" >
+ <widget class="QDialog" name="Gui::Dialog::DlgMacroExecute">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>344</width>
-    <height>346</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Execute macro</string>
   </property>
-  <property name="modal" >
+  <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout">
+   <property name="leftMargin">
     <number>9</number>
    </property>
-   <property name="spacing" >
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
+   <property name="spacing">
     <number>6</number>
    </property>
-   <item row="0" column="0" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
+   <item row="0" column="0">
+    <layout class="QGridLayout">
+     <property name="leftMargin">
       <number>0</number>
      </property>
-     <property name="spacing" >
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
       <number>6</number>
      </property>
-     <item row="0" column="0" >
-      <widget class="QGroupBox" name="MacroNameGroup" >
-       <property name="title" >
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="MacroNameGroup">
+       <property name="title">
         <string>Macro name:</string>
        </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
+       <layout class="QGridLayout">
+        <property name="leftMargin">
          <number>9</number>
         </property>
-        <property name="spacing" >
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+        <property name="spacing">
          <number>6</number>
         </property>
-        <item row="1" column="0" >
-         <widget class="QTreeWidget" name="macroListBox" >
-          <property name="rootIsDecorated" >
-           <bool>false</bool>
+        <item row="1" column="0">
+         <widget class="QTabWidget" name="tabMacroWidget">
+          <property name="tabPosition">
+           <enum>QTabWidget::North</enum>
           </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="userSpecificTab">
+           <attribute name="title">
+            <string>User macros</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QTreeWidget" name="userMacroListBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="rootIsDecorated">
+               <bool>false</bool>
+              </property>
+              <column>
+               <property name="text">
+                <string notr="true">1</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="systemWideTag">
+           <attribute name="title">
+            <string>System macros</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QTreeWidget" name="systemMacroListBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="rootIsDecorated">
+               <bool>false</bool>
+              </property>
+              <column>
+               <property name="text">
+                <string notr="true">1</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
-        <item row="0" column="0" >
-         <widget class="QLineEdit" name="LineEditMacroName" >
-          <property name="enabled" >
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="LineEditMacroName">
+          <property name="enabled">
            <bool>false</bool>
           </property>
          </widget>
@@ -62,21 +140,30 @@
        </layout>
       </widget>
      </item>
-     <item row="1" column="0" >
-      <widget class="QGroupBox" name="DestinationGroup" >
-       <property name="title" >
-        <string>Macro destination:</string>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="DestinationGroup">
+       <property name="title">
+        <string>User macros location:</string>
        </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
+       <layout class="QGridLayout">
+        <property name="leftMargin">
          <number>9</number>
         </property>
-        <property name="spacing" >
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+        <property name="spacing">
          <number>6</number>
         </property>
-        <item row="0" column="0" >
-         <widget class="Gui::FileChooser" name="fileChooser" >
-          <property name="focusPolicy" >
+        <item row="0" column="0">
+         <widget class="Gui::FileChooser" name="fileChooser" native="true">
+          <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
           <property name="mode" >
@@ -87,40 +174,49 @@
        </layout>
       </widget>
      </item>
-     <item row="0" column="1" >
-      <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
-       <property name="spacing" >
+     <item row="0" column="1">
+      <layout class="QVBoxLayout">
+       <property name="spacing">
         <number>6</number>
        </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
-        <widget class="QPushButton" name="executeButton" >
-         <property name="enabled" >
+        <widget class="QPushButton" name="executeButton">
+         <property name="enabled">
           <bool>false</bool>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Execute</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="closeButton" >
-         <property name="text" >
+        <widget class="QPushButton" name="closeButton">
+         <property name="text">
           <string>Close</string>
          </property>
         </widget>
        </item>
        <item>
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>77</width>
            <height>34</height>
@@ -129,41 +225,38 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="createButton" >
-         <property name="enabled" >
+        <widget class="QPushButton" name="createButton">
+         <property name="enabled">
           <bool>true</bool>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Create</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="deleteButton" >
-         <property name="enabled" >
+        <widget class="QPushButton" name="deleteButton">
+         <property name="enabled">
           <bool>false</bool>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>Delete</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="editButton" >
-         <property name="enabled" >
-          <bool>false</bool>
-         </property>
-         <property name="text" >
+        <widget class="QPushButton" name="editButton">
+         <property name="text">
           <string>Edit</string>
          </property>
         </widget>
        </item>
        <item>
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -177,19 +270,16 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>Gui::FileChooser</class>
    <extends>QWidget</extends>
    <header>Gui/FileDialog.h</header>
-   <container>0</container>
-   <pixmap></pixmap>
   </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>LineEditMacroName</tabstop>
-  <tabstop>macroListBox</tabstop>
   <tabstop>executeButton</tabstop>
   <tabstop>closeButton</tabstop>
   <tabstop>createButton</tabstop>
@@ -205,27 +295,43 @@
    <receiver>Gui::Dialog::DlgMacroExecute</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>268</x>
      <y>42</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>macroListBox</sender>
+   <sender>userMacroListBox</sender>
    <signal>itemDoubleClicked(QTreeWidgetItem*,int)</signal>
    <receiver>Gui::Dialog::DlgMacroExecute</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>110</x>
      <y>110</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
+     <x>281</x>
+     <y>281</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>systemMacroListBox</sender>
+   <signal>itemDoubleClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>Gui::Dialog::DlgMacroExecute</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
      <x>281</x>
      <y>281</y>
     </hint>
@@ -237,11 +343,11 @@
    <receiver>Gui::Dialog::DlgMacroExecute</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>317</x>
      <y>16</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>302</x>
      <y>319</y>
     </hint>

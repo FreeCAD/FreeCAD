@@ -872,7 +872,13 @@ void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
             indices[4*j] = N1; indices[4*j+1] = N2; indices[4*j+2] = N3; indices[4*j+3] = -1;
         }
 
-        builder.addIndexedFaceSet(vertices, indices, (float)ca);
+        builder.beginSeparator();
+        builder.addShapeHints((float)ca);
+        builder.beginPoints();
+        builder.addPoints(vertices);
+        builder.endPoints();
+        builder.addIndexedFaceSet(indices);
+        builder.endSeparator();
     } // end of face loop
 }
 

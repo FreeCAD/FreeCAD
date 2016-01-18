@@ -55,7 +55,7 @@ class DlgTipOfTheDayImp : public QDialog, public Ui_DlgTipOfTheDay, public Windo
     Q_OBJECT
 
 public:
-    DlgTipOfTheDayImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgTipOfTheDayImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DlgTipOfTheDayImp();
 
     void reload();

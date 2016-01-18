@@ -141,33 +141,123 @@ private:
 class BaseExport InventorBuilder
 {
 public:
-    /// Construction
-    InventorBuilder(std::ostream&);
-    /// Destruction
+    /*!
+     * \brief Construction of an InventorBuilder instance.
+     * This automatically opens a separator node.
+     * \param str - stream to write the content into
+     */
+    InventorBuilder(std::ostream& str);
+    /*!
+     * \brief Destruction of an InventorBuilder instance
+     */
     virtual ~InventorBuilder();
+    /*!
+     * \brief If needed closes the first opened separator node.
+     * This method must not be used more than one time for an instance.
+     */
     void close();
 
+    /*!
+     * \brief Sets a separator node.
+     */
     void beginSeparator();
+    /*!
+     * \brief Closes the last added separator node.
+     */
     void endSeparator();
+    /*!
+     * \brief Sets an info node.
+     * \param str - text set to the info node
+     */
+    void addInfo(const char* str);
+    /*!
+     * \brief Sets a label node.
+     * \param str - text set to the label node
+     */
+    void addLabel(const char* str);
+    /** @name Appearance handling */
+    //@{
+    /*!
+     * \brief Sets a base color node. The colors are in the range [0, 1].
+     * \param color_r - red color
+     * \param color_g - green color
+     * \param color_b - blue color
+     */
+    void addBaseColor(float color_r,float color_g,float color_b);
+    /*!
+     * \brief Sets a material node. The colors are in the range [0, 1].
+     * \param color_r - red color
+     * \param color_g - green color
+     * \param color_b - blue color
+     */
     void addMaterial(float color_r,float color_g,float color_b);
-    void addMaterialBinding(const char* = "OVERALL");
+    /*!
+     * \brief Starts a material node. The node must be closed with \ref endMaterial
+     * and the colors must be added with \ref addColor().
+     */
+    void beginMaterial();
+    /*!
+     * \brief Closes a material node.
+     */
+    void endMaterial();
+    /*!
+     * \brief Adds a color to a material node. The colors are in the range [0, 1].
+     * \param color_r - red color
+     * \param color_g - green color
+     * \param color_b - blue color
+     */
+    void addColor(float color_r,float color_g,float color_b);
+    /*!
+     * \brief Sets a material binding node.
+     * \param binding - binding of the material. Allowed values are:
+     * OVERALL, PER_PART, PER_PART_INDEXED, PER_FACE, PER_FACE_INDEXED, PER_VERTEX,
+     * PER_VERTEX_INDEXED and DEFAULT.
+     */
+    void addMaterialBinding(const char* binding = "OVERALL");
+    /*!
+     * \brief Sets a draw style node.
+     * \param pointSize - the point size
+     * \param lineWidth - the line width
+     * \param linePattern - the line pattern
+     * \param style - the draw style
+     */
     void addDrawStyle(short pointSize, short lineWidth,
         unsigned short linePattern = 0xffff, const char* style="FILLED");
+    /*!
+     * \brief Sets a shape hints node.
+     * \param crease - the crease angle in radians
+     */
+    void addShapeHints(float crease=0.0f);
+    //@}
+
+    /** @name Add coordinates */
+    //@{
+    /// add a single point
+    void addPoint(float x, float y, float z);
+    /// add a single point
+    void addPoint(const Vector3f &vec);
+    /// add a list of points
+    void addPoints(const std::vector<Vector3f> &vec);
+    //@}
 
     /** @name Point set handling */
     //@{
     /// starts a point set
     void beginPoints();
-    /// insert a point in an point set
-    void addPoint(float x, float y, float z);
-    /// add a vector to a point set
-    void addPoint(const Vector3f &vec);
     /// ends the points set operation
-    void endPoints(void);
+    void endPoints();
     /// add an SoPointSet node
-    void addPointSet(void);
-    /// add an SoLineSet node
-    void addLineSet(void);
+    void addPointSet();
+    //@}
+
+    /** @name Normal handling */
+    //@{
+    /// starts a point set
+    void beginNormal();
+    /// ends the points set operation
+    void endNormal();
+    /// add normal binding node
+    void addNormalBinding(const char*);
     //@}
 
     /** @name Line/Direction handling */
@@ -181,7 +271,8 @@ public:
     /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
     void addLineSet(const std::vector<Vector3f>& points, short lineSize=2,
                     float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
-    void addIndexedFaceSet(const std::vector<Vector3f>& points, const std::vector<int>& indices, float crease);
+    /// add an SoLineSet node
+    void addLineSet();
     //@}
 
     /** @name Triangle handling */
@@ -191,6 +282,7 @@ public:
                            float color_r=1.0,float color_g=1.0,float color_b=1.0);
     void addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY, float length, float width, bool filled = true,
                         short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
+    void addIndexedFaceSet(const std::vector<int>& indices);
     //@}
 
     /** @name Surface handling */
@@ -229,8 +321,6 @@ private:
 
 private:
     std::ostream& result;
-    bool bStartEndOpen;
-    bool bClosed;
     int indent;
 };
 

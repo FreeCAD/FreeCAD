@@ -83,7 +83,8 @@ static PyObject * open(PyObject *self, PyObject *args)
 
     PY_TRY {
         MeshObject mesh;
-        if (mesh.load(EncodedName.c_str())) {
+        MeshCore::Material mat;
+        if (mesh.load(EncodedName.c_str(), &mat)) {
             Base::FileInfo file(EncodedName.c_str());
             // create new document and add Import feature
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
@@ -97,6 +98,20 @@ static PyObject * open(PyObject *self, PyObject *args)
                     pcFeature->Mesh.swapMesh(*segm);
                     pcFeature->purgeTouched();
                 }
+            }
+            else if (mat.binding == MeshCore::MeshIO::PER_VERTEX && 
+                     mat.diffuseColor.size() == mesh.countPoints()) {
+                FeatureCustom *pcFeature = new FeatureCustom();
+                pcFeature->Label.setValue(file.fileNamePure().c_str());
+                pcFeature->Mesh.swapMesh(mesh);
+                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                    (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
+                if (prop) {
+                    prop->setValues(mat.diffuseColor);
+                }
+                pcFeature->purgeTouched();
+
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
             }
             else {
                 Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
@@ -132,6 +147,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
         }
 
         MeshObject mesh;
+        MeshCore::Material mat;
         if (mesh.load(EncodedName.c_str())) {
             Base::FileInfo file(EncodedName.c_str());
             unsigned long segmct = mesh.countSegments();
@@ -144,6 +160,20 @@ static PyObject * importer(PyObject *self, PyObject *args)
                     pcFeature->Mesh.swapMesh(*segm);
                     pcFeature->purgeTouched();
                 }
+            }
+            else if (mat.binding == MeshCore::MeshIO::PER_VERTEX && 
+                     mat.diffuseColor.size() == mesh.countPoints()) {
+                FeatureCustom *pcFeature = new FeatureCustom();
+                pcFeature->Label.setValue(file.fileNamePure().c_str());
+                pcFeature->Mesh.swapMesh(mesh);
+                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                    (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
+                if (prop) {
+                    prop->setValues(mat.diffuseColor);
+                }
+                pcFeature->purgeTouched();
+
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
             }
             else {
                 Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>

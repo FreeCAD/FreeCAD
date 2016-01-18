@@ -38,7 +38,17 @@ if open.__module__ == '__builtin__':
 def readResult(frd_input):
     frd_file = pyopen(frd_input, "r")
     nodes = {}
-    elements = {}
+    elements_hexa8 = {}
+    elements_penta6 = {}
+    elements_tetra4 = {}
+    elements_tetra10 = {}
+    elements_penta15 = {}
+    elements_hexa20 = {}
+    elements_tria3 = {}
+    elements_tria6 = {}
+    elements_quad4 = {}
+    elements_quad8 = {}
+    elements_seg2 = {}
     results = []
     mode_results = {}
     mode_disp = {}
@@ -48,6 +58,7 @@ def readResult(frd_input):
     nodes_found = False
     mode_stress_found = False
     elements_found = False
+    input_continues = False
     eigenmode = 0
     elem = -1
     elemType = 0
@@ -70,19 +81,125 @@ def readResult(frd_input):
         if elements_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             elemType = int(line[14:18])
-        #then the 10 id's for the Tet10 element
-        if elements_found and (line[1:3] == "-2") and elemType == 6:
-            node_id_2 = int(line[3:13])
-            node_id_1 = int(line[13:23])
-            node_id_3 = int(line[23:33])
-            node_id_4 = int(line[33:43])
-            node_id_5 = int(line[43:53])
-            node_id_7 = int(line[53:63])
-            node_id_6 = int(line[63:73])
-            node_id_9 = int(line[73:83])
-            node_id_8 = int(line[83:93])
-            node_id_10 = int(line[93:103])
-            elements[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10)
+        #then import elements
+        if elements_found and (line[1:3] == "-2"):
+            if elemType == 1:  # HEXA8 element
+                node_id_5 = int(line[3:13])
+                node_id_6 = int(line[13:23])
+                node_id_7 = int(line[23:33])
+                node_id_8 = int(line[33:43])
+                node_id_1 = int(line[43:53])
+                node_id_2 = int(line[53:63])
+                node_id_3 = int(line[63:73])
+                node_id_4 = int(line[73:83])
+                elements_hexa8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
+            elif elemType == 2:  # PENTA6 element
+                node_id_4 = int(line[3:13])
+                node_id_5 = int(line[13:23])
+                node_id_6 = int(line[23:33])
+                node_id_1 = int(line[33:43])
+                node_id_2 = int(line[43:53])
+                node_id_3 = int(line[53:63])
+                elements_penta6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
+            elif elemType == 3:  # TETRA4 element
+                node_id_2 = int(line[3:13])
+                node_id_1 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                elements_tetra4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
+            elif elemType == 4 and input_continues is False:  # HEXA20 element (1st line)
+                node_id_5 = int(line[3:13])
+                node_id_6 = int(line[13:23])
+                node_id_7 = int(line[23:33])
+                node_id_8 = int(line[33:43])
+                node_id_1 = int(line[43:53])
+                node_id_2 = int(line[53:63])
+                node_id_3 = int(line[63:73])
+                node_id_4 = int(line[73:83])
+                node_id_13 = int(line[83:93])
+                node_id_14 = int(line[93:103])
+                input_continues = True
+            elif elemType == 4 and input_continues is True:  # HEXA20 element (2nd line)
+                node_id_15 = int(line[3:13])
+                node_id_16 = int(line[13:23])
+                node_id_9 = int(line[23:33])
+                node_id_10 = int(line[33:43])
+                node_id_11 = int(line[43:53])
+                node_id_12 = int(line[53:63])
+                node_id_17 = int(line[63:73])
+                node_id_18 = int(line[73:83])
+                node_id_19 = int(line[83:93])
+                node_id_20 = int(line[93:103])
+                input_continues = False
+                elements_hexa20[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10,
+                                         node_id_11, node_id_12, node_id_13, node_id_14, node_id_15, node_id_16, node_id_17, node_id_18, node_id_19, node_id_20)
+            elif elemType == 5 and input_continues is False:  # PENTA15 element (1st line)
+                node_id_4 = int(line[3:13])
+                node_id_5 = int(line[13:23])
+                node_id_6 = int(line[23:33])
+                node_id_1 = int(line[33:43])
+                node_id_2 = int(line[43:53])
+                node_id_3 = int(line[53:63])
+                node_id_10 = int(line[63:73])
+                node_id_11 = int(line[73:83])
+                node_id_12 = int(line[83:93])
+                node_id_13 = int(line[93:103])
+                input_continues = True
+            elif elemType == 5 and input_continues is True:  # PENTA15 element (2nd line)
+                node_id_14 = int(line[3:13])
+                node_id_15 = int(line[13:23])
+                node_id_7 = int(line[23:33])
+                node_id_8 = int(line[33:43])
+                node_id_9 = int(line[43:53])
+                input_continues = False
+                elements_penta15[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10,
+                                          node_id_11, node_id_12, node_id_13, node_id_14, node_id_15)
+            elif elemType == 6:  # TETRA10 element
+                node_id_2 = int(line[3:13])
+                node_id_1 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                node_id_5 = int(line[43:53])
+                node_id_7 = int(line[53:63])
+                node_id_6 = int(line[63:73])
+                node_id_9 = int(line[73:83])
+                node_id_8 = int(line[83:93])
+                node_id_10 = int(line[93:103])
+                elements_tetra10[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10)
+            elif elemType == 7:  # TRIA3 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                elements_tria3[elem] = (node_id_1, node_id_2, node_id_3)
+            elif elemType == 8:  # TRIA6 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                node_id_5 = int(line[43:53])
+                node_id_6 = int(line[53:63])
+                elements_tria6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
+            elif elemType == 9:  # QUAD4 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                elements_quad4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
+            elif elemType == 10:  # QUAD8 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                node_id_3 = int(line[23:33])
+                node_id_4 = int(line[33:43])
+                node_id_5 = int(line[43:53])
+                node_id_6 = int(line[53:63])
+                node_id_7 = int(line[63:73])
+                node_id_8 = int(line[73:83])
+                elements_quad8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
+            elif elemType == 11:  # SEG2 element
+                node_id_1 = int(line[3:13])
+                node_id_2 = int(line[13:23])
+                elements_seg2[elem] = (node_id_1, node_id_2)
+
         #Check if we found new eigenmode
         if line[5:10] == "PMODE":
             eigenmode = int(line[30:36])
@@ -129,7 +246,11 @@ def readResult(frd_input):
             elements_found = False
 
     frd_file.close()
-    return {'Nodes': nodes, 'Tet10Elem': elements, 'Results': results}
+    return {'Nodes': nodes,
+            'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
+            'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,
+            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2,
+            'Results': results}
 
 
 def calculate_von_mises(i):
@@ -143,23 +264,23 @@ def calculate_von_mises(i):
     s11s22 = pow(s11 - s22, 2)
     s22s33 = pow(s22 - s33, 2)
     s33s11 = pow(s33 - s11, 2)
-    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) * pow(s31, 2))
+    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) + pow(s31, 2))
     vm_stress = sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31))
     return vm_stress
 
 
-def importFrd(filename, Analysis=None):
+def importFrd(filename, analysis=None):
     m = readResult(filename)
-    result_set_number = len(m['Results'])
-    MeshObject = None
-    if(len(m) > 0):
+    mesh_object = None
+    if(len(m['Nodes']) > 0):
         import Fem
-        if Analysis is None:
-            AnalysisName = os.path.splitext(os.path.basename(filename))[0]
-            AnalysisObject = FreeCAD.ActiveDocument.addObject('Fem::FemAnalysis', 'Analysis')
-            AnalysisObject.Label = AnalysisName
+        if analysis is None:
+            analysis_name = os.path.splitext(os.path.basename(filename))[0]
+            import FemAnalysis
+            analysis_object = FemAnalysis.makeFemAnalysis('Analysis')
+            analysis_object.Label = analysis_name
         else:
-            AnalysisObject = Analysis
+            analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
 
         if 'Nodes' in m:
             positions = []
@@ -173,29 +294,82 @@ def importFrd(filename, Analysis=None):
             z_span = abs(p_z_max - p_z_min)
             span = max(x_span, y_span, z_span)
 
-        if ('Tet10Elem' in m) and ('Nodes' in m) and (not Analysis):
+        if (not analysis) and ('Nodes' in m) and \
+            (('Hexa8Elem' in m) or ('Penta6Elem' in m) or ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or
+             ('Penta6Elem' in m) or ('Hexa20Elem' in m) or ('Tria3Elem' in m) or ('Tria6Elem' in m) or
+             ('Quad4Elem' in m) or ('Quad8Elem' in m) or ('Seg2Elem' in m)):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
 
             for i in nds:
                 n = nds[i]
                 mesh.addNode(n[0], n[1], n[2], i)
-            elms = m['Tet10Elem']
-            for i in elms:
-                e = elms[i]
+            elms_hexa8 = m['Hexa8Elem']
+            for i in elms_hexa8:
+                e = elms_hexa8[i]
+                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]], i)
+            elms_penta6 = m['Penta6Elem']
+            for i in elms_penta6:
+                e = elms_penta6[i]
+                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5]], i)
+            elms_tetra4 = m['Tetra4Elem']
+            for i in elms_tetra4:
+                e = elms_tetra4[i]
+                mesh.addVolume([e[0], e[1], e[2], e[3]], i)
+            elms_tetra10 = m['Tetra10Elem']
+            for i in elms_tetra10:
+                e = elms_tetra10[i]
                 mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9]], i)
+            elms_penta15 = m['Penta15Elem']
+            for i in elms_penta15:
+                e = elms_penta15[i]
+                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
+                                e[10], e[11], e[12], e[13], e[14]], i)
+            elms_hexa20 = m['Hexa20Elem']
+            for i in elms_hexa20:
+                e = elms_hexa20[i]
+                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
+                                e[10], e[11], e[12], e[13], e[14], e[15], e[16], e[17], e[18], e[19]], i)
+            elms_tria3 = m['Tria3Elem']
+            for i in elms_tria3:
+                e = elms_tria3[i]
+                mesh.addFace([e[0], e[1], e[2]], i)
+            elms_tria6 = m['Tria6Elem']
+            for i in elms_tria6:
+                e = elms_tria6[i]
+                mesh.addFace([e[0], e[1], e[2], e[3], e[4], e[5]], i)
+            elms_quad4 = m['Quad4Elem']
+            for i in elms_quad4:
+                e = elms_quad4[i]
+                mesh.addFace([e[0], e[1], e[2], e[3]], i)
+            elms_quad8 = m['Quad8Elem']
+            for i in elms_quad8:
+                e = elms_quad8[i]
+                mesh.addFace([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]], i)
+            elms_seg2 = m['Seg2Elem']
+            for i in elms_seg2:
+                e = elms_seg2[i]
+                mesh.addEdge(e[0], e[1])
+            print ("imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15".format(
+                   len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)))
+            print ("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2".format(
+                   len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2)))
             if len(nds) > 0:
-                MeshObject = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
-                MeshObject.FemMesh = mesh
-                AnalysisObject.Member = AnalysisObject.Member + [MeshObject]
+                mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', 'ResultMesh')
+                mesh_object.FemMesh = mesh
+                analysis_object.Member = analysis_object.Member + [mesh_object]
 
         for result_set in m['Results']:
             eigenmode_number = result_set['number']
-            if result_set_number > 1:
+            if eigenmode_number > 0:
                 results_name = 'Mode_' + str(eigenmode_number) + '_results'
             else:
                 results_name = 'Results'
             results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
+            for m in analysis_object.Member:
+                if m.isDerivedFrom("Fem::FemMeshObject"):
+                    results.Mesh = m
+                    break
 
             disp = result_set['disp']
             l = len(disp)
@@ -204,7 +378,7 @@ def importFrd(filename, Analysis=None):
                 displacement.append(v)
 
             x_max, y_max, z_max = map(max, zip(*displacement))
-            if result_set_number > 1:
+            if eigenmode_number > 0:
                 max_disp = max(x_max, y_max, z_max)
                 # Allow for max displacement to be 0.1% of the span
                 # FIXME - add to Preferences
@@ -215,24 +389,25 @@ def importFrd(filename, Analysis=None):
 
             if len(disp) > 0:
                 results.DisplacementVectors = map((lambda x: x * scale), disp.values())
-                results.ElementNumbers = disp.keys()
-                if(MeshObject):
-                    results.Mesh = MeshObject
+                results.NodeNumbers = disp.keys()
+                if(mesh_object):
+                    results.Mesh = mesh_object
 
             stress = result_set['stress']
             if len(stress) > 0:
                 mstress = []
                 for i in stress.values():
                     mstress.append(calculate_von_mises(i))
-                if result_set_number > 1:
+                if eigenmode_number > 0:
                     results.StressValues = map((lambda x: x * scale), mstress)
+                    results.Eigenmode = eigenmode_number
                 else:
                     results.StressValues = mstress
 
-            if (results.ElementNumbers != 0 and results.ElementNumbers != stress.keys()):
+            if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
                 print ("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                       .format(results.ElementNumbers, len(results.StressValues)))
-                results.ElementNumbers = stress.keys()
+                       .format(results.NodeNumbers, len(results.StressValues)))
+                results.NodeNumbers = stress.keys()
 
             x_min, y_min, z_min = map(min, zip(*displacement))
             sum_list = map(sum, zip(*displacement))
@@ -256,14 +431,11 @@ def importFrd(filename, Analysis=None):
                              z_min, z_avg, z_max,
                              a_min, a_avg, a_max,
                              s_min, s_avg, s_max]
-            AnalysisObject.Member = AnalysisObject.Member + [results]
+            analysis_object.Member = analysis_object.Member + [results]
 
         if(FreeCAD.GuiUp):
             import FemGui
-            import FreeCADGui
-            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
-                FreeCADGui.activateWorkbench("FemWorkbench")
-            FemGui.setActiveAnalysis(AnalysisObject)
+            FemGui.setActiveAnalysis(analysis_object)
 
 
 def insert(filename, docname):

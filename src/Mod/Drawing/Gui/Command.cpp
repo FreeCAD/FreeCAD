@@ -35,6 +35,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
 
 
 #include "DrawingView.h"
@@ -131,9 +132,9 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
 
     std::string path = App::Application::getResourceDir();
     path += "Mod/Drawing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("*.svg"));
+    QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.svg"));
     for (unsigned int i=0; i<dir.count(); i++ ) {
-        QRegExp rx(QString::fromAscii("(A|B|C|D|E)(\\d)_(Landscape|Portrait)(_.*\\.|\\.)svg$"));
+        QRegExp rx(QString::fromLatin1("(A|B|C|D|E)(\\d)_(Landscape|Portrait)(_.*\\.|\\.)svg$"));
         if (rx.indexIn(dir[i]) > -1) {
             QString paper = rx.cap(1);
             int id = rx.cap(2).toInt();
@@ -159,12 +160,12 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
             lastPaper = paper;
             lastId = id;
 
-            QFile file(QString::fromAscii(":/icons/actions/drawing-landscape-A0.svg"));
+            QFile file(QString::fromLatin1(":/icons/actions/drawing-landscape-A0.svg"));
             QAction* a = pcAction->addAction(QString());
             if (file.open(QFile::ReadOnly)) {
-                QString s = QString::fromAscii("style=\"font-size:22px\">%1%2</tspan></text>").arg(paper).arg(id);
+                QString s = QString::fromLatin1("style=\"font-size:22px\">%1%2</tspan></text>").arg(paper).arg(id);
                 QByteArray data = file.readAll();
-                data.replace("style=\"font-size:22px\">A0</tspan></text>", s.toAscii());
+                data.replace("style=\"font-size:22px\">A0</tspan></text>", s.toLatin1());
                 a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(64,64)));
             }
 
@@ -727,6 +728,54 @@ bool CmdDrawingDraftView::isActive(void)
 }
 
 
+//===========================================================================
+// Drawing_Spreadheet_View
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingSpreadsheetView);
+
+CmdDrawingSpreadsheetView::CmdDrawingSpreadsheetView()
+  : Command("Drawing_SpreadsheetView")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("&Spreadsheet View");
+    sToolTipText  = QT_TR_NOOP("Inserts a view of a selected spreadsheet in the active drawing");
+    sWhatsThis    = "Drawing_SpreadsheetView";
+    sStatusTip    = QT_TR_NOOP("Inserts a view of a selected spreadsheet in the active drawing");
+    sPixmap       = "actions/drawing-spreadsheet";
+}
+
+void CmdDrawingSpreadsheetView::activated(int iMsg)
+{
+    const std::vector<App::DocumentObject*> spreads = getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
+    if (spreads.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly one Spreadsheet object."));
+        return;
+    }
+    const std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+            QObject::tr("Create a page first."));
+        return;
+    }
+    std::string SpreadName = spreads.front()->getNameInDocument();
+    std::string PageName = pages.front()->getNameInDocument();
+    openCommand("Create spreadsheet view");
+    std::string FeatName = getUniqueObjectName("View");
+    doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewSpreadsheet','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SpreadName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdDrawingSpreadsheetView::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
 
 void CreateDrawingCommands(void)
 {
@@ -744,4 +793,5 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
     rcCmdMgr.addCommand(new CmdDrawingDraftView());
+    rcCmdMgr.addCommand(new CmdDrawingSpreadsheetView());
 }

@@ -27,6 +27,8 @@
 # include <iostream>
 #endif
 
+#include <boost/math/special_functions/fpclassify.hpp>
+
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
@@ -95,6 +97,31 @@ void PointKernel::operator = (const PointKernel& Kernel)
 unsigned int PointKernel::getMemSize (void) const
 {
     return _Points.size() * sizeof(value_type);
+}
+
+PointKernel::size_type PointKernel::countValid(void) const
+{
+    size_type num = 0;
+    for (const_point_iterator it = begin(); it != end(); ++it) {
+        if (!(boost::math::isnan(it->x) || 
+              boost::math::isnan(it->y) ||
+              boost::math::isnan(it->z)))
+            num++;
+    }
+    return num;
+}
+
+std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
+{
+    std::vector<PointKernel::value_type> valid;
+    valid.reserve(countValid());
+    for (const_point_iterator it = begin(); it != end(); ++it) {
+        if (!(boost::math::isnan(it->x) || 
+              boost::math::isnan(it->y) ||
+              boost::math::isnan(it->z)))
+            valid.push_back(value_type(it->x, it->y, it->z));
+    }
+    return valid;
 }
 
 void PointKernel::Save (Base::Writer &writer) const

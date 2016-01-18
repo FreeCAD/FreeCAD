@@ -24,22 +24,12 @@
 #ifndef FEM_ViewProviderAnalysis_H
 #define FEM_ViewProviderAnalysis_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <QCoreApplication>
 
-class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
-class SoShapeHints;
-class SoMaterialBinding;
-
 namespace FemGui
 {
-
-
 
 class FemGuiExport ViewProviderFemAnalysis : public Gui::ViewProviderDocumentObject
 {
@@ -51,7 +41,7 @@ public:
     ViewProviderFemAnalysis();
 
     /// destructor.
-    ~ViewProviderFemAnalysis();
+    virtual ~ViewProviderFemAnalysis();
 
     virtual bool doubleClicked(void);
 

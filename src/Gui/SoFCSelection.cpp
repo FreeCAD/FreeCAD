@@ -107,9 +107,9 @@ SoFCSelection::SoFCSelection()
     SO_NODE_DEFINE_ENUM_VALUE(Selected, SELECTED);
     SO_NODE_SET_SF_ENUM_TYPE(selected,  Selected);
 
-    highlighted = FALSE;
-    bShift      = FALSE;
-    bCtrl       = FALSE;
+    highlighted = false;
+    bShift      = false;
+    bCtrl       = false;
 
     selected = NOTSELECTED;
 }
@@ -332,9 +332,9 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         SoFCSelection::turnoffcurrent(action);
                         SoFCSelection::currenthighlight = (SoFullPath*)action->getCurPath()->copy();
                         SoFCSelection::currenthighlight->ref();
-                        highlighted = TRUE;
+                        highlighted = true;
                         this->touch(); // force scene redraw
-                        this->redrawHighlighted(action, TRUE);
+                        this->redrawHighlighted(action, true);
                     }
                 }
                 
@@ -345,7 +345,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                            ,pp->getPoint()[1]
                                            ,pp->getPoint()[2]);
 
-                getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
             }
             else { // picked point
                 if (highlighted) {
@@ -353,7 +353,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         SoFCSelection::turnoffcurrent(action);
                     //FIXME: I think we should set 'highlighted' to false whenever no point is picked
                     //else
-                    highlighted = FALSE;
+                    highlighted = false;
                     Gui::Selection().rmvPreselect();
                 }
             }
@@ -404,7 +404,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                        ,pp->getPoint()[1]
                                                        ,pp->getPoint()[2]);
 
-                            getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                            getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
                         }
                     }
                 }
@@ -438,7 +438,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                    ,pp->getPoint()[1]
                                                    ,pp->getPoint()[2]);
 
-                        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
                     }
                 }
 
@@ -465,17 +465,17 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     //
     if (event->isOfType(SoLocation2Event::getClassTypeId())) {
         // check to see if the mouse is over our geometry...
-        SbBool underTheMouse = FALSE;
+        SbBool underTheMouse = false;
         const SoPickedPoint * pp = this->getPickedPoint(action);
         SoFullPath *pPath = (pp != NULL) ? (SoFullPath *) pp->getPath() : NULL;
         if (pPath && pPath->containsPath(action->getCurPath())) {
             // Make sure I'm the lowest LocHL in the pick path!
-            underTheMouse = TRUE;
+            underTheMouse = true;
             for (int i = 0; i < pPath->getLength(); i++) {
                 SoNode *node = pPath->getNodeFromTail(i);
                 if (node->isOfType(SoFCSelection::getClassTypeId())) {
                     if (node != this)
-                    underTheMouse = FALSE;
+                    underTheMouse = false;
                     break; // found the lowest LocHL - look no further
                 }
             }
@@ -485,7 +485,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             if (! underTheMouse) {
                 // re-draw the object with it's normal color
                 //if(mymode != OFF)
-                redrawHighlighted(action, FALSE);
+                redrawHighlighted(action, false);
                 Gui::Selection().rmvPreselect();
             }
             else {
@@ -502,7 +502,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             if (underTheMouse) {
                 // draw this object highlighted
                 if (mymode != OFF)
-                    redrawHighlighted(action, TRUE);
+                    redrawHighlighted(action, true);
                 //const SoPickedPoint * pp = action->getPickedPoint();
                 Gui::Selection().setPreselect(documentName.getValue().getString()
                                                  ,objectName.getValue().getString()
@@ -513,10 +513,10 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             }
         }
         //if(selected == SELECTED){
-        //    redrawHighlighted(action, TRUE);
+        //    redrawHighlighted(action, true);
         //}
         //if(selectionCleared ){
-        //    redrawHighlighted(action, FALSE);
+        //    redrawHighlighted(action, false);
         //    selectionCleared = false;
         //}
     }
@@ -569,7 +569,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                        ,pp->getPoint()[1]
                                                        ,pp->getPoint()[2]);
 
-                            getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                            getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
                         }
                     }
                 }
@@ -603,7 +603,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                    ,pp->getPoint()[1]
                                                    ,pp->getPoint()[2]);
 
-                        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
                     }
                 }
 
@@ -696,7 +696,7 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 {
     // If not performing locate highlighting, just return.
     if (highlightMode.getValue() == OFF)
-        return FALSE;
+        return false;
 
     SoState *state = action->getState();
 
@@ -718,12 +718,12 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 
         // Emissive Color
         SoLazyElement::setEmissive(state, &col);
-        SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+        SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
         // Diffuse Color
         if (style.getValue() == EMISSIVE_DIFFUSE) {
             SoLazyElement::setDiffuse(state, this, 1, &col, &colorpacker);
-            SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+            SoOverrideElement::setDiffuseColorOverride(state, this, true);
         }
     }
 
@@ -759,7 +759,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 
         SoNode *tail = currenthighlight->getTail();
         if (tail->isOfType( SoFCSelection::getClassTypeId()))
-            ((SoFCSelection *)tail)->redrawHighlighted(action, FALSE);
+            ((SoFCSelection *)tail)->redrawHighlighted(action, false);
         else {
             // Just get rid of the path. It's no longer valid for redraw.
             currenthighlight->unref();
@@ -823,9 +823,9 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
     if (whichBuffer != GL_FRONT)
         glDrawBuffer(GL_FRONT);
 
-    highlighted = TRUE;
+    highlighted = true;
     glAction->apply(pathToRender);
-    highlighted = FALSE;
+    highlighted = false;
 
     // restore the buffering type
     if (whichBuffer != GL_FRONT)
@@ -855,7 +855,7 @@ SoFCSelection::setOverride(SoGLRenderAction * action)
         SoLazyElement::setEmissive(state, &this->colorSelection.getValue());
     else
         SoLazyElement::setEmissive(state, &this->colorHighlight.getValue());
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
     Styles mystyle = (Styles) this->style.getValue();
     if (mystyle == SoFCSelection::EMISSIVE_DIFFUSE) {
@@ -863,7 +863,7 @@ SoFCSelection::setOverride(SoGLRenderAction * action)
             SoLazyElement::setDiffuse(state, this,1, &this->colorSelection.getValue(),&colorpacker);
         else
             SoLazyElement::setDiffuse(state, this,1, &this->colorHighlight.getValue(),&colorpacker);
-        SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+        SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
 }
 
@@ -876,9 +876,9 @@ SoFCSelection::turnoffcurrent(SoAction * action)
         SoFCSelection::currenthighlight->getLength()) {
         SoNode * tail = SoFCSelection::currenthighlight->getTail();
         if (tail->isOfType(SoFCSelection::getClassTypeId())) {
-            ((SoFCSelection*)tail)->highlighted = FALSE;
+            ((SoFCSelection*)tail)->highlighted = false;
             ((SoFCSelection*)tail)->touch(); // force scene redraw
-            if (action) ((SoFCSelection*)tail)->redrawHighlighted(action, FALSE);
+            if (action) ((SoFCSelection*)tail)->redrawHighlighted(action, false);
         }
     }
     if (SoFCSelection::currenthighlight) {
@@ -896,7 +896,7 @@ SoFCSelection::turnoffcurrent(SoAction * action)
         // (processing events during render abort might cause this)
         SoState *state = action->getState();
         if (state && state->getDepth() == 1)
-            ((SoFCSelection *)tail)->redrawHighlighted(action, FALSE);
+            ((SoFCSelection *)tail)->redrawHighlighted(action, false);
     }
     else {
         // Just get rid of the path. It's no longer valid for redraw.

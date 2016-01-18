@@ -24,10 +24,10 @@
 #include "PreCompiled.h"
 
 #include <QMessageBox>
+#include "ViewProvider.h"
 #include "DlgSettings3DViewPartImp.h"
 #include "ui_DlgSettings3DViewPart.h"
 
-#include "ViewProvider.h"
 #include <Gui/PrefWidgets.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>

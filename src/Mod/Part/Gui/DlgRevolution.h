@@ -36,7 +36,7 @@ class DlgRevolution : public Gui::LocationDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgRevolution(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgRevolution(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgRevolution();
     void accept();
 

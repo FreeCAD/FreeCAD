@@ -33,7 +33,7 @@ class DlgPartBoxImp : public Gui::LocationInterface<Ui_DlgPartBox>
     Q_OBJECT
 
 public:
-    DlgPartBoxImp(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgPartBoxImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgPartBoxImp();
 };
 

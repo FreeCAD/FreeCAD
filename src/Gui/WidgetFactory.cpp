@@ -549,8 +549,8 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
     if (this->cw.contains(className))
         return QUiLoader::createWidget(className, parent, name);
     QWidget* w = 0;
-    if (WidgetFactory().CanProduce((const char*)className.toAscii()))
-        w = WidgetFactory().createWidget((const char*)className.toAscii(), parent);
+    if (WidgetFactory().CanProduce((const char*)className.toLatin1()))
+        w = WidgetFactory().createWidget((const char*)className.toLatin1(), parent);
     if (w) w->setObjectName(name);
     return w;
 }
@@ -676,8 +676,8 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
         }
     }
 
-    QWidget* widget = loader.createWidget(QString::fromAscii(className.c_str()), parent,
-        QString::fromAscii(objectName.c_str()));
+    QWidget* widget = loader.createWidget(QString::fromLatin1(className.c_str()), parent,
+        QString::fromLatin1(objectName.c_str()));
     if (!widget) {
         std::string err = "No such widget class '";
         err += className;
@@ -842,14 +842,14 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     setWindowTitle( templChild->objectName() );
     setObjectName( templChild->objectName() );
 
-    setSizeGripEnabled( TRUE );
+    setSizeGripEnabled( true );
     MyDialogLayout = new QGridLayout(this);
 
     buttonOk = new QPushButton(this);
     buttonOk->setObjectName(QLatin1String("buttonOK"));
     buttonOk->setText( tr( "&OK" ) );
-    buttonOk->setAutoDefault( TRUE );
-    buttonOk->setDefault( TRUE );
+    buttonOk->setAutoDefault( true );
+    buttonOk->setDefault( true );
 
     MyDialogLayout->addWidget( buttonOk, 1, 0 );
     QSpacerItem* spacer = new QSpacerItem( 210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
@@ -858,7 +858,7 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     buttonCancel = new QPushButton(this);
     buttonCancel->setObjectName(QLatin1String("buttonCancel"));
     buttonCancel->setText( tr( "&Cancel" ) );
-    buttonCancel->setAutoDefault( TRUE );
+    buttonCancel->setAutoDefault( true );
 
     MyDialogLayout->addWidget( buttonCancel, 1, 2 );
 
@@ -1029,8 +1029,8 @@ void PyResource::load( const char* name )
 /**
  * Makes a connection between the sender widget \a sender and its signal \a signal
  * of the created resource and Python callback function \a cb.
- * If the sender widget does not exist or no resource has been loaded this method returns FALSE, 
- * otherwise it returns TRUE.
+ * If the sender widget does not exist or no resource has been loaded this method returns false, 
+ * otherwise it returns true.
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 {
@@ -1041,7 +1041,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
     QList<QWidget*>::const_iterator it = list.begin();
     QObject *obj;
-    QString sigStr = QString::fromAscii("2%1").arg(QString::fromAscii(signal));
+    QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
 
     while ( it != list.end() ) {
         obj = *it;
@@ -1055,7 +1055,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     if (objS) {
         SignalConnect* sc = new SignalConnect(this, cb);
         mySingals.push_back(sc);
-        return QObject::connect(objS, sigStr.toAscii(), sc, SLOT ( onExecute() )  );
+        return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
     }
     else
         qWarning( "'%s' does not exist.\n", sender );
@@ -1165,14 +1165,14 @@ PyObject *PyResource::value(PyObject *args)
             int nSize = str.count();
             PyObject* slist = PyList_New(nSize);
             for (int i=0; i<nSize;++i) {
-                PyObject* item = PyString_FromString(str[i].toAscii());
+                PyObject* item = PyString_FromString(str[i].toLatin1());
                 PyList_SetItem(slist, i, item);
             }
         }   break;
     case QVariant::ByteArray:
         break;
     case QVariant::String:
-        pItem = PyString_FromString(v.toString().toAscii());
+        pItem = PyString_FromString(v.toString().toLatin1());
         break;
     case QVariant::Double:
         pItem = PyFloat_FromDouble(v.toDouble());
@@ -1209,7 +1209,7 @@ PyObject *PyResource::setValue(PyObject *args)
 
     QVariant v;
     if (PyString_Check(psValue)) {
-        v = QString::fromAscii(PyString_AsString(psValue));
+        v = QString::fromLatin1(PyString_AsString(psValue));
     }
     else if (PyInt_Check(psValue)) {
         int val = PyInt_AsLong(psValue);
@@ -1231,7 +1231,7 @@ PyObject *PyResource::setValue(PyObject *args)
                 continue;
 
             char* pItem = PyString_AsString(item);
-            str.append(QString::fromAscii(pItem));
+            str.append(QString::fromLatin1(pItem));
         }
 
         v = str;

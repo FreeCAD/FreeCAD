@@ -29,6 +29,8 @@
 # include <TopoDS_Edge.hxx>
 #endif
 
+#include <Base/Console.h>
+#include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureFillet.h"
@@ -39,11 +41,12 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Fillet, PartDesign::DressUp)
 
-const App::PropertyFloatConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.1};
+const App::PropertyQuantityConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.1};
 
 Fillet::Fillet()
 {
     ADD_PROPERTY(Radius,(1.0));
+    Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
 }
 
@@ -99,4 +102,40 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
+}
+
+void Fillet::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
+                     strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
+                App::PropertyFloatConstraint p;
+                p.Restore(reader);
+                static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }

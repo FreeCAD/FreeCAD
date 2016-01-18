@@ -43,6 +43,7 @@
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
+#include "FeatureFace.h"
 #include "FeatureExtrusion.h"
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
@@ -79,6 +80,7 @@
 #include "ConePy.h"
 #include "CylinderPy.h"
 #include "OffsetSurfacePy.h"
+#include "PlateSurfacePy.h"
 #include "PlanePy.h"
 #include "RectangularTrimmedSurfacePy.h"
 #include "SpherePy.h"
@@ -200,6 +202,7 @@ void PartExport initPart()
     Base::Interpreter().addType(&Part::BezierSurfacePy      ::Type,partModule,"BezierSurface");
     Base::Interpreter().addType(&Part::BSplineSurfacePy     ::Type,partModule,"BSplineSurface");
     Base::Interpreter().addType(&Part::OffsetSurfacePy      ::Type,partModule,"OffsetSurface");
+    Base::Interpreter().addType(&Part::PlateSurfacePy       ::Type,partModule,"PlateSurface");
     Base::Interpreter().addType(&Part::SurfaceOfExtrusionPy ::Type,partModule,"SurfaceOfExtrusion");
     Base::Interpreter().addType(&Part::SurfaceOfRevolutionPy::Type,partModule,"SurfaceOfRevolution");
     Base::Interpreter().addType(&Part::RectangularTrimmedSurfacePy
@@ -263,6 +266,7 @@ void PartExport initPart()
     Part::Wedge                 ::init();
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();
+    Part::Face                  ::init();
     Part::RuledSurface          ::init();
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
@@ -296,6 +300,7 @@ void PartExport initPart()
     Part::GeomToroid              ::init();
     Part::GeomPlane               ::init();
     Part::GeomOffsetSurface       ::init();
+    Part::GeomPlateSurface        ::init();
     Part::GeomTrimmedSurface      ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();

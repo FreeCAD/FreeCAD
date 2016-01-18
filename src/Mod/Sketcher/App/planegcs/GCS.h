@@ -39,15 +39,22 @@ namespace GCS
     ///////////////////////////////////////
 
     enum SolveStatus {
-        Success = 0,   // Found a solution zeroing the error function
-        Converged = 1, // Found a solution minimizing the error function
-        Failed = 2     // Failed to find any solution
+        Success = 0,        // Found a solution zeroing the error function
+        Converged = 1,      // Found a solution minimizing the error function
+        Failed = 2,         // Failed to find any solution
+        SuccessfulSolutionInvalid = 3, // This is a solution where the solver succeeded, but the resulting geometry is OCE-invalid
     };
 
     enum Algorithm {
         BFGS = 0,
         LevenbergMarquardt = 1,
         DogLeg = 2
+    };
+    
+    enum DogLegGaussStep {
+        FullPivLU = 0,
+        LeastNormFullPivLU = 1,
+        LeastNormLdlt = 2
     };
     
     enum QRAlgorithm {
@@ -95,6 +102,10 @@ namespace GCS
         int solve_BFGS(SubSystem *subsys, bool isFine=true, bool isRedundantsolving=false);
         int solve_LM(SubSystem *subsys, bool isRedundantsolving=false);
         int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
+
+        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
+        #endif
     public:
         int maxIter;
         int maxIterRedundant;
@@ -103,6 +114,7 @@ namespace GCS
         double convergence;
         double convergenceRedundant;
         QRAlgorithm qrAlgorithm;
+        DogLegGaussStep dogLegGaussStep;
         double qrpivotThreshold;
         DebugMode debugMode;
         double LM_eps;

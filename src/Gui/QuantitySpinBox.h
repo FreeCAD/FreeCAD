@@ -46,6 +46,8 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBind
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
 
 public:
+    using ExpressionBinding::apply;
+
     explicit QuantitySpinBox(QWidget *parent = 0);
     virtual ~QuantitySpinBox();
 
@@ -101,7 +103,6 @@ public:
     void setExpression(boost::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
-    bool apply();
 
 public Q_SLOTS:
     /// Sets the field with a quantity
@@ -113,6 +114,9 @@ protected Q_SLOTS:
     void userInput(const QString & text);
     void openFormulaDialog();
     void finishFormulaDialog();
+    
+    //get notified on expression change
+    virtual void onChange();
 
 protected:
     virtual StepEnabled stepEnabled() const;

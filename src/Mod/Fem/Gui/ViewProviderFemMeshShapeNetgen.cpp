@@ -41,8 +41,6 @@
 using namespace FemGui;
 
 
-
-
 /* TRANSLATOR FemGui::ViewProviderFemMeshShapeNetgen */
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemMeshShapeNetgen, FemGui::ViewProviderFemMeshShape)

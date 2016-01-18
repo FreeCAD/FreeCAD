@@ -72,6 +72,12 @@ public:
     */
     bool noRecomputes;
 
+    /*!
+     \brief Returns true if the sketcher supports the given geometry
+     \param geo - the geometry
+     \retval bool - true if the geometry is supported
+     */
+    bool isSupportedGeometry(const Part::Geometry *geo) const;
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo, bool construction=false);
     /// add unspecified geometry
@@ -122,6 +128,11 @@ public:
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
+    /** 
+     * sets the geometry of sketchObject as the solvedsketch geometry
+     * returns the DoF of such a geometry.
+     */
+    int setUpSketch();
 
     /** solves the sketch and updates the geometry, but not all the dependent features (does not recompute)
         When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
@@ -259,6 +270,12 @@ protected:
 
     void constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed);
     void constraintsRemoved(const std::set<App::ObjectIdentifier> &removed);
+    /*!
+     \brief Returns a list of supported geometries from the input list
+     \param geoList - the geometry list
+     \retval list - the supported geometry list
+     */
+    std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
 private:
     std::vector<Part::Geometry *> ExternalGeo;

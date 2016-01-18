@@ -57,6 +57,48 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4_2">
+     <item>
+      <widget class="QLabel" name="labelDogLegGaussStep">
+       <property name="toolTip">
+        <string>Type of function to apply in DogLeg for the Gauss step</string>
+       </property>
+       <property name="text">
+        <string>DogLeg Gauss step:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefComboBox" name="comboBoxDogLegGaussStep">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>DogLegGaussStep</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>FullPivLU</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>LeastNorm-FullPivLU</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>LeastNorm-LDLT</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="labelMaxIter">

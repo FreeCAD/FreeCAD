@@ -37,6 +37,7 @@
 #include <Gui/ActionFunction.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemSolverObject.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetObject.h>
 #include <Mod/Fem/App/FemConstraint.h>
@@ -76,13 +77,6 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)co
 
     return temp;
 }
-
-//std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren3D(void)const
-//{
-//
-//    //return static_cast<Assembly::ConstraintGroup*>(getObject())->Constraints.getValues();
-//    return std::vector<App::DocumentObject*> ();
-//}
 
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -170,6 +164,8 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
     if (!obj)
         return false;
     if (obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId()))
         return true;
     else if (obj->getTypeId().isDerivedFrom(Fem::Constraint::getClassTypeId()))
         return true;

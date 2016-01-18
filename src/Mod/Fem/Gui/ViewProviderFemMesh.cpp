@@ -70,37 +70,37 @@
 using namespace FemGui;
 
 
-
-
-
-
-struct FemFace 
+struct FemFace
 {
-	const SMDS_MeshNode *Nodes[8];
-	unsigned long  ElementNumber; 
+    const SMDS_MeshNode *Nodes[8];
+    unsigned long  ElementNumber; 
     const SMDS_MeshElement* Element;
-	unsigned short Size;
-	unsigned short FaceNo;
+    unsigned short Size;
+    unsigned short FaceNo;
     bool hide;
     Base::Vector3d getFirstNodePoint(void) {
         return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
     }
-	
-	Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
-	
-	bool isSameFace (FemFace &face);
+
+    Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo,
+        const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,
+        const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
+
+    bool isSameFace (FemFace &face);
 };
 
-Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4,const SMDS_MeshNode* n5,const SMDS_MeshNode* n6,const SMDS_MeshNode* n7,const SMDS_MeshNode* n8)
+Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,short faceNo,
+                            const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4,
+                            const SMDS_MeshNode* n5,const SMDS_MeshNode* n6,const SMDS_MeshNode* n7,const SMDS_MeshNode* n8)
 {
-	Nodes[0] = n1;
-	Nodes[1] = n2;
-	Nodes[2] = n3;
-	Nodes[3] = n4;
-	Nodes[4] = n5;
-	Nodes[5] = n6;
-	Nodes[6] = n7;
-	Nodes[7] = n8;
+    Nodes[0] = n1;
+    Nodes[1] = n2;
+    Nodes[2] = n3;
+    Nodes[3] = n4;
+    Nodes[4] = n5;
+    Nodes[5] = n6;
+    Nodes[6] = n7;
+    Nodes[7] = n8;
 
     Element         = element;
     ElementNumber   = id; 
@@ -108,29 +108,29 @@ Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned 
     FaceNo          = faceNo;
     hide            = false;
 
-	// sorting the nodes for later easier comparison (bubble sort)
+    // sorting the nodes for later easier comparison (bubble sort)
     int i, j, flag = 1;    // set flag to 1 to start first pass
-	const SMDS_MeshNode* temp;   // holding variable
-	
-	for(i = 1; (i <= size) && flag; i++)
-	{
-		flag = 0;
-		for (j=0; j < (size -1); j++)
-		{
-			if (Nodes[j+1] > Nodes[j])      // ascending order simply changes to <
-			{ 
-				temp = Nodes[j];             // swap elements
-				Nodes[j] = Nodes[j+1];
-				Nodes[j+1] = temp;
-				flag = 1;               // indicates that a swap occurred.
-			}
-		}
-	}
+    const SMDS_MeshNode* temp;   // holding variable
+
+    for(i = 1; (i <= size) && flag; i++)
+    {
+        flag = 0;
+        for (j=0; j < (size -1); j++)
+        {
+            if (Nodes[j+1] > Nodes[j])      // ascending order simply changes to <
+            {
+                temp = Nodes[j];             // swap elements
+                Nodes[j] = Nodes[j+1];
+                Nodes[j+1] = temp;
+                flag = 1;               // indicates that a swap occurred.
+            }
+        }
+    }
 
     return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
-};
+}
 
-class FemFaceGridItem :public std::vector<FemFace*>{
+class FemFaceGridItem : public std::vector<FemFace*>{
 public:
     //FemFaceGridItem(void){reserve(200);}
 };
@@ -140,16 +140,16 @@ bool FemFace::isSameFace (FemFace &face)
     // the same element can not have the same face
     if(face.ElementNumber == ElementNumber)
         return false;
-	if(face.Size != Size)
+    if(face.Size != Size)
         return false;
-	// if the same face size just compare if the sorted nodes are the same
-	if( Nodes[0] == face.Nodes[0] &&
-	    Nodes[1] == face.Nodes[1] &&
-		Nodes[2] == face.Nodes[2] &&
-		Nodes[3] == face.Nodes[3] &&
-		Nodes[4] == face.Nodes[4] &&
-		Nodes[5] == face.Nodes[5] &&
-		Nodes[6] == face.Nodes[6] &&
+    // if the same face size just compare if the sorted nodes are the same
+    if( Nodes[0] == face.Nodes[0] &&
+        Nodes[1] == face.Nodes[1] &&
+        Nodes[2] == face.Nodes[2] &&
+        Nodes[3] == face.Nodes[3] &&
+        Nodes[4] == face.Nodes[4] &&
+        Nodes[5] == face.Nodes[5] &&
+        Nodes[6] == face.Nodes[6] &&
         Nodes[7] == face.Nodes[7] ){
             hide = true;
             face.hide = true;
@@ -158,6 +158,24 @@ bool FemFace::isSameFace (FemFace &face)
 
     return false;
 };
+
+// ----------------------------------------------------------------------------
+
+class ViewProviderFemMesh::Private
+{
+public:
+    static const char *dm_face_wire;
+    static const char *dm_face_wire_node;
+    static const char *dm_face;
+    static const char *dm_node;
+    static const char *dm_wire;
+};
+
+const char * ViewProviderFemMesh::Private::dm_face_wire = "Faces & Wireframe";
+const char * ViewProviderFemMesh::Private::dm_face_wire_node = "Faces, Wireframe & Nodes";
+const char * ViewProviderFemMesh::Private::dm_face = "Faces";
+const char * ViewProviderFemMesh::Private::dm_node = "Nodes";
+const char * ViewProviderFemMesh::Private::dm_wire = "Wireframe";
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemMesh, Gui::ViewProviderGeometryObject)
 
@@ -228,7 +246,7 @@ ViewProviderFemMesh::~ViewProviderFemMesh()
     pcMatBinding->unref();
     pcPointMaterial->unref();
     pcPointStyle->unref();
-
+    pcAnoCoords->unref();
 }
 
 void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
@@ -245,13 +263,13 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcAnoStyle->style = SoDrawStyle::POINTS;
     pcAnoStyle->pointSize = 5;
 
-    SoMaterial * pcAnoMaterial = new SoMaterial;
+    SoMaterial *pcAnoMaterial = new SoMaterial;
     pcAnoMaterial->diffuseColor.setValue(0,1,0);
     pcAnoMaterial->emissiveColor.setValue(0,1,0);
     pcAnotRoot->addChild(pcAnoMaterial);  
     pcAnotRoot->addChild(pcAnoStyle);
     pcAnotRoot->addChild(pcAnoCoords);
-    SoPointSet * pointset = new SoPointSet;
+    SoPointSet *pointset = new SoPointSet;
     pcAnotRoot->addChild(pointset);
 
     // flat
@@ -263,7 +281,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcFlatRoot->addChild(pcMatBinding);
     pcFlatRoot->addChild(pcFaces);
     pcFlatRoot->addChild(pcAnotRoot);
-    addDisplayMaskMode(pcFlatRoot, "Flat");
+    addDisplayMaskMode(pcFlatRoot, Private::dm_face);
 
     // line
     SoLightModel* pcLightModel = new SoLightModel();
@@ -276,7 +294,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     color->rgb.setValue(0.0f,0.0f,0.0f);
     pcWireRoot->addChild(color);
     pcWireRoot->addChild(pcLines);
-    addDisplayMaskMode(pcWireRoot, "Wireframe");
+    addDisplayMaskMode(pcWireRoot, Private::dm_wire);
 
 
     // Points
@@ -286,7 +304,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcPointsRoot->addChild(pcCoords);
     pointset = new SoPointSet;
     pcPointsRoot->addChild(pointset);
-    addDisplayMaskMode(pcPointsRoot, "Nodes");
+    addDisplayMaskMode(pcPointsRoot, Private::dm_node);
 
     // flat+line (Elements)
     SoPolygonOffset* offset = new SoPolygonOffset();
@@ -306,7 +324,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcFlatWireRoot->addChild(color);
     pcFlatWireRoot->addChild(pcLines);
 
-    addDisplayMaskMode(pcFlatWireRoot, "Elements");
+    addDisplayMaskMode(pcFlatWireRoot, Private::dm_face_wire);
 
     // flat+line+Nodes (Elements&Nodes)
     SoGroup* pcElemNodesRoot = new SoSeparator();
@@ -324,36 +342,23 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcElemNodesRoot->addChild(pcPointMaterial);
     pcElemNodesRoot->addChild(pointset);
 
-    addDisplayMaskMode(pcElemNodesRoot, "Elements & Nodes");
-
-
-
+    addDisplayMaskMode(pcElemNodesRoot, Private::dm_face_wire_node);
 }
 
 void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
 {
-    if (strcmp("Elements",ModeName)==0)
-        setDisplayMaskMode("Elements");
-    else if (strcmp("Elements & Nodes",ModeName)==0)
-        setDisplayMaskMode("Elements & Nodes");
-    else if (strcmp("Flat",ModeName)==0)
-        setDisplayMaskMode("Flat");
-    else if (strcmp("Wireframe",ModeName)==0)
-        setDisplayMaskMode("Wireframe");
-    else if (strcmp("Nodes",ModeName)==0)
-        setDisplayMaskMode("Nodes");
-
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    setDisplayMaskMode(ModeName);
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderFemMesh::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Elements");
-    StrList.push_back("Elements & Nodes");
-    StrList.push_back("Flat");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Nodes");
+    StrList.push_back(Private::dm_face_wire);
+    StrList.push_back(Private::dm_face_wire_node);
+    StrList.push_back(Private::dm_face);
+    StrList.push_back(Private::dm_wire);
+    StrList.push_back(Private::dm_node);
     return StrList;
 }
 
@@ -765,19 +770,25 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
             int num = aFace->NbNodes();
             switch(num){
-                
-            case 4:// quad face
-                BndBox.Add(facesHelper[i++].set(4, aFace, aFace->GetID(), 0, aFace->GetNode(0), aFace->GetNode(1), aFace->GetNode(2), aFace->GetNode(3)));
-                break;
-            case 3:// tria face
+            case 3:
+                //tria3 face = N1, N2, N3
                 BndBox.Add(facesHelper[i++].set(3, aFace, aFace->GetID(), 0, aFace->GetNode(0), aFace->GetNode(1), aFace->GetNode(2)));
                 break;
-            case 6:// tria face with 6 nodes
+            case 4:
+                //quad4 face = N1, N2, N3, N4
+                BndBox.Add(facesHelper[i++].set(4, aFace, aFace->GetID(), 0, aFace->GetNode(0), aFace->GetNode(1), aFace->GetNode(2), aFace->GetNode(3)));
+                break;
+            case 6:
+                //tria6 face = N1, N2, N3, N4, N5, N6
                 BndBox.Add(facesHelper[i++].set(6, aFace, aFace->GetID(), 0, aFace->GetNode(0), aFace->GetNode(1), aFace->GetNode(2), aFace->GetNode(3), aFace->GetNode(4), aFace->GetNode(5)));
                 break;
-
-                //unknown case
-                default: assert(0);
+            case 8:
+                //quad8 face = N1, N2, N3, N4, N5, N6, N7, N8
+                BndBox.Add(facesHelper[i++].set(8, aFace, aFace->GetID(), 0, aFace->GetNode(0), aFace->GetNode(1), aFace->GetNode(2), aFace->GetNode(3), aFace->GetNode(4), aFace->GetNode(5), aFace->GetNode(6), aFace->GetNode(7)));
+                break;
+            default:
+                //unknown face type
+                throw std::runtime_error("Node count not supported by ViewProviderFemMesh, [3|4|6|8] are allowed");
             }
         }
     }
@@ -791,45 +802,114 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             int num = aVol->NbNodes();
 
             switch (num){
-                // tet 4 element 
+            //tetra4 volume
             case 4:
-                // face 1
+                // face 1 = N1, N2, N3
                 BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2)));
-                // face 2
+                // face 2 = N1, N4, N2
                 BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 2, aVol->GetNode(0), aVol->GetNode(3), aVol->GetNode(1)));
-                // face 3
+                // face 3 = N2, N4, N3
                 BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 3, aVol->GetNode(1), aVol->GetNode(3), aVol->GetNode(2)));
-                // face 4
+                // face 4 = N3, N4, N1
                 BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 4, aVol->GetNode(2), aVol->GetNode(3), aVol->GetNode(0)));
                 break;
-                //unknown case
-            case 8:
-                // face 1
+            //pyra5 volume
+            case 5:
+                // face 1 = N1, N2, N3, N4
                 BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(3)));
-                // face 2
+                // face 2 = N1, N5, N2
+                BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 2, aVol->GetNode(0), aVol->GetNode(4), aVol->GetNode(1)));
+                // face 3 = N2, N5, N3
+                BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 3, aVol->GetNode(1), aVol->GetNode(4), aVol->GetNode(2)));
+                // face 4 = N3, N5, N4
+                BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 4, aVol->GetNode(2), aVol->GetNode(4), aVol->GetNode(3)));
+                // face 5 = N4, N5, N1
+                BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 5, aVol->GetNode(3), aVol->GetNode(4), aVol->GetNode(0)));
+                break;
+            //penta6 volume
+            case 6:
+                // face 1 = N1, N2, N3
+                BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2)));
+                // face 2 = N4, N6, N5
+                BndBox.Add(facesHelper[i++].set(3, aVol, aVol->GetID(), 2, aVol->GetNode(3), aVol->GetNode(5), aVol->GetNode(4)));
+                // face 3 = N1, N4, N5, N2
+                BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 3, aVol->GetNode(0), aVol->GetNode(3), aVol->GetNode(4), aVol->GetNode(1)));
+                // face 4 = N2, N5, N6, N3
+                BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 4, aVol->GetNode(1), aVol->GetNode(4), aVol->GetNode(5), aVol->GetNode(2)));
+                // face 5 = N3, N6, N4, N1
+                BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 5, aVol->GetNode(2), aVol->GetNode(5), aVol->GetNode(3), aVol->GetNode(0)));
+                break;
+            //hexa8 volume 
+            //the nodes of hexa8 are not according the node numbers on the FreeCAD wiki Fem_Mesh
+            case 8:
+                // face 1 = N1, N2, N3, N4
+                BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(3)));
+                // face 2 = N5, N6, N7, N8
                 BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 2, aVol->GetNode(4), aVol->GetNode(5), aVol->GetNode(6), aVol->GetNode(7)));
-                // face 3
+                // face 3 = N1, N2, N5, N6
                 BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 3, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(4), aVol->GetNode(5)));
-                // face 4
+                // face 4 = N2, N3, N6, N7
                 BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 4, aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(5), aVol->GetNode(6)));
-                // face 5
+                // face 5 = N3, N4, N7, N8
                 BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 5, aVol->GetNode(2), aVol->GetNode(3), aVol->GetNode(6), aVol->GetNode(7)));
-                // face 6
+                // face 6 = N1, N4, N5, N8
                 BndBox.Add(facesHelper[i++].set(4, aVol, aVol->GetID(), 6, aVol->GetNode(0), aVol->GetNode(3), aVol->GetNode(4), aVol->GetNode(7)));
                 break;
-                //unknown case
+            //tetra10 volume
             case 10:
-                // face 1
+                // face 1 = N1, N2, N3, N5, N6, N7
                 BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(4), aVol->GetNode(5), aVol->GetNode(6)));
-                // face 2
+                // face 2 = N1, N4, N2, N8, N9, N5
                 BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 2, aVol->GetNode(0), aVol->GetNode(3), aVol->GetNode(1), aVol->GetNode(7), aVol->GetNode(8), aVol->GetNode(4)));
-                // face 3
+                // face 3 = N2, N4, N3, N9, N10, N6
                 BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 3, aVol->GetNode(1), aVol->GetNode(3), aVol->GetNode(2), aVol->GetNode(8), aVol->GetNode(9), aVol->GetNode(5)));
-                // face 4
+                // face 4 = N3, N4, N1, N10, N8, N7
                 BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 4, aVol->GetNode(2), aVol->GetNode(3), aVol->GetNode(0), aVol->GetNode(9), aVol->GetNode(7), aVol->GetNode(6)));
                 break;
-                //unknown case
-            default: assert(0);
+            //pyra13 volume
+            case 13:
+                // face 1 = N1, N2, N3, N4, N6, N7, N8, N9
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(3), aVol->GetNode(5), aVol->GetNode(6), aVol->GetNode(7), aVol->GetNode(8)));
+                // face 2 = N1, N5, N2, N10, N11, N6
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 2, aVol->GetNode(0), aVol->GetNode(4), aVol->GetNode(1), aVol->GetNode(9), aVol->GetNode(10), aVol->GetNode(5)));
+                // face 3 = N2, N5, N3, N11, N12, N7
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 3, aVol->GetNode(1), aVol->GetNode(4), aVol->GetNode(2), aVol->GetNode(10), aVol->GetNode(11), aVol->GetNode(6)));
+                // face 4 = N3, N5, N4, N12, N13, N8
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 4, aVol->GetNode(2), aVol->GetNode(4), aVol->GetNode(3), aVol->GetNode(11), aVol->GetNode(12), aVol->GetNode(7)));
+                // face 5 = N4, N5, N1, N13, N10, N9
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 5, aVol->GetNode(3), aVol->GetNode(4), aVol->GetNode(0), aVol->GetNode(12), aVol->GetNode(9), aVol->GetNode(8)));
+                break;
+            //penta15 volume
+            case 15:
+                // face 1 = N1, N2, N3, N7, N8, N9
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(6), aVol->GetNode(7), aVol->GetNode(8)));
+                // face 2 = N4, N6, N5, N12, N11, N10
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 2, aVol->GetNode(3), aVol->GetNode(5), aVol->GetNode(4), aVol->GetNode(11), aVol->GetNode(10), aVol->GetNode(9)));
+                // face 3 = N1, N4, N5, N2, N13, N10, N14, N7
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 3, aVol->GetNode(0), aVol->GetNode(3), aVol->GetNode(4), aVol->GetNode(1), aVol->GetNode(12), aVol->GetNode(9), aVol->GetNode(13), aVol->GetNode(6)));
+                // face 4 = N2, N5, N6, N3, N14, N11, N15, N8
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 4, aVol->GetNode(1), aVol->GetNode(4), aVol->GetNode(5), aVol->GetNode(2), aVol->GetNode(13), aVol->GetNode(9), aVol->GetNode(14), aVol->GetNode(7)));
+                // face 5 = N3, N6, N4, N1, N15, N12, N13, N9
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 5, aVol->GetNode(2), aVol->GetNode(5), aVol->GetNode(3), aVol->GetNode(0), aVol->GetNode(14), aVol->GetNode(11), aVol->GetNode(12), aVol->GetNode(8)));
+                break;
+            //hexa20 volume
+            case 20:
+                // face 1 = N1, N2, N3, N4, N9, N10, N11, N12
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(3), aVol->GetNode(8), aVol->GetNode(9), aVol->GetNode(10), aVol->GetNode(11)));
+                // face 2 = N5, N8, N7, N6, N16, N15, N14, N13
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 2, aVol->GetNode(4), aVol->GetNode(7), aVol->GetNode(6), aVol->GetNode(5), aVol->GetNode(15), aVol->GetNode(14), aVol->GetNode(13), aVol->GetNode(12)));
+                // face 3 = N1, N5, N6, N2, N17, N13, N18, N9
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 3, aVol->GetNode(0), aVol->GetNode(4), aVol->GetNode(5), aVol->GetNode(1), aVol->GetNode(16), aVol->GetNode(12), aVol->GetNode(17), aVol->GetNode(8)));
+                // face 4 = N2, N6, N7, N3, N18, N14, N19, N10
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 4, aVol->GetNode(1), aVol->GetNode(5), aVol->GetNode(6), aVol->GetNode(2), aVol->GetNode(17), aVol->GetNode(13), aVol->GetNode(18), aVol->GetNode(9)));
+                // face 5 = N3, N7, N8, N4, N19, N15, N20, N11
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 5, aVol->GetNode(2), aVol->GetNode(6), aVol->GetNode(7), aVol->GetNode(3), aVol->GetNode(18), aVol->GetNode(14), aVol->GetNode(19), aVol->GetNode(10)));
+                // face 6 = N4, N8, N5, N1, N20, N16, N17, N12
+                BndBox.Add(facesHelper[i++].set(8, aVol, aVol->GetID(), 6, aVol->GetNode(3), aVol->GetNode(7), aVol->GetNode(4), aVol->GetNode(0), aVol->GetNode(19), aVol->GetNode(15), aVol->GetNode(16), aVol->GetNode(11)));
+                break;
+            //unknown volume type
+            default:
+                throw std::runtime_error("Node count not supported by ViewProviderFemMesh, [4|5|6|8|10|13|15|20] are allowed");
             }
         }
     }
@@ -971,7 +1051,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             case 3:triangleCount++; break;
             case 4:triangleCount += 2; break;
             case 6:triangleCount += 4; break;
-            default: assert(0);
+            // case 8:triangleCount += 6; break;  //quad8 face -> 6 triangle but no further implementation is done
+            default: throw std::runtime_error("only display mode nodes is supported for this element");
+            //default:assert(0); 
         }
     }
     // edge map collect and sort edges of the faces to be shown. 
@@ -985,19 +1067,19 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             const SMDS_MeshEdge* aEdge = aEdgeIte->next();
             int num = aEdge->NbNodes();
             switch (num){
-            case 2: { // case for Segment element
+            case 2: { // Seg2: N1, N2
                 int nIdx0 = mapNodeIndex[aEdge->GetNode(0)];
                 int nIdx1 = mapNodeIndex[aEdge->GetNode(1)];
                 insEdgeVec(EdgeMap, nIdx0, nIdx1);
                 break;
             }
 
-            case 3: { // case for Segment element
+            case 3: { // Seg3: N1, N2, N3 (N3 is middle Node)
                 int nIdx0 = mapNodeIndex[aEdge->GetNode(0)];
                 int nIdx1 = mapNodeIndex[aEdge->GetNode(1)];
                 int nIdx2 = mapNodeIndex[aEdge->GetNode(2)];
-                insEdgeVec(EdgeMap, nIdx0, nIdx1);
-                insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                insEdgeVec(EdgeMap, nIdx0, nIdx2);
+                insEdgeVec(EdgeMap, nIdx2, nIdx1);
                 break;
             }
             }
@@ -1433,7 +1515,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     }
                     break;
 
-                default:assert(0); // not implemented node
+                //default:assert(0); // not implemented node
+                default: throw std::runtime_error("only display mode nodes is supported for this element");
+
             }
         }
     }

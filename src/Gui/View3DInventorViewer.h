@@ -299,7 +299,7 @@ public:
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
-     * \a TRUE the reorientation is animated, otherwise its directly
+     * \a true the reorientation is animated, otherwise its directly
      * set.
      */
     void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);

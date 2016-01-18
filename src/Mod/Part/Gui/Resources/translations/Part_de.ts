@@ -131,7 +131,7 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1597"/>
+        <location filename="../../Command.cpp" line="+1650"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -251,7 +251,7 @@
 <context>
     <name>CmdPartBoolean</name>
     <message>
-        <location line="-840"/>
+        <location line="-889"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -297,7 +297,7 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-848"/>
+        <location filename="../../Command.cpp" line="-850"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -333,7 +333,7 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+1007"/>
+        <location line="+1058"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -369,7 +369,7 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-748"/>
+        <location line="-799"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -443,7 +443,7 @@
 <context>
     <name>CmdPartCrossSections</name>
     <message>
-        <location filename="../../Command.cpp" line="+539"/>
+        <location filename="../../Command.cpp" line="+590"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -461,7 +461,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-879"/>
+        <location line="-930"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -517,7 +517,7 @@
 <context>
     <name>CmdPartExtrude</name>
     <message>
-        <location line="+250"/>
+        <location line="+252"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -535,7 +535,7 @@
 <context>
     <name>CmdPartFillet</name>
     <message>
-        <location line="+52"/>
+        <location line="+101"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-639"/>
+        <location line="-690"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -607,7 +607,7 @@
 <context>
     <name>CmdPartLoft</name>
     <message>
-        <location line="+407"/>
+        <location line="+458"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -627,9 +627,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartMakeFace</name>
+    <message>
+        <location line="-226"/>
+        <source>Part</source>
+        <translation type="unfinished">Formteil</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Make face from sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Make face from selected sketches</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartMakeSolid</name>
     <message>
-        <location line="-365"/>
+        <location line="-190"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -647,7 +665,7 @@
 <context>
     <name>CmdPartMirror</name>
     <message>
-        <location line="+267"/>
+        <location line="+316"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -683,7 +701,7 @@
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1181"/>
+        <location line="-1232"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -737,7 +755,7 @@
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+710"/>
+        <location filename="../../Command.cpp" line="+712"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -755,7 +773,7 @@
 <context>
     <name>CmdPartRevolve</name>
     <message>
-        <location line="+108"/>
+        <location line="+157"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -795,7 +813,7 @@
 <context>
     <name>CmdPartSection</name>
     <message>
-        <location line="-835"/>
+        <location line="-886"/>
         <source>Make a section of two shapes</source>
         <translation>Schnitt von zwei Formen erzeugen</translation>
     </message>
@@ -887,7 +905,7 @@
 <context>
     <name>CmdPartSweep</name>
     <message>
-        <location filename="../../Command.cpp" line="+586"/>
+        <location filename="../../Command.cpp" line="+637"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -1225,7 +1243,7 @@
         <translation>Y:</translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="+149"/>
+        <location filename="../../DlgExtrusion.cpp" line="+150"/>
         <source>Select a shape for extrusion, first.</source>
         <translation>Wählen Sie zuerst eine Form zum extrudieren.</translation>
     </message>
@@ -1692,9 +1710,18 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
 <context>
     <name>PartGui::DlgPartImportIgesImp</name>
     <message>
-        <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
         <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-        <translation>IGES (*.igs *.IGES); Alle Dateien (*.*)</translation>
+        <translation type="obsolete">IGES (*.igs *.IGES); Alle Dateien (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../../DlgPartImportIgesImp.cpp" line="+71"/>
+        <source>IGES</source>
+        <translation type="unfinished">IGES</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1730,9 +1757,18 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
 <context>
     <name>PartGui::DlgPartImportStepImp</name>
     <message>
-        <location filename="../../DlgPartImportStepImp.cpp" line="+68"/>
         <source>STEP (*.stp *.step);;All Files (*.*)</source>
-        <translation>STEP (*.stp *.step);; Alle Dateien (*.*)</translation>
+        <translation type="obsolete">STEP (*.stp *.step);; Alle Dateien (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../../DlgPartImportStepImp.cpp" line="+70"/>
+        <source>STEP</source>
+        <translation type="unfinished">STEP</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2216,7 +2252,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="unfinished">Volumenkörper erzeugen</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+176"/>
+        <location filename="../../DlgRevolution.cpp" line="+177"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Select a shape for revolution, first.</translation>
     </message>
@@ -2575,7 +2611,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+121"/>
+        <location filename="../../Mirroring.cpp" line="+122"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Wählen Sie zuerst eine Form für die Spiegelung.</translation>
     </message>
@@ -3197,17 +3233,17 @@ in the 3D view for the sweep path.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-1069"/>
+        <location filename="../../Command.cpp" line="-1120"/>
         <location line="+77"/>
         <location line="+82"/>
         <location line="+176"/>
         <location line="+50"/>
-        <location line="+908"/>
+        <location line="+959"/>
         <source>Wrong selection</source>
         <translation>Falsche Auswahl</translation>
     </message>
     <message>
-        <location line="-1292"/>
+        <location line="-1343"/>
         <location line="+385"/>
         <source>Select two shapes please.</source>
         <translation>Wählen Sie bitte zwei Formen.</translation>
@@ -3233,29 +3269,24 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+199"/>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-        <translation>Alle CAD-Dateien (*.stp *.step *IGS .IGES *.brp *.brep)</translation>
+        <translation type="obsolete">Alle CAD-Dateien (*.stp *.step *IGS .IGES *.brp *.brep)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>STEP (*.stp *.step)</source>
-        <translation>STEP (*.stp *.step)</translation>
+        <translation type="obsolete">STEP (*.stp *.step)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>IGES (*.igs *.iges)</source>
-        <translation>IGES (*.igs *.IGES)</translation>
+        <translation type="obsolete">IGES (*.igs *.IGES)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>BREP (*.brp *.brep)</source>
-        <translation>BREP (*.brp *.brep)</translation>
+        <translation type="obsolete">BREP (*.brp *.brep)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>All Files (*.*)</source>
-        <translation>Alle Dateien (*.*)</translation>
+        <translation type="obsolete">Alle Dateien (*.*)</translation>
     </message>
     <message>
         <location filename="../../CommandSimple.cpp" line="+59"/>
@@ -3292,7 +3323,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Transformieren</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+160"/>
+        <location filename="../../AppPartGui.cpp" line="+162"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Part design</translation>
@@ -3309,13 +3340,23 @@ Do you want to continue?</source>
         <translation type="unfinished">Anzeige</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-461"/>
+        <location filename="../../Command.cpp" line="-258"/>
         <location line="+82"/>
         <source>Select two shapes or more, please.</source>
         <translation>Wählen Sie bitte zwei oder mehrere Formen aus.</translation>
     </message>
     <message>
-        <location line="+1134"/>
+        <location line="+376"/>
+        <source>All CAD Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+804"/>
         <source>You have to select either two edges or two wires.</source>
         <translation>Wählen Sie entweder zwei Kanten oder zwei Drahtgitter aus.</translation>
     </message>
@@ -3646,6 +3687,11 @@ Do you want to continue?</source>
         <location line="+5"/>
         <source>Clear All</source>
         <translation type="unfinished">Alles löschen</translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderSpline.cpp" line="+80"/>
+        <source>Show control points</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

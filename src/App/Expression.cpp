@@ -258,7 +258,7 @@ void NumberExpression::negate()
 std::string NumberExpression::toString() const
 {
     std::stringstream s;
-    s << quantity.getValue();
+    s << std::setprecision(std::numeric_limits<double>::digits10 + 1) << quantity.getValue();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')
@@ -1090,14 +1090,14 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
      var = path;
 }
 
-void VariableExpression::renameDocumentObject(const std::string &oldName, const std::string &newName)
+bool VariableExpression::renameDocumentObject(const std::string &oldName, const std::string &newName)
 {
-    var.renameDocumentObject(oldName, newName);
+    return var.renameDocumentObject(oldName, newName);
 }
 
-void VariableExpression::renameDocument(const std::string &oldName, const std::string &newName)
+bool VariableExpression::renameDocument(const std::string &oldName, const std::string &newName)
 {
-    var.renameDocument(oldName, newName);
+    return var.renameDocument(oldName, newName);
 }
 
 //

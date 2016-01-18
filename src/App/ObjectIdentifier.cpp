@@ -26,6 +26,9 @@
 #	include <cassert>
 #endif
 
+#include <limits>
+#include <iomanip>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
 #include "Application.h"
@@ -114,13 +117,24 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const 
     , documentObjectNameSet(false)
     , propertyIndex(-1)
 {
+    if (owner) {
+        const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(owner);
+        if (!docObj)
+            throw Base::Exception("Property must be owned by a document object.");
+
+        const Document * doc = docObj->getDocument();
+
+        documentName = String(doc->getName(), false, true);
+        documentObjectName = String(docObj->getNameInDocument(), false, true);
+
+    }
     if (property.size() > 0)
         addComponent(Component::SimpleComponent(property));
 }
 
 /**
  * @brief Construct an ObjectIdentifier object given a property. The property is assumed to be single-valued.
- * @param prop Property to construct object idenfier for.
+ * @param prop Property to construct object identifier for.
  */
 
 ObjectIdentifier::ObjectIdentifier(const Property &prop)
@@ -129,6 +143,16 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop)
     , documentObjectNameSet(false)
     , propertyIndex(-1)
 {
+    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
+
+    if (!docObj)
+        throw Base::Exception("Property must be owned by a document object.");
+
+    Document * doc = docObj->getDocument();
+
+    documentName = String(doc->getName(), false, true);
+    documentObjectName = String(docObj->getNameInDocument(), false, true);
+
     addComponent(Component::SimpleComponent(String(owner->getPropertyName(&prop))));
 }
 
@@ -313,21 +337,30 @@ std::string ObjectIdentifier::toEscapedString() const
  * @param newName New name of document object
  */
 
-void ObjectIdentifier::renameDocumentObject(const std::string &oldName, const std::string &newName)
+bool ObjectIdentifier::renameDocumentObject(const std::string &oldName, const std::string &newName)
 {
-    if (documentObjectNameSet && documentObjectName == oldName) {        
+    if (oldName == newName)
+        return false;
+
+    if (documentObjectNameSet && documentObjectName == oldName) {
         if (ExpressionParser::isTokenAnIndentifier(newName))
             documentObjectName = newName;
         else
             documentObjectName = ObjectIdentifier::String(newName, true);
+
+        resolve();
+        return true;
     }
     else if (propertyIndex == 1 && documentObjectName == oldName) {
         if (ExpressionParser::isTokenAnIndentifier(newName))
             components[0].name = newName;
         else
             components[0].name = ObjectIdentifier::String(newName, true);
+
+        resolve();
+        return true;
     }
-    resolve();
+    return false;
 }
 
 /**
@@ -336,13 +369,18 @@ void ObjectIdentifier::renameDocumentObject(const std::string &oldName, const st
  * @param newName New name of document
  */
 
-void ObjectIdentifier::renameDocument(const std::string &oldName, const std::string &newName)
+bool ObjectIdentifier::renameDocument(const std::string &oldName, const std::string &newName)
 {
+    if (oldName == newName)
+        return false;
+
     if (documentName == oldName) {
         documentName = newName;
+        resolve();
+        return true;
     }
 
-    resolve();
+    return false;
 }
 
 /**
@@ -491,32 +529,35 @@ std::string ObjectIdentifier::Component::toString() const
  * @return Pointer to document object if a unique pointer is found, 0 otherwise.
  */
 
-App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * doc, const std::string & name) const
+App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * doc, const String & name) const
 {
-    DocumentObject * o1 = 0;
-    DocumentObject * o2 = 0;
+    DocumentObject * objectById = 0;
+    DocumentObject * objectByLabel = 0;
     std::vector<DocumentObject*> docObjects = doc->getObjects();
 
+    // No object found with matching label, try using name directly
+    objectById = doc->getObject(static_cast<const char*>(name));
+
+    if (name.isForceIdentifier())
+        return objectById;
+
     for (std::vector<DocumentObject*>::iterator j = docObjects.begin(); j != docObjects.end(); ++j) {
-        if (strcmp((*j)->Label.getValue(), name.c_str()) == 0) {
+        if (strcmp((*j)->Label.getValue(), static_cast<const char*>(name)) == 0) {
             // Found object with matching label
-            if (o1 != 0)
+            if (objectByLabel != 0)
                 return 0;
-            o1 = *j;
+            objectByLabel = *j;
         }
     }
 
-    // No object found with matching label, try using name directly
-    o2 = doc->getObject(name.c_str());
-
-    if (o1 == 0 && o2 == 0) // Not found at all
+    if (objectByLabel == 0 && objectById == 0) // Not found at all
         return 0;
-    else if (o1 == 0) // Found by name
-        return o2;
-    else if (o2 == 0) // Found by label
-        return o1;
-    else if (o1 == o2) // Found by both name and label, same object
-        return o1;
+    else if (objectByLabel == 0) // Found by name
+        return objectById;
+    else if (objectById == 0) // Found by label
+        return objectByLabel;
+    else if (objectByLabel == objectById) // Found by both name and label, same object
+        return objectByLabel;
     else
         return 0; // Found by both name and label, two different objects
 }
@@ -557,11 +598,11 @@ void ObjectIdentifier::resolve() const
         }
     }
 
-    documentName = String(doc->Label.getValue());
+    documentName = String(doc->getName(), false, documentName.isForceIdentifier());
 
     /* Document object name specified? */
     if (documentObjectNameSet) {
-        docObject = getDocumentObject(doc, documentObjectName.getString());
+        docObject = getDocumentObject(doc, documentObjectName);
         if (!docObject)
             return;
         if (components.size() > 0) {
@@ -574,7 +615,7 @@ void ObjectIdentifier::resolve() const
     else {
         /* Document object name not specified, resolve from path */
         if (components.size() == 1) {
-            documentObjectName = String(freecad_dynamic_cast<DocumentObject>(owner)->getNameInDocument());
+            documentObjectName = String(static_cast<const DocumentObject*>(owner)->getNameInDocument(), false, documentObjectName.isForceIdentifier());
             propertyName = components[0].name.getString();
             propertyIndex = 0;
         }
@@ -585,12 +626,12 @@ void ObjectIdentifier::resolve() const
             docObject = getDocumentObject(doc, components[0].name);
 
             if (docObject) {
-                documentObjectName = components[0].name;
+                documentObjectName = String(components[0].name, false, documentObjectName.isForceIdentifier());
                 propertyName = components[1].name.getString();
                 propertyIndex = 1;
             }
             else {
-                documentObjectName = String(freecad_dynamic_cast<DocumentObject>(owner)->getNameInDocument());
+                documentObjectName = String(static_cast<const DocumentObject*>(owner)->getNameInDocument(), false, documentObjectName.isForceIdentifier());
                 propertyName = components[0].name.getString();
                 propertyIndex = 0;
             }
@@ -608,21 +649,37 @@ void ObjectIdentifier::resolve() const
 
 Document * ObjectIdentifier::getDocument(String name) const
 {
-    App::Document * doc = 0;
-    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-
     if (name.getString().size() == 0)
         name = getDocumentName();
 
+    App::Document * docById = App::GetApplication().getDocument(name);
+
+    if (name.isForceIdentifier())
+        return docById;
+
+    App::Document * docByLabel = 0;
+    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+
     for (std::vector<App::Document*>::const_iterator i = docs.begin(); i != docs.end(); ++i) {
         if ((*i)->Label.getValue() == name.getString()) {
-            if (doc != 0)
+            /* Multiple hits for same label? */
+            if (docByLabel != 0)
                 return 0;
-            doc = *i;
+            docByLabel = *i;
         }
     }
 
-    return doc;
+    /* Not found on id? */
+    if (docById == 0)
+        return docByLabel; // Either not found at all, or on label
+    else {
+        /* Not found on label? */
+        if (docByLabel == 0) /* Then return doc by id */
+            return docById;
+
+        /* docByLabel and docById could be equal; that is ok */
+        return docByLabel == docById ? docById : 0;
+    }
 }
 
 /**
@@ -912,9 +969,9 @@ void ObjectIdentifier::setValue(const boost::any &value) const
     ss << getPythonAccessor() + " = ";
 
     if (value.type() == typeid(Base::Quantity))
-        ss << boost::any_cast<Base::Quantity>(value).getValue();
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<Base::Quantity>(value).getValue();
     else if (value.type() == typeid(double))
-        ss << boost::any_cast<double>(value);
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<double>(value);
     else if (value.type() == typeid(char*))
         ss << '\'' << Base::Tools::escapedUnicodeFromUtf8(boost::any_cast<char*>(value)) << '\'';
     else if (value.type() == typeid(const char*))

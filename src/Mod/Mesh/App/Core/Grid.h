@@ -459,7 +459,7 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned lon
       {
         for (ulZ = ulZ1; ulZ <= ulZ2; ulZ++)
         {
-          if (CMeshFacetFunc::BBoxContainFacet(GetBoundBox(ulX, ulY, ulZ), rclFacet) == TRUE)
+          if (CMeshFacetFunc::BBoxContainFacet(GetBoundBox(ulX, ulY, ulZ), rclFacet) == true)
             _aulGrid[ulX][ulY][ulZ].insert(ulFacetIndex);
         }
       }
