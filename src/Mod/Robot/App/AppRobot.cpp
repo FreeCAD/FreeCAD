@@ -29,9 +29,12 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
 
 #include "Robot6AxisPy.h"
 #include "Robot6Axis.h"
+#include "Simulation.h"
 #include "TrajectoryPy.h"
 #include "Trajectory.h"
 #include "PropertyTrajectory.h"
@@ -43,15 +46,50 @@
 #include "TrajectoryCompound.h"
 #include "TrajectoryDressUpObject.h"
 
-extern struct PyMethodDef Robot_methods[];
+namespace Robot {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("Robot")
+    {
+        add_varargs_method("simulateToFile",&Module::simulateToFile,
+            "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the simulation and write the result to a file."
+        );
+        initialize("This module is the Robot module."); // register with Python
+    }
 
-PyDoc_STRVAR(module_Robot_doc,
-"This module is the Robot module.");
+    virtual ~Module() {}
+
+private:
+    Py::Object simulateToFile(const Py::Tuple& args)
+    {
+        PyObject *pcRobObj;
+        PyObject *pcTracObj;
+        float tick;
+        char* FileName;
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!O!fs", &(Robot6AxisPy::Type), &pcRobObj,
+                                                    &(TrajectoryPy::Type), &pcTracObj,
+                                                    &tick,&FileName))
+            throw Py::Exception();
+
+        try {
+            Robot::Trajectory &Trac = * static_cast<TrajectoryPy*>(pcTracObj)->getTrajectoryPtr();
+            Robot::Robot6Axis &Rob  = * static_cast<Robot6AxisPy*>(pcRobObj)->getRobot6AxisPtr();
+            Simulation Sim(Trac,Rob);
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+
+        return Py::Float(0.0);
+    }
+};
+} // namespace Robot
 
 
 /* Python entry */
-extern "C" {
-void RobotExport initRobot()
+PyMODINIT_FUNC initRobot()
 {
     // load dependent module
     try {
@@ -62,9 +100,8 @@ void RobotExport initRobot()
         return;
     }
 
-    PyObject* robotModule = Py_InitModule3("Robot", Robot_methods, module_Robot_doc);   /* mod name, table ptr */
+    PyObject* robotModule = (new Robot::Module())->module().ptr();
     Base::Console().Log("Loading Robot module... done\n");
-
 
     // Add Types to module
     Base::Interpreter().addType(&Robot::Robot6AxisPy          ::Type,robotModule,"Robot6Axis");
@@ -75,7 +112,7 @@ void RobotExport initRobot()
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
- 
+
     Robot::Robot6Axis              ::init();
     Robot::RobotObject             ::init();
     Robot::TrajectoryObject        ::init();
@@ -86,5 +123,3 @@ void RobotExport initRobot()
     Robot::TrajectoryCompound      ::init();
     Robot::TrajectoryDressUpObject ::init();
 }
-
-} // extern "C"
