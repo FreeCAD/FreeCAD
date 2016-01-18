@@ -43,7 +43,7 @@
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderView)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
 // Construction/Destruction
@@ -60,18 +60,18 @@ ViewProviderDimension::~ViewProviderDimension()
 void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderView::attach(pcFeat);
+    ViewProviderDrawingView::attach(pcFeat);
 }
 
 void ViewProviderDimension::setDisplayMode(const char* ModeName)
 {
-    ViewProviderView::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderDimension::getDisplayModes(void) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderView::getDisplayModes();
+    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
 }

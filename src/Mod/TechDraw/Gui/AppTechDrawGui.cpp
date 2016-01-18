@@ -36,7 +36,7 @@
 
 #include "DlgPrefsDrawingImp.h"
 #include "ViewProviderPage.h"
-#include "ViewProviderView.h"
+#include "ViewProviderDrawingView.h"
 #include "ViewProviderDimension.h"
 #include "ViewProviderProjGroup.h"
 #include "ViewProviderProjGroupItem.h"
@@ -47,17 +47,17 @@
 #include "ViewProviderSymbol.h"
 #include "ViewProviderViewClip.h"
 #include "ViewProviderHatch.h"
-//#include "resources/qrc_Drawing.cpp"
+//#include "resources/qrc_TechDraw.cpp"
 
 // use a different name to CreateCommand()
-void CreateDrawingCommands(void);
-void CreateDrawingCommandsDims(void);
-void CreateDrawingCommandsDecorate(void);
+void CreateTechDrawCommands(void);
+void CreateTechDrawCommandsDims(void);
+void CreateTechDrawCommandsDecorate(void);
 
-void loadDrawingResource()
+void loadTechDrawResource()
 {
     // add resources and reloads the translators
-    Q_INIT_RESOURCE(Drawing);
+    Q_INIT_RESOURCE(TechDraw);
     Gui::Translator::instance()->refresh();
 }
 
@@ -75,12 +75,12 @@ void TechDrawGuiExport initTechDrawGui()
     }
 
     (void) Py_InitModule("TechDrawGui", TechDrawGui_Import_methods);   /* mod name, table ptr */
-    Base::Console().Log("Loading GUI of Drawing module... done\n");
+    Base::Console().Log("Loading GUI of TechDraw module... done\n");
 
     // instantiating the commands
-    CreateDrawingCommands();
-    CreateDrawingCommandsDims();
-    CreateDrawingCommandsDecorate();
+    CreateTechDrawCommands();
+    CreateTechDrawCommandsDims();
+    CreateTechDrawCommandsDecorate();
 
     TechDrawGui::Workbench::init();
 
@@ -90,8 +90,8 @@ void TechDrawGuiExport initTechDrawGui()
     QFontDatabase fontDB;
     fontDB.addApplicationFont(QString::fromAscii(":/fonts/osifont.ttf"));
 
-    TechDrawGui::ViewProviderDrawingPage::init();
-    TechDrawGui::ViewProviderView::init();
+    TechDrawGui::ViewProviderPage::init();
+    TechDrawGui::ViewProviderDrawingView::init();
 
     TechDrawGui::ViewProviderTemplate::init();
     TechDrawGui::ViewProviderDimension::init();
@@ -108,7 +108,7 @@ void TechDrawGuiExport initTechDrawGui()
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsDrawingImp> ("Drawing");
 
     // add resources and reloads the translators
-    loadDrawingResource();
+    loadTechDrawResource();
 }
 
 } // extern "C" {

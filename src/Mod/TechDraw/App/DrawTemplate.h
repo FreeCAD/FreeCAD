@@ -38,9 +38,7 @@ namespace TechDrawGeometry
 namespace TechDraw
 {
 
-/** Base class of all View Features in the drawing module
- */
-class TechDrawExport DrawTemplate: public App::DocumentObject
+class TechDrawExport DrawTemplate : public App::DocumentObject
 {
     PROPERTY_HEADER(TechDraw::DrawTemplate);
 

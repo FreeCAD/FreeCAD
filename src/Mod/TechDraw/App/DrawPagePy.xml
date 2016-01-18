@@ -11,7 +11,7 @@
     FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
-      <UserDocu>Feature for creating and manipulating Drawing Pages</UserDocu>
+      <UserDocu>Feature for creating and manipulating Technical Drawing Pages</UserDocu>
     </Documentation>
     <Methode Name="addView">
       <Documentation>

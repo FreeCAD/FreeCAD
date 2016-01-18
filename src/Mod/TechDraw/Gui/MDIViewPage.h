@@ -49,7 +49,7 @@ class DrawTemplate;
 namespace TechDrawGui
 {
 
-class ViewProviderDrawingPage;
+class ViewProviderPage;
 class QGVPage;
 class QGIView;
 
@@ -58,7 +58,7 @@ class TechDrawGuiExport MDIViewPage : public Gui::MDIView, public Gui::Selection
     Q_OBJECT
 
 public:
-    MDIViewPage(ViewProviderDrawingPage *page, Gui::Document* doc, QWidget* parent = 0);
+    MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = 0);
     virtual ~MDIViewPage();
 
 public Q_SLOTS:
@@ -118,7 +118,7 @@ private:
     QString m_currentPath;
     QPrinter::Orientation m_orientation;
     QPrinter::PageSize m_pageSize;
-    ViewProviderDrawingPage *pageGui;
+    ViewProviderPage *pageGui;
 
     QList<QGIView *> deleteItems;
 };

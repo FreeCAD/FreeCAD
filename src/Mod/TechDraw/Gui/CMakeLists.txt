@@ -20,7 +20,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawGui_LIBS
-    Drawing
+    TechDraw
     FreeCADGui
 )
 
@@ -129,8 +129,8 @@ SET(TechDrawGuiView_SRCS
 SET(TechDrawGuiViewProvider_SRCS
     ViewProviderPage.cpp
     ViewProviderPage.h
-    ViewProviderView.cpp
-    ViewProviderView.h
+    ViewProviderDrawingView.cpp
+    ViewProviderDrawingView.h
     ViewProviderProjGroupItem.cpp
     ViewProviderProjGroupItem.h
     ViewProviderTemplate.cpp

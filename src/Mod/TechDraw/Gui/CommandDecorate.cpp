@@ -59,24 +59,24 @@ using namespace std;
 bool _checkSelectionHatch(Gui::Command* cmd);
 
 //===========================================================================
-// Drawing_NewHatch
+// TechDraw_NewHatch
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewHatch);
+DEF_STD_CMD(CmdTechDrawNewHatch);
 
-CmdDrawingNewHatch::CmdDrawingNewHatch()
-  : Command("Drawing_NewHatch")
+CmdTechDrawNewHatch::CmdTechDrawNewHatch()
+  : Command("TechDraw_NewHatch")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a hatched area into a view");
     sToolTipText    = QT_TR_NOOP("Insert a hatched area into a view");
-    sWhatsThis      = "Drawing_NewHatch";
+    sWhatsThis      = "TechDraw_NewHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-hatch";
 }
 
-void CmdDrawingNewHatch::activated(int iMsg)
+void CmdTechDrawNewHatch::activated(int iMsg)
 {
     if (!_checkSelectionHatch(this)) {
         return;
@@ -117,12 +117,12 @@ void CmdDrawingNewHatch::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-void CreateDrawingCommandsDecorate(void)
+void CreateTechDrawCommandsDecorate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdDrawingNewHatch());
-    //rcCmdMgr.addCommand(new CmdDrawingHideLabels());
+    rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
+    //rcCmdMgr.addCommand(new CmdTechDrawHideLabels());
 }
 
 //===========================================================================

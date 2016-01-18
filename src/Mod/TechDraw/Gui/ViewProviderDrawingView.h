@@ -35,15 +35,15 @@ namespace TechDraw{
 namespace TechDrawGui {
 
 
-class TechDrawGuiExport ViewProviderView : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderView);
+    PROPERTY_HEADER(TechDrawGui::ViewProviderDrawingView);
 
 public:
     /// constructor
-    ViewProviderView();
+    ViewProviderDrawingView();
     /// destructor
-    virtual ~ViewProviderView();
+    virtual ~ViewProviderDrawingView();
 
 
     virtual void attach(App::DocumentObject *);
@@ -71,4 +71,3 @@ public:
 
 
 #endif // DRAWINGGUI_VIEWPROVIDERVIEW_H
-

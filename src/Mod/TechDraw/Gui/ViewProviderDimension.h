@@ -26,7 +26,7 @@
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
 #include <Gui/ViewProviderFeature.h>
-#include "ViewProviderView.h"
+#include "ViewProviderDrawingView.h"
 
 namespace TechDraw{
     class DrawViewDimension;
@@ -35,7 +35,7 @@ namespace TechDraw{
 namespace TechDrawGui {
 
 
-class TechDrawGuiExport ViewProviderDimension : public ViewProviderView
+class TechDrawGuiExport ViewProviderDimension : public ViewProviderDrawingView
 {
     PROPERTY_HEADER(TechDrawGui::ViewProviderDimension);
 

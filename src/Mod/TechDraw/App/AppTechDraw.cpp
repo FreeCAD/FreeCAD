@@ -33,15 +33,15 @@
 #include "DrawViewClip.h"
 #include "DrawHatch.h"
 
-extern struct PyMethodDef Drawing_methods[];
+extern struct PyMethodDef TechDraw_methods[];
 
-PyDoc_STRVAR(module_drawing_doc,
-"This module is the Drawing module.");
+PyDoc_STRVAR(module_techdraw_doc,
+"This module is the TechDraw module.");
 
 
 /* Python entry */
 extern "C" {
-void TechDrawExport initDrawing()
+void TechDrawExport initTechDraw()
 {
     // load dependent module
     try {
@@ -53,8 +53,8 @@ void TechDrawExport initDrawing()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    Py_InitModule3("Drawing", Drawing_methods, module_drawing_doc);   /* mod name, table ptr */
-    Base::Console().Log("Loading Drawing module... done\n");
+    Py_InitModule3("TechDraw", TechDraw_methods, module_techdraw_doc);   /* mod name, table ptr */
+    Base::Console().Log("Loading TechDraw module... done\n");
 
 
     // NOTE: To finish the initialization of our own type objects we must

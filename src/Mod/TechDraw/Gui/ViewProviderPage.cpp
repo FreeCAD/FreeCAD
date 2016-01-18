@@ -67,13 +67,13 @@
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingPage, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 
 //**************************************************************************
 // Construction/Destruction
 
-ViewProviderDrawingPage::ViewProviderDrawingPage()
+ViewProviderPage::ViewProviderPage()
   : view(0),
     restoreState(false)
 {
@@ -90,21 +90,21 @@ ViewProviderDrawingPage::ViewProviderDrawingPage()
     DisplayMode.setStatus(App::Property::Hidden,true);
 }
 
-ViewProviderDrawingPage::~ViewProviderDrawingPage()
+ViewProviderPage::~ViewProviderPage()
 {
 }
 
-void ViewProviderDrawingPage::attach(App::DocumentObject *pcFeat)
+void ViewProviderPage::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderDocumentObject::attach(pcFeat);
 }
 
-void ViewProviderDrawingPage::setDisplayMode(const char* ModeName)
+void ViewProviderPage::setDisplayMode(const char* ModeName)
 {
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderDrawingPage::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPage::getDisplayModes(void) const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
@@ -112,12 +112,12 @@ std::vector<std::string> ViewProviderDrawingPage::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderDrawingPage::show(void)
+void ViewProviderPage::show(void)
 {
     showMDIViewPage();
 }
 
-void ViewProviderDrawingPage::hide(void)
+void ViewProviderPage::hide(void)
 {
     // hiding the drawing page should not affect its children but closes the MDI view
     // therefore do not call the method of its direct base class
@@ -127,7 +127,7 @@ void ViewProviderDrawingPage::hide(void)
     }
 }
 
-void ViewProviderDrawingPage::updateData(const App::Property* prop)
+void ViewProviderPage::updateData(const App::Property* prop)
 {
     if (prop == &(getPageObject()->Views)) {
         if(view) {
@@ -142,7 +142,7 @@ void ViewProviderDrawingPage::updateData(const App::Property* prop)
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-bool ViewProviderDrawingPage::onDelete(const std::vector<std::string> &items)
+bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
     if (!view.isNull()) {
         // TODO: if DrawingPage has children, they should be deleted too, since they are useless without the page.
@@ -152,13 +152,13 @@ bool ViewProviderDrawingPage::onDelete(const std::vector<std::string> &items)
         view->deleteLater(); // Delete the drawing view;
     } else {
         // MDIViewPage is not displayed yet so don't try to delete it!
-        Base::Console().Log("INFO - ViewProviderDrawingPage::onDelete - Page object deleted when viewer not displayed\n");
+        Base::Console().Log("INFO - ViewProviderPage::onDelete - Page object deleted when viewer not displayed\n");
     }
     Gui::Selection().clearSelection();
     return ViewProviderDocumentObject::onDelete(items);
 }
 
-void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
     QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
@@ -166,7 +166,7 @@ void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, c
     act->setData(QVariant((int) ViewProvider::Default));
 }
 
-bool ViewProviderDrawingPage::setEdit(int ModNum)
+bool ViewProviderPage::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         showMDIViewPage();   // show the drawing
@@ -178,14 +178,14 @@ bool ViewProviderDrawingPage::setEdit(int ModNum)
     return true;
 }
 
-bool ViewProviderDrawingPage::doubleClicked(void)
+bool ViewProviderPage::doubleClicked(void)
 {
     showMDIViewPage();
     Gui::getMainWindow()->setActiveWindow(view);
     return true;
 }
 
-bool ViewProviderDrawingPage::showMDIViewPage()
+bool ViewProviderPage::showMDIViewPage()
 {
     if (isRestoring()) {
         return true;
@@ -208,7 +208,7 @@ bool ViewProviderDrawingPage::showMDIViewPage()
     return true;
 }
 
-std::vector<App::DocumentObject*> ViewProviderDrawingPage::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -248,24 +248,24 @@ std::vector<App::DocumentObject*> ViewProviderDrawingPage::claimChildren(void) c
     }
 }
 
-void ViewProviderDrawingPage::unsetEdit(int ModNum)
+void ViewProviderPage::unsetEdit(int ModNum)
 {
     static_cast<void>(showMDIViewPage());
     return;
 }
 
 
-MDIViewPage* ViewProviderDrawingPage::getMDIViewPage()
+MDIViewPage* ViewProviderPage::getMDIViewPage()
 {
     if (view.isNull()) {
-        Base::Console().Log("INFO - ViewProviderDrawingPage::getMDIViewPage has no view!\n");
+        Base::Console().Log("INFO - ViewProviderPage::getMDIViewPage has no view!\n");
         return 0;
     } else {
         return view;
     }
 }
 
-void ViewProviderDrawingPage::onSelectionChanged(const Gui::SelectionChanges& msg)
+void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if(!view.isNull()) {
         if(msg.Type == Gui::SelectionChanges::SetSelection) {
@@ -312,7 +312,7 @@ void ViewProviderDrawingPage::onSelectionChanged(const Gui::SelectionChanges& ms
     }
 }
 
-void ViewProviderDrawingPage::onChanged(const App::Property *prop)
+void ViewProviderPage::onChanged(const App::Property *prop)
 {
   if (prop == &(getPageObject()->Views)) {
         if(view) {
@@ -327,13 +327,13 @@ void ViewProviderDrawingPage::onChanged(const App::Property *prop)
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
-void ViewProviderDrawingPage::startRestoring()
+void ViewProviderPage::startRestoring()
 {
     restoreState = true;
     Gui::ViewProviderDocumentObject::startRestoring();
 }
 
-void ViewProviderDrawingPage::finishRestoring()
+void ViewProviderPage::finishRestoring()
 {
     restoreState = false;
     static_cast<void>(showMDIViewPage());
@@ -341,7 +341,7 @@ void ViewProviderDrawingPage::finishRestoring()
 }
 
 
-TechDraw::DrawPage* ViewProviderDrawingPage::getPageObject() const
+TechDraw::DrawPage* ViewProviderPage::getPageObject() const
 {
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
 }

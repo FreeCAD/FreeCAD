@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Drawing_DrawHatch_h_
-#define _Drawing_DrawHatch_h_
+#ifndef _TechDraw_DrawHatch_h_
+#define _TechDraw_DrawHatch_h_
 
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>

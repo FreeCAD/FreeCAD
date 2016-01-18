@@ -90,7 +90,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
     # get linker errors as soon as possible and not at runtime e.g. for modules
     if(UNIX)
-    #    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+        SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
     endif(UNIX)
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
