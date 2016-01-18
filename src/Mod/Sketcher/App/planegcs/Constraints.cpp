@@ -1315,8 +1315,9 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double *err, double *
         case HyperbolaPositiveMinorY:
         {
             DeriVector2 pa = c.sum(emaj.multD(a, da));
-            DeriVector2 A(pa.x,pa.y);
-            poa = A.sum(emin.multD(b, db));
+            //DeriVector2 A(pa.x,pa.y);
+            //poa = A.sum(emin.multD(b, db));
+            poa = pa.sum(emin.multD(b, db));
             by_y_not_by_x = AlignmentType == HyperbolaPositiveMinorY;
             break;
         }
@@ -1324,8 +1325,9 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double *err, double *
         case HyperbolaNegativeMinorY:
         {
             DeriVector2 pa = c.sum(emaj.multD(a, da));
-            DeriVector2 A(pa.x,pa.y);
-            poa = A.sum(emin.multD(-b, -db));
+            //DeriVector2 A(pa.x,pa.y);
+            //poa = A.sum(emin.multD(-b, -db));
+            poa = pa.sum(emin.multD(-b, -db));
             by_y_not_by_x = AlignmentType == HyperbolaNegativeMinorY;
             break;
         }
