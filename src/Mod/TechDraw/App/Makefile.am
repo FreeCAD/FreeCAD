@@ -1,7 +1,7 @@
 
 lib_LTLIBRARIES=libDrawing.la Drawing.la
 
-libDrawing_la_SOURCES=\
+libTechDraw_la_SOURCES=\
 		AppDrawingPy.cpp \
 		TechDrawExport.cpp \
 		TechDrawExport.h \
@@ -26,12 +26,12 @@ libDrawing_la_SOURCES=\
 
 
 # the library search path.
-libDrawing_la_LDFLAGS = -L../../../Base -L../../../App -L../../../Mod/Part/App \
+libTechDraw_la_LDFLAGS = -L../../../Base -L../../../App -L../../../Mod/Part/App \
 		-L$(OCC_LIB) $(all_libraries) \
 		-version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
-libDrawing_la_CPPFLAGS = -DTechDrawExport=
+libTechDraw_la_CPPFLAGS = -DTechDrawExport=
 
-libDrawing_la_LIBADD   = \
+libTechDraw_la_LIBADD   = \
 		@BOOST_REGEX_LIB@ @BOOST_SYSTEM_LIB@ \
 		-l@PYTHON_LIB@ \
 		-lxerces-c \
@@ -61,18 +61,18 @@ libDrawing_la_LIBADD   = \
 #--------------------------------------------------------------------------------------
 # Loader of libDrawing
 
-Drawing_la_SOURCES=\
+TechDraw_la_SOURCES=\
 		AppDrawing.cpp
 
 # the library search path.
-Drawing_la_LDFLAGS = $(libDrawing_la_LDFLAGS) -module -avoid-version
-Drawing_la_CPPFLAGS = $(libDrawing_la_CPPFLAGS)
+TechDraw_la_LDFLAGS = $(libTechDraw_la_LDFLAGS) -module -avoid-version
+TechDraw_la_CPPFLAGS = $(libTechDraw_la_CPPFLAGS)
 
-Drawing_la_LIBADD   = \
-		$(libDrawing_la_LIBADD) \
+TechDraw_la_LIBADD   = \
+		$(libTechDraw_la_LIBADD) \
 		-lDrawing
 
-Drawing_la_DEPENDENCIES = libDrawing.la
+TechDraw_la_DEPENDENCIES = libDrawing.la
 
 #--------------------------------------------------------------------------------------
 

@@ -164,7 +164,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewClipPython, TechDraw::DrawViewClip)
 template<> const char* TechDraw::DrawViewClipPython::getViewProviderName(void) const {
-    return "TechDrawGui::ViewProviderDrawingClip";
+    return "TechDrawGui::ViewProviderDrawClip";
 }
 /// @endcond
 

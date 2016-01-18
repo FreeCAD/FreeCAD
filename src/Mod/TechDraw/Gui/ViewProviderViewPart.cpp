@@ -48,7 +48,7 @@
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderView)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
 // Construction/Destruction

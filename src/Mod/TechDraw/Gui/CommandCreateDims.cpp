@@ -76,24 +76,24 @@ enum EdgeType{
     };
 
 //===========================================================================
-// Drawing_NewDimension
+// TechDraw_NewDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewDimension);
+DEF_STD_CMD(CmdTechDrawNewDimension);
 
-CmdDrawingNewDimension::CmdDrawingNewDimension()
-  : Command("Drawing_NewDimension")
+CmdTechDrawNewDimension::CmdTechDrawNewDimension()
+  : Command("TechDraw_NewDimension")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new dimension");
-    sWhatsThis      = "Drawing_NewDimension";
+    sWhatsThis      = "TechDraw_NewDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "Dimension";
 }
 
-void CmdDrawingNewDimension::activated(int iMsg)
+void CmdTechDrawNewDimension::activated(int iMsg)
 {
     bool result = _checkSelection(this);
     if (!result)
@@ -207,24 +207,24 @@ void CmdDrawingNewDimension::activated(int iMsg)
 }
 
 //===========================================================================
-// Drawing_NewRadiusDimension
+// TechDraw_NewRadiusDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewRadiusDimension);
+DEF_STD_CMD(CmdTechDrawNewRadiusDimension);
 
-CmdDrawingNewRadiusDimension::CmdDrawingNewRadiusDimension()
-  : Command("Drawing_NewRadiusDimension")
+CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
+  : Command("TechDraw_NewRadiusDimension")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a new radius dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new radius dimension feature for the selected view");
-    sWhatsThis      = "Drawing_NewRadiusDimension";
+    sWhatsThis      = "TechDraw_NewRadiusDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "Dimension_Radius";
 }
 
-void CmdDrawingNewRadiusDimension::activated(int iMsg)
+void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 {
     bool result = _checkSelection(this);
     if (!result)
@@ -293,24 +293,24 @@ void CmdDrawingNewRadiusDimension::activated(int iMsg)
 }
 
 //===========================================================================
-// Drawing_NewDiameterDimension
+// TechDraw_NewDiameterDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewDiameterDimension);
+DEF_STD_CMD(CmdTechDrawNewDiameterDimension);
 
-CmdDrawingNewDiameterDimension::CmdDrawingNewDiameterDimension()
-  : Command("Drawing_NewDiameterDimension")
+CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
+  : Command("TechDraw_NewDiameterDimension")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a new diameter dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature for the selected view");
-    sWhatsThis      = "Drawing_NewDiameterDimension";
+    sWhatsThis      = "TechDraw_NewDiameterDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "Dimension_Diameter";
 }
 
-void CmdDrawingNewDiameterDimension::activated(int iMsg)
+void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 {
     bool result = _checkSelection(this);
     if (!result)
@@ -382,24 +382,24 @@ void CmdDrawingNewDiameterDimension::activated(int iMsg)
 
 
 //===========================================================================
-// Drawing_NewLengthDimension
+// TechDraw_NewLengthDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewLengthDimension);
+DEF_STD_CMD(CmdTechDrawNewLengthDimension);
 
-CmdDrawingNewLengthDimension::CmdDrawingNewLengthDimension()
-  : Command("Drawing_NewLengthDimension")
+CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
+  : Command("TechDraw_NewLengthDimension")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a new length dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
-    sWhatsThis      = "Drawing_NewLengthDimension";
+    sWhatsThis      = "TechDraw_NewLengthDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "Dimension_Length";
 }
 
-void CmdDrawingNewLengthDimension::activated(int iMsg)
+void CmdTechDrawNewLengthDimension::activated(int iMsg)
 {
     bool result = _checkSelection(this);
     if (!result)
@@ -475,24 +475,24 @@ void CmdDrawingNewLengthDimension::activated(int iMsg)
 }
 
 //===========================================================================
-// Drawing_NewDistanceXDimension
+// TechDraw_NewDistanceXDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewDistanceXDimension);
+DEF_STD_CMD(CmdTechDrawNewDistanceXDimension);
 
-CmdDrawingNewDistanceXDimension::CmdDrawingNewDistanceXDimension()
-  : Command("Drawing_NewDistanceXDimension")
+CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
+  : Command("TechDraw_NewDistanceXDimension")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new horizontal-distance dimension");
-    sWhatsThis      = "Drawing_NewDistanceXDimension";
+    sWhatsThis      = "TechDraw_NewDistanceXDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "Dimension_Horizontal";
 }
 
-void CmdDrawingNewDistanceXDimension::activated(int iMsg)
+void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 {
     bool result = _checkSelection(this);
     if (!result)
@@ -567,24 +567,24 @@ void CmdDrawingNewDistanceXDimension::activated(int iMsg)
 
 
 //===========================================================================
-// Drawing_NewDistanceYDimension
+// TechDraw_NewDistanceYDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewDistanceYDimension);
+DEF_STD_CMD(CmdTechDrawNewDistanceYDimension);
 
-CmdDrawingNewDistanceYDimension::CmdDrawingNewDistanceYDimension()
-  : Command("Drawing_NewDistanceYDimension")
+CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
+  : Command("TechDraw_NewDistanceYDimension")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a new vertical dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
-    sWhatsThis      = "Drawing_NewDistanceYDimension";
+    sWhatsThis      = "TechDraw_NewDistanceYDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "Dimension_Vertical";
 }
 
-void CmdDrawingNewDistanceYDimension::activated(int iMsg)
+void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
 {
     bool result = _checkSelection(this);
     if (!result)
@@ -658,24 +658,24 @@ void CmdDrawingNewDistanceYDimension::activated(int iMsg)
 
 
 //===========================================================================
-// Drawing_NewAngleDimension
+// TechDraw_NewAngleDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewAngleDimension);
+DEF_STD_CMD(CmdTechDrawNewAngleDimension);
 
-CmdDrawingNewAngleDimension::CmdDrawingNewAngleDimension()
-  : Command("Drawing_NewAngleDimension")
+CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
+  : Command("TechDraw_NewAngleDimension")
 {
     sAppModule      = "Drawing";
     sGroup          = QT_TR_NOOP("Drawing");
     sMenuText       = QT_TR_NOOP("Insert a new angle dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
-    sWhatsThis      = "Drawing_NewAngleDimension";
+    sWhatsThis      = "TechDraw_NewAngleDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "Dimension_Angle";
 }
 
-void CmdDrawingNewAngleDimension::activated(int iMsg)
+void CmdTechDrawNewAngleDimension::activated(int iMsg)
 {
     bool result = _checkSelection(this);
     if (!result)
@@ -737,17 +737,17 @@ void CmdDrawingNewAngleDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-void CreateDrawingCommandsDims(void)
+void CreateTechDrawCommandsDims(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdDrawingNewDimension());
-    rcCmdMgr.addCommand(new CmdDrawingNewRadiusDimension());
-    rcCmdMgr.addCommand(new CmdDrawingNewDiameterDimension());
-    rcCmdMgr.addCommand(new CmdDrawingNewLengthDimension());
-    rcCmdMgr.addCommand(new CmdDrawingNewDistanceXDimension());
-    rcCmdMgr.addCommand(new CmdDrawingNewDistanceYDimension());
-    rcCmdMgr.addCommand(new CmdDrawingNewAngleDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewRadiusDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDiameterDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewLengthDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDistanceXDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDistanceYDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewAngleDimension());
 }
 
 //===========================================================================

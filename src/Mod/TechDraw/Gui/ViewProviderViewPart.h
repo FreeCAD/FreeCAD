@@ -24,7 +24,7 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
-#include "ViewProviderView.h"
+#include "ViewProviderDrawingView.h"
 
 namespace TechDraw{
     class DrawViewPart;
@@ -32,7 +32,7 @@ namespace TechDraw{
 
 namespace TechDrawGui {
 
-class TechDrawGuiExport ViewProviderViewPart : public ViewProviderView
+class TechDrawGuiExport ViewProviderViewPart : public ViewProviderDrawingView
 {
     PROPERTY_HEADER(TechDrawGui::ViewProviderViewPart);
 

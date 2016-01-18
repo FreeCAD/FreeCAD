@@ -40,14 +40,14 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawPage.h>
-#include "ViewProviderView.h"
+#include "ViewProviderDrawingView.h"
 
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderView, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
-ViewProviderView::ViewProviderView()
+ViewProviderDrawingView::ViewProviderDrawingView()
 {
     sPixmap = "View";
 
@@ -56,28 +56,28 @@ ViewProviderView::ViewProviderView()
     DisplayMode.setStatus(App::Property::ReadOnly,true);
 }
 
-ViewProviderView::~ViewProviderView()
+ViewProviderDrawingView::~ViewProviderDrawingView()
 {
 }
 
-void ViewProviderView::attach(App::DocumentObject *pcFeat)
+void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
 }
 
-void ViewProviderView::setDisplayMode(const char* ModeName)
+void ViewProviderDrawingView::setDisplayMode(const char* ModeName)
 {
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderView::getDisplayModes(void) const
+std::vector<std::string> ViewProviderDrawingView::getDisplayModes(void) const
 {
     std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
     return StrList;
 }
 
-void ViewProviderView::show(void)
+void ViewProviderDrawingView::show(void)
 {
     ViewProviderDocumentObject::show();
 
@@ -94,7 +94,7 @@ void ViewProviderView::show(void)
     }
 }
 
-void ViewProviderView::hide(void)
+void ViewProviderDrawingView::hide(void)
 {
     ViewProviderDocumentObject::hide();
 
@@ -111,31 +111,31 @@ void ViewProviderView::hide(void)
     }
 }
 
-bool ViewProviderView::isShow(void) const
+bool ViewProviderDrawingView::isShow(void) const
 {
     return Visibility.getValue();
 }
 
-void ViewProviderView::startRestoring()
+void ViewProviderDrawingView::startRestoring()
 {
     // do nothing
 }
 
-void ViewProviderView::finishRestoring()
+void ViewProviderDrawingView::finishRestoring()
 {
     // do nothing
 }
 
-void ViewProviderView::updateData(const App::Property*)
+void ViewProviderDrawingView::updateData(const App::Property*)
 {
 }
 
-TechDraw::DrawView* ViewProviderView::getViewObject() const
+TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
 }
 
-bool ViewProviderView::onDelete(const std::vector<std::string> &items)
+bool ViewProviderDrawingView::onDelete(const std::vector<std::string> &items)
 {
     //int viewCount =
     static_cast<void> (getViewObject()->findParentPage()->removeView(getViewObject()));

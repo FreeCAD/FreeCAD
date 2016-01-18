@@ -57,7 +57,7 @@ tdPlaceholder(PyObject *self, PyObject *args)
 }
 
 /* registration table  */
-struct PyMethodDef Drawing_methods[] = {
+struct PyMethodDef TechDraw_methods[] = {
    {"tdPlaceholder"       ,tdPlaceholder      ,METH_VARARGS,
      "[n/a] = tdPlaceholder(n/a) -- Temporary hack."},
     {NULL, NULL}        /* end of table marker */

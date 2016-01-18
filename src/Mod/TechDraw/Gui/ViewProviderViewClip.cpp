@@ -42,13 +42,13 @@
 #include <Gui/Selection.h>
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
-#include "ViewProviderView.h"
+#include "ViewProviderDrawingView.h"
 #include "ViewProviderViewClip.h"
 
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingClip, TechDrawGui::ViewProviderView)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingClip, TechDrawGui::ViewProviderDrawingView)
 
 ViewProviderDrawingClip::ViewProviderDrawingClip()
 {
@@ -91,7 +91,7 @@ std::vector<App::DocumentObject*> ViewProviderDrawingClip::claimChildren(void) c
 
 void ViewProviderDrawingClip::show(void)
 {
-    ViewProviderView::show();
+    ViewProviderDrawingView::show();
 
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())
@@ -108,7 +108,7 @@ void ViewProviderDrawingClip::show(void)
 
 void ViewProviderDrawingClip::hide(void)
 {
-    ViewProviderView::hide();
+    ViewProviderDrawingView::hide();
 
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())

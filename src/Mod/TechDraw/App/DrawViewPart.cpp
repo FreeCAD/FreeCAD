@@ -462,7 +462,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewPartPython, TechDraw::DrawViewPart)
 template<> const char* TechDraw::DrawViewPartPython::getViewProviderName(void) const {
-    return "TechDrawGui::ViewProviderView";
+    return "TechDrawGui::ViewProviderViewPart";
 }
 /// @endcond
 

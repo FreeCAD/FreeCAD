@@ -44,7 +44,7 @@
 namespace DrawUtil {
 
 //==============================================================================
-// convenient utility functions for Drawing Module
+// convenient utility functions for TechDraw Module
 //==============================================================================
 extern "C" {
 int TechDrawExport getIndexFromName(std::string geomName)

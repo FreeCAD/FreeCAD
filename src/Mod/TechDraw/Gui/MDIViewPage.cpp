@@ -103,7 +103,7 @@ using namespace TechDrawGui;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
-MDIViewPage::MDIViewPage(ViewProviderDrawingPage *pageVp, Gui::Document* doc, QWidget* parent)
+MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent), pageGui(pageVp)
 {
     m_view = new QGVPage(pageVp);

@@ -1,4 +1,4 @@
-# FreeCAD init script of the Drawing module
+# FreeCAD init script of the TechDraw module
 # (c) 2001 Juergen Riegel
 
 #***************************************************************************

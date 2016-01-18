@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Drawing_DrawViewDimension_h_
-#define _Drawing_DrawViewDimension_h_
+#ifndef _TechDraw_DrawViewDimension_h_
+#define _TechDraw_DrawViewDimension_h_
 
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>

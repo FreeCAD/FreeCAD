@@ -76,7 +76,7 @@
 
 using namespace TechDrawGui;
 
-QGVPage::QGVPage(ViewProviderDrawingPage *vp, QWidget *parent)
+QGVPage::QGVPage(ViewProviderPage *vp, QWidget *parent)
     : QGraphicsView(parent)
     , pageTemplate(0)
     , m_renderer(Native)

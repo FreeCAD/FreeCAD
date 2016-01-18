@@ -11,7 +11,7 @@
     FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
-      <UserDocu>Feature for creating and manipulating Drawing Templates</UserDocu>
+      <UserDocu>Feature for creating and manipulating Technical Drawing Templates</UserDocu>
     </Documentation>
   </PythonExport>
 </GenerateModel>

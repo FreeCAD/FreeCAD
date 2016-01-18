@@ -43,7 +43,7 @@ class QGIView;
 class QGIViewDimension;
 class QGITemplate;
 class QGIHatch;
-class ViewProviderDrawingPage;
+class ViewProviderPage;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -52,7 +52,7 @@ class TechDrawGuiExport QGVPage : public QGraphicsView
 public:
     enum RendererType { Native, OpenGL, Image };
 
-    QGVPage(ViewProviderDrawingPage *vp, QWidget *parent = 0);
+    QGVPage(ViewProviderPage *vp, QWidget *parent = 0);
     ~QGVPage();
 
     void setRenderer(RendererType type = Native);
@@ -111,7 +111,7 @@ private:
     QGraphicsRectItem *m_outlineItem;
     QBrush *bkgBrush;
     QImage m_image;
-    ViewProviderDrawingPage *pageGui;
+    ViewProviderPage *pageGui;
 };
 
 } // namespace MDIViewPageGui

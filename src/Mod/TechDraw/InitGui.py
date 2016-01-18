@@ -1,4 +1,4 @@
-# Drawing gui init module
+# TechDraw gui init module
 # (c) 2003 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
@@ -30,8 +30,8 @@
 #***************************************************************************/
 
 
-class DrawingWorkbench (Workbench):
-    "Drawing workbench object"
+class TechDrawWorkbench (Workbench):
+    "Technical Drawing workbench object"
     def __init__(self):
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/TechDraw/Resources/icons/preferences-drawing.svg"
         self.__class__.MenuText = "TechDraw"
@@ -44,5 +44,5 @@ class DrawingWorkbench (Workbench):
     def GetClassName(self):
         return "TechDrawGui::Workbench"
 
-Gui.addWorkbench(DrawingWorkbench())
+Gui.addWorkbench(TechDrawWorkbench())
 

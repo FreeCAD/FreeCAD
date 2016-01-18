@@ -39,30 +39,6 @@
         <file>icons/actions/saveSVG.svg</file>
         <file>icons/actions/techdraw-viewsection.svg</file>
         <file>icons/actions/techdraw-hatch.svg</file>
-        <file>translations/Drawing_af.qm</file>
-        <file>translations/Drawing_cs.qm</file>
-        <file>translations/Drawing_de.qm</file>
-        <file>translations/Drawing_es-ES.qm</file>
-        <file>translations/Drawing_fi.qm</file>
-        <file>translations/Drawing_fr.qm</file>
-        <file>translations/Drawing_hr.qm</file>
-        <file>translations/Drawing_hu.qm</file>
-        <file>translations/Drawing_it.qm</file>
-        <file>translations/Drawing_ja.qm</file>
-        <file>translations/Drawing_nl.qm</file>
-        <file>translations/Drawing_no.qm</file>
-        <file>translations/Drawing_pl.qm</file>
-        <file>translations/Drawing_pt-BR.qm</file>
-        <file>translations/Drawing_pt-PT.qm</file>
-        <file>translations/Drawing_ro.qm</file>
-        <file>translations/Drawing_ru.qm</file>
-        <file>translations/Drawing_sk.qm</file>
-        <file>translations/Drawing_sv-SE.qm</file>
-        <file>translations/Drawing_tr.qm</file>
-        <file>translations/Drawing_uk.qm</file>
-        <file>translations/Drawing_zh-CN.qm</file>
-        <file>translations/Drawing_zh-TW.qm</file>
-        <file>translations/Drawing_sr.qm</file>
         <file>icons/ProjBottom.svg</file>
         <file>icons/ProjFront.svg</file>
         <file>icons/ProjGroup.svg</file>

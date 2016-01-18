@@ -64,7 +64,7 @@ public:
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "TechDrawGui::ViewProviderDrawingClip";
+        return "TechDrawGui::ViewProviderDrawClip";
     }
     std::vector<std::string> getChildViewNames();
 

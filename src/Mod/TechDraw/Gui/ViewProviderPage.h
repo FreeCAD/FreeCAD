@@ -44,16 +44,16 @@ namespace TechDrawGui {
 
 class MDIViewPage;
 
-class TechDrawGuiExport ViewProviderDrawingPage : public Gui::ViewProviderDocumentObject,
+class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject,
                                                  public Gui::SelectionObserver
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderDrawingPage);
+    PROPERTY_HEADER(TechDrawGui::ViewProviderPage);
 
 public:
     /// constructor
-    ViewProviderDrawingPage();
+    ViewProviderPage();
     /// destructor
-    virtual ~ViewProviderDrawingPage();
+    virtual ~ViewProviderPage();
 
     //App::PropertyFloat         HintScale;
     //App::PropertyFloat         HintOffsetX;
