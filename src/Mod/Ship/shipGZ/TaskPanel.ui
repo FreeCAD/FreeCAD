@@ -33,16 +33,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QCheckBox" name="VariableDraft">
-       <property name="text">
-        <string>Variable Draft</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="AngleLabel">
        <property name="sizePolicy">
@@ -59,7 +49,7 @@
      <item row="0" column="1">
       <widget class="Gui::InputField" name="Angle"/>
      </item>
-     <item row="3" column="0" colspan="2">
+     <item row="2" column="0" colspan="2">
       <widget class="QCheckBox" name="VariableTrim">
        <property name="text">
         <string>Variable Trim angle</string>

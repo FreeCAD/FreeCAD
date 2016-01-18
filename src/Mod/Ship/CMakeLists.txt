@@ -90,6 +90,7 @@ SET(ShipGZ_SRCS
 	shipGZ/PlotAux.py
 	shipGZ/TaskPanel.py
 	shipGZ/TaskPanel.ui
+	shipGZ/Tools.py
 )
 SOURCE_GROUP("shipgz" FILES ${ShipGZ_SRCS})
 
