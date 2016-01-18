@@ -24,8 +24,6 @@
 import time
 from math import *
 from PySide import QtGui, QtCore
-from pivy.coin import *
-from pivy import coin
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Base, Vector
