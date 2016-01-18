@@ -37,10 +37,12 @@ class TaskPanel:
         self.ui = Paths.modulePath() + "/shipGZ/TaskPanel.ui"
 
     def accept(self):
+        if self.lc is None:
+            return False
+        self.save()
         return True
 
     def reject(self):
-        self.preview.clean()
         return True
 
     def clicked(self, index):
@@ -69,7 +71,7 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
 
         form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        form.n_points = self.widget(QtGui.QSpinBox, "NPoints")
+        form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
         form.var_draft = self.widget(QtGui.QCheckBox, "VariableDraft")
         form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
         self.form = form
@@ -98,6 +100,108 @@ class TaskPanel:
     def initValues(self):
         """ Set initial values for fields
         """
+        # Look for selected loading conditions (Spreadsheets)
+        self.lc = None
+        selObjs = Gui.Selection.getSelection()
+        if not selObjs:
+            msg = QtGui.QApplication.translate(
+                "ship_console",
+                "A loading condition instance must be selected before using"
+                " this tool (no objects selected)",
+                None,
+                QtGui.QApplication.UnicodeUTF8)
+            App.Console.PrintError(msg + '\n')
+            return True
+        for i in range(len(selObjs)):
+            obj = selObjs[i]
+            try:
+                if obj.TypeId != 'Spreadsheet::Sheet':
+                    continue
+            except ValueError:
+                continue
+            # Check if it is a Loading condition:
+            # B1 cell must be a ship
+            # B2 cell must be the loading condition itself
+            doc = App.ActiveDocument
+            try:
+                if obj not in doc.getObjectsByLabel(obj.get('B2')):
+                    continue
+                ships = doc.getObjectsByLabel(obj.get('B1'))
+                ship = None
+                for s in ships:
+                    if s is None or not s.PropertiesList.index("IsShip"):
+                        continue
+                    ship = s
+                    break
+                if ship is None:
+                    continue
+            except ValueError:
+                continue
+            # Let's see if several loading conditions have been selected (and
+            # prompt a warning)
+            if self.lc:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "More than one loading condition have been selected (the"
+                    " extra loading conditions will be ignored)",
+                    None,
+                    QtGui.QApplication.UnicodeUTF8)
+                App.Console.PrintWarning(msg + '\n')
+                break
+            self.lc = obj
+            self.ship = ship
+        if not self.lc:
+            msg = QtGui.QApplication.translate(
+                "ship_console",
+                "A loading condition instance must be selected before using"
+                " this tool (no valid loading condition found at the selected"
+                " objects)",
+                None,
+                QtGui.QApplication.UnicodeUTF8)
+            App.Console.PrintError(msg + '\n')
+            return True
+
+        # We have a valid loading condition, let's set the initial field values
+        angle_format = USys.getAngleFormat()
+        mw = self.getMainWindow()
+        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form.angle = self.widget(QtGui.QLineEdit, "Angle")
+        form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
+        form.var_draft = self.widget(QtGui.QCheckBox, "VariableDraft")
+        form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
+        form.angle.setText(Locale.toString(angle_format.format(90.0)))
+        # Try to use saved values
+        props = self.ship.PropertiesList
+        try:
+            props.index("GZAngle")
+            form.angle.setText(Locale.toString(angle_format.format(
+                self.ship.GZAngle.getValueAs(
+                    USys.getAngleUnits()).Value)))
+        except:
+            pass
+        try:
+            props.index("GZNumPoints")
+            form.n_points.setValue(self.ship.GZNumPoints)
+        except ValueError:
+            pass
+        try:
+            props.index("GZVariableDraft")
+            if self.ship.GZVariableDraft:
+                form.var_draft.setCheckState(QtCore.Qt.Checked)
+            else:
+                form.var_draft.setCheckState(QtCore.Qt.Unchecked)
+        except ValueError:
+            pass
+        try:
+            props.index("GZVariableTrim")
+            if self.ship.GZVariableTrim:
+                form.var_trim.setCheckState(QtCore.Qt.Checked)
+            else:
+                form.var_trim.setCheckState(QtCore.Qt.Unchecked)
+        except ValueError:
+            pass
+
+
         return False
 
     def retranslateUi(self):
@@ -112,10 +216,10 @@ class TaskPanel:
         self.widget(QtGui.QLabel, "AngleLabel").setText(
             QtGui.QApplication.translate(
                 "ship_gz",
-                "Angle",
+                "Maximum angle",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
-        self.widget(QtGui.QLabel, "NPointsLabel").setText(
+        self.widget(QtGui.QLabel, "NumPointsLabel").setText(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "Number of points",
@@ -127,7 +231,7 @@ class TaskPanel:
                 "Variable draft",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
-        self.widget(QtGui.QCheckBox, "VariableDraft").setTooltip(
+        self.widget(QtGui.QCheckBox, "VariableDraft").setToolTip(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "The ship will be moved to the equilibrium draft for each" + \
@@ -141,7 +245,7 @@ class TaskPanel:
                 "Variable trim",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
-        self.widget(QtGui.QCheckBox, "VariableTrim").setTooltip(
+        self.widget(QtGui.QCheckBox, "VariableTrim").setToolTip(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "The ship will be rotated to the equilibrium trim angle for" + \
@@ -150,7 +254,86 @@ class TaskPanel:
                 None,
                 QtGui.QApplication.UnicodeUTF8))
 
+    def save(self):
+        """ Saves the data into ship instance. """
+        mw = self.getMainWindow()
+        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form.angle = self.widget(QtGui.QLineEdit, "Angle")
+        form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
+        form.var_draft = self.widget(QtGui.QCheckBox, "VariableDraft")
+        form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
 
+        angle = Units.Quantity(Locale.fromString(
+            form.angle.text())).getValueAs('deg').Value
+        n_points = form.n_points.value()
+        var_draft = form.var_draft.isChecked()
+        var_trim = form.var_trim.isChecked()
+
+        props = self.ship.PropertiesList
+        try:
+            props.index("GZAngle")
+        except ValueError:
+            try:
+                tooltip = str(QtGui.QApplication.translate(
+                    "ship_gz",
+                    "GZ curve tool angle selected [deg]",
+                    None,
+                    QtGui.QApplication.UnicodeUTF8))
+            except:
+                tooltip = "GZ curve tool angle selected [deg]"
+            self.ship.addProperty("App::PropertyAngle",
+                                  "GZAngle",
+                                  "Ship",
+                                  tooltip)
+        self.ship.GZAngle = '{} deg'.format(angle)
+        try:
+            props.index("GZNumPoints")
+        except ValueError:
+            try:
+                tooltip = str(QtGui.QApplication.translate(
+                    "ship_areas",
+                    "GZ curve tool number of points selected",
+                    None,
+                    QtGui.QApplication.UnicodeUTF8))
+            except:
+                tooltip = "GZ curve tool number of points selected"
+            self.ship.addProperty("App::PropertyInteger",
+                                  "GZNumPoints",
+                                  "Ship",
+                                  tooltip)
+        self.ship.GZNumPoints = n_points
+        try:
+            props.index("GZVariableDraft")
+        except ValueError:
+            try:
+                tooltip = str(QtGui.QApplication.translate(
+                    "ship_areas",
+                    "GZ curve tool variable draft selection",
+                    None,
+                    QtGui.QApplication.UnicodeUTF8))
+            except:
+                tooltip = "GZ curve tool variable draft selection"
+            self.ship.addProperty("App::PropertyBool",
+                                  "GZVariableDraft",
+                                  "Ship",
+                                  tooltip)
+        self.ship.GZVariableDraft = var_draft
+        try:
+            props.index("GZVariableTrim")
+        except ValueError:
+            try:
+                tooltip = str(QtGui.QApplication.translate(
+                    "ship_areas",
+                    "GZ curve tool variable trim angle selection",
+                    None,
+                    QtGui.QApplication.UnicodeUTF8))
+            except:
+                tooltip = "GZ curve tool variable trim angle selection"
+            self.ship.addProperty("App::PropertyBool",
+                                  "GZVariableTrim",
+                                  "Ship",
+                                  tooltip)
+        self.ship.GZVariableTrim = var_trim
 
 def createTask():
     panel = TaskPanel()
