@@ -45,7 +45,6 @@ SET(Python_SRCS
 
 SET(Mod_SRCS
     AppRobot.cpp
-    AppRobotPy.cpp
     PreCompiled.cpp
     PreCompiled.h
 )

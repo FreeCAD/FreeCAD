@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -50,15 +53,26 @@ void loadRobotResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef RobotGui_Import_methods[];
+namespace RobotGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("RobotGui")
+    {
+        initialize("This module is the RobotGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+} // namespace RobotGui
 
 
 /* Python entry */
-extern "C" {
-void RobotGuiExport initRobotGui()  
+PyMODINIT_FUNC initRobotGui()
 {
-     if (!Gui::Application::Instance) {
+    if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         return;
     }
@@ -82,7 +96,7 @@ void RobotGuiExport initRobotGui()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    (void) Py_InitModule("RobotGui", RobotGui_Import_methods);   /* mod name, table ptr */
+    (void)new RobotGui::Module();
     Base::Console().Log("Loading GUI of Robot module... done\n");
 
     // instantiating the commands
@@ -93,14 +107,12 @@ void RobotGuiExport initRobotGui()
 
     // addition objects
     RobotGui::Workbench                      ::init();
-	RobotGui::ViewProviderRobotObject        ::init();
-	RobotGui::ViewProviderTrajectory         ::init();
-	RobotGui::ViewProviderEdge2TracObject    ::init();
-	RobotGui::ViewProviderTrajectoryCompound ::init();
-	RobotGui::ViewProviderTrajectoryDressUp  ::init();
+    RobotGui::ViewProviderRobotObject        ::init();
+    RobotGui::ViewProviderTrajectory         ::init();
+    RobotGui::ViewProviderEdge2TracObject    ::init();
+    RobotGui::ViewProviderTrajectoryCompound ::init();
+    RobotGui::ViewProviderTrajectoryDressUp  ::init();
 
      // add resources and reloads the translators
     loadRobotResource();
 }
-
-} // extern "C" {
