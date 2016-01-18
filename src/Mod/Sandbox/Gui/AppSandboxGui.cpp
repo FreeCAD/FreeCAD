@@ -187,20 +187,21 @@ private:
     double radius;
 };
 
-class SandboxModuleGui : public Py::ExtensionModule<SandboxModuleGui>
+namespace SandboxGui {
+class Module : public Py::ExtensionModule<Module>
 {
 
 public:
-    SandboxModuleGui() : Py::ExtensionModule<SandboxModuleGui>("SandboxGui")
+    Module() : Py::ExtensionModule<Module>("SandboxGui")
     {
-        add_varargs_method("interactiveFilletArc",&SandboxModuleGui::interactiveFilletArc,
+        add_varargs_method("interactiveFilletArc",&Module::interactiveFilletArc,
             "Interactive fillet arc");
-        add_varargs_method("xmlReader",&SandboxModuleGui::xmlReader,
+        add_varargs_method("xmlReader",&Module::xmlReader,
             "Read XML");
         initialize("This module is the SandboxGui module"); // register with Python
     }
     
-    virtual ~SandboxModuleGui() {}
+    virtual ~Module() {}
 
 private:
     Py::Object interactiveFilletArc(const Py::Tuple& args)
@@ -238,10 +239,10 @@ private:
     }
 };
 
+} // namespace SandboxGui
 
 /* Python entry */
-extern "C" {
-void SandboxGuiExport initSandboxGui()
+PyMODINIT_FUNC initSandboxGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -264,8 +265,6 @@ void SandboxGuiExport initSandboxGui()
 
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new SandboxModuleGui;
+    (void)new SandboxGui::Module;
     Base::Console().Log("Loading GUI of Sandbox module... done\n");
 }
-
-} // extern "C"
