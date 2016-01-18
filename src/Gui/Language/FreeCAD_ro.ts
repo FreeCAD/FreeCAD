@@ -133,6 +133,25 @@
     </message>
 </context>
 <context>
+    <name>DlgExpressionInput</name>
+    <message>
+        <source>Formula editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
@@ -1407,7 +1426,7 @@ Acest fişier există deja.</translation>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
         <source>HTML files (*.html *.htm)</source>
-        <translation type="unfinished">Fişiere HTML (*.html *.htm)</translation>
+        <translation type="obsolete">Fişiere HTML (*.html *.htm)</translation>
     </message>
     <message>
         <source>Access denied</source>
@@ -1418,6 +1437,10 @@ Acest fişier există deja.</translation>
 
 Specify another directory, please.</source>
         <translation type="unfinished">Acces nepermis &apos;%1&apos; vă rugăm specificați un alt director.</translation>
+    </message>
+    <message>
+        <source>HTML files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1490,6 +1513,18 @@ Specify another directory, please.</source>
     <message>
         <source>Wrong parameter</source>
         <translation type="unfinished">Parametru greşit</translation>
+    </message>
+    <message>
+        <source>Clear user settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to clear all your user settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you agree all your settings will be cleared.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1571,7 +1606,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
-        <translation type="unfinished">Fisiere proiect (*.fcstd)</translation>
+        <translation type="obsolete">Fisiere proiect (*.fcstd)</translation>
     </message>
     <message>
         <source>Destination</source>
@@ -1587,7 +1622,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Document.xml</source>
-        <translation type="unfinished">Document.xml</translation>
+        <translation type="obsolete">Document.xml</translation>
     </message>
     <message>
         <source>Create</source>
@@ -1612,6 +1647,10 @@ Specify another directory, please.</source>
     <message>
         <source>No destination is defined.</source>
         <translation type="unfinished">Nici o destinatie nu a fost definita.</translation>
+    </message>
+    <message>
+        <source>Project file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2936,7 +2975,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>XML (*.FCParam)</source>
-        <translation type="unfinished">XML (*.FCParam)</translation>
+        <translation type="obsolete">XML (*.FCParam)</translation>
     </message>
     <message>
         <source>Import parameter from file</source>
@@ -3296,7 +3335,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="unfinished">Fișierele Text (*.txt * .log)</translation>
+        <translation type="obsolete">Fișierele Text (*.txt * .log)</translation>
     </message>
     <message>
         <source>Go to end</source>
@@ -3309,6 +3348,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Redirect Python errors</source>
         <translation type="unfinished">Redirectioneaza erorile din Python</translation>
+    </message>
+    <message>
+        <source>Plain Text Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3479,7 +3522,7 @@ Doriți să salvați modificările?</translation>
     </message>
     <message>
         <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="unfinished">Macrocomandă FreeCAD (*.FCMacro);;Python (*.py)</translation>
+        <translation type="obsolete">Macrocomandă FreeCAD (*.FCMacro);;Python (*.py)</translation>
     </message>
     <message>
         <source>Export PDF</source>
@@ -3487,7 +3530,7 @@ Doriți să salvați modificările?</translation>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">Fişier PDF (*.pdf)</translation>
+        <translation type="obsolete">Fişier PDF (*.pdf)</translation>
     </message>
     <message>
         <source>untitled[*]</source>
@@ -3508,6 +3551,14 @@ Doriți să salvați modificările?</translation>
     <message>
         <source>Formatted</source>
         <translation type="unfinished">Formatat</translation>
+    </message>
+    <message>
+        <source>FreeCAD macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3589,31 +3640,55 @@ Doriți să salvați modificările?</translation>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">Format PNG (*.png)</translation>
+        <translation type="obsolete">Format PNG (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Format bitmap (*.bmp)</translation>
+        <translation type="obsolete">Format bitmap (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">Format GIF (*.gif)</translation>
+        <translation type="obsolete">Format GIF (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">Format JPG  (*.jpg)</translation>
+        <translation type="obsolete">Format JPG  (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">Format SVG  (*.svg)</translation>
+        <translation type="obsolete">Format SVG  (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">Format PDF (*.pdf)</translation>
+        <translation type="obsolete">Format PDF (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
         <translation type="unfinished">Exportă graficul</translation>
+    </message>
+    <message>
+        <source>PNG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3704,6 +3779,14 @@ Doriți să salvați modificările?</translation>
     <message>
         <source>Macros</source>
         <translation type="unfinished">Macro-uri</translation>
+    </message>
+    <message>
+        <source>Macro file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No such macro file: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3838,6 +3921,25 @@ Cum doresti sa continuam?</translation>
     <message>
         <source>No point was found on model</source>
         <translation type="unfinished">Pe model nu a fost găsit nici un punct</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::MayaGestureNavigationStyle</name>
+    <message>
+        <source>Tap. Or click left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3991,7 +4093,7 @@ Doriți să ieşiți fără a salva datele dumneavoastră?</translation>
     </message>
     <message>
         <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="unfinished">Fișiere de macrocomenzi (*.FCMacro *.py)</translation>
+        <translation type="obsolete">Fișiere de macrocomenzi (*.FCMacro *.py)</translation>
     </message>
     <message>
         <source>Insert file name</source>
@@ -3999,7 +4101,7 @@ Doriți să ieşiți fără a salva datele dumneavoastră?</translation>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation type="unfinished">Toate fișierele (*.*)</translation>
+        <translation type="obsolete">Toate fișierele (*.*)</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
@@ -4024,6 +4126,14 @@ Doriți să ieşiți fără a salva datele dumneavoastră?</translation>
     <message>
         <source>Clear console</source>
         <translation type="unfinished">Curata consola</translation>
+    </message>
+    <message>
+        <source>Macro Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4289,7 +4399,19 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">Fişier PDF (*.pdf)</translation>
+        <translation type="obsolete">Fişier PDF (*.pdf)</translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening file failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4527,7 +4649,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
         <source>Frozen views (*.cam)</source>
-        <translation type="unfinished">Vederile îngheţate (*.cam)</translation>
+        <translation type="obsolete">Vederile îngheţate (*.cam)</translation>
     </message>
     <message>
         <source>Restore views</source>
@@ -4785,7 +4907,7 @@ Retineti: locul unde faceti click conteaza.</translation>
     <message>
         <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="unfinished">Documentul este în modul de editare şi astfel nu poate fi închis pentru moment. 
+        <translation type="obsolete">Documentul este în modul de editare şi astfel nu poate fi închis pentru moment. 
 Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</translation>
     </message>
     <message>
@@ -4803,6 +4925,18 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     <message>
         <source>Save a copy of the document under new filename...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frozen views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Documentul</translation>
     </message>
 </context>
 <context>
@@ -5135,11 +5269,19 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Vie&amp;ws</source>
-        <translation type="unfinished">Vi&amp;zualizări</translation>
+        <translation type="obsolete">Vi&amp;zualizări</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation type="unfinished">Comută această fereastră</translation>
+        <translation type="obsolete">Comută această fereastră</translation>
+    </message>
+    <message>
+        <source>Panels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of available dock panels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

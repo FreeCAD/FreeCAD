@@ -55,94 +55,87 @@
 DEF_STD_CMD_A(CmdPointsImport);
 
 CmdPointsImport::CmdPointsImport()
-  :Command("Points_Import")
+  : Command("Points_Import")
 {
-  sAppModule    = "Points";
-  sGroup        = QT_TR_NOOP("Points");
-  sMenuText     = QT_TR_NOOP("Import points...");
-  sToolTipText  = QT_TR_NOOP("Imports a point cloud");
-  sWhatsThis    = QT_TR_NOOP("Imports a point cloud");
-  sStatusTip    = QT_TR_NOOP("Imports a point cloud");
-  sPixmap       = "Points_Import_Point_cloud";
+    sAppModule    = "Points";
+    sGroup        = QT_TR_NOOP("Points");
+    sMenuText     = QT_TR_NOOP("Import points...");
+    sToolTipText  = QT_TR_NOOP("Imports a point cloud");
+    sWhatsThis    = QT_TR_NOOP("Imports a point cloud");
+    sStatusTip    = QT_TR_NOOP("Imports a point cloud");
+    sPixmap       = "Points_Import_Point_cloud";
 }
 
 void CmdPointsImport::activated(int iMsg)
 {
-  QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
       QString::null, QString(), QString::fromLatin1("%1 (*.asc);;%2 (*.*)")
       .arg(QObject::tr("Ascii Points")).arg(QObject::tr("All Files")));
-  if ( fn.isEmpty() )
-    return;
+    if (fn.isEmpty())
+        return;
 
-  if (! fn.isEmpty() )
-  {
-    QFileInfo fi;
-    fi.setFile(fn);
+    if (!fn.isEmpty()) {
+        QFileInfo fi;
+        fi.setFile(fn);
 
-    openCommand("Points Import Create");
-    doCommand(Doc,"f = App.ActiveDocument.addObject(\"Points::ImportAscii\",\"%s\")", (const char*)fi.baseName().toAscii());
-    doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toAscii());
-    commitCommand();
- 
-    updateActive();
-  }
+        openCommand("Import points");
+        QByteArray name = fi.baseName().toLatin1();
+        Points::Feature* pts = static_cast<Points::Feature*>(getActiveGuiDocument()->getDocument()->
+            addObject("Points::Feature", static_cast<const char*>(name)));
+        Points::PointKernel* kernel = pts->Points.startEditing();
+        kernel->load(static_cast<const char*>(fn.toLatin1()));
+        pts->Points.finishEditing();
+        commitCommand();
+
+        updateActive();
+    }
 }
 
 bool CmdPointsImport::isActive(void)
 {
-  if( getActiveGuiDocument() )
-    return true;
-  else
-    return false;
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
 }
 
 DEF_STD_CMD_A(CmdPointsExport);
 
 CmdPointsExport::CmdPointsExport()
-  :Command("Points_Export")
+  : Command("Points_Export")
 {
-  sAppModule    = "Points";
-  sGroup        = QT_TR_NOOP("Points");
-  sMenuText     = QT_TR_NOOP("Export points...");
-  sToolTipText  = QT_TR_NOOP("Exports a point cloud");
-  sWhatsThis    = QT_TR_NOOP("Exports a point cloud");
-  sStatusTip    = QT_TR_NOOP("Exports a point cloud");
-  sPixmap       = "Points_Export_Point_cloud";
+    sAppModule    = "Points";
+    sGroup        = QT_TR_NOOP("Points");
+    sMenuText     = QT_TR_NOOP("Export points...");
+    sToolTipText  = QT_TR_NOOP("Exports a point cloud");
+    sWhatsThis    = QT_TR_NOOP("Exports a point cloud");
+    sStatusTip    = QT_TR_NOOP("Exports a point cloud");
+    sPixmap       = "Points_Export_Point_cloud";
 }
 
 void CmdPointsExport::activated(int iMsg)
 {
-  QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-      QString::null, QString(), QString::fromLatin1("%1 (*.asc);;%2 (*.*)")
-      .arg(QObject::tr("Ascii Points")).arg(QObject::tr("All Files")));
-  if ( fn.isEmpty() )
-    return;
-
-  if (! fn.isEmpty() )
-  {
-    QFileInfo fi;
-    fi.setFile(fn);
-  
-    openCommand("Export Points");
     std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
-    doCommand(Doc,"f = App.ActiveDocument.addObject(\"Points::Export\",\"%s\")", (const char*)fi.baseName().toAscii());
-    doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toAscii());
-    doCommand(Doc,"l=list()");
-    
-    for ( std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it )
-    {
-      doCommand(Doc,"l.append(App.ActiveDocument.getObject(\"%s\"))",(*it)->getNameInDocument());
-    }
+    for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
+        QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+          QString::null, QString(), QString::fromLatin1("%1 (*.asc);;%2 (*.*)")
+          .arg(QObject::tr("Ascii Points")).arg(QObject::tr("All Files")));
+        if (fn.isEmpty())
+            break;
 
-    doCommand(Doc,"f.Sources = l");
-    commitCommand();
-    updateActive();
-  }
+        if (!fn.isEmpty()) {
+            QFileInfo fi;
+            fi.setFile(fn);
+
+            Points::Feature* pts = static_cast<Points::Feature*>(*it);
+            pts->Points.getValue().save(static_cast<const char*>(fn.toLatin1()));
+        }
+    }
 }
 
 bool CmdPointsExport::isActive(void)
 {
-  return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsTransform);

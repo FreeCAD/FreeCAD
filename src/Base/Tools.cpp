@@ -175,6 +175,11 @@ void StopWatch::start()
     d->t.start();
 }
 
+int StopWatch::restart()
+{
+    return d->t.restart();
+}
+
 int StopWatch::elapsed()
 {
     return d->t.elapsed();

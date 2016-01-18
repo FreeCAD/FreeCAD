@@ -24,8 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
 #endif
 
 #include "ViewProviderFemMeshShape.h"
@@ -47,5 +45,3 @@ ViewProviderFemMeshShape::~ViewProviderFemMeshShape()
 {
  
 }
-
-

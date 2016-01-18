@@ -25,6 +25,7 @@
 #define _PointsAlgos_h_
 
 #include "Points.h"
+#include "Properties.h"
 
 namespace Points
 {
@@ -34,14 +35,38 @@ namespace Points
 class PointsExport PointsAlgos
 {
 public:
-  /** Load a point cloud
-   */
-  static void Load(PointKernel&, const char *FileName);
-  /** Load a point cloud
-   */
-  static void LoadAscii(PointKernel&, const char *FileName);
-
+    /** Load a point cloud
+     */
+    static void Load(PointKernel&, const char *FileName);
+    /** Load a point cloud
+     */
+    static void LoadAscii(PointKernel&, const char *FileName);
 };
+
+#ifdef HAVE_PCL_IO
+class PlyReader
+{
+public:
+    PlyReader();
+    ~PlyReader();
+    void clear();
+    void read(const std::string& filename);
+    const PointKernel& getPoints() const;
+    bool hasProperties() const;
+    const std::vector<float>& getIntensities() const;
+    bool hasIntensities() const;
+    const std::vector<App::Color>& getColors() const;
+    bool hasColors() const;
+    const std::vector<Base::Vector3f>& getNormals() const;
+    bool hasNormals() const;
+
+private:
+    PointKernel points;
+    std::vector<float> intensity;
+    std::vector<App::Color> colors;
+    std::vector<Base::Vector3f> normals;
+};
+#endif
 
 } // namespace Points
 

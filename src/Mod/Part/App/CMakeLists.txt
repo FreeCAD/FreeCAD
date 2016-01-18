@@ -62,13 +62,12 @@ generate_from_xml(ToroidPy)
 generate_from_xml(BezierSurfacePy)
 generate_from_xml(BSplineSurfacePy)
 generate_from_xml(OffsetSurfacePy)
+generate_from_xml(PlateSurfacePy)
 generate_from_xml(RectangularTrimmedSurfacePy)
 generate_from_xml(SurfaceOfExtrusionPy)
 generate_from_xml(SurfaceOfRevolutionPy)
 generate_from_xml(PartFeaturePy)
 generate_from_xml(Part2DObjectPy)
-generate_from_xml(OffsetSurfacePy)
-generate_from_xml(OffsetSurfacePy)
 generate_from_xml(TopoShapePy)
 generate_from_xml(TopoShapeCompoundPy)
 generate_from_xml(TopoShapeCompSolidPy)
@@ -113,6 +112,8 @@ SET(Features_SRCS
     FeatureCompound.h
     FeatureExtrusion.cpp
     FeatureExtrusion.h
+    FeatureFace.cpp
+    FeatureFace.h
     FeatureFillet.cpp
     FeatureFillet.h
     FeatureMirroring.cpp
@@ -195,6 +196,8 @@ SET(Python_SRCS
     BSplineSurfacePyImp.cpp
     OffsetSurfacePy.xml
     OffsetSurfacePyImp.cpp
+    PlateSurfacePy.xml
+    PlateSurfacePyImp.cpp
     RectangularTrimmedSurfacePy.xml
     RectangularTrimmedSurfacePyImp.cpp
     SurfaceOfExtrusionPy.xml

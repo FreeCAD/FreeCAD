@@ -41,7 +41,7 @@ class DlgMacroRecordImp : public QDialog, public Ui_DlgMacroRecord, public Gui::
     Q_OBJECT
 
 public:
-    DlgMacroRecordImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgMacroRecordImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     virtual ~DlgMacroRecordImp();
 
 protected Q_SLOTS:

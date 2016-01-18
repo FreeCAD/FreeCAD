@@ -27,9 +27,8 @@
 #endif
 
 #include "ViewProviderSetGeometry.h"
-#include <Gui/Control.h>
+//#include <Gui/Control.h>
 
-using namespace Gui;
 using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderSetGeometry, Gui::ViewProviderGeometryObject)
@@ -51,6 +50,5 @@ bool ViewProviderSetGeometry::setEdit(int ModNum)
 
 void ViewProviderSetGeometry::unsetEdit(int ModNum)
 {
-
 
 }

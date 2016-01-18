@@ -40,7 +40,7 @@ class _CommandQuickAnalysis(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
                           'Accel': "R, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
-        self.is_active = 'with_analysis'
+        self.is_active = 'with_solver'
 
     def Activated(self):
         def load_results(ret_code):
@@ -62,8 +62,8 @@ class _CommandQuickAnalysis(FemCommands):
     def show_results_on_mesh(self):
         #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
         # or confirmation that it's safe to call restore_result_dialog
-        import _ResultControlTaskPanel
-        tp = _ResultControlTaskPanel._ResultControlTaskPanel()
+        import _TaskPanelResultControl
+        tp = _TaskPanelResultControl._TaskPanelResultControl()
         tp.restore_result_dialog()
 
 

@@ -228,7 +228,13 @@ PyObject*  MeshPy::writeInventor(PyObject *args)
 
     std::stringstream result;
     Base::InventorBuilder builder(result);
-    builder.addIndexedFaceSet(coords, indices, creaseangle);
+    builder.beginSeparator();
+    builder.addShapeHints(creaseangle);
+    builder.beginPoints();
+    builder.addPoints(coords);
+    builder.endPoints();
+    builder.addIndexedFaceSet(indices);
+    builder.endSeparator();
     builder.close();
 
     return Py::new_reference_to(Py::String(result.str()));

@@ -2573,16 +2573,28 @@ class Offset(Modifier):
     def numericRadius(self,rad):
         '''this function gets called by the toolbar when
         valid radius have been entered there'''
+        #print "dvec:",self.dvec
+        #print "rad:",rad
         if self.dvec:
-            self.dvec.normalize()
-            self.dvec.multiply(rad)
+            if isinstance(self.dvec,float):
+                if self.mode == "Circle":
+                    r1 = self.shape.Edges[0].Curve.Radius
+                    r2 = self.ghost.getRadius()
+                    if r2 >= r1:
+                        rad = r1 + rad
+                    else:
+                        rad = r1 - rad
+                    d = str(rad)
+                else:
+                    print "Draft.Offset error: Unhandled case"
+            else:
+                self.dvec.normalize()
+                self.dvec.multiply(rad)
+                d = DraftVecUtils.toString(self.dvec)
             copymode = False
             occmode = self.ui.occOffset.isChecked()
-            if self.ui.isCopy.isChecked(): copymode = True
-            if isinstance(self.dvec,float):
-                d = str(self.dvec)
-            else:
-                d = DraftVecUtils.toString(self.dvec)
+            if self.ui.isCopy.isChecked(): 
+                copymode = True
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Offset"),
                         ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')',
@@ -2757,7 +2769,7 @@ class Trimex(Modifier):
             self.ctrl = hasMod(arg,MODSNAP)
             if self.extrudeMode:
                 arg["ShiftDown"] = False
-            if hasattr(FreeCADGui,"Snapper"):
+            elif hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setSelectMode(not self.ctrl)
             wp = not(self.extrudeMode and self.shift)
             self.point,cp,info = getPoint(self,arg,workingplane=wp)
@@ -3425,7 +3437,8 @@ class Edit(Modifier):
                         self.running = True
                         plane.save()
                         if "Shape" in self.obj.PropertiesList:
-                            plane.alignToFace(self.obj.Shape)
+                            if plane.weak:
+                                plane.alignToFace(self.obj.Shape)
                         if self.planetrack:
                             self.planetrack.set(self.editpoints[0])
                     else:
@@ -3450,6 +3463,8 @@ class Edit(Modifier):
                 self.obj.ViewObject.Selectable = self.selectstate
         Modifier.finish(self)
         plane.restore()
+        if FreeCADGui.Snapper.grid:
+            FreeCADGui.Snapper.grid.set()
         self.running = False
         # following line causes crash
         # FreeCADGui.ActiveDocument.resetEdit()
@@ -4041,6 +4056,7 @@ class Shape2DView(Modifier):
             self.view.removeEventCallback("SoEvent",self.call)
         faces = []
         objs = []
+        vec = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
         sel = FreeCADGui.Selection.getSelectionEx()
         for s in sel:
             objs.append(s.Object)
@@ -4050,10 +4066,10 @@ class Shape2DView(Modifier):
         #print(objs,faces)
         if len(objs) == 1:
             if faces:
-                Draft.makeShape2DView(objs[0],facenumbers=faces)
+                Draft.makeShape2DView(objs[0],vec,facenumbers=faces)
                 return
         for o in objs:
-            Draft.makeShape2DView(o)
+            Draft.makeShape2DView(o,vec)
         self.finish()
 
 
@@ -4303,7 +4319,7 @@ class ToggleGrid():
     "The Draft ToggleGrid command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Snap_Grid',
+        return {'Pixmap'  : 'Draft_Grid',
                 'Accel' : "G,R",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off")}
@@ -4404,6 +4420,129 @@ class VisGroup():
         FreeCADGui.doCommand("Draft.makeVisGroup()")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
+
+class Mirror(Modifier):
+    "The Draft_Mirror FreeCAD command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Mirror',
+                'Accel' : "M, I",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Mirror", "Mirror"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Mirror", "Mirrors the selected objects along a line defined by two points")}
+
+    def Activated(self):
+        self.name = translate("draft","Mirror").decode("utf8")
+        Modifier.Activated(self,self.name)
+        self.ghost = None
+        if self.ui:
+            if not FreeCADGui.Selection.getSelection():
+                self.ui.selectUi()
+                msg(translate("draft", "Select an object to mirror\n"))
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+            else:
+                self.proceed()
+
+    def proceed(self):
+        if self.call: self.view.removeEventCallback("SoEvent",self.call)
+        self.sel = FreeCADGui.Selection.getSelection()
+        self.ui.pointUi(self.name)
+        self.ui.modUi()
+        self.ui.xValue.setFocus()
+        self.ui.xValue.selectAll()
+        #self.ghost = ghostTracker(self.sel) TODO: solve this (see below)
+        self.call = self.view.addEventCallback("SoEvent",self.action)
+        msg(translate("draft", "Pick start point of mirror line:\n"))
+        self.ui.isCopy.hide()
+
+    def finish(self,closed=False,cont=False):
+        if self.ghost:
+            self.ghost.finalize()
+        Modifier.finish(self)
+        if cont and self.ui:
+            if self.ui.continueMode:
+                FreeCADGui.Selection.clearSelection()
+                self.Activated()
+
+    def mirror(self,p1,p2,copy=False):
+        "mirroring the real shapes"
+        sel = '['
+        for o in self.sel:
+            if len(sel) > 1:
+                sel += ','
+            sel += 'FreeCAD.ActiveDocument.'+o.Name
+        sel += ']'
+        FreeCADGui.addModule("Draft")
+        self.commit(translate("draft","Mirror"),
+                    ['Draft.mirror('+sel+','+DraftVecUtils.toString(p1)+','+DraftVecUtils.toString(p2)+')',
+                     'FreeCAD.ActiveDocument.recompute()'])
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg)
+            if (len(self.node) > 0):
+                last = self.node[-1]
+                if self.ghost:
+                    if self.point != last:
+                        # TODO : the following doesn't work at the moment
+                        mu = self.point.sub(last).normalize()
+                        if FreeCAD.GuiUp:
+                            mv = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
+                        else:
+                            mv = FreeCAD.Vector(0,0,1)
+                        mw = mv.cross(mu)
+                        import WorkingPlane
+                        tm = WorkingPlane.plane(u=mu,v=mv,w=mw,pos=last).getPlacement().toMatrix()
+                        m = self.ghost.getMatrix()
+                        m = m.multiply(tm.inverse())
+                        m.scale(FreeCAD.Vector(1,1,-1))
+                        m = m.multiply(tm)
+                        m.scale(FreeCAD.Vector(-1,1,1))
+                        self.ghost.setMatrix(m)
+            if self.extendedCopy:
+                if not hasMod(arg,MODALT): self.finish()
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                if self.point:
+                    self.ui.redraw()
+                    if (self.node == []):
+                        self.node.append(self.point)
+                        self.ui.isRelative.show()
+                        if self.ghost:
+                            self.ghost.on()
+                        msg(translate("draft", "Pick end point of mirror line:\n"))
+                        if self.planetrack:
+                            self.planetrack.set(self.point)
+                    else:
+                        last = self.node[0]
+                        if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
+                            self.mirror(last,self.point,True)
+                        else:
+                            self.mirror(last,self.point)
+                        if hasMod(arg,MODALT):
+                            self.extendedCopy = True
+                        else:
+                            self.finish(cont=True)
+
+    def numericInput(self,numx,numy,numz):
+        "this function gets called by the toolbar when valid x, y, and z have been entered there"
+        self.point = Vector(numx,numy,numz)
+        if not self.node:
+            self.node.append(self.point)
+            if self.ghost:
+                self.ghost.on()
+            msg(translate("draft", "Pick end point of mirror line:\n"))
+        else:
+            last = self.node[-1]
+            if self.ui.isCopy.isChecked():
+                self.mirror(last,self.point,True)
+            else:
+                self.mirror(last,self.point)
+            self.finish()
 
 
 #---------------------------------------------------------------------------
@@ -4617,6 +4756,7 @@ FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_Heal',Heal())
 FreeCADGui.addCommand('Draft_VisGroup',VisGroup())
+FreeCADGui.addCommand('Draft_Mirror',Mirror())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())

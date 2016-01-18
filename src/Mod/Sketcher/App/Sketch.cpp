@@ -912,6 +912,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case None:
+    case NumConstraintTypes:
         break;
     }
 
@@ -2186,6 +2187,7 @@ int Sketch::solve(void)
                     GCSsys.undoSolution();
                     updateGeometry();
                     Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
+                    ret = GCS::SuccessfulSolutionInvalid;
                 }else
                 {
                     updateNonDrivingConstraints();

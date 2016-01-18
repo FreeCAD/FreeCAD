@@ -28,6 +28,7 @@
 #endif
 
 #include <iomanip>
+#include <iterator>
 #include <boost/regex.hpp>
 
 #include <Base/Exception.h>
@@ -103,7 +104,7 @@ App::DocumentObjectExecReturn *FeatureViewSymbol::execute(void)
                 // change values of editable texts. Also strip the "freecad:editable"
                 // attribute so it isn't detected by the page
                 boost::regex e2 ("(<text.*?)(freecad:editable=\""+what[1].str()+"\")(.*?<tspan.*?)>(.*?)(</tspan>)");
-                boost::re_detail::string_out_iterator<std::string > out(newsvg);
+                std::back_insert_iterator<std::string> out(newsvg);
                 boost::regex_replace(out, begin, what[0].second, e2, "$1$3>"+editText[count]+"$5");
             }
             count++;

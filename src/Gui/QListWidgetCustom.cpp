@@ -39,16 +39,18 @@ QListWidgetCustom::~QListWidgetCustom()
 {
 }
 
-/* Overriden dragMoveEvent prevents dragging items that originated
+/* Overridden dragMoveEvent prevents dragging items that originated
  * from the same list for "disabled workbenches". Dragging from outside
  * is still allowed. Also it blocks dragging from another instance of FreeCAD
  */
 void QListWidgetCustom::dragMoveEvent(QDragMoveEvent *e)
 {
     if (e->source() != 0) {
-        const QString disabled_wbs = QString::fromAscii("disabled workbenches");
-        if (e->source()->accessibleName() == disabled_wbs) {
-            if (e->source() == this) {
+        QVariant prop = this->property("OnlyAcceptFrom");
+        if (prop.isValid()) {
+            QStringList filter = prop.toStringList();
+            QString sender = e->source()->objectName();
+            if (!filter.contains(sender)) {
                 e->ignore();
             } else {
                 e->accept();

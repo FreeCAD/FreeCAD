@@ -445,9 +445,6 @@ makeCompound(PyObject *self, PyObject *args)
 
 static PyObject * makeFilledFace(PyObject *self, PyObject *args)
 {
-    // http://opencascade.blogspot.com/2010/03/surface-modeling-part6.html
-    // TODO: GeomPlate_BuildPlateSurface
-    // TODO: GeomPlate_MakeApprox
     // TODO: BRepFeat_SplitShape
     PyObject *obj;
     PyObject *surf=0;

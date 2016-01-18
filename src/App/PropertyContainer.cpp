@@ -125,22 +125,22 @@ const char* PropertyContainer::getPropertyDocumentation(const char *name) const
 
 bool PropertyContainer::isReadOnly(const Property* prop) const
 {
-    return (getPropertyData().getType(this,prop) & Prop_ReadOnly) == Prop_ReadOnly;
+    return (getPropertyType(prop) & Prop_ReadOnly) == Prop_ReadOnly;
 }
 
 bool PropertyContainer::isReadOnly(const char *name) const
 {
-    return (getPropertyData().getType(this,name) & Prop_ReadOnly) == Prop_ReadOnly;
+    return (getPropertyType(name) & Prop_ReadOnly) == Prop_ReadOnly;
 }
 
 bool PropertyContainer::isHidden(const Property* prop) const
 {
-    return (getPropertyData().getType(this,prop) & Prop_Hidden) == Prop_Hidden;
+    return (getPropertyType(prop) & Prop_Hidden) == Prop_Hidden;
 }
 
 bool PropertyContainer::isHidden(const char *name) const
 {
-    return (getPropertyData().getType(this,name) & Prop_Hidden) == Prop_Hidden;
+    return (getPropertyType(name) & Prop_Hidden) == Prop_Hidden;
 }
 
 const char* PropertyContainer::getPropertyName(const Property* prop)const

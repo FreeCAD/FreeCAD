@@ -221,9 +221,9 @@ void TreeWidget::onCreateGroup()
     if (this->contextItem->type() == DocumentType) {
         DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        QString cmd = QString::fromAscii("App.getDocument(\"%1\").addObject"
+        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
                               "(\"App::DocumentObjectGroup\",\"%2\")")
-                              .arg(QString::fromAscii(doc->getName())).arg(name);
+                              .arg(QString::fromLatin1(doc->getName())).arg(name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
         Gui::Application::Instance->runPythonCode(cmd.toUtf8());
@@ -234,10 +234,10 @@ void TreeWidget::onCreateGroup()
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
-        QString cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\")"
+        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
                               ".newObject(\"App::DocumentObjectGroup\",\"%3\")")
-                              .arg(QString::fromAscii(doc->getName()))
-                              .arg(QString::fromAscii(obj->getNameInDocument()))
+                              .arg(QString::fromLatin1(doc->getName()))
+                              .arg(QString::fromLatin1(obj->getNameInDocument()))
                               .arg(name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
@@ -1364,9 +1364,9 @@ void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = viewObject->getObject();
 
-    QString info = QString::fromAscii(Obj->getStatusString());
+    QString info = QString::fromLatin1(Obj->getStatusString());
     if ( Obj->mustExecute() == 1 )
-        info += QString::fromAscii(" (but must be executed)");
+        info += QString::fromLatin1(" (but must be executed)");
     getMainWindow()->showMessage( info );
 
     if (Obj->isError()) {

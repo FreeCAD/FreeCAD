@@ -1,4 +1,3 @@
-PYSIDE_WRAP_RC(Spreadsheet_QRC_SRCS Resources/Spreadsheet.qrc)
 
 add_subdirectory(App)
 if(BUILD_GUI)

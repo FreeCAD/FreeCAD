@@ -25,7 +25,7 @@
 
 #include <QCoreApplication>
 #include <QTcpSocket>
-# include <stdexcept>
+#include <stdexcept>
 
 #include "Server.h"
 #include <Base/Exception.h>
@@ -33,6 +33,60 @@
 
 using namespace Web;
 
+Firewall* Firewall::instance = 0;
+
+Firewall* Firewall::getInstance()
+{
+    return instance;
+}
+
+void Firewall::setInstance(Firewall* inst)
+{
+    if (inst != instance) {
+        delete instance;
+        instance = inst;
+    }
+}
+
+Firewall::Firewall()
+{
+}
+
+Firewall::~Firewall()
+{
+}
+
+bool Firewall::filter(const QByteArray& cmd) const
+{
+    return true;
+}
+
+FirewallPython::FirewallPython(const Py::Object& o)
+  : obj(o)
+{
+}
+
+FirewallPython::~FirewallPython()
+{
+}
+
+bool FirewallPython::filter(const QByteArray& msg) const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Callable call(obj);
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(msg.constData()));
+        Py::Boolean ok(call.apply(args));
+        return static_cast<bool>(ok);
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e;
+        throw Base::RuntimeError(e.what());
+    }
+}
+
+// ----------------------------------------------------------------------------
 
 ServerEvent::ServerEvent(QTcpSocket* sock, const QByteArray& msg)
   : QEvent(QEvent::User), sock(sock), text(msg)
@@ -52,6 +106,8 @@ const QByteArray& ServerEvent::request() const
 {
     return text;
 }
+
+// ----------------------------------------------------------------------------
 
 AppServer::AppServer(QObject* parent)
   : QTcpServer(parent)
@@ -94,7 +150,11 @@ void AppServer::customEvent(QEvent* e)
     std::string str;
 
     try {
-        Base::Interpreter().runString(msg);
+        Firewall* fw = Firewall::getInstance();
+        if (!fw || fw->filter(msg))
+            str = Base::Interpreter().runString(msg);
+        else
+            str = "Command blocked";
     }
     catch (Base::PyException &e) {
         str = e.what();

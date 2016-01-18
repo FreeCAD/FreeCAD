@@ -26,8 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-#include <Base/Parameter.h>
 #include "ViewProviderPrism.h"
+#include <Base/Parameter.h>
 
 using namespace PartGui;
 using namespace std;

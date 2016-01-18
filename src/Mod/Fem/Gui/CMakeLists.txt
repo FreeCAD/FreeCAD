@@ -42,6 +42,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_MOC_HDRS
     DlgSettingsFemImp.h
+    PropertyFemMeshItem.h
     TaskObjectName.h
     TaskCreateNodeSet.h
     TaskDlgCreateNodeSet.h
@@ -116,6 +117,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemMeshShapeNetgen.h
     ViewProviderAnalysis.cpp
     ViewProviderAnalysis.h
+    ViewProviderSolver.cpp
+    ViewProviderSolver.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
     ViewProviderSetElements.cpp
@@ -185,6 +188,8 @@ SET(FemGui_SRCS_Module
     Resources/Fem.qrc
     PreCompiled.cpp
     PreCompiled.h
+    PropertyFemMeshItem.cpp
+    PropertyFemMeshItem.h
     Workbench.cpp
     Workbench.h
 )
@@ -209,8 +214,7 @@ fc_target_copy_resource(FemGui
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
     InitGui.py
-    MechanicalMaterial.ui
-    MechanicalAnalysis.ui
+    TaskPanelMechanicalMaterial.ui
     )
 
 SET(FemGuiIcon_SVG

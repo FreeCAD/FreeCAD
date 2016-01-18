@@ -23,6 +23,7 @@
 #include "FeatureViewAnnotation.h"
 #include "FeatureViewSymbol.h"
 #include "FeatureProjection.h"
+#include "FeatureViewSpreadsheet.h"
 #include "FeatureClip.h"
 #include "PageGroup.h"
 
@@ -63,6 +64,7 @@ void DrawingExport initDrawing()
     Drawing::FeatureViewAnnotation  ::init();
     Drawing::FeatureViewSymbol      ::init();
     Drawing::FeatureClip            ::init();
+    Drawing::FeatureViewSpreadsheet ::init();
 }
 
 } // extern "C"

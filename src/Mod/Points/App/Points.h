@@ -47,11 +47,13 @@ class PointsExport PointKernel : public Data::ComplexGeoData
 
 public:
     typedef Base::Vector3f value_type;
+    typedef std::vector<value_type>::difference_type difference_type;
+    typedef std::vector<value_type>::size_type size_type;
 
     PointKernel(void)
     {
     }
-    PointKernel(unsigned long size)
+    PointKernel(size_type size)
     {
         resize(size);
     }
@@ -81,6 +83,8 @@ public:
     { return this->_Points; }
     void setBasicPoints(const std::vector<value_type>& pts)
     { this->_Points = pts; }
+    void swap(std::vector<value_type>& pts)
+    { this->_Points.swap(pts); }
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
 
@@ -106,14 +110,13 @@ private:
     std::vector<value_type> _Points;
 
 public:
-    typedef std::vector<value_type>::difference_type difference_type;
-    typedef std::vector<value_type>::size_type size_type;
-
     /// number of points stored 
     size_type size(void) const {return this->_Points.size();}
-    void resize(unsigned int n){_Points.resize(n);}
-    void reserve(unsigned int n){_Points.reserve(n);}
-    inline void erase(unsigned long first, unsigned long last) {
+    size_type countValid(void) const;
+    std::vector<value_type> getValidPoints() const;
+    void resize(size_type n){_Points.resize(n);}
+    void reserve(size_type n){_Points.reserve(n);}
+    inline void erase(size_type first, size_type last) {
         _Points.erase(_Points.begin()+first,_Points.begin()+last);
     }
 

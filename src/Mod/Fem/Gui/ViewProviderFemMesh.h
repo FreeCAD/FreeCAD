@@ -43,7 +43,7 @@ class ViewProviderFEMMeshBuilder : public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderFEMMeshBuilder(){}
-    ~ViewProviderFEMMeshBuilder(){}
+    virtual ~ViewProviderFEMMeshBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
     void createMesh(const App::Property*, 
                     SoCoordinate3*, 
@@ -65,7 +65,7 @@ public:
     ViewProviderFemMesh();
 
     /// destructor.
-    ~ViewProviderFemMesh();
+    virtual ~ViewProviderFemMesh();
 
     // Display properties
     App::PropertyColor PointColor;
@@ -98,35 +98,33 @@ public:
     void setHighlightNodes(const std::set<long>&);
     void resetHighlightNodes(void);
     
-	/** @name Postprocessing
+    /** @name Postprocessing
       * this interfaces apply post processing stuff to the View-
-	  * Provider. They can override the positioning and the color
-	  * color or certain elements.
+      * Provider. They can override the positioning and the color
+      * color or certain elements.
      */
     //@{
 
-	/// set the color for each node
-	void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
+    /// set the color for each node
+    void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
     void setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color>  &NodeColors);
 
-	/// reset the view of the node colors
-	void resetColorByNodeId(void);
-	/// set the displacement for each node
+    /// reset the view of the node colors
+    void resetColorByNodeId(void);
+    /// set the displacement for each node
     void setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap);
     void setDisplacementByNodeId(const std::vector<long> &NodeIds,const std::vector<Base::Vector3d> &NodeDisps);
-	/// reset the view of the node displacement
-	void resetDisplacementByNodeId(void);
+    /// reset the view of the node displacement
+    void resetDisplacementByNodeId(void);
     /// reaply the node displacement with a certain factor and do a redraw
     void applyDisplacementToNodes(double factor);
-	/// set the color for each element
-	void setColorByElementId(const std::map<long,App::Color> &ElementColorMap);
-	/// reset the view of the element colors
-	void resetColorByElementId(void);
-
-	//@}
+    /// set the color for each element
+    void setColorByElementId(const std::map<long,App::Color> &ElementColorMap);
+    /// reset the view of the element colors
+    void resetColorByElementId(void);
+    //@}
 
     const std::vector<unsigned long> &getVisibleElementFaces(void)const{return vFaceElementIdx;}
-
 
     PyObject *getPyObject();
 
@@ -160,6 +158,9 @@ protected:
     SoIndexedLineSet      * pcLines;
 
     bool onlyEdges;
+
+private:
+    class Private;
 };
 
 } //namespace FemGui

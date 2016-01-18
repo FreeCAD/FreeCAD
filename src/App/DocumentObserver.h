@@ -24,6 +24,7 @@
 #ifndef APP_DOCUMENTOBSERVER_H
 #define APP_DOCUMENTOBSERVER_H
 
+#include <Base/BaseClass.h>
 #include <boost/signals.hpp>
 #include <set>
 
@@ -32,6 +33,86 @@ namespace App
 class Document;
 class DocumentObject;
 class Property;
+
+/**
+ * The DocumentT class is a helper class to store the name of a document.
+ * This can be useful when you cannot rely on that the document still exists when you have to
+ * access it.
+ *
+ * @author Werner Mayer
+ */
+class AppExport DocumentT
+{
+public:
+    /*! Constructor */
+    DocumentT();
+    /*! Constructor */
+    DocumentT(Document*);
+    /*! Destructor */
+    ~DocumentT();
+    /*! Assignment operator */
+    void operator=(const DocumentT&);
+    /*! Assignment operator */
+    void operator=(const Document*);
+
+    /*! Get a pointer to the document or 0 if it doesn't exist any more. */
+    Document* getDocument() const;
+    /*! Get the name of the document. */
+    std::string getDocumentName() const;
+    /*! Get the document as Python command. */
+    std::string getDocumentPython() const;
+
+private:
+    std::string document;
+};
+
+/**
+ * The DocumentObjectT class is a helper class to store the names of a document object and its document.
+ * This can be useful when you cannot rely on that the document or the object still exists when you have to
+ * access it.
+ *
+ * @author Werner Mayer
+ */
+class AppExport DocumentObjectT
+{
+public:
+    /*! Constructor */
+    DocumentObjectT();
+    /*! Constructor */
+    DocumentObjectT(DocumentObject*);
+    /*! Destructor */
+    ~DocumentObjectT();
+    /*! Assignment operator */
+    void operator=(const DocumentObjectT&);
+    /*! Assignment operator */
+    void operator=(const DocumentObject*);
+
+    /*! Get a pointer to the document or 0 if it doesn't exist any more. */
+    Document* getDocument() const;
+    /*! Get the name of the document. */
+    std::string getDocumentName() const;
+    /*! Get the document as Python command. */
+    std::string getDocumentPython() const;
+    /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
+    DocumentObject* getObject() const;
+    /*! Get the name of the document object. */
+    std::string getObjectName() const;
+    /*! Get the label of the document object. */
+    std::string getObjectLabel() const;
+    /*! Get the document object as Python command. */
+    std::string getObjectPython() const;
+    /*! Get a pointer to the document or 0 if it doesn't exist any more or the type doesn't match. */
+    template<typename T>
+    inline T* getObjectAs() const
+    {
+        return Base::freecad_dynamic_cast<T>(getObject());
+    }
+
+private:
+    std::string document;
+    std::string object;
+    std::string label;
+};
 
 /**
  * The DocumentObserver class simplfies the step to write classes that listen
@@ -121,7 +202,11 @@ private:
     virtual void slotDeletedObject(const App::DocumentObject& Obj);
     /** The property of an observed object has changed */
     virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    virtual void cancelObservation() = 0;
+    /** This method gets called when all observed objects are deleted or the whole document is deleted.
+      * This method can be re-implemented to perform an extra step like closing a dialog tht observes
+      * a document.
+      */
+    virtual void cancelObservation();
 
 private:
     std::set<App::DocumentObject*> _objects;

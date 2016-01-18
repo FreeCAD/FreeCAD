@@ -66,6 +66,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << "Drawing_Clip";
     *part << "Drawing_Symbol";
     *part << "Drawing_DraftView";
+    *part << "Drawing_SpreadsheetView";
     *part << "Drawing_ExportPage";
     *part << "Separator";
     *part << "Drawing_ProjectShape";
@@ -88,6 +89,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "Drawing_Clip";
     *part << "Drawing_Symbol";
     *part << "Drawing_DraftView";
+    *part << "Drawing_SpreadsheetView";
     *part << "Drawing_ExportPage";
     return root;
 }

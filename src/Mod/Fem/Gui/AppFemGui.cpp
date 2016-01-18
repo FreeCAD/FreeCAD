@@ -32,11 +32,13 @@
 #include <Gui/Application.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
+#include "PropertyFemMeshItem.h"
 #include "DlgSettingsFemImp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderAnalysis.h"
+#include "ViewProviderSolver.h"
 #include "ViewProviderSetNodes.h"
 #include "ViewProviderSetElements.h"
 #include "ViewProviderSetFaces.h"
@@ -50,7 +52,6 @@
 #include "ViewProviderFemConstraintPulley.h"
 #include "ViewProviderResult.h"
 #include "Workbench.h"
-//#include "resources/qrc_Fem.cpp"
 
 // use a different name to CreateCommand()
 void CreateFemCommands(void);
@@ -68,7 +69,7 @@ extern struct PyMethodDef FemGui_Import_methods[];
 
 /* Python entry */
 extern "C" {
-void FemGuiExport initFemGui()  
+void FemGuiExport initFemGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -88,6 +89,8 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderFemMesh                ::init();
     FemGui::ViewProviderFemMeshShape           ::init();
     FemGui::ViewProviderFemMeshShapeNetgen     ::init();
+    FemGui::ViewProviderSolver                 ::init();
+    FemGui::ViewProviderSolverPython           ::init();
     FemGui::ViewProviderSetNodes               ::init();
     FemGui::ViewProviderSetElements            ::init();
     FemGui::ViewProviderSetFaces               ::init();
@@ -101,20 +104,7 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderFemConstraintPulley    ::init();
     FemGui::ViewProviderResult                 ::init();
     FemGui::ViewProviderResultPython           ::init();
-
-    Base::Interpreter().loadModule("FemCommands");
-
-    Base::Interpreter().loadModule("_CommandMechanicalShowResult");
-    Base::Interpreter().loadModule("_CommandQuickAnalysis");
-    Base::Interpreter().loadModule("_CommandPurgeFemResults");
-    Base::Interpreter().loadModule("_CommandMechanicalJobControl");
-    Base::Interpreter().loadModule("_CommandFemFromShape");
-    Base::Interpreter().loadModule("_CommandNewMechanicalAnalysis");
-
-    Base::Interpreter().loadModule("MechanicalAnalysis");
-    Base::Interpreter().loadModule("MechanicalMaterial");
-    Base::Interpreter().loadModule("FemBeamSection");
-    Base::Interpreter().loadModule("FemShellThickness");
+    FemGui::PropertyFemMeshItem                ::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemImp> ("FEM");

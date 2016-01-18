@@ -4,7 +4,7 @@
 <context>
     <name>CmdSketcherClone</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="+1523"/>
+        <location filename="../../CommandSketcherTools.cpp" line="+1515"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -22,7 +22,7 @@
 <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-        <location line="-1428"/>
+        <location line="-1420"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -40,7 +40,7 @@
 <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-        <location line="+1451"/>
+        <location line="+1443"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -58,7 +58,7 @@
 <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+1751"/>
+        <location filename="../../CommandCreateGeo.cpp" line="+1778"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -86,7 +86,7 @@
 <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-        <location line="+1833"/>
+        <location line="+1846"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -114,7 +114,7 @@
 <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-        <location line="-438"/>
+        <location line="-445"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -147,7 +147,7 @@
 <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-        <location line="+1821"/>
+        <location line="+1849"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -195,7 +195,7 @@
 <context>
     <name>CmdSketcherConnect</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="-1345"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-1337"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -213,7 +213,7 @@
 <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2505"/>
+        <location filename="../../CommandConstraints.cpp" line="+2541"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -231,7 +231,7 @@
 <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-        <location line="-1664"/>
+        <location line="-1682"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -311,7 +311,7 @@
 <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-        <location line="+1403"/>
+        <location line="+1421"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -329,7 +329,7 @@
 <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-        <location line="-2222"/>
+        <location line="-2240"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -347,7 +347,7 @@
 <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-        <location line="+2654"/>
+        <location line="+2673"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -365,7 +365,7 @@
 <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-        <location line="-2464"/>
+        <location line="-2483"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -459,7 +459,7 @@
 <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-        <location line="+854"/>
+        <location line="+872"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-        <location line="-952"/>
+        <location line="-970"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -535,7 +535,7 @@
 <context>
     <name>CmdSketcherCopy</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="+1278"/>
+        <location filename="../../CommandSketcherTools.cpp" line="+1270"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-3622"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-3656"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-        <location line="+1911"/>
+        <location line="+1924"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -589,7 +589,7 @@
 <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-        <location line="-2213"/>
+        <location line="-2232"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -615,7 +615,7 @@
 <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-        <location line="+1848"/>
+        <location line="+1860"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -651,7 +651,7 @@
 <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-        <location line="+1910"/>
+        <location line="+1923"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -669,7 +669,7 @@
 <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-        <location line="-1039"/>
+        <location line="-1052"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -705,7 +705,7 @@
 <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-        <location line="+1346"/>
+        <location line="+1371"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -727,7 +727,7 @@
 <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-        <location line="+954"/>
+        <location line="+957"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -763,7 +763,7 @@
 <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-        <location line="-4845"/>
+        <location line="-4900"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -781,7 +781,7 @@
 <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-        <location line="+4891"/>
+        <location line="+4946"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -817,7 +817,7 @@
 <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-        <location line="-1244"/>
+        <location line="-1259"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -835,7 +835,7 @@
 <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-        <location line="-2729"/>
+        <location line="-2760"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -857,7 +857,7 @@
 <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-        <location line="-616"/>
+        <location line="-618"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -875,7 +875,7 @@
 <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-        <location line="+4293"/>
+        <location line="+4341"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -911,7 +911,7 @@
 <context>
     <name>CmdSketcherCreateText</name>
     <message>
-        <location line="-1191"/>
+        <location line="-1206"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -929,7 +929,7 @@
 <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-        <location line="+1162"/>
+        <location line="+1177"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -965,7 +965,7 @@
 <context>
     <name>CmdSketcherExternal</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-503"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-504"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -1001,7 +1001,7 @@
 <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-        <location line="+125"/>
+        <location line="+126"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -1067,7 +1067,7 @@
 <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-        <location line="-466"/>
+        <location line="-467"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -1158,7 +1158,7 @@
 <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-        <location line="-178"/>
+        <location line="-176"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -1172,7 +1172,7 @@
 <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-        <location line="-254"/>
+        <location line="-248"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -1190,7 +1190,7 @@
 <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-        <location line="+303"/>
+        <location line="+295"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -1204,7 +1204,7 @@
 <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-        <location line="-152"/>
+        <location line="-147"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -1272,7 +1272,7 @@
 <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-        <location line="+593"/>
+        <location line="+588"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -1316,7 +1316,7 @@
 <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2980"/>
+        <location filename="../../CommandConstraints.cpp" line="+2999"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -1334,7 +1334,7 @@
 <context>
     <name>CmdSketcherTrimming</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-193"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-194"/>
         <source>Sketcher</source>
         <translation>Створювач ескізів</translation>
     </message>
@@ -1356,7 +1356,7 @@
 <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+220"/>
+        <location filename="../../Command.cpp" line="+221"/>
         <source>Sketcher</source>
         <translation type="unfinished">Створювач ескізів</translation>
     </message>
@@ -1412,7 +1412,7 @@
     <message>
         <location filename="../../CommandAlterGeometry.cpp" line="+42"/>
         <location line="+8"/>
-        <location filename="../../CommandConstraints.cpp" line="-3393"/>
+        <location filename="../../CommandConstraints.cpp" line="-3412"/>
         <location line="+329"/>
         <location line="+97"/>
         <location line="+96"/>
@@ -1456,7 +1456,7 @@
         <location line="+34"/>
         <location line="+10"/>
         <location line="+41"/>
-        <location line="+253"/>
+        <location line="+271"/>
         <location line="+11"/>
         <location line="+151"/>
         <location line="+56"/>
@@ -1473,7 +1473,7 @@
         <location line="+18"/>
         <location line="+12"/>
         <location line="+48"/>
-        <location line="+180"/>
+        <location line="+181"/>
         <location line="+11"/>
         <location line="+20"/>
         <location line="+23"/>
@@ -1488,13 +1488,13 @@
         <location line="+51"/>
         <location line="+8"/>
         <location line="+30"/>
-        <location filename="../../CommandSketcherTools.cpp" line="-888"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-880"/>
         <location line="+8"/>
         <location line="+42"/>
         <location line="+60"/>
         <location line="+8"/>
         <location line="+79"/>
-        <location line="+428"/>
+        <location line="+420"/>
         <location line="+242"/>
         <location line="+37"/>
         <location line="+111"/>
@@ -1513,7 +1513,7 @@
         <translation>Обрати ребро(-а) з ескізу.</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-3133"/>
+        <location filename="../../CommandConstraints.cpp" line="-3152"/>
         <location line="+97"/>
         <source>Select an edge from the sketch.</source>
         <translation>Виберіть ребро в ескізі.</translation>
@@ -1537,7 +1537,7 @@
         <location line="+73"/>
         <location line="+9"/>
         <location line="+15"/>
-        <location filename="../../CommandSketcherTools.cpp" line="-1737"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-1729"/>
         <location line="+102"/>
         <source>Impossible constraint</source>
         <translation>Обмеження неможливе</translation>
@@ -1655,7 +1655,7 @@
         <translation type="unfinished">Do you want to share the same radius for all selected elements?</translation>
     </message>
     <message>
-        <location line="+200"/>
+        <location line="+218"/>
         <source>Select only entities from the sketch.</source>
         <translation type="unfinished">Select only entities from the sketch.</translation>
     </message>
@@ -1702,7 +1702,7 @@
         <translation type="unfinished">Incompatible geometry is selected!</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+101"/>
         <location line="+11"/>
         <source>Select at least one ellipse and one edge from the sketch.</source>
         <translation type="unfinished">Select at least one ellipse and one edge from the sketch.</translation>
@@ -1792,7 +1792,7 @@
         <translation type="obsolete">Вибір рівно двох вершин з ескізу.</translation>
     </message>
     <message>
-        <location line="-2831"/>
+        <location line="-2850"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
         <translation type="unfinished">Select two or more vertexes from the sketch.</translation>
@@ -1865,12 +1865,12 @@
     </message>
     <message>
         <location line="+12"/>
-        <location line="+1242"/>
+        <location line="+1260"/>
         <source>Select at least two lines from the sketch.</source>
         <translation>Оберіть на ескізі принаймні дві лінії.</translation>
     </message>
     <message>
-        <location line="-1228"/>
+        <location line="-1246"/>
         <source>Select a valid line</source>
         <translation>Оберіть припустиму лінію</translation>
     </message>
@@ -1904,12 +1904,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+59"/>
         <location line="+313"/>
-        <location line="+1155"/>
+        <location line="+1174"/>
         <source>Error</source>
         <translation type="unfinished">Помилка</translation>
     </message>
     <message>
-        <location line="-1442"/>
+        <location line="-1461"/>
         <location line="+312"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
@@ -1979,7 +1979,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
-        <location line="+590"/>
+        <location line="+608"/>
         <source>Cannot add an angle constraint on an axis!</source>
         <translation>Cannot add an angle constraint on an axis!</translation>
     </message>
@@ -1998,12 +1998,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
         <location line="+27"/>
-        <location line="+463"/>
+        <location line="+464"/>
         <source>Select two or more compatible edges</source>
         <translation>Select two or more compatible edges</translation>
     </message>
     <message>
-        <location line="-457"/>
+        <location line="-458"/>
         <source>Sketch axes cannot be used in equality constraints</source>
         <translation>Sketch axes cannot be used in equality constraints</translation>
     </message>
@@ -2069,22 +2069,19 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">Оберіть на ескізі лише два об&apos;єкти.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4123"/>
         <source>Edit sketch</source>
-        <translation>Редагувати ескіз</translation>
+        <translation type="obsolete">Редагувати ескіз</translation>
     </message>
     <message>
-        <location line="+14"/>
         <source>A dialog is already open in the task panel</source>
-        <translation>Діалогове вікно вже відкрито в панелі задач</translation>
+        <translation type="obsolete">Діалогове вікно вже відкрито в панелі задач</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation>Ви бажаєте закрити це діалогове вікно?</translation>
+        <translation type="obsolete">Ви бажаєте закрити це діалогове вікно?</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-359"/>
+        <location filename="../../Command.cpp" line="-360"/>
         <source>Several sub-elements selected</source>
         <translation>Обрано декілька вкладених елементів</translation>
     </message>
@@ -2124,9 +2121,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>Not allowed to edit the datum because the sketch contains conflicting constraints</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2827"/>
-        <location line="+2270"/>
-        <location filename="../../EditDatumDialog.cpp" line="+89"/>
+        <location filename="../../CommandConstraints.cpp" line="-2845"/>
+        <location line="+2288"/>
+        <location filename="../../EditDatumDialog.cpp" line="+114"/>
         <source>Dimensional constraint</source>
         <translation>Dimensional constraint</translation>
     </message>
@@ -2156,7 +2153,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
         <location line="+147"/>
-        <location line="+428"/>
+        <location line="+420"/>
         <location line="+279"/>
         <location line="+345"/>
         <location line="+461"/>
@@ -2229,12 +2226,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+141"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+377"/>
         <source>Toggle to/from reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Change value</source>
         <translation type="unfinished">Змінити значення</translation>
     </message>
@@ -2245,15 +2242,25 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
         <location line="+7"/>
+        <source>Center sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Delete</source>
         <translation type="unfinished">Видалити</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Swap constraint names</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2336"/>
-        <location filename="../../EditDatumDialog.cpp" line="-73"/>
+        <location filename="../../CommandConstraints.cpp" line="-2372"/>
+        <location filename="../../EditDatumDialog.cpp" line="-98"/>
         <source>Insert angle</source>
         <translation type="unfinished">Вставити кут</translation>
     </message>
@@ -2284,19 +2291,19 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">Ratio n2/n1:</translation>
     </message>
     <message>
-        <location line="+2285"/>
+        <location line="+2303"/>
         <source>Change radius</source>
         <translation type="unfinished">Change radius</translation>
     </message>
     <message>
-        <location line="-2290"/>
-        <location line="+2291"/>
+        <location line="-2308"/>
+        <location line="+2309"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
         <translation type="unfinished">Радіус:</translation>
     </message>
     <message>
-        <location line="+733"/>
+        <location line="+751"/>
         <source>Refractive index ratio</source>
         <translation type="unfinished">Refractive index ratio</translation>
     </message>
@@ -2306,7 +2313,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">Ratio n2/n1:</translation>
     </message>
     <message>
-        <location line="-3016"/>
+        <location line="-3052"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
         <translation type="unfinished">Вставити довжину</translation>
@@ -2338,11 +2345,16 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <source>datum:</source>
         <translation>datum:</translation>
     </message>
+    <message>
+        <location line="+17"/>
+        <source>Name (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-        <location filename="../../PropertyConstraintListItem.cpp" line="+120"/>
+        <location filename="../../PropertyConstraintListItem.cpp" line="+123"/>
         <source>Unnamed</source>
         <translation type="unfinished">Без назви</translation>
     </message>
@@ -2791,7 +2803,7 @@ However, no constraints linking to the endpoints were found.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+51"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+85"/>
         <source>Constraints</source>
         <translation>Обмеження</translation>
     </message>
@@ -3025,7 +3037,7 @@ However, no constraints linking to the endpoints were found.</translation>
 <context>
     <name>SketcherGui::TaskSketcherSolverAdvanced</name>
     <message>
-        <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+66"/>
+        <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+67"/>
         <source>Advanced solver control</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3099,19 +3111,43 @@ However, no constraints linking to the endpoints were found.</translation>
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+12"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+4186"/>
         <source>Invalid sketch</source>
         <translation type="unfinished">Invalid sketch</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.
 Use the sketch validation tool.</source>
-        <translation type="unfinished">The sketch is invalid and cannot be edited.
+        <translation type="obsolete">The sketch is invalid and cannot be edited.
 Use the sketch validation tool.</translation>
     </message>
     <message>
-        <location line="+99"/>
+        <location line="-29"/>
+        <source>Edit sketch</source>
+        <translation type="unfinished">Редагувати ескіз</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>A dialog is already open in the task panel</source>
+        <translation type="unfinished">Діалогове вікно вже відкрито в панелі задач</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you want to close this dialog?</source>
+        <translation type="unfinished">Ви бажаєте закрити це діалогове вікно?</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Do you want to open the sketch validation tool?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The sketch is invalid and cannot be edited.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+109"/>
         <source>Please remove the following constraint:</source>
         <translation>Будь ласка, видаліть наступне обмеження:</translation>
     </message>
@@ -3229,7 +3265,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-2550"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-2582"/>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
         <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
@@ -3238,7 +3274,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-        <location line="+1912"/>
+        <location line="+1925"/>
         <location line="+1"/>
         <source>Create a circle by 3 rim points</source>
         <translation type="unfinished">Create a circle by 3 rim points</translation>
@@ -3247,7 +3283,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_CreateArc</name>
     <message>
-        <location line="-1918"/>
+        <location line="-1931"/>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
         <translation type="unfinished">Create an arc by its center and by its end points</translation>
@@ -3256,7 +3292,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-        <location line="+1576"/>
+        <location line="+1582"/>
         <location line="+1"/>
         <source>Create an arc of ellipse by its center, major radius, endpoints</source>
         <translation type="unfinished">Create an arc of ellipse by its center, major radius, endpoints</translation>
@@ -3265,7 +3301,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-        <location line="+335"/>
+        <location line="+342"/>
         <location line="+1"/>
         <source>Create a circle by its center and by a rim point</source>
         <translation type="unfinished">Create a circle by its center and by a rim point</translation>
@@ -3274,7 +3310,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-        <location line="-341"/>
+        <location line="-348"/>
         <location line="+1"/>
         <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
         <translation type="unfinished">Create a ellipse by periapsis, apoapsis, and minor radius</translation>
@@ -3292,7 +3328,7 @@ Use the sketch validation tool.</translation>
 <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-        <location line="+1946"/>
+        <location line="+1974"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
         <translation type="unfinished">Create a heptagon by its center and by one corner</translation>
@@ -3436,24 +3472,49 @@ Do you want to detach it from the support?</translation>
     </message>
     <message>
         <location line="+17"/>
-        <location line="+280"/>
+        <location line="+322"/>
         <source>BFGS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-275"/>
-        <location line="+280"/>
+        <location line="-317"/>
+        <location line="+322"/>
         <source>LevenbergMarquardt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-275"/>
-        <location line="+280"/>
+        <location line="-317"/>
+        <location line="+322"/>
         <source>DogLeg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-268"/>
+        <location line="-310"/>
+        <source>Type of function to apply in DogLeg for the Gauss step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>DogLeg Gauss step:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>FullPivLU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>LeastNorm-FullPivLU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>LeastNorm-LDLT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Maximum number of iterations of the default algorithm</source>
         <translation type="unfinished"></translation>
     </message>

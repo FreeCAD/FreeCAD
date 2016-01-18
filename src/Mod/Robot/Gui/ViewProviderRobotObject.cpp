@@ -201,7 +201,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		// Axis 1
 		searchAction.setName("FREECAD_AXIS1");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
@@ -214,7 +214,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		// Axis 2
 		searchAction.setName("FREECAD_AXIS2");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
@@ -227,7 +227,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		// Axis 3
 		searchAction.setName("FREECAD_AXIS3");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
@@ -240,7 +240,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		// Axis 4
 		searchAction.setName("FREECAD_AXIS4");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
@@ -253,7 +253,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		// Axis 5
 		searchAction.setName("FREECAD_AXIS5");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
@@ -266,7 +266,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		// Axis 6
 		searchAction.setName("FREECAD_AXIS6");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){

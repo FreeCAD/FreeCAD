@@ -4545,7 +4545,7 @@ public:
         viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
 
         SoNode* root = viewer->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();

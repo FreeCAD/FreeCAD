@@ -260,9 +260,15 @@ void PropertySheet::Paste(const Property &from)
     while (icurr != data.end()) {
         Cell * cell = icurr->second;
 
-        if (cell->isMarked())
-            clear(ifrom->first);
-        ++icurr;
+        if (cell->isMarked()) {
+            std::map<CellAddress, Cell* >::iterator next = icurr;
+
+            ++next;
+            clear(icurr->first);
+            icurr = next;
+        }
+        else
+            ++icurr;
     }
 
     mergedCells = froms->mergedCells;
@@ -567,8 +573,9 @@ public:
         if (varExpr) {
             static const boost::regex e("(\\${0,1})([A-Za-z]+)(\\${0,1})([0-9]+)");
             boost::cmatch cm;
+            std::string s = varExpr->name();
 
-            if (boost::regex_match(varExpr->name().c_str(), cm, e)) {
+            if (boost::regex_match(s.c_str(), cm, e)) {
                 const boost::sub_match<const char *> colstr = cm[2];
                 const boost::sub_match<const char *> rowstr = cm[4];
                 int thisRow, thisCol;
@@ -579,7 +586,7 @@ public:
                 if (thisRow >= mRow || thisCol >= mCol) {
                     thisRow += mRowCount;
                     thisCol += mColCount;
-                    varExpr->setName(columnName(thisCol) + rowName(thisRow));
+                    varExpr->setPath(ObjectIdentifier(varExpr->getOwner(), columnName(thisCol) + rowName(thisRow)));
                     mChanged = true;
                 }
             }
@@ -590,11 +597,11 @@ public:
             CellAddress to(r.to());
 
             if (from.row() >= mRow || from.col() >= mCol) {
-                from = CellAddress(from.row() + mRowCount, from.col() + mColCount);
+                from = CellAddress(std::max(0, from.row() + mRowCount), std::max(0, from.col() + mColCount));
                 mChanged = true;
             }
             if (to.row() >= mRow || to.col() >= mCol) {
-                to = CellAddress(to.row() + mRowCount, to.col() + mColCount);
+                to = CellAddress(std::max(0, to.row() + mRowCount), std::max(0, to.col() + mColCount));
                 mChanged = true;
             }
             rangeExpr->setRange(Range(from, to));
@@ -667,7 +674,7 @@ void PropertySheet::removeRows(int row, int count)
     /* Sort them */
     std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, _1, _2));
 
-    RewriteExpressionVisitor visitor(CellAddress(row + count, CellAddress::MAX_COLUMNS), -count, 0);
+    RewriteExpressionVisitor visitor(CellAddress(row + count - 1, CellAddress::MAX_COLUMNS), -count, 0);
 
     Signaller signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
@@ -753,7 +760,7 @@ void PropertySheet::removeColumns(int col, int count)
     /* Sort them */
     std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::colSortFunc, this, _1, _2));
 
-    RewriteExpressionVisitor visitor(CellAddress(CellAddress::MAX_ROWS, col + count), 0, -count);
+    RewriteExpressionVisitor visitor(CellAddress(CellAddress::MAX_ROWS, col + count - 1), 0, -count);
 
     Signaller signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {

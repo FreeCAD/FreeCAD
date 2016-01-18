@@ -645,7 +645,7 @@ void SoFCDocumentObjectAction::finish()
   atexit_cleanup();
 }
 
-SoFCDocumentObjectAction::SoFCDocumentObjectAction () : _handled(FALSE)
+SoFCDocumentObjectAction::SoFCDocumentObjectAction () : _handled(false)
 {
   SO_ACTION_CONSTRUCTOR(SoFCDocumentObjectAction);
 }
@@ -666,7 +666,7 @@ void SoFCDocumentObjectAction::callDoAction(SoAction *action,SoNode *node)
 
 void SoFCDocumentObjectAction::setHandled()
 {
-  this->_handled = TRUE;
+  this->_handled = true;
 }
 
 SbBool SoFCDocumentObjectAction::isHandled() const
@@ -715,7 +715,7 @@ void SoGLSelectAction::initClass()
 
 SoGLSelectAction::SoGLSelectAction (const SbViewportRegion& region,
                                     const SbViewportRegion& select)
-  : vpregion(region), vpselect(select), _handled(FALSE)
+  : vpregion(region), vpselect(select), _handled(false)
 {
   SO_ACTION_CONSTRUCTOR(SoGLSelectAction);
 }
@@ -742,7 +742,7 @@ void SoGLSelectAction::callDoAction(SoAction *action,SoNode *node)
 
 void SoGLSelectAction::setHandled()
 {
-  this->_handled = TRUE;
+  this->_handled = true;
 }
 
 SbBool SoGLSelectAction::isHandled() const
@@ -790,7 +790,7 @@ void SoVisibleFaceAction::initClass()
   SO_ACTION_ADD_METHOD(SoFCSelection,callDoAction);
 }
 
-SoVisibleFaceAction::SoVisibleFaceAction () : _handled(FALSE)
+SoVisibleFaceAction::SoVisibleFaceAction () : _handled(false)
 {
   SO_ACTION_CONSTRUCTOR(SoVisibleFaceAction);
 }
@@ -811,7 +811,7 @@ void SoVisibleFaceAction::callDoAction(SoAction *action,SoNode *node)
 
 void SoVisibleFaceAction::setHandled()
 {
-  this->_handled = TRUE;
+  this->_handled = true;
 }
 
 SbBool SoVisibleFaceAction::isHandled() const
@@ -976,7 +976,7 @@ SoBoxSelectionRenderAction::constructorCommon(void)
     // Initialize local variables
     PRIVATE(this)->initBoxGraph();
 
-    this->hlVisible = TRUE;
+    this->hlVisible = true;
 
     PRIVATE(this)->basecolor->rgb.setValue(1.0f, 0.0f, 0.0f);
     PRIVATE(this)->drawstyle->linePattern = 0xffff;

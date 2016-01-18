@@ -434,8 +434,28 @@ Boolean indicates if the point lying directly on a face is considered to be insi
 	<Methode Name="distToShape" Const="true">
       <Documentation>
 		<UserDocu>Find the minimum distance to another shape.
-distToShape(Shape s):  Returns a list of minimum distance and solution point pairs - [mindist, (pointonthis,supporttype,
-pointons,supporttype),(...),...]</UserDocu>
+distToShape(Shape s):  Returns a list of minimum distance and solution point pairs.
+
+Returned is a tuple of three: (dist, vectors, infos).
+
+dist is the minimum distance, in mm (float value).
+
+vectors is a list of pairs of App.Vector. Each pair corresponds to solution.
+Example: [(Vector (2.0, -1.0, 2.0), Vector (2.0, 0.0, 2.0)), (Vector (2.0,
+-1.0, 2.0), Vector (2.0, -1.0, 3.0))] First vector is a point on self, second
+vector is a point on s.
+
+infos contains additional info on the solutions. It is a list of tuples:
+(topo1, index1, params1, topo2, index2, params2)
+
+    topo1, topo2 are strings identifying type of BREP element: 'Vertex',
+    'Edge', or 'Face'.
+
+    index1, index2 are indexes of the elements (zero-based).
+
+    params1, params2 are parameters of internal space of the elements. For
+    vertices, params is None. For edges, params is one float, u. For faces,
+    params is a tuple (u,v). </UserDocu>
 	  </Documentation>
 	</Methode>
     <Methode Name="getElement" Const="true">

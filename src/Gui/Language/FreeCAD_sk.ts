@@ -133,6 +133,25 @@
     </message>
 </context>
 <context>
+    <name>DlgExpressionInput</name>
+    <message>
+        <source>Formula editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
@@ -1411,7 +1430,7 @@ Tento súbor už existuje.</translation>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
         <source>HTML files (*.html *.htm)</source>
-        <translation type="unfinished">HTML súbory(*.html *.htm)</translation>
+        <translation type="obsolete">HTML súbory(*.html *.htm)</translation>
     </message>
     <message>
         <source>Access denied</source>
@@ -1424,6 +1443,10 @@ Specify another directory, please.</source>
         <translation type="unfinished">Prístup pre &apos;%1&apos; odmietnutý.
 
 Určite iný adresár.</translation>
+    </message>
+    <message>
+        <source>HTML files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1496,6 +1519,18 @@ Určite iný adresár.</translation>
     <message>
         <source>Wrong parameter</source>
         <translation type="unfinished">Chybný parameter</translation>
+    </message>
+    <message>
+        <source>Clear user settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to clear all your user settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you agree all your settings will be cleared.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1577,7 +1612,7 @@ Určite iný adresár.</translation>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
-        <translation type="unfinished">Súbor projektu(*.fcstd)</translation>
+        <translation type="obsolete">Súbor projektu(*.fcstd)</translation>
     </message>
     <message>
         <source>Destination</source>
@@ -1593,7 +1628,7 @@ Určite iný adresár.</translation>
     </message>
     <message>
         <source>Document.xml</source>
-        <translation type="unfinished">Dokument.xml</translation>
+        <translation type="obsolete">Dokument.xml</translation>
     </message>
     <message>
         <source>Create</source>
@@ -1618,6 +1653,10 @@ Určite iný adresár.</translation>
     <message>
         <source>No destination is defined.</source>
         <translation type="unfinished">Nebola určená destinácia.</translation>
+    </message>
+    <message>
+        <source>Project file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2950,7 +2989,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>XML (*.FCParam)</source>
-        <translation type="unfinished">XML (*.FCParam)</translation>
+        <translation type="obsolete">XML (*.FCParam)</translation>
     </message>
     <message>
         <source>Import parameter from file</source>
@@ -3310,7 +3349,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="unfinished">Obyčajné textové súbory (*.txt *.log)</translation>
+        <translation type="obsolete">Obyčajné textové súbory (*.txt *.log)</translation>
     </message>
     <message>
         <source>Go to end</source>
@@ -3323,6 +3362,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Redirect Python errors</source>
         <translation type="unfinished">Presmerovať chyby Python</translation>
+    </message>
+    <message>
+        <source>Plain Text Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3494,7 +3537,7 @@ Chcete uložiť zmeny?</translation>
     </message>
     <message>
         <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="unfinished">Makro FreeCAD (*.FCMacro);;Python(*.py)</translation>
+        <translation type="obsolete">Makro FreeCAD (*.FCMacro);;Python(*.py)</translation>
     </message>
     <message>
         <source>Export PDF</source>
@@ -3502,7 +3545,7 @@ Chcete uložiť zmeny?</translation>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">Súbor PDF (*.pdf)</translation>
+        <translation type="obsolete">Súbor PDF (*.pdf)</translation>
     </message>
     <message>
         <source>untitled[*]</source>
@@ -3523,6 +3566,14 @@ Chcete uložiť zmeny?</translation>
     <message>
         <source>Formatted</source>
         <translation type="unfinished">Formátované</translation>
+    </message>
+    <message>
+        <source>FreeCAD macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3604,31 +3655,55 @@ Chcete uložiť zmeny?</translation>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG format (*.png)</translation>
+        <translation type="obsolete">PNG format (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap format (*.bmp)</translation>
+        <translation type="obsolete">Bitmap format (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF format (*.gif)</translation>
+        <translation type="obsolete">GIF format (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG format (*.jpg)</translation>
+        <translation type="obsolete">JPG format (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG format (*.svg)</translation>
+        <translation type="obsolete">SVG format (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF format (*.pdf)</translation>
+        <translation type="obsolete">PDF format (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
         <translation type="unfinished">Export graph</translation>
+    </message>
+    <message>
+        <source>PNG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3719,6 +3794,14 @@ Chcete uložiť zmeny?</translation>
     <message>
         <source>Macros</source>
         <translation type="unfinished">Makrá</translation>
+    </message>
+    <message>
+        <source>Macro file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No such macro file: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3853,6 +3936,25 @@ How do you want to proceed?</translation>
     <message>
         <source>No point was found on model</source>
         <translation type="unfinished">No point was found on model</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::MayaGestureNavigationStyle</name>
+    <message>
+        <source>Tap. Or click left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4006,7 +4108,7 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     </message>
     <message>
         <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="unfinished">Makro súbory (*.FCMacro *.py)</translation>
+        <translation type="obsolete">Makro súbory (*.FCMacro *.py)</translation>
     </message>
     <message>
         <source>Insert file name</source>
@@ -4014,7 +4116,7 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation type="unfinished">Všetky súbory (*.*)</translation>
+        <translation type="obsolete">Všetky súbory (*.*)</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
@@ -4039,6 +4141,14 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     <message>
         <source>Clear console</source>
         <translation type="unfinished">Clear console</translation>
+    </message>
+    <message>
+        <source>Macro Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4306,7 +4416,19 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
         <source>PDF file (*.pdf)</source>
-        <translation type="unfinished">Súbor PDF (*.pdf)</translation>
+        <translation type="obsolete">Súbor PDF (*.pdf)</translation>
+    </message>
+    <message>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening file failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4544,7 +4666,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
         <source>Frozen views (*.cam)</source>
-        <translation type="unfinished">Zmrazené zobrazenia (*.cam)</translation>
+        <translation type="obsolete">Zmrazené zobrazenia (*.cam)</translation>
     </message>
     <message>
         <source>Restore views</source>
@@ -4809,7 +4931,7 @@ Buďte opatrní pri klikaní na body.</translation>
     <message>
         <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="unfinished">Dokument je v režime úprav a preto v tejto chvíli nemôže byť uzatvorený.
+        <translation type="obsolete">Dokument je v režime úprav a preto v tejto chvíli nemôže byť uzatvorený.
 Najskôr musíte buď dokončiť úpravy alebo zrušiť úpravy na paneli úloh.</translation>
     </message>
     <message>
@@ -4827,6 +4949,18 @@ Najskôr musíte buď dokončiť úpravy alebo zrušiť úpravy na paneli úloh.
     <message>
         <source>Save a copy of the document under new filename...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frozen views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Dokument</translation>
     </message>
 </context>
 <context>
@@ -5159,11 +5293,19 @@ Najskôr musíte buď dokončiť úpravy alebo zrušiť úpravy na paneli úloh.
     </message>
     <message>
         <source>Vie&amp;ws</source>
-        <translation type="unfinished">Zobrazenia</translation>
+        <translation type="obsolete">Zobrazenia</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation type="unfinished">Prepína toto okno</translation>
+        <translation type="obsolete">Prepína toto okno</translation>
+    </message>
+    <message>
+        <source>Panels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of available dock panels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

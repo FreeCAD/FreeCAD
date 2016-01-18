@@ -71,10 +71,22 @@ public:
     { return documentName; }
     void setDocumentName(const std::string& doc)
     { documentName = doc; }
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the document while it is open.
+    */
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the 3d view while it is open.
+    */
     virtual bool isAllowedAlterView(void) const
     { return true; }
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the selection while it is open.
+    */
     virtual bool isAllowedAlterSelection(void) const
     { return true; }
     virtual bool needsFullSpace() const

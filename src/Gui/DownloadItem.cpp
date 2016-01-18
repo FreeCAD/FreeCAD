@@ -271,7 +271,7 @@ void DownloadItem::init()
 
 QString DownloadItem::getDownloadDirectory() const
 {
-    QString exe = QString::fromAscii(App::GetApplication().getExecutableName());
+    QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
     QString path = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
     QString dirPath = QDir(path).filePath(exe);
     Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
@@ -367,12 +367,12 @@ void DownloadItem::open()
         if (doc) {
             for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
                 Gui::Application::Instance->importFrom(it.key().toUtf8(),
-                    doc->getDocument()->getName(), it.value().toAscii());
+                    doc->getDocument()->getName(), it.value().toLatin1());
             }
         }
         else {
             for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-                Gui::Application::Instance->open(it.key().toUtf8(), it.value().toAscii());
+                Gui::Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
             }
         }
     }

@@ -38,9 +38,9 @@
 #pragma warning(disable : 4267)
 #endif
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QtGui/QCursor>
-#include <QtGui/QMenu>
+#include <QMenu>
 #include <QtCore/QMap>
 
 #include <Inventor/nodes/SoCamera.h>

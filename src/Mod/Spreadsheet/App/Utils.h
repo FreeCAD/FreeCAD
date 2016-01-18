@@ -28,7 +28,6 @@
 #include <set>
 #include <memory>
 #include <Base/BaseClass.h>
-#include "PreCompiled.h"
 
 namespace Spreadsheet {
 

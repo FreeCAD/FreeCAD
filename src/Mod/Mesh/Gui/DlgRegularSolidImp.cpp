@@ -49,9 +49,9 @@ using namespace MeshGui;
  *  name 'name' and widget flags set to 'f'.
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WFlags fl)
+MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
 {
     this->setupUi(this);
@@ -202,7 +202,7 @@ void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
         // Execute the Python block
         QString solid = tr("Create %1").arg(comboBox1->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(solid.toUtf8());
-        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toAscii());
+        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().recompute()");
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -246,7 +246,7 @@ bool SingleDlgRegularSolidImp::hasInstance()
  *  Constructs a SingleDlgRegularSolidImp which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  */
-SingleDlgRegularSolidImp::SingleDlgRegularSolidImp(QWidget* parent, Qt::WFlags fl)
+SingleDlgRegularSolidImp::SingleDlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
   : DlgRegularSolidImp(parent, fl)
 {
 }

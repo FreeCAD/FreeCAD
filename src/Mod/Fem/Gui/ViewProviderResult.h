@@ -24,21 +24,11 @@
 #ifndef FEM_ViewProviderResult_H
 #define FEM_ViewProviderResult_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
-
-class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
-class SoShapeHints;
-class SoMaterialBinding;
 
 namespace FemGui
 {
-
-
 
 class FemGuiExport ViewProviderResult : public Gui::ViewProviderDocumentObject
 {
@@ -49,12 +39,11 @@ public:
     ViewProviderResult();
 
     /// destructor
-    ~ViewProviderResult();
+    virtual ~ViewProviderResult();
 
     // shows solid in the tree
-    virtual bool isShow(void) const{return true;}
-protected:
-
+    virtual bool isShow(void) const
+    { return true; }
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderResult> ViewProviderResultPython;

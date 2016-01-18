@@ -136,20 +136,20 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
     QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::auto_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    ui.groupBox->setTitle(ui.groupBox->title()+QString::fromAscii(" ")+comboNavigationStyle->currentText());
+    ui.groupBox->setTitle(ui.groupBox->title()+QString::fromLatin1(" ")+comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.selectionLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::PANNING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.panningLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::DRAGGING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.rotationLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::ZOOMING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.zoomingLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     dlg.exec();
 }
 
@@ -181,10 +181,10 @@ void DlgSettings3DViewImp::retranslate()
     Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
     comboNavigationStyle->clear();
 
-    QRegExp rx(QString::fromAscii("^\\w+::(\\w+)Navigation\\w+$"));
+    QRegExp rx(QString::fromLatin1("^\\w+::(\\w+)Navigation\\w+$"));
     for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
         if (*it != UserNavigationStyle::getClassTypeId()) {
-            QString data = QString::fromAscii(it->getName());
+            QString data = QString::fromLatin1(it->getName());
             QString name = data.mid(data.indexOf(QLatin1String("::"))+2);
             if (rx.indexIn(data) > -1) {
                 name = tr("%1 navigation").arg(rx.cap(1));

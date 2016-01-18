@@ -1699,6 +1699,9 @@ PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape)
 PyObject* TopoShapePy::proximity(PyObject *args)
 {
 #if OCC_VERSION_HEX >= 0x060801
+#if OCC_VERSION_HEX >= 0x060901
+    typedef BRepExtrema_MapOfIntegerPackedMapOfInteger BRepExtrema_OverlappedSubShapes;
+#endif
     PyObject* ps2;
     Standard_Real tol = Precision::Confusion();
     if (!PyArg_ParseTuple(args, "O!|d",&(TopoShapePy::Type), &ps2, &tol))
@@ -1714,7 +1717,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
         return 0;
     }
 
-    BRepExtrema_ShapeProximity proximity;getTopoShapePtr()->_Shape;
+    BRepExtrema_ShapeProximity proximity;
     proximity.LoadShape1 (s1);
     proximity.LoadShape2 (s2);
     if (tol > 0.0)

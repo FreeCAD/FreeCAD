@@ -45,7 +45,7 @@ class QMainWindow;
 
 #ifdef Q_WS_MACX
 #include <IOKit/IOKitLib.h>
-#include <3DconnexionClient/ConnexionClientAPI.h>
+#include <ConnexionClientAPI.h>
 extern OSErr InstallConnexionHandlers(ConnexionMessageHandlerProc messageHandler, ConnexionAddedHandlerProc addedHandler, ConnexionRemovedHandlerProc removedHandler)
   __attribute__((weak_import));
 extern UInt16 RegisterConnexionClient(UInt32 signature, UInt8 *name, UInt16 mode, UInt32 mask) __attribute__((weak_import));

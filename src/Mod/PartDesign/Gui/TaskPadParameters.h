@@ -107,7 +107,6 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button 
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 

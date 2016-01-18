@@ -520,9 +520,28 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     self.text1.justification = coin.SoAsciiText.LEFT
                     self.text2.justification = coin.SoAsciiText.LEFT
 
+    def setEdit(self,vobj,mode):
+        taskd = SpaceTaskPanel()
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
 
+class SpaceTaskPanel(ArchComponent.ComponentTaskPanel):
+    "A modified version of the Arch component task panel"
 
+    def __init__(self):
+        ArchComponent.ComponentTaskPanel.__init__(self)
+        self.editButton = QtGui.QPushButton(self.form)
+        self.editButton.setObjectName("editButton")
+        self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
+        self.grid.addWidget(self.editButton, 4, 0, 1, 2)
+        self.editButton.setText(QtGui.QApplication.translate("Arch", "Set text position", None, QtGui.QApplication.UnicodeUTF8))
+        QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.setTextPos)
+        
+    def setTextPos(self):
+        FreeCADGui.runCommand("Draft_Edit")
 
 
 if FreeCAD.GuiUp:

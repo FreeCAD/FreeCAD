@@ -176,6 +176,75 @@ protected:
     static std::string stl_header;
 };
 
+/*!
+  The MeshCleanup class is a helper class to remove points from the point array that are not
+  referenced by any facet. It also removes facet with point indices that are out of range.
+ */
+class MeshCleanup
+{
+public:
+    /*!
+      \brief Construction.
+      \param p -- the point array
+      \param f -- the facet array
+     */
+    MeshCleanup(MeshPointArray& p, MeshFacetArray& f);
+    ~MeshCleanup();
+
+    /*!
+      \brief Remove unreferenced and invalid facets.
+     */
+    void RemoveInvalids();
+
+private:
+    /*!
+      \brief Remove invalid facets.
+     */
+    void RemoveInvalidFacets();
+    /*!
+      \brief Remove invalid points.
+     */
+    void RemoveInvalidPoints();
+
+private:
+    MeshPointArray& pointArray;
+    MeshFacetArray& facetArray;
+};
+
+/*!
+   The MeshPointFacetAdjacency class is a helper class to get all facets per vertex
+   and set the neighbourhood of the facets.
+   At this point the MeshFacetArray only references the points but does not have set
+   the neighbourhood of two adjacent facets.
+ */
+class MeshPointFacetAdjacency
+{
+public:
+    /*!
+      \brief Construction.
+      \param p -- the number of points
+      \param f -- the facet array
+     */
+    MeshPointFacetAdjacency(std::size_t p, MeshFacetArray& f);
+    ~MeshPointFacetAdjacency();
+
+    /*!
+      \brief Set the neighbourhood of two adjacent facets.
+     */
+    void SetFacetNeighbourhood();
+
+private:
+    /*!
+      \brief Build up the adjacency information.
+     */
+    void Build();
+
+private:
+    std::size_t numPoints;
+    MeshFacetArray& facets;
+    std::vector< std::vector<std::size_t> > pointFacetAdjacency;
+};
+
 
 } // namespace MeshCore
 

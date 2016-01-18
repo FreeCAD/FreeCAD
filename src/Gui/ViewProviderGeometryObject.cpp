@@ -227,7 +227,7 @@ bool ViewProviderGeometryObject::setEdit(int ModNum)
 #if 1
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
-    sa.setSearchingAll(FALSE);
+    sa.setSearchingAll(false);
     sa.setNode(this->pcTransform);
     sa.apply(pcRoot);
     SoPath * path = sa.getPath();
@@ -336,7 +336,7 @@ void ViewProviderGeometryObject::setEditViewer(Gui::View3DInventorViewer* viewer
 {
     if (ModNum == (int)ViewProvider::Transform) {
         SoNode* root = viewer->getSceneGraph();
-        static_cast<SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+        static_cast<SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
     }
 }
 
@@ -345,7 +345,7 @@ void ViewProviderGeometryObject::unsetEditViewer(Gui::View3DInventorViewer* view
     int ModNum = this->getEditingMode();
     if (ModNum == (int)ViewProvider::Transform) {
         SoNode* root = viewer->getSceneGraph();
-        static_cast<SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+        static_cast<SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
     }
 }
 
@@ -601,7 +601,7 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
 {
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::ALL);
-    sa.setSearchingAll(TRUE);
+    sa.setSearchingAll(true);
     sa.setType(Gui::SoFCSelection::getClassTypeId());
     sa.apply(pcRoot);
 

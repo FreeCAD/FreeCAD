@@ -42,7 +42,7 @@ public:
     FemResultObject(void);
     virtual ~FemResultObject();
 
-    App::PropertyIntegerList ElementNumbers;
+    App::PropertyIntegerList NodeNumbers;
     /// Link to the corresponding  mesh
     App::PropertyLink Mesh;
     /// Stats of analysis
@@ -53,6 +53,10 @@ public:
     App::PropertyFloatList DisplacementLengths;
     /// Von Mises Stress values of analysis
     App::PropertyFloatList StressValues;
+    /// Eigenmode number
+    App::PropertyInteger Eigenmode;
+    /// Eigenmode frequency
+    App::PropertyFloat EigenmodeFrequency;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {

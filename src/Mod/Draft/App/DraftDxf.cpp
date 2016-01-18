@@ -43,6 +43,7 @@
 #include <Base/Parameter.h>
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Annotation.h>
@@ -55,6 +56,7 @@ DraftDxfRead::DraftDxfRead(std::string filepath, App::Document *pcDoc) : CDxfRea
     document = pcDoc;
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Draft");
     optionGroupLayers = hGrp->GetBool("groupLayers",false);
+    optionImportAnnotations = hGrp->GetBool("dxftext",false);
 }
 
 
@@ -129,19 +131,21 @@ void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double mi
 
 void DraftDxfRead::OnReadText(const double *point, const double height, const char* text)
 {
-    Base::Vector3d pt(point[0],point[1],point[2]);
-    if(LayerName().substr(0, 6) != "BLOCKS") {
-        App::Annotation *pcFeature = (App::Annotation *)document->addObject("App::Annotation", "Text");
-        pcFeature->LabelText.setValue(Deformat(text));
-        pcFeature->Position.setValue(pt);
+    if (optionImportAnnotations) {
+        Base::Vector3d pt(point[0],point[1],point[2]);
+        if(LayerName().substr(0, 6) != "BLOCKS") {
+            App::Annotation *pcFeature = (App::Annotation *)document->addObject("App::Annotation", "Text");
+            pcFeature->LabelText.setValue(Deformat(text));
+            pcFeature->Position.setValue(pt);
+        }
+        //else std::cout << "skipped text in block: " << LayerName() << std::endl;
     }
-    else std::cout << "skipped text in block: " << LayerName() << std::endl;
 }
 
 
 void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const char* name, double rotation)
 {
-    std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << " scale " << scale[0] << "," << scale[1] << "," << scale[2] << std::endl;
+    //std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << " scale " << scale[0] << "," << scale[1] << "," << scale[2] << std::endl;
     for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
         std::string k = i->first;
         std::string prefix = "BLOCKS ";
@@ -173,7 +177,13 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
 
 void DraftDxfRead::OnReadDimension(const double* s, const double* e, const double* point, double rotation)
 {
-    std::cout << "Dimension: " << std::endl;
+    if (optionImportAnnotations) {
+        Base::Interpreter().runString("import Draft");
+        Base::Interpreter().runStringArg("p1=FreeCAD.Vector(%f,%f,%f)",s[0],s[1],s[2]);
+        Base::Interpreter().runStringArg("p2=FreeCAD.Vector(%f,%f,%f)",e[0],e[1],e[2]);
+        Base::Interpreter().runStringArg("p3=FreeCAD.Vector(%f,%f,%f)",point[0],point[1],point[2]);
+        Base::Interpreter().runString("Draft.makeDimension(p1,p2,p3)");
+    }
 }
 
 
@@ -192,7 +202,7 @@ void DraftDxfRead::AddObject(Part::TopoShape *shape)
 }
 
 
-const char* DraftDxfRead::Deformat(const char* text)
+std::string DraftDxfRead::Deformat(const char* text)
 {
     // this function removes DXF formatting from texts
     std::stringstream ss;
@@ -223,10 +233,11 @@ const char* DraftDxfRead::Deformat(const char* text)
                 }
             }
         }
-        else if ( (text[i] != '{') && (text[i] != '}') )
+        else if ( (text[i] != '{') && (text[i] != '}') ) {
             ss << text[i];
+        }
     }
-    return ss.str().c_str();
+    return ss.str();
 }
 
 

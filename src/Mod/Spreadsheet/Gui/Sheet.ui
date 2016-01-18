@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::ExpressionLineEdit" name="cellContent">
+      <widget class="SpreadsheetGui::LineEdit" name="cellContent">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -47,9 +47,9 @@
    <header>SheetTableView.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::ExpressionLineEdit</class>
+   <class>SpreadsheetGui::LineEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">Gui/ExpressionCompleter.h</header>
+   <header>SpreadsheetView.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -57,7 +57,7 @@
 #include <QtCore/QEvent>
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
-#include <QtGui/QAction>
+#include <QAction>
 #include <QPaintEvent>
 #include <QResizeEvent>
 
@@ -205,7 +205,7 @@ QuarterWidget::constructor(const QGLFormat & format, const QGLWidget * sharewidg
   // set up a cache context for the default SoGLRenderAction
   PRIVATE(this)->sorendermanager->getGLRenderAction()->setCacheContext(this->getCacheContextId());
 
-  this->setMouseTracking(TRUE);
+  this->setMouseTracking(true);
 
   // Qt::StrongFocus means the widget will accept keyboard focus by
   // both tabbing and clicking
@@ -720,7 +720,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
         // processing the sensors might trigger a redraw in another
         // context. Release this context temporarily
         w->doneCurrent();
-        SoDB::getSensorManager()->processDelayQueue(FALSE);
+        SoDB::getSensorManager()->processDelayQueue(false);
         w->makeCurrent();
     }
 

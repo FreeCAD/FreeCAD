@@ -110,8 +110,8 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             return 0;
         }
 
-        prop->StatusBits.set(2,(type & 1) > 0);
-        prop->StatusBits.set(3,(type & 2) > 0);
+        prop->setStatus(Property::ReadOnly,(type & 1) > 0);
+        prop->setStatus(Property::Hidden,(type & 2) > 0);
 
         Py_Return;
     }
@@ -128,15 +128,15 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             }
 
             // reset all bits first
-            prop->StatusBits.reset(2);
-            prop->StatusBits.reset(3);
+            prop->setStatus(Property::ReadOnly, false);
+            prop->setStatus(Property::Hidden, false);
 
             for (Py::Sequence::iterator it = seq.begin();it!=seq.end();++it) {
                 std::string str = (std::string)Py::String(*it);
                 if (str == "ReadOnly")
-                    prop->StatusBits.set(2);
+                    prop->setStatus(Property::ReadOnly, true);
                 else if (str == "Hidden")
-                    prop->StatusBits.set(3);
+                    prop->setStatus(Property::Hidden, true);
             }
 
             Py_Return;
@@ -157,9 +157,9 @@ PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
     Py::List ret;
     if (prop) {
         short Type =  prop->getType();
-        if ((prop->StatusBits.test(2)) || (Type & Prop_ReadOnly))
+        if ((prop->testStatus(Property::ReadOnly)) || (Type & Prop_ReadOnly))
             ret.append(Py::String("ReadOnly"));
-        if ((prop->StatusBits.test(3)) || (Type & Prop_Hidden))
+        if ((prop->testStatus(Property::Hidden)) || (Type & Prop_Hidden))
             ret.append(Py::String("Hidden"));
     }
     return Py::new_reference_to(ret);
@@ -171,7 +171,13 @@ PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    const char* Group = getPropertyContainerPtr()->getPropertyGroup(pstr);
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    const char* Group = getPropertyContainerPtr()->getPropertyGroup(prop);
     if (Group)
         return Py::new_reference_to(Py::String(Group));
     else
@@ -184,7 +190,13 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    const char* Group = getPropertyContainerPtr()->getPropertyDocumentation(pstr);
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    const char* Group = getPropertyContainerPtr()->getPropertyDocumentation(prop);
     if (Group)
         return Py::new_reference_to(Py::String(Group));
     else

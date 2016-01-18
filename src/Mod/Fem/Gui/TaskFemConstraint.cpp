@@ -193,7 +193,7 @@ bool TaskDlgFemConstraint::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

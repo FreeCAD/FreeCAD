@@ -24,11 +24,10 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
 
-#include <QObject>
-#include <TopoDS_Shape.hxx>
 #include "ViewProviderFemConstraint.h"
 
 namespace FemGui {
+
 class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraint
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPressure);

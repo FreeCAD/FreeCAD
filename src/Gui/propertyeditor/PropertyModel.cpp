@@ -211,13 +211,16 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     // fill up the listview with the properties
     rootItem->reset();
 
+    beginResetModel();
+
     // sort the properties into their groups
     std::map<std::string, std::vector<std::vector<App::Property*> > > propGroup;
     PropertyModel::PropertyList::const_iterator jt;
     for (jt = props.begin(); jt != props.end(); ++jt) {
         App::Property* prop = jt->second.front();
         const char* group = prop->getGroup();
-        std::string grp = group ? group : "Base";
+        bool isEmpty = (group == 0 || group[0] == '\0');
+        std::string grp = isEmpty ? "Base" : group;
         propGroup[grp].push_back(jt->second);
     }
 
@@ -228,13 +231,13 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         PropertyItem* group = static_cast<PropertyItem*>(PropertySeparatorItem::create());
         group->setParent(rootItem);
         rootItem->appendChild(group);
-        group->setPropertyName(QString::fromAscii(kt->first.c_str()));
+        group->setPropertyName(QString::fromLatin1(kt->first.c_str()));
 
         // setup the items for the properties
         std::vector<std::vector<App::Property*> >::const_iterator it;
         for (it = kt->second.begin(); it != kt->second.end(); ++it) {
             App::Property* prop = it->front();
-            QString editor = QString::fromAscii(prop->getEditorName());
+            QString editor = QString::fromLatin1(prop->getEditorName());
             if (!editor.isEmpty()) {
                 Base::BaseClass* item = 0;
                 try {
@@ -251,14 +254,15 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     PropertyItem* child = (PropertyItem*)item;
                     child->setParent(rootItem);
                     rootItem->appendChild(child);
-                    child->setPropertyName(QString::fromAscii(prop->getName()));
+                    child->setPropertyName(QString::fromLatin1(prop->getName()));
                     child->setPropertyData(*it);
                 }
             }
         }
     }
 
-    reset();
+    endResetModel();
+//    reset();
 }
 
 void PropertyModel::updateProperty(const App::Property& prop)
@@ -273,6 +277,52 @@ void PropertyModel::updateProperty(const App::Property& prop)
             if (data.isValid()) {
                 dataChanged(data, data);
                 updateChildren(child, column, data);
+            }
+            break;
+        }
+    }
+}
+
+void PropertyModel::appendProperty(const App::Property& prop)
+{
+    QString editor = QString::fromLatin1(prop.getEditorName());
+    if (!editor.isEmpty()) {
+        Base::BaseClass* item = 0;
+        try {
+            item = static_cast<Base::BaseClass*>(Base::Type::
+                createInstanceByName(prop.getEditorName(),true));
+        }
+        catch (...) {
+        }
+        if (!item) {
+            qWarning("No property item for type %s found\n", prop.getEditorName());
+        }
+        else if (item->getTypeId().isDerivedFrom(PropertyItem::getClassTypeId())) {
+            // notify system to add new row
+            int row = rootItem->childCount();
+            beginInsertRows(QModelIndex(), row, row);
+
+            PropertyItem* child = static_cast<PropertyItem*>(item);
+            child->setParent(rootItem);
+            rootItem->appendChild(child);
+            child->setPropertyName(QString::fromLatin1(prop.getName()));
+            std::vector<App::Property*> data;
+            data.push_back(const_cast<App::Property*>(&prop));
+            child->setPropertyData(data);
+
+            endInsertRows();
+        }
+    }
+}
+
+void PropertyModel::removeProperty(const App::Property& prop)
+{
+    int numChild = rootItem->childCount();
+    for (int row=0; row<numChild; row++) {
+        PropertyItem* child = rootItem->child(row);
+        if (child->hasProperty(&prop)) {
+            if (child->removeProperty(&prop)) {
+                removeRow(row, QModelIndex());
             }
             break;
         }
@@ -296,6 +346,22 @@ void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelI
         }
 #endif
     }
+}
+
+bool PropertyModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    PropertyItem* item;
+    if (!parent.isValid())
+        item = rootItem;
+    else
+        item = static_cast<PropertyItem*>(parent.internalPointer());
+
+    int start = row;
+    int end = row+count-1;
+    beginRemoveRows(parent, start, end);
+    item->removeChildren(start, end);
+    endRemoveRows();
+    return true;
 }
 
 #include "moc_PropertyModel.cpp"

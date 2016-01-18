@@ -3,7 +3,7 @@
 <context>
     <name>Arch</name>
     <message>
-        <location filename="ArchWindow.py" line="1137"/>
+        <location filename="ArchWindow.py" line="1142"/>
         <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,27 +43,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1131"/>
+        <location filename="ArchWindow.py" line="1136"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1132"/>
+        <location filename="ArchWindow.py" line="1137"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchAxis.py" line="452"/>
+        <location filename="ArchAxis.py" line="497"/>
         <source>Axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchAxis.py" line="452"/>
+        <location filename="ArchAxis.py" line="497"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchAxis.py" line="452"/>
+        <location filename="ArchAxis.py" line="497"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,52 +88,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="607"/>
+        <location filename="ArchCommands.py" line="611"/>
         <source>is not closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="609"/>
+        <location filename="ArchCommands.py" line="613"/>
         <source>is not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="611"/>
+        <location filename="ArchCommands.py" line="615"/>
         <source>doesn&apos;t contain any solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="617"/>
+        <location filename="ArchCommands.py" line="621"/>
         <source>contains a non-closed solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="619"/>
+        <location filename="ArchCommands.py" line="623"/>
         <source>contains faces that are not part of any solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="949"/>
+        <location filename="ArchCommands.py" line="953"/>
         <source>Grouping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="981"/>
+        <location filename="ArchCommands.py" line="985"/>
         <source>Ungrouping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1012"/>
+        <location filename="ArchCommands.py" line="1016"/>
         <source>Split Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1052"/>
+        <location filename="ArchCommands.py" line="1056"/>
         <source>Mesh to Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1133"/>
+        <location filename="ArchCommands.py" line="1137"/>
         <source>All good! no problems found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -153,12 +153,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="283"/>
+        <location filename="ArchSectionPlane.py" line="622"/>
         <source>Objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="798"/>
+        <location filename="ArchComponent.py" line="801"/>
         <source>closing Sketch edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -208,7 +208,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSectionPlane.py" line="412"/>
+        <location filename="ArchSectionPlane.py" line="435"/>
         <source>Skipping invalid object: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,137 +238,137 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="771"/>
+        <location filename="ArchStructure.py" line="775"/>
         <source>Axes systems this structure is built on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="398"/>
+        <location filename="ArchWall.py" line="418"/>
         <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="772"/>
+        <location filename="ArchStructure.py" line="776"/>
         <source>The element numbers to exclude when this structure is based on axes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="227"/>
+        <location filename="ArchWall.py" line="360"/>
         <source>Create Wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="259"/>
+        <location filename="ArchWall.py" line="260"/>
         <source>WallTrace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="285"/>
+        <location filename="ArchWall.py" line="288"/>
         <source>Wall options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="294"/>
+        <location filename="ArchWall.py" line="297"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="300"/>
+        <location filename="ArchWall.py" line="303"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="306"/>
+        <location filename="ArchWall.py" line="309"/>
         <source>Alignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="395"/>
+        <location filename="ArchWall.py" line="415"/>
         <source>The width of this wall. Not used if this wall is based on a face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="396"/>
+        <location filename="ArchWall.py" line="416"/>
         <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="397"/>
+        <location filename="ArchWall.py" line="417"/>
         <source>The alignment of this wall on its base object, if applicable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="463"/>
+        <location filename="ArchWall.py" line="489"/>
         <source>Error: Invalid base object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="472"/>
+        <location filename="ArchWall.py" line="498"/>
         <source>This mesh is an invalid solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="463"/>
+        <location filename="ArchWindow.py" line="466"/>
         <source>Create Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="602"/>
+        <location filename="ArchWindow.py" line="607"/>
         <source>the components of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1133"/>
+        <location filename="ArchWindow.py" line="1138"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1134"/>
+        <location filename="ArchWindow.py" line="1139"/>
         <source>Create/update component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1135"/>
+        <location filename="ArchWindow.py" line="1140"/>
         <source>Base 2D object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1141"/>
+        <location filename="ArchWindow.py" line="1146"/>
         <source>Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1138"/>
+        <location filename="ArchWindow.py" line="1143"/>
         <source>Create new component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1139"/>
+        <location filename="ArchWindow.py" line="1144"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1140"/>
+        <location filename="ArchWindow.py" line="1145"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1142"/>
+        <location filename="ArchWindow.py" line="1147"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1143"/>
+        <location filename="ArchWindow.py" line="1148"/>
         <source>Z offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importDAE.py" line="80"/>
+        <location filename="importDAE.py" line="101"/>
         <source>Error: Couldn&apos;t determine character encoding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importDAE.py" line="169"/>
+        <location filename="importDAE.py" line="190"/>
         <source>file %s successfully created.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -401,12 +401,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="945"/>
+        <location filename="ArchCommands.py" line="949"/>
         <source>Add space boundary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="977"/>
+        <location filename="ArchCommands.py" line="981"/>
         <source>Remove space boundary</source>
         <translation type="unfinished"></translation>
     </message>
@@ -441,12 +441,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRebar.py" line="118"/>
+        <location filename="ArchRebar.py" line="121"/>
         <source>Create Rebar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRebar.py" line="128"/>
+        <location filename="ArchRebar.py" line="131"/>
         <source>Please select a base face on a structural object
 </source>
         <translation type="unfinished"></translation>
@@ -588,12 +588,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="521"/>
+        <location filename="ArchWindow.py" line="526"/>
         <source>Preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="288"/>
+        <location filename="ArchWall.py" line="291"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -603,7 +603,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="314"/>
+        <location filename="ArchWall.py" line="317"/>
         <source>Con&amp;tinue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -628,78 +628,78 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="817"/>
+        <location filename="ArchStructure.py" line="828"/>
         <source>Couldn&apos;t compute a shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="369"/>
+        <location filename="ArchWall.py" line="389"/>
         <source>Merge Wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="375"/>
+        <location filename="ArchWall.py" line="395"/>
         <source>The selected wall contain no subwall to merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="382"/>
+        <location filename="ArchWall.py" line="402"/>
         <source>Please select only wall objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="384"/>
+        <location filename="ArchWall.py" line="404"/>
         <source>Merge Walls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="394"/>
+        <location filename="ArchWall.py" line="414"/>
         <source>The length of this wall. Not used if this wall is based on an underlying object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="399"/>
+        <location filename="ArchWall.py" line="419"/>
         <source>The face number of the base object used to build this wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="400"/>
+        <location filename="ArchWall.py" line="420"/>
         <source>The offset between this wall and its baseline (only for left and right alignments)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="452"/>
+        <location filename="ArchWindow.py" line="455"/>
         <source>Pick a face on an existing object or select a preset
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="510"/>
+        <location filename="ArchWindow.py" line="515"/>
         <source>Window options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="603"/>
+        <location filename="ArchWindow.py" line="608"/>
         <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="605"/>
+        <location filename="ArchWindow.py" line="610"/>
         <source>The width of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="606"/>
+        <location filename="ArchWindow.py" line="611"/>
         <source>The height of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="607"/>
+        <location filename="ArchWindow.py" line="612"/>
         <source>The normal direction of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1108"/>
+        <location filename="ArchWindow.py" line="1113"/>
         <source>Unable to create component
 </source>
         <translation type="unfinished"></translation>
@@ -717,7 +717,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchAxis.py" line="451"/>
+        <location filename="ArchAxis.py" line="496"/>
         <source>Distances (mm) and angles (deg) between axes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -744,7 +744,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importOBJ.py" line="55"/>
+        <location filename="importOBJ.py" line="56"/>
         <source>Found a shape containing curves, triangulating
 </source>
         <translation type="unfinished"></translation>
@@ -762,17 +762,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="800"/>
+        <location filename="ArchCommands.py" line="804"/>
         <source>Object doesn&apos;t have settable IFC Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="806"/>
+        <location filename="ArchCommands.py" line="810"/>
         <source>Disabling Brep force flag of object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="812"/>
+        <location filename="ArchCommands.py" line="816"/>
         <source>Enabling Brep force flag of object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -807,7 +807,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="610"/>
+        <location filename="ArchWindow.py" line="615"/>
         <source>A material for this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -879,21 +879,6 @@
     <message>
         <location filename="ArchEquipment.py" line="220"/>
         <source>Create 3 views</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchEquipment.py" line="238"/>
-        <source>an optional 2D shape representing a top view of this equipment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchEquipment.py" line="239"/>
-        <source>an optional 2D shape representing a front view of this equipment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchEquipment.py" line="240"/>
-        <source>an optional 2D shape representing a side view of this equipment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1057,7 +1042,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="514"/>
+        <location filename="ArchWindow.py" line="519"/>
         <source>Sill height</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1173,7 +1158,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1199"/>
+        <location filename="ArchCommands.py" line="1203"/>
         <source>Create Component</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1353,7 +1338,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="604"/>
+        <location filename="ArchWindow.py" line="609"/>
         <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1362,41 +1347,57 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <source>This exporter can currently only export one site object</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="ArchSectionPlane.py" line="625"/>
+        <source>Objects seen by this section plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchSpace.py" line="540"/>
+        <source>Set text position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchStructure.py" line="623"/>
+        <source>Unable to extrude the base shape
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArchGitOptions</name>
     <message>
-        <location filename="ArchServer.py" line="151"/>
+        <location filename="ArchServer.py" line="152"/>
         <source>Git Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchServer.py" line="152"/>
+        <location filename="ArchServer.py" line="153"/>
         <source>What to commit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchServer.py" line="153"/>
+        <location filename="ArchServer.py" line="154"/>
         <source>All files in folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchServer.py" line="154"/>
+        <location filename="ArchServer.py" line="155"/>
         <source>Only this .FcStd file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchServer.py" line="155"/>
+        <location filename="ArchServer.py" line="156"/>
         <source>Commit message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchServer.py" line="156"/>
+        <location filename="ArchServer.py" line="157"/>
         <source>commit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchServer.py" line="157"/>
+        <location filename="ArchServer.py" line="158"/>
         <source>Push to default remote repository</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1455,12 +1456,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_Add</name>
     <message>
-        <location filename="ArchCommands.py" line="936"/>
+        <location filename="ArchCommands.py" line="940"/>
         <source>Add component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="937"/>
+        <location filename="ArchCommands.py" line="941"/>
         <source>Adds the selected components to the active object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1507,17 +1508,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_Check</name>
     <message>
-        <location filename="ArchCommands.py" line="1124"/>
+        <location filename="ArchCommands.py" line="1128"/>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1125"/>
+        <location filename="ArchCommands.py" line="1129"/>
         <source>Checks the selected objects for problems</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1146"/>
+        <location filename="ArchCommands.py" line="1150"/>
         <source>Explore the contents of an Ifc file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1525,12 +1526,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_CloseHoles</name>
     <message>
-        <location filename="ArchCommands.py" line="1107"/>
+        <location filename="ArchCommands.py" line="1111"/>
         <source>Close holes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1108"/>
+        <location filename="ArchCommands.py" line="1112"/>
         <source>Closes holes in open shapes, turning them solids</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1538,12 +1539,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_Component</name>
     <message>
-        <location filename="ArchCommands.py" line="1189"/>
+        <location filename="ArchCommands.py" line="1193"/>
         <source>Component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1191"/>
+        <location filename="ArchCommands.py" line="1195"/>
         <source>Creates an undefined architectural component</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1616,7 +1617,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_IfcExplorer</name>
     <message>
-        <location filename="ArchCommands.py" line="1145"/>
+        <location filename="ArchCommands.py" line="1149"/>
         <source>Ifc Explorer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1637,12 +1638,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_MergeWalls</name>
     <message>
-        <location filename="ArchWall.py" line="352"/>
+        <location filename="ArchWall.py" line="372"/>
         <source>Merge Walls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="353"/>
+        <location filename="ArchWall.py" line="373"/>
         <source>Merges the selected walls, if possible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1650,12 +1651,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_MeshToShape</name>
     <message>
-        <location filename="ArchCommands.py" line="1028"/>
+        <location filename="ArchCommands.py" line="1032"/>
         <source>Mesh to Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1029"/>
+        <location filename="ArchCommands.py" line="1033"/>
         <source>Turns selected meshes into Part Shape objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1676,12 +1677,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_Rebar</name>
     <message>
-        <location filename="ArchRebar.py" line="81"/>
+        <location filename="ArchRebar.py" line="84"/>
         <source>Rebar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRebar.py" line="83"/>
+        <location filename="ArchRebar.py" line="86"/>
         <source>Creates a Reinforcement bar from the selected face of a structural object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1689,12 +1690,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_Remove</name>
     <message>
-        <location filename="ArchCommands.py" line="968"/>
+        <location filename="ArchCommands.py" line="972"/>
         <source>Remove component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="969"/>
+        <location filename="ArchCommands.py" line="973"/>
         <source>Remove the selected components from their parents, or create a hole in a component</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1702,12 +1703,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_RemoveShape</name>
     <message>
-        <location filename="ArchCommands.py" line="1092"/>
+        <location filename="ArchCommands.py" line="1096"/>
         <source>Remove Shape from Arch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1093"/>
+        <location filename="ArchCommands.py" line="1097"/>
         <source>Removes cubic shapes from Arch components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1754,12 +1755,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-        <location filename="ArchCommands.py" line="1063"/>
+        <location filename="ArchCommands.py" line="1067"/>
         <source>Select non-manifold meshes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1064"/>
+        <location filename="ArchCommands.py" line="1068"/>
         <source>Selects all non-manifold meshes from the document or from the selected groups</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1798,12 +1799,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_SplitMesh</name>
     <message>
-        <location filename="ArchCommands.py" line="1003"/>
+        <location filename="ArchCommands.py" line="1007"/>
         <source>Split Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1004"/>
+        <location filename="ArchCommands.py" line="1008"/>
         <source>Splits selected meshes into independent components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1832,12 +1833,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_Survey</name>
     <message>
-        <location filename="ArchCommands.py" line="1159"/>
+        <location filename="ArchCommands.py" line="1163"/>
         <source>Survey</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1160"/>
+        <location filename="ArchCommands.py" line="1164"/>
         <source>Starts survey</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1845,12 +1846,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-        <location filename="ArchCommands.py" line="1174"/>
+        <location filename="ArchCommands.py" line="1178"/>
         <source>Toggle IFC Brep flag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1175"/>
+        <location filename="ArchCommands.py" line="1179"/>
         <source>Force an object to be exported as Brep or not</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2476,21 +2477,146 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <source>Merge materials with same name</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="preferences-dae.ui" line="64"/>
+        <source>Mesher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="71"/>
+        <source>The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="81"/>
+        <source>Builtin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="86"/>
+        <source>Mefisto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="91"/>
+        <source>Netgen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="104"/>
+        <source>Builtin and mefisto mesher options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="112"/>
+        <source>Tessellation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="119"/>
+        <source>The tessellation value to use with the builtin and mefisto meshers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="143"/>
+        <source>Netgen mesher options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="151"/>
+        <source>Grading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="158"/>
+        <source>The grading value to use for netgen meshing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="181"/>
+        <source>Segments per edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="188"/>
+        <source>The maximum number of segments per edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="211"/>
+        <source>Segments per radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="218"/>
+        <source>The number of segments per radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="241"/>
+        <source>Allow second order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="244"/>
+        <source>Second order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="261"/>
+        <source>Allows optimization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="264"/>
+        <source>Optimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="284"/>
+        <source>Allow quad faces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dae.ui" line="287"/>
+        <source>Allow quads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="322"/>
+        <source>Use triangulation options set in the DAE options page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="325"/>
+        <source>Use DAE triangulation options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="342"/>
+        <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="345"/>
+        <source>Join coplanar facets when triangulating</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="InitGui.py" line="108"/>
+        <location filename="InitGui.py" line="109"/>
         <source>Arch tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="109"/>
+        <location filename="InitGui.py" line="110"/>
         <source>Draft tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="110"/>
+        <location filename="InitGui.py" line="111"/>
         <source>Draft mod tools</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2498,22 +2624,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>arch</name>
     <message>
-        <location filename="InitGui.py" line="112"/>
+        <location filename="InitGui.py" line="113"/>
         <source>&amp;Architecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="115"/>
+        <location filename="InitGui.py" line="116"/>
         <source>&amp;Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="114"/>
+        <location filename="InitGui.py" line="115"/>
         <source>Utilities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="115"/>
+        <location filename="InitGui.py" line="116"/>
         <source>Snapping</source>
         <translation type="unfinished"></translation>
     </message>

@@ -459,7 +459,7 @@ void DrawingView::printPdf()
     dlg.setFileMode(QFileDialog::AnyFile);
     dlg.setAcceptMode(QFileDialog::AcceptSave);
     dlg.setWindowTitle(tr("Export PDF"));
-    dlg.setFilters(QStringList() << QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    dlg.setNameFilters(QStringList() << QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
 
     QGridLayout *gridLayout;
     QGridLayout *formLayout;

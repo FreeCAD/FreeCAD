@@ -32,7 +32,6 @@
 #include "Workbench.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderView.h"
-//#include "resources/qrc_Drawing.cpp"
 
 // use a different name to CreateCommand()
 void CreateDrawingCommands(void);
@@ -66,6 +65,7 @@ void DrawingGuiExport initDrawingGui()
 
     DrawingGui::ViewProviderDrawingPage::init();
     DrawingGui::ViewProviderDrawingView::init();
+    DrawingGui::ViewProviderDrawingViewPython::init();
     DrawingGui::ViewProviderDrawingClip::init();
 
     // add resources and reloads the translators

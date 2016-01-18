@@ -36,6 +36,7 @@ def findVert(aVertex,aList):
             if ( round(aVertex.Y,p) == round(aList[i].Y,p) ):
                 if ( round(aVertex.Z,p) == round(aList[i].Z,p) ):
                     return i
+    return None
 
 def getIndices(shape,offset):
     "returns a list with 2 lists: vertices and face indexes, offsetted with the given amount"
@@ -89,7 +90,10 @@ def getIndices(shape,offset):
                 for e in edges:
                     #print e.Vertexes[0].Point,e.Vertexes[1].Point
                     v = e.Vertexes[0]
-                    fi += " " + str(findVert(v,shape.Vertexes) + offset)
+                    ind = findVert(v,shape.Vertexes)
+                    if ind == None:
+                        return None,None,None
+                    fi += " " + str(ind + offset)
                 flist.append(fi)
     return vlist,elist,flist
 
@@ -104,14 +108,17 @@ def export(exportList,filename):
         if obj.isDerivedFrom("Part::Feature"):
             if obj.ViewObject.isVisible():
                 vlist,elist,flist = getIndices(obj.Shape,offset)
-                offset += len(vlist)
-                outfile.write("o " + obj.Name + "\n")
-                for v in vlist:
-                    outfile.write("v" + v + "\n")
-                for e in elist:
-                    outfile.write("l" + e + "\n")
-                for f in flist:
-                    outfile.write("f" + f + "\n")
+                if vlist == None:
+                    FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
+                else:
+                    offset += len(vlist)
+                    outfile.write("o " + obj.Name + "\n")
+                    for v in vlist:
+                        outfile.write("v" + v + "\n")
+                    for e in elist:
+                        outfile.write("l" + e + "\n")
+                    for f in flist:
+                        outfile.write("f" + f + "\n")
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","successfully written ")+filename+"\n")
             

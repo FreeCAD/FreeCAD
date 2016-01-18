@@ -87,7 +87,7 @@ void SceneModel::setNode(SoNode* node)
 
 void SceneModel::setNode(QModelIndex index, SoNode* node)
 {
-    this->setData(index, QVariant(QString::fromAscii(node->getTypeId().getName())));
+    this->setData(index, QVariant(QString::fromLatin1(node->getTypeId().getName())));
     if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
         SoGroup *group = static_cast<SoGroup*>(node);
         // insert SoGroup icon
@@ -96,7 +96,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
         for (int i=0; i<group->getNumChildren();i++) {
             SoNode* child = group->getChild(i);
             setNode(this->index(i, 0, index), child);
-            this->setData(this->index(i, 1, index), QVariant(QString::fromAscii(child->getName())));
+            this->setData(this->index(i, 1, index), QVariant(QString::fromLatin1(child->getName())));
         }
     }
     // insert icon
@@ -106,7 +106,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
 
 /* TRANSLATOR Gui::Dialog::DlgInspector */
 
-DlgInspector::DlgInspector(QWidget* parent, Qt::WFlags fl)
+DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_SceneInspector())
 {
     ui->setupUi(this);

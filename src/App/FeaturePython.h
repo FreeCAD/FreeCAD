@@ -44,9 +44,10 @@ public:
     FeaturePythonImp(App::DocumentObject*);
     ~FeaturePythonImp();
 
-    DocumentObjectExecReturn *execute();
+    bool execute();
     void onBeforeChange(const Property* prop);
     void onChanged(const Property* prop);
+    void onDocumentRestored();
     PyObject *getPyObject(void);
 
 private:
@@ -84,7 +85,15 @@ public:
     }
     /// recalculate the Feature
     virtual DocumentObjectExecReturn *execute(void) {
-        return imp->execute();
+        try {
+            bool handled = imp->execute();
+            if (!handled)
+                return FeatureT::execute();
+        }
+        catch (const Base::Exception& e) {
+            return new App::DocumentObjectExecReturn(e.what());
+        }
+        return DocumentObject::StdReturn;
     }
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -148,29 +157,13 @@ public:
     const char* getPropertyGroup(const char *name) const {
         return props->getPropertyGroup(name);
     }
-    /// get the Group of a Property
+    /// get the Documentation of a Property
     const char* getPropertyDocumentation(const Property* prop) const {
         return props->getPropertyDocumentation(prop);
     }
     /// get the Group of a named Property
     const char* getPropertyDocumentation(const char *name) const {
         return props->getPropertyDocumentation(name);
-    }
-    /// check if the property is read-only
-    bool isReadOnly(const Property* prop) const {
-        return props->isReadOnly(prop);
-    }
-    /// check if the nameed property is read-only
-    bool isReadOnly(const char *name) const {
-        return props->isReadOnly(name);
-    }
-    /// check if the property is hidden
-    bool isHidden(const Property* prop) const {
-        return props->isHidden(prop);
-    }
-    /// check if the named property is hidden
-    bool isHidden(const char *name) const {
-        return props->isHidden(name);
     }
     //@}
 
@@ -207,6 +200,10 @@ protected:
     virtual void onChanged(const Property* prop) {
         imp->onChanged(prop);
         FeatureT::onChanged(prop);
+    }
+    virtual void onDocumentRestored() {
+        imp->onDocumentRestored();
+        FeatureT::onDocumentRestored();
     }
 
 private:

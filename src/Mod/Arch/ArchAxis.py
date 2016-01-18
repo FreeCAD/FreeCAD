@@ -129,16 +129,24 @@ class _ViewProviderAxis:
         vobj.addProperty("App::PropertyLength","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
         vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", translate("Arch","The numbering style"))
         vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
+        vobj.addProperty("App::PropertyEnumeration","BubblePosition","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addProperty("App::PropertyInteger","StartNumber","Base","")
+        vobj.addProperty("App::PropertyString","FontName","Base","")
+        vobj.addProperty("App::PropertyLength","FontSize","Base","")
         vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
+        vobj.BubblePosition = ["Start","End","Both"]
         vobj.Proxy = self
         vobj.BubbleSize = 500
         vobj.LineWidth = 1
         vobj.LineColor = (0.13,0.15,0.37)
         vobj.DrawStyle = "Dashdot"
         vobj.NumberingStyle = "1,2,3"
+        vobj.StartNumber = 1
+        vobj.FontName = Draft.getParam("textfont","Arial,Sans")
+        vobj.FontSize = 350
 
     def getIcon(self):
         import Arch_rc
@@ -206,7 +214,7 @@ class _ViewProviderAxis:
                 self.linestyle.linePattern = 0xff88
         elif prop == "LineWidth":
                 self.linestyle.lineWidth = vobj.LineWidth
-        elif prop == "BubbleSize":
+        elif prop in ["BubbleSize","BubblePosition","FontName","FontSize"]:
             if hasattr(self,"bubbleset"):
                 if self.bubbles:
                     self.bubbleset.removeChild(self.bubbles)
@@ -219,63 +227,88 @@ class _ViewProviderAxis:
                         self.bubbles.addChild(self.bubblestyle)
                         import Part,Draft
                         self.bubbletexts = []
+                        pos = ["Start"]
+                        if hasattr(vobj,"BubblePosition"):
+                            if vobj.BubblePosition == "Both":
+                                pos = ["Start","End"]
+                            else:
+                                pos = [vobj.BubblePosition]
                         for i in range(len(vobj.Object.Shape.Edges)):
-                            verts = vobj.Object.Shape.Edges[i].Vertexes
-                            p1 = verts[0].Point
-                            p2 = verts[1].Point
-                            dv = p2.sub(p1)
-                            dv.normalize()
-                            if hasattr(vobj.BubbleSize,"Value"):
-                                rad = vobj.BubbleSize.Value/2
-                            else:
-                                rad = vobj.BubbleSize/2
-                            center = p2.add(dv.scale(rad,rad,rad))
-                            buf = Part.makeCircle(rad,center).writeInventor()
-                            try:
-                                cin = coin.SoInput()
-                                cin.setBuffer(buf)
-                                cob = coin.SoDB.readAll(cin)
-                            except:
-                                import re
-                                # workaround for pivy SoInput.setBuffer() bug
-                                buf = buf.replace("\n","")
-                                pts = re.findall("point \[(.*?)\]",buf)[0]
-                                pts = pts.split(",")
-                                pc = []
-                                for p in pts:
-                                    v = p.strip().split()
-                                    pc.append([float(v[0]),float(v[1]),float(v[2])])
-                                coords = coin.SoCoordinate3()
-                                coords.point.setValues(0,len(pc),pc)
-                                line = coin.SoLineSet()
-                                line.numVertices.setValue(-1)
-                            else:
-                                coords = cob.getChild(1).getChild(0).getChild(2)
-                                line = cob.getChild(1).getChild(0).getChild(3)
-                            self.bubbles.addChild(coords)
-                            self.bubbles.addChild(line)
-                            st = coin.SoSeparator()
-                            tr = coin.SoTransform()
-                            tr.translation.setValue((center.x,center.y-rad/2,center.z))
-                            fo = coin.SoFont()
-                            fo.name = Draft.getParam("textfont","Arial,Sans")
-                            fo.size = rad*1.5
-                            tx = coin.SoAsciiText()
-                            tx.justification = coin.SoText2.CENTER
-                            self.bubbletexts.append(tx)
-                            st.addChild(tr)
-                            st.addChild(fo)
-                            st.addChild(tx)
-                            self.bubbles.addChild(st)
+                            for p in pos:
+                                verts = vobj.Object.Shape.Edges[i].Vertexes
+                                if p == "Start":
+                                    p1 = verts[0].Point
+                                    p2 = verts[1].Point
+                                else:
+                                    p1 = verts[1].Point
+                                    p2 = verts[0].Point
+                                dv = p2.sub(p1)
+                                dv.normalize()
+                                if hasattr(vobj.BubbleSize,"Value"):
+                                    rad = vobj.BubbleSize.Value/2
+                                else:
+                                    rad = vobj.BubbleSize/2
+                                center = p2.add(dv.scale(rad,rad,rad))
+                                buf = Part.makeCircle(rad,center).writeInventor()
+                                try:
+                                    cin = coin.SoInput()
+                                    cin.setBuffer(buf)
+                                    cob = coin.SoDB.readAll(cin)
+                                except:
+                                    import re
+                                    # workaround for pivy SoInput.setBuffer() bug
+                                    buf = buf.replace("\n","")
+                                    pts = re.findall("point \[(.*?)\]",buf)[0]
+                                    pts = pts.split(",")
+                                    pc = []
+                                    for p in pts:
+                                        v = p.strip().split()
+                                        pc.append([float(v[0]),float(v[1]),float(v[2])])
+                                    coords = coin.SoCoordinate3()
+                                    coords.point.setValues(0,len(pc),pc)
+                                    line = coin.SoLineSet()
+                                    line.numVertices.setValue(-1)
+                                else:
+                                    coords = cob.getChild(1).getChild(0).getChild(2)
+                                    line = cob.getChild(1).getChild(0).getChild(3)
+                                self.bubbles.addChild(coords)
+                                self.bubbles.addChild(line)
+                                st = coin.SoSeparator()
+                                tr = coin.SoTransform()
+                                fs = rad*1.5
+                                if hasattr(vobj,"FontSize"):
+                                    fs = vobj.FontSize.Value
+                                tr.translation.setValue((center.x,center.y-fs/2.5,center.z))
+                                fo = coin.SoFont()
+                                fn = Draft.getParam("textfont","Arial,Sans")
+                                if hasattr(vobj,"FontName"):
+                                    if vobj.FontName:
+                                        try:
+                                            fn = str(vobj.FontName)
+                                        except:
+                                            pass
+                                fo.name = fn
+                                fo.size = fs
+                                tx = coin.SoAsciiText()
+                                tx.justification = coin.SoText2.CENTER
+                                self.bubbletexts.append(tx)
+                                st.addChild(tr)
+                                st.addChild(fo)
+                                st.addChild(tx)
+                                self.bubbles.addChild(st)
                         self.bubbleset.addChild(self.bubbles)
                         self.onChanged(vobj,"NumberingStyle")
-        elif prop == "NumberingStyle":
+        elif prop in ["NumberingStyle","StartNumber"]:
             if hasattr(self,"bubbletexts"):
                 chars = "abcdefghijklmnopqrstuvwxyz"
                 roman=(('M',1000),('CM',900),('D',500),('CD',400),
                        ('C',100),('XC',90),('L',50),('XL',40),
                        ('X',10),('IX',9),('V',5),('IV',4),('I',1))
                 num = 0
+                if hasattr(vobj,"StartNumber"):
+                    if vobj.StartNumber > 1:
+                        num = vobj.StartNumber-1
+                alt = False
                 for t in self.bubbletexts:
                     if hasattr(vobj,"NumberingStyle"):
                         if vobj.NumberingStyle == "1,2,3":
@@ -302,17 +335,23 @@ class _ViewProviderAxis:
                             t.string = result
                         elif vobj.NumberingStyle == "I,II,III":
                             result = ""
-                            num += 1
+                            n = num
+                            n += 1
                             for numeral, integer in roman:
-                                while num >= integer:
+                                while n >= integer:
                                     result += numeral
-                                    num -= integer
+                                    n -= integer
                             t.string = result
                         elif vobj.NumberingStyle == "L0,L1,L2":
                             t.string = "L"+str(num)
                     else:
                         t.string = str(num+1)
                     num += 1
+                    if hasattr(vobj,"BubblePosition"):
+                        if vobj.BubblePosition == "Both":
+                            if not alt:
+                                num -= 1
+                    alt = not alt
 
 
     def setEdit(self,vobj,mode=0):
@@ -429,8 +468,14 @@ class _AxisTaskPanel:
         for i in range(self.tree.topLevelItemCount()):
             it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
             if (remove == None) or (remove != i):
-                d.append(float(it.text(1)))
-                a.append(float(it.text(2)))
+                if it.text(1):
+                    d.append(float(it.text(1)))
+                else:
+                    d.append(0.0)
+                if it.text(2):
+                    a.append(float(it.text(2)))
+                else:
+                    a.append(0.0)
         self.obj.Distances = d
         self.obj.Angles = a
         self.obj.touch()

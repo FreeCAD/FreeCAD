@@ -33,7 +33,7 @@
 
 #include "ContextMenu.h"
 
-#include <QtGui/QMenu>
+#include <QMenu>
 
 #include <Inventor/SoEventManager.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>

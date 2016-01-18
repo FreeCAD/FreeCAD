@@ -57,7 +57,8 @@
 #define DEFAULT_QRSOLVER 1          // DENSE=0, SPARSEQR=1
 #define QR_PIVOT_THRESHOLD 1E-13    // under this value a Jacobian value is regarded as zero
 #define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
-#define MAX_ITER_MULTIPLIER true
+#define MAX_ITER_MULTIPLIER false
+#define DEFAULT_DOGLEG_GAUSS_STEP 0   // FullPivLU = 0, LeastNormFullPivLU = 1, LeastNormLdlt = 2
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -75,6 +76,7 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
     this->groupLayout()->addWidget(proxy);
 
     ui->comboBoxDefaultSolver->onRestore();
+    ui->comboBoxDogLegGaussStep->onRestore();
     ui->spinBoxMaxIter->onRestore();
     ui->checkBoxSketchSizeMultiplier->onRestore();
     ui->lineEditConvergence->onRestore();
@@ -98,7 +100,15 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
 
-    switch(ui->comboBoxDefaultSolver->currentIndex())
+    int currentindex = ui->comboBoxDefaultSolver->currentIndex();
+    int redundantcurrentindex = ui->comboBoxRedundantDefaultSolver->currentIndex();
+    
+    if(redundantcurrentindex == 2 || currentindex == 2)
+        ui->comboBoxDogLegGaussStep->setEnabled(true);
+    else
+        ui->comboBoxDogLegGaussStep->setEnabled(false); 
+    
+    switch(currentindex)
     {
         case 0: // BFGS
             ui->labelSolverParam1->setText(QString::fromLatin1(""));
@@ -127,7 +137,7 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->lineEditSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             sketchView->getSketchObject()->getSolvedSketch().setLM_eps(eps);
             sketchView->getSketchObject()->getSolvedSketch().setLM_eps1(eps1);
-            sketchView->getSketchObject()->getSolvedSketch().setLM_tau(eps1);            
+            sketchView->getSketchObject()->getSolvedSketch().setLM_tau(tau);
             break;
         }
         case 2: // DogLeg
@@ -156,7 +166,15 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
 
-    switch(ui->comboBoxRedundantDefaultSolver->currentIndex())
+    int currentindex = ui->comboBoxDefaultSolver->currentIndex();
+    int redundantcurrentindex = ui->comboBoxRedundantDefaultSolver->currentIndex();
+    
+    if(redundantcurrentindex == 2 || currentindex == 2)
+        ui->comboBoxDogLegGaussStep->setEnabled(true);
+    else
+        ui->comboBoxDogLegGaussStep->setEnabled(false); 
+    
+    switch(redundantcurrentindex)
     {
         case 0: // BFGS
             ui->labelRedundantSolverParam1->setText(QString::fromLatin1(""));
@@ -385,6 +403,13 @@ void TaskSketcherSolverAdvanced::on_comboBoxDefaultSolver_currentIndexChanged(in
     updateDefaultMethodParameters();
 }
 
+void TaskSketcherSolverAdvanced::on_comboBoxDogLegGaussStep_currentIndexChanged(int index)
+{
+    ui->comboBoxDogLegGaussStep->onSave();
+    sketchView->getSketchObject()->getSolvedSketch().setDogLegGaussStep((GCS::DogLegGaussStep) index);
+    updateDefaultMethodParameters();
+}
+
 void TaskSketcherSolverAdvanced::on_spinBoxMaxIter_valueChanged(int i)
 {
     ui->spinBoxMaxIter->onSave();
@@ -505,6 +530,8 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
     hGrp->SetASCII("Redundant_DL_tolf",QString::number(DL_TOLF).toUtf8()); 
     // Set other settings
     hGrp->SetInt("DefaultSolver",DEFAULT_SOLVER);
+    hGrp->SetInt("DogLegGaussStep",DEFAULT_DOGLEG_GAUSS_STEP);
+    
     hGrp->SetInt("RedundantDefaultSolver",DEFAULT_RSOLVER);
     hGrp->SetInt("MaxIter",MAX_ITER);
     hGrp->SetInt("RedundantSolverMaxIterations",MAX_ITER);
@@ -517,6 +544,7 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
     hGrp->SetInt("DebugMode",DEFAULT_SOLVER_DEBUG);
 
     ui->comboBoxDefaultSolver->onRestore();
+    ui->comboBoxDogLegGaussStep->onRestore();
     ui->spinBoxMaxIter->onRestore();
     ui->checkBoxSketchSizeMultiplier->onRestore();
     ui->lineEditConvergence->onRestore();
@@ -543,7 +571,8 @@ void TaskSketcherSolverAdvanced::updateSketchObject(void)
     sketchView->getSketchObject()->getSolvedSketch().setConvergence(ui->lineEditConvergence->text().toDouble());
     sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
     sketchView->getSketchObject()->getSolvedSketch().setMaxIter(ui->spinBoxMaxIter->value());
-    sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) ui->comboBoxDefaultSolver->currentIndex();   
+    sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) ui->comboBoxDefaultSolver->currentIndex();
+    sketchView->getSketchObject()->getSolvedSketch().setDogLegGaussStep((GCS::DogLegGaussStep) ui->comboBoxDogLegGaussStep->currentIndex());
 
     updateDefaultMethodParameters();
     updateRedundantMethodParameters();

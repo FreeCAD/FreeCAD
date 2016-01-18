@@ -76,7 +76,7 @@ bool ViewProviderLux::setEdit(int ModNum)
         std::string path = App::Application::getResourceDir();
         path += "Mod/Raytracing/Templates/";
         QString dataDir = QString::fromUtf8(path.c_str());
-        QDir dir(dataDir, QString::fromAscii("*.lxs"));
+        QDir dir(dataDir, QString::fromLatin1("*.lxs"));
         QStringList items;
         int current = 0;
         QFileInfo cfi(QString::fromUtf8(static_cast<Raytracing::LuxProject*>(getObject())->Template.getValue()));
@@ -93,7 +93,7 @@ bool ViewProviderLux::setEdit(int ModNum)
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
             doc->openTransaction("Edit LuxRender project");
-            QString fn = QString::fromAscii("%1%2.lxs").arg(dataDir).arg(file);
+            QString fn = QString::fromLatin1("%1%2.lxs").arg(dataDir).arg(file);
             static_cast<Raytracing::LuxProject*>(getObject())->Template.setValue((const char*)fn.toUtf8());
             doc->commitTransaction();
             doc->recompute();
@@ -148,7 +148,7 @@ bool ViewProviderPovray::setEdit(int ModNum)
         std::string path = App::Application::getResourceDir();
         path += "Mod/Raytracing/Templates/";
         QString dataDir = QString::fromUtf8(path.c_str());
-        QDir dir(dataDir, QString::fromAscii("*.pov"));
+        QDir dir(dataDir, QString::fromLatin1("*.pov"));
         QStringList items;
         int current = 0;
         QFileInfo cfi(QString::fromUtf8(static_cast<Raytracing::RayProject*>(getObject())->Template.getValue()));
@@ -165,7 +165,7 @@ bool ViewProviderPovray::setEdit(int ModNum)
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
             doc->openTransaction("Edit Povray project");
-            QString fn = QString::fromAscii("%1%2.pov").arg(dataDir).arg(file);
+            QString fn = QString::fromLatin1("%1%2.pov").arg(dataDir).arg(file);
             static_cast<Raytracing::RayProject*>(getObject())->Template.setValue((const char*)fn.toUtf8());
             doc->commitTransaction();
             doc->recompute();

@@ -136,12 +136,12 @@
         <translation>Szabvány</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Kész ...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>szürke</translation>
     </message>

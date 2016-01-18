@@ -1177,47 +1177,47 @@ Merci de visiter http://www.openscad.org/index.html pour l&apos;installer.</tran
     </message>
     <message>
         <source>Binary STL (*.stl)</source>
-        <translation>STL binaire (*.stl)</translation>
+        <translation type="obsolete">STL binaire (*.stl)</translation>
     </message>
     <message>
         <source>ASCII STL (*.ast)</source>
-        <translation>STL ASCII (*.ast)</translation>
+        <translation type="obsolete">STL ASCII (*.ast)</translation>
     </message>
     <message>
         <source>Binary Mesh (*.bms)</source>
-        <translation>Maillage binaire (*.bms)</translation>
+        <translation type="obsolete">Maillage binaire (*.bms)</translation>
     </message>
     <message>
         <source>Alias Mesh (*.obj)</source>
-        <translation>Maillage Alias (*.obj)</translation>
+        <translation type="obsolete">Maillage Alias (*.obj)</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii (*.iv)</source>
-        <translation>ASCII Inventor V2.1 (*.iv)</translation>
+        <translation type="obsolete">ASCII Inventor V2.1 (*.iv)</translation>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation>Tous les fichiers (*.*)</translation>
+        <translation type="obsolete">Tous les fichiers (*.*)</translation>
     </message>
     <message>
         <source>ASCII STL (*.stl)</source>
-        <translation>STL ASCII (*.stl)</translation>
+        <translation type="obsolete">STL ASCII (*.stl)</translation>
     </message>
     <message>
         <source>VRML V2.0 (*.wrl *.vrml)</source>
-        <translation>VRML V2.0 (*.wrl *.vrml)</translation>
+        <translation type="obsolete">VRML V2.0 (*.wrl *.vrml)</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0 (*.wrz)</source>
-        <translation>VRML 2.0 compressé (*.wrz)</translation>
+        <translation type="obsolete">VRML 2.0 compressé (*.wrz)</translation>
     </message>
     <message>
         <source>Nastran (*.nas *.bdf)</source>
-        <translation>Nastran (*.nas *.bdf)</translation>
+        <translation type="obsolete">Nastran (*.nas *.bdf)</translation>
     </message>
     <message>
         <source>Python module def (*.py)</source>
-        <translation>Module Python(*.py)</translation>
+        <translation type="obsolete">Module Python(*.py)</translation>
     </message>
     <message>
         <source>Meshing Tolerance</source>
@@ -1245,7 +1245,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2 Faces: %3]</source>
-        <translation>[Points: %1, Contours: %2 Faces: %3]</translation>
+        <translation type="obsolete">[Points: %1, Contours: %2 Faces: %3]</translation>
     </message>
     <message>
         <source>Leave info mode</source>
@@ -1269,11 +1269,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Stanford Polygon (*.ply)</source>
-        <translation>Polygone de Stanford (*.ply)</translation>
+        <translation type="obsolete">Polygone de Stanford (*.ply)</translation>
     </message>
     <message>
         <source>Object File Format (*.off)</source>
-        <translation>Object File Format (*.off)</translation>
+        <translation type="obsolete">Object File Format (*.off)</translation>
     </message>
     <message>
         <source>Standford Polygon (*.ply)</source>
@@ -1293,15 +1293,75 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-        <translation>Tous les fichiers de maillage (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
+        <translation type="obsolete">Tous les fichiers de maillage (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
         <source>X3D Extensible 3D (*.x3d)</source>
-        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
+        <translation type="obsolete">X3D Extensible 3D (*.x3d)</translation>
     </message>
     <message>
         <source>Display components</source>
         <translation type="unfinished">Afficher les composants</translation>
+    </message>
+    <message>
+        <source>All Mesh Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Binary STL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASCII STL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Binary Mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias Mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object File Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inventor V2.1 ascii</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stanford Polygon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X3D Extensible 3D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>VRML V2.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compressed VRML 2.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nastran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Python module def</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

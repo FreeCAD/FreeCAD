@@ -46,6 +46,7 @@
 # include <Geom_SphericalSurface.hxx>
 # include <Geom_ToroidalSurface.hxx>
 # include <Geom_OffsetSurface.hxx>
+# include <GeomPlate_Surface.hxx>
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
@@ -111,6 +112,7 @@
 #include "ConePy.h"
 #include "CylinderPy.h"
 #include "OffsetSurfacePy.h"
+#include "PlateSurfacePy.h"
 #include "PlanePy.h"
 #include "RectangularTrimmedSurfacePy.h"
 #include "SpherePy.h"
@@ -184,13 +186,13 @@ unsigned int Geometry::getMemSize (void) const
     return 1;
 }
 
-void         Geometry::Save       (Base::Writer &writer) const 
+void Geometry::Save(Base::Writer &writer) const 
 {
     const char c = Construction?'1':'0';
     writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>" << endl;
 }
 
-void         Geometry::Restore    (Base::XMLReader &reader)    
+void Geometry::Restore(Base::XMLReader &reader)    
 {
     // read my Element
     reader.readElement("Construction");
@@ -249,7 +251,7 @@ void GeomPoint::setPoint(const Base::Vector3d& p)
 }
 
 // Persistence implementer 
-unsigned int GeomPoint::getMemSize (void) const               
+unsigned int GeomPoint::getMemSize (void) const
 {
     return sizeof(Geom_CartesianPoint);
 }
@@ -3214,6 +3216,7 @@ PyObject *GeomPlane::getPyObject(void)
 {
     return new PlanePy((GeomPlane*)this->clone());
 }
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomOffsetSurface,Part::GeomSurface);
@@ -3261,6 +3264,72 @@ void         GeomOffsetSurface::Restore    (Base::XMLReader &/*reader*/)    {ass
 PyObject *GeomOffsetSurface::getPyObject(void)
 {
     return new OffsetSurfacePy((GeomOffsetSurface*)this->clone());
+}
+
+// -------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::GeomPlateSurface,Part::GeomSurface);
+
+GeomPlateSurface::GeomPlateSurface()
+{
+}
+
+GeomPlateSurface::GeomPlateSurface(const Handle_Geom_Surface& s, const Plate_Plate& plate)
+{
+    this->mySurface = new GeomPlate_Surface(s, plate);
+}
+
+GeomPlateSurface::GeomPlateSurface(const GeomPlate_BuildPlateSurface& buildPlate)
+{
+    Handle_GeomPlate_Surface s = buildPlate.Surface();
+    this->mySurface = Handle_GeomPlate_Surface::DownCast(s->Copy());
+}
+
+GeomPlateSurface::GeomPlateSurface(const Handle_GeomPlate_Surface& s)
+{
+    this->mySurface = Handle_GeomPlate_Surface::DownCast(s->Copy());
+}
+
+GeomPlateSurface::~GeomPlateSurface()
+{
+}
+
+void GeomPlateSurface::setHandle(const Handle_GeomPlate_Surface& s)
+{
+    mySurface = Handle_GeomPlate_Surface::DownCast(s->Copy());
+}
+
+const Handle_Geom_Geometry& GeomPlateSurface::handle() const
+{
+    return mySurface;
+}
+
+Geometry *GeomPlateSurface::clone(void) const
+{
+    GeomPlateSurface *newSurf = new GeomPlateSurface(mySurface);
+    newSurf->Construction = this->Construction;
+    return newSurf;
+}
+
+// Persistence implementer 
+unsigned int GeomPlateSurface::getMemSize (void) const
+{
+    throw Base::NotImplementedError("GeomPlateSurface::getMemSize");
+}
+
+void GeomPlateSurface::Save(Base::Writer &/*writer*/) const
+{
+    throw Base::NotImplementedError("GeomPlateSurface::Save");
+}
+
+void GeomPlateSurface::Restore(Base::XMLReader &/*reader*/)
+{
+    throw Base::NotImplementedError("GeomPlateSurface::Restore");
+}
+
+PyObject *GeomPlateSurface::getPyObject(void)
+{
+    return new PlateSurfacePy(static_cast<GeomPlateSurface*>(this->clone()));
 }
 
 // -------------------------------------------------

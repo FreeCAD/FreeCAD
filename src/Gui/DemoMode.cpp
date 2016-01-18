@@ -45,7 +45,7 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DemoMode */
 
-DemoMode::DemoMode(QWidget* parent, Qt::WFlags fl)
+DemoMode::DemoMode(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(0, fl|Qt::WindowStaysOnTopHint), viewAxis(0,0,-1), ui(new Ui_DemoMode)
 {
     // create widgets

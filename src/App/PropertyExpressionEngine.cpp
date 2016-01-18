@@ -31,6 +31,8 @@
 #include "PropertyExpressionEngine.h"
 #include "PropertyStandard.h"
 #include "PropertyUnits.h"
+#include <CXX/Objects.hxx>
+#include <boost/bind.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
@@ -39,6 +41,9 @@ using namespace App;
 using namespace Base;
 using namespace boost;
 
+typedef boost::function<void ()> aboutToSetValueFunc;
+typedef boost::function<void ()> hasSetValueFunc;
+
 /**
  * @brief The RelabelDocumentObjectExpressionVisitor class is a functor class used to rename variables in an expression.
  */
@@ -46,11 +51,20 @@ using namespace boost;
 class RelabelDocumentObjectExpressionVisitor : public ExpressionVisitor {
 public:
 
-    RelabelDocumentObjectExpressionVisitor(const std::string & _oldName, const std::string & _newName)
-        : oldName(_oldName)
+    RelabelDocumentObjectExpressionVisitor(aboutToSetValueFunc _aboutToSetValue, hasSetValueFunc _hasSetValue, const std::string & _oldName, const std::string & _newName)
+        : aboutToSetValue(_aboutToSetValue)
+        , hasSetValue(_hasSetValue)
+        , oldName(_oldName)
         , newName(_newName)
+        , changed(0)
     {
     }
+
+    ~RelabelDocumentObjectExpressionVisitor() {
+        if (changed > 0)
+            hasSetValue();
+    }
+
 
     /**
      * @brief Visit each node in the expression, and if it is a VariableExpression object, incoke renameDocumentObject in it.
@@ -60,13 +74,52 @@ public:
     void visit(Expression * node) {
         VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
 
-        if (expr)
-            expr->renameDocumentObject(oldName, newName);
+        if (expr) {
+            if (expr->renameDocumentObject(oldName, newName)) {
+                if (!changed) {
+                    aboutToSetValue();
+                    ++changed;
+                }
+            }
+        }
     }
 
+    int getChanged() const { return changed; }
+
 private:
+    aboutToSetValueFunc aboutToSetValue;
+    hasSetValueFunc hasSetValue;
     std::string oldName; /**< Document object name to replace  */
     std::string newName; /**< New document object name */
+    int changed;
+};
+
+class ObjectDeletedExpressionVisitor : public ExpressionVisitor {
+public:
+
+    ObjectDeletedExpressionVisitor(const App::DocumentObject * _obj)
+        : obj(_obj)
+        , found(false)
+    {
+    }
+
+    /**
+     * @brief Visit each node in the expression, and if it is a VariableExpression object check if it references obj
+     * @param node Node to visit
+     */
+
+    void visit(Expression * node) {
+        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+
+        if (expr && expr->getPath().getDocumentObject() == obj)
+            found = true;
+    }
+
+    bool isFound() const { return found; }
+
+private:
+    const App::DocumentObject * obj;
+    bool found;
 };
 
 TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::Property);
@@ -77,6 +130,7 @@ TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::Property);
 
 PropertyExpressionEngine::PropertyExpressionEngine()
     : Property()
+    , AtomicPropertyChangeInterface()
     , running(false)
     , validator(0)
 {
@@ -119,15 +173,15 @@ void PropertyExpressionEngine::Paste(const Property &from)
 {
     const PropertyExpressionEngine * fromee = static_cast<const PropertyExpressionEngine*>(&from);
 
-    aboutToSetValue();
+    AtomicPropertyChange signaller(*this);
     expressions.clear();
 
-    for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it)
+    for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it) {
         expressions[it->first] = ExpressionInfo(it->second);
+        expressionChanged(it->first);
+    }
 
     validator = fromee->validator;
-
-    hasSetValue();
 }
 
 void PropertyExpressionEngine::Save(Base::Writer &writer) const
@@ -151,6 +205,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
 
     int count = reader.getAttributeAsFloat("count");
 
+    restoredExpressions.clear();
     for (int i = 0; i < count; ++i) {
         DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
@@ -159,7 +214,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
         boost::shared_ptr<Expression> expression(ExpressionParser::parse(docObj, reader.getAttribute("expression")));
         const char * comment = reader.hasAttribute("comment") ? reader.getAttribute("comment") : 0;
 
-        setValue(path, expression, comment);
+        restoredExpressions[path] = ExpressionInfo(expression, comment);
     }
 
     reader.readEndElement("ExpressionEngine");
@@ -268,14 +323,52 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
     std::clog << "Object " << obj.getOldLabel() << " renamed to " << obj.Label.getValue() << std::endl;
 #endif
 
-    RelabelDocumentObjectExpressionVisitor v(obj.getOldLabel(), obj.Label.getStrValue());
+    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
-    aboutToSetValue();
+    /* In a document object, and on undo stack? */
+    if (!docObj || docObj->getNameInDocument() == 0)
+        return;
 
-    for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it)
+    RelabelDocumentObjectExpressionVisitor v(boost::bind( &PropertyExpressionEngine::aboutToSetValue, this),
+                                             boost::bind( &PropertyExpressionEngine::hasSetValue, this),
+                                             obj.getOldLabel(), obj.Label.getStrValue());
+
+    for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
+        int changed = v.getChanged();
+
         it->second.expression->visit(v);
 
-    hasSetValue();
+        if (changed != v.getChanged())
+            expressionChanged(it->first);
+    }
+}
+
+void PropertyExpressionEngine::slotObjectDeleted(const DocumentObject &obj)
+{
+    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+
+    /* In a document object, and on undo stack? */
+    if (!docObj || docObj->getNameInDocument() == 0)
+        return;
+
+    ObjectDeletedExpressionVisitor v(&obj);
+
+    for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
+        it->second.expression->visit(v);
+
+        if (v.isFound()) {
+            touch(); // Touch to force recompute; that will trigger a proper error
+            return;
+        }
+    }
+}
+
+void PropertyExpressionEngine::onDocumentRestored()
+{
+    AtomicPropertyChange signaller(*this);
+
+    for (ExpressionMap::iterator it = restoredExpressions.begin(); it != restoredExpressions.end(); ++it)
+        setValue(it->first, it->second.expression, it->second.comment.size() > 0 ? it->second.comment.c_str() : 0);
 }
 
 /**
@@ -312,20 +405,25 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
     // Try to access value; it should trigger an exception if it is not supported, or if the path is invalid
     prop->getPathValue(usePath);
 
+    // Check if the current expression equals the new one and do nothing if so to reduce unneeded computations
+    ExpressionMap::iterator it = expressions.find(usePath);
+    if(it != expressions.end() && expr == it->second.expression)
+        return;
+    
     if (expr) {
         std::string error = validateExpression(usePath, expr);
 
         if (error.size() > 0)
             throw Base::Exception(error.c_str());
 
-        aboutToSetValue();
+        AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr, comment);
-        hasSetValue();
+        expressionChanged(usePath);
     }
     else {
-        aboutToSetValue();
+        AtomicPropertyChange signaller(*this);
         expressions.erase(usePath);
-        hasSetValue();
+        expressionChanged(usePath);
     }
 }
 
@@ -669,6 +767,9 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
 
     aboutToSetValue();
     expressions = newExpressions;
+    for (ExpressionMap::const_iterator i = expressions.begin(); i != expressions.end(); ++i) 
+        expressionChanged(i->first);
+    
     hasSetValue();
 }
 
@@ -724,7 +825,14 @@ void PropertyExpressionEngine::renameObjectIdentifiers(const std::map<ObjectIden
 
 PyObject *PropertyExpressionEngine::getPyObject(void)
 {
-    Py_Return;
+    Py::List list;
+    for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+        Py::Tuple tuple(2);
+        tuple.setItem(0, Py::String(it->first.toString()));
+        tuple.setItem(1, Py::String(it->second.expression->toString()));
+        list.append(tuple);
+    }
+    return Py::new_reference_to(list);
 }
 
 void PropertyExpressionEngine::setPyObject(PyObject *)

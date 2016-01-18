@@ -206,7 +206,7 @@ void DocumentObject::onChanged(const Property* prop)
     if (_pDoc)
         _pDoc->onChangedProperty(this,prop);
 
-    if (prop == &Label && _pDoc)
+    if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
 
     if (prop->getType() & Prop_Output)
@@ -305,6 +305,10 @@ void DocumentObject::connectRelabelSignals()
         if (!onRelabledObjectConnection.connected())
             onRelabledObjectConnection = getDocument()->signalRelabelObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed, &ExpressionEngine, _1));
 
+        // Connect to signalDeletedObject, to properly track deletion of other objects that might be referenced in an expression
+        if (!onDeletedObjectConnection.connected())
+            onDeletedObjectConnection = getDocument()->signalDeletedObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted, &ExpressionEngine, _1));
+
         try {
             // Crude method to resolve all expression dependencies
             ExpressionEngine.execute();
@@ -317,5 +321,6 @@ void DocumentObject::connectRelabelSignals()
         // Disconnect signals; nothing to track now
         onRelabledObjectConnection.disconnect();
         onRelabledDocumentConnection.disconnect();
+        onDeletedObjectConnection.disconnect();
     }
 }

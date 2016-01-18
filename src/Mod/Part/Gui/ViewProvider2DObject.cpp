@@ -44,10 +44,6 @@
 #include <Mod/Part/App/PartFeature.h>
 
 
-//#include "Tree.h"
-
-
-
 using namespace PartGui;
 using namespace std;
 
