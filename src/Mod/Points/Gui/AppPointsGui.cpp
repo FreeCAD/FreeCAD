@@ -25,6 +25,9 @@
 #ifndef _PreComp_
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include "ViewProvider.h"
 #include "Workbench.h"
 
@@ -44,15 +47,25 @@ void loadPointsResource()
     Gui::Translator::instance()->refresh();
 }
 
+namespace PointsGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("PointsGui")
+    {
+        initialize("This module is the PointsGui module."); // register with Python
+    }
 
-/* registration table  */
-static struct PyMethodDef PointsGui_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+    virtual ~Module() {}
+
+private:
 };
 
+} // namespace PointsGui
+
+
 /* Python entry */
-extern "C" {
-void PointsGuiExport initPointsGui()
+PyMODINIT_FUNC initPointsGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -69,7 +82,7 @@ void PointsGuiExport initPointsGui()
     }
 
     Base::Console().Log("Loading GUI of Points module... done\n");
-    (void) Py_InitModule("PointsGui", PointsGui_methods);   /* mod name, table ptr */
+    (void)new PointsGui::Module();
 
     // instantiating the commands
     CreatePointsCommands();
@@ -84,5 +97,3 @@ void PointsGuiExport initPointsGui()
     // add resources and reloads the translators
     loadPointsResource();
 }
-
-} // extern "C"
