@@ -22,13 +22,20 @@
 #***************************************************************************
 
 import math
-from FreeCAD import Vector, Matrix, Placement
+import random
+from FreeCAD import Vector, Rotation, Matrix, Placement
 import Part
 import Units
 import FreeCAD as App
 import FreeCADGui as Gui
+from PySide import QtGui, QtCore
 import Instance
 from shipUtils import Math
+import shipUtils.Units as USys
+
+
+DENS = 1.025  # [tons/m3], salt water
+COMMON_BOOLEAN_ITERATIONS = 10
 
 
 def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
@@ -148,50 +155,72 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
     L = xmax - xmin
     B = ymax - ymin
     H = zmax - zmin
-    p = Vector(xmin - L, ymin - B, zmin - H)
-    try:
-        box = Part.makeBox(3.0 * L, 3.0 * B, - zmin + H, p)
-    except Part.OCCError:
-        return [0.0, Vector(), 0.0]
-    Part.show(box)
-    box_shape = App.ActiveDocument.Objects[-1]
 
+    box = App.ActiveDocument.addObject("Part::Box","Box")
+    length_format = USys.getLengthFormat()
+    box.Placement = Placement(Vector(xmin - L, ymin - B, zmin - H),
+                              Rotation(App.Vector(0,0,1),0))
+    box.Length = length_format.format(3.0 * L)
+    box.Width = length_format.format(3.0 * B)
+    box.Height = length_format.format(- zmin + H)
+
+    App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
                                             "DisplacementHelper")
-    common.Shapes = [ship_shape, box_shape]
+    common.Shapes = [ship_shape, box]
     App.ActiveDocument.recompute()
+    if len(common.Shape.Solids) == 0:
+        # The common operation is failing, let's try moving a bit the free
+        # surface
+        msg = QtGui.QApplication.translate(
+            "ship_console",
+            "Boolean operation failed. The tool is retrying that slightly"
+            " moving the free surface position",
+            None,
+            QtGui.QApplication.UnicodeUTF8)
+        App.Console.PrintWarning(msg + '\n')
+        random_bounds = 0.01 * H
+        i = 0
+        while len(common.Shape.Solids) == 0 and i < COMMON_BOOLEAN_ITERATIONS:
+            i += 1
+            box.Height = length_format.format(
+                - zmin + H + random.uniform(-random_bounds, random_bounds))
+            App.ActiveDocument.recompute()
 
     vol = 0.0
     cog = Vector()
-    for solid in common.Shape.Solids:
-        vol += solid.Volume / Units.Metre.Value**3
-        sCoG = solid.CenterOfMass
-        cog.x = cog.x + sCoG.x * solid.Volume / Units.Metre.Value**4
-        cog.y = cog.y + sCoG.y * solid.Volume / Units.Metre.Value**4
-        cog.z = cog.z + sCoG.z * solid.Volume / Units.Metre.Value**4
-    cog.x = cog.x / vol
-    cog.y = cog.y / vol
-    cog.z = cog.z / vol
+    if len(common.Shape.Solids) > 0:
+        for solid in common.Shape.Solids:
+            vol += solid.Volume / Units.Metre.Value**3
+            sCoG = solid.CenterOfMass
+            cog.x = cog.x + sCoG.x * solid.Volume / Units.Metre.Value**4
+            cog.y = cog.y + sCoG.y * solid.Volume / Units.Metre.Value**4
+            cog.z = cog.z + sCoG.z * solid.Volume / Units.Metre.Value**4
+        cog.x = cog.x / vol
+        cog.y = cog.y / vol
+        cog.z = cog.z / vol
     Vol = L * B * abs(bbox.ZMin) / Units.Metre.Value**3
 
     App.ActiveDocument.removeObject(common.Name)
     App.ActiveDocument.removeObject(ship_shape.Name)
-    App.ActiveDocument.removeObject(box_shape.Name)
+    App.ActiveDocument.removeObject(box.Name)
+    App.ActiveDocument.recompute()
 
     # Undo the transformations
     B = Part.Point(Vector(cog.x, cog.y, cog.z))
     m = Matrix()
-    m.move(Vector(0.0, 0.0, _draft))
+    m.move(Vector(0.0, 0.0, draft))
     m.rotateZ(-math.radians(yaw))
-    m.move(Vector(-_draft * math.sin(math.radians(roll)), 0.0, 0.0))
+    m.move(Vector(-draft * math.sin(math.radians(roll)), 0.0, 0.0))
     m.rotateY(math.radians(trim))
-    m.move(Vector(0.0, -_draft * math.sin(math.radians(trim)), base_z))
+    m.move(Vector(0.0,
+                  -draft * math.sin(math.radians(trim)),
+                  base_z / Units.Metre.Value))
     m.rotateX(-math.radians(roll))
     B.transform(m)
 
     # Return the computed data
-    dens = 1.025  # [tons/m3], salt water
-    return [dens*vol, Vector(B.X, B.Y, B.Z), vol/Vol]
+    return [DENS*vol, Vector(B.X, B.Y, B.Z), vol/Vol]
 
 
 def wettedArea(shape, draft, trim):
