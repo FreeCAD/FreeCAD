@@ -56,6 +56,8 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
+    ymin = bbox.YMin
+    ymax = bbox.YMax
     dx = (xmax - xmin) / (n - 1.0)
     # Since we are computing the sections in the total length (not in the
     # length between perpendiculars), we can grant that the starting and
@@ -71,46 +73,13 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
     for i in range(1, n - 1):
         App.Console.PrintMessage("{0} / {1}\n".format(i, n - 2))
         x = xmin + i * dx
-        area = 0.0
-        # Create the box
-        L = xmax - xmin
-        B = bbox.YMax - bbox.YMin
-        p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin)
         try:
-            box = Part.makeBox(1.5 * L + x, 3.0 * B, -bbox.ZMin, p)
+            f = Part.Face(shape.slice(Vector(1,0,0), x))
         except Part.OCCError:
-            areas.append([x, area])
+            areas.append([x / Units.Metre.Value, 0.0])
             continue
-        # Compute the common part with ship
-        for s in shape.Solids:
-            try:
-                common = box.common(s)
-            except Part.OCCError:
-                continue
-            if common.Volume == 0.0:
-                continue
-            # Recompute object adding it to the scene, when we have
-            # computed desired data we can remove it.
-            try:
-                Part.show(common)
-            except App.Base.FreeCADError:
-                continue
-            # Divide the solid by faces and compute only the well placed ones
-            faces = common.Faces
-            for f in faces:
-                faceBounds = f.BoundBox
-                # Orientation filter
-                if faceBounds.XMax - faceBounds.XMin > 0.00001:
-                    continue
-                # Place filter
-                if abs(faceBounds.XMax - x) > 0.00001:
-                    continue
-                # It is a valid face, so we can add this area
-                area = area + f.Area / Units.Metre.Value**2
-            # Destroy the last generated object
-            App.ActiveDocument.removeObject(
-                App.ActiveDocument.Objects[-1].Name)
-        areas.append([x / Units.Metre.Value, area])
+        # It is a valid face, so we can add this area
+        areas.append([x / Units.Metre.Value, f.Area / Units.Metre.Value**2])
     # Last area is equal to zero (due to the total length usage)
     areas.append([xmax / Units.Metre.Value, 0.0])
     App.Console.PrintMessage("Done!\n")
@@ -144,15 +113,16 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
+    ymin = bbox.YMin
+    ymax = bbox.YMax
     # Create the "sea" box to intersect the ship
     L = xmax - xmin
-    B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+    B = ymax - ymin
+    p = Vector(xmin - L, ymin - B, bbox.ZMin - 1.0)
     try:
-        box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
+        box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
     except Part.OCCError:
         return [0.0, Vector(), 0.0]
-
     vol = 0.0
     cog = Vector()
     for solid in shape.Solids:
@@ -212,11 +182,13 @@ def wettedArea(shape, draft, trim):
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
+    ymin = bbox.YMin
+    ymax = bbox.YMax
 
     # Create the "sea" box
     L = xmax - xmin
-    B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
+    B = ymax - ymin
+    p = Vector(xmin - L, ymin - B, bbox.ZMin - 1.0)
     try:
         box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
     except Part.OCCError:
@@ -273,11 +245,13 @@ def FloatingArea(ship, draft, trim):
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
+    ymin = bbox.YMin
+    ymax = bbox.YMax
 
     # Create the "sea" box
     L = xmax - xmin
-    B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
+    B = ymax - ymin
+    p = Vector(xmin - L, ymin - B, bbox.ZMin - 1.0)
     try:
         box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
     except Part.OCCError:
@@ -370,11 +344,13 @@ def mainFrameCoeff(ship, draft):
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
+    ymin = bbox.YMin
+    ymax = bbox.YMax
 
     # Create the "sea" box
     L = xmax - xmin
-    B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
+    B = ymax - ymin
+    p = Vector(xmin - L, ymin - B, bbox.ZMin - 1.0)
     try:
         box = Part.makeBox(1.5 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
     except Part.OCCError:
