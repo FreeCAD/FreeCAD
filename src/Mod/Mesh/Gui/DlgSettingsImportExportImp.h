@@ -38,8 +38,8 @@ class DlgSettingsImportExport : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsImportExport(QWidget *parent=nullptr);
-    ~DlgSettingsImportExport() = default;
+    DlgSettingsImportExport(QWidget* parent = 0);
+    ~DlgSettingsImportExport();
 
 protected:
     void saveSettings();
@@ -47,7 +47,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    std::auto_ptr<Ui_DlgSettingsImportExport> ui;
+    Ui_DlgSettingsImportExport* ui;
 };  // end class DlgSettingsImportExport
 
 } // namespace MeshGui
