@@ -33,6 +33,11 @@ DlgSettingsImportExport::DlgSettingsImportExport(QWidget* parent)
     ui->setupUi(this);
 }
 
+DlgSettingsImportExport::~DlgSettingsImportExport()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
+
 void DlgSettingsImportExport::saveSettings()
 {
     ui->maxDeviationExport->onSave();

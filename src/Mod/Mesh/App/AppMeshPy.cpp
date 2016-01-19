@@ -195,7 +195,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
 
     // If tolerance is specified via python interface, use that.
     // If not, use the preference, if that exists, else default to 0.1mm.
-    auto hGrp(App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh") );
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh");
     float fTolerance = hGrp->GetFloat( "MaxDeviationExport", 0.1f );
 
     if (!PyArg_ParseTuple(args, "Oet|f", &object, "utf-8", &Name, &fTolerance))
