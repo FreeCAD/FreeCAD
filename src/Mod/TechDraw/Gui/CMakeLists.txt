@@ -41,7 +41,7 @@ set(TechDrawGui_MOC_HDRS
     QGIViewSymbol.h
     QGIViewClip.h
     TaskProjGroup.h
-    DlgPrefsDrawingImp.h
+    DlgPrefsTechDrawImp.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -50,7 +50,7 @@ SOURCE_GROUP("Moc" FILES ${TechDrawGui_MOC_SRCS})
 qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 
 set(TechDrawGui_UIC_SRCS
-    DlgPrefsDrawing.ui
+    DlgPrefsTechDrawImp.ui
     TaskProjGroup.ui
 )
 
@@ -71,9 +71,9 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
-    DlgPrefsDrawing.ui
-    DlgPrefsDrawingImp.cpp
-    DlgPrefsDrawingImp.h
+    DlgPrefsTechDraw.ui
+    DlgPrefsTechDrawImp.cpp
+    DlgPrefsTechDrawImp.h
 
 )
 SET(TechDrawGuiView_SRCS
@@ -177,7 +177,7 @@ fc_target_copy_resource(TechDrawGui
     InitGui.py)
 
 SET(TechDrawGuiIcon_SVG
-    Resources/icons/preferences-drawing.svg
+    Resources/icons/preferences-techdraw.svg
 )
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiIcon_SVG})

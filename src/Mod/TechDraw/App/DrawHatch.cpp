@@ -54,7 +54,7 @@ DrawHatch::DrawHatch(void)
     ADD_PROPERTY_TYPE(HatchColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the hatch area");
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns";
     QString patternDir = QString::fromStdString(hGrp->GetASCII("PatternDir", defaultDir.c_str()));

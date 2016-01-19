@@ -1,7 +1,7 @@
- /**************************************************************************
+/***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsDrawingImp.cpp                        *
+ *   Based on src/Mod/FEM/Gui/DlgSettingsFEMImp.cpp                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,28 +23,57 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSDRAWINGIMP_H
-#define DRAWINGGUI_DLGPREFSDRAWINGIMP_H
+#include "PreCompiled.h"
 
-#include "ui_DlgPrefsDrawing.h"
-#include <Gui/PropertyPage.h>
+#include "DlgPrefsTechDrawImp.h"
+#include <Gui/PrefWidgets.h>
 
-namespace TechDrawGui {
+using namespace TechDrawGui;
 
-class DlgPrefsDrawingImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsDrawingImp
+DlgPrefsTechDrawImp::DlgPrefsTechDrawImp( QWidget* parent )
+  : PreferencePage( parent )
 {
-    Q_OBJECT
+    this->setupUi(this);
+}
 
-public:
-    DlgPrefsDrawingImp( QWidget* parent = 0 );
-    ~DlgPrefsDrawingImp();
+DlgPrefsTechDrawImp::~DlgPrefsTechDrawImp()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
 
-protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
-};
+void DlgPrefsTechDrawImp::saveSettings()
+{
+    pcb_Normal->onSave();
+    pcb_Select->onSave();
+    pcb_PreSelect->onSave();
+    pcb_Hidden->onSave();
+    le_LabelFont->onSave();
+    le_DefTemplate->onSave();
+    pfc_DefDir->onSave();
+}
 
-} // namespace TechDrawGui
+void DlgPrefsTechDrawImp::loadSettings()
+{
+    pcb_Normal->onRestore();
+    pcb_Select->onRestore();
+    pcb_PreSelect->onRestore();
+    pcb_Hidden->onRestore();
+    le_LabelFont->onRestore();
+    le_DefTemplate->onRestore();
+    pfc_DefDir->onRestore();
+}
 
-#endif // DRAWINGGUI_DLGPREFSDRAWINGIMP_H
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgPrefsTechDrawImp::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+#include "moc_DlgPrefsTechDrawImp.cpp"

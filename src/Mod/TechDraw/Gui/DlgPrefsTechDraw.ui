@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TechDrawGui::DlgPrefsDrawingImp</class>
- <widget class="QWidget" name="TechDrawGui::DlgPrefsDrawingImp">
+ <class>TechDrawGui::DlgPrefsTechDrawImp</class>
+ <widget class="QWidget" name="TechDrawGui::DlgPrefsTechDrawImp">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Drawing</string>
+   <string>TechDraw</string>
   </property>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
@@ -51,7 +51,7 @@
            <cstring>SelectColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Drawing/Colors</cstring>
+           <cstring>Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
@@ -61,7 +61,7 @@
            <cstring>HiddenColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Drawing/Colors</cstring>
+           <cstring>Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
@@ -78,7 +78,7 @@
            <cstring>NormalColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Drawing/Colors</cstring>
+           <cstring>Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
@@ -123,7 +123,7 @@
            <cstring>PreSelectColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Drawing/Colors</cstring>
+           <cstring>Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
@@ -178,7 +178,7 @@
            <cstring>LabelFont</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Drawing</cstring>
+           <cstring>Mod/TechDraw</cstring>
           </property>
          </widget>
         </item>
@@ -226,7 +226,7 @@
            <cstring>TemplateDir</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>/Mod/Drawing</cstring>
+           <cstring>/Mod/TechDraw</cstring>
           </property>
          </widget>
         </item>
@@ -266,7 +266,7 @@
            <cstring>TemplateFile</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Drawing</cstring>
+           <cstring>Mod/TechDraw</cstring>
           </property>
          </widget>
         </item>

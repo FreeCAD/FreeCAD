@@ -34,7 +34,7 @@
 
 #include "Workbench.h"
 
-#include "DlgPrefsDrawingImp.h"
+#include "DlgPrefsTechDrawImp.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDimension.h"
@@ -105,7 +105,7 @@ void TechDrawGuiExport initTechDrawGui()
     TechDrawGui::ViewProviderHatch::init();
 
     // register preferences pages
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsDrawingImp> ("Drawing");
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");
 
     // add resources and reloads the translators
     loadTechDrawResource();
