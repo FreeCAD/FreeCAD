@@ -190,14 +190,20 @@ static PyObject * importer(PyObject *self, PyObject *args)
 
 static PyObject * exporter(PyObject *self, PyObject *args)
 {
-    PyObject* object;
-    char* Name;
-    if (!PyArg_ParseTuple(args, "Oet",&object,"utf-8",&Name))
+    PyObject *object;
+    char *Name;
+
+    // If tolerance is specified via python interface, use that.
+    // If not, use the preference, if that exists, else default to 0.1mm.
+    auto hGrp(App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh") );
+    float fTolerance = hGrp->GetFloat( "MaxDeviationExport", 0.1f );
+
+    if (!PyArg_ParseTuple(args, "Oet|f", &object, "utf-8", &Name, &fTolerance))
         return NULL;
+
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
 
-    float fTolerance = 0.1f;
     MeshObject global_mesh;
 
     PY_TRY {
@@ -535,7 +541,8 @@ PyDoc_STRVAR(inst_doc,
 "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document.");
 
 PyDoc_STRVAR(export_doc,
-"export(list,string) -- Export a list of objects into a single file.");
+"export(list,string,[tolerance]) -- Export a list of objects into a single file.  tolerance is in mm\n"
+"and specifies the maximum acceptable deviation between the specified objects and the exported mesh.");
 
 PyDoc_STRVAR(calculateEigenTransform_doc,
 "calculateEigenTransform(seq(Base.Vector)) -- Calculates the eigen Transformation from a list of points.\n"
