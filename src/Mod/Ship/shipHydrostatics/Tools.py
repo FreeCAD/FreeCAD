@@ -22,7 +22,7 @@
 #***************************************************************************
 
 import math
-from FreeCAD import Vector
+from FreeCAD import Vector, Matrix, Placement
 import Part
 import Units
 import FreeCAD as App
@@ -48,10 +48,23 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
     # We will take a duplicate of ship shape in order to conviniently
     # manipulate it
     shape = ship.Shape.copy()
-    shape.translate(Vector(0.0, 0.0, -draft * Units.Metre.Value))
+    _draft = draft * Units.Metre.Value
+    # Roll the ship. In order to can deal with large roll angles, we are
+    # proceeding as follows:
+    # 1.- Applying the roll with respect the base line
+    # 2.- Recentering the ship in the y direction
+    # 3.- Readjusting the base line
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(1.0, 0.0, 0.0), roll)
+    base_z = shape.BoundBox.ZMin
+    shape.translate(Vector(0.0,
+                           _draft * math.sin(math.radians(roll)),
+                           -base_z))
+    # Trim and yaw the ship. In this case we only need to correct the x
+    # direction
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
+    shape.translate(Vector(_draft * math.sin(math.radians(trim)), 0.0, 0.0))
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0), yaw)
+    shape.translate(Vector(0.0, 0.0, -_draft))
     # Sections distance computation
     bbox = shape.BoundBox
     xmin = bbox.XMin
@@ -104,65 +117,81 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
     # We will take a duplicate of ship shape in order to conviniently
     # manipulate it
     shape = ship.Shape.copy()
-
-    shape.translate(Vector(0.0, 0.0, -draft * Units.Metre.Value))
+    _draft = draft * Units.Metre.Value
+    # Roll the ship. In order to can deal with large roll angles, we are
+    # proceeding as follows:
+    # 1.- Applying the roll with respect the base line
+    # 2.- Recentering the ship in the y direction
+    # 3.- Readjusting the base line
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(1.0, 0.0, 0.0), roll)
+    base_z = shape.BoundBox.ZMin
+    shape.translate(Vector(0.0,
+                           _draft * math.sin(math.radians(roll)),
+                           -base_z))
+    # Trim and yaw the ship. In this case we only need to correct the x
+    # direction
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
+    shape.translate(Vector(_draft * math.sin(math.radians(trim)), 0.0, 0.0))
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0), yaw)
+    shape.translate(Vector(0.0, 0.0, -_draft))
+    Part.show(shape)
+    ship_shape = App.ActiveDocument.Objects[-1]
 
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
     ymin = bbox.YMin
     ymax = bbox.YMax
+    zmin = bbox.ZMin
+    zmax = bbox.ZMax
     # Create the "sea" box to intersect the ship
     L = xmax - xmin
     B = ymax - ymin
-    p = Vector(xmin - L, ymin - B, bbox.ZMin - 1.0)
+    H = zmax - zmin
+    p = Vector(xmin - L, ymin - B, zmin - H)
     try:
-        box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
+        box = Part.makeBox(3.0 * L, 3.0 * B, - zmin + H, p)
     except Part.OCCError:
         return [0.0, Vector(), 0.0]
+    Part.show(box)
+    box_shape = App.ActiveDocument.Objects[-1]
+
+    common = App.activeDocument().addObject("Part::MultiCommon",
+                                            "DisplacementHelper")
+    common.Shapes = [ship_shape, box_shape]
+    App.ActiveDocument.recompute()
+
     vol = 0.0
     cog = Vector()
-    for solid in shape.Solids:
-        # Compute the common part of the "sea" with the ship
-        try:
-            common = box.common(solid)
-        except Part.OCCError:
-            continue
-        # Get the data
-        vol = vol + common.Volume / Units.Metre.Value**3
-        for s in common.Solids:
-            sCoG = s.CenterOfMass
-            cog.x = cog.x + sCoG.x * s.Volume / Units.Metre.Value**4
-            cog.y = cog.y + sCoG.y * s.Volume / Units.Metre.Value**4
-            cog.z = cog.z + sCoG.z * s.Volume / Units.Metre.Value**4
+    for solid in common.Shape.Solids:
+        vol += solid.Volume / Units.Metre.Value**3
+        sCoG = solid.CenterOfMass
+        cog.x = cog.x + sCoG.x * solid.Volume / Units.Metre.Value**4
+        cog.y = cog.y + sCoG.y * solid.Volume / Units.Metre.Value**4
+        cog.z = cog.z + sCoG.z * solid.Volume / Units.Metre.Value**4
     cog.x = cog.x / vol
     cog.y = cog.y / vol
     cog.z = cog.z / vol
     Vol = L * B * abs(bbox.ZMin) / Units.Metre.Value**3
+
+    App.ActiveDocument.removeObject(common.Name)
+    App.ActiveDocument.removeObject(ship_shape.Name)
+    App.ActiveDocument.removeObject(box_shape.Name)
+
     # Undo the transformations
-    B = Vector()
-    B.x = cog.x * math.cos(math.radians(-yaw)) - \
-        cog.y * math.sin(math.radians(-yaw))
-    B.y = cog.x * math.sin(math.radians(-yaw)) + \
-        cog.y * math.cos(math.radians(-yaw))
-    B.z = cog.z
-    cog.x = B.x * math.cos(math.radians(-trim)) - \
-        B.z * math.sin(math.radians(-trim))
-    cog.y = B.y
-    cog.z = B.x * math.sin(math.radians(-trim)) + \
-        B.z * math.cos(math.radians(-trim))
-    B.x = cog.x
-    B.y = cog.y * math.cos(math.radians(-roll)) - \
-        cog.z * math.sin(math.radians(-roll))
-    B.z = cog.y * math.sin(math.radians(-roll)) + \
-        cog.z * math.cos(math.radians(-roll))
-    B.z = B.z + draft
+    B = Part.Point(Vector(cog.x, cog.y, cog.z))
+    m = Matrix()
+    m.move(Vector(0.0, 0.0, _draft))
+    m.rotateZ(-math.radians(yaw))
+    m.move(Vector(-_draft * math.sin(math.radians(roll)), 0.0, 0.0))
+    m.rotateY(math.radians(trim))
+    m.move(Vector(0.0, -_draft * math.sin(math.radians(trim)), base_z))
+    m.rotateX(-math.radians(roll))
+    B.transform(m)
+
     # Return the computed data
     dens = 1.025  # [tons/m3], salt water
-    return [dens*vol, B, vol/Vol]
+    return [dens*vol, Vector(B.X, B.Y, B.Z), vol/Vol]
 
 
 def wettedArea(shape, draft, trim):
@@ -176,8 +205,9 @@ def wettedArea(shape, draft, trim):
     nObjects = 0
 
     shape = shape.copy()
-    shape.translate(Vector(0.0, 0.0, -draft * Units.Metre.Value))
+    _draft = draft * Units.Metre.Value
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
+    shape.translate(Vector(0.0, 0.0, -_draft))
 
     bbox = shape.BoundBox
     xmin = bbox.XMin
@@ -239,8 +269,9 @@ def FloatingArea(ship, draft, trim):
     minY = 0.0
 
     shape = ship.Shape.copy()
-    shape.translate(Vector(0.0, 0.0, -draft * Units.Metre.Value))
+    _draft = draft * Units.Metre.Value
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
+    shape.translate(Vector(0.0, 0.0, -_draft))
 
     bbox = shape.BoundBox
     xmin = bbox.XMin
