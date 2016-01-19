@@ -39,6 +39,7 @@
 #include "DlgEvaluateMeshImp.h"
 #include "PropertyEditorMesh.h"
 #include "DlgSettingsMeshView.h"
+#include "DlgSettingsImportExportImp.h"
 #include "SoFCMeshObject.h"
 #include "SoFCIndexedFaceSet.h"
 #include "SoPolygon.h"
@@ -96,6 +97,7 @@ void MeshGuiExport initMeshGui()
 
     // register preferences pages
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> ("Display");
+    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsImportExport>     ( QT_TRANSLATE_NOOP("QObject", "Import-Export") );
 
     MeshGui::SoFCMeshObjectElement              ::initClass();
     MeshGui::SoSFMeshObject                     ::initClass();
