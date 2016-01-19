@@ -1031,6 +1031,16 @@ Expression * VariableExpression::eval() const
 
         return new NumberExpression(owner, ivalue);
     }
+    else if (value.type() == typeid(long)) {
+        long lvalue = boost::any_cast<long>(value);
+
+        return new NumberExpression(owner, lvalue);
+    }
+    else if (value.type() == typeid(bool)) {
+        double bvalue = boost::any_cast<bool>(value) ? 1.0 : 0.0;
+
+        return new NumberExpression(owner, bvalue);
+    }
     else if (value.type() == typeid(std::string)) {
         std::string svalue = boost::any_cast<std::string>(value);
 
