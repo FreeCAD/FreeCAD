@@ -57,7 +57,7 @@ class TaskPanel:
 
         gz = Tools.solve(self.ship,
                          self.weights,
-                         self.tanks
+                         self.tanks,
                          rolls,
                          form.var_trim.isChecked())
 

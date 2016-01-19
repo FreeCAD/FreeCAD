@@ -36,6 +36,7 @@ from shipHydrostatics import Tools as Hydrostatics
 G = 9.81
 MAX_EQUILIBRIUM_ITERS = 10
 DENS = 1.025  # [tons/m3], salt water
+TRIM_RELAX_FACTOR = 10.0
 
 
 def solve(ship, weights, tanks, rolls, var_trim=True):
@@ -68,14 +69,15 @@ def solve(ship, weights, tanks, rolls, var_trim=True):
         # t[2] = filling level
         vol = t[0].Proxy.setFillingLevel(t[0], t[2]).getValueAs('m^3').Value
         TW += vol * t[1]
-    TW = TW.getValueAs('kg').Value * G
+    TW = TW * G
 
     gzs = []
-    for roll in rolls:
+    for i,roll in enumerate(rolls):
+        App.Console.PrintMessage("{0} / {1}\n".format(i + 1, len(rolls)))
         gz = solve_point(W, COG, TW, ship, tanks, roll, var_trim)
         if gz is None:
             return []
-        gzs.append(solve_point(W, COG, TW, ship, tanks, roll, var_trim))
+        gzs.append(gz)
 
     return gzs
 
@@ -92,9 +94,9 @@ def solve_point(W, COG, TW, ship, tanks, roll, var_trim=True):
     gz = 0.0
     
     # Look for the equilibrium draft (and eventually the trim angle too)
-    max_draft = ship.Shape.BoundBox.ZMax
-    draft = max_draft
-    max_disp = ship.Shape.Volume.getValueAs('m^3').Value * DENS * 1000.0 * G
+    max_draft = ship.Shape.BoundBox.ZMax / Units.Metre.Value
+    draft = ship.Draft.getValueAs('m').Value
+    max_disp = ship.Shape.Volume / Units.Metre.Value**3 * DENS * 1000.0 * G
     if max_disp < W + TW:
         msg = QtGui.QApplication.translate(
             "ship_console",
@@ -109,35 +111,32 @@ def solve_point(W, COG, TW, ship, tanks, roll, var_trim=True):
         # Get the displacement, and the bouyance application point
         disp, B, Cb = Hydrostatics.displacement(ship, draft, roll, trim)
         disp *= 1000.0 * G
-        # Get the empty ship weight transformed application point
-        p = Part.makePoint(COG)
-        p.translate(Vector(0.0, 0.0, -draft))
-        m = Matrix()
-        m.rotateX(math.radians(roll))
-        m.rotateY(-math.radians(trim))
-        p.rotate(Placement(m))
-        # Add the tanks
+        # Add the tanks effect on the center of gravity
         # TODO
         # ---
 
         # Compute the errors
-        draft_error = abs(disp - W - TW) / max_disp
+        draft_error = -(disp - W - TW) / max_disp
+        R = COG - B
         if not var_trim:
             trim_error = 0.0
         else:
-            dx = B.x - p.X 
-            dz = B.z - p.Z
-            if abs(dx) < 0.001 * ship.Length.getValueAs('m').Value:
-                trim_error = 0.0
-            else:
-                trim_error = math.degrees(math.atan2(dz, dx))
+            trim_error = -TRIM_RELAX_FACTOR * R.x / ship.Length.getValueAs('m').Value
 
         # Check if we can tolerate the errors
-        if draft_error < 0.01 and trim_error < 1.0:
+        if abs(draft_error) < 0.01 and abs(trim_error) < 0.05:
             break
 
         # Get the new draft and trim
         draft += draft_error * max_draft
-        trim += 0.5 * trim_error
+        trim += trim_error
 
-    return B.y - p.Y
+    App.Console.PrintMessage("draft and trim: {}, {}\n".format(draft, trim))
+
+    App.Console.PrintMessage(R)
+    App.Console.PrintMessage("\n")
+    c = math.cos(math.radians(roll))
+    s = math.sin(math.radians(roll))
+    App.Console.PrintMessage(c * R.y - s * R.z)
+    App.Console.PrintMessage("\n")
+    return c * R.y - s * R.z
