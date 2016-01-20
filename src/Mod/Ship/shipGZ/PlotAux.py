@@ -22,36 +22,37 @@
 #***************************************************************************
 
 import os
+import math
 from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
-from FreeCAD import Base
 import Spreadsheet
+from shipUtils import Paths
+
 
 class Plot(object):
-    def __init__(self, x, y, disp, xcb, ship):
-        """ Constructor. performs the plot and shows it.
-        @param x X coordinates.
-        @param y Transversal computed areas.
-        @param disp Ship displacement.
-        @param xcb Bouyancy center length.
-        @param ship Active ship instance.
-        """
-        self.plot(x, y, disp, xcb, ship)
-        self.spreadSheet(x, y, ship)
+    def __init__(self, roll, gz, draft, trim):
+        """ Plot the GZ curve
 
-    def plot(self, x, y, disp, xcb, ship):
-        """ Perform the areas curve plot.
-        @param x X coordinates.
-        @param y Transversal areas.
-        @param disp Ship displacement.
-        @param xcb Bouyancy center length.
-        @param ship Active ship instance.
-        @return True if error happens.
+        Position arguments:
+        roll -- List of roll angles (in degrees).
+        gz -- List of GZ values (in meters).
+        draft -- List of equilibrium drafts (in meters).
+        trim -- List of equilibrium trim angles (in degrees).
+        """
+        self.plot(roll, gz)
+        self.spreadSheet(roll, gz, draft, trim)
+
+    def plot(self, roll, gz):
+        """ Plot the GZ curve.
+
+        Position arguments:
+        roll -- List of roll angles (in degrees).
+        gz -- List of GZ values (in meters).
         """
         try:
             import Plot
-            plt = Plot.figure('Areas curve')
+            plt = Plot.figure('GZ')
         except ImportError:
             msg = QtGui.QApplication.translate(
                 "ship_console",
@@ -60,90 +61,46 @@ class Plot(object):
                 QtGui.QApplication.UnicodeUTF8)
             FreeCAD.Console.PrintWarning(msg + '\n')
             return True
-        # Plot areas curve
-        areas = Plot.plot(x, y, 'Transversal areas')
-        areas.line.set_linestyle('-')
-        areas.line.set_linewidth(2.0)
-        areas.line.set_color((0.0, 0.0, 0.0))
-        # Get perpendiculars data
-        Lpp = ship.Length.getValueAs('m').Value
-        FPx = 0.5 * Lpp
-        APx = -0.5 * Lpp
-        maxArea = max(y)
-        # Plot perpendiculars
-        FP = Plot.plot([FPx, FPx], [0.0, maxArea])
-        FP.line.set_linestyle('-')
-        FP.line.set_linewidth(1.0)
-        FP.line.set_color((0.0, 0.0, 0.0))
-        AP = Plot.plot([APx, APx], [0.0, maxArea])
-        AP.line.set_linestyle('-')
-        AP.line.set_linewidth(1.0)
-        AP.line.set_color((0.0, 0.0, 0.0))
-        # Add annotations for prependiculars
+
+        gz_plot = Plot.plot(roll, gz, 'GZ curve')
+        gz_plot.line.set_linestyle('-')
+        gz_plot.line.set_linewidth(1.0)
+        gz_plot.line.set_color((0.0, 0.0, 0.0))
+
         ax = Plot.axes()
-        ax.annotate('AP', xy=(APx + 0.01 * Lpp, 0.01 * maxArea), size=15)
-        ax.annotate('AP', xy=(APx + 0.01 * Lpp, 0.95 * maxArea), size=15)
-        ax.annotate('FP', xy=(FPx + 0.01 * Lpp, 0.01 * maxArea), size=15)
-        ax.annotate('FP', xy=(FPx + 0.01 * Lpp, 0.95 * maxArea), size=15)
-        # Add some additional data
-        addInfo = ("$XCB = {0} \\; \\mathrm{{m}}$\n"
-                   "$Area_{{max}} = {1} \\; \\mathrm{{m}}^2$\n"
-                   "$\\bigtriangleup = {2} \\; \\mathrm{{tons}}$".format(
-                   xcb,
-                   maxArea,
-                   disp))
-        ax.text(0.0,
-                0.01 * maxArea,
-                addInfo,
-                verticalalignment='bottom',
-                horizontalalignment='center',
-                fontsize=20)
-        # Write axes titles
-        Plot.xlabel(r'$x \; \mathrm{m}$')
-        Plot.ylabel(r'$Area \; \mathrm{m}^2$')
+        Plot.xlabel(r'$\phi \; [\mathrm{deg}]$')
+        Plot.ylabel(r'$GZ \; [\mathrm{m}]$')
         ax.xaxis.label.set_fontsize(20)
         ax.yaxis.label.set_fontsize(20)
-        # Show grid
+
         Plot.grid(True)
-        # End
         plt.update()
         return False
 
-    def spreadSheet(self, x, y, ship):
-        """ Write the output data file.
-        @param x X coordinates.
-        @param y Transversal areas.
-        @param ship Active ship instance.
+    def spreadSheet(self, roll, gz, draft, trim):
+        """ Create a Spreadsheet with the results
+
+        Position arguments:
+        roll -- List of roll angles (in degrees).
+        gz -- List of GZ values (in meters).
+        draft -- List of equilibrium drafts (in meters).
+        trim -- List of equilibrium trim angles (in degrees).
         """
         s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
-                                               'Areas curve')
+                                               'GZ')
 
         # Print the header
-        s.set("A1", "x [m]")
-        s.set("B1", "area [m^2]")
-        s.set("C1", "FP x")
-        s.set("D1", "FP y")
-        s.set("E1", "AP x")
-        s.set("F1", "AP y")
+        s.set("A1", "roll [deg]")
+        s.set("B1", "GZ [m]")
+        s.set("C1", "draft [m]")
+        s.set("D1", "trim [deg]")
 
-        # Print the perpendiculars data
-        Lpp = ship.Length.getValueAs('m').Value
-        FPx = 0.5 * Lpp
-        APx = -0.5 * Lpp
-        maxArea = max(y)
-        s.set("C2", str(FPx))
-        s.set("D2", str(0.0))
-        s.set("C3", str(FPx))
-        s.set("D3", str(maxArea))
-        s.set("E2", str(APx))
-        s.set("F2", str(0.0))
-        s.set("E3", str(APx))
-        s.set("F3", str(maxArea))
-        
         # Print the data
-        for i in range(len(x)):
-            s.set("A{}".format(i + 2), str(x[i]))
-            s.set("B{}".format(i + 2), str(y[i]))
+        for i in range(len(roll)):
+            s.set("A{}".format(i + 2), str(roll[i]))
+            s.set("B{}".format(i + 2), str(gz[i]))
+            s.set("C{}".format(i + 2), str(draft[i]))
+            s.set("D{}".format(i + 2), str(trim[i]))
 
         # Recompute
         FreeCAD.activeDocument().recompute()
