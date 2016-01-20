@@ -67,7 +67,7 @@ def solve(ship, weights, tanks, rolls, var_trim=True):
         # t[0] = tank object
         # t[1] = load density
         # t[2] = filling level
-        vol = t[0].Proxy.setFillingLevel(t[0], t[2]).getValueAs('m^3').Value
+        vol = t[0].Proxy.getVolume(t[0], t[2]).getValueAs('m^3').Value
         TW += vol * t[1]
     TW = TW * G
 

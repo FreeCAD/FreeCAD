@@ -24,12 +24,16 @@
 import time
 from math import *
 from PySide import QtGui, QtCore
-import FreeCAD
-import FreeCADGui
-from FreeCAD import Base, Vector
+import FreeCAD as App
+import FreeCADGui as Gui
+from FreeCAD import Base, Vector, Placement, Rotation
 import Part
 import Units
 from shipUtils import Paths, Math
+import shipUtils.Units as USys
+
+
+COMMON_BOOLEAN_ITERATIONS = 10
 
 
 class Tank:
@@ -52,28 +56,6 @@ class Tank:
                         "IsTank",
                         "Tank",
                         tooltip).IsTank = True
-        # Add the volume property (The volume of fluid will be set by each
-        # loading condition)
-        tooltip = str(QtGui.QApplication.translate(
-            "ship_tank",
-            "Volume of fluid [m^3]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("App::PropertyFloat",
-                        "Vol",
-                        "Tank",
-                        tooltip).Vol = 0.0
-        # Add the density property (The volume of fluid will be set by each
-        # loading condition)
-        tooltip = str(QtGui.QApplication.translate(
-            "ship_tank",
-            "Density [kg / m^3]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("App::PropertyFloat",
-                        "Dens",
-                        "Tank",
-                        tooltip).Dens = 0.0
         # Set the subshapes
         obj.Shape = Part.makeCompound(shapes)
 
@@ -97,52 +79,61 @@ class Tank:
         """
         pass
 
-    def setFillingLevel(self, fp, level):
-        """Compute the mass of the object, already taking into account the
-        type of subentities.
+    def getVolume(self, fp, level):
+        """Return the fluid volume inside the tank, provided the filling level.
 
         Keyword arguments:
         fp -- Part::FeaturePython object affected.
-        level -- Percentage of filling level (from 0 to 100).
+        level -- Percentage of filling level (interval [0, 1]).
         """
-        shape = fp.Shape
-        solids = shape.Solids
+        max(min(level, 1.0), 0.0)
 
-        # Get the cutting box
-        bbox = shape.BoundBox
-        z_min = bbox.ZMin
-        z_max = bbox.ZMax
+        # Build up the cutting box
+        bbox = fp.Shape.BoundBox
         dx = bbox.XMax - bbox.XMin
         dy = bbox.YMax - bbox.YMin
-        dz = level / 100.0 * (z_max - z_min)
-        z = z_min + dz
-        try:
-            box = Part.makeBox(3.0 * dx,
-                               3.0 * dy,
-                               (z_max - z_min) + dz,
-                               Vector(bbox.XMin - dx,
-                                      bbox.YMin - dy,
-                                      bbox.ZMin - (z_max - z_min)))
-        except:
-            fp.Vol = 0.0
-            return Units.parseQuantity('0 m^3')
+        dz = bbox.ZMax - bbox.ZMin
 
-        # Start computing the common part of each solid component with the
-        # cutting box, adding the volume
-        vol = 0.0
-        for s in solids:
-            try:
-                fluid = s.common(box)
-                v = fluid.Volume        
-            except:
-                v = 0.0
-            vol += v
+        box = App.ActiveDocument.addObject("Part::Box","Box")
+        length_format = USys.getLengthFormat()
+        box.Placement = Placement(Vector(bbox.XMin - dx,
+                                         bbox.XMin - dy,
+                                         bbox.ZMin - dz),
+                                  Rotation(App.Vector(0,0,1),0))
+        box.Length = length_format.format(3.0 * dx)
+        box.Width = length_format.format(3.0 * dy)
+        box.Height = length_format.format((1.0 + level) * dz)
 
-        # Get the volume quantity and store it with the right units
-        vol = Units.Quantity(vol, Units.Volume)
-        fp.Vol = vol.getValueAs("m^3").Value
+        # Create a new object on top of a copy of the tank shape
+        Part.show(fp.Shape.copy())
+        tank = App.ActiveDocument.Objects[-1]
 
-        return vol
+        # Compute the common boolean operation
+        App.ActiveDocument.recompute()
+        common = App.activeDocument().addObject("Part::MultiCommon",
+                                                "TankVolHelper")
+        common.Shapes = [tank, box]
+        App.ActiveDocument.recompute()
+        if len(common.Shape.Solids) == 0:
+            # The common operation is failing, let's try moving a bit the free
+            # surface
+            msg = QtGui.QApplication.translate(
+                "ship_console",
+                "Tank volume operation failed. The tool is retrying that"
+                " slightly moving the free surface position",
+                None,
+                QtGui.QApplication.UnicodeUTF8)
+            App.Console.PrintWarning(msg + '\n')
+            rand_bounds = 0.01 * dz
+            i = 0
+            while len(common.Shape.Solids) == 0 and i < COMMON_BOOLEAN_ITERATIONS:
+                i += 1
+                box.Height = length_format.format(
+                    (1.0 + level) * dz + random.uniform(-random_bounds,
+                                                        random_bounds))
+                App.ActiveDocument.recompute()
+
+        return Units.Quantity(common.Shape.Volume, Units.Volume)
 
 
 class ViewProviderTank:
