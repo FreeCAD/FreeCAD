@@ -91,19 +91,20 @@
 #include "PartFeaturePy.h"
 #include "PropertyGeometryList.h"
 
-extern struct PyMethodDef Part_methods[];
+namespace Part {
+extern PyObject* initModule();
+}
+
 using namespace Part;
+
 PyObject* Part::PartExceptionOCCError;
 PyObject* Part::PartExceptionOCCDomainError;
 PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
 
-PyDoc_STRVAR(module_part_doc,
-"This is a module working with shapes.");
 
-extern "C" {
-void PartExport initPart()
+PyMODINIT_FUNC initPart()
 {
     std::stringstream str;
     str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
@@ -122,7 +123,7 @@ void PartExport initPart()
     OSD::SetSignal(Standard_False);
 #endif
 
-    PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
+    PyObject* partModule = Part::initModule();
     Base::Console().Log("Loading Part module... done\n");
     PyObject* OCCError = 0;
     if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, 
@@ -381,5 +382,3 @@ void PartExport initPart()
     Interface_Static::SetCVal("write.step.product.name", hStepGrp->GetASCII("Product",
        Interface_Static::CVal("write.step.product.name")).c_str());
 }
-
-} // extern "C"
