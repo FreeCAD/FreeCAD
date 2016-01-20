@@ -27,7 +27,6 @@ set(Inspection_LIBS
 
 SET(Inspection_SRCS
     AppInspection.cpp
-    AppInspectionPy.cpp
     InspectionFeature.cpp
     InspectionFeature.h
     PreCompiled.cpp
