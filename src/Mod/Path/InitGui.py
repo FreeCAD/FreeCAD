@@ -91,8 +91,8 @@ class PathWorkbench ( Workbench ):
         # build commands list
         projcmdlist = ["Path_Project", "Path_ToolTableEdit","Path_Post","Path_Inspect"]
         prepcmdlist = ["Path_Plane","Path_Fixture","Path_LoadTool","Path_ToolLenOffset","Path_Comment","Path_Stop",
-                       "Path_FaceProfile","Path_FacePocket","Path_Custom"]
-        opcmdlist = ["Path_Profile","Path_Kurve","Path_Pocket","Path_Drilling","Path_FromShape"]
+                       "Path_FaceProfile","Path_FacePocket","Path_Custom","Path_FromShape"]
+        opcmdlist = ["Path_Profile","Path_Kurve","Path_Pocket","Path_Drilling"]
         modcmdlist = ["Path_Copy","Path_CompoundExtended","Path_Dressup","Path_Hop","Path_Array"]
 
 
