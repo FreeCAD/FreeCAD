@@ -2057,8 +2057,37 @@ def tessellateProjection(shape,seglen):
         except:
             print("Debug: error cleaning edge ",e)
     return Part.makeCompound(newedges)
+    
+    
+def rebaseWire(wire,vidx):
+    
+    """rebaseWire(wire,vidx): returns a new wire which is a copy of the
+    current wire, but where the first vertex is the vertex indicated by the given
+    index vidx, starting from 1. 0 will return an exact copy of the wire."""
+
+    if vidx < 1:
+        return wire
+    if vidx > len(wire.Vertexes):
+        #print("Vertex index above maximum\n")
+        return wire
+    basepoint = wire.Vertexes[vidx-1].Point
+    #wire = Part.__sortEdges__(wire)
+    edges = []
+    start = False
+    for i in range(len(wire.Edges)):
+        if wire.Edges[i].Vertexes[0].Point == basepoint:
+            start = True
+            edges.append(wire.Edges[i])
+        elif start:
+            edges.append(wire.Edges[i])
+    if len(edges) < len(wire.Edges):
+        f = len(wire.Edges) - len(edges)
+        edges.extend(wire.Edges[0:f])
+    return Part.Wire(edges)
+
 
 # circle functions *********************************************************
+
 
 def getBoundaryAngles(angle,alist):
         '''returns the 2 closest angles from the list that
