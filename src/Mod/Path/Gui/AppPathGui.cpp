@@ -46,13 +46,12 @@ void loadPathResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef PathGui_methods[];
-
+namespace PathGui {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void PathGuiExport initPathGui()  
+PyMODINIT_FUNC initPathGui()
 {
      if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -65,7 +64,7 @@ void PathGuiExport initPathGui()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    (void) Py_InitModule("PathGui", PathGui_methods);   /* mod name, table ptr */
+    (void)PathGui::initModule();
     Base::Console().Log("Loading GUI of Path module... done\n");
 
     // instantiating the commands
@@ -84,5 +83,3 @@ void PathGuiExport initPathGui()
     // register preferences pages
     new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> ("Path");
 }
-
-} // extern "C" {
