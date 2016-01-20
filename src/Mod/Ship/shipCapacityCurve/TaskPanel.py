@@ -163,7 +163,7 @@ class TaskPanel:
         dz = Units.Quantity(bbox.ZMax - bbox.ZMin, Units.Length)
 
         n = form.points.value()
-        dlevel = 100.0 / (n - 1)
+        dlevel = 1.0 / (n - 1)
         l = [0.0]
         v = [0.0]
         z = [0.0]
@@ -177,9 +177,9 @@ class TaskPanel:
         for i in range(1, n):
             App.Console.PrintMessage("\t{} / {}\n".format(i + 1, n))
             level = i * dlevel
-            vol = self.tank.Proxy.setFillingLevel(self.tank, level)
-            l.append(level)
-            z.append(level / 100.0 * dz.getValueAs("m").Value)
+            vol = self.tank.Proxy.getVolume(self.tank, level)
+            l.append(level * 100.0)
+            z.append(level * dz.getValueAs("m").Value)
             v.append(vol.getValueAs("m^3").Value)
         return (l, z, v)
 
