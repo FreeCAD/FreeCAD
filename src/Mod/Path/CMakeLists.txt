@@ -55,6 +55,7 @@ SET(PathScripts_SRCS
     PathScripts/PathArray.py
     PathScripts/PathCustom.py
     PathScripts/PathInspect.py
+    PathScripts/PathToolChange.py
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL

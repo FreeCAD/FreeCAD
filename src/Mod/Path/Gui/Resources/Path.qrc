@@ -28,5 +28,6 @@
         <file>icons/Path-Array.svg</file>
         <file>icons/Path-Custom.svg</file>
         <file>icons/Path-Inspect.svg</file>
+        <file>icons/Path-ToolChange.svg</file>
     </qresource>
 </RCC> 
