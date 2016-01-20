@@ -55,11 +55,13 @@ class TaskPanel:
         for i in range(n_points):
             rolls.append(roll * i / float(n_points - 1))
 
-        gz = Tools.solve(self.ship,
-                         self.weights,
-                         self.tanks,
-                         rolls,
-                         form.var_trim.isChecked())
+        gzs, drafts, trims = Tools.solve(self.ship,
+                                         self.weights,
+                                         self.tanks,
+                                         rolls,
+                                         form.var_trim.isChecked())
+
+        PlotAux.Plot(rolls, gzs, drafts, trims)
 
         return True
 

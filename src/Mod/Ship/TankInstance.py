@@ -26,7 +26,7 @@ from math import *
 from PySide import QtGui, QtCore
 import FreeCAD as App
 import FreeCADGui as Gui
-from FreeCAD import Base, Vector, Placement, Rotation
+from FreeCAD import Base, Vector, Matrix, Placement, Rotation
 import Part
 import Units
 from shipUtils import Paths, Math
@@ -79,14 +79,23 @@ class Tank:
         """
         pass
 
-    def getVolume(self, fp, level):
+    def getVolume(self, fp, level, return_shape=False):
         """Return the fluid volume inside the tank, provided the filling level.
 
         Keyword arguments:
         fp -- Part::FeaturePython object affected.
         level -- Percentage of filling level (interval [0, 1]).
+        return_shape -- False if the tool should return the fluid volume value,
+        True if the tool should return the volume shape.
         """
-        max(min(level, 1.0), 0.0)
+        if level <= 0.0:
+            if return_shape:
+                return Part.Vertex()
+            return Units.Quantity(0.0, Units.Volume)
+        if level >= 1.0:
+            if return_shape:
+                return fp.Shape.copy()
+            return Units.Quantity(fp.Shape.Volume, Units.Volume)
 
         # Build up the cutting box
         bbox = fp.Shape.BoundBox
@@ -97,7 +106,7 @@ class Tank:
         box = App.ActiveDocument.addObject("Part::Box","Box")
         length_format = USys.getLengthFormat()
         box.Placement = Placement(Vector(bbox.XMin - dx,
-                                         bbox.XMin - dy,
+                                         bbox.YMin - dy,
                                          bbox.ZMin - dz),
                                   Rotation(App.Vector(0,0,1),0))
         box.Length = length_format.format(3.0 * dx)
@@ -133,7 +142,91 @@ class Tank:
                                                         random_bounds))
                 App.ActiveDocument.recompute()
 
-        return Units.Quantity(common.Shape.Volume, Units.Volume)
+        if return_shape:
+            ret_value = common.Shape.copy()
+        else:
+            ret_value = Units.Quantity(common.Shape.Volume, Units.Volume)
+
+        App.ActiveDocument.removeObject(common.Name)
+        App.ActiveDocument.removeObject(tank.Name)
+        App.ActiveDocument.removeObject(box.Name)
+        App.ActiveDocument.recompute()
+
+        return ret_value
+
+    def getCoG(self, fp, vol, roll=0.0, trim=0.0):
+        """Return the fluid volume center of gravity, provided the volume of
+        fluid inside the tank.
+
+        The returned center of gravity is refered to the untransformed ship.
+
+        Keyword arguments:
+        fp -- Part::FeaturePython object affected.
+        vol -- Volume of fluid (in m^3).
+        roll -- Ship roll angle (in degrees).
+        trim -- Ship trim angle (in degrees).
+
+        If the fluid volume is bigger than the total tank one, it will be
+        conveniently clamped.
+        """
+        # Change the units of the volume, and clamp the value
+        vol = vol * Units.Metre.Value**3
+        if vol <= 0.0:
+            return Vector()
+        if vol >= fp.Shape.Volume:
+            vol = 0.0
+            for solid in fp.Shape.Solids:
+                vol += solid.Volume
+                sCoG = solid.CenterOfMass
+                cog.x = cog.x + sCoG.x * solid.Volume
+                cog.y = cog.y + sCoG.y * solid.Volume
+                cog.z = cog.z + sCoG.z * solid.Volume
+            cog.x = cog.x / vol
+            cog.y = cog.y / vol
+            cog.z = cog.z / vol
+            return cog
+
+        # Get a first estimation of the level
+        level = vol / fp.Shape.Volume
+
+        # Transform the tank shape
+        current_placement = fp.Placement
+        m = current_placement.toMatrix()
+        m.rotateX(radians(roll))
+        m.rotateY(-radians(trim))
+        fp.Placement = m
+
+        # Iterate to find the fluid shape
+        for i in range(COMMON_BOOLEAN_ITERATIONS):
+            shape = self.getVolume(fp, level, return_shape=True)
+            error = (vol - shape.Volume) / fp.Shape.Volume
+            if abs(error) < 0.01:
+                break
+            level += error
+
+        # Get the center of gravity
+        vol = 0.0
+        cog = Vector()
+        if len(shape.Solids) > 0:
+            for solid in shape.Solids:
+                vol += solid.Volume
+                sCoG = solid.CenterOfMass
+                cog.x = cog.x + sCoG.x * solid.Volume
+                cog.y = cog.y + sCoG.y * solid.Volume
+                cog.z = cog.z + sCoG.z * solid.Volume
+            cog.x = cog.x / vol
+            cog.y = cog.y / vol
+            cog.z = cog.z / vol
+
+        # Untransform the object to retrieve the original position
+        fp.Placement = current_placement
+        p = Part.Point(cog)
+        m = Matrix()
+        m.rotateY(radians(trim))
+        m.rotateX(-radians(roll))
+        p.rotate(Placement(m))
+
+        return Vector(p.X, p.Y, p.Z)
 
 
 class ViewProviderTank:
