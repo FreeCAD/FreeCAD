@@ -91,8 +91,13 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
 #endif
     else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
+#if PY_MAJOR_VERSION < 3
+    else if (PyInt_Check(value))
+        quant = Quantity((double)PyInt_AsLong(value),_Unit);
+#else
     else if (PyLong_Check(value))
         quant = Quantity((double)PyLong_AsLong(value),_Unit);
+#endif
     else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
         Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
         quant = *(pcObject->getQuantityPtr());

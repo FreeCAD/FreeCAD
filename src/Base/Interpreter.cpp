@@ -268,8 +268,13 @@ void InterpreterSingleton::systemExit(void)
         /* If we failed to dig out the 'code' attribute,
            just let the else clause below print the error. */
     }
+#if PY_MAJOR_VERSION < 3
+    if (PyInt_Check(value))
+        exitcode = (int)PyInt_AsLong(value);
+#else
     if (PyLong_Check(value))
         exitcode = (int)PyLong_AsLong(value);
+#endif
     else {
         PyObject_Print(value, stderr, Py_PRINT_RAW);
         PySys_WriteStderr("\n");

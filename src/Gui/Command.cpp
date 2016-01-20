@@ -1148,7 +1148,11 @@ void PythonGroupCommand::activated(int iMsg)
         if (cmd.hasAttr("Activated")) {
             Py::Callable call(cmd.getAttr("Activated"));
             Py::Tuple args(1);
+#if PY_MAJOR_VERSION < 3
+            args.setItem(0, Py::Int(iMsg));
+#else
             args.setItem(0, Py::Long(iMsg));
+#endif
             Py::Object ret = call.apply(args);
         }
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
@@ -1223,12 +1227,12 @@ Action * PythonGroupCommand::createAction(void)
 
         if (cmd.hasAttr("GetDefaultCommand")) {
             Py::Callable call2(cmd.getAttr("GetDefaultCommand"));
-            Py::Long def(call2.apply(args));
 #if PY_MAJOR_VERSION >= 3
-            defaultId = static_cast<int>(def);
+            Py::Long def(call2.apply(args));
 #else
-            defaultId = static_cast<int>(def.as_long());  // bug in pycxx
+            Py::Int def(call2.apply(args));
 #endif
+            defaultId = static_cast<int>(def);
         }
 
         // if the command is 'exclusive' then activate the default action

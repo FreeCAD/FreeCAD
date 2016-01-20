@@ -221,7 +221,11 @@ PyObject * QuantityPy::number_int_handler (PyObject *self)
     }
 
     QuantityPy* q = static_cast<QuantityPy*>(self);
+#if PY_MAJOR_VERSION < 3
+    return PyInt_FromLong((long)q->getValue());
+#else
     return PyLong_FromLong((long)q->getValue());
+#endif
 }
 
 #if PY_MAJOR_VERSION < 3
@@ -330,9 +334,15 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
             double b = PyFloat_AsDouble(other);
             return new QuantityPy(new Quantity(*a*b) );
         }
+#if PY_MAJOR_VERSION < 3
+        else if (PyInt_Check(other)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+            double b = (double)PyInt_AsLong(other);
+#else
         else if (PyLong_Check(other)) {
             Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
             double b = (double)PyLong_AsLong(other);
+#endif
             return new QuantityPy(new Quantity(*a*b) );
         }
     }
@@ -342,9 +352,15 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
             double b = PyFloat_AsDouble(self);
             return new QuantityPy(new Quantity(*a*b) );
         }
+#if PY_MAJOR_VERSION < 3
+        else if (PyInt_Check(self)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(other) ->getQuantityPtr();
+            double b = (double)PyInt_AsLong(self);
+#else
         else if (PyLong_Check(self)) {
             Base::Quantity *a = static_cast<QuantityPy*>(other) ->getQuantityPtr();
             double b = (double)PyLong_AsLong(self);
+#endif
             return new QuantityPy(new Quantity(*a*b) );
         }
     }
@@ -402,8 +418,13 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
     else if (PyFloat_Check(other)) {
         d2 = PyFloat_AsDouble(other);
     }
+#if PY_MAJOR_VERSION < 3
+    else if (PyInt_Check(other)) {
+        d2 = (double)PyInt_AsLong(other);
+#else
     else if (PyLong_Check(other)) {
         d2 = (double)PyLong_AsLong(other);
+#endif
     }
     else {
         PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
@@ -447,9 +468,15 @@ PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, Py
         double b = PyFloat_AsDouble(other);
         return new QuantityPy(new Quantity(a->pow(b)) );
     }
+#if PY_MAJOR_VERSION < 3
+    else if (PyInt_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = (double)PyInt_AsLong(other);
+#else
     else if (PyLong_Check(other)) {
         Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
         double b = (double)PyLong_AsLong(other);
+#endif
         return new QuantityPy(new Quantity(a->pow(b)));
     }
     else {

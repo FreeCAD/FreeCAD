@@ -67,10 +67,17 @@ Py::String BaseClassPy::getTypeId(void) const
     return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
 }
 
+#if PY_MAJOR_VERSION < 3
+Py::Int BaseClassPy::getModule(void) const
+{
+    return Py::Int();
+}
+#else
 Py::Long BaseClassPy::getModule(void) const
 {
     return Py::Long();
 }
+#endif
 
 PyObject *BaseClassPy::getCustomAttributes(const char* attr) const
 {

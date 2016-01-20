@@ -201,14 +201,22 @@ public:
     ///getter callback for the @i.Name@ attribute
     static PyObject * staticCallback_get@i.Name@ (PyObject *self, void *closure);
     /// getter for the @i.Name@ attribute
++ if (i.Parameter.Type == 'Long') and (sys.version_info.major < 3):
+    Py::Int get@i.Name@(void) const;
+= else:
     Py::@i.Parameter.Type@ get@i.Name@(void) const;
+-
     /// setter callback for the @i.Name@ attribute
     static int staticCallback_set@i.Name@ (PyObject *self, PyObject *value, void *closure);
 + if (i.ReadOnly):
     // no setter method,  @i.Name@ is read only!
 = else:
     /// setter for the @i.Name@ attribute
++ if (i.Parameter.Type == 'Long') and (sys.version_info.major < 3):
+    void set@i.Name@(Py::Int arg);
+= else:
     void set@i.Name@(Py::@i.Parameter.Type@ arg);
+-
 -
 -
     //@}
@@ -611,7 +619,11 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
 + if (i.Parameter.Type == "Float"):
         static_cast<@self.export.Name@*>(self)->set@i.Name@(Py::@i.Parameter.Type@(PyNumber_Float(value),true));
 = else:
++ if (i.Parameter.Type == 'Long') and (sys.version_info.major < 3):
+        static_cast<@self.export.Name@*>(self)->set@i.Name@(Py::Int(value,false));
+= else:
         static_cast<@self.export.Name@*>(self)->set@i.Name@(Py::@i.Parameter.Type@(value,false));
+-
 -
         return 0;
     } catch (const Py::Exception&) {

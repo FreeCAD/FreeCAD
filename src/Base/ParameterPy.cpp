@@ -260,7 +260,7 @@ Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
 #else
     return Py::Long(_cParamGrp->GetInt(pstr,Int));
 #endif
-}
+} 
 
 Py::Object ParameterGrpPy::setUnsigned(const Py::Tuple& args)
 {
@@ -285,7 +285,7 @@ Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
 #else
     return Py::Long(_cParamGrp->GetUnsigned(pstr,UInt));
 #endif
-}
+} 
 
 Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
 {

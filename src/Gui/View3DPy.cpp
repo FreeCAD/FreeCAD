@@ -1148,8 +1148,13 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
     try {
         QPoint pos = _view->mapFromGlobal(QCursor::pos());
         Py::Tuple tuple(2);
+#if PY_MAJOR_VERSION < 3
+        tuple.setItem(0, Py::Int(pos.x()));
+        tuple.setItem(1, Py::Int(_view->height()-pos.y()-1));
+#else
         tuple.setItem(0, Py::Long(pos.x()));
         tuple.setItem(1, Py::Long(_view->height()-pos.y()-1));
+#endif
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1165,14 +1170,18 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
-        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Long' requested
+        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
         //We should report this problem to the PyCXX project as in the documentation an 
         //example without the 'const' keyword is used.
-        //Or we can also write Py::Long x(tuple[0]);
+        //Or we can also write Py::Int x(tuple[0]);
         const Py::Tuple tuple(object);
+#if PY_MAJOR_VERSION < 3
+        Py::Int x(tuple[0]);
+        Py::Int y(tuple[1]);
+#else
         Py::Long x(tuple[0]);
         Py::Long y(tuple[1]);
-
+#endif
         // As this method could be called during a SoHandleEventAction scene
         // graph traversal we must not use a second SoHandleEventAction as
         // we will get Coin warnings because of multiple scene graph traversals
@@ -1234,14 +1243,18 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
-        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Long' requested
+        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
         //We should report this problem to the PyCXX project as in the documentation an 
         //example without the 'const' keyword is used.
-        //Or we can also write Py::Long x(tuple[0]);
+        //Or we can also write Py::Int x(tuple[0]);
         const Py::Tuple tuple(object);
+#if PY_MAJOR_VERSION < 3
+        Py::Int x(tuple[0]);
+        Py::Int y(tuple[1]);
+#else
         Py::Long x(tuple[0]);
         Py::Long y(tuple[1]);
-
+#endif
         // As this method could be called during a SoHandleEventAction scene
         // graph traversal we must not use a second SoHandleEventAction as
         // we will get Coin warnings because of multiple scene graph traversals
@@ -1309,8 +1322,13 @@ Py::Object View3DInventorPy::getSize(const Py::Tuple& args)
     try {
         SbVec2s size = _view->getViewer()->getSoRenderManager()->getSize();
         Py::Tuple tuple(2);
+#if PY_MAJOR_VERSION < 3
+        tuple.setItem(0, Py::Int(size[0]));
+        tuple.setItem(1, Py::Int(size[1]));
+#else
         tuple.setItem(0, Py::Long(size[0]));
         tuple.setItem(1, Py::Long(size[1]));
+#endif
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1328,8 +1346,8 @@ Py::Object View3DInventorPy::getPoint(const Py::Tuple& args)
         x = (int)Py::Long(t[0]);
         y = (int)Py::Long(t[1]);
 #else
-        x = (int)Py::Long(t[0]).as_long(); // bug in pycxx
-        y = (int)Py::Long(t[1]).as_long();
+        x = (int)Py::Int(t[0]);
+        y = (int)Py::Int(t[1]);
 #endif
     }
     try {
@@ -1381,9 +1399,13 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
         int x = pt[0] * sp[0];
         int y = pt[1] * sp[1];
         Py::Tuple tuple(2);
+#if PY_MAJOR_VERSION < 3
+        tuple.setItem(0, Py::Int(x));
+        tuple.setItem(1, Py::Int(y));
+#else
         tuple.setItem(0, Py::Long(x));
         tuple.setItem(1, Py::Long(y));
-
+#endif
         return tuple;
     }
     catch (const Base::Exception& e) {
@@ -1434,8 +1456,13 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
         dict.setItem("Time", Py::String(std::string(e->getTime().formatDate().getString())));
         SbVec2s p = n->getEvent()->getPosition();
         Py::Tuple pos(2);
+#if PY_MAJOR_VERSION < 3
+        pos.setItem(0, Py::Int(p[0]));
+        pos.setItem(1, Py::Int(p[1]));
+#else
         pos.setItem(0, Py::Long(p[0]));
         pos.setItem(1, Py::Long(p[1]));
+#endif
         // Position
         dict.setItem("Position", pos);
         // Shift, Ctrl, Alt down

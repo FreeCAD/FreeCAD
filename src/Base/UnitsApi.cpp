@@ -158,8 +158,13 @@ double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
     else if (PyFloat_Check(ArgObj)) {
         return PyFloat_AsDouble(ArgObj);
     }
+#if PY_MAJOR_VERSION < 3
+    else if (PyInt_Check(ArgObj)) {
+        return static_cast<double>(PyInt_AsLong(ArgObj));
+#else
     else if (PyLong_Check(ArgObj)) {
         return static_cast<double>(PyLong_AsLong(ArgObj));
+#endif
     }
     else {
         throw Base::Exception("Wrong parameter type!");
@@ -183,8 +188,13 @@ Quantity UnitsApi::toQuantity(PyObject *ArgObj, const Base::Unit &u)
     else if (PyFloat_Check(ArgObj)) {
         d = PyFloat_AsDouble(ArgObj);
     }
+#if PY_MAJOR_VERSION < 3
+    else if (PyInt_Check(ArgObj)) {
+        d = static_cast<double>(PyInt_AsLong(ArgObj));
+#else
     else if (PyLong_Check(ArgObj)) {
         d = static_cast<double>(PyLong_AsLong(ArgObj));
+#endif
     }
     else {
         throw Base::Exception("Wrong parameter type!");

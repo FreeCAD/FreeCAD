@@ -1035,9 +1035,13 @@ boost::any ObjectIdentifier::getValue() const
 
     if (!pyvalue)
         throw Base::Exception("Failed to get property value.");
-
+#if PY_MAJOR_VERSION < 3
+    if (PyInt_Check(pyvalue))
+        return boost::any(PyInt_AsLong(pyvalue));
+#else
     if (PyLong_Check(pyvalue))
         return boost::any(PyLong_AsLong(pyvalue));
+#endif
     else if (PyFloat_Check(pyvalue))
         return boost::any(PyFloat_AsDouble(pyvalue));
 #if PY_MAJOR_VERSION < 3

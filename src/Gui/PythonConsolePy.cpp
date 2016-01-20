@@ -61,7 +61,11 @@ Py::Object PythonStdout::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
+#if PY_MAJOR_VERSION < 3
+        return Py::Int(i);
+#else
         return Py::Long(i);
+#endif
     }
     return getattr_methods(name);
 }
@@ -136,7 +140,11 @@ Py::Object PythonStderr::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
+#if PY_MAJOR_VERSION < 3
+        return Py::Int(i);
+#else
         return Py::Long(i);
+#endif
     }
     return getattr_methods(name);
 }
@@ -210,7 +218,11 @@ Py::Object OutputStdout::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
+#if PY_MAJOR_VERSION < 3
+        return Py::Int(i);
+#else
         return Py::Long(i);
+#endif
     }
     return getattr_methods(name);
 }
@@ -282,7 +294,11 @@ Py::Object OutputStderr::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
+#if PY_MAJOR_VERSION < 3
+        return Py::Int(i);
+#else
         return Py::Long(i);
+#endif
     }
     return getattr_methods(name);
 }

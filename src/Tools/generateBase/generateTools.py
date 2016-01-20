@@ -88,6 +88,7 @@ class copier:
         "Initialize self's attributes"
         self.regex   = regex
         self.globals = dict
+        self.globals['sys'] = sys
         self.locals  = { '_cb':self.copyblock }
         self.restat  = restat
         self.restend = restend

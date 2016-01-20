@@ -1115,7 +1115,11 @@ Py::Object PyResource::value(const Py::Tuple& args)
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));
         break;
     case QVariant::Int:
+#if PY_MAJOR_VERSION < 3
         item = Py::Int(v.toInt());
+#else
+        item = Py::Long(v.toInt());
+#endif
         break;
     default:
 #if PY_MAJOR_VERSION >= 3
@@ -1156,10 +1160,12 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 #endif
 
     }
+#if PY_MAJOR_VERSION < 3
     else if (PyInt_Check(psValue)) {
         int val = PyInt_AsLong(psValue);
         v = val;
     }
+#endif
     else if (PyLong_Check(psValue)) {
         unsigned int val = PyLong_AsLong(psValue);
         v = val;
