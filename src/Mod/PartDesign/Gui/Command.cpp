@@ -612,11 +612,11 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
 }
 
 //===========================================================================
-// Common utility functions for SketchBased features
+// Common utility functions for ProfileBased features
 //===========================================================================
 
 // Take a list of Part2DObjects and classify them for creating a
-// SketchBased feature. FirstFreeSketch is the first free sketch in the same body 
+// ProfileBased feature. FirstFreeSketch is the first free sketch in the same body 
 // or sketches.end() if non available. The returned number is the amount of free sketches
 const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                                  std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
@@ -705,9 +705,42 @@ const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
     return freeSketches;
 }
 
-void prepareSketchBased(Gui::Command* cmd, const std::string& which,
-                        boost::function<void (Part::Part2DObject*, std::string)> func)
+void prepareProfileBased(Gui::Command* cmd, const std::string& which,
+                        boost::function<void (Part::Feature*, std::string)> func)
 {
+    auto base_worker = [which, cmd, func](App::DocumentObject* feature, std::string sub) {
+
+        if(!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+            return;
+        
+        std::string FeatName = cmd->getUniqueObjectName(which.c_str());
+
+        Gui::Command::openCommand((std::string("Make ") + which).c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",
+                    which.c_str(), FeatName.c_str());
+        
+        if(feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = App.activeDocument().%s",
+                        FeatName.c_str(), feature->getNameInDocument());
+        }
+        else {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = (App.activeDocument().%s, [\"%s\"])",
+                        FeatName.c_str(), feature->getNameInDocument(), sub.c_str());   
+        }         
+
+        func(static_cast<Part::Feature*>(feature), FeatName);
+    };
+    
+    //if a profie is selected we can make our life easy and fast
+    auto selection = cmd->getSelection().getSelectionEx();
+    if(!selection.empty() && selection.front().hasSubNames()) {
+        
+        base_worker(selection.front().getObject(), selection.front().getSubNames().front());
+        return;
+    }
+    
+    //no face profile was selected, do he extended sketch logic
+    
     bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
     // First check selections
@@ -734,26 +767,12 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
         return true;
     };
-
-    auto worker = [which, cmd, func](std::vector<App::DocumentObject*> features) {
-
-        if(features.empty())
-            return;
+    
+    auto sketch_worker = [&](std::vector<App::DocumentObject*> features) {
         
-        auto firstValidSketch = features.begin();
-        Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(*firstValidSketch);
-
-        std::string FeatName = cmd->getUniqueObjectName(which.c_str());
-
-        Gui::Command::openCommand((std::string("Make ") + which).c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",
-                    which.c_str(), FeatName.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",
-                    FeatName.c_str(), sketch->getNameInDocument());
-
-        func(sketch, FeatName);
+        base_worker(features.front(), "");
     };
-
+    
     //if there is a sketch selected which is from annother body or part we need to bring up the
     //pick task dialog to decide how those are handled
     bool ext = std::find_if( status.begin(), status.end(),
@@ -814,7 +833,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
             Gui::Control().closeDialog();
 
         Gui::Selection().clearSelection();
-        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, worker);
+        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker);
         if(!bNoSketchWasSelected && ext)
             pickDlg->showExternal(true);
 
@@ -827,14 +846,15 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
         else
             theSketch.push_back(*firstFreeSketch);
         
-        worker(theSketch);
+        sketch_worker(theSketch);
     }
 
 }
 
-void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch, const std::string& FeatName)
+void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, const std::string& FeatName)
 {
-    cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
+    if(sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
     finishFeature(cmd, FeatName);
 }
 
@@ -858,26 +878,28 @@ CmdPartDesignPad::CmdPartDesignPad()
 void CmdPartDesignPad::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* profile, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
         // specific parameters for Pad
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
-        App::DocumentObjectGroup* grp = sketch->getGroup();
+        App::DocumentObjectGroup* grp = profile->getGroup();
         if (grp) {
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
                         ,grp->getNameInDocument(),FeatName.c_str());
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
-                        ,grp->getNameInDocument(),sketch->getNameInDocument());
+            if(profile->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+                Gui::Command::doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                            ,grp->getNameInDocument(), profile->getNameInDocument());
         }
         Gui::Command::updateActive();
 
-        finishSketchBased(cmd, sketch, FeatName);
+        Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "Pad", worker);
+    prepareProfileBased(this, "Pad", worker);
 }
 
 bool CmdPartDesignPad::isActive(void)
@@ -905,16 +927,16 @@ CmdPartDesignPocket::CmdPartDesignPocket()
 void CmdPartDesignPocket::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 5.0",FeatName.c_str());
-        finishSketchBased(cmd, sketch, FeatName);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "Pocket", worker);
+    prepareProfileBased(this, "Pocket", worker);
 }
 
 bool CmdPartDesignPocket::isActive(void)
@@ -942,7 +964,7 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 void CmdPartDesignRevolution::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -953,11 +975,11 @@ void CmdPartDesignRevolution::activated(int iMsg)
         if (pcRevolution && pcRevolution->suggestReversed())
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
 
-        finishSketchBased(cmd, sketch, FeatName);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "Revolution", worker);
+    prepareProfileBased(this, "Revolution", worker);
 }
 
 bool CmdPartDesignRevolution::isActive(void)
@@ -985,7 +1007,7 @@ CmdPartDesignGroove::CmdPartDesignGroove()
 void CmdPartDesignGroove::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -996,11 +1018,11 @@ void CmdPartDesignGroove::activated(int iMsg)
         if (pcGroove && pcGroove->suggestReversed())
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
 
-        finishSketchBased(cmd, sketch, FeatName);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "Groove", worker);
+    prepareProfileBased(this, "Groove", worker);
 }
 
 bool CmdPartDesignGroove::isActive(void)
@@ -1028,18 +1050,18 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 void CmdPartDesignAdditivePipe::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
         // specific parameters for pipe
         Gui::Command::updateActive();
 
-        finishSketchBased(cmd, sketch, FeatName);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "AdditivePipe", worker);
+    prepareProfileBased(this, "AdditivePipe", worker);
 }
 
 bool CmdPartDesignAdditivePipe::isActive(void)
@@ -1068,18 +1090,18 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
         // specific parameters for pipe
         Gui::Command::updateActive();
 
-        finishSketchBased(cmd, sketch, FeatName);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "SubtractivePipe", worker);
+    prepareProfileBased(this, "SubtractivePipe", worker);
 }
 
 bool CmdPartDesignSubtractivePipe::isActive(void)
@@ -1108,18 +1130,18 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
         // specific parameters for pipe
         Gui::Command::updateActive();
 
-        finishSketchBased(cmd, sketch, FeatName);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "AdditiveLoft", worker);
+    prepareProfileBased(this, "AdditiveLoft", worker);
 }
 
 bool CmdPartDesignAdditiveLoft::isActive(void)
@@ -1148,18 +1170,18 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 {
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
         // specific parameters for pipe
         Gui::Command::updateActive();
 
-        finishSketchBased(cmd, sketch, FeatName);
+        finishProfileBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "SubtractiveLoft", worker);
+    prepareProfileBased(this, "SubtractiveLoft", worker);
 }
 
 bool CmdPartDesignSubtractiveLoft::isActive(void)
@@ -1523,8 +1545,8 @@ void CmdPartDesignMirrored::activated(int iMsg)
         if (features.empty())
         return;
 
-        if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
-            Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
+        if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+            Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch)
                 Gui::Command::doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
@@ -1571,8 +1593,8 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         if (features.empty())
             return;
 
-        if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
-            Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
+        if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+            Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch)
                 doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
@@ -1621,8 +1643,8 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         if (features.empty())
             return;
 
-        if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
-            Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
+        if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+            Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch)
                 doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());

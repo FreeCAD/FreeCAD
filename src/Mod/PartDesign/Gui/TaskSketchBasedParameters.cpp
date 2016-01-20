@@ -68,7 +68,7 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider
 const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg)
 {
     // Note: The validity checking has already been done in ReferenceSelection.cpp
-    PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
     App::DocumentObject* selObj = pcSketchBased->getDocument()->getObject(msg.pObjectName);
     if (selObj == pcSketchBased)
         return QString::fromAscii("");
@@ -94,7 +94,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
 
-    PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
 
     // The solid this feature will be fused to
     App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );
@@ -163,7 +163,7 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
         ss << "Face" << faceId;
 
         std::vector<std::string> upToFaces(1,ss.str());
-        PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+        PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
         pcSketchBased->UpToFace.setValue(obj, upToFaces);
         recomputeFeature();
 
@@ -210,11 +210,11 @@ bool TaskDlgSketchBasedParameters::accept() {
 
     // Make sure the feature is what we are expecting
     // Should be fine but you never know...
-    if ( !feature->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId()) ) {
+    if ( !feature->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId()) ) {
         throw Base::Exception("Bad object processed in the sketch based dialog.");
     }
 
-    App::DocumentObject* sketch = static_cast<PartDesign::SketchBased*>(feature)->Sketch.getValue();
+    App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();
 
     if (sketch) {
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
@@ -225,9 +225,9 @@ bool TaskDlgSketchBasedParameters::accept() {
 
 bool TaskDlgSketchBasedParameters::reject()
 {
-    PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
     // get the Sketch
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Sketch.getValue());
+    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
     bool rv;
 
     // rv should be true anyway but to be on the safe side dur to thurver changes better respect it.

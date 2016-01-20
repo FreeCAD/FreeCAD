@@ -49,7 +49,7 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::ProfileBased)
 
 Revolution::Revolution()
 {
@@ -69,7 +69,7 @@ short Revolution::mustExecute() const
         Base.isTouched() ||
         Angle.isTouched())
         return 1;
-    return SketchBased::mustExecute();
+    return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Revolution::execute(void)
@@ -86,9 +86,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
 
-    std::vector<TopoDS_Wire> wires;
+    TopoDS_Shape sketchshape;
     try {
-        wires = getSketchWires();
+        sketchshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
@@ -112,7 +112,6 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
-        TopoDS_Shape sketchshape = makeFace(wires);
         if (sketchshape.IsNull())
             return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
@@ -177,7 +176,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 bool Revolution::suggestReversed(void)
 {
     updateAxis();
-    return SketchBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
+    return ProfileBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
 }
 
 void Revolution::updateAxis(void)

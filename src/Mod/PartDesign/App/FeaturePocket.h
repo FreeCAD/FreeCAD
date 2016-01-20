@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Pocket : public SketchBased
+class PartDesignExport Pocket : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Pocket);
 

@@ -37,16 +37,16 @@ class gp_Lin;
 namespace PartDesign
 {
 
-class PartDesignExport SketchBased : public PartDesign::FeatureAddSub
+class PartDesignExport ProfileBased : public PartDesign::FeatureAddSub
 {
     PROPERTY_HEADER(PartDesign::SketchBased);
 
 public:
-    SketchBased();
+    ProfileBased();
 
     // Common properties for all sketch based features
-    /// Sketch used to create this feature
-    App::PropertyLink    Sketch;
+    /// Profile used to create this feature
+    App::PropertyLinkSub Profile;
     /// Reverse extrusion direction
     App::PropertyBool    Reversed;
     /// Make extrusion symmetric to sketch plane
@@ -68,31 +68,46 @@ public:
     virtual void transformPlacement(const Base::Placement &transform);
 
     /**
-     * Verifies the linked Sketch object
-     * @param silent if sketch property is malformed and the parameter is true
+     * Verifies the linked Profile and returns it if it is a valid 2D object
+     * @param silent if profile property is malformed and the parameter is true
      *               silently returns nullptr, otherwice throw a Base::Exception.
      *               Default is false.
      */
     Part::Part2DObject* getVerifiedSketch(bool silent=false) const;
+    
+    /**
+     * Verifies the linked Profile and returns it if it is a valid object
+     * @param silent if profile property is malformed and the parameter is true
+     *               silently returns nullptr, otherwice throw a Base::Exception.
+     *               Default is false.
+     */
+    Part::Feature* getVerifiedObject(bool silent=false) const;
+    
+    /**
+     * Verifies the linked Object and returns the shape used as profile
+     * @param silent if profile property is malformed and the parameter is true
+     *               silently returns nullptr, otherwice throw a Base::Exception.
+     *               Default is false.
+     */
+    TopoDS_Face getVerifiedFace(bool silent = false) const;
+    
     /// Returns the wires the sketch is composed of
-    std::vector<TopoDS_Wire> getSketchWires() const;
+    std::vector<TopoDS_Wire> getProfileWires() const;
+    
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
+    
+    Base::Vector3d getProfileNormal() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;    
 
     virtual Part::Feature* getBaseObject(bool silent=false) const;
-
+    
+    //backwards compatibility: profile property was renamed and has different type now
+    virtual void Restore(Base::XMLReader& reader);
+    
 protected:
-    void onChanged(const App::Property* prop);
-    TopoDS_Face validateFace(const TopoDS_Face&) const;
-    TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
-    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only    
-    bool isInside(const TopoDS_Wire&, const TopoDS_Wire&) const;
-    bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
-    bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;
-    bool isQuasiEqual(const TopoDS_Shape&, const TopoDS_Shape&) const;
     void remapSupportShape(const TopoDS_Shape&);
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 
@@ -136,6 +151,17 @@ protected:
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
                  Base::Vector3d& base, Base::Vector3d& dir);
+    
+    TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
+    
+private:
+    void onChanged(const App::Property* prop);
+    TopoDS_Face validateFace(const TopoDS_Face&) const;
+    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only    
+    bool isInside(const TopoDS_Wire&, const TopoDS_Wire&) const;
+    bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
+    bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;
+    bool isQuasiEqual(const TopoDS_Shape&, const TopoDS_Shape&) const;
 };
 
 } //namespace PartDesign

@@ -52,7 +52,7 @@ const char* Hole::TypeEnums[]    = {"Dimension","UpToLast","UpToFirst",NULL};
 const char* Hole::HoleTypeEnums[]= {"Simple","Counterbore","Countersunk",NULL};
 const char* Hole::ThreadEnums[]  = {"None","Metric","MetricFine",NULL};
 
-PROPERTY_SOURCE(PartDesign::Hole, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 Hole::Hole()
 {

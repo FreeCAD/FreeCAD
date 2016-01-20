@@ -54,7 +54,7 @@ using namespace PartDesign;
 
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace",NULL};
 
-PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 
 Pocket::Pocket()
 {
@@ -77,7 +77,7 @@ short Pocket::mustExecute() const
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
-    return SketchBased::mustExecute();
+    return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pocket::execute(void)
@@ -93,11 +93,11 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
 
-    Part::Part2DObject* sketch = 0;
-    std::vector<TopoDS_Wire> wires;
+    Part::Feature* obj = 0;
+    TopoDS_Face face;
     try {
-        sketch = getVerifiedSketch();
-        wires = getSketchWires();
+        obj = getVerifiedObject();
+        face = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
@@ -111,10 +111,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     }
 
     // get the Sketch plane
-    Base::Placement SketchPos = sketch->Placement.getValue();
-    Base::Rotation SketchOrientation = SketchPos.getRotation();
-    Base::Vector3d SketchVector(0,0,1);
-    SketchOrientation.multVec(SketchVector,SketchVector);
+    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Vector3d  SketchVector = getProfileNormal();
 
     // turn around for pockets
     SketchVector *= -1;
@@ -128,10 +126,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invObjLoc.Transformation());
 
-        TopoDS_Shape sketchshape = makeFace(wires);
-        if (sketchshape.IsNull())
+        if (face.IsNull())
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
-        sketchshape.Move(invObjLoc);
+        face.Move(invObjLoc);
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
@@ -151,7 +148,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, sketchshape, method, dir, Offset.getValue());
+            getUpToFace(upToFace, base, supportface, face, method, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid
@@ -164,7 +161,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!Ex.More())
                 supportface = TopoDS_Face();
             BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(base, sketchshape, supportface, dir, 0, 1);
+            PrismMaker.Init(base, face, supportface, dir, 0, 1);
             PrismMaker.Perform(upToFace);
 
             if (!PrismMaker.IsDone())
@@ -181,7 +178,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             this->Shape.setValue(prism);
         } else {
             TopoDS_Shape prism;
-            generatePrism(prism, sketchshape, method, dir, L, 0.0,
+            generatePrism(prism, face, method, dir, L, 0.0,
                           Midplane.getValue(), Reversed.getValue());
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
