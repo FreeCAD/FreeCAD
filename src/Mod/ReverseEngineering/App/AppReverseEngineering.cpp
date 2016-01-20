@@ -524,8 +524,7 @@ Mesh.show(m)
 
 
 /* Python entry */
-extern "C" {
-void ReenExport initReverseEngineering()
+PyMODINIT_FUNC initReverseEngineering()
 {
     // load dependent module
     try {
@@ -540,5 +539,3 @@ void ReenExport initReverseEngineering()
     new Reen::Module();
     Base::Console().Log("Loading ReverseEngineering module... done\n");
 }
-
-} // extern "C"
