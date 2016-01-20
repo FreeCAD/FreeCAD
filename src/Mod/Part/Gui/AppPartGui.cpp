@@ -16,6 +16,9 @@
 # include <Inventor/system/inttypes.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
@@ -77,13 +80,28 @@ void loadPartResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-static struct PyMethodDef PartGui_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+namespace PartGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("PartGui")
+    {
+        initialize("This module is the PartGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
 };
 
-extern "C" {
-void PartGuiExport initPartGui()
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace PartGui
+
+PyMODINIT_FUNC initPartGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -99,7 +117,7 @@ void PartGuiExport initPartGui()
         return;
     }
 
-    (void) Py_InitModule("PartGui", PartGui_methods);   /* mod name, table ptr */
+    (void)PartGui::initModule();
     Base::Console().Log("Loading GUI of Part module... done\n");
 
     PartGui::SoBrepFaceSet                  ::initClass();
@@ -176,4 +194,3 @@ void PartGuiExport initPartGui()
     rclBmpFactory.addXPM("PartFeature",(const char**) PartFeature_xpm);
     rclBmpFactory.addXPM("PartFeatureImport",(const char**) PartFeatureImport_xpm);
 }
-} // extern "C"
