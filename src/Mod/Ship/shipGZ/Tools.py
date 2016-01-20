@@ -133,10 +133,7 @@ def solve_point(W, COG, TW, ship, tanks, roll, var_trim=True):
 
     App.Console.PrintMessage("draft and trim: {}, {}\n".format(draft, trim))
 
-    App.Console.PrintMessage(R)
-    App.Console.PrintMessage("\n")
+    # GZ should be provided in the Free surface oriented frame of reference
     c = math.cos(math.radians(roll))
     s = math.sin(math.radians(roll))
-    App.Console.PrintMessage(c * R.y - s * R.z)
-    App.Console.PrintMessage("\n")
     return c * R.y - s * R.z
