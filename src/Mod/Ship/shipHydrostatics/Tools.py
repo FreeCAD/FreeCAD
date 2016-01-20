@@ -211,10 +211,10 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
     m = Matrix()
     m.move(Vector(0.0, 0.0, draft))
     m.rotateZ(-math.radians(yaw))
-    m.move(Vector(-draft * math.sin(math.radians(roll)), 0.0, 0.0))
+    m.move(Vector(-draft * math.sin(math.radians(trim)), 0.0, 0.0))
     m.rotateY(math.radians(trim))
     m.move(Vector(0.0,
-                  -draft * math.sin(math.radians(trim)),
+                  -draft * math.sin(math.radians(roll)),
                   base_z / Units.Metre.Value))
     m.rotateX(-math.radians(roll))
     B.transform(m)
