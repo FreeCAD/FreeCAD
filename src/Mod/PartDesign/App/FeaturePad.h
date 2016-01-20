@@ -33,7 +33,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Pad : public SketchBased
+class PartDesignExport Pad : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Pad);
 

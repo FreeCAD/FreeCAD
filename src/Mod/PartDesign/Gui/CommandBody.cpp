@@ -373,9 +373,9 @@ void CmdPartDesignMigrate::activated(int iMsg)
 
         // Fill the body with features
         for ( auto feature: *chainIt ) {
-            if ( feature->isDerivedFrom ( PartDesign::SketchBased::getClassTypeId() ) ) {
+            if ( feature->isDerivedFrom ( PartDesign::ProfileBased::getClassTypeId() ) ) {
                 // add the sketch and also reroute it if needed
-                PartDesign::SketchBased *sketchBased = static_cast<PartDesign::SketchBased *> ( feature );
+                PartDesign::ProfileBased *sketchBased = static_cast<PartDesign::ProfileBased *> ( feature );
                 Part::Part2DObject *sketch = sketchBased->getVerifiedSketch( /*silent =*/ true);
                 if ( sketch ) {
                     doCommand ( Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",

@@ -31,7 +31,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Pipe : public SketchBased
+class PartDesignExport Pipe : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Pad);
 

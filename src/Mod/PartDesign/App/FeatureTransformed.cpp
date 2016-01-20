@@ -103,8 +103,8 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
 App::DocumentObject* Transformed::getSketchObject() const
 {
     std::vector<DocumentObject*> originals = Originals.getValues();
-    if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
-        return (static_cast<PartDesign::SketchBased*>(originals.front()))->getVerifiedSketch();
+    if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch();
     }
     else if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
         return NULL;

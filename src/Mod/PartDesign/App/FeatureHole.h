@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Hole : public SketchBased
+class PartDesignExport Hole : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Hole);
 

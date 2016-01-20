@@ -49,7 +49,7 @@
 
 using namespace PartDesign;
 
-PROPERTY_SOURCE(PartDesign::Loft, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 
 Loft::Loft()
 {
@@ -68,7 +68,7 @@ short Loft::mustExecute() const
     if (Closed.isTouched())
         return 1;
  
-    return SketchBased::mustExecute();
+    return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Loft::execute(void)
@@ -76,12 +76,12 @@ App::DocumentObjectExecReturn *Loft::execute(void)
    
     std::vector<TopoDS_Wire> wires;
     try {
-        wires = getSketchWires();
+        wires = getProfileWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
     
-    TopoDS_Shape sketchshape = makeFace(wires);
+    TopoDS_Shape sketchshape = getVerifiedFace();
     if (sketchshape.IsNull())
         return new App::DocumentObjectExecReturn("Loft: Creating a face from sketch failed");
 
@@ -145,7 +145,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         }
         
         //build the top and bottom face, sew the shell and build the final solid
-        TopoDS_Shape front = makeFace(wires);
+        TopoDS_Shape front = getVerifiedFace();
         front.Move(invObjLoc);
         std::vector<TopoDS_Wire> backwires;
         for(std::vector<TopoDS_Wire>& wires : wiresections)
@@ -213,7 +213,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         
         return App::DocumentObject::StdReturn;
         
-        return SketchBased::execute();   
+        return ProfileBased::execute();   
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

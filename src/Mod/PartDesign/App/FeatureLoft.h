@@ -33,7 +33,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Loft : public SketchBased
+class PartDesignExport Loft : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Loft);
 

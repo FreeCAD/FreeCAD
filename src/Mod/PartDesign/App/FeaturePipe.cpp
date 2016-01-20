@@ -76,7 +76,7 @@ const char* Pipe::ModeEnums[] = {"Standart", "Fixed", "Frenet", "Auxillery", "Bi
 const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", NULL};
 
 
-PROPERTY_SOURCE(PartDesign::Pipe, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Pipe, PartDesign::ProfileBased)
 
 Pipe::Pipe()
 {   
@@ -106,7 +106,7 @@ short Pipe::mustExecute() const
         return 1;
     if (Transition.isTouched())
         return 1;
-    return SketchBased::mustExecute();
+    return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pipe::execute(void)
@@ -114,14 +114,24 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     
     std::vector<TopoDS_Wire> wires;
     try {
-        wires = getSketchWires();
+        wires = getProfileWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
     
-    TopoDS_Shape sketchshape = makeFace(wires);
+    TopoDS_Shape sketchshape = getVerifiedFace();
     if (sketchshape.IsNull())
-        return new App::DocumentObjectExecReturn("Pipe: Creating a face from sketch failed");
+        return new App::DocumentObjectExecReturn("Pipe: No valid sketch or face as first section");
+    else {
+        //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could 
+        //not use the current simulate approach and build the start and end face from the wires. As the shell 
+        //beginns always at the spine and not the profile, the sketchshape cannot be used directly as front face. 
+        //We would need a method to translate the frontshape to match the shell starting position somehow...
+        TopoDS_Face face = TopoDS::Face(sketchshape);
+        BRepAdaptor_Surface adapt(face);
+        if(adapt.GetType() != GeomAbs_Plane)
+            return new App::DocumentObjectExecReturn("Pipe: Only planar faces supportet");
+    }
 
     // if the Base property has a valid shape, fuse the pipe into it
     TopoDS_Shape base;
@@ -310,7 +320,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         
         return App::DocumentObject::StdReturn;
         
-        return SketchBased::execute();   
+        return ProfileBased::execute();   
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

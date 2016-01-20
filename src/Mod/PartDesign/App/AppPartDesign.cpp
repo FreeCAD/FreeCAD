@@ -87,7 +87,7 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Solid              ::init();
     PartDesign::DressUp            ::init();
     PartDesign::FeatureAddSub      ::init();
-    PartDesign::SketchBased        ::init();
+    PartDesign::ProfileBased        ::init();
     PartDesign::Transformed        ::init();
     PartDesign::Mirrored           ::init();
     PartDesign::LinearPattern      ::init();

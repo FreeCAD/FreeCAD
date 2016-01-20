@@ -42,6 +42,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Pln.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <BRepLProp_SLProps.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -58,7 +59,7 @@ using namespace PartDesign;
 
 const char* Pad::TypeEnums[]= {"Length","UpToLast","UpToFirst","UpToFace","TwoLengths",NULL};
 
-PROPERTY_SOURCE(PartDesign::Pad, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Pad, PartDesign::ProfileBased)
 
 Pad::Pad()
 {
@@ -83,7 +84,7 @@ short Pad::mustExecute() const
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
-    return SketchBased::mustExecute();
+    return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pad::execute(void)
@@ -96,11 +97,11 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Second length of pad too small");
 
-    Part::Part2DObject* sketch = 0;
-    std::vector<TopoDS_Wire> wires;
+    Part::Feature* obj = 0;
+    TopoDS_Shape sketchshape;
     try {
-        sketch = getVerifiedSketch();
-        wires = getSketchWires();
+        obj = getVerifiedObject();
+        sketchshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
@@ -115,10 +116,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
 
     // get the Sketch plane
-    Base::Placement SketchPos = sketch->Placement.getValue();
-    Base::Rotation SketchOrientation = SketchPos.getRotation();
-    Base::Vector3d SketchVector(0,0,1);
-    SketchOrientation.multVec(SketchVector,SketchVector);
+    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Vector3d  SketchVector = getProfileNormal();
 
     try {
         this->positionByPrevious();
@@ -129,7 +128,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invObjLoc.Transformation());
 
-        TopoDS_Shape sketchshape = makeFace(wires);
         if (sketchshape.IsNull())
             return new App::DocumentObjectExecReturn("Pad: Creating a face from sketch failed");
         sketchshape.Move(invObjLoc);
@@ -214,6 +212,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         this->AddSubShape.setValue(prism);
 
         if (!base.IsNull()) {
+//             auto obj = getDocument()->addObject("Part::Feature", "prism");
+//             static_cast<Part::Feature*>(obj)->Shape.setValue(prism);
             // Let's call algorithm computing a fuse operation:
             BRepAlgoAPI_Fuse mkFuse(base, prism);
             // Let's check if the fusion has been successful
