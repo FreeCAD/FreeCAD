@@ -87,29 +87,26 @@ class PathWorkbench ( Workbench ):
         from PathScripts import PathFacePocket
         from PathScripts import PathCustom
         from PathScripts import PathInspect
-        from PathScripts import PathToolChange
 
         # build commands list
         projcmdlist = ["Path_Project", "Path_ToolTableEdit","Path_Post","Path_Inspect"]
-        prepcmdlist = ["Path_Plane","Path_Fixture","Path_LoadTool","Path_ToolLenOffset","Path_Comment","Path_Stop"]
+        prepcmdlist = ["Path_Plane","Path_Fixture","Path_LoadTool","Path_ToolLenOffset","Path_Comment","Path_Stop",
+                       "Path_FaceProfile","Path_FacePocket","Path_Custom"]
         opcmdlist = ["Path_Profile","Path_Kurve","Path_Pocket","Path_Drilling","Path_FromShape"]
         modcmdlist = ["Path_Copy","Path_CompoundExtended","Path_Dressup","Path_Hop","Path_Array"]
-        partialcmdlist = ["Path_FaceProfile","Path_FacePocket","Path_Custom","Path_ToolChange"]
 
 
         # Add commands to menu and toolbar
         def QT_TRANSLATE_NOOP(scope, text): return text
         self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Commands for setting up Project"),projcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Prepatory Commands"),prepcmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Partial Commands"),prepcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Operations"),opcmdlist)
         self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Commands for grouping,copying, and organizing operations"),modcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Partial operations"),partialcmdlist)
 
         self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Project Setup")],projcmdlist)
-        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Prepatory Commands")],prepcmdlist)
-        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","New Operation")],opcmdlist)
+        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Partial Commands")],prepcmdlist)
+        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","New Operations")],opcmdlist)
         self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Path Modification")],modcmdlist)
-        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Partial operations")],partialcmdlist)
         
         # Add preferences pages
         import os
