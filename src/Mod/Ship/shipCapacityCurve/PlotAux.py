@@ -27,6 +27,8 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Base
 import Spreadsheet
+import matplotlib.ticker as mtick
+
 
 class Plot(object):
     def __init__(self, l, z, v, tank):
@@ -64,11 +66,16 @@ class Plot(object):
         vols.line.set_linestyle('-')
         vols.line.set_linewidth(2.0)
         vols.line.set_color((0.0, 0.0, 0.0))
-        Plot.xlabel(r'Percentage of filling level')
+        Plot.xlabel(r'$\mathrm{level}$')
         Plot.ylabel(r'$V \; [\mathrm{m}^3]$')
         plt.axes.xaxis.label.set_fontsize(20)
         plt.axes.yaxis.label.set_fontsize(20)
         Plot.grid(True)
+
+        # Special percentage formatter for the x axis
+        fmt = '%.0f%%'
+        xticks = mtick.FormatStrFormatter(fmt)
+        plt.axes.xaxis.set_major_formatter(xticks)
 
         # Now duplicate the axes
         ax = Plot.addNewAxes()
@@ -86,7 +93,7 @@ class Plot(object):
         ax.xaxis.set_label_position('top')
 
         # Plot the volume as a function of the level z coordinate
-        vols = Plot.plot(z, v, 'Capacity')
+        vols = Plot.plot(z, v, 'level')
         vols.line.set_linestyle('-')
         vols.line.set_linewidth(2.0)
         vols.line.set_color((0.0, 0.0, 1.0))
