@@ -97,7 +97,7 @@ CmdTechDrawNewPageDef::CmdTechDrawNewPageDef()
 void CmdTechDrawNewPageDef::activated(int iMsg)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/Templates";
     QString templateDir = QString::fromStdString(hGrp->GetASCII("TemplateDir", defaultDir.c_str()));
@@ -166,7 +166,7 @@ CmdTechDrawNewPage::CmdTechDrawNewPage()
 void CmdTechDrawNewPage::activated(int iMsg)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/Templates";
     QString templateDir = QString::fromStdString(hGrp->GetASCII("TemplateDir", defaultDir.c_str()));

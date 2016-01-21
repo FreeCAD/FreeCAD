@@ -70,7 +70,7 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
     setPos(pos);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
     m_colNormal = fcColor.asQColor();
     fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
@@ -81,7 +81,7 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
     m_colCurrent = m_colNormal;
     m_pen.setColor(m_colCurrent);
 
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing");
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
     m_font.setFamily(QString::fromStdString(fontName));
     m_font.setPointSize(5.0);     //scene units (mm), not points
