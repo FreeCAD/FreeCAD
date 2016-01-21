@@ -31,20 +31,20 @@ void loadImageResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef ImageGui_Import_methods[];
+namespace ImageGui {
+extern PyObject* initModule();
+}
 
 
 /* Python entry */
-extern "C" {
-void ImageGuiExport initImageGui()
+PyMODINIT_FUNC initImageGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         return;
     }
 
-    (void) Py_InitModule("ImageGui", ImageGui_Import_methods);   /* mod name, table ptr */
+    (void) ImageGui::initModule();
     Base::Console().Log("Loading GUI of Image module... done\n");
 
     // instantiating the commands
@@ -56,5 +56,3 @@ void ImageGuiExport initImageGui()
     // add resources and reloads the translators
     loadImageResource();
 }
-
-} // extern "C" {
