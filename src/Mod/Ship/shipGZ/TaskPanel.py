@@ -399,7 +399,7 @@ class TaskPanel:
         except ValueError:
             try:
                 tooltip = str(QtGui.QApplication.translate(
-                    "ship_areas",
+                    "ship_gz",
                     "GZ curve tool number of points selected",
                     None,
                     QtGui.QApplication.UnicodeUTF8))
@@ -415,7 +415,7 @@ class TaskPanel:
         except ValueError:
             try:
                 tooltip = str(QtGui.QApplication.translate(
-                    "ship_areas",
+                    "ship_gz",
                     "GZ curve tool variable trim angle selection",
                     None,
                     QtGui.QApplication.UnicodeUTF8))
