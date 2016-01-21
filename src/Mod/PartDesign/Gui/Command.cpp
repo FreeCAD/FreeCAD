@@ -1545,17 +1545,22 @@ void CmdPartDesignMirrored::activated(int iMsg)
         if (features.empty())
         return;
 
+        bool direction = false;
         if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
-            if (sketch)
-                Gui::Command::doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
+            if (sketch) {
+                doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
+                direction = true;
+            }
         }
-        // TODO Check if default mirrored plane correctly set (2015-09-01, Fat-Zer)
-        // else {
-        //     doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
-        //               App::Part::BaseplaneTypes[0]);
-        // }
+        if(!direction) {
+            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
+            if(body) {                
+                doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+                        body->getOrigin()->getXY()->getNameInDocument());
+            }
+        }
 
         finishTransformed(cmd, FeatName);
     };
@@ -1593,17 +1598,22 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         if (features.empty())
             return;
 
+        bool direction = false;
         if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
-            if (sketch)
+            if (sketch) {
                 doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
+                direction = true;
+            }
         }
-        // TODO Check if default direction correctly set (2015-09-01, Fat-Zer)
-        // else {
-        //     doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
-        //               App::Part::BaselineTypes[0]);
-        // }
+        if(!direction) {
+            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
+            if(body) {                
+                doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+                        body->getOrigin()->getX()->getNameInDocument());
+            }
+        }
         doCommand(Doc,"App.activeDocument().%s.Length = 100", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
 
@@ -1643,17 +1653,22 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         if (features.empty())
             return;
 
+        bool direction = false;
         if(features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
-            if (sketch)
+            if (sketch) {
                 doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
                         FeatName.c_str(), sketch->getNameInDocument());
+                direction = true;
+            }
         }
-        // TODO Check if default axis correctly set (2015-09-01, Fat-Zer)
-        // else {
-        //     doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
-        //               App::Part::BaselineTypes[0]);
-        // }
+        if(!direction) {
+            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
+            if(body) {                
+                doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+                        body->getOrigin()->getZ()->getNameInDocument());
+            }
+        }
 
         doCommand(Doc,"App.activeDocument().%s.Angle = 360", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());

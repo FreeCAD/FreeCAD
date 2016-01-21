@@ -158,10 +158,12 @@ Part::Part2DObject* ProfileBased::getVerifiedSketch(bool silent) const {
     const char* err = nullptr;
 
     if (!result) {
-        err = "No sketch linked";
+        err = "No profile linked at all";
     } else {
-        if (!result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (!result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             err = "Linked object is not a Sketch or Part2DObject";
+            result = nullptr;
+        }
     }
 
     if (!silent && err) {
@@ -242,7 +244,19 @@ TopoDS_Face ProfileBased::getVerifiedFace(bool silent) const {
 std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
     std::vector<TopoDS_Wire> result;
 
-    TopoDS_Shape shape = getVerifiedFace();
+    if(!Profile.getValue() || !Profile.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
+        throw Base::Exception("No valid profile linked");
+    
+    TopoDS_Shape shape;
+    if(Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
+    else {
+        if(Profile.getSubValues().empty()) 
+            throw Base::Exception("No valid subelement linked in Part::Feature");
+
+        shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(Profile.getSubValues().front().c_str());
+    }
+    
     if (shape.IsNull())
         throw Base::Exception("Linked shape object is empty");
 
