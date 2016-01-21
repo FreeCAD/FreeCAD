@@ -38,24 +38,102 @@ DENS = 1.025  # [tons/m3], salt water
 COMMON_BOOLEAN_ITERATIONS = 10
 
 
-def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
-    """ Compute the ship transversal areas.
-    @param ship Ship instance.
-    @param draft Ship draft.
-    @param roll Ship roll angle.
-    @param trim Ship trim angle.
-    @param yaw Ship yaw angle. Ussually you don't want to use this
-     value.
-    @param n Number of sections to perform.
-    @return Transversal areas (every area value is composed by x
-     coordinate and computed area)
+def getUnderwaterSide(shape):
+    """ Get the underwater shape, simply cropping the provided shape by the z=0
+    free surface plane.
+
+    Position arguments:
+    shape -- Solid shape to be cropped
+
+    Returned value:
+    Cropped shape. It is not modifying the input shape
+    """
+    # Convert the shape into an active object
+    Part.show(shape)
+    orig = App.ActiveDocument.Objects[-1]
+
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    ymin = bbox.YMin
+    ymax = bbox.YMax
+    zmin = bbox.ZMin
+    zmax = bbox.ZMax
+
+    # Create the "sea" box to intersect the ship
+    L = xmax - xmin
+    B = ymax - ymin
+    H = zmax - zmin
+
+    box = App.ActiveDocument.addObject("Part::Box","Box")
+    length_format = USys.getLengthFormat()
+    box.Placement = Placement(Vector(xmin - L, ymin - B, zmin - H),
+                              Rotation(App.Vector(0,0,1),0))
+    box.Length = length_format.format(3.0 * L)
+    box.Width = length_format.format(3.0 * B)
+    box.Height = length_format.format(- zmin + H)
+
+    App.ActiveDocument.recompute()
+    common = App.activeDocument().addObject("Part::MultiCommon",
+                                            "UnderwaterSideHelper")
+    common.Shapes = [orig, box]
+    App.ActiveDocument.recompute()
+    if len(common.Shape.Solids) == 0:
+        # The common operation is failing, let's try moving a bit the free
+        # surface
+        msg = QtGui.QApplication.translate(
+            "ship_console",
+            "Boolean operation failed when trying to get the underwater side."
+            " The tool is retrying such operation slightly moving the free"
+            " surface position",
+            None,
+            QtGui.QApplication.UnicodeUTF8)
+        App.Console.PrintWarning(msg + '\n')
+        random_bounds = 0.01 * H
+        i = 0
+        while len(common.Shape.Solids) == 0 and i < COMMON_BOOLEAN_ITERATIONS:
+            i += 1
+            box.Height = length_format.format(
+                - zmin + H + random.uniform(-random_bounds, random_bounds))
+            App.ActiveDocument.recompute() 
+
+    out = common.Shape
+    App.ActiveDocument.removeObject(common.Name)
+    App.ActiveDocument.removeObject(orig.Name)
+    App.ActiveDocument.removeObject(box.Name)
+    App.ActiveDocument.recompute()
+    return out
+
+
+def areas(ship, n, draft=None,
+                   roll=Units.parseQuantity("0 deg"), 
+                   trim=Units.parseQuantity("0 deg")):
+    """ Compute the ship transversal areas
+
+    Position arguments:
+    ship -- Ship object (see createShip)
+    n -- Number of points to compute
+
+    Keyword arguments:
+    draft -- Ship draft (Design ship draft by default)
+    roll -- Roll angle (0 degrees by default)
+    trim -- Trim angle (0 degrees by default)
+
+    Returned value:
+    List of sections, each section contains 2 values, the x longitudinal
+    coordinate, and the transversal area. If n < 2, an empty list will be
+    returned.
     """
     if n < 2:
         return []
-    # We will take a duplicate of ship shape in order to conviniently
+
+    if draft is None:
+        draft = ship.Draft
+
+    # We will take a duplicate of ship shape in order to conveniently
     # manipulate it
     shape = ship.Shape.copy()
-    _draft = draft * Units.Metre.Value
+
     # Roll the ship. In order to can deal with large roll angles, we are
     # proceeding as follows:
     # 1.- Applying the roll with respect the base line
@@ -63,26 +141,26 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
     # 3.- Readjusting the base line
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(1.0, 0.0, 0.0), roll)
     base_z = shape.BoundBox.ZMin
-    shape.translate(Vector(0.0,
-                           _draft * math.sin(math.radians(roll)),
-                           -base_z))
+    shape.translate(Vector(0.0, draft * math.sin(math.radians(roll)), -base_z))
     # Trim and yaw the ship. In this case we only need to correct the x
     # direction
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
-    shape.translate(Vector(_draft * math.sin(math.radians(trim)), 0.0, 0.0))
-    shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0), yaw)
-    shape.translate(Vector(0.0, 0.0, -_draft))
+    shape.translate(Vector(draft * math.sin(math.radians(trim)), 0.0, 0.0))
+    shape.translate(Vector(0.0, 0.0, -draft))
+
+    shape = getUnderwaterSide(shape)
+
     # Sections distance computation
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
-    ymin = bbox.YMin
-    ymax = bbox.YMax
     dx = (xmax - xmin) / (n - 1.0)
+
     # Since we are computing the sections in the total length (not in the
     # length between perpendiculars), we can grant that the starting and
     # ending sections have null area
-    areas = [[xmin / Units.Metre.Value, 0.0]]
+    areas = [(Units.Quantity(xmin, Units.Length),
+              Units.Quantity(0.0, Units.Area))]
     # And since we just need to compute areas we will create boxes with its
     # front face at the desired transversal area position, computing the
     # common solid part, dividing it by faces, and getting only the desired
@@ -96,12 +174,15 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
         try:
             f = Part.Face(shape.slice(Vector(1,0,0), x))
         except Part.OCCError:
-            areas.append([x / Units.Metre.Value, 0.0])
+            areas.append((Units.Quantity(x, Units.Length),
+                          Units.Quantity(0.0, Units.Area)))
             continue
         # It is a valid face, so we can add this area
-        areas.append([x / Units.Metre.Value, f.Area / Units.Metre.Value**2])
+        areas.append((Units.Quantity(x, Units.Length),
+                      Units.Quantity(f.Area, Units.Area)))
     # Last area is equal to zero (due to the total length usage)
-    areas.append([xmax / Units.Metre.Value, 0.0])
+    areas.append((Units.Quantity(xmax, Units.Length),
+                  Units.Quantity(0.0, Units.Area)))
     App.Console.PrintMessage("Done!\n")
     return areas
 
