@@ -18,7 +18,6 @@ qt4_add_resources(Complete_QRC_SRCS Resources/Complete.qrc)
 SET(CompleteGui_SRCS
     ${Complete_QRC_SRCS}
     AppCompleteGui.cpp
-    AppCompleteGuiPy.cpp
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h
