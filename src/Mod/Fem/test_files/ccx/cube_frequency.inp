@@ -468,7 +468,8 @@ Eall
 ** Materials
 ** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
-*MATERIAL, NAME=Steel
+**FreeCAD material name: Steel
+*MATERIAL, NAME=MechanicalMaterial
 *ELASTIC 
 200000 , 
 0.300
@@ -478,7 +479,7 @@ Eall
 ***********************************************************
 ** Sections
 ** written by write_femelementsets function
-*SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=Steel
+*SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
 ** One step is needed to calculate the mechanical analysis of FreeCAD
