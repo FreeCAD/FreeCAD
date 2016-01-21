@@ -104,7 +104,7 @@ App::DocumentObject* Transformed::getSketchObject() const
 {
     std::vector<DocumentObject*> originals = Originals.getValues();
     if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
-        return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch();
+        return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch(true);
     }
     else if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
         return NULL;
@@ -211,7 +211,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return App::DocumentObject::StdReturn; // No transformations defined, exit silently
 
     // Get the support
-    Part::Feature* supportFeature = getBaseObject();
+    Part::Feature* supportFeature;
 
     try {
         supportFeature = getBaseObject();
