@@ -1,5 +1,6 @@
 
 #include "PreCompiled.h"
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
 
 #include "Mod/TechDraw/App/DrawPage.h"
@@ -20,17 +21,27 @@ std::string DrawPagePy::representation(void) const
 
 PyObject* DrawPagePy::addView(PyObject* args)
 {
-    PyObject *pcFeatView;
+    //this implements iRC = pyPage.addView(pyView)  -or-
+    //doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    PyObject *pcDocObj;
 
-    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::DrawViewPy::Type), &pcFeatView)) {     // convert args: Python->C
-        Base::Console().Error("Error: DrawPagePy::addView - Bad Args\n");
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
+        Base::Console().Error("Error: DrawPagePy::addView - Bad Arg - not DocumentObject\n");
+        return NULL;
+        //TODO: sb PyErr??
+        //PyErr_SetString(PyExc_TypeError,"addView expects a DrawView");
+        //return -1;
     }
 
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage
+    //TODO: argument 1 arrives as "DocumentObjectPy", not "DrawViewPy"
+    //how to validate that obj is DrawView before use??
+    DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
+    DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
 
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    int rc = page->addView(view);
+
+    return PyInt_FromLong((long) rc);
 }
 
 //    double getPageWidth() const;
