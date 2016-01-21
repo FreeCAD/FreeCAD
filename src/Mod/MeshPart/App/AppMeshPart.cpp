@@ -34,10 +34,6 @@ namespace MeshPart {
 extern PyObject* initModule();
 }
 
-PyDoc_STRVAR(module_MeshPart_doc,
-"This module is the MeshPart module.");
-
-
 /* Python entry */
 PyMODINIT_FUNC initMeshPart()
 {
