@@ -15,7 +15,6 @@ set(Complete_LIBS
 
 SET(Complete_SRCS
     AppComplete.cpp
-    AppCompletePy.cpp
     PreCompiled.cpp
     PreCompiled.h
     CompleteConfiguration.h
