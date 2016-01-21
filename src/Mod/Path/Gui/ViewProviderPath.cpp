@@ -81,6 +81,7 @@ ViewProviderPath::ViewProviderPath()
     ADD_PROPERTY_TYPE(MarkerColor,(mr,mg,mb),"Path",App::Prop_None,"The color of the markers");
     ADD_PROPERTY_TYPE(LineWidth,(lwidth),"Path",App::Prop_None,"The line width of this path");
     ADD_PROPERTY_TYPE(ShowFirstRapid,(true),"Path",App::Prop_None,"Turns the display of the first rapid move on/off");
+    ADD_PROPERTY_TYPE(ShowNodes,(false),"Path",App::Prop_None,"Turns the display of nodes on/off");
     
     pcPathRoot = new Gui::SoFCSelection();
 
@@ -204,7 +205,7 @@ void ViewProviderPath::onChanged(const App::Property* prop)
     } else if (prop == &MarkerColor) {
         const App::Color& c = MarkerColor.getValue();
         pcMarkerColor->rgb.setValue(c.r,c.g,c.b);
-    } else if (prop == &ShowFirstRapid) {
+    } else if ( (prop == &ShowFirstRapid) || (prop == &ShowNodes) ) {
         Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
         this->updateData(&pcPathObj->Path);
     } else {
@@ -216,7 +217,7 @@ void ViewProviderPath::updateData(const App::Property* prop)
 {
     Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
 
-    if ( prop == &pcPathObj->Path) {
+    if (prop == &pcPathObj->Path) {
         
         const Toolpath &tp = pcPathObj->Path.getValue();
         if(tp.getSize()==0)
@@ -252,7 +253,8 @@ void ViewProviderPath::updateData(const App::Property* prop)
                         markers.push_back(last); // startpoint of path
                     }
                     points.push_back(next);
-                    //markers.push_back(next); // endpoint
+                    if (ShowNodes.getValue() == true)
+                        markers.push_back(next); // endpoint
                     last = next;
                     if ( (name == "G0") || (name == "G00") )
                         colorindex.push_back(0); // rapid color
@@ -277,9 +279,11 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 //double radius = (last - center).Length();
                 double angle = (next - center).GetAngle(last - center);
                 // BUGGY: not needed anyway?
-                //Base::Vector3d anorm = (last - center) % (next - center);
-                //if (anorm.z < 0)
-                //    angle = M_PI - angle;
+                Base::Vector3d anorm = (last - center) % (next - center);
+                if  ( (anorm.z < 0) && ( (name == "G3") || (name == "G03") ) )
+                    angle = M_PI * 2 - angle;
+                if (angle == 0)
+                    angle = M_PI * 2;
                 int segments = 3/(deviation/angle); //we use a rather simple rule here, provisorily
                 for (int j = 1; j < segments; j++) {
                     //std::cout << "vector " << j << std::endl;
@@ -293,8 +297,10 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 }
                 //std::cout << "next " << next.x << " , " << next.y << " , " << next.z << std::endl;
                 points.push_back(next);
-                //markers.push_back(next); // endpoint
-                //markers.push_back(center); // add a marker at center too
+                if (ShowNodes.getValue() == true) {
+                    markers.push_back(next); // endpoint
+                    markers.push_back(center); // add a marker at center too
+                }
                 last = next;
                 colorindex.push_back(1);
                 
@@ -314,14 +320,17 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 Base::Vector3d p1(next.x,next.y,last.z);
 //                Base::Vector3d p1(next.x,next.y,r);
                 points.push_back(p1);
-                //markers.push_back(p1);
+                if (ShowNodes.getValue() == true)
+                    markers.push_back(p1);
                 colorindex.push_back(0);
                 Base::Vector3d p2(next.x,next.y,r);
                 points.push_back(p2);
-                //markers.push_back(p2);
+                if (ShowNodes.getValue() == true)
+                    markers.push_back(p2);
                 colorindex.push_back(0);
                 points.push_back(next);
-                //markers.push_back(next);
+                if (ShowNodes.getValue() == true)
+                    markers.push_back(next);
                 colorindex.push_back(1);
                 double q;
                 if (cmd.has("Q")) {
@@ -335,7 +344,8 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 }
                 Base::Vector3d p3(next.x,next.y,last.z);
                 points.push_back(p3);
-                //markers.push_back(p2);
+                if (ShowNodes.getValue() == true)
+                    markers.push_back(p2);
                 colorindex.push_back(0);
             }
         }
@@ -354,10 +364,6 @@ void ViewProviderPath::updateData(const App::Property* prop)
     
             pcMarkerCoords->point.deleteValues(0);
             
-            // putting one marker at each node makes the display awfully slow
-            // following 2 lines leave just one at the origin
-            //pcMarkerCoords->point.setNum(1);
-            //pcMarkerCoords->point.set1Value(0,markers[0].x,markers[0].y,markers[0].z);
             pcMarkerCoords->point.setNum(markers.size());
             for(unsigned int i=0;i<markers.size();i++)
                 pcMarkerCoords->point.set1Value(i,markers[i].x,markers[i].y,markers[i].z);

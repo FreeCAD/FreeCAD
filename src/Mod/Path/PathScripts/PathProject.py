@@ -66,7 +66,11 @@ class ObjectPathProject:
         cmds = []
         for child in obj.Group:
             if child.isDerivedFrom("Path::Feature"):
-                cmds.extend(child.Path.Commands)
+                if obj.UsePlacements:
+                    for c in child.Path.Commands:
+                        cmds.append(c.transform(child.Placement))
+                else:
+                    cmds.extend(child.Path.Commands)
         if cmds:
             path = Path.Path(cmds)
             obj.Path = path
@@ -76,16 +80,16 @@ class ViewProviderProject:
     def __init__(self,vobj):
         vobj.Proxy = self
         mode = 2
-        vobj.setEditorMode('LineWidth',mode)
-        vobj.setEditorMode('MarkerColor',mode)
-        vobj.setEditorMode('NormalColor',mode)
+#        vobj.setEditorMode('LineWidth',mode)
+#        vobj.setEditorMode('MarkerColor',mode)
+#        vobj.setEditorMode('NormalColor',mode)
 #        vobj.setEditorMode('ShowFirstRapid',mode)
         vobj.setEditorMode('BoundingBox',mode)
         vobj.setEditorMode('DisplayMode',mode)
         vobj.setEditorMode('Selectable',mode)
         vobj.setEditorMode('ShapeColor',mode)
         vobj.setEditorMode('Transparency',mode)
-        vobj.setEditorMode('Visibility',mode)
+#        vobj.setEditorMode('Visibility',mode)
 
     def __getstate__(self): #mandatory
         return None
@@ -98,16 +102,16 @@ class ViewProviderProject:
 
     def onChanged(self,vobj,prop):
         mode = 2
-        vobj.setEditorMode('LineWidth',mode)
-        vobj.setEditorMode('MarkerColor',mode)
-        vobj.setEditorMode('NormalColor',mode)
+#        vobj.setEditorMode('LineWidth',mode)
+#        vobj.setEditorMode('MarkerColor',mode)
+#        vobj.setEditorMode('NormalColor',mode)
 #        vobj.setEditorMode('ShowFirstRapid',mode)
         vobj.setEditorMode('BoundingBox',mode)
         vobj.setEditorMode('DisplayMode',mode)
         vobj.setEditorMode('Selectable',mode)
         vobj.setEditorMode('ShapeColor',mode)
         vobj.setEditorMode('Transparency',mode)
-        vobj.setEditorMode('Visibility',mode)
+#        vobj.setEditorMode('Visibility',mode)
 
 
 class CommandProject:
