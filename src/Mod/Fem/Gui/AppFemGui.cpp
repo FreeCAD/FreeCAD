@@ -63,20 +63,20 @@ void loadFemResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef FemGui_Import_methods[];
+namespace FemGui {
+extern PyObject* initModule();
+}
 
 
 /* Python entry */
-extern "C" {
-void FemGuiExport initFemGui()
+PyMODINIT_FUNC initFemGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         return;
     }
 
-    (void) Py_InitModule("FemGui", FemGui_Import_methods);   /* mod name, table ptr */
+    (void) FemGui::initModule();
     Base::Console().Log("Loading GUI of Fem module... done\n");
 
     // instantiating the commands
@@ -112,5 +112,3 @@ void FemGuiExport initFemGui()
      // add resources and reloads the translators
     loadFemResource();
 }
-
-} // extern "C" {
