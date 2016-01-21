@@ -31,7 +31,6 @@
 #include "MDIViewPage.h"
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-//#include <Mod/Drawing/App/ProjectionAlgos.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>

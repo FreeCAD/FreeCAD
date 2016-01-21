@@ -89,7 +89,7 @@ QGIDatumLabel::QGIDatumLabel(int ref, QGraphicsScene *scene  ) : reference(ref)
     setAcceptHoverEvents(true);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
     m_colNormal = fcColor.asQColor();
     fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
@@ -194,7 +194,7 @@ QGIViewDimension::QGIViewDimension(const QPoint &pos, QGraphicsScene *scene) :
     pen.setWidthF(1.);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
     m_colNormal = fcColor.asQColor();
     fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
