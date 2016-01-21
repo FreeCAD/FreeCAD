@@ -295,10 +295,10 @@ void CmdTechDrawNewView::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.Y = %e",FeatName.c_str(), newY);
         doCommand(Doc,"App.activeDocument().%s.Scale = %e",FeatName.c_str(), newScale);
         doCommand(Doc,"App.activeDocument().%s.Rotation = %e",FeatName.c_str(), newRotation);
-        //doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-        TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
+        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+        //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
         //TODO: page->addView sb Python function??
-        page->addView(page->getDocument()->getObject(FeatName.c_str()));
+        //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     }
     updateActive();
     commitCommand();
@@ -348,9 +348,9 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Scale = 1.0",FeatName.c_str());
-//         doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),);
-        TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-        page->addView(page->getDocument()->getObject(FeatName.c_str()));
+        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+        //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
+        //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     }
     updateActive();
     commitCommand();
@@ -425,7 +425,9 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgProjGroup(multiView));
 
     // add the multiView to the page
-    page->addView(getDocument()->getObject(multiViewName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
+    //page->addView(getDocument()->getObject(multiViewName.c_str()));
 
     updateActive();
     commitCommand();
@@ -473,9 +475,9 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 7.0",FeatName.c_str());
-    //doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     updateActive();
     commitCommand();
 }
@@ -523,8 +525,9 @@ void CmdTechDrawClip::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Height = 30.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Width = 30.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.ShowLabels = False",FeatName.c_str());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     updateActive();
     commitCommand();
 }
@@ -592,6 +595,7 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     }
 
     openCommand("ClipPlus");
+    //TODO: implement Py addView for Clip
     clip->addView(view);
     updateActive();
     commitCommand();
@@ -659,6 +663,7 @@ void CmdTechDrawClipMinus::activated(int iMsg)
     }
 
     openCommand("ClipMinus");
+    //TODO: implement Py removeView for Clip
     clip->removeView(view);
     updateActive();
     commitCommand();
@@ -713,9 +718,9 @@ void CmdTechDrawSymbol::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Symbol = svg",FeatName.c_str());
-        //doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-        TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-        page->addView(page->getDocument()->getObject(FeatName.c_str()));
+        //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
+        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+        //page->addView(page->getDocument()->getObject(FeatName.c_str()));
         updateActive();
         commitCommand();
     }
