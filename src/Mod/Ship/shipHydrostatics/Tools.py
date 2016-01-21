@@ -38,8 +38,39 @@ DENS = 1.025  # [tons/m3], salt water
 COMMON_BOOLEAN_ITERATIONS = 10
 
 
+def placeShipShape(shape, draft, roll, trim):
+    """Move the ship shape such that the free surface matches with the plane
+    z=0. The transformation will be applied on the input shape, so copy it
+    before calling this method if it should be preserved.
+
+    Position arguments:
+    shape -- Ship shape
+    draft -- Ship draft
+    roll -- Roll angle
+    trim -- Trim angle
+
+    Returned value:
+    The same transformed input shape. Just for debugging purposes, you can
+    discard it.
+    """
+    # Roll the ship. In order to can deal with large roll angles, we are
+    # proceeding as follows:
+    # 1.- Applying the roll with respect the base line
+    # 2.- Recentering the ship in the y direction
+    # 3.- Readjusting the base line
+    shape.rotate(Vector(0.0, 0.0, 0.0), Vector(1.0, 0.0, 0.0), roll)
+    base_z = shape.BoundBox.ZMin
+    shape.translate(Vector(0.0, draft * math.sin(math.radians(roll)), -base_z))
+    # Trim the ship. In this case we only need to correct the x direction
+    shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
+    shape.translate(Vector(draft * math.sin(math.radians(trim)), 0.0, 0.0))
+    shape.translate(Vector(0.0, 0.0, -draft))
+
+    return shape
+
+
 def getUnderwaterSide(shape):
-    """ Get the underwater shape, simply cropping the provided shape by the z=0
+    """Get the underwater shape, simply cropping the provided shape by the z=0
     free surface plane.
 
     Position arguments:
@@ -130,25 +161,11 @@ def areas(ship, n, draft=None,
     if draft is None:
         draft = ship.Draft
 
-    # We will take a duplicate of ship shape in order to conveniently
-    # manipulate it
-    shape = ship.Shape.copy()
-
-    # Roll the ship. In order to can deal with large roll angles, we are
-    # proceeding as follows:
-    # 1.- Applying the roll with respect the base line
-    # 2.- Recentering the ship in the y direction
-    # 3.- Readjusting the base line
-    shape.rotate(Vector(0.0, 0.0, 0.0), Vector(1.0, 0.0, 0.0), roll)
-    base_z = shape.BoundBox.ZMin
-    shape.translate(Vector(0.0, draft * math.sin(math.radians(roll)), -base_z))
-    # Trim and yaw the ship. In this case we only need to correct the x
-    # direction
-    shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
-    shape.translate(Vector(draft * math.sin(math.radians(trim)), 0.0, 0.0))
-    shape.translate(Vector(0.0, 0.0, -draft))
-
-    shape = getUnderwaterSide(shape)
+    # Manipulate a copy of the ship shape
+    shape = getUnderwaterSide(placeShipShape(ship.Shape.copy(),
+                                             draft,
+                                             roll,
+                                             trim))
 
     # Sections distance computation
     bbox = shape.BoundBox
