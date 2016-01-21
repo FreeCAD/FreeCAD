@@ -51,28 +51,25 @@ class TaskPanel:
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
         form.num = self.widget(QtGui.QSpinBox, "Num")
-        draft = Units.Quantity(Locale.fromString(
-            form.draft.text())).getValueAs('m').Value
-        trim = Units.Quantity(Locale.fromString(
-            form.trim.text())).getValueAs('deg').Value
+        draft = Units.parseQuantity(Locale.fromString(form.draft.text()))
+        trim = Units.parseQuantity(Locale.fromString(form.trim.text()))
         num = form.num.value()
+
         data = Hydrostatics.displacement(self.ship,
-                                         draft,
+                                         draft.getValueAs("m").Value,
                                          0.0,
-                                         trim)
+                                         trim.getValueAs("deg").Value)
         disp = data[0]
         xcb = data[1].x
         data = Hydrostatics.areas(self.ship,
-                                  draft,
-                                  0.0,
-                                  trim,
-                                  0.0,
-                                  num)
+                                  num,
+                                  draft=draft,
+                                  trim=trim)
         x = []
         y = []
         for i in range(0, len(data)):
-            x.append(data[i][0])
-            y.append(data[i][1])
+            x.append(data[i][0].getValueAs("m").Value)
+            y.append(data[i][1].getValueAs("m^2").Value)
         PlotAux.Plot(x, y, disp, xcb, self.ship)
         self.preview.clean()
         return True
