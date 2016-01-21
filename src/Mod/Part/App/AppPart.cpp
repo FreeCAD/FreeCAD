@@ -125,39 +125,40 @@ PyMODINIT_FUNC initPart()
 
     PyObject* partModule = Part::initModule();
     Base::Console().Log("Loading Part module... done\n");
+
+    // Python exceptions
+    //
     PyObject* OCCError = 0;
-    if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, 
-                PyExc_RuntimeError)) {
-        OCCError = PyErr_NewException("Part.OCCError", 
-            Base::BaseExceptionFreeCADError, NULL);
+    if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, PyExc_RuntimeError)) {
+        OCCError = PyErr_NewException("Part.OCCError", Base::BaseExceptionFreeCADError, NULL);
     }
     else {
         Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
-        OCCError = PyErr_NewException("Part.OCCError", 
-            PyExc_RuntimeError, NULL);
+        OCCError = PyErr_NewException("Part.OCCError", PyExc_RuntimeError, NULL);
     }
     Py_INCREF(OCCError);
     PyModule_AddObject(partModule, "OCCError", OCCError);
     PartExceptionOCCError = OCCError; //set global variable ;(
-    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError",
-            PartExceptionOCCError, NULL);
+
+    // domain error
+    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError", PartExceptionOCCError, NULL);
     Py_INCREF(PartExceptionOCCDomainError);
-    PyModule_AddObject(partModule, "OCCDomainError",
-            PartExceptionOCCDomainError);
-    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError",
-            PartExceptionOCCDomainError, NULL);
+    PyModule_AddObject(partModule, "OCCDomainError", PartExceptionOCCDomainError);
+
+    // range error
+    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError", PartExceptionOCCDomainError, NULL);
     Py_INCREF(PartExceptionOCCRangeError);
     PyModule_AddObject(partModule, "OCCRangeError", PartExceptionOCCRangeError);
-    PartExceptionOCCConstructionError = PyErr_NewException(
-            "Part.OCCConstructionError", PartExceptionOCCDomainError, NULL);
+
+    // construction error
+    PartExceptionOCCConstructionError = PyErr_NewException("Part.OCCConstructionError", PartExceptionOCCDomainError, NULL);
     Py_INCREF(PartExceptionOCCConstructionError);
-    PyModule_AddObject(partModule, "OCCConstructionError",
-            PartExceptionOCCConstructionError);
-    PartExceptionOCCDimensionError = PyErr_NewException(
-            "Part.OCCDimensionError", PartExceptionOCCDomainError, NULL);
+    PyModule_AddObject(partModule, "OCCConstructionError", PartExceptionOCCConstructionError);
+
+    // dimension error
+    PartExceptionOCCDimensionError = PyErr_NewException("Part.OCCDimensionError", PartExceptionOCCDomainError, NULL);
     Py_INCREF(PartExceptionOCCConstructionError);
-    PyModule_AddObject(partModule, "OCCDimensionError",
-            PartExceptionOCCDimensionError);
+    PyModule_AddObject(partModule, "OCCDimensionError", PartExceptionOCCDimensionError);
 
     //rename the types properly to pickle and unpickle them
     Part::TopoShapePy         ::Type.tp_name = "Part.Shape";
