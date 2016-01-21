@@ -42,7 +42,7 @@ class ObjectArray:
 
     def __init__(self,obj):
         obj.addProperty("App::PropertyLink","Base","Path","The path to array")
-        obj.addProperty("App::PropertyVector","Offset","Path","The spacing between the array copies")
+        obj.addProperty("App::PropertyVectorDistance","Offset","Path","The spacing between the array copies")
         obj.addProperty("App::PropertyInteger","Copies","Path","The number of copies")
         obj.Proxy = self
 

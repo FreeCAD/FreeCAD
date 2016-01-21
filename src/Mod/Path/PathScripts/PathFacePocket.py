@@ -45,6 +45,8 @@ class ObjectFacePocket:
         obj.addProperty("App::PropertyDistance","Offset","Path","The distance between the face and the path")
         obj.addProperty("App::PropertyInteger","StartVertex","Path","The vertex index to start the path from")
         obj.addProperty("App::PropertyEnumeration","FirstMove","Path","The type of the first move")
+        obj.addProperty("App::PropertyDistance","RetractHeight","Path","The height to travel at between loops")
+        obj.addProperty("App::PropertyBool","Fill","Path","Perform only one loop or fill the whole shape")
         obj.FirstMove = ["G0","G1"]
         obj.Proxy = self
 
@@ -55,7 +57,7 @@ class ObjectFacePocket:
         return None
         
     def execute(self,obj):
-        if obj.Base and obj.Offset:
+        if obj.Base and obj.Offset.Value:
             import Part, DraftGeomUtils
             if "Face" in obj.Base[1][0]:
                 shape = getattr(obj.Base[0].Shape,obj.Base[1][0])
@@ -68,15 +70,18 @@ class ObjectFacePocket:
             
             # build offsets
             offsets = []
-            nextradius = obj.Offset
+            nextradius = obj.Offset.Value
             result = DraftGeomUtils.pocket2d(shape,nextradius)
             while result:
                 offsets.extend(result)
-                nextradius += obj.Offset
-                result = DraftGeomUtils.pocket2d(shape,nextradius)
+                if obj.Fill:
+                    nextradius += obj.Offset.Value
+                    result = DraftGeomUtils.pocket2d(shape,nextradius)
+                else:
+                    result = []
             
-            # first move will be rapid, subsequent will be at feed rate
             first = True
+            point = None
             
             # revert the list so we start with the outer wires
             offsets.reverse()
@@ -94,6 +99,10 @@ class ObjectFacePocket:
                             output += obj.FirstMove
                             first = False
                         else:
+                            if obj.RetractHeight.Value and point:
+                                output += "G0 X" + str("%f" % point.x) + " Y" + str("%f" % point.y) + " Z" + str("%f" % obj.RetractHeight.Value) + "\n"
+                                last = edge.Vertexes[0].Point
+                                output += "G0 X" + str("%f" % last.x) + " Y" + str("%f" % last.y) + " Z" + str("%f" % obj.RetractHeight.Value) + "\n"
                             output += "G1"
                         last = edge.Vertexes[0].Point
                         output += " X" + str("%f" % last.x) + " Y" + str("%f" % last.y) + " Z" + str("%f" % last.z) + "\n"
@@ -105,7 +114,7 @@ class ObjectFacePocket:
                         relcenter = center.sub(last)
                         v1 = last.sub(center)
                         v2 = point.sub(center)
-                        if v1.cross(v2).z < 0:
+                        if edge.Curve.Axis.z < 0:
                             output += "G2"
                         else:
                             output += "G3"
