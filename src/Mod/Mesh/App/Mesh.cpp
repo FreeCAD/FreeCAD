@@ -1465,7 +1465,11 @@ MeshObject* MeshObject::createSphere(float radius, int sampling)
         Py::Callable call(dict.getItem("Sphere"));
         Py::Tuple args(2);
         args.setItem(0, Py::Float(radius));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(1, Py::Long(sampling));
+#else
         args.setItem(1, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1487,7 +1491,11 @@ MeshObject* MeshObject::createEllipsoid(float radius1, float radius2, int sampli
         Py::Tuple args(3);
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(2, Py::Long(sampling));
+#else
         args.setItem(2, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1509,9 +1517,15 @@ MeshObject* MeshObject::createCylinder(float radius, float length, int closed, f
         Py::Tuple args(5);
         args.setItem(0, Py::Float(radius));
         args.setItem(1, Py::Float(length));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(2, Py::Long(closed));
+        args.setItem(3, Py::Float(edgelen));
+        args.setItem(4, Py::Long(sampling));
+#else
         args.setItem(2, Py::Int(closed));
         args.setItem(3, Py::Float(edgelen));
         args.setItem(4, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1534,9 +1548,15 @@ MeshObject* MeshObject::createCone(float radius1, float radius2, float len, int 
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
         args.setItem(2, Py::Float(len));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(3, Py::Long(closed));
+        args.setItem(4, Py::Float(edgelen));
+        args.setItem(5, Py::Long(sampling));
+#else
         args.setItem(3, Py::Int(closed));
         args.setItem(4, Py::Float(edgelen));
         args.setItem(5, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }
@@ -1558,7 +1578,11 @@ MeshObject* MeshObject::createTorus(float radius1, float radius2, int sampling)
         Py::Tuple args(3);
         args.setItem(0, Py::Float(radius1));
         args.setItem(1, Py::Float(radius2));
+#if PY_MAJOR_VERSION >= 3
+        args.setItem(2, Py::Long(sampling));
+#else
         args.setItem(2, Py::Int(sampling));
+#endif
         Py::List list(call.apply(args));
         return createMeshFromList(list);
     }

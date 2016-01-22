@@ -92,7 +92,11 @@ PyMODINIT_FUNC initMeshGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
+#if PY_MAJOR_VERSION >= 3
+        return 0;
+#else
         return;
+#endif
     }
 
     // load dependent module
@@ -101,7 +105,11 @@ PyMODINIT_FUNC initMeshGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
+#if PY_MAJOR_VERSION >= 3
+        return 0;
+#else
         return;
+#endif
     }
     (void) MeshGui::initModule();
     Base::Console().Log("Loading GUI of Mesh module... done\n");

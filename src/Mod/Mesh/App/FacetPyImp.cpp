@@ -76,10 +76,15 @@ PyObject*  FacetPy::unbound(PyObject *args)
     getFacetPtr()->Mesh = 0;
     Py_Return;
 }
-
+#if PY_MAJOR_VERSION >= 3
+Py::Long FacetPy::getIndex(void) const
+{
+    return Py::Long((long) getFacetPtr()->Index);
+#else
 Py::Int FacetPy::getIndex(void) const
 {
     return Py::Int((long) getFacetPtr()->Index);
+#endif
 }
 
 Py::Boolean FacetPy::getBound(void) const
