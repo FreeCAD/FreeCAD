@@ -192,7 +192,7 @@ unsigned int PropertyNormalList::getMemSize (void) const
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
 
-void PropertyNormalList::transform(const Base::Matrix4D &mat)
+void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
 {
     // A normal vector is only a direction with unit length, so we only need to rotate it
     // (no translations or scaling)
@@ -222,7 +222,6 @@ void PropertyNormalList::transform(const Base::Matrix4D &mat)
     }
 
     hasSetValue();
-
 }
 
 // ----------------------------------------------------------------------------
@@ -300,7 +299,7 @@ std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
     return fValues;
 }
 
-void PropertyCurvatureList::transform(const Base::Matrix4D &mat)
+void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
 {
     // The principal direction is only a vector with unit length, so we only need to rotate it
     // (no translations or scaling)
