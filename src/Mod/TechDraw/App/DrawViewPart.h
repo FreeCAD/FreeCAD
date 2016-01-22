@@ -64,6 +64,8 @@ public:
     //int removeHatch(App::DocumentObject *docObj);
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
 
+    //TODO: are there use-cases for Python access to TechDrawGeometry???
+
     const std::vector<TechDrawGeometry::Vertex *> & getVertexGeometry() const;
     const std::vector<TechDrawGeometry::BaseGeom  *> & getEdgeGeometry() const;
     const std::vector<TechDrawGeometry::Face *> & getFaceGeometry() const;

@@ -88,7 +88,7 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 {
     std::string svg = Symbol.getValue();
     const std::vector<std::string>& editText = EditableTexts.getValues();
-    
+
     if (!editText.empty()) {
         boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
@@ -115,7 +115,8 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
         newsvg.insert(newsvg.end(), begin, end);
         svg = newsvg;
     }
-    
+    //TODO: shouldn't there be a Symbol.setValue(svg) here??? -wf
+#if 0
     std::stringstream result;
     result  << "<g transform=\"translate(" << X.getValue() << "," << Y.getValue() << ")"
             << " rotate(" << Rotation.getValue() << ")"
@@ -126,6 +127,7 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
     // Apply the resulting fragment
     // no more ViewResult! Need to xlate SVG to Geometry object???
     //ViewResult.setValue(result.str().c_str());
+#endif
 
     //return App::DocumentObject::StdReturn;
     return DrawView::execute();

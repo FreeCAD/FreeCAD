@@ -50,7 +50,7 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewClip, TechDraw::DrawView)
 
-DrawViewClip::DrawViewClip(void) 
+DrawViewClip::DrawViewClip(void)
 {
     static const char *group = "Clip Group";
     //App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
@@ -164,7 +164,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewClipPython, TechDraw::DrawViewClip)
 template<> const char* TechDraw::DrawViewClipPython::getViewProviderName(void) const {
-    return "TechDrawGui::ViewProviderDrawClip";
+    return "TechDrawGui::ViewProviderViewClip";
 }
 /// @endcond
 

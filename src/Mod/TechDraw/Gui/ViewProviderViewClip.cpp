@@ -48,9 +48,9 @@
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingClip, TechDrawGui::ViewProviderDrawingView)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderViewClip, TechDrawGui::ViewProviderDrawingView)
 
-ViewProviderDrawingClip::ViewProviderDrawingClip()
+ViewProviderViewClip::ViewProviderViewClip()
 {
     sPixmap = "actions/techdraw-clip";
 
@@ -59,29 +59,29 @@ ViewProviderDrawingClip::ViewProviderDrawingClip()
     DisplayMode.setStatus(App::Property::ReadOnly,true);
 }
 
-ViewProviderDrawingClip::~ViewProviderDrawingClip()
+ViewProviderViewClip::~ViewProviderViewClip()
 {
 }
 
-void ViewProviderDrawingClip::attach(App::DocumentObject *pcFeat)
+void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
 }
 
-void ViewProviderDrawingClip::setDisplayMode(const char* ModeName)
+void ViewProviderViewClip::setDisplayMode(const char* ModeName)
 {
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderDrawingClip::getDisplayModes(void) const
+std::vector<std::string> ViewProviderViewClip::getDisplayModes(void) const
 {
     // get the modes of the father
     std::vector<std::string> StrList;
     return StrList;
 }
 
-std::vector<App::DocumentObject*> ViewProviderDrawingClip::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) const
 {
     // Collect any child views
     // for Clip, valid children are any View in Views
@@ -89,7 +89,7 @@ std::vector<App::DocumentObject*> ViewProviderDrawingClip::claimChildren(void) c
     return views;
 }
 
-void ViewProviderDrawingClip::show(void)
+void ViewProviderViewClip::show(void)
 {
     ViewProviderDrawingView::show();
 
@@ -106,7 +106,7 @@ void ViewProviderDrawingClip::show(void)
     }
 }
 
-void ViewProviderDrawingClip::hide(void)
+void ViewProviderViewClip::hide(void)
 {
     ViewProviderDrawingView::hide();
 
@@ -123,26 +123,26 @@ void ViewProviderDrawingClip::hide(void)
     }
 }
 
-bool ViewProviderDrawingClip::isShow(void) const
+bool ViewProviderViewClip::isShow(void) const
 {
     return Visibility.getValue();
 }
 
-void ViewProviderDrawingClip::startRestoring()
+void ViewProviderViewClip::startRestoring()
 {
     // do nothing
 }
 
-void ViewProviderDrawingClip::finishRestoring()
+void ViewProviderViewClip::finishRestoring()
 {
     // do nothing
 }
 
-void ViewProviderDrawingClip::updateData(const App::Property*)
+void ViewProviderViewClip::updateData(const App::Property*)
 {
 }
 
-TechDraw::DrawViewClip* ViewProviderDrawingClip::getObject() const
+TechDraw::DrawViewClip* ViewProviderViewClip::getObject() const
 {
     return dynamic_cast<TechDraw::DrawViewClip*>(pcObject);
 }
