@@ -30,4 +30,5 @@ __doc__="The Ships module provide a set of tools to make some specific Naval" \
         " Architecture computations"
 
 from shipCreateShip.Tools import createShip
-from shipHydrostatics.Tools import areas
+from shipHydrostatics.Tools import areas, displacement, wettedArea, moment,
+                                   floatingArea, BMT, mainFrameCoeff

@@ -121,8 +121,12 @@ def solve_point(W, COG, TW, VOLS, ship, tanks, roll, var_trim=True):
 
     for i in range(MAX_EQUILIBRIUM_ITERS):
         # Get the displacement, and the bouyance application point
-        disp, B, Cb = Hydrostatics.displacement(ship, draft, roll, trim)
-        disp *= 1000.0 * G
+        disp, B, _ = Hydrostatics.displacement(ship,
+                                               draft * Units.Metre,
+                                               roll * Units.Degree,
+                                               trim * Units.Degree)
+        disp = disp.getValueAs("kg").Value * G
+        B.multiply(1.0 / Units.Metre.Value)
         # Add the tanks effect on the center of gravity
         cog = Vector(COG.x * W, COG.y * W, COG.z * W)
         for i,t in enumerate(tanks):

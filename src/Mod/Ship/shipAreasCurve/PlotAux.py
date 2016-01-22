@@ -89,9 +89,9 @@ class Plot(object):
         addInfo = ("$XCB = {0} \\; \\mathrm{{m}}$\n"
                    "$Area_{{max}} = {1} \\; \\mathrm{{m}}^2$\n"
                    "$\\bigtriangleup = {2} \\; \\mathrm{{tons}}$".format(
-                   xcb,
+                   xcb.getValueAs("m").Value,
                    maxArea,
-                   disp))
+                   disp.getValueAs("kg").Value / 1000.0))
         ax.text(0.0,
                 0.01 * maxArea,
                 addInfo,
