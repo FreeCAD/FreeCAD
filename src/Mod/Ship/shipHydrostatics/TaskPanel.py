@@ -57,12 +57,9 @@ class TaskPanel:
         form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
         form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
 
-        trim = Units.Quantity(Locale.fromString(
-            form.trim.text())).getValueAs('deg').Value
-        min_draft = Units.Quantity(Locale.fromString(
-            form.minDraft.text())).getValueAs('m').Value
-        max_draft = Units.Quantity(Locale.fromString(
-            form.maxDraft.text())).getValueAs('m').Value
+        trim = Units.parseQuantity(Locale.fromString(form.trim.text()))
+        min_draft = Units.parseQuantity(Locale.fromString(form.minDraft.text()))
+        max_draft = Units.parseQuantity(Locale.fromString(form.maxDraft.text()))
         n_draft = form.nDraft.value()
 
         draft = min_draft
@@ -72,7 +69,6 @@ class TaskPanel:
             draft = draft + dDraft
             drafts.append(draft)
 
-        # Compute data
         # Get external faces
         self.loop = QtCore.QEventLoop()
         self.timer = QtCore.QTimer()
@@ -94,6 +90,7 @@ class TaskPanel:
             App.Console.PrintError(msg + '\n')
             return False
         faces = Part.makeShell(faces)
+
         # Get the hydrostatics
         msg = QtGui.QApplication.translate(
             "ship_console",
