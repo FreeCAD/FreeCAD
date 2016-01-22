@@ -58,6 +58,8 @@ public:
     App::PropertyBool    CentreLines;
     App::PropertyString  FormatSpec;
 
+    //TODO: do we need a property for the actual dimension value? how else to access from Py?
+
     short mustExecute() const;
     bool hasReferences(void) const;
 

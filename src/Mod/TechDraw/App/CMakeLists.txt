@@ -32,6 +32,7 @@ generate_from_xml(DrawTemplatePy)
 generate_from_xml(DrawParametricTemplatePy)
 generate_from_xml(DrawSVGTemplatePy)
 generate_from_xml(DrawViewSymbolPy)
+generate_from_xml(DrawViewClipPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -95,6 +96,8 @@ SET(Python_SRCS
     DrawParametricTemplatePyImp.cpp
     DrawSVGTemplatePy.xml
     DrawSVGTemplatePyImp.cpp
+    DrawViewClipPy.xml
+    DrawViewClipPyImp.cpp
 )
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
