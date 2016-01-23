@@ -750,7 +750,7 @@ PyObject*  TopoShapePy::check(PyObject *args)
     if (!getTopoShapePtr()->getShape().IsNull()) {
         std::stringstream str;
         if (!getTopoShapePtr()->analyze(str)) {
-            PyErr_SetString(PyExc_StandardError, str.str().c_str());
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
             PyErr_Print();
         }
     }
@@ -1758,9 +1758,9 @@ PyObject* TopoShapePy::tessellate(PyObject *args)
         for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
             it = Facets.begin(); it != Facets.end(); ++it) {
             Py::Tuple f(3);
-            f.setItem(0,Py::Int((int)it->I1));
-            f.setItem(1,Py::Int((int)it->I2));
-            f.setItem(2,Py::Int((int)it->I3));
+            f.setItem(0,Py::Long((long)it->I1));
+            f.setItem(1,Py::Long((long)it->I2));
+            f.setItem(2,Py::Long((long)it->I3));
             facet.append(f);
         }
         tuple.setItem(1, facet);
@@ -1870,9 +1870,9 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
         for (Py::Sequence::iterator it = facets.begin(); it != facets.end(); ++it) {
             Data::ComplexGeoData::Facet face;
             Py::Tuple f(*it);
-            face.I1 = (int)Py::Int(f[0]);
-            face.I2 = (int)Py::Int(f[1]);
-            face.I3 = (int)Py::Int(f[2]);
+            face.I1 = (int)Py::Long(f[0]);
+            face.I2 = (int)Py::Long(f[1]);
+            face.I3 = (int)Py::Long(f[2]);
             Facets.push_back(face);
         }
 
@@ -2245,7 +2245,11 @@ PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape)
             break;
         }
     }
+#if PY_MAJOR_VERSION >= 3
+    return PyLong_FromLong(supportIndex);
+#else
     return PyInt_FromLong(supportIndex);
+#endif
 }
 
 PyObject* TopoShapePy::proximity(PyObject *args)
@@ -2341,20 +2345,32 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             suppS1 = extss.SupportOnShape1(i);
             switch (supportType1) {
                 case BRepExtrema_IsVertex:
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Vertex");
+#else
                     pSuppType1 = PyString_FromString("Vertex");
+#endif
                     pSupportIndex1 = _getSupportIndex("Vertex",ts1,suppS1);
                     pParm1 = Py_None;
                     pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsOnEdge:
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Edge");
+#else
                     pSuppType1 = PyString_FromString("Edge");
+#endif
                     pSupportIndex1 = _getSupportIndex("Edge",ts1,suppS1);
                     extss.ParOnEdgeS1(i,t1);
                     pParm1 = PyFloat_FromDouble(t1);
                     pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsInFace:
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Face");
+#else
                     pSuppType1 = PyString_FromString("Face");
+#endif
                     pSupportIndex1 = _getSupportIndex("Face",ts1,suppS1);
                     extss.ParOnFaceS1(i,u1,v1);
                     pParm1 = PyTuple_New(2);
@@ -2364,8 +2380,13 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType1 is unknown: %d \n",supportType1);
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Unknown");
+                    pSupportIndex1 = PyLong_FromLong(-1);
+#else
                     pSuppType1 = PyString_FromString("Unknown");
                     pSupportIndex1 = PyInt_FromLong(-1);
+#endif
                     pParm1 = Py_None;
                     pParm2 = Py_None;
             }
@@ -2376,18 +2397,30 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             suppS2 = extss.SupportOnShape2(i);
             switch (supportType2) {
                 case BRepExtrema_IsVertex:
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Vertex");
+#else
                     pSuppType2 = PyString_FromString("Vertex");
+#endif
                     pSupportIndex2 = _getSupportIndex("Vertex",ts2,suppS2);
                     pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsOnEdge:
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Edge");
+#else
                     pSuppType2 = PyString_FromString("Edge");
+#endif
                     pSupportIndex2 = _getSupportIndex("Edge",ts2,suppS2);
                     extss.ParOnEdgeS2(i,t2);
                     pParm2 = PyFloat_FromDouble(t2);
                     break;
                 case BRepExtrema_IsInFace:
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Face");
+#else
                     pSuppType2 = PyString_FromString("Face");
+#endif
                     pSupportIndex2 = _getSupportIndex("Face",ts2,suppS2);
                     extss.ParOnFaceS2(i,u2,v2);
                     pParm2 = PyTuple_New(2);
@@ -2396,8 +2429,13 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType2 is unknown: %d \n",supportType1);
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Unknown");
+                    pSupportIndex2 = PyLong_FromLong(-1);
+#else
                     pSuppType2 = PyString_FromString("Unknown");
                     pSupportIndex2 = PyInt_FromLong(-1);
+#endif
             }
             pts = PyTuple_New(2);
             PyTuple_SetItem(pts,0,pPt1);
