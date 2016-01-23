@@ -236,17 +236,23 @@ private:
     }
 };
 
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace Sandbox
 
 
 /* Python entry */
-PyMODINIT_FUNC initSandbox() {
-
+PyMOD_INIT_FUNC(Sandbox)
+{
     Sandbox::DocumentProtector  ::init();
     Sandbox::SandboxObject      ::init();
 
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new Sandbox::Module;
+    PyObject* mod = Sandbox::initModule();
     Base::Console().Log("Loading Sandbox module... done\n");
+    PyMOD_Return(mod);
 }

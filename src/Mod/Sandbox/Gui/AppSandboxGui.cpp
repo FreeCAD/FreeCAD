@@ -153,7 +153,7 @@ private:
                 args.setItem(3,Py::Vector(Base::Vector3d(0,0,1)));
                 args.setItem(4,Py::Float(radius));
               //args.setItem(5,Py::Int((int)0));
-                args.setItem(5,Py::Int((int)1));
+                args.setItem(5,Py::Long((long)1));
                 Py::Tuple ret(method.apply(args));
                 Py::Vector S1(ret.getItem(0));
                 Py::Vector S2(ret.getItem(1));
@@ -239,14 +239,19 @@ private:
     }
 };
 
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace SandboxGui
 
 /* Python entry */
-PyMODINIT_FUNC initSandboxGui()
+PyMOD_INIT_FUNC(SandboxGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // Load Python modules this module depends on
@@ -255,7 +260,7 @@ PyMODINIT_FUNC initSandboxGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     // instanciating the commands
@@ -265,6 +270,7 @@ PyMODINIT_FUNC initSandboxGui()
 
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new SandboxGui::Module;
+    PyObject* mod = SandboxGui::initModule();
     Base::Console().Log("Loading GUI of Sandbox module... done\n");
+    PyMOD_Return(mod);
 }
