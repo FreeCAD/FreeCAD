@@ -84,9 +84,13 @@ public:
         add_varargs_method("insert",&Module::importer,
             "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."
         );
-        add_varargs_method("export",&Module::exporter,
-            "export(list,string,[tolerance]) -- Export a list of objects into a single file.  tolerance is in mm\n"
-            "and specifies the maximum acceptable deviation between the specified objects and the exported mesh."
+        add_keyword_method("export",&Module::exporter,
+            "export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])\n"
+            "Export a list of objects into a single file identified by filename.\n"
+            "tolerance is in mm and specifies the maximum acceptable deviation\n"
+            "between the specified objects and the exported mesh.\n"
+            "exportAmfCompressed specifies whether exported AMF files should be\n"
+            "compressed.\n"
         );
         add_varargs_method("show",&Module::show,
             "Put a mesh object in the active document or creates one if needed"
@@ -284,44 +288,55 @@ private:
 
         return Py::None();
     }
-    Py::Object exporter(const Py::Tuple& args)
+
+    Py::Object exporter(const Py::Tuple &args, const Py::Dict &keywds)
     {
-        PyObject *object;
-        char *Name;
+        PyObject *objects;
+        char *fileNamePy;
 
         // If tolerance is specified via python interface, use that.
         // If not, use the preference, if that exists, else default to 0.1mm.
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh");
-        float fTolerance = hGrp->GetFloat( "MaxDeviationExport", 0.1f );
+        auto hGrp( App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh") );
+        auto fTolerance( hGrp->GetFloat("MaxDeviationExport", 0.1f) );
 
-        if (!PyArg_ParseTuple(args.ptr(), "Oet|f", &object, "utf-8", &Name, &fTolerance))
+        int exportAmfCompressed( hGrp->GetBool("ExportAmfCompressed", true) );
+
+        static char *kwList[] = {"objectList", "filename", "tolerance",
+                                 "exportAmfCompressed", NULL};
+
+        // NOTE FOR PYTHON 3: Should switch exportAmfCompressed from using integer 'i' to bool 'p'
+        // TODO Deal with above nicely, and double check that the docstring is correct with regards to tol's default
+        if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(), "Oet|fi", kwList, &objects,
+                                          "utf-8", &fileNamePy,
+                                          &fTolerance, &exportAmfCompressed )) {
             throw Py::Exception();
+        }
 
-        std::string EncodedName = std::string(Name);
-        PyMem_Free(Name);
+        std::string outputFileName(fileNamePy);
+        PyMem_Free(fileNamePy);
 
         MeshObject global_mesh;
 
-        auto exportFormat( MeshOutput::GetFormat(EncodedName.c_str()) );
+        auto exportFormat( MeshOutput::GetFormat(outputFileName.c_str()) );
 
         std::unique_ptr<Exporter> exporter;
         if (exportFormat == MeshIO::AMF) {
-        std::map<std::string, std::string> meta;
-        meta["cad"] = App::Application::Config()["ExeName"] + " " +
-                      App::Application::Config()["ExeVersion"];
-        meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"] =
-                      App::Application::Config()["BuildRevisionHash"];
+            std::map<std::string, std::string> meta;
+            meta["cad"] = App::Application::Config()["ExeName"] + " " +
+                          App::Application::Config()["ExeVersion"];
+            meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"] =
+                          App::Application::Config()["BuildRevisionHash"];
 
-        exporter.reset( new AmfExporter(EncodedName, meta) );
+            exporter.reset( new AmfExporter(outputFileName, meta, exportAmfCompressed) );
         } else {
             // TODO: How do we handle unknown exportFormats?
-            exporter.reset( new MergeExporter(EncodedName, exportFormat) );
+            exporter.reset( new MergeExporter(outputFileName, exportFormat) );
         }
 
         Base::Type meshId = Base::Type::fromName("Mesh::Feature");
         Base::Type partId = Base::Type::fromName("Part::Feature");
 
-        Py::Sequence list(object);
+        Py::Sequence list(objects);
         for (auto it : list) {
             PyObject* item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
@@ -340,6 +355,7 @@ private:
 
         return Py::None();
     }
+
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;

@@ -91,7 +91,7 @@ class AmfExporter : public Exporter
          */
         AmfExporter(std::string fileName,
                     const std::map<std::string, std::string> &meta,
-                    bool compress = false);
+                    bool compress = true);
 
         /// Writes AMF footer
         ~AmfExporter();
