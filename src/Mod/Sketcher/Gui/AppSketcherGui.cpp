@@ -72,14 +72,20 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace SketcherGui
 
 /* Python entry */
-PyMODINIT_FUNC initSketcherGui()
+PyMOD_INIT_FUNC(SketcherGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
     try {
         Base::Interpreter().runString("import PartGui");
@@ -87,10 +93,10 @@ PyMODINIT_FUNC initSketcherGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
-    (void)new SketcherGui::Module();
+    PyObject* mod = SketcherGui::initModule();
     Base::Console().Log("Loading GUI of Sketcher module... done\n");
 
     // instantiating the commands
@@ -116,4 +122,6 @@ PyMODINIT_FUNC initSketcherGui()
 
      // add resources and reloads the translators
     loadSketcherResource();
+
+    PyMOD_Return(mod);
 }

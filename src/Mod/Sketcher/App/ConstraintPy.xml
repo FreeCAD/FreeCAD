@@ -20,13 +20,13 @@
       <Documentation>
         <UserDocu>First geometry index the Constraint refers to</UserDocu>
       </Documentation>
-      <Parameter Name="First" Type="Int"/>
+      <Parameter Name="First" Type="Long"/>
     </Attribute>
     <Attribute Name="Second" ReadOnly="false">
       <Documentation>
         <UserDocu>Second geometry index the Constraint refers to</UserDocu>
       </Documentation>
-      <Parameter Name="Second" Type="Int"/>
+      <Parameter Name="Second" Type="Long"/>
     </Attribute>
     <Attribute Name="Value" ReadOnly="true">
       <Documentation>
