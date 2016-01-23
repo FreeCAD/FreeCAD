@@ -35,19 +35,6 @@
      <layout class="QGridLayout">
       <item row="0" column="0">
        <layout class="QGridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="textLabel1">
-          <property name="toolTip">
-           <string>Defines the deviation of tessellation to the actual surface</string>
-          </property>
-          <property name="whatsThis">
-           <string>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Maximum mesh deviation</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="Gui::QuantitySpinBox" name="maxDeviationExport">
           <property name="unit" stdset="0">
@@ -67,6 +54,39 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel1">
+          <property name="toolTip">
+           <string>Defines the deviation of tessellation to the actual surface</string>
+          </property>
+          <property name="whatsThis">
+           <string>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Maximum mesh deviation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel2">
+          <property name="text">
+           <string>Export AMF files using compression</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefCheckBox" name="exportAmfCompressed">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ExportAmfCompressed</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Mesh</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -79,6 +99,11 @@
    <customwidget>
      <class>Gui::QuantitySpinBox</class>
      <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+    <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
      <header>Gui/PrefWidgets.h</header>
    </customwidget>
  </customwidgets>
