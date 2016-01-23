@@ -54,13 +54,18 @@ class _TaskPanelMechanicalMaterial:
         self.import_materials()
         previous_mat_path = self.get_material_path(self.material)
         if not previous_mat_path:
-            FreeCAD.Console.PrintMessage("Previously used material cannot be found in material directories. Using transient material.\n")
             material_name = self.get_material_name(self.material)
             if material_name != 'None':
+                FreeCAD.Console.PrintMessage("Previously used material cannot be found in material directories. Using transient material.\n")
                 self.add_transient_material(self.material)
                 index = self.form.cb_materials.findData(material_name)
             else:
-                index = self.form.cb_materials.findText(material_name)
+                if not self.material:
+                    index = self.form.cb_materials.findText(material_name)
+                else:
+                    FreeCAD.Console.PrintMessage("None material was previously used. Reload values.\n")
+                    self.add_transient_material(self.material)
+                    index = self.form.cb_materials.findData(material_name)
             self.choose_material(index)
         else:
             index = self.form.cb_materials.findData(previous_mat_path)
