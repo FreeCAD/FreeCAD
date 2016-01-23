@@ -23,11 +23,8 @@
 #ifndef MESH_EXPORTER_H
 #define MESH_EXPORTER_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <map>
-    #include <ostream>
-#endif  //  #ifndef _PreComp_
+#include <map>
+#include <ostream>
 
 #include <App/Property.h>
 

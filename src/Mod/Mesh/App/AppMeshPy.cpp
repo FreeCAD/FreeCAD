@@ -62,16 +62,6 @@ using namespace MeshCore;
 namespace Mesh {
 class Module : public Py::ExtensionModule<Module>
 {
-    struct add_offset {
-        unsigned long i;
-        add_offset(unsigned long i) : i(i)
-        {
-        }
-        void operator()(unsigned long& v)
-        {
-            v += i;
-        }
-    };
 public:
     Module() : Py::ExtensionModule<Module>("Mesh")
     {
@@ -79,10 +69,13 @@ public:
             "Read a mesh from a file and returns a Mesh object."
         );
         add_varargs_method("open",&Module::open,
-            "open(string) -- Create a new document and a Mesh::Import feature to load the file into the document."
+            "open(string)\n"
+            "Create a new document and a Mesh::Import feature to load the file into\n"
+            "the document."
         );
         add_varargs_method("insert",&Module::importer,
-            "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."
+            "insert(string|mesh,[string])\n"
+            "Load or insert a mesh into the given or active document."
         );
         add_keyword_method("export",&Module::exporter,
             "export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])\n"
@@ -117,7 +110,8 @@ public:
             "Create a tessellated torus"
         );
         add_varargs_method("calculateEigenTransform",&Module::calculateEigenTransform,
-            "calculateEigenTransform(seq(Base.Vector)) -- Calculates the eigen Transformation from a list of points.\n"
+            "calculateEigenTransform(seq(Base.Vector))\n"
+            "Calculates the eigen Transformation from a list of points.\n"
             "calculate the point's local coordinate system with the center\n"
             "of gravity as origin. The local coordinate system is computed\n"
             "this way that u has minimum and w has maximum expansion.\n"
@@ -127,15 +121,19 @@ public:
             "polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."
         );
         add_varargs_method("minimumVolumeOrientedBox",&Module::minimumVolumeOrientedBox,
-            "minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum volume oriented box containing all points.\n"
-            "The return value is a tuple of seven items: center, u, v, w directions and the lengths of the three vectors."
+            "minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum\n"
+            "volume oriented box containing all points. The return value is a\n"
+            "tuple of seven items:\n"
+            "    center, u, v, w directions and the lengths of the three vectors.\n"
         );
         initialize("The functions in this module allow working with mesh objects.\n"
-                   "A set of functions are provided that allow to read in registered mesh file formats\n"
-                   "to either an newly created or already exising document.\n"
+                   "A set of functions are provided for reading in registered mesh\n"
+                   "file formats to either an new or exising document.\n"
                    "\n"
-                   "open(string) -- Create a new document and a Mesh::Import feature to load the file into the document.\n"
-                   "insert(string, string) -- Create a Mesh::Import feature to load the file into the given document.\n"
+                   "open(string) -- Create a new document and a Mesh::Import feature\n"
+                   "                to load the file into the document.\n"
+                   "insert(string, string) -- Create a Mesh::Import feature to load\n"
+                   "                          the file into the given document.\n"
                    "Mesh() -- Create an empty mesh object.\n"
                    "\n");
     }
