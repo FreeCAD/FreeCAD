@@ -66,15 +66,21 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace RobotGui
 
 
 /* Python entry */
-PyMODINIT_FUNC initRobotGui()
+PyMOD_INIT_FUNC(RobotGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
     try {
         Base::Interpreter().runString("import PartGui");
@@ -94,9 +100,9 @@ PyMODINIT_FUNC initRobotGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void)new RobotGui::Module();
+    PyObject* mod = RobotGui::initModule();
     Base::Console().Log("Loading GUI of Robot module... done\n");
 
     // instantiating the commands
@@ -115,4 +121,6 @@ PyMODINIT_FUNC initRobotGui()
 
      // add resources and reloads the translators
     loadRobotResource();
+
+    PyMOD_Return(mod);
 }
