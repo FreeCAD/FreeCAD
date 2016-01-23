@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -99,7 +100,7 @@ private:
             quint16 p = server->serverPort();
             Py::Tuple t(2);
             t.setItem(0, Py::String((const char*)a.toLatin1()));
-            t.setItem(1, Py::Int(p));
+            t.setItem(1, Py::Long(p));
             return t;
         }
         else {
@@ -125,15 +126,22 @@ private:
         return Py::None();
     }
 };
+
+PyObject* initModule()
+{
+    return (new Module())->module().ptr();
+}
+
 } // namespace Web
 
 
 /* Python entry */
-PyMODINIT_FUNC initWeb() {
+PyMOD_INIT_FUNC(Web) {
 
     // ADD YOUR CODE HERE
     //
     //
-    new Web::Module();
+    PyObject* mod = Web::initModule();
     Base::Console().Log("Loading Web module... done\n");
+    PyMOD_Return(mod);
 }

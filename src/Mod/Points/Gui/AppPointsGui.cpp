@@ -61,15 +61,20 @@ public:
 private:
 };
 
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace PointsGui
 
 
 /* Python entry */
-PyMODINIT_FUNC initPointsGui()
+PyMOD_INIT_FUNC(PointsGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // load dependent module
@@ -78,11 +83,11 @@ PyMODINIT_FUNC initPointsGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     Base::Console().Log("Loading GUI of Points module... done\n");
-    (void)new PointsGui::Module();
+    PyObject* mod = PointsGui::initModule();
 
     // instantiating the commands
     CreatePointsCommands();
@@ -98,4 +103,6 @@ PyMODINIT_FUNC initPointsGui()
 
     // add resources and reloads the translators
     loadPointsResource();
+
+    PyMOD_Return(mod);
 }
