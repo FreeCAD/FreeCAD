@@ -57,18 +57,24 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace ReverseEngineeringGui
 
 
 /* Python entry */
-PyMODINIT_FUNC initReverseEngineeringGui()
+PyMOD_INIT_FUNC(ReverseEngineeringGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
-    new ReverseEngineeringGui::Module();
+    PyObject* mod = ReverseEngineeringGui::initModule();
     Base::Console().Log("Loading GUI of ReverseEngineering module... done\n");
 
     // instantiating the commands
@@ -77,4 +83,5 @@ PyMODINIT_FUNC initReverseEngineeringGui()
 
      // add resources and reloads the translators
     loadReverseEngineeringResource();
+    PyMOD_Return(mod);
 }
