@@ -41,6 +41,8 @@
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
 
+#include "DrawViewPy.h"  // generated from DrawViewPy.xml
+
 using namespace TechDraw;
 
 
@@ -168,6 +170,15 @@ bool DrawView::isInClip()
         }
     }
     return false;
+}
+
+PyObject *DrawView::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawViewPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 // Python Drawing feature ---------------------------------------------------------

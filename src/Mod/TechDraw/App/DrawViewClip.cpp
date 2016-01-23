@@ -40,6 +40,8 @@
 #include "DrawView.h"
 #include "DrawPage.h"
 
+#include "DrawViewClipPy.h"  // generated from DrawViewClipPy.xml
+
 using namespace TechDraw;
 using namespace std;
 
@@ -157,6 +159,16 @@ std::vector<std::string> DrawViewClip::getChildViewNames()
     }
     return childNames;
 }
+
+PyObject *DrawViewClip::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawViewClipPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

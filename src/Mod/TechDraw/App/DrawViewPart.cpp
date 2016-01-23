@@ -66,6 +66,8 @@
 #include "DrawHatch.h"
 //#include "DrawViewDimension.h"
 
+#include "DrawViewPartPy.h"  // generated from DrawViewPartPy.xml
+
 using namespace TechDraw;
 using namespace std;
 
@@ -454,6 +456,15 @@ void DrawViewPart::dumpVertexRefs(char* text) const
     for( ; it != refs.end(); it++, i++) {
         Base::Console().Message("DUMP - Vertex: %d ref: %d\n",i,(*it));
     }
+}
+
+PyObject *DrawViewPart::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawViewPartPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 // Python Drawing feature ---------------------------------------------------------

@@ -474,10 +474,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewAnnotation','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = 7.0",FeatName.c_str());
-    //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     updateActive();
     commitCommand();
 }
@@ -525,9 +522,7 @@ void CmdTechDrawClip::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Height = 30.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Width = 30.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.ShowLabels = False",FeatName.c_str());
-    //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     updateActive();
     commitCommand();
 }
@@ -594,9 +589,10 @@ void CmdTechDrawClipPlus::activated(int iMsg)
         return;
     }
 
+    std::string ClipName = clip->getNameInDocument();
+    std::string ViewName = view->getNameInDocument();
     openCommand("ClipPlus");
-    //TODO: implement Py addView for Clip
-    clip->addView(view);
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",ClipName.c_str(),ViewName.c_str());
     updateActive();
     commitCommand();
 }
@@ -662,9 +658,10 @@ void CmdTechDrawClipMinus::activated(int iMsg)
         return;
     }
 
+    std::string ClipName = clip->getNameInDocument();
+    std::string ViewName = view->getNameInDocument();
     openCommand("ClipMinus");
-    //TODO: implement Py removeView for Clip
-    clip->removeView(view);
+    doCommand(Doc,"App.activeDocument().%s.removeView(App.activeDocument().%s)",ClipName.c_str(),ViewName.c_str());
     updateActive();
     commitCommand();
 }
@@ -718,9 +715,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Symbol = svg",FeatName.c_str());
-        //TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
         doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-        //page->addView(page->getDocument()->getObject(FeatName.c_str()));
         updateActive();
         commitCommand();
     }

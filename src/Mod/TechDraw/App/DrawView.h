@@ -65,6 +65,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderDrawingView";
     }
+    //return PyObject as DrawViewPy
+    virtual PyObject *getPyObject(void);
 
     DrawPage* findParentPage() const;
 

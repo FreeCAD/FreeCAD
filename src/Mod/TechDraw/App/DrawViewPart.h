@@ -101,6 +101,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderViewPart";
     }
+    //return PyObject as DrawViewPartPy
+    virtual PyObject *getPyObject(void);
 
     void dumpVertexRefs(char* text) const;
 
