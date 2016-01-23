@@ -4,7 +4,7 @@ from subprocess import Popen, PIPE, check_call, check_output
 import pprint
 import re
 
-SYS_PATHS = ["/System/", "/usr/lib/"]
+SYS_PATHS = ["/System/", "/usr/lib/", "/Library/Frameworks/"]
 
 class LibraryNotFound(Exception):
     pass
