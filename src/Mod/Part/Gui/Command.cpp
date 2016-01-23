@@ -566,18 +566,29 @@ void CmdPartCompJoinFeatures::languageChange()
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
-    QAction* cmd0 = a[0];
-    cmd0->setText(QApplication::translate("PartCompJoinFeatures", rcCmdMgr.getCommandByName("Part_JoinConnect")->getMenuText()));
-    cmd0->setToolTip(QApplication::translate("Part_JoinConnect", rcCmdMgr.getCommandByName("Part_JoinConnect")->getToolTipText()));
-    cmd0->setStatusTip(QApplication::translate("Part_JoinConnect", rcCmdMgr.getCommandByName("Part_JoinConnect")->getStatusTip()));
-    QAction* cmd1 = a[1];
-    cmd1->setText(QApplication::translate("PartCompJoinFeatures", rcCmdMgr.getCommandByName("Part_JoinEmbed")->getMenuText()));
-    cmd1->setToolTip(QApplication::translate("Part_JoinEmbed", rcCmdMgr.getCommandByName("Part_JoinEmbed")->getToolTipText()));
-    cmd1->setStatusTip(QApplication::translate("Part_JoinEmbed", rcCmdMgr.getCommandByName("Part_JoinEmbed")->getStatusTip()));
-    QAction* cmd2 = a[2];
-    cmd2->setText(QApplication::translate("PartCompJoinFeatures", rcCmdMgr.getCommandByName("Part_JoinCutout")->getMenuText()));
-    cmd2->setToolTip(QApplication::translate("Part_JoinCutout", rcCmdMgr.getCommandByName("Part_JoinCutout")->getToolTipText()));
-    cmd2->setStatusTip(QApplication::translate("Part_JoinCutout", rcCmdMgr.getCommandByName("Part_JoinCutout")->getStatusTip()));
+    Gui::Command* joinConnect = rcCmdMgr.getCommandByName("Part_JoinConnect");
+    if (joinConnect) {
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("PartCompJoinFeatures", joinConnect->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("Part_JoinConnect", joinConnect->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("Part_JoinConnect", joinConnect->getStatusTip()));
+    }
+
+    Gui::Command* joinEmbed = rcCmdMgr.getCommandByName("Part_JoinEmbed");
+    if (joinEmbed) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("PartCompJoinFeatures", joinEmbed->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("Part_JoinEmbed", joinEmbed->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("Part_JoinEmbed", joinEmbed->getStatusTip()));
+    }
+
+    Gui::Command* joinCutout = rcCmdMgr.getCommandByName("Part_JoinCutout");
+    if (joinCutout) {
+        QAction* cmd2 = a[2];
+        cmd2->setText(QApplication::translate("PartCompJoinFeatures", joinCutout->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("Part_JoinCutout", joinCutout->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("Part_JoinCutout", joinCutout->getStatusTip()));
+    }
 }
 
 bool CmdPartCompJoinFeatures::isActive(void)
