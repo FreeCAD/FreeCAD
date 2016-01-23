@@ -62,15 +62,21 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace StartGui
 
 
 /* Python entry */
-PyMODINIT_FUNC initStartGui()
+PyMOD_INIT_FUNC(StartGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // load dependent module
@@ -79,7 +85,7 @@ PyMODINIT_FUNC initStartGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
     catch (Py::Exception& e) {
         Py::Object o = Py::type(e);
@@ -95,7 +101,7 @@ PyMODINIT_FUNC initStartGui()
         PyErr_Print();
     }
 
-    new StartGui::Module();
+    PyObject* mod = StartGui::initModule();
     Base::Console().Log("Loading GUI of Start module... done\n");
 
     // instantiating the commands
@@ -104,4 +110,5 @@ PyMODINIT_FUNC initStartGui()
 
      // add resources and reloads the translators
     loadStartResource();
+    PyMOD_Return(mod);
 }
