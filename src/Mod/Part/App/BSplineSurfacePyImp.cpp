@@ -286,7 +286,7 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-            Py::Int val(*it);
+            Py::Long val(*it);
             m(index++) = (int)val;
         }
 
@@ -349,7 +349,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-            Py::Int val(*it);
+            Py::Long val(*it);
             m(index++) = (int)val;
         }
 
@@ -1092,7 +1092,7 @@ PyObject* BSplineSurfacePy::getUMultiplicities(PyObject *args)
         surf->UMultiplicities(m);
         Py::List mults;
         for (Standard_Integer i=m.Lower(); i<=m.Upper(); i++) {
-            mults.append(Py::Int(m(i)));
+            mults.append(Py::Long(m(i)));
         }
         return Py::new_reference_to(mults);
     }
@@ -1114,7 +1114,7 @@ PyObject* BSplineSurfacePy::getVMultiplicities(PyObject *args)
         surf->VMultiplicities(m);
         Py::List mults;
         for (Standard_Integer i=m.Lower(); i<=m.Upper(); i++) {
-            mults.append(Py::Int(m(i)));
+            mults.append(Py::Long(m(i)));
         }
         return Py::new_reference_to(mults);
     }
@@ -1467,20 +1467,20 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Py::Sequence umultssq(umults);
         Standard_Integer index = 1;
         for (Py::Sequence::iterator it = umultssq.begin(); it != umultssq.end() && index <= occumults.Length(); ++it) {
-            Py::Int mult(*it);
+            Py::Long mult(*it);
             if (index < occumults.Length() || PyObject_Not(uperiodic)) {
-                sum_of_umults += mult; //sum up the mults to compare them against the number of poles later
+                sum_of_umults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
-            occumults(index++) = mult;
+            occumults(index++) = static_cast<int>(mult);
         }
         Py::Sequence vmultssq(vmults);
         index = 1;
         for (Py::Sequence::iterator it = vmultssq.begin(); it != vmultssq.end() && index <= occvmults.Length(); ++it) {
-            Py::Int mult(*it);
+            Py::Long mult(*it);
             if (index < occvmults.Length() || PyObject_Not(vperiodic)) {
-                sum_of_vmults += mult; //sum up the mults to compare them against the number of poles later
+                sum_of_vmults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
-            occvmults(index++) = mult;
+            occvmults(index++) = static_cast<int>(mult);
         }
         //copy or generate knots
         if (uknots != Py_None) { //uknots are given
@@ -1537,55 +1537,55 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         }
 }
 
-Py::Int BSplineSurfacePy::getUDegree(void) const
+Py::Long BSplineSurfacePy::getUDegree(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     int deg = surf->UDegree();
-    return Py::Int(deg);
+    return Py::Long(deg);
 }
 
-Py::Int BSplineSurfacePy::getVDegree(void) const
+Py::Long BSplineSurfacePy::getVDegree(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     int deg = surf->VDegree();
-    return Py::Int(deg);
+    return Py::Long(deg);
 }
 
-Py::Int BSplineSurfacePy::getMaxDegree(void) const
+Py::Long BSplineSurfacePy::getMaxDegree(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->MaxDegree()); 
+    return Py::Long(surf->MaxDegree()); 
 }
 
-Py::Int BSplineSurfacePy::getNbUPoles(void) const
+Py::Long BSplineSurfacePy::getNbUPoles(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->NbUPoles()); 
+    return Py::Long(surf->NbUPoles()); 
 }
 
-Py::Int BSplineSurfacePy::getNbVPoles(void) const
+Py::Long BSplineSurfacePy::getNbVPoles(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->NbVPoles()); 
+    return Py::Long(surf->NbVPoles()); 
 }
 
-Py::Int BSplineSurfacePy::getNbUKnots(void) const
+Py::Long BSplineSurfacePy::getNbUKnots(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->NbUKnots()); 
+    return Py::Long(surf->NbUKnots()); 
 }
 
-Py::Int BSplineSurfacePy::getNbVKnots(void) const
+Py::Long BSplineSurfacePy::getNbVKnots(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->NbVKnots()); 
+    return Py::Long(surf->NbVKnots()); 
 }
 
 Py::Object BSplineSurfacePy::getFirstUKnotIndex(void) const
@@ -1593,7 +1593,7 @@ Py::Object BSplineSurfacePy::getFirstUKnotIndex(void) const
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     int index = surf->FirstUKnotIndex();
-    return Py::Int(index);
+    return Py::Long(index);
 }
 
 Py::Object BSplineSurfacePy::getLastUKnotIndex(void) const
@@ -1601,7 +1601,7 @@ Py::Object BSplineSurfacePy::getLastUKnotIndex(void) const
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     int index = surf->LastUKnotIndex();
-    return Py::Int(index);
+    return Py::Long(index);
 }
 
 Py::Object BSplineSurfacePy::getFirstVKnotIndex(void) const
@@ -1609,7 +1609,7 @@ Py::Object BSplineSurfacePy::getFirstVKnotIndex(void) const
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     int index = surf->FirstVKnotIndex();
-    return Py::Int(index);
+    return Py::Long(index);
 }
 
 Py::Object BSplineSurfacePy::getLastVKnotIndex(void) const
@@ -1617,7 +1617,7 @@ Py::Object BSplineSurfacePy::getLastVKnotIndex(void) const
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     int index = surf->LastVKnotIndex();
-    return Py::Int(index);
+    return Py::Long(index);
 }
 
 Py::List BSplineSurfacePy::getUKnotSequence(void) const
