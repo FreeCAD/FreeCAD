@@ -65,7 +65,7 @@ PyObject* SketchPy::solve(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     getSketchPtr()->resetSolver();
-    return Py::new_reference_to(Py::Int(getSketchPtr()->solve()));
+    return Py::new_reference_to(Py::Long(getSketchPtr()->solve()));
 }
 
 PyObject* SketchPy::addGeometry(PyObject *args)
@@ -76,7 +76,7 @@ PyObject* SketchPy::addGeometry(PyObject *args)
 
     if (PyObject_TypeCheck(pcObj, &(Part::GeometryPy::Type))) {
         Part::Geometry *geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
-        return Py::new_reference_to(Py::Int(this->getSketchPtr()->addGeometry(geo)));
+        return Py::new_reference_to(Py::Long(this->getSketchPtr()->addGeometry(geo)));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
@@ -94,7 +94,7 @@ PyObject* SketchPy::addGeometry(PyObject *args)
         Py::Tuple tuple(numGeo);
         for (std::size_t i=0; i<numGeo; ++i) {
             int geoId = ret - int(numGeo - i);
-            tuple.setItem(i, Py::Int(geoId));
+            tuple.setItem(i, Py::Long(geoId));
         }
         return Py::new_reference_to(tuple);
     }
@@ -125,14 +125,14 @@ PyObject* SketchPy::addConstraint(PyObject *args)
         Py::Tuple tuple(numCon);
         for (std::size_t i=0; i<numCon; ++i) {
             int conId = ret - int(numCon - i);
-            tuple.setItem(i, Py::Int(conId));
+            tuple.setItem(i, Py::Long(conId));
         }
         return Py::new_reference_to(tuple);
     }
     else if(PyObject_TypeCheck(pcObj, &(ConstraintPy::Type))) {
         ConstraintPy  *pcObject = static_cast<ConstraintPy*>(pcObj);
         int ret = getSketchPtr()->addConstraint(pcObject->getConstraintPtr());
-        return Py::new_reference_to(Py::Int(ret));
+        return Py::new_reference_to(Py::Long(ret));
     }
     else {
         std::string error = std::string("type must be 'Constraint' or list of 'Constraint', not ");
@@ -160,12 +160,12 @@ PyObject* SketchPy::movePoint(PyObject *args)
         return 0;
     Base::Vector3d* toPoint = static_cast<Base::VectorPy*>(pcObj)->getVectorPtr();
 
-    return Py::new_reference_to(Py::Int(getSketchPtr()->movePoint(index1,(Sketcher::PointPos)index2,*toPoint,(relative>0))));
+    return Py::new_reference_to(Py::Long(getSketchPtr()->movePoint(index1,(Sketcher::PointPos)index2,*toPoint,(relative>0))));
 }
 
 // +++ attributes implementer ++++++++++++++++++++++++++++++++++++++++++++++++
 
-Py::Int SketchPy::getConstraint(void) const
+Py::Long SketchPy::getConstraint(void) const
 {
     //return Py::Int();
     throw Py::AttributeError("Not yet implemented");
