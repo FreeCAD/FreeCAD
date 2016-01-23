@@ -81,7 +81,7 @@ void WorkflowManager::init() {
 
 WorkflowManager *WorkflowManager::instance() {
     if (!_instance) {
-        throw Base::Exception( "Trying to instance the WorkflowManager manager before init() was called." );
+        WorkflowManager::init();
     }
     return _instance;
 }
