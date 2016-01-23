@@ -29,5 +29,6 @@
         <file>icons/Path-Custom.svg</file>
         <file>icons/Path-Inspect.svg</file>
         <file>icons/Path-ToolChange.svg</file>
+        <file>icons/Path-SimpleCopy.svg</file>
     </qresource>
 </RCC> 

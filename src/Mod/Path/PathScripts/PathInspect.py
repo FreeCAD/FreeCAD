@@ -125,15 +125,20 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.editor.setText("G01 X55 Y4.5 F300.0")
         self.highlighter = GCodeHighlighter(self.editor.document())
         layout.addWidget(self.editor)
-
+        
+        # Note
+        lab = QtGui.QLabel()
+        lab.setText(translate("PathInspect","<b>Note</b>: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute."))
+        lab.setWordWrap(True)
+        layout.addWidget(lab)
+        
         # OK and Cancel buttons
         self.buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok,
-            #QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
             QtCore.Qt.Horizontal, self)
         layout.addWidget(self.buttons)
         self.buttons.accepted.connect(self.accept)
-        #self.buttons.rejected.connect(self.reject)
+        self.buttons.rejected.connect(self.reject)
 
 
 def show(obj):
@@ -146,10 +151,13 @@ def show(obj):
             dia.editor.setText(obj.Path.toGCode())
             result = dia.exec_()
             # exec_() returns 0 or 1 depending on the button pressed (Ok or Cancel)
-            #if result:
-            #    return dia.editor.toPlainText()
-            #else:
-            #    return inputstring
+            if result:
+                import Path
+                p = Path.Path(dia.editor.toPlainText())
+                FreeCAD.ActiveDocument.openTransaction("Edit Path")
+                obj.Path = p
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
 
 
 class CommandPathInspect:

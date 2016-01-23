@@ -87,13 +87,14 @@ class PathWorkbench ( Workbench ):
         from PathScripts import PathFacePocket
         from PathScripts import PathCustom
         from PathScripts import PathInspect
+        from PathScripts import PathSimpleCopy
 
         # build commands list
         projcmdlist = ["Path_Project", "Path_ToolTableEdit","Path_Post","Path_Inspect"]
         prepcmdlist = ["Path_Plane","Path_Fixture","Path_LoadTool","Path_ToolLenOffset","Path_Comment","Path_Stop",
                        "Path_FaceProfile","Path_FacePocket","Path_Custom","Path_FromShape"]
         opcmdlist = ["Path_Profile","Path_Kurve","Path_Pocket","Path_Drilling"]
-        modcmdlist = ["Path_Copy","Path_CompoundExtended","Path_Dressup","Path_Hop","Path_Array"]
+        modcmdlist = ["Path_Copy","Path_CompoundExtended","Path_Dressup","Path_Hop","Path_Array","Path_SimpleCopy"]
 
 
         # Add commands to menu and toolbar
