@@ -750,8 +750,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- Shiboken/PySide ------------------------
 
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
-        SET(PYTHON_SUFFIX -python2.7) # for shiboken
-        SET(PYTHON_BASENAME -python2.7) # for PySide
+        SET(PYTHON_SUFFIX "" CACHE STRING "if not default python version is used: <ShibokenConfigPYTHON_BASENAME.cmake>")
+        SET(PYTHON_BASENAME "" CACHE STRING "if not default python version is used: <PySideConfigPYTHON_SUFFIX.cmake>")
 
         if(DEFINED MACPORTS_PREFIX)
             find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
