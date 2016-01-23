@@ -79,6 +79,9 @@
           <property name="text">
            <string/>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>ExportAmfCompressed</cstring>
           </property>
@@ -101,7 +104,7 @@
      <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
-    <customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
      <header>Gui/PrefWidgets.h</header>

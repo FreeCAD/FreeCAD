@@ -114,7 +114,7 @@ bool MergeExporter::addMesh(Mesh::Feature *meshFeat)
         indices.resize(mergingMesh.countFacets() - countFacets);
         std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
         Segment segm(&mergingMesh, indices, true);
-        // TODO: pass in the object? segm.setName(obj->Label.getValue());
+        segm.setName(meshFeat->Label.getValue());
         mergingMesh.addSegment(segm);
     }
 
@@ -149,7 +149,7 @@ bool MergeExporter::addPart(App::DocumentObject *obj, float tol)
         indices.resize(mergingMesh.countFacets() - countFacets);
         std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
         Segment segm(&mergingMesh, indices, true);
-        // TODO: pass in the object? segm.setName(obj->Label.getValue());
+        segm.setName(obj->Label.getValue());
         mergingMesh.addSegment(segm);
         
         return true;
