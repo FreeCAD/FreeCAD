@@ -18,6 +18,7 @@
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include "ImagePlane.h"
 
 
@@ -43,12 +44,12 @@ PyObject* initModule()
 } // namespace Image
 
 /* Python entry */
-PyMODINIT_FUNC initImage()
+PyMOD_INIT_FUNC(Image)
 {
-    (void) Image::initModule();
+    PyObject* mod = Image::initModule();
     Base::Console().Log("Loading Image module... done\n");
 
     Image::ImagePlane::init();
 
-    return;
+    PyMOD_Return(mod);
 }

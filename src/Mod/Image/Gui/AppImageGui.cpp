@@ -37,14 +37,14 @@ extern PyObject* initModule();
 
 
 /* Python entry */
-PyMODINIT_FUNC initImageGui()
+PyMOD_INIT_FUNC(ImageGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
-    (void) ImageGui::initModule();
+    PyObject* mod = ImageGui::initModule();
     Base::Console().Log("Loading GUI of Image module... done\n");
 
     // instantiating the commands
@@ -55,4 +55,6 @@ PyMODINIT_FUNC initImageGui()
 
     // add resources and reloads the translators
     loadImageResource();
+
+    PyMOD_Return(mod);
 }
