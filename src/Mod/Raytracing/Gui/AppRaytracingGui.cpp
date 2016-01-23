@@ -51,11 +51,11 @@ namespace RaytracingGui {
 }
 
 
-PyMODINIT_FUNC initRaytracingGui()
+PyMOD_INIT_FUNC(RaytracingGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     try {
@@ -63,9 +63,9 @@ PyMODINIT_FUNC initRaytracingGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void) RaytracingGui::initModule();
+    PyObject* mod = RaytracingGui::initModule();
     Base::Console().Log("Loading GUI of Raytracing module... done\n");
 
     // instantiating the commands
@@ -79,4 +79,6 @@ PyMODINIT_FUNC initRaytracingGui()
 
     // add resources and reloads the translators
     loadRaytracingResource();
+
+    PyMOD_Return(mod);
 }

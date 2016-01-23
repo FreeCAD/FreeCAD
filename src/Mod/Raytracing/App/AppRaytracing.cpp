@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "RayFeature.h"
@@ -40,7 +41,7 @@ namespace Raytracing {
 }
 
 
-PyMODINIT_FUNC initRaytracing()
+PyMOD_INIT_FUNC(Raytracing)
 {
     // load dependent module
     try {
@@ -48,7 +49,7 @@ PyMODINIT_FUNC initRaytracing()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     Raytracing::RaySegment       ::init();
@@ -58,6 +59,7 @@ PyMODINIT_FUNC initRaytracing()
     Raytracing::LuxProject       ::init();
 
 
-    (void) Raytracing::initModule();
+    PyObject* mod = Raytracing::initModule();
     Base::Console().Log("Loading Raytracing module... done\n");
+    PyMOD_Return(mod);
 }
