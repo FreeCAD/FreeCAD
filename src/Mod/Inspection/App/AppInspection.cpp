@@ -30,6 +30,7 @@
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include "InspectionFeature.h"
 
 
@@ -56,15 +57,16 @@ PyObject* initModule()
 
 
 /* Python entry */
-PyMODINIT_FUNC initInspection() {
-
+PyMOD_INIT_FUNC(Inspection)
+{
     // ADD YOUR CODE HERE
     //
     //
-    (void)Inspection::initModule();
+    PyObject* mod = Inspection::initModule();
     Base::Console().Log("Loading Inspection module... done\n");
 
     Inspection::PropertyDistanceList    ::init();
     Inspection::Feature                 ::init();
     Inspection::Group                   ::init();
+    PyMOD_Return(mod);
 }
