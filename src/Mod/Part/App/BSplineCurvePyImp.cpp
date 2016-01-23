@@ -225,7 +225,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-            Py::Int val(*it);
+            Py::Long val(*it);
             m(index++) = (int)val;
         }
 
@@ -662,7 +662,7 @@ PyObject* BSplineCurvePy::getMultiplicities(PyObject * args)
         curve->Multiplicities(m);
         Py::List mults;
         for (Standard_Integer i=m.Lower(); i<=m.Upper(); i++) {
-            mults.append(Py::Int(m(i)));
+            mults.append(Py::Long(m(i)));
         }
         return Py::new_reference_to(mults);
     }
@@ -673,32 +673,32 @@ PyObject* BSplineCurvePy::getMultiplicities(PyObject * args)
     }
 }
 
-Py::Int BSplineCurvePy::getDegree(void) const
+Py::Long BSplineCurvePy::getDegree(void) const
 {
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(curve->Degree()); 
+    return Py::Long(curve->Degree()); 
 }
 
-Py::Int BSplineCurvePy::getMaxDegree(void) const
+Py::Long BSplineCurvePy::getMaxDegree(void) const
 {
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(curve->MaxDegree()); 
+    return Py::Long(curve->MaxDegree()); 
 }
 
-Py::Int BSplineCurvePy::getNbPoles(void) const
+Py::Long BSplineCurvePy::getNbPoles(void) const
 {
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(curve->NbPoles()); 
+    return Py::Long(curve->NbPoles()); 
 }
 
-Py::Int BSplineCurvePy::getNbKnots(void) const
+Py::Long BSplineCurvePy::getNbKnots(void) const
 {
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(curve->NbKnots()); 
+    return Py::Long(curve->NbKnots()); 
 }
 
 Py::Object BSplineCurvePy::getStartPoint(void) const
@@ -721,14 +721,14 @@ Py::Object BSplineCurvePy::getFirstUKnotIndex(void) const
 {
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(curve->FirstUKnotIndex()); 
+    return Py::Long(curve->FirstUKnotIndex()); 
 }
 
 Py::Object BSplineCurvePy::getLastUKnotIndex(void) const
 {
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(curve->LastUKnotIndex()); 
+    return Py::Long(curve->LastUKnotIndex()); 
 }
 
 Py::List BSplineCurvePy::getKnotSequence(void) const
@@ -1211,11 +1211,11 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Py::Sequence multssq(mults);
             Standard_Integer index = 1;
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
-                Py::Int mult(*it);
+                Py::Long mult(*it);
                 if (index < occmults.Length() || PyObject_Not(periodic)) {
-                    sum_of_mults += mult; //sum up the mults to compare them against the number of poles later
+                    sum_of_mults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
                 }
-                occmults(index++) = mult;
+                occmults(index++) = static_cast<int>(mult);
             }
         }
         else { //mults are 1 or degree+1 at the ends

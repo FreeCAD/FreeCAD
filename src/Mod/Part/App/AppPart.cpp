@@ -219,7 +219,7 @@ PyTypeObject LinePyOld::Type = {
 }
 // --->
 
-PyMODINIT_FUNC initPart()
+PyMOD_INIT_FUNC(Part)
 {
     Base::Console().Log("Module: Part\n");
 
@@ -337,10 +337,14 @@ PyMODINIT_FUNC initPart()
                                                             ::Type,partModule,"RectangularTrimmedSurface");
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
-
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
 
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef BRepOffsetAPIDef = {PyModuleDef_HEAD_INIT,"BRepOffsetAPI", "BRepOffsetAPI", -1, 0};
+    PyObject* brepModule = PyModule_Create(&BRepOffsetAPIDef);
+#else
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
+#endif
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
@@ -588,4 +592,6 @@ PyMODINIT_FUNC initPart()
     Interface_Static::SetCVal("write.step.schema", ap.c_str());
     Interface_Static::SetCVal("write.step.product.name", hStepGrp->GetASCII("Product",
        Interface_Static::CVal("write.step.product.name")).c_str());
+
+    PyMOD_Return(partModule);
 }
