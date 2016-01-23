@@ -63,6 +63,7 @@ SET(ShipCreateWeight_SRCS
 	shipCreateWeight/__init__.py
 	shipCreateWeight/TaskPanel.py
 	shipCreateWeight/TaskPanel.ui
+	shipCreateWeight/Tools.py
 )
 SOURCE_GROUP("shipcreateweight" FILES ${ShipCreateWeight_SRCS})
 
