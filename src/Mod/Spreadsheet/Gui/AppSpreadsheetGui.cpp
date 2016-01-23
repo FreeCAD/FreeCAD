@@ -93,15 +93,21 @@ private:
         return Py::None();
     }
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace SpreadsheetGui
 
 
 /* Python entry */
-PyMODINIT_FUNC initSpreadsheetGui()
+PyMOD_INIT_FUNC(SpreadsheetGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // instantiating the commands
@@ -114,6 +120,7 @@ PyMODINIT_FUNC initSpreadsheetGui()
     // add resources and reloads the translators
     loadSpreadsheetResource();
 
-    new SpreadsheetGui::Module();
+    PyObject* mod = SpreadsheetGui::initModule();
     Base::Console().Log("Loading GUI of Spreadsheet module... done\n");
+    PyMOD_Return(mod);
 }
