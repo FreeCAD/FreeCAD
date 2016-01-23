@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "Command.h"
@@ -47,7 +48,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initPath()
+PyMOD_INIT_FUNC(Path)
 {
     PyObject* pathModule = Path::initModule();
     Base::Console().Log("Loading Path module... done\n");
@@ -74,4 +75,6 @@ PyMODINIT_FUNC initPath()
     Path::FeatureCompoundPython  ::init();
     Path::FeatureShape           ::init();
     Path::FeatureShapePython     ::init();
+
+    PyMOD_Return(pathModule);
 }

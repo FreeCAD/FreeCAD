@@ -26,7 +26,7 @@ commands (optional) is a list of Path commands</UserDocu>
             <Documentation>
                 <UserDocu>the number of commands in this path</UserDocu>
             </Documentation>
-            <Parameter Name="Size" Type="Int"/>
+            <Parameter Name="Size" Type="Long"/>
         </Attribute>
         <Attribute Name="Commands" ReadOnly="false">
             <Documentation>
