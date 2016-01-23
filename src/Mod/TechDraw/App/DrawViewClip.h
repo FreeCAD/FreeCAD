@@ -66,6 +66,9 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderViewClip";
     }
+    //return PyObject as DrawViewClipPy
+    virtual PyObject *getPyObject(void);
+
     std::vector<std::string> getChildViewNames();
 
 
