@@ -49,14 +49,14 @@ extern PyObject* initModule();
 
 
 /* Python entry */
-PyMODINIT_FUNC initDrawingGui()
+PyMOD_INIT_FUNC(DrawingGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
-    (void) DrawingGui::initModule();
+    PyObject* mod = DrawingGui::initModule();
     Base::Console().Log("Loading GUI of Drawing module... done\n");
 
     // instantiating the commands
@@ -70,4 +70,5 @@ PyMODINIT_FUNC initDrawingGui()
 
     // add resources and reloads the translators
     loadDrawingResource();
+    PyMOD_Return(mod);
 }
