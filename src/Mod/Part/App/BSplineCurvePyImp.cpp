@@ -204,7 +204,11 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
+#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
+#else
+            Py::Int val(*it);
+#endif
             m(index++) = (int)val;
         }
 
@@ -637,7 +641,7 @@ PyObject* BSplineCurvePy::getMultiplicities(PyObject * args)
         return 0;
     }
 }
-
+#if PY_MAJOR_VERSION >= 3
 Py::Long BSplineCurvePy::getDegree(void) const
 {
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
@@ -665,7 +669,35 @@ Py::Long BSplineCurvePy::getNbKnots(void) const
         (getGeometryPtr()->handle());
     return Py::Long(curve->NbKnots()); 
 }
+#else
+Py::Int BSplineCurvePy::getDegree(void) const
+{
+    Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(curve->Degree()); 
+}
 
+Py::Int BSplineCurvePy::getMaxDegree(void) const
+{
+    Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(curve->MaxDegree()); 
+}
+
+Py::Int BSplineCurvePy::getNbPoles(void) const
+{
+    Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(curve->NbPoles()); 
+}
+
+Py::Int BSplineCurvePy::getNbKnots(void) const
+{
+    Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(curve->NbKnots()); 
+}
+#endif
 Py::Object BSplineCurvePy::getStartPoint(void) const
 {
     Handle_Geom_BSplineCurve c = Handle_Geom_BSplineCurve::DownCast
@@ -1116,7 +1148,11 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Py::Sequence multssq(mults);
             Standard_Integer index = 1;
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
+#if PY_MAJOR_VERSION >= 3
                 Py::Long mult(*it);
+#else
+                Py::Int mult(*it);
+#endif
                 if (index < occmults.Length() || PyObject_Not(periodic)) {
                     sum_of_mults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
                 }

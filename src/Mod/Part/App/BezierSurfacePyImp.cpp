@@ -728,7 +728,7 @@ PyObject* BezierSurfacePy::vIso(PyObject * args)
         return 0;
     }
 }
-
+#if PY_MAJOR_VERSION >= 3
 Py::Long BezierSurfacePy::getUDegree(void) const
 {
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
@@ -763,7 +763,42 @@ Py::Long BezierSurfacePy::getNbVPoles(void) const
         (getGeometryPtr()->handle());
     return Py::Long(surf->NbVPoles()); 
 }
+#else
+Py::Int BezierSurfacePy::getUDegree(void) const
+{
+    Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(surf->UDegree()); 
+}
 
+Py::Int BezierSurfacePy::getVDegree(void) const
+{
+    Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(surf->UDegree()); 
+}
+
+Py::Int BezierSurfacePy::getMaxDegree(void) const
+{
+    Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(surf->MaxDegree()); 
+}
+
+Py::Int BezierSurfacePy::getNbUPoles(void) const
+{
+    Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(surf->NbUPoles()); 
+}
+
+Py::Int BezierSurfacePy::getNbVPoles(void) const
+{
+    Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
+        (getGeometryPtr()->handle());
+    return Py::Int(surf->NbVPoles()); 
+}
+#endif
 PyObject *BezierSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
