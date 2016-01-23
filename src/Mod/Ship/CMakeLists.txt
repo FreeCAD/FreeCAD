@@ -71,6 +71,7 @@ SET(ShipCreateTank_SRCS
 	shipCreateTank/__init__.py
 	shipCreateTank/TaskPanel.py
 	shipCreateTank/TaskPanel.ui
+	shipCreateTank/Tools.py
 )
 SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
 
