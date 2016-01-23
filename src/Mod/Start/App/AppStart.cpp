@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -46,11 +47,18 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace Start
 
 /* Python entry */
-PyMODINIT_FUNC initStart()
+PyMOD_INIT_FUNC(Start)
 {
-    new Start::Module();
+    PyObject* mod = Start::initModule();
     Base::Console().Log("Loading Start module... done\n");
+    PyMOD_Return(mod);
 }
