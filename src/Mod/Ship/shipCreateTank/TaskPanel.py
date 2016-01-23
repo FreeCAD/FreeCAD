@@ -25,6 +25,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
+import Tools
 import TankInstance as Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
@@ -40,21 +41,9 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.ship = self.widget(QtGui.QComboBox, "Ship")
 
-        # Create the object
         ship = self.ships[form.ship.currentIndex()]
-        obj = App.ActiveDocument.addObject("Part::FeaturePython", "Tank")
-        tank = Instance.Tank(obj, self.solids, ship)
-        Instance.ViewProviderTank(obj.ViewObject)
+        Tools.createTank(self.solids, ship)
 
-        # Set it as a child of the ship
-        tanks = ship.Tanks[:]
-        tanks.append(obj.Name)
-        ship.Tanks = tanks
-        ship.Proxy.cleanWeights(ship)
-        ship.Proxy.cleanTanks(ship)
-        ship.Proxy.cleanLoadConditions(ship)
-
-        App.ActiveDocument.recompute()
         return True
 
     def reject(self):
