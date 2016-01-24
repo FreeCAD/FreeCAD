@@ -928,7 +928,7 @@ StdMeshers_NumberOfSegmentsPy::~StdMeshers_NumberOfSegmentsPy()
 
 Py::Object StdMeshers_NumberOfSegmentsPy::setNumSegm(const Py::Tuple& args)
 {
-    hypothesis<StdMeshers_NumberOfSegments>()->SetNumberOfSegments((int)Py::Int(args[0]));
+    hypothesis<StdMeshers_NumberOfSegments>()->SetNumberOfSegments((int)Py::Long(args[0]));
     return Py::None();
 }
 
@@ -936,7 +936,7 @@ Py::Object StdMeshers_NumberOfSegmentsPy::getNumSegm(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    return Py::Int(hypothesis<StdMeshers_NumberOfSegments>()->GetNumberOfSegments());
+    return Py::Long(hypothesis<StdMeshers_NumberOfSegments>()->GetNumberOfSegments());
 }
 
 // ----------------------------------------------------------------------------
@@ -961,7 +961,7 @@ StdMeshers_NumberOfLayersPy::~StdMeshers_NumberOfLayersPy()
 
 Py::Object StdMeshers_NumberOfLayersPy::setNumLayers(const Py::Tuple& args)
 {
-    hypothesis<StdMeshers_NumberOfLayers>()->SetNumberOfLayers((int)Py::Int(args[0]));
+    hypothesis<StdMeshers_NumberOfLayers>()->SetNumberOfLayers((int)Py::Long(args[0]));
     return Py::None();
 }
 
@@ -969,7 +969,7 @@ Py::Object StdMeshers_NumberOfLayersPy::getNumLayers(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    return Py::Int(hypothesis<StdMeshers_NumberOfLayers>()->GetNumberOfLayers());
+    return Py::Long(hypothesis<StdMeshers_NumberOfLayers>()->GetNumberOfLayers());
 }
 
 // ----------------------------------------------------------------------------
@@ -1045,7 +1045,7 @@ StdMeshers_LengthFromEdgesPy::~StdMeshers_LengthFromEdgesPy()
 
 Py::Object StdMeshers_LengthFromEdgesPy::setMode(const Py::Tuple& args)
 {
-    hypothesis<StdMeshers_LengthFromEdges>()->SetMode((int)Py::Int(args[0]));
+    hypothesis<StdMeshers_LengthFromEdges>()->SetMode((int)Py::Long(args[0]));
     return Py::None();
 }
 
@@ -1053,7 +1053,7 @@ Py::Object StdMeshers_LengthFromEdgesPy::getMode(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    return Py::Int(hypothesis<StdMeshers_LengthFromEdges>()->GetMode());
+    return Py::Long(hypothesis<StdMeshers_LengthFromEdges>()->GetMode());
 }
 
 // ----------------------------------------------------------------------------
