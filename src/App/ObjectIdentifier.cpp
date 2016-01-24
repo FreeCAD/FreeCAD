@@ -125,7 +125,9 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const 
         const Document * doc = docObj->getDocument();
 
         documentName = String(doc->getName(), false, true);
+        documentNameSet = true;
         documentObjectName = String(docObj->getNameInDocument(), false, true);
+        documentObjectNameSet = true;
 
     }
     if (property.size() > 0)
@@ -139,8 +141,8 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const 
 
 ObjectIdentifier::ObjectIdentifier(const Property &prop)
     : owner(prop.getContainer())
-    , documentNameSet(false)
-    , documentObjectNameSet(false)
+    , documentNameSet(true)
+    , documentObjectNameSet(true)
     , propertyIndex(-1)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
