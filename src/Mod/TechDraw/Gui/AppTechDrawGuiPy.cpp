@@ -44,7 +44,9 @@
 
 using namespace TechDrawGui;
 
-//TODO: TechDraw does not open/import/export SVG/DXF files.  Not sure what belongs here.
+//TODO: TechDraw does not open/import/export SVG/DXF files like Drawing.  Not sure what belongs here.
+//equivalents to GuiCommand for MDIViewPage::saveSVG?, print, printPDF or just make MDIViewPage methods Py accessible?
+//
 /* module functions */
 static PyObject *
 open(PyObject *self, PyObject *args)
