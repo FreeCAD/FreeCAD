@@ -134,10 +134,12 @@ class CommandPathFaceProfile:
         # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction("Create Profile")
         FreeCADGui.addModule("PathScripts.PathFaceProfile")
+        FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","FaceProfile")')
         FreeCADGui.doCommand('PathScripts.PathFaceProfile.ObjectFaceProfile(obj)')
         FreeCADGui.doCommand('obj.Base = (FreeCAD.ActiveDocument.'+selection[0].ObjectName+',"'+selection[0].SubElementNames[0]+'")')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

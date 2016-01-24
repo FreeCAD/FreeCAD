@@ -359,17 +359,17 @@ def findMachine():
                 return o
 
 def addToProject(obj):
-        """Adds a path obj to this document, if no PathParoject exists it's created on the fly"""
+    """Adds a path obj to this document, if no PathParoject exists it's created on the fly"""
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+    if p.GetBool("pathAutoProject",True):
         project = findProj()
-
-        if project == None:
+        if not project:
             project = PathProject.CommandProject.Create()
-
         g = project.Group
         g.append(obj)
         project.Group = g
-
         return project
+    return None
 
 
 def getLastZ(obj):

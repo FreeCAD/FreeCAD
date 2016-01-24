@@ -74,9 +74,11 @@ class CommandPathCustom:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Custom Path")
         FreeCADGui.addModule("PathScripts.PathCustom")
+        FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Custom")')
         FreeCADGui.doCommand('PathScripts.PathCustom.ObjectCustom(obj)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
