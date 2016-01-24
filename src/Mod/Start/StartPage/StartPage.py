@@ -23,9 +23,14 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,cStringIO
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from PySide import QtGui
 from xml.etree.ElementTree import parse
+
+try:
+    import io as cStringIO
+except:
+    import cStringIO
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()

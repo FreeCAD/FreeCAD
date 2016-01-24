@@ -113,7 +113,8 @@ def InitApplications():
 					traceback.print_exc(file=output)
 					Log(output.getvalue())
 					Log('-'*100+'\n')
-					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
+					#Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
+					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:

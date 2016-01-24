@@ -1,7 +1,12 @@
 #   (c) Juergen Riegel (juergen.riegel@web.de) 2007      LGPL
 
 import FreeCAD, os, sys, unittest, Mesh
-import thread, time, tempfile, math
+import time, tempfile, math
+# http://python-kurs.eu/threads.php
+try:
+    import _thread as thread
+except:
+    import thread
 
 
 #---------------------------------------------------------------------------

@@ -252,45 +252,57 @@ PyObject *PropertyFileIncluded::getPyObject(void)
 }
 
 #if PY_MAJOR_VERSION >= 3
-    extern PyTypeObject PyFileIO_Type;
+extern PyTypeObject PyFileIO_Type;
+namespace App {
+const char* getNameFromFile(PyObject* value)
+{
+    const char* string = 0;
+    PyObject *oname = PyObject_GetAttrString (value, "name");
+    if (oname) {
+        if (PyUnicode_Check (oname)) {
+            string = PyUnicode_AsUTF8 (oname);
+        }
+        else if (PyBytes_Check (oname)) {
+            string = PyBytes_AsString (oname);
+        }
+        Py_DECREF (oname);
+    }
+
+    if (!string)
+        throw Base::TypeError("Unable to get filename");
+    return string;
+}
+}
 #endif
 
 void PropertyFileIncluded::setPyObject(PyObject *value)
 {
+#if PY_MAJOR_VERSION >= 3
     std::string string;
     if (PyUnicode_Check(value)) {
-#if PY_MAJOR_VERSION >= 3
         string = PyUnicode_AsUTF8(value);
+    }
+    else if (PyBytes_Check(value)) {
+        string = PyBytes_AsString(value);
+    }
+    else if (PyObject_IsInstance(value, (PyObject *)&PyFileIO_Type) == 1) {
+        string = getNameFromFile(value);
+    }
 #else
+    std::string string;
+    if (PyUnicode_Check(value)) {
         PyObject* unicode = PyUnicode_AsUTF8String(value);
         string = PyString_AsString(unicode);
         Py_DECREF(unicode);
     }
     else if (PyString_Check(value)) {
         string = PyString_AsString(value);
-#endif
     }
-#if PY_MAJOR_VERSION >= 3
-    else if(PyObject_IsInstance(value, (PyObject *)&PyFileIO_Type) == 1) {
-        PyObject *oname = PyObject_GetAttrString (value, "name");
-        if (oname == NULL) {
-            throw Base::TypeError("PropertyFileIncluded: Unable to get filename");
-        } else {
-            if (PyUnicode_Check (oname)) {
-                string = PyUnicode_AsUTF8 (oname);
-            } else if (PyBytes_Check (oname)) {
-                string = PyBytes_AsString (oname);
-            } else {
-                throw Base::TypeError("PropertyFileIncluded: Unable to decode filename");
-            }
-            Py_DECREF (oname);
-        }
-#else
     else if (PyFile_Check(value)) {
         PyObject* FileName = PyFile_Name(value);
         string = PyString_AsString(FileName);
-#endif
     }
+#endif
     else if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) != 2)
             throw Base::TypeError("Tuple needs size of (filePath,newFileName)"); 
@@ -300,8 +312,15 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         // decoding file
         std::string fileStr;
 #if PY_MAJOR_VERSION >= 3
-        if(PyObject_IsInstance(file, (PyObject *)&PyFileIO_Type) == 1) {
+        if (PyUnicode_Check(file)) {
             fileStr = PyUnicode_AsUTF8(file);
+        }
+        else if (PyBytes_Check(file)) {
+            fileStr = PyBytes_AsString(file);
+        }
+        else if(PyObject_IsInstance(file, (PyObject *)&PyFileIO_Type) == 1) {
+            fileStr = getNameFromFile(file);
+        }
 #else
         if (PyUnicode_Check(file)) {
             PyObject* unicode = PyUnicode_AsUTF8String(file);
@@ -310,29 +329,12 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         }
         else if (PyString_Check(file)) {
             fileStr = PyString_AsString(file);
-#endif
         }
-#if PY_MAJOR_VERSION >= 3
-        else if(PyObject_IsInstance(file, (PyObject *)&PyFileIO_Type) == 1) {
-            PyObject *oname = PyObject_GetAttrString (file, "name");
-            if (oname == NULL) {
-                throw Base::TypeError("PropertyFileIncluded: Unable to get filename");
-            } else {
-                if (PyUnicode_Check (oname)) {
-                    fileStr = PyUnicode_AsUTF8 (oname);
-                } else if (PyBytes_Check (oname)) {
-                    fileStr = PyBytes_AsString (oname);
-                } else {
-                    throw Base::TypeError("PropertyFileIncluded: Unable to decode filename");
-                }
-                Py_DECREF (oname);
-            }
-#else
         else if (PyFile_Check(file)) {
             PyObject* FileName = PyFile_Name(file);
             fileStr = PyString_AsString(FileName);
-#endif
         }
+#endif
         else {
             std::string error = std::string("First item in tuple must be a file or string, not ");
             error += file->ob_type->tp_name;
@@ -342,20 +344,15 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         // decoding name
         std::string nameStr;
 #if PY_MAJOR_VERSION >= 3
-        if(PyObject_IsInstance(name, (PyObject *)&PyFileIO_Type) == 1) {
-            PyObject *oname = PyObject_GetAttrString (name, "name");
-            if (oname == NULL) {
-                throw Base::TypeError("PropertyFileIncluded: Unable to get filename");
-            } else {
-                if (PyUnicode_Check (oname)) {
-                    nameStr = PyUnicode_AsUTF8 (oname);
-                } else if (PyBytes_Check (oname)) {
-                    nameStr = PyBytes_AsString (oname);
-                } else {
-                    throw Base::TypeError("PropertyFileIncluded: Unable to decode filename");
-                }
-                Py_DECREF (oname);
-            }
+        if (PyUnicode_Check(name)) {
+            nameStr = PyUnicode_AsUTF8(name);
+        }
+        else if (PyBytes_Check(name)) {
+            nameStr = PyBytes_AsString(name);
+        }
+        else if(PyObject_IsInstance(name, (PyObject *)&PyFileIO_Type) == 1) {
+            nameStr = getNameFromFile(name);
+        }
 #else
         if (PyString_Check(name)) {
             nameStr = PyString_AsString(name);
@@ -363,8 +360,8 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         else if (PyFile_Check(name)) {
             PyObject* FileName = PyFile_Name(name);
             nameStr = PyString_AsString(FileName);
-#endif
         }
+#endif
         else {
             std::string error = std::string("Second item in tuple must be a string, not ");
             error += name->ob_type->tp_name;
