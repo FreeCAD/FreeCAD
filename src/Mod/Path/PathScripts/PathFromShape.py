@@ -95,8 +95,10 @@ class CommandFromShape:
             return
         
         FreeCAD.ActiveDocument.openTransaction(translate("Path_FromShape","Create path from shape"))
+        FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand("obj = FreeCAD.activeDocument().addObject('Path::FeatureShape','PathShape')")
         FreeCADGui.doCommand("obj.Shape = FreeCAD.activeDocument()."+selection[0].Name+".Shape")
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

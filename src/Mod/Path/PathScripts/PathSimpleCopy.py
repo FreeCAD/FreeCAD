@@ -60,8 +60,10 @@ class CommandPathSimpleCopy:
             return
    
         FreeCAD.ActiveDocument.openTransaction(translate("Path_SimpleCopy","Simple Copy"))
-        FreeCADGui.doCommand('copy = FreeCAD.ActiveDocument.addObject("Path::Feature","'+selection[0].Name+ '_copy")')
-        FreeCADGui.doCommand('copy.Path = FreeCAD.ActiveDocument.'+selection[0].Name+'.Path')
+        FreeCADGui.addModule("PathScripts.PathUtils")
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::Feature","'+selection[0].Name+ '_copy")')
+        FreeCADGui.doCommand('obj.Path = FreeCAD.ActiveDocument.'+selection[0].Name+'.Path')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

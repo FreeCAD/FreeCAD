@@ -171,6 +171,7 @@ class CommandPathFacePocket:
         # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction("Create Pocket")
         FreeCADGui.addModule("PathScripts.PathFacePocket")
+        FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","FacePocket")')
         FreeCADGui.doCommand('PathScripts.PathFacePocket.ObjectFacePocket(obj)')
         subs = "["
@@ -179,6 +180,7 @@ class CommandPathFacePocket:
         subs += "]"
         FreeCADGui.doCommand('obj.Base = (FreeCAD.ActiveDocument.' + selection[0].ObjectName + ',' + subs + ')')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
