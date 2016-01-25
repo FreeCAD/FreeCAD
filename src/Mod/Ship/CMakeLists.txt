@@ -29,7 +29,7 @@ SET(ShipCreateShip_SRCS
 	shipCreateShip/Preview.py
 	shipCreateShip/TaskPanel.py
 	shipCreateShip/TaskPanel.ui
-	shipCreateShip/Tools.ui
+	shipCreateShip/Tools.py
 )
 SOURCE_GROUP("shipcreateship" FILES ${ShipCreateShip_SRCS})
 
