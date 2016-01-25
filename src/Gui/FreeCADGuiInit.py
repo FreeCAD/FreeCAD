@@ -121,10 +121,9 @@ def InitApplications():
 				except Exception as inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
 					Log('-'*100+'\n')
-                    Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
 					output=cStringIO.StringIO()
 					#traceback.print_exc(file=output) #buggy? 
-                    Log(traceback.format_exc())
+					Log(traceback.format_exc())
 					Log(output.getvalue())
 					Log('-'*100+'\n')
 					#Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
