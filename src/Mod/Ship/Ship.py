@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2016                                              *
+#*   Copyright (c) 2015                                                    *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -21,52 +21,19 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-import FreeCADGui
-from FreeCAD import Base
-import Part
-import Units
-from shipUtils import Paths
 
+__title__="FreeCAD Ship module"
+__author__ = "Jose Luis Cercos-Pita"
+__url__ = "http://www.freecadweb.org"
 
-class Preview(object):
-    def __init__(self):
-        """ Constructor. """
-        self.reinit()
+__doc__="The Ships module provide a set of tools to make some specific Naval" \
+        " Architecture computations"
 
-    def reinit(self):
-        """ Reinitializate the drawer. """
-        self.obj = None
-        self.clean()
-
-    def update(self, draft, trim, ship):
-        """ Update the free surface 3D view
-        @param draft Draft.
-        @param trim Trim in degrees.
-        """
-        self.clean()
-        # Set free surface bounds
-        bbox = ship.Shape.BoundBox
-        L = 1.5 * bbox.XLength
-        B = 3.0 * bbox.YLength
-        # Create the plane
-        x = -0.5 * L
-        y = -0.5 * B
-        point = Base.Vector(x, y, 0.0)
-        plane = Part.makePlane(L, B, point, Base.Vector(0, 0, 1))
-        plane.rotate(Base.Vector(0, 0, 0), Base.Vector(0, 1, 0), trim)
-        plane.translate(Base.Vector(0, 0, draft))
-        Part.show(plane)
-        objs = FreeCAD.ActiveDocument.Objects
-        self.obj = objs[len(objs) - 1]
-        self.obj.Label = 'FreeSurfaceHelper'
-        guiObj = FreeCADGui.ActiveDocument.getObject(self.obj.Name)
-        guiObj.ShapeColor = (0.4, 0.8, 0.85)
-        guiObj.Transparency = 50
-
-    def clean(self):
-        """ Erase all the annotations from the 3D view. """
-        if not self.obj:
-            return
-        FreeCAD.ActiveDocument.removeObject(self.obj.Name)
-        self.obj = None
+from shipCreateShip.Tools import createShip
+from shipHydrostatics.Tools import areas, displacement, wettedArea, moment
+from shipHydrostatics.Tools import floatingArea, BMT, mainFrameCoeff
+from shipCreateWeight.Tools import createWeight
+from shipCreateTank.Tools import createTank
+from shipCapacityCurve.Tools import tankCapacityCurve
+from shipCreateLoadCondition.Tools import createLoadCondition
+from shipGZ.Tools import gz

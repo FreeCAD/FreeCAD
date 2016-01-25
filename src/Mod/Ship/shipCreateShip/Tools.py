@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2016                                              *
+#*   Copyright (c) 2016                                                    *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +21,45 @@
 #*                                                                         *
 #***************************************************************************
 
-import TaskPanel
+
+import FreeCAD as App
+import Instance
 
 
-def load():
-    """Load the examples importing tool"""
-    TaskPanel.createTask()
+def createShip(solids, L, B, T):
+    """Create a new ship instance
+
+    Position arguments:
+    solids -- List of hull solid shapes
+    L -- Ship length between perpendiculars
+    B -- Ship Breadth
+    T -- Ship design draft
+
+    Returned value:
+    The new ship object
+
+    The solids can be easily extracted from an already existing object. For
+    instance, to get the solids from the selected object simply type the
+    following command:
+
+    solids = Gui.ActiveDocument.ActiveObject.Object.Shape.Solids
+
+    Regarding the Lenght, Breadth, and Draft, it is strongly recommended to use
+    Units.parseQuantity method, e.g. The following obfuscated code snippet build
+    such variables:
+
+    import Units
+    L = Units.parseQuantity("25.5 m")
+    B = Units.parseQuantity("3.9 m")
+    T = Units.parseQuantity("1.0 m")
+    """
+    obj = App.ActiveDocument.addObject("Part::FeaturePython", "Ship")
+    ship = Instance.Ship(obj, solids)
+    Instance.ViewProviderShip(obj.ViewObject)
+
+    obj.Length = L
+    obj.Breadth = B
+    obj.Draft = T
+
+    App.ActiveDocument.recompute()
+    return obj

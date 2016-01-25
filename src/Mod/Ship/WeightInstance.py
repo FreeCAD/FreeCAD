@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -24,8 +24,6 @@
 import time
 from math import *
 from PySide import QtGui, QtCore
-from pivy.coin import *
-from pivy import coin
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Base, Vector
@@ -38,7 +36,7 @@ class Weight:
     def __init__(self, obj, shapes, ship):
         """ Transform a generic object to a ship instance.
 
-        Keyword arguments:
+        Position arguments:
         obj -- Part::FeaturePython created object which should be transformed
         in a weight instance.
         shapes -- Set of shapes which will compound the weight element.
@@ -77,7 +75,7 @@ class Weight:
         # Add the area density property for surface elements
         tooltip = str(QtGui.QApplication.translate(
             "ship_weight",
-            "Area density [kg / m^3]",
+            "Area density [kg / m^2]",
             None,
             QtGui.QApplication.UnicodeUTF8))
         obj.addProperty("App::PropertyFloat",
@@ -102,7 +100,7 @@ class Weight:
     def onChanged(self, fp, prop):
         """Detects the ship data changes.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         prop -- Modified property name.
         """
@@ -112,7 +110,7 @@ class Weight:
     def execute(self, fp):
         """Detects the entity recomputations.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         """
         pass
@@ -120,7 +118,7 @@ class Weight:
     def _getPuntualMass(self, fp, shape):
         """Compute the mass of a puntual element.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Vertex shape object.
         """
@@ -129,7 +127,7 @@ class Weight:
     def _getLinearMass(self, fp, shape):
         """Compute the mass of a linear element.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Edge shape object.
         """
@@ -140,7 +138,7 @@ class Weight:
     def _getAreaMass(self, fp, shape):
         """Compute the mass of an area element.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Face shape object.
         """
@@ -151,7 +149,7 @@ class Weight:
     def _getVolumetricMass(self, fp, shape):
         """Compute the mass of a volumetric element.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Solid shape object.
         """
@@ -163,24 +161,27 @@ class Weight:
         """Compute the mass of the object, already taking into account the
         type of subentities.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
+
+        Returned value:
+        Object mass
         """
         m = Units.parseQuantity('0 kg')
         for s in fp.Shape.Solids:
-            m = m + self._getVolumetricMass(fp, s)
+            m += self._getVolumetricMass(fp, s)
         for f in fp.Shape.Faces:
-            m = m + self._getAreaMass(fp, f)
+            m += self._getAreaMass(fp, f)
         for e in fp.Shape.Edges:
-            m = m + self._getLinearMass(fp, e)
+            m += self._getLinearMass(fp, e)
         for v in fp.Shape.Vertexes:
-            m = m + self._getPuntualMass(fp, v)
+            m += self._getPuntualMass(fp, v)
         return m
 
     def _getPuntualMoment(self, fp, shape):
         """Compute the moment of a puntual element (respect to 0, 0, 0).
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Vertex shape object.
         """
@@ -193,7 +194,7 @@ class Weight:
     def _getLinearMoment(self, fp, shape):
         """Compute the mass of a linear element (respect to 0, 0, 0).
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Edge shape object.
         """
@@ -207,7 +208,7 @@ class Weight:
     def _getAreaMoment(self, fp, shape):
         """Compute the mass of an area element (respect to 0, 0, 0).
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Face shape object.
         """
@@ -221,7 +222,7 @@ class Weight:
     def _getVolumetricMoment(self, fp, shape):
         """Compute the mass of a volumetric element (respect to 0, 0, 0).
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Solid shape object.
         """
@@ -236,8 +237,11 @@ class Weight:
         """Compute the mass of the object, already taking into account the
         type of subentities.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
+
+        Returned value:
+        List of moments toward x, y and z
         """
         m = [Units.parseQuantity('0 kg*m'),
              Units.parseQuantity('0 kg*m'),
@@ -264,15 +268,18 @@ class Weight:
         """Compute the mass of the object, already taking into account the
         type of subentities.
 
-        Keyword arguments:
+        Position arguments:
         fp -- Part::FeaturePython object affected.
+
+        Returned value:
+        Center of Mass vector
         """
         mass = self.getMass(fp)
         moment = self.getMoment(fp)
         cog = []
         for i in range(len(moment)):
             cog.append(moment[i] / mass)
-        return cog
+        return Vector(cog[0].Value, cog[1].Value, cog[2].Value)
 
 
 class ViewProviderWeight:
@@ -312,7 +319,7 @@ class ViewProviderWeight:
     def getDefaultDisplayMode(self):
         """Return the name of the default display mode. It must be defined in
         getDisplayModes."""
-        return "Shaded"
+        return "Flat Lines"
 
     def setDisplayMode(self, mode):
         """Map the display mode defined in attach with those defined in
