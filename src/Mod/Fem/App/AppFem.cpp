@@ -54,14 +54,12 @@
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
 
-extern struct PyMethodDef Fem_methods[];
-
-PyDoc_STRVAR(module_Fem_doc,
-"This module is the FEM module.");
+namespace Fem {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void AppFemExport initFem()
+PyMODINIT_FUNC initFem()
 {
     // load dependend module
     try {
@@ -72,7 +70,7 @@ void AppFemExport initFem()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    PyObject* femModule = Py_InitModule3("Fem", Fem_methods, module_Fem_doc);   /* mod name, table ptr */
+    PyObject* femModule = Fem::initModule();
     Base::Console().Log("Loading Fem module... done\n");
 
     Fem::StdMeshers_Arithmetic1DPy              ::init_type(femModule);
@@ -146,5 +144,3 @@ void AppFemExport initFem()
     Fem::FemSolverObject            ::init();
     Fem::FemSolverObjectPython      ::init();
 }
-
-} // extern "C"

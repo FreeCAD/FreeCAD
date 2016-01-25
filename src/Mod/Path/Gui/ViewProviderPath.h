@@ -55,6 +55,7 @@ public:
     App::PropertyColor   NormalColor;
     App::PropertyColor   MarkerColor;
     App::PropertyBool    ShowFirstRapid;
+    App::PropertyBool    ShowNodes;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);

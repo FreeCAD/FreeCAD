@@ -287,7 +287,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
             fileStr = PyString_AsString(FileName);
         }
         else {
-            std::string error = std::string("First item in tuple must be a file or string");
+            std::string error = std::string("First item in tuple must be a file or string, not ");
             error += value->ob_type->tp_name;
             throw Base::TypeError(error);
         }
@@ -302,7 +302,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
             nameStr = PyString_AsString(FileName);
         }
         else {
-            std::string error = std::string("Second item in tuple must be a string");
+            std::string error = std::string("Second item in tuple must be a string, not ");
             error += value->ob_type->tp_name;
             throw Base::TypeError(error);
         }
@@ -311,7 +311,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         return;
     }
     else {
-        std::string error = std::string("Type must be string or file");
+        std::string error = std::string("Type must be string or file, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }

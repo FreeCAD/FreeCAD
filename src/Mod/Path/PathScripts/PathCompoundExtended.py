@@ -58,7 +58,11 @@ class ObjectCompoundExtended:
         cmds = []
         for child in obj.Group:
             if child.isDerivedFrom("Path::Feature"):
-                cmds.extend(child.Path.Commands)
+                if obj.UsePlacements:
+                    for c in child.Path.Commands:
+                        cmds.append(c.transform(child.Placement))
+                else:
+                    cmds.extend(child.Path.Commands)
         if cmds:
             path = Path.Path(cmds)
             obj.Path = path

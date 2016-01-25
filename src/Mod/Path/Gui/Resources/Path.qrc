@@ -23,5 +23,12 @@
         <file>icons/Path-Stop.svg</file>
         <file>icons/Path-Machine.svg</file>
         <file>icons/Path-Kurve.svg</file>
+        <file>icons/Path-FaceProfile.svg</file>
+        <file>icons/Path-FacePocket.svg</file>
+        <file>icons/Path-Array.svg</file>
+        <file>icons/Path-Custom.svg</file>
+        <file>icons/Path-Inspect.svg</file>
+        <file>icons/Path-ToolChange.svg</file>
+        <file>icons/Path-SimpleCopy.svg</file>
     </qresource>
 </RCC> 

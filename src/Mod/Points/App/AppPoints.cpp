@@ -35,22 +35,18 @@
 #include "PropertyPointKernel.h"
 #include "ViewFeature.h"
 
-
-/* registration table  */
-
-extern struct PyMethodDef Points_Import_methods[];
-
-
+namespace Points {
+    extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void PointsExport initPoints()
+PyMODINIT_FUNC initPoints()
 {
-    PyObject* pointsModule =  Py_InitModule("Points", Points_Import_methods);   /* mod name, table ptr */
+    PyObject* pointsModule = Points::initModule();
     Base::Console().Log("Loading Points module... done\n");
 
     // add python types
-    Base::Interpreter().addType(&Points::PointsPy  ::Type,pointsModule,"Points");
+    Base::Interpreter().addType(&Points::PointsPy::Type, pointsModule, "Points");
 
     // add properties
     Points::PropertyGreyValue     ::init();
@@ -65,5 +61,3 @@ void PointsExport initPoints()
     Points::FeaturePython         ::init();
     Points::ViewFeature           ::init();
 }
-
-} // extern "C"

@@ -474,43 +474,48 @@ def pocket2d(shape,offset):
     if not o.Wires:
         return []
     offsetWires = o.Wires
-    print("base offset wires:",offsetWires)
+    #print("base offset wires:",offsetWires)
     if not innerWires:
         return offsetWires
     for innerWire in innerWires:
         i = innerWire.makeOffset(offset)
+        if len(innerWire.Edges) == 1:
+            e = innerWire.Edges[0]
+            if isinstance(e.Curve,Part.Circle):
+                e = Part.makeCircle(e.Curve.Radius+offset,e.Curve.Center,e.Curve.Axis)
+                i = Part.Wire(e)
         if i.Wires:
-            print("offsetting island ",innerWire," : ",i.Wires)
+            #print("offsetting island ",innerWire," : ",i.Wires)
             for w in i.Wires:
                 added = False
-                print("checking wire ",w)
+                #print("checking wire ",w)
                 k = list(range(len(offsetWires)))
                 for j in k:
-                    print("checking against existing wire ",j)
+                    #print("checking against existing wire ",j)
                     ow = offsetWires[j]
                     if ow:
                         if wiresIntersect(w,ow):
-                            print("intersect")
+                            #print("intersect")
                             f1 = Part.Face(ow)
                             f2 = Part.Face(w)
                             f3  = f1.cut(f2)
-                            print("made new wires: ",f3.Wires)
+                            #print("made new wires: ",f3.Wires)
                             offsetWires[j] = f3.Wires[0]
                             if len(f3.Wires) > 1:
-                                print("adding more")
+                                #print("adding more")
                                 offsetWires.extend(f3.Wires[1:])
                             added = True
                         else:
                             a = w.BoundBox
                             b = ow.BoundBox
                             if (a.XMin <= b.XMin) and (a.YMin <= b.YMin) and (a.ZMin <= b.ZMin) and (a.XMax >= b.XMax) and (a.YMax >= b.YMax) and (a.ZMax >= b.ZMax):
-                                print("this wire is bigger than the outer wire")
+                                #print("this wire is bigger than the outer wire")
                                 offsetWires[j] = None
                                 added = True
-                            else:
-                                print("doesn't intersect")
+                            #else:
+                                #print("doesn't intersect")
                 if not added:
-                    print("doesn't intersect with any other")
+                    #print("doesn't intersect with any other")
                     offsetWires.append(w)
     offsetWires = [o for o in offsetWires if o != None]
     return offsetWires
@@ -2057,8 +2062,37 @@ def tessellateProjection(shape,seglen):
         except:
             print("Debug: error cleaning edge ",e)
     return Part.makeCompound(newedges)
+    
+    
+def rebaseWire(wire,vidx):
+    
+    """rebaseWire(wire,vidx): returns a new wire which is a copy of the
+    current wire, but where the first vertex is the vertex indicated by the given
+    index vidx, starting from 1. 0 will return an exact copy of the wire."""
+
+    if vidx < 1:
+        return wire
+    if vidx > len(wire.Vertexes):
+        #print("Vertex index above maximum\n")
+        return wire
+    basepoint = wire.Vertexes[vidx-1].Point
+    #wire = Part.__sortEdges__(wire)
+    edges = []
+    start = False
+    for i in range(len(wire.Edges)):
+        if wire.Edges[i].Vertexes[0].Point == basepoint:
+            start = True
+            edges.append(wire.Edges[i])
+        elif start:
+            edges.append(wire.Edges[i])
+    if len(edges) < len(wire.Edges):
+        f = len(wire.Edges) - len(edges)
+        edges.extend(wire.Edges[0:f])
+    return Part.Wire(edges)
+
 
 # circle functions *********************************************************
+
 
 def getBoundaryAngles(angle,alist):
         '''returns the 2 closest angles from the list that

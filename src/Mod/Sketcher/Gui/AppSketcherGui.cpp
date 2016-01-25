@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -54,13 +57,24 @@ void loadSketcherResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef SketcherGui_Import_methods[];
 
+namespace SketcherGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("SketcherGui")
+    {
+        initialize("This module is the SketcherGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+} // namespace SketcherGui
 
 /* Python entry */
-extern "C" {
-void SketcherGuiExport initSketcherGui()
+PyMODINIT_FUNC initSketcherGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -75,7 +89,7 @@ void SketcherGuiExport initSketcherGui()
         return;
     }
 
-    (void) Py_InitModule("SketcherGui", SketcherGui_Import_methods);   /* mod name, table ptr */
+    (void)new SketcherGui::Module();
     Base::Console().Log("Loading GUI of Sketcher module... done\n");
 
     // instantiating the commands
@@ -101,5 +115,3 @@ void SketcherGuiExport initSketcherGui()
      // add resources and reloads the translators
     loadSketcherResource();
 }
-
-} // extern "C" {

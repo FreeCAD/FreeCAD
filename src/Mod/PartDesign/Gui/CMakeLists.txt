@@ -157,7 +157,6 @@ SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 
 SET(PartDesignGuiModule_SRCS
     AppPartDesignGui.cpp
-    AppPartDesignGuiPy.cpp
     Command.cpp
     Resources/PartDesign.qrc
     PreCompiled.cpp

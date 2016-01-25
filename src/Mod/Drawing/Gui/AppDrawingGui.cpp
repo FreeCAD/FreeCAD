@@ -43,20 +43,20 @@ void loadDrawingResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef DrawingGui_Import_methods[];
+namespace DrawingGui {
+extern PyObject* initModule();
+}
 
 
 /* Python entry */
-extern "C" {
-void DrawingGuiExport initDrawingGui()
+PyMODINIT_FUNC initDrawingGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         return;
     }
 
-    (void) Py_InitModule("DrawingGui", DrawingGui_Import_methods);   /* mod name, table ptr */
+    (void) DrawingGui::initModule();
     Base::Console().Log("Loading GUI of Drawing module... done\n");
 
     // instantiating the commands
@@ -71,5 +71,3 @@ void DrawingGuiExport initDrawingGui()
     // add resources and reloads the translators
     loadDrawingResource();
 }
-
-} // extern "C" {

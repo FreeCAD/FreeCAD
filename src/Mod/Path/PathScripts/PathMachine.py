@@ -184,13 +184,17 @@ class _ViewProviderMachine:
         # this is executed when a property of the APP OBJECT changes
         pass
 
-    def setEdit(self,vobj,mode): #optional
+    def setEdit(self,vobj,mode=0): #optional
         # this is executed when the object is double-clicked in the tree
         pass
 
-    def unsetEdit(self,vobj,mode): #optional
+    def unsetEdit(self,vobj,mode=0): #optional
         # this is executed when the user cancels or terminates edit mode
         pass
+        
+    def doubleClicked(self,vobj):
+        from PathScripts import TooltableEditor
+        TooltableEditor.edit(vobj.Object.Name)
 
 class CommandPathMachine:
     def GetResources(self):
