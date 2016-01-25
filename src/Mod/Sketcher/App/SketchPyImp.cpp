@@ -166,11 +166,19 @@ PyObject* SketchPy::movePoint(PyObject *args)
 
 // +++ attributes implementer ++++++++++++++++++++++++++++++++++++++++++++++++
 
+#if PY_MAJOR_VERSION >= 3
 Py::Long SketchPy::getConstraint(void) const
 {
     //return Py::Int();
     throw Py::AttributeError("Not yet implemented");
 }
+#else
+Py::Int SketchPy::getConstraint(void) const
+{
+    //return Py::Int();
+    throw Py::AttributeError("Not yet implemented");
+}
+#endif
 
 Py::Tuple SketchPy::getConflicts(void) const
 {

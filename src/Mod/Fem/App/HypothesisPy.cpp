@@ -928,7 +928,11 @@ StdMeshers_NumberOfSegmentsPy::~StdMeshers_NumberOfSegmentsPy()
 
 Py::Object StdMeshers_NumberOfSegmentsPy::setNumSegm(const Py::Tuple& args)
 {
+#if PY_MAJOR_VERSION >= 3
     hypothesis<StdMeshers_NumberOfSegments>()->SetNumberOfSegments((int)Py::Long(args[0]));
+#else
+    hypothesis<StdMeshers_NumberOfSegments>()->SetNumberOfSegments((int)Py::Int(args[0]));
+#endif
     return Py::None();
 }
 
@@ -961,7 +965,11 @@ StdMeshers_NumberOfLayersPy::~StdMeshers_NumberOfLayersPy()
 
 Py::Object StdMeshers_NumberOfLayersPy::setNumLayers(const Py::Tuple& args)
 {
+#if PY_MAJOR_VERSION >= 3
     hypothesis<StdMeshers_NumberOfLayers>()->SetNumberOfLayers((int)Py::Long(args[0]));
+#else
+    hypothesis<StdMeshers_NumberOfLayers>()->SetNumberOfLayers((int)Py::Int(args[0]));
+#endif
     return Py::None();
 }
 
@@ -1045,7 +1053,11 @@ StdMeshers_LengthFromEdgesPy::~StdMeshers_LengthFromEdgesPy()
 
 Py::Object StdMeshers_LengthFromEdgesPy::setMode(const Py::Tuple& args)
 {
+#if PY_MAJOR_VERSION >= 3
     hypothesis<StdMeshers_LengthFromEdges>()->SetMode((int)Py::Long(args[0]));
+#else
+    hypothesis<StdMeshers_LengthFromEdges>()->SetMode((int)Py::Int(args[0]));
+#endif
     return Py::None();
 }
 

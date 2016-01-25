@@ -499,6 +499,7 @@ std::string ConstraintPy::representation(void) const
     return result.str();
 }
 
+#if PY_MAJOR_VERSION >= 3
 Py::Long ConstraintPy::getFirst(void) const
 {
     return Py::Long(this->getConstraintPtr()->First);
@@ -518,6 +519,27 @@ void  ConstraintPy::setSecond(Py::Long arg)
 {
     this->getConstraintPtr()->Second = arg;
 }
+#else
+Py::Int ConstraintPy::getFirst(void) const
+{
+    return Py::Int(this->getConstraintPtr()->First);
+}
+
+void  ConstraintPy::setFirst(Py::Int arg)
+{
+    this->getConstraintPtr()->First = arg;
+}
+
+Py::Int ConstraintPy::getSecond(void) const
+{
+    return Py::Int(this->getConstraintPtr()->Second);
+}
+
+void  ConstraintPy::setSecond(Py::Int arg)
+{
+    this->getConstraintPtr()->Second = arg;
+}
+#endif
 
 Py::String ConstraintPy::getName(void) const
 {

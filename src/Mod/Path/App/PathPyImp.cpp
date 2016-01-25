@@ -112,10 +112,17 @@ Py::Float PathPy::getLength(void) const
     return Py::Float(getToolpathPtr()->getLength());
 }
 
+#if PY_MAJOR_VERSION >= 3
 Py::Long PathPy::getSize(void) const
 {
     return Py::Long((long)getToolpathPtr()->getSize());
 }
+#else
+Py::Int PathPy::getSize(void) const
+{
+    return Py::Int((long)getToolpathPtr()->getSize());
+}
+#endif
 
 // specific methods
 
