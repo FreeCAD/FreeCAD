@@ -288,7 +288,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         }
         else {
             std::string error = std::string("First item in tuple must be a file or string, not ");
-            error += value->ob_type->tp_name;
+            error += file->ob_type->tp_name;
             throw Base::TypeError(error);
         }
 
@@ -303,7 +303,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         }
         else {
             std::string error = std::string("Second item in tuple must be a string, not ");
-            error += value->ob_type->tp_name;
+            error += name->ob_type->tp_name;
             throw Base::TypeError(error);
         }
 
