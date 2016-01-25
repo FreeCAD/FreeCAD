@@ -86,6 +86,7 @@ SOURCE_GROUP("shipcapacitycurve" FILES ${ShipCapacityCurve_SRCS})
 
 SET(ShipCreateLoadCondition_SRCS
     shipCreateLoadCondition/__init__.py
+    shipCreateLoadCondition/Tools.py
 )
 SOURCE_GROUP("shipcreateloadcondition" FILES ${ShipCreateLoadCondition_SRCS})
 

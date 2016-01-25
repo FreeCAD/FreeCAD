@@ -23,7 +23,8 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Spreadsheet
+from PySide import QtGui
+import Tools
 
 
 READ_ONLY_FOREGROUND = (0.5, 0.5, 0.5)
@@ -73,120 +74,4 @@ def load():
         App.Console.PrintError(msg + '\n')
         return
 
-    # Create the spreadsheet
-    s = App.activeDocument().addObject('Spreadsheet::Sheet',
-                                       'LoadCondition')
-
-    # Add a description
-    s.setForeground('A1:B2', READ_ONLY_FOREGROUND)
-    s.setBackground('A1:B2', READ_ONLY_BACKGROUND)
-    s.setAlignment('B1:B2', 'center', 'keep')
-    s.setStyle('B1:B2', 'italic', 'add')
-    s.set("A1", "Ship:")
-    s.set("A2", "Load condition:")
-    s.set("B1", "=" + ship.Name + ".Label")
-    s.set("B2", "=Label")
-
-    # Add the weights data
-    s.setAlignment('A4:A5', 'center', 'keep')
-    s.setStyle('A4:A5', 'bold', 'add')
-    s.setStyle('A4:A5', 'underline', 'add')
-    s.set("A4", "WEIGHTS DATA")
-    s.set("A5", "name")
-    for i in range(len(ship.Weights)):
-        weight = App.activeDocument().getObject(ship.Weights[i])
-        s.set("A{}".format(i + 6), "=" + weight.Name + ".Label")
-    s.setForeground('A4:A{}'.format(5 + len(ship.Weights)), READ_ONLY_FOREGROUND)
-    s.setBackground('A4:A{}'.format(5 + len(ship.Weights)), READ_ONLY_BACKGROUND)
-
-    # Add the tanks data
-    s.mergeCells('C4:E4')
-    s.setForeground('C4:E5', READ_ONLY_FOREGROUND)
-    s.setBackground('C4:E5', READ_ONLY_BACKGROUND)
-    s.setAlignment('C4:E5', 'center', 'keep')
-    s.setStyle('C4:E5', 'bold', 'add')
-    s.setStyle('C4:E5', 'underline', 'add')
-    s.set("C4", "TANKS DATA")
-    s.set("C5", "name")
-    s.set("D5", "Fluid density [kg/m^3]")
-    s.set("E5", "Filling ratio (interval [0, 1])")
-    if len(ship.Tanks):
-        for i in range(len(ship.Tanks)):
-            tank = App.activeDocument().getObject(ship.Tanks[i])
-            s.set("C{}".format(i + 6), "=" + tank.Name + ".Label")
-            s.set("D{}".format(i + 6), "998.0")
-            s.set("E{}".format(i + 6), "0.0")
-        s.setForeground('C6:C{}'.format(5 + len(ship.Tanks)), READ_ONLY_FOREGROUND)
-        s.setBackground('C6:C{}'.format(5 + len(ship.Tanks)), READ_ONLY_BACKGROUND)
-
-    s.setColumnWidth('A', 128)
-    s.setColumnWidth('B', 128)
-    s.setColumnWidth('C', 128)
-    s.setColumnWidth('D', 150)
-    s.setColumnWidth('E', 200)
-
-    """
-    # Add a reference to the owner ship
-    s.mergeCells('A1:D1')
-    s.setAlignment('A1:B2', 'center', 'keep')
-    s.setStyle('A1:B2', 'bold', 'add')
-    s.setStyle('A1:B2', 'underline', 'add')
-    s.set("A1", "SHIP DATA")
-    s.set("A2", "ship")
-    s.set("A3", ship.Label)
-    s.set("B2", "internal ref")
-    s.set("B3", ship.Name)
-    s.setForeground('A1:B3', (0.5,0.5,0.5))
-
-    # Clean the Ship instance before generating the load condition
-    ship.Proxy.cleanWeights(ship)
-    ship.Proxy.cleanTanks(ship)
-
-    # Add the weights data
-    s.mergeCells('A4:D4')
-    s.setAlignment('A4:B5', 'center', 'keep')
-    s.setStyle('A4:B5', 'bold', 'add')
-    s.setStyle('A4:B5', 'underline', 'add')
-    s.set("A4", "WEIGHTS DATA")
-    s.set("A5", "weight")
-    s.set("B5", "internal ref")
-    for i in range(len(ship.Weights)):
-        weight = App.activeDocument().getObject(ship.Weights[i])
-        s.set("A{}".format(i + 6), weight.Label)
-        s.set("B{}".format(i + 6), weight.Name)
-    s.setForeground('A4:B{}'.format(5 + len(ship.Weights)), (0.5,0.5,0.5))
-
-    # Add the tanks data
-    s.mergeCells('A{0}:D{0}'.format(6 + len(ship.Weights)))
-    s.setAlignment('A{0}:A{0}'.format(6 + len(ship.Weights)), 'center', 'keep')
-    s.setAlignment('A{0}:D{0}'.format(7 + len(ship.Weights)), 'center', 'keep')
-    s.setStyle('A{0}:A{0}'.format(6 + len(ship.Weights)), 'bold', 'add')
-    s.setStyle('A{0}:D{0}'.format(7 + len(ship.Weights)), 'bold', 'add')
-    s.setStyle('A{0}:A{0}'.format(6 + len(ship.Weights)), 'underline', 'add')
-    s.setStyle('A{0}:D{0}'.format(7 + len(ship.Weights)), 'underline', 'add')
-    s.set("A{}".format(6 + len(ship.Weights)), "TANKS DATA")
-    s.set("A{}".format(7 + len(ship.Weights)), "tank")
-    s.set("B{}".format(7 + len(ship.Weights)), "internal ref")
-    s.set("C{}".format(7 + len(ship.Weights)), "Fluid density [kg/m^3]")
-    s.set("D{}".format(7 + len(ship.Weights)), "Filling ratio (interval [0.0,1.0])")
-    for i in range(len(ship.Tanks)):
-        tank = App.activeDocument().getObject(ship.Tanks[i])
-        s.set("A{}".format(i + 8 + len(ship.Weights)), tank.Label)
-        s.set("B{}".format(i + 8 + len(ship.Weights)), tank.Name)
-        s.set("C{}".format(i + 8 + len(ship.Weights)), "998.0")
-        s.set("D{}".format(i + 8 + len(ship.Weights)), "0.0")
-    s.setForeground('A{0}:A{0}'.format(6 + len(ship.Weights)), (0.5,0.5,0.5))
-    s.setForeground('A{0}:D{0}'.format(7 + len(ship.Weights)), (0.5,0.5,0.5))
-    s.setForeground('A{}:B{}'.format(8 + len(ship.Weights),
-                                     8 + len(ship.Weights) + len(ship.Tanks)),
-                    (0.5,0.5,0.5))
-    """
-
-    # Add the spreadsheet to the list of loading conditions of the ship
-    lcs = ship.LoadConditions[:]
-    lcs.append(s.Name)
-    ship.LoadConditions = lcs
-    ship.Proxy.cleanLoadConditions(ship)
-
-    # Recompute to take the changes
-    App.activeDocument().recompute()
+    Tools.createLoadCondition(ship)
