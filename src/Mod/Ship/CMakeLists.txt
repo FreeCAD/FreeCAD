@@ -80,11 +80,12 @@ SET(ShipCapacityCurve_SRCS
 	shipCapacityCurve/PlotAux.py
 	shipCapacityCurve/TaskPanel.py
 	shipCapacityCurve/TaskPanel.ui
+	shipCapacityCurve/Tools.py
 )
 SOURCE_GROUP("shipcapacitycurve" FILES ${ShipCapacityCurve_SRCS})
 
 SET(ShipCreateLoadCondition_SRCS
-        shipCreateLoadCondition/__init__.py
+    shipCreateLoadCondition/__init__.py
 )
 SOURCE_GROUP("shipcreateloadcondition" FILES ${ShipCreateLoadCondition_SRCS})
 
