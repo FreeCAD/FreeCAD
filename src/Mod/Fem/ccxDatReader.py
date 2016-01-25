@@ -30,7 +30,10 @@ __url__ = "http://www.freecadweb.org"
 
 
 if open.__module__ == '__builtin__':
-    # because we'll redefine open below
+    # because we'll redefine open below (Python2)
+    pyopen = open
+elif open.__module__ == 'io':
+    # because we'll redefine open below (Python3)
     pyopen = open
 
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
