@@ -4,9 +4,9 @@
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = CalculiX
-Description = Standard material for CalculiX sample calculations
+Name = CalculiX-Steel
+Description = Standard steel material for CalculiX sample calculations
 Father = Metal
 YoungsModulus = 210000 MPa
 PoissonRatio = 0.3
-Density = 1000 kg/m^3
+Density = 7900 kg/m^3

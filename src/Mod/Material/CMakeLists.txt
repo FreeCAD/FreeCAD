@@ -16,7 +16,7 @@ SOURCE_GROUP("Module" FILES ${Material_SRCS})
 SET (MaterialLib_Files
     StandardMaterial/None.FCMat
     StandardMaterial/ABS.FCMat
-    StandardMaterial/CalculiX.FCMat
+    StandardMaterial/CalculiX-Steel.FCMat
     StandardMaterial/Concrete-Generic.FCMat
     StandardMaterial/PLA.FCMat
     StandardMaterial/Steel-Generic.FCMat
