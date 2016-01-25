@@ -490,7 +490,6 @@ class _Stairs(ArchComponent.Component):
         print("Not yet implemented!")
 
 
-
 class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
     "A View Provider for Stairs"
     def __init__(self,vobj):
