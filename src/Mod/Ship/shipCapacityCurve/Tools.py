@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2016                                              *
+#*   Copyright (c) 2016                                                    *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +21,40 @@
 #*                                                                         *
 #***************************************************************************
 
-import TaskPanel
+
+import FreeCAD as App
+import Units
+import WeightInstance as Instance
+import shipUtils.Units as USys
+from PySide import QtGui
 
 
-def load():
-    """Load the examples importing tool"""
-    TaskPanel.createTask()
+def tankCapacityCurve(tank, n):
+    """Create a tank capacity curve
+
+    Position arguments:
+    tank -- Tank object (see createTank)
+    ship -- n Number of filling levels to test
+
+    Returned value:
+    List of computed points. Each point contains the filling level percentage
+    (interval [0, 1]), the the filling level (0 for the bottom of the tank), and
+    the volume.
+    """
+    bbox = tank.Shape.BoundBox
+    dz = Units.Quantity(bbox.ZMax - bbox.ZMin, Units.Length)
+    dlevel = 1.0 / (n - 1)
+    out = [(0.0, Units.parseQuantity("0 m"), Units.parseQuantity("0 m^3"))]
+
+    msg = QtGui.QApplication.translate(
+        "ship_console",
+        "Computing capacity curves",
+        None,
+        QtGui.QApplication.UnicodeUTF8)
+    App.Console.PrintMessage(msg + '...\n')
+    for i in range(1, n):
+        App.Console.PrintMessage("\t{} / {}\n".format(i + 1, n))
+        level = i * dlevel
+        vol = tank.Proxy.getVolume(tank, level)
+        out.append((level, level * dz, level * vol))
+    return out

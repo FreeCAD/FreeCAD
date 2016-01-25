@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -44,7 +44,7 @@ class TaskPanel:
             App.open(path + "wigley.fcstd")
         elif(form.ship.currentIndex() == 2):   # s60 (Katamaran)
             App.open(path + "s60_katamaran.fcstd")
-        elif(form.ship.currentIndex() == 2):   # Wigley (Katamaran)
+        elif(form.ship.currentIndex() == 3):   # Wigley (Katamaran)
             App.open(path + "wigley_katamaran.fcstd")
         return True
 

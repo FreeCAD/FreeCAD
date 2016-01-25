@@ -21,9 +21,57 @@
 #*                                                                         *
 #***************************************************************************
 
-import TaskPanel
+import FreeCAD as App
+import FreeCADGui as Gui
+from PySide import QtGui
+import Tools
+
+
+READ_ONLY_FOREGROUND = (0.5, 0.5, 0.5)
+READ_ONLY_BACKGROUND = (0.9, 0.9, 0.9)
 
 
 def load():
-    """Load the examples importing tool"""
-    TaskPanel.createTask()
+    """Directly create the load condition"""
+    # Check that a ship has been selected
+    ship = None
+    selObjs = Gui.Selection.getSelection()
+    if not selObjs:
+        msg = QtGui.QApplication.translate(
+            "ship_console",
+            "A ship instance must be selected before using this tool (no"
+            " objects selected)",
+            None,
+            QtGui.QApplication.UnicodeUTF8)
+        App.Console.PrintError(msg + '\n')
+        return
+    for i in range(len(selObjs)):
+        obj = selObjs[i]
+        props = obj.PropertiesList
+        try:
+            props.index("IsShip")
+        except ValueError:
+            continue
+        if obj.IsShip:
+            if ship:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "More than one ship have been selected (the extra"
+                    " ships will be ignored)",
+                    None,
+                    QtGui.QApplication.UnicodeUTF8)
+                App.Console.PrintWarning(msg + '\n')
+                break
+            ship = obj
+
+    if not ship:
+        msg = QtGui.QApplication.translate(
+            "ship_console",
+            "A ship instance must be selected before using this tool (no"
+            " valid ship found at the selected objects)",
+            None,
+            QtGui.QApplication.UnicodeUTF8)
+        App.Console.PrintError(msg + '\n')
+        return
+
+    Tools.createLoadCondition(ship)

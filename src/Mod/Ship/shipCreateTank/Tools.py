@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2016                                              *
+#*   Copyright (c) 2016                                                    *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +21,36 @@
 #*                                                                         *
 #***************************************************************************
 
-import TaskPanel
+
+import FreeCAD as App
+import Units
+import TankInstance as Instance
 
 
-def load():
-    """Load the examples importing tool"""
-    TaskPanel.createTask()
+def createTank(solids, ship):
+    """Create a new tank instance
+
+    Position arguments:
+    solids -- List of solid shapes
+    ship -- Ship owner
+
+    Returned value:
+    The new tank object
+
+    The tool will claim the new tank as a child of the ship object. Please do
+    not remove the partner ship object before removing this new tank before.
+    """
+    obj = App.ActiveDocument.addObject("Part::FeaturePython", "Tank")
+    tank = Instance.Tank(obj, solids, ship)
+    Instance.ViewProviderTank(obj.ViewObject)
+
+    # Set it as a child of the ship
+    tanks = ship.Tanks[:]
+    tanks.append(obj.Name)
+    ship.Tanks = tanks
+    ship.Proxy.cleanWeights(ship)
+    ship.Proxy.cleanTanks(ship)
+    ship.Proxy.cleanLoadConditions(ship)
+
+    App.ActiveDocument.recompute()
+    return obj
