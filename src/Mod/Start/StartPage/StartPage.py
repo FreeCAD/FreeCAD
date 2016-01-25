@@ -42,10 +42,10 @@ def translate(context,text):
                                      QtGui.QApplication.UnicodeUTF8).encode("utf8")
     s = cStringIO.StringIO()
     for i in u:
-        if ord(i) == 39:
+        if i == 39:
             s.write("\\'")
         else:
-            s.write(i)
+            s.write(chr(i))
     t = s.getvalue()
     s.close()
     return t
@@ -639,7 +639,7 @@ def setColors(html):
         defaults["#textcolor"] = palette.text().color().name()
         defaults["#windowcolor"] = palette.window().color().name()
         defaults["#windowtextcolor"] = palette.windowText().color().name()
-    for k,v in defaults.iteritems():
+    for k,v in defaults.items():
         html = html.replace(k,str(v))
     return html
 

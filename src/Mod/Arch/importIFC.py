@@ -344,8 +344,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("done.")
     
     global ROOT_ELEMENT
+
     if root:
         ROOT_ELEMENT = root
+
+    if DEBUG: print ("done.")
 
     #global ifcfile # keeping global for debugging purposes
     filename = decode(filename,utf=True)
@@ -496,6 +499,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         except:
             if DEBUG: print(" ERROR unable to get object representation",)
         if prepr and (MERGE_MODE_ARCH == 0) and archobj and CREATE_CLONES:
+
             for s in prepr.Representations:
                 if s.RepresentationIdentifier.upper() == "BODY":
                     if s.Items[0].is_a("IfcMappedItem"):

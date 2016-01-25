@@ -27,7 +27,8 @@ __title__="FreeCAD Equipment"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,Units
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
+from FreeCAD import Units
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
