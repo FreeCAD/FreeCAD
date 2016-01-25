@@ -34,3 +34,4 @@ from shipHydrostatics.Tools import areas, displacement, wettedArea, moment,
                                    floatingArea, BMT, mainFrameCoeff
 from shipCreateWeight.Tools import createWeight
 from shipCreateTank.Tools import createTank
+from shipCapacityCurve.Tools import tankCapacityCurve
