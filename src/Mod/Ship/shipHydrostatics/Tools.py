@@ -261,12 +261,12 @@ def displacement(ship, draft=None,
     B = Part.Point(Vector(cog.x, cog.y, cog.z))
     m = Matrix()
     m.move(Vector(0.0, 0.0, draft))
-    m.move(Vector(-draft * math.sin(math.radians(trim)), 0.0, 0.0))
-    m.rotateY(math.radians(trim))
+    m.move(Vector(-draft * math.sin(trim.getValueAs("rad")), 0.0, 0.0))
+    m.rotateY(trim.getValueAs("rad"))
     m.move(Vector(0.0,
-                  -draft * math.sin(math.radians(roll)),
+                  -draft * math.sin(roll.getValueAs("rad")),
                   base_z))
-    m.rotateX(-math.radians(roll))
+    m.rotateX(-roll.getValueAs("rad"))
     B.transform(m)
 
     try:

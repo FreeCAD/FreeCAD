@@ -154,7 +154,8 @@ class Tank:
 
         return ret_value
 
-    def getCoG(self, fp, vol, roll=0.0, trim=0.0):
+    def getCoG(self, fp, vol, roll=Units.parseQuantity("0 deg"),
+                              trim=Units.parseQuantity("0 deg")):
         """Return the fluid volume center of gravity, provided the volume of
         fluid inside the tank.
 
@@ -162,15 +163,14 @@ class Tank:
 
         Keyword arguments:
         fp -- Part::FeaturePython object affected.
-        vol -- Volume of fluid (in m^3).
-        roll -- Ship roll angle (in degrees).
-        trim -- Ship trim angle (in degrees).
+        vol -- Volume of fluid.
+        roll -- Ship roll angle.
+        trim -- Ship trim angle.
 
         If the fluid volume is bigger than the total tank one, it will be
         conveniently clamped.
         """
         # Change the units of the volume, and clamp the value
-        vol = vol * Units.Metre.Value**3
         if vol <= 0.0:
             return Vector()
         if vol >= fp.Shape.Volume:
@@ -187,19 +187,19 @@ class Tank:
             return cog
 
         # Get a first estimation of the level
-        level = vol / fp.Shape.Volume
+        level = vol.Value / fp.Shape.Volume
 
         # Transform the tank shape
         current_placement = fp.Placement
         m = current_placement.toMatrix()
-        m.rotateX(radians(roll))
-        m.rotateY(-radians(trim))
-        fp.Placement = m
+        m.rotateX(roll.getValueAs("rad"))
+        m.rotateY(-trim.getValueAs("rad"))
+        fp.Placement = Placement(m)
 
         # Iterate to find the fluid shape
         for i in range(COMMON_BOOLEAN_ITERATIONS):
             shape = self.getVolume(fp, level, return_shape=True)
-            error = (vol - shape.Volume) / fp.Shape.Volume
+            error = (vol.Value - shape.Volume) / fp.Shape.Volume
             if abs(error) < 0.01:
                 break
             level += error
@@ -222,8 +222,8 @@ class Tank:
         fp.Placement = current_placement
         p = Part.Point(cog)
         m = Matrix()
-        m.rotateY(radians(trim))
-        m.rotateX(-radians(roll))
+        m.rotateY(trim.getValueAs("rad"))
+        m.rotateX(-roll.getValueAs("rad"))
         p.rotate(Placement(m))
 
         return Vector(p.X, p.Y, p.Z)

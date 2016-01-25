@@ -48,18 +48,22 @@ class TaskPanel:
         form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
         form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
 
-        rolls = []
-        roll = Units.Quantity(Locale.fromString(
-            form.angle.text())).getValueAs('deg').Value
+        roll = Units.Quantity(Locale.fromString(form.angle.text()))
         n_points = form.n_points.value()
+        var_trim = form.var_trim.isChecked()
+
+        rolls = []
         for i in range(n_points):
             rolls.append(roll * i / float(n_points - 1))
 
-        gzs, drafts, trims = Tools.solve(self.ship,
-                                         self.weights,
-                                         self.tanks,
-                                         rolls,
-                                         form.var_trim.isChecked())
+        points = Tools.gz(self.lc, rolls, var_trim)
+        gzs = []
+        drafts = []
+        trims = []
+        for p in points:
+            gzs.append(p[0].getValueAs('m').Value)
+            drafts.append(p[1].getValueAs('m').Value)
+            trims.append(p[2].getValueAs('deg').Value)
 
         PlotAux.Plot(rolls, gzs, drafts, trims)
 
@@ -175,99 +179,6 @@ class TaskPanel:
                     continue
             except ValueError:
                 continue
-            # Extract the weights and the tanks
-            weights = []
-            index = 6
-            while True:
-                try:
-                    ws = doc.getObjectsByLabel(obj.get('A{}'.format(index)))
-                except ValueError:
-                    break
-                index += 1
-                if len(ws) != 1:
-                    if len(ws) == 0:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Wrong Weight label! (no instances labeled as"
-                            "'{}' found)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
-                        App.Console.PrintError(msg + '\n'.format(
-                            obj.get('A{}'.format(index - 1))))
-                    else:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Ambiguous Weight label! ({} instances labeled as"
-                            "'{}' found)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
-                        App.Console.PrintError(msg + '\n'.format(
-                            len(ws),
-                            obj.get('A{}'.format(index - 1))))
-                    continue
-                w = ws[0]
-                try:
-                    if w is None or not w.PropertiesList.index("IsWeight"):
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Invalid Weight! (the object labeled as"
-                            "'{}' is not a weight)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
-                        App.Console.PrintError(msg + '\n'.format(
-                            len(ws),
-                            obj.get('A{}'.format(index - 1))))
-                        continue
-                except ValueError:
-                    continue
-                weights.append(w)
-            tanks = []
-            index = 6
-            while True:
-                try:
-                    ts = doc.getObjectsByLabel(obj.get('C{}'.format(index)))
-                    dens = float(obj.get('D{}'.format(index)))
-                    level = float(obj.get('E{}'.format(index)))
-                except ValueError:
-                    break
-                index += 1
-                if len(ts) != 1:
-                    if len(ts) == 0:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Wrong Tank label! (no instances labeled as"
-                            "'{}' found)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
-                        App.Console.PrintError(msg + '\n'.format(
-                            obj.get('C{}'.format(index - 1))))
-                    else:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Ambiguous Tank label! ({} instances labeled as"
-                            "'{}' found)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
-                        App.Console.PrintError(msg + '\n'.format(
-                            len(ts),
-                            obj.get('C{}'.format(index - 1))))
-                    continue
-                t = ts[0]
-                try:
-                    if t is None or not t.PropertiesList.index("IsTank"):
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Invalid Tank! (the object labeled as"
-                            "'{}' is not a tank)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
-                        App.Console.PrintError(msg + '\n'.format(
-                            len(ws),
-                            obj.get('C{}'.format(index - 1))))
-                        continue
-                except ValueError:
-                    continue
-                tanks.append((t, dens, level))
             # Let's see if several loading conditions have been selected (and
             # prompt a warning)
             if self.lc:
@@ -281,8 +192,6 @@ class TaskPanel:
                 break
             self.lc = obj
             self.ship = ship
-            self.weights = weights
-            self.tanks = tanks
         if not self.lc:
             msg = QtGui.QApplication.translate(
                 "ship_console",
