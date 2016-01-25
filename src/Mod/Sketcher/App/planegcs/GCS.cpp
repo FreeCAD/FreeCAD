@@ -962,7 +962,7 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
         Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
         2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
     
-    if(closertopositiveminor>0){
+    if(closertopositiveminor<0){
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorX,tagId);
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorY,tagId);
         addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMinorX,tagId);
