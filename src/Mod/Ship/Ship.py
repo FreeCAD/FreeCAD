@@ -36,3 +36,4 @@ from shipCreateWeight.Tools import createWeight
 from shipCreateTank.Tools import createTank
 from shipCapacityCurve.Tools import tankCapacityCurve
 from shipCreateLoadCondition.Tools import createLoadCondition
+from shipGZ.Tools import gz
