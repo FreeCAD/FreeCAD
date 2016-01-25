@@ -88,8 +88,7 @@ void loadTestResource()
 }
 
 /* Python entry */
-extern "C" {
-void AppTestGuiExport initQtUnitGui()
+PyMODINIT_FUNC initQtUnitGui()
 {
     // the following constructor call registers our extension module
     // with the Python runtime system
@@ -101,5 +100,3 @@ void AppTestGuiExport initQtUnitGui()
     loadTestResource();
     return;
 }
-
-} // extern "C"

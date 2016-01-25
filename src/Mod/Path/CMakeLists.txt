@@ -50,6 +50,12 @@ SET(PathScripts_SRCS
     PathScripts/PathKurveUtils.py
     PathScripts/PathKurve.py
     PathScripts/slic3r_pre.py
+    PathScripts/PathFaceProfile.py
+    PathScripts/PathFacePocket.py
+    PathScripts/PathArray.py
+    PathScripts/PathCustom.py
+    PathScripts/PathInspect.py
+    PathScripts/PathSimpleCopy.py
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL

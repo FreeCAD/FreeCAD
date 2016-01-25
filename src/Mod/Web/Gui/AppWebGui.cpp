@@ -60,7 +60,7 @@ public:
         );
         add_varargs_method("openBrowserHTML",&Module::openBrowserHTML
         );
-        initialize("This module is the Web module."); // register with Python
+        initialize("This module is the WebGui module."); // register with Python
     }
 
     virtual ~Module() {}

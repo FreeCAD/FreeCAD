@@ -36,7 +36,10 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
+#TODO make the shape parametric
 class FromShape:
+    
+    
     def __init__(self,obj):
         obj.addProperty("App::PropertyLink","Base","Shape",translate("Shape Object","The base Shape of this toolpath"))
         obj.Proxy = self
@@ -52,6 +55,7 @@ class FromShape:
 
 
 class _ViewProviderFromShape:
+
 
     def __init__(self,vobj): #mandatory
         vobj.Proxy = self
@@ -72,37 +76,32 @@ class _ViewProviderFromShape:
 class CommandFromShape:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Shape',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathFromShape","Gcode from a Shape"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_FromShape","Path from a Shape"),
                 'Accel': "P, S",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathFromShape","Creates GCode from a FreeCAD wire/curve")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_FromShape","Creates a Path from a wire/curve")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathFromShape","Create GCode from a wire/curve"))
-        FreeCADGui.addModule("PathScripts.PathFromShape")
-
-        consolecode = '''
-import Path
-import PathScripts
-from PathScripts import PathFromShape
-from PathScripts import PathUtils
-
-obj = FreeCAD.activeDocument().addObject('Path::FeatureShape','PathShape')
-obj.Shape= FreeCAD.activeDocument().Rectangle.Shape.copy()
-
-PathUtils.addToProject(obj)
-
-PathScripts.PathFromShape._ViewProviderFromShape(obj.ViewObject)
-App.ActiveDocument.recompute()
-'''
-        FreeCADGui.doCommand(consolecode)
+        
+        # check that the selection contains exactly what we want
+        selection = FreeCADGui.Selection.getSelection()
+        if len(selection) != 1:
+            FreeCAD.Console.PrintError(translate("Path_FromShape","Please select exactly one Part-based object\n"))
+            return
+        if not(selection[0].isDerivedFrom("Part::Feature")):
+            FreeCAD.Console.PrintError(translate("Path_FromShape","Please select exactly one Part-based object\n"))
+            return
+        
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_FromShape","Create path from shape"))
+        FreeCADGui.addModule("PathScripts.PathUtils")
+        FreeCADGui.doCommand("obj = FreeCAD.activeDocument().addObject('Path::FeatureShape','PathShape')")
+        FreeCADGui.doCommand("obj.Shape = FreeCAD.activeDocument()."+selection[0].Name+".Shape")
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp: 
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_FromShape',CommandFromShape())
-
-FreeCAD.Console.PrintLog("Loading PathFromShape... done\n")
