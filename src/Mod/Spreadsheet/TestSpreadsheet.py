@@ -1,4 +1,5 @@
-#   (c) Juergen Riegel (juergen.riegel@web.de) 2007      LGPL
+# (c) 2016 Werner Mayer
+# LGPL
 
 import os
 import sys
@@ -17,7 +18,6 @@ v = Base.Vector
 
 class SpreadsheetCases(unittest.TestCase):
     def setUp(self):
-        # set up a planar face with 2 triangles
         self.doc = FreeCAD.newDocument()
 
     def testAlias(self):
