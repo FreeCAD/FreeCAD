@@ -8,6 +8,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        TestSpreadsheet.py
     DESTINATION
         Mod/Spreadsheet
 )

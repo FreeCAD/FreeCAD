@@ -51,6 +51,7 @@ class TestCmd:
         QtUnitGui.addTest("TestSketcherApp")
         QtUnitGui.addTest("TestPartApp")
         QtUnitGui.addTest("TestPartDesignApp")
+        QtUnitGui.addTest("TestSpreadsheet")
         QtUnitGui.addTest("Workbench")
         QtUnitGui.addTest("Menu")
         QtUnitGui.addTest("Menu.MenuDeleteCases")
