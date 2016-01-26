@@ -56,7 +56,7 @@ class SpreadsheetCases(unittest.TestCase):
         except:
             self.assertEqual(sheet.getAlias("A1"),None)
         else:
-            self.fail("A cell address was used aa alias which shouldn't be allowed")
+            self.fail("A cell address was used as alias which shouldn't be allowed")
 
     def testPlacementName(self):
         """ Object name is equal to property name (bug #2389) """
@@ -80,7 +80,7 @@ class SpreadsheetCases(unittest.TestCase):
         sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388)) 
         sketch.setExpression('Constraints[0]', 'InvoluteGear.NumberOfTeeth')
         self.doc.recompute()
-        self.assertEqual(sketch.State,'Up-to-date')
+        self.assertIn('Up-to-date',sketch.State)
 
     def testSketcher(self):
         """ Mixup of Label and Name (bug #2407)"""
@@ -99,7 +99,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.Label="Calc"
         self.doc.recompute()
         self.assertEqual(sketch.ExpressionEngine[0][1],'Calc.Length')
-        self.assertEqual(sketch.State,'Up-to-date')
+        self.assertIn('Up-to-date',sketch.State)
 
     def tearDown(self):
         #closing doc
