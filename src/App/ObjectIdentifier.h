@@ -227,22 +227,31 @@ public:
 
 protected:
 
+    struct ResolveResults {
+
+        ResolveResults(const ObjectIdentifier & oi);
+
+        int propertyIndex;
+        App::Document * resolvedDocument;
+        String resolvedDocumentName;
+        App::DocumentObject * resolvedDocumentObject;
+        String resolvedDocumentObjectName;
+        App::Property * resolvedProperty;
+        std::string propertyName;
+    };
+
     std::string getPythonAccessor() const;
 
-    void resolve() const;
+    void resolve(ResolveResults & results) const;
 
     App::DocumentObject *getDocumentObject(const App::Document *doc, const String &name, bool &byIdentifier) const;
 
     const App::PropertyContainer * owner;
+    String  documentName;
     bool documentNameSet;
+    String  documentObjectName;
     bool documentObjectNameSet;
     std::vector<Component> components;
-
-    /// Mutable elements, updated by resolve()
-    mutable int propertyIndex;
-    mutable String documentName;
-    mutable String documentObjectName;
-    mutable std::string propertyName;
 
 };
 
