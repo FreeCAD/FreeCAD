@@ -148,7 +148,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop)
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
 
     if (!docObj)
-        throw Base::Exception("Property must be owned by a document object.");
+        throw Base::TypeError("Property must be owned by a document object.");
 
     Document * doc = docObj->getDocument();
 
