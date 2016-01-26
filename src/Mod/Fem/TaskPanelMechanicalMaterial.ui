@@ -176,7 +176,7 @@
            <double>0.100000000000000</double>
           </property>
           <property name="value">
-           <double>0.300000000000000</double>
+           <double>0.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -202,7 +202,7 @@
            </size>
           </property>
           <property name="text">
-           <string>0 kg/m^3</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -214,7 +214,7 @@
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true">kg/m^3</string>
+           <string notr="true">kg/mm^3</string>
           </property>
           <property name="decimals" stdset="0">
            <number>3</number>

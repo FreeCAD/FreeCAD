@@ -113,28 +113,38 @@ class _TaskPanelMechanicalMaterial:
 
     def ym_changed(self, value):
         import Units
+        # FreeCADs standard unit for stress is kPa
         old_ym = Units.Quantity(self.material['YoungsModulus'])
-        if old_ym != value:
-            material = self.material
-            # FreeCAD uses kPa internall for Stress
-            material['YoungsModulus'] = unicode(value) + " kPa"
-            self.material = material
+        variation = 0.001
+        if value:
+            if not (1 - variation < float(old_ym) / value < 1 + variation):
+                # YoungsModulus has changed
+                material = self.material
+                material['YoungsModulus'] = unicode(value) + " kPa"
+                self.material = material
 
     def density_changed(self, value):
         import Units
+        # FreeCADs standard unit for density is kg/mm^3
         old_density = Units.Quantity(self.material['Density'])
-        if old_density != value:
-            material = self.material
-            material['Density'] = unicode(value) + " kg/mm^3"
-            self.material = material
+        variation = 0.001
+        if value:
+            if not (1 - variation < float(old_density) / value < 1 + variation):
+                # density has changed
+                material = self.material
+                material['Density'] = unicode(value) + " kg/mm^3"
+                self.material = material
 
     def pr_changed(self, value):
         import Units
         old_pr = Units.Quantity(self.material['PoissonRatio'])
-        if old_pr != value:
-            material = self.material
-            material['PoissonRatio'] = unicode(value)
-            self.material = material
+        variation = 0.001
+        if value:
+            if  not (1 - variation < float(old_pr) / value < 1 + variation):
+                # PoissonRatio has changed
+                material = self.material
+                material['PoissonRatio'] = unicode(value)
+                self.material = material
 
     def choose_material(self, index):
         if index < 0:
