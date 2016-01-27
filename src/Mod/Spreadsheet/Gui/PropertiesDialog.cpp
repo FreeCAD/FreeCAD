@@ -204,22 +204,7 @@ void PropertiesDialog::aliasChanged(const QString & text)
 {
     QPalette palette = ui->alias->palette();
 
-    aliasOk = true;
-
-    if (sheet->getAddressFromAlias(Base::Tools::toStdString(text)).size() > 0)
-        aliasOk = false;
-
-    if (text.indexOf(QRegExp(QString::fromLatin1("^[A-Za-z][_A-Za-z0-9]*$"))) >= 0) {
-        try {
-            CellAddress address(text.toUtf8().constData());
-            aliasOk = false;
-        }
-        catch (...) { }
-    }
-    else {
-        if (!text.isEmpty())
-            aliasOk = false;
-    }
+    aliasOk = text.isEmpty() || sheet->isValidAlias(Base::Tools::toStdString(text));
 
     alias = aliasOk ? Base::Tools::toStdString(text) : "";
     palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);

@@ -37,6 +37,9 @@ SpreadsheetExport std::string columnName(int col);
 SpreadsheetExport std::string rowName(int row);
 int decodeColumn(const std::string &colstr);
 int decodeRow(const std::string &rowstr);
+int validColumn(const std::string &colstr);
+int validRow(const std::string &rowstr);
+
 SpreadsheetExport CellAddress stringToAddress(const char *strAddress);
 SpreadsheetExport void createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles);
 SpreadsheetExport std::string quote(const std::string &input);
