@@ -84,8 +84,8 @@ DEF_STD_CMD(CmdTechDrawNewDimension);
 CmdTechDrawNewDimension::CmdTechDrawNewDimension()
   : Command("TechDraw_NewDimension")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new dimension");
     sWhatsThis      = "TechDraw_NewDimension";
@@ -111,6 +111,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
+    //TODO: do all these validations have to be accessible from Python?
     //selected edge(s) must have valid reference to Source edge for True Dimension
     //otherwise Dimension must be Projected
     bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
@@ -197,8 +198,9 @@ void CmdTechDrawNewDimension::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
-
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
 
     //Horrible hack to force Tree update
@@ -215,8 +217,8 @@ DEF_STD_CMD(CmdTechDrawNewRadiusDimension);
 CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
   : Command("TechDraw_NewRadiusDimension")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new radius dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new radius dimension feature for the selected view");
     sWhatsThis      = "TechDraw_NewRadiusDimension";
@@ -283,7 +285,9 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
 
@@ -301,8 +305,8 @@ DEF_STD_CMD(CmdTechDrawNewDiameterDimension);
 CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
   : Command("TechDraw_NewDiameterDimension")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new diameter dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature for the selected view");
     sWhatsThis      = "TechDraw_NewDiameterDimension";
@@ -371,7 +375,9 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
 
@@ -390,8 +396,8 @@ DEF_STD_CMD(CmdTechDrawNewLengthDimension);
 CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
   : Command("TechDraw_NewLengthDimension")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new length dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
     sWhatsThis      = "TechDraw_NewLengthDimension";
@@ -465,7 +471,9 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
 
@@ -483,8 +491,8 @@ DEF_STD_CMD(CmdTechDrawNewDistanceXDimension);
 CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
   : Command("TechDraw_NewDistanceXDimension")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new horizontal-distance dimension");
     sWhatsThis      = "TechDraw_NewDistanceXDimension";
@@ -556,7 +564,9 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
 
@@ -575,8 +585,8 @@ DEF_STD_CMD(CmdTechDrawNewDistanceYDimension);
 CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
   : Command("TechDraw_NewDistanceYDimension")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new vertical dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
     sWhatsThis      = "TechDraw_NewDistanceYDimension";
@@ -647,7 +657,9 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
 
@@ -666,8 +678,8 @@ DEF_STD_CMD(CmdTechDrawNewAngleDimension);
 CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
   : Command("TechDraw_NewAngleDimension")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a new angle dimension into the drawing");
     sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
     sWhatsThis      = "TechDraw_NewAngleDimension";
@@ -728,7 +740,9 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    std::string PageName = page->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
 
