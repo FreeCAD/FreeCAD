@@ -35,10 +35,10 @@
 using namespace TechDrawGui;
 
 #if 0 // needed for Qt's lupdate utility
-//    qApp->translate("Workbench", "Drawing");
-    qApp->translate("Workbench", "Drawing Pages");
-    qApp->translate("Workbench", "Drawing Views");
-    qApp->translate("Workbench", "Drawing Dimensions");
+//    qApp->translate("Workbench", "TechDraw");
+    qApp->translate("Workbench", "TechDraw Pages");
+    qApp->translate("Workbench", "TechDraw Views");
+    qApp->translate("Workbench", "TechDraw Dimensions");
 #endif
 
 /// @namespace TechDrawGui @class Workbench
@@ -59,14 +59,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* draw = new Gui::MenuItem;
     root->insertItem(item, draw);
-    draw->setCommand("Drawing");
-    //*draw << "TechDraw_Open";
-    //*part << "TechDraw_NewA3Landscape";
+    draw->setCommand("TechDraw");
     *draw << "TechDraw_NewPageDef";
     *draw << "TechDraw_NewPage";
     *draw << "TechDraw_NewView";
     *draw << "TechDraw_ProjGroup";
-    //*part << "TechDraw_OpenBrowserView";
     *draw << "TechDraw_NewViewSection";
     *draw << "TechDraw_Annotation";
     *draw << "TechDraw_Symbol";
@@ -74,8 +71,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_ClipPlus";
     *draw << "TechDraw_ClipMinus";
     *draw << "TechDraw_NewDimension";
-    //*part << "TechDraw_DraftView";
     *draw << "TechDraw_ExportPage";
+    //*draw << "TechDraw_Open";
+    //*part << "TechDraw_NewA3Landscape";
+    //*part << "TechDraw_OpenBrowserView";
+    //*part << "TechDraw_DraftView";
     //*draw << "Separator";
     //*draw << "TechDraw_ProjectShape";
 
@@ -86,40 +86,40 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* pages = new Gui::ToolBarItem(root);
-    pages->setCommand("Drawing Pages");
+    pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_NewPageDef";
     *pages << "TechDraw_NewPage";
 
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
-    views->setCommand("Drawing Views");
+    views->setCommand("TechDraw Views");
     *views << "TechDraw_NewView";
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_Annotation";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
-    clips->setCommand("Drawing Clips");
+    clips->setCommand("TechDraw Clips");
     *clips << "TechDraw_Clip";
     *clips << "TechDraw_ClipPlus";
     *clips << "TechDraw_ClipMinus";
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
-    dims->setCommand("Drawing Dimensions");
-//    *dims << "TechDraw_NewDimension"
+    dims->setCommand("TechDraw Dimensions");
     *dims << "TechDraw_NewLengthDimension";
     *dims << "TechDraw_NewDistanceXDimension";
     *dims << "TechDraw_NewDistanceYDimension";
     *dims << "TechDraw_NewRadiusDimension";
     *dims << "TechDraw_NewDiameterDimension";
     *dims << "TechDraw_NewAngleDimension";
+//    *dims << "TechDraw_NewDimension"
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
-    file->setCommand("Drawing File Access");
+    file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPage";
     *file << "TechDraw_Symbol";
 
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
-    decor->setCommand("Drawing Decoration");
+    decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
     return root;
 }
@@ -128,7 +128,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     Gui::ToolBarItem *pages = new Gui::ToolBarItem(root);
-    pages->setCommand("Drawing Pages");
+    pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_NewPageDef";
     *pages << "TechDraw_NewPage";
 
@@ -140,28 +140,28 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_Annotation";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
-    clips->setCommand("Drawing Clips");
+    clips->setCommand("TechDraw Clips");
     *clips << "TechDraw_Clip";
     *clips << "TechDraw_ClipPlus";
     *clips << "TechDraw_ClipMinus";
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
-    dims->setCommand("Drawing Dimensions");
-//    *dims << "TechDraw_NewDimension";
+    dims->setCommand("TechDraw Dimensions");
     *dims << "TechDraw_NewLengthDimension";
     *dims << "TechDraw_NewDistanceXDimension";
     *dims << "TechDraw_NewDistanceYDimension";
     *dims << "TechDraw_NewRadiusDimension";
     *dims << "TechDraw_NewDiameterDimension";
     *dims << "TechDraw_NewAngleDimension";
+//    *dims << "TechDraw_NewDimension";
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
-    file->setCommand("Drawing File Access");
+    file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPage";
     *file << "TechDraw_Symbol";
 
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
-    decor->setCommand("Drawing Decoration");
+    decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
 
     return root;
