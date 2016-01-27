@@ -25,6 +25,7 @@ import FreeCAD
 
 import PySide
 from PySide import QtCore, QtGui
+from distutils.version import StrictVersion as V
 
 try:
     import matplotlib
@@ -32,7 +33,11 @@ try:
     matplotlib.rcParams['backend.qt4']='PySide'
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+    if V(matplotlib.__version__) < V("1.5.0"):
+       from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+    else:
+       from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+
     from matplotlib.figure import Figure
 except ImportError:
     msg = PySide.QtGui.QApplication.translate(
