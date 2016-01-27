@@ -278,9 +278,11 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 Base::Vector3d center = (last + cmd.getCenter());
                 //double radius = (last - center).Length();
                 double angle = (next - center).GetAngle(last - center);
-                // BUGGY: not needed anyway?
+                // GetAngle will always return the minor angle. Switch if needed
                 Base::Vector3d anorm = (last - center) % (next - center);
-                if  ( (anorm.z < 0) && ( (name == "G3") || (name == "G03") ) )
+                if ( (anorm.z < 0) && ( (name == "G3") || (name == "G03") ) )
+                    angle = M_PI * 2 - angle;
+                else if ( (anorm.z > 0) && ( (name == "G2") || (name == "G02") ) )
                     angle = M_PI * 2 - angle;
                 if (angle == 0)
                     angle = M_PI * 2;
