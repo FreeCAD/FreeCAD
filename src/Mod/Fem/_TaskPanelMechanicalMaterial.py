@@ -132,7 +132,9 @@ class _TaskPanelMechanicalMaterial:
             if not (1 - variation < float(old_density) / value < 1 + variation):
                 # density has changed
                 material = self.material
-                material['Density'] = unicode(value) + " kg/mm^3"
+                value_in_kg_per_m3 = value * 1e9
+                material['Density'] = unicode(value_in_kg_per_m3) + " kg/m^3"
+                # material['Density'] = unicode(value) + " kg/mm^3"
                 self.material = material
 
     def pr_changed(self, value):
