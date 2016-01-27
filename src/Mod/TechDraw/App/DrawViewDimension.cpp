@@ -188,6 +188,10 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 {
+    if (!hasReferences()) {                                            //too soon
+        return App::DocumentObject::StdReturn;
+    }
+
     //Clear the previous measurement made
     measurement->clear();
 
@@ -220,6 +224,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
 std::string  DrawViewDimension::getFormatedValue() const
 {
+
     QString str = QString::fromUtf8(FormatSpec.getStrValue().c_str());
 
     QRegExp rx(QString::fromAscii("%(\\w+)%"));                        //any word bracketed by %
@@ -246,17 +251,22 @@ std::string  DrawViewDimension::getFormatedValue() const
 double DrawViewDimension::getDimValue() const
 {
     double result = 0.0;
-    if (!getViewPart()->hasGeometry()) {                               //happens when loading saved document
+    if (!hasReferences()) {                                            //happens during Dimension creation
+        Base::Console().Message("INFO - DVD::getDimValue - Dimension has no References\n");
         return result;
     }
+
+    if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
+        Base::Console().Message("INFO - DVD::getDimValue ViewPart has no Geometry yet\n");
+        return result;
+    }
+
     if (ProjectionType.isValue("True")) {
         // True Values
         if (!measurement->hasReferences()) {
             return result;
         }
         if(Type.isValue("Distance")) {
-            //TODO: measurement->length() is the sum of the lengths of the edges in the References. is this what we want here?
-            //return measurement->length();
             result = measurement->delta().Length();
         } else if(Type.isValue("DistanceX")){
             Base::Vector3d delta = measurement->delta();
@@ -422,6 +432,8 @@ double DrawViewDimension::getDimValue() const
 
 DrawViewPart* DrawViewDimension::getViewPart() const
 {
+    //TODO: range_check here if no References.  valid situation during Dimension creation.  what happens if return NULL??
+    //need checks everywhere?
     return dynamic_cast<TechDraw::DrawViewPart * >(References.getValues().at(0));
 }
 
@@ -503,14 +515,7 @@ double DrawViewDimension::dist2Segs(Base::Vector2D s1,
 
 bool DrawViewDimension::hasReferences(void) const
 {
-    bool result = false;
-    const std::vector<App::DocumentObject*> &refs = References.getValues();
-    if (refs.empty()) {
-        result = false;
-    } else {
-        result = true;
-    }
-    return result;
+    return (References.getSize() > 0);
 }
 
 PyObject *DrawViewDimension::getPyObject(void)

@@ -324,13 +324,16 @@ void QGIViewDimension::datumLabelDragFinished()
 
 void QGIViewDimension::draw()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()))
-        return;
-
     TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
+    if((!dim) ||                                                       //nothing to draw, don't try
+       (!dim->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) ||
+       (!dim->hasReferences()) ) {
+        return;
+    }
+
     QGIDatumLabel *lbl = dynamic_cast<QGIDatumLabel *>(datumLabel);
     const TechDraw::DrawViewPart *refObj = dim->getViewPart();
-    if(!refObj->hasGeometry()) {                                       //nothing to draw yet
+    if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
         return;
     }
     pen.setStyle(Qt::SolidLine);
