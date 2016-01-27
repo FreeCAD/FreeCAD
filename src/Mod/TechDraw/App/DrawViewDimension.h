@@ -73,6 +73,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderDimension";
     }
+    //return PyObject as DrawViewDimensionPy
+    virtual PyObject *getPyObject(void);
 
     virtual std::string getFormatedValue() const;
     virtual double getDimValue() const;
