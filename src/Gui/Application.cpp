@@ -379,6 +379,7 @@ Application::Application(bool GUIenabled)
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(),
             module,"UiLoader");
+        PyResource::init_type();
 
         // PySide additions
         PySideUicModule* pySide = new PySideUicModule();
