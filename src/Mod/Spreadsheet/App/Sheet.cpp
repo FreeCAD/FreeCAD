@@ -1123,19 +1123,28 @@ void Sheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
 }
 
 /**
- * @brief Set alias for cell at address \a address to \a alias.
+ * @brief Set alias for cell at address \a address to \a alias. If the alias
+ * is an empty string, the existing alias is removed.
  * @param address Address of cell
  * @param alias New alias.
  */
 
 void Sheet::setAlias(CellAddress address, const std::string &alias)
 {
-    const Cell * cell = cells.getValueFromAlias(alias);
+    std::string existingAlias = getAddressFromAlias(alias);
 
-    if (cell != 0)
-        throw Base::Exception("Alias already defined.");
-    else
+    if (existingAlias.size() > 0) {
+        if (existingAlias == address.toString()) // Same as old?
+            return;
+        else
+            throw Base::Exception("Alias already defined");
+    }
+    else if (alias.size() == 0) // Empty?
+        cells.setAlias(address, "");
+    else if (isValidAlias(alias)) // Valid?
         cells.setAlias(address, alias);
+    else
+        throw Base::Exception("Invalid alias");
 }
 
 /**
@@ -1153,6 +1162,31 @@ std::string Sheet::getAddressFromAlias(const std::string &alias) const
         return cell->getAddress().toString();
     else
         return std::string();
+}
+
+/**
+ * @brief Determine whether a given alias candiate is valid or not.
+ *
+ * A candidate is valid is the string is syntactically correct,
+ * and the alias does not conflict with an existing property.
+ *
+ */
+
+bool Sheet::isValidAlias(const std::string & candidate)
+{
+    // Valid syntactically?
+    if (!cells.isValidAlias(candidate))
+        return false;
+
+    // Existing alias? Then it's ok
+    if (getAddressFromAlias(candidate).size() > 0 )
+        return true;
+
+    // Check to see that is does not crash with any other property in the Sheet object.
+    if (getPropertyByName(candidate.c_str()))
+        return false;
+    else
+        return true;
 }
 
 /**

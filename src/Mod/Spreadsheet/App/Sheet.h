@@ -142,6 +142,8 @@ public:
 
     std::string getAddressFromAlias(const std::string & alias) const;
 
+    bool isValidAlias(const std::string &candidate);
+
     void setSpans(CellAddress address, int rows, int columns);
 
     std::set<std::string> dependsOn(CellAddress address) const;

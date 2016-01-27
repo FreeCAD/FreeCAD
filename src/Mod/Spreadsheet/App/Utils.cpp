@@ -84,13 +84,12 @@ std::string Spreadsheet::rowName(int row)
 
 int Spreadsheet::decodeRow(const std::string &rowstr)
 {
-    char * end;
-    int i = strtol(rowstr.c_str(), &end, 10);
+    int row = validRow(rowstr);
 
-    if (i <0 || i >= CellAddress::MAX_ROWS || *end)
+    if (row >= 0)
+        return row;
+    else
         throw Base::Exception("Invalid row specification.");
-
-    return i - 1;
 }
 
 /**
@@ -104,13 +103,51 @@ int Spreadsheet::decodeRow(const std::string &rowstr)
 
 int Spreadsheet::decodeColumn(const std::string &colstr)
 {
+    int col = validColumn(colstr);
+
+    if (col >= 0)
+        return col;
+    else
+        throw Base::Exception("Invalid column specification");
+}
+
+/**
+  * Determine wheter a row specification is valid or not.
+  *
+  * @param rowstr Row specified as a string, with "1" being the first row.
+  *
+  * @returns 0 or positive on success, -1 on error.
+  */
+
+int Spreadsheet::validRow(const std::string &rowstr)
+{
+    char * end;
+    int i = strtol(rowstr.c_str(), &end, 10);
+
+    if (i <0 || i >= CellAddress::MAX_ROWS || *end)
+        return -1;
+
+    return i - 1;
+}
+
+/**
+  * Determine whether a column specification is valid or not.
+  *
+  * @param colstr Column specified as a string, with "A" begin the first column.
+  *
+  * @returns 0 or positive on success, -1 on error.
+  *
+  */
+
+int Spreadsheet::validColumn(const std::string &colstr)
+{
     int col = 0;
 
     if (colstr.length() == 1) {
         if ((colstr[0] >= 'A' && colstr[0] <= 'Z'))
             col = colstr[0] - 'A';
         else
-            throw Base::Exception("Invalid column specification");
+            return -1;
     }
     else {
         col = 0;
@@ -120,7 +157,7 @@ int Spreadsheet::decodeColumn(const std::string &colstr)
             if ((*i >= 'A' && *i <= 'Z'))
                 v = *i - 'A';
             else
-                throw Base::Exception("Invalid column specification");
+                return -1;
 
             col = col * 26 + v;
         }

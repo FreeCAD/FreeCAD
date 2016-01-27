@@ -176,6 +176,33 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
         return getValue(it->second);
     else
         return 0;
+
+}
+
+bool PropertySheet::isValidAlias(const std::string &candidate)
+{
+    static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
+    boost::cmatch cm;
+
+    /* Check if it is used before */
+    if (getValueFromAlias(candidate) != 0)
+        return false;
+
+    if (boost::regex_match(candidate.c_str(), cm, gen)) {
+        static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+
+        if (boost::regex_match(candidate.c_str(), cm, e)) {
+            const boost::sub_match<const char *> colstr = cm[1];
+            const boost::sub_match<const char *> rowstr = cm[2];
+
+            // A valid cell address?
+            if (Spreadsheet::validRow(rowstr.str()) >= 0 && Spreadsheet::validColumn(colstr.str()) >= 0)
+                return false;
+        }
+        return true;
+    }
+    else
+        return false;
 }
 
 std::set<CellAddress> PropertySheet::getUsedCells() const
@@ -452,7 +479,15 @@ void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 
 void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 {
+    if (alias.size() > 0 && !isValidAlias(alias))
+        throw Base::Exception("Invalid alias");
+
+    const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
+
+    if (aliasedCell != 0 && cell != aliasedCell)
+        throw Base::Exception("Alias already defined.");
+
     assert(cell != 0);
 
     /* Mark cells depending on this cell dirty; they need to be resolved when an alias changes or disappears */

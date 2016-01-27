@@ -85,6 +85,8 @@ public:
 
     const Cell * getValueFromAlias(const std::string &alias) const;
 
+    bool isValidAlias(const std::string &candidate);
+
     std::set<CellAddress> getUsedCells() const;
 
     Sheet * sheet() const { return owner; }
