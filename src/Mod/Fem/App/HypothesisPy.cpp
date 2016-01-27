@@ -83,7 +83,7 @@ void SMESH_HypothesisPy<T>::init_type(PyObject* module)
     SMESH_HypothesisPy<T>::behaviors().supportRepr();
     SMESH_HypothesisPy<T>::behaviors().supportGetattr();
     SMESH_HypothesisPy<T>::behaviors().supportSetattr();
-    SMESH_HypothesisPy<T>::behaviors().type_object()->tp_new = &PyMake;
+    SMESH_HypothesisPy<T>::behaviors().set_tp_new(PyMake);
 
     SMESH_HypothesisPy::add_varargs_method("setLibName", &SMESH_HypothesisPy<T>::setLibName, "setLibName(String)");
     SMESH_HypothesisPy::add_varargs_method("getLibName", &SMESH_HypothesisPy<T>::getLibName, "String getLibName()");
