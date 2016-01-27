@@ -4,7 +4,23 @@ from subprocess import Popen, PIPE, check_call, check_output
 import pprint
 import re
 
-SYS_PATHS = ["/System/", "/usr/lib/", "/Library/Frameworks/"]
+# This script is intended to help copy dynamic libraries used by FreeCAD into
+# a Mac application bundle and change dyld commands as appropriate.  There are
+# two key items that this currently does differently from other similar tools:
+#
+#  * @rpath is used rather than @executable_path because the libraries need to
+#    be loadable through a Python interpreter and the FreeCAD binaries.
+#  * We need to be able to add multiple rpaths in some libraries.
+
+# Assume any libraries in these paths don't need to be bundled
+systemPaths = [ "/System/", "/usr/lib/",
+                "/Library/Frameworks/3DconnexionClient.framework/" ]
+
+# If a library is in these paths, but not systemPaths, a warning will be
+# issued and it will NOT be bundled.  Generally, libraries installed by
+# MacPorts or Homebrew won't end up in /Library/Frameworks, so we assume
+# that libraries found there aren't meant to be bundled.
+warnPaths = ["/Library/Frameworks/"]
 
 class LibraryNotFound(Exception):
     pass
@@ -73,8 +89,13 @@ def is_macho(path):
     return False
 
 def is_system_lib(lib):
-    for p in SYS_PATHS:
+    for p in systemPaths:
         if lib.startswith(p):
+            return True
+    for p in warnPaths:
+        if lib.startswith(p):
+            print "WARNING: library %s will not be bundled!" % lib
+            print "See MakeMacRelocatable.py for more information."
             return True
     return False
 
@@ -250,19 +271,13 @@ def get_rpaths(library):
 
         if "cmd LC_RPATH" in line:
             expectingRpath = True
-            continue
-
-        if "Load command" in line:
+        elif "Load command" in line:
             expectingRpath = False
-            continue
-
-        if not expectingRpath:
-            continue
-
-        m = re.match(pathRegex, line)
-        if m:
-            rpaths.append(m.group(1))
-            expectingRpath = False
+        elif expectingRpath:
+            m = re.match(pathRegex, line)
+            if m:
+                rpaths.append(m.group(1))
+                expectingRpath = False
 
     return rpaths
 
