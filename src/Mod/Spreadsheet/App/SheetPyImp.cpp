@@ -477,9 +477,18 @@ PyObject* SheetPy::setAlias(PyObject *args)
 
     try {
         address = stringToAddress(strAddress);
-
-        if (PyString_Check(value))
+        if (PyUnicode_Check(value))
+#if PY_MAJOR_VERSION >= 3
+            getSheetPtr()->setAlias(address, PyUnicode_AsUTF8(value));
+#else
+        {
+            PyObject* unicode = PyUnicode_AsUTF8String(value);
+            v = QString::fromUtf8(PyString_AsString(unicode));
+            Py_DECREF(unicode);            
+        }
+        else if (PyString_Check(value))
             getSheetPtr()->setAlias(address, PyString_AsString(value));
+#endif
         else if (value == Py_None)
             getSheetPtr()->setAlias(address, "");
         else
