@@ -37,6 +37,8 @@
 
 #include "DrawHatch.h"
 
+#include "DrawHatchPy.h"  // generated from DrawHatchPy.xml
+
 using namespace TechDraw;
 using namespace std;
 
@@ -95,6 +97,15 @@ App::DocumentObjectExecReturn *DrawHatch::execute(void)
 {
     //TODO: need to refresh DrawViewPart to reflect change in hatch
     return App::DocumentObject::StdReturn;
+}
+
+PyObject *DrawHatch::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawHatchPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 // Python Drawing feature ---------------------------------------------------------

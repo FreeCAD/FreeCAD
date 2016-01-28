@@ -98,19 +98,22 @@ void CmdTechDrawNewHatch::activated(int iMsg)
         subs.push_back((*itSub));
     }
 
+    //TODO: this should be the active page or a selected page? not first page
+    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
+    std::string PageName = page->getNameInDocument();
+
     openCommand("Create Hatch");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.PartView = App.activeDocument().%s",FeatName.c_str(),objFeat->getNameInDocument());
-    commitCommand();
 
     hatch = dynamic_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str()));
     hatch->Edges.setValues(objs, subs);
+    //should this be: doCommand(Doc,"App..Feat..Edges = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
+    //seems very unwieldy
 
-    hatch->execute();
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    page->addView(page->getDocument()->getObject(FeatName.c_str()));
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    commitCommand();
 
     //Horrible hack to force Tree update  ??still required??
     double x = objFeat->X.getValue();
