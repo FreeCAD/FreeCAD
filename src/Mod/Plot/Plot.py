@@ -337,6 +337,38 @@ def save(path, figsize=None, dpi=None):
     plt.update()
 
 
+def addNavigationToolbar():
+    """Add the matplotlib QT navigation toolbar to the plot.
+    """
+    plt = getPlot()
+    if not plt:
+        return
+    # Check that the navigation toolbar has not been already created
+    if plt.mpl_toolbar is not None:
+        return
+    # Create the navigation toolbar and add it
+    plt.mpl_toolbar = NavigationToolbar(plt.canvas, plt)
+    vbox = plt.layout()
+    vbox.addWidget(plt.mpl_toolbar)
+
+
+def delNavigationToolbar():
+    """Remove the matplotlib QT navigation toolbar from the plot.
+    """
+    plt = getPlot()
+    if not plt:
+        return
+    # Check that the navigation toolbar already exist
+    if plt.mpl_toolbar is None:
+        return
+    # Remove the widget from the layout
+    vbox = plt.layout()
+    vbox.removeWidget(plt.mpl_toolbar)
+    # Destroy the navigation toolbar
+    plt.mpl_toolbar.deleteLater()
+    plt.mpl_toolbar = None
+
+
 class Line():
     def __init__(self, axes, x, y, name):
         """Construct a new plot serie.
@@ -397,9 +429,12 @@ class Plot(PySide.QtGui.QWidget):
         self.axes.spines['top'].set_color('none')
         self.axes.yaxis.set_ticks_position('left')
         self.axes.spines['right'].set_color('none')
+        # Add the navigation toolbar by default
+        self.mpl_toolbar = NavigationToolbar(self.canvas, self)
         # Setup layout
         vbox = PySide.QtGui.QVBoxLayout()
         vbox.addWidget(self.canvas)
+        vbox.addWidget(self.mpl_toolbar)
         self.setLayout(vbox)
         # Active series
         self.series = []
