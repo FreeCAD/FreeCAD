@@ -194,11 +194,8 @@ void CmdTechDrawNewDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
     }
 
-    dim->execute();
-
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
@@ -281,11 +278,8 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
     }
 
-    dim->execute();
-
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
@@ -371,11 +365,8 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
     }
 
-    dim->execute();
-
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
@@ -467,11 +458,8 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
     }
 
-    dim->execute();
-
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
@@ -560,11 +548,8 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
     }
 
-    dim->execute();
-
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
@@ -653,11 +638,8 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
     }
 
-    dim->execute();
-
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
@@ -736,11 +718,8 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
     }
 
-    dim->execute();
-
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    //page->addView(page->getDocument()->getObject(FeatName.c_str()));
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
