@@ -88,10 +88,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     endif(BUILD_ENABLE_CXX11)
     set(CMAKE_CXX_FLAGS "-Wall -Wno-deprecated -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
     # get linker errors as soon as possible and not at runtime e.g. for modules
-    if(UNIX)
-        SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
-    endif(UNIX)
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,-undefined,error")
+    elseif(UNIX)
+        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+    endif()
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 # ================================================================================
