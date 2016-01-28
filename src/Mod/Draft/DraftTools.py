@@ -36,7 +36,7 @@ __url__ = "http://www.freecadweb.org"
 # Generic stuff
 #---------------------------------------------------------------------------
 
-import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
+import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
@@ -74,7 +74,10 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 
 def translate(context,text):
     "convenience function for Qt translator"
-    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
+    if sys.version_info.major < 3:
+        return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
+    else:
+        return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8)
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
