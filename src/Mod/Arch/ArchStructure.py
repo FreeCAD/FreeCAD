@@ -84,7 +84,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             # don't set the length if we have a base object, otherwise the lenght X height calc
             # gets wrong
             obj.Length = p.GetFloat("StructureLength",100)
-    if height > length:
+    if obj.Height > obj.Length:
         obj.Role = "Column"
     return obj
 
