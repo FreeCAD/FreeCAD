@@ -33,7 +33,7 @@ try:
     matplotlib.rcParams['backend.qt4']='PySide'
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    if V(matplotlib.__version__) < V("1.5.0"):
+    if V(matplotlib.__version__) < V("1.4.0"):
        from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
     else:
        from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
