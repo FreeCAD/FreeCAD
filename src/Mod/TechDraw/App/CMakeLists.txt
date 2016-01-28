@@ -35,6 +35,7 @@ generate_from_xml(DrawSVGTemplatePy)
 generate_from_xml(DrawViewSymbolPy)
 generate_from_xml(DrawViewClipPy)
 generate_from_xml(DrawViewDimensionPy)
+generate_from_xml(DrawHatchPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -104,7 +105,8 @@ SET(Python_SRCS
     DrawViewClipPyImp.cpp
     DrawViewDimensionPy.xml
     DrawViewDimensionPyImp.cpp
-)
+    DrawHatchPy.xml
+    DrawHatchPyImp.cpp)
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
 SOURCE_GROUP("Features" FILES ${Draw_SRCS})

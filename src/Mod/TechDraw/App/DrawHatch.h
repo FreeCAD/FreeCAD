@@ -55,9 +55,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderHatch";
     }
-
-    //DrawViewPart* getViewPart() const;
-
+    //return PyObject as DrawHatchPy
+    virtual PyObject *getPyObject(void);
 protected:
     void onChanged(const App::Property* prop);
 

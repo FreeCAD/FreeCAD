@@ -72,6 +72,7 @@ DrawPage::DrawPage(void)
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
     ADD_PROPERTY_TYPE(Scale ,(1.0), group, App::Prop_None, "Scale factor for this Page");
+    //TODO: Page should create itself with default Template instead of Cmd figuring it out?
 }
 
 DrawPage::~DrawPage()
@@ -156,7 +157,7 @@ PyObject *DrawPage::getPyObject(void)
         PythonObject = Py::Object(new DrawPagePy(this),true);
     }
 
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 bool DrawPage::hasValidTemplate() const
@@ -272,4 +273,3 @@ void DrawPage::onDocumentRestored()
     recompute();
     App::DocumentObject::onDocumentRestored();
 }
-
