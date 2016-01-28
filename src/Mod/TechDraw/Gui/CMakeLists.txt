@@ -50,7 +50,7 @@ SOURCE_GROUP("Moc" FILES ${TechDrawGui_MOC_SRCS})
 qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 
 set(TechDrawGui_UIC_SRCS
-    DlgPrefsTechDrawImp.ui
+    DlgPrefsTechDraw.ui
     TaskProjGroup.ui
 )
 
