@@ -577,12 +577,13 @@ class Component:
                         base = base.fuse(add)
 
                     elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window",True)):
-                        f = o.Proxy.getSubVolume(o)
-                        if f:
-                            if base.Solids and f.Solids:
-                                if placement:
-                                    f.Placement = f.Placement.multiply(placement)
-                                base = base.cut(f)
+                        if hasattr(o.Proxy,"getSubVolume"):
+                            f = o.Proxy.getSubVolume(o)
+                            if f:
+                                if base.Solids and f.Solids:
+                                    if placement:
+                                        f.Placement = f.Placement.multiply(placement)
+                                    base = base.cut(f)
 
                     elif o.isDerivedFrom("Part::Feature"):
                         if o.Shape:

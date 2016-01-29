@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>478</height>
+    <height>486</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -247,6 +247,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcMergeMaterials</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_6">
+          <property name="text">
+           <string>Create clones when objects have shared geometry</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcCreateClones</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
