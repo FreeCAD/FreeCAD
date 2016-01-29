@@ -304,6 +304,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         GET_EXTRUSIONS = False
     if not SEPARATE_OPENINGS:
         SKIP.append("IfcOpeningElement")
+    CREATE_CLONES = p.GetBool("ifcCreateClones",True)
 
     try:
         import ifcopenshell
@@ -451,7 +452,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             prepr = product.Representation
         except:
             if DEBUG: print " ERROR unable to get object representation",
-        if prepr and (MERGE_MODE_ARCH == 0) and archobj:
+        if prepr and (MERGE_MODE_ARCH == 0) and archobj and CREATE_CLONES:
             for s in prepr.Representations:
                 if s.RepresentationIdentifier.upper() == "BODY":
                     if s.Items[0].is_a("IfcMappedItem"):
