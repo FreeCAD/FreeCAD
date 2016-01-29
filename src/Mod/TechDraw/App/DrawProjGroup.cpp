@@ -40,6 +40,8 @@
 #include "DrawPage.h"
 #include "DrawProjGroup.h"
 
+#include "DrawProjGroupPy.h"  // generated from DrawProjGroupPy.xml
+
 using namespace TechDraw;
 
 const char* DrawProjGroup::ProjectionTypeEnums[] = {"Document",
@@ -283,7 +285,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
     DrawProjGroupItem *view = NULL;
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
-        std::string FeatName = getDocument()->getUniqueObjectName("ProjGroup");
+        std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
         App::DocumentObject *docObj = getDocument()->addObject("TechDraw::DrawProjGroupItem",
                                                                FeatName.c_str());
 
@@ -614,4 +616,13 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
 void DrawProjGroup::onDocumentRestored()
 {
     execute();
+}
+
+PyObject *DrawProjGroup::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawProjGroupPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }

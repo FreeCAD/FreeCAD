@@ -101,6 +101,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderProjGroup";
     }
+    //return PyObject as DrawProjGroupPy
+    virtual PyObject *getPyObject(void);
 
     /// Determines either "First Angle" or "Third Angle".
     App::Enumeration usedProjectionType(void);

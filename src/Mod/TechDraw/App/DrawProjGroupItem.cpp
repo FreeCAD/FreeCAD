@@ -32,6 +32,8 @@
 
 #include "DrawProjGroupItem.h"
 
+#include "DrawProjGroupItemPy.h"  // generated from DrawProjGroupItemPy.xml
+
 using namespace TechDraw;
 
 const char* DrawProjGroupItem::TypeEnums[] = {"Front",
@@ -110,3 +112,11 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
     return TechDraw::DrawViewPart::execute();
 }*/
 
+PyObject *DrawProjGroupItem::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DrawProjGroupItemPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
