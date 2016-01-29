@@ -417,9 +417,10 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     TechDraw::DrawProjGroup *multiView = dynamic_cast<TechDraw::DrawProjGroup *>(docObj);
 
     // set the anchor
-    App::DocumentObject* anchorView = multiView->addProjection("Front");
-    std::string anchorName = anchorView->getNameInDocument();
-    doCommand(Doc,"App.activeDocument().%s.Anchor = App.activeDocument().%s",multiViewName.c_str(),anchorName.c_str());
+    std::string anchor = "Front";
+    doCommand(Doc,"App.activeDocument().%s.addProjection('%s')",multiViewName.c_str(),anchor.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Anchor = App.activeDocument().%s.getItemByLabel('%s')",
+              multiViewName.c_str(),multiViewName.c_str(),anchor.c_str());
 
     // create the rest of the desired views
     Gui::Control().showDialog(new TaskDlgProjGroup(multiView));
@@ -427,7 +428,6 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     // add the multiView to the page
     std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
-    //page->addView(getDocument()->getObject(multiViewName.c_str()));
 
     updateActive();
     commitCommand();

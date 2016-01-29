@@ -56,6 +56,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderProjGroupItem";
     }
+    //return PyObject as DrawProjGroupItemPy
+    virtual PyObject *getPyObject(void);
 
 protected:
     /// Called by the container when a Property was changed
