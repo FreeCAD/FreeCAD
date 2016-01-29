@@ -52,7 +52,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Walls drawing</string>
+      <string>Object creation</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
@@ -87,6 +87,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>joinWallSketches</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="toolTip">
+           <string>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</string>
+          </property>
+          <property name="text">
+           <string>Remove external geometry of base sketches when needed</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>archRemoveExternal</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
