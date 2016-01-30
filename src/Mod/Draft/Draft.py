@@ -244,7 +244,9 @@ def dimSymbol(symbol=None,invert=False):
     if symbol == None:
         symbol = getParam("dimsymbol",0)
     from pivy import coin
-    if symbol == 1: 
+    if symbol == 0:
+        return coin.SoSphere()
+    elif symbol == 1: 
         marker = coin.SoMarkerSet()
         marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
         return marker
@@ -272,7 +274,7 @@ def dimSymbol(symbol=None,invert=False):
         return marker
     else:
         print("Draft.dimsymbol: Not implemented")
-    return coin.SoSphere()
+        return coin.SoSphere()
 
 def shapify(obj):
     '''shapify(object): transforms a parametric shape object into
