@@ -4400,36 +4400,36 @@ class _ViewProviderWire(_ViewProviderDraft):
                 if hasattr(self,"coords"):
                     self.coords.translation.setValue((p.x,p.y,p.z))
                     if len(obj.Points) >= 2:
-                        v1 = obj.Points[-1].sub(obj.Points[-2])
+                        v1 = obj.Points[-2].sub(obj.Points[-1])
                         v1.normalize()
                         import DraftGeomUtils
                         v2 = DraftGeomUtils.getNormal(obj.Shape)
-                        v3 = v1.cross(v2)
+                        if DraftVecUtils.isNull(v2):
+                            v2 = Vector(0,0,1)
+                        v3 = v1.cross(v2).negative()
                         q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
                         self.coords.rotation.setValue((q[0],q[1],q[2],q[3]))
         return
 
-    def onChanged(self, vp, prop):
-        if prop == "EndArrow":
-            rn = vp.RootNode
-            if vp.EndArrow:
-                rn.addChild(self.pt)
-                self.onChanged(vp,"ArrowSize")
-            else:
-                rn.removeChild(self.pt)
-        elif prop == "ArrowSize":
-            if hasattr(vp,"ArrowSize"):
-                s = vp.ArrowSize
-            else:
-                s = getParam("arrowsize",0.1)
-            self.coords.scaleFactor.setValue((s,s,s))
-        elif prop == "ArrowType":
+    def onChanged(self, vobj, prop):
+        if prop in ["EndArrow","ArrowSize","ArrowType"]:
+            rn = vobj.RootNode
             if hasattr(self,"pt"):
-                self.pt.removeChild(self.symbol)
-                s = arrowtypes.index(vp.ArrowType)
-                self.symbol = dimSymbol(s)
-                self.pt.addChild(self.symbol)
-        _ViewProviderDraft.onChanged(self,vp,prop)
+                if vobj.EndArrow:
+                    self.pt.removeChild(self.symbol)
+                    s = arrowtypes.index(vobj.ArrowType)
+                    self.symbol = dimSymbol(s)
+                    self.pt.addChild(self.symbol)
+                    self.updateData(vobj.Object,"Points")
+                    if hasattr(vobj,"ArrowSize"):
+                        s = vobj.ArrowSize
+                    else:
+                        s = getParam("arrowsize",0.1)
+                    self.coords.scaleFactor.setValue((s,s,s))
+                    rn.addChild(self.pt)
+                else:
+                    rn.removeChild(self.pt)
+        _ViewProviderDraft.onChanged(self,vobj,prop)
         return
 
     def claimChildren(self):
