@@ -201,10 +201,14 @@ class DraftTaskPanel:
         else:
             self.form = widget
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Close)
     def accept(self):
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        if hasattr(FreeCADGui,"draftToolBar"):
+            print "validating"
+            FreeCADGui.draftToolBar.validatePoint()
+        else:
+            FreeCADGui.ActiveDocument.resetEdit()
+            return True
     def reject(self):
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
