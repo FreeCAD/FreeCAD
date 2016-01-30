@@ -55,7 +55,7 @@ else:
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
     
-arrowtypes = ["Dot","Circle","Arrow"]
+arrowtypes = ["Dot","Circle","Arrow","Tick"]
 
 #---------------------------------------------------------------------------
 # General functions
@@ -263,6 +263,14 @@ def dimSymbol(symbol=None,invert=False):
         marker.addChild(c)
         return marker
     elif symbol == 3:
+        marker = coin.SoSeparator()
+        c = coin.SoCoordinate3()
+        c.point.setValues([(-1,-2,0),(0,2,0),(1,2,0),(0,-2,0)])
+        f = coin.SoFaceSet()
+        marker.addChild(c)
+        marker.addChild(f)
+        return marker
+    else:
         print("Draft.dimsymbol: Not implemented")
     return coin.SoSphere()
 
