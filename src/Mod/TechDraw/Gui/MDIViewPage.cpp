@@ -104,7 +104,9 @@ using namespace TechDrawGui;
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
-  : Gui::MDIView(doc, parent), pageGui(pageVp)
+  : Gui::MDIView(doc, parent),
+    pageGui(pageVp),
+    m_frameState(true)
 {
     m_view = new QGVPage(pageVp);
 
@@ -1088,6 +1090,13 @@ void MDIViewPage::saveSVG()
     p.end();
 
     m_view->toggleEdit(true);
+    m_view->scene()->update();
+}
+
+void MDIViewPage::setFrameState(bool state)
+{
+    m_frameState = state;
+    m_view->toggleEdit(state);
     m_view->scene()->update();
 }
 

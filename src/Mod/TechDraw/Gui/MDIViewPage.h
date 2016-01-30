@@ -87,6 +87,8 @@ public:
     void print(QPrinter* printer);
     void printPdf();
     void printPreview();
+    void setFrameState(bool state);
+    bool getFrameState(void) {return m_frameState;};
 
     void setDocumentObject(const std::string&);
     PyObject* getPyObject();
@@ -119,6 +121,8 @@ private:
     QPrinter::Orientation m_orientation;
     QPrinter::PageSize m_pageSize;
     ViewProviderPage *pageGui;
+
+    bool m_frameState;
 
     QList<QGIView *> deleteItems;
 };
