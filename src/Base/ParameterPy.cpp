@@ -276,8 +276,8 @@ Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|I", &pstr,&UInt))
         throw Py::Exception();
 #if PY_MAJOR_VERSION < 3
-    int cropped = _cParamGrp->GetUnsigned(pstr,UInt) & INT_MAX;
-    return Py::Int(cropped);
+    PyObject* val = Py_BuildValue("I",_cParamGrp->GetUnsigned(pstr,UInt));
+    return Py::Int(val);
 #else
     return Py::Long(_cParamGrp->GetUnsigned(pstr,UInt));
 #endif
