@@ -67,8 +67,8 @@ DEF_STD_CMD(CmdTechDrawNewHatch);
 CmdTechDrawNewHatch::CmdTechDrawNewHatch()
   : Command("TechDraw_NewHatch")
 {
-    sAppModule      = "Drawing";
-    sGroup          = QT_TR_NOOP("Drawing");
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert a hatched area into a view");
     sToolTipText    = QT_TR_NOOP("Insert a hatched area into a view");
     sWhatsThis      = "TechDraw_NewHatch";
@@ -120,12 +120,65 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+//===========================================================================
+// TechDraw_ToggleFrame
+//===========================================================================
+
+DEF_STD_CMD(CmdTechDrawToggleFrame);
+
+CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
+  : Command("TechDraw_ToggleFrame")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Turn View Frames on or off");
+    sToolTipText    = QT_TR_NOOP("Turn View Frames on or off");
+    sWhatsThis      = "TechDraw_ToggleFrame";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-toggleframe";
+}
+
+void CmdTechDrawToggleFrame::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (pages.empty()) {                                   // no Pages in Selection
+        pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        if (pages.empty()) {                               // no Pages in Document
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No pages found"),
+                                 QObject::tr("Create a TechDraw Page first."));
+            return;
+        }
+    }
+
+    unsigned int n = getSelection().countObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (n > 1) {                                          // too many Pages
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select only one Page object."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = dynamic_cast<TechDraw::DrawPage*>(pages.front());
+
+//TODO: this should probably work on the currently displayed page, rather than selecting one in the Tree
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
+    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+
+    if (dvp  && dvp->getMDIViewPage()) {
+        dvp->getMDIViewPage()->setFrameState(!dvp->getMDIViewPage()->getFrameState());
+    } else {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
+            QObject::tr("Need a TechDraw Page for this command"));
+        return;
+    }
+}
+
 void CreateTechDrawCommandsDecorate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
-    //rcCmdMgr.addCommand(new CmdTechDrawHideLabels());
+    rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 }
 
 //===========================================================================
