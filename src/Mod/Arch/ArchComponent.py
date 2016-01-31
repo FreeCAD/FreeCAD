@@ -766,11 +766,13 @@ class ViewProviderComponent:
         return []
 
     def setEdit(self,vobj,mode):
-        taskd = ComponentTaskPanel()
-        taskd.obj = self.Object
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
-        return True
+        if mode == 0:
+            taskd = ComponentTaskPanel()
+            taskd.obj = self.Object
+            taskd.update()
+            FreeCADGui.Control.showDialog(taskd)
+            return True
+        return False
 
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
