@@ -3614,7 +3614,7 @@ public:
             
             
             Base::Vector2D majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
-            // We always create a CCW ellipse, because we want our XY reference system to be in the +X +Y direction
+            // We always create a CCW hyperbola, because we want our XY reference system to be in the +X +Y direction
             // Our normal will then always be in the +Z axis (local +Z axis of the sketcher)
             
             if(a>b)
@@ -3638,29 +3638,7 @@ public:
                 endAngle +=  M_PI/2;
                 startAngle += M_PI/2;
             }
-            
-            /*startAngle=M_PI/4;
-            endAngle=-M_PI/4;*/
-            /*majAxisPoint.fX=20;
-            majAxisPoint.fY=0;
-            minAxisPoint.fX=0;
-            minAxisPoint.fY=10;
-            centerPoint.fX=0;
-            centerPoint.fY=0;*/
-            
-            
-            Base::Vector3d center = Base::Vector3d(centerPoint.fX,centerPoint.fY,0);
-            
-            Base::Vector3d majorpositiveend = center + a * Base::Vector3d(cos(phi),sin(phi),0);
-            Base::Vector3d majornegativeend = center - a * Base::Vector3d(cos(phi),sin(phi),0);  
-            Base::Vector3d minorpositiveend = center + b * Base::Vector3d(-sin(phi),cos(phi),0);
-            Base::Vector3d minornegativeend = center - b * Base::Vector3d(-sin(phi),cos(phi),0);
-                
-            double cf = sqrt( abs(a*a - b*b) );//using abs, avoided using different formula for a>b/a<b cases
-                
-            Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
-            Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
-            
+
             int currentgeoid = getHighestCurveIndex();
 
             try {
@@ -3673,12 +3651,13 @@ public:
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.ArcOfHyperbola"
                 "(Part.Hyperbola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),"
-                "%f,%f))",
+                "%f,%f),%s)",
                     sketchgui->getObject()->getNameInDocument(),
                     majAxisPoint.fX, majAxisPoint.fY,                                    
                     minAxisPoint.fX, minAxisPoint.fY,
                     centerPoint.fX, centerPoint.fY,
-                    startAngle, endAngle); 
+                    startAngle, endAngle,
+                    geometryCreationMode==Construction?"True":"False"); 
 
             currentgeoid++;
 
@@ -3691,13 +3670,20 @@ public:
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
                 Gui::Command::abortCommand();
-                Gui::Command::updateActive();
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                if(autoRecompute) 
+                    Gui::Command::updateActive();
+                else
+                    static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();            
+
                 return false;
             }
-            
+
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
-            
+
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
@@ -3710,9 +3696,32 @@ public:
                 sugConstr2.clear();
             }
 
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute)
+                Gui::Command::updateActive();
+            else
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();        
+
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode = STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(34);
+                applyCursor();
+                /* It is ok not to call to purgeHandler
+                 * in continuous creation mode because the 
+                 * handler is destroyed by the quit() method on pressing the
+                 * right button of the mouse */                
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
         }
         return true;
     }
