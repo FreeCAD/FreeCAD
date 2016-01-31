@@ -183,10 +183,11 @@ QString CallTipsList::extractContext(const QString& line) const
     for (int i=0; i<len; i++) {
         int pos = len-1-i;
         const char ch = line.at(pos).toLatin1();
-        if ((ch >= 48 && ch <= 57)  ||  // Numbers
-            (ch >= 65 && ch <= 90)  ||  // Uppercase letters
-            (ch >= 97 && ch <= 122) ||  // Lowercase letters
-            (ch == '.') || (ch == '_'))
+        if ((ch >= 48 && ch <= 57)  ||    // Numbers
+            (ch >= 65 && ch <= 90)  ||    // Uppercase letters
+            (ch >= 97 && ch <= 122) ||    // Lowercase letters
+            (ch == '.') || (ch == '_') || // dot or underscore
+            (ch == ' ') || (ch == '\t'))  // whitespace (between dot and text)
             index = pos;
         else 
             break;
@@ -203,9 +204,10 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         return tips;
 
     try {
-        QStringList items = context.split(QLatin1Char('.'));
         Py::Module module("__main__");
         Py::Dict dict = module.getDict();
+#if 0
+        QStringList items = context.split(QLatin1Char('.'));
         QString modname = items.front();
         items.pop_front();
         if (!dict.hasKey(std::string(modname.toLatin1())))
@@ -222,7 +224,26 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             else
                 return tips;
         }
-        
+#else
+        // Don't use hasattr & getattr because if a property is bound to a method this will be executed twice.
+        PyObject* code = Py_CompileString(static_cast<const char*>(context.toLatin1()), "<CallTipsList>", Py_eval_input);
+        if (!code) {
+            PyErr_Clear();
+            return tips;
+        }
+
+        PyObject* eval = 0;
+        if (PyCode_Check(code)) {
+            eval = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(code), dict.ptr(), dict.ptr());
+        }
+        Py_DECREF(code);
+        if (!eval) {
+            PyErr_Clear();
+            return tips;
+        }
+        Py::Object obj(eval, true);
+#endif
+
         // Checks whether the type is a subclass of PyObjectBase because to get the doc string
         // of a member we must get it by its type instead of its instance otherwise we get the
         // wrong string, namely that of the type of the member. 
@@ -234,6 +255,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         Py::Object inst = obj; // the object instance 
         union PyType_Object typeobj = {&Base::PyObjectBase::Type};
         union PyType_Object typedoc = {&App::DocumentObjectPy::Type};
+        union PyType_Object basetype = {&PyBaseObject_Type};
+
         if (PyObject_IsSubclass(type.ptr(), typedoc.o) == 1) {
             // From the template Python object we don't query its type object because there we keep
             // a list of additional methods that we won't see otherwise. But to get the correct doc
@@ -252,7 +275,18 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             PyObject* classobj = reinterpret_cast<PyObject*>(inst->in_class);
             obj = Py::Object(classobj);
         }
-        // TODO: How to find new style classes
+        else if (PyObject_IsInstance(obj.ptr(), basetype.o) == 1) {
+            // New style class which can be a module, type, list, tuple, int, float, ...
+            // Make sure it's not a type objec
+            union PyType_Object typetype = {&PyType_Type};
+            if (PyObject_IsInstance(obj.ptr(), typetype.o) != 1) {
+                // this should be now a user-defined Python class
+                // http://stackoverflow.com/questions/12233103/in-python-at-runtime-determine-if-an-object-is-a-class-old-and-new-type-instan
+                if (Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
+                    obj = type;
+                }
+            }
+        }
 
         // If we have an instance of PyObjectBase then determine whether it's valid or not
         if (PyObject_IsInstance(inst.ptr(), typeobj.o) == 1) {
