@@ -3288,8 +3288,10 @@ class _ViewProviderDraft:
         return
 
     def setEdit(self,vobj,mode=0):
-        FreeCADGui.runCommand("Draft_Edit")
-        return True
+        if mode == 0:
+            FreeCADGui.runCommand("Draft_Edit")
+            return True
+        return False
 
     def unsetEdit(self,vobj,mode=0):
         if FreeCAD.activeDraftCommand:
