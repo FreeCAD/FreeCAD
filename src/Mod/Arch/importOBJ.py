@@ -22,7 +22,11 @@
 #***************************************************************************
 
 import FreeCAD, DraftGeomUtils, Part, Draft
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    from DraftTools import translate
+else:
+    def translate(context,text):
+        return text
 
 p = Draft.precision()
 
