@@ -246,7 +246,14 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         else if (PyObject_IsSubclass(type.ptr(), typeobj.o) == 1) {
             obj = type;
         }
-        
+        else if (PyInstance_Check(obj.ptr())) {
+            // instances of old style classes
+            PyInstanceObject* inst = reinterpret_cast<PyInstanceObject*>(obj.ptr());
+            PyObject* classobj = reinterpret_cast<PyObject*>(inst->in_class);
+            obj = Py::Object(classobj);
+        }
+        // TODO: How to find new style classes
+
         // If we have an instance of PyObjectBase then determine whether it's valid or not
         if (PyObject_IsInstance(inst.ptr(), typeobj.o) == 1) {
             Base::PyObjectBase* baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
@@ -257,7 +264,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             PyErr_Clear();
         }
 
-        Py::List list(PyObject_Dir(obj.ptr()), true);
+        Py::List list(obj.dir());
 
         // If we derive from PropertyContainerPy we can search for the properties in the
         // C++ twin class.
