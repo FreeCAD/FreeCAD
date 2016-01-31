@@ -3292,12 +3292,12 @@ public:
                     Gui::Command::updateActive();
                 else
                     static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();                
-                
+
                 return false;
             }
 
             Gui::Command::commitCommand();
-            
+
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
@@ -3309,22 +3309,22 @@ public:
                 createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
                 sugConstr2.clear();
             }
-            
+
             // add suggested constraints for start of arc
             if (sugConstr3.size() > 0) {
                 createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
                 sugConstr3.clear();
             }
-            
+
             // add suggested constraints for start of arc
             if (sugConstr4.size() > 0) {
                 createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
                 sugConstr4.clear();
             }
-            
+
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-        
+
             if(autoRecompute)
                 Gui::Command::updateActive();
             else
@@ -3453,11 +3453,8 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            double rx0 = onSketchPos.fX - centerPoint.fX;
-            double ry0 = onSketchPos.fY - centerPoint.fY;
-            
             EditCurve[1]= onSketchPos;
-            
+
             // Display radius for user
             float radius = (onSketchPos - centerPoint).Length();
 
@@ -3498,8 +3495,7 @@ public:
             }
             
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f),
-                                   AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
@@ -3537,7 +3533,7 @@ public:
                     double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
                     EditCurve[i] = Base::Vector2D(centerPoint.fX + rx, centerPoint.fY + ry);
                 }
-            
+
                 // Display radius for user
                 SbString text;
                 text.sprintf(" (%.1fR,%.1fR)", a, b);
@@ -3547,17 +3543,14 @@ public:
             {
                 arcAngle=0.;
             }
-            
+
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2D(0.f,0.f),
-                                   AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2D(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr4);
                 return;
             }
         }
-        
-        
-        
+
         applyCursor();
     }
 
@@ -3686,14 +3679,26 @@ public:
 
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
                 sugConstr1.clear();
             }
 
-            // add suggested constraints for circumference
+            // add suggested constraints for arc
             if (sugConstr2.size() > 0) {
-                //createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::none);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
                 sugConstr2.clear();
+            }
+
+            // add suggested constraints for start of arc
+            if (sugConstr3.size() > 0) {
+                //createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
+                sugConstr3.clear();
+            }
+
+            // add suggested constraints for start of arc
+            if (sugConstr4.size() > 0) {
+                //createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
+                sugConstr4.clear();
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
