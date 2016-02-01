@@ -249,12 +249,25 @@ bool TaskDlgFemConstraintPressure::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
     const TaskFemConstraintPressure* parameterPressure = static_cast<const TaskFemConstraintPressure*>(parameter);
+    std::string scale = "1";
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Pressure = %f",
-            name.c_str(), parameterPressure->getPressure());
+        if (parameterPressure->getPressure()<=0)
+        {
+          QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a pressure greater than 0"));  
+            return false;
+        }
+        else
+        {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Pressure = %f",
+            name.c_str(), parameterPressure->getPressure()); 
+        }
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s",
             name.c_str(), parameterPressure->getReverse() ? "True" : "False");
+
+        scale = parameterPressure->getScale();  //OvG: determine modified scale
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s",
+            name.c_str(), scale.c_str()); //OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
