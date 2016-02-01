@@ -4413,14 +4413,15 @@ class _ViewProviderWire(_ViewProviderDraft):
                     self.coords.translation.setValue((p.x,p.y,p.z))
                     if len(obj.Points) >= 2:
                         v1 = obj.Points[-2].sub(obj.Points[-1])
-                        v1.normalize()
-                        import DraftGeomUtils
-                        v2 = DraftGeomUtils.getNormal(obj.Shape)
-                        if DraftVecUtils.isNull(v2):
-                            v2 = Vector(0,0,1)
-                        v3 = v1.cross(v2).negative()
-                        q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
-                        self.coords.rotation.setValue((q[0],q[1],q[2],q[3]))
+                        if not DraftVecUtils.isNull(v1):
+                            v1.normalize()
+                            import DraftGeomUtils
+                            v2 = DraftGeomUtils.getNormal(obj.Shape)
+                            if DraftVecUtils.isNull(v2):
+                                v2 = Vector(0,0,1)
+                            v3 = v1.cross(v2).negative()
+                            q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
+                            self.coords.rotation.setValue((q[0],q[1],q[2],q[3]))
         return
 
     def onChanged(self, vobj, prop):
