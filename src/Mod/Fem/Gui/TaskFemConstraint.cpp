@@ -56,6 +56,8 @@
 
 #include <Base/Console.h>
 
+# include <boost/lexical_cast.hpp> //OvG conversion between string and int etc.
+
 using namespace FemGui;
 using namespace Gui;
 
@@ -110,6 +112,14 @@ const std::string TaskFemConstraint::getReferences(const std::vector<std::string
         result = result + (i != items.begin() ? ", " : "") + "(" + objStr + "," + refStr + ")";
     }
 
+    return result;
+}
+
+const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculated scale for constraint display
+{   
+    std::string result;
+    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
+    result = boost::lexical_cast<std::string>(pcConstraint->Scale.getValue());
     return result;
 }
 
