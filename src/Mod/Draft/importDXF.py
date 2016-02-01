@@ -491,7 +491,7 @@ def drawCircle(circle,forceShape=False):
         warn(circle)
     return None
 
-def drawEllipse(ellipse):
+def drawEllipse(ellipse,forceShape=False):
     "returns a Part shape from a dxf arc"
     try:
         c = vec(ellipse.loc)
