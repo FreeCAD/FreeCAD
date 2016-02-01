@@ -42,6 +42,7 @@ public:
 
     virtual const std::string getReferences(void) const {return std::string();}
     const std::string getReferences(const std::vector<std::string>& items) const;
+    const std::string getScale() const;
 
 protected Q_SLOTS:
     void onReferenceDeleted(const int row);

@@ -107,19 +107,22 @@ bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
 
 #define HEIGHT 4
 #define WIDTH (1.5*HEIGHT)
-#define USE_MULTIPLE_COPY
+//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintFixed* pcConstraint = static_cast<Fem::ConstraintFixed*>(this->getObject());
+    float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
 
 #ifdef USE_MULTIPLE_COPY
+    //OvG: always need access to cp for scaling
+    SoMultipleCopy* cp = new SoMultipleCopy();
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
-        SoMultipleCopy* cp = new SoMultipleCopy();
         cp->matrix.setNum(0);
-        cp->addChild((SoNode*)createFixed(HEIGHT, WIDTH));
+        cp->addChild((SoNode*)createFixed(scaledheight, scaledwidth)); //OvG: Scaling
         pShapeSep->addChild(cp);
     }
 #endif
@@ -132,7 +135,7 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
 #ifdef USE_MULTIPLE_COPY
-        SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
+        cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cp->matrix.setNum(points.size());
         SbMatrix* matrices = cp->matrix.startEditing();
         int idx = 0;
@@ -153,7 +156,7 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
 #else
             SoSeparator* sep = new SoSeparator();
             createPlacement(sep, base, rot);
-            createFixed(sep, HEIGHT, WIDTH);
+            createFixed(sep, scaledheight, scaledwidth); //OvG: Scaling
             pShapeSep->addChild(sep);
 #endif
             n++;
