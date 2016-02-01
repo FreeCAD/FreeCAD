@@ -106,6 +106,7 @@ text56 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=T
 text57 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Power_users_hub")
 text58 = translate("StartPage","Your version of FreeCAD is up to date.")
 text59 = translate("StartPage","There is a new release of FreeCAD available.")
+text60 = translate("StartPage","Load an FEM example analysis")
 
 # get FreeCAD version
 
@@ -434,6 +435,7 @@ def getExamples():
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
+        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample.py">""" + text60 + """</a></li>
     </ul>"""
       
 def getLinks():

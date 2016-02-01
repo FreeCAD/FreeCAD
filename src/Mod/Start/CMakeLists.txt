@@ -17,6 +17,7 @@ if(BUILD_GUI)
         LoadMRU1.py
         LoadMRU2.py
         LoadArchExample.py
+        LoadFemExample.py
         Mesh.py
         PartDesign.py
         Background.jpg
