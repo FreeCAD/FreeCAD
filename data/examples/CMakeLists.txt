@@ -6,6 +6,7 @@ SET(Examples_Files
     PartDesignExample.FCStd
     RobotExample.FCStd
     ArchDetail.FCStd
+    FemCalculixCantilever3D.FCStd
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL
