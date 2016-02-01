@@ -204,8 +204,7 @@ class DraftTaskPanel:
         return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Close)
     def accept(self):
         if hasattr(FreeCADGui,"draftToolBar"):
-            FreeCADGui.draftToolBar.validatePoint()
-            return True
+            return FreeCADGui.draftToolBar.validatePoint()
         else:
             FreeCADGui.ActiveDocument.resetEdit()
             return True
@@ -1223,8 +1222,11 @@ class DraftToolBar:
                                 numy = last.y + v.y
                                 numz = last.z + v.z
                         self.sourceCmd.numericInput(numx,numy,numz)
+            elif (self.textValue.isVisible() or self.SStringValue.isVisible() or self.SSizeValue.isVisible() or self.STrackValue.isVisible() or self.FFileValue.isVisible()):
+                return False
             else:
                 FreeCADGui.ActiveDocument.resetEdit()
+        return True
 
     def validateSNumeric(self):
         ''' send valid numeric parameters to ShapeString '''
