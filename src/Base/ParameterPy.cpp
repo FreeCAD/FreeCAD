@@ -277,7 +277,7 @@ Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
         throw Py::Exception();
 #if PY_MAJOR_VERSION < 3
     PyObject* val = Py_BuildValue("I",_cParamGrp->GetUnsigned(pstr,UInt));
-    return Py::Int(val);
+    return Py::asObject(val);
 #else
     return Py::Long(_cParamGrp->GetUnsigned(pstr,UInt));
 #endif
