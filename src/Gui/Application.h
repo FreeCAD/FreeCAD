@@ -239,6 +239,7 @@ public:
     PYFUNCDEF_S(sAddModule);
     
     PYFUNCDEF_S(sShowDownloads);
+    PYFUNCDEF_S(sShowPreferences);
 
     static PyMethodDef    Methods[]; 
 

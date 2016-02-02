@@ -54,6 +54,7 @@
 #include "WorkbenchManager.h"
 #include "Language/Translator.h"
 #include "DownloadManager.h"
+#include "DlgPreferencesImp.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -159,6 +160,9 @@ PyMethodDef Application::Methods[] = {
   {"showDownloads",               (PyCFunction) Application::sShowDownloads,1,
    "showDownloads() -> None\n\n"
    "Shows the downloads manager window"},
+  {"showPreferences",               (PyCFunction) Application::sShowPreferences,1,
+   "showPreferences([string,int]) -> None\n\n"
+   "Shows the preferences window. If string and int are provided, the given page index in the given group is shown."},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -1048,6 +1052,21 @@ PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args,PyObje
     if (!PyArg_ParseTuple(args, ""))             // convert args: Python->C 
         return NULL;                             // NULL triggers exception 
     Gui::Dialog::DownloadManager::getInstance();
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    int idx=0;
+    if (!PyArg_ParseTuple(args, "|si", &pstr, &idx))             // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+    Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
+    if (pstr) 
+        cDlg.activateGroupPage(QString::fromUtf8(pstr),idx);
+    cDlg.exec();
 
     Py_INCREF(Py_None);
     return Py_None;
