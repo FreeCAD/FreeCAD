@@ -96,6 +96,7 @@ ENDSEC;
 END-ISO-10303-21;
 """
 
+
 def decode(filename,utf=False):
     if isinstance(filename,unicode):
         # workaround since ifcopenshell currently can't handle unicode filenames
@@ -107,6 +108,7 @@ def decode(filename,utf=False):
         filename = filename.encode(encoding)
     return filename
 
+
 def doubleClickTree(item,column):
     txt = item.text(column)
     if "Entity #" in txt:
@@ -116,13 +118,41 @@ def doubleClickTree(item,column):
             tree.scrollToItem(addr[0])
             addr[0].setSelected(True)
 
+
+def getPreferences():
+    """retrieves IFC preferences"""
+    global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS,
+           ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS,
+           MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES,
+           FORCE_BREP
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")   
+    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
+        import FreeCADGui
+        FreeCADGui.showPreferences("Import-Export",0)
+    DEBUG = p.GetBool("ifcDebug",False) 
+    PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
+    SKIP = p.GetString("ifcSkip","").split(",")
+    SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
+    ROOT_ELEMENT = p.GetString("ifcRootElement","IfcProduct")
+    GET_EXTRUSIONS = p.GetBool("ifcGetExtrusions",False)
+    MERGE_MATERIALS = p.GetBool("ifcMergeMaterials",False)
+    MERGE_MODE_ARCH = p.GetInt("ifcImportModeArch",0)
+    MERGE_MODE_STRUCT = p.GetInt("ifcImportModeStruct",1)
+    if MERGE_MODE_ARCH > 0:
+        SEPARATE_OPENINGS = False
+        GET_EXTRUSIONS = False
+    if not SEPARATE_OPENINGS:
+        SKIP.append("IfcOpeningElement")
+    CREATE_CLONES = p.GetBool("ifcCreateClones",True)
+    FORCEBREP = p.GetBool("ifcExportAsBrep",False)
+
+
 def explore(filename=None):
     """explore([filename]): opens a dialog showing
     the contents of an IFC file. If no filename is given, a dialog will
     pop up to choose a file."""
-
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    DEBUG = p.GetBool("ifcDebug",False)
+    
+    getPreferences()
 
     try:
         import ifcopenshell
@@ -287,24 +317,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     certain object ids (will also get their children) and root can be used to
     import only the derivates of a certain element type (default = ifcProduct)."""
 
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    DEBUG = p.GetBool("ifcDebug",False)
-    PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
-    SKIP = p.GetString("ifcSkip","").split(",")
-    SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
-    ROOT_ELEMENT = p.GetString("ifcRootElement","IfcProduct")
-    GET_EXTRUSIONS = p.GetBool("ifcGetExtrusions",False)
-    MERGE_MATERIALS = p.GetBool("ifcMergeMaterials",False)
-    if root:
-        ROOT_ELEMENT = root
-    MERGE_MODE_ARCH = p.GetInt("ifcImportModeArch",0)
-    MERGE_MODE_STRUCT = p.GetInt("ifcImportModeStruct",1)
-    if MERGE_MODE_ARCH > 0:
-        SEPARATE_OPENINGS = False
-        GET_EXTRUSIONS = False
-    if not SEPARATE_OPENINGS:
-        SKIP.append("IfcOpeningElement")
-    CREATE_CLONES = p.GetBool("ifcCreateClones",True)
+    getPreferences()
 
     try:
         import ifcopenshell
@@ -320,6 +333,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
     FreeCAD.ActiveDocument = doc
 
     if DEBUG: print "done."
+    
+    if root:
+        ROOT_ELEMENT = root
 
     #global ifcfile # keeping global for debugging purposes
     filename = decode(filename,utf=True)
@@ -789,9 +805,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 def export(exportList,filename):
     "exports FreeCAD contents to an IFC file"
 
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    FORCEBREP = p.GetBool("ifcExportAsBrep",False)
-    DEBUG = p.GetBool("ifcDebug",False)
+    getPreferences()
 
     try:
         global ifcopenshell

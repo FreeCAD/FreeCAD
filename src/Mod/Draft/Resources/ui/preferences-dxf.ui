@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>506</width>
-    <height>564</height>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,9 +21,41 @@
     <number>9</number>
    </property>
    <item>
+    <widget class="Gui::PrefCheckBox" name="checkBox_6">
+     <property name="text">
+      <string>Show this dialog when importing and exporting</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>dxfShowDialog</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Draft</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBox_4">
+     <property name="toolTip">
+      <string>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</string>
+     </property>
+     <property name="text">
+      <string>Use legacy python importer</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>dxfUseLegacyImporter</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Draft</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Automatic update</string>
+      <string>Automatic update (legacy importer only)</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -61,29 +93,6 @@
       <property name="margin">
        <number>9</number>
       </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_4">
-          <property name="toolTip">
-           <string>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</string>
-          </property>
-          <property name="text">
-           <string>Use legacy python importer</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxfUseLegacyImporter</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
