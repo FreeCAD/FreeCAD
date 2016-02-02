@@ -276,6 +276,9 @@ class DraftTool:
         "stores actions to be committed to the FreeCAD document"
         self.commitList.append((name,func))
 
+    def undo(self):
+        self.commitList.pop()
+
     def getStrings(self,addrot=None):
         "returns a couple of useful strings fro building python commands"
 
@@ -573,6 +576,7 @@ class Wire(Line):
     "a FreeCAD command for creating a wire"
     def __init__(self):
         Line.__init__(self,wiremode=True)
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Wire',
                 'Accel' : "W, I",
@@ -580,7 +584,16 @@ class Wire(Line):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
     def Activated(self):
         Line.Activated(self,name=translate("draft","DWire"))
+        if self.doc:
+            self.wireTrack = wireTracker()
 
+    def undolast(self):
+        "undoes last line segment"
+        if (len(self.node) > 1):
+            self.node.pop()
+            newshape = Part.Wire(self.node).toShape()
+            self.obj.Shape = newshape
+            msg(translate("draft", "Last point has been removed\n"))
 
 class BSpline(Line):
     "a FreeCAD command for creating a b-spline"
