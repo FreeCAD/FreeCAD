@@ -52,7 +52,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Drafting</source>
-        <translation>И Недовршено</translation>
+        <translation>&amp;Недовршено</translation>
     </message>
     <message>
         <location line="+1"/>

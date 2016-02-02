@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>Chamfer...</source>
-        <translation type="obsolete">Smusso...</translation>
+        <translation type="obsolete">Chamfer...</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="+654"/>
@@ -78,7 +78,7 @@
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation>Crea una gola o scanalatura in uno sketch selezionato</translation>
+        <translation>Crea una gola o scanalatura con uno schizzo selezionato</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     <message>
         <location line="+1"/>
         <source>create a mirrored feature</source>
-        <translation>crea una feature di specchiatura</translation>
+        <translation>Crea una funzione di specchiatura</translation>
     </message>
 </context>
 <context>
@@ -132,7 +132,7 @@
     <message>
         <location line="+1"/>
         <source>create a multitransform feature</source>
-        <translation>crea una feature di multitrasformazione</translation>
+        <translation>Crea una funzione di multitrasformazione</translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location line="+1"/>
         <source>create a pocket with the selected sketch</source>
-        <translation>Crea una cavità o tasca usando lo sketch selezionato</translation>
+        <translation>Crea una cavità o tasca usando lo schizzo selezionato</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location line="+1"/>
         <source>Revolve a selected sketch</source>
-        <translation>Crea un solido di rivoluzione da uno sketch selezionato</translation>
+        <translation>Crea un solido di rivoluzione da uno schizzo selezionato</translation>
     </message>
 </context>
 <context>
@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Parametro evolvente</translation>
+        <translation>Parametro evolvente</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Numero di denti:</translation>
+        <translation>Numero di denti:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Moduli:</translation>
+        <translation>Moduli:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Alta precisione:</translation>
+        <translation>Alta precisione:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Vero</translation>
+        <translation>Vero</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Falso</translation>
+        <translation>Falso</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Ingranaggio esterno:</translation>
+        <translation>Ingranaggio esterno:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Angolo di pressione:</translation>
+        <translation>Angolo di pressione:</translation>
     </message>
 </context>
 <context>
@@ -317,8 +317,8 @@
     <message>
         <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-        <translation type="obsolete">Nessuna forma valida è stata selezionata.
-Seleziona prima una forma valida dal menù a tendina.</translation>
+        <translation type="obsolete">Non è stata selezionata nessuna forma valida.
+Selezionare prima una forma valida dal menù a tendina.</translation>
     </message>
     <message>
         <source>No edge selected</source>
@@ -327,7 +327,7 @@ Seleziona prima una forma valida dal menù a tendina.</translation>
     <message>
         <source>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</source>
-        <translation type="obsolete">Nessuna entità spigolo da smussare è stata selezionata.
+        <translation type="obsolete">Non è stato selezionato nessuno spigolo da smussare.
 Selezionare prima una o più entità spigolo.</translation>
     </message>
 </context>
@@ -336,7 +336,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location filename="../../FeaturePickDialog.ui" line="+14"/>
         <source>Choose feature</source>
-        <translation>Scegli la feature</translation>
+        <translation>Scegliere la funzione</translation>
     </message>
 </context>
 <context>
@@ -409,7 +409,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Modifica smusso</translation>
+        <translation>Modifica smusso</translation>
     </message>
 </context>
 <context>
@@ -425,7 +425,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Modifica raccordo</translation>
+        <translation>Modifica raccordo</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Modifica cavità</translation>
+        <translation>Modifica cavità</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -578,12 +578,12 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>Asse verticale dello sketch</translation>
+        <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>Asse orizzontale dello sketch</translation>
+        <translation>Asse orizzontale dello schizzo</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -603,7 +603,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+14"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+52"/>
@@ -659,7 +659,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Feature originale</translation>
+        <translation>Funzione originale</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -669,19 +669,19 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Asse orizzontale dello sketch</translation>
+        <translation>Asse orizzontale dello schizzo</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Asse verticale dello sketch</translation>
+        <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Seleziona riferimento...</translation>
+        <translation>Seleziona riferimento...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -706,17 +706,17 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
         <source>Select an edge or a face</source>
-        <translation>Seleziona uno spigolo o una faccia</translation>
+        <translation>Selezionare uno spigolo o una faccia</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non definito</translation>
+        <translation>Non definito</translation>
     </message>
 </context>
 <context>
@@ -729,7 +729,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Feature originale</translation>
+        <translation>Funzione originale</translation>
     </message>
     <message>
         <source>XY</source>
@@ -751,19 +751,19 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Asse orizzontale dello sketch</translation>
+        <translation>Asse orizzontale dello schizzo</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Asse verticale dello sketch</translation>
+        <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Seleziona riferimento...</translation>
+        <translation>Seleziona riferimento...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -773,21 +773,21 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <source>Select a plane</source>
-        <translation type="obsolete">Seleziona un piano</translation>
+        <translation type="obsolete">Selezionare un piano</translation>
     </message>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Seleziona una faccia</translation>
+        <translation>Selezionare una faccia</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non definito</translation>
+        <translation>Non definito</translation>
     </message>
 </context>
 <context>
@@ -800,7 +800,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Feature originale</translation>
+        <translation>Funzione originale</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -810,7 +810,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+17"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <location filename="../../TaskMultiTransformParameters.cpp" line="-376"/>
@@ -830,12 +830,12 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+4"/>
         <source>Add linear pattern</source>
-        <translation>Aggiunge una serie rettangolare</translation>
+        <translation>Aggiungi una serie rettangolare</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add polar pattern</source>
-        <translation>Aggiunge una serie polare</translation>
+        <translation>Aggiungi una serie polare</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -897,7 +897,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+19"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -1045,7 +1045,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Invertito</translation>
+        <translation>Invertito</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1059,7 +1059,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+19"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <location line="-60"/>
@@ -1111,7 +1111,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Feature originale</translation>
+        <translation>Funzione originale</translation>
     </message>
     <message>
         <source>X</source>
@@ -1132,19 +1132,19 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Asse</translation>
+        <translation>Asse</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Asse normale allo sketch</translation>
+        <translation>Asse normale allo schizzo</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Seleziona riferimento...</translation>
+        <translation>Seleziona riferimento...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1169,12 +1169,12 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-55"/>
         <source>Select an edge</source>
-        <translation>Seleziona uno spigolo</translation>
+        <translation>Selezionare uno spigolo</translation>
     </message>
 </context>
 <context>
@@ -1192,12 +1192,12 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>Asse verticale dello sketch</translation>
+        <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>Asse orizzontale dello sketch</translation>
+        <translation>Asse orizzontale dello schizzo</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -1212,7 +1212,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+14"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
     <message>
         <source>Vertical</source>
@@ -1235,7 +1235,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non definito</translation>
+        <translation>Non definito</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Feature originale</translation>
+        <translation>Funzione originale</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1268,7 +1268,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Aggiorna vista</translation>
+        <translation>Aggiorna la vista</translation>
     </message>
 </context>
 <context>
@@ -1296,7 +1296,7 @@ Selezionare prima una o più entità spigolo.</translation>
     </message>
     <message>
         <source>Select a sketch or 2D object.</source>
-        <translation type="obsolete">Selezionare uno sketch o un oggetto 2D.</translation>
+        <translation type="obsolete">Selezionare uno schizzo o un oggetto 2D.</translation>
     </message>
     <message>
         <source>The shape of the selected object is empty.</source>
@@ -1312,19 +1312,19 @@ Selezionare prima una o più entità spigolo.</translation>
         <location line="+74"/>
         <location line="+84"/>
         <source>No valid sketches in this document</source>
-        <translation>Nessuno sketch valido in questo documento</translation>
+        <translation>Questo documento non contiene nessuno schizzo valido </translation>
     </message>
     <message>
         <location line="-241"/>
         <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Si prega di creare prima uno sketch o un oggetto 2D</translation>
+        <translation>Si prega di creare prima uno schizzo o un oggetto 2D</translation>
     </message>
     <message>
         <location line="-74"/>
         <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Si prega di creare prima uno sketch o un oggetto 2D. Deve essere posizionato su una faccia di supporto di un solido</translation>
+        <translation>Prima si deve creare uno schizzo o un oggetto 2D. Deve essere posizionato su una faccia di supporto di un solido</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -1342,7 +1342,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>La feature Raccordo funziona solo sulle parti</translation>
+        <translation>La funzione Raccordo funziona solo sulle parti</translation>
     </message>
     <message>
         <location line="+312"/>
@@ -1352,7 +1352,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Nessun raccordo possibile su facce e spigoli selezionati</translation>
+        <translation>Sulle facce e spigoli selezionati non è possibile creare nessun raccordo</translation>
     </message>
     <message>
         <location line="+71"/>
@@ -1369,27 +1369,27 @@ Selezionare prima una o più entità spigolo.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Gli schizzi selezionati non sono validi</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno degli schizzi o degli oggetti 2D selezionati è valido per creare un prisma o Pad. Si prega di selezionare uno schizzo valido o un oggetto 2D che non sia utilizzato per nessuna altra funzione.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno degli schizzi o degli oggetti 2D selezionati è valido per creare una rivoluzione. Si prega di selezionare uno schizzo valido o un oggetto 2D che non sia utilizzato per nessuna altra funzione.</translation>
     </message>
     <message>
         <location line="+393"/>
         <source>No chamfer possible on selected faces/edges</source>
-        <translation>Nessun smusso possibile su facce e spigoli selezionati</translation>
+        <translation>Sulle facce e spigoli selezionati non è possibile creare nessuno smusso</translation>
     </message>
     <message>
         <location line="+65"/>
         <source>Select one or more faces.</source>
-        <translation>Seleziona una o più facce.</translation>
+        <translation>Selezionare una o più facce.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1399,7 +1399,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Nessuno sformo possibile sulle facce selezionate</translation>
+        <translation>Sulle facce e spigoli selezionati non è possibile creare nessuno sformo</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1408,12 +1408,12 @@ Selezionare prima una o più entità spigolo.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>No valid features in this document</source>
-        <translation>Nessuna feature valida in questo documento</translation>
+        <translation>Questo documento non contiene nessuna funzione valida</translation>
     </message>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Si prega di creare prima una funzione additiva o sottrattiva</translation>
+        <translation>Prima deve essere creata una funzione additiva o sottrattiva</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1430,8 +1430,8 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <source>The sketch has to have a support for the pocket feature.
 Create the sketch on a face.</source>
-        <translation type="obsolete">Per la feature cavità lo sketch deve avere un supporto. 
-Creare lo sketch su una faccia.</translation>
+        <translation type="obsolete">Per la funzione cavità lo schizzo deve avere un supporto. 
+Creare lo schizzo su una faccia.</translation>
     </message>
     <message>
         <location filename="../../TaskPadParameters.cpp" line="+86"/>
@@ -1459,7 +1459,7 @@ Creare lo sketch su una faccia.</translation>
         <location filename="../../ViewProviderRevolution.cpp" line="+92"/>
         <location filename="../../ViewProviderTransformed.cpp" line="+179"/>
         <source>A dialog is already open in the task panel</source>
-        <translation>Una finestra di dialogo è già aperto nel pannello attività</translation>
+        <translation>Nel pannello azioni c&apos;è già una finestra di dialogo aperta</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1471,7 +1471,7 @@ Creare lo sketch su una faccia.</translation>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <location filename="../../ViewProviderTransformed.cpp" line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation>Vuoi chiudere questa finestra?</translation>
+        <translation>Si desidera chiudere questa finestra?</translation>
     </message>
     <message>
         <location filename="../../ViewProviderRevolution.cpp" line="-28"/>
@@ -1487,23 +1487,23 @@ Creare lo sketch su una faccia.</translation>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Perso il collegamento allo schizzo di base</translation>
+        <translation>Perso il collegamento allo schizzo di base</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">L&apos;oggetto non può essere modificato perché si è perso il link per lo schizzo di base.</translation>
+        <translation>L&apos;oggetto non può essere modificato perché si è perso il link allo schizzo di base.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Piano neutro mancante</translation>
+        <translation>Manca il piano neutro</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane or an edge plus a pull direction</source>
-        <translation>Si prega di selezionare un piano o uno spigolo più una direzione di trazione</translation>
+        <translation>Selezionare un piano o uno spigolo più una direzione di trazione</translation>
     </message>
     <message>
         <location line="-17"/>
@@ -1534,12 +1534,12 @@ Creare lo sketch su una faccia.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Modifica la scanalatura</translation>
+        <translation>Modifica la scanalatura</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Modifica la rivoluzione</translation>
+        <translation>Modifica la rivoluzione</translation>
     </message>
 </context>
 <context>

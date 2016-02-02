@@ -5,454 +5,461 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Create spreadsheet</source>
-        <translation type="unfinished">Create spreadsheet</translation>
+        <translation>Rekenblad aanmaken</translation>
     </message>
     <message>
         <source>Create a new spreadsheet</source>
-        <translation type="unfinished">Create a new spreadsheet</translation>
+        <translation>Een nieuw rekenblad aanmaken</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Align bottom</source>
-        <translation type="unfinished">Align bottom</translation>
+        <translation>Onderzijde uitlijnen</translation>
     </message>
     <message>
         <source>Bottom-align contents of selected cells</source>
-        <translation type="unfinished">Bottom-align contents of selected cells</translation>
+        <translation>Eigenschappen &apos;onderzijde uitlijnen&apos; van geselecteerde cellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Align center</source>
-        <translation type="unfinished">Align center</translation>
+        <translation>Midden uitlijnen</translation>
     </message>
     <message>
         <source>Center-align contents of selected cells</source>
-        <translation type="unfinished">Center-align contents of selected cells</translation>
+        <translation>Eigenschappen &apos;midden uitlijnen&apos; van geselecteerde cellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Align left</source>
-        <translation type="unfinished">Links uitlijnen</translation>
+        <translation>Links uitlijnen</translation>
     </message>
     <message>
         <source>Left-align contents of selected cells</source>
-        <translation type="unfinished">Left-align contents of selected cells</translation>
+        <translation>Eigenschappen &apos;links uitlijnen&apos; van geselecteerde cellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Align right</source>
-        <translation type="unfinished">Rechts uitlijnen</translation>
+        <translation>Rechts uitlijnen</translation>
     </message>
     <message>
         <source>Right-align contents of selected cells</source>
-        <translation type="unfinished">Right-align contents of selected cells</translation>
+        <translation>Eigenschappen &apos;rechts uitlijnen&apos; van geselecteerde cellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Align top</source>
-        <translation type="unfinished">Bovenaan uitlijnen</translation>
+        <translation>Bovenaan uitlijnen</translation>
     </message>
     <message>
         <source>Top-align contents of selected cells</source>
-        <translation type="unfinished">Top-align contents of selected cells</translation>
+        <translation>Eigenschappen &apos;bovenzijde uitlijnen&apos; van geselecteerde cellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Vertically center-align</source>
-        <translation type="unfinished">Vertically center-align</translation>
+        <translation>Verticaal centreren</translation>
     </message>
     <message>
         <source>Center-align contents vertically of selected cells</source>
-        <translation type="unfinished">Center-align contents vertically of selected cells</translation>
+        <translation>De inhoud van geselecteerde cellen verticaal centreren</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetExport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Export spreadsheet</source>
-        <translation type="unfinished">Export spreadsheet</translation>
+        <translation>Rekenblad exporteren</translation>
     </message>
     <message>
         <source>Export spreadsheet to CSV file</source>
-        <translation type="unfinished">Export spreadsheet to CSV file</translation>
+        <translation>Het rekenblad naar CSV-bestand exporteren</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetImport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Import spreadsheet</source>
-        <translation type="unfinished">Import spreadsheet</translation>
+        <translation>Rekenblad importeren</translation>
     </message>
     <message>
         <source>Import CSV file into spreadsheet</source>
-        <translation type="unfinished">Import CSV file into spreadsheet</translation>
+        <translation>Een CSV-bestand als rekenblad importeren</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Merge cells</source>
-        <translation type="unfinished">Merge cells</translation>
+        <translation>Cellen samenvoegen</translation>
     </message>
     <message>
         <source>Merge selected cells in spreadsheet</source>
-        <translation type="unfinished">Merge selected cells in spreadsheet</translation>
+        <translation>De geselecteerde cellen in rekenblad samenvoegen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias instellen</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished"></translation>
+        <translation>Een alias instellen voor de geselecteerde cel</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Split cell</source>
-        <translation type="unfinished">Split cell</translation>
+        <translation>Cel splitsen</translation>
     </message>
     <message>
         <source>Split previously merged cells in spreadsheet</source>
-        <translation type="unfinished">Split previously merged cells in spreadsheet</translation>
+        <translation>Eerder samengevoegde cellen in werkblad splitsen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished">Bold text</translation>
+        <translation>Vette tekst</translation>
     </message>
     <message>
         <source>Set bold text in selected cells</source>
-        <translation type="unfinished">Set bold text in selected cells</translation>
+        <translation>Vette tekst instellen in geselecteerde cellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished">Italic text</translation>
+        <translation>Cursieve tekst</translation>
     </message>
     <message>
         <source>Set italic text in selected cells</source>
-        <translation type="unfinished">Set italic text in selected cells</translation>
+        <translation>Cursieve tekst in geselecteerde cellen instellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
     <message>
         <source>Underline text</source>
-        <translation type="unfinished">Underline text</translation>
+        <translation>Tekst onderlijnen</translation>
     </message>
     <message>
         <source>Set underline text in selected cells</source>
-        <translation type="unfinished">Set underline text in selected cells</translation>
+        <translation>Tekst met onderstreping in geselecteerde cellen instellen</translation>
     </message>
 </context>
 <context>
     <name>ColorPickerPopup</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>Eigen</translation>
     </message>
 </context>
 <context>
     <name>PropertiesDialog</name>
     <message>
         <source>Cell properties</source>
-        <translation type="unfinished">Cell properties</translation>
+        <translation>Celeigenschappen</translation>
     </message>
     <message>
         <source>&amp;Color</source>
-        <translation type="unfinished">&amp;Color</translation>
+        <translation>&amp;Kleur</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Tekst</translation>
+        <translation>Tekst</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Background</translation>
+        <translation>Achtergrond</translation>
     </message>
     <message>
         <source>&amp;Alignment</source>
-        <translation type="unfinished">&amp;Alignment</translation>
+        <translation>&amp; Uitlijning</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished">Horizontaal</translation>
+        <translation>Horizontaal</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Links</translation>
+        <translation>Links</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation type="unfinished">Middelpunt</translation>
+        <translation>Middelpunt</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Rechts</translation>
+        <translation>Rechts</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished">Verticaal</translation>
+        <translation>Verticaal</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Boven</translation>
+        <translation>Boven</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Onder</translation>
+        <translation>Onder</translation>
     </message>
     <message>
         <source>&amp;Style</source>
-        <translation type="unfinished">&amp;Style</translation>
+        <translation>&amp;Stijl</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished">Bold</translation>
+        <translation>Vet</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished">Italic</translation>
+        <translation>Cursief</translation>
     </message>
     <message>
         <source>Underline</source>
-        <translation type="unfinished">Underline</translation>
+        <translation>Onderstrepen</translation>
     </message>
     <message>
         <source>&amp;Display unit</source>
-        <translation type="unfinished">&amp;Display unit</translation>
+        <translation>&amp; Beeldscherm</translation>
     </message>
     <message>
         <source>Unit string</source>
-        <translation type="unfinished">Unit string</translation>
+        <translation>Eenheid tekenreeks</translation>
     </message>
     <message>
         <source>A&amp;lias</source>
-        <translation type="unfinished">A&amp;lias</translation>
+        <translation>A&amp;lias</translation>
     </message>
     <message>
         <source>Alias for this cell</source>
-        <translation type="unfinished">Alias for this cell</translation>
+        <translation>Alias voor deze cel</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>All (*)</source>
-        <translation type="unfinished">All (*)</translation>
+        <translation>Alle (*)</translation>
     </message>
     <message>
         <source>Import file</source>
-        <translation type="unfinished">Bestand importeren</translation>
+        <translation>Bestand importeren</translation>
     </message>
     <message>
         <source>Export file</source>
-        <translation type="unfinished">Bestand exporteren</translation>
+        <translation>Bestand exporteren</translation>
     </message>
     <message>
         <source>Cell contents</source>
-        <translation type="unfinished">Cell contents</translation>
+        <translation>Celinhoud</translation>
     </message>
     <message>
         <source>Show spreadsheet</source>
-        <translation type="unfinished">Show spreadsheet</translation>
+        <translation>Rekenblad tonen</translation>
     </message>
 </context>
 <context>
     <name>QtColorPicker</name>
     <message>
         <source>Black</source>
-        <translation type="unfinished">Zwart</translation>
+        <translation>Zwart</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">Wit</translation>
+        <translation>Wit</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Rood</translation>
+        <translation>Rood</translation>
     </message>
     <message>
         <source>Dark red</source>
-        <translation type="unfinished">Donkerrood</translation>
+        <translation>Donkerrood</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Groen</translation>
+        <translation>Groen</translation>
     </message>
     <message>
         <source>Dark green</source>
-        <translation type="unfinished">Donkergroen</translation>
+        <translation>Donkergroen</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Blauw</translation>
+        <translation>Blauw</translation>
     </message>
     <message>
         <source>Dark blue</source>
-        <translation type="unfinished">Donkerblauw</translation>
+        <translation>Donkerblauw</translation>
     </message>
     <message>
         <source>Cyan</source>
-        <translation type="unfinished">Cyaan</translation>
+        <translation>Cyaan</translation>
     </message>
     <message>
         <source>Dark cyan</source>
-        <translation type="unfinished">Donkercyaan</translation>
+        <translation>Donkercyaan</translation>
     </message>
     <message>
         <source>Magenta</source>
-        <translation type="unfinished">Magenta</translation>
+        <translation>Magenta</translation>
     </message>
     <message>
         <source>Dark magenta</source>
-        <translation type="unfinished">Donkermagenta</translation>
+        <translation>Donkermagenta</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="unfinished">Geel</translation>
+        <translation>Geel</translation>
     </message>
     <message>
         <source>Dark yellow</source>
-        <translation type="unfinished">Donkergeel</translation>
+        <translation>Donkergeel</translation>
     </message>
     <message>
         <source>Gray</source>
-        <translation type="unfinished">Grijs</translation>
+        <translation>Grijs</translation>
     </message>
     <message>
         <source>Dark gray</source>
-        <translation type="unfinished">Dark gray</translation>
+        <translation>Donkergrijs</translation>
     </message>
     <message>
         <source>Light gray</source>
-        <translation type="unfinished">Light gray</translation>
+        <translation>Lichtgrijs</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>Eigen</translation>
     </message>
 </context>
 <context>
     <name>Sheet</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Vorm</translation>
+        <translation>Vorm</translation>
     </message>
     <message>
         <source>&amp;Contents</source>
-        <translation type="unfinished">&amp;Contents</translation>
+        <translation>&amp;Inhoud</translation>
+    </message>
+</context>
+<context>
+    <name>SpreadsheetGui::Module</name>
+    <message>
+        <source>Unnamed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
         <source>Insert rows</source>
-        <translation type="unfinished">Insert rows</translation>
+        <translation>Rijen invoegen</translation>
     </message>
     <message>
         <source>Remove rows</source>
-        <translation type="unfinished">Remove rows</translation>
+        <translation>Rijen verwijderen</translation>
     </message>
     <message>
         <source>Insert columns</source>
-        <translation type="unfinished">Insert columns</translation>
+        <translation>Kolommen invoegen</translation>
     </message>
     <message>
         <source>Remove columns</source>
-        <translation type="unfinished">Remove columns</translation>
+        <translation>Kolommen verwijderen</translation>
     </message>
     <message>
         <source>Properties...</source>
-        <translation type="unfinished">Properties...</translation>
+        <translation>Eigenschappen...</translation>
     </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Rekenblad</translation>
+        <translation>Rekenblad</translation>
     </message>
 </context>
 </TS>

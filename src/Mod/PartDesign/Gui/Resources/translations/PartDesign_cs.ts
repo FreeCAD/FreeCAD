@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Parametr evolventy</translation>
+        <translation>Parametr evolventy</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">počet zubů:</translation>
+        <translation>počet zubů:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modul:</translation>
+        <translation>Modul:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Vysoká přesnost:</translation>
+        <translation>Vysoká přesnost:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Ano</translation>
+        <translation>Pravda</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Ne</translation>
+        <translation>Nepravda</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Vnější ozubení:</translation>
+        <translation>Vnější ozubení:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Úhel záběru:</translation>
+        <translation>Úhel záběru:</translation>
     </message>
 </context>
 <context>
@@ -407,7 +407,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Upravit zkosení</translation>
+        <translation>Upravit zkosení</translation>
     </message>
 </context>
 <context>
@@ -423,7 +423,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Upravit zaoblení</translation>
+        <translation>Upravit zaoblení</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Upravit kapsu</translation>
+        <translation>Upravit kapsu</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -667,24 +667,24 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vodorovná skicovací osa</translation>
+        <translation>Vodorovná skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Svislá skicovací osa</translation>
+        <translation>Svislá skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Vyber referenci...</translation>
+        <translation>Vyber referenci...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -714,7 +714,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Nedefinovaná</translation>
+        <translation>Nedefinovaná</translation>
     </message>
 </context>
 <context>
@@ -749,19 +749,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vodorovná skicovací osa</translation>
+        <translation>Vodorovná skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Svislá skicovací osa</translation>
+        <translation>Svislá skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Vyber referenci...</translation>
+        <translation>Vyber referenci...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -780,12 +780,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Vybrat plochu</translation>
+        <translation>Vybrat plochu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Nedefinovaná</translation>
+        <translation>Nedefinovaná</translation>
     </message>
 </context>
 <context>
@@ -1043,7 +1043,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Překlopit</translation>
+        <translation>Překlopit</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1130,24 +1130,24 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Osa</translation>
+        <translation>Osa</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normálová osa roviny náčrtu</translation>
+        <translation>Normálová osa roviny náčrtu</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Vyber referenci...</translation>
+        <translation>Vyber referenci...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1233,7 +1233,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Nedefinovaná</translation>
+        <translation>Nedefinovaná</translation>
     </message>
 </context>
 <context>
@@ -1367,17 +1367,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejsou vybrané platné náčrty</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádný z vybraných náčrtů / 2D objektů není platný pro vysunutí desky. Vyberte prosím platný náčrt nebo 2D objekt, který není použitý žádným jiným prvkem.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádný z vybraných náčrtů / 2D objektů není platný pro rotaci. Vyberte prosím platný náčrt nebo 2D objekt, který není použitý žádným jiným prvkem.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1411,7 +1411,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Vytvořte prosím nejprve odčítací nebo přídavný prvek</translation>
+        <translation>Vytvořte prosím nejprve odčítací nebo přídavný prvek</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1484,13 +1484,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Ztratila se návaznost na základní náčrt</translation>
+        <translation>Ztratila se návaznost na základní náčrt</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">Objekt nemůže být editován, protože vazba na základní náčrt je ztracená.</translation>
+        <translation>Objekt nemůže být editován, protože vazba na základní náčrt je ztracená.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1531,12 +1531,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Upravit vybrání</translation>
+        <translation>Upravit vybrání</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Upravit rotaci</translation>
+        <translation>Upravit rotaci</translation>
     </message>
 </context>
 <context>

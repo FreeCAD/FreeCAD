@@ -6,13 +6,13 @@
     <message>
         <location filename="../../Command.cpp" line="+153"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a part to the Analysis</source>
-        <translation type="unfinished">Ein Teil zur Analyse hinzufügen</translation>
+        <translation>Ein Teil zur Analyse hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -20,17 +20,17 @@
     <message>
         <location line="+106"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM bearing constraint</source>
-        <translation type="unfinished">FEM-Lagerrandbedingung erstellen</translation>
+        <translation>FEM-Lagerrandbedingung erstellen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a bearing</source>
-        <translation type="unfinished">FEM-Randbedingung für ein Lager erstellen</translation>
+        <translation>FEM-Randbedingung für ein Lager erstellen</translation>
     </message>
 </context>
 <context>
@@ -38,103 +38,103 @@
     <message>
         <location line="+36"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM fixed constraint</source>
-        <translation type="unfinished">FEM-Einspannbedingung erstellen</translation>
+        <translation>FEM-Einspannbedingung erstellen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a fixed geometric entity</source>
-        <translation type="unfinished">FEM-Randbedingung für eine fixierte geometrische Einheit erstellen</translation>
+        <translation>FEM-Randbedingung für eine fixierte geometrische Einheit erstellen</translation>
     </message>
 </context>
 <context>
     <name>CmdFemConstraintForce</name>
     <message>
-        <location line="+36"/>
+        <location line="+37"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM force constraint</source>
-        <translation type="unfinished">FEM-Kraftrandbedingung erstellen</translation>
+        <translation>FEM-Kraftrandbedingung erstellen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a force acting on a geometric entity</source>
-        <translation type="unfinished">FEM-Randbedingung für eine auf eine geometrische Einheit wirkende Kraft erstellen</translation>
+        <translation>FEM-Randbedingung für eine auf eine geometrische Einheit wirkende Kraft erstellen</translation>
     </message>
 </context>
 <context>
     <name>CmdFemConstraintGear</name>
     <message>
-        <location line="+77"/>
+        <location line="+81"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM gear constraint</source>
-        <translation type="unfinished">FEM-Zahnradrandbedingung erstellen</translation>
+        <translation>FEM-Zahnradrandbedingung erstellen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a gear</source>
-        <translation type="unfinished">FEM-Randbedingung für ein Zahnrad erstellen</translation>
+        <translation>FEM-Randbedingung für ein Zahnrad erstellen</translation>
     </message>
 </context>
 <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-        <location line="-42"/>
+        <location line="-44"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM pressure constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellen Sie eine FEM-Druck-Randbedingung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a pressure acting on a face</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellen Sie eine FEM-Randbedingung mit einem Druck, der auf eine Fläche wirkt</translation>
     </message>
 </context>
 <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-        <location line="+76"/>
+        <location line="+78"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM pulley constraint</source>
-        <translation type="unfinished">FEM-Rollenrandbedingung erstellen</translation>
+        <translation>FEM-Rollenrandbedingung erstellen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a pulley</source>
-        <translation type="unfinished">FEM-Randbedingung für eine Rolle erstellen</translation>
+        <translation>FEM-Randbedingung für eine Rolle erstellen</translation>
     </message>
 </context>
 <context>
     <name>CmdFemCreateAnalysis</name>
     <message>
-        <location line="-365"/>
+        <location line="-370"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a FEM analysis</source>
-        <translation type="unfinished">Eine FEM-Analyse erstellen</translation>
+        <translation>Eine FEM-Analyse erstellen</translation>
     </message>
 </context>
 <context>
@@ -155,54 +155,54 @@
 <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-        <location line="+550"/>
+        <location line="+555"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Define/create a nodes set...</source>
-        <translation type="unfinished">Definieren/Erstellen eines Knoten-Sets ...</translation>
+        <translation>Definieren/Erstellen eines Knoten-Sets ...</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Falsche Auswahl</translation>
+        <translation>Falsche Auswahl</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select a single FEM mesh or nodes set, please.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie ein einzelnes FEM-Netz oder einen Knotensatz.</translation>
     </message>
 </context>
 <context>
     <name>CmdFemCreateSolver</name>
     <message>
-        <location line="-458"/>
+        <location line="-463"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a solver to the Analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Fügen Sie einen Gleichungslöser zur Analyse hinzu</translation>
     </message>
 </context>
 <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-        <location line="+368"/>
+        <location line="+373"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+2"/>
         <source>Create node set by Poly</source>
-        <translation type="unfinished">Erstelle Knotengruppe mittels Poly</translation>
+        <translation>Erstelle Knotengruppe mittels Poly</translation>
     </message>
 </context>
 <context>
@@ -210,108 +210,108 @@
     <message>
         <location filename="../../DlgSettingsFem.ui" line="+14"/>
         <source>FEM</source>
-        <translation type="unfinished">FEM</translation>
+        <translation>FEM</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>CalculiX</source>
-        <translation type="unfinished"></translation>
+        <translation>CalculiX</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Use internal editor for .inp files</source>
-        <translation type="unfinished"></translation>
+        <translation>Internen Editor für .inp-Dateien verwenden</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>External editor:</source>
-        <translation type="unfinished"></translation>
+        <translation>Externer Editor:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Leave blank to use default CalculiX ccx binary file</source>
-        <translation type="unfinished"></translation>
+        <translation>Freilassen, um die Standard-CalculiX ccx Binär-Datei zu verwenden</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>ccx binary</source>
-        <translation type="unfinished"></translation>
+        <translation>ccx binär</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Working directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Arbeitsverzeichnis</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Default analysis settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyse-Standardeinstellungen</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default type on analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyse-Standardtyp</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Static</source>
-        <translation type="unfinished"></translation>
+        <translation>Statisch</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Eigenmode number</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl Eigenformen</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>High frequency limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Hochfrequenz-Limit</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Low frequency limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Niederfrequenz-Limit</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+7"/>
         <source>Hz</source>
-        <translation type="unfinished"></translation>
+        <translation>Hz</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Materials</source>
-        <translation type="unfinished"></translation>
+        <translation>Materialien</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Use built-in materials</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwenden von installierten Materialien</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Use materials from .FreeCAD/Materials directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwenden von Materialien aus dem &quot;FreeCAD/Materials&quot;-Verzeichnis</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Use materials from user defined directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwenden von Materialien aus dem vom Benutzer definierten Verzeichnis</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>User directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerverzeichnis</translation>
     </message>
 </context>
 <context>
@@ -342,7 +342,7 @@
     <message>
         <location filename="../../TaskAnalysisInfo.cpp" line="+45"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Knoten-Set</translation>
+        <translation>Knoten-Set</translation>
     </message>
 </context>
 <context>
@@ -350,21 +350,21 @@
     <message>
         <location filename="../../TaskCreateNodeSet.cpp" line="+63"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Knoten-Set</translation>
+        <translation>Knoten-Set</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-        <location filename="../../TaskFemConstraint.cpp" line="+185"/>
+        <location filename="../../TaskFemConstraint.cpp" line="+195"/>
         <location line="+11"/>
         <source>Input error</source>
-        <translation type="unfinished">Eingabefehler</translation>
+        <translation>Eingabefehler</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You must specify at least one reference</source>
-        <translation type="unfinished">Sie müssen mindestens eine Referenz angeben</translation>
+        <translation>Sie müssen mindestens eine Referenz angeben</translation>
     </message>
 </context>
 <context>
@@ -372,15 +372,21 @@
     <message>
         <location filename="../../TaskFemConstraintBearing.cpp" line="+351"/>
         <source>Input error</source>
-        <translation type="unfinished">Eingabefehler</translation>
+        <translation>Eingabefehler</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+372"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+358"/>
+        <location line="+26"/>
         <source>Input error</source>
-        <translation type="unfinished">Eingabefehler</translation>
+        <translation>Eingabefehler</translation>
+    </message>
+    <message>
+        <location line="-26"/>
+        <source>Please specify a force greater than 0</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -388,15 +394,21 @@
     <message>
         <location filename="../../TaskFemConstraintGear.cpp" line="+310"/>
         <source>Input error</source>
-        <translation type="unfinished">Eingabefehler</translation>
+        <translation>Eingabefehler</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-        <location filename="../../TaskFemConstraintPressure.cpp" line="+260"/>
+        <location filename="../../TaskFemConstraintPressure.cpp" line="+257"/>
+        <location line="+16"/>
         <source>Input error</source>
-        <translation type="unfinished">Eingabefehler</translation>
+        <translation>Eingabefehler</translation>
+    </message>
+    <message>
+        <location line="-16"/>
+        <source>Please specify a pressure greater than 0</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -404,7 +416,7 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="+204"/>
         <source>Input error</source>
-        <translation type="unfinished">Eingabefehler</translation>
+        <translation>Eingabefehler</translation>
     </message>
 </context>
 <context>
@@ -412,12 +424,12 @@
     <message>
         <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="+75"/>
         <source>Edit FEM mesh</source>
-        <translation type="unfinished"></translation>
+        <translation>FEM-Netz bearbeiten</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Meshing failure</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler bei der Netzerstellung</translation>
     </message>
 </context>
 <context>
@@ -425,15 +437,15 @@
     <message>
         <location filename="../../TaskDriver.cpp" line="+51"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Knoten-Set</translation>
+        <translation>Knoten-Set</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraint</name>
     <message>
-        <location filename="../../TaskFemConstraint.cpp" line="-120"/>
+        <location filename="../../TaskFemConstraint.cpp" line="-128"/>
         <source>FEM constraint parameters</source>
-        <translation type="unfinished">FEM-Randbedingungsparameter</translation>
+        <translation>FEM-Randbedingungsparameter</translation>
     </message>
 </context>
 <context>
@@ -441,7 +453,7 @@
     <message>
         <location filename="../../TaskFemConstraintBearing.cpp" line="-275"/>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location line="+98"/>
@@ -451,37 +463,37 @@
         <location line="+6"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Auswahlfehler</translation>
+        <translation>Auswahlfehler</translation>
     </message>
     <message>
         <location line="-38"/>
         <source>Please use only a single reference for bearing constraint</source>
-        <translation type="unfinished">Bitte verwenden Sie nur eine einzige Referenz für die Lagerrandbedingung</translation>
+        <translation>Bitte verwenden Sie nur eine einzige Referenz für die Lagerrandbedingung</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces can be picked</source>
-        <translation type="unfinished">Es können nur Flächen ausgewählt werden</translation>
+        <translation>Es können nur Flächen ausgewählt werden</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Only cylindrical faces can be picked</source>
-        <translation type="unfinished">Es können nur zylindrische Flächen ausgewählt werden</translation>
+        <translation>Es können nur zylindrische Flächen ausgewählt werden</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Es können nur ebene Flächen ausgewählt werden</translation>
+        <translation>Es können nur ebene Flächen ausgewählt werden</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Es können nur geradlinige Kanten ausgewählt werden</translation>
+        <translation>Es können nur geradlinige Kanten ausgewählt werden</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Es können nur Flächen und Kanten ausgewählt werden</translation>
+        <translation>Es können nur Flächen und Kanten ausgewählt werden</translation>
     </message>
 </context>
 <context>
@@ -489,31 +501,31 @@
     <message>
         <location filename="../../TaskFemConstraintFixed.cpp" line="+74"/>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location line="+61"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Auswahlfehler</translation>
+        <translation>Auswahlfehler</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Gemischte Formtypen sind nicht möglich. Verwenden Sie stattdessen eine zweite Randbedingung</translation>
+        <translation>Gemischte Formtypen sind nicht möglich. Verwenden Sie stattdessen eine zweite Randbedingung</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Es können nur Flächen, Kanten und Ecken ausgewählt werden</translation>
+        <translation>Es können nur Flächen, Kanten und Ecken ausgewählt werden</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-297"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-283"/>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <source>Point load [N]</source>
@@ -530,17 +542,17 @@
     <message>
         <location line="+67"/>
         <source>Point load</source>
-        <translation type="unfinished"></translation>
+        <translation>Punktlast</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load</source>
-        <translation type="unfinished"></translation>
+        <translation>Streckenlast</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Area load</source>
-        <translation type="unfinished"></translation>
+        <translation>Flächenlast</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -549,32 +561,32 @@
         <location line="+6"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Auswahlfehler</translation>
+        <translation>Auswahlfehler</translation>
     </message>
     <message>
         <location line="-48"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Gemischte Formtypen sind nicht möglich. Verwenden Sie stattdessen eine zweite Randbedingung</translation>
+        <translation>Gemischte Formtypen sind nicht möglich. Verwenden Sie stattdessen eine zweite Randbedingung</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Es können nur Flächen, Kanten und Ecken ausgewählt werden</translation>
+        <translation>Es können nur Flächen, Kanten und Ecken ausgewählt werden</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Es können nur ebene Flächen ausgewählt werden</translation>
+        <translation>Es können nur ebene Flächen ausgewählt werden</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Es können nur geradlinige Kanten ausgewählt werden</translation>
+        <translation>Es können nur geradlinige Kanten ausgewählt werden</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Es können nur Flächen und Kanten ausgewählt werden</translation>
+        <translation>Es können nur Flächen und Kanten ausgewählt werden</translation>
     </message>
 </context>
 <context>
@@ -584,40 +596,40 @@
         <location line="+6"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Auswahlfehler</translation>
+        <translation>Auswahlfehler</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Es können nur ebene Flächen ausgewählt werden</translation>
+        <translation>Es können nur ebene Flächen ausgewählt werden</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Es können nur geradlinige Kanten ausgewählt werden</translation>
+        <translation>Es können nur geradlinige Kanten ausgewählt werden</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Es können nur Flächen und Kanten ausgewählt werden</translation>
+        <translation>Es können nur Flächen und Kanten ausgewählt werden</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-        <location filename="../../TaskFemConstraintPressure.cpp" line="-199"/>
+        <location filename="../../TaskFemConstraintPressure.cpp" line="-196"/>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Selection error</source>
-        <translation type="unfinished">Auswahlfehler</translation>
+        <translation>Auswahlfehler</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Only faces can be picked</source>
-        <translation type="unfinished">Es können nur Flächen ausgewählt werden</translation>
+        <translation>Es können nur Flächen ausgewählt werden</translation>
     </message>
 </context>
 <context>
@@ -625,12 +637,12 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
         <source>Pulley diameter</source>
-        <translation type="unfinished">Rollendurchmesser</translation>
+        <translation>Rollendurchmesser</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Torque [Nm]</source>
-        <translation type="unfinished">Drehmoment [Nm]</translation>
+        <translation>Drehmoment [Nm]</translation>
     </message>
 </context>
 <context>
@@ -638,7 +650,7 @@
     <message>
         <location filename="../../TaskObjectName.cpp" line="+48"/>
         <source>TaskObjectName</source>
-        <translation type="unfinished">AufgabenObjektName</translation>
+        <translation>AufgabenObjektName</translation>
     </message>
 </context>
 <context>
@@ -646,7 +658,7 @@
     <message>
         <location filename="../../TaskTetParameter.cpp" line="+52"/>
         <source>Tet Parameter</source>
-        <translation type="unfinished">Tetraeder-Parameter</translation>
+        <translation>Tetraeder-Parameter</translation>
     </message>
 </context>
 <context>
@@ -654,7 +666,7 @@
     <message>
         <location filename="../../ViewProviderAnalysis.cpp" line="+84"/>
         <source>Activate analysis</source>
-        <translation type="unfinished"></translation>
+        <translation>Analyse aktivieren</translation>
     </message>
 </context>
 <context>
@@ -662,12 +674,12 @@
     <message>
         <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="+76"/>
         <source>Meshing failure</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler bei der Netzerstellung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-        <translation type="unfinished"></translation>
+        <translation>Das FEM-Modul ist ohne NETGEN-Unterstützung erstellt worden. Die Netzerstellung funktioniert nicht!!!</translation>
     </message>
 </context>
 <context>
@@ -676,57 +688,57 @@
         <location filename="../../../TaskPanelFemBeamSection.ui" line="+14"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cross Section</source>
-        <translation type="unfinished"></translation>
+        <translation>Querschnitt</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+18"/>
         <source>Use FreeCAD Property Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>FreeCAD-Eigenschaften-Editor verwenden</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>to edit the cross section values</source>
-        <translation type="unfinished"></translation>
+        <translation>die Querschnitt-Werte bearbeiten</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+17"/>
         <source>References</source>
-        <translation type="unfinished"></translation>
+        <translation>Referenzen</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+6"/>
         <source>Leave references blank </source>
-        <translation type="unfinished"></translation>
+        <translation>Referenzen frei lassen </translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+7"/>
         <source>to choose all remaining shapes</source>
-        <translation type="unfinished"></translation>
+        <translation>alle übrigen Formen wählen</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+10"/>
         <source>Add reference</source>
-        <translation type="unfinished">Referenz hinzufügen</translation>
+        <translation>Referenz hinzufügen</translation>
     </message>
     <message>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="-46"/>
         <source>Thickness</source>
-        <translation type="unfinished"></translation>
+        <translation>Dicke</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>to edit the thickness value</source>
-        <translation type="unfinished"></translation>
+        <translation>verändern der Dicke</translation>
     </message>
 </context>
 <context>
@@ -734,130 +746,130 @@
     <message>
         <location filename="../../../TaskPanelFemSolverCalculix.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanische Analyse</translation>
+        <translation>Mechanische Analyse</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Working directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Arbeitsverzeichnis</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Analysis type</source>
-        <translation type="unfinished"></translation>
+        <translation>Analysetyp</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Static</source>
-        <translation type="unfinished"></translation>
+        <translation>Statisch</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Write .inp file</source>
-        <translation type="unfinished"></translation>
+        <translation>.Inp Datei schreiben</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit .inp file</source>
-        <translation type="unfinished"></translation>
+        <translation>.Inp Datei bearbeiten</translation>
     </message>
     <message>
         <source>Write Calculix Input File</source>
-        <translation type="obsolete">Calculix Eingabedatei schreiben</translation>
+        <translation type="obsolete">CalculiX Eingabedatei schreiben</translation>
     </message>
     <message>
         <source>Edit Calculix Input File</source>
-        <translation type="obsolete">Calculix Eingabedatei bearbeiten</translation>
+        <translation type="obsolete">CalculiX Eingabedatei bearbeiten</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Run Calculix</source>
-        <translation type="unfinished">Calculix ausführen</translation>
+        <translation>CalculiX ausführen</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Time:</source>
-        <translation type="unfinished">Zeit:</translation>
+        <translation>Zeit:</translation>
     </message>
     <message>
         <location filename="../../../TaskPanelMechanicalMaterial.ui" line="+14"/>
         <source>Mechanical material</source>
-        <translation type="unfinished">Mechanisches Material</translation>
+        <translation>Mechanisches Material</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Material</source>
-        <translation type="unfinished"></translation>
+        <translation>Material</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">auswählen...</translation>
+        <translation>auswählen...</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>References</source>
-        <translation type="unfinished"></translation>
+        <translation>Referenzen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Leave references blank </source>
-        <translation type="unfinished"></translation>
+        <translation>Referenzen frei lassen </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>to choose all remaining shapes</source>
-        <translation type="unfinished"></translation>
+        <translation>alle übrigen Formen wählen</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Add reference</source>
-        <translation type="unfinished">Referenz hinzufügen</translation>
+        <translation>Referenz hinzufügen</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften</translation>
     </message>
     <message>
         <location line="+145"/>
         <source>External material resources</source>
-        <translation type="unfinished"></translation>
+        <translation>Externe Material-Datenbanken</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>MatWeb database...</source>
-        <translation type="unfinished">MatWeb-Datenbank...</translation>
+        <translation>MatWeb-Datenbank...</translation>
     </message>
     <message>
         <location line="-140"/>
         <source>Young&apos;s Modulus:</source>
-        <translation type="unfinished">Elastizitätsmodul:</translation>
+        <translation>Elastizitätsmodul:</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Density</source>
-        <translation type="unfinished"></translation>
+        <translation>Dichte</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>0 kg/m^3</source>
-        <translation type="unfinished"></translation>
+        <translation>0 kg/m^3</translation>
     </message>
     <message>
         <location line="-164"/>
         <source>Material Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Materialbeschreibung</translation>
     </message>
     <message>
         <source>Pa</source>
@@ -866,20 +878,20 @@
     <message>
         <location line="+107"/>
         <source>Poisson Ratio:</source>
-        <translation type="unfinished">Poissonzahl:</translation>
+        <translation>Poissonzahl:</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-519"/>
+        <location filename="../../Command.cpp" line="-524"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">Keine aktive Analyse</translation>
+        <translation>Keine aktive Analyse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">Sie müssen eine Analyse erstellen oder aktivieren</translation>
+        <translation>Sie müssen eine Analyse erstellen oder aktivieren</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -888,47 +900,47 @@
         <location line="+8"/>
         <location line="+55"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Falsche Auswahl</translation>
+        <translation>Falsche Auswahl</translation>
     </message>
     <message>
         <location line="-124"/>
         <location line="+62"/>
         <location line="+63"/>
         <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-        <translation type="unfinished">Ihr FreeCAD ist ohne NETGEN-Unterstützung gebaut. Gittererzeugung wird nicht funktionieren....</translation>
+        <translation>Ihr FreeCAD ist ohne NETGEN-Unterstützung gebaut. Gittererzeugung wird nicht funktionieren....</translation>
     </message>
     <message>
         <location line="-117"/>
         <location line="+62"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation type="unfinished">Wählen Sie eine Kante, eine Fläche oder einen Körper. Nur ein Körper ist erlaubt.</translation>
+        <translation>Wählen Sie eine Kante, eine Fläche oder einen Körper. Nur ein Körper ist erlaubt.</translation>
     </message>
     <message>
         <location line="-57"/>
         <location line="+62"/>
         <source>Wrong object type</source>
-        <translation type="unfinished">Falscher Objekt-Typ</translation>
+        <translation>Falscher Objekt-Typ</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>Fillet works only on parts</source>
-        <translation type="unfinished">Rundung funktioniert nur bei Teilen</translation>
+        <translation>Rundung funktioniert nur bei Teilen</translation>
     </message>
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="+16"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFemConstraint.cpp" line="+145"/>
         <source>Edit constraint</source>
-        <translation type="unfinished">Randbedingung bearbeiten</translation>
+        <translation>Randbedingung bearbeiten</translation>
     </message>
     <message>
         <source>Combo View</source>
@@ -957,7 +969,7 @@
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="+74"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="+73"/>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
+        <translation>Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -966,27 +978,27 @@
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="+1"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation type="unfinished">Möchten Sie dieses Dialogfeld schließen?</translation>
+        <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="-15"/>
         <source>Meshing</source>
-        <translation type="unfinished">Vernetzung</translation>
+        <translation>Vernetzung</translation>
     </message>
     <message>
         <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
         <source>Constraint force</source>
-        <translation type="unfinished">Einschränkungskraft</translation>
+        <translation>Einschränkungskraft</translation>
     </message>
     <message>
         <location filename="../../TaskFemConstraintPressure.cpp" line="+98"/>
         <source>Constraint normal stress</source>
-        <translation type="unfinished"></translation>
+        <translation>Randbedingung Normalspannung</translation>
     </message>
     <message>
         <location filename="../../PropertyFemMeshItem.cpp" line="+98"/>
         <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-        <translation type="unfinished"></translation>
+        <translation>[Knoten: %1, Kanten: %2, Flächen: %3, Polygone: %4, Volumen: %5, Polyeder: %6]</translation>
     </message>
 </context>
 <context>
@@ -994,7 +1006,7 @@
     <message>
         <location filename="../../../TaskPanelShowDisplacement.ui" line="+14"/>
         <source>Show result</source>
-        <translation type="unfinished">Ergebnis anzeigen</translation>
+        <translation>Ergebnis anzeigen</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -1003,57 +1015,57 @@
     <message>
         <location line="+121"/>
         <source>Displacement</source>
-        <translation type="unfinished">Verdrängung</translation>
+        <translation>Verdrängung</translation>
     </message>
     <message>
         <location line="-39"/>
         <source>Max:</source>
-        <translation type="unfinished">Max:</translation>
+        <translation>Max:</translation>
     </message>
     <message>
         <location line="-74"/>
         <source>Result type</source>
-        <translation type="unfinished"></translation>
+        <translation>Ergebnistyp</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Y displacement</source>
-        <translation type="unfinished"></translation>
+        <translation>Y-Verschiebung</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>X displacement</source>
-        <translation type="unfinished"></translation>
+        <translation>X-Verschiebung</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Z displacement</source>
-        <translation type="unfinished"></translation>
+        <translation>Z-Verschiebung</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Von Mises stress</source>
-        <translation type="unfinished"></translation>
+        <translation>Von-Mises Spannung</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Abs displacement</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Verschiebung</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Min:</source>
-        <translation type="unfinished">Min:</translation>
+        <translation>Min:</translation>
     </message>
     <message>
         <location line="-72"/>
         <source>None</source>
-        <translation type="unfinished">Kein</translation>
+        <translation>Kein</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Avg:</source>
-        <translation type="unfinished">Durchschnitt:</translation>
+        <translation>Durchschnitt:</translation>
     </message>
     <message>
         <source>mm</source>
@@ -1062,17 +1074,17 @@
     <message>
         <location line="+64"/>
         <source>Show</source>
-        <translation type="unfinished">Anzeigen</translation>
+        <translation>Anzeigen</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Factor:</source>
-        <translation type="unfinished">Faktor:</translation>
+        <translation>Faktor:</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Slider max:</source>
-        <translation type="unfinished">Schieber maximal:</translation>
+        <translation>Schieber maximal:</translation>
     </message>
 </context>
 <context>
@@ -1080,17 +1092,17 @@
     <message>
         <location filename="../../TaskAnalysisInfo.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Meshes:</source>
-        <translation type="unfinished">Netze:</translation>
+        <translation>Netze:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Constraints</source>
-        <translation type="unfinished">Einschränkungen</translation>
+        <translation>Einschränkungen</translation>
     </message>
 </context>
 <context>
@@ -1098,57 +1110,57 @@
     <message>
         <location filename="../../TaskCreateNodeSet.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Volume</source>
-        <translation type="unfinished">Volumen</translation>
+        <translation>Volumen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Surface</source>
-        <translation type="unfinished">Oberfläche</translation>
+        <translation>Oberfläche</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nodes: 0</source>
-        <translation type="unfinished">Knoten: 0</translation>
+        <translation>Knoten: 0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Poly</source>
-        <translation type="unfinished">Poly</translation>
+        <translation>Poly</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Box</source>
-        <translation type="unfinished">Quader</translation>
+        <translation>Quader</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Pick</source>
-        <translation type="unfinished">Auswählen</translation>
+        <translation>Auswählen</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Add</source>
-        <translation type="unfinished">Hinzufügen</translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Angle-search</source>
-        <translation type="unfinished">Winkelsuche</translation>
+        <translation>Winkelsuche</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Collect adjancent nodes</source>
-        <translation type="unfinished">Angrenzende Knoten erfassen</translation>
+        <translation>Angrenzende Knoten erfassen</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Stop angle:</source>
-        <translation type="unfinished">Stoppwinkel:</translation>
+        <translation>Stoppwinkel:</translation>
     </message>
 </context>
 <context>
@@ -1156,7 +1168,7 @@
     <message>
         <location filename="../../TaskDriver.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
 </context>
 <context>
@@ -1164,52 +1176,52 @@
     <message>
         <location filename="../../TaskFemConstraint.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Add reference</source>
-        <translation type="unfinished">Referenz hinzufügen</translation>
+        <translation>Referenz hinzufügen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Belastung [N]</translation>
+        <translation>Belastung [N]</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Diameter</source>
-        <translation type="unfinished">Durchmesser</translation>
+        <translation>Durchmesser</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other diameter</source>
-        <translation type="unfinished">Anderer Durchmesser</translation>
+        <translation>Anderer Durchmesser</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Center distance</source>
-        <translation type="unfinished">Achsabstand</translation>
+        <translation>Achsabstand</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Direction</source>
-        <translation type="unfinished">Richtung</translation>
+        <translation>Richtung</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Umgekehrte Richtung</translation>
+        <translation>Umgekehrte Richtung</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Location</source>
-        <translation type="unfinished">Lage</translation>
+        <translation>Lage</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Distance</source>
-        <translation type="unfinished">Abstand</translation>
+        <translation>Abstand</translation>
     </message>
 </context>
 <context>
@@ -1217,72 +1229,72 @@
     <message>
         <location filename="../../TaskFemConstraintBearing.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Referenz hinzufügen</translation>
+        <translation>Referenz hinzufügen</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Gear diameter</source>
-        <translation type="unfinished">Wälzkreisdurchmesser</translation>
+        <translation>Wälzkreisdurchmesser</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other pulley dia</source>
-        <translation type="unfinished">Weitere Rollendurchmesser</translation>
+        <translation>Weitere Rollendurchmesser</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Center distance</source>
-        <translation type="unfinished">Achsabstand</translation>
+        <translation>Achsabstand</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Force</source>
-        <translation type="unfinished">Kraft</translation>
+        <translation>Kraft</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Belt tension force</source>
-        <translation type="unfinished">Riemenspannungskraft</translation>
+        <translation>Riemenspannungskraft</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Driven pulley</source>
-        <translation type="unfinished">Abtriebsrolle</translation>
+        <translation>Abtriebsrolle</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Force location [deg]</source>
-        <translation type="unfinished">Kraftwinkel [Grad]</translation>
+        <translation>Kraftwinkel [Grad]</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Force Direction</source>
-        <translation type="unfinished">Kraftrichtung</translation>
+        <translation>Kraftrichtung</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reversed direction</source>
-        <translation type="unfinished">Umgekehrte Richtung</translation>
+        <translation>Umgekehrte Richtung</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Axial free</source>
-        <translation type="unfinished">Axial frei beweglich</translation>
+        <translation>Axial frei beweglich</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Location</source>
-        <translation type="unfinished">Lage</translation>
+        <translation>Lage</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Distance</source>
-        <translation type="unfinished">Abstand</translation>
+        <translation>Abstand</translation>
     </message>
 </context>
 <context>
@@ -1290,12 +1302,12 @@
     <message>
         <location filename="../../TaskFemConstraintFixed.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Referenz hinzufügen</translation>
+        <translation>Referenz hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -1303,27 +1315,27 @@
     <message>
         <location filename="../../TaskFemConstraintForce.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Referenz hinzufügen</translation>
+        <translation>Referenz hinzufügen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Belastung [N]</translation>
+        <translation>Belastung [N]</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Direction</source>
-        <translation type="unfinished">Richtung</translation>
+        <translation>Richtung</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Umgekehrte Richtung</translation>
+        <translation>Umgekehrte Richtung</translation>
     </message>
 </context>
 <context>
@@ -1331,27 +1343,27 @@
     <message>
         <location filename="../../TaskFemConstraintPressure.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Referenz hinzufügen</translation>
+        <translation>Referenz hinzufügen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Pressure</source>
-        <translation type="unfinished"></translation>
+        <translation>Druck</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1 MPa</source>
-        <translation type="unfinished"></translation>
+        <translation>1 MPa</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Umgekehrte Richtung</translation>
+        <translation>Umgekehrte Richtung</translation>
     </message>
 </context>
 <context>
@@ -1359,7 +1371,7 @@
     <message>
         <location filename="../../TaskObjectName.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
 </context>
 <context>
@@ -1367,87 +1379,87 @@
     <message>
         <location filename="../../TaskTetParameter.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Max. Size:</source>
-        <translation type="unfinished">Max. Größe:</translation>
+        <translation>Max. Größe:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Second order</source>
-        <translation type="unfinished">Zweite Ordnung</translation>
+        <translation>Zweite Ordnung</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Feinheit:</translation>
+        <translation>Feinheit:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>VeryCoarse</source>
-        <translation type="unfinished">Sehr grob</translation>
+        <translation>Sehr grob</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Grob</translation>
+        <translation>Grob</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Mittel</translation>
+        <translation>Mittel</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fein</translation>
+        <translation>Fein</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>VeryFine</source>
-        <translation type="unfinished">Sehr fein</translation>
+        <translation>Sehr fein</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>UserDefined</source>
-        <translation type="unfinished">Benutzerdefiniert</translation>
+        <translation>Benutzerdefiniert</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Growth Rate:</source>
-        <translation type="unfinished">Wachstumsrate:</translation>
+        <translation>Wachstumsrate:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Nbr. Segs per Edge:</source>
-        <translation type="unfinished">Anz. Segmente pro Kante:</translation>
+        <translation>Anz. Segmente pro Kante:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nbr. Segs per Radius:</source>
-        <translation type="unfinished">Anz. Segmente pro Radius:</translation>
+        <translation>Anz. Segmente pro Radius:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimieren</translation>
+        <translation>Optimieren</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Node count: </source>
-        <translation type="unfinished">Knotenanzahl: </translation>
+        <translation>Knotenanzahl: </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Triangle count:</source>
-        <translation type="unfinished">Dreiecksanzahl:</translation>
+        <translation>Dreiecksanzahl:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Tetraeder count:</source>
-        <translation type="unfinished">Tetraederanzahl:</translation>
+        <translation>Tetraederanzahl:</translation>
     </message>
 </context>
 <context>

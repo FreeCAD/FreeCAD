@@ -236,13 +236,13 @@
         <location filename="../../Command.cpp" line="-78"/>
         <location line="+49"/>
         <source>Ascii Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Points ASCII</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+49"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers</translation>
     </message>
 </context>
 <context>

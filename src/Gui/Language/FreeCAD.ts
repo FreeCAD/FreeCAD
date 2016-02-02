@@ -1238,10 +1238,6 @@ Please define another shortcut.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1259,6 +1255,18 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User macros location:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1299,6 +1307,10 @@ This file already exists.</source>
     </message>
     <message>
         <source>Creation of file &apos;%1&apos; failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read-only</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4818,6 +4830,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not allowed to delete system-wide macros</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

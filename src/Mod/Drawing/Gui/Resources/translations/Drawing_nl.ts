@@ -11,13 +11,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Annotation</source>
-        <translation>&amp;Annotation</translation>
+        <translation>Aantekening </translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts an Annotation view in the active drawing</source>
-        <translation>Inserts an Annotation view in the active drawing</translation>
+        <translation type="unfinished">Inserts an Annotation view in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -30,13 +30,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Clip</source>
-        <translation>&amp;Clip</translation>
+        <translation type="unfinished">&amp;Clip</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a clip group in the active drawing</source>
-        <translation>Inserts a clip group in the active drawing</translation>
+        <translation type="unfinished">Inserts a clip group in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -44,7 +44,7 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation type="unfinished">Tekening</translation>
+        <translation>Tekening</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -151,13 +151,13 @@
     <message>
         <location line="+1"/>
         <source>Open &amp;browser view</source>
-        <translation>Open &amp;browser view</translation>
+        <translation type="unfinished">Open &amp;browser view</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Opens the selected page in a browser view</source>
-        <translation>Opens the selected page in a browser view</translation>
+        <translation type="unfinished">Opens the selected page in a browser view</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@
     <message>
         <location line="+1"/>
         <source>Insert an orthographic projection of a part in the active drawing</source>
-        <translation>Insert an orthographic projection of a part in the active drawing</translation>
+        <translation type="unfinished">Insert an orthographic projection of a part in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -202,18 +202,18 @@
     <message>
         <location line="+62"/>
         <source>Drawing</source>
-        <translation type="unfinished">Tekening</translation>
+        <translation>Tekening</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Spreadsheet View</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -221,12 +221,12 @@
     <message>
         <location line="-176"/>
         <source>Drawing</source>
-        <translation type="unfinished">Tekening</translation>
+        <translation>Tekening</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Symbol</source>
-        <translation type="unfinished">&amp;Symbol</translation>
+        <translation>&amp;Symbool</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF file</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -360,12 +360,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Opening file failed</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
     </message>
 </context>
 <context>
@@ -402,17 +402,7 @@ Do you want to continue?</translation>
         <translation type="unfinished">Spacing dx / dy   </translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Show hidden lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Show smooth lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
+        <location line="+71"/>
         <source> Axis out and right</source>
         <translation type="unfinished"> Axis out and right</translation>
     </message>
@@ -464,7 +454,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isometrisch</translation>
+        <translation>Isometrisch</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -605,15 +595,17 @@ Do you want to continue?</translation>
         <translation type="obsolete">Secundaire dx/dy</translation>
     </message>
     <message>
-        <source>Show hidden</source>
-        <translation type="obsolete">Toon verborgen</translation>
+        <location line="+125"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished">Show hidden lines</translation>
     </message>
     <message>
-        <source>Show smooth</source>
-        <translation type="obsolete">Toon glad</translation>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished">Show smooth lines</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+11"/>
         <source>Axonometric</source>
         <translation>Axonometrisch</translation>
     </message>
@@ -621,7 +613,7 @@ Do you want to continue?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+50"/>
+        <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
         <translation>Zichtbare scherpe randen</translation>
     </message>
@@ -674,6 +666,26 @@ Do you want to continue?</translation>
         <location line="+17"/>
         <source>Project shapes</source>
         <translation>Projecteer vormen </translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>No active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active document to complete the operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>No active view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active view to complete the operation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -729,17 +741,17 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Liggend</translation>
+        <translation>Liggend</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Staand</translation>
+        <translation>Staand</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1%2 %3</translation>
+        <translation>%1%2 %3</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -749,7 +761,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished">%1%2 %3 (%4)</translation>
+        <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -804,7 +816,7 @@ Do you want to continue?</translation>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scalable Vector Graphic</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -840,12 +852,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>
@@ -894,20 +906,20 @@ Do you want to continue?</translation>
         <translation type="obsolete">Onder</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
-        <location line="+929"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+51"/>
+        <location line="+907"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Axonometrisch maken...</translation>
+        <translation>Axonometrisch maken...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Edit axonometric settings...</source>
         <translation type="unfinished">Edit axonometric settings...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Make orthographic</source>
         <translation type="unfinished">Make orthographic</translation>
     </message>

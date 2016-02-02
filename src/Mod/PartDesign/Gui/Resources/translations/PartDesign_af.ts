@@ -19,7 +19,7 @@
     <message>
         <location line="+1"/>
         <source>Chamfer</source>
-        <translation>Chamfer</translation>
+        <translation type="unfinished">Chamfer</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -37,12 +37,12 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Draft</translation>
+        <translation type="unfinished">Draft</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>Make a draft on a face</translation>
+        <translation type="unfinished">Make a draft on a face</translation>
     </message>
 </context>
 <context>
@@ -73,12 +73,12 @@
     <message>
         <location line="+1"/>
         <source>Groove</source>
-        <translation>Groove</translation>
+        <translation type="unfinished">Groove</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation>Groove a selected sketch</translation>
+        <translation type="unfinished">Groove a selected sketch</translation>
     </message>
 </context>
 <context>
@@ -91,12 +91,12 @@
     <message>
         <location line="+1"/>
         <source>LinearPattern</source>
-        <translation>LinearPattern</translation>
+        <translation type="unfinished">LinearPattern</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a linear pattern feature</source>
-        <translation>create a linear pattern feature</translation>
+        <translation type="unfinished">create a linear pattern feature</translation>
     </message>
 </context>
 <context>
@@ -109,12 +109,12 @@
     <message>
         <location line="+1"/>
         <source>Mirrored</source>
-        <translation>Mirrored</translation>
+        <translation type="unfinished">Mirrored</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a mirrored feature</source>
-        <translation>create a mirrored feature</translation>
+        <translation type="unfinished">create a mirrored feature</translation>
     </message>
 </context>
 <context>
@@ -127,12 +127,12 @@
     <message>
         <location line="+1"/>
         <source>MultiTransform</source>
-        <translation>MultiTransform</translation>
+        <translation type="unfinished">MultiTransform</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a multitransform feature</source>
-        <translation>create a multitransform feature</translation>
+        <translation type="unfinished">create a multitransform feature</translation>
     </message>
 </context>
 <context>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>PolarPattern</source>
-        <translation>PolarPattern</translation>
+        <translation type="unfinished">PolarPattern</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a polar pattern feature</source>
-        <translation>create a polar pattern feature</translation>
+        <translation type="unfinished">create a polar pattern feature</translation>
     </message>
 </context>
 <context>
@@ -217,12 +217,12 @@
     <message>
         <location line="+1"/>
         <source>Scaled</source>
-        <translation>Scaled</translation>
+        <translation type="unfinished">Scaled</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a scaled feature</source>
-        <translation>create a scaled feature</translation>
+        <translation type="unfinished">create a scaled feature</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location filename="../../FeaturePickDialog.ui" line="+14"/>
         <source>Choose feature</source>
-        <translation>Choose feature</translation>
+        <translation type="unfinished">Choose feature</translation>
     </message>
 </context>
 <context>
@@ -401,7 +401,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location filename="../../TaskChamferParameters.cpp" line="+52"/>
         <source>Chamfer parameters</source>
-        <translation>Chamfer parameters</translation>
+        <translation type="unfinished">Chamfer parameters</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Wysig sak</translation>
+        <translation>Wysig sak</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -507,37 +507,37 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Add face</source>
-        <translation>Add face</translation>
+        <translation type="unfinished">Add face</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove face</source>
-        <translation>Remove face</translation>
+        <translation type="unfinished">Remove face</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Draft angle</source>
-        <translation>Draft angle</translation>
+        <translation type="unfinished">Draft angle</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Neutral plane</source>
-        <translation>Neutral plane</translation>
+        <translation type="unfinished">Neutral plane</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Pull direction</source>
-        <translation>Pull direction</translation>
+        <translation type="unfinished">Pull direction</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reverse pull direction</source>
-        <translation>Reverse pull direction</translation>
+        <translation type="unfinished">Reverse pull direction</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="-347"/>
         <source>Draft parameters</source>
-        <translation>Draft parameters</translation>
+        <translation type="unfinished">Draft parameters</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -578,12 +578,12 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>Vertical sketch axis</translation>
+        <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>Horizontal sketch axis</translation>
+        <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -593,7 +593,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+31"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetric to plane</translation>
+        <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -603,12 +603,12 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+14"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+52"/>
         <source>Groove parameters</source>
-        <translation>Groove parameters</translation>
+        <translation type="unfinished">Groove parameters</translation>
     </message>
 </context>
 <context>
@@ -659,7 +659,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation type="unfinished">Original feature</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -696,7 +696,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+21"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -706,12 +706,12 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
         <source>Select an edge or a face</source>
-        <translation>Select an edge or a face</translation>
+        <translation type="unfinished">Select an edge or a face</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -729,7 +729,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation type="unfinished">Original feature</translation>
     </message>
     <message>
         <source>XY</source>
@@ -773,7 +773,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <source>Select a plane</source>
@@ -800,17 +800,17 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation type="unfinished">Original feature</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Transformations</source>
-        <translation>Transformations</translation>
+        <translation type="unfinished">Transformations</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location filename="../../TaskMultiTransformParameters.cpp" line="-376"/>
@@ -825,22 +825,22 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+4"/>
         <source>Add mirrored transformation</source>
-        <translation>Add mirrored transformation</translation>
+        <translation type="unfinished">Add mirrored transformation</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add linear pattern</source>
-        <translation>Add linear pattern</translation>
+        <translation type="unfinished">Add linear pattern</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add polar pattern</source>
-        <translation>Add polar pattern</translation>
+        <translation type="unfinished">Add polar pattern</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add scaled transformation</source>
-        <translation>Add scaled transformation</translation>
+        <translation type="unfinished">Add scaled transformation</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -855,7 +855,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+27"/>
         <source>Right-click to add</source>
-        <translation>Right-click to add</translation>
+        <translation type="unfinished">Right-click to add</translation>
     </message>
 </context>
 <context>
@@ -878,12 +878,12 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+28"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetric to plane</translation>
+        <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>2nd length</source>
-        <translation>2nd length</translation>
+        <translation type="unfinished">2nd length</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -892,12 +892,12 @@ Kies ten minste een kant.</translation>
         <location line="+106"/>
         <location line="+100"/>
         <source>Face</source>
-        <translation>Face</translation>
+        <translation type="unfinished">Face</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -956,19 +956,19 @@ Kies ten minste een kant.</translation>
         <location line="+73"/>
         <location line="+315"/>
         <source>No face selected</source>
-        <translation>No face selected</translation>
+        <translation type="unfinished">No face selected</translation>
     </message>
     <message>
         <location line="-307"/>
         <location line="+294"/>
         <source>To last</source>
-        <translation>To last</translation>
+        <translation type="unfinished">To last</translation>
     </message>
     <message>
         <location line="-293"/>
         <location line="+294"/>
         <source>To first</source>
-        <translation>To first</translation>
+        <translation type="unfinished">To first</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -980,7 +980,7 @@ Kies ten minste een kant.</translation>
         <location line="-293"/>
         <location line="+294"/>
         <source>Two dimensions</source>
-        <translation>Two dimensions</translation>
+        <translation type="unfinished">Two dimensions</translation>
     </message>
 </context>
 <context>
@@ -1040,12 +1040,12 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+34"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetric to plane</translation>
+        <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Omgekeerde</translation>
+        <translation>Omgekeerde</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1054,12 +1054,12 @@ Kies ten minste een kant.</translation>
         <location line="+113"/>
         <location line="+80"/>
         <source>Face</source>
-        <translation>Face</translation>
+        <translation type="unfinished">Face</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location line="-60"/>
@@ -1079,13 +1079,13 @@ Kies ten minste een kant.</translation>
         <location line="+61"/>
         <location line="+281"/>
         <source>To first</source>
-        <translation>To first</translation>
+        <translation type="unfinished">To first</translation>
     </message>
     <message>
         <location line="-282"/>
         <location line="+281"/>
         <source>Through all</source>
-        <translation>Through all</translation>
+        <translation type="unfinished">Through all</translation>
     </message>
     <message>
         <location line="-279"/>
@@ -1098,7 +1098,7 @@ Kies ten minste een kant.</translation>
         <location line="+112"/>
         <location line="+186"/>
         <source>No face selected</source>
-        <translation>No face selected</translation>
+        <translation type="unfinished">No face selected</translation>
     </message>
 </context>
 <context>
@@ -1111,7 +1111,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation type="unfinished">Original feature</translation>
     </message>
     <message>
         <source>X</source>
@@ -1132,7 +1132,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">As</translation>
+        <translation>As</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1159,7 +1159,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+27"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1169,12 +1169,12 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-55"/>
         <source>Select an edge</source>
-        <translation>Select an edge</translation>
+        <translation type="unfinished">Select an edge</translation>
     </message>
 </context>
 <context>
@@ -1192,17 +1192,17 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>Vertical sketch axis</translation>
+        <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>Horizontal sketch axis</translation>
+        <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetric to plane</translation>
+        <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1212,7 +1212,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+14"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <source>Vertical</source>
@@ -1248,17 +1248,17 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation type="unfinished">Original feature</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Factor</source>
-        <translation>Factor</translation>
+        <translation type="unfinished">Factor</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1268,7 +1268,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
 </context>
 <context>
@@ -1276,7 +1276,7 @@ Kies ten minste een kant.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>Transformed feature messages</translation>
+        <translation type="unfinished">Transformed feature messages</translation>
     </message>
 </context>
 <context>
@@ -1312,19 +1312,19 @@ Kies ten minste een kant.</translation>
         <location line="+74"/>
         <location line="+84"/>
         <source>No valid sketches in this document</source>
-        <translation>No valid sketches in this document</translation>
+        <translation type="unfinished">No valid sketches in this document</translation>
     </message>
     <message>
         <location line="-241"/>
         <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Please create a sketch or 2D object first</translation>
+        <translation type="unfinished">Please create a sketch or 2D object first</translation>
     </message>
     <message>
         <location line="-74"/>
         <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Please create a sketch or 2D object first. It must have a support face on a solid</translation>
+        <translation type="unfinished">Please create a sketch or 2D object first. It must have a support face on a solid</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -1347,59 +1347,59 @@ Kies ten minste een kant.</translation>
     <message>
         <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>Shape of selected Part is empty</translation>
+        <translation type="unfinished">Shape of selected Part is empty</translation>
     </message>
     <message>
         <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>No fillet possible on selected faces/edges</translation>
+        <translation type="unfinished">No fillet possible on selected faces/edges</translation>
     </message>
     <message>
         <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>Chamfer works only on parts</translation>
+        <translation type="unfinished">Chamfer works only on parts</translation>
     </message>
     <message>
         <location line="-142"/>
         <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>Shape of selected part is empty</translation>
+        <translation type="unfinished">Shape of selected part is empty</translation>
     </message>
     <message>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>
         <source>No chamfer possible on selected faces/edges</source>
-        <translation>No chamfer possible on selected faces/edges</translation>
+        <translation type="unfinished">No chamfer possible on selected faces/edges</translation>
     </message>
     <message>
         <location line="+65"/>
         <source>Select one or more faces.</source>
-        <translation>Select one or more faces.</translation>
+        <translation type="unfinished">Select one or more faces.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Draft works only on parts</translation>
+        <translation type="unfinished">Draft works only on parts</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>No draft possible on selected faces</translation>
+        <translation type="unfinished">No draft possible on selected faces</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1408,7 +1408,7 @@ Kies ten minste een kant.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>No valid features in this document</source>
-        <translation>No valid features in this document</translation>
+        <translation type="unfinished">No valid features in this document</translation>
     </message>
     <message>
         <location line="-313"/>
@@ -1421,7 +1421,7 @@ Kies ten minste een kant.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Please create a subtractive or additive feature first, please</translation>
+        <translation type="unfinished">Please create a subtractive or additive feature first, please</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1446,7 +1446,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderChamfer.cpp" line="+58"/>
         <source>Edit chamfer</source>
-        <translation>Edit chamfer</translation>
+        <translation type="unfinished">Edit chamfer</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1480,7 +1480,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderGroove.cpp" line="-28"/>
         <source>Edit Groove</source>
-        <translation>Edit Groove</translation>
+        <translation type="unfinished">Edit Groove</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1497,38 +1497,38 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Missing neutral plane</translation>
+        <translation type="unfinished">Missing neutral plane</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane or an edge plus a pull direction</source>
-        <translation>Please select a plane or an edge plus a pull direction</translation>
+        <translation type="unfinished">Please select a plane or an edge plus a pull direction</translation>
     </message>
     <message>
         <location line="-17"/>
         <location filename="../../ViewProviderDraft.cpp" line="-18"/>
         <source>Edit draft</source>
-        <translation>Edit draft</translation>
+        <translation type="unfinished">Edit draft</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
         <source>Edit fillet</source>
-        <translation>Edit fillet</translation>
+        <translation type="unfinished">Edit fillet</translation>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
         <source>One transformed shape does not intersect support</source>
-        <translation>One transformed shape does not intersect support</translation>
+        <translation type="unfinished">One transformed shape does not intersect support</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 transformed shapes do not intersect support</source>
-        <translation>%1 transformed shapes do not intersect support</translation>
+        <translation type="unfinished">%1 transformed shapes do not intersect support</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Transformation succeeded</source>
-        <translation>Transformation succeeded</translation>
+        <translation type="unfinished">Transformation succeeded</translation>
     </message>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
@@ -1551,7 +1551,7 @@ Create the sketch on a face.</source>
     <message>
         <location line="+12"/>
         <source>No message</source>
-        <translation>No message</translation>
+        <translation type="unfinished">No message</translation>
     </message>
 </context>
 <context>

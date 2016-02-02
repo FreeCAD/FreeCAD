@@ -407,7 +407,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Uredi zarub</translation>
+        <translation>Uredi zarub</translation>
     </message>
 </context>
 <context>
@@ -423,7 +423,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">uredi obrub</translation>
+        <translation>uredi obrub</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Uredi udubljenje</translation>
+        <translation>Uredi udubljenje</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -667,12 +667,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizontalna os skice</translation>
+        <translation>Horizontalna os skice</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikalna os skice</translation>
+        <translation>Vertikalna os skice</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -749,12 +749,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizontalna os skice</translation>
+        <translation>Horizontalna os skice</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikalna os skice</translation>
+        <translation>Vertikalna os skice</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1043,7 +1043,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Obrnuti</translation>
+        <translation>Obrnuti</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1130,7 +1130,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Osi</translation>
+        <translation>Osi</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1367,17 +1367,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>

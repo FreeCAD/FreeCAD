@@ -44,18 +44,18 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation type="unfinished">Mise en plan</translation>
+        <translation>Mise en plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp;Draft Vue</translation>
+        <translation>Vue &amp;Draft</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished">Insère une vue Draft des objets sélectionnés dans la page active</translation>
+        <translation>Insère une vue brouillon des objets sélectionnés dans le dessin actif</translation>
     </message>
 </context>
 <context>
@@ -202,18 +202,18 @@
     <message>
         <location line="+62"/>
         <source>Drawing</source>
-        <translation type="unfinished">Mise en plan</translation>
+        <translation>Mise en plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue &amp;feuille de calcul</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation>Insère une vue d&apos;une feuille de calcul sélectionnée sur le dessin actif</translation>
     </message>
 </context>
 <context>
@@ -221,18 +221,18 @@
     <message>
         <location line="-176"/>
         <source>Drawing</source>
-        <translation type="unfinished">Mise en plan</translation>
+        <translation>Mise en plan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Symbol</source>
-        <translation type="unfinished">&amp;Symbole</translation>
+        <translation>&amp;Symbole</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">Insère un symbole à partir d&apos;un fichier svg dans la mise en plan active</translation>
+        <translation>Insère un symbole à partir d&apos;un fichier svg dans la mise en plan active</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier PDF</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -334,36 +334,36 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished">Orientation différente</translation>
+        <translation>Orientation différente</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">L&apos;imprimante utilise une orientation différente que le dessin. Voulez-vous continuer ?</translation>
+        <translation>L&apos;imprimante utilise une orientation différente que le dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished">Format de papier différent</translation>
+        <translation>Format de papier différent</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">L&apos;imprimante utilise un format de papier différent que le dessin. Voulez-vous continuer ?</translation>
+        <translation>L&apos;imprimante utilise un format de papier différent que le dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;ouverture du fichier a échoué</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier &apos;%1&apos; n&apos;accepte pas l&apos;écriture.</translation>
     </message>
 </context>
 <context>
@@ -387,118 +387,108 @@ Do you want to continue?</source>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation type="unfinished">Faites un clic droit pour les paramètres d&apos;axonométrie</translation>
+        <translation>Faites un clic droit pour les paramètres d&apos;axonométrie</translation>
     </message>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">En haut à gauche x / y</translation>
+        <translation>En haut à gauche x / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Espacement dx / dy   </translation>
+        <translation>Espacement dx / dy   </translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Show hidden lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Show smooth lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
+        <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Sens de l&apos;axe vers la droite</translation>
+        <translation> Sens de l&apos;axe vers la droite</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Retournement vertical</translation>
+        <translation> Retournement vertical</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+200"/>
         <source>X +ve</source>
-        <translation type="unfinished">X +ve</translation>
+        <translation>X +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Y +ve</source>
-        <translation type="unfinished">Y +ve</translation>
+        <translation>Y +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Z +ve</source>
-        <translation type="unfinished">Z +ve</translation>
+        <translation>Z +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+200"/>
         <source>X -ve</source>
-        <translation type="unfinished">X -ve</translation>
+        <translation>X -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Y -ve</source>
-        <translation type="unfinished">Y -ve</translation>
+        <translation>Y -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Z -ve</source>
-        <translation type="unfinished">Z -ve</translation>
+        <translation>Z -ve</translation>
     </message>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isométrique</translation>
+        <translation>Isométrique</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimétrique</translation>
+        <translation>Dimétrique</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">Trimétrique</translation>
+        <translation>Trimétrique</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Échelle</translation>
+        <translation> Échelle</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> Vue de projection   </translation>
+        <translation> Vue de projection   </translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished"> Axe aligné vers le haut</translation>
+        <translation> Axe aligné vers le haut</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Retourner</translation>
+        <translation>Retourner</translation>
     </message>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimétrique</translation>
+        <translation> Trimétrique</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -518,12 +508,12 @@ Do you want to continue?</source>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">Vue de :</translation>
+        <translation>Vue de :</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation type="unfinished">Axe aligné à droite :</translation>
+        <translation>Axe aligné à droite :</translation>
     </message>
     <message>
         <source>Primary View</source>
@@ -603,15 +593,17 @@ Do you want to continue?</source>
         <translation type="obsolete">dx et dy secondaires</translation>
     </message>
     <message>
-        <source>Show hidden</source>
-        <translation type="obsolete">Monter les bords cachés</translation>
+        <location line="+125"/>
+        <source>Show hidden lines</source>
+        <translation>Afficher les lignes masquées</translation>
     </message>
     <message>
-        <source>Show smooth</source>
-        <translation type="obsolete">Montrer les bords lissés</translation>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation>Afficher les lignes douces</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+11"/>
         <source>Axonometric</source>
         <translation>Axonométrique</translation>
     </message>
@@ -619,7 +611,7 @@ Do you want to continue?</source>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+50"/>
+        <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
         <translation>Arêtes vives visibles</translation>
     </message>
@@ -672,6 +664,26 @@ Do you want to continue?</source>
         <location line="+17"/>
         <source>Project shapes</source>
         <translation>Projeter les formes</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>No active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active document to complete the operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>No active view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active view to complete the operation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -727,32 +739,32 @@ Do you want to continue?</source>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Paysage</translation>
+        <translation>Paysage</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Portrait</translation>
+        <translation>Portrait</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1 %2 %3</translation>
+        <translation>%1 %2 %3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Insérer le nouveau %1 %2 %3 dessin</translation>
+        <translation>Insérer le nouveau %1 %2 %3 dessin</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished">%1%2 %3 (%4)</translation>
+        <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Insérer le nouveau dessin %1 %2 %3 (%4)</translation>
+        <translation>Insérer le nouveau dessin %1 %2 %3 (%4)</translation>
     </message>
 </context>
 <context>
@@ -802,7 +814,7 @@ Do you want to continue?</source>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished"></translation>
+        <translation>Graphique Vectoriel Adaptable (Svg)</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -812,7 +824,7 @@ Do you want to continue?</source>
         <location line="+45"/>
         <location line="+175"/>
         <source>No page found</source>
-        <translation type="unfinished">Aucune page trouvée</translation>
+        <translation>Aucune page trouvée</translation>
     </message>
     <message>
         <location line="-425"/>
@@ -822,12 +834,12 @@ Do you want to continue?</source>
         <location line="+45"/>
         <location line="+175"/>
         <source>Create a page first.</source>
-        <translation type="unfinished">Créez d&apos;abord une page.</translation>
+        <translation>Créez d&apos;abord une page.</translation>
     </message>
     <message>
         <location line="-357"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished">Sélectionnez exactement un seul objet Pièce.</translation>
+        <translation>Sélectionnez exactement un seul objet Pièce.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -838,12 +850,12 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished"></translation>
+        <translation>Merci de sélectionner un seul objet Spreadsheet</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>
@@ -892,22 +904,22 @@ Do you want to continue?</source>
         <translation type="obsolete">Dessous</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
-        <location line="+929"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+51"/>
+        <location line="+907"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Rendre axonométrique...</translation>
+        <translation>Rendre axonométrique...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">Modifier les paramètres axonométriques...</translation>
+        <translation>Modifier les paramètres axonométriques...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Rendre orthographique</translation>
+        <translation>Rendre orthographique</translation>
     </message>
 </context>
 <context>

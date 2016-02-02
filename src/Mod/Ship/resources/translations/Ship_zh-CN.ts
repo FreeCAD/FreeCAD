@@ -6,12 +6,12 @@
     <message>
       <location filename="InitGui.py" line="67"/>
       <source>Ship design</source>
-      <translation type="unfinished">船舶设计</translation>
+      <translation>船舶设计</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="70"/>
       <source>Weights</source>
-      <translation type="unfinished">重量</translation>
+      <translation>重量</translation>
     </message>
     <message>
       <location filename="Instance.py" line="46"/>
@@ -54,7 +54,7 @@
     <message>
       <location filename="ShipGui.py" line="94"/>
       <source>Areas curve</source>
-      <translation type="unfinished">面积曲线</translation>
+      <translation>面积曲线</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="97"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">创建新的船舶</translation>
+      <translation>创建新的船舶</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="63"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation type="unfinished">流体静力学</translation>
+      <translation>流体静力学</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="114"/>
@@ -93,7 +93,7 @@
     <message>
       <location filename="ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation type="unfinished">加载示例船舶几何体</translation>
+      <translation>加载示例船舶几何体</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="46"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">外轮廓绘制</translation>
+      <translation>外轮廓绘制</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="80"/>
@@ -117,32 +117,32 @@
   <context>
     <name>ship_areas</name>
     <message>
-      <location filename="TaskPanel.py" line="219"/>
+      <location filename="TaskPanel.py" line="221"/>
       <source>Draft</source>
-      <translation type="unfinished">吃水深度</translation>
+      <translation>吃水深度</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="225"/>
+      <location filename="TaskPanel.py" line="227"/>
       <source>Trim</source>
-      <translation type="unfinished">修剪</translation>
+      <translation>修剪</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="329"/>
+      <location filename="TaskPanel.py" line="335"/>
       <source>Displacement</source>
-      <translation type="unfinished">位移</translation>
+      <translation>位移</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="353"/>
+      <location filename="TaskPanel.py" line="361"/>
       <source>Areas curve tool draft selected [m]</source>
       <translation type="unfinished">Areas curve tool draft selected [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="214"/>
+      <location filename="TaskPanel.py" line="216"/>
       <source>Plot the transversal areas curve</source>
       <translation type="unfinished">Plot the transversal areas curve</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="369"/>
+      <location filename="TaskPanel.py" line="377"/>
       <source>Areas curve tool trim selected [deg]</source>
       <translation type="unfinished">Areas curve tool trim selected [deg]</translation>
     </message>
@@ -167,7 +167,7 @@
     <message>
       <location filename="TaskPanel.py" line="150"/>
       <source>Number of points</source>
-      <translation type="unfinished">点的数量</translation>
+      <translation>点的数量</translation>
     </message>
   </context>
   <context>
@@ -175,27 +175,27 @@
     <message>
       <location filename="TaskPanel.py" line="162"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation type="unfinished">在使用该工具前请创建或加载一个船体几何</translation>
+      <translation>在使用该工具前请创建或加载一个船体几何</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="155"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation type="unfinished">船舶对象只能创建在船体几何之上(选定对象中未发现实体)</translation>
+      <translation>船舶对象只能创建在船体几何之上(选定对象中未发现实体)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="95"/>
+      <location filename="TaskPanel.py" line="98"/>
       <source>Computing hydrostatics</source>
-      <translation type="unfinished">计算流体静力学</translation>
+      <translation>计算流体静力学</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="496"/>
+      <location filename="TaskPanel.py" line="503"/>
       <source>Computing external faces</source>
-      <translation type="unfinished">计算外表面</translation>
+      <translation>计算外表面</translation>
     </message>
     <message>
       <location filename="Preview.py" line="54"/>
       <source>Computing sections</source>
-      <translation type="unfinished">计算剖面</translation>
+      <translation>计算剖面</translation>
     </message>
     <message>
       <location filename="Preview.py" line="128"/>
@@ -208,17 +208,17 @@
       <translation type="unfinished">Ship objects can only be created on top of hull geometry (no objects selected)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="199"/>
+      <location filename="TaskPanel.py" line="202"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
       <translation type="unfinished">A ship instance must be selected before using this tool (no objects selected)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="216"/>
+      <location filename="TaskPanel.py" line="219"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
       <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="227"/>
+      <location filename="TaskPanel.py" line="230"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
       <translation type="unfinished">A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
     </message>
@@ -248,7 +248,7 @@
       <translation type="unfinished">Plot module is disabled, tools cannot graph output curves</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="86"/>
+      <location filename="TaskPanel.py" line="89"/>
       <source>Failure detecting external faces from the ship object</source>
       <translation type="unfinished">Failure detecting external faces from the ship object</translation>
     </message>
@@ -273,95 +273,95 @@
     <message>
       <location filename="Preview.py" line="66"/>
       <source>Base line</source>
-      <translation type="unfinished">基准线</translation>
+      <translation>基准线</translation>
     </message>
     <message>
       <location filename="Preview.py" line="83"/>
       <source>Free surface</source>
-      <translation type="unfinished">自由表面</translation>
+      <translation>自由表面</translation>
     </message>
     <message>
       <location filename="Preview.py" line="100"/>
       <source>Forward perpendicular</source>
-      <translation type="unfinished">艏垂线</translation>
+      <translation>艏垂线</translation>
     </message>
     <message>
       <location filename="Preview.py" line="117"/>
       <source>After perpendicular</source>
-      <translation type="unfinished">艉垂线</translation>
+      <translation>艉垂线</translation>
     </message>
     <message>
       <location filename="Preview.py" line="134"/>
       <source>Main frame</source>
-      <translation type="unfinished">主框架</translation>
+      <translation>主框架</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="222"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">创建新的船舶</translation>
+      <translation>创建新的船舶</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Length</source>
-      <translation type="unfinished">长度</translation>
+      <translation>长度</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="233"/>
       <source>Breadth</source>
-      <translation type="unfinished">广度</translation>
+      <translation>广度</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="239"/>
       <source>Draft</source>
-      <translation type="unfinished">吃水深度</translation>
+      <translation>吃水深度</translation>
     </message>
   </context>
   <context>
     <name>ship_hydrostatic</name>
     <message>
-      <location filename="TaskPanel.py" line="279"/>
+      <location filename="TaskPanel.py" line="282"/>
       <source>Plot hydrostatics</source>
-      <translation type="unfinished">绘制流体静力曲线</translation>
+      <translation>绘制流体静力曲线</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="284"/>
+      <location filename="TaskPanel.py" line="287"/>
       <source>Trim</source>
-      <translation type="unfinished">修剪</translation>
+      <translation>修剪</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="290"/>
+      <location filename="TaskPanel.py" line="293"/>
       <source>Minimum draft</source>
-      <translation type="unfinished">最小吃水深度</translation>
+      <translation>最小吃水深度</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="296"/>
+      <location filename="TaskPanel.py" line="299"/>
       <source>Maximum draft</source>
-      <translation type="unfinished">最大吃水深度</translation>
+      <translation>最大吃水深度</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="302"/>
+      <location filename="TaskPanel.py" line="305"/>
       <source>Number of points</source>
-      <translation type="unfinished">点的数量</translation>
+      <translation>点的数量</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="416"/>
+      <location filename="TaskPanel.py" line="423"/>
       <source>Hydrostatics tool trim selected</source>
       <translation type="unfinished">Hydrostatics tool trim selected</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="430"/>
+      <location filename="TaskPanel.py" line="437"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation type="unfinished">流体力学工具最小吃水深度选择[m]</translation>
+      <translation>流体力学工具最小吃水深度选择[m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="444"/>
+      <location filename="TaskPanel.py" line="451"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation type="unfinished">流体力学工具最大吃水深度选择[m]</translation>
+      <translation>流体力学工具最大吃水深度选择[m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="458"/>
+      <location filename="TaskPanel.py" line="465"/>
       <source>Hydrostatics tool number of points selected</source>
-      <translation type="unfinished">流体力学工具点数选择</translation>
+      <translation>流体力学工具点数选择</translation>
     </message>
   </context>
   <context>
@@ -369,12 +369,12 @@
     <message>
       <location filename="TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">加载示例船舶</translation>
+      <translation>加载示例船舶</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="111"/>
       <source>Select ship example geometry</source>
-      <translation type="unfinished">选择船舶示例几何体</translation>
+      <translation>选择船舶示例几何体</translation>
     </message>
   </context>
   <context>
@@ -382,37 +382,37 @@
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Outline draw</source>
-      <translation type="unfinished">外轮廓绘制</translation>
+      <translation>外轮廓绘制</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="232"/>
       <source>Auto create</source>
-      <translation type="unfinished">自动创建</translation>
+      <translation>自动创建</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="238"/>
       <source>Delete all sections</source>
-      <translation type="unfinished">删除所有剖面</translation>
+      <translation>删除所有剖面</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Create sections</source>
-      <translation type="unfinished">创建剖面</translation>
+      <translation>创建剖面</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="250"/>
       <source>Transversal</source>
-      <translation type="unfinished">横向</translation>
+      <translation>横向</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Longitudinal</source>
-      <translation type="unfinished">纵向</translation>
+      <translation>纵向</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="264"/>
       <source>Water lines</source>
-      <translation type="unfinished">水位线</translation>
+      <translation>水位线</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="479"/>
@@ -506,52 +506,52 @@
       <translation type="unfinished">Density [kg / m^3]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="136"/>
+      <location filename="TaskPanel.py" line="137"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
       <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="150"/>
+      <location filename="TaskPanel.py" line="151"/>
       <source>No geometrical shapes found in the selected objects</source>
       <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="187"/>
+      <location filename="TaskPanel.py" line="188"/>
       <source>Unknow object shapes selected</source>
       <translation type="unfinished">Unknow object shapes selected</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="205"/>
+      <location filename="TaskPanel.py" line="206"/>
       <source>There are not ship objects to create weights into them</source>
       <translation type="unfinished">There are not ship objects to create weights into them</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="240"/>
+      <location filename="TaskPanel.py" line="241"/>
       <source>Create a new weight</source>
       <translation type="unfinished">Create a new weight</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="245"/>
+      <location filename="TaskPanel.py" line="246"/>
       <source>Ship</source>
       <translation type="unfinished">Ship</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="252"/>
+      <location filename="TaskPanel.py" line="253"/>
       <source>Mass</source>
       <translation type="unfinished">Mass</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="259"/>
+      <location filename="TaskPanel.py" line="260"/>
       <source>Linear density</source>
       <translation type="unfinished">Linear density</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="266"/>
+      <location filename="TaskPanel.py" line="267"/>
       <source>Area density</source>
       <translation type="unfinished">Area density</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="273"/>
+      <location filename="TaskPanel.py" line="274"/>
       <source>Density</source>
       <translation type="unfinished">Density</translation>
     </message>

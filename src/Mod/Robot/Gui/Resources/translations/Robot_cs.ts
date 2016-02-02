@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Add a tool shape to the robot</source>
-        <translation>Add a tool shape to the robot</translation>
+        <translation>Přidat robotovi tvar nástroje</translation>
     </message>
 </context>
 <context>
@@ -65,7 +65,7 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>Edge to Trajectory...</translation>
+        <translation>Trajektorie z hrany...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -83,12 +83,12 @@
     <message>
         <location line="+1"/>
         <source>Kuka compact subroutine...</source>
-        <translation>Kuka compact subroutine...</translation>
+        <translation>Kompaktní podprogram Kuki...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the trajectory as a compact KRL subroutine.</source>
-        <translation>Export the trajectory as a compact KRL subroutine.</translation>
+        <translation>Exportovat trajektorii jako kompaktní KRL podprogram.</translation>
     </message>
 </context>
 <context>
@@ -101,12 +101,12 @@
     <message>
         <location line="+1"/>
         <source>Kuka full subroutine...</source>
-        <translation>Kuka full subroutine...</translation>
+        <translation>Plný podprogram Kuki...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the trajectory as a full KRL subroutine.</source>
-        <translation>Export the trajectory as a full KRL subroutine.</translation>
+        <translation>Exportovat trajektorii jako plný KRL podprogram.</translation>
     </message>
 </context>
 <context>
@@ -196,7 +196,7 @@
     <message>
         <location line="+1"/>
         <source>Insert robot Tool location into trajectory</source>
-        <translation>Insert robot Tool location into trajectory</translation>
+        <translation>Vložit polohu robotova nástroje do trajektorie</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation>Insert preselection position into trajectory (W)</translation>
+        <translation>Vložit předvolenou pozici do trajektorie (W)</translation>
     </message>
 </context>
 <context>
@@ -246,7 +246,7 @@
     <message>
         <location line="+1"/>
         <source>set the default orientation for subsequent commands for waypoint creation</source>
-        <translation>set the default orientation for subsequent commands for waypoint creation</translation>
+        <translation>nastavit výchozí orientaci pro následující příkazy vytvářející body trajektorie</translation>
     </message>
 </context>
 <context>
@@ -264,7 +264,7 @@
     <message>
         <location line="+1"/>
         <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-        <translation>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+        <translation>Nastavit výchozí hodnoty pro rychlost, zrychlení a spojení mezi následujícícmi příkazy tvorby bodů trajektorie</translation>
     </message>
 </context>
 <context>
@@ -278,7 +278,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Set the home position</source>
-        <translation>Set the home position</translation>
+        <translation>Nastavit výchozí pozici</translation>
     </message>
 </context>
 <context>
@@ -309,7 +309,7 @@
     <message>
         <location line="+1"/>
         <source>Trajectory compound...</source>
-        <translation>Trajectory compound...</translation>
+        <translation>Složená trajektorie...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Dress-up trajectory...</translation>
+        <translation>Nastavit trajektorii...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+        <translation>Vytvoří objekt nastavavení, který přepíše některé aspekty trajektorie</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -385,7 +385,7 @@
         <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
-        <translation>Select one Robot and one Trajectory object.</translation>
+        <translation>Vyberte jednoho robota a objekt jedné trakjektorie.</translation>
     </message>
     <message>
         <location line="-24"/>
@@ -395,7 +395,7 @@
     <message>
         <location line="+1"/>
         <source>You need at least two way points in a trajectory to simulate.</source>
-        <translation>You need at least two way points in a trajectory to simulate.</translation>
+        <translation>K simulaci potřebujete alespoň dva body na trajektorii.</translation>
     </message>
     <message>
         <source>KRL file(*.src)</source>
@@ -409,13 +409,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">KRL file</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -426,22 +426,22 @@
     <message>
         <location filename="../../CommandInsertRobot.cpp" line="+1"/>
         <source>Select one robot and one shape or VRML object.</source>
-        <translation>Select one robot and one shape or VRML object.</translation>
+        <translation>Vyberte jednoho robota a jeden objekt tvaru nebo VRML objekt.</translation>
     </message>
     <message>
         <location filename="../../CommandTrajectory.cpp" line="+79"/>
         <source>No preselection</source>
-        <translation>No preselection</translation>
+        <translation>Prázdný předvýběr</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-        <translation>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
+        <translation>Pro použití tohoto příkazu musíte najet myší na geometrii (předvýběr). Detaily viz dokumentace.</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Select one Robot to set home postion</translation>
+        <translation>Vyberte jednoho robota pro nastavení výchozí pozice</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -467,7 +467,7 @@
     <message>
         <location line="+9"/>
         <source>set default continuity</source>
-        <translation>set default continuity</translation>
+        <translation>nastavit výchozí spojitost</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -487,12 +487,12 @@
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Select the Trajectory which you want to dress up.</translation>
+        <translation>Vyberte trajektrorii, kterou chcete nastavit.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>
         <source>No robot files installed</source>
-        <translation>No robot files installed</translation>
+        <translation>Nejsou nainstalovány soubory robota</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -573,7 +573,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.cpp" line="+47"/>
         <source>TaskEdge2TracParameter</source>
-        <translation>TaskEdge2TracParameter</translation>
+        <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
 </context>
 <context>
@@ -631,7 +631,7 @@
     <message>
         <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
         <source>TaskRobot6Axis</source>
-        <translation>TaskRobot6Axis</translation>
+        <translation type="unfinished">TaskRobot6Axis</translation>
     </message>
 </context>
 <context>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../../TaskRobotControl.cpp" line="+46"/>
         <source>TaskRobotControl</source>
-        <translation>TaskRobotControl</translation>
+        <translation type="unfinished">TaskRobotControl</translation>
     </message>
 </context>
 <context>
@@ -647,7 +647,7 @@
     <message>
         <location filename="../../TaskRobotMessages.cpp" line="+46"/>
         <source>TaskRobotMessages</source>
-        <translation>TaskRobotMessages</translation>
+        <translation type="unfinished">TaskRobotMessages</translation>
     </message>
 </context>
 <context>
@@ -720,7 +720,7 @@
     <message>
         <location line="+18"/>
         <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
-        <translation>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
+        <translation>Pozice: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../../TaskTrajectory.cpp" line="+44"/>
         <source>Trajectory</source>
-        <translation>Trajectory</translation>
+        <translation type="unfinished">Trajectory</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
         <source>Dress Up Parameter</source>
-        <translation>Dress Up Parameter</translation>
+        <translation type="unfinished">Dress Up Parameter</translation>
     </message>
 </context>
 <context>
@@ -781,12 +781,12 @@
     <message>
         <location line="+14"/>
         <source>Cluster: 0</source>
-        <translation>Cluster: 0</translation>
+        <translation>Svazek: 0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Sizing Value:</source>
-        <translation>Sizing Value:</translation>
+        <translation>Hodnota velikosti:</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -885,7 +885,7 @@
     <message>
         <location line="+5"/>
         <source>Base 0</source>
-        <translation>Base 0</translation>
+        <translation>Základna 0</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -895,7 +895,7 @@
     <message>
         <location line="+5"/>
         <source>World</source>
-        <translation>World</translation>
+        <translation>Svět</translation>
     </message>
     <message utf8="true">
         <location line="+9"/>
@@ -972,17 +972,17 @@
         <location line="+26"/>
         <location line="+37"/>
         <source>Use</source>
-        <translation>Použití</translation>
+        <translation>Použít</translation>
     </message>
     <message>
         <location line="-26"/>
         <source>Accel:</source>
-        <translation>Accel:</translation>
+        <translation>Zrychlení:</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Don&apos;t change Cont</source>
-        <translation>Don&apos;t change Cont</translation>
+        <translation type="unfinished">Don&apos;t change Cont</translation>
     </message>
     <message>
         <location line="+5"/>

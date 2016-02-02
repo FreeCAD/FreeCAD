@@ -236,13 +236,13 @@
         <location filename="../../Command.cpp" line="-78"/>
         <location line="+49"/>
         <source>Ascii Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Punkty Ascii</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+49"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Points tools</source>
-        <translation>Narzędzia Punktów</translation>
+        <translation>Narzędzia punktów</translation>
     </message>
     <message>
         <location line="+1"/>

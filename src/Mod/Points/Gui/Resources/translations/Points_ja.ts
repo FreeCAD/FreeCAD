@@ -6,12 +6,12 @@
     <message>
         <location filename="../../Command.cpp" line="+108"/>
         <source>Points</source>
-        <translation>点</translation>
+        <translation>点群</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export points...</source>
-        <translation>点をエクスポート...</translation>
+        <translation>点群をエクスポート...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -26,12 +26,12 @@
     <message>
         <location line="-51"/>
         <source>Points</source>
-        <translation>点</translation>
+        <translation>点群</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Import points...</source>
-        <translation>点をインポート...</translation>
+        <translation>点群をインポート...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -46,7 +46,7 @@
     <message>
         <location line="+117"/>
         <source>Points</source>
-        <translation>点</translation>
+        <translation>点群</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -66,12 +66,12 @@
     <message>
         <location line="-39"/>
         <source>Points</source>
-        <translation>点</translation>
+        <translation>点群</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transform Points</source>
-        <translation>点を変換</translation>
+        <translation>点群を変換</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -86,7 +86,7 @@
     <message>
         <location filename="../../DlgPointsRead.ui" line="+14"/>
         <source>ASCII points import</source>
-        <translation>ASCII形式の点をインポート</translation>
+        <translation>ASCII形式の点群をインポート</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -121,7 +121,7 @@
     <message>
         <location line="+54"/>
         <source>Point format</source>
-        <translation>点の形式</translation>
+        <translation>点群の形式</translation>
     </message>
     <message>
         <location line="+78"/>
@@ -131,7 +131,7 @@
     <message>
         <location line="+98"/>
         <source>Points format:</source>
-        <translation>点の形式:</translation>
+        <translation>点群の形式:</translation>
     </message>
     <message>
         <location line="-91"/>
@@ -236,13 +236,13 @@
         <location filename="../../Command.cpp" line="-78"/>
         <location line="+49"/>
         <source>Ascii Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Asciiポイント</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+49"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -255,7 +255,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Points</source>
-        <translation>点(&amp;P)</translation>
+        <translation>点群(&amp;P)</translation>
     </message>
 </context>
 </TS>

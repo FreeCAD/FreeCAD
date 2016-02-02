@@ -39,7 +39,7 @@
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">标准</translation>
+        <translation>标准</translation>
     </message>
     <message>
         <location line="+7"/>

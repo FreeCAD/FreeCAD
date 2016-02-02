@@ -81,7 +81,7 @@
     </message>
     <message>
         <source>Select test name:</source>
-        <translation>Seleccion del módulo a probar:</translation>
+        <translation>Selecciona nombre para la prueba</translation>
     </message>
 </context>
 <context>

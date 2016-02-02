@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">影像平面</translation>
+        <translation>影像平面</translation>
     </message>
     <message>
         <location line="+6"/>

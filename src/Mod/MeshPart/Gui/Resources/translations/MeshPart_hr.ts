@@ -39,7 +39,7 @@
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standard</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+7"/>

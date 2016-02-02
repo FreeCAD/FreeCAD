@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Paramètres de la développante</translation>
+        <translation>Paramètres de la développante</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Nombre de dents :</translation>
+        <translation>Nombre de dents :</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules :</translation>
+        <translation>Modules :</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Haute précision :</translation>
+        <translation>Haute précision :</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Vrai</translation>
+        <translation>Vrai</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Faux</translation>
+        <translation>Faux</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Engrenages externes :</translation>
+        <translation>Engrenages externes :</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Angle de pression :</translation>
+        <translation>Angle de pression :</translation>
     </message>
 </context>
 <context>
@@ -407,7 +407,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Modifier le chanfrein</translation>
+        <translation>Modifier le chanfrein</translation>
     </message>
 </context>
 <context>
@@ -423,7 +423,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Modifier le congé</translation>
+        <translation>Modifier le congé</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Modifier la cavité</translation>
+        <translation>Modifier la cavité</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -667,19 +667,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse horizontal</translation>
+        <translation>Axe d&apos;esquisse horizontal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse vertical</translation>
+        <translation>Axe d&apos;esquisse vertical</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Sélectionnez une référence...</translation>
+        <translation>Sélectionnez une référence...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -714,7 +714,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non défini</translation>
+        <translation>Non défini</translation>
     </message>
 </context>
 <context>
@@ -749,19 +749,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse horizontal</translation>
+        <translation>Axe d&apos;esquisse horizontal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse vertical</translation>
+        <translation>Axe d&apos;esquisse vertical</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Sélectionnez une référence...</translation>
+        <translation>Sélectionnez une référence...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -780,12 +780,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Sélectionnez une face</translation>
+        <translation>Sélectionnez une face</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non défini</translation>
+        <translation>Non défini</translation>
     </message>
 </context>
 <context>
@@ -1043,7 +1043,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Inversé</translation>
+        <translation>Inversé</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1130,19 +1130,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Axe</translation>
+        <translation>Axe</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Axe normal à l&apos;esquisse</translation>
+        <translation>Axe normal à l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Sélectionnez une référence...</translation>
+        <translation>Sélectionnez une référence...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1233,7 +1233,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non défini</translation>
+        <translation>Non défini</translation>
     </message>
 </context>
 <context>
@@ -1367,17 +1367,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun croquis valide sélectionné</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune esquisse ou objet 2D sélectionné n&apos;est valable pour le remplissage. Veuillez sélectionner une esquisse ou un objet non utilisé par une autre fonctionnalité.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune esquisse ou objet 2D sélectionné n&apos;est valable pour une rotation. Veuillez sélectionner une esquisse ou un objet non utilisé par une autre fonctionnalité.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1411,7 +1411,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Veuillez d&apos;abord créer une fonctionnalité soustractive ou additive</translation>
+        <translation>Veuillez d&apos;abord créer une fonctionnalité soustractive ou additive</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1484,13 +1484,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Le lien à l&apos;esquisse de base est perdu</translation>
+        <translation>Le lien à l&apos;esquisse de base est perdu</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">L&apos;objet ne peut pas être modifié parce que le lien vers le l&apos;esquisse de base est perdu.</translation>
+        <translation>L&apos;objet ne peut pas être modifié parce que le lien vers le l&apos;esquisse de base est perdu.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1531,12 +1531,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Éditer la gorge</translation>
+        <translation>Éditer la gorge</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Éditer la révolution</translation>
+        <translation>Éditer la révolution</translation>
     </message>
 </context>
 <context>

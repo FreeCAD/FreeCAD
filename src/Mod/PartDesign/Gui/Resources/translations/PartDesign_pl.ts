@@ -248,34 +248,34 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Parametry ewolwenty</translation>
+        <translation>Parametry ewolwenty</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Liczba zębów:</translation>
+        <translation>Liczba zębów:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Moduły:</translation>
+        <translation>Moduły:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">High precision:</translation>
+        <translation>Wysoka precyzja:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">True</translation>
+        <translation>Prawda</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">False</translation>
+        <translation>Fałsz</translation>
     </message>
     <message>
         <location line="-19"/>
@@ -285,7 +285,7 @@
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Kąt przyporu:</translation>
+        <translation>Kąt przyporu:</translation>
     </message>
 </context>
 <context>
@@ -407,7 +407,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Edytuj fazowanie</translation>
+        <translation>Edytuj fazowanie</translation>
     </message>
 </context>
 <context>
@@ -423,7 +423,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Edytuj filet</translation>
+        <translation>Edytuj filet</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Edytuj kieszeń</translation>
+        <translation>Edytuj kieszeń</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -667,19 +667,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Szkic poziomej osi</translation>
+        <translation>Szkic poziomej osi</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Szkic pionowej osi</translation>
+        <translation>Szkic pionowej osi</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Wybierz odniesienie...</translation>
+        <translation>Wybierz odniesienie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -714,7 +714,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Niezdefiniowany</translation>
+        <translation>Niezdefiniowany</translation>
     </message>
 </context>
 <context>
@@ -749,19 +749,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Szkic poziomej osi</translation>
+        <translation>Szkic poziomej osi</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Szkic pionowej osi</translation>
+        <translation>Szkic pionowej osi</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Wybierz odniesienie...</translation>
+        <translation>Wybierz odniesienie...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -780,12 +780,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Wybierz ścianę</translation>
+        <translation>Wybierz ścianę</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Niezdefiniowany</translation>
+        <translation>Niezdefiniowany</translation>
     </message>
 </context>
 <context>
@@ -1043,7 +1043,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Odwrócony</translation>
+        <translation>Odwrócony</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1130,19 +1130,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Oś</translation>
+        <translation>Oś</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Oś normalna do szkicu</translation>
+        <translation>Oś normalna do szkicu</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Wybierz odniesienie...</translation>
+        <translation>Wybierz odniesienie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1233,7 +1233,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Niezdefiniowany</translation>
+        <translation>Niezdefiniowany</translation>
     </message>
 </context>
 <context>
@@ -1367,17 +1367,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>

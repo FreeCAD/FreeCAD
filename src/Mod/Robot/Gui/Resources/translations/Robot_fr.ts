@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Maquiller la trajectoire...</translation>
+        <translation>Mise en forme de la trajectoire...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Créer un objet d&apos;habillage qui masque certains aspects d&apos;une trajectoire</translation>
+        <translation>Créer un objet de mise en forme qui remplace certains aspects d&apos;une trajectoire</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -409,13 +409,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier KRL</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers</translation>
     </message>
     <message>
         <location line="-61"/>

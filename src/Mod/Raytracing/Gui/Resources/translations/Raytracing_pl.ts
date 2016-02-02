@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Eksport projektu Raytracing do pliku</translation>
+        <translation>Eksport projektu Raytracing do pliku</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -28,27 +28,27 @@
     <message>
         <location line="+206"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Raytracing</translation>
+        <translation>Raytracing</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New Luxrender project</source>
-        <translation type="unfinished">Nowy projekt Luxrendera</translation>
+        <translation>Nowy projekt Luxrendera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new Luxrender project into the document</source>
-        <translation type="unfinished">Wstaw nowy projekt Luxrendera do projektu</translation>
+        <translation>Wstaw nowy projekt Luxrendera do projektu</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">Brak szablonu</translation>
+        <translation>Brak szablonu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">Szablon niedostępny</translation>
+        <translation>Szablon niedostępny</translation>
     </message>
 </context>
 <context>
@@ -66,7 +66,7 @@
     <message>
         <location line="+1"/>
         <source>Insert a new part object into a Raytracing project</source>
-        <translation type="unfinished">Wstaw nową część do projektu Raytracing</translation>
+        <translation>Wstaw nową część do projektu Raytracing</translation>
     </message>
     <message>
         <source>Insert a new part object into a Povray project</source>
@@ -91,22 +91,22 @@
     <message>
         <location line="+1"/>
         <source>New POV-Ray project</source>
-        <translation type="unfinished">New POV-Ray project</translation>
+        <translation>Nowy projekt POV-Ray</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Insert new POV-Ray project into the document</translation>
+        <translation>Wstaw nowy projekt POV-Ray do dokumentu</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">Brak szablonu</translation>
+        <translation>Brak szablonu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">Szablon niedostępny</translation>
+        <translation>Szablon niedostępny</translation>
     </message>
 </context>
 <context>
@@ -114,17 +114,17 @@
     <message>
         <location line="+203"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Raytracing</translation>
+        <translation>Raytracing</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation type="unfinished">&amp; Renderuj</translation>
+        <translation>&amp; Renderuj</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Renderuje obecny projekt raytracing za pomocą zewnętrznego renderera</translation>
+        <translation>Renderuje obecny projekt raytracing za pomocą zewnętrznego renderera</translation>
     </message>
 </context>
 <context>
@@ -132,17 +132,17 @@
     <message>
         <location line="+249"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Raytracing</translation>
+        <translation>Raytracing</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Reset Camera</source>
-        <translation type="unfinished">&amp;Zresetuj kamerę</translation>
+        <translation>&amp;Zresetuj kamerę</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sets the camera of the selected Raytracing project to match the current view</source>
-        <translation type="unfinished">Ustawia widok kamery z wybranego projektu Raytracing i dopasowuje go do bieżącego widoku</translation>
+        <translation>Ustawia widok kamery z wybranego projektu Raytracing i dopasowuje go do bieżącego widoku</translation>
     </message>
 </context>
 <context>
@@ -155,12 +155,12 @@
     <message>
         <location line="+1"/>
         <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished">Export camera to POV-Ray...</translation>
+        <translation>Eksport widoku kamery do POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation>Eksportowanie pozycji kamery aktywnego widoku 3D w formacie POV-Ray do pliku</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>Export part to POV-Ray...</source>
-        <translation type="unfinished">Export part to POV-Ray...</translation>
+        <translation>Eksport części do POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the selected Part (object) as a POV-Ray file</source>
-        <translation type="unfinished">Write the selected Part (object) as a POV-Ray file</translation>
+        <translation>Zapisuje wybraną część (obiekt) jako plik POV-Ray</translation>
     </message>
     <message>
         <source>Export part to povray...</source>
@@ -213,18 +213,17 @@
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
-Do you want to continue?</translation>
+        <translation>Bieżącym widokiem kamery nie jest perspektywa i tym samym wynik obrazu POV-Ray może później wyglądać inaczej od oczekiwań. Czy chcesz kontynuować?</translation>
     </message>
     <message>
         <location line="-109"/>
         <source>Export view to POV-Ray...</source>
-        <translation type="unfinished">Export view to POV-Ray...</translation>
+        <translation>Eksportowanie widoku do POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-        <translation type="unfinished">Write the active 3D view with camera and all its content to a POV-Ray file</translation>
+        <translation>Zapisz aktywny widok 3D z kamery i całą jego zawartość do pliku POV-Ray</translation>
     </message>
     <message>
         <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
@@ -248,7 +247,7 @@ Do you want to continue?</source>
         <location line="+507"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">Bieżący widok kamery nie jest perspektywą i dla tego wynik obrazu luxrender, może później wyglądać inaczej do tego, czego oczekiwałeś. Czy chcesz kontynuować?</translation>
+        <translation>Bieżący widok kamery nie jest perspektywą i dla tego wynik obrazu luxrender, może później wyglądać inaczej do tego, czego oczekiwałeś. Czy chcesz kontynuować?</translation>
     </message>
 </context>
 <context>
@@ -294,61 +293,61 @@ Do you want to continue?</source>
         <location line="+10"/>
         <location line="+12"/>
         <source>No Raytracing project to insert</source>
-        <translation type="unfinished">Brak projektu Raytracing do wstawienia</translation>
+        <translation>Brak projektu Raytracing do wstawienia</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>Create a Raytracing project to insert a view.</source>
-        <translation type="unfinished">Tworzy nowy projekt Raytracing aby wstawić widok.</translation>
+        <translation>Tworzy nowy projekt Raytracing aby wstawić widok.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select a Raytracing project to insert the view.</source>
-        <translation type="unfinished">Wybierz projekt Raytracing żeby wstawić widok.</translation>
+        <translation>Wybierz projekt Raytracing żeby wstawić widok.</translation>
     </message>
     <message>
         <location line="+64"/>
         <location line="+63"/>
         <location line="+249"/>
         <source>Select one Raytracing project object.</source>
-        <translation type="unfinished">Wybierz jeden obiekt projektu Raytracing.</translation>
+        <translation>Wybierz jeden obiekt projektu Raytracing.</translation>
     </message>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished"></translation>
+        <translation>Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
-        <translation type="unfinished">POV-Ray not found</translation>
+        <translation>Nie znaleziono POV-Ray</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the POV-Ray executable in the preferences.</translation>
+        <translation>Proszę ustawić ścieżkę do pliku wykonywalnego POV-Ray w preferencjach.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
+        <translation>Proszę poprawić ścieżkę do pliku wykonywalnego POV-Ray w preferencjach.</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>Lux project file missing</source>
-        <translation type="unfinished">Lux project file missing</translation>
+        <translation>Brakuje pliku projektu Lux</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Lux project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The Lux project file doesn&apos;t exist.</translation>
+        <translation>Plik projektu Lux nie istnieje.</translation>
     </message>
     <message>
         <location line="-68"/>
         <location line="+6"/>
         <source>Luxrender not found</source>
-        <translation type="unfinished">Nie znaleziono Luxrender</translation>
+        <translation>Nie znaleziono Luxrender</translation>
     </message>
     <message>
         <location line="-482"/>
@@ -356,7 +355,7 @@ Do you want to continue?</source>
         <location line="+62"/>
         <location line="+279"/>
         <source>POV-Ray</source>
-        <translation type="unfinished"></translation>
+        <translation>POV-Ray</translation>
     </message>
     <message>
         <location line="-391"/>
@@ -365,27 +364,27 @@ Do you want to continue?</source>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Ustaw ścieżkę do pliku wykonywalnego luxrendera albo luxkonsoli w ustawieniach preferencji.</translation>
+        <translation>Ustaw ścieżkę do pliku wykonywalnego luxrendera albo luxkonsoli w ustawieniach preferencji.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Popraw ścieżkę do pliku wykonywalnego luxrendera albo luxkonsoli w ustawieniach preferencji.</translation>
+        <translation>Popraw ścieżkę do pliku wykonywalnego luxrendera albo luxkonsoli w ustawieniach preferencji.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>POV-Ray file missing</source>
-        <translation type="unfinished">POV-Ray file missing</translation>
+        <translation>Brakuje pliku POV-Ray</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The POV-Ray project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The POV-Ray project file doesn&apos;t exist.</translation>
+        <translation>Brak pliku projektu POV-Ray.</translation>
     </message>
     <message>
         <source>Rendered image (*.bmp)</source>
@@ -400,7 +399,7 @@ Do you want to continue?</source>
         <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
-        <translation type="unfinished">Renderowanie obrazu</translation>
+        <translation>Renderowanie obrazu</translation>
     </message>
     <message>
         <source>No Povray project to insert</source>
@@ -429,22 +428,22 @@ Do you want to continue?</source>
     <message>
         <location line="+103"/>
         <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation type="unfinished">The path to the POV-Ray executable, if you want to render from FreeCAD</translation>
+        <translation>Ścieżka do pliku wykonywalnego POV-Ray, jeśli chcesz wykonać renderowanie z FreeCAD</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>POV-Ray executable:</source>
-        <translation type="unfinished">POV-Ray executable:</translation>
+        <translation>Plik wykonywalny POV-Ray:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>POV-Ray output parameters:</source>
-        <translation type="unfinished">POV-Ray output parameters:</translation>
+        <translation>Parametry wyjściowe POV-Ray:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The POV-Ray parameters to be passed to the render.</source>
-        <translation type="unfinished">The POV-Ray parameters to be passed to the render.</translation>
+        <translation>Parametry POV-Ray przekazywane do renderowania.</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -464,42 +463,42 @@ Do you want to continue?</source>
     <message>
         <location line="-159"/>
         <source>Render</source>
-        <translation type="unfinished">Renderowanie</translation>
+        <translation>Renderowanie</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>+P +A</source>
-        <translation type="unfinished">+P +A</translation>
+        <translation>+P +A</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>+W: </source>
-        <translation type="unfinished">+W: </translation>
+        <translation>+W: </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The width of the rendered image</source>
-        <translation type="unfinished">Szerokość wyrenderowanego obrazu</translation>
+        <translation>Szerokość wyrenderowanego obrazu</translation>
     </message>
     <message>
         <location line="+19"/>
         <source> +H : </source>
-        <translation type="unfinished"> +H: </translation>
+        <translation> +H: </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The height of the rendered image</source>
-        <translation type="unfinished">Wysokość renderowanego obrazu</translation>
+        <translation>Wysokość renderowanego obrazu</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Luxrender executable:</source>
-        <translation type="unfinished">Plik wykonywalny luxrendera:</translation>
+        <translation>Plik wykonywalny luxrendera:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The path to the luxrender (or luxconsole) executable</source>
-        <translation type="unfinished">Ścieżka do pliku wykonywalnego luxrendera (albo luxkonsoli)</translation>
+        <translation>Ścieżka do pliku wykonywalnego luxrendera (albo luxkonsoli)</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -511,7 +510,7 @@ Do you want to continue?</source>
         <location line="+23"/>
         <location line="+16"/>
         <source>Used by utility tools</source>
-        <translation type="unfinished">Używany przez narzędzia</translation>
+        <translation>Używany przez narzędzia</translation>
     </message>
     <message>
         <location line="-13"/>
@@ -549,17 +548,17 @@ Do you want to continue?</source>
     <message>
         <location filename="../../ViewProvider.cpp" line="+68"/>
         <source>Edit LuxRender project</source>
-        <translation type="unfinished">Edycja projektu LuxRender</translation>
+        <translation>Edycja projektu LuxRender</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>LuxRender template</source>
-        <translation type="unfinished">Szablon LuxRender</translation>
+        <translation>Szablon LuxRender</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a LuxRender template</source>
-        <translation type="unfinished">Wybierz szablon LuxRender</translation>
+        <translation>Wybierz szablon LuxRender</translation>
     </message>
 </context>
 <context>
@@ -567,17 +566,17 @@ Do you want to continue?</source>
     <message>
         <location line="+48"/>
         <source>Edit Povray project</source>
-        <translation type="unfinished">Edycja projektu Povray</translation>
+        <translation>Edycja projektu Povray</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Povray template</source>
-        <translation type="unfinished">Szablon POV Ray</translation>
+        <translation>Szablon POV Ray</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a Povray template</source>
-        <translation type="unfinished">Wybierz szablon POV Ray</translation>
+        <translation>Wybierz szablon POV Ray</translation>
     </message>
 </context>
 <context>

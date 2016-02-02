@@ -131,19 +131,19 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1650"/>
+        <location filename="../../Command.cpp" line="+1661"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Check Geometry</source>
-        <translation>Check Geometry</translation>
+        <translation>Skontrolovať geometriu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Analyzes Geometry For Errors</source>
-        <translation>Analyzes Geometry For Errors</translation>
+        <translation>Analyzuje chyby geometrie</translation>
     </message>
 </context>
 <context>
@@ -156,7 +156,7 @@
     <message>
         <location line="+1"/>
         <source>Color per face</source>
-        <translation>Color per face</translation>
+        <translation type="unfinished">Color per face</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -169,13 +169,13 @@
     <message>
         <location line="+62"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Angular</source>
-        <translation type="unfinished">Measure Angular</translation>
+        <translation>Meranie uhla</translation>
     </message>
 </context>
 <context>
@@ -183,13 +183,13 @@
     <message>
         <location line="+26"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation>Vyčistiť všetko</translation>
     </message>
 </context>
 <context>
@@ -197,13 +197,13 @@
     <message>
         <location line="-58"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Linear</source>
-        <translation type="unfinished">Measure Linear</translation>
+        <translation>Meranie vzdialenosti</translation>
     </message>
 </context>
 <context>
@@ -211,13 +211,13 @@
     <message>
         <location line="+116"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>Prepnúť 3D</translation>
     </message>
 </context>
 <context>
@@ -225,13 +225,13 @@
     <message>
         <location line="-36"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle All</source>
-        <translation type="unfinished">Toggle All</translation>
+        <translation>Prepnúť všetko</translation>
     </message>
 </context>
 <context>
@@ -239,13 +239,13 @@
     <message>
         <location line="+60"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Toggle Delta</translation>
+        <translation>Prepnúť rozdiel</translation>
     </message>
 </context>
 <context>
@@ -278,12 +278,12 @@
         <location line="+10"/>
         <location line="+5"/>
         <source>Cube</source>
-        <translation type="unfinished">Kocka</translation>
+        <translation>Kocka</translation>
     </message>
     <message>
         <location line="-14"/>
         <source>Create a cube solid</source>
-        <translation type="unfinished">Create a cube solid</translation>
+        <translation>Vytvoriť kocku</translation>
     </message>
     <message>
         <source>Box</source>
@@ -297,19 +297,19 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-850"/>
+        <location filename="../../Command.cpp" line="-861"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Box fix 1</source>
-        <translation>Box fix 1</translation>
+        <translation type="unfinished">Box fix 1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a box solid without dialog</source>
-        <translation>Create a box solid without dialog</translation>
+        <translation type="unfinished">Create a box solid without dialog</translation>
     </message>
 </context>
 <context>
@@ -322,18 +322,18 @@
     <message>
         <location line="+1"/>
         <source>Box fix 2</source>
-        <translation>Box fix 2</translation>
+        <translation type="unfinished">Box fix 2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a box solid without dialog</source>
-        <translation>Create a box solid without dialog</translation>
+        <translation type="unfinished">Create a box solid without dialog</translation>
     </message>
 </context>
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+1058"/>
+        <location line="+1069"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
@@ -358,18 +358,18 @@
     <message>
         <location line="+1"/>
         <source>Chamfer...</source>
-        <translation>Chamfer...</translation>
+        <translation type="unfinished">Chamfer...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Chamfer the selected edges of a shape</source>
-        <translation>Zreže hranu na vybranom telese alebo hrane</translation>
+        <translation>Skosí vybranú hranu na telese</translation>
     </message>
 </context>
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-799"/>
+        <location line="-810"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
@@ -389,35 +389,35 @@
     <message>
         <location line="+163"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join objects...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join objects...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join walled objects</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join walled objects</translation>
     </message>
 </context>
 <context>
     <name>CmdPartCompound</name>
     <message>
-        <location line="+92"/>
+        <location line="+103"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make compound</source>
-        <translation type="unfinished">Make compound</translation>
+        <translation>Vytvoriť celok</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a compound of several shapes</source>
-        <translation type="unfinished">Make a compound of several shapes</translation>
+        <translation>Vytvoriť celok niekoľkých tvarov</translation>
     </message>
 </context>
 <context>
@@ -461,7 +461,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-930"/>
+        <location line="-941"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+488"/>
+        <location filename="../../Command.cpp" line="+499"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-690"/>
+        <location line="-701"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+270"/>
+        <location line="+281"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
@@ -619,7 +619,7 @@
     <message>
         <location line="+1"/>
         <source>Utility to loft</source>
-        <translation>Utility to loft</translation>
+        <translation>Nástroj profilovania</translation>
     </message>
     <message>
         <source>Advanced utility to lofts</source>
@@ -631,17 +631,17 @@
     <message>
         <location line="-226"/>
         <source>Part</source>
-        <translation type="unfinished">Časť</translation>
+        <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from selected sketches</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from selected sketches</translation>
     </message>
 </context>
 <context>
@@ -659,7 +659,7 @@
     <message>
         <location line="+1"/>
         <source>Create solid from a shell or compound</source>
-        <translation>Create solid from a shell or compound</translation>
+        <translation>Vytvoriť teleso zo škrupiny alebo z celku</translation>
     </message>
 </context>
 <context>
@@ -690,18 +690,18 @@
     <message>
         <location line="+1"/>
         <source>Offset...</source>
-        <translation>Offset...</translation>
+        <translation>Odsadenie...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to offset</source>
-        <translation>Utility to offset</translation>
+        <translation>Nástroj odsadenia</translation>
     </message>
 </context>
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1232"/>
+        <location line="-1243"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
@@ -744,30 +744,30 @@
     <message>
         <location line="+1"/>
         <source>Refine shape</source>
-        <translation>Refine shape</translation>
+        <translation>Vylepšiť tvar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Refine the copy of a shape</source>
-        <translation>Refine the copy of a shape</translation>
+        <translation>Vylepšiť kópiu tvaru</translation>
     </message>
 </context>
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+712"/>
+        <location filename="../../Command.cpp" line="+723"/>
         <source>Part</source>
         <translation>Časť</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reverse shapes</source>
-        <translation>Reverse shapes</translation>
+        <translation>Obrátiť útvary</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reverse orientation of shapes</source>
-        <translation>Reverse orientation of shapes</translation>
+        <translation>Obrátiť orientáciu útvarov</translation>
     </message>
 </context>
 <context>
@@ -803,7 +803,7 @@
     <message>
         <location line="+1"/>
         <source>Create a ruled surface from either two Edges or two wires</source>
-        <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
+        <translation>Vytvoriť plochu z dvoch Hrán alebo dvoch drôtov</translation>
     </message>
     <message>
         <source>Create a ruled surface from two curves</source>
@@ -861,7 +861,7 @@
     <message>
         <location line="+1"/>
         <source>Create a simple non-parametric copy</source>
-        <translation>Create a simple non-parametric copy</translation>
+        <translation>Vytvoriť jednodúchú neparametrickú kópiu</translation>
     </message>
 </context>
 <context>
@@ -912,12 +912,12 @@
     <message>
         <location line="+1"/>
         <source>Sweep...</source>
-        <translation>Sweep...</translation>
+        <translation>Ťahanie...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to sweep</source>
-        <translation>Utility to sweep</translation>
+        <translation>Nástroj na ťahanie</translation>
     </message>
 </context>
 <context>
@@ -930,12 +930,12 @@
     <message>
         <location line="+1"/>
         <source>Thickness...</source>
-        <translation>Thickness...</translation>
+        <translation>Hrúbka...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to apply a thickness</source>
-        <translation>Utility to apply a thickness</translation>
+        <translation>Nástroj na vytvorenie škrupiny</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -946,12 +946,12 @@
     <message>
         <location line="-19"/>
         <source>Selected one or more faces of a shape</source>
-        <translation>Selected one or more faces of a shape</translation>
+        <translation>Vybraná jedna alebo viac plôch útvaru</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Selected shape is not a solid</source>
-        <translation>Selected shape is not a solid</translation>
+        <translation>Vybraný útvar nie je teleso</translation>
     </message>
 </context>
 <context>
@@ -1173,7 +1173,7 @@
     <message>
         <location filename="../../DlgFilletEdges.cpp" line="+964"/>
         <source>Chamfer Edges</source>
-        <translation>Chamfer Edges</translation>
+        <translation type="unfinished">Chamfer Edges</translation>
     </message>
 </context>
 <context>
@@ -1211,12 +1211,12 @@
     <message>
         <location line="+10"/>
         <source>Create solid</source>
-        <translation>Create solid</translation>
+        <translation>Vytvoriť teleso</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Taper outward angle</source>
-        <translation>Taper outward angle</translation>
+        <translation>Uhol zúženia</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -1245,28 +1245,24 @@
     <message>
         <location filename="../../DlgExtrusion.cpp" line="+150"/>
         <source>Select a shape for extrusion, first.</source>
-        <translation>Select a shape for extrusion, first.</translation>
+        <translation type="unfinished">Select a shape for extrusion, first.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
-        <translation>The document &apos;%1&apos; doesn&apos;t exist.</translation>
+        <translation type="unfinished">The document &apos;%1&apos; doesn&apos;t exist.</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Suceeded</source>
-        <translation type="obsolete">Suceeded</translation>
+        <translation>Podarilo sa</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+5"/>
         <location line="+5"/>
         <source>Failed</source>
-        <translation type="unfinished">Failed</translation>
+        <translation>Nepodarilo sa</translation>
     </message>
 </context>
 <context>
@@ -1289,12 +1285,12 @@
     <message>
         <location line="+52"/>
         <source>Select faces</source>
-        <translation type="unfinished">Select faces</translation>
+        <translation>Vyberte plochy</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Select edges</source>
-        <translation type="unfinished">Select edges</translation>
+        <translation>Vyberte hrany</translation>
     </message>
     <message>
         <location line="-104"/>
@@ -1329,38 +1325,38 @@
     <message>
         <location filename="../../DlgFilletEdges.cpp" line="-728"/>
         <source>Length:</source>
-        <translation type="unfinished">Dĺžka:</translation>
+        <translation>Dĺžka:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Constant Length</translation>
+        <translation>Konštantná Dĺžka</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Variable Length</translation>
+        <translation>Premenná dĺžka</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Edges to chamfer</source>
-        <translation type="unfinished">Hrany na skosenie</translation>
+        <translation>Hrany na skosenie</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+520"/>
         <source>Start length</source>
-        <translation type="unfinished">Start length</translation>
+        <translation>Počiatočná dĺžka</translation>
     </message>
     <message>
         <location line="-519"/>
         <source>End length</source>
-        <translation type="unfinished">End length</translation>
+        <translation>Koncová dĺžka</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Edges to fillet</source>
-        <translation>Edges to fillet</translation>
+        <translation>Hrany na zaoblenie</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1376,7 +1372,7 @@
     <message>
         <location line="+506"/>
         <source>Length</source>
-        <translation type="unfinished">Dĺžka</translation>
+        <translation>Dĺžka</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1392,8 +1388,8 @@
         <location line="+1"/>
         <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-        <translation>No edge entity is checked to fillet.
-Please check one or more edge entities first.</translation>
+        <translation>Žiadna hrana nebola vybratá na zaoblenie.
+Najskôr prosím vyberte jednu alebo viac hrán.</translation>
     </message>
     <message>
         <location filename="../../DlgFilletEdges.ui" line="+101"/>
@@ -1429,77 +1425,81 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation>IGES</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Export</translation>
+        <translation>Export</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished"></translation>
+        <translation>Prvky na export do IGES</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Milimeter</translation>
+        <translation>Milimeter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Meter</translation>
+        <translation>Meter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Palec</translation>
+        <translation>Palec</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Write solids and shells as</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Write solids and shells as</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
+    </message>
+    <message>
+        <source>Enable B-REP mode</source>
+        <translation type="obsolete">Povoliť B-REP mód</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importovať</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished"></translation>
+        <translation>Vynechať prázdne útvary</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation>Hlavička</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation>Firma</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation>Produkt</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
 </context>
 <context>
@@ -1507,57 +1507,57 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation>STEP</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Export</translation>
+        <translation>Export</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished"></translation>
+        <translation>Prvky na export do STEP</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Milimeter</translation>
+        <translation>Milimeter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Meter</translation>
+        <translation>Meter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Palec</translation>
+        <translation>Palec</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation>Schéma</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation>Hlavička</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation>Firma</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation>Produkt</translation>
     </message>
 </context>
 <context>
@@ -1716,12 +1716,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../DlgPartImportIgesImp.cpp" line="+71"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation>IGES</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -1742,7 +1742,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="-40"/>
         <source>Step input file</source>
-        <translation>Step input file</translation>
+        <translation>Vstupný STEP súbor</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1763,12 +1763,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../DlgPartImportStepImp.cpp" line="+70"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation>STEP</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -1950,7 +1950,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="+18"/>
         <location filename="../../DlgPrimitives.cpp" line="+34"/>
         <source>Ellipse</source>
-        <translation>Ellipse</translation>
+        <translation>Elipsa</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1967,7 +1967,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+14"/>
         <source>Regular polygon</source>
-        <translation type="unfinished">Regular polygon</translation>
+        <translation>Pravidelný mnohouholník</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2029,28 +2029,28 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">U parameter:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V parameters:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Polomer 2: {3:?}</translation>
+        <translation type="unfinished">Radius 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V parameter:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">U Parameter:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2064,7 +2064,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="+150"/>
         <location line="+882"/>
         <source>Polygon:</source>
-        <translation type="unfinished">Polygon:</translation>
+        <translation>Mnohouholník:</translation>
     </message>
     <message>
         <location line="-862"/>
@@ -2090,7 +2090,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+7"/>
         <source>X2 min/max:</source>
-        <translation>X2 min/max:</translation>
+        <translation>X 2 min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2100,17 +2100,17 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+181"/>
         <source>Coordinate system:</source>
-        <translation>Coordinate system:</translation>
+        <translation>Súradnicový systém:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Right-handed</source>
-        <translation>Right-handed</translation>
+        <translation type="unfinished">Right-handed</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Left-handed</source>
-        <translation>Left-handed</translation>
+        <translation type="unfinished">Left-handed</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -2126,38 +2126,38 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="+58"/>
         <location line="+103"/>
         <source>Angle 1:</source>
-        <translation>Angle 1:</translation>
+        <translation>Uhol 1:</translation>
     </message>
     <message>
         <location line="-96"/>
         <location line="+103"/>
         <source>Angle 2:</source>
-        <translation>Angle 2:</translation>
+        <translation>Uhol 2:</translation>
     </message>
     <message>
         <location line="-49"/>
         <source>From three points</source>
-        <translation>From three points</translation>
+        <translation type="unfinished">From three points</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Major radius:</source>
-        <translation>Major radius:</translation>
+        <translation type="unfinished">Major radius:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Minor radius:</source>
-        <translation>Minor radius:</translation>
+        <translation type="unfinished">Minor radius:</translation>
     </message>
     <message>
         <location line="+200"/>
         <source>End point</source>
-        <translation>End point</translation>
+        <translation>Koncový bod</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Start point</source>
-        <translation>Start point</translation>
+        <translation>Počiatočný bod</translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.cpp" line="+193"/>
@@ -2244,17 +2244,17 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+8"/>
         <source>Select line in 3D view</source>
-        <translation>Select line in 3D view</translation>
+        <translation type="unfinished">Select line in 3D view</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create Solid</source>
-        <translation type="unfinished">Create Solid</translation>
+        <translation>Vytvoriť teleso</translation>
     </message>
     <message>
         <location filename="../../DlgRevolution.cpp" line="+177"/>
         <source>Select a shape for revolution, first.</source>
-        <translation>Select a shape for revolution, first.</translation>
+        <translation type="unfinished">Select a shape for revolution, first.</translation>
     </message>
 </context>
 <context>
@@ -2292,12 +2292,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maximum angular deflection</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
         <source> °</source>
-        <translation type="unfinished"></translation>
+        <translation> °</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2310,12 +2310,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="-20"/>
         <source>Defines the deviation of tessellation to the actual surface</source>
-        <translation>Defines the deviation of tessellation to the actual surface</translation>
+        <translation type="unfinished">Defines the deviation of tessellation to the actual surface</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defining the normals per vertex is also called &lt;span style=&quot; font-style:italic;&quot;&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2338,12 +2338,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../DlgSettings3DViewPartImp.cpp" line="+64"/>
         <source>Deviation</source>
-        <translation>Deviation</translation>
+        <translation type="unfinished">Deviation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-        <translation>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+        <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
     </message>
 </context>
 <context>
@@ -2376,12 +2376,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+6"/>
         <source>Model settings</source>
-        <translation>Model settings</translation>
+        <translation>Nastavenia modelu</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Automatically refine model after boolean operation</source>
-        <translation>Automatically refine model after boolean operation</translation>
+        <translation type="unfinished">Automatically refine model after boolean operation</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2391,7 +2391,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+16"/>
         <source>Object naming</source>
-        <translation type="unfinished">Object naming</translation>
+        <translation>Pomenovanie objektu</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2401,7 +2401,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="-48"/>
         <source>Automatically check model after boolean operation</source>
-        <translation>Automatically check model after boolean operation</translation>
+        <translation type="unfinished">Automatically check model after boolean operation</translation>
     </message>
 </context>
 <context>
@@ -2409,17 +2409,17 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
         <source>Part colors</source>
-        <translation type="unfinished">Part colors</translation>
+        <translation>Farby súčiastky</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Default Part colors</translation>
+        <translation>Predvolená farba súčiastky</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Default shape color</translation>
+        <translation>Predvolená farba tvaru</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2429,60 +2429,60 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+26"/>
         <source>Default line color</source>
-        <translation type="unfinished">Predvolená farba čiary</translation>
+        <translation>Predvolená farba čiary</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line color for new shapes</source>
-        <translation type="unfinished">The default line color for new shapes</translation>
+        <translation>Predvolená farba čiary pre nové útvary</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Default line width</translation>
+        <translation>Predvolené nastavenie šírky čiary</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished">The default line thickness for new shapes</translation>
+        <translation>Predvolená hrúbka čiary pre nové útvary</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+68"/>
         <source>px</source>
-        <translation type="unfinished">px</translation>
+        <translation>px</translation>
     </message>
     <message>
         <location line="-43"/>
         <source>Default vertex color</source>
-        <translation type="unfinished">Default vertex color</translation>
+        <translation>Predvolená farba bodu</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Default vertex size</translation>
+        <translation>Predvolená veľkosť bodu</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Bounding box color</source>
-        <translation type="unfinished">Bounding box color</translation>
+        <translation>Farba ohraničujúceho kvádra</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of bounding boxes in the 3D view</source>
-        <translation type="unfinished">The color of bounding boxes in the 3D view</translation>
+        <translation>Farba ohraničujúcich kvádrov v 3D pohľade</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annotations</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default text color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default text color</translation>
     </message>
 </context>
 <context>
@@ -2490,12 +2490,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../TaskFaceColors.cpp" line="+394"/>
         <source>Face colors</source>
-        <translation>Face colors</translation>
+        <translation>Farby stien</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you really want to cancel?</source>
-        <translation>Do you really want to cancel?</translation>
+        <translation>Naozaj chcete zrušiť?</translation>
     </message>
 </context>
 <context>
@@ -2503,7 +2503,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../Location.ui" line="+14"/>
         <source>Location</source>
-        <translation>Location</translation>
+        <translation>Umiestnenie</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2526,7 +2526,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location filename="../../TaskLoft.cpp" line="+73"/>
         <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+        <translation>Bod/Hrana/Drôt/Plocha</translation>
     </message>
     <message>
         <location line="-144"/>
@@ -2537,17 +2537,17 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="-63"/>
         <source>Too few elements</source>
-        <translation>Too few elements</translation>
+        <translation>Príliž málo prvkov</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+        <translation>Najmenej dva body, hrany, drôty alebo pochy sú požadované.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Input error</source>
-        <translation type="unfinished">Vstupná chyba</translation>
+        <translation>Chyba zadania</translation>
     </message>
     <message>
         <source>At least two vertices, edges or wires are required.</source>
@@ -2593,7 +2593,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+8"/>
         <source>Base point:</source>
-        <translation>Base point:</translation>
+        <translation>Základový bod:</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2613,7 +2613,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../Mirroring.cpp" line="+122"/>
         <source>Select a shape for mirroring, first.</source>
-        <translation>Select a shape for mirroring, first.</translation>
+        <translation>Vyberte prosím najskôr útvar na zrkadlenie.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2626,7 +2626,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../TaskOffset.cpp" line="+165"/>
         <source>Input error</source>
-        <translation>Vstupná chyba</translation>
+        <translation>Chyba zadania</translation>
     </message>
 </context>
 <context>
@@ -2663,7 +2663,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="-204"/>
         <location line="+19"/>
         <source>Select two vertices</source>
-        <translation>Select two vertices</translation>
+        <translation>Vyberte dva body</translation>
     </message>
     <message>
         <source>Select three or more edges</source>
@@ -2672,12 +2672,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte tri a viac bodov</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Select one or more edges</source>
-        <translation>Select one or more edges</translation>
+        <translation>Vyberte jednu alebo viacero hrán</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2697,12 +2697,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte zoznam bodov</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Select a closed set of edges</source>
-        <translation>Select a closed set of edges</translation>
+        <translation>Vyberte uzavretú sadu hrán</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2726,19 +2726,19 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="-279"/>
         <location line="+280"/>
         <source>Sweep</source>
-        <translation>Sweep</translation>
+        <translation>Ťahanie</translation>
     </message>
     <message>
         <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+        <translation>Bod/Hrana/Drôt/Plocha</translation>
     </message>
     <message>
         <location line="+129"/>
         <location line="+131"/>
         <location line="+8"/>
         <source>Sweep path</source>
-        <translation>Sweep path</translation>
+        <translation>Dráha ťahania</translation>
     </message>
     <message>
         <source>Select an edge or wire you want to sweep along.</source>
@@ -2747,48 +2747,48 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte jednu alebo viacero spojených kriviek, pozdĺž ktorých chcete ťahať.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Too few elements</source>
-        <translation>Too few elements</translation>
+        <translation>Príliž málo prvkov</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>At least one edge or wire is required.</source>
-        <translation>At least one edge or wire is required.</translation>
+        <translation>Najmenej jedna hrana alebo krivka je požadovaná.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Chybný výber</translation>
+        <translation>Chybný výber</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation type="unfinished">&apos;%1&apos; cannot be used as profile and path.</translation>
+        <translation>&apos;%1&apos; nemôže byť použitý ako profil a cesta.</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Input error</source>
-        <translation type="unfinished">Vstupná chyba</translation>
+        <translation>Chyba zadania</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Done</source>
-        <translation type="unfinished">Done</translation>
+        <translation>Hotovo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte jednu alebo viacero spojených kriviek v 3D pohľade a stlačte tlačítko na vykonanie</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybraná trajektória ťahania je nevhodná.</translation>
     </message>
 </context>
 <context>
@@ -2796,7 +2796,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="+548"/>
         <source>Shape Content</source>
-        <translation type="unfinished">Shape Content</translation>
+        <translation>Obsah útvaru</translation>
     </message>
 </context>
 <context>
@@ -2804,7 +2804,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="-511"/>
         <source>Check Geometry</source>
-        <translation>Check Geometry</translation>
+        <translation>Skontrolovať geometriu</translation>
     </message>
 </context>
 <context>
@@ -3044,7 +3044,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+9"/>
         <source>Create solid</source>
-        <translation>Create solid</translation>
+        <translation>Vytvoriť teleso</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3054,7 +3054,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+20"/>
         <source>Closed</source>
-        <translation type="unfinished">Zatvorené</translation>
+        <translation>Zatvorené</translation>
     </message>
 </context>
 <context>
@@ -3068,27 +3068,27 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+10"/>
         <source>Mode</source>
-        <translation>Mode</translation>
+        <translation>Režim</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Skin</source>
-        <translation>Skin</translation>
+        <translation type="unfinished">Skin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Pipe</source>
-        <translation>Pipe</translation>
+        <translation>Trubka</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>RectoVerso</source>
-        <translation>RectoVerso</translation>
+        <translation>Rub a Líce</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Join type</source>
-        <translation>Join type</translation>
+        <translation>Typ spojenia</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3098,7 +3098,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+5"/>
         <source>Tangent</source>
-        <translation>Tangent</translation>
+        <translation>Dotykový</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3109,12 +3109,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+7"/>
         <source>Self-intersection</source>
-        <translation>Self-intersection</translation>
+        <translation>Seba pretínajúci</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Fill offset</source>
-        <translation>Fill offset</translation>
+        <translation>Vyplniť odsadenie</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3124,7 +3124,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+27"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation>Aktualizovať pohľad</translation>
     </message>
 </context>
 <context>
@@ -3138,32 +3138,32 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+6"/>
         <source>Edge from vertices</source>
-        <translation>Edge from vertices</translation>
+        <translation>Hrana z bodov</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished"></translation>
+        <translation>Plocha z bodov</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Face from edges</source>
-        <translation>Face from edges</translation>
+        <translation>Plocha z hrán</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Planar</source>
-        <translation>Planar</translation>
+        <translation>Rovinný</translation>
     </message>
     <message>
         <location line="-21"/>
         <source>Shell from faces</source>
-        <translation>Shell from faces</translation>
+        <translation>Škrupina z plôch</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Solid from shell</source>
-        <translation>Solid from shell</translation>
+        <translation>Teleso zo škrupiny</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -3181,29 +3181,28 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location filename="../../TaskSweep.ui" line="+14"/>
         <source>Sweep</source>
-        <translation>Sweep</translation>
+        <translation>Ťahanie</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Trajektória ťahania</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Create solid</source>
-        <translation>Create solid</translation>
+        <translation>Vytvoriť teleso</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Frenet</source>
-        <translation>Frenet</translation>
+        <translation type="unfinished">Frenet</translation>
     </message>
     <message>
         <location filename="../../TaskSweep.cpp" line="+42"/>
         <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-        <translation>Select one or more profiles and select an edge or wire
-in the 3D view for the sweep path.</translation>
+        <translation>Vyberte jeden alebo viac profilov a vyberte hranu alebo krivku v 3D pohľade ako trajektóriu ťahania.</translation>
     </message>
 </context>
 <context>
@@ -3213,44 +3212,44 @@ in the 3D view for the sweep path.</translation>
         <location line="+165"/>
         <location line="+10"/>
         <source>Thickness</source>
-        <translation>Thickness</translation>
+        <translation type="unfinished">Thickness</translation>
     </message>
     <message>
         <location line="-119"/>
         <source>Select faces of the source object and press &apos;Done&apos;</source>
-        <translation>Select faces of the source object and press &apos;Done&apos;</translation>
+        <translation>Vyberte steny zdrojového objektu a stlačte tlačítko &quot;Hotovo&quot;</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Done</source>
-        <translation>Done</translation>
+        <translation>Hotovo</translation>
     </message>
     <message>
         <location line="+71"/>
         <source>Input error</source>
-        <translation>Vstupná chyba</translation>
+        <translation>Chyba zadania</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-1120"/>
+        <location filename="../../Command.cpp" line="-1131"/>
         <location line="+77"/>
         <location line="+82"/>
-        <location line="+176"/>
+        <location line="+187"/>
         <location line="+50"/>
         <location line="+959"/>
         <source>Wrong selection</source>
         <translation>Chybný výber</translation>
     </message>
     <message>
-        <location line="-1343"/>
-        <location line="+385"/>
+        <location line="-1354"/>
+        <location line="+396"/>
         <source>Select two shapes please.</source>
         <translation>Prosím označ dva tvary.</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-386"/>
         <location line="+82"/>
         <location line="+82"/>
         <source>Non-solids selected</source>
@@ -3266,9 +3265,9 @@ Do you want to continue?</source>
 Do you want to continue?</translation>
     </message>
     <message>
-        <location line="+160"/>
+        <location line="+171"/>
         <source>Select one shape or more, please.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one shape or more, please.</translation>
     </message>
     <message>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
@@ -3293,39 +3292,39 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../CommandSimple.cpp" line="+59"/>
         <source>Sewing Tolerance</source>
-        <translation>Sewing Tolerance</translation>
+        <translation type="unfinished">Sewing Tolerance</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter tolerance for sewing shape:</source>
-        <translation>Enter tolerance for sewing shape:</translation>
+        <translation type="unfinished">Enter tolerance for sewing shape:</translation>
     </message>
     <message>
         <location filename="../../ViewProviderMirror.cpp" line="+77"/>
         <source>Edit mirror plane</source>
-        <translation>Edit mirror plane</translation>
+        <translation type="unfinished">Edit mirror plane</translation>
     </message>
     <message>
         <location line="+300"/>
         <source>Edit chamfer edges</source>
-        <translation>Edit chamfer edges</translation>
+        <translation type="unfinished">Edit chamfer edges</translation>
     </message>
     <message>
         <location line="+141"/>
         <source>Edit offset</source>
-        <translation>Edit offset</translation>
+        <translation type="unfinished">Edit offset</translation>
     </message>
     <message>
         <location line="+81"/>
         <source>Edit thickness</source>
-        <translation>Edit thickness</translation>
+        <translation type="unfinished">Edit thickness</translation>
     </message>
     <message>
         <source>Transform</source>
         <translation type="obsolete">Transformácia</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+162"/>
+        <location filename="../../AppPartGui.cpp" line="+180"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Časť návrhu</translation>
@@ -3334,28 +3333,28 @@ Do you want to continue?</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display</source>
-        <translation type="unfinished">Obrazovka</translation>
+        <translation>Obrazovka</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-258"/>
+        <location filename="../../Command.cpp" line="-269"/>
         <location line="+82"/>
         <source>Select two shapes or more, please.</source>
         <translation>Vyberte dva alebo viacej tvarov, prosím.</translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+387"/>
         <source>All CAD Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All CAD Files</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="+804"/>
@@ -3375,22 +3374,22 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="-305"/>
         <source>Compound</source>
-        <translation>Compound</translation>
+        <translation type="unfinished">Compound</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Compound Solid</source>
-        <translation>Compound Solid</translation>
+        <translation type="unfinished">Compound Solid</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Solid</source>
-        <translation>Solid</translation>
+        <translation type="unfinished">Solid</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Shell</source>
-        <translation>Shell</translation>
+        <translation type="unfinished">Shell</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3400,12 +3399,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Wire</source>
-        <translation>Wire</translation>
+        <translation type="unfinished">Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edge</source>
-        <translation>Edge</translation>
+        <translation type="unfinished">Edge</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3420,182 +3419,182 @@ Do you want to continue?</translation>
     <message>
         <location line="+15"/>
         <source>No Error</source>
-        <translation>No Error</translation>
+        <translation type="unfinished">No Error</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve</source>
-        <translation>Invalid Point On Curve</translation>
+        <translation type="unfinished">Invalid Point On Curve</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve On Surface</source>
-        <translation>Invalid Point On Curve On Surface</translation>
+        <translation type="unfinished">Invalid Point On Curve On Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Surface</source>
-        <translation>Invalid Point On Surface</translation>
+        <translation type="unfinished">Invalid Point On Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No 3D Curve</source>
-        <translation>No 3D Curve</translation>
+        <translation type="unfinished">No 3D Curve</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Multiple 3D Curve</source>
-        <translation>Multiple 3D Curve</translation>
+        <translation type="unfinished">Multiple 3D Curve</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid 3D Curve</source>
-        <translation>Invalid 3D Curve</translation>
+        <translation>Neplatná 3D krivka</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No Curve On Surface</source>
-        <translation>No Curve On Surface</translation>
+        <translation>Žiadna krivka na povrchu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Curve On Surface</source>
-        <translation>Invalid Curve On Surface</translation>
+        <translation>Neplatná krivka na povrchu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Curve On Closed Surface</source>
-        <translation>Invalid Curve On Closed Surface</translation>
+        <translation>Neplatná krivka na zatvorenom povrchu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Same Range Flag</source>
-        <translation>Invalid Same Range Flag</translation>
+        <translation type="unfinished">Invalid Same Range Flag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Same Parameter Flag</source>
-        <translation>Invalid Same Parameter Flag</translation>
+        <translation type="unfinished">Invalid Same Parameter Flag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Degenerated Flag</source>
-        <translation>Invalid Degenerated Flag</translation>
+        <translation type="unfinished">Invalid Degenerated Flag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Free Edge</source>
-        <translation>Free Edge</translation>
+        <translation>Voľná hrana</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid MultiConnexity</source>
-        <translation>Invalid MultiConnexity</translation>
+        <translation type="unfinished">Invalid MultiConnexity</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Range</source>
-        <translation>Invalid Range</translation>
+        <translation>Neplatný rozsah</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Empty Wire</source>
-        <translation>Empty Wire</translation>
+        <translation type="unfinished">Empty Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Edge</source>
-        <translation>Redundant Edge</translation>
+        <translation type="unfinished">Redundant Edge</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Self Intersecting Wire</source>
-        <translation>Self Intersecting Wire</translation>
+        <translation type="unfinished">Self Intersecting Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No Surface</source>
-        <translation>No Surface</translation>
+        <translation>Žiaden povrch</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Wire</source>
-        <translation>Invalid Wire</translation>
+        <translation type="unfinished">Invalid Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Wire</source>
-        <translation>Redundant Wire</translation>
+        <translation type="unfinished">Redundant Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Intersecting Wires</source>
-        <translation>Intersecting Wires</translation>
+        <translation type="unfinished">Intersecting Wires</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Imbrication Of Wires</source>
-        <translation>Invalid Imbrication Of Wires</translation>
+        <translation type="unfinished">Invalid Imbrication Of Wires</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Empty Shell</source>
-        <translation>Empty Shell</translation>
+        <translation type="unfinished">Empty Shell</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Face</source>
-        <translation>Redundant Face</translation>
+        <translation type="unfinished">Redundant Face</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unorientable Shape</source>
-        <translation>Unorientable Shape</translation>
+        <translation type="unfinished">Unorientable Shape</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Not Closed</source>
-        <translation>Not Closed</translation>
+        <translation type="unfinished">Not Closed</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Not Connected</source>
-        <translation>Not Connected</translation>
+        <translation type="unfinished">Not Connected</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sub Shape Not In Shape</source>
-        <translation>Sub Shape Not In Shape</translation>
+        <translation type="unfinished">Sub Shape Not In Shape</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bad Orientation</source>
-        <translation>Bad Orientation</translation>
+        <translation>Nesprávna orientácia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bad Orientation Of Sub Shape</source>
-        <translation>Bad Orientation Of Sub Shape</translation>
+        <translation type="unfinished">Bad Orientation Of Sub Shape</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Tolerance Value</source>
-        <translation>Invalid Tolerance Value</translation>
+        <translation>Nevhodná hodnota tolerancie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Check Failed</source>
-        <translation>Check Failed</translation>
+        <translation>Kontrola zlyhala</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>No Result</source>
-        <translation>No Result</translation>
+        <translation>Žiadny výsledok</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Out Of Enum Range: </source>
-        <translation>Out Of Enum Range: </translation>
+        <translation>Mimo dovolený rozsah: </translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3605,7 +3604,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>BOPAlgo BadType</source>
-        <translation type="unfinished">BOPAlgo BadType</translation>
+        <translation>BOPAlgo NesprávnyTyp</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3656,13 +3655,13 @@ Do you want to continue?</translation>
         <location line="+284"/>
         <location line="+162"/>
         <source>Invalid</source>
-        <translation>Invalid</translation>
+        <translation>Neplatný</translation>
     </message>
     <message>
         <location filename="../../TaskDimension.cpp" line="+552"/>
         <location line="+1040"/>
         <source>Selections</source>
-        <translation type="unfinished">Selections</translation>
+        <translation>Výbery</translation>
     </message>
     <message>
         <location line="-1033"/>
@@ -3673,27 +3672,27 @@ Do you want to continue?</translation>
     <message>
         <location line="-265"/>
         <source>Reset Dialog</source>
-        <translation type="unfinished">Reset Dialog</translation>
+        <translation>Vyprázdniť formulár</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>Prepnúť 3D</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Toggle Delta</translation>
+        <translation>Prepnúť rozdiel</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation>Vyčistiť všetko</translation>
     </message>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Show control points</translation>
     </message>
 </context>
 <context>
@@ -3701,17 +3700,17 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>&amp;Part</source>
-        <translation>&amp;Part</translation>
+        <translation>&amp;Diel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Simple</source>
-        <translation>&amp;Simple</translation>
+        <translation>&amp;Jednoduchý</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Parametric</source>
-        <translation>&amp;Parametric</translation>
+        <translation>&amp;Parametrický</translation>
     </message>
     <message>
         <location line="+2"/>

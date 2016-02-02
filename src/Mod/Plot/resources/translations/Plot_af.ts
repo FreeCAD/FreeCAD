@@ -319,7 +319,7 @@
     <message>
       <location filename="TaskPanel.py" line="126"/>
       <source>Position</source>
-      <translation type="unfinished">Posisie</translation>
+      <translation>Posisie</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="132"/>

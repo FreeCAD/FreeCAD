@@ -42,7 +42,7 @@
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>面上に勾配を作成</translation>
+        <translation>面上に抜き勾配を作成</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location line="+1"/>
         <source>Make a fillet on an edge, face or body</source>
-        <translation>、面や立体のエッジにフィレットを作成</translation>
+        <translation>面や立体のエッジにフィレットを作成</translation>
     </message>
 </context>
 <context>
@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">インボリュート曲線パラメーター</translation>
+        <translation>インボリュート曲線パラメーター</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">歯数:</translation>
+        <translation>歯数:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">モジュール:</translation>
+        <translation>モジュール:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">高精度：</translation>
+        <translation>高精度：</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">True</translation>
+        <translation>True</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">False</translation>
+        <translation>False</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">外歯車：</translation>
+        <translation>外歯車：</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">基準圧力角:</translation>
+        <translation>基準圧力角:</translation>
     </message>
 </context>
 <context>
@@ -409,7 +409,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">面取りを編集</translation>
+        <translation>面取りを編集</translation>
     </message>
 </context>
 <context>
@@ -425,7 +425,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">フィレットを編集</translation>
+        <translation>フィレットを編集</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">ポケットを編集</translation>
+        <translation>ポケットを編集</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -669,19 +669,19 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">水平スケッチ軸</translation>
+        <translation>水平スケッチ軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">垂直スケッチ軸</translation>
+        <translation>垂直スケッチ軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">参照を選択...</translation>
+        <translation>参照を選択...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -716,7 +716,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">未定義</translation>
+        <translation>未定義</translation>
     </message>
 </context>
 <context>
@@ -751,19 +751,19 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">水平スケッチ軸</translation>
+        <translation>水平スケッチ軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">垂直スケッチ軸</translation>
+        <translation>垂直スケッチ軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">参照を選択...</translation>
+        <translation>参照を選択...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -782,12 +782,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">面を選択</translation>
+        <translation>面を選択</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">未定義</translation>
+        <translation>未定義</translation>
     </message>
 </context>
 <context>
@@ -883,7 +883,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+16"/>
         <source>2nd length</source>
-        <translation>2つの寸法</translation>
+        <translation>2番目の長さ</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -962,7 +962,7 @@ Please check one or more edge entities first.</translation>
         <location line="-307"/>
         <location line="+294"/>
         <source>To last</source>
-        <translation>To last</translation>
+        <translation type="unfinished">To last</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -1045,7 +1045,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">逆方向</translation>
+        <translation>逆方向</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1132,19 +1132,19 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">軸</translation>
+        <translation>軸</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">通常のスケッチ軸</translation>
+        <translation>通常のスケッチ軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">参照を選択...</translation>
+        <translation>参照を選択...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1235,7 +1235,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">未定義</translation>
+        <translation>未定義</translation>
     </message>
 </context>
 <context>
@@ -1369,17 +1369,17 @@ Please check one or more edge entities first.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>妥当でないスケッチが選択されています</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>選択されているスケッチ/2Dオブジェクトに押し出しが有効なものがありません。他のフィーチャーで使用されていない有効なスケッチ、2Dオブジェクトを選択してください。</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>選択されているスケッチ/2Dオブジェクトに回転押し出しが有効なものがありません。他のフィーチャーで使用されていない有効なスケッチ、2Dオブジェクトを選択してください。</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1394,12 +1394,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>勾配処理は部品に対してのみ行えます</translation>
+        <translation>抜き勾配の処理は、部品に対してのみ行えます</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>選択された面に対して勾配処理を行うことができません</translation>
+        <translation>選択された面は、抜き勾配にできません</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1413,7 +1413,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">まず最初に減算または加算する形状を作成してください</translation>
+        <translation>まず最初に減算または加算する形状を作成してください</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1486,13 +1486,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">ベーススケッチとのリンクが消失</translation>
+        <translation>ベーススケッチとのリンクが消失</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">ベーススケッチとのリンクが失われているためオブジェクトを編集することができません。</translation>
+        <translation>ベーススケッチとのリンクが失われているためオブジェクトを編集することができません。</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1533,12 +1533,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">グルーブを編集</translation>
+        <translation>グルーブを編集</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">回転体を編集</translation>
+        <translation>回転体を編集</translation>
     </message>
 </context>
 <context>

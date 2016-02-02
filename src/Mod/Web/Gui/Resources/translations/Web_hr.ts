@@ -126,7 +126,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGuiPy.cpp" line="49"/>
+        <location filename="../../AppWebGui.cpp" line="78"/>
         <location filename="../../BrowserView.cpp" line="348"/>
         <source>Browser</source>
         <translation type="unfinished">Browser</translation>
@@ -142,7 +142,7 @@
     <message>
         <location filename="../../BrowserView.cpp" line="239"/>
         <source>Error</source>
-        <translation type="unfinished">Pogreška</translation>
+        <translation>Pogreška</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="319"/>
@@ -160,7 +160,7 @@
     <message>
         <location filename="../../BrowserView.cpp" line="125"/>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open in new window</translation>
     </message>
 </context>
 <context>
