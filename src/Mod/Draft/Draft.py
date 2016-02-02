@@ -4404,6 +4404,7 @@ class _ViewProviderWire(_ViewProviderDraft):
         self.symbol = dimSymbol()
         self.pt.addChild(self.symbol)
         _ViewProviderDraft.attach(self,obj)
+        self.onChanged(obj,"EndArrow")
         
     def updateData(self, obj, prop):
         if prop == "Points":
@@ -4425,10 +4426,10 @@ class _ViewProviderWire(_ViewProviderDraft):
         return
 
     def onChanged(self, vobj, prop):
-        if prop in ["EndArrow","ArrowSize","ArrowType"]:
+        if prop in ["EndArrow","ArrowSize","ArrowType","Visibility"]:
             rn = vobj.RootNode
             if hasattr(self,"pt"):
-                if vobj.EndArrow:
+                if vobj.EndArrow and vobj.Visibility:
                     self.pt.removeChild(self.symbol)
                     s = arrowtypes.index(vobj.ArrowType)
                     self.symbol = dimSymbol(s)
@@ -4441,6 +4442,7 @@ class _ViewProviderWire(_ViewProviderDraft):
                     self.coords.scaleFactor.setValue((s,s,s))
                     rn.addChild(self.pt)
                 else:
+                    self.pt.removeChild(self.symbol)
                     rn.removeChild(self.pt)
         _ViewProviderDraft.onChanged(self,vobj,prop)
         return
