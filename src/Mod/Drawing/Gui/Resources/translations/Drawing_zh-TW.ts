@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Annotation</source>
-        <translation>&amp;註釋</translation>
+        <translation>註釋(&amp;A)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -30,7 +30,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Clip</source>
-        <translation>&amp;剪下</translation>
+        <translation>剪下(&amp;C)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -44,18 +44,18 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation type="unfinished">工程圖</translation>
+        <translation>工程圖</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp;Draft View</translation>
+        <translation>底圖檢視(&amp;D)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
+        <translation>於目前圖面中插入所選物件之底圖視圖</translation>
     </message>
 </context>
 <context>
@@ -115,12 +115,12 @@
     <message>
         <location line="+1"/>
         <source>Insert view in drawing</source>
-        <translation>於繪圖區插入畫面</translation>
+        <translation>於繪圖區插入視圖</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert a new View of a Part in the active drawing</source>
-        <translation>於目前繪圖區插入新的零件畫面</translation>
+        <translation>於目前繪圖區插入新的零件視圖</translation>
     </message>
 </context>
 <context>
@@ -151,7 +151,7 @@
     <message>
         <location line="+1"/>
         <source>Open &amp;browser view</source>
-        <translation>開啟&amp;瀏覽模式</translation>
+        <translation>開啟瀏覽模式(&amp;b)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -202,18 +202,18 @@
     <message>
         <location line="+62"/>
         <source>Drawing</source>
-        <translation type="unfinished">工程圖</translation>
+        <translation>工程圖</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Spreadsheet View</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -221,18 +221,18 @@
     <message>
         <location line="-176"/>
         <source>Drawing</source>
-        <translation type="unfinished">工程圖</translation>
+        <translation>工程圖</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Symbol</source>
-        <translation type="unfinished">&amp; 符號</translation>
+        <translation>符號(&amp;S)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">從目前圖面內svg檔中插入一個符號</translation>
+        <translation>於目前圖面內插入一個來自svg檔的符號</translation>
     </message>
 </context>
 <context>
@@ -245,12 +245,12 @@
     <message>
         <location line="+6"/>
         <source>&amp;Outline</source>
-        <translation>&amp;大綱</translation>
+        <translation>大綱(&amp;O)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Native</source>
-        <translation>&amp;原始的</translation>
+        <translation>原始的(&amp;N)</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF file</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -334,38 +334,36 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished">Different orientation</translation>
+        <translation>不同方向</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+        <translation>印表機與圖面使用之方向不同，您要繼續嗎？</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished">Different paper size</translation>
+        <translation>紙張尺寸不同</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+        <translation>印表機與圖面之紙張尺寸不同，您要繼續嗎？</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Opening file failed</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
     </message>
 </context>
 <context>
@@ -389,118 +387,108 @@ Do you want to continue?</translation>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation type="unfinished">按右鍵來進行軸測設定</translation>
+        <translation>按右鍵來進行軸測設定</translation>
     </message>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">Top left x / y</translation>
+        <translation>左上 x / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Spacing dx / dy   </translation>
+        <translation>間距 dx / dy</translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Show hidden lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Show smooth lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
+        <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Axis out and right</translation>
+        <translation>軸外側靠右</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Vertical tilt</translation>
+        <translation>垂直傾斜</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+200"/>
         <source>X +ve</source>
-        <translation type="unfinished">X +ve</translation>
+        <translation>正向X軸</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Y +ve</source>
-        <translation type="unfinished">Y +ve</translation>
+        <translation>正向Y軸</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Z +ve</source>
-        <translation type="unfinished">Z +ve</translation>
+        <translation>正向Z軸</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+200"/>
         <source>X -ve</source>
-        <translation type="unfinished">X -ve</translation>
+        <translation>負向X軸</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Y -ve</source>
-        <translation type="unfinished">Y -ve</translation>
+        <translation>負向Y軸</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Z -ve</source>
-        <translation type="unfinished">Z -ve</translation>
+        <translation>負向Z軸</translation>
     </message>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">等角立體</translation>
+        <translation>等角立體</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">二等角立體</translation>
+        <translation>二等角立體</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">不等角立體</translation>
+        <translation>不等角立體</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished">比例</translation>
+        <translation>比例</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished">檢視投影視角</translation>
+        <translation>檢視投影視角</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished">軸已對齊</translation>
+        <translation>軸已對齊</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">翻轉</translation>
+        <translation>翻轉</translation>
     </message>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimetric</translation>
+        <translation>不等角立體</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -520,12 +508,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">檢視自:</translation>
+        <translation>檢視自:</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation type="unfinished">對齊軸右側</translation>
+        <translation>對齊軸右側</translation>
     </message>
     <message>
         <source>Primary View</source>
@@ -605,15 +593,17 @@ Do you want to continue?</translation>
         <translation type="obsolete">二階dx / dy</translation>
     </message>
     <message>
-        <source>Show hidden</source>
-        <translation type="obsolete">顯示被隱藏</translation>
+        <location line="+125"/>
+        <source>Show hidden lines</source>
+        <translation>顯示影藏線</translation>
     </message>
     <message>
-        <source>Show smooth</source>
-        <translation type="obsolete">平滑顯示</translation>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation>顯示平滑線</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+11"/>
         <source>Axonometric</source>
         <translation>軸測圖</translation>
     </message>
@@ -621,7 +611,7 @@ Do you want to continue?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+50"/>
+        <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
         <translation>顯示銳利邊緣</translation>
     </message>
@@ -674,6 +664,26 @@ Do you want to continue?</translation>
         <location line="+17"/>
         <source>Project shapes</source>
         <translation>專案形式</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>No active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active document to complete the operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>No active view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active view to complete the operation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -729,32 +739,32 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">背景</translation>
+        <translation>橫向</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">影像</translation>
+        <translation>縱向</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1%2 %3</translation>
+        <translation>%1%2 %3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">插入新的 %1%2 %3 工程圖</translation>
+        <translation>插入新的 %1%2 %3 圖面</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished">%1%2 %3 (%4)</translation>
+        <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
+        <translation>插入新的 %1%2 %3 (%4) 圖面</translation>
     </message>
 </context>
 <context>
@@ -804,7 +814,7 @@ Do you want to continue?</translation>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scalable Vector Graphic</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -814,7 +824,7 @@ Do you want to continue?</translation>
         <location line="+45"/>
         <location line="+175"/>
         <source>No page found</source>
-        <translation type="unfinished">No page found</translation>
+        <translation>未發現頁面</translation>
     </message>
     <message>
         <location line="-425"/>
@@ -824,12 +834,12 @@ Do you want to continue?</translation>
         <location line="+45"/>
         <location line="+175"/>
         <source>Create a page first.</source>
-        <translation type="unfinished">Create a page first.</translation>
+        <translation>請先建立一個頁面</translation>
     </message>
     <message>
         <location line="-357"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished">Select exactly one Part object.</translation>
+        <translation>請確實選取一個零件物件</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -840,12 +850,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>
@@ -867,7 +877,7 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../ViewProviderPage.cpp" line="+152"/>
         <source>Show drawing</source>
-        <translation>顯示工程圖</translation>
+        <translation>顯示圖面</translation>
     </message>
     <message>
         <source>Front</source>
@@ -894,22 +904,22 @@ Do you want to continue?</translation>
         <translation type="obsolete">底部</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
-        <location line="+929"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+51"/>
+        <location line="+907"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Make axonometric...</translation>
+        <translation>產生軸測...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">編輯軸測設定</translation>
+        <translation>編輯軸測設定</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">建立正投影視角</translation>
+        <translation>建立正投影視角</translation>
     </message>
 </context>
 <context>

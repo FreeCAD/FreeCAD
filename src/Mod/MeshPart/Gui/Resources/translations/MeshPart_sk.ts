@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+46"/>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -34,27 +34,27 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Meshing options</translation>
+        <translation>Možnosti sieťovania</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Štandard</translation>
+        <translation>Štandard</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation>Maximálna dĺžka hrany:</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -64,7 +64,7 @@
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation>Veľmi hrubé</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -84,42 +84,42 @@
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation>Veľmi jemné</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation>Definované užívateľom</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Mesh size grading:</translation>
+        <translation>Stupňovanie veľkosti siete:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation>Počet prvkov na hranu:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Elements per curvature radius:</translation>
+        <translation>Počet prvkov na krivku oblúku:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimize surface</translation>
+        <translation>Optimalizovať povrch</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Second order elements</translation>
+        <translation>Druhoradé prvky</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quad dominated</translation>
+        <translation>Hlavný štvoruholník</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+36"/>
         <source>MeshPart</source>
-        <translation>Sieťovaná časť</translation>
+        <translation>Sieťovanie dielu</translation>
     </message>
 </context>
 </TS>

@@ -5,342 +5,342 @@
     <name>Angle</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Форма</translation>
     </message>
     <message>
         <source>A:</source>
-        <translation type="unfinished">A:</translation>
+        <translation>A:</translation>
     </message>
     <message>
         <source>B:</source>
-        <translation type="unfinished">B:</translation>
+        <translation>B:</translation>
     </message>
     <message>
         <source>C:</source>
-        <translation type="unfinished">C:</translation>
+        <translation>C:</translation>
     </message>
     <message>
         <source>Angle Snap</source>
-        <translation type="unfinished">Прив&apos;язка по куту</translation>
+        <translation>Прив&apos;язка по куту</translation>
     </message>
     <message utf8="true">
         <source>1 °</source>
-        <translation type="unfinished">1 °</translation>
+        <translation>1 °</translation>
     </message>
     <message utf8="true">
         <source>2 °</source>
-        <translation type="unfinished">2 °</translation>
+        <translation>2 °</translation>
     </message>
     <message utf8="true">
         <source>5 °</source>
-        <translation type="unfinished">5 °</translation>
+        <translation>5 °</translation>
     </message>
     <message utf8="true">
         <source>10 °</source>
-        <translation type="unfinished">10 °</translation>
+        <translation>10 °</translation>
     </message>
     <message utf8="true">
         <source>20 °</source>
-        <translation type="unfinished">20 °</translation>
+        <translation>20 °</translation>
     </message>
     <message utf8="true">
         <source>45 °</source>
-        <translation type="unfinished">45 °</translation>
+        <translation>45 °</translation>
     </message>
     <message utf8="true">
         <source>90 °</source>
-        <translation type="unfinished">90 °</translation>
+        <translation>90 °</translation>
     </message>
     <message utf8="true">
         <source>180 °</source>
-        <translation type="unfinished">180 °</translation>
+        <translation>180 °</translation>
     </message>
 </context>
 <context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Стандартний тест</translation>
     </message>
     <message>
         <source>Test console output</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевірка виводу консолі</translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Вимірювання</translation>
+        <translation>Вимірювання</translation>
     </message>
     <message>
         <source>Clear measurement</source>
-        <translation type="unfinished">Clear measurement</translation>
+        <translation>Очистити результат вимірювання</translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Вимірювання</translation>
+        <translation>Вимірювання</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
-        <translation type="unfinished">Перемкнути вимірювання</translation>
+        <translation>Перемкнути вимірювання</translation>
     </message>
 </context>
 <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
         <source>Spaceball Motion</source>
-        <translation type="unfinished">Рух 3D-миші Spaceball</translation>
+        <translation>Рух 3D-миші Spaceball</translation>
     </message>
     <message>
         <source>Global Sensitivity:  </source>
-        <translation type="unfinished">Загальна чутливість:  </translation>
+        <translation>Загальна чутливість:  </translation>
     </message>
     <message>
         <source>Dominant Mode</source>
-        <translation type="unfinished">Домінуючий режим</translation>
+        <translation>Домінуючий режим</translation>
     </message>
     <message>
         <source>Flip Y/Z</source>
-        <translation type="unfinished">Віддзеркалити Y/Z</translation>
+        <translation>Віддзеркалити Y/Z</translation>
     </message>
     <message>
         <source>Enable Translations</source>
-        <translation type="unfinished">Увімкнути переміщення</translation>
+        <translation>Увімкнути переміщення</translation>
     </message>
     <message>
         <source>Enable Rotations</source>
-        <translation type="unfinished">Увімкнути обертання</translation>
+        <translation>Увімкнути обертання</translation>
     </message>
     <message>
         <source>Calibrate</source>
-        <translation type="unfinished">Калібрувати</translation>
+        <translation>Калібрувати</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">За замовчуванням</translation>
+        <translation>За замовчуванням</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation type="unfinished">Увімкнути</translation>
+        <translation>Увімкнути</translation>
     </message>
     <message>
         <source>Reverse</source>
-        <translation type="unfinished">Навпаки</translation>
+        <translation>Навпаки</translation>
     </message>
 </context>
 <context>
     <name>DlgExpressionInput</name>
     <message>
         <source>Formula editor</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Formula editor</translation>
     </message>
     <message>
         <source>Result:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Result:</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Discard</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Гаразд</translation>
     </message>
 </context>
 <context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Units calculator</translation>
+        <translation>Конвертор розмірностей</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">як:</translation>
+        <translation>як:</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation type="unfinished">=&gt;</translation>
+        <translation>=&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Копіювати</translation>
+        <translation>Копіювати</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Закрити</translation>
+        <translation>Закрити</translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Форма</translation>
     </message>
     <message>
         <source>Ico</source>
-        <translation type="unfinished">Ico</translation>
+        <translation>Ico</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Ім&apos;я файлу</translation>
+        <translation>Ім&apos;я файлу</translation>
     </message>
 </context>
 <context>
     <name>Gui::AccelLineEdit</name>
     <message>
         <source>none</source>
-        <translation type="unfinished">немає</translation>
+        <translation>немає</translation>
     </message>
 </context>
 <context>
     <name>Gui::ActionSelector</name>
     <message>
         <source>Available:</source>
-        <translation type="unfinished">Доступно:</translation>
+        <translation>Доступно:</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation type="unfinished">Вибрано:</translation>
+        <translation>Вибрано:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Додати</translation>
+        <translation>Додати</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Видалити</translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Перемістити вгору</translation>
+        <translation>Перемістити вгору</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Перемістити вниз</translation>
+        <translation>Перемістити вниз</translation>
     </message>
 </context>
 <context>
     <name>Gui::AlignmentView</name>
     <message>
         <source>Movable object</source>
-        <translation type="unfinished">Рухомий об&apos;єкт</translation>
+        <translation>Рухомий об&apos;єкт</translation>
     </message>
     <message>
         <source>Fixed object</source>
-        <translation type="unfinished">Зафіксований об&apos;єкт</translation>
+        <translation>Зафіксований об&apos;єкт</translation>
     </message>
 </context>
 <context>
     <name>Gui::Assistant</name>
     <message>
         <source>%1 Help</source>
-        <translation type="unfinished">%1 Довідка</translation>
+        <translation>%1 Довідка</translation>
     </message>
     <message>
         <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 файлів довідки не знайдено (%2). Швидше за все вам потрібно буде встановити %1 пакетів документації.</translation>
     </message>
     <message>
         <source>Unable to launch Qt Assistant (%1)</source>
-        <translation type="unfinished">Неможливо запустити Qt Assistant (%1)</translation>
+        <translation>Неможливо запустити Qt Assistant (%1)</translation>
     </message>
 </context>
 <context>
     <name>Gui::AutoSaver</name>
     <message>
         <source>Please wait until the AutoRecovery file has been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Будь ласка, зачекайте, поки файл для автоматичного відновлення не буде збереженим...</translation>
     </message>
 </context>
 <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Натиснути ліву кнопку миші</translation>
+        <translation>Натиснути ліву кнопку миші</translation>
     </message>
     <message>
         <source>Press SHIFT and middle mouse button</source>
-        <translation type="unfinished">Натисніть клавішу SHIFT та середню кнопку миші</translation>
+        <translation>Натисніть клавішу SHIFT та середню кнопку миші</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Натиснути середню кнопку миші</translation>
+        <translation>Натиснути середню кнопку миші</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Прокручування середньою кнопкою миші</translation>
+        <translation>Прокручування середньою кнопкою миші</translation>
     </message>
 </context>
 <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Натиснути ліву кнопку миші</translation>
+        <translation>Натиснути ліву кнопку миші</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Натиснути середню кнопку миші</translation>
+        <translation>Натиснути середню кнопку миші</translation>
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Натисніть середню та ліву або праву кнопку миші</translation>
+        <translation>Натисніть середню та ліву або праву кнопку миші</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation type="unfinished">Прокрутіть середню кнопку мишки або клікніть і рухайте мишку вверх або вниз утримуючи нажатою середню кнопку</translation>
+        <translation>Прокрутіть середню кнопку мишки або клікніть і рухайте мишку вверх або вниз утримуючи нажатою середню кнопку</translation>
     </message>
 </context>
 <context>
     <name>Gui::Command</name>
     <message>
         <source>Standard</source>
-        <translation type="unfinished">Стандартно</translation>
+        <translation>Стандартно</translation>
     </message>
 </context>
 <context>
     <name>Gui::ContainerDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Гаразд</translation>
+        <translation>&amp;Гаразд</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Відміна</translation>
+        <translation>&amp;Відміна</translation>
     </message>
 </context>
 <context>
     <name>Gui::ControlSingleton</name>
     <message>
         <source>Task panel</source>
-        <translation type="unfinished">Панель завдань</translation>
+        <translation>Панель завдань</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
-        <translation type="unfinished">Про</translation>
+        <translation>Про</translation>
     </message>
     <message>
         <source>Revision number</source>
-        <translation type="unfinished">Номер редакції</translation>
+        <translation>Номер редакції</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished">Версія</translation>
+        <translation>Версія</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">Гаразд</translation>
+        <translation>Гаразд</translation>
     </message>
     <message>
         <source></source>
@@ -348,150 +348,150 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Release date</source>
-        <translation type="unfinished">Дата випуску</translation>
+        <translation>Дата випуску</translation>
     </message>
     <message>
         <source>License...</source>
-        <translation type="unfinished">Ліцензії...</translation>
+        <translation>Ліцензії...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
-        <translation type="unfinished">Копіювати до буферу обміну</translation>
+        <translation>Копіювати до буферу обміну</translation>
     </message>
     <message>
         <source>Operating system</source>
-        <translation type="unfinished">Операційна система</translation>
+        <translation>Операційна система</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Розмір слова</translation>
+        <translation>Розмір слова</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
         <source>Button %1</source>
-        <translation type="unfinished">Кнопка %1</translation>
+        <translation>Кнопка %1</translation>
     </message>
     <message>
         <source>Out Of Range</source>
-        <translation type="unfinished">Поза межами припустимого діапазону</translation>
+        <translation>Поза межами припустимого діапазону</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::Clipping</name>
     <message>
         <source>Clipping</source>
-        <translation type="unfinished">Clipping</translation>
+        <translation>Відсікання</translation>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Clipping X</translation>
+        <translation>Відсікання по X</translation>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation>Перевернути</translation>
     </message>
     <message>
         <source>Offset</source>
-        <translation type="unfinished">Зміщення</translation>
+        <translation>Зміщення</translation>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Clipping Y</translation>
+        <translation>Відсікання по Y</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Clipping Z</translation>
+        <translation>Відсікання по Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation>Відсікання у довільному напрямку</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation>Підлаштуватися до напрямку перегляду</translation>
     </message>
     <message>
         <source>Direction</source>
-        <translation type="unfinished">Напрямок</translation>
+        <translation>Напрямок</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
         <source>Commands</source>
-        <translation type="unfinished">Команди</translation>
+        <translation>Команди</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DemoMode</name>
     <message>
         <source>View Turntable</source>
-        <translation type="unfinished">Показати програвач</translation>
+        <translation>Показати програвач</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Швидкість</translation>
+        <translation>Швидкість</translation>
     </message>
     <message>
         <source>Maximum</source>
-        <translation type="unfinished">Максимум</translation>
+        <translation>Максимум</translation>
     </message>
     <message>
         <source>Minimum</source>
-        <translation type="unfinished">Мінімум</translation>
+        <translation>Мінімум</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">На весь екран</translation>
+        <translation>На весь екран</translation>
     </message>
     <message>
         <source>Enable timer</source>
-        <translation type="unfinished">Увімкнути таймер</translation>
+        <translation>Увімкнути таймер</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"> s</translation>
+        <translation> s</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Кут</translation>
+        <translation>Кут</translation>
     </message>
     <message utf8="true">
         <source>90°</source>
-        <translation type="unfinished">90°</translation>
+        <translation>90°</translation>
     </message>
     <message utf8="true">
         <source>-90°</source>
-        <translation type="unfinished">-90°</translation>
+        <translation>-90°</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Відтворити</translation>
+        <translation>Відтворити</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished">Стоп</translation>
+        <translation>Стоп</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Закрити</translation>
+        <translation>Закрити</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgActivateWindow</name>
     <message>
         <source>Choose Window</source>
-        <translation type="unfinished">Виберіть вікно</translation>
+        <translation>Виберіть вікно</translation>
     </message>
     <message>
         <source>&amp;Activate</source>
-        <translation type="unfinished">&amp;Активувати</translation>
+        <translation>&amp;Активувати</translation>
     </message>
     <message>
         <source></source>
@@ -502,18 +502,18 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgActivateWindowImp</name>
     <message>
         <source>Windows</source>
-        <translation type="unfinished">Вікна</translation>
+        <translation>Вікна</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgAuthorization</name>
     <message>
         <source>Authorization</source>
-        <translation type="unfinished">Авторизація</translation>
+        <translation>Авторизація</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished">Пароль:</translation>
+        <translation>Пароль:</translation>
     </message>
     <message>
         <source></source>
@@ -521,139 +521,139 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">ім&apos;я користувача:</translation>
+        <translation>ім&apos;я користувача:</translation>
     </message>
     <message>
         <source>Site:</source>
-        <translation type="unfinished">Site:</translation>
+        <translation>Веб-сайт:</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 на %2</translation>
+        <translation>%1 на %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
         <source>Choose Icon</source>
-        <translation type="unfinished">Оберіть піктограму</translation>
+        <translation>Оберіть піктограму</translation>
     </message>
     <message>
         <source>Icon folders...</source>
-        <translation type="unfinished">Icon folders...</translation>
+        <translation>Папки з піктограмами...</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Макроси</translation>
+        <translation>Макроси</translation>
     </message>
     <message>
         <source>Setup Custom Macros</source>
-        <translation type="unfinished">Налаштування власних макросів</translation>
+        <translation>Налаштування власних макросів</translation>
     </message>
     <message>
         <source>Macro:</source>
-        <translation type="unfinished">Макрос:</translation>
+        <translation>Макрос:</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Pixmap</source>
-        <translation type="unfinished">Малюнок</translation>
+        <translation>Малюнок</translation>
     </message>
     <message>
         <source>Accelerator:</source>
-        <translation type="unfinished">Прискорювач:</translation>
+        <translation>Прискорювач:</translation>
     </message>
     <message>
         <source>What&apos;s this:</source>
-        <translation type="unfinished">Що це:</translation>
+        <translation>Що це:</translation>
     </message>
     <message>
         <source>Status text:</source>
-        <translation type="unfinished">Текст стану:</translation>
+        <translation>Текст стану:</translation>
     </message>
     <message>
         <source>Tool tip:</source>
-        <translation type="unfinished">Підказка:</translation>
+        <translation>Підказка:</translation>
     </message>
     <message>
         <source>Menu text:</source>
-        <translation type="unfinished">Текст меню:</translation>
+        <translation>Текст меню:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Додати</translation>
+        <translation>Додати</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Видалити</translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished">Замінити</translation>
+        <translation>Замінити</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomActionsImp</name>
     <message>
         <source>Icons</source>
-        <translation type="unfinished">Піктограми</translation>
+        <translation>Піктограми</translation>
     </message>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Макроси</translation>
+        <translation>Макроси</translation>
     </message>
     <message>
         <source>No macro</source>
-        <translation type="unfinished">Без макросів</translation>
+        <translation>Без макросів</translation>
     </message>
     <message>
         <source>No macros found.</source>
-        <translation type="unfinished">Макросів не знайдено.</translation>
+        <translation>Макросів не знайдено.</translation>
     </message>
     <message>
         <source>Macro not found</source>
-        <translation type="unfinished">Макрос не знайдено</translation>
+        <translation>Макрос не знайдено</translation>
     </message>
     <message>
         <source>Sorry, couldn&apos;t find macro file &apos;%1&apos;.</source>
-        <translation type="unfinished">На жаль, не вдалось знайти файл &quot;%1&quot; макросу.</translation>
+        <translation>На жаль, не вдалось знайти файл &quot;%1&quot; макросу.</translation>
     </message>
     <message>
         <source>Empty macro</source>
-        <translation type="unfinished">Порожній макрос</translation>
+        <translation>Порожній макрос</translation>
     </message>
     <message>
         <source>Please specify the macro first.</source>
-        <translation type="unfinished">Спочатку вкажіть макрос.</translation>
+        <translation>Спочатку вкажіть макрос.</translation>
     </message>
     <message>
         <source>Empty text</source>
-        <translation type="unfinished">Пустий текст</translation>
+        <translation>Пустий текст</translation>
     </message>
     <message>
         <source>Please specify the menu text first.</source>
-        <translation type="unfinished">Спочатку вкажіть текст меню.</translation>
+        <translation>Спочатку вкажіть текст меню.</translation>
     </message>
     <message>
         <source>No item selected</source>
-        <translation type="unfinished">Нічого не вибрано</translation>
+        <translation>Нічого не вибрано</translation>
     </message>
     <message>
         <source>Please select a macro item first.</source>
-        <translation type="unfinished">Спочатку виберіть макрос.</translation>
+        <translation>Спочатку виберіть макрос.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomCommands</name>
     <message>
         <source>Commands</source>
-        <translation type="unfinished">Команди</translation>
+        <translation>Команди</translation>
     </message>
     <message>
         <source></source>
@@ -664,70 +664,70 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCustomCommandsImp</name>
     <message>
         <source>Category</source>
-        <translation type="unfinished">Категорія</translation>
+        <translation>Категорія</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished">Піктограма</translation>
+        <translation>Піктограма</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Команда</translation>
+        <translation>Команда</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomKeyboard</name>
     <message>
         <source>Keyboard</source>
-        <translation type="unfinished">Клавіатура</translation>
+        <translation>Клавіатура</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished">Опис:</translation>
+        <translation>Опис:</translation>
     </message>
     <message>
         <source>&amp;Category:</source>
-        <translation type="unfinished">&amp;Категорія:</translation>
+        <translation>&amp;Категорія:</translation>
     </message>
     <message>
         <source>C&amp;ommands:</source>
-        <translation type="unfinished">К&amp;оманди:</translation>
+        <translation>К&amp;оманди:</translation>
     </message>
     <message>
         <source>Current shortcut:</source>
-        <translation type="unfinished">Поточні клавіатурні скорочення:</translation>
+        <translation>Поточні клавіатурні скорочення:</translation>
     </message>
     <message>
         <source>Press &amp;new shortcut:</source>
-        <translation type="unfinished">Натисніть нове скорочення:</translation>
+        <translation>Натисніть нове скорочення:</translation>
     </message>
     <message>
         <source>Currently assigned to:</source>
-        <translation type="unfinished">Зараз призначено для:</translation>
+        <translation>Зараз призначено для:</translation>
     </message>
     <message>
         <source>&amp;Assign</source>
-        <translation type="unfinished">&amp;Призначити</translation>
+        <translation>&amp;Призначити</translation>
     </message>
     <message>
         <source>Alt+A</source>
-        <translation type="unfinished">Alt+A</translation>
+        <translation>Alt+A</translation>
     </message>
     <message>
         <source>&amp;Reset</source>
-        <translation type="unfinished">&amp;Скинути</translation>
+        <translation>&amp;Скинути</translation>
     </message>
     <message>
         <source>Alt+R</source>
-        <translation type="unfinished">Alt+R</translation>
+        <translation>Alt+R</translation>
     </message>
     <message>
         <source>Re&amp;set All</source>
-        <translation type="unfinished">Скинути все</translation>
+        <translation>Скинути все</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt+S</translation>
     </message>
     <message>
         <source></source>
@@ -738,33 +738,33 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCustomKeyboardImp</name>
     <message>
         <source>Icon</source>
-        <translation type="unfinished">Піктограма</translation>
+        <translation>Піктограма</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Команда</translation>
+        <translation>Команда</translation>
     </message>
     <message>
         <source>none</source>
-        <translation type="unfinished">немає</translation>
+        <translation>немає</translation>
     </message>
     <message>
         <source>Multiple defined shortcut</source>
-        <translation type="unfinished">Визначені декілька скорочень</translation>
+        <translation>Визначені декілька скорочень</translation>
     </message>
     <message>
         <source>The shortcut &apos;%1&apos; is defined more than once. This could result into unexpected behaviour.</source>
-        <translation type="unfinished">Скорочення &apos;%1&apos; призначене більш як одній дії. Це може призвести до непередбачуваних результатів.</translation>
+        <translation>Скорочення &apos;%1&apos; призначене більш як одній дії. Це може призвести до непередбачуваних результатів.</translation>
     </message>
     <message>
         <source>Already defined shortcut</source>
-        <translation type="unfinished">Скорочення вже призначено</translation>
+        <translation>Скорочення вже призначено</translation>
     </message>
     <message>
         <source>The shortcut &apos;%1&apos; is already assigned to &apos;%2&apos;.
 
 Please define another shortcut.</source>
-        <translation type="unfinished">Скорочення &apos;%1&apos; вже призначено для &apos;%2&apos;.
+        <translation>Скорочення &apos;%1&apos; вже призначено для &apos;%2&apos;.
 
 Будь ласка оберіть інше сполучення.</translation>
     </message>
@@ -773,94 +773,94 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
         <source>Toolbox bars</source>
-        <translation type="unfinished">Панель інструментів</translation>
+        <translation>Панель інструментів</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomToolbars</name>
     <message>
         <source>Toolbars</source>
-        <translation type="unfinished">Панелі інструментів</translation>
+        <translation>Панелі інструментів</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Замітка:&lt;/span&gt; Зміни вступлять в дію при наступному завантаженні відповідних інструментальних засобів&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Замітка:&lt;/span&gt; Зміни вступлять в дію при наступному завантаженні відповідних інструментальних засобів&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="unfinished">Перемістити праворуч</translation>
+        <translation>Перемістити праворуч</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Переміщення обраного елемента на один рівень вниз.&lt;/b&gt;&lt;p&gt;Це також призведе до зміни рівня батьківського елемента.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Переміщення обраного елемента на один рівень вниз.&lt;/b&gt;&lt;p&gt;Це також призведе до зміни рівня батьківського елемента.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="unfinished">Перемістити ліворуч</translation>
+        <translation>Перемістити ліворуч</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Переміщення обраного елемента на один рівень вгору.&lt;/b&gt;&lt;p&gt;Це також призведе до зміни рівня батьківського елемента.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Переміщення обраного елемента на один рівень вгору.&lt;/b&gt;&lt;p&gt;Це також призведе до зміни рівня батьківського елемента.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Перемістити вниз</translation>
+        <translation>Перемістити вниз</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Перемістити обраний елемент вниз.&lt;/b&gt;&lt;p&gt;Елемент буде переміщено в межах ієрархії рівня.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Перемістити обраний елемент вниз.&lt;/b&gt;&lt;p&gt;Елемент буде переміщено в межах ієрархії рівня.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Перемістити вгору</translation>
+        <translation>Перемістити вгору</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Перемістити обраний елемент вгору.&lt;/b&gt;&lt;p&gt;Елемент буде переміщено в межах ієрархії рівня.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Перемістити обраний елемент вгору.&lt;/b&gt;&lt;p&gt;Елемент буде переміщено в межах ієрархії рівня.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>New...</source>
-        <translation type="unfinished">Новий...</translation>
+        <translation>Новий...</translation>
     </message>
     <message>
         <source>Rename...</source>
-        <translation type="unfinished">Перейменувати...</translation>
+        <translation>Перейменувати...</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Видалити</translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished">Піктограма</translation>
+        <translation>Піктограма</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Команда</translation>
+        <translation>Команда</translation>
     </message>
     <message>
         <source>&lt;Separator&gt;</source>
-        <translation type="unfinished">&lt;Розділювач&gt;</translation>
+        <translation>&lt;Розділювач&gt;</translation>
     </message>
     <message>
         <source>New toolbar</source>
-        <translation type="unfinished">Нова панель інструментів</translation>
+        <translation>Нова панель інструментів</translation>
     </message>
     <message>
         <source>Toolbar name:</source>
-        <translation type="unfinished">Назва панелі:</translation>
+        <translation>Назва панелі:</translation>
     </message>
     <message>
         <source>Duplicated name</source>
-        <translation type="unfinished">Повторення назви</translation>
+        <translation>Повторення назви</translation>
     </message>
     <message>
         <source>The toolbar name &apos;%1&apos; is already used</source>
-        <translation type="unfinished">Назва &apos;%1&apos; для панелі інструментів уже використовується</translation>
+        <translation>Назва &apos;%1&apos; для панелі інструментів уже використовується</translation>
     </message>
     <message>
         <source>Rename toolbar</source>
-        <translation type="unfinished">Перейменувати панель</translation>
+        <translation>Перейменувати панель</translation>
     </message>
     <message>
         <source></source>
@@ -868,95 +868,95 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Global</source>
-        <translation type="unfinished">Глобальна</translation>
+        <translation>Глобальна</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
     <message>
         <source>Customize</source>
-        <translation type="unfinished">Налаштування</translation>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Довідка</translation>
+        <translation>&amp;Довідка</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрити</translation>
+        <translation>&amp;Закрити</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
         <source>Spaceball Motion</source>
-        <translation type="unfinished">Рух 3D-миші Spaceball</translation>
+        <translation>Рух 3D-миші Spaceball</translation>
     </message>
     <message>
         <source>No Spaceball Present</source>
-        <translation type="unfinished">3D-миші Spaceball не виявлено</translation>
+        <translation>3D-миші Spaceball не виявлено</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
         <source>No Spaceball Present</source>
-        <translation type="unfinished">3D-миші Spaceball не виявлено</translation>
+        <translation>3D-миші Spaceball не виявлено</translation>
     </message>
     <message>
         <source>Buttons</source>
-        <translation type="unfinished">Кнопки</translation>
+        <translation>Кнопки</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Очистити</translation>
+        <translation>Очистити</translation>
     </message>
     <message>
         <source>Print Reference</source>
-        <translation type="unfinished">Друкувати посилання</translation>
+        <translation>Друкувати посилання</translation>
     </message>
     <message>
         <source>Spaceball Buttons</source>
-        <translation type="unfinished">Кнопки 3D-миші Spaceball</translation>
+        <translation>Кнопки 3D-миші Spaceball</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Показати властивості</translation>
+        <translation>Показати властивості</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Відображення</translation>
+        <translation>Відображення</translation>
     </message>
     <message>
         <source>Transparency:</source>
-        <translation type="unfinished">Прозорість:</translation>
+        <translation>Прозорість:</translation>
     </message>
     <message>
         <source>Line width:</source>
-        <translation type="unfinished">Ширина лінії:</translation>
+        <translation>Ширина лінії:</translation>
     </message>
     <message>
         <source>Point size:</source>
-        <translation type="unfinished">Розмір пункту:</translation>
+        <translation>Розмір пункту:</translation>
     </message>
     <message>
         <source>Material</source>
-        <translation type="unfinished">Матеріал</translation>
+        <translation>Матеріал</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Viewing mode</source>
-        <translation type="unfinished">Режим перегляду</translation>
+        <translation>Режим перегляду</translation>
     </message>
     <message>
         <source>Plot mode:</source>
-        <translation type="unfinished">Режим друку:</translation>
+        <translation>Режим друку:</translation>
     </message>
     <message>
         <source></source>
@@ -964,169 +964,169 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Line transparency:</source>
-        <translation type="unfinished">Прозорість лінії:</translation>
+        <translation>Прозорість лінії:</translation>
     </message>
     <message>
         <source>Line color:</source>
-        <translation type="unfinished">Колір лінії:</translation>
+        <translation>Колір лінії:</translation>
     </message>
     <message>
         <source>Shape color:</source>
-        <translation type="unfinished">Колір форми:</translation>
+        <translation>Колір форми:</translation>
     </message>
     <message>
         <source>Color plot:</source>
-        <translation type="unfinished">Кольоровий друк:</translation>
+        <translation>Кольоровий друк:</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Вікно документа:</translation>
+        <translation>Вікно документа:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
     <message>
         <source>Default</source>
-        <translation type="unfinished">За замовчуванням</translation>
+        <translation>За замовчуванням</translation>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished">Алюміній</translation>
+        <translation>Алюміній</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished">Латунь</translation>
+        <translation>Латунь</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished">Бронза</translation>
+        <translation>Бронза</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished">Мідь</translation>
+        <translation>Мідь</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished">Хром</translation>
+        <translation>Хром</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished">Смарагд</translation>
+        <translation>Смарагд</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished">Золото</translation>
+        <translation>Золото</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished">Нефрит</translation>
+        <translation>Нефрит</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished">Metalized</translation>
+        <translation>Металізований</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished">Neon GNC</translation>
+        <translation>Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished">Neon PHC</translation>
+        <translation>Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished">Обсидіан</translation>
+        <translation>Обсидіан</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished">Pewter</translation>
+        <translation>П&apos;ютер</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished">Plaster</translation>
+        <translation>Штукатурка</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished">Plastic</translation>
+        <translation>Пластмаса</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished">Ruby</translation>
+        <translation>Рубін</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished">Satin</translation>
+        <translation>Атлас</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished">Shiny plastic</translation>
+        <translation>Виблискуюча пластмаса</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished">Срібло</translation>
+        <translation>Срібло</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished">Сталь</translation>
+        <translation>Сталь</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished">Stone</translation>
+        <translation>Камінь</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
         <source>Editor</source>
-        <translation type="unfinished">Редактор</translation>
+        <translation>Редактор</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Параметри</translation>
+        <translation>Параметри</translation>
     </message>
     <message>
         <source>Enable line numbers</source>
-        <translation type="unfinished">Показувати нумерацію рядків</translation>
+        <translation>Показувати нумерацію рядків</translation>
     </message>
     <message>
         <source>Enable folding</source>
-        <translation type="unfinished">Увімкнути складання</translation>
+        <translation>Увімкнути складання</translation>
     </message>
     <message>
         <source>Indentation</source>
-        <translation type="unfinished">Відступ</translation>
+        <translation>Відступ</translation>
     </message>
     <message>
         <source>Insert spaces</source>
-        <translation type="unfinished">Вставляти пробіли</translation>
+        <translation>Вставляти пробіли</translation>
     </message>
     <message>
         <source>Tab size:</source>
-        <translation type="unfinished">Розмір табуляції:</translation>
+        <translation>Розмір табуляції:</translation>
     </message>
     <message>
         <source>Indent size:</source>
-        <translation type="unfinished">Розмір відступу:</translation>
+        <translation>Розмір відступу:</translation>
     </message>
     <message>
         <source>Keep tabs</source>
-        <translation type="unfinished">Зберегти вкладки</translation>
+        <translation>Зберегти вкладки</translation>
     </message>
     <message>
         <source>Display Items</source>
-        <translation type="unfinished">Відображення елементів</translation>
+        <translation>Відображення елементів</translation>
     </message>
     <message>
         <source>Family:</source>
-        <translation type="unfinished">Сімейство:</translation>
+        <translation>Сімейство:</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished">Розмір:</translation>
+        <translation>Розмір:</translation>
     </message>
     <message>
         <source>Preview:</source>
-        <translation type="unfinished">Попередній перегляд:</translation>
+        <translation>Попередній перегляд:</translation>
     </message>
     <message>
         <source></source>
@@ -1137,85 +1137,85 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgGeneral</name>
     <message>
         <source>General</source>
-        <translation type="unfinished">Загальне</translation>
+        <translation>Загальне</translation>
     </message>
     <message>
         <source>Start up</source>
-        <translation type="unfinished">Запуск</translation>
+        <translation>Запуск</translation>
     </message>
     <message>
         <source>Enable splash screen at start up</source>
-        <translation type="unfinished">Увімкнути заставку при запуску</translation>
+        <translation>Увімкнути заставку при запуску</translation>
     </message>
     <message>
         <source>Switch to tab of report window:</source>
-        <translation type="unfinished">Перейти на вкладку вікна звіту:</translation>
+        <translation>Перейти на вкладку вікна звіту:</translation>
     </message>
     <message>
         <source>Auto load module after start up:</source>
-        <translation type="unfinished">Автоматичне завантаження модуля після запуску:</translation>
+        <translation>Автоматичне завантаження модуля після запуску:</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished">Мова</translation>
+        <translation>Мова</translation>
     </message>
     <message>
         <source>Change language:</source>
-        <translation type="unfinished">Змінити мову:</translation>
+        <translation>Змінити мову:</translation>
     </message>
     <message>
         <source>Main window</source>
-        <translation type="unfinished">Головне вікно</translation>
+        <translation>Головне вікно</translation>
     </message>
     <message>
         <source>Size of recent file list</source>
-        <translation type="unfinished">Розмір списку останніх файлів</translation>
+        <translation>Розмір списку останніх файлів</translation>
     </message>
     <message>
         <source>Window style:</source>
-        <translation type="unfinished">Стиль вікна:</translation>
+        <translation>Стиль вікна:</translation>
     </message>
     <message>
         <source>Size of toolbar icons:</source>
-        <translation type="unfinished">Розмір піктограм на панелі інструментів:</translation>
+        <translation>Розмір піктограм на панелі інструментів:</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Увімкнути мозаїчний фон</translation>
+        <translation>Увімкнути мозаїчний фон</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation>Таблиця стилів:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
         <source>Default (%1 x %1)</source>
-        <translation type="unfinished">За замовчуванням (%1 x %1)</translation>
+        <translation>За замовчуванням (%1 x %1)</translation>
     </message>
     <message>
         <source>Small (%1 x %1)</source>
-        <translation type="unfinished">Малий (%1 x %1)</translation>
+        <translation>Малий (%1 x %1)</translation>
     </message>
     <message>
         <source>Large (%1 x %1)</source>
-        <translation type="unfinished">Великий (%1 x %1)</translation>
+        <translation>Великий (%1 x %1)</translation>
     </message>
     <message>
         <source>Extra large (%1 x %1)</source>
-        <translation type="unfinished">Дуже великий (%1 x %1)</translation>
+        <translation>Дуже великий (%1 x %1)</translation>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation>Таблиці стилів немає</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgInputDialog</name>
     <message>
         <source>Input</source>
-        <translation type="unfinished">Ввід</translation>
+        <translation>Ввід</translation>
     </message>
     <message>
         <source></source>
@@ -1226,176 +1226,192 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
         <source>Scene Inspector</source>
-        <translation type="unfinished">Інспектор сцени</translation>
+        <translation>Інспектор сцени</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroExecute</name>
     <message>
         <source>Execute macro</source>
-        <translation type="unfinished">Виконати макрос</translation>
+        <translation>Виконати макрос</translation>
     </message>
     <message>
         <source>Macro name:</source>
-        <translation type="unfinished">Назва макросу:</translation>
+        <translation>Назва макросу:</translation>
     </message>
     <message>
         <source>Macro destination:</source>
-        <translation type="unfinished">Призначення макросу:</translation>
+        <translation type="obsolete">Призначення макросу:</translation>
     </message>
     <message>
         <source>Execute</source>
-        <translation type="unfinished">Виконати</translation>
+        <translation>Виконати</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Закрити</translation>
+        <translation>Закрити</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Створити</translation>
+        <translation>Створити</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Видалити</translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
+    </message>
+    <message>
+        <source>User macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User macros location:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Макроси</translation>
+        <translation>Макроси</translation>
     </message>
     <message>
         <source>Macro file</source>
-        <translation type="unfinished">Файл макросу</translation>
+        <translation>Файл макросу</translation>
     </message>
     <message>
         <source>Enter a file name, please:</source>
-        <translation type="unfinished">Будь ласка, введіть ім&apos;я файлу:</translation>
+        <translation>Будь ласка, введіть ім&apos;я файлу:</translation>
     </message>
     <message>
         <source>Existing file</source>
-        <translation type="unfinished">Існуючий файл</translation>
+        <translation>Існуючий файл</translation>
     </message>
     <message>
         <source>&apos;%1&apos;.
 This file already exists.</source>
-        <translation type="unfinished">&apos;%1&apos;.
+        <translation>&apos;%1&apos;.
 Цей файл вже існує.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Видалити макрос</translation>
+        <translation>Видалити макрос</translation>
     </message>
     <message>
         <source>Do you really want to delete the macro &apos;%1&apos;?</source>
-        <translation type="unfinished">Ви дійсно бажаєте видалити макрос &quot;%1&quot;?</translation>
+        <translation>Ви дійсно бажаєте видалити макрос &quot;%1&quot;?</translation>
     </message>
     <message>
         <source>Cannot create file</source>
-        <translation type="unfinished">Не вдається створити файл</translation>
+        <translation>Не вдається створити файл</translation>
     </message>
     <message>
         <source>Creation of file &apos;%1&apos; failed.</source>
-        <translation type="unfinished">Створення файлу &apos;%1&apos; не вдалося.</translation>
+        <translation>Створення файлу &apos;%1&apos; не вдалося.</translation>
+    </message>
+    <message>
+        <source>Read-only</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
         <source>Macro recording</source>
-        <translation type="unfinished">Запис макросу</translation>
+        <translation>Запис макросу</translation>
     </message>
     <message>
         <source>Macro name:</source>
-        <translation type="unfinished">Назва макросу:</translation>
+        <translation>Назва макросу:</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished">Стоп</translation>
+        <translation>Стоп</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <source>Macro path:</source>
-        <translation type="unfinished">Шлях до макросу:</translation>
+        <translation>Шлях до макросу:</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Record</source>
-        <translation type="unfinished">Запис</translation>
+        <translation>Запис</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
     <message>
         <source>Macro recorder</source>
-        <translation type="unfinished">Засіб запису макросу</translation>
+        <translation>Засіб запису макросу</translation>
     </message>
     <message>
         <source>Specify first a place to save.</source>
-        <translation type="unfinished">Спочатку вкажіть місце для збереження.</translation>
+        <translation>Спочатку вкажіть місце для збереження.</translation>
     </message>
     <message>
         <source>Existing macro</source>
-        <translation type="unfinished">Наявні макроси</translation>
+        <translation>Наявні макроси</translation>
     </message>
     <message>
         <source>The macro &apos;%1&apos; already exists. Do you want to overwrite?</source>
-        <translation type="unfinished">Макрос &quot;%1&quot; уже існує. Бажаєте замінити?</translation>
+        <translation>Макрос &quot;%1&quot; уже існує. Бажаєте замінити?</translation>
     </message>
     <message>
         <source>The macro directory doesn&apos;t exist. Please, choose another one.</source>
-        <translation type="unfinished">Каталог макросів не існує. Будь ласка, оберіть інший.</translation>
+        <translation>Каталог макросів не існує. Будь ласка, оберіть інший.</translation>
     </message>
     <message>
         <source>Choose macro directory</source>
-        <translation type="unfinished">Вибрати каталог макросів</translation>
+        <translation>Вибрати каталог макросів</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">Ви не маєте права на запис до цього каталогу. Будь ласка, оберіть інший.</translation>
+        <translation>Ви не маєте права на запис до цього каталогу. Будь ласка, оберіть інший.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
         <source>Material properties</source>
-        <translation type="unfinished">Властивості матеріалу</translation>
+        <translation>Властивості матеріалу</translation>
     </message>
     <message>
         <source>Material</source>
-        <translation type="unfinished">Матеріал</translation>
+        <translation>Матеріал</translation>
     </message>
     <message>
         <source>Diffuse color:</source>
-        <translation type="unfinished">Колір дифузії:</translation>
+        <translation>Колір дифузії:</translation>
     </message>
     <message>
         <source>Specular color:</source>
-        <translation type="unfinished">Колір відбиття:</translation>
+        <translation>Колір відбиття:</translation>
     </message>
     <message>
         <source>Shininess:</source>
-        <translation type="unfinished">Яскравість:</translation>
+        <translation>Яскравість:</translation>
     </message>
     <message>
         <source>%</source>
-        <translation type="unfinished">%</translation>
+        <translation>%</translation>
     </message>
     <message>
         <source>Ambient color:</source>
-        <translation type="unfinished">Колір оточення:</translation>
+        <translation>Колір оточення:</translation>
     </message>
     <message>
         <source></source>
@@ -1403,105 +1419,101 @@ This file already exists.</source>
     </message>
     <message>
         <source>Emissive color:</source>
-        <translation type="unfinished">Колір емісії:</translation>
+        <translation>Колір емісії:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgOnlineHelp</name>
     <message>
         <source>On-line help</source>
-        <translation type="unfinished">Он-лайн допомога</translation>
+        <translation>Он-лайн допомога</translation>
     </message>
     <message>
         <source>Help viewer</source>
-        <translation type="unfinished">Перегляд допомоги</translation>
+        <translation>Перегляд допомоги</translation>
     </message>
     <message>
         <source>Location of start page</source>
-        <translation type="unfinished">Розташування початкової сторінки</translation>
+        <translation>Розташування початкової сторінки</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
-        <source>HTML files (*.html *.htm)</source>
-        <translation type="obsolete">HTML файли (*.html *.htm)</translation>
-    </message>
-    <message>
         <source>Access denied</source>
-        <translation type="unfinished">Доступ заборонено</translation>
+        <translation>Доступ заборонено</translation>
     </message>
     <message>
         <source>Access denied to &apos;%1&apos;
 
 Specify another directory, please.</source>
-        <translation type="unfinished">Відмовлено в доступі до &apos;%1&apos;
+        <translation>Відмовлено в доступі до &apos;%1&apos;
 Вкажіть інший каталог, будь ласка.</translation>
     </message>
     <message>
         <source>HTML files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">HTML files</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
         <source>Parameter Editor</source>
-        <translation type="unfinished">Параметри редактора</translation>
+        <translation>Параметри редактора</translation>
     </message>
     <message>
         <source>Save to disk</source>
-        <translation type="unfinished">Зберегти на диск</translation>
+        <translation>Зберегти на диск</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation type="unfinished">Alt+C</translation>
+        <translation>Alt+C</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрити</translation>
+        <translation>&amp;Закрити</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgParameterImp</name>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Група</translation>
+        <translation>Група</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Назва</translation>
+        <translation>Назва</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Тип</translation>
+        <translation>Тип</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Значення</translation>
+        <translation>Значення</translation>
     </message>
     <message>
         <source>User parameter</source>
-        <translation type="unfinished">Параметри користувача</translation>
+        <translation>Параметри користувача</translation>
     </message>
     <message>
         <source>Invalid input</source>
-        <translation type="unfinished">Некоректний ввід</translation>
+        <translation>Некоректний ввід</translation>
     </message>
     <message>
         <source>Invalid key name &apos;%1&apos;</source>
-        <translation type="unfinished">Невірне ім&apos;я ключа &apos;%1&apos;</translation>
+        <translation>Невірне ім&apos;я ключа &apos;%1&apos;</translation>
     </message>
     <message>
         <source>System parameter</source>
-        <translation type="unfinished">Системні параметри</translation>
+        <translation>Системні параметри</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Налаштування</translation>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <source></source>
@@ -1512,62 +1524,62 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
         <source>Wrong parameter</source>
-        <translation type="unfinished">Неправильний параметр</translation>
+        <translation>Неправильний параметр</translation>
     </message>
     <message>
         <source>Clear user settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clear user settings</translation>
     </message>
     <message>
         <source>Do you want to clear all your user settings?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you want to clear all your user settings?</translation>
     </message>
     <message>
         <source>If you agree all your settings will be cleared.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If you agree all your settings will be cleared.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
         <source>Project information</source>
-        <translation type="unfinished">Інформація про проект</translation>
+        <translation>Інформація про проект</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished">Інформація</translation>
+        <translation>Інформація</translation>
     </message>
     <message>
         <source>&amp;Name:</source>
-        <translation type="unfinished">Назва:</translation>
+        <translation>Назва:</translation>
     </message>
     <message>
         <source>Commen&amp;t:</source>
-        <translation type="unfinished">Коментар:</translation>
+        <translation>Коментар:</translation>
     </message>
     <message>
         <source>Path:</source>
-        <translation type="unfinished">Шлях:</translation>
+        <translation>Шлях:</translation>
     </message>
     <message>
         <source>&amp;Last modified by:</source>
-        <translation type="unfinished">І останні зміни внесені:</translation>
+        <translation>І останні зміни внесені:</translation>
     </message>
     <message>
         <source>Created &amp;by:</source>
-        <translation type="unfinished">Створено:</translation>
+        <translation>Створено:</translation>
     </message>
     <message>
         <source>Com&amp;pany:</source>
-        <translation type="unfinished">Компанія:</translation>
+        <translation>Компанія:</translation>
     </message>
     <message>
         <source>Last &amp;modification date:</source>
-        <translation type="unfinished">Дата останньої зміни:</translation>
+        <translation>Дата останньої зміни:</translation>
     </message>
     <message>
         <source>Creation &amp;date:</source>
-        <translation type="unfinished">Дата створення:</translation>
+        <translation>Дата створення:</translation>
     </message>
     <message>
         <source></source>
@@ -1575,144 +1587,136 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>UUID:</source>
-        <translation type="unfinished">UUID:</translation>
+        <translation>UUID:</translation>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">Відомості про ліцензію:</translation>
+        <translation>Відомості про ліцензію:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">URL ліцензії</translation>
+        <translation>URL ліцензії</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Відкрити у браузері</translation>
+        <translation>Відкрити у браузері</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
         <source>Project utility</source>
-        <translation type="unfinished">Утиліта проекту</translation>
+        <translation>Утиліта проекту</translation>
     </message>
     <message>
         <source>Extract project</source>
-        <translation type="unfinished">Видобути проект</translation>
+        <translation>Видобути проект</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished">Джерело</translation>
-    </message>
-    <message>
-        <source>Project file (*.fcstd)</source>
-        <translation type="obsolete">Файл проекту (*.fcstd)</translation>
+        <translation>Джерело</translation>
     </message>
     <message>
         <source>Destination</source>
-        <translation type="unfinished">Призначення</translation>
+        <translation>Призначення</translation>
     </message>
     <message>
         <source>Extract</source>
-        <translation type="unfinished">Витяг</translation>
+        <translation>Витяг</translation>
     </message>
     <message>
         <source>Create project</source>
-        <translation type="unfinished">Створити проект</translation>
-    </message>
-    <message>
-        <source>Document.xml</source>
-        <translation type="obsolete">Document.xml</translation>
+        <translation>Створити проект</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Створити</translation>
+        <translation>Створити</translation>
     </message>
     <message>
         <source>Load project file after creation</source>
-        <translation type="unfinished">Завантажити файл проекту після створення</translation>
+        <translation>Завантажити файл проекту після створення</translation>
     </message>
     <message>
         <source>Empty source</source>
-        <translation type="unfinished">Порожнє джерело</translation>
+        <translation>Порожнє джерело</translation>
     </message>
     <message>
         <source>No source is defined.</source>
-        <translation type="unfinished">Немає визначеного джерела.</translation>
+        <translation>Немає визначеного джерела.</translation>
     </message>
     <message>
         <source>Empty destination</source>
-        <translation type="unfinished">Призначення порожнє</translation>
+        <translation>Призначення порожнє</translation>
     </message>
     <message>
         <source>No destination is defined.</source>
-        <translation type="unfinished">Призначення не визначено.</translation>
+        <translation>Призначення не визначено.</translation>
     </message>
     <message>
         <source>Project file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Project file</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Посилання</translation>
+        <translation>Посилання</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Показати всі типи об&apos;єктів</translation>
+        <translation>Показати всі типи об&apos;єктів</translation>
     </message>
     <message>
         <source>No selection</source>
-        <translation type="unfinished">Нічого не вибрано</translation>
+        <translation>Нічого не вибрано</translation>
     </message>
     <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished">Please select an object from the list</translation>
+        <translation>Оберіть об&apos;єкт зі списку, будь ласка</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
         <source>Output window</source>
-        <translation type="unfinished">Вікно виводу</translation>
+        <translation>Вікно виводу</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation type="unfinished">Вивід</translation>
+        <translation>Вивід</translation>
     </message>
     <message>
         <source>Record log messages</source>
-        <translation type="unfinished">Запис повідомлень журналу (log)</translation>
+        <translation>Запис повідомлень журналу (log)</translation>
     </message>
     <message>
         <source>Record warnings</source>
-        <translation type="unfinished">Запис попереджень</translation>
+        <translation>Запис попереджень</translation>
     </message>
     <message>
         <source>Record error messages</source>
-        <translation type="unfinished">Запис повідомлень про помилки</translation>
+        <translation>Запис повідомлень про помилки</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished">Кольори</translation>
+        <translation>Кольори</translation>
     </message>
     <message>
         <source>Normal messages:</source>
-        <translation type="unfinished">Звичайні повідомлення:</translation>
+        <translation>Звичайні повідомлення:</translation>
     </message>
     <message>
         <source>Log messages:</source>
-        <translation type="unfinished">Повідомлення журналу:</translation>
+        <translation>Повідомлення журналу:</translation>
     </message>
     <message>
         <source>Warnings:</source>
-        <translation type="unfinished">Попередження:</translation>
+        <translation>Попередження:</translation>
     </message>
     <message>
         <source>Errors:</source>
-        <translation type="unfinished">Помилки:</translation>
+        <translation>Помилки:</translation>
     </message>
     <message>
         <source></source>
@@ -1720,93 +1724,93 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Redirect internal Python errors to report view</source>
-        <translation type="unfinished">Переспрямувати внутрішні помилки Python у вид повідомлень</translation>
+        <translation>Переспрямувати внутрішні помилки Python у вид повідомлень</translation>
     </message>
     <message>
         <source>Redirect internal Python output to report view</source>
-        <translation type="unfinished">Перенаправити внутрішній вивод Python до звіту</translation>
+        <translation>Перенаправити внутрішній вивод Python до звіту</translation>
     </message>
     <message>
         <source>Python interpreter</source>
-        <translation type="unfinished"></translation>
+        <translation>Інтерпретатор Python</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
         <source>Running external program</source>
-        <translation type="unfinished">Запуск зовнішньої програми</translation>
+        <translation>Запуск зовнішньої програми</translation>
     </message>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished">ТекстовийНадпис</translation>
+        <translation>ТекстовийНадпис</translation>
     </message>
     <message>
         <source>Advanced &gt;&gt;</source>
-        <translation type="unfinished">Додатково &gt;&gt;</translation>
+        <translation>Додатково &gt;&gt;</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Accept changes</source>
-        <translation type="unfinished">Прийняти зміни</translation>
+        <translation>Прийняти зміни</translation>
     </message>
     <message>
         <source>Discard changes</source>
-        <translation type="unfinished">Скасувати зміни</translation>
+        <translation>Скасувати зміни</translation>
     </message>
     <message>
         <source>Abort program</source>
-        <translation type="unfinished">Перервати програму</translation>
+        <translation>Перервати програму</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Select a file</source>
-        <translation type="unfinished">Виберіть файл</translation>
+        <translation>Виберіть файл</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
         <source>3D View</source>
-        <translation type="unfinished">3D вигляд</translation>
+        <translation>3D вигляд</translation>
     </message>
     <message>
         <source>3D View settings</source>
-        <translation type="unfinished">Налаштування 3D вигляду</translation>
+        <translation>Налаштування 3D вигляду</translation>
     </message>
     <message>
         <source>Show coordinate system in the corner</source>
-        <translation type="unfinished">Показувати систему координат в кутку</translation>
+        <translation>Показувати систему координат в кутку</translation>
     </message>
     <message>
         <source>Show counter of frames per second</source>
-        <translation type="unfinished">Показувати кількість кадрів в секунду</translation>
+        <translation>Показувати кількість кадрів в секунду</translation>
     </message>
     <message>
         <source>Enable animation</source>
-        <translation type="unfinished">Увімкнути анімацію</translation>
+        <translation>Увімкнути анімацію</translation>
     </message>
     <message>
         <source>Eye to eye distance for stereo modes:</source>
-        <translation type="unfinished">Відстань між точками огляду:</translation>
+        <translation>Відстань між точками огляду:</translation>
     </message>
     <message>
         <source>Camera type</source>
-        <translation type="unfinished">Тип камери</translation>
+        <translation>Тип камери</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation type="unfinished">Ортогональна візуалізація</translation>
+        <translation>Ортогональна візуалізація</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation type="unfinished">Візуалізація в перспективі</translation>
+        <translation>Візуалізація в перспективі</translation>
     </message>
     <message>
         <source></source>
@@ -1814,169 +1818,169 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>3D Navigation</source>
-        <translation type="unfinished">3D Навігація</translation>
+        <translation>3D Навігація</translation>
     </message>
     <message>
         <source>Mouse...</source>
-        <translation type="unfinished">Мишка...</translation>
+        <translation>Мишка...</translation>
     </message>
     <message>
         <source>Intensity of backlight</source>
-        <translation type="unfinished">Інтенсивність підсвітки</translation>
+        <translation>Інтенсивність підсвітки</translation>
     </message>
     <message>
         <source>Enable backlight color</source>
-        <translation type="unfinished">Увімкнути колір підсвітки</translation>
+        <translation>Увімкнути колір підсвітки</translation>
     </message>
     <message>
         <source>Orbit style</source>
-        <translation type="unfinished">Стиль орбіти</translation>
+        <translation>Стиль орбіти</translation>
     </message>
     <message>
         <source>Turntable</source>
-        <translation type="unfinished">Поворотний</translation>
+        <translation>Поворотний</translation>
     </message>
     <message>
         <source>Trackball</source>
-        <translation type="unfinished">Трекбол</translation>
+        <translation>Трекбол</translation>
     </message>
     <message>
         <source>Invert zoom</source>
-        <translation type="unfinished">Інвертувати масштабування</translation>
+        <translation>Інвертувати масштабування</translation>
     </message>
     <message>
         <source>Zoom at cursor</source>
-        <translation type="unfinished">Масштабування над курсором</translation>
+        <translation>Масштабування над курсором</translation>
     </message>
     <message>
         <source>Zoom step</source>
-        <translation type="unfinished">Крок масштабування</translation>
+        <translation>Крок масштабування</translation>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Згладжування</translation>
+        <translation>Згладжування</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Немає</translation>
+        <translation>Немає</translation>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation>Згладжування лінії</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
-        <translation type="unfinished">MSAA 2x</translation>
+        <translation>MSAA 2x</translation>
     </message>
     <message>
         <source>MSAA 4x</source>
-        <translation type="unfinished">MSAA 4x</translation>
+        <translation>MSAA 4x</translation>
     </message>
     <message>
         <source>MSAA 8x</source>
-        <translation type="unfinished">MSAA 8x</translation>
+        <translation>MSAA 8x</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation type="unfinished">%1 навігація</translation>
+        <translation>%1 навігація</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
-        <translation type="unfinished"></translation>
+        <translation>Згладжування</translation>
     </message>
     <message>
         <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open a new viewer or restart %1 to apply anti-aliasing changes.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsColorGradient</name>
     <message>
         <source>Color model</source>
-        <translation type="unfinished">Колірна модель</translation>
+        <translation>Колірна модель</translation>
     </message>
     <message>
         <source>&amp;Gradient:</source>
-        <translation type="unfinished">&amp;Градієнт:</translation>
+        <translation>&amp;Градієнт:</translation>
     </message>
     <message>
         <source>red-yellow-green-cyan-blue</source>
-        <translation type="unfinished">червоний-жовтий-зелений-блакитний-синій</translation>
+        <translation>червоний-жовтий-зелений-блакитний-синій</translation>
     </message>
     <message>
         <source>blue-cyan-green-yellow-red</source>
-        <translation type="unfinished">синій-блакитний-зелений-жовтий-червоний</translation>
+        <translation>синій-блакитний-зелений-жовтий-червоний</translation>
     </message>
     <message>
         <source>white-black</source>
-        <translation type="unfinished">білий-чорний</translation>
+        <translation>білий-чорний</translation>
     </message>
     <message>
         <source>black-white</source>
-        <translation type="unfinished">чорний-білий</translation>
+        <translation>чорний-білий</translation>
     </message>
     <message>
         <source>Visibility</source>
-        <translation type="unfinished">Видимість</translation>
+        <translation>Видимість</translation>
     </message>
     <message>
         <source>Out g&amp;rayed</source>
-        <translation type="unfinished">З сірого</translation>
+        <translation>З сірого</translation>
     </message>
     <message>
         <source>Alt+R</source>
-        <translation type="unfinished">Alt+R</translation>
+        <translation>Alt+R</translation>
     </message>
     <message>
         <source>Out &amp;invisible</source>
-        <translation type="unfinished">З прозорого</translation>
+        <translation>З прозорого</translation>
     </message>
     <message>
         <source>Alt+I</source>
-        <translation type="unfinished">Alt+I</translation>
+        <translation>Alt+I</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished">Стиль</translation>
+        <translation>Стиль</translation>
     </message>
     <message>
         <source>&amp;Zero</source>
-        <translation type="unfinished">&amp;Нуль</translation>
+        <translation>&amp;Нуль</translation>
     </message>
     <message>
         <source>Alt+Z</source>
-        <translation type="unfinished">Alt+Z</translation>
+        <translation>Alt+Z</translation>
     </message>
     <message>
         <source>&amp;Flow</source>
-        <translation type="unfinished">&amp;Потік</translation>
+        <translation>&amp;Потік</translation>
     </message>
     <message>
         <source>Alt+F</source>
-        <translation type="unfinished">Alt+F</translation>
+        <translation>Alt+F</translation>
     </message>
     <message>
         <source>Parameter range</source>
-        <translation type="unfinished">Значення діапазону</translation>
+        <translation>Значення діапазону</translation>
     </message>
     <message>
         <source>Mi&amp;nimum:</source>
-        <translation type="unfinished">Мінімум:</translation>
+        <translation>Мінімум:</translation>
     </message>
     <message>
         <source>Ma&amp;ximum:</source>
-        <translation type="unfinished">Максимум:</translation>
+        <translation>Максимум:</translation>
     </message>
     <message>
         <source>&amp;Labels:</source>
-        <translation type="unfinished">&amp;Позначки:</translation>
+        <translation>&amp;Позначки:</translation>
     </message>
     <message>
         <source>&amp;Decimals:</source>
-        <translation type="unfinished">&amp;Десяткові:</translation>
+        <translation>&amp;Десяткові:</translation>
     </message>
     <message>
         <source></source>
@@ -1984,589 +1988,585 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Color-gradient settings</source>
-        <translation type="unfinished">Налаштування кольору градієнта</translation>
+        <translation>Налаштування кольору градієнта</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsColorGradientImp</name>
     <message>
         <source>Wrong parameter</source>
-        <translation type="unfinished">Неправильний параметр</translation>
+        <translation>Неправильний параметр</translation>
     </message>
     <message>
         <source>The maximum value must be higher than the minimum value.</source>
-        <translation type="unfinished">Максимальне значення має бути вище, ніж мінімальне значення.</translation>
+        <translation>Максимальне значення має бути вище, ніж мінімальне значення.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsDocument</name>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Документ</translation>
+        <translation>Документ</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Загальне</translation>
+        <translation>Загальне</translation>
     </message>
     <message>
         <source>Document save compression level
 (0 = none, 9 = highest, 3 = default)</source>
-        <translation type="unfinished">Рівень стиснення документу
+        <translation>Рівень стиснення документу
 (0 = немає, 9 = високий, 3 = за замовчуванням)</translation>
     </message>
     <message>
         <source>Create new document at start up</source>
-        <translation type="unfinished">Створення нового документа при запуску</translation>
+        <translation>Створення нового документа при запуску</translation>
     </message>
     <message>
         <source>Storage</source>
-        <translation type="unfinished">Сховище</translation>
+        <translation>Сховище</translation>
     </message>
     <message>
         <source>Saving transactions (Auto-save)</source>
-        <translation type="unfinished">Збереження операцій (Автозбереження)</translation>
+        <translation>Збереження операцій (Автозбереження)</translation>
     </message>
     <message>
         <source>Discard saved transaction after saving document</source>
-        <translation type="unfinished">Очищати збережені операції після збереження документа</translation>
+        <translation>Очищати збережені операції після збереження документа</translation>
     </message>
     <message>
         <source>Save thumbnail into project file when saving document</source>
-        <translation type="unfinished">Зберегти мініатюру у файл проекту при збереженні документа</translation>
+        <translation>Зберегти мініатюру у файл проекту при збереженні документа</translation>
     </message>
     <message>
         <source>Create up to backup files when resaving document</source>
-        <translation type="unfinished">Створення резервної копії файлів під час повторного збереження документу</translation>
+        <translation>Створення резервної копії файлів під час повторного збереження документу</translation>
     </message>
     <message>
         <source>Document objects</source>
-        <translation type="unfinished">Об&apos;єкти документу</translation>
+        <translation>Об&apos;єкти документу</translation>
     </message>
     <message>
         <source>Allow duplicate object labels in one document</source>
-        <translation type="unfinished">Дозволити дублювання підписів для об&apos;єктів в одному документі</translation>
+        <translation>Дозволити дублювання підписів для об&apos;єктів в одному документі</translation>
     </message>
     <message>
         <source>Maximum Undo/Redo steps</source>
-        <translation type="unfinished">Максимальна кількість кроків скасування/повторення дій</translation>
+        <translation>Максимальна кількість кроків скасування/повторення дій</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
-        <translation type="unfinished">Використання скасування/повторення дій у документах</translation>
+        <translation>Використання скасування/повторення дій у документах</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished">Authoring and License</translation>
+        <translation>Авторство та ліцензії</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished">Author name</translation>
+        <translation>Ім&apos;я автора</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ім&apos;я, що буде використовуватися при створенні документа.&lt;/p&gt;&lt;p&gt;Порожнє, якщо бажаєте залишитися невідомим.&lt;/p&gt;&lt;p&gt;Ви також можете записати на кшталт:&lt;/p&gt;&lt;p&gt;Іван Петренко &amp;lt;ivan@petrenko.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished">If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</translation>
+        <translation>Якщо цей пункт обраний, поле &quot;Остання модифікація&quot; буде заповнено при збережені файлу</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished">Set on save</translation>
+        <translation>Встановити при збереженні</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished">Назва компанії</translation>
+        <translation>Назва компанії</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished">Default license</translation>
+        <translation>Ліцензія за замовчуванням</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished">The default license for new documents</translation>
+        <translation>Ліцензія за замовчуванням для нових документів</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished">All rights reserved</translation>
+        <translation>Усі права захищені</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished">CreativeCommons Attribution</translation>
+        <translation>Ліцензія Creative Commons із зазначенням авторства</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
+        <translation>Ліцензія Creative Commons із зазначенням авторства, розповсюдження на тих самих умовах</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
+        <translation>Ліцензія Creative Commons із зазначенням авторства, без похідних творів</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
+        <translation>Ліцензія Creative Commons із зазначенням авторства, некомерційна</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
+        <translation>Ліцензія Creative Commons із зазначенням авторства, некомерційна, розповсюдження на тих самих умовах</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
+        <translation>Ліцензія Creative Commons із зазначенням авторства, некомерційна, без похідних творів</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished">Public Domain</translation>
+        <translation>Суспільне надбання</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished">FreeArt</translation>
+        <translation>FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Other</translation>
+        <translation>Інші</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">URL ліцензії</translation>
+        <translation>URL ліцензії</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished">An URL where the user can find more details about the license</translation>
-    </message>
-    <message>
-        <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="obsolete">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
+        <translation>Посилання, де користувач зможе знайти більш детальну інформацію про ліцензію</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished">The default company to use for new files</translation>
+        <translation>Компанія за замовчуванням у нових файлах</translation>
     </message>
     <message>
         <source>Run AutoRecovery at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Запустити автовідновлення при завантаженні</translation>
     </message>
     <message>
         <source>Save AutoRecovery information every</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберігати інформацію для автовідновлення кожні</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Текст</translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished">Закладка</translation>
+        <translation>Закладка</translation>
     </message>
     <message>
         <source>Breakpoint</source>
-        <translation type="unfinished">Точка зупинки</translation>
+        <translation>Точка зупинки</translation>
     </message>
     <message>
         <source>Keyword</source>
-        <translation type="unfinished">Ключове слово</translation>
+        <translation>Ключове слово</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Коментар</translation>
+        <translation>Коментар</translation>
     </message>
     <message>
         <source>Block comment</source>
-        <translation type="unfinished">Блок коментаря</translation>
+        <translation>Блок коментаря</translation>
     </message>
     <message>
         <source>Number</source>
-        <translation type="unfinished">Число</translation>
+        <translation>Число</translation>
     </message>
     <message>
         <source>String</source>
-        <translation type="unfinished">Рядок</translation>
+        <translation>Рядок</translation>
     </message>
     <message>
         <source>Character</source>
-        <translation type="unfinished">Символ</translation>
+        <translation>Символ</translation>
     </message>
     <message>
         <source>Class name</source>
-        <translation type="unfinished">Назва класу</translation>
+        <translation>Назва класу</translation>
     </message>
     <message>
         <source>Define name</source>
-        <translation type="unfinished">Вказати назву</translation>
+        <translation>Вказати назву</translation>
     </message>
     <message>
         <source>Operator</source>
-        <translation type="unfinished">Оператор</translation>
+        <translation>Оператор</translation>
     </message>
     <message>
         <source>Python output</source>
-        <translation type="unfinished">Вивід Python</translation>
+        <translation>Вивід Python</translation>
     </message>
     <message>
         <source>Python error</source>
-        <translation type="unfinished">Помилка Python</translation>
+        <translation>Помилка Python</translation>
     </message>
     <message>
         <source>Items</source>
-        <translation type="unfinished">Елементи</translation>
+        <translation>Елементи</translation>
     </message>
     <message>
         <source>Current line highlight</source>
-        <translation type="unfinished">Підсвітка поточної лінії</translation>
+        <translation>Підсвітка поточної лінії</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
     <message>
         <source>Image settings</source>
-        <translation type="unfinished">Параметри зображення</translation>
+        <translation>Параметри зображення</translation>
     </message>
     <message>
         <source>Image properties</source>
-        <translation type="unfinished">Властивості зображення</translation>
+        <translation>Властивості зображення</translation>
     </message>
     <message>
         <source>Back&amp;ground:</source>
-        <translation type="unfinished">Фон:</translation>
+        <translation>Фон:</translation>
     </message>
     <message>
         <source>Current</source>
-        <translation type="unfinished">Поточне</translation>
+        <translation>Поточне</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">Білий</translation>
+        <translation>Білий</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation type="unfinished">Чорний</translation>
+        <translation>Чорний</translation>
     </message>
     <message>
         <source>Image dimensions</source>
-        <translation type="unfinished">Розміри зображення</translation>
+        <translation>Розміри зображення</translation>
     </message>
     <message>
         <source>Pixel</source>
-        <translation type="unfinished">Піксель</translation>
+        <translation>Піксель</translation>
     </message>
     <message>
         <source>&amp;Width:</source>
-        <translation type="unfinished">Ширина:</translation>
+        <translation>Ширина:</translation>
     </message>
     <message>
         <source>Current screen</source>
-        <translation type="unfinished">Поточний екран</translation>
+        <translation>Поточний екран</translation>
     </message>
     <message>
         <source>Icon       32  x 32</source>
-        <translation type="unfinished">Іконка 32 х 32</translation>
+        <translation>Іконка 32 х 32</translation>
     </message>
     <message>
         <source>Icon       64 x 64</source>
-        <translation type="unfinished">Іконка 64 х 64</translation>
+        <translation>Іконка 64 х 64</translation>
     </message>
     <message>
         <source>Icon       128 x 128</source>
-        <translation type="unfinished">Іконка 128 х 128</translation>
+        <translation>Іконка 128 х 128</translation>
     </message>
     <message>
         <source>CGA       320 x 200</source>
-        <translation type="unfinished">CGA       320 x 200</translation>
+        <translation>CGA       320 x 200</translation>
     </message>
     <message>
         <source>QVGA     320 x 240</source>
-        <translation type="unfinished">QVGA     320 x 240</translation>
+        <translation>QVGA     320 x 240</translation>
     </message>
     <message>
         <source>VGA       640 x 480</source>
-        <translation type="unfinished">VGA       640 x 480</translation>
+        <translation>VGA       640 x 480</translation>
     </message>
     <message>
         <source>NTSC     720 x 480</source>
-        <translation type="unfinished">NTSC     720 x 480</translation>
+        <translation>NTSC     720 x 480</translation>
     </message>
     <message>
         <source>PAL        768 x 578</source>
-        <translation type="unfinished">PAL        768 x 578</translation>
+        <translation>PAL        768 x 578</translation>
     </message>
     <message>
         <source>SVGA     800 x 600</source>
-        <translation type="unfinished">SVGA     800 x 600</translation>
+        <translation>SVGA     800 x 600</translation>
     </message>
     <message>
         <source>XGA       1024 x 768</source>
-        <translation type="unfinished">XGA       1024 x 768</translation>
+        <translation>XGA       1024 x 768</translation>
     </message>
     <message>
         <source>HD720   1280 x 720</source>
-        <translation type="unfinished">HD720   1280 x 720</translation>
+        <translation>HD720   1280 x 720</translation>
     </message>
     <message>
         <source>SXGA     1280 x 1024</source>
-        <translation type="unfinished">SXGA     1280 x 1024</translation>
+        <translation>SXGA     1280 x 1024</translation>
     </message>
     <message>
         <source>SXGA+   1400 x 1050</source>
-        <translation type="unfinished">SXGA+   1400 x 1050</translation>
+        <translation>SXGA+   1400 x 1050</translation>
     </message>
     <message>
         <source>UXGA     1600 x 1200</source>
-        <translation type="unfinished">UXGA     1600 x 1200</translation>
+        <translation>UXGA     1600 x 1200</translation>
     </message>
     <message>
         <source>HD1080 1920 x 1080</source>
-        <translation type="unfinished">HD1080 1920 x 1080</translation>
+        <translation>HD1080 1920 x 1080</translation>
     </message>
     <message>
         <source>WUXGA  1920 x 1200</source>
-        <translation type="unfinished">WUXGA  1920 x 1200</translation>
+        <translation>WUXGA  1920 x 1200</translation>
     </message>
     <message>
         <source>QXGA     2048 x 1538</source>
-        <translation type="unfinished">QXGA     2048 x 1538</translation>
+        <translation>QXGA     2048 x 1538</translation>
     </message>
     <message>
         <source>WQXGA  2560 x 1600</source>
-        <translation type="unfinished">WQXGA  2560 x 1600</translation>
+        <translation>WQXGA  2560 x 1600</translation>
     </message>
     <message>
         <source>QSXGA   2560 x 2048</source>
-        <translation type="unfinished">QSXGA   2560 x 2048</translation>
+        <translation>QSXGA   2560 x 2048</translation>
     </message>
     <message utf8="true">
         <source>QUXGA   3200 × 2400</source>
-        <translation type="unfinished">QUXGA   3200 × 2400</translation>
+        <translation>QUXGA   3200 × 2400</translation>
     </message>
     <message utf8="true">
         <source>HUXGA   6400 × 4800</source>
-        <translation type="unfinished">HUXGA   6400 × 4800</translation>
+        <translation>HUXGA   6400 × 4800</translation>
     </message>
     <message>
         <source>!!!          10000 x 10000</source>
-        <translation type="unfinished">!!!          10000 x 10000</translation>
+        <translation>!!!          10000 x 10000</translation>
     </message>
     <message>
         <source>Standard sizes:</source>
-        <translation type="unfinished">Стандартні розміри:</translation>
+        <translation>Стандартні розміри:</translation>
     </message>
     <message>
         <source>&amp;Height:</source>
-        <translation type="unfinished">Висота:</translation>
+        <translation>Висота:</translation>
     </message>
     <message>
         <source>Aspect ratio:</source>
-        <translation type="unfinished">Відношення сторін:</translation>
+        <translation>Відношення сторін:</translation>
     </message>
     <message>
         <source>&amp;Screen</source>
-        <translation type="unfinished">Екран</translation>
+        <translation>Екран</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt+S</translation>
     </message>
     <message>
         <source>&amp;4:3</source>
-        <translation type="unfinished">&amp;4:3</translation>
+        <translation>&amp;4:3</translation>
     </message>
     <message>
         <source>Alt+4</source>
-        <translation type="unfinished">Alt+4</translation>
+        <translation>Alt+4</translation>
     </message>
     <message>
         <source>1&amp;6:9</source>
-        <translation type="unfinished">1&amp;6:9</translation>
+        <translation>1&amp;6:9</translation>
     </message>
     <message>
         <source>Alt+6</source>
-        <translation type="unfinished">Alt+6</translation>
+        <translation>Alt+6</translation>
     </message>
     <message>
         <source>&amp;1:1</source>
-        <translation type="unfinished">&amp;1:1</translation>
+        <translation>&amp;1:1</translation>
     </message>
     <message>
         <source>Alt+1</source>
-        <translation type="unfinished">Alt+1</translation>
+        <translation>Alt+1</translation>
     </message>
     <message>
         <source>Image comment</source>
-        <translation type="unfinished">Коментар до зображення</translation>
+        <translation>Коментар до зображення</translation>
     </message>
     <message>
         <source>Insert MIBA</source>
-        <translation type="unfinished">Вставити MIBA</translation>
+        <translation>Вставити MIBA</translation>
     </message>
     <message>
         <source>Insert comment</source>
-        <translation type="unfinished">Вставити коментар</translation>
+        <translation>Вставити коментар</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>Macro recording settings</source>
-        <translation type="unfinished">Установки запису макросів</translation>
+        <translation>Установки запису макросів</translation>
     </message>
     <message>
         <source>Logging Commands</source>
-        <translation type="unfinished">Ведення журналу команд</translation>
+        <translation>Ведення журналу команд</translation>
     </message>
     <message>
         <source>Show script commands in python console</source>
-        <translation type="unfinished">Показувати команди сценарію в консолі Python</translation>
+        <translation>Показувати команди сценарію в консолі Python</translation>
     </message>
     <message>
         <source>Log all commands issued by menus to file:</source>
-        <translation type="unfinished">Реєстрація всіх команд (викликаних з допомогою меню) у файл:</translation>
+        <translation>Реєстрація всіх команд (викликаних з допомогою меню) у файл:</translation>
     </message>
     <message>
         <source>FullScript.FCScript</source>
-        <translation type="unfinished">FullScript.FCScript</translation>
+        <translation>FullScript.FCScript</translation>
     </message>
     <message>
         <source>Gui commands</source>
-        <translation type="unfinished">Команди GUI</translation>
+        <translation>Команди GUI</translation>
     </message>
     <message>
         <source>Recording GUI commands</source>
-        <translation type="unfinished">Запис команд GUI</translation>
+        <translation>Запис команд GUI</translation>
     </message>
     <message>
         <source>Record as comment</source>
-        <translation type="unfinished">Записати як коментар</translation>
+        <translation>Записати як коментар</translation>
     </message>
     <message>
         <source>Macro path</source>
-        <translation type="unfinished">Шлях до макросу</translation>
+        <translation>Шлях до макросу</translation>
     </message>
     <message>
         <source>General macro settings</source>
-        <translation type="unfinished">Загальні параметри макросів</translation>
+        <translation>Загальні параметри макросів</translation>
     </message>
     <message>
         <source>Run macros in local environment</source>
-        <translation type="unfinished">Запуск макросів у локальному середовищі</translation>
+        <translation>Запуск макросів у локальному середовищі</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
         <source>Units</source>
-        <translation type="unfinished">Одиниці</translation>
+        <translation>Одиниці</translation>
     </message>
     <message>
         <source>Units settings</source>
-        <translation type="unfinished">Налаштування одиниць</translation>
+        <translation>Налаштування одиниць</translation>
     </message>
     <message>
         <source>Standard (mm/kg/s/degree)</source>
-        <translation type="unfinished">Стандарт (мм/кг/с/град)</translation>
+        <translation>Стандарт (мм/кг/с/град)</translation>
     </message>
     <message>
         <source>MKS (m/kg/s/degree)</source>
-        <translation type="unfinished">МКС (м/кг/с/град)</translation>
+        <translation>МКС (м/кг/с/град)</translation>
     </message>
     <message>
         <source>Magnitude</source>
-        <translation type="unfinished">Величина</translation>
+        <translation>Величина</translation>
     </message>
     <message>
         <source>Unit</source>
-        <translation type="unfinished">Одиниця</translation>
+        <translation>Одиниця</translation>
     </message>
     <message>
         <source>User system:</source>
-        <translation type="unfinished">Користувач системи:</translation>
+        <translation>Користувач системи:</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">Система мір США (дюйм / фунт)</translation>
+        <translation>Система мір США (дюйм / фунт)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Кількість десяткових знаків:</translation>
+        <translation>Кількість десяткових знаків:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation>Британська десяткова (дюйми/фунти)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
     <message>
         <source>Colors</source>
-        <translation type="unfinished">Кольори</translation>
+        <translation>Кольори</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Вибір</translation>
+        <translation>Вибір</translation>
     </message>
     <message>
         <source>Enable selection highlighting</source>
-        <translation type="unfinished">Увімкнути підсвічування виділеного</translation>
+        <translation>Увімкнути підсвічування виділеного</translation>
     </message>
     <message>
         <source>Enable preselection highlighting</source>
-        <translation type="unfinished">Увімкнути підсвічування виділеного</translation>
+        <translation>Увімкнути підсвічування виділеного</translation>
     </message>
     <message>
         <source>Background color</source>
-        <translation type="unfinished">Колір фону</translation>
+        <translation>Колір фону</translation>
     </message>
     <message>
         <source>Middle color</source>
-        <translation type="unfinished">Середній колір</translation>
+        <translation>Середній колір</translation>
     </message>
     <message>
         <source>Color gradient</source>
-        <translation type="unfinished">Градієнт кольору</translation>
+        <translation>Градієнт кольору</translation>
     </message>
     <message>
         <source>Simple color</source>
-        <translation type="unfinished">Прості кольори</translation>
+        <translation>Прості кольори</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source>Tip of the day</source>
-        <translation type="unfinished">Порада дня</translation>
+        <translation>Порада дня</translation>
     </message>
     <message>
         <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation type="unfinished">&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Чи знаєте Ви ...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Чи знаєте Ви ...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation type="unfinished">&amp;Показувати поради при запуску</translation>
+        <translation>&amp;Показувати поради при запуску</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt+S</translation>
     </message>
     <message>
         <source>&amp;Next Tip</source>
-        <translation type="unfinished">&amp;Наступна порада</translation>
+        <translation>&amp;Наступна порада</translation>
     </message>
     <message>
         <source>Alt+N</source>
-        <translation type="unfinished">Alt+N</translation>
+        <translation>Alt+N</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрити</translation>
+        <translation>&amp;Закрити</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation type="unfinished">Alt+C</translation>
+        <translation>Alt+C</translation>
     </message>
     <message>
         <source></source>
@@ -2578,661 +2578,655 @@ Specify another directory, please.</source>
     <message>
         <source>Download failed: %1
 </source>
-        <translation type="unfinished">Помилка під час завантаження: %1
+        <translation>Помилка під час завантаження: %1
 </translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation type="unfinished">Якщо Ви бажаєте дізнатися більше про FreeCAD слід перейти до %1 або натиснути пункт Довідка в Меню довідки.</translation>
+        <translation>Якщо Ви бажаєте дізнатися більше про FreeCAD слід перейти до %1 або натиснути пункт Довідка в Меню довідки.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation>Невідповідність одиниці вимірювання</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
         <source>Workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Робочі середовища</translation>
     </message>
     <message>
         <source>Enabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Активні робочі середовища</translation>
     </message>
     <message>
         <source>Disabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Неактивні робочі середовища</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Перемістити вниз</translation>
+        <translation>Перемістити вниз</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перемістити обраний елемент вниз.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Елемент буде переміщено вниз&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="unfinished">Перемістити ліворуч</translation>
+        <translation>Перемістити ліворуч</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Видалити з активних робочих середовищ обране&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="unfinished">Перемістити праворуч</translation>
+        <translation>Перемістити праворуч</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перемістити до активних робочих середовищ обране середовище.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Sort enabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортувати активні робочі середовища</translation>
     </message>
     <message>
         <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Сортувати активні робочі середовища&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Перемістити вгору</translation>
+        <translation>Перемістити вгору</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Перемістити обраний елемент вгору.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Елемент буде переміщений вгору.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; Зміни стануть активними при наступному запуску FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Add all to enabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Всі робочі середовища додати до активних</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
         <source>Placement</source>
-        <translation type="unfinished">Розташування</translation>
+        <translation>Розташування</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DocumentRecovery</name>
     <message>
         <source>Document Recovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Відновлення Документа</translation>
     </message>
     <message>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
+
+The &apos;Status&apos; column shows whether the document could be recovered.</translation>
     </message>
     <message>
         <source>Status of recovered documents:</source>
-        <translation type="unfinished"></translation>
+        <translation>Стан відновленого документа:</translation>
     </message>
     <message>
         <source>Document Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Назва документа</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Статус</translation>
     </message>
     <message>
         <source>Start Recovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Почати Відновлення</translation>
     </message>
     <message>
         <source>Not yet recovered</source>
-        <translation type="unfinished"></translation>
+        <translation>Ще не відновлений</translation>
     </message>
     <message>
         <source>Unknown problem occurred</source>
-        <translation type="unfinished"></translation>
+        <translation>Сталася невідома помилка</translation>
     </message>
     <message>
         <source>Failed to recover</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося відновити</translation>
     </message>
     <message>
         <source>Successfully recovered</source>
-        <translation type="unfinished"></translation>
+        <translation>Успішно відновлений</translation>
     </message>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Завершити</translation>
+        <translation>Завершити</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
         <source>Download</source>
-        <translation type="unfinished">Завантажити</translation>
+        <translation>Завантажити</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Закрити</translation>
+        <translation>Закрити</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation type="unfinished">У поточному каталозі вже існує файл з назвою %1. Замінити?</translation>
+        <translation>У поточному каталозі вже існує файл з назвою %1. Замінити?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation type="unfinished">Не вдалося зберегти файл %1: %2.</translation>
+        <translation>Не вдалося зберегти файл %1: %2.</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
-        <translation type="unfinished">Завантаження %1.</translation>
+        <translation>Завантаження %1.</translation>
     </message>
     <message>
         <source>Download canceled.</source>
-        <translation type="unfinished">Завантаження відмінено.</translation>
+        <translation>Завантаження відмінено.</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation type="unfinished">Помилка завантаження: %1.</translation>
+        <translation>Помилка завантаження: %1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation type="unfinished">Завантаження %1 до поточного каталогу.</translation>
+        <translation>Завантаження %1 до поточного каталогу.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 на %2</translation>
+        <translation>%1 на %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Зберегти файл</translation>
+        <translation>Зберегти файл</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Завантаження скасовано: %1</translation>
+        <translation>Завантаження скасовано: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation>Відкрити папку</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Помилка відкриття файлу для зберігання: %1</translation>
+        <translation>Помилка відкриття файлу для зберігання: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Помилка збереження: %1</translation>
+        <translation>Помилка збереження: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Помилка мережі: %1</translation>
+        <translation>Помилка мережі: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">секунд</translation>
+        <translation>секунд</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">хвилин</translation>
+        <translation>хвилин</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 залишилося</translation>
+        <translation>- %4 %5 залишилося</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 з %2 (%3/сек) %4</translation>
+        <translation>%1 з %2 (%3/сек) %4</translation>
     </message>
     <message>
         <source>?</source>
-        <translation type="unfinished">?</translation>
+        <translation>?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 з %2 - Зупинено</translation>
+        <translation>%1 з %2 - Зупинено</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished">байт</translation>
+        <translation>байт</translation>
     </message>
     <message>
         <source>kB</source>
-        <translation type="unfinished">кБ</translation>
+        <translation>кБ</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished">Мб</translation>
+        <translation>Мб</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Завантаження</translation>
+        <translation>Завантаження</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Прибрати</translation>
+        <translation>Прибрати</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 елементів</translation>
+        <translation>0 елементів</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Менеджер завантажень</translation>
+        <translation>Менеджер завантажень</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 завантаження</translation>
+        <translation>1 завантаження</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 завантажень</translation>
+        <translation>%1 завантажень</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
         <source>Icon folders</source>
-        <translation type="unfinished">Icon folders</translation>
+        <translation>Папки з піктограмами</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished">Add icon folder</translation>
+        <translation>Додати папку з піктограмами</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished">Add or remove custom icon folders</translation>
+        <translation>Додати або видалити папку піктограм користувача</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished">Видалити папку</translation>
+        <translation>Видалити папку</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
+        <translation>Видалення папки відбудется лише після перезапуску програми.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
         <source>Input vector</source>
-        <translation type="unfinished">Вхідний вектор</translation>
+        <translation>Вхідний вектор</translation>
     </message>
     <message>
         <source>Vector</source>
-        <translation type="unfinished">Вектор</translation>
+        <translation>Вектор</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished">Авторське право</translation>
+        <translation>Авторське право</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::MouseButtons</name>
     <message>
         <source>Mouse buttons</source>
-        <translation type="unfinished">Кнопки мишки</translation>
+        <translation>Кнопки мишки</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished">Налаштування</translation>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <source>Selection:</source>
-        <translation type="unfinished">Вибір:</translation>
+        <translation>Вибір:</translation>
     </message>
     <message>
         <source>Panning</source>
-        <translation type="unfinished">Панорамування</translation>
+        <translation>Панорамування</translation>
     </message>
     <message>
         <source>Rotation:</source>
-        <translation type="unfinished">Обертання:</translation>
+        <translation>Обертання:</translation>
     </message>
     <message>
         <source>Zooming:</source>
-        <translation type="unfinished">Масштабування:</translation>
+        <translation>Масштабування:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::ParameterGroup</name>
     <message>
         <source>Expand</source>
-        <translation type="unfinished">Розгорнути</translation>
+        <translation>Розгорнути</translation>
     </message>
     <message>
         <source>Add sub-group</source>
-        <translation type="unfinished">Додати підгрупу</translation>
+        <translation>Додати підгрупу</translation>
     </message>
     <message>
         <source>Remove group</source>
-        <translation type="unfinished">Видалити групу</translation>
+        <translation>Видалити групу</translation>
     </message>
     <message>
         <source>Rename group</source>
-        <translation type="unfinished">Перейменувати групу</translation>
+        <translation>Перейменувати групу</translation>
     </message>
     <message>
         <source>Export parameter</source>
-        <translation type="unfinished">Параметри експорту</translation>
+        <translation>Параметри експорту</translation>
     </message>
     <message>
         <source>Import parameter</source>
-        <translation type="unfinished">Параметр імпорту</translation>
+        <translation>Параметр імпорту</translation>
     </message>
     <message>
         <source>Collapse</source>
-        <translation type="unfinished">Згорнути</translation>
+        <translation>Згорнути</translation>
     </message>
     <message>
         <source>Do really want to remove this parameter group?</source>
-        <translation type="unfinished">Дійсно бажаєте видалити групу параметрів ?</translation>
+        <translation>Дійсно бажаєте видалити групу параметрів ?</translation>
     </message>
     <message>
         <source>Existing sub-group</source>
-        <translation type="unfinished">Існуючі підгрупи</translation>
+        <translation>Існуючі підгрупи</translation>
     </message>
     <message>
         <source>The sub-group &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">Підгрупа &quot;%1&quot; вже існує.</translation>
+        <translation>Підгрупа &quot;%1&quot; вже існує.</translation>
     </message>
     <message>
         <source>Export parameter to file</source>
-        <translation type="unfinished">Експорт параметрів до файлу</translation>
-    </message>
-    <message>
-        <source>XML (*.FCParam)</source>
-        <translation type="obsolete">XML (*.FCParam)</translation>
+        <translation>Експорт параметрів до файлу</translation>
     </message>
     <message>
         <source>Import parameter from file</source>
-        <translation type="unfinished">Імпорт параметрів з файлу</translation>
+        <translation>Імпорт параметрів з файлу</translation>
     </message>
     <message>
         <source>Import Error</source>
-        <translation type="unfinished">Помилка імпорту</translation>
+        <translation>Помилка імпорту</translation>
     </message>
     <message>
         <source>Reading from &apos;%1&apos; failed.</source>
-        <translation type="unfinished">Помилка читання з &apos;%1&apos;.</translation>
+        <translation>Помилка читання з &apos;%1&apos;.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::ParameterValue</name>
     <message>
         <source>Change value</source>
-        <translation type="unfinished">Змінити значення</translation>
+        <translation>Змінити значення</translation>
     </message>
     <message>
         <source>Remove key</source>
-        <translation type="unfinished">Видалити ключ</translation>
+        <translation>Видалити ключ</translation>
     </message>
     <message>
         <source>Rename key</source>
-        <translation type="unfinished">Перейменувати ключ</translation>
+        <translation>Перейменувати ключ</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished">Новий</translation>
+        <translation>Новий</translation>
     </message>
     <message>
         <source>New string item</source>
-        <translation type="unfinished">Новий рядок елементу</translation>
+        <translation>Новий рядок елементу</translation>
     </message>
     <message>
         <source>New float item</source>
-        <translation type="unfinished">Новий дійсний елемент</translation>
+        <translation>Новий дійсний елемент</translation>
     </message>
     <message>
         <source>New integer item</source>
-        <translation type="unfinished">Новий елемент, ціле число</translation>
+        <translation>Новий елемент, ціле число</translation>
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">Новий непідписаний елемент</translation>
+        <translation>Новий непідписаний елемент</translation>
     </message>
     <message>
         <source>New Boolean item</source>
-        <translation type="unfinished">Новий логічний елемент</translation>
+        <translation>Новий логічний елемент</translation>
     </message>
     <message>
         <source>Existing item</source>
-        <translation type="unfinished">Існуючий елемент</translation>
+        <translation>Існуючий елемент</translation>
     </message>
     <message>
         <source>The item &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">Елемент &apos;%1&apos; вже існує.</translation>
+        <translation>Елемент &apos;%1&apos; вже існує.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::Placement</name>
     <message>
         <source>Placement</source>
-        <translation type="unfinished">Розташування</translation>
+        <translation>Розташування</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">Гаразд</translation>
+        <translation>Гаразд</translation>
     </message>
     <message>
         <source>Translation:</source>
-        <translation type="unfinished">Переміщення:</translation>
+        <translation>Переміщення:</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
     <message>
         <source>Rotation:</source>
-        <translation type="unfinished">Обертання:</translation>
+        <translation>Обертання:</translation>
     </message>
     <message>
         <source>Angle:</source>
-        <translation type="unfinished">Кут:</translation>
+        <translation>Кут:</translation>
     </message>
     <message>
         <source>Axis:</source>
-        <translation type="unfinished">Вісь:</translation>
+        <translation>Вісь:</translation>
     </message>
     <message>
         <source>Center:</source>
-        <translation type="unfinished">Центр:</translation>
+        <translation>Центр:</translation>
     </message>
     <message>
         <source>Pitch:</source>
-        <translation type="unfinished">Крок:</translation>
+        <translation>Крок:</translation>
     </message>
     <message>
         <source>Roll:</source>
-        <translation type="unfinished">Кинути:</translation>
+        <translation>Кинути:</translation>
     </message>
     <message>
         <source>Yaw:</source>
-        <translation type="unfinished">Відхилення:</translation>
+        <translation>Відхилення:</translation>
     </message>
     <message>
         <source>Rotation axis with angle</source>
-        <translation type="unfinished">Повернути вісь на кут</translation>
-    </message>
-    <message>
-        <source>Euler angles</source>
-        <translation type="obsolete">Кути Ейлера</translation>
+        <translation>Повернути вісь на кут</translation>
     </message>
     <message>
         <source>Apply placement changes immediately</source>
-        <translation type="unfinished">Застосувати зміни розміщення негайно</translation>
+        <translation>Застосувати зміни розміщення негайно</translation>
     </message>
     <message>
         <source>Apply incremental changes to object placement</source>
-        <translation type="unfinished">Застосувати поступові зміни до місцезнаходження об&apos;єкту</translation>
+        <translation>Застосувати поступові зміни до місцезнаходження об&apos;єкту</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Застосувати</translation>
+        <translation>Застосувати</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Скинути</translation>
+        <translation>Скинути</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Закрити</translation>
+        <translation>Закрити</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished">Incorrect quantity</translation>
+        <translation>Неправильна кількість</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
+        <translation>Поля заповнені некоректними величинами, переконайтесь, що вводите правильні значення!</translation>
     </message>
     <message>
         <source>Euler angles (XY&apos;Z&apos;&apos;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ейлерові кути (XY&apos;Z&apos;&apos;)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
         <source>Button</source>
-        <translation type="unfinished">Кнопка</translation>
+        <translation>Кнопка</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Команда</translation>
+        <translation>Команда</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::SceneInspector</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Діалогове вікно</translation>
+        <translation>Діалогове вікно</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Закрити</translation>
+        <translation>Закрити</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Оновити</translation>
+        <translation>Оновити</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::SceneModel</name>
     <message>
         <source>Inventor Tree</source>
-        <translation type="unfinished">Винахідник дерева</translation>
+        <translation>Винахідник дерева</translation>
     </message>
     <message>
         <source>Nodes</source>
-        <translation type="unfinished">Вузли</translation>
+        <translation>Вузли</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Назва</translation>
+        <translation>Назва</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::TextureMapping</name>
     <message>
         <source>Texture</source>
-        <translation type="unfinished">Текстура</translation>
+        <translation>Текстура</translation>
     </message>
     <message>
         <source>Texture mapping</source>
-        <translation type="unfinished">Текстури</translation>
+        <translation>Текстури</translation>
     </message>
     <message>
         <source>Global</source>
-        <translation type="unfinished">Глобальна</translation>
+        <translation>Глобальна</translation>
     </message>
     <message>
         <source>Environment</source>
-        <translation type="unfinished">Середовище</translation>
+        <translation>Середовище</translation>
     </message>
     <message>
         <source>Image files (%1)</source>
-        <translation type="unfinished">Файли зображень (%1)</translation>
+        <translation>Файли зображень (%1)</translation>
     </message>
     <message>
         <source>No image</source>
-        <translation type="unfinished">Зображення відсутнє</translation>
+        <translation>Зображення відсутнє</translation>
     </message>
     <message>
         <source>The specified file is not a valid image file.</source>
-        <translation type="unfinished">Вказаний файл не є допустимим файлом зображення.</translation>
+        <translation>Вказаний файл не є допустимим файлом зображення.</translation>
     </message>
     <message>
         <source>No 3d view</source>
-        <translation type="unfinished">3d вигляд відсутній</translation>
+        <translation>3d вигляд відсутній</translation>
     </message>
     <message>
         <source>No active 3d view found.</source>
-        <translation type="unfinished">Не знайдено активного 3d вигляду.</translation>
+        <translation>Не знайдено активного 3d вигляду.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::Transform</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">Перетворення</translation>
+        <translation>Перетворення</translation>
     </message>
 </context>
 <context>
     <name>Gui::DlgTreeWidget</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Діалогове вікно</translation>
+        <translation>Діалогове вікно</translation>
     </message>
     <message>
         <source>Items</source>
-        <translation type="unfinished">Елементи</translation>
+        <translation>Елементи</translation>
     </message>
     <message>
         <source></source>
@@ -3243,702 +3237,658 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::DockWnd::CombiView</name>
     <message>
         <source>CombiView</source>
-        <translation type="unfinished">КомбінованийВигляд</translation>
+        <translation>КомбінованийВигляд</translation>
     </message>
     <message>
         <source>Project</source>
-        <translation type="unfinished">Проект</translation>
+        <translation>Проект</translation>
     </message>
     <message>
         <source>Tasks</source>
-        <translation type="unfinished">Завдання</translation>
+        <translation>Завдання</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished">Модель</translation>
+        <translation>Модель</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::HelpView</name>
     <message>
         <source>Previous</source>
-        <translation type="unfinished">Назад</translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished">Вперед</translation>
+        <translation>Вперед</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Додому</translation>
+        <translation>Додому</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished">Відкрити</translation>
+        <translation>Відкрити</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished">Відкрити файл</translation>
+        <translation>Відкрити файл</translation>
     </message>
     <message>
         <source>All HTML files (*.html *.htm)</source>
-        <translation type="unfinished">Всі HTML-файли (*.HTML *.HTM)</translation>
+        <translation>Всі HTML-файли (*.HTML *.HTM)</translation>
     </message>
     <message>
         <source>External browser</source>
-        <translation type="unfinished">Зовнішній браузер</translation>
+        <translation>Зовнішній браузер</translation>
     </message>
     <message>
         <source>No external browser found. Specify in preferences, please</source>
-        <translation type="unfinished">Не знайдено зовнішній браузер. Вкажіть його в настройках, будь ласка,</translation>
+        <translation>Не знайдено зовнішній браузер. Вкажіть його в настройках, будь ласка,</translation>
     </message>
     <message>
         <source>Starting of %1 failed</source>
-        <translation type="unfinished">Старт з %1 не вдався</translation>
+        <translation>Старт з %1 не вдався</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
         <source>Property View</source>
-        <translation type="unfinished">Перегляд властивостей</translation>
+        <translation>Перегляд властивостей</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
         <source>Logging</source>
-        <translation type="unfinished">Ведення журналу</translation>
+        <translation>Ведення журналу</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="unfinished">Попередження</translation>
+        <translation>Попередження</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Помилка</translation>
+        <translation>Помилка</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Параметри</translation>
+        <translation>Параметри</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Очистити</translation>
+        <translation>Очистити</translation>
     </message>
     <message>
         <source>Save As...</source>
-        <translation type="unfinished">Зберегти як...</translation>
+        <translation>Зберегти як...</translation>
     </message>
     <message>
         <source>Save Report Output</source>
-        <translation type="unfinished">Зберегти звіт</translation>
-    </message>
-    <message>
-        <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="obsolete">Текстові файли (*.txt *.log)</translation>
+        <translation>Зберегти звіт</translation>
     </message>
     <message>
         <source>Go to end</source>
-        <translation type="unfinished">Перейти в кінець</translation>
+        <translation>Перейти в кінець</translation>
     </message>
     <message>
         <source>Redirect Python output</source>
-        <translation type="unfinished">Переспрямувати вивід Python</translation>
+        <translation>Переспрямувати вивід Python</translation>
     </message>
     <message>
         <source>Redirect Python errors</source>
-        <translation type="unfinished">Перенаправлення помилок Python</translation>
+        <translation>Перенаправлення помилок Python</translation>
     </message>
     <message>
         <source>Plain Text Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plain Text Files</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::ReportView</name>
     <message>
         <source>Output</source>
-        <translation type="unfinished">Вивід</translation>
+        <translation>Вивід</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Консоль python</translation>
+        <translation>Консоль python</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation type="unfinished">Перегляд властивостей</translation>
+        <translation>Перегляд властивостей</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Пошук</translation>
+        <translation>Пошук</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished">Searches object labels</translation>
+        <translation>Пошук за мітками об&apos;єкту</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished">Clears the search field</translation>
+        <translation>Очистити поле пошуку</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished">Select only</translation>
+        <translation>Тільки виділити</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished">Selects only this object</translation>
+        <translation>Виділіть лише цей об&apos;єкт</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished">Зняти виділення</translation>
+        <translation>Зняти виділення</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished">Deselects this object</translation>
+        <translation>Зняти виділення з цього об&apos;єкта</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished">Zoom fit</translation>
+        <translation>Повністю вмістити у вікно перегляду</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
+        <translation>Виділити та повністю вмістити об&apos;єкт у 3D-вікні</translation>
     </message>
     <message>
         <source>Go to selection</source>
-        <translation type="unfinished">Перейти до вибраного</translation>
+        <translation>Перейти до вибраного</translation>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished">Selects and locates this object in the tree view</translation>
+        <translation>Виділити об&apos;єкт та позначити його у дереві моделі</translation>
     </message>
     <message>
         <source>To python console</source>
-        <translation type="unfinished"></translation>
+        <translation>На консоль python</translation>
     </message>
     <message>
         <source>Reveals this object and its subelements in the python console.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Gui::DockWnd::TaskPanelView</name>
-    <message>
-        <source>Task View</source>
-        <translation type="obsolete">Вигляд завдання</translation>
+        <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
         <source>Could not open file.</source>
-        <translation type="unfinished">Неможливо відкрити файл.</translation>
+        <translation>Неможливо відкрити файл.</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation type="unfinished">Ви спробували отримати доступ до адреси %1, яка в даний час недоступна. Будь ласка, переконайтеся, що URL-адреса існує і спробуйте перезавантажити сторінку.</translation>
+        <translation>Ви спробували отримати доступ до адреси %1, яка в даний час недоступна. Будь ласка, переконайтеся, що URL-адреса існує і спробуйте перезавантажити сторінку.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation type="unfinished">З&apos;єднання з %1</translation>
+        <translation>З&apos;єднання з %1</translation>
     </message>
     <message>
         <source>Sending to %1</source>
-        <translation type="unfinished">Надсилання до %1</translation>
+        <translation>Надсилання до %1</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation type="unfinished">Читання з %1</translation>
+        <translation>Читання з %1</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation type="unfinished">Помилка завантаження: %1.</translation>
+        <translation>Помилка завантаження: %1.</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished">Назад</translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished">Далі</translation>
+        <translation>Далі</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Додому</translation>
+        <translation>Додому</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Оновити</translation>
+        <translation>Оновити</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Копіювати</translation>
+        <translation>Копіювати</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation type="unfinished">Виділити все</translation>
+        <translation>Виділити все</translation>
     </message>
     <message>
         <source>No description for</source>
-        <translation type="unfinished">Нема опису для</translation>
+        <translation>Нема опису для</translation>
     </message>
 </context>
 <context>
     <name>Gui::DocumentModel</name>
     <message>
         <source>Application</source>
-        <translation type="unfinished">Програма</translation>
+        <translation>Програма</translation>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
-        <translation type="unfinished">Етикетки та атрибути</translation>
+        <translation>Етикетки та атрибути</translation>
     </message>
 </context>
 <context>
     <name>Gui::EditorView</name>
     <message>
         <source>Modified file</source>
-        <translation type="unfinished">Змінений файл</translation>
+        <translation>Змінений файл</translation>
     </message>
     <message>
         <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-        <translation type="unfinished">%1.
+        <translation>%1.
 
 Файл було змінено поза редактором. Бажаєте перезавантаити його?</translation>
     </message>
     <message>
         <source>Unsaved document</source>
-        <translation type="unfinished">Незбережений документ</translation>
+        <translation>Незбережений документ</translation>
     </message>
     <message>
         <source>The document has been modified.
 Do you want to save your changes?</source>
-        <translation type="unfinished">Документ було змінено.
+        <translation>Документ було змінено.
 Бажаєте зберегти внесені зміни?</translation>
     </message>
     <message>
-        <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="obsolete">FreeCAD макрос (*.FCMacro);;Python (*.py)</translation>
-    </message>
-    <message>
         <source>Export PDF</source>
-        <translation type="unfinished">Експорт в PDF</translation>
-    </message>
-    <message>
-        <source>PDF file (*.pdf)</source>
-        <translation type="obsolete">Файл PDF (*.pdf)</translation>
+        <translation>Експорт в PDF</translation>
     </message>
     <message>
         <source>untitled[*]</source>
-        <translation type="unfinished">без імені [*]</translation>
+        <translation>без імені [*]</translation>
     </message>
     <message>
         <source> - Editor</source>
-        <translation type="unfinished"> - Редактор</translation>
+        <translation> - Редактор</translation>
     </message>
     <message>
         <source>%1 chars removed</source>
-        <translation type="unfinished">%1 символів видалено</translation>
+        <translation>%1 символів видалено</translation>
     </message>
     <message>
         <source>%1 chars added</source>
-        <translation type="unfinished">%1 символів додано</translation>
+        <translation>%1 символів додано</translation>
     </message>
     <message>
         <source>Formatted</source>
-        <translation type="unfinished">Форматований</translation>
+        <translation>Форматований</translation>
     </message>
     <message>
         <source>FreeCAD macro</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD macro</translation>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF file</translation>
     </message>
 </context>
 <context>
     <name>Gui::FileChooser</name>
     <message>
         <source>Select a file</source>
-        <translation type="unfinished">Виберіть файл</translation>
+        <translation>Виберіть файл</translation>
     </message>
     <message>
         <source>Select a directory</source>
-        <translation type="unfinished">Виберіть каталог</translation>
+        <translation>Виберіть каталог</translation>
     </message>
 </context>
 <context>
     <name>Gui::FileDialog</name>
     <message>
         <source>Save as</source>
-        <translation type="unfinished">Зберегти як</translation>
+        <translation>Зберегти як</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished">Відкрити</translation>
+        <translation>Відкрити</translation>
     </message>
 </context>
 <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
         <source>Extended</source>
-        <translation type="unfinished">Розширений</translation>
+        <translation>Розширений</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="unfinished">Усі файли (*.*)</translation>
+        <translation>Усі файли (*.*)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Flag</name>
     <message>
         <source>Top left</source>
-        <translation type="unfinished">Вгорі ліворуч</translation>
+        <translation>Вгорі ліворуч</translation>
     </message>
     <message>
         <source>Bottom left</source>
-        <translation type="unfinished">Внизу ліворуч</translation>
+        <translation>Внизу ліворуч</translation>
     </message>
     <message>
         <source>Top right</source>
-        <translation type="unfinished">Вгорі праворуч</translation>
+        <translation>Вгорі праворуч</translation>
     </message>
     <message>
         <source>Bottom right</source>
-        <translation type="unfinished">Внизу праворуч</translation>
+        <translation>Внизу праворуч</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Видалити</translation>
+        <translation>Видалити</translation>
     </message>
 </context>
 <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation>Торкніться екрана. Або клацніть лівою кнопкою миші.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press right mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перетягніть екран двома пальцями. Або натисніть праву кнопку миші.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перетягніть екран одним пальцем. Або натисніть ліву кнопку миші. У режимі Ескіз та в інших режимах, додатково утримуйте кнопку Alt.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
     </message>
 </context>
 <context>
     <name>Gui::GraphvizView</name>
     <message>
-        <source>PNG format (*.png)</source>
-        <translation type="obsolete">Формат PNG (*. png)</translation>
-    </message>
-    <message>
-        <source>Bitmap format (*.bmp)</source>
-        <translation type="obsolete">Формат Bitmap (*. bmp)</translation>
-    </message>
-    <message>
-        <source>GIF format (*.gif)</source>
-        <translation type="obsolete">Формат GIF (*. gif)</translation>
-    </message>
-    <message>
-        <source>JPG format (*.jpg)</source>
-        <translation type="obsolete">JPG формат (*.jpg)</translation>
-    </message>
-    <message>
-        <source>SVG format (*.svg)</source>
-        <translation type="obsolete">Формат SVG (*.svg)</translation>
-    </message>
-    <message>
-        <source>PDF format (*.pdf)</source>
-        <translation type="obsolete">Формат PDF (*. PDF)</translation>
-    </message>
-    <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation>Експортувати діаграму</translation>
     </message>
     <message>
         <source>PNG format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PNG format</translation>
     </message>
     <message>
         <source>Bitmap format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitmap format</translation>
     </message>
     <message>
         <source>GIF format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">GIF format</translation>
     </message>
     <message>
         <source>JPG format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">JPG format</translation>
     </message>
     <message>
         <source>SVG format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG format</translation>
     </message>
     <message>
         <source>PDF format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF format</translation>
     </message>
 </context>
 <context>
     <name>Gui::InputField</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Зберегти значення</translation>
+        <translation>Зберегти значення</translation>
     </message>
 </context>
 <context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
         <source>Press CTRL and left mouse button</source>
-        <translation type="unfinished">Натисніть CTRL та ліву кнопку миші</translation>
+        <translation>Натисніть CTRL та ліву кнопку миші</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Натиснути середню кнопку миші</translation>
+        <translation>Натиснути середню кнопку миші</translation>
     </message>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Натиснути ліву кнопку миші</translation>
+        <translation>Натиснути ліву кнопку миші</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Прокручування середньою кнопкою миші</translation>
+        <translation>Прокручування середньою кнопкою миші</translation>
     </message>
 </context>
 <context>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished">Список</translation>
+        <translation>Список</translation>
     </message>
 </context>
 <context>
     <name>Gui::LocationDialog</name>
     <message>
         <source>Wrong direction</source>
-        <translation type="unfinished">Неправильний напрямок</translation>
+        <translation>Неправильний напрямок</translation>
     </message>
     <message>
         <source>Direction must not be the null vector</source>
-        <translation type="unfinished">Напрям не може мати нульовий вектор</translation>
+        <translation>Напрям не може мати нульовий вектор</translation>
     </message>
     <message>
         <source>X</source>
-        <translation type="unfinished">X</translation>
+        <translation>X</translation>
     </message>
     <message>
         <source>Y</source>
-        <translation type="unfinished">Y</translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>Z</source>
-        <translation type="unfinished">Z</translation>
+        <translation>Z</translation>
     </message>
     <message>
         <source>User defined...</source>
-        <translation type="unfinished">Визначено користувачем...</translation>
+        <translation>Визначено користувачем...</translation>
     </message>
 </context>
 <context>
     <name>Gui::LocationWidget</name>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>Direction:</source>
-        <translation type="unfinished">Напрям:</translation>
+        <translation>Напрям:</translation>
     </message>
 </context>
 <context>
     <name>Gui::MacroCommand</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Макроси</translation>
+        <translation>Макроси</translation>
     </message>
     <message>
         <source>Macro file doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Macro file doesn&apos;t exist</translation>
     </message>
     <message>
         <source>No such macro file: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No such macro file: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
     <name>Gui::MainWindow</name>
     <message>
         <source>Dimension</source>
-        <translation type="unfinished">Розмірність</translation>
+        <translation>Розмірність</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished">Готово</translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <source>Toggles this toolbar</source>
-        <translation type="unfinished">Переключення цієї панелі</translation>
+        <translation>Переключення цієї панелі</translation>
     </message>
     <message>
         <source>Toggles this dockable window</source>
-        <translation type="unfinished">Переключення цього закріплюваного вікна</translation>
+        <translation>Переключення цього закріплюваного вікна</translation>
     </message>
     <message>
         <source>Close All</source>
-        <translation type="unfinished">Закрити все</translation>
+        <translation>Закрити все</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Залежності об&apos;єктів</translation>
+        <translation>Залежності об&apos;єктів</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation>Виділені об&apos;єкти залежать від невиділених об&apos;єктів. Ви хочете дублювати їх також?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There is a rendering issue on MacOS.</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation>Щоб отримати більше інформації, перегляньте &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt;статтю&lt;/a&gt; на вікі</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
+        <translation>Не показувати знову</translation>
     </message>
 </context>
 <context>
     <name>Gui::ManualAlignment</name>
     <message>
         <source>Manual alignment</source>
-        <translation type="unfinished">Вирівнювання вручну</translation>
+        <translation>Вирівнювання вручну</translation>
     </message>
     <message>
         <source>The alignment is already in progress.</source>
-        <translation type="unfinished">Вирівнювання вже виконується.</translation>
+        <translation>Вирівнювання вже виконується.</translation>
     </message>
     <message>
         <source>Alignment[*]</source>
-        <translation type="unfinished">Вирівнювання[*]</translation>
+        <translation>Вирівнювання[*]</translation>
     </message>
     <message>
         <source>Please, select at least one point in the left and the right view</source>
-        <translation type="unfinished">Будь ласка, вкажіть не менше однієї точки на лівому та правому поданнях</translation>
+        <translation>Будь ласка, вкажіть не менше однієї точки на лівому та правому поданнях</translation>
     </message>
     <message>
         <source>Please, select at least %1 points in the left and the right view</source>
-        <translation type="unfinished">Виберіть принаймні %1 точок на лівому та правому видах</translation>
+        <translation>Виберіть принаймні %1 точок на лівому та правому видах</translation>
     </message>
     <message>
         <source>Please pick points in the left and right view</source>
-        <translation type="unfinished">Виберіть точку на лівому та правому виді</translation>
+        <translation>Виберіть точку на лівому та правому виді</translation>
     </message>
     <message>
         <source>The alignment has finished</source>
-        <translation type="unfinished">Вирівнювання завершено</translation>
+        <translation>Вирівнювання завершено</translation>
     </message>
     <message>
         <source>The alignment has been canceled</source>
-        <translation type="unfinished">Вирівнювання скасовано</translation>
+        <translation>Вирівнювання скасовано</translation>
     </message>
     <message>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
-        <translation type="unfinished">Занадто мало точок вибрано на лівому виді. Необхідно вибрати принаймні %1 точок.</translation>
+        <translation>Занадто мало точок вибрано на лівому виді. Необхідно вибрати принаймні %1 точок.</translation>
     </message>
     <message>
         <source>Too few points picked in the right view. At least %1 points are needed.</source>
-        <translation type="unfinished">Занадто мало точок вибрано на правому виді. Необхідно вибрати принаймні %1 точок.</translation>
+        <translation>Занадто мало точок вибрано на правому виді. Необхідно вибрати принаймні %1 точок.</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-        <translation type="unfinished">Вибрана різна кількість точок на лівому та правому видах. На лівому виді вибрано %1 точок, на правому виді вибрано %2 точок.</translation>
+        <translation>Вибрана різна кількість точок на лівому та правому видах. На лівому виді вибрано %1 точок, на правому виді вибрано %2 точок.</translation>
     </message>
     <message>
         <source>Try to align group of views</source>
-        <translation type="unfinished">Вирівняти групу виглядів</translation>
+        <translation>Вирівняти групу виглядів</translation>
     </message>
     <message>
         <source>The alignment failed.
 How do you want to proceed?</source>
-        <translation type="unfinished">Не вдалося виконати вирівнювання. Як ви бажаєте продовжувати?</translation>
+        <translation>Не вдалося виконати вирівнювання. Як ви бажаєте продовжувати?</translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">Повторити</translation>
+        <translation>Повторити</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished">Ігнорувати</translation>
+        <translation>Ігнорувати</translation>
     </message>
     <message>
         <source>Abort</source>
-        <translation type="unfinished">Перервати</translation>
+        <translation>Перервати</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-        <translation type="unfinished">Обрана різна кількість точок на лівому та правому видах. На лівому виді обрано %1 точок, на правому виді - %2 точок.</translation>
+        <translation>Обрана різна кількість точок на лівому та правому видах. На лівому виді обрано %1 точок, на правому виді - %2 точок.</translation>
     </message>
     <message>
         <source>Point picked at (%1,%2,%3)</source>
-        <translation type="unfinished">Обрані точки при (%1, %2 %3)</translation>
+        <translation>Обрані точки при (%1, %2 %3)</translation>
     </message>
     <message>
         <source>No point was picked</source>
-        <translation type="unfinished">Жодної точки не вибрано</translation>
+        <translation>Жодної точки не вибрано</translation>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">Не знайдено точки на моделі</translation>
+        <translation>Не знайдено точки на моделі</translation>
     </message>
 </context>
 <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation>Торкніться екрана. Або клацніть лівою кнопкою миші.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
     </message>
 </context>
 <context>
@@ -3946,7 +3896,7 @@ How do you want to proceed?</source>
     <message>
         <source>Download started...
 </source>
-        <translation type="unfinished">Завантаження розпочато...
+        <translation>Завантаження розпочато...
 </translation>
     </message>
 </context>
@@ -3954,3014 +3904,2973 @@ How do you want to proceed?</source>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Натиснути ліву кнопку миші</translation>
+        <translation>Натиснути ліву кнопку миші</translation>
     </message>
     <message>
         <source>Press CTRL and middle mouse button</source>
-        <translation type="unfinished"></translation>
+        <translation>Натисніть клавішу Ctrl та середню кнопку миші</translation>
     </message>
     <message>
         <source>Press CTRL and right mouse button</source>
-        <translation type="unfinished"></translation>
+        <translation>Натисніть клавішу Ctrl та праву кнопку миші</translation>
     </message>
     <message>
         <source>Press CTRL and left mouse button</source>
-        <translation type="unfinished">Натисніть CTRL та ліву кнопку миші</translation>
+        <translation>Натисніть CTRL та ліву кнопку миші</translation>
     </message>
 </context>
 <context>
     <name>Gui::PrefQuantitySpinBox</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Зберегти значення</translation>
+        <translation>Зберегти значення</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished">Clear list</translation>
+        <translation>Очистити список</translation>
     </message>
 </context>
 <context>
     <name>Gui::ProgressBar</name>
     <message>
         <source>Remaining: %1</source>
-        <translation type="unfinished">Залишилося:%1</translation>
+        <translation>Залишилося:%1</translation>
     </message>
     <message>
         <source>Aborting</source>
-        <translation type="unfinished">Переривання</translation>
+        <translation>Переривання</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
-        <translation type="unfinished">Ви дійсно бажаєте перервати операцію?</translation>
+        <translation>Ви дійсно бажаєте перервати операцію?</translation>
     </message>
 </context>
 <context>
     <name>Gui::ProgressDialog</name>
     <message>
         <source>Remaining: %1</source>
-        <translation type="unfinished">Залишилося:%1</translation>
+        <translation>Залишилося:%1</translation>
     </message>
     <message>
         <source>Aborting</source>
-        <translation type="unfinished">Переривання</translation>
+        <translation>Переривання</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
-        <translation type="unfinished">Ви дійсно бажаєте перервати операцію?</translation>
+        <translation>Ви дійсно бажаєте перервати операцію?</translation>
     </message>
 </context>
 <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Редагувати...</translation>
+        <translation>Редагувати...</translation>
     </message>
 </context>
 <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
         <source>Property</source>
-        <translation type="unfinished">Властивість</translation>
+        <translation>Властивість</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Значення</translation>
+        <translation>Значення</translation>
     </message>
 </context>
 <context>
     <name>Gui::PropertyView</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Дані</translation>
+        <translation>Дані</translation>
     </message>
 </context>
 <context>
     <name>Gui::PythonConsole</name>
     <message>
         <source>System exit</source>
-        <translation type="unfinished">Вихід із системи</translation>
+        <translation>Вихід із системи</translation>
     </message>
     <message>
         <source>The application is still running.
 Do you want to exit without saving your data?</source>
-        <translation type="unfinished">Програма, досі працює.
+        <translation>Програма, досі працює.
 Бажаєте вийти без збереження даних?</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Консоль python</translation>
+        <translation>Консоль python</translation>
     </message>
     <message>
         <source>Unhandled PyCXX exception.</source>
-        <translation type="unfinished">Необроблене виключення PyCXX.</translation>
+        <translation>Необроблене виключення PyCXX.</translation>
     </message>
     <message>
         <source>Unhandled FreeCAD exception.</source>
-        <translation type="unfinished">Необроблене виключення FreeCAD.</translation>
+        <translation>Необроблене виключення FreeCAD.</translation>
     </message>
     <message>
         <source>Unhandled unknown C++ exception.</source>
-        <translation type="unfinished">Необроблений невідомий виняток C++.</translation>
+        <translation>Необроблений невідомий виняток C++.</translation>
     </message>
     <message>
         <source>&amp;Copy command</source>
-        <translation type="unfinished">&amp;Копіювати команду</translation>
+        <translation>&amp;Копіювати команду</translation>
     </message>
     <message>
         <source>&amp;Copy history</source>
-        <translation type="unfinished">&amp;Копіювати історію</translation>
+        <translation>&amp;Копіювати історію</translation>
     </message>
     <message>
         <source>Save history as...</source>
-        <translation type="unfinished">Зберегти історію як...</translation>
+        <translation>Зберегти історію як...</translation>
     </message>
     <message>
         <source>Insert file name...</source>
-        <translation type="unfinished">Введіть ім&apos;я файлу ...</translation>
+        <translation>Введіть ім&apos;я файлу ...</translation>
     </message>
     <message>
         <source>Save History</source>
-        <translation type="unfinished">Зберегти історію</translation>
-    </message>
-    <message>
-        <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="obsolete">Файли макросів (*.FCMacro *.ру)</translation>
+        <translation>Зберегти історію</translation>
     </message>
     <message>
         <source>Insert file name</source>
-        <translation type="unfinished">Введіть ім&apos;я файлу</translation>
-    </message>
-    <message>
-        <source>All Files (*.*)</source>
-        <translation type="obsolete">Всі файли (*.*)</translation>
+        <translation>Введіть ім&apos;я файлу</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
-        <translation type="unfinished">Необроблений виняток C++.</translation>
+        <translation>Необроблений виняток C++.</translation>
     </message>
     <message>
         <source>Word wrap</source>
-        <translation type="unfinished">Перенесення слів</translation>
+        <translation>Перенесення слів</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
-        <translation type="unfinished">&amp;Копіювати</translation>
+        <translation>&amp;Копіювати</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished">&amp;Вставити</translation>
+        <translation>&amp;Вставити</translation>
     </message>
     <message>
         <source>Select All</source>
-        <translation type="unfinished">Вибрати все</translation>
+        <translation>Вибрати все</translation>
     </message>
     <message>
         <source>Clear console</source>
-        <translation type="unfinished">Очистити консоль</translation>
+        <translation>Очистити консоль</translation>
     </message>
     <message>
         <source>Macro Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Macro Files</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
     <name>Gui::PythonEditor</name>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Коментар</translation>
+        <translation>Коментар</translation>
     </message>
     <message>
         <source>Uncomment</source>
-        <translation type="unfinished">Розкоментувати</translation>
+        <translation>Розкоментувати</translation>
     </message>
 </context>
 <context>
     <name>Gui::RecentFilesAction</name>
     <message>
         <source>Open file %1</source>
-        <translation type="unfinished">Відкрити файл %1</translation>
+        <translation>Відкрити файл %1</translation>
     </message>
     <message>
         <source>File not found</source>
-        <translation type="unfinished">Файл не знайдено</translation>
+        <translation>Файл не знайдено</translation>
     </message>
     <message>
         <source>The file &apos;%1&apos; cannot be opened.</source>
-        <translation type="unfinished">Файл &apos;%1&apos; не може бути відкритий.</translation>
+        <translation>Файл &apos;%1&apos; не може бути відкритий.</translation>
     </message>
 </context>
 <context>
     <name>Gui::SelectModule</name>
     <message>
         <source>Select module</source>
-        <translation type="unfinished">Виберіть модуль</translation>
+        <translation>Виберіть модуль</translation>
     </message>
     <message>
         <source>Open %1 as</source>
-        <translation type="unfinished">Відкрити %1 як</translation>
+        <translation>Відкрити %1 як</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation type="unfinished">Вибрати</translation>
+        <translation>Вибрати</translation>
     </message>
 </context>
 <context>
     <name>Gui::StdCmdDescription</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Des&amp;cription</source>
-        <translation type="unfinished">Опис</translation>
+        <translation>Опис</translation>
     </message>
     <message>
         <source>Long description of commands</source>
-        <translation type="unfinished">Детальний опис команд</translation>
+        <translation>Детальний опис команд</translation>
     </message>
 </context>
 <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Download online help</source>
-        <translation type="unfinished">Завантажити довідку з інтернету</translation>
+        <translation>Завантажити довідку з інтернету</translation>
     </message>
     <message>
         <source>Download %1&apos;s online help</source>
-        <translation type="unfinished">Завантаження %1&apos;s довідки з інтернету</translation>
+        <translation>Завантаження %1&apos;s довідки з інтернету</translation>
     </message>
     <message>
         <source>Non-existing directory</source>
-        <translation type="unfinished">Неіснуючий каталог</translation>
+        <translation>Неіснуючий каталог</translation>
     </message>
     <message>
         <source>The directory &apos;%1&apos; does not exist.
 
 Do you want to specify an existing directory?</source>
-        <translation type="unfinished">Каталог &apos;%1&apos; не існує.
+        <translation>Каталог &apos;%1&apos; не існує.
 
 Бажаєте призначити існуючий каталог?</translation>
     </message>
     <message>
         <source>Missing permission</source>
-        <translation type="unfinished">Відсутній дозвіл</translation>
+        <translation>Відсутній дозвіл</translation>
     </message>
     <message>
         <source>You don&apos;t have write permission to &apos;%1&apos;
 
 Do you want to specify another directory?</source>
-        <translation type="unfinished">Ви не маєте дозволу на запис до &apos;%1&apos;
+        <translation>Ви не маєте дозволу на запис до &apos;%1&apos;
 
 Бажаєте вказати інший каталог?</translation>
     </message>
     <message>
         <source>Stop downloading</source>
-        <translation type="unfinished">Зупинка завантаження</translation>
+        <translation>Зупинка завантаження</translation>
     </message>
 </context>
 <context>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Автоматичне документування модуля python</translation>
+        <translation>Автоматичне документування модуля python</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Відкриється веб-переглядач для відображення документації модулів Python</translation>
+        <translation>Відкриється веб-переглядач для відображення документації модулів Python</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskBoxAngle</name>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Кут</translation>
+        <translation>Кут</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskBoxPosition</name>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Позиція</translation>
+        <translation>Позиція</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
-        <translation type="unfinished">Режим друку:</translation>
+        <translation>Режим друку:</translation>
     </message>
     <message>
         <source>Point size:</source>
-        <translation type="unfinished">Розмір пункту:</translation>
+        <translation>Розмір пункту:</translation>
     </message>
     <message>
         <source>Line width:</source>
-        <translation type="unfinished">Ширина лінії:</translation>
+        <translation>Ширина лінії:</translation>
     </message>
     <message>
         <source>Transparency:</source>
-        <translation type="unfinished">Прозорість:</translation>
+        <translation>Прозорість:</translation>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished">Зовнішній вигляд</translation>
+        <translation>Зовнішній вигляд</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Вікно документа:</translation>
+        <translation>Вікно документа:</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">Діалогове вікно вже відкрито в панелі задач</translation>
+        <translation>Діалогове вікно вже відкрито в панелі задач</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskSelectLinkProperty</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished">Зовнішній вигляд</translation>
+        <translation>Зовнішній вигляд</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>edit selection</source>
-        <translation type="unfinished">редагувати вибір</translation>
+        <translation>редагувати вибір</translation>
     </message>
 </context>
 <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Натиснути ліву кнопку миші</translation>
+        <translation>Натиснути ліву кнопку миші</translation>
     </message>
     <message>
         <source>Press SHIFT button</source>
-        <translation type="unfinished">Натисніть клавішу SHIFT</translation>
+        <translation>Натисніть клавішу SHIFT</translation>
     </message>
     <message>
         <source>Press ALT button</source>
-        <translation type="unfinished">Натисніть клавішу ALT</translation>
+        <translation>Натисніть клавішу ALT</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Одночасно натисніть кнопки CTRL і SHIFT</translation>
+        <translation>Одночасно натисніть кнопки CTRL і SHIFT</translation>
     </message>
 </context>
 <context>
     <name>Gui::TreeDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">У вигляді дерева</translation>
+        <translation>У вигляді дерева</translation>
     </message>
 </context>
 <context>
     <name>Gui::TreeWidget</name>
     <message>
         <source>Create group...</source>
-        <translation type="unfinished">Створити групу...</translation>
+        <translation>Створити групу...</translation>
     </message>
     <message>
         <source>Create a group</source>
-        <translation type="unfinished">Створити групу</translation>
+        <translation>Створити групу</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Група</translation>
+        <translation>Група</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Перейменувати</translation>
+        <translation>Перейменувати</translation>
     </message>
     <message>
         <source>Rename object</source>
-        <translation type="unfinished">Перейменувати об&apos;єкт</translation>
+        <translation>Перейменувати об&apos;єкт</translation>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
-        <translation type="unfinished">Етикетки та атрибути</translation>
+        <translation>Етикетки та атрибути</translation>
     </message>
     <message>
         <source>Application</source>
-        <translation type="unfinished">Програма</translation>
+        <translation>Програма</translation>
     </message>
     <message>
         <source>Finish editing</source>
-        <translation type="unfinished">Завершити редагування</translation>
+        <translation>Завершити редагування</translation>
     </message>
     <message>
         <source>Finish editing object</source>
-        <translation type="unfinished">Завершити редагування об&apos;єкту</translation>
+        <translation>Завершити редагування об&apos;єкту</translation>
     </message>
     <message>
         <source>Activate document</source>
-        <translation type="unfinished">Активувати документ</translation>
+        <translation>Активувати документ</translation>
     </message>
     <message>
         <source>Activate document %1</source>
-        <translation type="unfinished">Активувати документ %1</translation>
+        <translation>Активувати документ %1</translation>
     </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
     <message>
         <source>Export PDF</source>
-        <translation type="unfinished">Експорт в PDF</translation>
-    </message>
-    <message>
-        <source>PDF file (*.pdf)</source>
-        <translation type="obsolete">Файл PDF (*.pdf)</translation>
+        <translation>Експорт в PDF</translation>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF file</translation>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Opening file failed</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
     </message>
 </context>
 <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
-        <translation type="unfinished">Оберіть &apos;%1&apos; робочу область</translation>
+        <translation>Оберіть &apos;%1&apos; робочу область</translation>
     </message>
 </context>
 <context>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Ввести логін і пароль для &quot;%1&quot; на %2&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Ввести логін і пароль для &quot;%1&quot; на %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Підключення до проксі-сервера за допомогою &quot;%1&quot;:&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Підключення до проксі-сервера за допомогою &quot;%1&quot;:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
     <name>Position</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Форма</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>0.1 mm</source>
-        <translation type="unfinished">0.1 мм</translation>
+        <translation>0.1 мм</translation>
     </message>
     <message>
         <source>0.5 mm</source>
-        <translation type="unfinished">0.5 мм</translation>
+        <translation>0.5 мм</translation>
     </message>
     <message>
         <source>1 mm</source>
-        <translation type="unfinished">1 мм</translation>
+        <translation>1 мм</translation>
     </message>
     <message>
         <source>2 mm</source>
-        <translation type="unfinished">2 мм</translation>
+        <translation>2 мм</translation>
     </message>
     <message>
         <source>5 mm</source>
-        <translation type="unfinished">5 мм</translation>
+        <translation>5 мм</translation>
     </message>
     <message>
         <source>10 mm</source>
-        <translation type="unfinished">10 мм</translation>
+        <translation>10 мм</translation>
     </message>
     <message>
         <source>20 mm</source>
-        <translation type="unfinished">20 мм</translation>
+        <translation>20 мм</translation>
     </message>
     <message>
         <source>50 mm</source>
-        <translation type="unfinished">50 мм</translation>
+        <translation>50 мм</translation>
     </message>
     <message>
         <source>100 mm</source>
-        <translation type="unfinished">100 мм</translation>
+        <translation>100 мм</translation>
     </message>
     <message>
         <source>200 mm</source>
-        <translation type="unfinished">200 мм</translation>
+        <translation>200 мм</translation>
     </message>
     <message>
         <source>500 mm</source>
-        <translation type="unfinished">500 мм</translation>
+        <translation>500 мм</translation>
     </message>
     <message>
         <source>1 m</source>
-        <translation type="unfinished">1 м</translation>
+        <translation>1 м</translation>
     </message>
     <message>
         <source>2 m</source>
-        <translation type="unfinished">2 м</translation>
+        <translation>2 м</translation>
     </message>
     <message>
         <source>5 m </source>
-        <translation type="unfinished">5 м </translation>
+        <translation>5 м </translation>
     </message>
     <message>
         <source>Grid Snap in</source>
-        <translation type="unfinished">Захват сітки в</translation>
+        <translation>Захват сітки в</translation>
     </message>
 </context>
 <context>
     <name>PropertyListDialog</name>
     <message>
         <source>Invalid input</source>
-        <translation type="unfinished">Некоректний ввід</translation>
+        <translation>Некоректний ввід</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished">Введене у рядку %1 значення не є числом</translation>
+        <translation>Введене у рядку %1 значення не є числом</translation>
     </message>
 </context>
 <context>
     <name>QDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">У вигляді дерева</translation>
+        <translation>У вигляді дерева</translation>
     </message>
     <message>
         <source>Property view</source>
-        <translation type="unfinished">Властивості вигляду</translation>
+        <translation>Властивості вигляду</translation>
     </message>
     <message>
         <source>Selection view</source>
-        <translation type="unfinished">Вибір вигляду</translation>
+        <translation>Вибір вигляду</translation>
     </message>
     <message>
         <source>Report view</source>
-        <translation type="unfinished">Вигляд звіту</translation>
-    </message>
-    <message>
-        <source>Task View</source>
-        <translation type="obsolete">Вигляд завдання</translation>
+        <translation>Вигляд звіту</translation>
     </message>
     <message>
         <source>Combo View</source>
-        <translation type="unfinished">Комбінований вигляд</translation>
+        <translation>Комбінований вигляд</translation>
     </message>
     <message>
         <source>Toolbox</source>
-        <translation type="unfinished">Панель інструментів</translation>
+        <translation>Панель інструментів</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Консоль python</translation>
+        <translation>Консоль python</translation>
     </message>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Показати властивості</translation>
+        <translation>Показати властивості</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>General</source>
-        <translation type="unfinished">Загальне</translation>
+        <translation>Загальне</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Відображення</translation>
+        <translation>Відображення</translation>
     </message>
     <message>
         <source>Unknown filetype</source>
-        <translation type="unfinished">Невідомий тип файлу</translation>
+        <translation>Невідомий тип файлу</translation>
     </message>
     <message>
         <source>Cannot open unknown filetype: %1</source>
-        <translation type="unfinished">Не вдається відкрити невідомий тип файлу: %1</translation>
+        <translation>Не вдається відкрити невідомий тип файлу: %1</translation>
     </message>
     <message>
         <source>Cannot save to unknown filetype: %1</source>
-        <translation type="unfinished">Не вдається зберегти в невідомий тип файлу: %1</translation>
+        <translation>Не вдається зберегти в невідомий тип файлу: %1</translation>
     </message>
     <message>
         <source>Workbench failure</source>
-        <translation type="unfinished">Крах робочої області</translation>
+        <translation>Крах робочої області</translation>
     </message>
     <message>
         <source>%1</source>
-        <translation type="unfinished">%1</translation>
-    </message>
-    <message>
-        <source>Unable to launch Qt Assistant (%1)</source>
-        <translation type="obsolete">Неможливо запустити Qt Assistant (%1)</translation>
+        <translation>%1</translation>
     </message>
     <message>
         <source>Exception</source>
-        <translation type="unfinished">Виняток</translation>
+        <translation>Виняток</translation>
     </message>
     <message>
         <source>Open document</source>
-        <translation type="unfinished">Відкрити документ</translation>
+        <translation>Відкрити документ</translation>
     </message>
     <message>
         <source>Import file</source>
-        <translation type="unfinished">Імпорт файлу</translation>
+        <translation>Імпорт файлу</translation>
     </message>
     <message>
         <source>Export file</source>
-        <translation type="unfinished">Експорт файлу</translation>
+        <translation>Експорт файлу</translation>
     </message>
     <message>
         <source>Printing...</source>
-        <translation type="unfinished">Друк...</translation>
+        <translation>Друк...</translation>
     </message>
     <message>
         <source>Cannot load workbench</source>
-        <translation type="unfinished">Не вдається завантажити робочу область</translation>
+        <translation>Не вдається завантажити робочу область</translation>
     </message>
     <message>
         <source>A general error occurred while loading the workbench</source>
-        <translation type="unfinished">Загальна помилка при завантаженні робочої області</translation>
+        <translation>Загальна помилка при завантаженні робочої області</translation>
     </message>
     <message>
         <source>Save views...</source>
-        <translation type="unfinished">Зберегти вигляд...</translation>
+        <translation>Зберегти вигляд...</translation>
     </message>
     <message>
         <source>Load views...</source>
-        <translation type="unfinished">Завантажити вигляд...</translation>
+        <translation>Завантажити вигляд...</translation>
     </message>
     <message>
         <source>Freeze view</source>
-        <translation type="unfinished">Заморозити вигляд</translation>
+        <translation>Заморозити вигляд</translation>
     </message>
     <message>
         <source>Clear views</source>
-        <translation type="unfinished">Очистити вигляд</translation>
+        <translation>Очистити вигляд</translation>
     </message>
     <message>
         <source>Restore view &amp;%1</source>
-        <translation type="unfinished">Відновити вигляд &amp;%1</translation>
+        <translation>Відновити вигляд &amp;%1</translation>
     </message>
     <message>
         <source>Save frozen views</source>
-        <translation type="unfinished">Зберегти заморожені вигляди</translation>
-    </message>
-    <message>
-        <source>Frozen views (*.cam)</source>
-        <translation type="obsolete">Заморожені вигляди (*.cam)</translation>
+        <translation>Зберегти заморожені вигляди</translation>
     </message>
     <message>
         <source>Restore views</source>
-        <translation type="unfinished">Відновити вигляди</translation>
+        <translation>Відновити вигляди</translation>
     </message>
     <message>
         <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-        <translation type="unfinished">При імпорті виглядів очиститься поточний вигляд.
+        <translation>При імпорті виглядів очиститься поточний вигляд.
 Бажаєте продовжити?</translation>
     </message>
     <message>
         <source>Restore frozen views</source>
-        <translation type="unfinished">Відновлення заморожених виглядів</translation>
+        <translation>Відновлення заморожених виглядів</translation>
     </message>
     <message>
         <source>Cannot open file &apos;%1&apos;.</source>
-        <translation type="unfinished">Не вдається відкрити файл %1.</translation>
+        <translation>Не вдається відкрити файл %1.</translation>
     </message>
     <message>
         <source>Docked</source>
-        <translation type="unfinished">Закріплено</translation>
+        <translation>Закріплено</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation type="unfinished">Не закріплено</translation>
+        <translation>Не закріплено</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">На весь екран</translation>
+        <translation>На весь екран</translation>
     </message>
     <message>
         <source>files</source>
-        <translation type="unfinished">Файли</translation>
+        <translation>Файли</translation>
     </message>
     <message>
         <source>Save picture</source>
-        <translation type="unfinished">Зберегти зображення</translation>
+        <translation>Зберегти зображення</translation>
     </message>
     <message>
         <source>New sub-group</source>
-        <translation type="unfinished">Нова підгрупа</translation>
+        <translation>Нова підгрупа</translation>
     </message>
     <message>
         <source>Enter the name:</source>
-        <translation type="unfinished">Введіть назву:</translation>
+        <translation>Введіть назву:</translation>
     </message>
     <message>
         <source>New text item</source>
-        <translation type="unfinished">Новий текстовий елемент</translation>
+        <translation>Новий текстовий елемент</translation>
     </message>
     <message>
         <source>Enter your text:</source>
-        <translation type="unfinished">Введіть текст:</translation>
+        <translation>Введіть текст:</translation>
     </message>
     <message>
         <source>New integer item</source>
-        <translation type="unfinished">Новий елемент, ціле число</translation>
+        <translation>Новий елемент, ціле число</translation>
     </message>
     <message>
         <source>Enter your number:</source>
-        <translation type="unfinished">Введіть номер:</translation>
+        <translation>Введіть номер:</translation>
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">Новий непідписаний елемент</translation>
+        <translation>Новий непідписаний елемент</translation>
     </message>
     <message>
         <source>New float item</source>
-        <translation type="unfinished">Новий дійсний елемент</translation>
+        <translation>Новий дійсний елемент</translation>
     </message>
     <message>
         <source>New Boolean item</source>
-        <translation type="unfinished">Новий логічний елемент</translation>
+        <translation>Новий логічний елемент</translation>
     </message>
     <message>
         <source>Choose an item:</source>
-        <translation type="unfinished">Виберіть елемент:</translation>
+        <translation>Виберіть елемент:</translation>
     </message>
     <message>
         <source>Rename group</source>
-        <translation type="unfinished">Перейменувати групу</translation>
+        <translation>Перейменувати групу</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; cannot be renamed.</source>
-        <translation type="unfinished">Групу &apos;%1&apos; неможливо перейменувати.</translation>
+        <translation>Групу &apos;%1&apos; неможливо перейменувати.</translation>
     </message>
     <message>
         <source>Existing group</source>
-        <translation type="unfinished">Існуюча група</translation>
+        <translation>Існуюча група</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">Група &apos;%1&apos; вже існує.</translation>
+        <translation>Група &apos;%1&apos; вже існує.</translation>
     </message>
     <message>
         <source>Change value</source>
-        <translation type="unfinished">Змінити значення</translation>
+        <translation>Змінити значення</translation>
     </message>
     <message>
         <source>Save document under new filename...</source>
-        <translation type="unfinished">Зберегти документ під новим ім&apos;ям ...</translation>
+        <translation>Зберегти документ під новим ім&apos;ям ...</translation>
     </message>
     <message>
         <source>Saving aborted</source>
-        <translation type="unfinished">Збереження перервано</translation>
+        <translation>Збереження перервано</translation>
     </message>
     <message>
         <source>Unsaved document</source>
-        <translation type="unfinished">Незбережений документ</translation>
+        <translation>Незбережений документ</translation>
     </message>
     <message>
         <source>Save Macro</source>
-        <translation type="unfinished">Зберегти макрос</translation>
+        <translation>Зберегти макрос</translation>
     </message>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Завершити</translation>
+        <translation>Завершити</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Очистити</translation>
+        <translation>Очистити</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <source>Inner</source>
-        <translation type="unfinished">Внутрішній</translation>
+        <translation>Внутрішній</translation>
     </message>
     <message>
         <source>Outer</source>
-        <translation type="unfinished">Зовнішній</translation>
+        <translation>Зовнішній</translation>
     </message>
     <message>
         <source>No Browser</source>
-        <translation type="unfinished">Браузер відсутній</translation>
+        <translation>Браузер відсутній</translation>
     </message>
     <message>
         <source>Unable to open your browser.
 
 Please open a browser window and type in: http://localhost:%1.</source>
-        <translation type="unfinished">Не вдається відкрити браузер.
+        <translation>Не вдається відкрити браузер.
 
 Будь ласка, відкрийте вікно браузера та введіть адресу: http://localhost:%1.</translation>
     </message>
     <message>
         <source>No Server</source>
-        <translation type="unfinished">Сервер відсутній</translation>
+        <translation>Сервер відсутній</translation>
     </message>
     <message>
         <source>Unable to start the server to port %1: %2.</source>
-        <translation type="unfinished">Не вдалося запустити сервер з портом %1: %2.</translation>
+        <translation>Не вдалося запустити сервер з портом %1: %2.</translation>
     </message>
     <message>
         <source>Unable to open your system browser.</source>
-        <translation type="unfinished">Не вдається відкрити Ваш системний браузер.</translation>
+        <translation>Не вдається відкрити Ваш системний браузер.</translation>
     </message>
     <message>
         <source>Options...</source>
-        <translation type="unfinished">Параметри...</translation>
+        <translation>Параметри...</translation>
     </message>
     <message>
         <source>Out of memory</source>
-        <translation type="unfinished">Не вистачає пам&apos;яті</translation>
+        <translation>Не вистачає пам&apos;яті</translation>
     </message>
     <message>
         <source>Not enough memory available to display the data.</source>
-        <translation type="unfinished">Недостатньо пам&apos;яті для відображення даних.</translation>
+        <translation>Недостатньо пам&apos;яті для відображення даних.</translation>
     </message>
     <message>
         <source>Cannot find file %1</source>
-        <translation type="unfinished">Не вдається знайти файл %1</translation>
+        <translation>Не вдається знайти файл %1</translation>
     </message>
     <message>
         <source>Cannot find file %1 neither in %2 nor in %3</source>
-        <translation type="unfinished">Не вдається знайти файл %1 ні в %2 , ні в %3</translation>
+        <translation>Не вдається знайти файл %1 ні в %2 , ні в %3</translation>
     </message>
     <message>
         <source>Save %1 Document</source>
-        <translation type="unfinished">Зберегти %1 документ</translation>
+        <translation>Зберегти %1 документ</translation>
     </message>
     <message>
         <source>%1 document (*.FCStd)</source>
-        <translation type="unfinished">Документ %1 (*.FCStd)</translation>
+        <translation>Документ %1 (*.FCStd)</translation>
     </message>
     <message>
         <source>Document not closable</source>
-        <translation type="unfinished">Документ не закривається</translation>
+        <translation>Документ не закривається</translation>
     </message>
     <message>
         <source>The document is not closable for the moment.</source>
-        <translation type="unfinished">Документ не може бути закритим в даний час.</translation>
+        <translation>Документ не може бути закритим в даний час.</translation>
     </message>
     <message>
         <source>No OpenGL</source>
-        <translation type="unfinished">Без OpenGL</translation>
+        <translation>Без OpenGL</translation>
     </message>
     <message>
         <source>This system does not support OpenGL</source>
-        <translation type="unfinished">Ця система не підтримує OpenGL</translation>
+        <translation>Ця система не підтримує OpenGL</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-        <translation type="unfinished">Неможливо завантажити документацію.
+        <translation>Неможливо завантажити документацію.
 Щоб завантажити це потрібно Qt 4.4 або вище.</translation>
     </message>
     <message>
-        <source>%1 Help</source>
-        <translation type="obsolete">%1 Довідка</translation>
-    </message>
-    <message>
         <source>Exporting PDF...</source>
-        <translation type="unfinished">Експорт в PDF ...</translation>
+        <translation>Експорт в PDF ...</translation>
     </message>
     <message>
         <source>Wrong selection</source>
-        <translation type="unfinished">Невірний вибір</translation>
+        <translation>Невірний вибір</translation>
     </message>
     <message>
         <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation type="unfinished">Обрано лише один об&apos;єкт. Будь ласка, виберіть два об&apos;єкти. Майте на увазі, що має значення місце, де ви робите вибір.</translation>
+        <translation>Обрано лише один об&apos;єкт. Будь ласка, виберіть два об&apos;єкти. Майте на увазі, що має значення місце, де ви робите вибір.</translation>
     </message>
     <message>
         <source>Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation type="unfinished">Будь ласка, виберіть два об&apos;єкти. Майте на увазі, що має значення місце, де ви робите вибір.</translation>
+        <translation>Будь ласка, виберіть два об&apos;єкти. Майте на увазі, що має значення місце, де ви робите вибір.</translation>
     </message>
     <message>
         <source>New boolean item</source>
-        <translation type="unfinished">Новий логічний елемент</translation>
+        <translation>Новий логічний елемент</translation>
     </message>
     <message>
         <source>Navigation styles</source>
-        <translation type="unfinished">Стилі навігації</translation>
+        <translation>Стилі навігації</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation type="unfinished">%1 навігація</translation>
+        <translation>%1 навігація</translation>
     </message>
     <message>
         <source>Move annotation</source>
-        <translation type="unfinished">Переміщення анотації</translation>
+        <translation>Переміщення анотації</translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">Перетворення</translation>
-    </message>
-    <message>
-        <source>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="obsolete">Документ знаходиться в режимі редагування і тому його зараз не можна закрити. Ви повинні або завершити, або скасувати редагування на панелі завдань.</translation>
+        <translation>Перетворення</translation>
     </message>
     <message>
         <source>Do you want to close this dialog?</source>
-        <translation type="unfinished">Ви бажаєте закрити це діалогове вікно?</translation>
+        <translation>Ви бажаєте закрити це діалогове вікно?</translation>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished">Do you want to save your changes to document &apos;%1&apos; before closing?</translation>
+        <translation>Бажаєте зберегти зміни, які були внесені до документа &apos;%1&apos; перед його закриттям?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished">Якщо ви не збережете зміни, вони будуть утрачені.</translation>
+        <translation>Якщо ви не збережете зміни, вони будуть утрачені.</translation>
     </message>
     <message>
         <source>Save a copy of the document under new filename...</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберегти копію документа під новим іменем файла...</translation>
     </message>
     <message>
         <source>Frozen views</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Frozen views</translation>
     </message>
     <message>
         <source>Saving document failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saving document failed</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Документ</translation>
+        <translation>Документ</translation>
+    </message>
+    <message>
+        <source>Delete macro</source>
+        <translation type="unfinished">Видалити макрос</translation>
+    </message>
+    <message>
+        <source>Not allowed to delete system-wide macros</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdBoxSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Box selection</source>
-        <translation type="unfinished">Прямокутник виділення</translation>
+        <translation>Прямокутник виділення</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAbout</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>&amp;About %1</source>
-        <translation type="unfinished">Про %1</translation>
+        <translation>Про %1</translation>
     </message>
     <message>
         <source>About %1</source>
-        <translation type="unfinished">Про %1</translation>
+        <translation>Про %1</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAboutQt</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">Про &amp;Qt</translation>
+        <translation>Про &amp;Qt</translation>
     </message>
     <message>
         <source>About Qt</source>
-        <translation type="unfinished">Про Qt</translation>
+        <translation>Про Qt</translation>
     </message>
 </context>
 <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>Ne&amp;xt</source>
-        <translation type="unfinished">Далі</translation>
+        <translation>Далі</translation>
     </message>
     <message>
         <source>Activate next window</source>
-        <translation type="unfinished">Активувати наступне вікно</translation>
+        <translation>Активувати наступне вікно</translation>
     </message>
 </context>
 <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>Pre&amp;vious</source>
-        <translation type="unfinished">Назад</translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <source>Activate previous window</source>
-        <translation type="unfinished">Активувати попереднє вікно</translation>
+        <translation>Активувати попереднє вікно</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAlignment</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Alignment...</source>
-        <translation type="unfinished">Вирівнювання...</translation>
+        <translation>Вирівнювання...</translation>
     </message>
     <message>
         <source>Align the selected objects</source>
-        <translation type="unfinished">Вирівняти виділені об&apos;єкти</translation>
+        <translation>Вирівняти виділені об&apos;єкти</translation>
     </message>
 </context>
 <context>
     <name>StdCmdArrangeIcons</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>Arrange &amp;Icons</source>
-        <translation type="unfinished">Організувати &amp;Ікони</translation>
+        <translation>Організувати &amp;Ікони</translation>
     </message>
     <message>
         <source>Arrange Icons</source>
-        <translation type="unfinished">Організувати Ікони</translation>
+        <translation>Організувати Ікони</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAxisCross</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Toggle axis cross</source>
-        <translation type="unfinished">Показати/приховати початок координат</translation>
+        <translation>Показати/приховати початок координат</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCascadeWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>&amp;Cascade</source>
-        <translation type="unfinished">&amp;Каскадом</translation>
+        <translation>&amp;Каскадом</translation>
     </message>
     <message>
         <source>Tile pragmatic</source>
-        <translation type="unfinished">Прагматична плитка</translation>
+        <translation>Прагматична плитка</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>Cl&amp;ose</source>
-        <translation type="unfinished">Зак&amp;рити</translation>
+        <translation>Зак&amp;рити</translation>
     </message>
     <message>
         <source>Close active window</source>
-        <translation type="unfinished">Закрити активне вікно</translation>
+        <translation>Закрити активне вікно</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>Close Al&amp;l</source>
-        <translation type="unfinished">Закрити всі</translation>
+        <translation>Закрити всі</translation>
     </message>
     <message>
         <source>Close all windows</source>
-        <translation type="unfinished">Закрити всі вікна</translation>
+        <translation>Закрити всі вікна</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCommandLine</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Start command &amp;line...</source>
-        <translation type="unfinished">Запуск командного рядка...</translation>
+        <translation>Запуск командного рядка...</translation>
     </message>
     <message>
         <source>Opens the command line in the console</source>
-        <translation type="unfinished">Відкриття командного рядка в консолі</translation>
+        <translation>Відкриття командного рядка в консолі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCopy</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>C&amp;opy</source>
-        <translation type="unfinished">Копіювати</translation>
+        <translation>Копіювати</translation>
     </message>
     <message>
         <source>Copy operation</source>
-        <translation type="unfinished">Операції копіювання</translation>
+        <translation>Операції копіювання</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCut</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>&amp;Cut</source>
-        <translation type="unfinished">Вирізати</translation>
+        <translation>Вирізати</translation>
     </message>
     <message>
         <source>Cut out</source>
-        <translation type="unfinished">Вирізати</translation>
+        <translation>Вирізати</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDelete</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished">Видалити</translation>
+        <translation>Видалити</translation>
     </message>
     <message>
         <source>Deletes the selected objects</source>
-        <translation type="unfinished">Видаляє вибрані об&apos;єкти</translation>
+        <translation>Видаляє вибрані об&apos;єкти</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDemoMode</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>View turntable...</source>
-        <translation type="unfinished">Відкрити програвач ...</translation>
+        <translation>Відкрити програвач ...</translation>
     </message>
     <message>
         <source>View turntable</source>
-        <translation type="unfinished">Відкрити програвач</translation>
+        <translation>Відкрити програвач</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgCustomize</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Cu&amp;stomize...</source>
-        <translation type="unfinished">Власні установки...</translation>
+        <translation>Власні установки...</translation>
     </message>
     <message>
         <source>Customize toolbars and command bars</source>
-        <translation type="unfinished">Налаштування панелі інструментів та панелі команд</translation>
+        <translation>Налаштування панелі інструментів та панелі команд</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgMacroExecute</name>
     <message>
         <source>Macros ...</source>
-        <translation type="unfinished">Макроси ...</translation>
+        <translation>Макроси ...</translation>
     </message>
     <message>
         <source>Opens a dialog to let you execute a recorded macro</source>
-        <translation type="unfinished">Відкриває діалогове вікно, щоб виконати записаний макрос</translation>
+        <translation>Відкриває діалогове вікно, щоб виконати записаний макрос</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>Execute macro</source>
-        <translation type="unfinished">Виконати макрос</translation>
+        <translation>Виконати макрос</translation>
     </message>
     <message>
         <source>Execute the macro in the editor</source>
-        <translation type="unfinished">Виконати макрос у редакторі</translation>
+        <translation>Виконати макрос у редакторі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
         <source>&amp;Macro recording ...</source>
-        <translation type="unfinished">Запис макросу ...</translation>
+        <translation>Запис макросу ...</translation>
     </message>
     <message>
         <source>Opens a dialog to record a macro</source>
-        <translation type="unfinished">Відкриває діалогове вікно для запису макросів</translation>
+        <translation>Відкриває діалогове вікно для запису макросів</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgParameter</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>E&amp;dit parameters ...</source>
-        <translation type="unfinished">Редагування параметрів ...</translation>
+        <translation>Редагування параметрів ...</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the parameters</source>
-        <translation type="unfinished">Відкриває діалогове вікно для зміни параметрів</translation>
+        <translation>Відкриває діалогове вікно для зміни параметрів</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgPreferences</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>&amp;Preferences ...</source>
-        <translation type="unfinished">&amp;Установки ...</translation>
+        <translation>&amp;Установки ...</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the preferences</source>
-        <translation type="unfinished">Відкриває діалогове вікно для зміни установок</translation>
+        <translation>Відкриває діалогове вікно для зміни установок</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDockViewMenu</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
-    </message>
-    <message>
-        <source>Vie&amp;ws</source>
-        <translation type="obsolete">Відображення</translation>
-    </message>
-    <message>
-        <source>Toggles this window</source>
-        <translation type="obsolete">Перемкнути це вікно</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Panels</source>
-        <translation type="unfinished"></translation>
+        <translation>Панелі</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">List of available dock panels</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDrawStyle</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Draw style</source>
-        <translation type="unfinished">Стиль малювання</translation>
+        <translation>Стиль малювання</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Duplicate selection</source>
-        <translation type="unfinished">Дублювання виділеного</translation>
+        <translation>Дублювання виділеного</translation>
     </message>
     <message>
         <source>Put duplicates of the selected objects to the active document</source>
-        <translation type="unfinished">Вставити дублікати обраних об&apos;єктів у активний документ</translation>
+        <translation>Вставити дублікати обраних об&apos;єктів у активний документ</translation>
     </message>
 </context>
 <context>
     <name>StdCmdEdit</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Toggle &amp;Edit mode</source>
-        <translation type="unfinished">Переключити режим &amp;Редагувати</translation>
+        <translation>Переключити режим &amp;Редагувати</translation>
     </message>
     <message>
         <source>Toggles the selected object&apos;s edit mode</source>
-        <translation type="unfinished">Змінити режим редагування обраного об&apos;єкту</translation>
+        <translation>Змінити режим редагування обраного об&apos;єкту</translation>
     </message>
     <message>
         <source>Enters or leaves the selected object&apos;s edit mode</source>
-        <translation type="unfinished">Ввійти у режим або вийти з режиму редагування обраного об&apos;єкту</translation>
+        <translation>Ввійти у режим або вийти з режиму редагування обраного об&apos;єкту</translation>
     </message>
 </context>
 <context>
     <name>StdCmdExport</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Export...</source>
-        <translation type="unfinished">&amp;Експорт...</translation>
+        <translation>&amp;Експорт...</translation>
     </message>
     <message>
         <source>Export an object in the active document</source>
-        <translation type="unfinished">Експорт об&apos;єкта в активний документ</translation>
+        <translation>Експорт об&apos;єкта в активний документ</translation>
     </message>
     <message>
         <source>No selection</source>
-        <translation type="unfinished">Нічого не вибрано</translation>
+        <translation>Нічого не вибрано</translation>
     </message>
     <message>
         <source>Please select first the objects you want to export.</source>
-        <translation type="unfinished">Спочатку виберіть об&apos;єкти, які потрібно експортувати.</translation>
+        <translation>Спочатку виберіть об&apos;єкти, які потрібно експортувати.</translation>
     </message>
 </context>
 <context>
     <name>StdCmdExportGraphviz</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Dependency graph...</source>
-        <translation type="unfinished">Графік залежності...</translation>
+        <translation>Графік залежності...</translation>
     </message>
     <message>
         <source>Show the dependency graph of the objects in the active document</source>
-        <translation type="unfinished">Показати граф залежностей об&apos;єктів в активному документі</translation>
+        <translation>Показати граф залежностей об&apos;єктів в активному документі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFeatRecompute</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Recompute</source>
-        <translation type="unfinished">&amp;Перерахувати</translation>
+        <translation>&amp;Перерахувати</translation>
     </message>
     <message>
         <source>Recompute feature or document</source>
-        <translation type="unfinished">Перерахувати функцію або документ</translation>
+        <translation>Перерахувати функцію або документ</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreeCADFAQ</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>FreeCAD FAQ</source>
-        <translation type="unfinished">Часті питання по FreeCAD</translation>
+        <translation>Часті питання по FreeCAD</translation>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Часті питання на веб-сайті FreeCAD</translation>
+        <translation>Часті питання на веб-сайті FreeCAD</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished">Найчастіші питання</translation>
+        <translation>Найчастіші питання</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreeCADForum</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation type="unfinished">Форум FreeCAD</translation>
+        <translation>Форум FreeCAD</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
-        <translation type="unfinished">Форум FreeCAD, де ви можете отримати допомогу від інших користувачів</translation>
+        <translation>Форум FreeCAD, де ви можете отримати допомогу від інших користувачів</translation>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">Форум FreeCAD</translation>
+        <translation>Форум FreeCAD</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreeCADPowerUserHub</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Документація зі сценаріїв Python</translation>
+        <translation>Документація зі сценаріїв Python</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Документація зі сценаріїв Python на сайті FreeCAD</translation>
+        <translation>Документація зі сценаріїв Python на сайті FreeCAD</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">Документація для досвідчених користувачів</translation>
+        <translation>Документація для досвідчених користувачів</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Документація користувача</translation>
+        <translation>Документація користувача</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Документація користувача на веб-сайті FreeCAD</translation>
+        <translation>Документація користувача на веб-сайті FreeCAD</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>FreeCAD Website</source>
-        <translation type="unfinished">Сайт FreeCAD</translation>
+        <translation>Сайт FreeCAD</translation>
     </message>
     <message>
         <source>The FreeCAD website</source>
-        <translation type="unfinished">Сайт FreeCAD</translation>
+        <translation>Сайт FreeCAD</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreezeViews</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Freeze display</source>
-        <translation type="unfinished">Замороження дисплею</translation>
+        <translation>Замороження дисплею</translation>
     </message>
     <message>
         <source>Freezes the current view position</source>
-        <translation type="unfinished">Замерзає поточну позицію перегляду</translation>
+        <translation>Замерзає поточну позицію перегляду</translation>
     </message>
 </context>
 <context>
     <name>StdCmdHideObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Hide all objects</source>
-        <translation type="unfinished">Сховати всі об&apos;єкти</translation>
+        <translation>Сховати всі об&apos;єкти</translation>
     </message>
     <message>
         <source>Hide all objects in the document</source>
-        <translation type="unfinished">Сховати всі об&apos;єкти в документі</translation>
+        <translation>Сховати всі об&apos;єкти в документі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdHideSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Hide selection</source>
-        <translation type="unfinished">Сховати вибране</translation>
+        <translation>Сховати вибране</translation>
     </message>
     <message>
         <source>Hide all selected objects</source>
-        <translation type="unfinished">Приховати всі вибрані об&apos;єкти</translation>
+        <translation>Приховати всі вибрані об&apos;єкти</translation>
     </message>
 </context>
 <context>
     <name>StdCmdImport</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Import...</source>
-        <translation type="unfinished">&amp;Імпорт...</translation>
+        <translation>&amp;Імпорт...</translation>
     </message>
     <message>
         <source>Import a file in the active document</source>
-        <translation type="unfinished">Імпорт файлу в активний документ</translation>
+        <translation>Імпорт файлу в активний документ</translation>
     </message>
     <message>
         <source>Supported formats</source>
-        <translation type="unfinished">Підтримувані формати</translation>
+        <translation>Підтримувані формати</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="unfinished">Усі файли (*.*)</translation>
+        <translation>Усі файли (*.*)</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStartDebug</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>Debug macro</source>
-        <translation type="unfinished">Відлагодження макросу</translation>
+        <translation>Відлагодження макросу</translation>
     </message>
     <message>
         <source>Start debugging of macro</source>
-        <translation type="unfinished">Почати налагодження макросу</translation>
+        <translation>Почати налагодження макросу</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStepInto</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Крок у</translation>
+        <translation>Крок у</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStepOver</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>Step over</source>
-        <translation type="unfinished">Переступити</translation>
+        <translation>Переступити</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStopDebug</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>Stop debugging</source>
-        <translation type="unfinished">Зупинити налагодження</translation>
+        <translation>Зупинити налагодження</translation>
     </message>
     <message>
         <source>Stop debugging of macro</source>
-        <translation type="unfinished">Зупинити відлагодження макросу</translation>
+        <translation>Зупинити відлагодження макросу</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>S&amp;top macro recording</source>
-        <translation type="unfinished">Зупинити запис макросу</translation>
+        <translation>Зупинити запис макросу</translation>
     </message>
     <message>
         <source>Stop the macro recording session</source>
-        <translation type="unfinished">Зупинка запису макросу</translation>
+        <translation>Зупинка запису макросу</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMeasureDistance</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Measure distance</source>
-        <translation type="unfinished">Виміряти відстань</translation>
+        <translation>Виміряти відстань</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Measures distance between two selected objects</source>
-        <translation type="unfinished">Виміряти відстань між двома обраними об&apos;єктами</translation>
+        <translation>Виміряти відстань між двома обраними об&apos;єктами</translation>
     </message>
     <message>
         <source>Measure distance</source>
-        <translation type="unfinished">Виміряти відстань</translation>
+        <translation>Виміряти відстань</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMergeProjects</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Merge project...</source>
-        <translation type="unfinished">Злиття проекту ...</translation>
+        <translation>Злиття проекту ...</translation>
     </message>
     <message>
         <source>Merge project</source>
-        <translation type="unfinished">Злиття проекту</translation>
+        <translation>Злиття проекту</translation>
     </message>
     <message>
         <source>%1 document (*.fcstd)</source>
-        <translation type="unfinished">%1 документ (*.fcstd)</translation>
+        <translation>%1 документ (*.fcstd)</translation>
     </message>
     <message>
         <source>Cannot merge project with itself.</source>
-        <translation type="unfinished">Неможливо злити проекту з самим собою.</translation>
+        <translation>Неможливо злити проекту з самим собою.</translation>
     </message>
 </context>
 <context>
     <name>StdCmdNew</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished">Новий</translation>
+        <translation>Новий</translation>
     </message>
     <message>
         <source>Create a new empty document</source>
-        <translation type="unfinished">Створити новий порожній документ</translation>
+        <translation>Створити новий порожній документ</translation>
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Без назви</translation>
+        <translation>Без назви</translation>
     </message>
 </context>
 <context>
     <name>StdCmdOnlineHelp</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Show help to the application</source>
-        <translation type="unfinished">Показати довідку по програмі</translation>
+        <translation>Показати довідку по програмі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Help Website</source>
-        <translation type="unfinished">Сайт довідки</translation>
+        <translation>Сайт довідки</translation>
     </message>
     <message>
         <source>The website where the help is maintained</source>
-        <translation type="unfinished">Сайт де можна отримати допомогу від розробників</translation>
+        <translation>Сайт де можна отримати допомогу від розробників</translation>
     </message>
 </context>
 <context>
     <name>StdCmdOpen</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation type="unfinished">&amp;Відкрити...</translation>
+        <translation>&amp;Відкрити...</translation>
     </message>
     <message>
         <source>Open a document or import files</source>
-        <translation type="unfinished">Відкрити документ або імпортувати файли</translation>
+        <translation>Відкрити документ або імпортувати файли</translation>
     </message>
     <message>
         <source>Supported formats</source>
-        <translation type="unfinished">Підтримувані формати</translation>
+        <translation>Підтримувані формати</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="unfinished">Усі файли (*.*)</translation>
+        <translation>Усі файли (*.*)</translation>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished">Не вдалося відкрити файл</translation>
+        <translation>Не вдалося відкрити файл</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished">Завантаження файлу %1 не підтримується</translation>
+        <translation>Завантаження файлу %1 не підтримується</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPaste</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished">&amp;Вставити</translation>
+        <translation>&amp;Вставити</translation>
     </message>
     <message>
         <source>Paste operation</source>
-        <translation type="unfinished">Операція вставки</translation>
+        <translation>Операція вставки</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPlacement</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Placement...</source>
-        <translation type="unfinished">Розташування...</translation>
+        <translation>Розташування...</translation>
     </message>
     <message>
         <source>Place the selected objects</source>
-        <translation type="unfinished">Розміщення вибраних об&apos;єктів</translation>
+        <translation>Розміщення вибраних об&apos;єктів</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPrint</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Print...</source>
-        <translation type="unfinished">&amp;Друк...</translation>
+        <translation>&amp;Друк...</translation>
     </message>
     <message>
         <source>Print the document</source>
-        <translation type="unfinished">Друк документа</translation>
+        <translation>Друк документа</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPrintPdf</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Export PDF...</source>
-        <translation type="unfinished">&amp;Експорт до PDF...</translation>
+        <translation>&amp;Експорт до PDF...</translation>
     </message>
     <message>
         <source>Export the document as PDF</source>
-        <translation type="unfinished">Експорт документа в PDF</translation>
+        <translation>Експорт документа в PDF</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPrintPreview</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Print preview...</source>
-        <translation type="unfinished">&amp;Попередній перегляд...</translation>
+        <translation>&amp;Попередній перегляд...</translation>
     </message>
     <message>
         <source>Print the document</source>
-        <translation type="unfinished">Друк документа</translation>
+        <translation>Друк документа</translation>
     </message>
     <message>
         <source>Print preview</source>
-        <translation type="unfinished">Попередній перегляд</translation>
+        <translation>Попередній перегляд</translation>
     </message>
 </context>
 <context>
     <name>StdCmdProjectInfo</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Project i&amp;nformation...</source>
-        <translation type="unfinished">Інформація про проект...</translation>
+        <translation>Інформація про проект...</translation>
     </message>
     <message>
         <source>Show details of the currently active project</source>
-        <translation type="unfinished">Показати подробиці про поточний проект</translation>
+        <translation>Показати подробиці про поточний проект</translation>
     </message>
 </context>
 <context>
     <name>StdCmdProjectUtil</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Project utility...</source>
-        <translation type="unfinished">Утиліта проекту...</translation>
+        <translation>Утиліта проекту...</translation>
     </message>
     <message>
         <source>Utility to extract or create project files</source>
-        <translation type="unfinished">Утиліта для видобування або створення файлів проекту</translation>
+        <translation>Утиліта для видобування або створення файлів проекту</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPythonWebsite</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>Python Website</source>
-        <translation type="unfinished">Сайт Python</translation>
+        <translation>Сайт Python</translation>
     </message>
     <message>
         <source>The official Python website</source>
-        <translation type="unfinished">Офіційний сайт Python</translation>
+        <translation>Офіційний сайт Python</translation>
     </message>
 </context>
 <context>
     <name>StdCmdQuit</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation type="unfinished">Вихід</translation>
+        <translation>Вихід</translation>
     </message>
     <message>
         <source>Quits the application</source>
-        <translation type="unfinished">Вихід з програми</translation>
+        <translation>Вихід з програми</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRandomColor</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Random color</source>
-        <translation type="unfinished">Випадковий колір</translation>
+        <translation>Випадковий колір</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRecentFiles</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Recent files</source>
-        <translation type="unfinished">Нещодавні файли</translation>
+        <translation>Нещодавні файли</translation>
     </message>
     <message>
         <source>Recent file list</source>
-        <translation type="unfinished">Список останніх файлів</translation>
+        <translation>Список останніх файлів</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRedo</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation type="unfinished">Повторити</translation>
+        <translation>Повторити</translation>
     </message>
     <message>
         <source>Redoes a previously undone action</source>
-        <translation type="unfinished">Повторює останню скасовану дію</translation>
+        <translation>Повторює останню скасовану дію</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRefresh</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>&amp;Refresh</source>
-        <translation type="unfinished">Оновити</translation>
+        <translation>Оновити</translation>
     </message>
     <message>
         <source>Recomputes the current active document</source>
-        <translation type="unfinished">Перераховує поточного активного документ</translation>
+        <translation>Перераховує поточного активного документ</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRevert</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="unfinished"></translation>
+        <translation>Відмінити</translation>
     </message>
     <message>
         <source>Reverts to the saved version of this file</source>
-        <translation type="unfinished"></translation>
+        <translation>Повернутися до збереженої версії цього файлу</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSave</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Зберегти</translation>
+        <translation>&amp;Зберегти</translation>
     </message>
     <message>
         <source>Save the active document</source>
-        <translation type="unfinished">Зберегти активний документ</translation>
+        <translation>Зберегти активний документ</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSaveAs</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation type="unfinished">Зберегти як...</translation>
+        <translation>Зберегти як...</translation>
     </message>
     <message>
         <source>Save the active document under a new file name</source>
-        <translation type="unfinished">Зберегти поточний документ під новим ім&apos;ям</translation>
+        <translation>Зберегти поточний документ під новим ім&apos;ям</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSaveCopy</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Save a &amp;Copy...</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберегти &amp;Копію...</translation>
     </message>
     <message>
         <source>Save a copy of the active document under a new file name</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберегти копію активного документа з новим іменем файлу</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSceneInspector</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Scene inspector...</source>
-        <translation type="unfinished">Інспектор сцени...</translation>
+        <translation>Інспектор сцени...</translation>
     </message>
     <message>
         <source>Scene inspector</source>
-        <translation type="unfinished">Інспектор сцени</translation>
+        <translation>Інспектор сцени</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSelectAll</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Select &amp;All</source>
-        <translation type="unfinished">Вибрати усе</translation>
+        <translation>Вибрати усе</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation type="unfinished">Виділити все</translation>
+        <translation>Виділити все</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Appearance...</source>
-        <translation type="unfinished">Зовнішній вигляд...</translation>
+        <translation>Зовнішній вигляд...</translation>
     </message>
     <message>
         <source>Sets the display properties of the selected object</source>
-        <translation type="unfinished">Задає вигляд виділеного об&apos;єкта</translation>
+        <translation>Задає вигляд виділеного об&apos;єкта</translation>
     </message>
 </context>
 <context>
     <name>StdCmdShowObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Show all objects</source>
-        <translation type="unfinished">Показати всі об&apos;єкти</translation>
+        <translation>Показати всі об&apos;єкти</translation>
     </message>
     <message>
         <source>Show all objects in the document</source>
-        <translation type="unfinished">Показати всі об&apos;єкти в документі</translation>
+        <translation>Показати всі об&apos;єкти в документі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdShowSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Show selection</source>
-        <translation type="unfinished">Показати віділене</translation>
+        <translation>Показати віділене</translation>
     </message>
     <message>
         <source>Show all selected objects</source>
-        <translation type="unfinished">Показати всі виділені об&apos;єкти</translation>
+        <translation>Показати всі виділені об&apos;єкти</translation>
     </message>
 </context>
 <context>
     <name>StdCmdStatusBar</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Status bar</source>
-        <translation type="unfinished">Рядок стану</translation>
+        <translation>Рядок стану</translation>
     </message>
     <message>
         <source>Toggles the status bar</source>
-        <translation type="unfinished">Перемикнути рядок стану</translation>
+        <translation>Перемикнути рядок стану</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTextureMapping</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>Texture mapping...</source>
-        <translation type="unfinished">Відображення текстури...</translation>
+        <translation>Відображення текстури...</translation>
     </message>
     <message>
         <source>Texture mapping</source>
-        <translation type="unfinished">Текстури</translation>
+        <translation>Текстури</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTileWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>&amp;Tile</source>
-        <translation type="unfinished">Плитка</translation>
+        <translation>Плитка</translation>
     </message>
     <message>
         <source>Tile the windows</source>
-        <translation type="unfinished">Вікна плиткою</translation>
+        <translation>Вікна плиткою</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>Toggle breakpoint</source>
-        <translation type="unfinished">Поміняти точку зупинки</translation>
+        <translation>Поміняти точку зупинки</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Clipping plane</source>
-        <translation type="unfinished">Площини обрізання</translation>
+        <translation>Площини обрізання</translation>
     </message>
     <message>
         <source>Toggles clipping plane for active view</source>
-        <translation type="unfinished">Переключення площину відсікання для активного перегляду</translation>
+        <translation>Переключення площину відсікання для активного перегляду</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleNavigation</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Toggle navigation/Edit mode</source>
-        <translation type="unfinished">Перемкнути навігацію/Змінити режим</translation>
+        <translation>Перемкнути навігацію/Змінити режим</translation>
     </message>
     <message>
         <source>Toggle between navigation and edit mode</source>
-        <translation type="unfinished">Переключення між навігацією і режимом редагування</translation>
+        <translation>Переключення між навігацією і режимом редагування</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Toggle all objects</source>
-        <translation type="unfinished">Перемкнути всі об&apos;єкти</translation>
+        <translation>Перемкнути всі об&apos;єкти</translation>
     </message>
     <message>
         <source>Toggles visibility of all objects in the active document</source>
-        <translation type="unfinished">Вмикає/вимикає видимість всіх об&apos;єктів в активному документі</translation>
+        <translation>Вмикає/вимикає видимість всіх об&apos;єктів в активному документі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleSelectability</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Toggle selectability</source>
-        <translation type="unfinished">Перемикач можливостей вибору</translation>
+        <translation>Перемикач можливостей вибору</translation>
     </message>
     <message>
         <source>Toggles the property of the objects to get selected in the 3D-View</source>
-        <translation type="unfinished">Перемикає можливість обирати об&apos;єкти у 3D-режимі</translation>
+        <translation>Перемикає можливість обирати об&apos;єкти у 3D-режимі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleVisibility</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Toggle visibility</source>
-        <translation type="unfinished">Перемикнути видимість</translation>
+        <translation>Перемикнути видимість</translation>
     </message>
     <message>
         <source>Toggles visibility</source>
-        <translation type="unfinished">Вмикає/вимикає видимість</translation>
+        <translation>Вмикає/вимикає видимість</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToolBarMenu</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Tool&amp;bars</source>
-        <translation type="unfinished">Панелі інструментів</translation>
+        <translation>Панелі інструментів</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation type="unfinished">Перемкнути це вікно</translation>
+        <translation>Перемкнути це вікно</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTransform</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Transform...</source>
-        <translation type="unfinished">Перетворення...</translation>
+        <translation>Перетворення...</translation>
     </message>
     <message>
         <source>Transform the geometry of selected objects</source>
-        <translation type="unfinished">Перетворення геометрії вибраних об&apos;єктів</translation>
+        <translation>Перетворення геометрії вибраних об&apos;єктів</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTransformManip</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">Перетворення</translation>
+        <translation>Перетворення</translation>
     </message>
     <message>
         <source>Transform the selected object in the 3d view</source>
-        <translation type="unfinished">Перетворити виділений об&apos;єкт у тривимірний вигляд</translation>
+        <translation>Перетворити виділений об&apos;єкт у тривимірний вигляд</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTreeSelection</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Go to selection</source>
-        <translation type="unfinished">Перейти до вибраного</translation>
+        <translation>Перейти до вибраного</translation>
     </message>
     <message>
         <source>Scroll to first selected item</source>
-        <translation type="unfinished">Прокрутити до першого виділеного елемента</translation>
+        <translation>Прокрутити до першого виділеного елемента</translation>
     </message>
 </context>
 <context>
     <name>StdCmdUndo</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Правка</translation>
+        <translation>Правка</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
-        <translation type="unfinished">&amp;Скасувати</translation>
+        <translation>&amp;Скасувати</translation>
     </message>
     <message>
         <source>Undo exactly one action</source>
-        <translation type="unfinished">Скасувати рівно одну дію</translation>
+        <translation>Скасувати рівно одну дію</translation>
     </message>
 </context>
 <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Інструменти</translation>
+        <translation>Інструменти</translation>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">Калькулятор одиниць...</translation>
+        <translation>Калькулятор одиниць...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Запустити калькулятор одиниць</translation>
+        <translation>Запустити калькулятор одиниць</translation>
     </message>
 </context>
 <context>
     <name>StdCmdUserInterface</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Dock views</source>
-        <translation type="unfinished">Зафіксувати види</translation>
+        <translation>Зафіксувати види</translation>
     </message>
     <message>
         <source>Dock all top-level views</source>
-        <translation type="unfinished">Зафіксувати всі види верхнього рівня</translation>
+        <translation>Зафіксувати всі види верхнього рівня</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewAxo</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
-    </message>
-    <message>
-        <source>Axometric</source>
-        <translation type="obsolete">Аксонометрія</translation>
-    </message>
-    <message>
-        <source>Set to axometric view</source>
-        <translation type="obsolete">Встановити аксонометричну проекцію</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Axonometric</source>
-        <translation type="unfinished"></translation>
+        <translation>Аксонометрія</translation>
     </message>
     <message>
         <source>Set to axonometric view</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановити аксонометричний вигляд</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewBottom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Внизу</translation>
+        <translation>Внизу</translation>
     </message>
     <message>
         <source>Set to bottom view</source>
-        <translation type="unfinished">Встановити вид знизу</translation>
+        <translation>Встановити вид знизу</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewCreate</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Create new view</source>
-        <translation type="unfinished">Створити новий вигляд</translation>
+        <translation>Створити новий вигляд</translation>
     </message>
     <message>
         <source>Creates a new  view window for the active document</source>
-        <translation type="unfinished">Створення нового вікна перегляду для активного документа</translation>
+        <translation>Створення нового вікна перегляду для активного документа</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample1</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Inventor example #1</source>
-        <translation type="unfinished">Винахідник Приклад #1</translation>
+        <translation>Винахідник Приклад #1</translation>
     </message>
     <message>
         <source>Shows a 3D texture with manipulator</source>
-        <translation type="unfinished">Показує 3D текстури з маніпулятором</translation>
+        <translation>Показує 3D текстури з маніпулятором</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample2</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Inventor example #2</source>
-        <translation type="unfinished">Винахідник Приклад #2</translation>
+        <translation>Винахідник Приклад #2</translation>
     </message>
     <message>
         <source>Shows spheres and drag-lights</source>
-        <translation type="unfinished">Показ сфер та перетягувані ліхтарі</translation>
+        <translation>Показ сфер та перетягувані ліхтарі</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample3</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Inventor example #3</source>
-        <translation type="unfinished">Винахідник Приклад #3</translation>
+        <translation>Винахідник Приклад #3</translation>
     </message>
     <message>
         <source>Shows a animated texture</source>
-        <translation type="unfinished">Показ анімованих текстур</translation>
+        <translation>Показ анімованих текстур</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFitAll</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Fit all</source>
-        <translation type="unfinished">Вмістити все</translation>
+        <translation>Вмістити все</translation>
     </message>
     <message>
         <source>Fits the whole content on the screen</source>
-        <translation type="unfinished">Вмістити весь вміст на екрані</translation>
+        <translation>Вмістити весь вміст на екрані</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFitSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Fit selection</source>
-        <translation type="unfinished">Вмістити вибране</translation>
+        <translation>Вмістити вибране</translation>
     </message>
     <message>
         <source>Fits the selected content on the screen</source>
-        <translation type="unfinished">Вмістити вибране на екрані</translation>
+        <translation>Вмістити вибране на екрані</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFront</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Front</source>
-        <translation type="unfinished">Фронт</translation>
+        <translation>Фронт</translation>
     </message>
     <message>
         <source>Set to front view</source>
-        <translation type="unfinished">Показ вигляду з переду</translation>
+        <translation>Показ вигляду з переду</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Issue camera position</source>
-        <translation type="unfinished">Вихідне положення камери</translation>
+        <translation>Вихідне положення камери</translation>
     </message>
     <message>
         <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-        <translation type="unfinished">Вихідне положення камери для консолі і макросів, щоб потім швидко відновити цю позицію</translation>
+        <translation>Вихідне положення камери для консолі і макросів, щоб потім швидко відновити цю позицію</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Stereo Interleaved Columns</source>
-        <translation type="unfinished">Формування стереозображення способом чередування стовпчиків</translation>
+        <translation>Формування стереозображення способом чередування стовпчиків</translation>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Columns</source>
-        <translation type="unfinished">Перемкнути вивід стереозображення на спосіб чередування стовпчиків</translation>
+        <translation>Перемкнути вивід стереозображення на спосіб чередування стовпчиків</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Stereo Interleaved Rows</source>
-        <translation type="unfinished">Формування стереозображення черезрядковим способом</translation>
+        <translation>Формування стереозображення черезрядковим способом</translation>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Rows</source>
-        <translation type="unfinished">Перемкнути вивід стереозображення на черезрядковий спосіб</translation>
+        <translation>Перемкнути вивід стереозображення на черезрядковий спосіб</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Stereo Off</source>
-        <translation type="unfinished">Вимкнути стерео</translation>
+        <translation>Вимкнути стерео</translation>
     </message>
     <message>
         <source>Switch stereo viewing off</source>
-        <translation type="unfinished">Вимкнути стерео вигляд</translation>
+        <translation>Вимкнути стерео вигляд</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Stereo quad buffer</source>
-        <translation type="unfinished">Стереозображення, сформоване методом чотириразового буферування</translation>
+        <translation>Стереозображення, сформоване методом чотириразового буферування</translation>
     </message>
     <message>
         <source>Switch stereo viewing to quad buffer</source>
-        <translation type="unfinished">Перемкнути вивід стереозображення на спосіб чотирикратного буферування</translation>
+        <translation>Перемкнути вивід стереозображення на спосіб чотирикратного буферування</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished">Стерео червоно-блакитне</translation>
+        <translation>Стерео червоно-блакитне</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished">Перемкнути перегляд на червоно-блакитне стерео</translation>
+        <translation>Перемкнути перегляд на червоно-блакитне стерео</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Ліворуч</translation>
+        <translation>Ліворуч</translation>
     </message>
     <message>
         <source>Set to left view</source>
-        <translation type="unfinished">Встановити вид зліва</translation>
+        <translation>Встановити вид зліва</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRear</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Rear</source>
-        <translation type="unfinished">Тил</translation>
+        <translation>Тил</translation>
     </message>
     <message>
         <source>Set to rear view</source>
-        <translation type="unfinished">Встановити вид ззаду</translation>
+        <translation>Встановити вид ззаду</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Направо</translation>
+        <translation>Направо</translation>
     </message>
     <message>
         <source>Set to right view</source>
-        <translation type="unfinished">Встановити вигляд з права</translation>
+        <translation>Встановити вигляд з права</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Rotate Left</source>
-        <translation type="unfinished">Повернути ліворуч</translation>
+        <translation>Повернути ліворуч</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° counter-clockwise</source>
-        <translation type="unfinished">Повернути на 90° проти годинникової стрілки</translation>
+        <translation>Повернути на 90° проти годинникової стрілки</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRotateRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Rotate Right</source>
-        <translation type="unfinished">Повернути праворуч</translation>
+        <translation>Повернути праворуч</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° clockwise</source>
-        <translation type="unfinished">Повернути на 90° за годинниковою стрілкою</translation>
+        <translation>Повернути на 90° за годинниковою стрілкою</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewTop</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Згори</translation>
+        <translation>Згори</translation>
     </message>
     <message>
         <source>Set to top view</source>
-        <translation type="unfinished">Встановити вигляд зверху</translation>
+        <translation>Встановити вигляд зверху</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewVR</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished">FreeCAD-VR</translation>
+        <translation>FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
+        <translation>Поширити 3D-вікно FreeCAD на Oculus Rift</translation>
     </message>
 </context>
 <context>
     <name>StdCmdWhatsThis</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Довідка</translation>
+        <translation>Довідка</translation>
     </message>
     <message>
         <source>&amp;What&apos;s This?</source>
-        <translation type="unfinished">&amp;Що це?</translation>
+        <translation>&amp;Що це?</translation>
     </message>
     <message>
         <source>What&apos;s This</source>
-        <translation type="unfinished">Що це таке</translation>
+        <translation>Що це таке</translation>
     </message>
 </context>
 <context>
     <name>StdCmdWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>&amp;Windows...</source>
-        <translation type="unfinished">Вікна...</translation>
+        <translation>Вікна...</translation>
     </message>
     <message>
         <source>Windows list</source>
-        <translation type="unfinished">Список вікон</translation>
+        <translation>Список вікон</translation>
     </message>
 </context>
 <context>
     <name>StdCmdWindowsMenu</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Вікно</translation>
+        <translation>Вікно</translation>
     </message>
     <message>
         <source>Activates this window</source>
-        <translation type="unfinished">Активувати це вікно</translation>
+        <translation>Активувати це вікно</translation>
     </message>
 </context>
 <context>
     <name>StdCmdWorkbench</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Workbench</source>
-        <translation type="unfinished">Робочий простір</translation>
+        <translation>Робочий простір</translation>
     </message>
     <message>
         <source>Switch between workbenches</source>
-        <translation type="unfinished">Перемикання між робочими областями</translation>
+        <translation>Перемикання між робочими областями</translation>
     </message>
 </context>
 <context>
     <name>StdOrthographicCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Orthographic view</source>
-        <translation type="unfinished">Ортогональний вигляд</translation>
+        <translation>Ортогональний вигляд</translation>
     </message>
     <message>
         <source>Switches to orthographic view mode</source>
-        <translation type="unfinished">Перемкнутись до режиму Ортогональна подання</translation>
+        <translation>Перемкнутись до режиму Ортогональна подання</translation>
     </message>
 </context>
 <context>
     <name>StdPerspectiveCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Perspective view</source>
-        <translation type="unfinished">Перспектива</translation>
+        <translation>Перспектива</translation>
     </message>
     <message>
         <source>Switches to perspective view mode</source>
-        <translation type="unfinished">Переключення в режим перегляду перспективи</translation>
+        <translation>Переключення в режим перегляду перспективи</translation>
     </message>
 </context>
 <context>
     <name>StdViewBoxZoom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Box zoom</source>
-        <translation type="unfinished">Поле маштабування</translation>
+        <translation>Поле маштабування</translation>
     </message>
 </context>
 <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Document window</source>
-        <translation type="unfinished">Вікно документа</translation>
+        <translation>Вікно документа</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-        <translation type="unfinished">Показати активний вид в повноекранному режимі, у відстикованому, або зістикуваваному режимі</translation>
+        <translation>Показати активний вид в повноекранному режимі, у відстикованому, або зістикуваваному режимі</translation>
     </message>
 </context>
 <context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Save picture...</source>
-        <translation type="unfinished">Зберегти зображення...</translation>
+        <translation>Зберегти зображення...</translation>
     </message>
     <message>
         <source>Creates a screenshot of the active view</source>
-        <translation type="unfinished">Створити знімок активного вигляду</translation>
+        <translation>Створити знімок активного вигляду</translation>
     </message>
 </context>
 <context>
     <name>StdViewZoomIn</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished">Збільшити</translation>
+        <translation>Збільшити</translation>
     </message>
 </context>
 <context>
     <name>StdViewZoomOut</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished">Зменшити</translation>
+        <translation>Зменшити</translation>
     </message>
 </context>
 <context>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Залежності об&apos;єктів</translation>
+        <translation>Залежності об&apos;єктів</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">На цей об&apos;єкт посилаються інші об&apos;єкти, і тому ті об&apos;єкти можуть бути пошкоджені. Бажаєте продовжити?</translation>
+        <translation>На цей об&apos;єкт посилаються інші об&apos;єкти і тому ті об&apos;єкти можуть бути пошкоджені. Бажаєте продовжити?</translation>
     </message>
 </context>
 <context>
     <name>Std_DrawStyle</name>
     <message>
         <source>As is</source>
-        <translation type="unfinished">Як є</translation>
+        <translation>Як є</translation>
     </message>
     <message>
         <source>Normal mode</source>
-        <translation type="unfinished">Звичайний режим</translation>
+        <translation>Звичайний режим</translation>
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Каркас</translation>
+        <translation>Каркас</translation>
     </message>
     <message>
         <source>Wireframe mode</source>
-        <translation type="unfinished">Каркасний режим</translation>
+        <translation>Каркасний режим</translation>
     </message>
     <message>
         <source>Flat lines</source>
-        <translation type="unfinished">Flat lines</translation>
+        <translation>Прямі лінії</translation>
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Flat lines mode</translation>
+        <translation>Режим прямих ліній</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Затінений</translation>
+        <translation>Затінений</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Режим затіненя</translation>
+        <translation>Режим затіненя</translation>
     </message>
     <message>
         <source>Points</source>
-        <translation type="unfinished">Точки</translation>
+        <translation>Точки</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Режим точок</translation>
+        <translation>Режим точок</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Залежності об&apos;єктів</translation>
+        <translation>Залежності об&apos;єктів</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">Виділені об&apos;єкти залежать від невиділених об&apos;єктів. Ви хочете дублювати їх також?</translation>
+        <translation>Виділені об&apos;єкти залежать від невиділених об&apos;єктів. Ви хочете дублювати їх також?</translation>
     </message>
 </context>
 <context>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation type="unfinished">Graphviz не знайдено</translation>
+        <translation>Graphviz не знайдено</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation type="unfinished">Неможливо знайти Graphviz на вашій системі. Ви бажаєте вказати шлях до нього, якщо він вже встановлений?</translation>
+        <translation>Неможливо знайти Graphviz на вашій системі. Ви бажаєте вказати шлях до нього, якщо він вже встановлений?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation type="unfinished">Шлях до встановленного Graphviz</translation>
+        <translation>Шлях до встановленного Graphviz</translation>
     </message>
     <message>
         <source>Dependency graph</source>
-        <translation type="unfinished">Графік залежності</translation>
+        <translation>Графік залежності</translation>
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation type="unfinished">Помилка Graphviz</translation>
+        <translation>Помилка Graphviz</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation type="unfinished">Помилка Graphviz при створенні файла зображення</translation>
+        <translation>Помилка Graphviz при створенні файла зображення</translation>
     </message>
 </context>
 <context>
     <name>Std_Revert</name>
     <message>
         <source>This will discard all the changes since last file save.</source>
-        <translation type="unfinished"></translation>
+        <translation>Це скасує всі зміни від часу останнього збереження файла.</translation>
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви впевнені?</translation>
     </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Файл</translation>
+        <translation>&amp;Файл</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Редагувати</translation>
+        <translation>&amp;Редагувати</translation>
     </message>
     <message>
         <source>Standard views</source>
-        <translation type="unfinished">Стандартні вигляди</translation>
+        <translation>Стандартні вигляди</translation>
     </message>
     <message>
         <source>&amp;Stereo</source>
-        <translation type="unfinished">&amp;Стерео</translation>
+        <translation>&amp;Стерео</translation>
     </message>
     <message>
         <source>&amp;Zoom</source>
-        <translation type="unfinished">&amp;Збільшення</translation>
+        <translation>&amp;Збільшення</translation>
     </message>
     <message>
         <source>Visibility</source>
-        <translation type="unfinished">Видимість</translation>
+        <translation>Видимість</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Вигляд</translation>
+        <translation>&amp;Вигляд</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
-        <translation type="unfinished">&amp;Інструменти</translation>
+        <translation>&amp;Інструменти</translation>
     </message>
     <message>
         <source>&amp;Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>&amp;Windows</source>
-        <translation type="unfinished">&amp;Вікна</translation>
+        <translation>&amp;Вікна</translation>
     </message>
     <message>
         <source>&amp;On-line help</source>
-        <translation type="unfinished">&amp;Он-лайн допомога</translation>
+        <translation>&amp;Он-лайн допомога</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Довідка</translation>
+        <translation>&amp;Довідка</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Макрос</translation>
+        <translation>Макрос</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="unfinished">Вигляд</translation>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Special Ops</source>
-        <translation type="unfinished">Спеціальні операції</translation>
+        <translation>Спеціальні операції</translation>
     </message>
 </context>
 <context>
     <name>testClass</name>
     <message>
         <source>test</source>
-        <translation type="unfinished">Тест</translation>
+        <translation>Тест</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -6972,7 +6881,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
@@ -6983,15 +6892,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Choose the style of the Task Panel</source>
-        <translation type="unfinished">Виберіть стиль панелі завдань</translation>
+        <translation>Виберіть стиль панелі завдань</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">За замовчуванням</translation>
+        <translation>За замовчуванням</translation>
     </message>
     <message>
         <source>Windows XP</source>
-        <translation type="unfinished">Windows XP</translation>
+        <translation>Windows XP</translation>
     </message>
 </context>
 </TS>

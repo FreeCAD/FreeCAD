@@ -159,11 +159,11 @@
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set alias</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set alias for selected cell</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Background</source>
@@ -257,11 +257,11 @@
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished">水平</translation>
+        <translation>水平</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">左视</translation>
+        <translation>左视</translation>
     </message>
     <message>
         <source>Center</source>
@@ -269,19 +269,19 @@
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">右</translation>
+        <translation>右</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished">垂直</translation>
+        <translation>垂直</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">顶视</translation>
+        <translation>顶视</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">底视</translation>
+        <translation>底视</translation>
     </message>
     <message>
         <source>&amp;Style</source>
@@ -324,11 +324,11 @@
     </message>
     <message>
         <source>Import file</source>
-        <translation type="unfinished">导入文件</translation>
+        <translation>导入文件</translation>
     </message>
     <message>
         <source>Export file</source>
-        <translation type="unfinished">导出文件</translation>
+        <translation>导出文件</translation>
     </message>
     <message>
         <source>Cell contents</source>
@@ -343,11 +343,11 @@
     <name>QtColorPicker</name>
     <message>
         <source>Black</source>
-        <translation type="unfinished">黑色</translation>
+        <translation>黑色</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">白色</translation>
+        <translation>白色</translation>
     </message>
     <message>
         <source>Red</source>
@@ -418,11 +418,18 @@
     <name>Sheet</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">窗体</translation>
+        <translation>窗体</translation>
     </message>
     <message>
         <source>&amp;Contents</source>
         <translation type="unfinished">&amp;Contents</translation>
+    </message>
+</context>
+<context>
+    <name>SpreadsheetGui::Module</name>
+    <message>
+        <source>Unnamed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

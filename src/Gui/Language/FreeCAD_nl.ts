@@ -5,343 +5,342 @@
     <name>Angle</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Vorm</translation>
+        <translation>Vorm</translation>
     </message>
     <message>
         <source>A:</source>
-        <translation type="unfinished">A:</translation>
+        <translation>A:</translation>
     </message>
     <message>
         <source>B:</source>
-        <translation type="unfinished">B:</translation>
+        <translation>B:</translation>
     </message>
     <message>
         <source>C:</source>
-        <translation type="unfinished">C:</translation>
+        <translation>C:</translation>
     </message>
     <message>
         <source>Angle Snap</source>
-        <translation type="unfinished">Hoek-kleven</translation>
+        <translation>Hoek-kleven</translation>
     </message>
     <message utf8="true">
         <source>1 °</source>
-        <translation type="unfinished">1°</translation>
+        <translation>1°</translation>
     </message>
     <message utf8="true">
         <source>2 °</source>
-        <translation type="unfinished">2°</translation>
+        <translation>2°</translation>
     </message>
     <message utf8="true">
         <source>5 °</source>
-        <translation type="unfinished">5°</translation>
+        <translation>5°</translation>
     </message>
     <message utf8="true">
         <source>10 °</source>
-        <translation type="unfinished">10°</translation>
+        <translation>10°</translation>
     </message>
     <message utf8="true">
         <source>20 °</source>
-        <translation type="unfinished">20°</translation>
+        <translation>20°</translation>
     </message>
     <message utf8="true">
         <source>45 °</source>
-        <translation type="unfinished">45°</translation>
+        <translation>45°</translation>
     </message>
     <message utf8="true">
         <source>90 °</source>
-        <translation type="unfinished">90°</translation>
+        <translation>90°</translation>
     </message>
     <message utf8="true">
         <source>180 °</source>
-        <translation type="unfinished">180°</translation>
+        <translation>180°</translation>
     </message>
 </context>
 <context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Standaard-Test</translation>
     </message>
     <message>
         <source>Test console output</source>
-        <translation type="unfinished"></translation>
+        <translation>Console uitvoer van testen</translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation>Meten</translation>
     </message>
     <message>
         <source>Clear measurement</source>
-        <translation type="unfinished">Clear measurement</translation>
+        <translation>Metingen uitwissen</translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation>Meten</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
-        <translation type="unfinished">Toggle measurement</translation>
+        <translation>Metingen schakelen</translation>
     </message>
 </context>
 <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
         <source>Spaceball Motion</source>
-        <translation type="unfinished">Spaceball Motion</translation>
+        <translation>Spaceball beweging</translation>
     </message>
     <message>
         <source>Global Sensitivity:  </source>
-        <translation type="unfinished">Globale gevoeligheid:  </translation>
+        <translation>Globale gevoeligheid:  </translation>
     </message>
     <message>
         <source>Dominant Mode</source>
-        <translation type="unfinished">Dominant Mode</translation>
+        <translation>Dominante modus</translation>
     </message>
     <message>
         <source>Flip Y/Z</source>
-        <translation type="unfinished">Y/Z omwisselen</translation>
+        <translation>Y/Z omwisselen</translation>
     </message>
     <message>
         <source>Enable Translations</source>
-        <translation type="unfinished">Schakel vertalingen in</translation>
+        <translation>Schakel vertalingen in</translation>
     </message>
     <message>
         <source>Enable Rotations</source>
-        <translation type="unfinished">Schakel rotaties in</translation>
+        <translation>Schakel rotaties in</translation>
     </message>
     <message>
         <source>Calibrate</source>
-        <translation type="unfinished">Kalibreren</translation>
+        <translation>Kalibreren</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
     <message>
         <source>Enable</source>
-        <translation type="unfinished">Schakel in</translation>
+        <translation>Schakel in</translation>
     </message>
     <message>
         <source>Reverse</source>
-        <translation type="unfinished">Omdraaien</translation>
+        <translation>Omdraaien</translation>
     </message>
 </context>
 <context>
     <name>DlgExpressionInput</name>
     <message>
         <source>Formula editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Formule-editor</translation>
     </message>
     <message>
         <source>Result:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultaat:</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Uitwissen</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Units calculator</translation>
+        <translation>Eenheden rekenmachine</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">als:</translation>
+        <translation>als:</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation type="unfinished">=&gt;</translation>
+        <translation>=&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Kopie</translation>
+        <translation>Kopie</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Vorm</translation>
+        <translation>Vorm</translation>
     </message>
     <message>
         <source>Ico</source>
-        <translation type="unfinished">Ico</translation>
+        <translation>Ico</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Bestandsnaam</translation>
+        <translation>Bestandsnaam</translation>
     </message>
 </context>
 <context>
     <name>Gui::AccelLineEdit</name>
     <message>
         <source>none</source>
-        <translation type="unfinished">geen</translation>
+        <translation>geen</translation>
     </message>
 </context>
 <context>
     <name>Gui::ActionSelector</name>
     <message>
         <source>Available:</source>
-        <translation type="unfinished">Beschikbaar:</translation>
+        <translation>Beschikbaar:</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation type="unfinished">Geselecteerd:</translation>
+        <translation>Geselecteerd:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Toevoegen</translation>
+        <translation>Toevoegen</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Verwijderen</translation>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Naar boven verplaatsen</translation>
+        <translation>Naar boven verplaatsen</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Naar beneden verplaatsen</translation>
+        <translation>Naar beneden verplaatsen</translation>
     </message>
 </context>
 <context>
     <name>Gui::AlignmentView</name>
     <message>
         <source>Movable object</source>
-        <translation type="unfinished">Verplaatsbaar object</translation>
+        <translation>Verplaatsbaar object</translation>
     </message>
     <message>
         <source>Fixed object</source>
-        <translation type="unfinished">Vast object</translation>
+        <translation>Vast object</translation>
     </message>
 </context>
 <context>
     <name>Gui::Assistant</name>
     <message>
         <source>%1 Help</source>
-        <translation type="unfinished">%1 Help</translation>
+        <translation>%1 Help</translation>
     </message>
     <message>
         <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 niet gevonden help-bestanden (%2). Misschien moet U de %1 documentatiepakket installeren.</translation>
     </message>
     <message>
         <source>Unable to launch Qt Assistant (%1)</source>
-        <translation type="unfinished">Onmogelijk om Qt Assistant (%1) te start</translation>
+        <translation>Onmogelijk om Qt Assistant (%1) te start</translation>
     </message>
 </context>
 <context>
     <name>Gui::AutoSaver</name>
     <message>
         <source>Please wait until the AutoRecovery file has been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Wacht tot het AutoHerstel-bestand gered is...</translation>
     </message>
 </context>
 <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Druk op de linker muisknop</translation>
+        <translation>Druk op de linker muisknop</translation>
     </message>
     <message>
         <source>Press SHIFT and middle mouse button</source>
-        <translation type="unfinished">Druk op SHIFT en middelste muisknop</translation>
+        <translation>Druk op SHIFT en middelste muisknop</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Druk op de middelste muisknop</translation>
+        <translation>Druk op de middelste muisknop</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Scroll middelste muisknop</translation>
+        <translation>Scroll middelste muisknop</translation>
     </message>
 </context>
 <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Druk op de linker muisknop</translation>
+        <translation>Druk op de linker muisknop</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Druk op de middelste muisknop</translation>
+        <translation>Druk op de middelste muisknop</translation>
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Press middle and left or right mouse button</translation>
+        <translation>Druk op de middelste en linker of rechter muisknop</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
-while doing a left or right click and move the mouse up or down</translation>
+        <translation>Middelste muisknop scrollen of middelste knop drukken terwijl linker of rechterknop drukken en de muis omhoog of omlaag bewegen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Command</name>
     <message>
         <source>Standard</source>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
 </context>
 <context>
     <name>Gui::ContainerDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuleren</translation>
+        <translation>&amp;Annuleren</translation>
     </message>
 </context>
 <context>
     <name>Gui::ControlSingleton</name>
     <message>
         <source>Task panel</source>
-        <translation type="unfinished">Taken-deelvenster</translation>
+        <translation>Taken-deelvenster</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
-        <translation type="unfinished">Info over</translation>
+        <translation>Info over</translation>
     </message>
     <message>
         <source>Revision number</source>
-        <translation type="unfinished">Revisienummer</translation>
+        <translation>Revisienummer</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished">Versie</translation>
+        <translation>Versie</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source></source>
@@ -349,45 +348,45 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Release date</source>
-        <translation type="unfinished">Uitgifte datum</translation>
+        <translation>Uitgifte datum</translation>
     </message>
     <message>
         <source>License...</source>
-        <translation type="unfinished">Licentie ...</translation>
+        <translation>Licentie ...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
-        <translation type="unfinished">Naar klembord kopiëren</translation>
+        <translation>Naar klembord kopiëren</translation>
     </message>
     <message>
         <source>Operating system</source>
-        <translation type="unfinished">Besturingssysteem</translation>
+        <translation>Besturingssysteem</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation>Woordlengte</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
         <source>Button %1</source>
-        <translation type="unfinished">Knop %1</translation>
+        <translation>Knop %1</translation>
     </message>
     <message>
         <source>Out Of Range</source>
-        <translation type="unfinished">Buiten het bereik</translation>
+        <translation>Buiten het bereik</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::Clipping</name>
     <message>
         <source>Clipping</source>
-        <translation type="unfinished">Clipping</translation>
+        <translation>Knipsel</translation>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Clipping X</translation>
+        <translation>Knipsel X</translation>
     </message>
     <message>
         <source>Flip</source>
@@ -395,104 +394,104 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Offset</source>
-        <translation type="unfinished">Verschuiving</translation>
+        <translation>Verschuiving</translation>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Clipping Y</translation>
+        <translation>Knipsel Y</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Clipping Z</translation>
+        <translation>Knipsel Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation>Knipsel met aangepaste richting</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation>Aan zichtrichting passen</translation>
     </message>
     <message>
         <source>Direction</source>
-        <translation type="unfinished">Richting</translation>
+        <translation>Richting</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
         <source>Commands</source>
-        <translation type="unfinished">Commando&apos;s</translation>
+        <translation>Commando&apos;s</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DemoMode</name>
     <message>
         <source>View Turntable</source>
-        <translation type="unfinished">Draaitafel tonen</translation>
+        <translation>Draaitafel tonen</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Snelheid</translation>
+        <translation>Snelheid</translation>
     </message>
     <message>
         <source>Maximum</source>
-        <translation type="unfinished">Maximale</translation>
+        <translation>Maximale</translation>
     </message>
     <message>
         <source>Minimum</source>
-        <translation type="unfinished">Minimum</translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">Schermvullend</translation>
+        <translation>Schermvullend</translation>
     </message>
     <message>
         <source>Enable timer</source>
-        <translation type="unfinished">Inschakelen van de timer</translation>
+        <translation>Inschakelen van de timer</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"> s</translation>
+        <translation> s</translation>
     </message>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Hoek</translation>
+        <translation>Hoek</translation>
     </message>
     <message utf8="true">
         <source>90°</source>
-        <translation type="unfinished">90 °</translation>
+        <translation>90 °</translation>
     </message>
     <message utf8="true">
         <source>-90°</source>
-        <translation type="unfinished">-90 °</translation>
+        <translation>-90 °</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Afspelen</translation>
+        <translation>Afspelen</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished">Stop</translation>
+        <translation>Stop</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgActivateWindow</name>
     <message>
         <source>Choose Window</source>
-        <translation type="unfinished">Kies Venster</translation>
+        <translation>Kies Venster</translation>
     </message>
     <message>
         <source>&amp;Activate</source>
-        <translation type="unfinished">&amp;Activeren</translation>
+        <translation>&amp;Activeren</translation>
     </message>
     <message>
         <source></source>
@@ -503,18 +502,18 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgActivateWindowImp</name>
     <message>
         <source>Windows</source>
-        <translation type="unfinished">Vensters</translation>
+        <translation>Vensters</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgAuthorization</name>
     <message>
         <source>Authorization</source>
-        <translation type="unfinished">Autorisatie</translation>
+        <translation>Autorisatie</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished">Wachtwoord:</translation>
+        <translation>Wachtwoord:</translation>
     </message>
     <message>
         <source></source>
@@ -522,139 +521,139 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">Gebruikersnaam:</translation>
+        <translation>Gebruikersnaam:</translation>
     </message>
     <message>
         <source>Site:</source>
-        <translation type="unfinished">Site:</translation>
+        <translation>Site:</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation>%1 op %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
         <source>Choose Icon</source>
-        <translation type="unfinished">Pictogram kiezen</translation>
+        <translation>Pictogram kiezen</translation>
     </message>
     <message>
         <source>Icon folders...</source>
-        <translation type="unfinished">Icon folders...</translation>
+        <translation>Icon mappen...</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macro&apos;s</translation>
+        <translation>Macro&apos;s</translation>
     </message>
     <message>
         <source>Setup Custom Macros</source>
-        <translation type="unfinished">Instellen van eigen Macro&apos;s</translation>
+        <translation>Instellen van eigen Macro&apos;s</translation>
     </message>
     <message>
         <source>Macro:</source>
-        <translation type="unfinished">Macro:</translation>
+        <translation>Macro:</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Pixmap</source>
-        <translation type="unfinished">Symbool</translation>
+        <translation>Symbool</translation>
     </message>
     <message>
         <source>Accelerator:</source>
-        <translation type="unfinished">Sneltoets:</translation>
+        <translation>Sneltoets:</translation>
     </message>
     <message>
         <source>What&apos;s this:</source>
-        <translation type="unfinished">Wat is dit:</translation>
+        <translation>Wat is dit:</translation>
     </message>
     <message>
         <source>Status text:</source>
-        <translation type="unfinished">Status tekst:</translation>
+        <translation>Status tekst:</translation>
     </message>
     <message>
         <source>Tool tip:</source>
-        <translation type="unfinished">Tooltip:</translation>
+        <translation>Tooltip:</translation>
     </message>
     <message>
         <source>Menu text:</source>
-        <translation type="unfinished">Menutekst:</translation>
+        <translation>Menutekst:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Toevoegen</translation>
+        <translation>Toevoegen</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Verwijderen</translation>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished">Vervangen</translation>
+        <translation>Vervangen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomActionsImp</name>
     <message>
         <source>Icons</source>
-        <translation type="unfinished">Pictogrammen</translation>
+        <translation>Pictogrammen</translation>
     </message>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macro&apos;s</translation>
+        <translation>Macro&apos;s</translation>
     </message>
     <message>
         <source>No macro</source>
-        <translation type="unfinished">Geen macro</translation>
+        <translation>Geen macro</translation>
     </message>
     <message>
         <source>No macros found.</source>
-        <translation type="unfinished">Geen macro&apos;s gevonden.</translation>
+        <translation>Geen macro&apos;s gevonden.</translation>
     </message>
     <message>
         <source>Macro not found</source>
-        <translation type="unfinished">macro niet gevonden</translation>
+        <translation>macro niet gevonden</translation>
     </message>
     <message>
         <source>Sorry, couldn&apos;t find macro file &apos;%1&apos;.</source>
-        <translation type="unfinished">Sorry, kon macro-bestand &apos;%1&apos; niet vinden.</translation>
+        <translation>Sorry, kon macro-bestand &apos;%1&apos; niet vinden.</translation>
     </message>
     <message>
         <source>Empty macro</source>
-        <translation type="unfinished">Lege macro</translation>
+        <translation>Lege macro</translation>
     </message>
     <message>
         <source>Please specify the macro first.</source>
-        <translation type="unfinished">Gelieve eerst de macro te specificeren.</translation>
+        <translation>Gelieve eerst de macro te specificeren.</translation>
     </message>
     <message>
         <source>Empty text</source>
-        <translation type="unfinished">Lege tekst</translation>
+        <translation>Lege tekst</translation>
     </message>
     <message>
         <source>Please specify the menu text first.</source>
-        <translation type="unfinished">Gelieve de menu tekst eerst te specificeren.</translation>
+        <translation>Gelieve de menu tekst eerst te specificeren.</translation>
     </message>
     <message>
         <source>No item selected</source>
-        <translation type="unfinished">Geen item geselecteerd</translation>
+        <translation>Geen item geselecteerd</translation>
     </message>
     <message>
         <source>Please select a macro item first.</source>
-        <translation type="unfinished">Selecteer eerst een macro-item.</translation>
+        <translation>Selecteer eerst een macro-item.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomCommands</name>
     <message>
         <source>Commands</source>
-        <translation type="unfinished">Commando&apos;s</translation>
+        <translation>Commando&apos;s</translation>
     </message>
     <message>
         <source></source>
@@ -665,70 +664,70 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgCustomCommandsImp</name>
     <message>
         <source>Category</source>
-        <translation type="unfinished">Categorie</translation>
+        <translation>Categorie</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished">Pictogram</translation>
+        <translation>Pictogram</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Commando</translation>
+        <translation>Commando</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomKeyboard</name>
     <message>
         <source>Keyboard</source>
-        <translation type="unfinished">Toetsenbord</translation>
+        <translation>Toetsenbord</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished">Omschrijving:</translation>
+        <translation>Omschrijving:</translation>
     </message>
     <message>
         <source>&amp;Category:</source>
-        <translation type="unfinished">&amp;Categorie:</translation>
+        <translation>&amp;Categorie:</translation>
     </message>
     <message>
         <source>C&amp;ommands:</source>
-        <translation type="unfinished">Commando&apos;s:</translation>
+        <translation>Commando&apos;s:</translation>
     </message>
     <message>
         <source>Current shortcut:</source>
-        <translation type="unfinished">Huidige snelkoppeling:</translation>
+        <translation>Huidige snelkoppeling:</translation>
     </message>
     <message>
         <source>Press &amp;new shortcut:</source>
-        <translation type="unfinished">Druk op @nieuwe snelkoppeling:</translation>
+        <translation>Druk op @nieuwe snelkoppeling:</translation>
     </message>
     <message>
         <source>Currently assigned to:</source>
-        <translation type="unfinished">Momenteel toegewezen aan:</translation>
+        <translation>Momenteel toegewezen aan:</translation>
     </message>
     <message>
         <source>&amp;Assign</source>
-        <translation type="unfinished">Toewijzen</translation>
+        <translation>Toewijzen</translation>
     </message>
     <message>
         <source>Alt+A</source>
-        <translation type="unfinished">Alt+A</translation>
+        <translation>Alt+A</translation>
     </message>
     <message>
         <source>&amp;Reset</source>
-        <translation type="unfinished">&amp;Herstellen</translation>
+        <translation>&amp;Herstellen</translation>
     </message>
     <message>
         <source>Alt+R</source>
-        <translation type="unfinished">Alt+R</translation>
+        <translation>Alt+R</translation>
     </message>
     <message>
         <source>Re&amp;set All</source>
-        <translation type="unfinished">Alles her&amp;stellen</translation>
+        <translation>Alles her&amp;stellen</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt+S</translation>
     </message>
     <message>
         <source></source>
@@ -739,33 +738,33 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgCustomKeyboardImp</name>
     <message>
         <source>Icon</source>
-        <translation type="unfinished">Pictogram</translation>
+        <translation>Pictogram</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Commando</translation>
+        <translation>Commando</translation>
     </message>
     <message>
         <source>none</source>
-        <translation type="unfinished">geen</translation>
+        <translation>geen</translation>
     </message>
     <message>
         <source>Multiple defined shortcut</source>
-        <translation type="unfinished">Meervoudig gedefinieerde snelkoppeling</translation>
+        <translation>Meervoudig gedefinieerde snelkoppeling</translation>
     </message>
     <message>
         <source>The shortcut &apos;%1&apos; is defined more than once. This could result into unexpected behaviour.</source>
-        <translation type="unfinished">De snel koppeling &apos;%1&apos; is meer dan één keer gedefinieerd. Dit kan resulteren in onverwacht gedrag.</translation>
+        <translation>De snel koppeling &apos;%1&apos; is meer dan één keer gedefinieerd. Dit kan resulteren in onverwacht gedrag.</translation>
     </message>
     <message>
         <source>Already defined shortcut</source>
-        <translation type="unfinished">Reeds gedefinieerde sneltoets</translation>
+        <translation>Reeds gedefinieerde sneltoets</translation>
     </message>
     <message>
         <source>The shortcut &apos;%1&apos; is already assigned to &apos;%2&apos;.
 
 Please define another shortcut.</source>
-        <translation type="unfinished">De sneltoets &apos;%1&apos; is reeds toegewezen aan &apos;%2&apos;.
+        <translation>De sneltoets &apos;%1&apos; is reeds toegewezen aan &apos;%2&apos;.
 Gelieve een andere snelkoppeling te kiezen.</translation>
     </message>
 </context>
@@ -773,94 +772,94 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
         <source>Toolbox bars</source>
-        <translation type="unfinished">Gereedschap werkbalken</translation>
+        <translation>Gereedschap werkbalken</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomToolbars</name>
     <message>
         <source>Toolbars</source>
-        <translation type="unfinished">Werkbalken</translation>
+        <translation>Werkbalken</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; De instellingen worden geactiveerd op de volgende initialisatie van de bestemde werkbank&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; De instellingen worden geactiveerd op de volgende initialisatie van de bestemde werkbank&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="unfinished">Naar rechts verplaatsen</translation>
+        <translation>Naar rechts verplaatsen</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Verplaats het geselecteerde item één niveau naar beneden.&lt;/b&gt; &lt;p&gt;Dit verandert ook het niveau van het bovenliggende item.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Verplaats het geselecteerde item één niveau naar beneden.&lt;/b&gt; &lt;p&gt;Dit verandert ook het niveau van het bovenliggende item.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="unfinished">Naar links verplaatsen</translation>
+        <translation>Naar links verplaatsen</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Verplaats het geselecteerde item één niveau omhoog.&lt;/b&gt; &lt;p&gt;Dit verandert ook het niveau van het bovenliggende item.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Verplaats het geselecteerde item één niveau omhoog.&lt;/b&gt; &lt;p&gt;Dit verandert ook het niveau van het bovenliggende item.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Naar beneden verplaatsen</translation>
+        <translation>Naar beneden verplaatsen</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Verplaats het geselecteerde item omlaag.&lt;/b&gt; &lt;p&gt;Het item wordt verplaatst binnen het hiërarchie niveau.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Verplaats het geselecteerde item omlaag.&lt;/b&gt; &lt;p&gt;Het item wordt verplaatst binnen het hiërarchie niveau.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Naar boven verplaatsen</translation>
+        <translation>Naar boven verplaatsen</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Verplaats het geselecteerde item omlaag.&lt;/b&gt;&lt;p&gt;Het item wordt verplaatst binnen het hiërarchie niveau.&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Verplaats het geselecteerde item omlaag.&lt;/b&gt;&lt;p&gt;Het item wordt verplaatst binnen het hiërarchie niveau.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>New...</source>
-        <translation type="unfinished">Nieuw...</translation>
+        <translation>Nieuw...</translation>
     </message>
     <message>
         <source>Rename...</source>
-        <translation type="unfinished">Hernoemen...</translation>
+        <translation>Hernoemen...</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Verwijderen</translation>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished">Pictogram</translation>
+        <translation>Pictogram</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Commando</translation>
+        <translation>Commando</translation>
     </message>
     <message>
         <source>&lt;Separator&gt;</source>
-        <translation type="unfinished">&lt;Separator&gt;</translation>
+        <translation>&lt;Separator&gt;</translation>
     </message>
     <message>
         <source>New toolbar</source>
-        <translation type="unfinished">Nieuwe werkbalk</translation>
+        <translation>Nieuwe werkbalk</translation>
     </message>
     <message>
         <source>Toolbar name:</source>
-        <translation type="unfinished">Werkbalknaam:</translation>
+        <translation>Werkbalknaam:</translation>
     </message>
     <message>
         <source>Duplicated name</source>
-        <translation type="unfinished">Dubbele naam</translation>
+        <translation>Dubbele naam</translation>
     </message>
     <message>
         <source>The toolbar name &apos;%1&apos; is already used</source>
-        <translation type="unfinished">De werkbalk naam &apos;%1&apos; is al in gebruik</translation>
+        <translation>De werkbalk naam &apos;%1&apos; is al in gebruik</translation>
     </message>
     <message>
         <source>Rename toolbar</source>
-        <translation type="unfinished">Werkbalk hernoemen</translation>
+        <translation>Werkbalk hernoemen</translation>
     </message>
     <message>
         <source></source>
@@ -868,95 +867,95 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     </message>
     <message>
         <source>Global</source>
-        <translation type="unfinished">Overal</translation>
+        <translation>Overal</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
     <message>
         <source>Customize</source>
-        <translation type="unfinished">Aanpassen</translation>
+        <translation>Aanpassen</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Help</translation>
+        <translation>&amp;Help</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp; Sluiten</translation>
+        <translation>&amp; Sluiten</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
         <source>Spaceball Motion</source>
-        <translation type="unfinished">Spaceball Motion</translation>
+        <translation>Spaceball beweging</translation>
     </message>
     <message>
         <source>No Spaceball Present</source>
-        <translation type="unfinished">Geen Spaceball aanwezig</translation>
+        <translation>Geen Spaceball aanwezig</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
         <source>No Spaceball Present</source>
-        <translation type="unfinished">Geen Spaceball aanwezig</translation>
+        <translation>Geen Spaceball aanwezig</translation>
     </message>
     <message>
         <source>Buttons</source>
-        <translation type="unfinished">Knoppen</translation>
+        <translation>Knoppen</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Wissen</translation>
+        <translation>Wissen</translation>
     </message>
     <message>
         <source>Print Reference</source>
-        <translation type="unfinished">Afdruk referentie</translation>
+        <translation>Afdruk referentie</translation>
     </message>
     <message>
         <source>Spaceball Buttons</source>
-        <translation type="unfinished">Spaceball Buttons</translation>
+        <translation>Spaceball Buttons</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Weergave eigenschappen</translation>
+        <translation>Weergave eigenschappen</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Weergave</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Transparency:</source>
-        <translation type="unfinished">Transparantie:</translation>
+        <translation>Transparantie:</translation>
     </message>
     <message>
         <source>Line width:</source>
-        <translation type="unfinished">Lijndikte:</translation>
+        <translation>Lijndikte:</translation>
     </message>
     <message>
         <source>Point size:</source>
-        <translation type="unfinished">Puntgrootte:</translation>
+        <translation>Puntgrootte:</translation>
     </message>
     <message>
         <source>Material</source>
-        <translation type="unfinished">Materiaal</translation>
+        <translation>Materiaal</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Viewing mode</source>
-        <translation type="unfinished">Weergavemodus</translation>
+        <translation>Weergavemodus</translation>
     </message>
     <message>
         <source>Plot mode:</source>
-        <translation type="unfinished">Plot modus:</translation>
+        <translation>Plot modus:</translation>
     </message>
     <message>
         <source></source>
@@ -964,169 +963,169 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     </message>
     <message>
         <source>Line transparency:</source>
-        <translation type="unfinished">Lijn transparantie:</translation>
+        <translation>Lijn transparantie:</translation>
     </message>
     <message>
         <source>Line color:</source>
-        <translation type="unfinished">Lijnkleur:</translation>
+        <translation>Lijnkleur:</translation>
     </message>
     <message>
         <source>Shape color:</source>
-        <translation type="unfinished">Kleur van de vorm:</translation>
+        <translation>Kleur van de vorm:</translation>
     </message>
     <message>
         <source>Color plot:</source>
-        <translation type="unfinished">Kleuren afdruk:</translation>
+        <translation>Kleuren afdruk:</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Documentvenster:</translation>
+        <translation>Documentvenster:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished">Aluminium</translation>
+        <translation>Aluminium</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished">Brons</translation>
+        <translation>Brons</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished">Bronze</translation>
+        <translation>Brons</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished">Koper</translation>
+        <translation>Koper</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished">Chroom</translation>
+        <translation>Chroom</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished">Smaragd</translation>
+        <translation>Smaragd</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished">Goud</translation>
+        <translation>Goud</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished">Jade</translation>
+        <translation>Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished">Metalized</translation>
+        <translation>Gemetalliseerde</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished">Neon GNC</translation>
+        <translation>Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished">Neon PHC</translation>
+        <translation>Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished">Obsidiaan</translation>
+        <translation>Obsidiaan</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished">Pewter</translation>
+        <translation>Pewter</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished">Plaster</translation>
+        <translation>Gips</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished">Plastic</translation>
+        <translation>Kunststof</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished">Robijn</translation>
+        <translation>Robijn</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished">Satin</translation>
+        <translation>Satijn</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished">Shiny plastic</translation>
+        <translation>Glanzende kunststof</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished">Silver</translation>
+        <translation>Zilver</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished">Staal</translation>
+        <translation>Staal</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished">Steen</translation>
+        <translation>Steen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
         <source>Editor</source>
-        <translation type="unfinished">Editor</translation>
+        <translation>Editor</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Opties</translation>
+        <translation>Opties</translation>
     </message>
     <message>
         <source>Enable line numbers</source>
-        <translation type="unfinished">Activeer regelnummers</translation>
+        <translation>Activeer regelnummers</translation>
     </message>
     <message>
         <source>Enable folding</source>
-        <translation type="unfinished">Activeer vouwen</translation>
+        <translation>Activeer vouwen</translation>
     </message>
     <message>
         <source>Indentation</source>
-        <translation type="unfinished">Inspringen</translation>
+        <translation>Inspringen</translation>
     </message>
     <message>
         <source>Insert spaces</source>
-        <translation type="unfinished">Spaties invoegen</translation>
+        <translation>Spaties invoegen</translation>
     </message>
     <message>
         <source>Tab size:</source>
-        <translation type="unfinished">Tabgrootte:</translation>
+        <translation>Tabgrootte:</translation>
     </message>
     <message>
         <source>Indent size:</source>
-        <translation type="unfinished">Inspring grootte:</translation>
+        <translation>Inspring grootte:</translation>
     </message>
     <message>
         <source>Keep tabs</source>
-        <translation type="unfinished">Behoud tabs</translation>
+        <translation>Behoud tabs</translation>
     </message>
     <message>
         <source>Display Items</source>
-        <translation type="unfinished">Geef items weer</translation>
+        <translation>Geef items weer</translation>
     </message>
     <message>
         <source>Family:</source>
-        <translation type="unfinished">Familie:</translation>
+        <translation>Familie:</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished">Grootte:</translation>
+        <translation>Grootte:</translation>
     </message>
     <message>
         <source>Preview:</source>
-        <translation type="unfinished">Voorbeeldweergave:</translation>
+        <translation>Voorbeeldweergave:</translation>
     </message>
     <message>
         <source></source>
@@ -1137,85 +1136,85 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     <name>Gui::Dialog::DlgGeneral</name>
     <message>
         <source>General</source>
-        <translation type="unfinished">Algemeen</translation>
+        <translation>Algemeen</translation>
     </message>
     <message>
         <source>Start up</source>
-        <translation type="unfinished">Opstarten</translation>
+        <translation>Opstarten</translation>
     </message>
     <message>
         <source>Enable splash screen at start up</source>
-        <translation type="unfinished">Activeer splash-scherm tijdens het opstarten</translation>
+        <translation>Activeer splash-scherm tijdens het opstarten</translation>
     </message>
     <message>
         <source>Switch to tab of report window:</source>
-        <translation type="unfinished">Schakel over naar het tabblad van het verslag-venster:</translation>
+        <translation>Schakel over naar het tabblad van het verslag-venster:</translation>
     </message>
     <message>
         <source>Auto load module after start up:</source>
-        <translation type="unfinished">Automatisch laden module na het opstarten:</translation>
+        <translation>Automatisch laden module na het opstarten:</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished">Taal</translation>
+        <translation>Taal</translation>
     </message>
     <message>
         <source>Change language:</source>
-        <translation type="unfinished">Taal wijzigen:</translation>
+        <translation>Taal wijzigen:</translation>
     </message>
     <message>
         <source>Main window</source>
-        <translation type="unfinished">Hoofdvenster</translation>
+        <translation>Hoofdvenster</translation>
     </message>
     <message>
         <source>Size of recent file list</source>
-        <translation type="unfinished">Grootte van de recente-bestanden lijst</translation>
+        <translation>Grootte van de recente-bestanden lijst</translation>
     </message>
     <message>
         <source>Window style:</source>
-        <translation type="unfinished">Venster stijl:</translation>
+        <translation>Venster stijl:</translation>
     </message>
     <message>
         <source>Size of toolbar icons:</source>
-        <translation type="unfinished">Grootte van de werkbalk-pictogrammen:</translation>
+        <translation>Grootte van de werkbalk-pictogrammen:</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation>Betegelde achtergrond inschakelen</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation>Style Sheet:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
         <source>Default (%1 x %1)</source>
-        <translation type="unfinished">Standaard (%1 x %1)</translation>
+        <translation>Standaard (%1 x %1)</translation>
     </message>
     <message>
         <source>Small (%1 x %1)</source>
-        <translation type="unfinished">Klein (1% x %1)</translation>
+        <translation>Klein (1% x %1)</translation>
     </message>
     <message>
         <source>Large (%1 x %1)</source>
-        <translation type="unfinished">Groot (1% x %1)</translation>
+        <translation>Groot (1% x %1)</translation>
     </message>
     <message>
         <source>Extra large (%1 x %1)</source>
-        <translation type="unfinished">Extra groot (1% x %1)</translation>
+        <translation>Extra groot (1% x %1)</translation>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation>Geen stylesheet</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgInputDialog</name>
     <message>
         <source>Input</source>
-        <translation type="unfinished">Invoer</translation>
+        <translation>Invoer</translation>
     </message>
     <message>
         <source></source>
@@ -1226,175 +1225,191 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
         <source>Scene Inspector</source>
-        <translation type="unfinished">Scènekeuring</translation>
+        <translation>Scènekeuring</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroExecute</name>
     <message>
         <source>Execute macro</source>
-        <translation type="unfinished">Macro uitvoeren</translation>
+        <translation>Macro uitvoeren</translation>
     </message>
     <message>
         <source>Macro name:</source>
-        <translation type="unfinished">Macro-naam:</translation>
+        <translation>Macro-naam:</translation>
     </message>
     <message>
         <source>Macro destination:</source>
-        <translation type="unfinished">Macro-bestemming:</translation>
+        <translation type="obsolete">Macro-bestemming:</translation>
     </message>
     <message>
         <source>Execute</source>
-        <translation type="unfinished">Uitvoeren</translation>
+        <translation>Uitvoeren</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Aanmaken</translation>
+        <translation>Aanmaken</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Verwijderen</translation>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
+    </message>
+    <message>
+        <source>User macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User macros location:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macro&apos;s</translation>
+        <translation>Macro&apos;s</translation>
     </message>
     <message>
         <source>Macro file</source>
-        <translation type="unfinished">Macro-bestand</translation>
+        <translation>Macro-bestand</translation>
     </message>
     <message>
         <source>Enter a file name, please:</source>
-        <translation type="unfinished">Gelieve een bestandsnaam in te voeren:</translation>
+        <translation>Gelieve een bestandsnaam in te voeren:</translation>
     </message>
     <message>
         <source>Existing file</source>
-        <translation type="unfinished">Bestaand bestand</translation>
+        <translation>Bestaand bestand</translation>
     </message>
     <message>
         <source>&apos;%1&apos;.
 This file already exists.</source>
-        <translation type="unfinished">&apos;%1&apos;. Dit bestand bestaat reeds.</translation>
+        <translation>&apos;%1&apos;. Dit bestand bestaat reeds.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Verwijder macro</translation>
+        <translation>Verwijder macro</translation>
     </message>
     <message>
         <source>Do you really want to delete the macro &apos;%1&apos;?</source>
-        <translation type="unfinished">Weet u zeker dat u macro &apos;%1&apos; wilt verwijderen?</translation>
+        <translation>Weet u zeker dat u macro &apos;%1&apos; wilt verwijderen?</translation>
     </message>
     <message>
         <source>Cannot create file</source>
-        <translation type="unfinished">Kan bestand niet aanmaken</translation>
+        <translation>Kan bestand niet aanmaken</translation>
     </message>
     <message>
         <source>Creation of file &apos;%1&apos; failed.</source>
-        <translation type="unfinished">Creëren van bestand &apos;%1&apos; mislukt. </translation>
+        <translation>Creëren van bestand &apos;%1&apos; mislukt. </translation>
+    </message>
+    <message>
+        <source>Read-only</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
         <source>Macro recording</source>
-        <translation type="unfinished">Macro-opname</translation>
+        <translation>Macro-opname</translation>
     </message>
     <message>
         <source>Macro name:</source>
-        <translation type="unfinished">Macro-naam:</translation>
+        <translation>Macro-naam:</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished">Stop</translation>
+        <translation>Stop</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>Macro path:</source>
-        <translation type="unfinished">Macro-pad:</translation>
+        <translation>Macro-pad:</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Record</source>
-        <translation type="unfinished">Opnemen</translation>
+        <translation>Opnemen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
     <message>
         <source>Macro recorder</source>
-        <translation type="unfinished">Macro-recorder</translation>
+        <translation>Macro-recorder</translation>
     </message>
     <message>
         <source>Specify first a place to save.</source>
-        <translation type="unfinished">Geef eerst de locatie om op te slaan.</translation>
+        <translation>Geef eerst de locatie om op te slaan.</translation>
     </message>
     <message>
         <source>Existing macro</source>
-        <translation type="unfinished">Bestaande macro</translation>
+        <translation>Bestaande macro</translation>
     </message>
     <message>
         <source>The macro &apos;%1&apos; already exists. Do you want to overwrite?</source>
-        <translation type="unfinished">De macro &apos;%1&apos; bestaat reeds. Wilt u het overschrijven?</translation>
+        <translation>De macro &apos;%1&apos; bestaat reeds. Wilt u het overschrijven?</translation>
     </message>
     <message>
         <source>The macro directory doesn&apos;t exist. Please, choose another one.</source>
-        <translation type="unfinished">De macro-map bestaat niet. Gelieve een andere te kiezen.</translation>
+        <translation>De macro-map bestaat niet. Gelieve een andere te kiezen.</translation>
     </message>
     <message>
         <source>Choose macro directory</source>
-        <translation type="unfinished">Kies macro-map</translation>
+        <translation>Kies macro-map</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation>U hebt geen schrijfrechten voor deze map. Kies een andere map.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
         <source>Material properties</source>
-        <translation type="unfinished">Materiaaleigenschappen</translation>
+        <translation>Materiaaleigenschappen</translation>
     </message>
     <message>
         <source>Material</source>
-        <translation type="unfinished">Materiaal</translation>
+        <translation>Materiaal</translation>
     </message>
     <message>
         <source>Diffuse color:</source>
-        <translation type="unfinished">Diffuse kleur:</translation>
+        <translation>Diffuse kleur:</translation>
     </message>
     <message>
         <source>Specular color:</source>
-        <translation type="unfinished">Spiegelende kleur:</translation>
+        <translation>Spiegelende kleur:</translation>
     </message>
     <message>
         <source>Shininess:</source>
-        <translation type="unfinished">Glans:</translation>
+        <translation>Glans:</translation>
     </message>
     <message>
         <source>%</source>
-        <translation type="unfinished">%</translation>
+        <translation>%</translation>
     </message>
     <message>
         <source>Ambient color:</source>
-        <translation type="unfinished">Omgevingskleur:</translation>
+        <translation>Omgevingskleur:</translation>
     </message>
     <message>
         <source></source>
@@ -1402,105 +1417,101 @@ This file already exists.</source>
     </message>
     <message>
         <source>Emissive color:</source>
-        <translation type="unfinished">Emissieve kleur:</translation>
+        <translation>Emissieve kleur:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgOnlineHelp</name>
     <message>
         <source>On-line help</source>
-        <translation type="unfinished">On-line help</translation>
+        <translation>On-line help</translation>
     </message>
     <message>
         <source>Help viewer</source>
-        <translation type="unfinished">Help-Viewer</translation>
+        <translation>Help-Viewer</translation>
     </message>
     <message>
         <source>Location of start page</source>
-        <translation type="unfinished">Locatie van startpagina</translation>
+        <translation>Locatie van startpagina</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
-        <source>HTML files (*.html *.htm)</source>
-        <translation type="obsolete">HTML-bestanden (*. html *. htm)</translation>
-    </message>
-    <message>
         <source>Access denied</source>
-        <translation type="unfinished">Toegang geweigerd</translation>
+        <translation>Toegang geweigerd</translation>
     </message>
     <message>
         <source>Access denied to &apos;%1&apos;
 
 Specify another directory, please.</source>
-        <translation type="unfinished">Toegang geweigerd &apos;%1&apos;
+        <translation>Toegang geweigerd &apos;%1&apos;
 Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>HTML files</source>
-        <translation type="unfinished"></translation>
+        <translation>HTML-bestanden</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
         <source>Parameter Editor</source>
-        <translation type="unfinished">Parameter-editor</translation>
+        <translation>Parameter-editor</translation>
     </message>
     <message>
         <source>Save to disk</source>
-        <translation type="unfinished">Opslaan op schijf</translation>
+        <translation>Opslaan op schijf</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation type="unfinished">Alt+C</translation>
+        <translation>Alt+C</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp; Sluiten</translation>
+        <translation>&amp; Sluiten</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgParameterImp</name>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Groep</translation>
+        <translation>Groep</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Naam</translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Waarde</translation>
+        <translation>Waarde</translation>
     </message>
     <message>
         <source>User parameter</source>
-        <translation type="unfinished">Gebruikersparameter</translation>
+        <translation>Gebruikersparameter</translation>
     </message>
     <message>
         <source>Invalid input</source>
-        <translation type="unfinished">Ongeldige invoer</translation>
+        <translation>Ongeldige invoer</translation>
     </message>
     <message>
         <source>Invalid key name &apos;%1&apos;</source>
-        <translation type="unfinished">Ongeldige sleutelnaam &apos;%1&apos;</translation>
+        <translation>Ongeldige sleutelnaam &apos;%1&apos;</translation>
     </message>
     <message>
         <source>System parameter</source>
-        <translation type="unfinished">Systeem-parameter</translation>
+        <translation>Systeem-parameter</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Voorkeuren</translation>
+        <translation>Voorkeuren</translation>
     </message>
     <message>
         <source></source>
@@ -1511,62 +1522,62 @@ Kies een andere map, alstublieft.</translation>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
         <source>Wrong parameter</source>
-        <translation type="unfinished">Verkeerde parameter</translation>
+        <translation>Verkeerde parameter</translation>
     </message>
     <message>
         <source>Clear user settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersinstellingen verwijderen</translation>
     </message>
     <message>
         <source>Do you want to clear all your user settings?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wilt u alle uw gebruikersinstellingen wissen?</translation>
     </message>
     <message>
         <source>If you agree all your settings will be cleared.</source>
-        <translation type="unfinished"></translation>
+        <translation>Als u akkoord gaat zullen alle uw instellingen worden gewist.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
         <source>Project information</source>
-        <translation type="unfinished">Projectinformatie</translation>
+        <translation>Projectinformatie</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished">Informatie</translation>
+        <translation>Informatie</translation>
     </message>
     <message>
         <source>&amp;Name:</source>
-        <translation type="unfinished">&amp;Naam:</translation>
+        <translation>&amp;Naam:</translation>
     </message>
     <message>
         <source>Commen&amp;t:</source>
-        <translation type="unfinished">Commen&amp;taar:</translation>
+        <translation>Commen&amp;taar:</translation>
     </message>
     <message>
         <source>Path:</source>
-        <translation type="unfinished">PAD:</translation>
+        <translation>PAD:</translation>
     </message>
     <message>
         <source>&amp;Last modified by:</source>
-        <translation type="unfinished">&amp;Laatst gewijzigd door:</translation>
+        <translation>&amp;Laatst gewijzigd door:</translation>
     </message>
     <message>
         <source>Created &amp;by:</source>
-        <translation type="unfinished">Gemaakt &amp;door:</translation>
+        <translation>Gemaakt &amp;door:</translation>
     </message>
     <message>
         <source>Com&amp;pany:</source>
-        <translation type="unfinished">&amp;Firma:</translation>
+        <translation>&amp;Firma:</translation>
     </message>
     <message>
         <source>Last &amp;modification date:</source>
-        <translation type="unfinished">Laatste &amp;wijzigingsdatum:</translation>
+        <translation>Laatste &amp;wijzigingsdatum:</translation>
     </message>
     <message>
         <source>Creation &amp;date:</source>
-        <translation type="unfinished">Aanmaak&amp;datum:</translation>
+        <translation>Aanmaak&amp;datum:</translation>
     </message>
     <message>
         <source></source>
@@ -1574,144 +1585,136 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>UUID:</source>
-        <translation type="unfinished">UUID:</translation>
+        <translation>UUID:</translation>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">License information:</translation>
+        <translation>Licentie-informatie:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation>Licentie URL</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Open in browser</translation>
+        <translation>In browser openen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
         <source>Project utility</source>
-        <translation type="unfinished">Project hulpprogramma</translation>
+        <translation>Project hulpprogramma</translation>
     </message>
     <message>
         <source>Extract project</source>
-        <translation type="unfinished">Extraheer project</translation>
+        <translation>Extraheer project</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished">Bron</translation>
-    </message>
-    <message>
-        <source>Project file (*.fcstd)</source>
-        <translation type="obsolete">Project-bestand (*.fcstd)</translation>
+        <translation>Bron</translation>
     </message>
     <message>
         <source>Destination</source>
-        <translation type="unfinished">Bestemming</translation>
+        <translation>Bestemming</translation>
     </message>
     <message>
         <source>Extract</source>
-        <translation type="unfinished">Uittrekken</translation>
+        <translation>Uittrekken</translation>
     </message>
     <message>
         <source>Create project</source>
-        <translation type="unfinished">Project aanmaken</translation>
-    </message>
-    <message>
-        <source>Document.xml</source>
-        <translation type="obsolete">Document.xml</translation>
+        <translation>Project aanmaken</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Aanmaken</translation>
+        <translation>Aanmaken</translation>
     </message>
     <message>
         <source>Load project file after creation</source>
-        <translation type="unfinished">Laad projectbestand na het creëren</translation>
+        <translation>Laad projectbestand na het creëren</translation>
     </message>
     <message>
         <source>Empty source</source>
-        <translation type="unfinished">Lege bron</translation>
+        <translation>Lege bron</translation>
     </message>
     <message>
         <source>No source is defined.</source>
-        <translation type="unfinished">Geen bron is gedefinieerd.</translation>
+        <translation>Geen bron is gedefinieerd.</translation>
     </message>
     <message>
         <source>Empty destination</source>
-        <translation type="unfinished">Lege bestemming</translation>
+        <translation>Lege bestemming</translation>
     </message>
     <message>
         <source>No destination is defined.</source>
-        <translation type="unfinished">Geen bestemming is gedefinieerd.</translation>
+        <translation>Geen bestemming is gedefinieerd.</translation>
     </message>
     <message>
         <source>Project file</source>
-        <translation type="unfinished"></translation>
+        <translation>Project-bestand</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation>Link</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation>Alle objecttypen tonen</translation>
     </message>
     <message>
         <source>No selection</source>
-        <translation type="unfinished">Geen selectie</translation>
+        <translation>Geen selectie</translation>
     </message>
     <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished">Please select an object from the list</translation>
+        <translation>Selecteer een object in de lijst</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
         <source>Output window</source>
-        <translation type="unfinished">Uitvoer-venster</translation>
+        <translation>Uitvoer-venster</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation type="unfinished">Uitvoer</translation>
+        <translation>Uitvoer</translation>
     </message>
     <message>
         <source>Record log messages</source>
-        <translation type="unfinished">logboek-berichten bewaren</translation>
+        <translation>logboek-berichten bewaren</translation>
     </message>
     <message>
         <source>Record warnings</source>
-        <translation type="unfinished">Waarschuwingen bewaren</translation>
+        <translation>Waarschuwingen bewaren</translation>
     </message>
     <message>
         <source>Record error messages</source>
-        <translation type="unfinished">Foutmeldingen bewaren</translation>
+        <translation>Foutmeldingen bewaren</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished">Kleuren</translation>
+        <translation>Kleuren</translation>
     </message>
     <message>
         <source>Normal messages:</source>
-        <translation type="unfinished">Normale berichten:</translation>
+        <translation>Normale berichten:</translation>
     </message>
     <message>
         <source>Log messages:</source>
-        <translation type="unfinished">Logboekberichten:</translation>
+        <translation>Logboekberichten:</translation>
     </message>
     <message>
         <source>Warnings:</source>
-        <translation type="unfinished">Waarschuwingen:</translation>
+        <translation>Waarschuwingen:</translation>
     </message>
     <message>
         <source>Errors:</source>
-        <translation type="unfinished">Fouten:</translation>
+        <translation>Fouten:</translation>
     </message>
     <message>
         <source></source>
@@ -1719,93 +1722,93 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Redirect internal Python errors to report view</source>
-        <translation type="unfinished">Interne Python fouten omleiden naar rapportweergave</translation>
+        <translation>Interne Python fouten omleiden naar rapportweergave</translation>
     </message>
     <message>
         <source>Redirect internal Python output to report view</source>
-        <translation type="unfinished">Interne Python uitvoer omleiden naar de rapportweergave</translation>
+        <translation>Interne Python uitvoer omleiden naar de rapportweergave</translation>
     </message>
     <message>
         <source>Python interpreter</source>
-        <translation type="unfinished"></translation>
+        <translation>Python-interpreter</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
         <source>Running external program</source>
-        <translation type="unfinished">Draaien van extern programma</translation>
+        <translation>Draaien van extern programma</translation>
     </message>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished">Tekstbenaming</translation>
+        <translation>Tekstbenaming</translation>
     </message>
     <message>
         <source>Advanced &gt;&gt;</source>
-        <translation type="unfinished">Geavanceerde &gt;&gt;</translation>
+        <translation>Geavanceerde &gt;&gt;</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Accept changes</source>
-        <translation type="unfinished">Accepteer wijzigingen</translation>
+        <translation>Accepteer wijzigingen</translation>
     </message>
     <message>
         <source>Discard changes</source>
-        <translation type="unfinished">Wijzigingen verwerpen</translation>
+        <translation>Wijzigingen verwerpen</translation>
     </message>
     <message>
         <source>Abort program</source>
-        <translation type="unfinished">Programma afbreken</translation>
+        <translation>Programma afbreken</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Select a file</source>
-        <translation type="unfinished">Selecteer een bestand</translation>
+        <translation>Selecteer een bestand</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
         <source>3D View</source>
-        <translation type="unfinished">3D-weergave</translation>
+        <translation>3D-weergave</translation>
     </message>
     <message>
         <source>3D View settings</source>
-        <translation type="unfinished">Instellingen voor 3D-weergave</translation>
+        <translation>Instellingen voor 3D-weergave</translation>
     </message>
     <message>
         <source>Show coordinate system in the corner</source>
-        <translation type="unfinished">Toon coördinatenstelsel in de hoek</translation>
+        <translation>Toon coördinatenstelsel in de hoek</translation>
     </message>
     <message>
         <source>Show counter of frames per second</source>
-        <translation type="unfinished">Toon teller van frames per seconde</translation>
+        <translation>Toon teller van frames per seconde</translation>
     </message>
     <message>
         <source>Enable animation</source>
-        <translation type="unfinished">Animatie inschakelen</translation>
+        <translation>Animatie inschakelen</translation>
     </message>
     <message>
         <source>Eye to eye distance for stereo modes:</source>
-        <translation type="unfinished">Oogafstand voor stereo-modus:</translation>
+        <translation>Oogafstand voor stereo-modus:</translation>
     </message>
     <message>
         <source>Camera type</source>
-        <translation type="unfinished">Cameratype</translation>
+        <translation>Cameratype</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation type="unfinished">Orthogonale projectie</translation>
+        <translation>Orthogonale projectie</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation type="unfinished">Perspectiefreproductie</translation>
+        <translation>Perspectiefreproductie</translation>
     </message>
     <message>
         <source></source>
@@ -1813,51 +1816,51 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>3D Navigation</source>
-        <translation type="unfinished">3D-navigatie</translation>
+        <translation>3D-navigatie</translation>
     </message>
     <message>
         <source>Mouse...</source>
-        <translation type="unfinished">Muis...</translation>
+        <translation>Muis...</translation>
     </message>
     <message>
         <source>Intensity of backlight</source>
-        <translation type="unfinished">Intensiteit van de achtergrondverlichting</translation>
+        <translation>Intensiteit van de achtergrondverlichting</translation>
     </message>
     <message>
         <source>Enable backlight color</source>
-        <translation type="unfinished">Inschakelen achtergrondverlichtingskleur</translation>
+        <translation>Inschakelen achtergrondverlichtingskleur</translation>
     </message>
     <message>
         <source>Orbit style</source>
-        <translation type="unfinished">Orbit stijl</translation>
+        <translation>Orbit stijl</translation>
     </message>
     <message>
         <source>Turntable</source>
-        <translation type="unfinished">Draaitafel</translation>
+        <translation>Draaitafel</translation>
     </message>
     <message>
         <source>Trackball</source>
-        <translation type="unfinished">Trackball</translation>
+        <translation>Trackball</translation>
     </message>
     <message>
         <source>Invert zoom</source>
-        <translation type="unfinished">Zoom omkeren</translation>
+        <translation>Zoom omkeren</translation>
     </message>
     <message>
         <source>Zoom at cursor</source>
-        <translation type="unfinished">Inzoomen bij cursor</translation>
+        <translation>Inzoomen bij cursor</translation>
     </message>
     <message>
         <source>Zoom step</source>
-        <translation type="unfinished">Zoom stap</translation>
+        <translation>Zoom stap</translation>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation>Anti-aliasing</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Geen</translation>
+        <translation>Geen</translation>
     </message>
     <message>
         <source>Line Smoothing</source>
@@ -1865,117 +1868,117 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
-        <translation type="unfinished">MSAA 2x</translation>
+        <translation>MSAA 2x</translation>
     </message>
     <message>
         <source>MSAA 4x</source>
-        <translation type="unfinished">MSAA 4x</translation>
+        <translation>MSAA 4x</translation>
     </message>
     <message>
         <source>MSAA 8x</source>
-        <translation type="unfinished">MSAA 8x</translation>
+        <translation>MSAA 8x</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation type="unfinished">%1 navigatie</translation>
+        <translation>%1 navigatie</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
-        <translation type="unfinished"></translation>
+        <translation>Anti-aliasing</translation>
     </message>
     <message>
         <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Open een nieuwe viewer of %1 herstart om anti-aliasing wijzigingen toepassen.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsColorGradient</name>
     <message>
         <source>Color model</source>
-        <translation type="unfinished">Kleurenmodel</translation>
+        <translation>Kleurenmodel</translation>
     </message>
     <message>
         <source>&amp;Gradient:</source>
-        <translation type="unfinished">Verloop:</translation>
+        <translation>Verloop:</translation>
     </message>
     <message>
         <source>red-yellow-green-cyan-blue</source>
-        <translation type="unfinished">rood-geel-groen-cyaan-blauw</translation>
+        <translation>rood-geel-groen-cyaan-blauw</translation>
     </message>
     <message>
         <source>blue-cyan-green-yellow-red</source>
-        <translation type="unfinished">blauw-cyaan-groen-geel-rood</translation>
+        <translation>blauw-cyaan-groen-geel-rood</translation>
     </message>
     <message>
         <source>white-black</source>
-        <translation type="unfinished">wit-zwart</translation>
+        <translation>wit-zwart</translation>
     </message>
     <message>
         <source>black-white</source>
-        <translation type="unfinished">zwart-wit</translation>
+        <translation>zwart-wit</translation>
     </message>
     <message>
         <source>Visibility</source>
-        <translation type="unfinished">Zichtbaarheid</translation>
+        <translation>Zichtbaarheid</translation>
     </message>
     <message>
         <source>Out g&amp;rayed</source>
-        <translation type="unfinished">Uit geg&amp;rijsd</translation>
+        <translation>Uit geg&amp;rijsd</translation>
     </message>
     <message>
         <source>Alt+R</source>
-        <translation type="unfinished">Alt+R</translation>
+        <translation>Alt+R</translation>
     </message>
     <message>
         <source>Out &amp;invisible</source>
-        <translation type="unfinished">Uit onzichtbaar</translation>
+        <translation>Uit onzichtbaar</translation>
     </message>
     <message>
         <source>Alt+I</source>
-        <translation type="unfinished">Alt+I</translation>
+        <translation>Alt+I</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished">Stijl</translation>
+        <translation>Stijl</translation>
     </message>
     <message>
         <source>&amp;Zero</source>
-        <translation type="unfinished">&amp;Nul</translation>
+        <translation>&amp;Nul</translation>
     </message>
     <message>
         <source>Alt+Z</source>
-        <translation type="unfinished">Alt+Z</translation>
+        <translation>Alt+Z</translation>
     </message>
     <message>
         <source>&amp;Flow</source>
-        <translation type="unfinished">Stroming</translation>
+        <translation>Stroming</translation>
     </message>
     <message>
         <source>Alt+F</source>
-        <translation type="unfinished">Alt+F</translation>
+        <translation>Alt+F</translation>
     </message>
     <message>
         <source>Parameter range</source>
-        <translation type="unfinished">Parameterbereik</translation>
+        <translation>Parameterbereik</translation>
     </message>
     <message>
         <source>Mi&amp;nimum:</source>
-        <translation type="unfinished">Mi&amp;nimum:</translation>
+        <translation>Mi&amp;nimum:</translation>
     </message>
     <message>
         <source>Ma&amp;ximum:</source>
-        <translation type="unfinished">Ma&amp;ximum:</translation>
+        <translation>Ma&amp;ximum:</translation>
     </message>
     <message>
         <source>&amp;Labels:</source>
-        <translation type="unfinished">&amp;Benamingen:</translation>
+        <translation>&amp;Benamingen:</translation>
     </message>
     <message>
         <source>&amp;Decimals:</source>
-        <translation type="unfinished">Aantal &amp;decimalen:</translation>
+        <translation>Aantal &amp;decimalen:</translation>
     </message>
     <message>
         <source></source>
@@ -1983,588 +1986,584 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Color-gradient settings</source>
-        <translation type="unfinished">Kleurverloop instellingen</translation>
+        <translation>Kleurverloop instellingen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsColorGradientImp</name>
     <message>
         <source>Wrong parameter</source>
-        <translation type="unfinished">Verkeerde parameter</translation>
+        <translation>Verkeerde parameter</translation>
     </message>
     <message>
         <source>The maximum value must be higher than the minimum value.</source>
-        <translation type="unfinished">De maximale waarde moet hoger zijn dan de minimale waarde.</translation>
+        <translation>De maximale waarde moet hoger zijn dan de minimale waarde.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsDocument</name>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Document</translation>
+        <translation>Document</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Algemeen</translation>
+        <translation>Algemeen</translation>
     </message>
     <message>
         <source>Document save compression level
 (0 = none, 9 = highest, 3 = default)</source>
-        <translation type="unfinished">Document op te slaan compressie-niveau (0=geen, 9=hoogste, 3=standaard)</translation>
+        <translation>Document op te slaan compressie-niveau (0=geen, 9=hoogste, 3=standaard)</translation>
     </message>
     <message>
         <source>Create new document at start up</source>
-        <translation type="unfinished">Maak een nieuw document aan bij het opstarten</translation>
+        <translation>Maak een nieuw document aan bij het opstarten</translation>
     </message>
     <message>
         <source>Storage</source>
-        <translation type="unfinished">Opslag</translation>
+        <translation>Opslag</translation>
     </message>
     <message>
         <source>Saving transactions (Auto-save)</source>
-        <translation type="unfinished">Opslaan van transacties (automatisch opslaan)</translation>
+        <translation>Opslaan van transacties (automatisch opslaan)</translation>
     </message>
     <message>
         <source>Discard saved transaction after saving document</source>
-        <translation type="unfinished">Opgeslagen transactie na het opslaan van het document negeren</translation>
+        <translation>Opgeslagen transactie na het opslaan van het document negeren</translation>
     </message>
     <message>
         <source>Save thumbnail into project file when saving document</source>
-        <translation type="unfinished">Miniatuur opslaat in projectbestand bij het opslaan van document</translation>
+        <translation>Miniatuur opslaat in projectbestand bij het opslaan van document</translation>
     </message>
     <message>
         <source>Create up to backup files when resaving document</source>
-        <translation type="unfinished">Maximaal aantal backup bestanden bij opslag</translation>
+        <translation>Maximaal aantal backup bestanden bij opslag</translation>
     </message>
     <message>
         <source>Document objects</source>
-        <translation type="unfinished">Document objecten</translation>
+        <translation>Document objecten</translation>
     </message>
     <message>
         <source>Allow duplicate object labels in one document</source>
-        <translation type="unfinished">Dubbele voorwerpnamen in een document toestaan</translation>
+        <translation>Dubbele voorwerpnamen in een document toestaan</translation>
     </message>
     <message>
         <source>Maximum Undo/Redo steps</source>
-        <translation type="unfinished">Maximale &apos;ongedaan maken&apos; / &apos;Opnieuw&apos; stappen</translation>
+        <translation>Maximale &apos;ongedaan maken&apos; / &apos;Opnieuw&apos; stappen</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
-        <translation type="unfinished">Gebruik undo/redo op documenten</translation>
+        <translation>Gebruik undo/redo op documenten</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished">Authoring and License</translation>
+        <translation>Auteur en licentie</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished">Author name</translation>
+        <translation>Auteursnaam</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;De naam te gebruiken op documentcreatie.&lt;/p&gt; &lt;p&gt;Leeg houden voor anoniem.&lt;/p&gt; &lt;p&gt;U kunt het ook zo formateren:&lt;/p&gt; &lt;p&gt;John Doe &amp;lt;-john@doe.com &amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished">If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</translation>
+        <translation>Als dit ingeschakeld is, zal de &quot;Laatst gewijzigd door&quot; veld ingesteld worden bij het opslaan van het bestand</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished">Set on save</translation>
+        <translation>Instellen met opslaan</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished">Bedrijf</translation>
+        <translation>Bedrijf</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished">Default license</translation>
+        <translation>Standaardlicentie</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished">The default license for new documents</translation>
+        <translation>De standaard licentie voor nieuwe documenten</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished">All rights reserved</translation>
+        <translation>Alle rechten voorbehouden</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished">CreativeCommons Attribution</translation>
+        <translation>CreativeCommons-Naamsvermelding</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
+        <translation>Creative Commons Naamsvermelding-GelijkDelen</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
+        <translation>CreativeCommons-Naamsvermelding-GeenAfgelijkeDelen</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
+        <translation>CreativeCommons-Naamsvermelding-NietComercieel</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
+        <translation>CreativeCommons-Naamsvermelding-NietComercieel-GelijkDelen</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
+        <translation>CreativeCommons-Naamsvermelding-NietComercieel-GeenAfgeleideWerken</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished">Public Domain</translation>
+        <translation>Publiek domein</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished">FreeArt</translation>
+        <translation>FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Other</translation>
+        <translation>Andere</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation>Licentie URL</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished">An URL where the user can find more details about the license</translation>
-    </message>
-    <message>
-        <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="obsolete">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
+        <translation>Een URL waar de gebruiker meer details over de licentie kan vinden</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished">The default company to use for new files</translation>
+        <translation>Het standaardbedrijf te gebruiken voor nieuwe bestanden</translation>
     </message>
     <message>
         <source>Run AutoRecovery at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>AutoHerstel bij het opstarten uitvoeren</translation>
     </message>
     <message>
         <source>Save AutoRecovery information every</source>
-        <translation type="unfinished"></translation>
+        <translation>AutoHerstel-informatie opslaan elke</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Tekst</translation>
+        <translation>Tekst</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished">Bladwijzer</translation>
+        <translation>Bladwijzer</translation>
     </message>
     <message>
         <source>Breakpoint</source>
-        <translation type="unfinished">Pauze-punt</translation>
+        <translation>Pauze-punt</translation>
     </message>
     <message>
         <source>Keyword</source>
-        <translation type="unfinished">Sleutelwoord</translation>
+        <translation>Sleutelwoord</translation>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Commentaar</translation>
+        <translation>Commentaar</translation>
     </message>
     <message>
         <source>Block comment</source>
-        <translation type="unfinished">Commentaarblok</translation>
+        <translation>Commentaarblok</translation>
     </message>
     <message>
         <source>Number</source>
-        <translation type="unfinished">Getal</translation>
+        <translation>Getal</translation>
     </message>
     <message>
         <source>String</source>
-        <translation type="unfinished">Tekenreeks</translation>
+        <translation>Tekenreeks</translation>
     </message>
     <message>
         <source>Character</source>
-        <translation type="unfinished">Teken</translation>
+        <translation>Teken</translation>
     </message>
     <message>
         <source>Class name</source>
-        <translation type="unfinished">Klassenaam</translation>
+        <translation>Klassenaam</translation>
     </message>
     <message>
         <source>Define name</source>
-        <translation type="unfinished">Definieer Naam</translation>
+        <translation>Definieer Naam</translation>
     </message>
     <message>
         <source>Operator</source>
-        <translation type="unfinished">Operand</translation>
+        <translation>Operand</translation>
     </message>
     <message>
         <source>Python output</source>
-        <translation type="unfinished">Python-uitvoer</translation>
+        <translation>Python-uitvoer</translation>
     </message>
     <message>
         <source>Python error</source>
-        <translation type="unfinished">Python-fout</translation>
+        <translation>Python-fout</translation>
     </message>
     <message>
         <source>Items</source>
-        <translation type="unfinished">Items</translation>
+        <translation>Items</translation>
     </message>
     <message>
         <source>Current line highlight</source>
-        <translation type="unfinished">Current line highlight</translation>
+        <translation>Nadruk van tegenwoordige lijn</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
     <message>
         <source>Image settings</source>
-        <translation type="unfinished">Afbeeldingsinstellingen</translation>
+        <translation>Afbeeldingsinstellingen</translation>
     </message>
     <message>
         <source>Image properties</source>
-        <translation type="unfinished">Afbeeldingeigenschappen</translation>
+        <translation>Afbeeldingeigenschappen</translation>
     </message>
     <message>
         <source>Back&amp;ground:</source>
-        <translation type="unfinished">achter&amp;grond:</translation>
+        <translation>achter&amp;grond:</translation>
     </message>
     <message>
         <source>Current</source>
-        <translation type="unfinished">Huidige</translation>
+        <translation>Huidige</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">Wit</translation>
+        <translation>Wit</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation type="unfinished">Zwart</translation>
+        <translation>Zwart</translation>
     </message>
     <message>
         <source>Image dimensions</source>
-        <translation type="unfinished">Afbeeldings-afmetingen</translation>
+        <translation>Afbeeldings-afmetingen</translation>
     </message>
     <message>
         <source>Pixel</source>
-        <translation type="unfinished">beeldpunt</translation>
+        <translation>beeldpunt</translation>
     </message>
     <message>
         <source>&amp;Width:</source>
-        <translation type="unfinished">&amp;Breedte:</translation>
+        <translation>&amp;Breedte:</translation>
     </message>
     <message>
         <source>Current screen</source>
-        <translation type="unfinished">Huidige beeldscherm</translation>
+        <translation>Huidige beeldscherm</translation>
     </message>
     <message>
         <source>Icon       32  x 32</source>
-        <translation type="unfinished">Pictogram 32 x 32</translation>
+        <translation>Pictogram 32 x 32</translation>
     </message>
     <message>
         <source>Icon       64 x 64</source>
-        <translation type="unfinished">Pictogram 64 x 64</translation>
+        <translation>Pictogram 64 x 64</translation>
     </message>
     <message>
         <source>Icon       128 x 128</source>
-        <translation type="unfinished">Pictogram 128 x 128</translation>
+        <translation>Pictogram 128 x 128</translation>
     </message>
     <message>
         <source>CGA       320 x 200</source>
-        <translation type="unfinished">CGA 320 x 200</translation>
+        <translation>CGA 320 x 200</translation>
     </message>
     <message>
         <source>QVGA     320 x 240</source>
-        <translation type="unfinished">QVGA 320 x 240</translation>
+        <translation>QVGA 320 x 240</translation>
     </message>
     <message>
         <source>VGA       640 x 480</source>
-        <translation type="unfinished">VGA 640 x 480</translation>
+        <translation>VGA 640 x 480</translation>
     </message>
     <message>
         <source>NTSC     720 x 480</source>
-        <translation type="unfinished">NTSC 720 x 480</translation>
+        <translation>NTSC 720 x 480</translation>
     </message>
     <message>
         <source>PAL        768 x 578</source>
-        <translation type="unfinished">PAL 768 x 578</translation>
+        <translation>PAL 768 x 578</translation>
     </message>
     <message>
         <source>SVGA     800 x 600</source>
-        <translation type="unfinished">SVGA 800 x 600</translation>
+        <translation>SVGA 800 x 600</translation>
     </message>
     <message>
         <source>XGA       1024 x 768</source>
-        <translation type="unfinished">XGA 1024 x 768</translation>
+        <translation>XGA 1024 x 768</translation>
     </message>
     <message>
         <source>HD720   1280 x 720</source>
-        <translation type="unfinished">HD720 1280 x 720</translation>
+        <translation>HD720 1280 x 720</translation>
     </message>
     <message>
         <source>SXGA     1280 x 1024</source>
-        <translation type="unfinished">SXGA 1280 x 1024</translation>
+        <translation>SXGA 1280 x 1024</translation>
     </message>
     <message>
         <source>SXGA+   1400 x 1050</source>
-        <translation type="unfinished">SXGA + 1400 x 1050</translation>
+        <translation>SXGA + 1400 x 1050</translation>
     </message>
     <message>
         <source>UXGA     1600 x 1200</source>
-        <translation type="unfinished">UXGA 1600 x 1200</translation>
+        <translation>UXGA 1600 x 1200</translation>
     </message>
     <message>
         <source>HD1080 1920 x 1080</source>
-        <translation type="unfinished">HD1080 1920 x 1080</translation>
+        <translation>HD1080 1920 x 1080</translation>
     </message>
     <message>
         <source>WUXGA  1920 x 1200</source>
-        <translation type="unfinished">WUXGA 1920 x 1200</translation>
+        <translation>WUXGA 1920 x 1200</translation>
     </message>
     <message>
         <source>QXGA     2048 x 1538</source>
-        <translation type="unfinished">QXGA 2048 x 1538</translation>
+        <translation>QXGA 2048 x 1538</translation>
     </message>
     <message>
         <source>WQXGA  2560 x 1600</source>
-        <translation type="unfinished">WQXGA 2560 x 1600</translation>
+        <translation>WQXGA 2560 x 1600</translation>
     </message>
     <message>
         <source>QSXGA   2560 x 2048</source>
-        <translation type="unfinished">QSXGA 2560 x 2048</translation>
+        <translation>QSXGA 2560 x 2048</translation>
     </message>
     <message utf8="true">
         <source>QUXGA   3200 × 2400</source>
-        <translation type="unfinished">QUXGA 3200 × 2400</translation>
+        <translation>QUXGA 3200 × 2400</translation>
     </message>
     <message utf8="true">
         <source>HUXGA   6400 × 4800</source>
-        <translation type="unfinished">HUXGA 6400 × 4800</translation>
+        <translation>HUXGA 6400 × 4800</translation>
     </message>
     <message>
         <source>!!!          10000 x 10000</source>
-        <translation type="unfinished">!!! 10000 x 10000</translation>
+        <translation>!!! 10000 x 10000</translation>
     </message>
     <message>
         <source>Standard sizes:</source>
-        <translation type="unfinished">Standaard formaten:</translation>
+        <translation>Standaard formaten:</translation>
     </message>
     <message>
         <source>&amp;Height:</source>
-        <translation type="unfinished">Hoogte:</translation>
+        <translation>Hoogte:</translation>
     </message>
     <message>
         <source>Aspect ratio:</source>
-        <translation type="unfinished">Beeldverhouding:</translation>
+        <translation>Beeldverhouding:</translation>
     </message>
     <message>
         <source>&amp;Screen</source>
-        <translation type="unfinished">&amp;Scherm</translation>
+        <translation>&amp;Scherm</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt+S</translation>
     </message>
     <message>
         <source>&amp;4:3</source>
-        <translation type="unfinished">&amp;4:3</translation>
+        <translation>&amp;4:3</translation>
     </message>
     <message>
         <source>Alt+4</source>
-        <translation type="unfinished">Alt+4</translation>
+        <translation>Alt+4</translation>
     </message>
     <message>
         <source>1&amp;6:9</source>
-        <translation type="unfinished">1&amp;6:9</translation>
+        <translation>1&amp;6:9</translation>
     </message>
     <message>
         <source>Alt+6</source>
-        <translation type="unfinished">Alt+6</translation>
+        <translation>Alt+6</translation>
     </message>
     <message>
         <source>&amp;1:1</source>
-        <translation type="unfinished">&amp;1:1</translation>
+        <translation>&amp;1:1</translation>
     </message>
     <message>
         <source>Alt+1</source>
-        <translation type="unfinished">Alt+1</translation>
+        <translation>Alt+1</translation>
     </message>
     <message>
         <source>Image comment</source>
-        <translation type="unfinished">Bijschrift</translation>
+        <translation>Bijschrift</translation>
     </message>
     <message>
         <source>Insert MIBA</source>
-        <translation type="unfinished">MIBA-informatie toevoegen</translation>
+        <translation>MIBA-informatie toevoegen</translation>
     </message>
     <message>
         <source>Insert comment</source>
-        <translation type="unfinished">Opmerking invoegen</translation>
+        <translation>Opmerking invoegen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>Macro recording settings</source>
-        <translation type="unfinished">Macro-opname-instellingen</translation>
+        <translation>Macro-opname-instellingen</translation>
     </message>
     <message>
         <source>Logging Commands</source>
-        <translation type="unfinished">Loggen van commando&apos;s</translation>
+        <translation>Loggen van commando&apos;s</translation>
     </message>
     <message>
         <source>Show script commands in python console</source>
-        <translation type="unfinished">Toon scriptopdrachten in python console</translation>
+        <translation>Toon scriptopdrachten in python console</translation>
     </message>
     <message>
         <source>Log all commands issued by menus to file:</source>
-        <translation type="unfinished">Log alle commando&apos;s veroorzaakt door menu&apos;s naar bestand:</translation>
+        <translation>Log alle commando&apos;s veroorzaakt door menu&apos;s naar bestand:</translation>
     </message>
     <message>
         <source>FullScript.FCScript</source>
-        <translation type="unfinished">FullScript.FCScript</translation>
+        <translation>FullScript.FCScript</translation>
     </message>
     <message>
         <source>Gui commands</source>
-        <translation type="unfinished">Gui commando&apos;s</translation>
+        <translation>Gui commando&apos;s</translation>
     </message>
     <message>
         <source>Recording GUI commands</source>
-        <translation type="unfinished">GUI-commando&apos;s opnemen</translation>
+        <translation>GUI-commando&apos;s opnemen</translation>
     </message>
     <message>
         <source>Record as comment</source>
-        <translation type="unfinished">Opnemen als commentaar</translation>
+        <translation>Opnemen als commentaar</translation>
     </message>
     <message>
         <source>Macro path</source>
-        <translation type="unfinished">Macro-pad</translation>
+        <translation>Macro-pad</translation>
     </message>
     <message>
         <source>General macro settings</source>
-        <translation type="unfinished">Algemene macro instellingen</translation>
+        <translation>Algemene macro instellingen</translation>
     </message>
     <message>
         <source>Run macros in local environment</source>
-        <translation type="unfinished">Macro&apos;s uitvoeren in de lokale omgeving</translation>
+        <translation>Macro&apos;s uitvoeren in de lokale omgeving</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
         <source>Units</source>
-        <translation type="unfinished">Eenheden</translation>
+        <translation>Eenheden</translation>
     </message>
     <message>
         <source>Units settings</source>
-        <translation type="unfinished">Instellingen van de eenheden</translation>
+        <translation>Instellingen van de eenheden</translation>
     </message>
     <message>
         <source>Standard (mm/kg/s/degree)</source>
-        <translation type="unfinished">Standaard (mm/kg/s/graad)</translation>
+        <translation>Standaard (mm/kg/s/graad)</translation>
     </message>
     <message>
         <source>MKS (m/kg/s/degree)</source>
-        <translation type="unfinished">MKS (m/kg/s/graad)</translation>
+        <translation>MKS (m/kg/s/graad)</translation>
     </message>
     <message>
         <source>Magnitude</source>
-        <translation type="unfinished">Omvang</translation>
+        <translation>Omvang</translation>
     </message>
     <message>
         <source>Unit</source>
-        <translation type="unfinished">Eenheid</translation>
+        <translation>Eenheid</translation>
     </message>
     <message>
         <source>User system:</source>
-        <translation type="unfinished">Gebruiker systeem:</translation>
+        <translation>Gebruiker systeem:</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation>US customary (in/lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Number of decimals:</translation>
+        <translation>Aantal decimalen:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation>Imperial decimal (in/lb)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
     <message>
         <source>Colors</source>
-        <translation type="unfinished">Kleuren</translation>
+        <translation>Kleuren</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Selectie</translation>
+        <translation>Selectie</translation>
     </message>
     <message>
         <source>Enable selection highlighting</source>
-        <translation type="unfinished">Activeer selectie markeren</translation>
+        <translation>Activeer selectie markeren</translation>
     </message>
     <message>
         <source>Enable preselection highlighting</source>
-        <translation type="unfinished">Activeer voorselectie markeren</translation>
+        <translation>Activeer voorselectie markeren</translation>
     </message>
     <message>
         <source>Background color</source>
-        <translation type="unfinished">Achtergrond</translation>
+        <translation>Achtergrond</translation>
     </message>
     <message>
         <source>Middle color</source>
-        <translation type="unfinished">Middelste kleur</translation>
+        <translation>Middelste kleur</translation>
     </message>
     <message>
         <source>Color gradient</source>
-        <translation type="unfinished">Kleurverloop</translation>
+        <translation>Kleurverloop</translation>
     </message>
     <message>
         <source>Simple color</source>
-        <translation type="unfinished">Eenvoudige kleur</translation>
+        <translation>Eenvoudige kleur</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source>Tip of the day</source>
-        <translation type="unfinished">Tip van de dag</translation>
+        <translation>Tip van de dag</translation>
     </message>
     <message>
         <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation type="unfinished">&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Wist u dat...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Wist u dat...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation type="unfinished">&amp;Toon tips bij opstarten</translation>
+        <translation>&amp;Toon tips bij opstarten</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation type="unfinished">Alt+S</translation>
+        <translation>Alt+S</translation>
     </message>
     <message>
         <source>&amp;Next Tip</source>
-        <translation type="unfinished">&amp;Volgende Tip</translation>
+        <translation>&amp;Volgende Tip</translation>
     </message>
     <message>
         <source>Alt+N</source>
-        <translation type="unfinished">Alt+N</translation>
+        <translation>Alt+N</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp; Sluiten</translation>
+        <translation>&amp; Sluiten</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation type="unfinished">Alt+C</translation>
+        <translation>Alt+C</translation>
     </message>
     <message>
         <source></source>
@@ -2576,660 +2575,654 @@ Kies een andere map, alstublieft.</translation>
     <message>
         <source>Download failed: %1
 </source>
-        <translation type="unfinished">Downloaden is mislukt:%1</translation>
+        <translation>Downloaden is mislukt:%1</translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation type="unfinished">Als u meer wilt weten over FreeCAD moet je naar %1 gaan of het help-item drukken in het helpmenu.</translation>
+        <translation>Als u meer wilt weten over FreeCAD moet je naar %1 gaan of het help-item drukken in het helpmenu.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation>Wanverhouding van eenheid</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
         <source>Workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Werkbanken</translation>
     </message>
     <message>
         <source>Enabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingeschakelde werkbanken</translation>
     </message>
     <message>
         <source>Disabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitgeschakelde werkbanken</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Naar beneden verplaatsen</translation>
+        <translation>Naar beneden verplaatsen</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt; Het geselecteerde item omlaag verplaatsen.&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Het item zal naar beneden worden verplaatst&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="unfinished">Naar links verplaatsen</translation>
+        <translation>Naar links verplaatsen</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt;De geselecteerde workbench van ingeschakelde werkbanken verwijderen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="unfinished">Naar rechts verplaatsen</translation>
+        <translation>Naar rechts verplaatsen</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt;Verplaatst de geselecteerde werkbank naar ingeschakelde werkbanken.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Sort enabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingeschakelde werkbanken sorteren</translation>
     </message>
     <message>
         <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Ingeschakelde werkbanken sorteren&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Naar boven verplaatsen</translation>
+        <translation>Naar boven verplaatsen</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt;Het geselecteerd item omhoog verplaatsen.&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Het item zal naar boven worden verplaatst&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt; Opmerking:&lt;/span&gt; &lt;span style=&quot;font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; De wijzigingen zullen de volgende keer dat u FreeCAD start actief worden&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Add all to enabled workbenches</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle tot ingeschakelde werkbanken toevoegen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
         <source>Placement</source>
-        <translation type="unfinished">Plaatsing</translation>
+        <translation>Plaatsing</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DocumentRecovery</name>
     <message>
         <source>Document Recovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentherstel</translation>
     </message>
     <message>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Druk op &apos;Herstel starten&apos; om met het proces van herstel van de document hieronder beginnen. 
+
+De kolom &apos;Status&apos; toont als het document kan hersteld worden.</translation>
     </message>
     <message>
         <source>Status of recovered documents:</source>
-        <translation type="unfinished"></translation>
+        <translation>Status van herstelde documenten:</translation>
     </message>
     <message>
         <source>Document Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentnaam</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Start Recovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Herstel starten</translation>
     </message>
     <message>
         <source>Not yet recovered</source>
-        <translation type="unfinished"></translation>
+        <translation>Nog niet hersteld</translation>
     </message>
     <message>
         <source>Unknown problem occurred</source>
-        <translation type="unfinished"></translation>
+        <translation>Een onbekend probleem is gebeurd</translation>
     </message>
     <message>
         <source>Failed to recover</source>
-        <translation type="unfinished"></translation>
+        <translation>Herstellen mislukt</translation>
     </message>
     <message>
         <source>Successfully recovered</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Successfully recovered</translation>
     </message>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Voltooien</translation>
+        <translation>Voltooien</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
         <source>Download</source>
-        <translation type="unfinished">Downloaden</translation>
+        <translation>Downloaden</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation type="unfinished">Er bestaat al een bestand met de naam %1 in de huidige map. Overschrijven?</translation>
+        <translation>Er bestaat al een bestand met de naam %1 in de huidige map. Overschrijven?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation type="unfinished">Het bestand %1 kan niet bewaard worden: %2.</translation>
+        <translation>Het bestand %1 kan niet bewaard worden: %2.</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
-        <translation type="unfinished">%1 aan het downloaden.</translation>
+        <translation>%1 aan het downloaden.</translation>
     </message>
     <message>
         <source>Download canceled.</source>
-        <translation type="unfinished">Download geannuleerd.</translation>
+        <translation>Download geannuleerd.</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation type="unfinished">Downloaden is mislukt:%1.</translation>
+        <translation>Downloaden is mislukt:%1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation type="unfinished">Downloaded %1 to current directory.</translation>
+        <translation>%1 gedownload naar huidige directory.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation>%1 op %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Bestand opslaan</translation>
+        <translation>Bestand opslaan</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation>Download geannuleerd: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation>Open de bevattende map</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation>Fout bij het openen van opgeslagen bestand: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Fout bij het opslaan: %1</translation>
+        <translation>Fout bij het opslaan: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Netwerkfout: %1</translation>
+        <translation>Netwerkfout: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconden</translation>
+        <translation>seconden</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minuten</translation>
+        <translation>minuten</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 resterend</translation>
+        <translation>- %4 %5 resterend</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 van %2 (%3/sec) %4</translation>
+        <translation>%1 van %2 (%3/sec) %4</translation>
     </message>
     <message>
         <source>?</source>
-        <translation type="unfinished">?</translation>
+        <translation>?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 van %2 - Gestopt</translation>
+        <translation>%1 van %2 - Gestopt</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished">bytes</translation>
+        <translation>bytes</translation>
     </message>
     <message>
         <source>kB</source>
-        <translation type="unfinished">kB</translation>
+        <translation>kB</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished">MB</translation>
+        <translation>MB</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation>Downloads</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation>Wissen</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 Items</translation>
+        <translation>0 Items</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Downloadbeheer</translation>
+        <translation>Downloadbeheer</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 download</translation>
+        <translation>1 download</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 downloads</translation>
+        <translation>%1 downloads</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
         <source>Icon folders</source>
-        <translation type="unfinished">Icon folders</translation>
+        <translation>Icon mappen</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished">Add icon folder</translation>
+        <translation>Icon map toevoegen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished">Add or remove custom icon folders</translation>
+        <translation>Aangepaste icon mappen toevoegen of verwijderen</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished">Remove folder</translation>
+        <translation>Map verwijderen</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
+        <translation>Verwijderen van een map enkel van kracht is nadat de applicatie herstart heeft.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
         <source>Input vector</source>
-        <translation type="unfinished">invoervector</translation>
+        <translation>invoervector</translation>
     </message>
     <message>
         <source>Vector</source>
-        <translation type="unfinished">Vector</translation>
+        <translation>Vector</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished">Copyright</translation>
+        <translation>Copyright</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::MouseButtons</name>
     <message>
         <source>Mouse buttons</source>
-        <translation type="unfinished">Muisknoppen</translation>
+        <translation>Muisknoppen</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished">Configuratie</translation>
+        <translation>Configuratie</translation>
     </message>
     <message>
         <source>Selection:</source>
-        <translation type="unfinished">Selectie:</translation>
+        <translation>Selectie:</translation>
     </message>
     <message>
         <source>Panning</source>
-        <translation type="unfinished">Verplaatsen</translation>
+        <translation>Verplaatsen</translation>
     </message>
     <message>
         <source>Rotation:</source>
-        <translation type="unfinished">Rotatie:</translation>
+        <translation>Rotatie:</translation>
     </message>
     <message>
         <source>Zooming:</source>
-        <translation type="unfinished">Zoomen:</translation>
+        <translation>Zoomen:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::ParameterGroup</name>
     <message>
         <source>Expand</source>
-        <translation type="unfinished">Uitklappen</translation>
+        <translation>Uitklappen</translation>
     </message>
     <message>
         <source>Add sub-group</source>
-        <translation type="unfinished">Subgroep toevoegen</translation>
+        <translation>Subgroep toevoegen</translation>
     </message>
     <message>
         <source>Remove group</source>
-        <translation type="unfinished">Groep verwijderen</translation>
+        <translation>Groep verwijderen</translation>
     </message>
     <message>
         <source>Rename group</source>
-        <translation type="unfinished">Groep hernoemen</translation>
+        <translation>Groep hernoemen</translation>
     </message>
     <message>
         <source>Export parameter</source>
-        <translation type="unfinished">Export parameter</translation>
+        <translation>Export parameter</translation>
     </message>
     <message>
         <source>Import parameter</source>
-        <translation type="unfinished">Import parameter</translation>
+        <translation>Import parameter</translation>
     </message>
     <message>
         <source>Collapse</source>
-        <translation type="unfinished">Samenvouwen</translation>
+        <translation>Samenvouwen</translation>
     </message>
     <message>
         <source>Do really want to remove this parameter group?</source>
-        <translation type="unfinished">Wilt u deze parameter-groep echt verwijderen?</translation>
+        <translation>Wilt u deze parameter-groep echt verwijderen?</translation>
     </message>
     <message>
         <source>Existing sub-group</source>
-        <translation type="unfinished">Bestaande subgroep</translation>
+        <translation>Bestaande subgroep</translation>
     </message>
     <message>
         <source>The sub-group &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">De subgroep &apos;%1&apos; bestaat reeds.</translation>
+        <translation>De subgroep &apos;%1&apos; bestaat reeds.</translation>
     </message>
     <message>
         <source>Export parameter to file</source>
-        <translation type="unfinished">Exporteer parameters naar bestand</translation>
-    </message>
-    <message>
-        <source>XML (*.FCParam)</source>
-        <translation type="obsolete">XML(*.FCParam)</translation>
+        <translation>Exporteer parameters naar bestand</translation>
     </message>
     <message>
         <source>Import parameter from file</source>
-        <translation type="unfinished">Importeer parameters uit bestand</translation>
+        <translation>Importeer parameters uit bestand</translation>
     </message>
     <message>
         <source>Import Error</source>
-        <translation type="unfinished">Import fout</translation>
+        <translation>Import fout</translation>
     </message>
     <message>
         <source>Reading from &apos;%1&apos; failed.</source>
-        <translation type="unfinished">Het lezen van &apos;%1&apos; is mislukt.</translation>
+        <translation>Het lezen van &apos;%1&apos; is mislukt.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::ParameterValue</name>
     <message>
         <source>Change value</source>
-        <translation type="unfinished">Waarde wijzigen</translation>
+        <translation>Waarde wijzigen</translation>
     </message>
     <message>
         <source>Remove key</source>
-        <translation type="unfinished">Verwijder de sleutel</translation>
+        <translation>Verwijder de sleutel</translation>
     </message>
     <message>
         <source>Rename key</source>
-        <translation type="unfinished">Wijzig de naam van de sleutel</translation>
+        <translation>Wijzig de naam van de sleutel</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished">Nieuw</translation>
+        <translation>Nieuw</translation>
     </message>
     <message>
         <source>New string item</source>
-        <translation type="unfinished">Nieuwe tekenreeks</translation>
+        <translation>Nieuwe tekenreeks</translation>
     </message>
     <message>
         <source>New float item</source>
-        <translation type="unfinished">Nieuwe decimale waarde</translation>
+        <translation>Nieuwe decimale waarde</translation>
     </message>
     <message>
         <source>New integer item</source>
-        <translation type="unfinished">Nieuw geheel getal</translation>
+        <translation>Nieuw geheel getal</translation>
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">Nieuw positief geheel getal</translation>
+        <translation>Nieuw positief geheel getal</translation>
     </message>
     <message>
         <source>New Boolean item</source>
-        <translation type="unfinished">Nieuwe booleaanse waarde</translation>
+        <translation>Nieuwe booleaanse waarde</translation>
     </message>
     <message>
         <source>Existing item</source>
-        <translation type="unfinished">Bestaand item</translation>
+        <translation>Bestaand item</translation>
     </message>
     <message>
         <source>The item &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">Item &apos;%1&apos; bestaat reeds.</translation>
+        <translation>Item &apos;%1&apos; bestaat reeds.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::Placement</name>
     <message>
         <source>Placement</source>
-        <translation type="unfinished">Plaatsing</translation>
+        <translation>Plaatsing</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Translation:</source>
-        <translation type="unfinished">Verplaatsing:</translation>
+        <translation>Verplaatsing:</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
     <message>
         <source>Rotation:</source>
-        <translation type="unfinished">Rotatie:</translation>
+        <translation>Rotatie:</translation>
     </message>
     <message>
         <source>Angle:</source>
-        <translation type="unfinished">Hoek:</translation>
+        <translation>Hoek:</translation>
     </message>
     <message>
         <source>Axis:</source>
-        <translation type="unfinished">Assen:</translation>
+        <translation>Assen:</translation>
     </message>
     <message>
         <source>Center:</source>
-        <translation type="unfinished">Middelpunt:</translation>
+        <translation>Middelpunt:</translation>
     </message>
     <message>
         <source>Pitch:</source>
-        <translation type="unfinished">Steiging:</translation>
+        <translation>Steiging:</translation>
     </message>
     <message>
         <source>Roll:</source>
-        <translation type="unfinished">Rol:</translation>
+        <translation>Rol:</translation>
     </message>
     <message>
         <source>Yaw:</source>
-        <translation type="unfinished">Afwijking:</translation>
+        <translation>Afwijking:</translation>
     </message>
     <message>
         <source>Rotation axis with angle</source>
-        <translation type="unfinished">Rotatieas met hoek</translation>
-    </message>
-    <message>
-        <source>Euler angles</source>
-        <translation type="obsolete">Euler hoeken</translation>
+        <translation>Rotatieas met hoek</translation>
     </message>
     <message>
         <source>Apply placement changes immediately</source>
-        <translation type="unfinished">Verplaatsingen onmiddellijk doorvoeren</translation>
+        <translation>Verplaatsingen onmiddellijk doorvoeren</translation>
     </message>
     <message>
         <source>Apply incremental changes to object placement</source>
-        <translation type="unfinished">Incrementele verplaatsingen toepassen op object</translation>
+        <translation>Incrementele verplaatsingen toepassen op object</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Toepassen</translation>
+        <translation>Toepassen</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Herstel</translation>
+        <translation>Herstel</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished">Incorrect quantity</translation>
+        <translation>Verkeerd aantal</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
+        <translation>Er zijn invoervelden met verkeerde input, zorg voor geldige waarden van plaatsing!</translation>
     </message>
     <message>
         <source>Euler angles (XY&apos;Z&apos;&apos;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoeken van Euler (XY&apos;Z&apos;&apos;)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
         <source>Button</source>
-        <translation type="unfinished">Knop</translation>
+        <translation>Knop</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished">Commando</translation>
+        <translation>Commando</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::SceneInspector</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Dialoog</translation>
+        <translation>Dialoog</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Vernieuwen</translation>
+        <translation>Vernieuwen</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::SceneModel</name>
     <message>
         <source>Inventor Tree</source>
-        <translation type="unfinished">Inventorboom</translation>
+        <translation>Inventorboom</translation>
     </message>
     <message>
         <source>Nodes</source>
-        <translation type="unfinished">Knopen</translation>
+        <translation>Knopen</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Naam</translation>
+        <translation>Naam</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::TextureMapping</name>
     <message>
         <source>Texture</source>
-        <translation type="unfinished">Textuur</translation>
+        <translation>Textuur</translation>
     </message>
     <message>
         <source>Texture mapping</source>
-        <translation type="unfinished">Textuurafbeelden</translation>
+        <translation>Textuurafbeelden</translation>
     </message>
     <message>
         <source>Global</source>
-        <translation type="unfinished">Overal</translation>
+        <translation>Overal</translation>
     </message>
     <message>
         <source>Environment</source>
-        <translation type="unfinished">Omgeving</translation>
+        <translation>Omgeving</translation>
     </message>
     <message>
         <source>Image files (%1)</source>
-        <translation type="unfinished">Afbeeldingsbestanden (%1)</translation>
+        <translation>Afbeeldingsbestanden (%1)</translation>
     </message>
     <message>
         <source>No image</source>
-        <translation type="unfinished">Geen afbeelding</translation>
+        <translation>Geen afbeelding</translation>
     </message>
     <message>
         <source>The specified file is not a valid image file.</source>
-        <translation type="unfinished">Het opgegeven bestand is niet een geldig afbeeldingsbestand.</translation>
+        <translation>Het opgegeven bestand is niet een geldig afbeeldingsbestand.</translation>
     </message>
     <message>
         <source>No 3d view</source>
-        <translation type="unfinished">Geen 3D-weergave</translation>
+        <translation>Geen 3D-weergave</translation>
     </message>
     <message>
         <source>No active 3d view found.</source>
-        <translation type="unfinished">Geen actieve 3D-weergave gevonden.</translation>
+        <translation>Geen actieve 3D-weergave gevonden.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::Transform</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">Transformeren</translation>
+        <translation>Transformeren</translation>
     </message>
 </context>
 <context>
     <name>Gui::DlgTreeWidget</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Dialoog</translation>
+        <translation>Dialoog</translation>
     </message>
     <message>
         <source>Items</source>
-        <translation type="unfinished">Items</translation>
+        <translation>Items</translation>
     </message>
     <message>
         <source></source>
@@ -3240,482 +3233,439 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::DockWnd::CombiView</name>
     <message>
         <source>CombiView</source>
-        <translation type="unfinished">Combi-Weergave</translation>
+        <translation>Combi-Weergave</translation>
     </message>
     <message>
         <source>Project</source>
-        <translation type="unfinished">Project</translation>
+        <translation>Project</translation>
     </message>
     <message>
         <source>Tasks</source>
-        <translation type="unfinished">Taken</translation>
+        <translation>Taken</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation>Model</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::HelpView</name>
     <message>
         <source>Previous</source>
-        <translation type="unfinished">Vorige</translation>
+        <translation>Vorige</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished">Volgende</translation>
+        <translation>Volgende</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Startpagina</translation>
+        <translation>Startpagina</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished">Openen</translation>
+        <translation>Openen</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished">Bestand openen</translation>
+        <translation>Bestand openen</translation>
     </message>
     <message>
         <source>All HTML files (*.html *.htm)</source>
-        <translation type="unfinished">Alle HTML-bestanden (*. html *. htm)</translation>
+        <translation>Alle HTML-bestanden (*. html *. htm)</translation>
     </message>
     <message>
         <source>External browser</source>
-        <translation type="unfinished">Externe browser</translation>
+        <translation>Externe browser</translation>
     </message>
     <message>
         <source>No external browser found. Specify in preferences, please</source>
-        <translation type="unfinished">Geen externe browser gevonden. Bij opties instellen,</translation>
+        <translation>Geen externe browser gevonden. Bij opties instellen,</translation>
     </message>
     <message>
         <source>Starting of %1 failed</source>
-        <translation type="unfinished">Starten van &apos;%1&apos; is mislukt</translation>
+        <translation>Starten van &apos;%1&apos; is mislukt</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
         <source>Property View</source>
-        <translation type="unfinished">Eigenschappen-aanzicht</translation>
+        <translation>Eigenschappen-aanzicht</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
         <source>Logging</source>
-        <translation type="unfinished">Loggen</translation>
+        <translation>Loggen</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="unfinished">Waarschuwing</translation>
+        <translation>Waarschuwing</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fout</translation>
+        <translation>Fout</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Opties</translation>
+        <translation>Opties</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Wissen</translation>
+        <translation>Wissen</translation>
     </message>
     <message>
         <source>Save As...</source>
-        <translation type="unfinished">Opslaan als...</translation>
+        <translation>Opslaan als...</translation>
     </message>
     <message>
         <source>Save Report Output</source>
-        <translation type="unfinished">Rapport-uitvoer opslaan</translation>
-    </message>
-    <message>
-        <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="obsolete">Eenvoudige tekstbestanden (*.txt *.log)</translation>
+        <translation>Rapport-uitvoer opslaan</translation>
     </message>
     <message>
         <source>Go to end</source>
-        <translation type="unfinished">Ga naar het einde</translation>
+        <translation>Ga naar het einde</translation>
     </message>
     <message>
         <source>Redirect Python output</source>
-        <translation type="unfinished">Python-uitvoer omleiden</translation>
+        <translation>Python-uitvoer omleiden</translation>
     </message>
     <message>
         <source>Redirect Python errors</source>
-        <translation type="unfinished">Omleiden van Python fouten</translation>
+        <translation>Omleiden van Python fouten</translation>
     </message>
     <message>
         <source>Plain Text Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Gewone tekstbestanden</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::ReportView</name>
     <message>
         <source>Output</source>
-        <translation type="unfinished">Uitvoer</translation>
+        <translation>Uitvoer</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python Console</translation>
+        <translation>Python Console</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
-        <translation type="unfinished">Eigenschappen-aanzicht</translation>
+        <translation>Eigenschappen-aanzicht</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Zoeken</translation>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished">Searches object labels</translation>
+        <translation>Object labels zoeken</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished">Clears the search field</translation>
+        <translation>Het zoekveld wissen</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished">Select only</translation>
+        <translation>Selecteer enkel</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished">Selects only this object</translation>
+        <translation>Hiermee selecteert u enkel dit object</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished">Deselecteer</translation>
+        <translation>Deselecteer</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished">Deselects this object</translation>
+        <translation>Dit object deselecteren</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished">Zoom fit</translation>
+        <translation>Zoom aangepast</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
+        <translation>Selecteert en past dit object in het 3D-venster</translation>
     </message>
     <message>
         <source>Go to selection</source>
-        <translation type="unfinished">Ga naar selectie</translation>
+        <translation>Ga naar selectie</translation>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished">Selects and locates this object in the tree view</translation>
+        <translation>Dit object selecteren en in de documentstructuur vinden</translation>
     </message>
     <message>
         <source>To python console</source>
-        <translation type="unfinished"></translation>
+        <translation>Naar python console</translation>
     </message>
     <message>
         <source>Reveals this object and its subelements in the python console.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Gui::DockWnd::TaskPanelView</name>
-    <message>
-        <source>Task View</source>
-        <translation type="obsolete">Taakweergave</translation>
+        <translation>Drukt dit object en haar subelementen in de python console uit.</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
         <source>Could not open file.</source>
-        <translation type="unfinished">Kon bestand niet openen.</translation>
+        <translation>Kon bestand niet openen.</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation type="unfinished">U hebt geprobeerd om het adres %1 te benaderen welke op dit moment niet beschikbaar is. Zorg ervoor dat de URL bestaat en probeer de pagina te herladen.</translation>
+        <translation>U hebt geprobeerd om het adres %1 te benaderen welke op dit moment niet beschikbaar is. Zorg ervoor dat de URL bestaat en probeer de pagina te herladen.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation type="unfinished">Verbinden met %1</translation>
+        <translation>Verbinden met %1</translation>
     </message>
     <message>
         <source>Sending to %1</source>
-        <translation type="unfinished">Verzenden naar %1</translation>
+        <translation>Verzenden naar %1</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation type="unfinished">Lezen van %1</translation>
+        <translation>Lezen van %1</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation type="unfinished">Downloaden is mislukt:%1.</translation>
+        <translation>Downloaden is mislukt:%1.</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished">Vorige</translation>
+        <translation>Vorige</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished">Vooruit</translation>
+        <translation>Vooruit</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Startpagina</translation>
+        <translation>Startpagina</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Vernieuwen</translation>
+        <translation>Vernieuwen</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Kopie</translation>
+        <translation>Kopie</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation type="unfinished">Alles selecteren</translation>
+        <translation>Alles selecteren</translation>
     </message>
     <message>
         <source>No description for</source>
-        <translation type="unfinished">Geen omschrijving voor</translation>
+        <translation>Geen omschrijving voor</translation>
     </message>
 </context>
 <context>
     <name>Gui::DocumentModel</name>
     <message>
         <source>Application</source>
-        <translation type="unfinished">Applicatie</translation>
+        <translation>Applicatie</translation>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
-        <translation type="unfinished">Benamingen &amp; kenmerken</translation>
+        <translation>Benamingen &amp; kenmerken</translation>
     </message>
 </context>
 <context>
     <name>Gui::EditorView</name>
     <message>
         <source>Modified file</source>
-        <translation type="unfinished">Gewijzigd bestand</translation>
+        <translation>Gewijzigd bestand</translation>
     </message>
     <message>
         <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-        <translation type="unfinished">%1. Dit is gewijzigd buiten de source-editor om. Wilt u het herladen?</translation>
+        <translation>%1. Dit is gewijzigd buiten de source-editor om. Wilt u het herladen?</translation>
     </message>
     <message>
         <source>Unsaved document</source>
-        <translation type="unfinished">Niet-opgeslagen document</translation>
+        <translation>Niet-opgeslagen document</translation>
     </message>
     <message>
         <source>The document has been modified.
 Do you want to save your changes?</source>
-        <translation type="unfinished">Het document is gewijzigd.
+        <translation>Het document is gewijzigd.
 Wilt u uw wijzigingen opslaan?</translation>
     </message>
     <message>
-        <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="obsolete">FreeCAD macro(*.FCMacro);;Python(*.py)</translation>
-    </message>
-    <message>
         <source>Export PDF</source>
-        <translation type="unfinished">Exporteren als PDF</translation>
-    </message>
-    <message>
-        <source>PDF file (*.pdf)</source>
-        <translation type="obsolete">PDF-bestand (*. pdf)</translation>
+        <translation>Exporteren als PDF</translation>
     </message>
     <message>
         <source>untitled[*]</source>
-        <translation type="unfinished">naamloos[*]</translation>
+        <translation>naamloos[*]</translation>
     </message>
     <message>
         <source> - Editor</source>
-        <translation type="unfinished">- Editor</translation>
+        <translation>- Editor</translation>
     </message>
     <message>
         <source>%1 chars removed</source>
-        <translation type="unfinished">%1 karakters verwijderd</translation>
+        <translation>%1 karakters verwijderd</translation>
     </message>
     <message>
         <source>%1 chars added</source>
-        <translation type="unfinished">%1 karakters toegevoegd</translation>
+        <translation>%1 karakters toegevoegd</translation>
     </message>
     <message>
         <source>Formatted</source>
-        <translation type="unfinished">Geformatteerd</translation>
+        <translation>Geformatteerd</translation>
     </message>
     <message>
         <source>FreeCAD macro</source>
-        <translation type="unfinished"></translation>
+        <translation>FreeCAD macro</translation>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF file</translation>
     </message>
 </context>
 <context>
     <name>Gui::FileChooser</name>
     <message>
         <source>Select a file</source>
-        <translation type="unfinished">Selecteer een bestand</translation>
+        <translation>Selecteer een bestand</translation>
     </message>
     <message>
         <source>Select a directory</source>
-        <translation type="unfinished">Kies een map</translation>
+        <translation>Kies een map</translation>
     </message>
 </context>
 <context>
     <name>Gui::FileDialog</name>
     <message>
         <source>Save as</source>
-        <translation type="unfinished">Opslaan als</translation>
+        <translation>Opslaan als</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished">Openen</translation>
+        <translation>Openen</translation>
     </message>
 </context>
 <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
         <source>Extended</source>
-        <translation type="unfinished">Uitgebreid</translation>
+        <translation>Uitgebreid</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="unfinished">Alle bestanden (*.*)</translation>
+        <translation>Alle bestanden (*.*)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Flag</name>
     <message>
         <source>Top left</source>
-        <translation type="unfinished">Linksboven</translation>
+        <translation>Linksboven</translation>
     </message>
     <message>
         <source>Bottom left</source>
-        <translation type="unfinished">Linksonder</translation>
+        <translation>Linksonder</translation>
     </message>
     <message>
         <source>Top right</source>
-        <translation type="unfinished">Rechtsboven</translation>
+        <translation>Rechtsboven</translation>
     </message>
     <message>
         <source>Bottom right</source>
-        <translation type="unfinished">Rechts Onder</translation>
+        <translation>Rechts Onder</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Verwijderen</translation>
+        <translation>Verwijderen</translation>
     </message>
 </context>
 <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tap. Or click left mouse button.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press right mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
     </message>
 </context>
 <context>
     <name>Gui::GraphvizView</name>
-    <message>
-        <source>PNG format (*.png)</source>
-        <translation type="obsolete">PNG-formaat (*.png)</translation>
-    </message>
-    <message>
-        <source>Bitmap format (*.bmp)</source>
-        <translation type="obsolete">Bitmap-formaat (*.bmp)</translation>
-    </message>
-    <message>
-        <source>GIF format (*.gif)</source>
-        <translation type="obsolete">GIF-formaat (*.gif)</translation>
-    </message>
-    <message>
-        <source>JPG format (*.jpg)</source>
-        <translation type="obsolete">JPG-formaat (*.jpg)</translation>
-    </message>
-    <message>
-        <source>SVG format (*.svg)</source>
-        <translation type="obsolete">SVG-formaat (*.svg)</translation>
-    </message>
-    <message>
-        <source>PDF format (*.pdf)</source>
-        <translation type="obsolete">PDF-formaat (*.pdf)</translation>
-    </message>
     <message>
         <source>Export graph</source>
         <translation type="unfinished">Export graph</translation>
     </message>
     <message>
         <source>PNG format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PNG format</translation>
     </message>
     <message>
         <source>Bitmap format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitmap format</translation>
     </message>
     <message>
         <source>GIF format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">GIF format</translation>
     </message>
     <message>
         <source>JPG format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">JPG format</translation>
     </message>
     <message>
         <source>SVG format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG format</translation>
     </message>
     <message>
         <source>PDF format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF format</translation>
     </message>
 </context>
 <context>
     <name>Gui::InputField</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Waarde opslaan</translation>
+        <translation>Waarde opslaan</translation>
     </message>
 </context>
 <context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
         <source>Press CTRL and left mouse button</source>
-        <translation type="unfinished">Druk op CTRL en de linker muisknop</translation>
+        <translation>Druk op CTRL en de linker muisknop</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation type="unfinished">Druk op de middelste muisknop</translation>
+        <translation>Druk op de middelste muisknop</translation>
     </message>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Druk op de linker muisknop</translation>
+        <translation>Druk op de linker muisknop</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Scroll middelste muisknop</translation>
+        <translation>Scroll middelste muisknop</translation>
     </message>
 </context>
 <context>
@@ -3729,84 +3679,84 @@ Wilt u uw wijzigingen opslaan?</translation>
     <name>Gui::LocationDialog</name>
     <message>
         <source>Wrong direction</source>
-        <translation type="unfinished">Verkeerde richting</translation>
+        <translation>Verkeerde richting</translation>
     </message>
     <message>
         <source>Direction must not be the null vector</source>
-        <translation type="unfinished">Richting mag niet de nul-vector zijn</translation>
+        <translation>Richting mag niet de nul-vector zijn</translation>
     </message>
     <message>
         <source>X</source>
-        <translation type="unfinished">x</translation>
+        <translation>x</translation>
     </message>
     <message>
         <source>Y</source>
-        <translation type="unfinished">Y</translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>Z</source>
-        <translation type="unfinished">Z</translation>
+        <translation>Z</translation>
     </message>
     <message>
         <source>User defined...</source>
-        <translation type="unfinished">Door gebruiker gedefinieerd...</translation>
+        <translation>Door gebruiker gedefinieerd...</translation>
     </message>
 </context>
 <context>
     <name>Gui::LocationWidget</name>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>Direction:</source>
-        <translation type="unfinished">Richting:</translation>
+        <translation>Richting:</translation>
     </message>
 </context>
 <context>
     <name>Gui::MacroCommand</name>
     <message>
         <source>Macros</source>
-        <translation type="unfinished">Macro&apos;s</translation>
+        <translation>Macro&apos;s</translation>
     </message>
     <message>
         <source>Macro file doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Macro file doesn&apos;t exist</translation>
     </message>
     <message>
         <source>No such macro file: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No such macro file: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
     <name>Gui::MainWindow</name>
     <message>
         <source>Dimension</source>
-        <translation type="unfinished">Afmeting</translation>
+        <translation>Afmeting</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished">Gereed</translation>
+        <translation>Gereed</translation>
     </message>
     <message>
         <source>Toggles this toolbar</source>
-        <translation type="unfinished">Schakelt deze werkbalk in/uit</translation>
+        <translation>Schakelt deze werkbalk in/uit</translation>
     </message>
     <message>
         <source>Toggles this dockable window</source>
-        <translation type="unfinished">Schakelt dit dokbare venster in/uit</translation>
+        <translation>Schakelt dit dokbare venster in/uit</translation>
     </message>
     <message>
         <source>Close All</source>
-        <translation type="unfinished">Alles sluiten</translation>
+        <translation>Alles sluiten</translation>
     </message>
     <message>
         <source>Object dependencies</source>
@@ -3820,30 +3770,30 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There is a rendering issue on MacOS.</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Don&apos;t show again</translation>
     </message>
 </context>
 <context>
     <name>Gui::ManualAlignment</name>
     <message>
         <source>Manual alignment</source>
-        <translation type="unfinished">Handmatige uitlijning</translation>
+        <translation>Handmatige uitlijning</translation>
     </message>
     <message>
         <source>The alignment is already in progress.</source>
-        <translation type="unfinished">De uitlijning is al aan de gang.</translation>
+        <translation>De uitlijning is al aan de gang.</translation>
     </message>
     <message>
         <source>Alignment[*]</source>
-        <translation type="unfinished">Uitlijning [*]</translation>
+        <translation>Uitlijning [*]</translation>
     </message>
     <message>
         <source>Please, select at least one point in the left and the right view</source>
@@ -3859,11 +3809,11 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>The alignment has finished</source>
-        <translation type="unfinished">De uitlijning is voltooid</translation>
+        <translation>De uitlijning is voltooid</translation>
     </message>
     <message>
         <source>The alignment has been canceled</source>
-        <translation type="unfinished">De uitlijning is geannuleerd</translation>
+        <translation>De uitlijning is geannuleerd</translation>
     </message>
     <message>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
@@ -3888,19 +3838,19 @@ on the right view %2 points are picked.</translation>
     <message>
         <source>The alignment failed.
 How do you want to proceed?</source>
-        <translation type="unfinished">De uitlijning is mislukt. Hoe wilt u doorgaan?</translation>
+        <translation>De uitlijning is mislukt. Hoe wilt u doorgaan?</translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">Opnieuw proberen</translation>
+        <translation>Opnieuw proberen</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished">Negeren</translation>
+        <translation>Negeren</translation>
     </message>
     <message>
         <source>Abort</source>
-        <translation type="unfinished">Afbreken</translation>
+        <translation>Afbreken</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
@@ -3912,7 +3862,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>No point was picked</source>
-        <translation type="unfinished">Geen punt was geselecteerd</translation>
+        <translation>Geen punt was geselecteerd</translation>
     </message>
     <message>
         <source>No point was found on model</source>
@@ -3923,19 +3873,19 @@ How do you want to proceed?</source>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tap. Or click left mouse button.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
     </message>
 </context>
 <context>
@@ -3943,7 +3893,7 @@ How do you want to proceed?</source>
     <message>
         <source>Download started...
 </source>
-        <translation type="unfinished">Download gestart...
+        <translation>Download gestart...
 </translation>
     </message>
 </context>
@@ -3951,30 +3901,30 @@ How do you want to proceed?</source>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Druk op de linker muisknop</translation>
+        <translation>Druk op de linker muisknop</translation>
     </message>
     <message>
         <source>Press CTRL and middle mouse button</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Press CTRL and middle mouse button</translation>
     </message>
     <message>
         <source>Press CTRL and right mouse button</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Press CTRL and right mouse button</translation>
     </message>
     <message>
         <source>Press CTRL and left mouse button</source>
-        <translation type="unfinished">Druk op CTRL en de linker muisknop</translation>
+        <translation>Druk op CTRL en de linker muisknop</translation>
     </message>
 </context>
 <context>
     <name>Gui::PrefQuantitySpinBox</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Waarde opslaan</translation>
+        <translation>Waarde opslaan</translation>
     </message>
     <message>
         <source>Clear list</source>
@@ -3985,255 +3935,247 @@ How do you want to proceed?</source>
     <name>Gui::ProgressBar</name>
     <message>
         <source>Remaining: %1</source>
-        <translation type="unfinished">Resterend: %1</translation>
+        <translation>Resterend: %1</translation>
     </message>
     <message>
         <source>Aborting</source>
-        <translation type="unfinished">Bezig met afbreken</translation>
+        <translation>Bezig met afbreken</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
-        <translation type="unfinished">Wilt u echt de bewerking afbreken?</translation>
+        <translation>Wilt u echt de bewerking afbreken?</translation>
     </message>
 </context>
 <context>
     <name>Gui::ProgressDialog</name>
     <message>
         <source>Remaining: %1</source>
-        <translation type="unfinished">Resterend: %1</translation>
+        <translation>Resterend: %1</translation>
     </message>
     <message>
         <source>Aborting</source>
-        <translation type="unfinished">Bezig met afbreken</translation>
+        <translation>Bezig met afbreken</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
-        <translation type="unfinished">Wilt u echt de bewerking afbreken?</translation>
+        <translation>Wilt u echt de bewerking afbreken?</translation>
     </message>
 </context>
 <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Bewerken...</translation>
+        <translation>Bewerken...</translation>
     </message>
 </context>
 <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
         <source>Property</source>
-        <translation type="unfinished">Eigenschap</translation>
+        <translation>Eigenschap</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Waarde</translation>
+        <translation>Waarde</translation>
     </message>
 </context>
 <context>
     <name>Gui::PropertyView</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished">Gegevens</translation>
+        <translation>Gegevens</translation>
     </message>
 </context>
 <context>
     <name>Gui::PythonConsole</name>
     <message>
         <source>System exit</source>
-        <translation type="unfinished">Systeem afsluiten</translation>
+        <translation>Systeem afsluiten</translation>
     </message>
     <message>
         <source>The application is still running.
 Do you want to exit without saving your data?</source>
-        <translation type="unfinished">Het programma draait nog. Wil je afsluiten zonder je gegevens op te slaan?</translation>
+        <translation>Het programma draait nog. Wil je afsluiten zonder je gegevens op te slaan?</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python Console</translation>
+        <translation>Python Console</translation>
     </message>
     <message>
         <source>Unhandled PyCXX exception.</source>
-        <translation type="unfinished">Niet-verwerkte uitzondering voor PyCXX.</translation>
+        <translation>Niet-verwerkte uitzondering voor PyCXX.</translation>
     </message>
     <message>
         <source>Unhandled FreeCAD exception.</source>
-        <translation type="unfinished">Niet-verwerkte uitzondering voor FreeCAD.</translation>
+        <translation>Niet-verwerkte uitzondering voor FreeCAD.</translation>
     </message>
     <message>
         <source>Unhandled unknown C++ exception.</source>
-        <translation type="unfinished">Niet-verwerkte uitzondering voor onbekende C++.</translation>
+        <translation>Niet-verwerkte uitzondering voor onbekende C++.</translation>
     </message>
     <message>
         <source>&amp;Copy command</source>
-        <translation type="unfinished">Kopieer commando</translation>
+        <translation>Kopieer commando</translation>
     </message>
     <message>
         <source>&amp;Copy history</source>
-        <translation type="unfinished">Kopieer geschiedenis</translation>
+        <translation>Kopieer geschiedenis</translation>
     </message>
     <message>
         <source>Save history as...</source>
-        <translation type="unfinished">Geschiedenis opslaan als...</translation>
+        <translation>Geschiedenis opslaan als...</translation>
     </message>
     <message>
         <source>Insert file name...</source>
-        <translation type="unfinished">Bestandsnaam invoeren...</translation>
+        <translation>Bestandsnaam invoeren...</translation>
     </message>
     <message>
         <source>Save History</source>
-        <translation type="unfinished">Geschiedenis opslaan</translation>
-    </message>
-    <message>
-        <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="obsolete">Macro-bestanden (*. FCMacro *. py)</translation>
+        <translation>Geschiedenis opslaan</translation>
     </message>
     <message>
         <source>Insert file name</source>
-        <translation type="unfinished">Bestandsnaam invoeren</translation>
-    </message>
-    <message>
-        <source>All Files (*.*)</source>
-        <translation type="obsolete">Alle bestanden (*.*)</translation>
+        <translation>Bestandsnaam invoeren</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
-        <translation type="unfinished">Onverwerkte std C++ uitzondering.</translation>
+        <translation>Onverwerkte std C++ uitzondering.</translation>
     </message>
     <message>
         <source>Word wrap</source>
-        <translation type="unfinished">Tekstterugloop</translation>
+        <translation>Tekstterugloop</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
-        <translation type="unfinished">&amp;Kopiëren</translation>
+        <translation>&amp;Kopiëren</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished">&amp;Plakken</translation>
+        <translation>&amp;Plakken</translation>
     </message>
     <message>
         <source>Select All</source>
-        <translation type="unfinished">Alles selecteren</translation>
+        <translation>Alles selecteren</translation>
     </message>
     <message>
         <source>Clear console</source>
-        <translation type="unfinished">Maak console leeg</translation>
+        <translation>Maak console leeg</translation>
     </message>
     <message>
         <source>Macro Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Macro Files</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
     <name>Gui::PythonEditor</name>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Commentaar</translation>
+        <translation>Commentaar</translation>
     </message>
     <message>
         <source>Uncomment</source>
-        <translation type="unfinished">Verwijder commentaar</translation>
+        <translation>Verwijder commentaar</translation>
     </message>
 </context>
 <context>
     <name>Gui::RecentFilesAction</name>
     <message>
         <source>Open file %1</source>
-        <translation type="unfinished">Open bestand %1</translation>
+        <translation>Open bestand %1</translation>
     </message>
     <message>
         <source>File not found</source>
-        <translation type="unfinished">Bestand niet gevonden</translation>
+        <translation>Bestand niet gevonden</translation>
     </message>
     <message>
         <source>The file &apos;%1&apos; cannot be opened.</source>
-        <translation type="unfinished">Het bestand &apos;%1&apos; kan niet worden geopend.</translation>
+        <translation>Het bestand &apos;%1&apos; kan niet worden geopend.</translation>
     </message>
 </context>
 <context>
     <name>Gui::SelectModule</name>
     <message>
         <source>Select module</source>
-        <translation type="unfinished">Module selecteren</translation>
+        <translation>Module selecteren</translation>
     </message>
     <message>
         <source>Open %1 as</source>
-        <translation type="unfinished">Open %1 als</translation>
+        <translation>Open %1 als</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation type="unfinished">Selecteer</translation>
+        <translation>Selecteer</translation>
     </message>
 </context>
 <context>
     <name>Gui::StdCmdDescription</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Des&amp;cription</source>
-        <translation type="unfinished">Oms&amp;chrijving</translation>
+        <translation>Oms&amp;chrijving</translation>
     </message>
     <message>
         <source>Long description of commands</source>
-        <translation type="unfinished">Lange beschrijving van de commando&apos;s</translation>
+        <translation>Lange beschrijving van de commando&apos;s</translation>
     </message>
 </context>
 <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Download online help</source>
-        <translation type="unfinished">Download online-help</translation>
+        <translation>Download online-help</translation>
     </message>
     <message>
         <source>Download %1&apos;s online help</source>
-        <translation type="unfinished">Download %1&apos;s online hulp</translation>
+        <translation>Download %1&apos;s online hulp</translation>
     </message>
     <message>
         <source>Non-existing directory</source>
-        <translation type="unfinished">Niet-bestaande map</translation>
+        <translation>Niet-bestaande map</translation>
     </message>
     <message>
         <source>The directory &apos;%1&apos; does not exist.
 
 Do you want to specify an existing directory?</source>
-        <translation type="unfinished">De map &apos;%1&apos; bestaat niet.
+        <translation>De map &apos;%1&apos; bestaat niet.
 Wilt u een bestaande map opgeven?</translation>
     </message>
     <message>
         <source>Missing permission</source>
-        <translation type="unfinished">Ontbrekende toestemming</translation>
+        <translation>Ontbrekende toestemming</translation>
     </message>
     <message>
         <source>You don&apos;t have write permission to &apos;%1&apos;
 
 Do you want to specify another directory?</source>
-        <translation type="unfinished">U hebt geen toestemming om te schrijven naar &apos;%1&apos;
+        <translation>U hebt geen toestemming om te schrijven naar &apos;%1&apos;
 Wilt u een andere map opgeven?</translation>
     </message>
     <message>
         <source>Stop downloading</source>
-        <translation type="unfinished">Stop met downloaden</translation>
+        <translation>Stop met downloaden</translation>
     </message>
 </context>
 <context>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
@@ -4248,85 +4190,85 @@ Wilt u een andere map opgeven?</translation>
     <name>Gui::TaskBoxAngle</name>
     <message>
         <source>Angle</source>
-        <translation type="unfinished">Hoek</translation>
+        <translation>Hoek</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskBoxPosition</name>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Positie</translation>
+        <translation>Positie</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
-        <translation type="unfinished">Plot modus:</translation>
+        <translation>Plot modus:</translation>
     </message>
     <message>
         <source>Point size:</source>
-        <translation type="unfinished">Puntgrootte:</translation>
+        <translation>Puntgrootte:</translation>
     </message>
     <message>
         <source>Line width:</source>
-        <translation type="unfinished">Lijndikte:</translation>
+        <translation>Lijndikte:</translation>
     </message>
     <message>
         <source>Transparency:</source>
-        <translation type="unfinished">Transparantie:</translation>
+        <translation>Transparantie:</translation>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished">Uiterlijk</translation>
+        <translation>Uiterlijk</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Documentvenster:</translation>
+        <translation>Documentvenster:</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">Een dialoog is al geopend in het taakvenster</translation>
+        <translation>Een dialoog is al geopend in het taakvenster</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
 </context>
 <context>
     <name>Gui::TaskView::TaskSelectLinkProperty</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished">Uiterlijk</translation>
+        <translation>Uiterlijk</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>edit selection</source>
-        <translation type="unfinished">selectie bewerken</translation>
+        <translation>selectie bewerken</translation>
     </message>
 </context>
 <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Druk op de linker muisknop</translation>
+        <translation>Druk op de linker muisknop</translation>
     </message>
     <message>
         <source>Press SHIFT button</source>
-        <translation type="unfinished">Druk op de SHIFT toets</translation>
+        <translation>Druk op de SHIFT toets</translation>
     </message>
     <message>
         <source>Press ALT button</source>
-        <translation type="unfinished">Druk op de toets ALT</translation>
+        <translation>Druk op de toets ALT</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
@@ -4337,84 +4279,80 @@ Wilt u een andere map opgeven?</translation>
     <name>Gui::TreeDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">Boomstructuurweergave</translation>
+        <translation>Boomstructuurweergave</translation>
     </message>
 </context>
 <context>
     <name>Gui::TreeWidget</name>
     <message>
         <source>Create group...</source>
-        <translation type="unfinished">Groep maken...</translation>
+        <translation>Groep maken...</translation>
     </message>
     <message>
         <source>Create a group</source>
-        <translation type="unfinished">Maak een groep</translation>
+        <translation>Maak een groep</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Groep</translation>
+        <translation>Groep</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Hernoemen</translation>
+        <translation>Hernoemen</translation>
     </message>
     <message>
         <source>Rename object</source>
-        <translation type="unfinished">Object hernoemen</translation>
+        <translation>Object hernoemen</translation>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
-        <translation type="unfinished">Benamingen &amp; kenmerken</translation>
+        <translation>Benamingen &amp; kenmerken</translation>
     </message>
     <message>
         <source>Application</source>
-        <translation type="unfinished">Applicatie</translation>
+        <translation>Applicatie</translation>
     </message>
     <message>
         <source>Finish editing</source>
-        <translation type="unfinished">Bewerken gereed</translation>
+        <translation>Bewerken gereed</translation>
     </message>
     <message>
         <source>Finish editing object</source>
-        <translation type="unfinished">Beëindig bewerken object</translation>
+        <translation>Beëindig bewerken object</translation>
     </message>
     <message>
         <source>Activate document</source>
-        <translation type="unfinished">Activeer document</translation>
+        <translation>Activeer document</translation>
     </message>
     <message>
         <source>Activate document %1</source>
-        <translation type="unfinished">Activeer document %1</translation>
+        <translation>Activeer document %1</translation>
     </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
     <message>
         <source>Export PDF</source>
-        <translation type="unfinished">Exporteren als PDF</translation>
-    </message>
-    <message>
-        <source>PDF file (*.pdf)</source>
-        <translation type="obsolete">PDF-bestand (*. pdf)</translation>
+        <translation>Exporteren als PDF</translation>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF file</translation>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Opening file failed</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
     </message>
 </context>
 <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
-        <translation type="unfinished">Selecteer de &apos;%1&apos; werkbank</translation>
+        <translation>Selecteer de &apos;%1&apos; werkbank</translation>
     </message>
 </context>
 <context>
@@ -4432,86 +4370,86 @@ Wilt u een andere map opgeven?</translation>
     <name>Position</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Vorm</translation>
+        <translation>Vorm</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation type="unfinished">X:</translation>
+        <translation>X:</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation type="unfinished">Y:</translation>
+        <translation>Y:</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation type="unfinished">Z:</translation>
+        <translation>Z:</translation>
     </message>
     <message>
         <source>0.1 mm</source>
-        <translation type="unfinished">0,1 mm</translation>
+        <translation>0,1 mm</translation>
     </message>
     <message>
         <source>0.5 mm</source>
-        <translation type="unfinished">0,5 mm</translation>
+        <translation>0,5 mm</translation>
     </message>
     <message>
         <source>1 mm</source>
-        <translation type="unfinished">1 mm</translation>
+        <translation>1 mm</translation>
     </message>
     <message>
         <source>2 mm</source>
-        <translation type="unfinished">2 mm</translation>
+        <translation>2 mm</translation>
     </message>
     <message>
         <source>5 mm</source>
-        <translation type="unfinished">5 mm</translation>
+        <translation>5 mm</translation>
     </message>
     <message>
         <source>10 mm</source>
-        <translation type="unfinished">10 mm</translation>
+        <translation>10 mm</translation>
     </message>
     <message>
         <source>20 mm</source>
-        <translation type="unfinished">20 mm</translation>
+        <translation>20 mm</translation>
     </message>
     <message>
         <source>50 mm</source>
-        <translation type="unfinished">50 mm</translation>
+        <translation>50 mm</translation>
     </message>
     <message>
         <source>100 mm</source>
-        <translation type="unfinished">100 mm</translation>
+        <translation>100 mm</translation>
     </message>
     <message>
         <source>200 mm</source>
-        <translation type="unfinished">200 mm</translation>
+        <translation>200 mm</translation>
     </message>
     <message>
         <source>500 mm</source>
-        <translation type="unfinished">500 mm</translation>
+        <translation>500 mm</translation>
     </message>
     <message>
         <source>1 m</source>
-        <translation type="unfinished">1 m</translation>
+        <translation>1 m</translation>
     </message>
     <message>
         <source>2 m</source>
-        <translation type="unfinished">2 m</translation>
+        <translation>2 m</translation>
     </message>
     <message>
         <source>5 m </source>
-        <translation type="unfinished">5 m </translation>
+        <translation>5 m </translation>
     </message>
     <message>
         <source>Grid Snap in</source>
-        <translation type="unfinished">Raster kleven in</translation>
+        <translation>Raster kleven in</translation>
     </message>
 </context>
 <context>
     <name>PropertyListDialog</name>
     <message>
         <source>Invalid input</source>
-        <translation type="unfinished">Ongeldige invoer</translation>
+        <translation>Ongeldige invoer</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
@@ -4522,393 +4460,372 @@ Wilt u een andere map opgeven?</translation>
     <name>QDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">Boomstructuurweergave</translation>
+        <translation>Boomstructuurweergave</translation>
     </message>
     <message>
         <source>Property view</source>
-        <translation type="unfinished">Eigenschappen-aanzicht</translation>
+        <translation>Eigenschappen-aanzicht</translation>
     </message>
     <message>
         <source>Selection view</source>
-        <translation type="unfinished">Selectieweergave</translation>
+        <translation>Selectieweergave</translation>
     </message>
     <message>
         <source>Report view</source>
-        <translation type="unfinished">Rapportweergave</translation>
-    </message>
-    <message>
-        <source>Task View</source>
-        <translation type="obsolete">Taakweergave</translation>
+        <translation>Rapportweergave</translation>
     </message>
     <message>
         <source>Combo View</source>
-        <translation type="unfinished">Combi-weergave</translation>
+        <translation>Combi-weergave</translation>
     </message>
     <message>
         <source>Toolbox</source>
-        <translation type="unfinished">Gereedschapskist</translation>
+        <translation>Gereedschapskist</translation>
     </message>
     <message>
         <source>Python console</source>
-        <translation type="unfinished">Python Console</translation>
+        <translation>Python Console</translation>
     </message>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Weergave eigenschappen</translation>
+        <translation>Weergave eigenschappen</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>General</source>
-        <translation type="unfinished">Algemeen</translation>
+        <translation>Algemeen</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Weergave</translation>
+        <translation>Weergave</translation>
     </message>
     <message>
         <source>Unknown filetype</source>
-        <translation type="unfinished">Onbekend bestandstype</translation>
+        <translation>Onbekend bestandstype</translation>
     </message>
     <message>
         <source>Cannot open unknown filetype: %1</source>
-        <translation type="unfinished">Kan onbekende bestandstype niet openen: %1</translation>
+        <translation>Kan onbekende bestandstype niet openen: %1</translation>
     </message>
     <message>
         <source>Cannot save to unknown filetype: %1</source>
-        <translation type="unfinished">Kan onbekende bestandstype niet opslaan: %1</translation>
+        <translation>Kan onbekende bestandstype niet opslaan: %1</translation>
     </message>
     <message>
         <source>Workbench failure</source>
-        <translation type="unfinished">Werkbank falen</translation>
+        <translation>Werkbank falen</translation>
     </message>
     <message>
         <source>%1</source>
-        <translation type="unfinished">%1</translation>
-    </message>
-    <message>
-        <source>Unable to launch Qt Assistant (%1)</source>
-        <translation type="obsolete">Onmogelijk om Qt Assistant (%1) te start</translation>
+        <translation>%1</translation>
     </message>
     <message>
         <source>Exception</source>
-        <translation type="unfinished">Uitzondering</translation>
+        <translation>Uitzondering</translation>
     </message>
     <message>
         <source>Open document</source>
-        <translation type="unfinished">Document openen</translation>
+        <translation>Document openen</translation>
     </message>
     <message>
         <source>Import file</source>
-        <translation type="unfinished">Bestand importeren</translation>
+        <translation>Bestand importeren</translation>
     </message>
     <message>
         <source>Export file</source>
-        <translation type="unfinished">Bestand exporteren</translation>
+        <translation>Bestand exporteren</translation>
     </message>
     <message>
         <source>Printing...</source>
-        <translation type="unfinished">Afdrukken...</translation>
+        <translation>Afdrukken...</translation>
     </message>
     <message>
         <source>Cannot load workbench</source>
-        <translation type="unfinished">Kan werkbank niet laden</translation>
+        <translation>Kan werkbank niet laden</translation>
     </message>
     <message>
         <source>A general error occurred while loading the workbench</source>
-        <translation type="unfinished">Een algemene fout is opgetreden tijdens het laden van de werkbank</translation>
+        <translation>Een algemene fout is opgetreden tijdens het laden van de werkbank</translation>
     </message>
     <message>
         <source>Save views...</source>
-        <translation type="unfinished">Weergaves opslaan...</translation>
+        <translation>Weergaves opslaan...</translation>
     </message>
     <message>
         <source>Load views...</source>
-        <translation type="unfinished">Weergaves laden...</translation>
+        <translation>Weergaves laden...</translation>
     </message>
     <message>
         <source>Freeze view</source>
-        <translation type="unfinished">Weergave blokkeren</translation>
+        <translation>Weergave blokkeren</translation>
     </message>
     <message>
         <source>Clear views</source>
-        <translation type="unfinished">Weergaves wissen</translation>
+        <translation>Weergaves wissen</translation>
     </message>
     <message>
         <source>Restore view &amp;%1</source>
-        <translation type="unfinished">Herstel weergave &amp;%1</translation>
+        <translation>Herstel weergave &amp;%1</translation>
     </message>
     <message>
         <source>Save frozen views</source>
-        <translation type="unfinished">Bevroren zichten opslaan</translation>
-    </message>
-    <message>
-        <source>Frozen views (*.cam)</source>
-        <translation type="obsolete">Geblokkeerde weergaves (*.cam)</translation>
+        <translation>Bevroren zichten opslaan</translation>
     </message>
     <message>
         <source>Restore views</source>
-        <translation type="unfinished">Weergaves terughalen</translation>
+        <translation>Weergaves terughalen</translation>
     </message>
     <message>
         <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-        <translation type="unfinished">Importeren van de gerestaureerde zichten zou de reeds opgeslagen zichten overschrijven. Wilt u doorgaan?</translation>
+        <translation>Importeren van de gerestaureerde zichten zou de reeds opgeslagen zichten overschrijven. Wilt u doorgaan?</translation>
     </message>
     <message>
         <source>Restore frozen views</source>
-        <translation type="unfinished">Bevroren zichten herstellen</translation>
+        <translation>Bevroren zichten herstellen</translation>
     </message>
     <message>
         <source>Cannot open file &apos;%1&apos;.</source>
-        <translation type="unfinished">Kan bestand &apos;%1&apos; niet openen.</translation>
+        <translation>Kan bestand &apos;%1&apos; niet openen.</translation>
     </message>
     <message>
         <source>Docked</source>
-        <translation type="unfinished">Gedokt</translation>
+        <translation>Gedokt</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation type="unfinished">Afgekoppeld</translation>
+        <translation>Afgekoppeld</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">Schermvullend</translation>
+        <translation>Schermvullend</translation>
     </message>
     <message>
         <source>files</source>
-        <translation type="unfinished">Bestanden</translation>
+        <translation>Bestanden</translation>
     </message>
     <message>
         <source>Save picture</source>
-        <translation type="unfinished">Afbeelding opslaan</translation>
+        <translation>Afbeelding opslaan</translation>
     </message>
     <message>
         <source>New sub-group</source>
-        <translation type="unfinished">Nieuwe subgroep</translation>
+        <translation>Nieuwe subgroep</translation>
     </message>
     <message>
         <source>Enter the name:</source>
-        <translation type="unfinished">Voer de naam in:</translation>
+        <translation>Voer de naam in:</translation>
     </message>
     <message>
         <source>New text item</source>
-        <translation type="unfinished">Nieuw tekstitem</translation>
+        <translation>Nieuw tekstitem</translation>
     </message>
     <message>
         <source>Enter your text:</source>
-        <translation type="unfinished">Voer uw tekst in:</translation>
+        <translation>Voer uw tekst in:</translation>
     </message>
     <message>
         <source>New integer item</source>
-        <translation type="unfinished">Nieuw geheel getal</translation>
+        <translation>Nieuw geheel getal</translation>
     </message>
     <message>
         <source>Enter your number:</source>
-        <translation type="unfinished">Geef uw nummer:</translation>
+        <translation>Geef uw nummer:</translation>
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">Nieuw positief geheel getal</translation>
+        <translation>Nieuw positief geheel getal</translation>
     </message>
     <message>
         <source>New float item</source>
-        <translation type="unfinished">Nieuwe decimale waarde</translation>
+        <translation>Nieuwe decimale waarde</translation>
     </message>
     <message>
         <source>New Boolean item</source>
-        <translation type="unfinished">Nieuwe booleaanse waarde</translation>
+        <translation>Nieuwe booleaanse waarde</translation>
     </message>
     <message>
         <source>Choose an item:</source>
-        <translation type="unfinished">Kies een item:</translation>
+        <translation>Kies een item:</translation>
     </message>
     <message>
         <source>Rename group</source>
-        <translation type="unfinished">Groep hernoemen</translation>
+        <translation>Groep hernoemen</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; cannot be renamed.</source>
-        <translation type="unfinished">De groep &apos;%1&apos; kan niet worden hernoemd.</translation>
+        <translation>De groep &apos;%1&apos; kan niet worden hernoemd.</translation>
     </message>
     <message>
         <source>Existing group</source>
-        <translation type="unfinished">Bestaande groep</translation>
+        <translation>Bestaande groep</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; already exists.</source>
-        <translation type="unfinished">De groep &apos;%1&apos; bestaat al.</translation>
+        <translation>De groep &apos;%1&apos; bestaat al.</translation>
     </message>
     <message>
         <source>Change value</source>
-        <translation type="unfinished">Waarde wijzigen</translation>
+        <translation>Waarde wijzigen</translation>
     </message>
     <message>
         <source>Save document under new filename...</source>
-        <translation type="unfinished">Document opslaan onder een nieuwe bestandsnaam...</translation>
+        <translation>Document opslaan onder een nieuwe bestandsnaam...</translation>
     </message>
     <message>
         <source>Saving aborted</source>
-        <translation type="unfinished">Opslaan afgebroken</translation>
+        <translation>Opslaan afgebroken</translation>
     </message>
     <message>
         <source>Unsaved document</source>
-        <translation type="unfinished">Niet-opgeslagen document</translation>
+        <translation>Niet-opgeslagen document</translation>
     </message>
     <message>
         <source>Save Macro</source>
-        <translation type="unfinished">Macro opslaan</translation>
+        <translation>Macro opslaan</translation>
     </message>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Voltooien</translation>
+        <translation>Voltooien</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Wissen</translation>
+        <translation>Wissen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>Inner</source>
-        <translation type="unfinished">binnenste</translation>
+        <translation>binnenste</translation>
     </message>
     <message>
         <source>Outer</source>
-        <translation type="unfinished">buitenste</translation>
+        <translation>buitenste</translation>
     </message>
     <message>
         <source>No Browser</source>
-        <translation type="unfinished">Geen browser</translation>
+        <translation>Geen browser</translation>
     </message>
     <message>
         <source>Unable to open your browser.
 
 Please open a browser window and type in: http://localhost:%1.</source>
-        <translation type="unfinished">Kan uw browser niet openen.
+        <translation>Kan uw browser niet openen.
 Open een browservenster en typ: http://localhost:%1.</translation>
     </message>
     <message>
         <source>No Server</source>
-        <translation type="unfinished">Geen Server</translation>
+        <translation>Geen Server</translation>
     </message>
     <message>
         <source>Unable to start the server to port %1: %2.</source>
-        <translation type="unfinished">Kan de server met poort %1 niet starten: %2.</translation>
+        <translation>Kan de server met poort %1 niet starten: %2.</translation>
     </message>
     <message>
         <source>Unable to open your system browser.</source>
-        <translation type="unfinished">Kan uw standaard browser niet starten.</translation>
+        <translation>Kan uw standaard browser niet starten.</translation>
     </message>
     <message>
         <source>Options...</source>
-        <translation type="unfinished">Opties...</translation>
+        <translation>Opties...</translation>
     </message>
     <message>
         <source>Out of memory</source>
-        <translation type="unfinished">Onvoldoende geheugen</translation>
+        <translation>Onvoldoende geheugen</translation>
     </message>
     <message>
         <source>Not enough memory available to display the data.</source>
-        <translation type="unfinished">Niet genoeg geheugen beschikbaar om de gegevens weer te geven.</translation>
+        <translation>Niet genoeg geheugen beschikbaar om de gegevens weer te geven.</translation>
     </message>
     <message>
         <source>Cannot find file %1</source>
-        <translation type="unfinished">Kan bestand %1 niet vinden</translation>
+        <translation>Kan bestand %1 niet vinden</translation>
     </message>
     <message>
         <source>Cannot find file %1 neither in %2 nor in %3</source>
-        <translation type="unfinished">Kan bestand %1 niet vinden noch in %2, noch in %3</translation>
+        <translation>Kan bestand %1 niet vinden noch in %2, noch in %3</translation>
     </message>
     <message>
         <source>Save %1 Document</source>
-        <translation type="unfinished">Document %1 opslaan</translation>
+        <translation>Document %1 opslaan</translation>
     </message>
     <message>
         <source>%1 document (*.FCStd)</source>
-        <translation type="unfinished">%1 document (*.FCStd)</translation>
+        <translation>%1 document (*.FCStd)</translation>
     </message>
     <message>
         <source>Document not closable</source>
-        <translation type="unfinished">Document niet te sluiten</translation>
+        <translation>Document niet te sluiten</translation>
     </message>
     <message>
         <source>The document is not closable for the moment.</source>
-        <translation type="unfinished">Het document kan nu niet gesloten worden.</translation>
+        <translation>Het document kan nu niet gesloten worden.</translation>
     </message>
     <message>
         <source>No OpenGL</source>
-        <translation type="unfinished">Geen OpenGL</translation>
+        <translation>Geen OpenGL</translation>
     </message>
     <message>
         <source>This system does not support OpenGL</source>
-        <translation type="unfinished">Dit systeem biedt geen ondersteuning voor OpenGL</translation>
+        <translation>Dit systeem biedt geen ondersteuning voor OpenGL</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-        <translation type="unfinished">Niet in staat om documenten te laden. 
+        <translation>Niet in staat om documenten te laden. 
 Om het te kunnen laden is Qt 4.4 of hoger nodig.</translation>
     </message>
     <message>
-        <source>%1 Help</source>
-        <translation type="obsolete">%1 Help</translation>
-    </message>
-    <message>
         <source>Exporting PDF...</source>
-        <translation type="unfinished">Exporteren van PDF ...</translation>
+        <translation>Exporteren van PDF ...</translation>
     </message>
     <message>
         <source>Wrong selection</source>
-        <translation type="unfinished">Verkeerde selectie</translation>
+        <translation>Verkeerde selectie</translation>
     </message>
     <message>
         <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation type="unfinished">Slechts één object geselecteerd. Selecteer twee objecten.
+        <translation>Slechts één object geselecteerd. Selecteer twee objecten.
 Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation type="unfinished">Selecteer twee objecten.
+        <translation>Selecteer twee objecten.
 Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>New boolean item</source>
-        <translation type="unfinished">Nieuw Booleaans element</translation>
+        <translation>Nieuw Booleaans element</translation>
     </message>
     <message>
         <source>Navigation styles</source>
-        <translation type="unfinished">Navigatie stijlen</translation>
+        <translation>Navigatie stijlen</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation type="unfinished">%1 navigatie</translation>
+        <translation>%1 navigatie</translation>
     </message>
     <message>
         <source>Move annotation</source>
-        <translation type="unfinished">Verplaats annotatie</translation>
+        <translation>Verplaats annotatie</translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">Transformeren</translation>
-    </message>
-    <message>
-        <source>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="obsolete">Het document is in de bewerkingsmodus en kan nu dus niet geworden gesloten. Voltooi of annuleer het bewerken in het taakpaneel.</translation>
+        <translation>Transformeren</translation>
     </message>
     <message>
         <source>Do you want to close this dialog?</source>
-        <translation type="unfinished">Wilt u dit dialoogvenster sluiten?</translation>
+        <translation>Wilt u dit dialoogvenster sluiten?</translation>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
@@ -4920,405 +4837,405 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Save a copy of the document under new filename...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Save a copy of the document under new filename...</translation>
     </message>
     <message>
         <source>Frozen views</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Frozen views</translation>
     </message>
     <message>
         <source>Saving document failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saving document failed</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Document</translation>
+        <translation>Document</translation>
+    </message>
+    <message>
+        <source>Delete macro</source>
+        <translation type="unfinished">Verwijder macro</translation>
+    </message>
+    <message>
+        <source>Not allowed to delete system-wide macros</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StdBoxSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Box selection</source>
-        <translation type="unfinished">Rechthoekselectie</translation>
+        <translation>Rechthoekselectie</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAbout</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>&amp;About %1</source>
-        <translation type="unfinished">&amp;Info over %1</translation>
+        <translation>&amp;Info over %1</translation>
     </message>
     <message>
         <source>About %1</source>
-        <translation type="unfinished">Info over %1</translation>
+        <translation>Info over %1</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAboutQt</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">Info over Qt</translation>
+        <translation>Info over Qt</translation>
     </message>
     <message>
         <source>About Qt</source>
-        <translation type="unfinished">Info over Qt</translation>
+        <translation>Info over Qt</translation>
     </message>
 </context>
 <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>Ne&amp;xt</source>
-        <translation type="unfinished">Volge&amp;nde</translation>
+        <translation>Volge&amp;nde</translation>
     </message>
     <message>
         <source>Activate next window</source>
-        <translation type="unfinished">Activeer volgende venster</translation>
+        <translation>Activeer volgende venster</translation>
     </message>
 </context>
 <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>Pre&amp;vious</source>
-        <translation type="unfinished">&amp;Vorige</translation>
+        <translation>&amp;Vorige</translation>
     </message>
     <message>
         <source>Activate previous window</source>
-        <translation type="unfinished">Activeer vorige venster</translation>
+        <translation>Activeer vorige venster</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAlignment</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Alignment...</source>
-        <translation type="unfinished">Uitlijning...</translation>
+        <translation>Uitlijning...</translation>
     </message>
     <message>
         <source>Align the selected objects</source>
-        <translation type="unfinished">Lijn de geselecteerde objecten uit</translation>
+        <translation>Lijn de geselecteerde objecten uit</translation>
     </message>
 </context>
 <context>
     <name>StdCmdArrangeIcons</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>Arrange &amp;Icons</source>
-        <translation type="unfinished">Schikken p&amp;ictogrammen</translation>
+        <translation>Schikken p&amp;ictogrammen</translation>
     </message>
     <message>
         <source>Arrange Icons</source>
-        <translation type="unfinished">Schikken pictogrammen</translation>
+        <translation>Schikken pictogrammen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdAxisCross</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Toggle axis cross</source>
-        <translation type="unfinished">Schakel assenkruis</translation>
+        <translation>Schakel assenkruis</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCascadeWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>&amp;Cascade</source>
-        <translation type="unfinished">&amp;Trapsgewijs</translation>
+        <translation>&amp;Trapsgewijs</translation>
     </message>
     <message>
         <source>Tile pragmatic</source>
-        <translation type="unfinished">Tegel pragmatisch</translation>
+        <translation>Tegel pragmatisch</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>Cl&amp;ose</source>
-        <translation type="unfinished">&amp;Sluiten</translation>
+        <translation>&amp;Sluiten</translation>
     </message>
     <message>
         <source>Close active window</source>
-        <translation type="unfinished">Actieve venster sluiten</translation>
+        <translation>Actieve venster sluiten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>Close Al&amp;l</source>
-        <translation type="unfinished">A&amp;lles sluiten</translation>
+        <translation>A&amp;lles sluiten</translation>
     </message>
     <message>
         <source>Close all windows</source>
-        <translation type="unfinished">Alle vensters sluiten</translation>
+        <translation>Alle vensters sluiten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCommandLine</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Start command &amp;line...</source>
-        <translation type="unfinished">Command &amp;line opstarten...</translation>
+        <translation>Command &amp;line opstarten...</translation>
     </message>
     <message>
         <source>Opens the command line in the console</source>
-        <translation type="unfinished">Opent de command line in de console</translation>
+        <translation>Opent de command line in de console</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCopy</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>C&amp;opy</source>
-        <translation type="unfinished">K&amp;opiëren</translation>
+        <translation>K&amp;opiëren</translation>
     </message>
     <message>
         <source>Copy operation</source>
-        <translation type="unfinished">Kopieer bewerking</translation>
+        <translation>Kopieer bewerking</translation>
     </message>
 </context>
 <context>
     <name>StdCmdCut</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>&amp;Cut</source>
-        <translation type="unfinished">&amp;Knippen</translation>
+        <translation>&amp;Knippen</translation>
     </message>
     <message>
         <source>Cut out</source>
-        <translation type="unfinished">Uitsnijden</translation>
+        <translation>Uitsnijden</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDelete</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished">&amp;Verwijderen</translation>
+        <translation>&amp;Verwijderen</translation>
     </message>
     <message>
         <source>Deletes the selected objects</source>
-        <translation type="unfinished">Wist de geselecteerde objecten</translation>
+        <translation>Wist de geselecteerde objecten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDemoMode</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>View turntable...</source>
-        <translation type="unfinished">Draaitafel tonen...</translation>
+        <translation>Draaitafel tonen...</translation>
     </message>
     <message>
         <source>View turntable</source>
-        <translation type="unfinished">Draaitafel tonen</translation>
+        <translation>Draaitafel tonen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgCustomize</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Cu&amp;stomize...</source>
-        <translation type="unfinished">&amp;Personalisatie...</translation>
+        <translation>&amp;Personalisatie...</translation>
     </message>
     <message>
         <source>Customize toolbars and command bars</source>
-        <translation type="unfinished">Werkbalken en opdrachtbalken aanpassen</translation>
+        <translation>Werkbalken en opdrachtbalken aanpassen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgMacroExecute</name>
     <message>
         <source>Macros ...</source>
-        <translation type="unfinished">Macro&apos;s ...</translation>
+        <translation>Macro&apos;s ...</translation>
     </message>
     <message>
         <source>Opens a dialog to let you execute a recorded macro</source>
-        <translation type="unfinished">Opent een dialoogvenster om u een opgenomen macro te laten uitvoeren</translation>
+        <translation>Opent een dialoogvenster om u een opgenomen macro te laten uitvoeren</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>Execute macro</source>
-        <translation type="unfinished">Macro uitvoeren</translation>
+        <translation>Macro uitvoeren</translation>
     </message>
     <message>
         <source>Execute the macro in the editor</source>
-        <translation type="unfinished">De macro uitvoeren in de editor</translation>
+        <translation>De macro uitvoeren in de editor</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
         <source>&amp;Macro recording ...</source>
-        <translation type="unfinished">&amp;Macro opnemen...</translation>
+        <translation>&amp;Macro opnemen...</translation>
     </message>
     <message>
         <source>Opens a dialog to record a macro</source>
-        <translation type="unfinished">Opent een dialoogvenster om een macro op te nemen</translation>
+        <translation>Opent een dialoogvenster om een macro op te nemen</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgParameter</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>E&amp;dit parameters ...</source>
-        <translation type="unfinished">E&amp;dit parameters...</translation>
+        <translation>E&amp;dit parameters...</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the parameters</source>
-        <translation type="unfinished">Opent een dialoogvenster om de parameters te bewerken</translation>
+        <translation>Opent een dialoogvenster om de parameters te bewerken</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDlgPreferences</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>&amp;Preferences ...</source>
-        <translation type="unfinished">&amp;Opties...</translation>
+        <translation>&amp;Opties...</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the preferences</source>
-        <translation type="unfinished">Opent een dialoogvenster om de voorkeuren bewerken</translation>
+        <translation>Opent een dialoogvenster om de voorkeuren bewerken</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDockViewMenu</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
-    </message>
-    <message>
-        <source>Vie&amp;ws</source>
-        <translation type="obsolete">&amp;Weergaves</translation>
-    </message>
-    <message>
-        <source>Toggles this window</source>
-        <translation type="obsolete">Schakelt dit venster</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Panels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Panels</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">List of available dock panels</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDrawStyle</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Draw style</source>
-        <translation type="unfinished">Tekenstijl</translation>
+        <translation>Tekenstijl</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Duplicate selection</source>
-        <translation type="unfinished">Dupliceer selectie</translation>
+        <translation>Dupliceer selectie</translation>
     </message>
     <message>
         <source>Put duplicates of the selected objects to the active document</source>
-        <translation type="unfinished">Duplicaten van de geselecteerde objecten aan het actieve document toevoegen</translation>
+        <translation>Duplicaten van de geselecteerde objecten aan het actieve document toevoegen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdEdit</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Toggle &amp;Edit mode</source>
-        <translation type="unfinished">Bewerkingsmode</translation>
+        <translation>Bewerkingsmode</translation>
     </message>
     <message>
         <source>Toggles the selected object&apos;s edit mode</source>
-        <translation type="unfinished">Verander de bewerkingsmode van het geselecteerde object</translation>
+        <translation>Verander de bewerkingsmode van het geselecteerde object</translation>
     </message>
     <message>
         <source>Enters or leaves the selected object&apos;s edit mode</source>
@@ -5329,64 +5246,64 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdExport</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Export...</source>
-        <translation type="unfinished">&amp;Exporteren...</translation>
+        <translation>&amp;Exporteren...</translation>
     </message>
     <message>
         <source>Export an object in the active document</source>
-        <translation type="unfinished">Export een object uit het actieve document</translation>
+        <translation>Export een object uit het actieve document</translation>
     </message>
     <message>
         <source>No selection</source>
-        <translation type="unfinished">Geen selectie</translation>
+        <translation>Geen selectie</translation>
     </message>
     <message>
         <source>Please select first the objects you want to export.</source>
-        <translation type="unfinished">Selecteer eerst de objecten die u wilt exporteren.</translation>
+        <translation>Selecteer eerst de objecten die u wilt exporteren.</translation>
     </message>
 </context>
 <context>
     <name>StdCmdExportGraphviz</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Dependency graph...</source>
-        <translation type="unfinished">Afhankelijkheden grafiek...</translation>
+        <translation>Afhankelijkheden grafiek...</translation>
     </message>
     <message>
         <source>Show the dependency graph of the objects in the active document</source>
-        <translation type="unfinished">Toon de afhankelijkheden grafiek van de objecten in het actieve document</translation>
+        <translation>Toon de afhankelijkheden grafiek van de objecten in het actieve document</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFeatRecompute</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Recompute</source>
-        <translation type="unfinished">&amp;Herberekenen</translation>
+        <translation>&amp;Herberekenen</translation>
     </message>
     <message>
         <source>Recompute feature or document</source>
-        <translation type="unfinished">Stuk of document herberekenen</translation>
+        <translation>Stuk of document herberekenen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreeCADFAQ</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>FreeCAD FAQ</source>
-        <translation type="unfinished">FreeCAD FAQ</translation>
+        <translation>FreeCAD FAQ</translation>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
@@ -5401,11 +5318,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdFreeCADForum</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation type="unfinished">FreeCAD Forum</translation>
+        <translation>FreeCAD Forum</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
@@ -5413,14 +5330,14 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">Het FreeCAD Forum</translation>
+        <translation>Het FreeCAD Forum</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreeCADPowerUserHub</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Python scripting documentation</source>
@@ -5439,7 +5356,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdFreeCADUserHub</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Users documentation</source>
@@ -5454,105 +5371,105 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdFreeCADWebsite</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>FreeCAD Website</source>
-        <translation type="unfinished">FreeCAD Webpagina</translation>
+        <translation>FreeCAD Webpagina</translation>
     </message>
     <message>
         <source>The FreeCAD website</source>
-        <translation type="unfinished">De FreeCAD webpagina</translation>
+        <translation>De FreeCAD webpagina</translation>
     </message>
 </context>
 <context>
     <name>StdCmdFreezeViews</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Freeze display</source>
-        <translation type="unfinished">Bevries aanzicht</translation>
+        <translation>Bevries aanzicht</translation>
     </message>
     <message>
         <source>Freezes the current view position</source>
-        <translation type="unfinished">Blokkeert de huidige weergave</translation>
+        <translation>Blokkeert de huidige weergave</translation>
     </message>
 </context>
 <context>
     <name>StdCmdHideObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Hide all objects</source>
-        <translation type="unfinished">Verberg alle objecten</translation>
+        <translation>Verberg alle objecten</translation>
     </message>
     <message>
         <source>Hide all objects in the document</source>
-        <translation type="unfinished">Verberg alle objecten in het document</translation>
+        <translation>Verberg alle objecten in het document</translation>
     </message>
 </context>
 <context>
     <name>StdCmdHideSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Hide selection</source>
-        <translation type="unfinished">Selectie verbergen</translation>
+        <translation>Selectie verbergen</translation>
     </message>
     <message>
         <source>Hide all selected objects</source>
-        <translation type="unfinished">Verberg alle geselecteerde objecten</translation>
+        <translation>Verberg alle geselecteerde objecten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdImport</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Import...</source>
-        <translation type="unfinished">&amp;Importeren...</translation>
+        <translation>&amp;Importeren...</translation>
     </message>
     <message>
         <source>Import a file in the active document</source>
-        <translation type="unfinished">Importeer een bestand in het actieve document</translation>
+        <translation>Importeer een bestand in het actieve document</translation>
     </message>
     <message>
         <source>Supported formats</source>
-        <translation type="unfinished">Ondersteunde formaten</translation>
+        <translation>Ondersteunde formaten</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="unfinished">Alle bestanden (*.*)</translation>
+        <translation>Alle bestanden (*.*)</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStartDebug</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>Debug macro</source>
-        <translation type="unfinished">Debug macro</translation>
+        <translation>Debug macro</translation>
     </message>
     <message>
         <source>Start debugging of macro</source>
-        <translation type="unfinished">Start debuggen van macro</translation>
+        <translation>Start debuggen van macro</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStepInto</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>Step into</source>
@@ -5563,105 +5480,105 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdMacroStepOver</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>Step over</source>
-        <translation type="unfinished">Stap over</translation>
+        <translation>Stap over</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStopDebug</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>Stop debugging</source>
-        <translation type="unfinished">Stop debugging</translation>
+        <translation>Stop debugging</translation>
     </message>
     <message>
         <source>Stop debugging of macro</source>
-        <translation type="unfinished">Stop debuggen van macro</translation>
+        <translation>Stop debuggen van macro</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>S&amp;top macro recording</source>
-        <translation type="unfinished">S&amp;top macro-opname</translation>
+        <translation>S&amp;top macro-opname</translation>
     </message>
     <message>
         <source>Stop the macro recording session</source>
-        <translation type="unfinished">Stop de macro-opname sessie</translation>
+        <translation>Stop de macro-opname sessie</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMeasureDistance</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Measure distance</source>
-        <translation type="unfinished">Afstand meten</translation>
+        <translation>Afstand meten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Measures distance between two selected objects</source>
-        <translation type="unfinished">Meet afstand tussen twee geselecteerde objecten</translation>
+        <translation>Meet afstand tussen twee geselecteerde objecten</translation>
     </message>
     <message>
         <source>Measure distance</source>
-        <translation type="unfinished">Afstand meten</translation>
+        <translation>Afstand meten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdMergeProjects</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Merge project...</source>
-        <translation type="unfinished">Voeg project samen...</translation>
+        <translation>Voeg project samen...</translation>
     </message>
     <message>
         <source>Merge project</source>
-        <translation type="unfinished">Voeg project samen</translation>
+        <translation>Voeg project samen</translation>
     </message>
     <message>
         <source>%1 document (*.fcstd)</source>
-        <translation type="unfinished">%1 document(*.fcstd)</translation>
+        <translation>%1 document(*.fcstd)</translation>
     </message>
     <message>
         <source>Cannot merge project with itself.</source>
-        <translation type="unfinished">Kan project niet met zichzelf samenvoegen.</translation>
+        <translation>Kan project niet met zichzelf samenvoegen.</translation>
     </message>
 </context>
 <context>
     <name>StdCmdNew</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished">&amp;Nieuw</translation>
+        <translation>&amp;Nieuw</translation>
     </message>
     <message>
         <source>Create a new empty document</source>
-        <translation type="unfinished">Maak een nieuw leeg document</translation>
+        <translation>Maak een nieuw leeg document</translation>
     </message>
     <message>
         <source>Unnamed</source>
@@ -5672,49 +5589,49 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdOnlineHelp</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Show help to the application</source>
-        <translation type="unfinished">Toon help voor de applicatie</translation>
+        <translation>Toon help voor de applicatie</translation>
     </message>
 </context>
 <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Help Website</source>
-        <translation type="unfinished">Help Webpagina</translation>
+        <translation>Help Webpagina</translation>
     </message>
     <message>
         <source>The website where the help is maintained</source>
-        <translation type="unfinished">De webpagina waar de help wordt onderhouden</translation>
+        <translation>De webpagina waar de help wordt onderhouden</translation>
     </message>
 </context>
 <context>
     <name>StdCmdOpen</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation type="unfinished">&amp;Openen...</translation>
+        <translation>&amp;Openen...</translation>
     </message>
     <message>
         <source>Open a document or import files</source>
-        <translation type="unfinished">Open een document of importeer bestanden </translation>
+        <translation>Open een document of importeer bestanden </translation>
     </message>
     <message>
         <source>Supported formats</source>
-        <translation type="unfinished">Ondersteunde formaten</translation>
+        <translation>Ondersteunde formaten</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="unfinished">Alle bestanden (*.*)</translation>
+        <translation>Alle bestanden (*.*)</translation>
     </message>
     <message>
         <source>Cannot open file</source>
@@ -5729,543 +5646,543 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdPaste</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished">&amp;Plakken</translation>
+        <translation>&amp;Plakken</translation>
     </message>
     <message>
         <source>Paste operation</source>
-        <translation type="unfinished">Plakken</translation>
+        <translation>Plakken</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPlacement</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Placement...</source>
-        <translation type="unfinished">Plaatsing...</translation>
+        <translation>Plaatsing...</translation>
     </message>
     <message>
         <source>Place the selected objects</source>
-        <translation type="unfinished">Plaats de geselecteerde objecten</translation>
+        <translation>Plaats de geselecteerde objecten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPrint</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Print...</source>
-        <translation type="unfinished">Afdru&amp;kken...</translation>
+        <translation>Afdru&amp;kken...</translation>
     </message>
     <message>
         <source>Print the document</source>
-        <translation type="unfinished">Het document afdrukken</translation>
+        <translation>Het document afdrukken</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPrintPdf</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Export PDF...</source>
-        <translation type="unfinished">&amp;Exporteren als PDF...</translation>
+        <translation>&amp;Exporteren als PDF...</translation>
     </message>
     <message>
         <source>Export the document as PDF</source>
-        <translation type="unfinished">Exporteer het document als PDF</translation>
+        <translation>Exporteer het document als PDF</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPrintPreview</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Print preview...</source>
-        <translation type="unfinished">&amp;Afdrukvoorbeeld...</translation>
+        <translation>&amp;Afdrukvoorbeeld...</translation>
     </message>
     <message>
         <source>Print the document</source>
-        <translation type="unfinished">Het document afdrukken</translation>
+        <translation>Het document afdrukken</translation>
     </message>
     <message>
         <source>Print preview</source>
-        <translation type="unfinished">Afdrukvoorbeeld</translation>
+        <translation>Afdrukvoorbeeld</translation>
     </message>
 </context>
 <context>
     <name>StdCmdProjectInfo</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Project i&amp;nformation...</source>
-        <translation type="unfinished">Project&amp;informatie...</translation>
+        <translation>Project&amp;informatie...</translation>
     </message>
     <message>
         <source>Show details of the currently active project</source>
-        <translation type="unfinished">Toon details van het huidige actieve project</translation>
+        <translation>Toon details van het huidige actieve project</translation>
     </message>
 </context>
 <context>
     <name>StdCmdProjectUtil</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Project utility...</source>
-        <translation type="unfinished">Project hulpprogramma...</translation>
+        <translation>Project hulpprogramma...</translation>
     </message>
     <message>
         <source>Utility to extract or create project files</source>
-        <translation type="unfinished">Gereedschap om project bestanden uit te trekken of te maken</translation>
+        <translation>Gereedschap om project bestanden uit te trekken of te maken</translation>
     </message>
 </context>
 <context>
     <name>StdCmdPythonWebsite</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Python Website</source>
-        <translation type="unfinished">Python-webpagina</translation>
+        <translation>Python-webpagina</translation>
     </message>
     <message>
         <source>The official Python website</source>
-        <translation type="unfinished">De officiële Python webpagina</translation>
+        <translation>De officiële Python webpagina</translation>
     </message>
 </context>
 <context>
     <name>StdCmdQuit</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation type="unfinished">Afsl&amp;uiten</translation>
+        <translation>Afsl&amp;uiten</translation>
     </message>
     <message>
         <source>Quits the application</source>
-        <translation type="unfinished">Sluit de applicatie</translation>
+        <translation>Sluit de applicatie</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRandomColor</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Random color</source>
-        <translation type="unfinished">Willekeurige kleur</translation>
+        <translation>Willekeurige kleur</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRecentFiles</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Recent files</source>
-        <translation type="unfinished">Recente Bestanden</translation>
+        <translation>Recente Bestanden</translation>
     </message>
     <message>
         <source>Recent file list</source>
-        <translation type="unfinished">Lijst met recente bestanden</translation>
+        <translation>Lijst met recente bestanden</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRedo</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation type="unfinished">&amp;Opnieuw</translation>
+        <translation>&amp;Opnieuw</translation>
     </message>
     <message>
         <source>Redoes a previously undone action</source>
-        <translation type="unfinished">Opnieuw uitvoeren van een eerder ongedane actie</translation>
+        <translation>Opnieuw uitvoeren van een eerder ongedane actie</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRefresh</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>&amp;Refresh</source>
-        <translation type="unfinished">&amp;Verversen</translation>
+        <translation>&amp;Verversen</translation>
     </message>
     <message>
         <source>Recomputes the current active document</source>
-        <translation type="unfinished">Het huidige actieve document herberekenen</translation>
+        <translation>Het huidige actieve document herberekenen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdRevert</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Revert</translation>
     </message>
     <message>
         <source>Reverts to the saved version of this file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reverts to the saved version of this file</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSave</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">O&amp;pslaan</translation>
+        <translation>O&amp;pslaan</translation>
     </message>
     <message>
         <source>Save the active document</source>
-        <translation type="unfinished">Sla het actieve document op</translation>
+        <translation>Sla het actieve document op</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSaveAs</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation type="unfinished">Opslaan &amp;als...</translation>
+        <translation>Opslaan &amp;als...</translation>
     </message>
     <message>
         <source>Save the active document under a new file name</source>
-        <translation type="unfinished">Sla het actieve document onder een nieuwe bestandsnaam op</translation>
+        <translation>Sla het actieve document onder een nieuwe bestandsnaam op</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSaveCopy</name>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Save a &amp;Copy...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Save a &amp;Copy...</translation>
     </message>
     <message>
         <source>Save a copy of the active document under a new file name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Save a copy of the active document under a new file name</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSceneInspector</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Scene inspector...</source>
-        <translation type="unfinished">Scènekeuring...</translation>
+        <translation>Scènekeuring...</translation>
     </message>
     <message>
         <source>Scene inspector</source>
-        <translation type="unfinished">Scènekeuring</translation>
+        <translation>Scènekeuring</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSelectAll</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Select &amp;All</source>
-        <translation type="unfinished">&amp;Alles selecteren</translation>
+        <translation>&amp;Alles selecteren</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation type="unfinished">Alles selecteren</translation>
+        <translation>Alles selecteren</translation>
     </message>
 </context>
 <context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Appearance...</source>
-        <translation type="unfinished">Uiterlijk...</translation>
+        <translation>Uiterlijk...</translation>
     </message>
     <message>
         <source>Sets the display properties of the selected object</source>
-        <translation type="unfinished">Stelt de weergave-eigenschappen in van het geselecteerde object </translation>
+        <translation>Stelt de weergave-eigenschappen in van het geselecteerde object </translation>
     </message>
 </context>
 <context>
     <name>StdCmdShowObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Show all objects</source>
-        <translation type="unfinished">Toon alle objecten</translation>
+        <translation>Toon alle objecten</translation>
     </message>
     <message>
         <source>Show all objects in the document</source>
-        <translation type="unfinished">Toon alle objecten in het document</translation>
+        <translation>Toon alle objecten in het document</translation>
     </message>
 </context>
 <context>
     <name>StdCmdShowSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Show selection</source>
-        <translation type="unfinished">Toon selectie</translation>
+        <translation>Toon selectie</translation>
     </message>
     <message>
         <source>Show all selected objects</source>
-        <translation type="unfinished">Toon alle geselecteerde objecten</translation>
+        <translation>Toon alle geselecteerde objecten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdStatusBar</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Status bar</source>
-        <translation type="unfinished">statusregel</translation>
+        <translation>statusregel</translation>
     </message>
     <message>
         <source>Toggles the status bar</source>
-        <translation type="unfinished">Schakelt de statusregel aan/uit</translation>
+        <translation>Schakelt de statusregel aan/uit</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTextureMapping</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>Texture mapping...</source>
-        <translation type="unfinished">Texture mapping...</translation>
+        <translation>Texture mapping...</translation>
     </message>
     <message>
         <source>Texture mapping</source>
-        <translation type="unfinished">Textuurafbeelden</translation>
+        <translation>Textuurafbeelden</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTileWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>&amp;Tile</source>
-        <translation type="unfinished">&amp;Naast elkaar</translation>
+        <translation>&amp;Naast elkaar</translation>
     </message>
     <message>
         <source>Tile the windows</source>
-        <translation type="unfinished">Vensters naast elkaar schikken</translation>
+        <translation>Vensters naast elkaar schikken</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>Toggle breakpoint</source>
-        <translation type="unfinished">Schakel breekpunt aan/uit</translation>
+        <translation>Schakel breekpunt aan/uit</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Clipping plane</source>
-        <translation type="unfinished">Snijvlak</translation>
+        <translation>Snijvlak</translation>
     </message>
     <message>
         <source>Toggles clipping plane for active view</source>
-        <translation type="unfinished">Snijvlak voor de actieve weergave in/uitschakelen</translation>
+        <translation>Snijvlak voor de actieve weergave in/uitschakelen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleNavigation</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Toggle navigation/Edit mode</source>
-        <translation type="unfinished">Schakel tussen navigatie en aanpassing modus</translation>
+        <translation>Schakel tussen navigatie en aanpassing modus</translation>
     </message>
     <message>
         <source>Toggle between navigation and edit mode</source>
-        <translation type="unfinished">Wisselen tussen navigatie- en editmode</translation>
+        <translation>Wisselen tussen navigatie- en editmode</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Toggle all objects</source>
-        <translation type="unfinished">Alle objecten [de]selecteren</translation>
+        <translation>Alle objecten [de]selecteren</translation>
     </message>
     <message>
         <source>Toggles visibility of all objects in the active document</source>
-        <translation type="unfinished">Wisselt zichtbaarheid van alle objecten in het actieve document</translation>
+        <translation>Wisselt zichtbaarheid van alle objecten in het actieve document</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleSelectability</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Toggle selectability</source>
-        <translation type="unfinished">Schakel selecteerbaarheid aan/uit</translation>
+        <translation>Schakel selecteerbaarheid aan/uit</translation>
     </message>
     <message>
         <source>Toggles the property of the objects to get selected in the 3D-View</source>
-        <translation type="unfinished">Schakelt de mogelijkheid of ombjecten in de 3D view te selecteren aan of uit</translation>
+        <translation>Schakelt de mogelijkheid of ombjecten in de 3D view te selecteren aan of uit</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleVisibility</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Toggle visibility</source>
-        <translation type="unfinished">Wissel zichtbaarheid</translation>
+        <translation>Wissel zichtbaarheid</translation>
     </message>
     <message>
         <source>Toggles visibility</source>
-        <translation type="unfinished">Wisselt zichtbaarheid</translation>
+        <translation>Wisselt zichtbaarheid</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToolBarMenu</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Tool&amp;bars</source>
-        <translation type="unfinished">Werk&amp;balk</translation>
+        <translation>Werk&amp;balk</translation>
     </message>
     <message>
         <source>Toggles this window</source>
-        <translation type="unfinished">Schakelt dit venster</translation>
+        <translation>Schakelt dit venster</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTransform</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Transform...</source>
-        <translation type="unfinished">Verander...</translation>
+        <translation>Verander...</translation>
     </message>
     <message>
         <source>Transform the geometry of selected objects</source>
-        <translation type="unfinished">Verander de geometrie van de geselecteerde objecten</translation>
+        <translation>Verander de geometrie van de geselecteerde objecten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTransformManip</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">Transformeren</translation>
+        <translation>Transformeren</translation>
     </message>
     <message>
         <source>Transform the selected object in the 3d view</source>
-        <translation type="unfinished">Transformeren van het geselecteerde object in de 3D-weergave</translation>
+        <translation>Transformeren van het geselecteerde object in de 3D-weergave</translation>
     </message>
 </context>
 <context>
     <name>StdCmdTreeSelection</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Go to selection</source>
-        <translation type="unfinished">Ga naar selectie</translation>
+        <translation>Ga naar selectie</translation>
     </message>
     <message>
         <source>Scroll to first selected item</source>
-        <translation type="unfinished">Scroll naar het eerste geselecteerde item</translation>
+        <translation>Scroll naar het eerste geselecteerde item</translation>
     </message>
 </context>
 <context>
     <name>StdCmdUndo</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
-        <translation type="unfinished">&amp;Ongedaan maken</translation>
+        <translation>&amp;Ongedaan maken</translation>
     </message>
     <message>
         <source>Undo exactly one action</source>
-        <translation type="unfinished">Precies één actie ongedaan maken</translation>
+        <translation>Precies één actie ongedaan maken</translation>
     </message>
 </context>
 <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Gereedschap</translation>
+        <translation>Gereedschap</translation>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
@@ -6280,244 +6197,236 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdUserInterface</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Dock views</source>
-        <translation type="unfinished">Weergaves klampen</translation>
+        <translation>Weergaves klampen</translation>
     </message>
     <message>
         <source>Dock all top-level views</source>
-        <translation type="unfinished">De bovenste weergaves klampen</translation>
+        <translation>De bovenste weergaves klampen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewAxo</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
-    </message>
-    <message>
-        <source>Axometric</source>
-        <translation type="obsolete">Axonometrisch</translation>
-    </message>
-    <message>
-        <source>Set to axometric view</source>
-        <translation type="obsolete">Axonometrisch zicht instellen</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Axonometric</source>
-        <translation type="unfinished"></translation>
+        <translation>Axonometrisch</translation>
     </message>
     <message>
         <source>Set to axonometric view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set to axonometric view</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewBottom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Onder</translation>
+        <translation>Onder</translation>
     </message>
     <message>
         <source>Set to bottom view</source>
-        <translation type="unfinished">Instellen als onderaanzicht</translation>
+        <translation>Instellen als onderaanzicht</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewCreate</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Create new view</source>
-        <translation type="unfinished">Nieuwe weergave aanmaken</translation>
+        <translation>Nieuwe weergave aanmaken</translation>
     </message>
     <message>
         <source>Creates a new  view window for the active document</source>
-        <translation type="unfinished">Maakt een nieuw weergavevenster voor het actieve document</translation>
+        <translation>Maakt een nieuw weergavevenster voor het actieve document</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample1</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Inventor example #1</source>
-        <translation type="unfinished">Inventor voorbeeld #1</translation>
+        <translation>Inventor voorbeeld #1</translation>
     </message>
     <message>
         <source>Shows a 3D texture with manipulator</source>
-        <translation type="unfinished">Toont een 3D textuur met manipulator</translation>
+        <translation>Toont een 3D textuur met manipulator</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample2</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Inventor example #2</source>
-        <translation type="unfinished">Inventor bijvoorbeeld #2</translation>
+        <translation>Inventor bijvoorbeeld #2</translation>
     </message>
     <message>
         <source>Shows spheres and drag-lights</source>
-        <translation type="unfinished">Toont sferen en treklichten</translation>
+        <translation>Toont sferen en treklichten</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample3</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Inventor example #3</source>
-        <translation type="unfinished">Inventor bijvoorbeeld #3</translation>
+        <translation>Inventor bijvoorbeeld #3</translation>
     </message>
     <message>
         <source>Shows a animated texture</source>
-        <translation type="unfinished">Toont een geanimeerde textuur</translation>
+        <translation>Toont een geanimeerde textuur</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFitAll</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Fit all</source>
-        <translation type="unfinished">Passend</translation>
+        <translation>Passend</translation>
     </message>
     <message>
         <source>Fits the whole content on the screen</source>
-        <translation type="unfinished">Zorgt dat de volledige inhoud op het scherm past</translation>
+        <translation>Zorgt dat de volledige inhoud op het scherm past</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFitSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Fit selection</source>
-        <translation type="unfinished">Selectie passend</translation>
+        <translation>Selectie passend</translation>
     </message>
     <message>
         <source>Fits the selected content on the screen</source>
-        <translation type="unfinished">Zorgt dat de geselecteerde inhoud op het scherm past</translation>
+        <translation>Zorgt dat de geselecteerde inhoud op het scherm past</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFront</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Front</source>
-        <translation type="unfinished">Voorkant</translation>
+        <translation>Voorkant</translation>
     </message>
     <message>
         <source>Set to front view</source>
-        <translation type="unfinished">Ingestellen als vooraanzicht</translation>
+        <translation>Ingestellen als vooraanzicht</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Issue camera position</source>
-        <translation type="unfinished">De camerapositie weergeven</translation>
+        <translation>De camerapositie weergeven</translation>
     </message>
     <message>
         <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-        <translation type="unfinished">Weergeeft de camerapositie in de console en in een macro, zo het gemakkelijk kan herhaald worden</translation>
+        <translation>Weergeeft de camerapositie in de console en in een macro, zo het gemakkelijk kan herhaald worden</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Stereo Interleaved Columns</source>
-        <translation type="unfinished">Stereoscopisch, vervlochten kolommen</translation>
+        <translation>Stereoscopisch, vervlochten kolommen</translation>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Columns</source>
-        <translation type="unfinished">Ga naar stereoscopisch, vervlochten kolommen</translation>
+        <translation>Ga naar stereoscopisch, vervlochten kolommen</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Stereo Interleaved Rows</source>
-        <translation type="unfinished">Stereoscopisch, vervlochten regels</translation>
+        <translation>Stereoscopisch, vervlochten regels</translation>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Rows</source>
-        <translation type="unfinished">Ga naar stereoscopisch vervlochten regels</translation>
+        <translation>Ga naar stereoscopisch vervlochten regels</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Stereo Off</source>
-        <translation type="unfinished">Stereo Uit</translation>
+        <translation>Stereo Uit</translation>
     </message>
     <message>
         <source>Switch stereo viewing off</source>
-        <translation type="unfinished">Schakel stereo-weergave uit</translation>
+        <translation>Schakel stereo-weergave uit</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Stereo quad buffer</source>
-        <translation type="unfinished">Stereoscopisch, quad buffer</translation>
+        <translation>Stereoscopisch, quad buffer</translation>
     </message>
     <message>
         <source>Switch stereo viewing to quad buffer</source>
-        <translation type="unfinished">Ga naar stereoscopisch, quad buffer</translation>
+        <translation>Ga naar stereoscopisch, quad buffer</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished">Stereo red/cyan</translation>
+        <translation>Stereo rood/cyaan</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
@@ -6528,101 +6437,101 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdViewLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Links</translation>
+        <translation>Links</translation>
     </message>
     <message>
         <source>Set to left view</source>
-        <translation type="unfinished">Instellen als linkeraanzicht</translation>
+        <translation>Instellen als linkeraanzicht</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRear</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Rear</source>
-        <translation type="unfinished">Achter</translation>
+        <translation>Achter</translation>
     </message>
     <message>
         <source>Set to rear view</source>
-        <translation type="unfinished">Instellen als achteraanzicht</translation>
+        <translation>Instellen als achteraanzicht</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Rechts</translation>
+        <translation>Rechts</translation>
     </message>
     <message>
         <source>Set to right view</source>
-        <translation type="unfinished">Instellen als rechteraanzicht</translation>
+        <translation>Instellen als rechteraanzicht</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Rotate Left</source>
-        <translation type="unfinished">Linksom draaien</translation>
+        <translation>Linksom draaien</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° counter-clockwise</source>
-        <translation type="unfinished">De weergave 90 ° linksom draaien</translation>
+        <translation>De weergave 90 ° linksom draaien</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRotateRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Rotate Right</source>
-        <translation type="unfinished">Rechtsom draaien</translation>
+        <translation>Rechtsom draaien</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° clockwise</source>
-        <translation type="unfinished">De weergave 90 ° rechtsom draaien</translation>
+        <translation>De weergave 90 ° rechtsom draaien</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewTop</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Boven</translation>
+        <translation>Boven</translation>
     </message>
     <message>
         <source>Set to top view</source>
-        <translation type="unfinished">Instellen als bovenaanzicht</translation>
+        <translation>Instellen als bovenaanzicht</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewVR</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished">FreeCAD-VR</translation>
+        <translation>FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
@@ -6633,149 +6542,149 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdWhatsThis</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Help</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>&amp;What&apos;s This?</source>
-        <translation type="unfinished">&amp;Wat is dit?</translation>
+        <translation>&amp;Wat is dit?</translation>
     </message>
     <message>
         <source>What&apos;s This</source>
-        <translation type="unfinished">Wat is dit</translation>
+        <translation>Wat is dit</translation>
     </message>
 </context>
 <context>
     <name>StdCmdWindows</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>&amp;Windows...</source>
-        <translation type="unfinished">&amp;Vensters...</translation>
+        <translation>&amp;Vensters...</translation>
     </message>
     <message>
         <source>Windows list</source>
-        <translation type="unfinished">Windows lijst</translation>
+        <translation>Windows lijst</translation>
     </message>
 </context>
 <context>
     <name>StdCmdWindowsMenu</name>
     <message>
         <source>Window</source>
-        <translation type="unfinished">Venster</translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>Activates this window</source>
-        <translation type="unfinished">Activeert dit venster</translation>
+        <translation>Activeert dit venster</translation>
     </message>
 </context>
 <context>
     <name>StdCmdWorkbench</name>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Workbench</source>
-        <translation type="unfinished">Werkbank</translation>
+        <translation>Werkbank</translation>
     </message>
     <message>
         <source>Switch between workbenches</source>
-        <translation type="unfinished">Schakel tussen werkbanken</translation>
+        <translation>Schakel tussen werkbanken</translation>
     </message>
 </context>
 <context>
     <name>StdOrthographicCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Orthographic view</source>
-        <translation type="unfinished">Orthogonale projectie</translation>
+        <translation>Orthogonale projectie</translation>
     </message>
     <message>
         <source>Switches to orthographic view mode</source>
-        <translation type="unfinished">Schakelt naar orthogonale projectie</translation>
+        <translation>Schakelt naar orthogonale projectie</translation>
     </message>
 </context>
 <context>
     <name>StdPerspectiveCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Perspective view</source>
-        <translation type="unfinished">Perspectiefweergave</translation>
+        <translation>Perspectiefweergave</translation>
     </message>
     <message>
         <source>Switches to perspective view mode</source>
-        <translation type="unfinished">Gaat over naar perspectiefweergave</translation>
+        <translation>Gaat over naar perspectiefweergave</translation>
     </message>
 </context>
 <context>
     <name>StdViewBoxZoom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Box zoom</source>
-        <translation type="unfinished">Vensterzoom</translation>
+        <translation>Vensterzoom</translation>
     </message>
 </context>
 <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Document window</source>
-        <translation type="unfinished">Documentvenster</translation>
+        <translation>Documentvenster</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-        <translation type="unfinished">De actieve weergave tonen als volledig, losgekoppeld of gekoppeld scherm</translation>
+        <translation>De actieve weergave tonen als volledig, losgekoppeld of gekoppeld scherm</translation>
     </message>
 </context>
 <context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Save picture...</source>
-        <translation type="unfinished">Afbeelding opslaan...</translation>
+        <translation>Afbeelding opslaan...</translation>
     </message>
     <message>
         <source>Creates a screenshot of the active view</source>
-        <translation type="unfinished">Maakt een schermafbeelding van de actieve weergave</translation>
+        <translation>Maakt een schermafbeelding van de actieve weergave</translation>
     </message>
 </context>
 <context>
     <name>StdViewZoomIn</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished">Inzoomen</translation>
+        <translation>Inzoomen</translation>
     </message>
 </context>
 <context>
     <name>StdViewZoomOut</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standaardweergave</translation>
+        <translation>Standaardweergave</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished">Uitzoomen</translation>
+        <translation>Uitzoomen</translation>
     </message>
 </context>
 <context>
@@ -6795,19 +6704,19 @@ Are you sure to continue?</translation>
     <name>Std_DrawStyle</name>
     <message>
         <source>As is</source>
-        <translation type="unfinished">Als getekend</translation>
+        <translation>Als getekend</translation>
     </message>
     <message>
         <source>Normal mode</source>
-        <translation type="unfinished">Standaard modus</translation>
+        <translation>Standaard modus</translation>
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Draadmodel</translation>
+        <translation>Draadmodel</translation>
     </message>
     <message>
         <source>Wireframe mode</source>
-        <translation type="unfinished">Draadmodel modus</translation>
+        <translation>Draadmodel modus</translation>
     </message>
     <message>
         <source>Flat lines</source>
@@ -6827,7 +6736,7 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points</source>
-        <translation type="unfinished">Punten</translation>
+        <translation>Punten</translation>
     </message>
     <message>
         <source>Points mode</source>
@@ -6851,113 +6760,113 @@ Do you want to duplicate them, too?</translation>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation type="unfinished">Graphviz niet gevonden</translation>
+        <translation>Graphviz niet gevonden</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation type="unfinished">Graphviz kon niet worden gevonden op uw systeem. Wilt u het installatiepad opgeven als dit al is geïnstalleerd?</translation>
+        <translation>Graphviz kon niet worden gevonden op uw systeem. Wilt u het installatiepad opgeven als dit al is geïnstalleerd?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation type="unfinished">Graphviz installatiepad</translation>
+        <translation>Graphviz installatiepad</translation>
     </message>
     <message>
         <source>Dependency graph</source>
-        <translation type="unfinished">Afhankelijkheden grafiek</translation>
+        <translation>Afhankelijkheden grafiek</translation>
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation type="unfinished">Graphviz is mislukt</translation>
+        <translation>Graphviz is mislukt</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation type="unfinished">Graphviz kon geen afbeeldingsbestand creëren</translation>
+        <translation>Graphviz kon geen afbeeldingsbestand creëren</translation>
     </message>
 </context>
 <context>
     <name>Std_Revert</name>
     <message>
         <source>This will discard all the changes since last file save.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">This will discard all the changes since last file save.</translation>
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Are you sure?</translation>
     </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Bestand</translation>
+        <translation>&amp;Bestand</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Bewerken</translation>
+        <translation>&amp;Bewerken</translation>
     </message>
     <message>
         <source>Standard views</source>
-        <translation type="unfinished">Standaardweergaves</translation>
+        <translation>Standaardweergaves</translation>
     </message>
     <message>
         <source>&amp;Stereo</source>
-        <translation type="unfinished">&amp;Stereo</translation>
+        <translation>&amp;Stereo</translation>
     </message>
     <message>
         <source>&amp;Zoom</source>
-        <translation type="unfinished">&amp;Zoom</translation>
+        <translation>&amp;Zoom</translation>
     </message>
     <message>
         <source>Visibility</source>
-        <translation type="unfinished">Zichtbaarheid</translation>
+        <translation>Zichtbaarheid</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Weergave</translation>
+        <translation>&amp;Weergave</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
-        <translation type="unfinished">&amp;Gereedschap</translation>
+        <translation>&amp;Gereedschap</translation>
     </message>
     <message>
         <source>&amp;Macro</source>
-        <translation type="unfinished">&amp;Macro</translation>
+        <translation>&amp;Macro</translation>
     </message>
     <message>
         <source>&amp;Windows</source>
-        <translation type="unfinished">&amp;Vensters</translation>
+        <translation>&amp;Vensters</translation>
     </message>
     <message>
         <source>&amp;On-line help</source>
-        <translation type="unfinished">&amp;Online-help</translation>
+        <translation>&amp;Online-help</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Help</translation>
+        <translation>&amp;Help</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation type="unfinished">Macro</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="unfinished">Aanzicht</translation>
+        <translation>Aanzicht</translation>
     </message>
     <message>
         <source>Special Ops</source>
-        <translation type="unfinished">Speciale functies</translation>
+        <translation>Speciale functies</translation>
     </message>
 </context>
 <context>
     <name>testClass</name>
     <message>
         <source>test</source>
-        <translation type="unfinished">Test</translation>
+        <translation>Test</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -6968,21 +6877,21 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; &lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;iisTaskPanel&lt;/span&gt; &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt; &lt;span style=&quot; font-size:12pt;&quot;&gt;Gemaakt voor Qt 4.3.x&lt;/span&gt; &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt; www.ii-system.com &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Choose the style of the Task Panel</source>
-        <translation type="unfinished">Kies de stijl van het taken-panel</translation>
+        <translation>Kies de stijl van het taken-panel</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
     <message>
         <source>Windows XP</source>
-        <translation type="unfinished">Windows XP</translation>
+        <translation>Windows XP</translation>
     </message>
 </context>
 </TS>

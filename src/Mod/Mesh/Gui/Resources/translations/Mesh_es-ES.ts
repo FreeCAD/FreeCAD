@@ -154,11 +154,11 @@
     </message>
     <message>
         <source>Export mesh...</source>
-        <translation>Esportar malla...</translation>
+        <translation>Exportar malla...</translation>
     </message>
     <message>
         <source>Exports a mesh to file</source>
-        <translation>Esporta la malla a un archivo</translation>
+        <translation>Exporta la malla a un archivo</translation>
     </message>
 </context>
 <context>
@@ -225,15 +225,15 @@
     <name>CmdMeshFromPartShape</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malla</translation>
+        <translation>Malla</translation>
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">Crear malla de forma ...</translation>
+        <translation>Crear malla de forma ...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">Teselar forma</translation>
+        <translation>Teselar forma</translation>
     </message>
 </context>
 <context>
@@ -281,15 +281,15 @@
     <name>CmdMeshMerge</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malla</translation>
+        <translation>Malla</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionar</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished"></translation>
+        <translation>Fusionar las mallas seleccionadas en una sola</translation>
     </message>
 </context>
 <context>
@@ -461,15 +461,15 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malla</translation>
+        <translation>Malla</translation>
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Recortar malla con un plano</translation>
+        <translation>Recortar malla con un plano</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Ajusta una malla con un plano</translation>
+        <translation>Ajusta una malla con un plano</translation>
     </message>
 </context>
 <context>
@@ -835,6 +835,33 @@ Please run the command to repair folds first</source>
     </message>
 </context>
 <context>
+    <name>MeshGui::DlgSettingsImportExport</name>
+    <message>
+        <source>Mesh Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines the deviation of tessellation to the actual surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum mesh deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
         <source>Mesh view</source>
@@ -937,7 +964,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Sólo selección</translation>
+        <translation>Sólo selección</translation>
     </message>
 </context>
 <context>
@@ -963,7 +990,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Finalizar</translation>
+        <translation>Finalizar</translation>
     </message>
 </context>
 <context>
@@ -1076,31 +1103,31 @@ Please run the command to repair folds first</source>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Selección</translation>
+        <translation>Selección</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Añadir</translation>
+        <translation>Añadir</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Borrar</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">ünicamente respecto a triángulos visibles</translation>
+        <translation>ünicamente respecto a triángulos visibles</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Únicamente respecto a triángulos con las normales frente a pantalla</translation>
+        <translation>Únicamente respecto a triángulos con las normales frente a pantalla</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Utilice una herramienta Pincel para seleccionar el área</translation>
+        <translation>Utilice una herramienta Pincel para seleccionar el área</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Borra completamente el área seleccionada</translation>
+        <translation>Borra completamente el área seleccionada</translation>
     </message>
 </context>
 <context>
@@ -1118,27 +1145,27 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Seleccionar plano</translation>
+        <translation>Seleccionar plano</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Por favor seleccione el plano de corte de la malla.</translation>
+        <translation>Por favor seleccione el plano de corte de la malla.</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation>OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Error desconocido al ejecutar OpenSCAD.</translation>
+        <translation>Error desconocido al ejecutar OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD no parece instalado en su sistema. Por favor visite http://www.openscad.org/index.html para instalarlo.</translation>
+        <translation>OpenSCAD no parece instalado en su sistema. Por favor visite http://www.openscad.org/index.html para instalarlo.</translation>
     </message>
 </context>
 <context>
@@ -1156,7 +1183,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Export mesh</source>
-        <translation>Esportar malla</translation>
+        <translation>Exportar malla</translation>
     </message>
     <message>
         <source>Solid Mesh</source>
@@ -1298,66 +1325,70 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Mostrar componentes</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos los archivos de mallas</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished"></translation>
+        <translation>Binario STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished"></translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation>Binario de la malla</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias de la malla</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de archivo del objeto</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished"></translation>
+        <translation>Inventor ascii V2.1</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished"></translation>
+        <translation>Polígono Stanford</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos los Archivos</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished"></translation>
+        <translation>X3D 3D Extensible</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>Comprimido VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished"></translation>
+        <translation>Módulo def de Python</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation>[Puntos: %1, Aristas: %2, Caras: %3]</translation>
+    </message>
+    <message>
+        <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

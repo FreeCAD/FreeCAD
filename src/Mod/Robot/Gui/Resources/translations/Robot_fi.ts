@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Liikeradan peitto...</translation>
+        <translation>Liikeradan peitto...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Luo peittokohde, joka naamioi joitakin piirretyn kuvion liikeratoja</translation>
+        <translation>Luo peittokohde, joka naamioi joitakin piirretyn kuvion liikeratoja</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -409,13 +409,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">KRL file</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -573,7 +573,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.cpp" line="+47"/>
         <source>TaskEdge2TracParameter</source>
-        <translation>TaskEdge2TracParameter</translation>
+        <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
         <source>Dress Up Parameter</source>
-        <translation>Dress Up Parameter</translation>
+        <translation type="unfinished">Dress Up Parameter</translation>
     </message>
 </context>
 <context>

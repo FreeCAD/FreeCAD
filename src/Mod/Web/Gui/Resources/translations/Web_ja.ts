@@ -6,17 +6,17 @@
     <message>
         <location filename="../../Command.cpp" line="75"/>
         <source>Web</source>
-        <translation type="unfinished">ウェブ</translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="76"/>
         <source>Previous page</source>
-        <translation type="unfinished">前のページ</translation>
+        <translation>前のページ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="77"/>
         <source>Go back to the previous page</source>
-        <translation type="unfinished">前のページに戻る</translation>
+        <translation>前のページに戻る</translation>
     </message>
 </context>
 <context>
@@ -24,17 +24,17 @@
     <message>
         <location filename="../../Command.cpp" line="103"/>
         <source>Web</source>
-        <translation type="unfinished">ウェブ</translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="104"/>
         <source>Next page</source>
-        <translation type="unfinished">次のページ</translation>
+        <translation>次のページ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="105"/>
         <source>Go to the next page</source>
-        <translation type="unfinished">次のページに進む</translation>
+        <translation>次のページに進む</translation>
     </message>
 </context>
 <context>
@@ -42,13 +42,13 @@
     <message>
         <location filename="../../Command.cpp" line="131"/>
         <source>Web</source>
-        <translation type="unfinished">ウェブ</translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="132"/>
         <location filename="../../Command.cpp" line="133"/>
         <source>Refresh web page</source>
-        <translation type="unfinished">ウェブページを更新</translation>
+        <translation>ウェブページを更新</translation>
     </message>
 </context>
 <context>
@@ -56,17 +56,17 @@
     <message>
         <location filename="../../Command.cpp" line="158"/>
         <source>Web</source>
-        <translation type="unfinished">ウェブ</translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="159"/>
         <source>Stop loading</source>
-        <translation type="unfinished">読み込みを中止</translation>
+        <translation>読み込みを中止</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="160"/>
         <source>Stop the current loading</source>
-        <translation type="unfinished">現在の読み込みを中止</translation>
+        <translation>現在の読み込みを中止</translation>
     </message>
 </context>
 <context>
@@ -74,17 +74,17 @@
     <message>
         <location filename="../../Command.cpp" line="187"/>
         <source>Web</source>
-        <translation type="unfinished">ウェブ</translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="188"/>
         <source>Zoom in</source>
-        <translation type="unfinished">ズームイン</translation>
+        <translation>ズームイン</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="189"/>
         <source>Zoom into the page</source>
-        <translation type="unfinished">ページを拡大</translation>
+        <translation>ページを拡大</translation>
     </message>
 </context>
 <context>
@@ -92,17 +92,17 @@
     <message>
         <location filename="../../Command.cpp" line="215"/>
         <source>Web</source>
-        <translation type="unfinished">ウェブ</translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="216"/>
         <source>Zoom out</source>
-        <translation type="unfinished">ズームアウト</translation>
+        <translation>ズームアウト</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="217"/>
         <source>Zoom out of the page</source>
-        <translation type="unfinished">ページを縮小</translation>
+        <translation>ページを縮小</translation>
     </message>
 </context>
 <context>
@@ -110,31 +110,31 @@
     <message>
         <location filename="../../Command.cpp" line="50"/>
         <source>Web</source>
-        <translation type="unfinished">ウェブ</translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="51"/>
         <source>Open website...</source>
-        <translation type="unfinished">ウェブサイトを開く</translation>
+        <translation>ウェブサイトを開く</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="52"/>
         <source>Opens a website in FreeCAD</source>
-        <translation type="unfinished">FreeCAD でウェブサイトを開く</translation>
+        <translation>FreeCAD でウェブサイトを開く</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGuiPy.cpp" line="49"/>
+        <location filename="../../AppWebGui.cpp" line="78"/>
         <location filename="../../BrowserView.cpp" line="348"/>
         <source>Browser</source>
-        <translation type="unfinished">ブラウザー</translation>
+        <translation>ブラウザー</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="244"/>
         <source>File does not exist!</source>
-        <translation type="unfinished">ファイルが存在しません!</translation>
+        <translation>ファイルが存在しません!</translation>
     </message>
 </context>
 <context>
@@ -142,12 +142,12 @@
     <message>
         <location filename="../../BrowserView.cpp" line="239"/>
         <source>Error</source>
-        <translation type="unfinished">エラー</translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="319"/>
         <source>Loading %1...</source>
-        <translation type="unfinished">%1 を読み込み中・・・</translation>
+        <translation>%1 を読み込み中・・・</translation>
     </message>
 </context>
 <context>
@@ -155,12 +155,12 @@
     <message>
         <location filename="../../BrowserView.cpp" line="121"/>
         <source>Open in External Browser</source>
-        <translation type="unfinished">外部ブラウザーで開く</translation>
+        <translation>外部ブラウザーで開く</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="125"/>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>新規ウィンドウで開く</translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="46"/>
         <source>Navigation</source>
-        <translation type="unfinished">ナビゲーション</translation>
+        <translation>ナビゲーション</translation>
     </message>
 </context>
 </TS>

@@ -44,7 +44,7 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation type="unfinished">Desen</translation>
+        <translation>Desen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -202,18 +202,18 @@
     <message>
         <location line="+62"/>
         <source>Drawing</source>
-        <translation type="unfinished">Desen</translation>
+        <translation>Desen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Spreadsheet View</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -221,18 +221,18 @@
     <message>
         <location line="-176"/>
         <source>Drawing</source>
-        <translation type="unfinished">Desen</translation>
+        <translation>Desen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Symbol</source>
-        <translation type="unfinished">&amp;Simbol</translation>
+        <translation>&amp;Simbol</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">Inserează un simbol dintr-un fișier svg în desenul activ</translation>
+        <translation>Inserează un simbol dintr-un fișier svg în desenul activ</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PDF file</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -334,38 +334,36 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished">Different orientation</translation>
+        <translation>Orientare diferită</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+        <translation>Imprimanta utilizează o orientare diferită decât desenul. Doriţi să continuaţi?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished">Different paper size</translation>
+        <translation>Hârtie de dimensiune diferită</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+        <translation>Imprimanta utilizează o altă dimensiune de hârtie decât desenul. Doriţi să continuaţi?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Opening file failed</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
     </message>
 </context>
 <context>
@@ -389,118 +387,108 @@ Do you want to continue?</translation>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation type="unfinished">Click dreapta pentru configurări axonometrice</translation>
+        <translation>Click dreapta pentru configurări axonometrice</translation>
     </message>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">Sus stânga x / y</translation>
+        <translation>Sus stânga x / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Distanțează dx / dy   </translation>
+        <translation>Distanțează dx / dy   </translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Show hidden lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Show smooth lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
+        <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Axa afară și dreaptă</translation>
+        <translation> Axa afară și dreaptă</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Înclinare verticală</translation>
+        <translation> Înclinare verticală</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+200"/>
         <source>X +ve</source>
-        <translation type="unfinished">X +ve</translation>
+        <translation>X +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Y +ve</source>
-        <translation type="unfinished">Y +ve</translation>
+        <translation>Y +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Z +ve</source>
-        <translation type="unfinished">Z +ve</translation>
+        <translation>Z +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+200"/>
         <source>X -ve</source>
-        <translation type="unfinished">X -ve</translation>
+        <translation>X -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Y -ve</source>
-        <translation type="unfinished">Y -ve</translation>
+        <translation>Y -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Z -ve</source>
-        <translation type="unfinished">Z -ve</translation>
+        <translation>Z -ve</translation>
     </message>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Izometrică</translation>
+        <translation>Izometrică</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimetric</translation>
+        <translation>Dimetric</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">Trimetric</translation>
+        <translation>Trimetric</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Scală</translation>
+        <translation> Scală</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> Vizualizează proiecția   </translation>
+        <translation> Vizualizează proiecția   </translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished"> Axa aliniată sus</translation>
+        <translation> Axa aliniată sus</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Întoarce</translation>
+        <translation>Întoarce</translation>
     </message>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimetric</translation>
+        <translation> Trimetric</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -520,12 +508,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">Vizualizare de la:</translation>
+        <translation>Vizualizare de la:</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation type="unfinished">Axa aliniată la dreapta:</translation>
+        <translation>Axa aliniată la dreapta:</translation>
     </message>
     <message>
         <source>Primary View</source>
@@ -605,15 +593,17 @@ Do you want to continue?</translation>
         <translation type="obsolete">dx / dy secundar</translation>
     </message>
     <message>
-        <source>Show hidden</source>
-        <translation type="obsolete">Arată ce este ascuns</translation>
+        <location line="+125"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished">Show hidden lines</translation>
     </message>
     <message>
-        <source>Show smooth</source>
-        <translation type="obsolete">Arată neted</translation>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished">Show smooth lines</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+11"/>
         <source>Axonometric</source>
         <translation>Axonometric</translation>
     </message>
@@ -621,7 +611,7 @@ Do you want to continue?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+50"/>
+        <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
         <translation>Muchiile ascuțite vizibile</translation>
     </message>
@@ -674,6 +664,26 @@ Do you want to continue?</translation>
         <location line="+17"/>
         <source>Project shapes</source>
         <translation>Proiectează formele</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>No active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active document to complete the operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>No active view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active view to complete the operation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -729,32 +739,32 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Peisaj</translation>
+        <translation>Peisaj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Portret</translation>
+        <translation>Portret</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1%2 %3</translation>
+        <translation>%1%2 %3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Inserează un nou %1%2%3 desen</translation>
+        <translation>Inserează un nou %1%2%3 desen</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished">%1%2 %3 (%4)</translation>
+        <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
+        <translation>Inserare desen nou %1%2 %3 (%4)</translation>
     </message>
 </context>
 <context>
@@ -804,7 +814,7 @@ Do you want to continue?</translation>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scalable Vector Graphic</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -814,7 +824,7 @@ Do you want to continue?</translation>
         <location line="+45"/>
         <location line="+175"/>
         <source>No page found</source>
-        <translation type="unfinished">No page found</translation>
+        <translation>Pagină negăsită</translation>
     </message>
     <message>
         <location line="-425"/>
@@ -824,12 +834,12 @@ Do you want to continue?</translation>
         <location line="+45"/>
         <location line="+175"/>
         <source>Create a page first.</source>
-        <translation type="unfinished">Create a page first.</translation>
+        <translation>Creați o pagină în primul rând.</translation>
     </message>
     <message>
         <location line="-357"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished">Select exactly one Part object.</translation>
+        <translation>Selectați un obiect cu exact o parte.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -840,12 +850,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>
@@ -894,22 +904,22 @@ Do you want to continue?</translation>
         <translation type="obsolete">Partea de jos</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
-        <location line="+929"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+51"/>
+        <location line="+907"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Fă axonometric...</translation>
+        <translation>Fă axonometric...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">Editare configurări axonometrice...</translation>
+        <translation>Editare configurări axonometrice...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Fă ortografic</translation>
+        <translation>Fă ortografic</translation>
     </message>
 </context>
 <context>

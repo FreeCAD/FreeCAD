@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+46"/>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -34,92 +34,92 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">メッシュ作成オプション</translation>
+        <translation>メッシュ作成オプション</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">標準</translation>
+        <translation>標準</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">最大エッジ長さ:</translation>
+        <translation>最大エッジ長さ:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">細かさ:</translation>
+        <translation>細かさ:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">非常に粗い</translation>
+        <translation>非常に粗い</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">粗い</translation>
+        <translation>粗い</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">中程度</translation>
+        <translation>中程度</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">細かい</translation>
+        <translation>細かい</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">非常に細かい</translation>
+        <translation>非常に細かい</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">ユーザー定義</translation>
+        <translation>ユーザー定義</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">メッシュサイズの程度</translation>
+        <translation>メッシュサイズの程度</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">エッジあたりの要素:</translation>
+        <translation>エッジあたりの要素:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">曲率半径あたりの要素:</translation>
+        <translation>曲率半径あたりの要素:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">サーフェスを最適化</translation>
+        <translation>サーフェスを最適化</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">2次要素</translation>
+        <translation>2次要素</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">四角形優占</translation>
+        <translation>四角形優占</translation>
     </message>
     <message>
         <source>Settings</source>

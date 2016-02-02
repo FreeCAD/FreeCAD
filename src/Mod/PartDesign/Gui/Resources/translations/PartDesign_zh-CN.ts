@@ -407,7 +407,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">编辑倒角</translation>
+        <translation>编辑倒角</translation>
     </message>
 </context>
 <context>
@@ -423,7 +423,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">编辑圆角</translation>
+        <translation>编辑圆角</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">编辑凹槽</translation>
+        <translation>编辑凹槽</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -667,12 +667,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">水平草绘轴</translation>
+        <translation>水平草绘轴</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">垂直草绘轴</translation>
+        <translation>垂直草绘轴</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -694,7 +694,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+21"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -749,12 +749,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">水平草绘轴</translation>
+        <translation>水平草绘轴</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">垂直草绘轴</translation>
+        <translation>垂直草绘轴</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1043,7 +1043,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">反转</translation>
+        <translation>反转</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1130,7 +1130,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">轴线</translation>
+        <translation>轴线</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1157,7 +1157,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+27"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1256,7 +1256,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1367,17 +1367,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>

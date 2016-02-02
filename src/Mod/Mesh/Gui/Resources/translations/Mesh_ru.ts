@@ -225,15 +225,15 @@
     <name>CmdMeshFromPartShape</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Сеть</translation>
+        <translation>Сеть</translation>
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">Создайте сетку из фигуры...</translation>
+        <translation>Создайте сетку из фигуры...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">Мозаика из фигуры</translation>
+        <translation>Мозаика из фигуры</translation>
     </message>
 </context>
 <context>
@@ -281,15 +281,15 @@
     <name>CmdMeshMerge</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Сеть</translation>
+        <translation>Сеть</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Merge</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Merges selected meshes into one</translation>
     </message>
 </context>
 <context>
@@ -461,15 +461,15 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Сеть</translation>
+        <translation>Сеть</translation>
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Подрезать сетку плоскостью</translation>
+        <translation>Подрезать сетку плоскостью</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Подрезает сетку выбранной плоскостью</translation>
+        <translation>Подрезает сетку выбранной плоскостью</translation>
     </message>
 </context>
 <context>
@@ -835,6 +835,33 @@ Please run the command to repair folds first</source>
     </message>
 </context>
 <context>
+    <name>MeshGui::DlgSettingsImportExport</name>
+    <message>
+        <source>Mesh Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines the deviation of tessellation to the actual surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum mesh deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
         <source>Mesh view</source>
@@ -937,7 +964,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Только выделение</translation>
+        <translation>Только выделение</translation>
     </message>
 </context>
 <context>
@@ -963,7 +990,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Завершить</translation>
+        <translation>Завершить</translation>
     </message>
 </context>
 <context>
@@ -1076,31 +1103,31 @@ Please run the command to repair folds first</source>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Выделение</translation>
+        <translation>Выделение</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Добавить</translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Очистить</translation>
+        <translation>Очистить</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">Уважать только видимые треугольники</translation>
+        <translation>Уважать только видимые треугольники</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Привилегировать треугольники с наружным покрытием</translation>
+        <translation>Привилегировать треугольники с наружным покрытием</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation>Используйте инструмент «кисть» для выбора области</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Полностью очистить выделенную область</translation>
+        <translation>Полностью очистить выделенную область</translation>
     </message>
 </context>
 <context>
@@ -1118,27 +1145,27 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Выберите плоскость</translation>
+        <translation>Выберите плоскость</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Выберите плоскость, которая подрежет сетку.</translation>
+        <translation>Выберите плоскость, которая подрежет сетку.</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation>OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Произошла неизвестная ошибка при выполнении OpenSCAD.</translation>
+        <translation>Произошла неизвестная ошибка при выполнении OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">Приложение OpenSCAD не обнаружено в системе.
+        <translation>Приложение OpenSCAD не обнаружено в системе.
 Скачайте его на сайте http://www.openscad.org и установите.</translation>
     </message>
 </context>
@@ -1301,66 +1328,70 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Показать компоненты</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Mesh Files</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Binary STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Binary Mesh</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alias Mesh</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Object File Format</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inventor V2.1 ascii</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stanford Polygon</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">X3D Extensible 3D</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Compressed VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Python module def</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+    </message>
+    <message>
+        <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

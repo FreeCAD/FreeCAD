@@ -76,7 +76,7 @@
     <message>
         <location line="+1"/>
         <source>Wire Tools</source>
-        <translation>Інструмент Струна</translation>
+        <translation>Інструменти каркасу</translation>
     </message>
 </context>
 </TS>

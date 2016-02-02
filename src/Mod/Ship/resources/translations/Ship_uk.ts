@@ -6,47 +6,47 @@
     <message>
       <location filename="InitGui.py" line="67"/>
       <source>Ship design</source>
-      <translation type="unfinished">Проектування корабля</translation>
+      <translation>Проектування корабля</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="70"/>
       <source>Weights</source>
-      <translation type="unfinished">Weights</translation>
+      <translation>Вантажі</translation>
     </message>
     <message>
       <location filename="Instance.py" line="46"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation>Істина, якщо екземпляр корабля правильний, Брехня в іншому випадку</translation>
     </message>
     <message>
       <location filename="Instance.py" line="56"/>
       <source>Ship length [m]</source>
-      <translation type="unfinished">Ship length [m]</translation>
+      <translation>Довжина судна [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="65"/>
       <source>Ship breadth [m]</source>
-      <translation type="unfinished">Ship breadth [m]</translation>
+      <translation>Ширина судна [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="74"/>
       <source>Ship draft [m]</source>
-      <translation type="unfinished">Ship draft [m]</translation>
+      <translation>Осадка судна [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="85"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation>Задати зовнішні грані корпусу судна</translation>
     </message>
     <message>
       <location filename="Instance.py" line="94"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Набір екземплярів вантажу</translation>
     </message>
     <message>
       <location filename="Instance.py" line="103"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Набір екземплярів ємностей</translation>
     </message>
   </context>
   <context>
@@ -54,12 +54,12 @@
     <message>
       <location filename="ShipGui.py" line="94"/>
       <source>Areas curve</source>
-      <translation type="unfinished">Areas curve</translation>
+      <translation>Області кривої</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="97"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>Діаграма кривої поперечних зон</translation>
     </message>
   </context>
   <context>
@@ -67,12 +67,12 @@
     <message>
       <location filename="ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">Створити новий корабель</translation>
+      <translation>Створити новий корабель</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="63"/>
       <source>Create a new ship instance on top of the hull geometry</source>
-      <translation type="unfinished">Create a new ship instance on top of the hull geometry</translation>
+      <translation>Створити екземпляр нового судна на вершині геометрії корпусу</translation>
     </message>
   </context>
   <context>
@@ -80,12 +80,12 @@
     <message>
       <location filename="ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation type="unfinished">Гідростатика</translation>
+      <translation>Гідростатика</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="114"/>
       <source>Plot the ship hydrostatics</source>
-      <translation type="unfinished">Plot the ship hydrostatics</translation>
+      <translation>Діаграма гідростатики судна</translation>
     </message>
   </context>
   <context>
@@ -93,12 +93,12 @@
     <message>
       <location filename="ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation type="unfinished">Load an example ship geometry</translation>
+      <translation>Завантажити приклад геометрії судна</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation type="unfinished">Load an example ship hull geometry.</translation>
+      <translation>Завантажити приклад геометрії корпусу судна.</translation>
     </message>
   </context>
   <context>
@@ -106,45 +106,45 @@
     <message>
       <location filename="ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Контурне креслення</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="80"/>
       <source>Plots the ship hull outline draw</source>
-      <translation type="unfinished">Plots the ship hull outline draw</translation>
+      <translation>Діаграми зовнішніх ліній корпусу корабля</translation>
     </message>
   </context>
   <context>
     <name>ship_areas</name>
     <message>
-      <location filename="TaskPanel.py" line="219"/>
+      <location filename="TaskPanel.py" line="221"/>
       <source>Draft</source>
-      <translation type="unfinished">Креслення</translation>
+      <translation>Креслення</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="225"/>
+      <location filename="TaskPanel.py" line="227"/>
       <source>Trim</source>
-      <translation type="unfinished">Обрізати</translation>
+      <translation>Обрізати</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="329"/>
+      <location filename="TaskPanel.py" line="335"/>
       <source>Displacement</source>
-      <translation type="unfinished">Водотоннажність</translation>
+      <translation>Водотоннажність</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="353"/>
+      <location filename="TaskPanel.py" line="361"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation type="unfinished">Areas curve tool draft selected [m]</translation>
+      <translation>Задане значення осідання при розрахунку стройової по ватерлінії [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="214"/>
+      <location filename="TaskPanel.py" line="216"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>Діаграма кривої поперечних зон</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="369"/>
+      <location filename="TaskPanel.py" line="377"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation type="unfinished">Areas curve tool trim selected [deg]</translation>
+      <translation>Інструмент обрізка області кривої обраний [deg]</translation>
     </message>
   </context>
   <context>
@@ -152,22 +152,22 @@
     <message>
       <location filename="ShipGui.py" line="162"/>
       <source>Tank capacity curve</source>
-      <translation type="unfinished">Tank capacity curve</translation>
+      <translation>Крива ємності резервуару</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="165"/>
       <source>Plot the tank capacity curve (level-volume curve)</source>
-      <translation type="unfinished">Plot the tank capacity curve (level-volume curve)</translation>
+      <translation>Діаграма ємності резервуару (крива рівень-об'єм)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="145"/>
       <source>Plot the tank capacity curve</source>
-      <translation type="unfinished">Plot the tank capacity curve</translation>
+      <translation>Діаграма ємності резервуару</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="150"/>
       <source>Number of points</source>
-      <translation type="unfinished">Кількість точок</translation>
+      <translation>Кількість точок</translation>
     </message>
   </context>
   <context>
@@ -175,87 +175,87 @@
     <message>
       <location filename="TaskPanel.py" line="162"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation type="unfinished">Please create or load a ship hull geometry before using this tool</translation>
+      <translation>Необхідно створити або завантажити геометрію корпусу судна перед використанням цього інструменту</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="155"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no solid found at selected objects)</translation>
+      <translation>Об'єкти судна можуть бути створені у верхній частині геометрії корпусу (не знайдено моделей серед виділених об'єктів)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="95"/>
+      <location filename="TaskPanel.py" line="98"/>
       <source>Computing hydrostatics</source>
-      <translation type="unfinished">Computing hydrostatics</translation>
+      <translation>Обчислення гідростатики</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="496"/>
+      <location filename="TaskPanel.py" line="503"/>
       <source>Computing external faces</source>
-      <translation type="unfinished">Обчислення зовнішніх поверхонь</translation>
+      <translation>Обчислення зовнішніх поверхонь</translation>
     </message>
     <message>
       <location filename="Preview.py" line="54"/>
       <source>Computing sections</source>
-      <translation type="unfinished">Computing sections</translation>
+      <translation>Обчислення перетину</translation>
     </message>
     <message>
       <location filename="Preview.py" line="128"/>
       <source>Any valid ship section found</source>
-      <translation type="unfinished">Any valid ship section found</translation>
+      <translation>Будь-яка допустима основна секція плавального судна</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="134"/>
       <source>Ship objects can only be created on top of hull geometry (no objects selected)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no objects selected)</translation>
+      <translation>Об'єкти на кораблі можуть бути створені тільки на верхній частині корпусу (об'єкти не вибрані)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="199"/>
+      <location filename="TaskPanel.py" line="202"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Примірник корабля повинен бути обраний перед використанням цього засобу (об'єкти не вибрані)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="216"/>
+      <location filename="TaskPanel.py" line="219"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
+      <translation>Було обрано більше одного корабля (додаткові кораблі будуть ігноруватися)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="227"/>
+      <location filename="TaskPanel.py" line="230"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
+      <translation>Примірник корабля повинен бути обраний перед використанням цього інструменту (не підходящий корабель для обраних об'єктів)</translation>
     </message>
     <message>
       <location filename="PlotAux.py" line="57"/>
       <source>Plot module is disabled, so I cannot perform the plot</source>
-      <translation type="unfinished">Plot module is disabled, so I cannot perform the plot</translation>
+      <translation>Модуль діаграм відключений, тому розрахунок діаграм неможливий</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="183"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (no objects selected)</translation>
+      <translation>Примірник корабля повинен бути обраний перед використанням цього інструменту (об'єкти не вибрані)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="202"/>
       <source>More than one ship has been selected (just the first one will be used)</source>
-      <translation type="unfinished">More than one ship has been selected (just the first one will be used)</translation>
+      <translation>Був обраний більш ніж один корабель (тільки перший з них буде використовуватися)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="213"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (novalid ships found in the selected objects)</translation>
+      <translation>Примірник корабля повинен бути обраний перш ніж використовувати цей інструмент (Виявлений невідповідний корабель для обраних об'єктів)</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="41"/>
       <source>Plot module is disabled, tools cannot graph output curves</source>
-      <translation type="unfinished">Plot module is disabled, tools cannot graph output curves</translation>
+      <translation>Модуль діаграм відключений, інструмент не може відобразити криві</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="86"/>
+      <location filename="TaskPanel.py" line="89"/>
       <source>Failure detecting external faces from the ship object</source>
-      <translation type="unfinished">Failure detecting external faces from the ship object</translation>
+      <translation>Не вдалося визначити зовнішні поверхні судна</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="104"/>
       <source>A tank instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Перед використанням цього інструмента потрібно вибрати екземпляр ємності (не обрано жодного об'єкта)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="121"/>
@@ -273,95 +273,95 @@
     <message>
       <location filename="Preview.py" line="66"/>
       <source>Base line</source>
-      <translation type="unfinished">Base line</translation>
+      <translation>Базова лінія</translation>
     </message>
     <message>
       <location filename="Preview.py" line="83"/>
       <source>Free surface</source>
-      <translation type="unfinished">Free surface</translation>
+      <translation>Хвилювання</translation>
     </message>
     <message>
       <location filename="Preview.py" line="100"/>
       <source>Forward perpendicular</source>
-      <translation type="unfinished">Forward perpendicular</translation>
+      <translation>Носовий перпендикуляр</translation>
     </message>
     <message>
       <location filename="Preview.py" line="117"/>
       <source>After perpendicular</source>
-      <translation type="unfinished">After perpendicular</translation>
+      <translation>Кормовий перпендикуляр</translation>
     </message>
     <message>
       <location filename="Preview.py" line="134"/>
       <source>Main frame</source>
-      <translation type="unfinished">Main frame</translation>
+      <translation>Мідель-шпангоут</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="222"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">Створити новий корабель</translation>
+      <translation>Створити новий корабель</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Length</source>
-      <translation type="unfinished">Довжина</translation>
+      <translation>Довжина</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="233"/>
       <source>Breadth</source>
-      <translation type="unfinished">Breadth</translation>
+      <translation>Ширина</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="239"/>
       <source>Draft</source>
-      <translation type="unfinished">Креслення</translation>
+      <translation>Креслення</translation>
     </message>
   </context>
   <context>
     <name>ship_hydrostatic</name>
     <message>
-      <location filename="TaskPanel.py" line="279"/>
+      <location filename="TaskPanel.py" line="282"/>
       <source>Plot hydrostatics</source>
-      <translation type="unfinished">Plot hydrostatics</translation>
+      <translation>Діаграма гідростатики</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="284"/>
+      <location filename="TaskPanel.py" line="287"/>
       <source>Trim</source>
-      <translation type="unfinished">Обрізати</translation>
+      <translation>Обрізати</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="290"/>
+      <location filename="TaskPanel.py" line="293"/>
       <source>Minimum draft</source>
-      <translation type="unfinished">Minimum draft</translation>
+      <translation>Мінімальна осадка</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="296"/>
+      <location filename="TaskPanel.py" line="299"/>
       <source>Maximum draft</source>
-      <translation type="unfinished">Maximum draft</translation>
+      <translation>Максимальна осадка</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="302"/>
+      <location filename="TaskPanel.py" line="305"/>
       <source>Number of points</source>
-      <translation type="unfinished">Кількість точок</translation>
+      <translation>Кількість точок</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="416"/>
+      <location filename="TaskPanel.py" line="423"/>
       <source>Hydrostatics tool trim selected</source>
-      <translation type="unfinished">Hydrostatics tool trim selected</translation>
+      <translation>Розрахунковий кут дифферента</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="430"/>
+      <location filename="TaskPanel.py" line="437"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool minimum draft selected [m]</translation>
+      <translation>Розрахункове значення мінімального осідання [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="444"/>
+      <location filename="TaskPanel.py" line="451"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool maximum draft selected [m]</translation>
+      <translation>Розрахункове значення максимального осідання [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="458"/>
+      <location filename="TaskPanel.py" line="465"/>
       <source>Hydrostatics tool number of points selected</source>
-      <translation type="unfinished">Hydrostatics tool number of points selected</translation>
+      <translation>Розрахункова кількість точок гідростатики</translation>
     </message>
   </context>
   <context>
@@ -369,12 +369,12 @@
     <message>
       <location filename="TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">Load example ship</translation>
+      <translation>Завантажити приклад судна</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="111"/>
       <source>Select ship example geometry</source>
-      <translation type="unfinished">Select ship example geometry</translation>
+      <translation>Обрати приклад геометрії судна</translation>
     </message>
   </context>
   <context>
@@ -382,52 +382,52 @@
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Контурне креслення</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="232"/>
       <source>Auto create</source>
-      <translation type="unfinished">Auto create</translation>
+      <translation>Автоматичне створення</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="238"/>
       <source>Delete all sections</source>
-      <translation type="unfinished">Видалити всі розділи</translation>
+      <translation>Видалити всі розділи</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Create sections</source>
-      <translation type="unfinished">Create sections</translation>
+      <translation>Створити перетин</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="250"/>
       <source>Transversal</source>
-      <translation type="unfinished">Transversal</translation>
+      <translation>Поперечний</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Longitudinal</source>
-      <translation type="unfinished">Longitudinal</translation>
+      <translation>Подовжній</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="264"/>
       <source>Water lines</source>
-      <translation type="unfinished">Water lines</translation>
+      <translation>Ватерлінії</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="479"/>
       <source>Transversal section positions [m]</source>
-      <translation type="unfinished">Transversal section positions [m]</translation>
+      <translation>Позиція поперечного перерізу [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="488"/>
       <source>Longitudinal section positions [m]</source>
-      <translation type="unfinished">Longitudinal section positions [m]</translation>
+      <translation>Позиція подовжнього перетину [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="497"/>
       <source>Water line positions [m]</source>
-      <translation type="unfinished">Water line positions [m]</translation>
+      <translation>Позиція ватерлінії [m]</translation>
     </message>
   </context>
   <context>
@@ -440,17 +440,17 @@
     <message>
       <location filename="TankInstance.py" line="59"/>
       <source>Volume of fluid [m^3]</source>
-      <translation type="unfinished">Volume of fluid [m^3]</translation>
+      <translation>Об'єм рідини [m^3]</translation>
     </message>
     <message>
       <location filename="TankInstance.py" line="70"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation>Щільність [кг / м^3]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="171"/>
       <source>Create a new tank</source>
-      <translation type="unfinished">Create a new tank</translation>
+      <translation>Створити нову ємність</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="117"/>
@@ -470,7 +470,7 @@
     <message>
       <location filename="TaskPanel.py" line="176"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Судно</translation>
     </message>
   </context>
   <context>
@@ -488,72 +488,72 @@
     <message>
       <location filename="WeightInstance.py" line="58"/>
       <source>Mass [kg]</source>
-      <translation type="unfinished">Mass [kg]</translation>
+      <translation>Маса [kg]</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="68"/>
       <source>Linear density [kg / m]</source>
-      <translation type="unfinished">Linear density [kg / m]</translation>
+      <translation>Лінійна щільність [кг / м]</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="78"/>
       <source>Area density [kg / m^3]</source>
-      <translation type="unfinished">Area density [kg / m^3]</translation>
+      <translation>Поверхнева щільність [кг / м^3]</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="88"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation>Щільність [кг / м^3]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="136"/>
+      <location filename="TaskPanel.py" line="137"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
       <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="150"/>
+      <location filename="TaskPanel.py" line="151"/>
       <source>No geometrical shapes found in the selected objects</source>
       <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="187"/>
+      <location filename="TaskPanel.py" line="188"/>
       <source>Unknow object shapes selected</source>
       <translation type="unfinished">Unknow object shapes selected</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="205"/>
+      <location filename="TaskPanel.py" line="206"/>
       <source>There are not ship objects to create weights into them</source>
       <translation type="unfinished">There are not ship objects to create weights into them</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="240"/>
+      <location filename="TaskPanel.py" line="241"/>
       <source>Create a new weight</source>
-      <translation type="unfinished">Create a new weight</translation>
+      <translation>Створити новий вантаж</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="245"/>
+      <location filename="TaskPanel.py" line="246"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Судно</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="252"/>
+      <location filename="TaskPanel.py" line="253"/>
       <source>Mass</source>
-      <translation type="unfinished">Mass</translation>
+      <translation>Маса</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="259"/>
+      <location filename="TaskPanel.py" line="260"/>
       <source>Linear density</source>
-      <translation type="unfinished">Linear density</translation>
+      <translation>Лінійна щільність</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="266"/>
+      <location filename="TaskPanel.py" line="267"/>
       <source>Area density</source>
-      <translation type="unfinished">Area density</translation>
+      <translation>Поверхнева щільність</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="273"/>
+      <location filename="TaskPanel.py" line="274"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Щільність</translation>
     </message>
   </context>
 </TS>

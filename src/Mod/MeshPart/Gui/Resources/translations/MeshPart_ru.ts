@@ -34,12 +34,12 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Параметры сетки</translation>
+        <translation>Параметры сетки</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">По умолчанию</translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -54,7 +54,7 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Максимальная длина  кромки:</translation>
+        <translation>Максимальная длина  кромки:</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -64,7 +64,7 @@
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Очень грубая</translation>
+        <translation>Очень грубая</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -84,12 +84,12 @@
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Очень хорошая</translation>
+        <translation>Очень хорошая</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Определяемые пользователем</translation>
+        <translation>Определяемые пользователем</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -99,7 +99,7 @@
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Количество элементов на  ребро:</translation>
+        <translation>Количество элементов на  ребро:</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -109,12 +109,12 @@
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimize surface</translation>
+        <translation>Оптимизировать поверхность</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Элементы второго порядка</translation>
+        <translation>Элементы второго порядка</translation>
     </message>
     <message>
         <location line="+7"/>

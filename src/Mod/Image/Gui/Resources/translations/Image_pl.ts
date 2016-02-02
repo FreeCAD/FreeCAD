@@ -59,37 +59,37 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Wybierz orientację</translation>
+        <translation>Wybierz orientację</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Płaszczyzna obrazu</translation>
+        <translation>Płaszczyzna obrazu</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">Płaszczyzna X-Y</translation>
+        <translation>Płaszczyzna X-Y</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">Płaszczyzna XZ</translation>
+        <translation>Płaszczyzna XZ</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">Płaszczyzna YZ</translation>
+        <translation>Płaszczyzna YZ</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Odwróć kierunek</translation>
+        <translation>Odwróć kierunek</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Odsunięcie:</translation>
+        <translation>Odsunięcie:</translation>
     </message>
 </context>
 <context>

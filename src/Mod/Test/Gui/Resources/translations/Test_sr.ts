@@ -88,7 +88,7 @@
     <name>TestGui::UnitTestDialog</name>
     <message>
         <source>Help</source>
-        <translation>Help</translation>
+        <translation>Помоћ</translation>
     </message>
     <message>
         <source>About FreeCAD UnitTest</source>

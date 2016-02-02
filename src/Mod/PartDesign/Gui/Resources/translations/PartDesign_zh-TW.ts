@@ -37,7 +37,7 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>拔模角</translation>
+        <translation>吃水</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -60,7 +60,7 @@
     <message>
         <location line="+1"/>
         <source>Make a fillet on an edge, face or body</source>
-        <translation>於邊緣,面或物體產生圓角</translation>
+        <translation>於邊緣、面或實體產生圓角</translation>
     </message>
 </context>
 <context>
@@ -78,7 +78,7 @@
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation>於選定素描上挖槽</translation>
+        <translation>於選定草圖上挖槽</translation>
     </message>
 </context>
 <context>
@@ -91,12 +91,12 @@
     <message>
         <location line="+1"/>
         <source>LinearPattern</source>
-        <translation>線性模式</translation>
+        <translation>線性</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a linear pattern feature</source>
-        <translation>建立一個線性模式功能</translation>
+        <translation>建立一個線性特徵</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     <message>
         <location line="+1"/>
         <source>create a mirrored feature</source>
-        <translation>建立一個鏡像功能</translation>
+        <translation>建立一個鏡像特徵</translation>
     </message>
 </context>
 <context>
@@ -127,12 +127,12 @@
     <message>
         <location line="+1"/>
         <source>MultiTransform</source>
-        <translation>多重模式</translation>
+        <translation>多重效果</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a multitransform feature</source>
-        <translation>建立一個多重模式功能</translation>
+        <translation>建立一個多重效果特徵</translation>
     </message>
 </context>
 <context>
@@ -150,7 +150,7 @@
     <message>
         <location line="+1"/>
         <source>Pad a selected sketch</source>
-        <translation>填充所選素描</translation>
+        <translation>填充所選草圖</translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location line="+1"/>
         <source>create a pocket with the selected sketch</source>
-        <translation>以選定素描產生凹陷</translation>
+        <translation>以選定草圖產生凹陷</translation>
     </message>
 </context>
 <context>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>PolarPattern</source>
-        <translation>極座標模式</translation>
+        <translation>環形</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a polar pattern feature</source>
-        <translation>建立一個極座標模式功能</translation>
+        <translation>建立一個環形特徵</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location line="+1"/>
         <source>Revolve a selected sketch</source>
-        <translation>旋轉選定之素描</translation>
+        <translation>旋轉選定之草圖</translation>
     </message>
 </context>
 <context>
@@ -222,7 +222,7 @@
     <message>
         <location line="+1"/>
         <source>create a scaled feature</source>
-        <translation>建立一個縮放的功能</translation>
+        <translation>建立一個縮放的特徵</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
     <message>
         <location line="+1"/>
         <source>Sketch tools</source>
-        <translation>素描工具</translation>
+        <translation>草圖工具</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">漸開線參數</translation>
+        <translation>漸開線參數</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">牙之數量:</translation>
+        <translation>牙之數量:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">模數：</translation>
+        <translation>模數：</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">高精度:</translation>
+        <translation>高精度：</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">正確</translation>
+        <translation>正確</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">錯誤</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">外齒輪:</translation>
+        <translation>外齒輪：</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">壓力角:</translation>
+        <translation>壓力角：</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../FeaturePickDialog.ui" line="+14"/>
         <source>Choose feature</source>
-        <translation>選擇功能</translation>
+        <translation>選擇特徵</translation>
     </message>
 </context>
 <context>
@@ -409,7 +409,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">編輯倒角</translation>
+        <translation>編輯倒角</translation>
     </message>
 </context>
 <context>
@@ -425,7 +425,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">編輯圓角</translation>
+        <translation>編輯圓角</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">編輯凹陷</translation>
+        <translation>編輯凹陷</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -578,12 +578,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>垂直素描軸</translation>
+        <translation>垂直草圖軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>水平素描軸</translation>
+        <translation>水平草圖軸</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -659,7 +659,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>原始功能</translation>
+        <translation>原始特徵</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -669,24 +669,24 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">水平素描軸</translation>
+        <translation>水平草圖軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">垂直素描軸</translation>
+        <translation>垂直草圖軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">選取參考...</translation>
+        <translation>選取參考...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -716,7 +716,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">未定義</translation>
+        <translation>未定義</translation>
     </message>
 </context>
 <context>
@@ -729,7 +729,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>原始功能</translation>
+        <translation>原始特徵</translation>
     </message>
     <message>
         <source>XY</source>
@@ -751,19 +751,19 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">水平素描軸</translation>
+        <translation>水平草圖軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">垂直素描軸</translation>
+        <translation>垂直草圖軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">選取參考...</translation>
+        <translation>選取參考...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -782,12 +782,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">選取一個面</translation>
+        <translation>選取一個面</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">未定義</translation>
+        <translation>未定義</translation>
     </message>
 </context>
 <context>
@@ -800,12 +800,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>原始功能</translation>
+        <translation>原始特徵</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Transformations</source>
-        <translation>功能</translation>
+        <translation>效果</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -830,12 +830,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+4"/>
         <source>Add linear pattern</source>
-        <translation>加入線性模式效果</translation>
+        <translation>加入線性效果</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add polar pattern</source>
-        <translation>加入極座標模式效果</translation>
+        <translation>加入環形效果</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -956,7 +956,7 @@ Please check one or more edge entities first.</translation>
         <location line="+73"/>
         <location line="+315"/>
         <source>No face selected</source>
-        <translation>無選定面</translation>
+        <translation>無選定之面</translation>
     </message>
     <message>
         <location line="-307"/>
@@ -1045,7 +1045,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">反轉</translation>
+        <translation>反轉</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1098,7 +1098,7 @@ Please check one or more edge entities first.</translation>
         <location line="+112"/>
         <location line="+186"/>
         <source>No face selected</source>
-        <translation>無選定面</translation>
+        <translation>無選定之面</translation>
     </message>
 </context>
 <context>
@@ -1111,7 +1111,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>原始功能</translation>
+        <translation>原始特徵</translation>
     </message>
     <message>
         <source>X</source>
@@ -1132,24 +1132,24 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">軸</translation>
+        <translation>軸</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">垂直草圖軸</translation>
+        <translation>垂直草圖軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">選取參考...</translation>
+        <translation>選取參考...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1192,12 +1192,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>垂直素描軸</translation>
+        <translation>垂直草圖軸</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>水平素描軸</translation>
+        <translation>水平草圖軸</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -1235,7 +1235,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">未定義</translation>
+        <translation>未定義</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>原始功能</translation>
+        <translation>原始特徵</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1276,7 +1276,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>效果功能訊息</translation>
+        <translation>特徵效果訊息</translation>
     </message>
 </context>
 <context>
@@ -1312,25 +1312,25 @@ Please check one or more edge entities first.</translation>
         <location line="+74"/>
         <location line="+84"/>
         <source>No valid sketches in this document</source>
-        <translation>檔案中無有效素描</translation>
+        <translation>檔案中無有效之草圖</translation>
     </message>
     <message>
         <location line="-241"/>
         <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>請先建立一個素描或2D物件</translation>
+        <translation>請先建立一個草圖或2D物件</translation>
     </message>
     <message>
         <location line="-74"/>
         <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>請先建立一個素描或2D物件,其必須於實體上有一基礎面</translation>
+        <translation>請先建立一個草圖或2D物件，其必須於實體上有一基礎面</translation>
     </message>
     <message>
         <location line="+74"/>
         <location line="+151"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation>選取邊緣,面或物體,僅允許有一個物體</translation>
+        <translation>請選取邊緣、面或實體，但僅允許選取一個實體。</translation>
     </message>
     <message>
         <location line="-146"/>
@@ -1342,7 +1342,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>圓角功能僅能用於零件</translation>
+        <translation>圓角特徵僅能用於實體</translation>
     </message>
     <message>
         <location line="+312"/>
@@ -1357,7 +1357,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>倒腳僅能用於零件上</translation>
+        <translation>倒角僅能用於零件上</translation>
     </message>
     <message>
         <location line="-142"/>
@@ -1369,17 +1369,17 @@ Please check one or more edge entities first.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>未選取有效草圖</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>未選取有效可進行填充之草圖或2D物件，請選取尚未被其他功能所使用之草圖或2D物件。</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>未選取有效可進行旋轉之草圖或2D物件，請選取尚未被其他功能所使用之草圖或2D物件。</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1394,7 +1394,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>拔模功能僅能運作於零件上</translation>
+        <translation>拔模特徵僅能運作於零件上</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -1408,12 +1408,12 @@ Please check one or more edge entities first.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>No valid features in this document</source>
-        <translation>於此檔中無有效功能</translation>
+        <translation>於此檔中無有效特徵</translation>
     </message>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">請先建立一個刪減或添加的功能</translation>
+        <translation>請先建立一個刪減或添加的特徵</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1421,7 +1421,7 @@ Please check one or more edge entities first.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>請先建立一個刪除或增加功能</translation>
+        <translation>請先建立一個刪除或增加特徵</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1486,13 +1486,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">無連結至基礎素描</translation>
+        <translation>無連結至草圖來源</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">因為無連結至基礎素描使此物件無法編輯</translation>
+        <translation>因為無連結至草圖來源，而使此物件無法編輯</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1518,12 +1518,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
         <source>One transformed shape does not intersect support</source>
-        <translation>功能產生之造型中,有一個不在基礎上</translation>
+        <translation>特徵產生之造型中，有一個不在基礎面上</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 transformed shapes do not intersect support</source>
-        <translation>功能產生之造型中,有%1個不在基礎上</translation>
+        <translation>特徵產生之造型中，有%1個不在基礎面上</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1533,12 +1533,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">編輯挖槽</translation>
+        <translation>編輯挖槽</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">編輯旋轉</translation>
+        <translation>編輯旋轉</translation>
     </message>
 </context>
 <context>

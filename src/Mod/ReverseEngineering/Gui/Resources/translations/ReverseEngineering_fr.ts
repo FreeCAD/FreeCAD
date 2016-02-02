@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished"></translation>
+        <translation>Approximation de la surface B-Spline...</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -46,17 +46,17 @@
     <message>
         <location line="+129"/>
         <source>Reverse Engineering</source>
-        <translation type="unfinished">Rétro-ingénierie</translation>
+        <translation>Rétro-ingénierie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson...</source>
-        <translation type="unfinished"></translation>
+        <translation>Poisson...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconstruction de surface Poisson</translation>
     </message>
 </context>
 <context>
@@ -64,14 +64,14 @@
     <message>
         <location line="+32"/>
         <source>Reverse Engineering</source>
-        <translation type="unfinished">Rétro-ingénierie</translation>
+        <translation>Rétro-ingénierie</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>View triangulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir la triangulation</translation>
     </message>
 </context>
 <context>
@@ -79,74 +79,74 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Adapter une surface B-Spline</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>direction U</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished"></translation>
+        <translation>Degré</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished"></translation>
+        <translation>Points de controle</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>v-Direction</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Réglages</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Iterations</source>
-        <translation type="unfinished"></translation>
+        <translation>Itérations</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Facteur de taille</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Smoothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Lissage</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished"></translation>
+        <translation>Poids total</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Length of gradient</source>
-        <translation type="unfinished"></translation>
+        <translation>Longueur du dégradé</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Bending energy</source>
-        <translation type="unfinished"></translation>
+        <translation>Énergie de flexion</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Curvature variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Variation de courbure</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished"></translation>
+        <translation>Directions u/v personnalisés</translation>
     </message>
 </context>
 <context>
@@ -154,17 +154,17 @@
     <message>
         <location filename="../../FitBSplineSurface.cpp" line="+145"/>
         <source>Wrong selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection invalide</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a single placement object to get local orientation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez sélectionner un objet de placement unique pour obtenir l&apos;orientation locale.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de saisie</translation>
     </message>
 </context>
 <context>
@@ -172,32 +172,32 @@
     <message>
         <location filename="../../Poisson.ui" line="+14"/>
         <source>Poisson</source>
-        <translation type="unfinished"></translation>
+        <translation>Poisson</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Octree depth</source>
-        <translation type="unfinished"></translation>
+        <translation>Profondeur des Octree</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solver divide</source>
-        <translation type="unfinished"></translation>
+        <translation>Divisions du solveur</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Samples per node</source>
-        <translation type="unfinished"></translation>
+        <translation>Samples par noeuds</translation>
     </message>
     <message>
         <location filename="../../Poisson.cpp" line="+108"/>
         <source>Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de saisie</translation>
     </message>
 </context>
 <context>
@@ -206,13 +206,13 @@
         <location filename="../../Command.cpp" line="-154"/>
         <location line="+130"/>
         <source>Wrong selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection invalide</translation>
     </message>
     <message>
         <location line="-129"/>
         <location line="+130"/>
         <source>Please select a single point cloud.</source>
-        <translation type="unfinished"></translation>
+        <translation>Merci de sélectionner un point du nuage de points.</translation>
     </message>
 </context>
 <context>
@@ -220,7 +220,7 @@
     <message>
         <location line="+55"/>
         <source>View triangulation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de la vue en triangulation</translation>
     </message>
 </context>
 <context>

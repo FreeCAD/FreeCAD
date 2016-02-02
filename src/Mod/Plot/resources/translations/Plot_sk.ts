@@ -6,12 +6,12 @@
     <message>
       <location filename="InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation type="unfinished">Plot edition tools</translation>
+      <translation>Nástroje úpravy grafu</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation type="unfinished">Plot</translation>
+      <translation>Graf</translation>
     </message>
   </context>
   <context>
@@ -19,12 +19,12 @@
     <message>
       <location filename="PlotGui.py" line="62"/>
       <source>Configure axes</source>
-      <translation type="unfinished">Configure axes</translation>
+      <translation>Nastaviť osi</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation>Nastaviť parametre osí</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="PlotGui.py" line="110"/>
       <source>Show/Hide grid</source>
-      <translation type="unfinished">Show/Hide grid</translation>
+      <translation>Zobraziť/skryť mriežku</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="113"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation type="unfinished">Show/Hide grid on selected plot</translation>
+      <translation>Zobraziť/skryť mriežku vybraného grafu</translation>
     </message>
   </context>
   <context>
@@ -45,12 +45,12 @@
     <message>
       <location filename="PlotGui.py" line="154"/>
       <source>Set labels</source>
-      <translation type="unfinished">Set labels</translation>
+      <translation>Nastaviť popisy</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="157"/>
       <source>Set title and axes labels</source>
-      <translation type="unfinished">Set title and axes labels</translation>
+      <translation>Nastaviť nadpis a popisy osí</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="PlotGui.py" line="137"/>
       <source>Show/Hide legend</source>
-      <translation type="unfinished">Show/Hide legend</translation>
+      <translation>Zobraziť/skryť legendu</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="140"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation type="unfinished">Show/Hide legend on selected plot</translation>
+      <translation>Zobraziť/skryť legendu vo vybranom grafe</translation>
     </message>
   </context>
   <context>
@@ -71,12 +71,12 @@
     <message>
       <location filename="PlotGui.py" line="171"/>
       <source>Set positions and sizes</source>
-      <translation type="unfinished">Set positions and sizes</translation>
+      <translation>Nastavenie pozície a veľkosti</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="174"/>
       <source>Set labels and legend positions and sizes</source>
-      <translation type="unfinished">Set labels and legend positions and sizes</translation>
+      <translation>Nastavenie pozície a veľkosti popisov a legendy</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="PlotGui.py" line="45"/>
       <source>Save plot</source>
-      <translation type="unfinished">Save plot</translation>
+      <translation>Uložiť graf</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation type="unfinished">Save the plot as an image file</translation>
+      <translation>Uložiť graf ako obrázok</translation>
     </message>
   </context>
   <context>
@@ -97,12 +97,12 @@
     <message>
       <location filename="PlotGui.py" line="81"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation>Nastavenie série</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="84"/>
       <source>Configure series drawing style and label</source>
-      <translation type="unfinished">Configure series drawing style and label</translation>
+      <translation>Nastavenie štýlu a popisu pre sériu</translation>
     </message>
   </context>
   <context>
@@ -110,107 +110,107 @@
     <message>
       <location filename="TaskPanel.py" line="175"/>
       <source>Configure axes</source>
-      <translation type="unfinished">Configure axes</translation>
+      <translation>Nastaviť osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="180"/>
       <source>Active axes</source>
-      <translation type="unfinished">Active axes</translation>
+      <translation>Aktívne osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="220"/>
       <source>Apply to all axes</source>
-      <translation type="unfinished">Apply to all axes</translation>
+      <translation>Aplikovať na všetky osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="225"/>
       <source>Dimensions</source>
-      <translation type="unfinished">Dimensions</translation>
+      <translation>Rozmery</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="230"/>
       <source>X axis position</source>
-      <translation type="unfinished">X axis position</translation>
+      <translation>Poloha osi X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="235"/>
       <source>Y axis position</source>
-      <translation type="unfinished">Y axis position</translation>
+      <translation>Poloha osi Y</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="205"/>
       <source>Scales</source>
-      <translation type="unfinished">Scales</translation>
+      <translation>Mierka</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="210"/>
       <source>X auto</source>
-      <translation type="unfinished">X auto</translation>
+      <translation>X automaticky</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="215"/>
       <source>Y auto</source>
-      <translation type="unfinished">Y auto</translation>
+      <translation>Y automaticky</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
       <source>Index of the active axes</source>
-      <translation type="unfinished">Index of the active axes</translation>
+      <translation>Popis aktívnych osí</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="245"/>
       <source>Add new axes to the plot</source>
-      <translation type="unfinished">Add new axes to the plot</translation>
+      <translation>Pridať nové osi do grafu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="251"/>
       <source>Remove selected axes</source>
-      <translation type="unfinished">Remove selected axes</translation>
+      <translation>Odobrať vybrané osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation type="unfinished">Check it to apply transformations to all axes</translation>
+      <translation>Zaškrtnite pre povolenie transformácií vo všetkých osách</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="263"/>
       <source>Left bound of axes</source>
-      <translation type="unfinished">Left bound of axes</translation>
+      <translation>Ľavá medza osí</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="269"/>
       <source>Right bound of axes</source>
-      <translation type="unfinished">Right bound of axes</translation>
+      <translation>Pravá medza osí</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="275"/>
       <source>Bottom bound of axes</source>
-      <translation type="unfinished">Bottom bound of axes</translation>
+      <translation>Spodná medza osí</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="281"/>
       <source>Top bound of axes</source>
-      <translation type="unfinished">Top bound of axes</translation>
+      <translation>Horná medza osí</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="287"/>
       <source>Outward offset of X axis</source>
-      <translation type="unfinished">Outward offset of X axis</translation>
+      <translation>Vonkajšie odsadenie osi X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="293"/>
       <source>Outward offset of Y axis</source>
-      <translation type="unfinished">Outward offset of Y axis</translation>
+      <translation>Vonkajšie odsadenie osi Y</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="299"/>
       <source>X axis scale autoselection</source>
-      <translation type="unfinished">X axis scale autoselection</translation>
+      <translation>Automatická mierka osi X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="305"/>
       <source>Y axis scale autoselection</source>
-      <translation type="unfinished">Y axis scale autoselection</translation>
+      <translation>Automatická mierka osi Y</translation>
     </message>
   </context>
   <context>
@@ -218,32 +218,32 @@
     <message>
       <location filename="Plot.py" line="38"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation type="unfinished">matplotlib not found, so Plot module can not be loaded</translation>
+      <translation>modul Graf nemohol byť načítaný, pretože knižnica matplotlib nebola nájdená</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation type="unfinished">matplotlib not found, Plot module will be disabled</translation>
+      <translation>knižnica matplotlib nebola nájdená, modul Graf bude deaktivovaný</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation type="unfinished">Plot document must be selected in order to save it</translation>
+      <translation>Dokument grafu musí byť vybraný, aby mohol byť uložený</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="365"/>
       <source>Axes 0 can not be deleted</source>
-      <translation type="unfinished">Axes 0 can not be deleted</translation>
+      <translation>Osi 0 nemôžu byť zmazané</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation>Mriežka grafu musí byť aktivovaná hore v dokumente grafu</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="126"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation>Legenda musí byť aktivovaná hore v dokumente grafu</translation>
     </message>
   </context>
   <context>
@@ -251,62 +251,62 @@
     <message>
       <location filename="TaskPanel.py" line="133"/>
       <source>Set labels</source>
-      <translation type="unfinished">Set labels</translation>
+      <translation>Nastaviť popisy</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="138"/>
       <source>Active axes</source>
-      <translation type="unfinished">Active axes</translation>
+      <translation>Aktívne osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="143"/>
       <source>Title</source>
-      <translation type="unfinished">Title</translation>
+      <translation>Nadpis</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="148"/>
       <source>X label</source>
-      <translation type="unfinished">X label</translation>
+      <translation>Popis osi X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="153"/>
       <source>Y label</source>
-      <translation type="unfinished">Y label</translation>
+      <translation>Popis osi Y</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="158"/>
       <source>Index of the active axes</source>
-      <translation type="unfinished">Index of the active axes</translation>
+      <translation>Popis aktívnych osí</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="163"/>
       <source>Title (associated to active axes)</source>
-      <translation type="unfinished">Title (associated to active axes)</translation>
+      <translation>Nadpis (pripojený k aktívnym osám)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="169"/>
       <source>Title font size</source>
-      <translation type="unfinished">Title font size</translation>
+      <translation>Veľkosť písma nadpisu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="175"/>
       <source>X axis title</source>
-      <translation type="unfinished">X axis title</translation>
+      <translation>Nadpis na ose X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="181"/>
       <source>X axis title font size</source>
-      <translation type="unfinished">X axis title font size</translation>
+      <translation>Velľkosť písma nadpisu na ose X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="187"/>
       <source>Y axis title</source>
-      <translation type="unfinished">Y axis title</translation>
+      <translation>Nadpis na ose Y</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="193"/>
       <source>Y axis title font size</source>
-      <translation type="unfinished">Y axis title font size</translation>
+      <translation>Velľkosť písma nadpisu na ose Y</translation>
     </message>
   </context>
   <context>
@@ -314,37 +314,37 @@
     <message>
       <location filename="TaskPanel.py" line="121"/>
       <source>Set positions and sizes</source>
-      <translation type="unfinished">Set positions and sizes</translation>
+      <translation>Nastavenie pozície a veľkosti</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="126"/>
       <source>Position</source>
-      <translation type="unfinished">Pozícia</translation>
+      <translation>Pozícia</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="132"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Veľkosť</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="138"/>
       <source>List of modificable items</source>
-      <translation type="unfinished">List of modificable items</translation>
+      <translation>Zoznam upraviteľných položiek</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="144"/>
       <source>X item position</source>
-      <translation type="unfinished">X item position</translation>
+      <translation>Poloha položky v smere X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="150"/>
       <source>Y item position</source>
-      <translation type="unfinished">Y item position</translation>
+      <translation>Poloha položky v smere Y</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="156"/>
       <source>Item size</source>
-      <translation type="unfinished">Item size</translation>
+      <translation>Veľkosť položky</translation>
     </message>
   </context>
   <context>
@@ -352,42 +352,42 @@
     <message>
       <location filename="TaskPanel.py" line="128"/>
       <source>Save figure</source>
-      <translation type="unfinished">Save figure</translation>
+      <translation>Uložiť znázornenie</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="133"/>
       <source>Inches</source>
-      <translation type="unfinished">Inches</translation>
+      <translation>Palce</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="139"/>
       <source>Dots per Inch</source>
-      <translation type="unfinished">Dots per Inch</translation>
+      <translation>Body na palec</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="145"/>
       <source>Output image file path</source>
-      <translation type="unfinished">Output image file path</translation>
+      <translation>Umiestnenie súboru výstupného obrázku</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="151"/>
       <source>Show a file selection dialog</source>
-      <translation type="unfinished">Show a file selection dialog</translation>
+      <translation>Zobraziť dialóg pre výber súboru</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="157"/>
       <source>X image size</source>
-      <translation type="unfinished">X image size</translation>
+      <translation>Veľkosť obrázku v smere X</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="163"/>
       <source>Y image size</source>
-      <translation type="unfinished">Y image size</translation>
+      <translation>Veľkosť obrázku v smere Y</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="169"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
+      <translation>Počet bodiek na bod, spolu s veľkosťou, definujú výstupné rozlíšenie obrázku</translation>
     </message>
   </context>
   <context>
@@ -395,67 +395,67 @@
     <message>
       <location filename="TaskPanel.py" line="154"/>
       <source>No label</source>
-      <translation type="unfinished">No label</translation>
+      <translation>Bez popisu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="160"/>
       <source>Remove serie</source>
-      <translation type="unfinished">Remove serie</translation>
+      <translation>Odobrať sériu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="196"/>
       <source>Line style</source>
-      <translation type="unfinished">Line style</translation>
+      <translation>Štýl čiary</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="172"/>
       <source>Marker</source>
-      <translation type="unfinished">Marker</translation>
+      <translation>Značka</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="149"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation>Nastavenie série</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="178"/>
       <source>List of available series</source>
-      <translation type="unfinished">List of available series</translation>
+      <translation>Zoznam dostupných sérií</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="184"/>
       <source>Line title</source>
-      <translation type="unfinished">Line title</translation>
+      <translation>Nadpis na čiare</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="202"/>
       <source>Marker style</source>
-      <translation type="unfinished">Marker style</translation>
+      <translation>Štýl značky</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="208"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Hrúbka čiary</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="214"/>
       <source>Marker size</source>
-      <translation type="unfinished">Marker size</translation>
+      <translation>Veľkosť značky</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="220"/>
       <source>Line and marker color</source>
-      <translation type="unfinished">Line and marker color</translation>
+      <translation>Farba čiary a značky</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="226"/>
       <source>Removes this serie</source>
-      <translation type="unfinished">Removes this serie</translation>
+      <translation>Odobrať túto sériu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="190"/>
       <source>If checked serie will not be considered for legend</source>
-      <translation type="unfinished">If checked serie will not be considered for legend</translation>
+      <translation>Vybraná séria nebude zahrnutá v legende</translation>
     </message>
   </context>
 </TS>

@@ -225,15 +225,15 @@
     <name>CmdMeshFromPartShape</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malha</translation>
+        <translation>Malha</translation>
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">Criar Malha a Partir da Forma ...</translation>
+        <translation>Criar Malha a Partir da Forma ...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">Forma Tessellate</translation>
+        <translation>Forma Tessellate</translation>
     </message>
 </context>
 <context>
@@ -281,15 +281,15 @@
     <name>CmdMeshMerge</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malha</translation>
+        <translation>Malha</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundir</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundir as malhas selecionadas numa só</translation>
     </message>
 </context>
 <context>
@@ -461,15 +461,15 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Malha</translation>
+        <translation>Malha</translation>
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Trim mesh with a plane</translation>
+        <translation>Aparar malha com um plano</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Trims a mesh with a plane</translation>
+        <translation>Aparar malha com um plano</translation>
     </message>
 </context>
 <context>
@@ -704,7 +704,7 @@
     </message>
     <message>
         <source>No self-intersections</source>
-        <translation>No self-intersections</translation>
+        <translation>Nenhuma auto-intersecção</translation>
     </message>
     <message>
         <source>Self-intersections</source>
@@ -712,36 +712,35 @@
     </message>
     <message>
         <source>Mesh repair</source>
-        <translation>Mesh repair</translation>
+        <translation>Reparar malha (mesh)</translation>
     </message>
     <message>
         <source>Flipped normals found</source>
-        <translation>Flipped normals found</translation>
+        <translation>Foram encontradas normais invertidas</translation>
     </message>
     <message>
         <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-        <translation>Check failed due to folds on the surface.
-Please run the command to repair folds first</translation>
+        <translation>Verificação falhou devido a dobras na superfície. Por favor, execute o comando &quot;reparar dobras&quot; primeiro</translation>
     </message>
     <message>
         <source>No folds on surface</source>
-        <translation>No folds on surface</translation>
+        <translation>Nenhuma dobra na superfície</translation>
     </message>
     <message>
         <source>%1 folds on surface</source>
-        <translation>%1 folds on surface</translation>
+        <translation>%1 dobras na superfície</translation>
     </message>
     <message>
         <source>Folds</source>
-        <translation>Folds</translation>
+        <translation>Dobras</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgRegularSolid</name>
     <message>
         <source>Regular Solid</source>
-        <translation>Regular Solid</translation>
+        <translation>Sólido regular</translation>
     </message>
     <message>
         <source>&amp;Create</source>
@@ -813,7 +812,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Edge length:</source>
-        <translation>Edge length:</translation>
+        <translation>Comprimento da aresta:</translation>
     </message>
     <message>
         <source>Radius 1:</source>
@@ -836,38 +835,65 @@ Please run the command to repair folds first</translation>
     </message>
 </context>
 <context>
+    <name>MeshGui::DlgSettingsImportExport</name>
+    <message>
+        <source>Mesh Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines the deviation of tessellation to the actual surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum mesh deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
         <source>Mesh view</source>
-        <translation>Mesh view</translation>
+        <translation>Vista de malha</translation>
     </message>
     <message>
         <source>Two-side rendering</source>
-        <translation>Two-side rendering</translation>
+        <translation>Renderização dos dois lados</translation>
     </message>
     <message>
         <source>Backface color</source>
-        <translation>Backface color</translation>
+        <translation>Cor da face posterior</translation>
     </message>
     <message>
         <source>Smoothing</source>
-        <translation>Smoothing</translation>
+        <translation>Suavização</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt; &lt;body style=&quot;white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt; &lt;p style=&quot;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; Este é o menor ângulo entre duas faces onde será usado o sombreamento plano.&lt;/p&gt;&lt;p style=&quot;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; se o ângulo entre as normais de duas faces vizinhas é menor do que o ângulo de vincos, as faces serão suavizadas ao redor de sua aresta comum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Crease angle</source>
-        <translation>Crease angle</translation>
+        <translation>Ângulo de dobra</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt; &lt;body style=&quot;white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; &lt;span style=&quot;font-weight:600;&quot;&gt; flat sombreamento de sombreamento/Phong&lt;/span&gt;&lt;/p&gt; &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; define a aparência de superfícies.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; com sombreamento plano as normais da superfície não são definidas por vértice, o que leva a uma aparência irreal para superfícies curvas. Use sombreamento Phong para uma aparência mais suave.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; se essa opção for definida, o sombreamento Phong será usado, se estiver desactivado o sombreamento plano será usado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Define normal per vertex</source>
-        <translation>Define normal per vertex</translation>
+        <translation>Definir normal por vértice</translation>
     </message>
     <message utf8="true">
         <source> °</source>
@@ -879,38 +905,38 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Default appearance for new meshes</source>
-        <translation>Default appearance for new meshes</translation>
+        <translation>Aparência predefinida para novas malhas</translation>
     </message>
     <message>
         <source>Default line color</source>
-        <translation>Default line color</translation>
+        <translation>Cor predefinida de linha</translation>
     </message>
     <message>
         <source>Mesh transparency</source>
-        <translation>Mesh transparency</translation>
+        <translation>Transparência da malha</translation>
     </message>
     <message>
         <source>Default mesh color</source>
-        <translation>Default mesh color</translation>
+        <translation>Cor predefinida da malha</translation>
     </message>
     <message>
         <source>Show bounding-box for highlighted or selected meshes</source>
-        <translation>Show bounding-box for highlighted or selected meshes</translation>
+        <translation>Mostrar caixa delimitadora para malhas realçadas ou selecionadas</translation>
     </message>
     <message>
         <source>Line transparency</source>
-        <translation>Line transparency</translation>
+        <translation>Transparência da linha</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::DlgSmoothing</name>
     <message>
         <source>Smoothing</source>
-        <translation>Smoothing</translation>
+        <translation>Suavização</translation>
     </message>
     <message>
         <source>Method</source>
-        <translation>Method</translation>
+        <translation>Método</translation>
     </message>
     <message>
         <source>Taubin</source>
@@ -926,7 +952,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Iterations:</source>
-        <translation>Iterations:</translation>
+        <translation>Iterações (repetições):</translation>
     </message>
     <message>
         <source>Lambda:</source>
@@ -938,7 +964,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation>Apenas seleção</translation>
     </message>
 </context>
 <context>
@@ -949,7 +975,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Flip normal</source>
-        <translation>Flip normal</translation>
+        <translation>Inverter normais</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -964,14 +990,14 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Terminar</translation>
+        <translation>Terminar</translation>
     </message>
 </context>
 <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
         <source>Remove components</source>
-        <translation>Remove components</translation>
+        <translation>Remover componente</translation>
     </message>
     <message>
         <source>Select</source>
@@ -979,23 +1005,23 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Select whole component</source>
-        <translation>Select whole component</translation>
+        <translation>Selecione o componente completo</translation>
     </message>
     <message>
         <source>Pick triangle</source>
-        <translation>Pick triangle</translation>
+        <translation>Escolher triângulo</translation>
     </message>
     <message>
         <source>&lt; faces than</source>
-        <translation>&lt; faces than</translation>
+        <translation>&lt; faces do que</translation>
     </message>
     <message>
         <source>Region</source>
-        <translation>Region</translation>
+        <translation>Região</translation>
     </message>
     <message>
         <source>Components</source>
-        <translation>Components</translation>
+        <translation>Componentes</translation>
     </message>
     <message>
         <source>All</source>
@@ -1003,27 +1029,27 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation>Deselect</translation>
+        <translation>Desselecionar</translation>
     </message>
     <message>
         <source>Deselect whole component</source>
-        <translation>Deselect whole component</translation>
+        <translation>Desselecionar componente completo</translation>
     </message>
     <message>
         <source>&gt; faces than</source>
-        <translation>&gt; faces than</translation>
+        <translation>&gt; faces do que</translation>
     </message>
     <message>
         <source>Region options</source>
-        <translation>Region options</translation>
+        <translation>Opções de região</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation>Respect only triangles with normals facing screen</translation>
+        <translation>Respeitar apenas triângulos com normais de frente para o monitor</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation>Respect only visible triangles</translation>
+        <translation>Respeitar apenas triângulos visíveis</translation>
     </message>
 </context>
 <context>
@@ -1077,31 +1103,31 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Seleção</translation>
+        <translation>Seleção</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Adicionar</translation>
+        <translation>Adicionar</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Limpar</translation>
+        <translation>Limpar</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">Respect only visible triangles</translation>
+        <translation>Respeitar apenas triângulos visíveis</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Respect only triangles with normals facing screen</translation>
+        <translation>Respeitar apenas triângulos com normais de frente para o monitor</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation>Use um pincel para selecionar a área</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Clears completely the selected area</translation>
+        <translation>Limpa completamente a área selecionada</translation>
     </message>
 </context>
 <context>
@@ -1112,35 +1138,35 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Invert</source>
-        <translation>Invert</translation>
+        <translation>Inverter</translation>
     </message>
 </context>
 <context>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Selecionar plano</translation>
+        <translation>Selecionar plano</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation>Favor selecione um plano com o qual possa aparar a malha.</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation>OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation>Ocorreu um erro desconhecido ao executar OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+        <translation>O OpenSCAD não foi encontrado no seu sistema.
+Visite http://www.openscad.org/index.html para instalá-lo.</translation>
     </message>
 </context>
 <context>
@@ -1298,70 +1324,74 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>X3D Extensible 3D (*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D (*.x3d)</translation>
+        <translation type="obsolete">X3D 3D Extensível (*.x3d)</translation>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Exibir componentes</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os Ficheiros de malha (mesh)</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished"></translation>
+        <translation>Binário STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished"></translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation>Malha binária</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alias Mesh</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de ficheiro do objeto</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished"></translation>
+        <translation>Inventor v 2.1 ascii</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished"></translation>
+        <translation>Polígono de Stanford</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os Ficheiros</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished"></translation>
+        <translation>X3D Extensivel 3D</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>VRML v 2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>VRML 2.0 comprimido</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished"></translation>
+        <translation>Def de módulo Python</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation>[Pontos: %1, Arestas: %2, Faces: %3]</translation>
+    </message>
+    <message>
+        <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1377,11 +1407,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>&amp;Meshes</source>
-        <translation>&amp;Meshes</translation>
+        <translation>&amp;Malhas</translation>
     </message>
     <message>
         <source>Mesh tools</source>
-        <translation>Mesh tools</translation>
+        <translation>Ferramentas de malha (mesh)</translation>
     </message>
 </context>
 </TS>

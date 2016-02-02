@@ -131,7 +131,7 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1650"/>
+        <location filename="../../Command.cpp" line="+1661"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -169,7 +169,7 @@
     <message>
         <location line="+62"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -183,7 +183,7 @@
     <message>
         <location line="+26"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -197,7 +197,7 @@
     <message>
         <location line="-58"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -211,7 +211,7 @@
     <message>
         <location line="+116"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -225,7 +225,7 @@
     <message>
         <location line="-36"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -239,7 +239,7 @@
     <message>
         <location line="+60"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -278,7 +278,7 @@
         <location line="+10"/>
         <location line="+5"/>
         <source>Cube</source>
-        <translation type="unfinished">Kocka</translation>
+        <translation>Kocka</translation>
     </message>
     <message>
         <location line="-14"/>
@@ -297,7 +297,7 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-850"/>
+        <location filename="../../Command.cpp" line="-861"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -333,7 +333,7 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+1058"/>
+        <location line="+1069"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -369,7 +369,7 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-799"/>
+        <location line="-810"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -389,25 +389,25 @@
     <message>
         <location line="+163"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join objects...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join objects...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join walled objects</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join walled objects</translation>
     </message>
 </context>
 <context>
     <name>CmdPartCompound</name>
     <message>
-        <location line="+92"/>
+        <location line="+103"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -461,7 +461,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-930"/>
+        <location line="-941"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+488"/>
+        <location filename="../../Command.cpp" line="+499"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-690"/>
+        <location line="-701"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+270"/>
+        <location line="+281"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -631,17 +631,17 @@
     <message>
         <location line="-226"/>
         <source>Part</source>
-        <translation type="unfinished">Geometrijsko tijelo</translation>
+        <translation>Geometrijsko tijelo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from selected sketches</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from selected sketches</translation>
     </message>
 </context>
 <context>
@@ -701,7 +701,7 @@
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1232"/>
+        <location line="-1243"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -755,7 +755,7 @@
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+712"/>
+        <location filename="../../Command.cpp" line="+723"/>
         <source>Part</source>
         <translation>Geometrijsko tijelo</translation>
     </message>
@@ -1250,7 +1250,7 @@
     <message>
         <location line="+8"/>
         <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
-        <translation>The document &apos;%1&apos; doesn&apos;t exist.</translation>
+        <translation type="unfinished">The document &apos;%1&apos; doesn&apos;t exist.</translation>
     </message>
     <message>
         <location line="+85"/>
@@ -1325,7 +1325,7 @@
     <message>
         <location filename="../../DlgFilletEdges.cpp" line="-728"/>
         <source>Length:</source>
-        <translation type="unfinished">Duljina:</translation>
+        <translation>Duljina:</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1340,7 +1340,7 @@
     <message>
         <location line="+2"/>
         <source>Edges to chamfer</source>
-        <translation type="unfinished">Rubove za zarubljivanje</translation>
+        <translation>Rubove za zarubljivanje</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1372,7 +1372,7 @@
     <message>
         <location line="+506"/>
         <source>Length</source>
-        <translation type="unfinished">Dužina</translation>
+        <translation>Dužina</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1428,7 +1428,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Izvoz</translation>
+        <translation>Izvoz</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1438,32 +1438,32 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Milimetar</translation>
+        <translation>Milimetar</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Metar</translation>
+        <translation>Metar</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Palac</translation>
+        <translation>Palac</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Write solids and shells as</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Write solids and shells as</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
     </message>
     <message>
         <source>Enable B-REP mode</source>
@@ -1510,7 +1510,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Izvoz</translation>
+        <translation>Izvoz</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1520,17 +1520,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Milimetar</translation>
+        <translation>Milimetar</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Metar</translation>
+        <translation>Metar</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Palac</translation>
+        <translation>Palac</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1719,7 +1719,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -1766,7 +1766,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -2290,12 +2290,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maximum angular deflection</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
         <source> °</source>
-        <translation type="unfinished"></translation>
+        <translation> °</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2427,7 +2427,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+26"/>
         <source>Default line color</source>
-        <translation type="unfinished">Zadana boja linije</translation>
+        <translation>Zadana boja linije</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2475,12 +2475,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+38"/>
         <source>Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annotations</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default text color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default text color</translation>
     </message>
 </context>
 <context>
@@ -2545,7 +2545,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+33"/>
         <source>Input error</source>
-        <translation type="unfinished">Pogreška na ulazu</translation>
+        <translation>Pogreška na ulazu</translation>
     </message>
     <message>
         <source>At least two vertices, edges or wires are required.</source>
@@ -2760,7 +2760,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Pogrešan odabir</translation>
+        <translation>Pogrešan odabir</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2770,12 +2770,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+37"/>
         <source>Input error</source>
-        <translation type="unfinished">Pogreška na ulazu</translation>
+        <translation>Pogreška na ulazu</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Done</source>
-        <translation type="unfinished">Gotovo</translation>
+        <translation>Gotovo</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2993,7 +2993,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Box selection</source>
-        <translation type="unfinished">Pravokutno odabiranje</translation>
+        <translation>Pravokutno odabiranje</translation>
     </message>
 </context>
 <context>
@@ -3052,7 +3052,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+20"/>
         <source>Closed</source>
-        <translation type="unfinished">Zatvoreno</translation>
+        <translation>Zatvoreno</translation>
     </message>
 </context>
 <context>
@@ -3232,23 +3232,23 @@ u 3D pogledu kao putanju za Sweep.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-1120"/>
+        <location filename="../../Command.cpp" line="-1131"/>
         <location line="+77"/>
         <location line="+82"/>
-        <location line="+176"/>
+        <location line="+187"/>
         <location line="+50"/>
         <location line="+959"/>
         <source>Wrong selection</source>
         <translation>Pogrešan odabir</translation>
     </message>
     <message>
-        <location line="-1343"/>
-        <location line="+385"/>
+        <location line="-1354"/>
+        <location line="+396"/>
         <source>Select two shapes please.</source>
         <translation>Molim odaberite dva oblika.</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-386"/>
         <location line="+82"/>
         <location line="+82"/>
         <source>Non-solids selected</source>
@@ -3264,9 +3264,9 @@ Do you want to continue?</source>
 Do you want to continue?</translation>
     </message>
     <message>
-        <location line="+160"/>
+        <location line="+171"/>
         <source>Select one shape or more, please.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one shape or more, please.</translation>
     </message>
     <message>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
@@ -3323,7 +3323,7 @@ Do you want to continue?</translation>
         <translation type="obsolete">Transformiraj</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+162"/>
+        <location filename="../../AppPartGui.cpp" line="+180"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Dizajn Tijela</translation>
@@ -3337,23 +3337,23 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Display</source>
-        <translation type="unfinished">Prikaz</translation>
+        <translation>Prikaz</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-258"/>
+        <location filename="../../Command.cpp" line="-269"/>
         <location line="+82"/>
         <source>Select two shapes or more, please.</source>
         <translation>Odaberite dva ili više oblika, molim.</translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+387"/>
         <source>All CAD Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All CAD Files</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="+804"/>
@@ -3666,7 +3666,7 @@ Do you want to continue?</translation>
         <location line="-1033"/>
         <location line="+1040"/>
         <source>Control</source>
-        <translation type="unfinished">Kontrola</translation>
+        <translation>Kontrola</translation>
     </message>
     <message>
         <location line="-265"/>
@@ -3691,7 +3691,7 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Show control points</translation>
     </message>
 </context>
 <context>

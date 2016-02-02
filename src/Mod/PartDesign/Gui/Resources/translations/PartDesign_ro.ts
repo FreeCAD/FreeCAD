@@ -253,29 +253,29 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation>Număr de dinţi:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation>Module:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">High precision:</translation>
+        <translation>Precizie mare:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">True</translation>
+        <translation>Adevărat</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">False</translation>
+        <translation>Fals</translation>
     </message>
     <message>
         <location line="-19"/>
@@ -409,7 +409,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Editati tesitura</translation>
+        <translation>Editati tesitura</translation>
     </message>
 </context>
 <context>
@@ -425,7 +425,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Editare panglica</translation>
+        <translation>Editare panglica</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Editare de buzunar</translation>
+        <translation>Editare de buzunar</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -669,12 +669,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Axa orizontală a schiţei</translation>
+        <translation>Axa orizontală a schiţei</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Axa verticală a schiţei</translation>
+        <translation>Axa verticală a schiţei</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -686,7 +686,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -716,7 +716,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation>Nedefinit</translation>
     </message>
 </context>
 <context>
@@ -751,12 +751,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Axa orizontală a schiţei</translation>
+        <translation>Axa orizontală a schiţei</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Axa verticală a schiţei</translation>
+        <translation>Axa verticală a schiţei</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -782,12 +782,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation>Selectaţi o față</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation>Nedefinit</translation>
     </message>
 </context>
 <context>
@@ -1045,7 +1045,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Inversat</translation>
+        <translation>Inversat</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1132,7 +1132,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Axele</translation>
+        <translation>Axele</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1149,7 +1149,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1235,7 +1235,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation>Nedefinit</translation>
     </message>
 </context>
 <context>
@@ -1369,17 +1369,17 @@ Please check one or more edge entities first.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>

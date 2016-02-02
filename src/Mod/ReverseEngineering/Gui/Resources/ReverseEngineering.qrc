@@ -25,5 +25,6 @@
         <file>translations/ReverseEngineering_hu.qm</file>
         <file>translations/ReverseEngineering_pt-PT.qm</file>
         <file>translations/ReverseEngineering_sr.qm</file>
+        <file>translations/ReverseEngineering_el.qm</file>
     </qresource>
 </RCC> 

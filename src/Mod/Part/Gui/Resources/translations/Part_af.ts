@@ -131,19 +131,19 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1650"/>
+        <location filename="../../Command.cpp" line="+1661"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Check Geometry</source>
-        <translation>Check Geometry</translation>
+        <translation type="unfinished">Check Geometry</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Analyzes Geometry For Errors</source>
-        <translation>Analyzes Geometry For Errors</translation>
+        <translation type="unfinished">Analyzes Geometry For Errors</translation>
     </message>
 </context>
 <context>
@@ -156,7 +156,7 @@
     <message>
         <location line="+1"/>
         <source>Color per face</source>
-        <translation>Color per face</translation>
+        <translation type="unfinished">Color per face</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -169,7 +169,7 @@
     <message>
         <location line="+62"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -183,7 +183,7 @@
     <message>
         <location line="+26"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -197,7 +197,7 @@
     <message>
         <location line="-58"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -211,7 +211,7 @@
     <message>
         <location line="+116"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -225,7 +225,7 @@
     <message>
         <location line="-36"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -239,7 +239,7 @@
     <message>
         <location line="+60"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -278,7 +278,7 @@
         <location line="+10"/>
         <location line="+5"/>
         <source>Cube</source>
-        <translation type="unfinished">Kubus</translation>
+        <translation>Kubus</translation>
     </message>
     <message>
         <location line="-14"/>
@@ -297,7 +297,7 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-850"/>
+        <location filename="../../Command.cpp" line="-861"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -333,7 +333,7 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+1058"/>
+        <location line="+1069"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -369,7 +369,7 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-799"/>
+        <location line="-810"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -389,25 +389,25 @@
     <message>
         <location line="+163"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join objects...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join objects...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join walled objects</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join walled objects</translation>
     </message>
 </context>
 <context>
     <name>CmdPartCompound</name>
     <message>
-        <location line="+92"/>
+        <location line="+103"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -461,7 +461,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-930"/>
+        <location line="-941"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+488"/>
+        <location filename="../../Command.cpp" line="+499"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-690"/>
+        <location line="-701"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+270"/>
+        <location line="+281"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -619,7 +619,7 @@
     <message>
         <location line="+1"/>
         <source>Utility to loft</source>
-        <translation>Utility to loft</translation>
+        <translation type="unfinished">Utility to loft</translation>
     </message>
     <message>
         <source>Advanced utility to lofts</source>
@@ -631,17 +631,17 @@
     <message>
         <location line="-226"/>
         <source>Part</source>
-        <translation type="unfinished">Onderdeel</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from selected sketches</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from selected sketches</translation>
     </message>
 </context>
 <context>
@@ -690,18 +690,18 @@
     <message>
         <location line="+1"/>
         <source>Offset...</source>
-        <translation>Offset...</translation>
+        <translation type="unfinished">Offset...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to offset</source>
-        <translation>Utility to offset</translation>
+        <translation type="unfinished">Utility to offset</translation>
     </message>
 </context>
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1232"/>
+        <location line="-1243"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -744,18 +744,18 @@
     <message>
         <location line="+1"/>
         <source>Refine shape</source>
-        <translation>Refine shape</translation>
+        <translation type="unfinished">Refine shape</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Refine the copy of a shape</source>
-        <translation>Refine the copy of a shape</translation>
+        <translation type="unfinished">Refine the copy of a shape</translation>
     </message>
 </context>
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+712"/>
+        <location filename="../../Command.cpp" line="+723"/>
         <source>Part</source>
         <translation>Onderdeel</translation>
     </message>
@@ -912,12 +912,12 @@
     <message>
         <location line="+1"/>
         <source>Sweep...</source>
-        <translation>Sweep...</translation>
+        <translation type="unfinished">Sweep...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to sweep</source>
-        <translation>Utility to sweep</translation>
+        <translation type="unfinished">Utility to sweep</translation>
     </message>
 </context>
 <context>
@@ -930,12 +930,12 @@
     <message>
         <location line="+1"/>
         <source>Thickness...</source>
-        <translation>Thickness...</translation>
+        <translation type="unfinished">Thickness...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to apply a thickness</source>
-        <translation>Utility to apply a thickness</translation>
+        <translation type="unfinished">Utility to apply a thickness</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -946,12 +946,12 @@
     <message>
         <location line="-19"/>
         <source>Selected one or more faces of a shape</source>
-        <translation>Selected one or more faces of a shape</translation>
+        <translation type="unfinished">Selected one or more faces of a shape</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Selected shape is not a solid</source>
-        <translation>Selected shape is not a solid</translation>
+        <translation type="unfinished">Selected shape is not a solid</translation>
     </message>
 </context>
 <context>
@@ -1216,7 +1216,7 @@
     <message>
         <location line="+9"/>
         <source>Taper outward angle</source>
-        <translation>Taper outward angle</translation>
+        <translation type="unfinished">Taper outward angle</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -1250,7 +1250,7 @@
     <message>
         <location line="+8"/>
         <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
-        <translation>The document &apos;%1&apos; doesn&apos;t exist.</translation>
+        <translation type="unfinished">The document &apos;%1&apos; doesn&apos;t exist.</translation>
     </message>
     <message>
         <location line="+85"/>
@@ -1325,7 +1325,7 @@
     <message>
         <location filename="../../DlgFilletEdges.cpp" line="-728"/>
         <source>Length:</source>
-        <translation type="unfinished">Lengte:</translation>
+        <translation>Lengte:</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1340,7 +1340,7 @@
     <message>
         <location line="+2"/>
         <source>Edges to chamfer</source>
-        <translation type="unfinished">Kante om te groef</translation>
+        <translation>Kante om te groef</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1372,7 +1372,7 @@
     <message>
         <location line="+506"/>
         <source>Length</source>
-        <translation type="unfinished">Lengte</translation>
+        <translation>Lengte</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1430,7 +1430,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Voer uit</translation>
+        <translation>Voer uit</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1440,32 +1440,32 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Millimeter</translation>
+        <translation>Millimeter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Meter</translation>
+        <translation>Meter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Duim</translation>
+        <translation>Duim</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Write solids and shells as</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Write solids and shells as</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
     </message>
     <message>
         <source>Enable B-REP mode</source>
@@ -1512,7 +1512,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Voer uit</translation>
+        <translation>Voer uit</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1522,17 +1522,17 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Millimeter</translation>
+        <translation>Millimeter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Meter</translation>
+        <translation>Meter</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Duim</translation>
+        <translation>Duim</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1721,7 +1721,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -1768,7 +1768,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -1950,7 +1950,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
         <location line="+18"/>
         <location filename="../../DlgPrimitives.cpp" line="+34"/>
         <source>Ellipse</source>
-        <translation>Ellipse</translation>
+        <translation type="unfinished">Ellipse</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2075,42 +2075,42 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="-831"/>
         <source>X min/max:</source>
-        <translation>X min/max:</translation>
+        <translation type="unfinished">X min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Y min/max:</source>
-        <translation>Y min/max:</translation>
+        <translation type="unfinished">Y min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Z min/max:</source>
-        <translation>Z min/max:</translation>
+        <translation type="unfinished">Z min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>X2 min/max:</source>
-        <translation>X2 min/max:</translation>
+        <translation type="unfinished">X2 min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Z2 min/max:</source>
-        <translation>Z2 min/max:</translation>
+        <translation type="unfinished">Z2 min/max:</translation>
     </message>
     <message>
         <location line="+181"/>
         <source>Coordinate system:</source>
-        <translation>Coordinate system:</translation>
+        <translation type="unfinished">Coordinate system:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Right-handed</source>
-        <translation>Right-handed</translation>
+        <translation type="unfinished">Right-handed</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Left-handed</source>
-        <translation>Left-handed</translation>
+        <translation type="unfinished">Left-handed</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -2126,38 +2126,38 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
         <location line="+58"/>
         <location line="+103"/>
         <source>Angle 1:</source>
-        <translation>Angle 1:</translation>
+        <translation type="unfinished">Angle 1:</translation>
     </message>
     <message>
         <location line="-96"/>
         <location line="+103"/>
         <source>Angle 2:</source>
-        <translation>Angle 2:</translation>
+        <translation type="unfinished">Angle 2:</translation>
     </message>
     <message>
         <location line="-49"/>
         <source>From three points</source>
-        <translation>From three points</translation>
+        <translation type="unfinished">From three points</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Major radius:</source>
-        <translation>Major radius:</translation>
+        <translation type="unfinished">Major radius:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Minor radius:</source>
-        <translation>Minor radius:</translation>
+        <translation type="unfinished">Minor radius:</translation>
     </message>
     <message>
         <location line="+200"/>
         <source>End point</source>
-        <translation>End point</translation>
+        <translation type="unfinished">End point</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Start point</source>
-        <translation>Start point</translation>
+        <translation type="unfinished">Start point</translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.cpp" line="+193"/>
@@ -2244,7 +2244,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+8"/>
         <source>Select line in 3D view</source>
-        <translation>Select line in 3D view</translation>
+        <translation type="unfinished">Select line in 3D view</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2292,12 +2292,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maximum angular deflection</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
         <source> °</source>
-        <translation type="unfinished"></translation>
+        <translation> °</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2376,12 +2376,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+6"/>
         <source>Model settings</source>
-        <translation>Model settings</translation>
+        <translation type="unfinished">Model settings</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Automatically refine model after boolean operation</source>
-        <translation>Automatically refine model after boolean operation</translation>
+        <translation type="unfinished">Automatically refine model after boolean operation</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2401,7 +2401,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="-48"/>
         <source>Automatically check model after boolean operation</source>
-        <translation>Automatically check model after boolean operation</translation>
+        <translation type="unfinished">Automatically check model after boolean operation</translation>
     </message>
 </context>
 <context>
@@ -2429,7 +2429,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+26"/>
         <source>Default line color</source>
-        <translation type="unfinished">Versuimlynkleur</translation>
+        <translation>Versuimlynkleur</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2477,12 +2477,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+38"/>
         <source>Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annotations</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default text color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default text color</translation>
     </message>
 </context>
 <context>
@@ -2490,12 +2490,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location filename="../../TaskFaceColors.cpp" line="+394"/>
         <source>Face colors</source>
-        <translation>Face colors</translation>
+        <translation type="unfinished">Face colors</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you really want to cancel?</source>
-        <translation>Do you really want to cancel?</translation>
+        <translation type="unfinished">Do you really want to cancel?</translation>
     </message>
 </context>
 <context>
@@ -2503,7 +2503,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location filename="../../Location.ui" line="+14"/>
         <source>Location</source>
-        <translation>Location</translation>
+        <translation type="unfinished">Location</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2547,7 +2547,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+33"/>
         <source>Input error</source>
-        <translation type="unfinished">Invoerfout</translation>
+        <translation>Invoerfout</translation>
     </message>
     <message>
         <source>At least two vertices, edges or wires are required.</source>
@@ -2677,7 +2677,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+52"/>
         <source>Select one or more edges</source>
-        <translation>Select one or more edges</translation>
+        <translation type="unfinished">Select one or more edges</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2726,7 +2726,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
         <location line="-279"/>
         <location line="+280"/>
         <source>Sweep</source>
-        <translation>Sweep</translation>
+        <translation type="unfinished">Sweep</translation>
     </message>
     <message>
         <location line="-281"/>
@@ -2738,7 +2738,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
         <location line="+131"/>
         <location line="+8"/>
         <source>Sweep path</source>
-        <translation>Sweep path</translation>
+        <translation type="unfinished">Sweep path</translation>
     </message>
     <message>
         <source>Select an edge or wire you want to sweep along.</source>
@@ -2757,12 +2757,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+0"/>
         <source>At least one edge or wire is required.</source>
-        <translation>At least one edge or wire is required.</translation>
+        <translation type="unfinished">At least one edge or wire is required.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Verkeerde keuse</translation>
+        <translation>Verkeerde keuse</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2772,7 +2772,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+37"/>
         <source>Input error</source>
-        <translation type="unfinished">Invoerfout</translation>
+        <translation>Invoerfout</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2804,7 +2804,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="-511"/>
         <source>Check Geometry</source>
-        <translation>Check Geometry</translation>
+        <translation type="unfinished">Check Geometry</translation>
     </message>
 </context>
 <context>
@@ -2995,7 +2995,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+7"/>
         <source>Box selection</source>
-        <translation type="unfinished">Boksseleksie</translation>
+        <translation>Boksseleksie</translation>
     </message>
 </context>
 <context>
@@ -3054,7 +3054,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+20"/>
         <source>Closed</source>
-        <translation type="unfinished">Gesluit</translation>
+        <translation>Gesluit</translation>
     </message>
 </context>
 <context>
@@ -3068,27 +3068,27 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+10"/>
         <source>Mode</source>
-        <translation>Mode</translation>
+        <translation type="unfinished">Mode</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Skin</source>
-        <translation>Skin</translation>
+        <translation type="unfinished">Skin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Pipe</source>
-        <translation>Pipe</translation>
+        <translation type="unfinished">Pipe</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>RectoVerso</source>
-        <translation>RectoVerso</translation>
+        <translation type="unfinished">RectoVerso</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Join type</source>
-        <translation>Join type</translation>
+        <translation type="unfinished">Join type</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3098,7 +3098,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+5"/>
         <source>Tangent</source>
-        <translation>Tangent</translation>
+        <translation type="unfinished">Tangent</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3109,12 +3109,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+7"/>
         <source>Self-intersection</source>
-        <translation>Self-intersection</translation>
+        <translation type="unfinished">Self-intersection</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Fill offset</source>
-        <translation>Fill offset</translation>
+        <translation type="unfinished">Fill offset</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3124,7 +3124,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+27"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
 </context>
 <context>
@@ -3181,7 +3181,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location filename="../../TaskSweep.ui" line="+14"/>
         <source>Sweep</source>
-        <translation>Sweep</translation>
+        <translation type="unfinished">Sweep</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3196,13 +3196,13 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+7"/>
         <source>Frenet</source>
-        <translation>Frenet</translation>
+        <translation type="unfinished">Frenet</translation>
     </message>
     <message>
         <location filename="../../TaskSweep.cpp" line="+42"/>
         <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-        <translation>Select one or more profiles and select an edge or wire
+        <translation type="unfinished">Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</translation>
     </message>
 </context>
@@ -3218,12 +3218,12 @@ in the 3D view for the sweep path.</translation>
     <message>
         <location line="-119"/>
         <source>Select faces of the source object and press &apos;Done&apos;</source>
-        <translation>Select faces of the source object and press &apos;Done&apos;</translation>
+        <translation type="unfinished">Select faces of the source object and press &apos;Done&apos;</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Done</source>
-        <translation>Done</translation>
+        <translation type="unfinished">Done</translation>
     </message>
     <message>
         <location line="+71"/>
@@ -3234,23 +3234,23 @@ in the 3D view for the sweep path.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-1120"/>
+        <location filename="../../Command.cpp" line="-1131"/>
         <location line="+77"/>
         <location line="+82"/>
-        <location line="+176"/>
+        <location line="+187"/>
         <location line="+50"/>
         <location line="+959"/>
         <source>Wrong selection</source>
         <translation>Verkeerde keuse</translation>
     </message>
     <message>
-        <location line="-1343"/>
-        <location line="+385"/>
+        <location line="-1354"/>
+        <location line="+396"/>
         <source>Select two shapes please.</source>
         <translation>Kies twee vorms asseblief.</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-386"/>
         <location line="+82"/>
         <location line="+82"/>
         <source>Non-solids selected</source>
@@ -3266,9 +3266,9 @@ Do you want to continue?</source>
 Do you want to continue?</translation>
     </message>
     <message>
-        <location line="+160"/>
+        <location line="+171"/>
         <source>Select one shape or more, please.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one shape or more, please.</translation>
     </message>
     <message>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
@@ -3308,24 +3308,24 @@ Do you want to continue?</translation>
     <message>
         <location line="+300"/>
         <source>Edit chamfer edges</source>
-        <translation>Edit chamfer edges</translation>
+        <translation type="unfinished">Edit chamfer edges</translation>
     </message>
     <message>
         <location line="+141"/>
         <source>Edit offset</source>
-        <translation>Edit offset</translation>
+        <translation type="unfinished">Edit offset</translation>
     </message>
     <message>
         <location line="+81"/>
         <source>Edit thickness</source>
-        <translation>Edit thickness</translation>
+        <translation type="unfinished">Edit thickness</translation>
     </message>
     <message>
         <source>Transform</source>
         <translation type="obsolete">Omskep</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+162"/>
+        <location filename="../../AppPartGui.cpp" line="+180"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Onderdeelontwerp</translation>
@@ -3339,23 +3339,23 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Display</source>
-        <translation type="unfinished">Vertoon</translation>
+        <translation>Vertoon</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-258"/>
+        <location filename="../../Command.cpp" line="-269"/>
         <location line="+82"/>
         <source>Select two shapes or more, please.</source>
         <translation>Kies twee of meer vorms, asseblief.</translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+387"/>
         <source>All CAD Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All CAD Files</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="+804"/>
@@ -3375,37 +3375,37 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="-305"/>
         <source>Compound</source>
-        <translation>Compound</translation>
+        <translation type="unfinished">Compound</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Compound Solid</source>
-        <translation>Compound Solid</translation>
+        <translation type="unfinished">Compound Solid</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Solid</source>
-        <translation>Solid</translation>
+        <translation type="unfinished">Solid</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Shell</source>
-        <translation>Shell</translation>
+        <translation type="unfinished">Shell</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Face</source>
-        <translation>Face</translation>
+        <translation type="unfinished">Face</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wire</source>
-        <translation>Wire</translation>
+        <translation type="unfinished">Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edge</source>
-        <translation>Edge</translation>
+        <translation type="unfinished">Edge</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3420,182 +3420,182 @@ Do you want to continue?</translation>
     <message>
         <location line="+15"/>
         <source>No Error</source>
-        <translation>No Error</translation>
+        <translation type="unfinished">No Error</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve</source>
-        <translation>Invalid Point On Curve</translation>
+        <translation type="unfinished">Invalid Point On Curve</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve On Surface</source>
-        <translation>Invalid Point On Curve On Surface</translation>
+        <translation type="unfinished">Invalid Point On Curve On Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Surface</source>
-        <translation>Invalid Point On Surface</translation>
+        <translation type="unfinished">Invalid Point On Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No 3D Curve</source>
-        <translation>No 3D Curve</translation>
+        <translation type="unfinished">No 3D Curve</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Multiple 3D Curve</source>
-        <translation>Multiple 3D Curve</translation>
+        <translation type="unfinished">Multiple 3D Curve</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid 3D Curve</source>
-        <translation>Invalid 3D Curve</translation>
+        <translation type="unfinished">Invalid 3D Curve</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No Curve On Surface</source>
-        <translation>No Curve On Surface</translation>
+        <translation type="unfinished">No Curve On Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Curve On Surface</source>
-        <translation>Invalid Curve On Surface</translation>
+        <translation type="unfinished">Invalid Curve On Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Curve On Closed Surface</source>
-        <translation>Invalid Curve On Closed Surface</translation>
+        <translation type="unfinished">Invalid Curve On Closed Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Same Range Flag</source>
-        <translation>Invalid Same Range Flag</translation>
+        <translation type="unfinished">Invalid Same Range Flag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Same Parameter Flag</source>
-        <translation>Invalid Same Parameter Flag</translation>
+        <translation type="unfinished">Invalid Same Parameter Flag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Degenerated Flag</source>
-        <translation>Invalid Degenerated Flag</translation>
+        <translation type="unfinished">Invalid Degenerated Flag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Free Edge</source>
-        <translation>Free Edge</translation>
+        <translation type="unfinished">Free Edge</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid MultiConnexity</source>
-        <translation>Invalid MultiConnexity</translation>
+        <translation type="unfinished">Invalid MultiConnexity</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Range</source>
-        <translation>Invalid Range</translation>
+        <translation type="unfinished">Invalid Range</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Empty Wire</source>
-        <translation>Empty Wire</translation>
+        <translation type="unfinished">Empty Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Edge</source>
-        <translation>Redundant Edge</translation>
+        <translation type="unfinished">Redundant Edge</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Self Intersecting Wire</source>
-        <translation>Self Intersecting Wire</translation>
+        <translation type="unfinished">Self Intersecting Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No Surface</source>
-        <translation>No Surface</translation>
+        <translation type="unfinished">No Surface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Wire</source>
-        <translation>Invalid Wire</translation>
+        <translation type="unfinished">Invalid Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Wire</source>
-        <translation>Redundant Wire</translation>
+        <translation type="unfinished">Redundant Wire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Intersecting Wires</source>
-        <translation>Intersecting Wires</translation>
+        <translation type="unfinished">Intersecting Wires</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Imbrication Of Wires</source>
-        <translation>Invalid Imbrication Of Wires</translation>
+        <translation type="unfinished">Invalid Imbrication Of Wires</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Empty Shell</source>
-        <translation>Empty Shell</translation>
+        <translation type="unfinished">Empty Shell</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Redundant Face</source>
-        <translation>Redundant Face</translation>
+        <translation type="unfinished">Redundant Face</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unorientable Shape</source>
-        <translation>Unorientable Shape</translation>
+        <translation type="unfinished">Unorientable Shape</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Not Closed</source>
-        <translation>Not Closed</translation>
+        <translation type="unfinished">Not Closed</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Not Connected</source>
-        <translation>Not Connected</translation>
+        <translation type="unfinished">Not Connected</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sub Shape Not In Shape</source>
-        <translation>Sub Shape Not In Shape</translation>
+        <translation type="unfinished">Sub Shape Not In Shape</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bad Orientation</source>
-        <translation>Bad Orientation</translation>
+        <translation type="unfinished">Bad Orientation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bad Orientation Of Sub Shape</source>
-        <translation>Bad Orientation Of Sub Shape</translation>
+        <translation type="unfinished">Bad Orientation Of Sub Shape</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Tolerance Value</source>
-        <translation>Invalid Tolerance Value</translation>
+        <translation type="unfinished">Invalid Tolerance Value</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Check Failed</source>
-        <translation>Check Failed</translation>
+        <translation type="unfinished">Check Failed</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>No Result</source>
-        <translation>No Result</translation>
+        <translation type="unfinished">No Result</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Out Of Enum Range: </source>
-        <translation>Out Of Enum Range: </translation>
+        <translation type="unfinished">Out Of Enum Range: </translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3656,7 +3656,7 @@ Do you want to continue?</translation>
         <location line="+284"/>
         <location line="+162"/>
         <source>Invalid</source>
-        <translation>Invalid</translation>
+        <translation type="unfinished">Invalid</translation>
     </message>
     <message>
         <location filename="../../TaskDimension.cpp" line="+552"/>
@@ -3668,7 +3668,7 @@ Do you want to continue?</translation>
         <location line="-1033"/>
         <location line="+1040"/>
         <source>Control</source>
-        <translation type="unfinished">Beheer</translation>
+        <translation>Beheer</translation>
     </message>
     <message>
         <location line="-265"/>
@@ -3693,7 +3693,7 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Show control points</translation>
     </message>
 </context>
 <context>

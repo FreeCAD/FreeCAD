@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Rovina obrázku</translation>
+        <translation>Rovina obrázku</translation>
     </message>
     <message>
         <location line="+6"/>

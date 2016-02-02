@@ -11,12 +11,12 @@
     <message>
         <location line="+1"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>Clonă</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
     </message>
 </context>
 <context>
@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Close Shape</source>
-        <translation type="unfinished">Închide forma</translation>
+        <translation>Închide forma</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -47,12 +47,12 @@
     <message>
         <location line="+1"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiere</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
     </message>
 </context>
 <context>
@@ -65,12 +65,12 @@
     <message>
         <location line="+1"/>
         <source>Create arc</source>
-        <translation type="unfinished">Creeaza un arc de cerc</translation>
+        <translation>Creeaza un arc de cerc</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc in the sketcher</source>
-        <translation type="unfinished">Crearea unui arc de cerc în schiţă</translation>
+        <translation>Crearea unui arc de cerc în schiţă</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -93,7 +93,7 @@
     <message>
         <location line="+1"/>
         <source>Create circle</source>
-        <translation type="unfinished">Crează cerc</translation>
+        <translation>Crează cerc</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -154,7 +154,7 @@
     <message>
         <location line="+1"/>
         <source>Create regular polygon</source>
-        <translation type="unfinished">Creează poligon regulat</translation>
+        <translation>Creează poligon regulat</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -164,32 +164,32 @@
     <message>
         <location line="+100"/>
         <source>Triangle</source>
-        <translation type="unfinished">Triunghi</translation>
+        <translation>Triunghi</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Square</source>
-        <translation type="unfinished">Pătrat</translation>
+        <translation>Pătrat</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Pentagon</source>
-        <translation type="unfinished">Pentagon</translation>
+        <translation>Pentagon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Hexagon</source>
-        <translation type="unfinished">Hexagon</translation>
+        <translation>Hexagon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Heptagon</source>
-        <translation type="unfinished">Heptagon</translation>
+        <translation>Heptagon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Octagon</source>
-        <translation type="unfinished">Octogon</translation>
+        <translation>Octogon</translation>
     </message>
 </context>
 <context>
@@ -202,7 +202,7 @@
     <message>
         <location line="+1"/>
         <source>Connect Edges</source>
-        <translation type="unfinished">Conectează marginile</translation>
+        <translation>Conectează marginile</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../../CommandConstraints.cpp" line="+2541"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -233,7 +233,7 @@
     <message>
         <location line="-1682"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -251,7 +251,7 @@
     <message>
         <location line="+90"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -269,12 +269,12 @@
     <message>
         <location line="+263"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain horizontal distance</source>
-        <translation>Constrain horizontal distance</translation>
+        <translation type="unfinished">Constrain horizontal distance</translation>
     </message>
     <message>
         <source>Constrain vertical distance</source>
@@ -291,12 +291,12 @@
     <message>
         <location line="+163"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain vertical distance</source>
-        <translation>Constrain vertical distance</translation>
+        <translation type="unfinished">Constrain vertical distance</translation>
     </message>
     <message>
         <source>Constrain horizontal distance</source>
@@ -313,7 +313,7 @@
     <message>
         <location line="+1421"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -331,7 +331,7 @@
     <message>
         <location line="-2240"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -367,7 +367,7 @@
     <message>
         <location line="-2483"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -385,7 +385,7 @@
     <message>
         <location line="+782"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -403,7 +403,7 @@
     <message>
         <location line="+97"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -413,7 +413,7 @@
     <message>
         <location line="+1"/>
         <source>Create a perpendicular constraint between two lines</source>
-        <translation type="unfinished">Crează o constrângere perpendiculară între două linii</translation>
+        <translation>Crează o constrângere perpendiculară între două linii</translation>
     </message>
     <message>
         <source>Create a Perpendicular constraint between two lines</source>
@@ -425,7 +425,7 @@
     <message>
         <location line="-515"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -443,7 +443,7 @@
     <message>
         <location line="+1087"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -479,7 +479,7 @@
     <message>
         <location line="-172"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -501,7 +501,7 @@
     <message>
         <location line="-970"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -519,7 +519,7 @@
     <message>
         <location line="-1294"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -542,12 +542,12 @@
     <message>
         <location line="+1"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiere</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creates a simple copy of the geometry taking as reference the last selected point</translation>
     </message>
 </context>
 <context>
@@ -560,12 +560,12 @@
     <message>
         <location line="+1"/>
         <source>Create arc by three points</source>
-        <translation type="unfinished">Creaţi arc de trei puncte</translation>
+        <translation>Creaţi arc de trei puncte</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Creează un arc de la punctul său final și un punct de-a lungul arcului</translation>
+        <translation>Creează un arc de la punctul său final și un punct de-a lungul arcului</translation>
     </message>
 </context>
 <context>
@@ -578,7 +578,7 @@
     <message>
         <location line="+1"/>
         <source>Create circle by three points</source>
-        <translation type="unfinished">Creați cerc de trei puncte</translation>
+        <translation>Creați cerc de trei puncte</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -591,7 +591,7 @@
     <message>
         <location line="-2232"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -601,7 +601,7 @@
     <message>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">Creează un arc cu propiul centru și cu propiile puncte finale</translation>
+        <translation>Creează un arc cu propiul centru și cu propiile puncte finale</translation>
     </message>
     <message>
         <source>Create arc</source>
@@ -635,7 +635,7 @@
     <message>
         <location line="-1256"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -653,7 +653,7 @@
     <message>
         <location line="+1923"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -707,7 +707,7 @@
     <message>
         <location line="+1371"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -721,7 +721,7 @@
     <message>
         <location line="+1"/>
         <source>Create a fillet between two lines or at a coincident point</source>
-        <translation>Create a fillet between two lines or at a coincident point</translation>
+        <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
     </message>
 </context>
 <context>
@@ -734,7 +734,7 @@
     <message>
         <location line="+1"/>
         <source>Create heptagon</source>
-        <translation type="unfinished">Creează heptagon</translation>
+        <translation>Creează heptagon</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -752,7 +752,7 @@
     <message>
         <location line="+1"/>
         <source>Create hexagon</source>
-        <translation type="unfinished">Creează hexagon</translation>
+        <translation>Creează hexagon</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -765,7 +765,7 @@
     <message>
         <location line="-4900"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -788,7 +788,7 @@
     <message>
         <location line="+1"/>
         <source>Create octagon</source>
-        <translation type="unfinished">Creează octogon</translation>
+        <translation>Creează octogon</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -806,7 +806,7 @@
     <message>
         <location line="+1"/>
         <source>Create pentagon</source>
-        <translation type="unfinished">Creează pentagon</translation>
+        <translation>Creează pentagon</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -819,7 +819,7 @@
     <message>
         <location line="-1259"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -837,7 +837,7 @@
     <message>
         <location line="-2760"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -859,7 +859,7 @@
     <message>
         <location line="-618"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -900,7 +900,7 @@
     <message>
         <location line="+1"/>
         <source>Create square</source>
-        <translation type="unfinished">Creează pătrat</translation>
+        <translation>Creează pătrat</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -913,7 +913,7 @@
     <message>
         <location line="-1206"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -936,7 +936,7 @@
     <message>
         <location line="+1"/>
         <source>Create equilateral triangle</source>
-        <translation type="unfinished">Creează triunghi echilateral</translation>
+        <translation>Creează triunghi echilateral</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -954,7 +954,7 @@
     <message>
         <location line="+1"/>
         <source>Edit sketch</source>
-        <translation type="unfinished">Editaţi schiţa</translation>
+        <translation>Editaţi schiţa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -967,7 +967,7 @@
     <message>
         <location filename="../../CommandCreateGeo.cpp" line="-504"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -985,7 +985,7 @@
     <message>
         <location filename="../../Command.cpp" line="+28"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1003,7 +1003,7 @@
     <message>
         <location line="+126"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1027,12 +1027,12 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Merge sketches</source>
-        <translation type="unfinished">Combină schițe</translation>
+        <translation>Combină schițe</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Selecţie greşită</translation>
+        <translation>Selecţie greşită</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1051,17 +1051,17 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Mirror sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mirror sketch</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Selecţie greşită</translation>
+        <translation>Selecţie greşită</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select one or more sketches, please.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one or more sketches, please.</translation>
     </message>
 </context>
 <context>
@@ -1069,7 +1069,7 @@
     <message>
         <location line="-467"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1111,12 +1111,12 @@
     <message>
         <location line="+1"/>
         <source>Rectangular Array</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rectangular Array</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates an rectangular array pattern of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creates an rectangular array pattern of the geometry taking as reference the last selected point</translation>
     </message>
 </context>
 <context>
@@ -1179,7 +1179,7 @@
     <message>
         <location line="+1"/>
         <source>Select Constraints</source>
-        <translation type="unfinished">Selectaţi constrângeri</translation>
+        <translation>Selectaţi constrângeri</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1211,12 +1211,12 @@
     <message>
         <location line="+1"/>
         <source>Select Horizontal Axis</source>
-        <translation type="unfinished">Selectaţi axa orizontală</translation>
+        <translation>Selectaţi axa orizontală</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the horizontal axis</source>
-        <translation type="unfinished">Selectaţi axa orizontală</translation>
+        <translation>Selectaţi axa orizontală</translation>
     </message>
 </context>
 <context>
@@ -1229,12 +1229,12 @@
     <message>
         <location line="+1"/>
         <source>Select Origin</source>
-        <translation type="unfinished">Selectaţi originea</translation>
+        <translation>Selectaţi originea</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the origin point</source>
-        <translation type="unfinished">Selectaţi punctul de origine</translation>
+        <translation>Selectaţi punctul de origine</translation>
     </message>
 </context>
 <context>
@@ -1261,12 +1261,12 @@
     <message>
         <location line="+1"/>
         <source>Select Vertical Axis</source>
-        <translation type="unfinished">Selectare axă verticală</translation>
+        <translation>Selectare axă verticală</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the vertical axis</source>
-        <translation type="unfinished">Selectaţi axa verticală</translation>
+        <translation>Selectaţi axa verticală</translation>
     </message>
 </context>
 <context>
@@ -1279,12 +1279,12 @@
     <message>
         <location line="+1"/>
         <source>Symmetry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Symmetry</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates symmetric geometry with respect to the last selected line or point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creates symmetric geometry with respect to the last selected line or point</translation>
     </message>
 </context>
 <context>
@@ -1292,17 +1292,17 @@
     <message>
         <location filename="../../CommandAlterGeometry.cpp" line="+72"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggle construction geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toggle construction geometry</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toggles the toolbar or selected geometry to/from construction mode</translation>
     </message>
     <message>
         <source>Toggle construction line</source>
@@ -1323,12 +1323,12 @@
     <message>
         <location line="+1"/>
         <source>Toggle reference/driving constraint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toggle reference/driving constraint</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggles the toolbar or selected constraints to/from reference mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toggles the toolbar or selected constraints to/from reference mode</translation>
     </message>
 </context>
 <context>
@@ -1336,7 +1336,7 @@
     <message>
         <location filename="../../CommandCreateGeo.cpp" line="-194"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1363,22 +1363,22 @@
     <message>
         <location line="+1"/>
         <source>Validate sketch...</source>
-        <translation type="unfinished">Validează schița...</translation>
+        <translation>Validează schița...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Validate sketch</source>
-        <translation type="unfinished">Validează schița</translation>
+        <translation>Validează schița</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Selecţie greşită</translation>
+        <translation>Selecţie greşită</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select one sketch, please.</source>
-        <translation type="unfinished">Selectați o schiță.</translation>
+        <translation>Selectați o schiță.</translation>
     </message>
 </context>
 <context>
@@ -1386,7 +1386,7 @@
     <message>
         <location line="-49"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1620,17 +1620,17 @@
     <message>
         <location line="-530"/>
         <source>Select one vertex from the sketch other than the origin.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one vertex from the sketch other than the origin.</translation>
     </message>
     <message>
         <location line="+396"/>
         <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</translation>
     </message>
     <message>
         <location line="+290"/>
@@ -1647,7 +1647,7 @@
     <message>
         <location line="+52"/>
         <source>Constrain equal</source>
-        <translation type="unfinished">Egalitate constransă</translation>
+        <translation>Egalitate constransă</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1668,7 +1668,7 @@
     <message>
         <location line="-90"/>
         <source>Parallel lines</source>
-        <translation type="unfinished">Linii paralele</translation>
+        <translation>Linii paralele</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1694,7 +1694,7 @@
     <message>
         <location line="+22"/>
         <source>Can not create constraint with external geometry only!!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Can not create constraint with external geometry only!!</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1746,7 +1746,7 @@
         <location line="+155"/>
         <location line="+8"/>
         <source>Extra elements</source>
-        <translation type="unfinished">Elemente suplimentare</translation>
+        <translation>Elemente suplimentare</translation>
     </message>
     <message>
         <location line="-170"/>
@@ -1785,7 +1785,7 @@
         <location line="+8"/>
         <location line="+30"/>
         <source>Select constraint(s) from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select constraint(s) from the sketch.</translation>
     </message>
     <message>
         <source>Select exactly two vertexes from the sketch.</source>
@@ -1899,14 +1899,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+12"/>
         <source>Wrong number of selected objects!</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">Număr greșit al obiectelor selectate!</translation>
+        <translation>Număr greșit al obiectelor selectate!</translation>
     </message>
     <message>
         <location line="+59"/>
         <location line="+313"/>
         <location line="+1174"/>
         <source>Error</source>
-        <translation type="unfinished">Eroare</translation>
+        <translation>Eroare</translation>
     </message>
     <message>
         <location line="-1461"/>
@@ -1958,7 +1958,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+13"/>
         <source>Wrong number of selected objects!</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">Număr greșit al obiectelor selectate!</translation>
+        <translation>Număr greșit al obiectelor selectate!</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2128,9 +2128,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>Constrângere dimensională</translation>
     </message>
     <message>
-        <location filename="../../AppSketcherGui.cpp" line="+99"/>
+        <location filename="../../AppSketcherGui.cpp" line="+113"/>
         <source>Display</source>
-        <translation type="unfinished">Afișare</translation>
+        <translation>Afișare</translation>
     </message>
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="-141"/>
@@ -2178,18 +2178,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+148"/>
         <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The last element must be a point or a line serving as reference for the symmetry construction.</translation>
     </message>
     <message>
         <location line="+295"/>
         <location line="+461"/>
         <source>A copy requires at least one selected non-external geometric element</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A copy requires at least one selected non-external geometric element</translation>
     </message>
 </context>
 <context>
@@ -2228,32 +2228,32 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../TaskSketcherConstrains.cpp" line="+377"/>
         <source>Toggle to/from reference</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toggle to/from reference</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Change value</source>
-        <translation type="unfinished">Modificaţi valoarea</translation>
+        <translation>Modificaţi valoarea</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Rename</source>
-        <translation type="unfinished">Redenumire</translation>
+        <translation>Redenumire</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Center sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Center sketch</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Delete</source>
-        <translation type="unfinished">Ştergeţi</translation>
+        <translation>Ştergeţi</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Swap constraint names</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Swap constraint names</translation>
     </message>
 </context>
 <context>
@@ -2262,13 +2262,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location filename="../../CommandConstraints.cpp" line="-2372"/>
         <location filename="../../EditDatumDialog.cpp" line="-98"/>
         <source>Insert angle</source>
-        <translation type="unfinished">Introdu unghi</translation>
+        <translation>Introdu unghi</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Angle:</source>
-        <translation type="unfinished">Unghiul:</translation>
+        <translation>Unghiul:</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2300,7 +2300,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+2309"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
-        <translation type="unfinished">Raza:</translation>
+        <translation>Raza:</translation>
     </message>
     <message>
         <location line="+751"/>
@@ -2316,13 +2316,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="-3052"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
-        <translation type="unfinished">Introduceţi lungimea</translation>
+        <translation>Introduceţi lungimea</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Length:</source>
-        <translation type="unfinished">Lungime:</translation>
+        <translation>Lungime:</translation>
     </message>
 </context>
 <context>
@@ -2330,7 +2330,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../TaskSketcherElements.cpp" line="+169"/>
         <source>Delete</source>
-        <translation type="unfinished">Ştergeţi</translation>
+        <translation>Ştergeţi</translation>
     </message>
 </context>
 <context>
@@ -2348,7 +2348,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+17"/>
         <source>Name (optional)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Name (optional)</translation>
     </message>
 </context>
 <context>
@@ -2356,7 +2356,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../PropertyConstraintListItem.cpp" line="+123"/>
         <source>Unnamed</source>
-        <translation type="unfinished">Nedenumit</translation>
+        <translation>Nedenumit</translation>
     </message>
 </context>
 <context>
@@ -2365,22 +2365,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location filename="../../SketchMirrorDialog.ui" line="+14"/>
         <location line="+6"/>
         <source>Select Mirror Axis/Point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select Mirror Axis/Point</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>X-Axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">X-Axis</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Y-Axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Y-Axis</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Origin</translation>
     </message>
 </context>
 <context>
@@ -2388,37 +2388,37 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../SketchOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation>Choose orientation</translation>
+        <translation type="unfinished">Choose orientation</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sketch orientation</source>
-        <translation>Sketch orientation</translation>
+        <translation type="unfinished">Sketch orientation</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation>XY-Plane</translation>
+        <translation type="unfinished">XY-Plane</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation>XZ-Plane</translation>
+        <translation type="unfinished">XZ-Plane</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation>YZ-Plane</translation>
+        <translation type="unfinished">YZ-Plane</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation>Offset:</translation>
+        <translation type="unfinished">Offset:</translation>
     </message>
 </context>
 <context>
@@ -2426,57 +2426,57 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../SketchRectangularArrayDialog.ui" line="+17"/>
         <source>Create array</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create array</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Columns:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Columns:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of columns of the linear array</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Number of columns of the linear array</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Rows:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rows:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rows of the linear array</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Number of rows of the linear array</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Makes the inter-row and inter-col spacing the same if clicked</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Equal vertical/horizontal spacing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Equal vertical/horizontal spacing</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>if selected, each element in the array is constraint with respect to the others using construction lines</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">if selected, each element in the array is constraint with respect to the others using construction lines</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Constrain inter-element separation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Constrain inter-element separation</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>If checked it substitutes dimensional constraints by geometric constraints in the copies, so that a change in the original element is directly reflected on copies</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If checked it substitutes dimensional constraints by geometric constraints in the copies, so that a change in the original element is directly reflected on copies</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>Clonă</translation>
     </message>
 </context>
 <context>
@@ -2526,7 +2526,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+33"/>
         <source>Construction geometry</source>
-        <translation type="unfinished">Geometria constructiei</translation>
+        <translation>Geometria constructiei</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2536,7 +2536,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+26"/>
         <source>External geometry</source>
-        <translation type="unfinished">Geometrie externă</translation>
+        <translation>Geometrie externă</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2551,17 +2551,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+319"/>
         <source>Geometry Creation &quot;Continue Mode&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Geometry Creation &quot;Continue Mode&quot;</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Sketch Solver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sketch Solver</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Show Advanced Solver Control in the Task bar</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Show Advanced Solver Control in the Task bar</translation>
     </message>
     <message>
         <location line="-423"/>
@@ -2607,7 +2607,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+35"/>
         <source>Default line width</source>
-        <translation type="unfinished">Lățime implicită linie</translation>
+        <translation>Lățime implicită linie</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -2617,17 +2617,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+46"/>
         <source>Non-driving Datum color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Non-driving Datum color</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of driving constraints in edit mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The color of driving constraints in edit mode</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>The color of non-driving constrains or dimensions in edit mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The color of non-driving constrains or dimensions in edit mode</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -2637,7 +2637,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+14"/>
         <source>Font size</source>
-        <translation type="unfinished">Dimensiunea fontului</translation>
+        <translation>Dimensiunea fontului</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2665,7 +2665,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+5"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Lipsesc coincidente</translation>
+        <translation>Lipsesc coincidente</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2800,12 +2800,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="+5"/>
         <source>Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Referinţă</translation>
     </message>
     <message>
         <location filename="../../TaskSketcherConstrains.cpp" line="+85"/>
         <source>Constraints</source>
-        <translation>Constraints</translation>
+        <translation type="unfinished">Constraints</translation>
     </message>
 </context>
 <context>
@@ -2813,32 +2813,32 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../TaskSketcherElements.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Type:</source>
-        <translation type="unfinished">Tip:</translation>
+        <translation>Tip:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Edge</source>
-        <translation type="unfinished">Margine</translation>
+        <translation>Margine</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Starting Point</source>
-        <translation type="unfinished">Punct de plecare</translation>
+        <translation>Punct de plecare</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>End Point</source>
-        <translation type="unfinished">Punct final</translation>
+        <translation>Punct final</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Center Point</source>
-        <translation type="unfinished">Punct central</translation>
+        <translation>Punct central</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2858,7 +2858,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../TaskSketcherElements.cpp" line="+66"/>
         <source>Elements</source>
-        <translation type="unfinished">Elemente</translation>
+        <translation>Elemente</translation>
     </message>
     <message>
         <location line="+444"/>
@@ -2866,7 +2866,7 @@ However, no constraints linking to the endpoints were found.</translation>
         <location line="+46"/>
         <location line="+1"/>
         <source>Point</source>
-        <translation type="unfinished">Punct</translation>
+        <translation>Punct</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2874,7 +2874,7 @@ However, no constraints linking to the endpoints were found.</translation>
         <location line="+46"/>
         <location line="+1"/>
         <source>Line</source>
-        <translation type="unfinished">Linie</translation>
+        <translation>Linie</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2882,7 +2882,7 @@ However, no constraints linking to the endpoints were found.</translation>
         <location line="+46"/>
         <location line="+1"/>
         <source>Arc</source>
-        <translation type="unfinished">Arc</translation>
+        <translation>Arc</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2890,19 +2890,19 @@ However, no constraints linking to the endpoints were found.</translation>
         <location line="+46"/>
         <location line="+1"/>
         <source>Circle</source>
-        <translation type="unfinished">Cerc</translation>
+        <translation>Cerc</translation>
     </message>
     <message>
         <location line="-45"/>
         <location line="+1"/>
         <source>Ellipse</source>
-        <translation type="unfinished">Elipsa</translation>
+        <translation>Elipsa</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+1"/>
         <source>Elliptical Arc</source>
-        <translation type="unfinished">Arc eliptic</translation>
+        <translation>Arc eliptic</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2910,7 +2910,7 @@ However, no constraints linking to the endpoints were found.</translation>
         <location line="+40"/>
         <location line="+1"/>
         <source>Other</source>
-        <translation type="unfinished">Altceva</translation>
+        <translation>Altceva</translation>
     </message>
 </context>
 <context>
@@ -2923,7 +2923,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="+6"/>
         <source>Show grid</source>
-        <translation type="unfinished">Arată grila</translation>
+        <translation>Arată grila</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3023,7 +3023,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../TaskSketcherGeneral.cpp" line="+121"/>
         <source>Edit controls</source>
-        <translation>Edit controls</translation>
+        <translation type="unfinished">Edit controls</translation>
     </message>
 </context>
 <context>
@@ -3039,7 +3039,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+67"/>
         <source>Advanced solver control</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Advanced solver control</translation>
     </message>
 </context>
 <context>
@@ -3057,12 +3057,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="+10"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Lipsesc coincidente</translation>
+        <translation>Lipsesc coincidente</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Tolerance:</source>
-        <translation type="unfinished">Toleranţă:</translation>
+        <translation>Toleranţă:</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3094,13 +3094,13 @@ However, no constraints linking to the endpoints were found.</translation>
         <location line="+33"/>
         <location line="+23"/>
         <source>Find</source>
-        <translation type="unfinished">Caută</translation>
+        <translation>Caută</translation>
     </message>
     <message>
         <location line="-63"/>
         <location line="+47"/>
         <source>Fix</source>
-        <translation type="unfinished">Fix</translation>
+        <translation>Fix</translation>
     </message>
     <message>
         <location line="-53"/>
@@ -3113,7 +3113,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../ViewProviderSketch.cpp" line="+4186"/>
         <source>Invalid sketch</source>
-        <translation type="unfinished">Schiță nevalidă</translation>
+        <translation>Schiță nevalidă</translation>
     </message>
     <message>
         <source>The sketch is invalid and cannot be edited.
@@ -3124,27 +3124,27 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="-29"/>
         <source>Edit sketch</source>
-        <translation type="unfinished">Editaţi schiţa</translation>
+        <translation>Editaţi schiţa</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
+        <translation>O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation type="unfinished">Doriţi să închideţi această fereastră de dialog?</translation>
+        <translation>Doriţi să închideţi această fereastră de dialog?</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Do you want to open the sketch validation tool?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you want to open the sketch validation tool?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The sketch is invalid and cannot be edited.</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -3181,7 +3181,7 @@ Use the sketch validation tool.</translation>
         <location line="+7"/>
         <location line="+8"/>
         <source>(click to select)</source>
-        <translation type="unfinished">(apăsați pentru selectare)</translation>
+        <translation>(apăsați pentru selectare)</translation>
     </message>
     <message>
         <location line="-9"/>
@@ -3237,7 +3237,7 @@ Use the sketch validation tool.</translation>
         <location filename="../../CommandSketcherTools.cpp" line="-276"/>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
     </message>
 </context>
 <context>
@@ -3245,12 +3245,12 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="-2"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>Clonă</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiere</translation>
     </message>
 </context>
 <context>
@@ -3259,7 +3259,7 @@ Use the sketch validation tool.</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creates a simple copy of the geometry taking as reference the last selected point</translation>
     </message>
 </context>
 <context>
@@ -3268,7 +3268,7 @@ Use the sketch validation tool.</translation>
         <location filename="../../CommandCreateGeo.cpp" line="-2582"/>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Creează un arc de la punctul său final și un punct de-a lungul arcului</translation>
+        <translation>Creează un arc de la punctul său final și un punct de-a lungul arcului</translation>
     </message>
 </context>
 <context>
@@ -3277,7 +3277,7 @@ Use the sketch validation tool.</translation>
         <location line="+1925"/>
         <location line="+1"/>
         <source>Create a circle by 3 rim points</source>
-        <translation type="unfinished">Creează un cerc cu 3 puncte pe circumferință</translation>
+        <translation>Creează un cerc cu 3 puncte pe circumferință</translation>
     </message>
 </context>
 <context>
@@ -3286,7 +3286,7 @@ Use the sketch validation tool.</translation>
         <location line="-1931"/>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">Creează un arc cu propiul centru și cu propiile puncte finale</translation>
+        <translation>Creează un arc cu propiul centru și cu propiile puncte finale</translation>
     </message>
 </context>
 <context>
@@ -3304,7 +3304,7 @@ Use the sketch validation tool.</translation>
         <location line="+342"/>
         <location line="+1"/>
         <source>Create a circle by its center and by a rim point</source>
-        <translation type="unfinished">Creează un cerc cu centru propiu și cu un punct pe circumferință</translation>
+        <translation>Creează un cerc cu centru propiu și cu un punct pe circumferință</translation>
     </message>
 </context>
 <context>
@@ -3384,13 +3384,13 @@ Use the sketch validation tool.</translation>
     <message>
         <location filename="../../Command.cpp" line="+164"/>
         <source>Sketch has support</source>
-        <translation type="unfinished">Schița are suport</translation>
+        <translation>Schița are suport</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-        <translation type="unfinished">Schița cu o față suport nu se poate reorienta.
+        <translation>Schița cu o față suport nu se poate reorienta.
 Doriți să fie detașată de suport?</translation>
     </message>
 </context>
@@ -3435,22 +3435,22 @@ Doriți să fie detașată de suport?</translation>
     <message>
         <location line="+25"/>
         <source>Executes a recompute of the active document after every command</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Executes a recompute of the active document after every command</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Auto Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auto Update</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Forces a recompute of the active document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Forces a recompute of the active document</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Update</translation>
     </message>
 </context>
 <context>
@@ -3458,235 +3458,235 @@ Doriți să fie detașată de suport?</translation>
     <message>
         <location filename="../../TaskSketcherSolverAdvanced.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Default algorithm used for Sketch solving</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default algorithm used for Sketch solving</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Default Solver:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default Solver:</translation>
     </message>
     <message>
         <location line="+17"/>
         <location line="+322"/>
         <source>BFGS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">BFGS</translation>
     </message>
     <message>
         <location line="-317"/>
         <location line="+322"/>
         <source>LevenbergMarquardt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LevenbergMarquardt</translation>
     </message>
     <message>
         <location line="-317"/>
         <location line="+322"/>
         <source>DogLeg</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">DogLeg</translation>
     </message>
     <message>
         <location line="-310"/>
         <source>Type of function to apply in DogLeg for the Gauss step</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Type of function to apply in DogLeg for the Gauss step</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>DogLeg Gauss step:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">DogLeg Gauss step:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>FullPivLU</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-FullPivLU</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LeastNorm-FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-LDLT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LeastNorm-LDLT</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Maximum number of iterations of the default algorithm</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maximum number of iterations of the default algorithm</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Maximum Iterations:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maximum Iterations:</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>If selected, the Maximum iterations value is multiplied by the sketch size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If selected, the Maximum iterations value is multiplied by the sketch size</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sketch size multiplier:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sketch size multiplier:</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Error threshold under which convergence is reached</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error threshold under which convergence is reached</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Convergence:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Convergence:</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Param1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Param1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Param2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Param3</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Algorithm used for the rank revealing QR decomposition</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Algorithm used for the rank revealing QR decomposition</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>QR Algorithm:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">QR Algorithm:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Eigen Dense QR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eigen Dense QR</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Eigen Sparse QR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eigen Sparse QR</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Pivot threshold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pivot threshold</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1E-13</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1E-13</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solving algorithm used for determination of Redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solving algorithm used for determination of Redundant constraints</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redundant Solver:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Redundant Solver:</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Maximum number of iterations of the solver used for determination of Redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maximum number of iterations of the solver used for determination of Redundant constraints</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Max Iterations:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Red. Max Iterations:</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Sketch size multiplier:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Red. Sketch size multiplier:</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Error threshold under which convergence is reached for the solving of redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error threshold under which convergence is reached for the solving of redundant constraints</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Convergence</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Red. Convergence</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1E-10</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1E-10</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Red. Param1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Red. Param1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Red. Param2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Red. Param3</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Degree of verbosity of the debug output to the console</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Degree of verbosity of the debug output to the console</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Console  Debug mode:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Console  Debug mode:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Niciunul</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Minim</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Iteration Level</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Iteration Level</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Solve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solve</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Resets all solver values to their default values</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Resets all solver values to their default values</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Restore Defaults</translation>
     </message>
 </context>
 <context>
@@ -3694,7 +3694,7 @@ Doriți să fie detașată de suport?</translation>
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>

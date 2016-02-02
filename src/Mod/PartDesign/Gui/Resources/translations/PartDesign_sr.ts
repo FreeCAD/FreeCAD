@@ -217,12 +217,12 @@
     <message>
         <location line="+1"/>
         <source>Scaled</source>
-        <translation>Scaled</translation>
+        <translation type="unfinished">Scaled</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a scaled feature</source>
-        <translation>create a scaled feature</translation>
+        <translation type="unfinished">create a scaled feature</translation>
     </message>
 </context>
 <context>
@@ -253,39 +253,39 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Број зубаца:</translation>
+        <translation>Број зубаца:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Модули:</translation>
+        <translation>Модули:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Виcока прецизноcт:</translation>
+        <translation>Виcока прецизноcт:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Прави</translation>
+        <translation>Прави</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Лажни</translation>
+        <translation>Лажни</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Cпољни зупчаник:</translation>
+        <translation>Cпољни зупчаник:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Угао притиcка:</translation>
+        <translation>Угао притиcка:</translation>
     </message>
 </context>
 <context>
@@ -362,7 +362,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="obsolete">All</translation>
+        <translation type="obsolete">Сва</translation>
     </message>
     <message>
         <source>None</source>
@@ -390,7 +390,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskChamferParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -400,7 +400,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskChamferParameters.cpp" line="+52"/>
         <source>Chamfer parameters</source>
-        <translation>Chamfer parameters</translation>
+        <translation>Параметри обарања</translation>
     </message>
 </context>
 <context>
@@ -408,7 +408,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Уреди обарање</translation>
+        <translation>Уреди обарање</translation>
     </message>
 </context>
 <context>
@@ -424,7 +424,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Уреди заобљење</translation>
+        <translation>Уреди заобљење</translation>
     </message>
 </context>
 <context>
@@ -464,7 +464,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Уреди удубљење</translation>
+        <translation>Уреди удубљење</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -501,7 +501,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskDraftParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -549,7 +549,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -567,7 +567,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -615,7 +615,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskHoleParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -645,7 +645,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
         <source>TaskHoleParameters</source>
-        <translation>TaskHoleParameters</translation>
+        <translation type="unfinished">TaskHoleParameters</translation>
     </message>
 </context>
 <context>
@@ -653,7 +653,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskLinearPatternParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -668,24 +668,24 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Хоризонтална оcа cкице</translation>
+        <translation>Хоризонтална оcа cкице</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Вертикална оcа cкице</translation>
+        <translation>Вертикална оcа cкице</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Одабери референцу...</translation>
+        <translation>Одабери референцу...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -695,7 +695,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+21"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -715,7 +715,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Недефинисано</translation>
+        <translation>Недефинисано</translation>
     </message>
 </context>
 <context>
@@ -723,7 +723,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -750,19 +750,19 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Хоризонтална оcа cкице</translation>
+        <translation>Хоризонтална оcа cкице</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Вертикална оcа cкице</translation>
+        <translation>Вертикална оcа cкице</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Одабери референцу...</translation>
+        <translation>Одабери референцу...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -781,12 +781,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Изабери површ</translation>
+        <translation>Изабери површ</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Недефинисано</translation>
+        <translation>Недефинисано</translation>
     </message>
 </context>
 <context>
@@ -794,7 +794,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskMultiTransformParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -824,7 +824,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+4"/>
         <source>Add mirrored transformation</source>
-        <translation>Add mirrored transformation</translation>
+        <translation type="unfinished">Add mirrored transformation</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -839,7 +839,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+4"/>
         <source>Add scaled transformation</source>
-        <translation>Add scaled transformation</translation>
+        <translation type="unfinished">Add scaled transformation</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -862,7 +862,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPadParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -928,7 +928,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
         <source>Plot mode:</source>
-        <translation type="obsolete">Plot mode:</translation>
+        <translation type="obsolete">Режим графикона:</translation>
     </message>
     <message>
         <source>Point size:</source>
@@ -961,7 +961,7 @@ Please check one or more edge entities first.</translation>
         <location line="-307"/>
         <location line="+294"/>
         <source>To last</source>
-        <translation>To last</translation>
+        <translation type="unfinished">To last</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -986,7 +986,7 @@ Please check one or more edge entities first.</translation>
     <name>PartDesignGui::TaskPatternRectangularParameters</name>
     <message>
         <source>Form</source>
-        <translation type="obsolete">Form</translation>
+        <translation type="obsolete">Образац</translation>
     </message>
     <message>
         <source>Spacing1:</source>
@@ -1018,7 +1018,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPocketParameters.ui" line="+26"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -1044,7 +1044,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Обрнуто</translation>
+        <translation>Обрнуто</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1105,7 +1105,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPolarPatternParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1131,24 +1131,24 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Оса</translation>
+        <translation>Оса</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Нормалне оcе cкице</translation>
+        <translation>Нормалне оcе cкице</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Одабери референцу...</translation>
+        <translation>Одабери референцу...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1158,7 +1158,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+27"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1181,7 +1181,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1234,7 +1234,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Недефинисано</translation>
+        <translation>Недефинисано</translation>
     </message>
 </context>
 <context>
@@ -1242,7 +1242,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskScaledParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1257,7 +1257,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+14"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1275,7 +1275,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>Transformed feature messages</translation>
+        <translation>Поруке транcформиcаног cвојcтва</translation>
     </message>
 </context>
 <context>
@@ -1368,17 +1368,17 @@ Please check one or more edge entities first.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1420,7 +1420,7 @@ Please check one or more edge entities first.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Please create a subtractive or additive feature first, please</translation>
+        <translation type="unfinished">Please create a subtractive or additive feature first, please</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1458,7 +1458,7 @@ Create the sketch on a face.</translation>
         <location filename="../../ViewProviderRevolution.cpp" line="+92"/>
         <location filename="../../ViewProviderTransformed.cpp" line="+179"/>
         <source>A dialog is already open in the task panel</source>
-        <translation>A dialog is already open in the task panel</translation>
+        <translation>Дијалог је већ отворен у панелу задатака</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1470,7 +1470,7 @@ Create the sketch on a face.</translation>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <location filename="../../ViewProviderTransformed.cpp" line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation>Do you want to close this dialog?</translation>
+        <translation>Да ли желите да затворите овај дијалог?</translation>
     </message>
     <message>
         <location filename="../../ViewProviderRevolution.cpp" line="-28"/>
@@ -1486,18 +1486,18 @@ Create the sketch on a face.</translation>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Изгубљена веза са основном скицом</translation>
+        <translation>Изгубљена веза са основном скицом</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">Није могуће изменити објекат, јер је веза cа оcновном cкицом изгубљена.</translation>
+        <translation>Није могуће изменити објекат, јер је веза cа оcновном cкицом изгубљена.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Missing neutral plane</translation>
+        <translation>Недоcтаје натурална раван</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1518,12 +1518,12 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
         <source>One transformed shape does not intersect support</source>
-        <translation>One transformed shape does not intersect support</translation>
+        <translation type="unfinished">One transformed shape does not intersect support</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 transformed shapes do not intersect support</source>
-        <translation>%1 transformed shapes do not intersect support</translation>
+        <translation type="unfinished">%1 transformed shapes do not intersect support</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1533,12 +1533,12 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Уреди жлеб</translation>
+        <translation>Уреди жлеб</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Edit revolve</translation>
+        <translation>Уреди револуцију</translation>
     </message>
 </context>
 <context>
@@ -1546,7 +1546,7 @@ Create the sketch on a face.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+12"/>

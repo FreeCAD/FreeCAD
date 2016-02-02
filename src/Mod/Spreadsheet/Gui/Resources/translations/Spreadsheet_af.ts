@@ -159,11 +159,11 @@
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set alias</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set alias for selected cell</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Teks</translation>
+        <translation>Teks</translation>
     </message>
     <message>
         <source>Background</source>
@@ -257,11 +257,11 @@
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished">Horisontaal</translation>
+        <translation>Horisontaal</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Links</translation>
+        <translation>Links</translation>
     </message>
     <message>
         <source>Center</source>
@@ -269,19 +269,19 @@
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Regs</translation>
+        <translation>Regs</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished">Vertikaal</translation>
+        <translation>Vertikaal</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Bo-aansig</translation>
+        <translation>Bo-aansig</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Bodem</translation>
+        <translation>Bodem</translation>
     </message>
     <message>
         <source>&amp;Style</source>
@@ -324,11 +324,11 @@
     </message>
     <message>
         <source>Import file</source>
-        <translation type="unfinished">Voer lêer in</translation>
+        <translation>Voer lêer in</translation>
     </message>
     <message>
         <source>Export file</source>
-        <translation type="unfinished">Voer lêer uit</translation>
+        <translation>Voer lêer uit</translation>
     </message>
     <message>
         <source>Cell contents</source>
@@ -343,11 +343,11 @@
     <name>QtColorPicker</name>
     <message>
         <source>Black</source>
-        <translation type="unfinished">Swart</translation>
+        <translation>Swart</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">Wit</translation>
+        <translation>Wit</translation>
     </message>
     <message>
         <source>Red</source>
@@ -418,11 +418,18 @@
     <name>Sheet</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Vorm</translation>
+        <translation>Vorm</translation>
     </message>
     <message>
         <source>&amp;Contents</source>
         <translation type="unfinished">&amp;Contents</translation>
+    </message>
+</context>
+<context>
+    <name>SpreadsheetGui::Module</name>
+    <message>
+        <source>Unnamed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

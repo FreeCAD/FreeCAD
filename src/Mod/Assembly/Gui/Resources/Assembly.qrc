@@ -25,5 +25,6 @@
         <file>translations/Assembly_hu.qm</file>
         <file>translations/Assembly_pt-PT.qm</file>
         <file>translations/Assembly_sr.qm</file>
+        <file>translations/Assembly_el.qm</file>
     </qresource>
 </RCC> 

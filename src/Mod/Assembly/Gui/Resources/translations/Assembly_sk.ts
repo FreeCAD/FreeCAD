@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+50"/>
         <source>Assembly</source>
-        <translation>Assembly</translation>
+        <translation type="unfinished">Assembly</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../../Command.cpp" line="+42"/>
         <source>Assembly</source>
-        <translation>Assembly</translation>
+        <translation type="unfinished">Assembly</translation>
     </message>
     <message>
         <location line="+1"/>

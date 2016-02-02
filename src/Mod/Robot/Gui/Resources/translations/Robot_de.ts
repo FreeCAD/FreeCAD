@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Verkleidete Bewegungsbahn...</translation>
+        <translation>Verkleidete Bewegungsbahn...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Erstellt ein Verkleidungsobjekt, das gewisse Eigenschaften einer Bewegungsbahn überschreibt</translation>
+        <translation>Erstellt ein Verkleidungsobjekt, das gewisse Eigenschaften einer Bewegungsbahn überschreibt</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -409,13 +409,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished"></translation>
+        <translation>KRL-Datei</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location line="-61"/>

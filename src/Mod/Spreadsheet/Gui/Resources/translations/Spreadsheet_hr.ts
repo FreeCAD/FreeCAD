@@ -159,11 +159,11 @@
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set alias</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set alias for selected cell</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Tekst</translation>
+        <translation>Tekst</translation>
     </message>
     <message>
         <source>Background</source>
@@ -257,11 +257,11 @@
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished">Vodoravno</translation>
+        <translation>Vodoravno</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Lijevo</translation>
+        <translation>Lijevo</translation>
     </message>
     <message>
         <source>Center</source>
@@ -269,19 +269,19 @@
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Desno</translation>
+        <translation>Desno</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished">Okomito</translation>
+        <translation>Okomito</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Gore</translation>
+        <translation>Gore</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Ispod</translation>
+        <translation>Ispod</translation>
     </message>
     <message>
         <source>&amp;Style</source>
@@ -324,11 +324,11 @@
     </message>
     <message>
         <source>Import file</source>
-        <translation type="unfinished">Uvoz datoteke</translation>
+        <translation>Uvoz datoteke</translation>
     </message>
     <message>
         <source>Export file</source>
-        <translation type="unfinished">Izvoz datoteke</translation>
+        <translation>Izvoz datoteke</translation>
     </message>
     <message>
         <source>Cell contents</source>
@@ -343,11 +343,11 @@
     <name>QtColorPicker</name>
     <message>
         <source>Black</source>
-        <translation type="unfinished">Crna</translation>
+        <translation>Crna</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">Bijela</translation>
+        <translation>Bijela</translation>
     </message>
     <message>
         <source>Red</source>
@@ -418,11 +418,18 @@
     <name>Sheet</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Obrazac</translation>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <source>&amp;Contents</source>
         <translation type="unfinished">&amp;Contents</translation>
+    </message>
+</context>
+<context>
+    <name>SpreadsheetGui::Module</name>
+    <message>
+        <source>Unnamed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

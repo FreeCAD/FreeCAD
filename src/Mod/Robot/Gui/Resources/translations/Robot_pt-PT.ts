@@ -65,12 +65,12 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>Edge to Trajectory...</translation>
+        <translation>Aresta para trajetória...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Generate a Trajectory from a set of edges</source>
-        <translation>Generate a Trajectory from a set of edges</translation>
+        <translation>Gerar uma trajetória a partir de um conjunto de arestas</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
     <message>
         <location line="+1"/>
         <source>Kuka compact subroutine...</source>
-        <translation>Kuka compact subroutine...</translation>
+        <translation>Kuka sub-rotina compacta...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the trajectory as a compact KRL subroutine.</source>
-        <translation>Export the trajectory as a compact KRL subroutine.</translation>
+        <translation>Exporte a trajetória como uma sub-rotina KRL compacta.</translation>
     </message>
 </context>
 <context>
@@ -101,12 +101,12 @@
     <message>
         <location line="+1"/>
         <source>Kuka full subroutine...</source>
-        <translation>Kuka full subroutine...</translation>
+        <translation>Kuka sub-rotina completa...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the trajectory as a full KRL subroutine.</source>
-        <translation>Export the trajectory as a full KRL subroutine.</translation>
+        <translation>Exporte a trajetória como uma sub-rotina KRL completa.</translation>
     </message>
 </context>
 <context>
@@ -196,7 +196,7 @@
     <message>
         <location line="+1"/>
         <source>Insert robot Tool location into trajectory</source>
-        <translation>Insert robot Tool location into trajectory</translation>
+        <translation>Inserir localização da ferramenta de robô na trajetória</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation>Insert preselection position into trajectory (W)</translation>
+        <translation type="unfinished">Insert preselection position into trajectory (W)</translation>
     </message>
 </context>
 <context>
@@ -246,7 +246,7 @@
     <message>
         <location line="+1"/>
         <source>set the default orientation for subsequent commands for waypoint creation</source>
-        <translation>set the default orientation for subsequent commands for waypoint creation</translation>
+        <translation type="unfinished">set the default orientation for subsequent commands for waypoint creation</translation>
     </message>
 </context>
 <context>
@@ -264,7 +264,7 @@
     <message>
         <location line="+1"/>
         <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-        <translation>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+        <translation type="unfinished">set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
     </message>
 </context>
 <context>
@@ -309,12 +309,12 @@
     <message>
         <location line="+1"/>
         <source>Trajectory compound...</source>
-        <translation>Trajectory compound...</translation>
+        <translation type="unfinished">Trajectory compound...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Group and connect some trajectories to one</source>
-        <translation>Group and connect some trajectories to one</translation>
+        <translation type="unfinished">Group and connect some trajectories to one</translation>
     </message>
 </context>
 <context>
@@ -348,17 +348,17 @@
     <message>
         <location filename="../../Workbench.cpp" line="+53"/>
         <source>Trajectory tools</source>
-        <translation>Trajectory tools</translation>
+        <translation type="unfinished">Trajectory tools</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Robot tools</source>
-        <translation>Robot tools</translation>
+        <translation type="unfinished">Robot tools</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert Robot</source>
-        <translation>Insert Robot</translation>
+        <translation type="unfinished">Insert Robot</translation>
     </message>
 </context>
 <context>
@@ -409,13 +409,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">KRL file</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os Ficheiros</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -426,7 +426,7 @@
     <message>
         <location filename="../../CommandInsertRobot.cpp" line="+1"/>
         <source>Select one robot and one shape or VRML object.</source>
-        <translation>Select one robot and one shape or VRML object.</translation>
+        <translation type="unfinished">Select one robot and one shape or VRML object.</translation>
     </message>
     <message>
         <location filename="../../CommandTrajectory.cpp" line="+79"/>
@@ -436,23 +436,23 @@
     <message>
         <location line="+1"/>
         <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-        <translation>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
+        <translation type="unfinished">You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Select one Robot to set home postion</translation>
+        <translation type="unfinished">Select one Robot to set home postion</translation>
     </message>
     <message>
         <location line="+49"/>
         <source>Select one Robot</source>
-        <translation>Select one Robot</translation>
+        <translation type="unfinished">Select one Robot</translation>
     </message>
     <message>
         <location filename="../../CommandTrajectory.cpp" line="-24"/>
         <location line="+17"/>
         <source>Select one Trajectory object.</source>
-        <translation>Select one Trajectory object.</translation>
+        <translation type="unfinished">Select one Trajectory object.</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -487,7 +487,7 @@
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Select the Trajectory which you want to dress up.</translation>
+        <translation type="unfinished">Select the Trajectory which you want to dress up.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>
@@ -573,7 +573,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.cpp" line="+47"/>
         <source>TaskEdge2TracParameter</source>
-        <translation>TaskEdge2TracParameter</translation>
+        <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
 </context>
 <context>
@@ -631,7 +631,7 @@
     <message>
         <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
         <source>TaskRobot6Axis</source>
-        <translation>TaskRobot6Axis</translation>
+        <translation type="unfinished">TaskRobot6Axis</translation>
     </message>
 </context>
 <context>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../../TaskRobotControl.cpp" line="+46"/>
         <source>TaskRobotControl</source>
-        <translation>TaskRobotControl</translation>
+        <translation type="unfinished">TaskRobotControl</translation>
     </message>
 </context>
 <context>
@@ -647,7 +647,7 @@
     <message>
         <location filename="../../TaskRobotMessages.cpp" line="+46"/>
         <source>TaskRobotMessages</source>
-        <translation>TaskRobotMessages</translation>
+        <translation type="unfinished">TaskRobotMessages</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
         <source>Dress Up Parameter</source>
-        <translation>Dress Up Parameter</translation>
+        <translation type="unfinished">Dress Up Parameter</translation>
     </message>
 </context>
 <context>
@@ -776,22 +776,22 @@
     <message>
         <location line="+18"/>
         <source>Edges: 0</source>
-        <translation>Edges: 0</translation>
+        <translation type="unfinished">Edges: 0</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Cluster: 0</source>
-        <translation>Cluster: 0</translation>
+        <translation type="unfinished">Cluster: 0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Sizing Value:</source>
-        <translation>Sizing Value:</translation>
+        <translation type="unfinished">Sizing Value:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Use orientation of edge</source>
-        <translation>Use orientation of edge</translation>
+        <translation type="unfinished">Use orientation of edge</translation>
     </message>
     <message>
         <source>TaskEdge2TracParameter</source>
@@ -982,7 +982,7 @@
     <message>
         <location line="+36"/>
         <source>Don&apos;t change Cont</source>
-        <translation>Don&apos;t change Cont</translation>
+        <translation type="unfinished">Don&apos;t change Cont</translation>
     </message>
     <message>
         <location line="+5"/>

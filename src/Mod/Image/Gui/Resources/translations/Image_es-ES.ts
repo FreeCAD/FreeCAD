@@ -64,22 +64,22 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Plano de imagen</translation>
+        <translation>Plano de imagen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">Plano XY</translation>
+        <translation>Plano XY</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">Plano XZ</translation>
+        <translation>Plano XZ</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">Plano YZ</translation>
+        <translation>Plano YZ</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -89,7 +89,7 @@
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Desplazamiento:</translation>
+        <translation>Desplazamiento:</translation>
     </message>
 </context>
 <context>

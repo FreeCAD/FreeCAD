@@ -207,23 +207,23 @@
 <context>
     <name>Path</name>
     <message>
-        <location filename="InitGui.py" line="105"/>
+        <location filename="InitGui.py" line="107"/>
         <source>Project Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="106"/>
-        <source>Prepatory Commands</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="107"/>
-        <source>New Operation</source>
+        <location filename="InitGui.py" line="110"/>
+        <source>Path Modification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="InitGui.py" line="108"/>
-        <source>Path Modification</source>
+        <source>Partial Commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="109"/>
+        <source>New Operations</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -232,6 +232,25 @@
     <message>
         <location filename="PathProfile.py" line="48"/>
         <source>If the toolpath is a closed polyline this is True</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathArray</name>
+    <message>
+        <location filename="PathArray.py" line="106"/>
+        <source>Array</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathArray.py" line="107"/>
+        <source>Creates an array from a selected path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathArray.py" line="120"/>
+        <source>Please select exactly one path object
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -271,17 +290,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathCompoundExtended.py" line="91"/>
+        <location filename="PathCompoundExtended.py" line="95"/>
         <source>Compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathCompoundExtended.py" line="93"/>
+        <location filename="PathCompoundExtended.py" line="97"/>
         <source>Creates a Path Compound object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathCompoundExtended.py" line="100"/>
+        <location filename="PathCompoundExtended.py" line="104"/>
         <source>Create Compound</source>
         <translation type="unfinished"></translation>
     </message>
@@ -378,6 +397,68 @@
     </message>
 </context>
 <context>
+    <name>PathFacePocket</name>
+    <message>
+        <location filename="PathFacePocket.py" line="142"/>
+        <source>Face Pocket</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFacePocket.py" line="143"/>
+        <source>Creates a pocket inside a loop of edges or a face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFacePocket.py" line="156"/>
+        <source>Please select an edges loop from one object, or a single face
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFacePocket.py" line="161"/>
+        <source>Please select only edges or a single face
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFacePocket.py" line="168"/>
+        <source>The selected edges don&apos;t form a loop
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathFaceProfile</name>
+    <message>
+        <location filename="PathFaceProfile.py" line="114"/>
+        <source>Face Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFaceProfile.py" line="115"/>
+        <source>Creates a profile object around a selected face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFaceProfile.py" line="125"/>
+        <source>Please select one face or wire
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFaceProfile.py" line="128"/>
+        <source>Please select only one face or wire
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFaceProfile.py" line="131"/>
+        <source>Please select only a face or a wire
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PathFixture</name>
     <message>
         <location filename="PathFixture.py" line="119"/>
@@ -397,21 +478,6 @@
 </context>
 <context>
     <name>PathFromShape</name>
-    <message>
-        <location filename="PathFromShape.py" line="75"/>
-        <source>Gcode from a Shape</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathFromShape.py" line="77"/>
-        <source>Creates GCode from a FreeCAD wire/curve</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathFromShape.py" line="83"/>
-        <source>Create GCode from a wire/curve</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>PathHop</name>
@@ -454,6 +520,20 @@
     </message>
 </context>
 <context>
+    <name>PathInspect</name>
+    <message>
+        <location filename="PathInspect.py" line="131"/>
+        <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathInspect.py" line="181"/>
+        <source>Please select exactly one path object
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PathKurve</name>
     <message>
         <location filename="PathKurve.py" line="184"/>
@@ -472,12 +552,12 @@
 <context>
     <name>PathMachine</name>
     <message>
-        <location filename="PathMachine.py" line="198"/>
+        <location filename="PathMachine.py" line="202"/>
         <source>Machine Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathMachine.py" line="206"/>
+        <location filename="PathMachine.py" line="210"/>
         <source>Create a Machine object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -650,17 +730,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathProject.py" line="118"/>
+        <location filename="PathProject.py" line="122"/>
         <source>Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathProject.py" line="120"/>
+        <location filename="PathProject.py" line="124"/>
         <source>Creates a Path Project object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathProject.py" line="131"/>
+        <location filename="PathProject.py" line="135"/>
         <source>Create Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -720,28 +800,110 @@
 <context>
     <name>PathWorkbench</name>
     <message>
-        <location filename="InitGui.py" line="99"/>
+        <location filename="InitGui.py" line="102"/>
         <source>Commands for setting up Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="100"/>
-        <source>Prepatory Commands</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="101"/>
+        <location filename="InitGui.py" line="104"/>
         <source>Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="102"/>
+        <location filename="InitGui.py" line="105"/>
         <source>Commands for grouping,copying, and organizing operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="108"/>
+        <location filename="InitGui.py" line="110"/>
         <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="103"/>
+        <source>Partial Commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Path_Custom</name>
+    <message>
+        <location filename="PathCustom.py" line="69"/>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathCustom.py" line="70"/>
+        <source>Creates a path object based on custom G-code</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Path_FromShape</name>
+    <message>
+        <location filename="PathFromShape.py" line="79"/>
+        <source>Path from a Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFromShape.py" line="81"/>
+        <source>Creates a Path from a wire/curve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFromShape.py" line="94"/>
+        <source>Please select exactly one Part-based object
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathFromShape.py" line="97"/>
+        <source>Create path from shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Path_Inspect</name>
+    <message>
+        <location filename="PathInspect.py" line="168"/>
+        <source>Inspect G-code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathInspect.py" line="169"/>
+        <source>Inspects the G-code contents of a path</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Path_SimpleCopy</name>
+    <message>
+        <location filename="PathSimpleCopy.py" line="62"/>
+        <source>Simple Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSimpleCopy.py" line="47"/>
+        <source>Creates a non-parametric copy of another path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSimpleCopy.py" line="59"/>
+        <source>Please select exactly one path object
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Path_ToolChange</name>
+    <message>
+        <location filename="PathToolChange.py" line="63"/>
+        <source>Tool Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathToolChange.py" line="64"/>
+        <source>Changes the current tool</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -809,7 +971,7 @@
 <context>
     <name>Shape Object</name>
     <message>
-        <location filename="PathFromShape.py" line="41"/>
+        <location filename="PathFromShape.py" line="44"/>
         <source>The base Shape of this toolpath</source>
         <translation type="unfinished"></translation>
     </message>

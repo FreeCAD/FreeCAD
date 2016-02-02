@@ -59,37 +59,37 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Válasszon orientáció</translation>
+        <translation>Válasszon orientáció</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Kép sík</translation>
+        <translation>Kép sík</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">XY-sík</translation>
+        <translation>XY-sík</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ-sík</translation>
+        <translation>XZ-sík</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ-sík</translation>
+        <translation>YZ-sík</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Fordított irányban</translation>
+        <translation>Fordított irányban</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Eltolás:</translation>
+        <translation>Eltolás:</translation>
     </message>
 </context>
 <context>

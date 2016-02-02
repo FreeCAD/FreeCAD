@@ -59,7 +59,7 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">选择方向</translation>
+        <translation>选择方向</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -69,27 +69,27 @@
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">XY平面</translation>
+        <translation>XY平面</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ平面</translation>
+        <translation>XZ平面</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ平面</translation>
+        <translation>YZ平面</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">反转方向</translation>
+        <translation>反转方向</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">偏移:</translation>
+        <translation>偏移:</translation>
     </message>
 </context>
 <context>

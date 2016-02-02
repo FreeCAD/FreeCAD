@@ -5,7 +5,7 @@
     <name>CmdMeshAddFacet</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Add triangle</source>
@@ -13,14 +13,14 @@
     </message>
     <message>
         <source>Add triangle manually to a mesh</source>
-        <translation>Adauga manual un triunghi la retea</translation>
+        <translation>Adaugă manual un triunghi la rețea</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshBoundingBox</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Boundings info...</source>
@@ -35,7 +35,7 @@
     <name>CmdMeshBuildRegularSolid</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Regular solid...</source>
@@ -54,14 +54,14 @@
     </message>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshDifference</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Difference</source>
@@ -72,7 +72,7 @@
     <name>CmdMeshEvaluateFacet</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Face info</source>
@@ -87,7 +87,7 @@
     <name>CmdMeshEvaluateSolid</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Check solid mesh</source>
@@ -102,7 +102,7 @@
     <name>CmdMeshEvaluation</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Opens a dialog to analyze and repair a mesh</source>
@@ -150,7 +150,7 @@
     <name>CmdMeshExport</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Export mesh...</source>
@@ -165,7 +165,7 @@
     <name>CmdMeshFillInteractiveHole</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Close hole</source>
@@ -180,7 +180,7 @@
     <name>CmdMeshFillupHoles</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Fill holes...</source>
@@ -195,7 +195,7 @@
     <name>CmdMeshFlipNormals</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Flip normals</source>
@@ -210,7 +210,7 @@
     <name>CmdMeshFromGeometry</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Create mesh from geometry...</source>
@@ -229,18 +229,18 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">Creaza retea din forma...</translation>
+        <translation>Creaza retea din forma...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">Divide forma</translation>
+        <translation>Divide forma</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Harmonize normals</source>
@@ -255,7 +255,7 @@
     <name>CmdMeshImport</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Import mesh...</source>
@@ -270,7 +270,7 @@
     <name>CmdMeshIntersection</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Intersection</source>
@@ -285,18 +285,18 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Merge</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Merges selected meshes into one</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshPolyCut</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Cut mesh</source>
@@ -311,7 +311,7 @@
     <name>CmdMeshPolySegm</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Make segment</source>
@@ -326,7 +326,7 @@
     <name>CmdMeshPolySelect</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Select mesh</source>
@@ -341,7 +341,7 @@
     <name>CmdMeshPolySplit</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Split mesh</source>
@@ -356,7 +356,7 @@
     <name>CmdMeshPolyTrim</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Trim mesh</source>
@@ -371,7 +371,7 @@
     <name>CmdMeshRemoveCompByHand</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Remove components by hand...</source>
@@ -386,7 +386,7 @@
     <name>CmdMeshRemoveComponents</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Remove components...</source>
@@ -401,7 +401,7 @@
     <name>CmdMeshSegmentation</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Create mesh segments...</source>
@@ -416,7 +416,7 @@
     <name>CmdMeshSmoothing</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Smooth...</source>
@@ -431,7 +431,7 @@
     <name>CmdMeshToolMesh</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Segment by tool mesh</source>
@@ -446,7 +446,7 @@
     <name>CmdMeshTransform</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Transform mesh</source>
@@ -476,7 +476,7 @@
     <name>CmdMeshUnion</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Union</source>
@@ -487,7 +487,7 @@
     <name>CmdMeshVertexCurvature</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Calculates the curvature of the vertices of a mesh</source>
@@ -502,7 +502,7 @@
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Curvature info</source>
@@ -757,7 +757,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
         <source>Alt+O</source>
-        <translation>Alt+O</translation>
+        <translation type="unfinished">Alt+O</translation>
     </message>
     <message>
         <source>Solid:</source>
@@ -833,6 +833,33 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <message>
         <source>No active document</source>
         <translation>Nici un document activ</translation>
+    </message>
+</context>
+<context>
+    <name>MeshGui::DlgSettingsImportExport</name>
+    <message>
+        <source>Mesh Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines the deviation of tessellation to the actual surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum mesh deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -938,7 +965,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Numai selecția</translation>
+        <translation>Numai selecția</translation>
     </message>
 </context>
 <context>
@@ -964,7 +991,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Terminare</translation>
+        <translation>Terminare</translation>
     </message>
 </context>
 <context>
@@ -1077,31 +1104,31 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Selecţie</translation>
+        <translation>Selecţie</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Adaugă</translation>
+        <translation>Adaugă</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Eliberează</translation>
+        <translation>Eliberează</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">Respecta doar triunghiurile vizibile</translation>
+        <translation>Respecta doar triunghiurile vizibile</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Respecta numai triunghiuri cu normalele catre ecran</translation>
+        <translation>Respecta numai triunghiuri cu normalele catre ecran</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Utilizați o unealtă pensulă pentru a selecta zona</translation>
+        <translation>Utilizați o unealtă pensulă pentru a selecta zona</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Curăță complet zona selectată</translation>
+        <translation>Curăță complet zona selectată</translation>
     </message>
 </context>
 <context>
@@ -1119,7 +1146,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Selectare plan</translation>
+        <translation>Selectare plan</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
@@ -1130,16 +1157,16 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation>OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">A intervenit o eroare necunoscută în timpul rulării OpenSCAD.</translation>
+        <translation>A intervenit o eroare necunoscută în timpul rulării OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD nu poate fi găsit pe sistem.
+        <translation>OpenSCAD nu poate fi găsit pe sistem.
 Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     </message>
 </context>
@@ -1302,66 +1329,70 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Afișează componente</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Mesh Files</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Binary STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Binary Mesh</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alias Mesh</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Object File Format</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inventor V2.1 ascii</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stanford Polygon</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">X3D Extensible 3D</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Compressed VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Python module def</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+    </message>
+    <message>
+        <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

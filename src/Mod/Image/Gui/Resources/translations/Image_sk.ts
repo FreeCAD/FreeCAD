@@ -69,17 +69,17 @@
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">Rovina XY</translation>
+        <translation>Rovina XY</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ rovina</translation>
+        <translation>XZ rovina</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ rovine</translation>
+        <translation>YZ rovine</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -89,7 +89,7 @@
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Odstup:</translation>
+        <translation>Odstup:</translation>
     </message>
 </context>
 <context>

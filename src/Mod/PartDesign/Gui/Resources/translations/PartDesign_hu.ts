@@ -408,7 +408,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Letörés szerkesztése</translation>
+        <translation>Letörés szerkesztése</translation>
     </message>
 </context>
 <context>
@@ -424,7 +424,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Lekerekítés módosítása</translation>
+        <translation>Lekerekítés módosítása</translation>
     </message>
 </context>
 <context>
@@ -464,7 +464,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Zseb szerkesztése</translation>
+        <translation>Zseb szerkesztése</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -668,12 +668,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vázlat vízszintes tengely</translation>
+        <translation>Vázlat vízszintes tengely</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vázlat függőleges tengely</translation>
+        <translation>Vázlat függőleges tengely</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -750,12 +750,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vázlat vízszintes tengely</translation>
+        <translation>Vázlat vízszintes tengely</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vázlat függőleges tengely</translation>
+        <translation>Vázlat függőleges tengely</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1044,7 +1044,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Fordított</translation>
+        <translation>Fordított</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1131,7 +1131,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Tengely</translation>
+        <translation>Tengely</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1368,17 +1368,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>

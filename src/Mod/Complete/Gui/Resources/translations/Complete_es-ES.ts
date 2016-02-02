@@ -24,12 +24,12 @@
     <message>
         <location filename="../../Workbench.cpp" line="+57"/>
         <source>Self-test...</source>
-        <translation>Auto-prueba...</translation>
+        <translation>hola</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Runs a self-test to check if the application works properly</source>
-        <translation>Ejecuta una auto-prueba para comprobar si la aplicación funciona correctamente</translation>
+        <translation>Runs a self-test to check if the application works properly</translation>
     </message>
 </context>
 <context>

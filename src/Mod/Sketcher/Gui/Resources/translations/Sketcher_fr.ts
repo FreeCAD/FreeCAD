@@ -6,17 +6,17 @@
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="+1515"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>Clone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un clone de la géométrie en prenant comme référence le dernier point sélectionné</translation>
     </message>
 </context>
 <context>
@@ -24,17 +24,17 @@
     <message>
         <location line="-1420"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Close Shape</source>
-        <translation type="unfinished">Fermer la forme</translation>
+        <translation>Fermer la forme</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Produce closed shape by Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished">Produire la forme fermée en liant le point d&apos;arriver de l&apos;élément avec le point de départ de l&apos;élément suivant</translation>
+        <translation>Produire la forme fermée en liant le point d&apos;arriver de l&apos;élément avec le point de départ de l&apos;élément suivant</translation>
     </message>
 </context>
 <context>
@@ -42,17 +42,17 @@
     <message>
         <location line="+1443"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un clone de la géométrie en prenant comme référence le dernier point sélectionné</translation>
     </message>
 </context>
 <context>
@@ -60,27 +60,27 @@
     <message>
         <location filename="../../CommandCreateGeo.cpp" line="+1778"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create arc</source>
-        <translation type="unfinished">Créer un arc</translation>
+        <translation>Créer un arc</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc in the sketcher</source>
-        <translation type="unfinished">Créer un arc de cercle dans l&apos;esquisse</translation>
+        <translation>Créer un arc de cercle dans l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>Center and end points</source>
-        <translation type="unfinished">Centre et points d&apos;extrémité</translation>
+        <translation>Centre et points d&apos;extrémité</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>End points and rim point</source>
-        <translation type="unfinished">Points d&apos;extrémité et point sur périmètre</translation>
+        <translation>Points d&apos;extrémité et point sur périmètre</translation>
     </message>
 </context>
 <context>
@@ -88,27 +88,27 @@
     <message>
         <location line="+1846"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create circle</source>
-        <translation type="unfinished">Créer un cercle</translation>
+        <translation>Créer un cercle</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a circle in the sketcher</source>
-        <translation type="unfinished">Créer un cercle dans l&apos;esquisse</translation>
+        <translation>Créer un cercle dans l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>Center and rim point</source>
-        <translation type="unfinished">Point de centre et de bord</translation>
+        <translation>Point de centre et de bord</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>3 rim points</source>
-        <translation type="unfinished">Cercle par 3 points</translation>
+        <translation>Cercle par 3 points</translation>
     </message>
 </context>
 <context>
@@ -116,32 +116,32 @@
     <message>
         <location line="-445"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a conic</source>
-        <translation type="unfinished">Créer une conique</translation>
+        <translation>Créer une conique</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a conic in the sketch</source>
-        <translation type="unfinished">Créer une conique dans l’esquisse</translation>
+        <translation>Créer une conique dans l’esquisse</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Ellipse by center, major radius, point</source>
-        <translation type="unfinished">Ellipse par centre, demi-grand axe, point</translation>
+        <translation>Ellipse par centre, demi-grand axe, point</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-        <translation type="unfinished">Ellipse de périapse, apoapse, demi-petit axe</translation>
+        <translation>Ellipse de périapse, apoapse, demi-petit axe</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Arc of ellipse by center, major radius, endpoints</source>
-        <translation type="unfinished">Arc d&apos;ellipse par centre, demi-grand axe, extrémités</translation>
+        <translation>Arc d&apos;ellipse par centre, demi-grand axe, extrémités</translation>
     </message>
 </context>
 <context>
@@ -149,47 +149,47 @@
     <message>
         <location line="+1849"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create regular polygon</source>
-        <translation type="unfinished">Créer un polygone régulier</translation>
+        <translation>Créer un polygone régulier</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an regular polygon in the sketcher</source>
-        <translation type="unfinished">Créez un polygone régulier dans l&apos;esquisse</translation>
+        <translation>Créez un polygone régulier dans l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+100"/>
         <source>Triangle</source>
-        <translation type="unfinished">Triangle</translation>
+        <translation>Triangle</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Square</source>
-        <translation type="unfinished">Carré</translation>
+        <translation>Carré</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Pentagon</source>
-        <translation type="unfinished">Pentagone</translation>
+        <translation>Pentagone</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Hexagon</source>
-        <translation type="unfinished">Hexagone</translation>
+        <translation>Hexagone</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Heptagon</source>
-        <translation type="unfinished">Heptagon</translation>
+        <translation>Heptagon</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Octagon</source>
-        <translation type="unfinished">Octogone</translation>
+        <translation>Octogone</translation>
     </message>
 </context>
 <context>
@@ -197,17 +197,17 @@
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="-1337"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Connect Edges</source>
-        <translation type="unfinished">Raccorder les arêtes</translation>
+        <translation>Raccorder les arêtes</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished">Lier le point d&apos;arriver de l&apos;élément avec le point de départ de l&apos;élément suivant</translation>
+        <translation>Lier le point d&apos;arriver de l&apos;élément avec le point de départ de l&apos;élément suivant</translation>
     </message>
 </context>
 <context>
@@ -349,17 +349,17 @@
     <message>
         <location line="+2673"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain InternalAlignment</source>
-        <translation type="unfinished">Contraindre l&apos;alignement interne</translation>
+        <translation>Contraindre l&apos;alignement interne</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrains an element to be aligned with the internal geometry of another element</source>
-        <translation type="unfinished">Contraindre un élément pour qu&apos;il soit aligné avec la géométrie interne d&apos;un autre élément</translation>
+        <translation>Contraindre un élément pour qu&apos;il soit aligné avec la géométrie interne d&apos;un autre élément</translation>
     </message>
 </context>
 <context>
@@ -413,7 +413,7 @@
     <message>
         <location line="+1"/>
         <source>Create a perpendicular constraint between two lines</source>
-        <translation type="unfinished">Créer une contrainte de perpendicularité entre deux lignes</translation>
+        <translation>Créer une contrainte de perpendicularité entre deux lignes</translation>
     </message>
     <message>
         <source>Create a Perpendicular constraint between two lines</source>
@@ -461,17 +461,17 @@
     <message>
         <location line="+872"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain refraction (Snell&apos;s law&apos;)</source>
-        <translation type="unfinished">Contraindre la réfraction (Loi de Snell)</translation>
+        <translation>Contraindre la réfraction (Loi de Snell)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</source>
-        <translation type="unfinished">Créer une contrainte de réfraction (Loi de Snell) entre deux points d’extrémités des rayons et une arête en tant qu&apos;interface.</translation>
+        <translation>Créer une contrainte de réfraction (Loi de Snell) entre deux points d’extrémités des rayons et une arête en tant qu&apos;interface.</translation>
     </message>
 </context>
 <context>
@@ -489,7 +489,7 @@
     <message>
         <location line="+1"/>
         <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-        <translation type="unfinished">Créer une contrainte de symétrie entre deux points par rapport à une ligne ou un point</translation>
+        <translation>Créer une contrainte de symétrie entre deux points par rapport à une ligne ou un point</translation>
     </message>
     <message>
         <source>Create an symmetry constraint between two points with respect to a line</source>
@@ -537,17 +537,17 @@
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="+1270"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer une copie simple de la géométrie en prenant comme référence le dernier point sélectionné</translation>
     </message>
 </context>
 <context>
@@ -555,17 +555,17 @@
     <message>
         <location filename="../../CommandCreateGeo.cpp" line="-3656"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create arc by three points</source>
-        <translation type="unfinished">Arc par 3 points</translation>
+        <translation>Arc par 3 points</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Créer un arc par les point d&apos;extrémités et un point sur l&apos;arc</translation>
+        <translation>Créer un arc par les point d&apos;extrémités et un point sur l&apos;arc</translation>
     </message>
 </context>
 <context>
@@ -573,17 +573,17 @@
     <message>
         <location line="+1924"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create circle by three points</source>
-        <translation type="unfinished">Créer un cercle par trois points</translation>
+        <translation>Créer un cercle par trois points</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a circle by 3 perimeter points</source>
-        <translation type="unfinished">Créer un cercle par 3 points de périmetre</translation>
+        <translation>Créer un cercle par 3 points de périmetre</translation>
     </message>
 </context>
 <context>
@@ -596,12 +596,12 @@
     <message>
         <location line="+1"/>
         <source>Create arc by center</source>
-        <translation type="unfinished">Créer un arc à partir du centre</translation>
+        <translation>Créer un arc à partir du centre</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">Créer un arc par son centre et ses points d&apos;extrémité</translation>
+        <translation>Créer un arc par son centre et ses points d&apos;extrémité</translation>
     </message>
     <message>
         <source>Create arc</source>
@@ -617,17 +617,17 @@
     <message>
         <location line="+1860"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse</source>
-        <translation type="unfinished">Créer un arc d&apos;ellipse</translation>
+        <translation>Créer un arc d&apos;ellipse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse in the sketch</source>
-        <translation type="unfinished">Créer un arc d&apos;ellipse dans l&apos;esquisse</translation>
+        <translation>Créer un arc d&apos;ellipse dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -671,17 +671,17 @@
     <message>
         <location line="-1052"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create ellipse by 3 points</source>
-        <translation type="unfinished">Créer une ellipse via 3 points</translation>
+        <translation>Créer une ellipse via 3 points</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by 3 points in the sketch</source>
-        <translation type="unfinished">Créer une ellipse via 3 points d&apos;esquisse</translation>
+        <translation>Créer une ellipse via 3 points d&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -689,17 +689,17 @@
     <message>
         <location line="-31"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create ellipse by center</source>
-        <translation type="unfinished">Créer une ellipse par son centre</translation>
+        <translation>Créer une ellipse par son centre</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by center in the sketch</source>
-        <translation type="unfinished">Créer une ellipse par son centre dans l&apos;esquisse</translation>
+        <translation>Créer une ellipse par son centre dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -729,17 +729,17 @@
     <message>
         <location line="+957"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create heptagon</source>
-        <translation type="unfinished">Créer un heptagone</translation>
+        <translation>Créer un heptagone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a heptagon in the sketch</source>
-        <translation type="unfinished">Créer un heptagone dans l&apos;esquisse</translation>
+        <translation>Créer un heptagone dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -747,17 +747,17 @@
     <message>
         <location line="-27"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create hexagon</source>
-        <translation type="unfinished">Créer un hexagone</translation>
+        <translation>Créer un hexagone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a hexagon in the sketch</source>
-        <translation type="unfinished">Créer un hexagone dans l&apos;esquisse</translation>
+        <translation>Créer un hexagone dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -783,17 +783,17 @@
     <message>
         <location line="+4946"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create octagon</source>
-        <translation type="unfinished">Créer un octogone</translation>
+        <translation>Créer un octogone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an octagon in the sketch</source>
-        <translation type="unfinished">Créer un octogone dans l&apos;esquisse</translation>
+        <translation>Créer un octogone dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -801,17 +801,17 @@
     <message>
         <location line="-78"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create pentagon</source>
-        <translation type="unfinished">Créer un Pentagone</translation>
+        <translation>Créer un Pentagone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a pentagon in the sketch</source>
-        <translation type="unfinished">Créer un pentagone dans l&apos;esquisse</translation>
+        <translation>Créer un pentagone dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -847,7 +847,7 @@
     <message>
         <location line="+1"/>
         <source>Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</source>
-        <translation type="unfinished">Créer une polyligne. &apos;M&apos; pour basculer entre les comportements</translation>
+        <translation>Créer une polyligne. &apos;M&apos; pour basculer entre les comportements</translation>
     </message>
     <message>
         <source>Create a polyline in the sketch</source>
@@ -877,17 +877,17 @@
     <message>
         <location line="+4341"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create slot</source>
-        <translation type="unfinished">Créer une rainure</translation>
+        <translation>Créer une rainure</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a slot in the sketch</source>
-        <translation type="unfinished">Créer un rainure dans l&apos;esquisse</translation>
+        <translation>Créer un rainure dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -895,17 +895,17 @@
     <message>
         <location line="+261"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create square</source>
-        <translation type="unfinished">Créer un carré</translation>
+        <translation>Créer un carré</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a square in the sketch</source>
-        <translation type="unfinished">Créer un carré dans l&apos;esquisse</translation>
+        <translation>Créer un carré dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -931,17 +931,17 @@
     <message>
         <location line="+1177"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create equilateral triangle</source>
-        <translation type="unfinished">Créer un triangle équilatéral</translation>
+        <translation>Créer un triangle équilatéral</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an equilateral triangle in the sketch</source>
-        <translation type="unfinished">Créer un triangle équilatéral dans l&apos;esquisse</translation>
+        <translation>Créer un triangle équilatéral dans l&apos;esquisse</translation>
     </message>
 </context>
 <context>
@@ -949,17 +949,17 @@
     <message>
         <location filename="../../Command.cpp" line="+186"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edit sketch</source>
-        <translation type="unfinished">Modifier l&apos;esquisse</translation>
+        <translation>Modifier l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edit the selected sketch</source>
-        <translation type="unfinished">Editer l&apos;esquisse sélectionnée</translation>
+        <translation>Editer l&apos;esquisse sélectionnée</translation>
     </message>
 </context>
 <context>
@@ -1021,23 +1021,23 @@
     <message>
         <location line="+280"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Merge sketches</source>
-        <translation type="unfinished">Fusionner les esquisses</translation>
+        <translation>Fusionner les esquisses</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Mauvaise sélection</translation>
+        <translation>Mauvaise sélection</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select at least two sketches, please.</source>
-        <translation type="unfinished">Sélectionnez au moins deux esquisses, s&apos;il vous plaît.</translation>
+        <translation>Sélectionnez au moins deux esquisses, s&apos;il vous plaît.</translation>
     </message>
 </context>
 <context>
@@ -1045,23 +1045,23 @@
     <message>
         <location line="-124"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Mirror sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Croquis miroir</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Mauvaise sélection</translation>
+        <translation>Mauvaise sélection</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select one or more sketches, please.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner une ou plusieurs esquisses, s&apos;il vous plaît.</translation>
     </message>
 </context>
 <context>
@@ -1083,7 +1083,7 @@
     <message>
         <location line="+1"/>
         <source>Create a new sketch</source>
-        <translation type="unfinished">Créer une nouvelle esquisse</translation>
+        <translation>Créer une nouvelle esquisse</translation>
     </message>
 </context>
 <context>
@@ -1106,17 +1106,17 @@
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="+317"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Rectangular Array</source>
-        <translation type="unfinished"></translation>
+        <translation>Tableau rectangulaire</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates an rectangular array pattern of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>Crée un modèle de tableau rectangulaire de la géométrie en prenant comme référence le dernier point sélectionné</translation>
     </message>
 </context>
 <context>
@@ -1124,17 +1124,17 @@
     <message>
         <location filename="../../Command.cpp" line="+194"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reorient sketch...</source>
-        <translation type="unfinished">Réorienter l&apos;esquisse...</translation>
+        <translation>Réorienter l&apos;esquisse...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reorient the selected sketch</source>
-        <translation type="unfinished">Réorienter l&apos;esquisse sélectionnée</translation>
+        <translation>Réorienter l&apos;esquisse sélectionnée</translation>
     </message>
 </context>
 <context>
@@ -1142,17 +1142,17 @@
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="-1087"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show/hide internal geometry</source>
-        <translation type="unfinished">Afficher/masquer la géométrie interne</translation>
+        <translation>Afficher/masquer la géométrie interne</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show all internal geometry / hide unused internal geometry</source>
-        <translation type="unfinished">Afficher toute la géométrie interne / masquer la géométrie interne non utilisée</translation>
+        <translation>Afficher toute la géométrie interne / masquer la géométrie interne non utilisée</translation>
     </message>
 </context>
 <context>
@@ -1160,13 +1160,13 @@
     <message>
         <location line="-176"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Conflicting Constraints</source>
-        <translation type="unfinished">Sélectionnez des contraintes conflictuelles</translation>
+        <translation>Sélectionnez des contraintes conflictuelles</translation>
     </message>
 </context>
 <context>
@@ -1174,17 +1174,17 @@
     <message>
         <location line="-248"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Constraints</source>
-        <translation type="unfinished">Sélectionnez les contraintes</translation>
+        <translation>Sélectionnez les contraintes</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the constraints associated to the selected elements</source>
-        <translation type="unfinished">Sélectionne les contraintes associées aux éléments sélectionnés</translation>
+        <translation>Sélectionne les contraintes associées aux éléments sélectionnés</translation>
     </message>
 </context>
 <context>
@@ -1192,13 +1192,13 @@
     <message>
         <location line="+295"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Elements associated with constraints</source>
-        <translation type="unfinished">Sélectionne les éléments associés aux contraintes</translation>
+        <translation>Sélectionne les éléments associés aux contraintes</translation>
     </message>
 </context>
 <context>
@@ -1206,17 +1206,17 @@
     <message>
         <location line="-147"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Horizontal Axis</source>
-        <translation type="unfinished">Sélectionne l&apos;axe Horizontal</translation>
+        <translation>Sélectionne l&apos;axe Horizontal</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the horizontal axis</source>
-        <translation type="unfinished">Sélectionne l&apos;axe horizontal</translation>
+        <translation>Sélectionne l&apos;axe horizontal</translation>
     </message>
 </context>
 <context>
@@ -1224,17 +1224,17 @@
     <message>
         <location line="-92"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Origin</source>
-        <translation type="unfinished">Sélectionne l&apos;origine</translation>
+        <translation>Sélectionne l&apos;origine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the origin point</source>
-        <translation type="unfinished">Sélectionne le point d&apos;origine</translation>
+        <translation>Sélectionne le point d&apos;origine</translation>
     </message>
 </context>
 <context>
@@ -1242,13 +1242,13 @@
     <message>
         <location line="+130"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Redundant Constraints</source>
-        <translation type="unfinished">Sélectionne les contraintes redondantes</translation>
+        <translation>Sélectionne les contraintes redondantes</translation>
     </message>
 </context>
 <context>
@@ -1256,17 +1256,17 @@
     <message>
         <location line="-87"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Vertical Axis</source>
-        <translation type="unfinished">Sélectionne l&apos;axe Verticale</translation>
+        <translation>Sélectionne l&apos;axe Verticale</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the vertical axis</source>
-        <translation type="unfinished">Sélectionne l&apos;axe verticale</translation>
+        <translation>Sélectionne l&apos;axe verticale</translation>
     </message>
 </context>
 <context>
@@ -1274,17 +1274,17 @@
     <message>
         <location line="+588"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Symmetry</source>
-        <translation type="unfinished"></translation>
+        <translation>Symétrie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates symmetric geometry with respect to the last selected line or point</source>
-        <translation type="unfinished"></translation>
+        <translation>Crée une géométrie symétrique par rapport à la dernière ligne ou point sélectionné</translation>
     </message>
 </context>
 <context>
@@ -1297,12 +1297,12 @@
     <message>
         <location line="+1"/>
         <source>Toggle construction geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Basculer en construction de géométrie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Active/désactive la barre d&apos;outils ou la géométrie sélectionnée vers/depuis le mode construction</translation>
     </message>
     <message>
         <source>Toggle construction line</source>
@@ -1318,17 +1318,17 @@
     <message>
         <location filename="../../CommandConstraints.cpp" line="+2999"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggle reference/driving constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Bascule entre contrainte de référence ou de conduite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggles the toolbar or selected constraints to/from reference mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Active/désactive la barre d&apos;outils ou la contrainte sélectionnée vers/depuis le mode référence</translation>
     </message>
 </context>
 <context>
@@ -1358,27 +1358,27 @@
     <message>
         <location filename="../../Command.cpp" line="+221"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Validate sketch...</source>
-        <translation type="unfinished">Valider l&apos;esquisse...</translation>
+        <translation>Valider l&apos;esquisse...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Validate sketch</source>
-        <translation type="unfinished">Valider l&apos;esquisse</translation>
+        <translation>Valider l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Mauvaise sélection</translation>
+        <translation>Mauvaise sélection</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select one sketch, please.</source>
-        <translation type="unfinished">Sélectionnez une esquisse.</translation>
+        <translation>Sélectionnez une esquisse.</translation>
     </message>
 </context>
 <context>
@@ -1611,7 +1611,7 @@
     <message>
         <location line="-72"/>
         <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
-        <translation type="unfinished">Impossible d&apos;ajouter une contrainte fixe de coordonnée x sur le point d&apos;origine !</translation>
+        <translation>Impossible d&apos;ajouter une contrainte fixe de coordonnée x sur le point d&apos;origine !</translation>
     </message>
     <message>
         <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
@@ -1620,125 +1620,125 @@
     <message>
         <location line="-530"/>
         <source>Select one vertex from the sketch other than the origin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionne dans l&apos;esquisse un sommet autre que l&apos;origine.</translation>
     </message>
     <message>
         <location line="+396"/>
         <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun des points sélectionnés ne passe par les courbes respectives, soit parce qu&apos;elles font partie du même élément, soit parce qu&apos;elles sont toutes deux géométriquement extérieures.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner soit un point et plusieurs courbes, soit une courbe et plusieurs points. Vous avez sélectionné %1 courbes et %2 points.</translation>
     </message>
     <message>
         <location line="+290"/>
         <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
-        <translation type="unfinished">Impossible d&apos;ajouter une contrainte de coordonnée verticale fixe sur le point d&apos;origine!</translation>
+        <translation>Impossible d&apos;ajouter une contrainte de coordonnée verticale fixe sur le point d&apos;origine!</translation>
     </message>
     <message>
         <location line="+747"/>
         <location line="+10"/>
         <location line="+41"/>
         <source>Select one or more arcs or circles from the sketch.</source>
-        <translation type="unfinished">Sélectionnez un ou plusieurs arcs ou cercles dans l&apos;esquisse.</translation>
+        <translation>Sélectionnez un ou plusieurs arcs ou cercles dans l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Constrain equal</source>
-        <translation type="unfinished">Contrainte d&apos;égalité</translation>
+        <translation>Contrainte d&apos;égalité</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you want to share the same radius for all selected elements?</source>
-        <translation type="unfinished">Voulez-vous que tous les éléments sélectionnés aient le même rayon?</translation>
+        <translation>Voulez-vous que tous les éléments sélectionnés aient le même rayon?</translation>
     </message>
     <message>
         <location line="+218"/>
         <source>Select only entities from the sketch.</source>
-        <translation type="unfinished">Sélectionnez uniquement des entités de l&apos;esquisse.</translation>
+        <translation>Sélectionnez uniquement des entités de l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+207"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
-        <translation type="unfinished">Sélectionnez une ou deux lignes dans l&apos;esquisse. Ou sélectionnez deux arêtes et un point.</translation>
+        <translation>Sélectionnez une ou deux lignes dans l&apos;esquisse. Ou sélectionnez deux arêtes et un point.</translation>
     </message>
     <message>
         <location line="-90"/>
         <source>Parallel lines</source>
-        <translation type="unfinished">Lignes parallèles</translation>
+        <translation>Lignes parallèles</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>An angle constraint cannot be set for two parallel lines.</source>
-        <translation type="unfinished">Une contrainte angulaire ne peut pas être appliquée à deux lignes parallèles.</translation>
+        <translation>Une contrainte angulaire ne peut pas être appliquée à deux lignes parallèles.</translation>
     </message>
     <message>
         <location line="+417"/>
         <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Sélectionnez deux extrémités de lignes pour agir comme des rayons, et une arête qui représente une limite. Le premier point sélectionné correspond à l&apos;indice n1, le deuxième - à n2, et la valeur de la donnée définit la rapport n2/n1.</translation>
+        <translation>Sélectionnez deux extrémités de lignes pour agir comme des rayons, et une arête qui représente une limite. Le premier point sélectionné correspond à l&apos;indice n1, le deuxième - à n2, et la valeur de la donnée définit la rapport n2/n1.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Selected objects are not just geometry from one sketch.</source>
-        <translation type="unfinished">Les objets sélectionnés ne sont pas seulement des géométries de l&apos;esquisse.</translation>
+        <translation>Les objets sélectionnés ne sont pas seulement des géométries de l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Number of selected objects is not 3 (is %1).</source>
-        <translation type="unfinished">Le nombre d&apos;objets sélectionnés n&apos;est pas égale à 3 (est %1).</translation>
+        <translation>Le nombre d&apos;objets sélectionnés n&apos;est pas égale à 3 (est %1).</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Can not create constraint with external geometry only!!</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de créer des contraintes uniquement avec une géométrie extérieure !!</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Incompatible geometry is selected!</source>
-        <translation type="unfinished">La géométrie sélectionnée est incompatible !</translation>
+        <translation>La géométrie sélectionnée est incompatible !</translation>
     </message>
     <message>
         <location line="+101"/>
         <location line="+11"/>
         <source>Select at least one ellipse and one edge from the sketch.</source>
-        <translation type="unfinished">Sélectionnez au moins une ellipse et une arête dans l&apos;esquisse.</translation>
+        <translation>Sélectionnez au moins une ellipse et une arête dans l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Sketch axes cannot be used in internal alignment constraint</source>
-        <translation type="unfinished">Les axes de l&apos;esquisse ne peuvent être utilisés comme contrainte d&apos;alignement interne</translation>
+        <translation>Les axes de l&apos;esquisse ne peuvent être utilisés comme contrainte d&apos;alignement interne</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</source>
-        <translation type="unfinished">Vous ne pouvez pas contraindre en interne une ellipse sur une autre ellipse. Sélectionnez seulement une ellipse.</translation>
+        <translation>Vous ne pouvez pas contraindre en interne une ellipse sur une autre ellipse. Sélectionnez seulement une ellipse.</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+164"/>
         <source>Maximum 2 points are supported.</source>
-        <translation type="unfinished">2 points sont supportés au maximum.</translation>
+        <translation>2 points sont supportés au maximum.</translation>
     </message>
     <message>
         <location line="-158"/>
         <location line="+164"/>
         <source>Maximum 2 lines are supported.</source>
-        <translation type="unfinished">2 lignes sont supportés au maximum.</translation>
+        <translation>2 lignes sont supportés au maximum.</translation>
     </message>
     <message>
         <location line="-127"/>
         <location line="+164"/>
         <source>Nothing to constraint</source>
-        <translation type="unfinished">Rien à contrainte</translation>
+        <translation>Rien à contrainte</translation>
     </message>
     <message>
         <location line="-163"/>
         <source>Currently all internal geometry of the ellipse is already exposed.</source>
-        <translation type="unfinished">Actuellement, toute la géométrie interne de l&apos;ellipse est déjà exposée.</translation>
+        <translation>Actuellement, toute la géométrie interne de l&apos;ellipse est déjà exposée.</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1746,46 +1746,46 @@
         <location line="+155"/>
         <location line="+8"/>
         <source>Extra elements</source>
-        <translation type="unfinished">Éléments supplémentaires</translation>
+        <translation>Éléments supplémentaires</translation>
     </message>
     <message>
         <location line="-170"/>
         <location line="+8"/>
         <location line="+155"/>
         <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
-        <translation type="unfinished">Vous avez fournis plus d&apos;éléments que possible pour l&apos;ellipse donnée. Ils ont été ignorées.</translation>
+        <translation>Vous avez fournis plus d&apos;éléments que possible pour l&apos;ellipse donnée. Ils ont été ignorées.</translation>
     </message>
     <message>
         <location line="-142"/>
         <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
-        <translation type="unfinished">Vous ne pouvez pas contraindre en interne un arc d&apos;ellipse sur un autre arc d&apos;ellipse. Sélectionnez seulement un arc d&apos;ellipse.</translation>
+        <translation>Vous ne pouvez pas contraindre en interne un arc d&apos;ellipse sur un autre arc d&apos;ellipse. Sélectionnez seulement un arc d&apos;ellipse.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-        <translation type="unfinished">Vous ne pouvez pas contraindre en interne une ellipse sur un arc d&apos;ellipse. Sélectionnez seulement une ellipse ou un arc d&apos;ellipse.</translation>
+        <translation>Vous ne pouvez pas contraindre en interne une ellipse sur un arc d&apos;ellipse. Sélectionnez seulement une ellipse ou un arc d&apos;ellipse.</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Currently all internal geometry of the arc of ellipse is already exposed.</source>
-        <translation type="unfinished">Actuellement, toute la géométrie interne de l&apos;ellipse est déjà exposée.</translation>
+        <translation>Actuellement, toute la géométrie interne de l&apos;ellipse est déjà exposée.</translation>
     </message>
     <message>
         <location line="+94"/>
         <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
-        <translation type="unfinished">Vous avez fournis plus d&apos;éléments que possible pour l&apos;ellipse donnée. Ils ont été ignorées.</translation>
+        <translation>Vous avez fournis plus d&apos;éléments que possible pour l&apos;ellipse donnée. Ils ont été ignorées.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished">Actuellement la géométrie interne est uniquement pris en charge pour les ellipses et les arcs d&apos;ellipse. Le dernier élément sélectionné doit être une ellipse ou un arc d&apos;ellipse.</translation>
+        <translation>Actuellement la géométrie interne est uniquement pris en charge pour les ellipses et les arcs d&apos;ellipse. Le dernier élément sélectionné doit être une ellipse ou un arc d&apos;ellipse.</translation>
     </message>
     <message>
         <location line="+51"/>
         <location line="+8"/>
         <location line="+30"/>
         <source>Select constraint(s) from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner les contraintes de l&apos;esquisse.</translation>
     </message>
     <message>
         <source>Select exactly two vertexes from the sketch.</source>
@@ -1795,7 +1795,7 @@
         <location line="-2850"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
-        <translation type="unfinished">Sélectionnez deux sommets de l&apos;esquisse ou plus.</translation>
+        <translation>Sélectionnez deux sommets de l&apos;esquisse ou plus.</translation>
     </message>
     <message>
         <location line="+82"/>
@@ -1885,7 +1885,7 @@
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">Cette contrainte peut être appliquée de plusieurs manières.
+        <translation>Cette contrainte peut être appliquée de plusieurs manières.
 
 Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courbe ; deux points d&apos;extrémités ; deux courbes et un point.</translation>
     </message>
@@ -1893,27 +1893,27 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+11"/>
         <source>Select some geometry from the sketch.</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">Sélectionnez une géométrie de l&apos;esquisse.</translation>
+        <translation>Sélectionnez une géométrie de l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Wrong number of selected objects!</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">Nombre d&apos;objets sélectionnés erroné !</translation>
+        <translation>Nombre d&apos;objets sélectionnés erroné !</translation>
     </message>
     <message>
         <location line="+59"/>
         <location line="+313"/>
         <location line="+1174"/>
         <source>Error</source>
-        <translation type="unfinished">Erreur</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location line="-1461"/>
         <location line="+312"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">Avec 3 objets, il doit y avoir 2 courbes et 1 point.</translation>
+        <translation>Avec 3 objets, il doit y avoir 2 courbes et 1 point.</translation>
     </message>
     <message>
         <location line="-303"/>
@@ -1944,7 +1944,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">Cette contrainte peut être appliquée de plusieurs manières.
+        <translation>Cette contrainte peut être appliquée de plusieurs manières.
 
 Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courbe ; deux points d&apos;extrémités ; deux courbes et un point.</translation>
     </message>
@@ -1952,13 +1952,13 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+11"/>
         <source>Select some geometry from the sketch.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">Sélectionnez une géométrie de l&apos;esquisse.</translation>
+        <translation>Sélectionnez une géométrie de l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Wrong number of selected objects!</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">Nombre d&apos;objets sélectionnés erroné !</translation>
+        <translation>Nombre d&apos;objets sélectionnés erroné !</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2019,7 +2019,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+48"/>
         <location line="+78"/>
         <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-        <translation type="unfinished">Sélectionnez deux points et une ligne de symétrie, deux points et un point de symétrie, ou une ligne et un point de symétrie dans l&apos;esquisse.</translation>
+        <translation>Sélectionnez deux points et une ligne de symétrie, deux points et un point de symétrie, ou une ligne et un point de symétrie dans l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="-60"/>
@@ -2128,9 +2128,9 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <translation>Contrainte dimensionnelle</translation>
     </message>
     <message>
-        <location filename="../../AppSketcherGui.cpp" line="+99"/>
+        <location filename="../../AppSketcherGui.cpp" line="+113"/>
         <source>Display</source>
-        <translation type="unfinished">Affichage</translation>
+        <translation>Affichage</translation>
     </message>
     <message>
         <location filename="../../CommandSketcherTools.cpp" line="-141"/>
@@ -2138,18 +2138,18 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+102"/>
         <location line="+8"/>
         <source>Select at least two edges from the sketch.</source>
-        <translation type="unfinished">Sélectionnez au moins deux arêtes de l&apos;esquisse.</translation>
+        <translation>Sélectionnez au moins deux arêtes de l&apos;esquisse.</translation>
     </message>
     <message>
         <location line="-78"/>
         <location line="+102"/>
         <source>One selected edge is not connectable</source>
-        <translation type="unfinished">Une arête sélectionnée n&apos;est pas raccordable</translation>
+        <translation>Une arête sélectionnée n&apos;est pas raccordable</translation>
     </message>
     <message>
         <location line="-92"/>
         <source>Closing a shape formed by exactly two lines makes no sense.</source>
-        <translation type="unfinished">Fermer une forme constituée de deux lignes n&apos;a aucun sens.</translation>
+        <translation>Fermer une forme constituée de deux lignes n&apos;a aucun sens.</translation>
     </message>
     <message>
         <location line="+147"/>
@@ -2158,38 +2158,38 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+345"/>
         <location line="+461"/>
         <source>Select elements from a single sketch.</source>
-        <translation type="unfinished">Sélectionner des éléments d&apos;une seule esquisse.</translation>
+        <translation>Sélectionner des éléments d&apos;une seule esquisse.</translation>
     </message>
     <message>
         <location line="-1120"/>
         <source>No constraint selected</source>
-        <translation type="unfinished">Aucune contrainte sélectionnée</translation>
+        <translation>Aucune contrainte sélectionnée</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>At least one constraint must be selected</source>
-        <translation type="unfinished">Au moins une contrainte doit être sélectionnée</translation>
+        <translation>Au moins une contrainte doit être sélectionnée</translation>
     </message>
     <message>
         <location line="+276"/>
         <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished">Actuellement la géométrie interne est uniquement pris en charge pour les ellipses et les arcs d&apos;ellipse. Le dernier élément sélectionné doit être une ellipse ou un arc d&apos;ellipse.</translation>
+        <translation>Actuellement la géométrie interne est uniquement pris en charge pour les ellipses et les arcs d&apos;ellipse. Le dernier élément sélectionné doit être une ellipse ou un arc d&apos;ellipse.</translation>
     </message>
     <message>
         <location line="+148"/>
         <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une construction symétrique nécessite au moins deux éléments géométriques, le dernier élément géométrique étant la référence pour la construction de la symétrie.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le dernier élément doit être un point ou une ligne servant de référence pour la construction de la symétrie.</translation>
     </message>
     <message>
         <location line="+295"/>
         <location line="+461"/>
         <source>A copy requires at least one selected non-external geometric element</source>
-        <translation type="unfinished"></translation>
+        <translation>Une copie nécessite la sélection d&apos;au moins un élément géométrique non externe</translation>
     </message>
 </context>
 <context>
@@ -2228,32 +2228,32 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
     <message>
         <location filename="../../TaskSketcherConstrains.cpp" line="+377"/>
         <source>Toggle to/from reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Basculer vers ou à partir d&apos;une référence</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Change value</source>
-        <translation type="unfinished">Changer la valeur</translation>
+        <translation>Changer la valeur</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Rename</source>
-        <translation type="unfinished">Renommer</translation>
+        <translation>Renommer</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Center sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>Centrer l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Swap constraint names</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervertir les noms de contrainte</translation>
     </message>
 </context>
 <context>
@@ -2262,67 +2262,67 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location filename="../../CommandConstraints.cpp" line="-2372"/>
         <location filename="../../EditDatumDialog.cpp" line="-98"/>
         <source>Insert angle</source>
-        <translation type="unfinished">insérer un angle</translation>
+        <translation>insérer un angle</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Angle:</source>
-        <translation type="unfinished">Angle :</translation>
+        <translation>Angle :</translation>
     </message>
     <message>
         <location line="+4"/>
         <location filename="../../EditDatumDialog.cpp" line="+4"/>
         <source>Insert radius</source>
-        <translation type="unfinished">insérer un rayon</translation>
+        <translation>insérer un rayon</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../EditDatumDialog.cpp" line="+6"/>
         <source>Refractive index ratio</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Ratio de l&apos;indice de réfraction</translation>
+        <translation>Ratio de l&apos;indice de réfraction</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../EditDatumDialog.cpp" line="+1"/>
         <source>Ratio n2/n1:</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Ratio n2/n1 :</translation>
+        <translation>Ratio n2/n1 :</translation>
     </message>
     <message>
         <location line="+2303"/>
         <source>Change radius</source>
-        <translation type="unfinished">Changer le rayon</translation>
+        <translation>Changer le rayon</translation>
     </message>
     <message>
         <location line="-2308"/>
         <location line="+2309"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
-        <translation type="unfinished">Rayon :</translation>
+        <translation>Rayon :</translation>
     </message>
     <message>
         <location line="+751"/>
         <source>Refractive index ratio</source>
-        <translation type="unfinished">Ratio de l&apos;indice de réfraction</translation>
+        <translation>Ratio de l&apos;indice de réfraction</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ratio n2/n1:</source>
-        <translation type="unfinished">Ratio n2/n1 :</translation>
+        <translation>Ratio n2/n1 :</translation>
     </message>
     <message>
         <location line="-3052"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
-        <translation type="unfinished">insérer une longueur</translation>
+        <translation>insérer une longueur</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Length:</source>
-        <translation type="unfinished">Longueur :</translation>
+        <translation>Longueur :</translation>
     </message>
 </context>
 <context>
@@ -2330,7 +2330,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
     <message>
         <location filename="../../TaskSketcherElements.cpp" line="+169"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation>Supprimer</translation>
     </message>
 </context>
 <context>
@@ -2348,7 +2348,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
     <message>
         <location line="+17"/>
         <source>Name (optional)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom (facultatif)</translation>
     </message>
 </context>
 <context>
@@ -2356,7 +2356,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
     <message>
         <location filename="../../PropertyConstraintListItem.cpp" line="+123"/>
         <source>Unnamed</source>
-        <translation type="unfinished">Sans nom</translation>
+        <translation>Sans nom</translation>
     </message>
 </context>
 <context>
@@ -2365,22 +2365,22 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location filename="../../SketchMirrorDialog.ui" line="+14"/>
         <location line="+6"/>
         <source>Select Mirror Axis/Point</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner point d&apos;axe/miroir</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>X-Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Axe X</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Y-Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Axe Y</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>Origine</translation>
     </message>
 </context>
 <context>
@@ -2426,57 +2426,57 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
     <message>
         <location filename="../../SketchRectangularArrayDialog.ui" line="+17"/>
         <source>Create array</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un tableau</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Columns:</source>
-        <translation type="unfinished"></translation>
+        <translation>Colonnes:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of columns of the linear array</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de colonnes du tableau</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Rows:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lignes:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rows of the linear array</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de lignes du tableau linéaire</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-        <translation type="unfinished"></translation>
+        <translation>Si cliqué, l&apos;espacement entre lignes et entre colonnes sera identique</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Equal vertical/horizontal spacing</source>
-        <translation type="unfinished"></translation>
+        <translation>Espacement vertical/horizontal égal</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>if selected, each element in the array is constraint with respect to the others using construction lines</source>
-        <translation type="unfinished"></translation>
+        <translation>si sélectionné, chaque élément du tableau est contraint par rapport aux autres en respectant les lignes de construction</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Constrain inter-element separation</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrainte de séparation entre éléments</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>If checked it substitutes dimensional constraints by geometric constraints in the copies, so that a change in the original element is directly reflected on copies</source>
-        <translation type="unfinished"></translation>
+        <translation>Si la case est cochée, les contraintes géométriques se substituent aux contraintes dimensionnelles dans les copies ; ainsi, une modification dans l&apos;élément d&apos;origine se reflète directement dans les copies</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>Clone</translation>
     </message>
 </context>
 <context>
@@ -2484,112 +2484,112 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
     <message>
         <location filename="../../SketcherSettings.ui" line="+14"/>
         <source>Sketcher</source>
-        <translation type="unfinished">Esquisseur</translation>
+        <translation>Esquisseur</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sketcher colors</source>
-        <translation type="unfinished">Couleur du Sketcher</translation>
+        <translation>Couleur du Sketcher</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default edge color</source>
-        <translation type="unfinished">Couleur d&apos;arête par défaut</translation>
+        <translation>Couleur d&apos;arête par défaut</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+66"/>
         <source>The color of edges being edited</source>
-        <translation type="unfinished">Couleur de l&apos;arête en cours d&apos;édition</translation>
+        <translation>Couleur de l&apos;arête en cours d&apos;édition</translation>
     </message>
     <message>
         <location line="-40"/>
         <source>Default vertex color</source>
-        <translation type="unfinished">Couleur des points par défaut</translation>
+        <translation>Couleur des points par défaut</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+66"/>
         <source>The color of vertices being edited</source>
-        <translation type="unfinished">Couleur du point en cours d&apos;édition</translation>
+        <translation>Couleur du point en cours d&apos;édition</translation>
     </message>
     <message>
         <location line="-40"/>
         <source>Edit edge color</source>
-        <translation type="unfinished">Modifier la couleur des arêtes</translation>
+        <translation>Modifier la couleur des arêtes</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Edit vertex color</source>
-        <translation type="unfinished">Modifier la couleur des points</translation>
+        <translation>Modifier la couleur des points</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Construction geometry</source>
-        <translation type="unfinished">Géométrie de construction</translation>
+        <translation>Géométrie de construction</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>The color of construction geometry in edit mode</source>
-        <translation type="unfinished">Couleur des éléments de construction en mode édition</translation>
+        <translation>Couleur des éléments de construction en mode édition</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>External geometry</source>
-        <translation type="unfinished">Géométrie externe</translation>
+        <translation>Géométrie externe</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of external geometry in edit mode</source>
-        <translation type="unfinished">Couleur des éléments de géométrie externe dans le mode d&apos;édition</translation>
+        <translation>Couleur des éléments de géométrie externe dans le mode d&apos;édition</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Fully constrained geometry</source>
-        <translation type="unfinished">Géométrie entièrement contrainte</translation>
+        <translation>Géométrie entièrement contrainte</translation>
     </message>
     <message>
         <location line="+319"/>
         <source>Geometry Creation &quot;Continue Mode&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Création de géométrie « Mode Continuer »</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Sketch Solver</source>
-        <translation type="unfinished"></translation>
+        <translation>Solveur de croquis</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Show Advanced Solver Control in the Task bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir les Contrôles Avancé du Solveur dans la barre des tâches</translation>
     </message>
     <message>
         <location line="-423"/>
         <location line="+99"/>
         <source>The color of fully constrained geometry in edit mode</source>
-        <translation type="unfinished">Couleur d&apos;une esquisse entiérement contrainte en mode édition</translation>
+        <translation>Couleur d&apos;une esquisse entiérement contrainte en mode édition</translation>
     </message>
     <message>
         <location line="-7"/>
         <source>Constraint color</source>
-        <translation type="unfinished">Couleur des contraintes</translation>
+        <translation>Couleur des contraintes</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Datum color</source>
-        <translation type="unfinished">Couleur des données numériques</translation>
+        <translation>Couleur des données numériques</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Datum text size</source>
-        <translation type="unfinished">Taille de texte pour les données numériques</translation>
+        <translation>Taille de texte pour les données numériques</translation>
     </message>
     <message>
         <location line="+20"/>
         <location line="+35"/>
         <location line="+52"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished">Épaisseur de ligne par défaut pour les nouvelles formes</translation>
+        <translation>Épaisseur de ligne par défaut pour les nouvelles formes</translation>
     </message>
     <message>
         <location line="-84"/>
@@ -2597,57 +2597,57 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+52"/>
         <location line="+92"/>
         <source>px</source>
-        <translation type="unfinished">px</translation>
+        <translation>px</translation>
     </message>
     <message>
         <location line="-189"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Taille des points par défaut</translation>
+        <translation>Taille des points par défaut</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Default line width</source>
-        <translation type="unfinished">Largeur de ligne par défaut</translation>
+        <translation>Largeur de ligne par défaut</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Cursor text color</source>
-        <translation type="unfinished">Couleur du curseur de texte</translation>
+        <translation>Couleur du curseur de texte</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Non-driving Datum color</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur des données non actives</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of driving constraints in edit mode</source>
-        <translation type="unfinished"></translation>
+        <translation>La couleur des contraintes actives en mode édition</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>The color of non-driving constrains or dimensions in edit mode</source>
-        <translation type="unfinished"></translation>
+        <translation>La couleur des contraintes ou dimensions non actives en mode d&apos;édition</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Sketch editing</source>
-        <translation type="unfinished">Modification d&apos;esquisse</translation>
+        <translation>Modification d&apos;esquisse</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Font size</source>
-        <translation type="unfinished">Taille de police</translation>
+        <translation>Taille de police</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Grid line pattern</source>
-        <translation type="unfinished">Motif des lignes de grille</translation>
+        <translation>Motif des lignes de grille</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Ask for value after creating a distance constraint</source>
-        <translation type="unfinished">Demander la valeur après la création d&apos;une contrainte de distance</translation>
+        <translation>Demander la valeur après la création d&apos;une contrainte de distance</translation>
     </message>
 </context>
 <context>
@@ -2655,42 +2655,42 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
     <message>
         <location filename="../../TaskSketcherValidation.cpp" line="+279"/>
         <source>No missing coincidences</source>
-        <translation type="unfinished">Aucune coïncidence manquante</translation>
+        <translation>Aucune coïncidence manquante</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No missing coincidences found</source>
-        <translation type="unfinished">Aucune coïncidence manquante trouvée</translation>
+        <translation>Aucune coïncidence manquante trouvée</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Coïncidences manquantes</translation>
+        <translation>Coïncidences manquantes</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 missing coincidences found</source>
-        <translation type="unfinished">%1 coïncidences manquantes trouvées</translation>
+        <translation>%1 coïncidences manquantes trouvées</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>No invalid constraints</source>
-        <translation type="unfinished">Aucune contrainte non valide</translation>
+        <translation>Aucune contrainte non valide</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No invalid constraints found</source>
-        <translation type="unfinished">Aucune contrainte non valide trouvée</translation>
+        <translation>Aucune contrainte non valide trouvée</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished">Contraintes non valides</translation>
+        <translation>Contraintes non valides</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid constraints found</source>
-        <translation type="unfinished">Contraintes non valides trouvées</translation>
+        <translation>Contraintes non valides trouvées</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2698,7 +2698,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished">Géométrie externe inversée</translation>
+        <translation>Géométrie externe inversée</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2707,7 +2707,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished">%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs points d&apos;extrémité sont mis en évidence dans la vue 3D. 
+        <translation>%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs points d&apos;extrémité sont mis en évidence dans la vue 3D. 
 
 %2 contraintes sont appliquées aux extrémités. Ces contraintes sont affichées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport).  
 
@@ -2718,51 +2718,51 @@ Cliquez sur le bouton «Inverser les points d&apos;extrémité des contraintes»
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished">%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs points d&apos;extrémité sont mis en évidence dans la vue 3D.  
+        <translation>%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs points d&apos;extrémité sont mis en évidence dans la vue 3D.  
 
 Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été trouvée.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished">Aucun arc inversé n&apos;a été trouvé dans la géométrie externe.</translation>
+        <translation>Aucun arc inversé n&apos;a été trouvé dans la géométrie externe.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished">%1 modifications ont été apportées aux contraintes liées aux points d&apos;extrémité des arcs inversés.</translation>
+        <translation>%1 modifications ont été apportées aux contraintes liées aux points d&apos;extrémité des arcs inversés.</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished">Contrainte de verrouillage d&apos;orientation</translation>
+        <translation>Contrainte de verrouillage d&apos;orientation</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished">Le verrouillage de l&apos;orientation a été activé et recalculé pour %1 contraintes. Ces contraintes sont indiquées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport).</translation>
+        <translation>Le verrouillage de l&apos;orientation a été activé et recalculé pour %1 contraintes. Ces contraintes sont indiquées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished">Le verrouillage de l&apos;orientation a été désactivé pour %1 contraintes. Ces contraintes sont indiquées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport). Notez que pour les contraintes futures, le verrouillage par défaut est toujours activé.</translation>
+        <translation>Le verrouillage de l&apos;orientation a été désactivé pour %1 contraintes. Ces contraintes sont indiquées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport). Notez que pour les contraintes futures, le verrouillage par défaut est toujours activé.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished">Supprimer les contraintes liées à une géométrie externe</translation>
+        <translation>Supprimer les contraintes liées à une géométrie externe</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished">Vous êtes sur le point de supprimer toutes les contraintes liées à la géométrie externe. Ceci est utile pour réparer une esquisse avec des liens vers une géométrie externe brisés ou modifiés. Êtes-vous sûr de que vouloir supprimer ces contraintes?</translation>
+        <translation>Vous êtes sur le point de supprimer toutes les contraintes liées à la géométrie externe. Ceci est utile pour réparer une esquisse avec des liens vers une géométrie externe brisés ou modifiés. Êtes-vous sûr de que vouloir supprimer ces contraintes?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished">Toutes les contraintes liées à une géométrie externe ont été supprimées.</translation>
+        <translation>Toutes les contraintes liées à une géométrie externe ont été supprimées.</translation>
     </message>
 </context>
 <context>
@@ -2800,7 +2800,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
     <message>
         <location line="+5"/>
         <source>Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Référence</translation>
     </message>
     <message>
         <location filename="../../TaskSketcherConstrains.cpp" line="+85"/>
@@ -2813,52 +2813,52 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
     <message>
         <location filename="../../TaskSketcherElements.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Forme</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Type:</source>
-        <translation type="unfinished">Type :</translation>
+        <translation>Type :</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Edge</source>
-        <translation type="unfinished">Arête</translation>
+        <translation>Arête</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Starting Point</source>
-        <translation type="unfinished">Point de départ</translation>
+        <translation>Point de départ</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>End Point</source>
-        <translation type="unfinished">Point final</translation>
+        <translation>Point final</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Center Point</source>
-        <translation type="unfinished">Point central</translation>
+        <translation>Point central</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Extended Naming</source>
-        <translation type="unfinished">Nom Étendu</translation>
+        <translation>Nom Étendu</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Auto-switch to Edge</source>
-        <translation type="unfinished">Basculement automatique vers Arête</translation>
+        <translation>Basculement automatique vers Arête</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: sélection multiple&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: basculer vers le type valide suivant type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: sélection multiple&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: basculer vers le type valide suivant type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../TaskSketcherElements.cpp" line="+66"/>
         <source>Elements</source>
-        <translation type="unfinished">Éléments</translation>
+        <translation>Éléments</translation>
     </message>
     <message>
         <location line="+444"/>
@@ -2866,7 +2866,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
         <location line="+46"/>
         <location line="+1"/>
         <source>Point</source>
-        <translation type="unfinished">Point</translation>
+        <translation>Point</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2874,7 +2874,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
         <location line="+46"/>
         <location line="+1"/>
         <source>Line</source>
-        <translation type="unfinished">Ligne</translation>
+        <translation>Ligne</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2882,7 +2882,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
         <location line="+46"/>
         <location line="+1"/>
         <source>Arc</source>
-        <translation type="unfinished">Arc</translation>
+        <translation>Arc</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2890,19 +2890,19 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
         <location line="+46"/>
         <location line="+1"/>
         <source>Circle</source>
-        <translation type="unfinished">Cercle</translation>
+        <translation>Cercle</translation>
     </message>
     <message>
         <location line="-45"/>
         <location line="+1"/>
         <source>Ellipse</source>
-        <translation type="unfinished">Ellipse</translation>
+        <translation>Ellipse</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+1"/>
         <source>Elliptical Arc</source>
-        <translation type="unfinished">Arc elliptique</translation>
+        <translation>Arc elliptique</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2910,7 +2910,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
         <location line="+40"/>
         <location line="+1"/>
         <source>Other</source>
-        <translation type="unfinished">Autre</translation>
+        <translation>Autre</translation>
     </message>
 </context>
 <context>
@@ -2923,7 +2923,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
     <message>
         <location line="+6"/>
         <source>Show grid</source>
-        <translation type="unfinished">Afficher la grille</translation>
+        <translation>Afficher la grille</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3039,7 +3039,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
     <message>
         <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+67"/>
         <source>Advanced solver control</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrôle avancé du solveur</translation>
     </message>
 </context>
 <context>
@@ -3047,65 +3047,65 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
     <message>
         <location filename="../../TaskSketcherValidation.ui" line="+14"/>
         <source>Sketcher validation</source>
-        <translation type="unfinished">Validation de l&apos;esquisse</translation>
+        <translation>Validation de l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished">Supprimer les contraintes liées à une géométrie externe</translation>
+        <translation>Supprimer les contraintes liées à une géométrie externe</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Coïncidences manquantes</translation>
+        <translation>Coïncidences manquantes</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Tolerance:</source>
-        <translation type="unfinished">Tolérance :</translation>
+        <translation>Tolérance :</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished">Géométrie externe inversée</translation>
+        <translation>Géométrie externe inversée</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished">Inverser les points d&apos;extrémité de contraintes</translation>
+        <translation>Inverser les points d&apos;extrémité de contraintes</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished">Contrainte de verrouillage d&apos;orientation</translation>
+        <translation>Contrainte de verrouillage d&apos;orientation</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished">Activer/mettre à jour</translation>
+        <translation>Activer/mettre à jour</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished">Désactiver</translation>
+        <translation>Désactiver</translation>
     </message>
     <message>
         <location line="-86"/>
         <location line="+33"/>
         <location line="+23"/>
         <source>Find</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <location line="-63"/>
         <location line="+47"/>
         <source>Fix</source>
-        <translation type="unfinished">Réparer</translation>
+        <translation>Réparer</translation>
     </message>
     <message>
         <location line="-53"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished">Contraintes non valides</translation>
+        <translation>Contraintes non valides</translation>
     </message>
 </context>
 <context>
@@ -3113,7 +3113,7 @@ Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été 
     <message>
         <location filename="../../ViewProviderSketch.cpp" line="+4186"/>
         <source>Invalid sketch</source>
-        <translation type="unfinished">Esquisse non valide</translation>
+        <translation>Esquisse non valide</translation>
     </message>
     <message>
         <source>The sketch is invalid and cannot be edited.
@@ -3124,27 +3124,27 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
     <message>
         <location line="-29"/>
         <source>Edit sketch</source>
-        <translation type="unfinished">Modifier l&apos;esquisse</translation>
+        <translation>Modifier l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
+        <translation>Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation type="unfinished">Voulez-vous fermer cette boîte de dialogue?</translation>
+        <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Do you want to open the sketch validation tool?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous ouvrir l&apos;outil de validation d&apos;esquisse ?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;esquisse n&apos;est pas valide et ne peut pas être éditée.</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -3174,24 +3174,24 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
     <message>
         <location line="+7"/>
         <source>Over-constrained sketch </source>
-        <translation type="unfinished">Esquisse Sur-contrainte </translation>
+        <translation>Esquisse Sur-contrainte </translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+7"/>
         <location line="+8"/>
         <source>(click to select)</source>
-        <translation type="unfinished">(cliquez pour sélectionner)</translation>
+        <translation>(cliquez pour sélectionner)</translation>
     </message>
     <message>
         <location line="-9"/>
         <source>Sketch contains conflicting constraints </source>
-        <translation type="unfinished">L&apos;esquisse contient des contraintes contradictoires </translation>
+        <translation>L&apos;esquisse contient des contraintes contradictoires </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Sketch contains redundant constraints </source>
-        <translation type="unfinished">L&apos;esquisse contient des contraintes redondantes </translation>
+        <translation>L&apos;esquisse contient des contraintes redondantes </translation>
     </message>
     <message>
         <source>Over-constrained sketch</source>
@@ -3237,7 +3237,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location filename="../../CommandSketcherTools.cpp" line="-276"/>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un clone de la géométrie en prenant comme référence le dernier point sélectionné</translation>
     </message>
 </context>
 <context>
@@ -3245,12 +3245,12 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
     <message>
         <location line="-2"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>Clone</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copie</translation>
     </message>
 </context>
 <context>
@@ -3259,7 +3259,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer une copie simple de la géométrie en prenant comme référence le dernier point sélectionné</translation>
     </message>
 </context>
 <context>
@@ -3268,7 +3268,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location filename="../../CommandCreateGeo.cpp" line="-2582"/>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Créer un arc par les point d&apos;extrémités et un point sur l&apos;arc</translation>
+        <translation>Créer un arc par les point d&apos;extrémités et un point sur l&apos;arc</translation>
     </message>
 </context>
 <context>
@@ -3277,7 +3277,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="+1925"/>
         <location line="+1"/>
         <source>Create a circle by 3 rim points</source>
-        <translation type="unfinished">Créer un arc par 3 points sur arc</translation>
+        <translation>Créer un arc par 3 points sur arc</translation>
     </message>
 </context>
 <context>
@@ -3286,7 +3286,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="-1931"/>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">Créer un arc par son centre et ses points d&apos;extrémité</translation>
+        <translation>Créer un arc par son centre et ses points d&apos;extrémité</translation>
     </message>
 </context>
 <context>
@@ -3295,7 +3295,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="+1582"/>
         <location line="+1"/>
         <source>Create an arc of ellipse by its center, major radius, endpoints</source>
-        <translation type="unfinished">Créer un arc d&apos;ellipse par son centre, les rayon majeur, les points de d&apos;extrémités</translation>
+        <translation>Créer un arc d&apos;ellipse par son centre, les rayon majeur, les points de d&apos;extrémités</translation>
     </message>
 </context>
 <context>
@@ -3304,7 +3304,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="+342"/>
         <location line="+1"/>
         <source>Create a circle by its center and by a rim point</source>
-        <translation type="unfinished">Créer un cercle par son centre et par un point sur le périmètre</translation>
+        <translation>Créer un cercle par son centre et par un point sur le périmètre</translation>
     </message>
 </context>
 <context>
@@ -3313,7 +3313,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="-348"/>
         <location line="+1"/>
         <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
-        <translation type="unfinished">Créer une ellipse avec le périapse, l&apos;apoapse et le petit rayon</translation>
+        <translation>Créer une ellipse avec le périapse, l&apos;apoapse et le petit rayon</translation>
     </message>
 </context>
 <context>
@@ -3322,7 +3322,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create an ellipse by center, major radius and point</source>
-        <translation type="unfinished">Créer une ellipse avec le centre, le grand rayon et un point</translation>
+        <translation>Créer une ellipse avec le centre, le grand rayon et un point</translation>
     </message>
 </context>
 <context>
@@ -3331,7 +3331,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="+1974"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
-        <translation type="unfinished">Créer un heptagone avec son centre et un sommet</translation>
+        <translation>Créer un heptagone avec son centre et un sommet</translation>
     </message>
 </context>
 <context>
@@ -3340,7 +3340,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a hexagon by its center and by one corner</source>
-        <translation type="unfinished">Créer un hexagone avec son centre et un sommet</translation>
+        <translation>Créer un hexagone avec son centre et un sommet</translation>
     </message>
 </context>
 <context>
@@ -3349,7 +3349,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="+7"/>
         <location line="+1"/>
         <source>Create an octagon by its center and by one corner</source>
-        <translation type="unfinished">Créer un octogone avec son centre et un sommet</translation>
+        <translation>Créer un octogone avec son centre et un sommet</translation>
     </message>
 </context>
 <context>
@@ -3358,7 +3358,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="-13"/>
         <location line="+1"/>
         <source>Create a pentagon by its center and by one corner</source>
-        <translation type="unfinished">Créer un pentagone avec son centre et un angle</translation>
+        <translation>Créer un pentagone avec son centre et un angle</translation>
     </message>
 </context>
 <context>
@@ -3367,7 +3367,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a square by its center and by one corner</source>
-        <translation type="unfinished">Créer un carré avec son centre et un angle</translation>
+        <translation>Créer un carré avec son centre et un angle</translation>
     </message>
 </context>
 <context>
@@ -3376,7 +3376,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create an equilateral triangle by its center and by one corner</source>
-        <translation type="unfinished">Créer un triangle équilatéral avec son centre et un sommet</translation>
+        <translation>Créer un triangle équilatéral avec son centre et un sommet</translation>
     </message>
 </context>
 <context>
@@ -3384,13 +3384,13 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
     <message>
         <location filename="../../Command.cpp" line="+164"/>
         <source>Sketch has support</source>
-        <translation type="unfinished">L&apos;esquisse a un support</translation>
+        <translation>L&apos;esquisse a un support</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-        <translation type="unfinished">Une esquisse avec une face de support ne peut pas être réorientée.
+        <translation>Une esquisse avec une face de support ne peut pas être réorientée.
 Voulez-vous la détacher de son support ?</translation>
     </message>
 </context>
@@ -3435,22 +3435,22 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
         <location line="+25"/>
         <source>Executes a recompute of the active document after every command</source>
-        <translation type="unfinished"></translation>
+        <translation>Effectue un calcul du document actif après chaque commande</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Auto Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour automatique</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Forces a recompute of the active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Force un calcul du document actif</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour</translation>
     </message>
 </context>
 <context>
@@ -3458,235 +3458,235 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
         <location filename="../../TaskSketcherSolverAdvanced.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Forme</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Default algorithm used for Sketch solving</source>
-        <translation type="unfinished"></translation>
+        <translation>Algorithme utilisé par défaut pour résoudre croquis</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Default Solver:</source>
-        <translation type="unfinished"></translation>
+        <translation>Solveur par défaut:</translation>
     </message>
     <message>
         <location line="+17"/>
         <location line="+322"/>
         <source>BFGS</source>
-        <translation type="unfinished"></translation>
+        <translation>BFGS</translation>
     </message>
     <message>
         <location line="-317"/>
         <location line="+322"/>
         <source>LevenbergMarquardt</source>
-        <translation type="unfinished"></translation>
+        <translation>Levenberg-Marquardt</translation>
     </message>
     <message>
         <location line="-317"/>
         <location line="+322"/>
         <source>DogLeg</source>
-        <translation type="unfinished"></translation>
+        <translation>Coude</translation>
     </message>
     <message>
         <location line="-310"/>
         <source>Type of function to apply in DogLeg for the Gauss step</source>
-        <translation type="unfinished"></translation>
+        <translation>Type de fonction à appliquer dans DogLeg pour l&apos;étape de Gauss</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>DogLeg Gauss step:</source>
-        <translation type="unfinished"></translation>
+        <translation>Étape DogLeg de Gauss :</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>FullPivLU</source>
-        <translation type="unfinished"></translation>
+        <translation>FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-FullPivLU</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LeastNorm-FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-LDLT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LeastNorm-LDLT</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Maximum number of iterations of the default algorithm</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre maximal d&apos;itérations de l&apos;algorithme par défaut</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Maximum Iterations:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre max. d&apos;itérations</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>If selected, the Maximum iterations value is multiplied by the sketch size</source>
-        <translation type="unfinished"></translation>
+        <translation>Si sélectionné, la valeur d&apos;itérations maximum est multipliée par la taille de l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sketch size multiplier:</source>
-        <translation type="unfinished"></translation>
+        <translation>Multiplicateur de taille de croquis :</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Error threshold under which convergence is reached</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil d&apos;erreur sous lequel la convergence est atteinte</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Convergence:</source>
-        <translation type="unfinished"></translation>
+        <translation>Convergence :</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Param1</source>
-        <translation type="unfinished"></translation>
+        <translation>Param1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param2</source>
-        <translation type="unfinished"></translation>
+        <translation>Param2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param3</source>
-        <translation type="unfinished"></translation>
+        <translation>Param3</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Algorithm used for the rank revealing QR decomposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Algorithme utilisé pour le rang révélant la décomposition QR</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>QR Algorithm:</source>
-        <translation type="unfinished"></translation>
+        <translation>Algorithme QR :</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Eigen Dense QR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eigen Dense QR</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Eigen Sparse QR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eigen Sparse QR</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Pivot threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil de pivot</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1E-13</source>
-        <translation type="unfinished"></translation>
+        <translation>1E-13</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solving algorithm used for determination of Redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation>Algorithme de résolution utilisé pour la détermination des contraintes redondantes</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redundant Solver:</source>
-        <translation type="unfinished"></translation>
+        <translation>Solveur redondant :</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Maximum number of iterations of the solver used for determination of Redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre maximal d&apos;itérations du solveur utilisé pour déterminer des contraintes redondantes</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Max Iterations:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge. Itérations max :</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
-        <translation type="unfinished"></translation>
+        <translation>Si sélectionné, la valeur d&apos;itérations maximum pour l&apos;algorithme redondant est multipliée par la taille de l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Sketch size multiplier:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge. Multiplicateur de taille de croquis :</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Error threshold under which convergence is reached for the solving of redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuil d&apos;erreur sous lequel la convergence est atteinte pour la résolution des contraintes redondantes</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Convergence</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge. Convergence</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1E-10</source>
-        <translation type="unfinished"></translation>
+        <translation>1E-10</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Red. Param1</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge. Param1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param2</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge. Param2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param3</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge. Param3</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Degree of verbosity of the debug output to the console</source>
-        <translation type="unfinished"></translation>
+        <translation>Degrés de verbosité de la sortie de débogage vers la console</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Console  Debug mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>Console en mode débogage :</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Iteration Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau d&apos;itération</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Solve</source>
-        <translation type="unfinished"></translation>
+        <translation>Résoudre</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Resets all solver values to their default values</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer toutes les valeurs du solveur par les valeurs par défaut</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer les valeurs par défaut</translation>
     </message>
 </context>
 <context>
@@ -3704,7 +3704,7 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
         <location line="+2"/>
         <source>Sketcher tools</source>
-        <translation type="unfinished">Outils d&apos;esquisse</translation>
+        <translation>Outils d&apos;esquisse</translation>
     </message>
     <message>
         <source>Sketcher geoms</source>

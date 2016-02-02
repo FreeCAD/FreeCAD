@@ -6,17 +6,17 @@
     <message>
         <location filename="../../Command.cpp" line="75"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="76"/>
         <source>Previous page</source>
-        <translation type="unfinished">Pagina anterioară</translation>
+        <translation>Pagina anterioară</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="77"/>
         <source>Go back to the previous page</source>
-        <translation type="unfinished">Revino la pagina anterioară</translation>
+        <translation>Revino la pagina anterioară</translation>
     </message>
 </context>
 <context>
@@ -24,17 +24,17 @@
     <message>
         <location filename="../../Command.cpp" line="103"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="104"/>
         <source>Next page</source>
-        <translation type="unfinished">Pagina următoare</translation>
+        <translation>Pagina următoare</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="105"/>
         <source>Go to the next page</source>
-        <translation type="unfinished">Avansează la pagina următoare</translation>
+        <translation>Avansează la pagina următoare</translation>
     </message>
 </context>
 <context>
@@ -42,13 +42,13 @@
     <message>
         <location filename="../../Command.cpp" line="131"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="132"/>
         <location filename="../../Command.cpp" line="133"/>
         <source>Refresh web page</source>
-        <translation type="unfinished">Reâmprospătează pagina web</translation>
+        <translation>Reâmprospătează pagina web</translation>
     </message>
 </context>
 <context>
@@ -56,17 +56,17 @@
     <message>
         <location filename="../../Command.cpp" line="158"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="159"/>
         <source>Stop loading</source>
-        <translation type="unfinished">Oprește încărcarea</translation>
+        <translation>Oprește încărcarea</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="160"/>
         <source>Stop the current loading</source>
-        <translation type="unfinished">Oprește încărcarea actuală</translation>
+        <translation>Oprește încărcarea actuală</translation>
     </message>
 </context>
 <context>
@@ -74,17 +74,17 @@
     <message>
         <location filename="../../Command.cpp" line="187"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="188"/>
         <source>Zoom in</source>
-        <translation type="unfinished">Mărește</translation>
+        <translation>Mărește</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="189"/>
         <source>Zoom into the page</source>
-        <translation type="unfinished">Mărește în pagină</translation>
+        <translation>Mărește în pagină</translation>
     </message>
 </context>
 <context>
@@ -92,17 +92,17 @@
     <message>
         <location filename="../../Command.cpp" line="215"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="216"/>
         <source>Zoom out</source>
-        <translation type="unfinished">Micșorează</translation>
+        <translation>Micșorează</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="217"/>
         <source>Zoom out of the page</source>
-        <translation type="unfinished">Micșorează pagina</translation>
+        <translation>Micșorează pagina</translation>
     </message>
 </context>
 <context>
@@ -110,31 +110,31 @@
     <message>
         <location filename="../../Command.cpp" line="50"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="51"/>
         <source>Open website...</source>
-        <translation type="unfinished">Deschide pagina web...</translation>
+        <translation>Deschide pagina web...</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="52"/>
         <source>Opens a website in FreeCAD</source>
-        <translation type="unfinished">Deschide o pagină web în FreeCAD</translation>
+        <translation>Deschide o pagină web în FreeCAD</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGuiPy.cpp" line="49"/>
+        <location filename="../../AppWebGui.cpp" line="78"/>
         <location filename="../../BrowserView.cpp" line="348"/>
         <source>Browser</source>
-        <translation type="unfinished">Navigator</translation>
+        <translation>Navigator</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="244"/>
         <source>File does not exist!</source>
-        <translation type="unfinished">Fișierul nu există!</translation>
+        <translation>Fișierul nu există!</translation>
     </message>
 </context>
 <context>
@@ -142,12 +142,12 @@
     <message>
         <location filename="../../BrowserView.cpp" line="239"/>
         <source>Error</source>
-        <translation type="unfinished">Eroare</translation>
+        <translation>Eroare</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="319"/>
         <source>Loading %1...</source>
-        <translation type="unfinished">Se încarcă %1...</translation>
+        <translation>Se încarcă %1...</translation>
     </message>
 </context>
 <context>
@@ -155,12 +155,12 @@
     <message>
         <location filename="../../BrowserView.cpp" line="121"/>
         <source>Open in External Browser</source>
-        <translation type="unfinished">Deschide în navigator extern</translation>
+        <translation>Deschide în navigator extern</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="125"/>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open in new window</translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="46"/>
         <source>Navigation</source>
-        <translation type="unfinished">Navigare</translation>
+        <translation>Navigare</translation>
     </message>
 </context>
 </TS>

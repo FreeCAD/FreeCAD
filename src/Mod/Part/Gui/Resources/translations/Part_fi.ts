@@ -131,7 +131,7 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1650"/>
+        <location filename="../../Command.cpp" line="+1661"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -169,13 +169,13 @@
     <message>
         <location line="+62"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Angular</source>
-        <translation type="unfinished">Mittaa kulma</translation>
+        <translation>Mittaa kulma</translation>
     </message>
 </context>
 <context>
@@ -183,13 +183,13 @@
     <message>
         <location line="+26"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Clear All</source>
-        <translation type="unfinished">Tyhjennä kaikki</translation>
+        <translation>Tyhjennä kaikki</translation>
     </message>
 </context>
 <context>
@@ -197,13 +197,13 @@
     <message>
         <location line="-58"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Linear</source>
-        <translation type="unfinished">Mittaa lineaarisesti</translation>
+        <translation>Mittaa lineaarisesti</translation>
     </message>
 </context>
 <context>
@@ -211,13 +211,13 @@
     <message>
         <location line="+116"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Vaihda 3d</translation>
+        <translation>Vaihda 3d</translation>
     </message>
 </context>
 <context>
@@ -225,13 +225,13 @@
     <message>
         <location line="-36"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle All</source>
-        <translation type="unfinished">Vaihda kaikki</translation>
+        <translation>Vaihda kaikki</translation>
     </message>
 </context>
 <context>
@@ -239,13 +239,13 @@
     <message>
         <location line="+60"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Vaihda Delta</translation>
+        <translation>Vaihda Delta</translation>
     </message>
 </context>
 <context>
@@ -278,12 +278,12 @@
         <location line="+10"/>
         <location line="+5"/>
         <source>Cube</source>
-        <translation type="unfinished">Kuutio</translation>
+        <translation>Kuutio</translation>
     </message>
     <message>
         <location line="-14"/>
         <source>Create a cube solid</source>
-        <translation type="unfinished">Luo kiinteä kuutio</translation>
+        <translation>Luo kiinteä kuutio</translation>
     </message>
     <message>
         <source>Box</source>
@@ -297,7 +297,7 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-850"/>
+        <location filename="../../Command.cpp" line="-861"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -333,7 +333,7 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+1058"/>
+        <location line="+1069"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -369,7 +369,7 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-799"/>
+        <location line="-810"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -389,35 +389,35 @@
     <message>
         <location line="+163"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join objects...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join objects...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join walled objects</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Join walled objects</translation>
     </message>
 </context>
 <context>
     <name>CmdPartCompound</name>
     <message>
-        <location line="+92"/>
+        <location line="+103"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make compound</source>
-        <translation type="unfinished">Tee yhdistelmäkuvio</translation>
+        <translation>Tee yhdistelmäkuvio</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a compound of several shapes</source>
-        <translation type="unfinished">Tehdä yhdistelmäkuvio useasta muodosta</translation>
+        <translation>Tehdä yhdistelmäkuvio useasta muodosta</translation>
     </message>
 </context>
 <context>
@@ -461,7 +461,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-930"/>
+        <location line="-941"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+488"/>
+        <location filename="../../Command.cpp" line="+499"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-690"/>
+        <location line="-701"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+270"/>
+        <location line="+281"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -631,17 +631,17 @@
     <message>
         <location line="-226"/>
         <source>Part</source>
-        <translation type="unfinished">osa</translation>
+        <translation>osa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from selected sketches</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Make face from selected sketches</translation>
     </message>
 </context>
 <context>
@@ -701,7 +701,7 @@
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1232"/>
+        <location line="-1243"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -755,7 +755,7 @@
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+712"/>
+        <location filename="../../Command.cpp" line="+723"/>
         <source>Part</source>
         <translation>osa</translation>
     </message>
@@ -803,7 +803,7 @@
     <message>
         <location line="+1"/>
         <source>Create a ruled surface from either two Edges or two wires</source>
-        <translation type="unfinished">Luoda  ohjattu pinta joko kahdesta reunasta tai kahdesta linjasta</translation>
+        <translation>Luoda  ohjattu pinta joko kahdesta reunasta tai kahdesta linjasta</translation>
     </message>
     <message>
         <source>Create a ruled surface from two curves</source>
@@ -1250,19 +1250,19 @@
     <message>
         <location line="+8"/>
         <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
-        <translation>The document &apos;%1&apos; doesn&apos;t exist.</translation>
+        <translation type="unfinished">The document &apos;%1&apos; doesn&apos;t exist.</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished">Onnistui</translation>
+        <translation>Onnistui</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+5"/>
         <location line="+5"/>
         <source>Failed</source>
-        <translation type="unfinished">Epäonnistui</translation>
+        <translation>Epäonnistui</translation>
     </message>
 </context>
 <context>
@@ -1285,12 +1285,12 @@
     <message>
         <location line="+52"/>
         <source>Select faces</source>
-        <translation type="unfinished">Valitse pinnat</translation>
+        <translation>Valitse pinnat</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Select edges</source>
-        <translation type="unfinished">Valitse reunat</translation>
+        <translation>Valitse reunat</translation>
     </message>
     <message>
         <location line="-104"/>
@@ -1325,33 +1325,33 @@
     <message>
         <location filename="../../DlgFilletEdges.cpp" line="-728"/>
         <source>Length:</source>
-        <translation type="unfinished">Pituus:</translation>
+        <translation>Pituus:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Vakiopituus</translation>
+        <translation>Vakiopituus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Muuttuva pituus</translation>
+        <translation>Muuttuva pituus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Edges to chamfer</source>
-        <translation type="unfinished">Viisteen reunat</translation>
+        <translation>Viisteen reunat</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+520"/>
         <source>Start length</source>
-        <translation type="unfinished">Aloituspituus</translation>
+        <translation>Aloituspituus</translation>
     </message>
     <message>
         <location line="-519"/>
         <source>End length</source>
-        <translation type="unfinished">Lopetuspituus</translation>
+        <translation>Lopetuspituus</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1372,7 +1372,7 @@
     <message>
         <location line="+506"/>
         <source>Length</source>
-        <translation type="unfinished">Pituus</translation>
+        <translation>Pituus</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1425,47 +1425,47 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished">IGES</translation>
+        <translation>IGES</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Vie</translation>
+        <translation>Vie</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished">Yksiköt IGES vietäväksi</translation>
+        <translation>Yksiköt IGES vietäväksi</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Millimetri</translation>
+        <translation>Millimetri</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Metri</translation>
+        <translation>Metri</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Tuuma</translation>
+        <translation>Tuuma</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Write solids and shells as</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Write solids and shells as</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
     </message>
     <message>
         <source>Enable B-REP mode</source>
@@ -1474,32 +1474,32 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+13"/>
         <source>Import</source>
-        <translation type="unfinished">Tuonti</translation>
+        <translation>Tuonti</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished">Ohita tyhjät kohteet</translation>
+        <translation>Ohita tyhjät kohteet</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished">Otsikko</translation>
+        <translation>Otsikko</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished">Yritys</translation>
+        <translation>Yritys</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished">Tuote</translation>
+        <translation>Tuote</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished">Kehittäjä</translation>
+        <translation>Kehittäjä</translation>
     </message>
 </context>
 <context>
@@ -1507,57 +1507,57 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished">ASKEL</translation>
+        <translation>ASKEL</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Vie</translation>
+        <translation>Vie</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished">Yksiköt ASKEL-vientiin</translation>
+        <translation>Yksiköt ASKEL-vientiin</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Millimetri</translation>
+        <translation>Millimetri</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Metri</translation>
+        <translation>Metri</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Tuuma</translation>
+        <translation>Tuuma</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished">Kaavio</translation>
+        <translation>Kaavio</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished">Otsikko</translation>
+        <translation>Otsikko</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished">Yritys</translation>
+        <translation>Yritys</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished">Kehittäjä</translation>
+        <translation>Kehittäjä</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished">Tuote</translation>
+        <translation>Tuote</translation>
     </message>
 </context>
 <context>
@@ -1716,12 +1716,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location filename="../../DlgPartImportIgesImp.cpp" line="+71"/>
         <source>IGES</source>
-        <translation type="unfinished">IGES</translation>
+        <translation>IGES</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -1763,12 +1763,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location filename="../../DlgPartImportStepImp.cpp" line="+70"/>
         <source>STEP</source>
-        <translation type="unfinished">ASKEL</translation>
+        <translation>ASKEL</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
 </context>
 <context>
@@ -1938,13 +1938,13 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+16"/>
         <source>Prism</source>
-        <translation type="unfinished">Prisma</translation>
+        <translation>Prisma</translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../../DlgPrimitives.cpp" line="+67"/>
         <source>Spiral</source>
-        <translation type="unfinished">Kierre</translation>
+        <translation>Kierre</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1967,7 +1967,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+14"/>
         <source>Regular polygon</source>
-        <translation type="unfinished">Säännöllinen monikulmio</translation>
+        <translation>Säännöllinen monikulmio</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2029,28 +2029,28 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished">U muuttuja:</translation>
+        <translation>U muuttuja:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished">V muuttujat:</translation>
+        <translation>V muuttujat:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Säde 3:</translation>
+        <translation>Säde 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished">V  muuttuja:</translation>
+        <translation>V  muuttuja:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished">U muuttuja:</translation>
+        <translation>U muuttuja:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2064,13 +2064,13 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <location line="+150"/>
         <location line="+882"/>
         <source>Polygon:</source>
-        <translation type="unfinished">Monikulmio:</translation>
+        <translation>Monikulmio:</translation>
     </message>
     <message>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished">Kehäsäde:</translation>
+        <translation>Kehäsäde:</translation>
     </message>
     <message>
         <location line="-831"/>
@@ -2115,12 +2115,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+88"/>
         <source>Growth:</source>
-        <translation type="unfinished">Kasvu:</translation>
+        <translation>Kasvu:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rotations:</source>
-        <translation type="unfinished">Kierrosten lukumäärä:</translation>
+        <translation>Kierrosten lukumäärä:</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -2249,7 +2249,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+7"/>
         <source>Create Solid</source>
-        <translation type="unfinished">Luo kiinteä</translation>
+        <translation>Luo kiinteä</translation>
     </message>
     <message>
         <location filename="../../DlgRevolution.cpp" line="+177"/>
@@ -2292,12 +2292,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maximum angular deflection</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
         <source> °</source>
-        <translation type="unfinished"></translation>
+        <translation> °</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2338,12 +2338,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location filename="../../DlgSettings3DViewPartImp.cpp" line="+64"/>
         <source>Deviation</source>
-        <translation>Deviation</translation>
+        <translation type="unfinished">Deviation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-        <translation>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+        <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
     </message>
 </context>
 <context>
@@ -2386,17 +2386,17 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation type="unfinished">Automaattisesti tarkenna malli, kun luonnokseen perustuva toiminto on tehty</translation>
+        <translation>Automaattisesti tarkenna malli, kun luonnokseen perustuva toiminto on tehty</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Object naming</source>
-        <translation type="unfinished">Kohteen nimeäminen</translation>
+        <translation>Kohteen nimeäminen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add name of base object</source>
-        <translation type="unfinished">Lisää peruskohteelle nimi</translation>
+        <translation>Lisää peruskohteelle nimi</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -2409,80 +2409,80 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
         <source>Part colors</source>
-        <translation type="unfinished">Osan värit</translation>
+        <translation>Osan värit</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Osan oletusvärit</translation>
+        <translation>Osan oletusvärit</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Muodon oletusväri</translation>
+        <translation>Muodon oletusväri</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The default color for new shapes</source>
-        <translation type="unfinished">Uusien muotojen oletusväri</translation>
+        <translation>Uusien muotojen oletusväri</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Default line color</source>
-        <translation type="unfinished">Viivan oletusväri</translation>
+        <translation>Viivan oletusväri</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line color for new shapes</source>
-        <translation type="unfinished">Uusien muotojen viivojen oletusväri</translation>
+        <translation>Uusien muotojen viivojen oletusväri</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Oletusarvo viivan leveydelle</translation>
+        <translation>Oletusarvo viivan leveydelle</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished">Uusien muotojen viivojen oletuspaksuus</translation>
+        <translation>Uusien muotojen viivojen oletuspaksuus</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+68"/>
         <source>px</source>
-        <translation type="unfinished">px</translation>
+        <translation>px</translation>
     </message>
     <message>
         <location line="-43"/>
         <source>Default vertex color</source>
-        <translation type="unfinished">Päätepisteen oletusväri</translation>
+        <translation>Päätepisteen oletusväri</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Päätepisteen oletuskoko</translation>
+        <translation>Päätepisteen oletuskoko</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Bounding box color</source>
-        <translation type="unfinished">Rajaavan ruudun väri</translation>
+        <translation>Rajaavan ruudun väri</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of bounding boxes in the 3D view</source>
-        <translation type="unfinished">Rajaavien ruutujen oletusväri 3D näkymässä</translation>
+        <translation>Rajaavien ruutujen oletusväri 3D näkymässä</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annotations</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default text color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default text color</translation>
     </message>
 </context>
 <context>
@@ -2526,7 +2526,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <location filename="../../TaskLoft.cpp" line="+73"/>
         <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Loppupiste/reuna/linja/näyttöpinta</translation>
+        <translation>Loppupiste/reuna/linja/näyttöpinta</translation>
     </message>
     <message>
         <location line="-144"/>
@@ -2542,12 +2542,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation type="unfinished">On oltava vähintään kaksi pistettä, reunaa, linjaa tai näyttöpintaa.</translation>
+        <translation>On oltava vähintään kaksi pistettä, reunaa, linjaa tai näyttöpintaa.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Input error</source>
-        <translation type="unfinished">Syötteen virhe</translation>
+        <translation>Syötteen virhe</translation>
     </message>
     <message>
         <source>At least two vertices, edges or wires are required.</source>
@@ -2672,7 +2672,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished">Valitse vähintään kolme kärkipistettä</translation>
+        <translation>Valitse vähintään kolme kärkipistettä</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2697,7 +2697,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished">Valitse luettelo kärkipisteitä</translation>
+        <translation>Valitse luettelo kärkipisteitä</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2731,7 +2731,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Loppupiste/reuna/linja/näyttöpinta</translation>
+        <translation>Loppupiste/reuna/linja/näyttöpinta</translation>
     </message>
     <message>
         <location line="+129"/>
@@ -2747,7 +2747,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished">Valitse vähintään yksi yhdistettyjä reunoja, joita pitkin haluat pyyhkäistä.</translation>
+        <translation>Valitse vähintään yksi yhdistettyjä reunoja, joita pitkin haluat pyyhkäistä.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2762,33 +2762,33 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+7"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Väärä valinta</translation>
+        <translation>Väärä valinta</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation type="unfinished">&apos;%1&apos; ei voi käyttää profiilina ja kansiona.</translation>
+        <translation>&apos;%1&apos; ei voi käyttää profiilina ja kansiona.</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Input error</source>
-        <translation type="unfinished">Syötteen virhe</translation>
+        <translation>Syötteen virhe</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Done</source>
-        <translation type="unfinished">Valmis</translation>
+        <translation>Valmis</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished">Valitse yhdistettyjä reunoja vähintään yksi  3d -näkymässä ja paina &apos;Valmis&apos;</translation>
+        <translation>Valitse yhdistettyjä reunoja vähintään yksi  3d -näkymässä ja paina &apos;Valmis&apos;</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished">Valittu pyyhkäisykansio ei kelpaa.</translation>
+        <translation>Valittu pyyhkäisykansio ei kelpaa.</translation>
     </message>
 </context>
 <context>
@@ -2796,7 +2796,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="+548"/>
         <source>Shape Content</source>
-        <translation type="unfinished">Muoto sisältö</translation>
+        <translation>Muoto sisältö</translation>
     </message>
 </context>
 <context>
@@ -2995,7 +2995,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+7"/>
         <source>Box selection</source>
-        <translation type="unfinished">Laatikon valinta</translation>
+        <translation>Laatikon valinta</translation>
     </message>
 </context>
 <context>
@@ -3054,7 +3054,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+20"/>
         <source>Closed</source>
-        <translation type="unfinished">Suljettu</translation>
+        <translation>Suljettu</translation>
     </message>
 </context>
 <context>
@@ -3143,7 +3143,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished">Näkymäpinta kärkipisteistä</translation>
+        <translation>Näkymäpinta kärkipisteistä</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3186,7 +3186,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished">Pyyhi kansio</translation>
+        <translation>Pyyhi kansio</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3233,27 +3233,27 @@ in the 3D view for the sweep path.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-1120"/>
+        <location filename="../../Command.cpp" line="-1131"/>
         <location line="+77"/>
         <location line="+82"/>
-        <location line="+176"/>
+        <location line="+187"/>
         <location line="+50"/>
         <location line="+959"/>
         <source>Wrong selection</source>
         <translation>Väärä valinta</translation>
     </message>
     <message>
-        <location line="-1343"/>
-        <location line="+385"/>
+        <location line="-1354"/>
+        <location line="+396"/>
         <source>Select two shapes please.</source>
         <translation>Valitse kaksi muotoa kiitos.</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-386"/>
         <location line="+82"/>
         <location line="+82"/>
         <source>Non-solids selected</source>
-        <translation type="unfinished">Ei-kiinteät valittu</translation>
+        <translation>Ei-kiinteät valittu</translation>
     </message>
     <message>
         <location line="-163"/>
@@ -3261,13 +3261,13 @@ in the 3D view for the sweep path.</source>
         <location line="+82"/>
         <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-        <translation type="unfinished">Ei-kiinteiden kohteiden käyttö voi Boolean laskutoimituksilla aiheuttaa odottamattomia tuloksia. 
+        <translation>Ei-kiinteiden kohteiden käyttö voi Boolean laskutoimituksilla aiheuttaa odottamattomia tuloksia. 
 Haluatko jatkaa?</translation>
     </message>
     <message>
-        <location line="+160"/>
+        <location line="+171"/>
         <source>Select one shape or more, please.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one shape or more, please.</translation>
     </message>
     <message>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
@@ -3324,7 +3324,7 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">muunna</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+162"/>
+        <location filename="../../AppPartGui.cpp" line="+180"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Osa suunnittelu</translation>
@@ -3333,28 +3333,28 @@ Haluatko jatkaa?</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished">Tuo/Vie</translation>
+        <translation>Tuo/Vie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display</source>
-        <translation type="unfinished">Näyttö</translation>
+        <translation>Näyttö</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-258"/>
+        <location filename="../../Command.cpp" line="-269"/>
         <location line="+82"/>
         <source>Select two shapes or more, please.</source>
         <translation>Valitse vähintään kaksi muotoa, ole hyvä.</translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+387"/>
         <source>All CAD Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All CAD Files</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="+804"/>
@@ -3599,57 +3599,57 @@ Haluatko jatkaa?</translation>
     <message>
         <location line="+12"/>
         <source>BOPAlgo CheckUnknown</source>
-        <translation type="unfinished">BOPAlgo TarkistusTuntematon</translation>
+        <translation>BOPAlgo TarkistusTuntematon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo BadType</source>
-        <translation type="unfinished">BOPAlgo VääräTyyppi</translation>
+        <translation>BOPAlgo VääräTyyppi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo SelfIntersect</source>
-        <translation type="unfinished">BOPAlgo Itseleikkaus</translation>
+        <translation>BOPAlgo Itseleikkaus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo TooSmallEdge</source>
-        <translation type="unfinished">BOPAlgo LiianPieniReuna</translation>
+        <translation>BOPAlgo LiianPieniReuna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NonRecoverableFace</source>
-        <translation type="unfinished">BOPAlgo EiPalautettavaNäkymä</translation>
+        <translation>BOPAlgo EiPalautettavaNäkymä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfVertex</source>
-        <translation type="unfinished">BOPAlgo PäätepisteenSopimattomuus</translation>
+        <translation>BOPAlgo PäätepisteenSopimattomuus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfEdge</source>
-        <translation type="unfinished">BOPAlgo ReunanSopimattomuus</translation>
+        <translation>BOPAlgo ReunanSopimattomuus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfFace</source>
-        <translation type="unfinished">BOPAlgo NäkymänSopimattomuus</translation>
+        <translation>BOPAlgo NäkymänSopimattomuus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo OperationAborted</source>
-        <translation type="unfinished">BOPAlgo ToimintoKeskeytetty</translation>
+        <translation>BOPAlgo ToimintoKeskeytetty</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo GeomAbs_C0</source>
-        <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+        <translation>BOPAlgo GeomAbs_C0</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NotValid</source>
-        <translation type="unfinished">BOPAlgo EiKelvollinen</translation>
+        <translation>BOPAlgo EiKelvollinen</translation>
     </message>
     <message>
         <location line="+284"/>
@@ -3661,7 +3661,7 @@ Haluatko jatkaa?</translation>
         <location filename="../../TaskDimension.cpp" line="+552"/>
         <location line="+1040"/>
         <source>Selections</source>
-        <translation type="unfinished">Valinnat</translation>
+        <translation>Valinnat</translation>
     </message>
     <message>
         <location line="-1033"/>
@@ -3672,27 +3672,27 @@ Haluatko jatkaa?</translation>
     <message>
         <location line="-265"/>
         <source>Reset Dialog</source>
-        <translation type="unfinished">Palauta valintaikkuna</translation>
+        <translation>Palauta valintaikkuna</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Vaihda 3d</translation>
+        <translation>Vaihda 3d</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Vaihda Delta</translation>
+        <translation>Vaihda Delta</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Clear All</source>
-        <translation type="unfinished">Tyhjennä kaikki</translation>
+        <translation>Tyhjennä kaikki</translation>
     </message>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Show control points</translation>
     </message>
 </context>
 <context>

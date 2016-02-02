@@ -28,7 +28,7 @@
     <message>
         <location line="+206"/>
         <source>Raytracing</source>
-        <translation type="unfinished">光线追踪</translation>
+        <translation>光线追踪</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -43,12 +43,12 @@
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">没有模板</translation>
+        <translation>没有模板</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">没有可用的模板</translation>
+        <translation>没有可用的模板</translation>
     </message>
 </context>
 <context>
@@ -101,12 +101,12 @@
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">没有模板</translation>
+        <translation>没有模板</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">没有可用的模板</translation>
+        <translation>没有可用的模板</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     <message>
         <location line="+203"/>
         <source>Raytracing</source>
-        <translation type="unfinished">光线追踪</translation>
+        <translation>光线追踪</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -132,7 +132,7 @@
     <message>
         <location line="+249"/>
         <source>Raytracing</source>
-        <translation type="unfinished">光线追踪</translation>
+        <translation>光线追踪</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -317,7 +317,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -357,7 +357,7 @@ Do you want to continue?</translation>
         <location line="+62"/>
         <location line="+279"/>
         <source>POV-Ray</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray</translation>
     </message>
     <message>
         <location line="-391"/>
@@ -366,7 +366,7 @@ Do you want to continue?</translation>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -465,7 +465,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-159"/>
         <source>Render</source>
-        <translation type="unfinished">呈现</translation>
+        <translation>呈现</translation>
     </message>
     <message>
         <location line="+40"/>

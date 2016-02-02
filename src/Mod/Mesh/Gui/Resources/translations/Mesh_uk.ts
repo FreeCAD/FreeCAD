@@ -28,7 +28,7 @@
     </message>
     <message>
         <source>Shows the boundings of the selected mesh</source>
-        <translation>Shows the boundings of the selected mesh</translation>
+        <translation>Показує структуру вибраної мережі</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     <name>CmdMeshDemolding</name>
     <message>
         <source>Interactive demolding direction</source>
-        <translation>Interactive demolding direction</translation>
+        <translation>Інтерактивне витягання напрямку з форми</translation>
     </message>
     <message>
         <source>Mesh</source>
@@ -225,15 +225,15 @@
     <name>CmdMeshFromPartShape</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Сітка(Меш)</translation>
+        <translation>Сітка(Меш)</translation>
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">Створення сітки з форми ...</translation>
+        <translation>Створення сітки з форми ...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">Теселяція форми</translation>
+        <translation>Теселяція форми</translation>
     </message>
 </context>
 <context>
@@ -281,15 +281,15 @@
     <name>CmdMeshMerge</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Сітка(Меш)</translation>
+        <translation>Сітка(Меш)</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>Об&apos;єднання</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Merges selected meshes into one</translation>
     </message>
 </context>
 <context>
@@ -360,11 +360,11 @@
     </message>
     <message>
         <source>Trim mesh</source>
-        <translation>Trim mesh</translation>
+        <translation>Обрізати сітку</translation>
     </message>
     <message>
         <source>Trims a mesh with a picked polygon</source>
-        <translation>Trims a mesh with a picked polygon</translation>
+        <translation>Обрізати сітку обраним багатокутником</translation>
     </message>
 </context>
 <context>
@@ -394,7 +394,7 @@
     </message>
     <message>
         <source>Remove topologic independent components from the mesh</source>
-        <translation>Remove topologic independent components from the mesh</translation>
+        <translation>Видалити топологічно-незалежні компоненти з сітки</translation>
     </message>
 </context>
 <context>
@@ -405,11 +405,11 @@
     </message>
     <message>
         <source>Create mesh segments...</source>
-        <translation>Create mesh segments...</translation>
+        <translation>Створити сегменти сітки...</translation>
     </message>
     <message>
         <source>Create mesh segments</source>
-        <translation>Create mesh segments</translation>
+        <translation>Створити сегменти сітки</translation>
     </message>
 </context>
 <context>
@@ -461,15 +461,15 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Сітка(Меш)</translation>
+        <translation>Сітка(Меш)</translation>
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Trim mesh with a plane</translation>
+        <translation>Обрізати сітки площиною</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Trims a mesh with a plane</translation>
+        <translation>Обрізати сітку площиною</translation>
     </message>
 </context>
 <context>
@@ -628,7 +628,7 @@
     </message>
     <message>
         <source>Multiple point indices</source>
-        <translation>Multiple point indices</translation>
+        <translation>Індекси множинних точок</translation>
     </message>
     <message>
         <source>Non-manifolds</source>
@@ -636,7 +636,7 @@
     </message>
     <message>
         <source>Cannot remove non-manifolds</source>
-        <translation>Cannot remove non-manifolds</translation>
+        <translation>Неможливо видалити одноманітності</translation>
     </message>
     <message>
         <source>No selection</source>
@@ -644,19 +644,19 @@
     </message>
     <message>
         <source>No flipped normals</source>
-        <translation>No flipped normals</translation>
+        <translation>Перевернутих нормалей немає</translation>
     </message>
     <message>
         <source>%1 flipped normals</source>
-        <translation>%1 flipped normals</translation>
+        <translation>%1 перевернути нормалі</translation>
     </message>
     <message>
         <source>No non-manifolds</source>
-        <translation>No non-manifolds</translation>
+        <translation>Відсутня одноманітність</translation>
     </message>
     <message>
         <source>%1 non-manifolds</source>
-        <translation>%1 non-manifolds</translation>
+        <translation>%1 одноманітний</translation>
     </message>
     <message>
         <source>No invalid indices</source>
@@ -716,13 +716,12 @@
     </message>
     <message>
         <source>Flipped normals found</source>
-        <translation>Flipped normals found</translation>
+        <translation>Знайдені перевернуті нормалі</translation>
     </message>
     <message>
         <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-        <translation>Check failed due to folds on the surface.
-Please run the command to repair folds first</translation>
+        <translation>Не вдалося перевірити через складок на поверхні. Спочатку запустіть команду для налагодження складок</translation>
     </message>
     <message>
         <source>No folds on surface</source>
@@ -836,6 +835,33 @@ Please run the command to repair folds first</translation>
     </message>
 </context>
 <context>
+    <name>MeshGui::DlgSettingsImportExport</name>
+    <message>
+        <source>Mesh Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines the deviation of tessellation to the actual surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum mesh deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
         <source>Mesh view</source>
@@ -855,7 +881,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Це найменший кут між двома поверхнями, де обраховані нормалі для отримання рівного затінення.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Якщо кути між нормалями двох сусідніх поверхонь менші за кут згину, поверхні будуть гладко затінені навколо їх загального ребра&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Crease angle</source>
@@ -863,7 +889,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Define normal per vertex</source>
@@ -875,7 +901,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defining the normals per vertex is also called &lt;span style=&quot; font-style:italic;&quot;&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defining the normals per vertex is also called &lt;span style=&quot; font-style:italic;&quot;&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defining the normals per vertex is also called &lt;span style=&quot; font-style:italic;&quot;&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Default appearance for new meshes</source>
@@ -934,11 +960,11 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Mu:</source>
-        <translation>Mu:</translation>
+        <translation type="unfinished">Mu:</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation>Тільки виділення</translation>
     </message>
 </context>
 <context>
@@ -949,7 +975,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Flip normal</source>
-        <translation>Flip normal</translation>
+        <translation>Відображення по нормалі</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -964,7 +990,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Завершити</translation>
+        <translation>Завершити</translation>
     </message>
 </context>
 <context>
@@ -1030,11 +1056,11 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::Segmentation</name>
     <message>
         <source>Mesh segmentation</source>
-        <translation>Mesh segmentation</translation>
+        <translation>Сегментація сітки</translation>
     </message>
     <message>
         <source>Smooth mesh</source>
-        <translation>Smooth mesh</translation>
+        <translation>Згладити сітку</translation>
     </message>
     <message>
         <source>Plane</source>
@@ -1046,7 +1072,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Minumum number of faces</source>
-        <translation>Minumum number of faces</translation>
+        <translation>Мінімальна кількість граней</translation>
     </message>
     <message>
         <source>Cylinder</source>
@@ -1058,11 +1084,11 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Tolerance (Flat)</source>
-        <translation>Tolerance (Flat)</translation>
+        <translation>Точність (по поверхні)</translation>
     </message>
     <message>
         <source>Tolerance (Curved)</source>
-        <translation>Tolerance (Curved)</translation>
+        <translation>Точність (по вигину)</translation>
     </message>
     <message>
         <source>Minimum number of faces</source>
@@ -1077,31 +1103,31 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Вибір</translation>
+        <translation>Вибір</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Додати</translation>
+        <translation>Додати</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Очистити</translation>
+        <translation>Очистити</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">Поважати лише видимі трикутники</translation>
+        <translation>Поважати лише видимі трикутники</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Поважати лише трикутники з нормалями на передньому плані</translation>
+        <translation>Поважати лише трикутники з нормалями на передньому плані</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation>Для виділення області використовуйте інструмент &quot;Пензель&quot;</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Clears completely the selected area</translation>
+        <translation>Повністю очищає виділену область</translation>
     </message>
 </context>
 <context>
@@ -1119,27 +1145,27 @@ Please run the command to repair folds first</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation>Оберіть площину</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation>Оберіть площину за допомогою якої ви будете обрізати сітку.</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation>OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation>Виникла невідома помилка при виконанні OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD не знайдений на вашій системі. Будь ласка, відвідайте http://www.openscad.org/index.html щоб встановити цю програму.</translation>
+        <translation>OpenSCAD не знайдений на вашій системі. Будь ласка, відвідайте http://www.openscad.org/index.html щоб встановити цю програму.</translation>
     </message>
 </context>
 <context>
@@ -1301,66 +1327,70 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Відобразити компоненти</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Mesh Files</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Binary STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Binary Mesh</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alias Mesh</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Object File Format</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inventor V2.1 ascii</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stanford Polygon</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">X3D Extensible 3D</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Compressed VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Python module def</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+    </message>
+    <message>
+        <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

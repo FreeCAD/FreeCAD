@@ -64,12 +64,12 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Площина зображення</translation>
+        <translation>Площина зображення</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">Площина XY</translation>
+        <translation>Площина XY</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -89,7 +89,7 @@
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Зміщення:</translation>
+        <translation>Зміщення:</translation>
     </message>
 </context>
 <context>

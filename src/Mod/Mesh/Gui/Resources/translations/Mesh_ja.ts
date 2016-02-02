@@ -5,7 +5,7 @@
     <name>CmdMeshAddFacet</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Add triangle</source>
@@ -20,7 +20,7 @@
     <name>CmdMeshBoundingBox</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Boundings info...</source>
@@ -35,7 +35,7 @@
     <name>CmdMeshBuildRegularSolid</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Regular solid...</source>
@@ -54,14 +54,14 @@
     </message>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshDifference</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Difference</source>
@@ -72,7 +72,7 @@
     <name>CmdMeshEvaluateFacet</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Face info</source>
@@ -87,7 +87,7 @@
     <name>CmdMeshEvaluateSolid</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Check solid mesh</source>
@@ -102,7 +102,7 @@
     <name>CmdMeshEvaluation</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Opens a dialog to analyze and repair a mesh</source>
@@ -150,7 +150,7 @@
     <name>CmdMeshExport</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Export mesh...</source>
@@ -165,7 +165,7 @@
     <name>CmdMeshFillInteractiveHole</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Close hole</source>
@@ -180,7 +180,7 @@
     <name>CmdMeshFillupHoles</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Fill holes...</source>
@@ -195,7 +195,7 @@
     <name>CmdMeshFlipNormals</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Flip normals</source>
@@ -210,7 +210,7 @@
     <name>CmdMeshFromGeometry</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Create mesh from geometry...</source>
@@ -229,18 +229,18 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">シェイプからメッシュを作成する...</translation>
+        <translation>シェイプからメッシュを作成する...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">シェイプをテッセレーションします。</translation>
+        <translation>シェイプをテッセレーションします。</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Harmonize normals</source>
@@ -255,7 +255,7 @@
     <name>CmdMeshImport</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Import mesh...</source>
@@ -270,7 +270,7 @@
     <name>CmdMeshIntersection</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Intersection</source>
@@ -285,18 +285,18 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>マージ</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished"></translation>
+        <translation>選択されたメッシュを一つにマージさせます</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshPolyCut</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Cut mesh</source>
@@ -311,7 +311,7 @@
     <name>CmdMeshPolySegm</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Make segment</source>
@@ -326,7 +326,7 @@
     <name>CmdMeshPolySelect</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Select mesh</source>
@@ -341,7 +341,7 @@
     <name>CmdMeshPolySplit</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Split mesh</source>
@@ -356,7 +356,7 @@
     <name>CmdMeshPolyTrim</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Trim mesh</source>
@@ -371,7 +371,7 @@
     <name>CmdMeshRemoveCompByHand</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Remove components by hand...</source>
@@ -386,7 +386,7 @@
     <name>CmdMeshRemoveComponents</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Remove components...</source>
@@ -401,7 +401,7 @@
     <name>CmdMeshSegmentation</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Create mesh segments...</source>
@@ -416,7 +416,7 @@
     <name>CmdMeshSmoothing</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Smooth...</source>
@@ -431,7 +431,7 @@
     <name>CmdMeshToolMesh</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Segment by tool mesh</source>
@@ -446,7 +446,7 @@
     <name>CmdMeshTransform</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Transform mesh</source>
@@ -465,18 +465,18 @@
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">平面上のメッシュをトリム</translation>
+        <translation>平面上のメッシュをトリム</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">平面上のメッシュを1つトリム</translation>
+        <translation>平面上のメッシュを1つトリム</translation>
     </message>
 </context>
 <context>
     <name>CmdMeshUnion</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Union</source>
@@ -487,7 +487,7 @@
     <name>CmdMeshVertexCurvature</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Calculates the curvature of the vertices of a mesh</source>
@@ -502,7 +502,7 @@
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <source>Curvature info</source>
@@ -836,6 +836,33 @@ Please run the command to repair folds first</source>
     </message>
 </context>
 <context>
+    <name>MeshGui::DlgSettingsImportExport</name>
+    <message>
+        <source>Mesh Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines the deviation of tessellation to the actual surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum mesh deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
         <source>Mesh view</source>
@@ -938,7 +965,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">選択のみ</translation>
+        <translation>選択のみ</translation>
     </message>
 </context>
 <context>
@@ -964,7 +991,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">完了</translation>
+        <translation>完了</translation>
     </message>
 </context>
 <context>
@@ -1077,31 +1104,31 @@ Please run the command to repair folds first</source>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">選択範囲</translation>
+        <translation>選択範囲</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">追加</translation>
+        <translation>追加</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">クリア</translation>
+        <translation>クリア</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">表示されている三角形のみ考慮</translation>
+        <translation>表示されている三角形のみ考慮</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">画面の方向を向いた法線を持つ三角形のみ考慮</translation>
+        <translation>画面の方向を向いた法線を持つ三角形のみ考慮</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">ブラシツールを使用して領域を選択</translation>
+        <translation>ブラシツールを使用して領域を選択</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">選択した領域を完全にクリア</translation>
+        <translation>選択範囲を完全に選択解除</translation>
     </message>
 </context>
 <context>
@@ -1119,27 +1146,27 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">平面を選択</translation>
+        <translation>平面を選択</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">メッシュのトリムを行う平面を選択してください。</translation>
+        <translation>メッシュのトリムを行う平面を選択してください。</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation>OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">OpenSCAD の実行中に、不明なエラーが発生しました。</translation>
+        <translation>OpenSCAD の実行中に、不明なエラーが発生しました。</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD がシステムに見つかりません。
+        <translation>OpenSCAD がシステムに見つかりません。
 インストール方法につて http://www.openscad.org/index.html を参照してください。</translation>
     </message>
 </context>
@@ -1230,7 +1257,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>The mesh &apos;%1&apos; is a solid.</source>
-        <translation>&apos;％1&apos;はソリッドメッシュです。</translation>
+        <translation>&apos;%1&apos;はソリッドメッシュです。</translation>
     </message>
     <message>
         <source>The mesh &apos;%1&apos; is not a solid.</source>
@@ -1285,7 +1312,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Clear selected faces</source>
-        <translation>選択した面をクリア</translation>
+        <translation>面の選択を全て解除</translation>
     </message>
     <message>
         <source>Annotation</source>
@@ -1301,66 +1328,70 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">表示コンポーネント</translation>
+        <translation>表示コンポーネント</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished"></translation>
+        <translation>全てのメッシュファイル</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished"></translation>
+        <translation>バイナリーSTL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished"></translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation>バイナリーメッシュ</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliasメッシュ</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished"></translation>
+        <translation>オブジェクトファイル形式</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished"></translation>
+        <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished"></translation>
+        <translation>スタンフォードポリゴン</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished"></translation>
+        <translation>X3D 拡張 3D</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>圧縮済み VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished"></translation>
+        <translation>Pythonモジュール定義</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation>[点: %1, 線: %2 面: %3]</translation>
+    </message>
+    <message>
+        <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

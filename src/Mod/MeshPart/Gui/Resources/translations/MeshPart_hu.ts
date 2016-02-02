@@ -39,7 +39,7 @@
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Általános</translation>
+        <translation>Általános</translation>
     </message>
     <message>
         <location line="+7"/>
