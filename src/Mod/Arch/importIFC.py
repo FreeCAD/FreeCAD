@@ -121,10 +121,10 @@ def doubleClickTree(item,column):
 
 def getPreferences():
     """retrieves IFC preferences"""
-    global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS,
-           ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS,
-           MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES,
-           FORCE_BREP
+    global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
+    global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
+    global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
+    global FORCE_BREP
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")   
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
