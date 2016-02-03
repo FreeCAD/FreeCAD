@@ -40,6 +40,7 @@
         <file>translations/Spreadsheet_el.qm</file>
         <file>translations/Spreadsheet_sk.qm</file>
         <file>translations/Spreadsheet_tr.qm</file>
+        <file>translations/Spreadsheet_sl.qm</file>
         <file>icons/SpreadsheetAlias.svg</file>
     </qresource>
 </RCC>

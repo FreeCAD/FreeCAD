@@ -27,5 +27,6 @@
         <file>translations/Points_pt-PT.qm</file>
         <file>translations/Points_sr.qm</file>
         <file>translations/Points_el.qm</file>
+        <file>translations/Points_sl.qm</file>
     </qresource>
 </RCC> 

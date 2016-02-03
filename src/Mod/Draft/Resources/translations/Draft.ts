@@ -940,17 +940,17 @@ such as &quot;Arial:Bold&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="135"/>
+        <location filename="preferences-dxf.ui" line="144"/>
         <source>if this is checked, paper space objects will be imported too</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="106"/>
+        <location filename="preferences-dxf.ui" line="115"/>
         <source>if this is unchecked, texts/mtexts won&apos;t be imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="415"/>
+        <location filename="preferences-dxf.ui" line="424"/>
         <source>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -991,17 +991,17 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="151"/>
+        <location filename="preferences-dxf.ui" line="160"/>
         <source>Check this if you want the non-named blocks (beginning with a *) to be imported too</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="253"/>
+        <location filename="preferences-dxf.ui" line="262"/>
         <source>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="256"/>
+        <location filename="preferences-dxf.ui" line="265"/>
         <source>Join geometry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1146,22 +1146,22 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="273"/>
+        <location filename="preferences-dxf.ui" line="282"/>
         <source>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="276"/>
+        <location filename="preferences-dxf.ui" line="285"/>
         <source>Group layers into blocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="453"/>
+        <location filename="preferences-dxf.ui" line="462"/>
         <source>If this is checked, all objects containing faces will be exported as 3d polyfaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="456"/>
+        <location filename="preferences-dxf.ui" line="465"/>
         <source>Export 3D objects as polyface meshes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1196,32 +1196,32 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="293"/>
+        <location filename="preferences-dxf.ui" line="302"/>
         <source>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="296"/>
+        <location filename="preferences-dxf.ui" line="305"/>
         <source>Use standard font size for texts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="333"/>
+        <location filename="preferences-dxf.ui" line="342"/>
         <source>If this is checked, hatches will be converted into simple wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="336"/>
+        <location filename="preferences-dxf.ui" line="345"/>
         <source>Import hatch boundaries as wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="353"/>
+        <location filename="preferences-dxf.ui" line="362"/>
         <source>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="356"/>
+        <location filename="preferences-dxf.ui" line="365"/>
         <source>Render polylines with width</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1286,42 +1286,42 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="99"/>
+        <location filename="preferences-dxf.ui" line="108"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="109"/>
+        <location filename="preferences-dxf.ui" line="118"/>
         <source>texts and dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="122"/>
+        <location filename="preferences-dxf.ui" line="131"/>
         <source>points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="138"/>
+        <location filename="preferences-dxf.ui" line="147"/>
         <source>layouts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="154"/>
+        <location filename="preferences-dxf.ui" line="163"/>
         <source>*blocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="496"/>
+        <location filename="preferences-dxf.ui" line="505"/>
         <source>If this is checked, the exported objects will be projected to reflect the current view direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="499"/>
+        <location filename="preferences-dxf.ui" line="508"/>
         <source>Project exported objects along current view direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="373"/>
+        <location filename="preferences-dxf.ui" line="382"/>
         <source>Ellipse export is badly supported. Use this to export them as polylines instead.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1441,52 +1441,52 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="171"/>
+        <location filename="preferences-dxf.ui" line="180"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="181"/>
+        <location filename="preferences-dxf.ui" line="190"/>
         <source>simple Part shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="197"/>
+        <location filename="preferences-dxf.ui" line="206"/>
         <source>If this is checked, parametric Draft objects will be created whenever possible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="200"/>
+        <location filename="preferences-dxf.ui" line="209"/>
         <source>Draft objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="213"/>
+        <location filename="preferences-dxf.ui" line="222"/>
         <source>If this is checked, sketches will be created whenever possible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="216"/>
+        <location filename="preferences-dxf.ui" line="225"/>
         <source>Sketches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="233"/>
+        <location filename="preferences-dxf.ui" line="242"/>
         <source>If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="236"/>
+        <location filename="preferences-dxf.ui" line="245"/>
         <source>Get original colors from the DXF file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="376"/>
+        <location filename="preferences-dxf.ui" line="385"/>
         <source>Treat ellipses and splines as polylines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="405"/>
+        <location filename="preferences-dxf.ui" line="414"/>
         <source>Max Spline Segment: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1501,37 +1501,32 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="26"/>
-        <source>Automatic update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="preferences-dxf.ui" line="34"/>
+        <location filename="preferences-dxf.ui" line="66"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="37"/>
+        <location filename="preferences-dxf.ui" line="69"/>
         <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="178"/>
+        <location filename="preferences-dxf.ui" line="187"/>
         <source>If this is checked, only standard Part objects will be created (fastest)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="313"/>
+        <location filename="preferences-dxf.ui" line="322"/>
         <source>If this is checked, DXF layers will be imported as Draft VisGroups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="316"/>
+        <location filename="preferences-dxf.ui" line="325"/>
         <source>Use VisGroups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="421"/>
+        <location filename="preferences-dxf.ui" line="430"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1691,12 +1686,12 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="69"/>
+        <location filename="preferences-dxf.ui" line="39"/>
         <source>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="72"/>
+        <location filename="preferences-dxf.ui" line="42"/>
         <source>Use legacy python importer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1726,18 +1721,28 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="473"/>
+        <location filename="preferences-dxf.ui" line="482"/>
         <source>if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="476"/>
+        <location filename="preferences-dxf.ui" line="485"/>
         <source>Export Drawing Views as blocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-dxf.ui" line="90"/>
+        <location filename="preferences-dxf.ui" line="99"/>
         <source>Note: Not all the options below are used by the new importer yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dxf.ui" line="26"/>
+        <source>Show this dialog when importing and exporting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-dxf.ui" line="58"/>
+        <source>Automatic update (legacy importer only)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2282,7 +2287,7 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="4591"/>
+        <location filename="Draft.py" line="4593"/>
         <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </source>
         <translation type="unfinished"></translation>

@@ -25,5 +25,6 @@
         <file>translations/Test_pt-PT.qm</file>
         <file>translations/Test_sr.qm</file>
         <file>translations/Test_el.qm</file>
+        <file>translations/Test_sl.qm</file>
     </qresource>
 </RCC>

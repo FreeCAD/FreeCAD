@@ -477,9 +477,6 @@
     </message>
 </context>
 <context>
-    <name>PathFromShape</name>
-</context>
-<context>
     <name>PathHop</name>
     <message>
         <location filename="PathHop.py" line="44"/>

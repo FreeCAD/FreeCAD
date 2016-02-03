@@ -862,12 +862,11 @@
         <translation>Dichtheid</translation>
     </message>
     <message>
-        <location line="+19"/>
         <source>0 kg/m^3</source>
-        <translation type="unfinished">0 kg/m^3</translation>
+        <translation type="obsolete">0 kg/m^3</translation>
     </message>
     <message>
-        <location line="-164"/>
+        <location line="-145"/>
         <source>Material Description</source>
         <translation type="unfinished">Material Description</translation>
     </message>

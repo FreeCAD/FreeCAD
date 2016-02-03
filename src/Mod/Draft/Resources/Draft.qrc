@@ -98,6 +98,7 @@
         <file>translations/Draft_pt-PT.qm</file>
         <file>translations/Draft_sr.qm</file>
         <file>translations/Draft_el.qm</file>
+        <file>translations/Draft_sl.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>
