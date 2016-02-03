@@ -144,7 +144,7 @@ def getPreferences():
     if not SEPARATE_OPENINGS:
         SKIP.append("IfcOpeningElement")
     CREATE_CLONES = p.GetBool("ifcCreateClones",True)
-    FORCEBREP = p.GetBool("ifcExportAsBrep",False)
+    FORCE_BREP = p.GetBool("ifcExportAsBrep",False)
 
 
 def explore(filename=None):
@@ -316,9 +316,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
     import only the derivates of a certain element type (default = ifcProduct)."""
-
+    
     getPreferences()
-
+    
     try:
         import ifcopenshell
     except:
@@ -334,6 +334,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     if DEBUG: print "done."
     
+    global ROOT_ELEMENT
     if root:
         ROOT_ELEMENT = root
 
@@ -896,7 +897,7 @@ def export(exportList,filename):
                     brepflag = True
 
         # getting the representation
-        representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or FORCEBREP))
+        representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or FORCE_BREP))
 
         if DEBUG: print str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name
 
@@ -1369,4 +1370,3 @@ def getRotation(entity):
     import WorkingPlane
     p = WorkingPlane.plane(u=u,v=v,w=w)
     return p.getRotation().Rotation
-
