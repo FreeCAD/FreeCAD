@@ -179,7 +179,7 @@ class ObjectPocket:
 #            print "finishDepth" + str(obj.FinishDepth)
 #            print "offsets:", len(offsets)
 
-            def prnt(vlu): return str(round(vlu, 4))
+            def prnt(vlu): return str("%.4f" % round(vlu, 4))
 
             for vpos in frange(obj.StartDepth, obj.FinalDepth, obj.StepDown, obj.FinishDepth):
 #                print "vpos: " + str(vpos)
