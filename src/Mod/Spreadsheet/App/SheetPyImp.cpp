@@ -483,7 +483,7 @@ PyObject* SheetPy::setAlias(PyObject *args)
 #else
         {
             PyObject* unicode = PyUnicode_AsUTF8String(value);
-            v = QString::fromUtf8(PyString_AsString(unicode));
+            getSheetPtr()->setAlias(address, PyString_AsString(unicode));
             Py_DECREF(unicode);            
         }
         else if (PyString_Check(value))
