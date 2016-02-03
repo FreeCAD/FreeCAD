@@ -26,5 +26,6 @@
         <file>translations/Image_pt-PT.qm</file>
         <file>translations/Image_sr.qm</file>
         <file>translations/Image_el.qm</file>
+        <file>translations/Image_sl.qm</file>
     </qresource>
 </RCC> 

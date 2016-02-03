@@ -55,5 +55,6 @@
 	<file>translations/Path_el.qm</file>
 	<file>translations/Path_sk.qm</file>
 	<file>translations/Path_tr.qm</file>
+	<file>translations/Path_sl.qm</file>
     </qresource>
 </RCC> 

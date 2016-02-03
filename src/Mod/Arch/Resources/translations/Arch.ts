@@ -2203,37 +2203,37 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="37"/>
+        <location filename="preferences-ifc.ui" line="50"/>
         <source>Show debug messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="183"/>
+        <location filename="preferences-ifc.ui" line="196"/>
         <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="186"/>
+        <location filename="preferences-ifc.ui" line="199"/>
         <source>Separate openings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="223"/>
+        <location filename="preferences-ifc.ui" line="236"/>
         <source>If this is checked, object names will be prefixed with the IFC ID number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="226"/>
+        <location filename="preferences-ifc.ui" line="239"/>
         <source>Prefix names with ID number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="283"/>
+        <location filename="preferences-ifc.ui" line="296"/>
         <source>Exclude list: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="290"/>
+        <location filename="preferences-ifc.ui" line="303"/>
         <source>A comma-separated list of Ifc entities to exclude from import</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2283,7 +2283,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="322"/>
+        <location filename="preferences-ifc.ui" line="335"/>
         <source>Some IFC viewers don&apos;t like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2328,7 +2328,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="325"/>
+        <location filename="preferences-ifc.ui" line="338"/>
         <source>Force export as Brep</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2358,7 +2358,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="314"/>
+        <location filename="preferences-ifc.ui" line="327"/>
         <source>Export options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2368,102 +2368,102 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="26"/>
+        <location filename="preferences-ifc.ui" line="39"/>
         <source>General options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="34"/>
+        <location filename="preferences-ifc.ui" line="47"/>
         <source>Show verbose information during import and export of IFC files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="55"/>
+        <location filename="preferences-ifc.ui" line="68"/>
         <source>Import options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="63"/>
+        <location filename="preferences-ifc.ui" line="76"/>
         <source>Import arch IFC objects as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="119"/>
+        <location filename="preferences-ifc.ui" line="132"/>
         <source>Specifies what kind of objects will be created in FreeCAD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="80"/>
+        <location filename="preferences-ifc.ui" line="93"/>
         <source>Parametric Arch objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="129"/>
+        <location filename="preferences-ifc.ui" line="142"/>
         <source>Non-parametric Arch objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="134"/>
+        <location filename="preferences-ifc.ui" line="147"/>
         <source>Simple Part shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="95"/>
+        <location filename="preferences-ifc.ui" line="108"/>
         <source>One compound per floor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="100"/>
+        <location filename="preferences-ifc.ui" line="113"/>
         <source>Do not import Arch objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="112"/>
+        <location filename="preferences-ifc.ui" line="125"/>
         <source>Import struct IFC objects as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="139"/>
+        <location filename="preferences-ifc.ui" line="152"/>
         <source>One compound for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="144"/>
+        <location filename="preferences-ifc.ui" line="157"/>
         <source>Do not import structural objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="156"/>
+        <location filename="preferences-ifc.ui" line="169"/>
         <source>Root element:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="163"/>
+        <location filename="preferences-ifc.ui" line="176"/>
         <source>Only subtypes of this element will be imported. Keep value as &quot;IfcProduct&quot; to import all building elements.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="166"/>
+        <location filename="preferences-ifc.ui" line="179"/>
         <source>IfcProduct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="203"/>
+        <location filename="preferences-ifc.ui" line="216"/>
         <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="206"/>
+        <location filename="preferences-ifc.ui" line="219"/>
         <source>Detect extrusions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="243"/>
+        <location filename="preferences-ifc.ui" line="256"/>
         <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="246"/>
+        <location filename="preferences-ifc.ui" line="259"/>
         <source>Merge materials with same name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2573,22 +2573,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="342"/>
+        <location filename="preferences-ifc.ui" line="355"/>
         <source>Use triangulation options set in the DAE options page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="345"/>
+        <location filename="preferences-ifc.ui" line="358"/>
         <source>Use DAE triangulation options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="362"/>
+        <location filename="preferences-ifc.ui" line="375"/>
         <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="365"/>
+        <location filename="preferences-ifc.ui" line="378"/>
         <source>Join coplanar facets when triangulating</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2608,8 +2608,13 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="263"/>
+        <location filename="preferences-ifc.ui" line="276"/>
         <source>Create clones when objects have shared geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="26"/>
+        <source>Show this dialog when importing and exporting</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

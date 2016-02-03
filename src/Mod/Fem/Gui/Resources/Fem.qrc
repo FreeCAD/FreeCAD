@@ -48,5 +48,6 @@
         <file>translations/Fem_pt-PT.qm</file>
         <file>translations/Fem_sr.qm</file>
         <file>translations/Fem_el.qm</file>
+        <file>translations/Fem_sl.qm</file>
     </qresource>
 </RCC> 

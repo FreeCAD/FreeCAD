@@ -25,5 +25,6 @@
         <file>translations/StartPage_pt-PT.qm</file>
         <file>translations/StartPage_sr.qm</file>
         <file>translations/StartPage_el.qm</file>
+        <file>translations/StartPage_sl.qm</file>
     </qresource>
 </RCC> 

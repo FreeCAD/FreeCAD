@@ -94,5 +94,6 @@
         <file>translations/Arch_pt-PT.qm</file>
         <file>translations/Arch_sr.qm</file>
         <file>translations/Arch_el.qm</file>
+        <file>translations/Arch_sl.qm</file>
     </qresource>
 </RCC> 

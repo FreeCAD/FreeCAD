@@ -862,12 +862,11 @@
         <translation>Dichte</translation>
     </message>
     <message>
-        <location line="+19"/>
         <source>0 kg/m^3</source>
-        <translation>0 kg/m^3</translation>
+        <translation type="obsolete">0 kg/m^3</translation>
     </message>
     <message>
-        <location line="-164"/>
+        <location line="-145"/>
         <source>Material Description</source>
         <translation>Materialbeschreibung</translation>
     </message>
