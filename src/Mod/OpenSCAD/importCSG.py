@@ -49,6 +49,9 @@ import Part
 from OpenSCADFeatures import *
 from OpenSCADUtils import *
 
+params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+printverbose = params.GetBool('printVerbose',False)
+
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
@@ -715,8 +718,8 @@ def processDXF(fname,layer):
     obj.Shape=face
     if printverbose: print "DXF Diagnostics"
     if printverbose: print obj.Shape.ShapeType
-    if printverbose: print "Closed : "+str(f.isClosed())
-    if printverbose: print f.check()
+    if printverbose: print "Closed : "+str(obj.Shape.isClosed())
+    if printverbose: print obj.Shape.check()
     if printverbose: print [w.isClosed() for w in obj.Shape.Wires]
     return(obj)
 
