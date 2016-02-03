@@ -25,6 +25,7 @@
 import FreeCAD,Path
 from PySide import QtCore,QtGui
 from PathScripts import PathUtils
+import math
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -129,6 +130,7 @@ class ObjectPocket:
 
 
 
+    #To reload this from FreeCAD, use: import PathScripts.PathPocket; reload(PathScripts.PathPocket)
     def execute(self,obj):
         if obj.Base:
             tool = PathUtils.getLastTool(obj)
@@ -154,12 +156,13 @@ class ObjectPocket:
             # save tool
             if obj.ToolNumber > 0 and tool.ToolNumber != obj.ToolNumber:
                 output += "M06 T" + str(tool.ToolNumber) + "\n"
-
+            
             # build offsets
             offsets = []
             nextradius = radius
             result = DraftGeomUtils.pocket2d(shape,nextradius)
             while result:
+                #print "Adding " + str(len(result)) + " wires"
                 offsets.extend(result)
                 nextradius += radius
                 result = DraftGeomUtils.pocket2d(shape,nextradius)
@@ -180,9 +183,230 @@ class ObjectPocket:
 #            print "offsets:", len(offsets)
 
             def prnt(vlu): return str("%.4f" % round(vlu, 4))
+            
+            #Fraction of tool radius our plunge helix is to be
+            #FIXME: This should be configurable
+            plungeR = 0.75
+            
+            #(minimum) Fraction of tool DIAMETER to go back and forth while ramp-plunging
+            #FIXME: This should be configurable
+            #FIXME: The ramp plunging should maybe even be limited to this distance; I don't know what's best
+            rampD = 0.75
+            
+            
+            #Total offset from the desired pocket edge is tool radius plus the plunge helix radius
+            #Any point on these curves could be the center of a plunge
+            helixBounds = DraftGeomUtils.pocket2d(shape, tool.Diameter / 2. * (1 + plungeR))
+            
+            
+            #Try to find a location to nicely plunge, starting with a helix, then ramp
+            #Can't do it without knowledge of a tool
+            plungePos = None
+            rampEdge = None
+            if not tool:
+                    raise Error("Ramp plunge location-finding requires a tool")
+                    return
+            else:
+                #Since we're going to start machining either the inner-most
+                #edge or the outer (depending on StartAt setting), try to
+                #plunge near that location
+                
+                if helixBounds:
+                    #Edge is easy- pick a point on helixBounds and go with it
+                    if obj.StartAt == 'Edge':
+                        plungePos = helixBounds[0].Edges[0].Vertexes[0].Point
+                    #Center is harder- use a point from the first offset, check if it works
+                    else:
+                        plungePos = offsets[0].Edges[0].Vertexes[0].Point
+                        
+                        #If it turns out this is invalid for some reason, nuke plungePos
+                        [perp,idx] = DraftGeomUtils.findPerpendicular(plungePos, shape.Edges)
+                        if not perp or perp.Length < tool.Diameter / 2. * (1 + plungeR):
+                            plungePos = None
+                        #FIXME: Really need to do a point-in-polygon operation to make sure this is within helixBounds
+                        #Or some math to prove that it has to be (doubt that's true)
+                        #Maybe reverse helixBounds and pick off that?
+                
+                
+                #If we didn't find a place to helix, how about a ramp?
+                if not plungePos:
+                    #Check first edge of our offsets
+                    if (offsets[0].Edges[0].Length >= tool.Diameter * rampD) and not (isinstance(offsets[0].Edges[0].Curve, Part.Circle)):
+                        rampEdge = offsets[0].Edges[0]
+                    #The last edge also connects with the starting location- try that
+                    elif (offsets[0].Edges[-1].Length >= tool.Diameter * rampD) and not (isinstance(offsets[0].Edges[-1].Curve, Part.Circle)):
+                        rampEdge = offsets[0].Edges[-1]
+                    else:
+                        print "Neither edge works: " + str(offsets[0].Edges[0]) + ", " + str(offsets[0].Edges[-1])
+                    #FIXME: There's got to be a smarter way to find a place to ramp
+                
+            
+            #Returns gcode to perform a rapid move
+            def rapid(x=None, y=None, z=None):
+                retstr = "G00"
+                if (x != None) or (y != None) or (z != None):
+                    if (x != None):
+                        retstr += " X" + str("%.4f" % x)
+                    if (y != None):
+                        retstr += " Y" + str("%.4f" % y)
+                    if (z != None):
+                        retstr += " Z" + str("%.4f" % z)
+                else:
+                    return ""
+                return retstr + "\n"
+                
+            #Returns gcode to perform a linear feed
+            def feed(x=None, y=None, z=None):
+                global feedxy
+                retstr = "G01 F"
+                if(x == None) and (y == None):
+                    retstr += str("%.4f" % obj.HorizFeed)
+                else:
+                    retstr += str("%.4f" % obj.VertFeed)
+                
+                if (x != None) or (y != None) or (z != None):
+                    if (x != None):
+                        retstr += " X" + str("%.4f" % x)
+                    if (y != None):
+                        retstr += " Y" + str("%.4f" % y)
+                    if (z != None):
+                        retstr += " Z" + str("%.4f" % z)
+                else:
+                    return ""
+                return retstr + "\n"
+            
+            #Returns gcode to perform an arc
+            #Assumes XY plane or helix around Z
+            #Don't worry about starting Z- assume that's dealt with elsewhere
+            def arc(cx, cy, sx, sy, ex, ey, ez=None, ccw=False):
+                #If start/end radii aren't within eps, abort
+                eps = 0.01
+                if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
+                    print "ERROR: Illegal arc: Stand and end radii not equal"
+                    return ""
+                
+                #Set [C]CW and feed
+                retstr = ""
+                if ccw:
+                    retstr += "G03 F"
+                else:
+                    retstr += "G02 F"
+                retstr += str(obj.HorizFeed)
+                
+                #End location
+                retstr += " X" + str("%.4f" % ex) + " Y" + str("%.4f" % ey)
+                
+                #Helix if requested
+                if ez != None:
+                    retstr += " Z" + str("%.4f" % ez)
+                
+                #Append center offsets
+                retstr += " I" + str("%.4f" % (cx - sx)) + " J" + str("%.4f" % (cy - sy))
+                
+                return retstr + "\n"
+
+            #Returns gcode to helically plunge
+            #destZ is the milling level
+            #startZ is the height we can safely feed down to before helix-ing
+            def helicalPlunge(plungePos, rampangle, destZ, startZ):
+                helixCmds = "(START HELICAL PLUNGE)\n"
+                if(plungePos == None):
+                    raise Error("Helical plunging requires a position!")
+                    return None
+                if(not tool):
+                    raise Error("Helical plunging requires a tool!")
+                    return None
+
+                helixX = plungePos.x + tool.Diameter/2. * plungeR
+                helixY = plungePos.y;
+                
+                helixCirc = math.pi * tool.Diameter * plungeR
+                dzPerRev = math.sin(rampangle/180. * math.pi) * helixCirc
+
+                #Go to the start of the helix position
+                helixCmds += rapid(helixX, helixY)
+                helixCmds += rapid(z=startZ)
+                
+                #Helix as required to get to the requested depth
+                lastZ = startZ
+                curZ = max(startZ-dzPerRev, destZ)
+                done = False
+                while not done:
+                    done = (curZ == destZ)
+                    #NOTE: FreeCAD doesn't render this, but at least LinuxCNC considers it valid
+                    #helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX, helixY, ez = curZ, ccw=True)
+                    
+                    #Use two half-helixes; FreeCAD renders that correctly,
+                    #and it fits with the other code breaking up 360-degree arcs
+                    helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX - tool.Diameter * plungeR, helixY, ez = (curZ + lastZ)/2., ccw=True)
+                    helixCmds += arc(plungePos.x, plungePos.y, helixX - tool.Diameter * plungeR, helixY, helixX, helixY, ez = curZ, ccw=True)
+                    lastZ = curZ
+                    curZ = max(curZ - dzPerRev, destZ)
+                
+                return helixCmds
+                
+                
+            #Returns commands to linearly ramp into a cut
+            #FIXME: This ramps along the first edge, assuming it's long
+            #enough, NOT just wiggling back and forth by ~0.75 * toolD.
+            #Not sure if that's any worse, but it's simpler
+            #FIXME: This code is untested
+            def rampPlunge(edge, rampangle, destZ, startZ):
+                rampCmds = "(START RAMP PLUNGE)\n"
+                if(edge == None):
+                    raise Error("Ramp plunging requires an edge!")
+                    return None
+                if(not tool):
+                    raise Error("Ramp plunging requires a tool!")
+                
+                
+                sPoint = edge.Vertexes[0].Point
+                ePoint = edge.Vertexes[1].Point
+                #Evidently edges can get flipped- pick the right one in this case
+                #FIXME: This is iffy code, based on what already existed in the "for vpos ..." loop below
+                if ePoint == sPoint:
+                    #print "FLIP"
+                    ePoint = edge.Vertexes[-1].Point
+                #print "Start: " + str(sPoint) + " End: " + str(ePoint) + " Zhigh: " + prnt(startZ) + " ZLow: " + prnt(destZ)
+                
+                rampDist = edge.Length
+                rampDZ = math.sin(rampangle/180. * math.pi) * rampDist
+                
+                rampCmds += rapid(sPoint.x, sPoint.y)
+                rampCmds += rapid(z=startZ)
+                
+                #Ramp down to the requested depth
+                #FIXME: This might be an arc, so handle that as well
+                lastZ = startZ
+                curZ = max(startZ-rampDZ, destZ)
+                done = False
+                while not done:
+                    done = (curZ == destZ)
+                    
+                    #If it's an arc, handle it!
+                    if isinstance(edge.Curve,Part.Circle):
+                        raise Error("rampPlunge: Screw it, not handling an arc.")
+                    #Straight feed! Easy!
+                    else:
+                        rampCmds += feed(ePoint.x, ePoint.y, curZ)
+                        rampCmds += feed(sPoint.x, sPoint.y)
+
+                    lastZ = curZ
+                    curZ = max(curZ - rampDZ, destZ)
+                
+                return rampCmds
+                    
+            
+            
+            
+            #For helix-ing/ramping, know where we were last time
+            #FIXME: Can probably get this from the "machine"?
+            lastZ = fastZPos
 
             for vpos in frange(obj.StartDepth, obj.FinalDepth, obj.StepDown, obj.FinishDepth):
 #                print "vpos: " + str(vpos)
+                #Every for every depth we should helix down
+                first = True
                 # loop over successive wires
                 for currentWire in offsets:
 #                    print "new line (offset)"
@@ -192,14 +416,29 @@ class ObjectPocket:
                         if not last:
                             # we set the base GO to our fast move to our starting pos
                             if first:
-                                startPoint = edge.Vertexes[0].Point
-                                output += "G0 X" + prnt(startPoint.x) + " Y" + prnt(startPoint.y) +\
-                                          " Z" + prnt(fastZPos) + "\n"
+                                #If we can helix, do so
+                                if plungePos:
+                                    output += helicalPlunge(plungePos, 3, vpos, lastZ)
+                                    #print output
+                                    lastZ = vpos
+                                #Otherwise, see if we can ramp
+                                #FIXME: This could be a LOT smarter (eg, searching for a longer leg of the edge to ramp along)
+                                elif rampEdge:
+                                    output += rampPlunge(rampEdge, 3, vpos, lastZ)
+                                    lastZ = vpos
+                                #Otherwise, straight plunge... Don't want to, but sometimes you might not have a choice.
+                                #FIXME: At least not with the lazy ramp programming above...
+                                else:
+                                    print "WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp"
+                                    startPoint = edge.Vertexes[0].Point
+                                    output += "G0 X" + prnt(startPoint.x) + " Y" + prnt(startPoint.y) +\
+                                              " Z" + prnt(fastZPos) + "\n"
                                 first = False
                             #then move slow down to our starting point for our profile
                             last = edge.Vertexes[0].Point
                             output += "G1 X" + prnt(last.x) + " Y" + prnt(last.y) + " Z" + prnt(vpos) + "\n"
-                        if isinstance(edge.Curve,Part.Circle):
+                        #if isinstance(edge.Curve,Part.Circle):
+                        if DraftGeomUtils.geomType(edge) == "Circle":
                             point = edge.Vertexes[-1].Point
                             if point == last: # edges can come flipped
                                 point = edge.Vertexes[0].Point
@@ -224,7 +463,7 @@ class ObjectPocket:
                             last = point
 
             #move back up
-            output += "G1 Z" + prnt(fastZPos) + "\n"
+            output += "G0 Z" + prnt(fastZPos) + "\n"
 #            print output
 #            path = Path.Path(output)
 #            obj.Path = path
