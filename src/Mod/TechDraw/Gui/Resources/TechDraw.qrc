@@ -48,5 +48,6 @@
         <file>icons/ProjRight.svg</file>
         <file>icons/ProjTop.svg</file>
         <file>icons/actions/techdraw-projgroup.svg</file>
+        <file>icons/actions/drawing-draft-view.svg</file>
     </qresource>
 </RCC>
