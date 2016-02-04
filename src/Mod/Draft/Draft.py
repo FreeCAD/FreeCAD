@@ -4428,7 +4428,7 @@ class _ViewProviderWire(_ViewProviderDraft):
     def onChanged(self, vobj, prop):
         if prop in ["EndArrow","ArrowSize","ArrowType","Visibility"]:
             rn = vobj.RootNode
-            if hasattr(self,"pt"):
+            if hasattr(self,"pt") and hasattr(vobj,"EndArrow"):
                 if vobj.EndArrow and vobj.Visibility:
                     self.pt.removeChild(self.symbol)
                     s = arrowtypes.index(vobj.ArrowType)
