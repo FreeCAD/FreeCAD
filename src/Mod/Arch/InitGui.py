@@ -80,7 +80,7 @@ class ArchWorkbench(Workbench):
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
-                     "Arch_Bimserver","Arch_Git"]
+                     "Arch_Bimserver","Arch_Git","Arch_IfcSpreadsheet"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
