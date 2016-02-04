@@ -71,6 +71,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_ClipPlus";
     *draw << "TechDraw_ClipMinus";
     *draw << "TechDraw_NewDimension";
+    *draw << "TechDraw_DraftView";
     *draw << "TechDraw_ExportPage";
     //*draw << "TechDraw_Open";
     //*part << "TechDraw_NewA3Landscape";
@@ -96,6 +97,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_Annotation";
+    *views << "TechDraw_DraftView";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
     clips->setCommand("TechDraw Clips");
@@ -139,6 +141,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_Annotation";
+    *views << "TechDraw_DraftView";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
     clips->setCommand("TechDraw Clips");

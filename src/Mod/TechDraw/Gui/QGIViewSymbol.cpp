@@ -61,7 +61,7 @@ QGIViewSymbol::QGIViewSymbol(const QPoint &pos, QGraphicsScene *scene) :QGIView(
 
 QGIViewSymbol::~QGIViewSymbol()
 {
-    // m_svgItem belongs to this group and will be deleted by Qt 
+    // m_svgItem belongs to this group and will be deleted by Qt
     delete(m_svgRender);
 }
 
@@ -89,7 +89,7 @@ void QGIViewSymbol::updateView(bool update)
         viewSymbol->Symbol.isTouched()) {
         draw();
     }
-    
+
     if (viewSymbol->Scale.isTouched()) {
         setScale(viewSymbol->Scale.getValue());
         draw();
@@ -114,6 +114,9 @@ void QGIViewSymbol::drawSvg()
     TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
 
     QString qs(QString::fromUtf8(viewSymbol->Symbol.getValue()));
+    if (qs.isEmpty()) {
+        return;
+    }
     QByteArray qba;
     qba.append(qs);
     if (!load(&qba)) {
@@ -135,4 +138,3 @@ bool QGIViewSymbol::load(QByteArray *svgBytes)
 }
 
 #include "moc_QGIViewSymbol.cpp"
-

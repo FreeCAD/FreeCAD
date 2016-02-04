@@ -32,6 +32,7 @@
 //#include "DrawProjection.h"
 #include "DrawViewClip.h"
 #include "DrawHatch.h"
+#include "DrawViewDraft.h"
 
 extern struct PyMethodDef TechDraw_methods[];
 
@@ -79,6 +80,7 @@ void TechDrawExport initTechDraw()
 
     TechDraw::DrawViewClip        ::init();
     TechDraw::DrawHatch           ::init();
+    TechDraw::DrawViewDraft       ::init();
 
    // Python Types
     TechDraw::DrawViewPython      ::init();
