@@ -44,6 +44,9 @@ endif(WIN32)
 
 # ================================================================================
 
+# Issues with boost::any on older versions with C++11 enabled.
+set(BOOST_MIN_VERSION 1.55)
+
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     set(CMAKE_COMPILER_IS_CLANGXX TRUE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -65,10 +68,11 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
     EXECUTE_PROCESS( COMMAND ${CMAKE_C_COMPILER} -dumpversion
                      OUTPUT_VARIABLE GCC_VERSION )
     IF(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    ELSE(GCC_VERSION)
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    ELSE(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
         SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-    ENDIF(GCC_VERSION)
+        UNSET(BOOST_MIN_VERSION) # For Ubuntu 12.04
+    ENDIF(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
 ENDIF()
 
 # ================================================================================
@@ -584,7 +588,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
-    find_package(Boost COMPONENTS filesystem program_options regex signals system thread REQUIRED)
+    find_package(Boost ${BOOST_MIN_VERSION} 
+        COMPONENTS filesystem program_options regex signals system thread REQUIRED)
 
     IF(NOT Boost_FOUND)
         MESSAGE(FATAL_ERROR "========================================\n"
