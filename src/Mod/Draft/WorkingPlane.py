@@ -233,6 +233,10 @@ class plane:
                 if not DraftVecUtils.equals(self.u.cross(self.v),self.axis):
                     self.u = q[2]
                     self.v = q[1]
+                if DraftVecUtils.equals(self.u,Vector(0,0,1)):
+                    # the X axis is vertical: rotate 90 degrees
+                    self.u,self.v = self.v.negative(),self.u
+                    
             self.weak = False
             return True
         else:

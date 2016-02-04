@@ -386,7 +386,7 @@ class _CommandWindow:
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
+        self.sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Thickness = p.GetFloat("WindowThickness",50)
         self.Width = p.GetFloat("WindowWidth",1000)
@@ -394,27 +394,18 @@ class _CommandWindow:
         self.RemoveExternal =  p.GetBool("archRemoveExternal",False)
         self.Preset = 0
         self.Sill = 0
+        self.Include = True
         self.baseFace = None
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         import DraftGui
         self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
-
-        # auto mode
-        if sel and FreeCADGui.Selection.getSelectionEx():
-            obj = sel[0]
-            if Draft.getType(obj) in AllowedHosts:
-                # make sure only one face is selected
-                sub = FreeCADGui.Selection.getSelectionEx()[0]
-                if len(sub.SubElementNames) == 1:
-                    if "Face" in sub.SubElementNames[0]:
-                        FreeCADGui.activateWorkbench("SketcherWorkbench")
-                        FreeCADGui.runCommand("Sketcher_NewSketch")
-                        FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
-                        FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
-                        return
-
-            elif obj.isDerivedFrom("Part::Part2DObject"):
+        
+        # autobuild mode
+        if FreeCADGui.Selection.getSelectionEx():
+            FreeCADGui.draftToolBar.offUi()
+            obj = self.sel[0]
+            if obj.isDerivedFrom("Part::Part2DObject"):
                 FreeCADGui.Control.closeDialog()
                 host = None
                 if hasattr(obj,"Support"):
@@ -431,7 +422,7 @@ class _CommandWindow:
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
                 FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                if host:
+                if host and self.Include:
                     if self.RemoveExternal:
                         FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
                     else:
@@ -448,7 +439,7 @@ class _CommandWindow:
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return
-
+        
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
@@ -467,6 +458,9 @@ class _CommandWindow:
         self.tracker.finalize()
         if point == None:
             return
+        # if something was selected, override the underlying object
+        if self.sel:
+            obj = self.sel[0]
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
         # preset
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
@@ -482,7 +476,7 @@ class _CommandWindow:
         for p in self.wparams:
             wp += p.lower() + "=" + str(getattr(self,p)) + ","
         FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
-        if obj:
+        if obj and self.Include:
             if Draft.getType(obj) in AllowedHosts:
                 if self.RemoveExternal:
                     FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
@@ -525,12 +519,18 @@ class _CommandWindow:
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Window options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
+        
+        # include box
+        include = QtGui.QCheckBox(translate("Arch","Auto include in host object").decode("utf8"))
+        include.setChecked(True)
+        grid.addWidget(include,0,0,1,2)
+        QtCore.QObject.connect(include,QtCore.SIGNAL("stateChanged(int)"),self.setInclude)
 
         # sill height
         labels = QtGui.QLabel(translate("Arch","Sill height").decode("utf8"))
         values = ui.createWidget("Gui::InputField")
-        grid.addWidget(labels,0,0,1,1)
-        grid.addWidget(values,0,1,1,1)
+        grid.addWidget(labels,1,0,1,1)
+        grid.addWidget(values,1,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
         # presets box
@@ -538,19 +538,19 @@ class _CommandWindow:
         valuep = QtGui.QComboBox()
         valuep.addItems(WindowPresets)
         valuep.setCurrentIndex(self.Preset)
-        grid.addWidget(labelp,1,0,1,1)
-        grid.addWidget(valuep,1,1,1,1)
+        grid.addWidget(labelp,2,0,1,1)
+        grid.addWidget(valuep,2,1,1,1)
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
 
         # image display
         self.im = QtSvg.QSvgWidget(":/ui/ParametersWindowFixed.svg")
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
-        grid.addWidget(self.im,2,0,1,2)
+        grid.addWidget(self.im,3,0,1,2)
         #self.im.hide()
 
         # parameters
-        i = 3
+        i = 4
         for param in self.wparams:
             lab = QtGui.QLabel(translate("Arch",param).decode("utf8"))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
@@ -573,6 +573,9 @@ class _CommandWindow:
 
     def setSill(self,d):
         self.Sill = d
+        
+    def setInclude(self,i):
+        self.Include = bool(i)
 
     def setParams(self,param,d):
         setattr(self,param,d)
