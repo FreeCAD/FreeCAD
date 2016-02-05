@@ -299,6 +299,7 @@ class Component:
         obj.addProperty("App::PropertyLink","BaseMaterial","Material",translate("Arch","A material for this object"))
         obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this object"))
         obj.addProperty("App::PropertyBool","MoveWithHost","Arch",translate("Arch","Specifies if this object must move together when its host is moved"))
+        obj.addProperty("App::PropertyLink","IfcProperties","Arch",translate("Arch","Custom IFC properties and attributes"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None

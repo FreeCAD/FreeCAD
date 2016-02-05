@@ -22,7 +22,7 @@
 #***************************************************************************
 
 __title__ =  "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
-__author__ = "Yorik van Havre"
+__author__ = "Yorik van Havre","Jonathan Wiedemann"
 __url__ =    "http://www.freecadweb.org"
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
@@ -124,7 +124,7 @@ def getPreferences():
     global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
-    global FORCE_BREP
+    global FORCE_BREP, IMPORT_PROPERTIES
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")   
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -145,6 +145,7 @@ def getPreferences():
         SKIP.append("IfcOpeningElement")
     CREATE_CLONES = p.GetBool("ifcCreateClones",True)
     FORCE_BREP = p.GetBool("ifcExportAsBrep",False)
+    IMPORT_PROPERTIES = p.GetBool("ifcImportProperties",False)
 
 
 def explore(filename=None):
@@ -363,7 +364,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     additions = {} # { host:[child,...], ... }
     groups = {} # { host:[child,...], ... }     # used in structural IFC
     subtractions = [] # [ [opening,host], ... ]
-    properties = {} # { host:[property, ...], ... }
+    properties = {} # { obj : { cat : [property, ... ], ... }, ... }
     colors = {} # { id:(r,g,b) }
     shapes = {} # { id:shaoe } only used for merge mode
     structshapes = {} # { id:shaoe } only used for merge mode
@@ -379,8 +380,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
     for r in ifcfile.by_type("IfcRelDefinesByProperties"):
         for obj in r.RelatedObjects:
+            if not obj.id() in properties :
+                properties[obj.id()] = {}
+            prop_by_category = {}
+            prop = []
             if r.RelatingPropertyDefinition.is_a("IfcPropertySet"):
-                properties.setdefault(obj.id(),[]).extend([e.id() for e in r.RelatingPropertyDefinition.HasProperties])
+                prop.extend([e.id() for e in r.RelatingPropertyDefinition.HasProperties])
+                prop_by_category[r.RelatingPropertyDefinition.id()] = prop
+                properties[obj.id()].update(prop_by_category)
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
             mattable[o.id()] = r.RelatingMaterial.id()
@@ -614,12 +621,40 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # properties
             if pid in properties:
-                if hasattr(obj,"IfcAttributes"):
+                if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties") :
+                    ifc_spreadsheet = Arch.makeIfcSpreadsheet()
+                    n=2
+                    for c in properties[pid].keys():
+                        o = ifcfile[c]
+                        if DEBUG : print("propertyset Name",o.Name,type(o.Name))
+                        catname = o.Name
+                        for p in properties[pid][c]:
+                            l = ifcfile[p]
+                            if l.is_a("IfcPropertySingleValue"):
+                                if IMPORT_PROPERTIES :
+                                    if DEBUG :
+                                        print("property name",l.Name,type(l.Name))
+                                        print("property NominalValue",l.NominalValue.is_a(),type(l.NominalValue.is_a()))
+                                        print("property NominalValue.wrappedValue",l.NominalValue.wrappedValue,type(l.NominalValue.wrappedValue))
+                                        #print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
+                                    ifc_spreadsheet.set(str('A'+str(n)), catname.encode("utf8"))
+                                    ifc_spreadsheet.set(str('B'+str(n)), l.Name.encode("utf8"))
+                                    ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
+                                    if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier']:
+                                        ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
+                                    else :
+                                        ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
+                                    if hasattr(l.NominalValue,'Unit') :
+                                        ifc_spreadsheet.set(str('E'+str(n)), str(l.NominalValue.Unit))
+                                    n += 1
+                        obj.IfcProperties = ifc_spreadsheet
+                elif hasattr(obj,"IfcAttributes"):
                     a = obj.IfcAttributes
-                    for p in properties[pid]:
-                        o = ifcfile[p]
-                        if o.is_a("IfcPropertySingleValue"):
-                            a[o.Name.encode("utf8")] = str(o.NominalValue)
+                    for c in properties[pid].keys():
+                        for p in properties[pid][c]:
+                            l = ifcfile[p]
+                            if l.is_a("IfcPropertySingleValue"):
+                                a[l.Name.encode("utf8")] = str(l.NominalValue)
                     obj.IfcAttributes = a
 
             # color
@@ -944,35 +979,91 @@ def export(exportList,filename):
                 ifcfile.createIfcRelVoidsElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Subtraction','',product,prod2)
 
         # properties
-        if hasattr(obj,"IfcAttributes"):
-            props = []
-            for key in obj.IfcAttributes:
-                if not (key in ["IfcUID","FlagForceBrep"]):
-                    r = obj.IfcAttributes[key].strip(")").split("(")
-                    if len(r) == 1:
-                        tp = "IfcText"
-                        val = r[0]
-                    else:
-                        tp = r[0]
-                        val = "(".join(r[1:])
-                        val = val.strip("'")
-                        val = val.strip('"')
-                        if DEBUG: print "      property ",key," : ",val.encode("utf8"), " (", str(tp), ")"
-                        if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
-                            val = val.encode("utf8")
-                        elif tp == "IfcBoolean":
-                            if val == ".T.":
-                                val = True
+        if hasattr(obj,"IfcProperties") or hasattr(obj,"IfcAttributes"):
+            if DEBUG : print("      add ifc properties")
+            if obj.IfcProperties:
+                if obj.IfcProperties.TypeId == 'Spreadsheet::Sheet':
+                    sheet = obj.IfcProperties
+                    propertiesDic = {}
+                    categories = []
+                    n=2
+                    cell = True
+                    while cell == True :
+                        if hasattr(sheet,'A'+str(n)):
+                            cat = sheet.get('A'+str(n))
+                            key = sheet.get('B'+str(n))
+                            tp = sheet.get('C'+str(n))
+                            if hasattr(sheet,'D'+str(n)):
+                                val = sheet.get('D'+str(n))
                             else:
-                                val = False
-                        elif tp == "IfcInteger":
-                            val = int(val)
+                                val = ''
+                            if isinstance(key, unicode):
+                                key = key.encode("utf8")
+                            else :
+                                key = str(key)
+                            tp = tp.encode("utf8")
+                            if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
+                                val = val.encode("utf8")
+                            elif tp == "IfcBoolean":
+                                if val == 'True':
+                                    val = True
+                                else:
+                                    val = False
+                            elif tp == "IfcInteger":
+                                val = int(val)
+                            else:
+                                val = float(val)
+                            unit = None
+                            #unit = sheet.get('E'+str(n))
+                            if cat in categories :
+                                propertiesDic[cat].append({"key":key,"tp":tp,"val":val,"unit":unit})
+                            else:
+                                propertiesDic[cat] = [{"key":key,"tp":tp,"val":val,"unit":unit}]
+                                categories.append(cat)
+                            n += 1
                         else:
-                            val = float(val)
-                    props.append(ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(tp),val),None))
-            if props:
-                pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
-                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                            cell = False
+                    for cat in propertiesDic:
+                        props = []
+                        for prop in propertiesDic[cat] :
+                            if DEBUG :
+                                print("key",prop["key"],type(prop["key"]))
+                                print("tp",prop["tp"],type(prop["tp"]))
+                                print("val",prop["val"],type(prop["val"]))
+                            props.append(ifcfile.createIfcPropertySingleValue(prop["key"],None,ifcfile.create_entity(prop["tp"],prop["val"]),None))
+                        pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
+                        ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+            elif obj.IfcAttributes:
+                props = []
+                for key in obj.IfcAttributes:
+                    if not (key in ["IfcUID","FlagForceBrep"]):
+                        r = obj.IfcAttributes[key].strip(")").split("(")
+                        if len(r) == 1:
+                            tp = "IfcText"
+                            val = r[0]
+                        else:
+                            tp = r[0]
+                            val = "(".join(r[1:])
+                            val = val.strip("'")
+                            val = val.strip('"')
+                            if DEBUG: print "      property ",key," : ",val.encode("utf8"), " (", str(tp), ")"
+                            if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
+                                val = val.encode("utf8")
+                            elif tp == "IfcBoolean":
+                                if val == ".T.":
+                                    val = True
+                                else:
+                                    val = False
+                            elif tp == "IfcInteger":
+                                val = int(val)
+                            else:
+                                val = float(val)
+                        props.append(ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(tp),val),None))
+                if props:
+                    pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
+                    ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+            else:
+                if DEBUG : print("no ifc properties to export")
 
         count += 1
 
