@@ -311,6 +311,15 @@ def getGroupContents(objectslist,walls=False,addgroups=False):
     is a group, its content is appened to the list, which is returned. If walls is True,
     walls are also scanned for included windows. If addgroups is true, the group itself
     is also included in the list.'''
+    def getWindows(obj):
+        l = []
+        if getType(obj) in ["Wall","Structure"]:
+            for o in obj.OutList:
+                l.extend(getWindows(o))
+        elif (getType(obj) == "Window") or isClone(obj,"Window"):
+            l.append(obj)
+        return l
+        
     newlist = []
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
@@ -327,10 +336,8 @@ def getGroupContents(objectslist,walls=False,addgroups=False):
             #print("adding ",obj.Name)
             newlist.append(obj)
             if walls:
-                if getType(obj) in ["Wall","Structure"]:
-                    for o in obj.OutList:
-                        if (getType(o) == "Window") or isClone(o,"Window"):
-                            newlist.append(o)
+                newlist.extend(getWindows(obj))
+                
     # cleaning possible duplicates
     cleanlist = []
     for obj in newlist:
