@@ -621,14 +621,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # properties
             if pid in properties:
-                if hasattr(obj,"IfcAttributes"):
-                    a = obj.IfcAttributes
-                    for c in properties[pid].keys():
-                        for p in properties[pid][c]:
-                            l = ifcfile[p]
-                            if l.is_a("IfcPropertySingleValue"):
-                                a[l.Name.encode("utf8")] = str(l.NominalValue)
-                    obj.IfcAttributes = a
                 if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties") :
                     ifc_spreadsheet = Arch.makeIfcSpreadsheet()
                     n=2
@@ -656,6 +648,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                         ifc_spreadsheet.set(str('E'+str(n)), str(l.NominalValue.Unit))
                                     n += 1
                         obj.IfcProperties = ifc_spreadsheet
+                elif hasattr(obj,"IfcAttributes"):
+                    a = obj.IfcAttributes
+                    for c in properties[pid].keys():
+                        for p in properties[pid][c]:
+                            l = ifcfile[p]
+                            if l.is_a("IfcPropertySingleValue"):
+                                a[l.Name.encode("utf8")] = str(l.NominalValue)
+                    obj.IfcAttributes = a
 
             # color
             if FreeCAD.GuiUp and (pid in colors) and hasattr(obj.ViewObject,"ShapeColor"):
