@@ -688,7 +688,15 @@ void ManualAlignment::setViewingDirections(const Base::Vector3d& view1, const Ba
         SbRotation rot2;
         SbVec3f up(0.0f, 1.0f, 0.0f);
         rot.multVec(up, up);
-        rot2.setValue(up, SbVec3f(up1.x, up1.y, up1.z));
+
+        // avoid possible problems with roundoff errors
+        SbVec3f upDir(up1.x, up1.y, up1.z);
+        float dot = up.dot(upDir);
+        if (dot < -0.99f) {
+            up = -upDir;
+        }
+
+        rot2.setValue(up, upDir);
         myViewer->getViewer(0)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
         myViewer->getViewer(0)->viewAll();
     }
@@ -700,7 +708,15 @@ void ManualAlignment::setViewingDirections(const Base::Vector3d& view1, const Ba
         SbRotation rot2;
         SbVec3f up(0.0f, 1.0f, 0.0f);
         rot.multVec(up, up);
-        rot2.setValue(up, SbVec3f(up2.x, up2.y, up2.z));
+
+        // avoid possible problems with roundoff errors
+        SbVec3f upDir(up2.x, up2.y, up2.z);
+        float dot = up.dot(upDir);
+        if (dot < -0.99f) {
+            up = -upDir;
+        }
+
+        rot2.setValue(up, upDir);
         myViewer->getViewer(1)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
         myViewer->getViewer(1)->viewAll();
     }
