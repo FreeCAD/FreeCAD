@@ -27,6 +27,7 @@
 #include "MDIView.h"
 
 #include <Base/Parameter.h>
+#include <CXX/Extensions.hxx>
 #include <vector>
 
 namespace Gui {
@@ -54,8 +55,10 @@ public:
     virtual void deleteSelf();
 
     View3DInventorViewer *getViewer(unsigned int) const;
-
     void setOverrideCursor(const QCursor&);
+
+    PyObject *getPyObject(void);
+    void setPyObject(PyObject *);
 
 protected:
     void setupSettings();
@@ -64,6 +67,29 @@ protected:
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
     std::vector<View3DInventorViewer*> _viewer;
+};
+
+class AbstractSplitViewPy : public Py::PythonExtension<AbstractSplitViewPy>
+{
+public:
+    static void init_type(void);    // announce properties and methods
+
+    AbstractSplitViewPy(AbstractSplitView *vi);
+    ~AbstractSplitViewPy();
+
+    Py::Object repr();
+
+    Py::Object fitAll(const Py::Tuple&);
+    Py::Object viewBottom(const Py::Tuple&);
+    Py::Object viewFront(const Py::Tuple&);
+    Py::Object viewLeft(const Py::Tuple&);
+    Py::Object viewRear(const Py::Tuple&);
+    Py::Object viewRight(const Py::Tuple&);
+    Py::Object viewTop(const Py::Tuple&);
+    Py::Object viewAxometric(const Py::Tuple&);
+
+private:
+    AbstractSplitView* _view;
 };
 
 /** The SplitView3DInventor class allows to create a window with two or more Inventor views.
