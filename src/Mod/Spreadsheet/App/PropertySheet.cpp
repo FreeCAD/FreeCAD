@@ -239,18 +239,19 @@ Cell * PropertySheet::createCell(CellAddress address)
 
 PropertySheet::PropertySheet(Sheet *_owner)
     : Property()
+    , AtomicPropertyChangeInterface()
     , owner(_owner)
-    , signalCounter(0)
 {
 }
 
 PropertySheet::PropertySheet(const PropertySheet &other)
-    : dirty(other.dirty)
+    : Property()
+    , AtomicPropertyChangeInterface()
+    , dirty(other.dirty)
     , mergedCells(other.mergedCells)
     , owner(other.owner)
     , propertyNameToCellMap(other.propertyNameToCellMap)
     , documentObjectToCellMap(other.documentObjectToCellMap)
-    , signalCounter(0)
 {
     std::map<CellAddress, Cell* >::const_iterator i = other.data.begin();
 
@@ -273,7 +274,7 @@ App::Property *PropertySheet::Copy(void) const
 
 void PropertySheet::Paste(const Property &from)
 {
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
 
     const PropertySheet * froms = static_cast<const PropertySheet*>(&from);
 
@@ -541,7 +542,7 @@ void PropertySheet::clear(CellAddress address)
     if (i == data.end())
         return;
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
 
     // Spit cell to clean up mergeCells map; all data is in first cell anyway
     splitCell(address);
@@ -571,7 +572,7 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
     std::map<CellAddress, Cell*>::const_iterator i = data.find(currPos);
     std::map<CellAddress, Cell*>::const_iterator j = data.find(newPos);
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
 
     if (j != data.end())
         clear(newPos);
@@ -684,7 +685,7 @@ void PropertySheet::insertRows(int row, int count)
 
     RewriteExpressionVisitor visitor(CellAddress(row, CellAddress::MAX_COLUMNS), count, 0);
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -732,7 +733,7 @@ void PropertySheet::removeRows(int row, int count)
 
     RewriteExpressionVisitor visitor(CellAddress(row + count - 1, CellAddress::MAX_COLUMNS), -count, 0);
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -770,7 +771,7 @@ void PropertySheet::insertColumns(int col, int count)
 
     RewriteExpressionVisitor visitor(CellAddress(CellAddress::MAX_ROWS, col), 0, count);
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -818,7 +819,7 @@ void PropertySheet::removeColumns(int col, int count)
 
     RewriteExpressionVisitor visitor(CellAddress(CellAddress::MAX_ROWS, col + count - 1), 0, -count);
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -859,7 +860,7 @@ bool PropertySheet::mergeCells(CellAddress from, CellAddress to)
         }
     }
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
 
     // Clear cells that will be hidden by the merge
     for (int r = from.row(); r <= to.row(); ++r)
@@ -888,7 +889,7 @@ void PropertySheet::splitCell(CellAddress address)
         return;
 
     CellAddress anchor = i->second;
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     cellAt(anchor)->getSpans(rows, cols);
 
     for (int r = anchor.row(); r <= anchor.row() + rows; ++r)
@@ -1127,7 +1128,7 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
 
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     RelabelDocumentObjectExpressionVisitor v(documentObjectName[docObj], docObj->Label.getValue());
 
     while (i != data.end()) {
@@ -1148,7 +1149,7 @@ void PropertySheet::renamedDocument(const App::Document * doc)
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
     /* Resolve all cells */
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     RelabelDocumentExpressionVisitor v(documentName[doc], doc->Label.getValue());
 
     while (i != data.end()) {
@@ -1218,7 +1219,7 @@ const std::set<std::string> &PropertySheet::getDeps(CellAddress pos) const
 
 void PropertySheet::recomputeDependencies(CellAddress key)
 {
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
 
     removeDependencies(key);
     addDependencies(key);
@@ -1227,7 +1228,7 @@ void PropertySheet::recomputeDependencies(CellAddress key)
 
 void PropertySheet::rebuildDocDepList()
 {
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
 
     docDeps.clear();
     BuildDocDepsExpressionVisitor v(docDeps);
@@ -1255,26 +1256,11 @@ void PropertySheet::resolveAll()
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
     /* Resolve all cells */
-    Signaller signaller(*this);
+    AtomicPropertyChange signaller(*this);
     while (i != data.end()) {
         recomputeDependencies(i->first);
         setDirty(i->first);
         ++i;
     }
     touch();
-}
-
-PropertySheet::Signaller::Signaller(PropertySheet &sheet)
-    : mSheet(sheet)
-{
-    if (mSheet.signalCounter == 0)
-        mSheet.aboutToSetValue();
-    mSheet.signalCounter++;
-}
-
-PropertySheet::Signaller::~Signaller()
-{
-    mSheet.signalCounter--;
-    if (mSheet.signalCounter == 0)
-           mSheet.hasSetValue();
 }

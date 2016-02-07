@@ -144,7 +144,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
     std::ifstream file;
     int row = 0;
 
-    PropertySheet::Signaller signaller(cells);
+    PropertySheet::AtomicPropertyChange signaller(cells);
 
     clearAll();
 
