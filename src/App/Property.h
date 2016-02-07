@@ -212,6 +212,7 @@ template<class P> class AtomicPropertyChangeInterface {
 protected:
     AtomicPropertyChangeInterface() : signalCounter(0) { }
 
+public:
     class AtomicPropertyChange {
     public:
         AtomicPropertyChange(P & prop) : mProp(prop) {
@@ -233,6 +234,8 @@ protected:
     private:
         P & mProp; /**< Referenced to property we work on */
     };
+
+    static AtomicPropertyChange * getAtomicPropertyChange(P & prop) { return new AtomicPropertyChange(prop); }
 
 private:
 

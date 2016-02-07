@@ -46,6 +46,25 @@ public:
     virtual void visit(Expression * e) = 0;
 };
 
+template<class P> class AppExport ExpressionModifier : public ExpressionVisitor {
+public:
+    ExpressionModifier(P & _prop)
+        : prop(_prop) { }
+
+    virtual ~ExpressionModifier() { }
+
+    void setExpressionChanged() {
+        if (!signaller)
+            signaller = boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange>(AtomicPropertyChangeInterface<P>::getAtomicPropertyChange(prop));
+    }
+
+    bool getChanged() const { return signaller != 0; }
+
+protected:
+    P & prop;
+    boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange> signaller;
+};
+
 /**
   * Base class for expressions.
   *
