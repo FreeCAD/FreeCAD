@@ -487,6 +487,7 @@ void CallTipsList::showTips(const QString& line)
 
     this->validObject = true;
     QString context = extractContext(line);
+    context = context.simplified();
     QMap<QString, CallTip> tips = extractTips(context);
     clear();
     for (QMap<QString, CallTip>::Iterator it = tips.begin(); it != tips.end(); ++it) {
