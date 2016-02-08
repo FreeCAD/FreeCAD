@@ -41,6 +41,7 @@
 #include "SpreadsheetExpression.h"
 #include "Utils.h"
 #include <PropertySheetPy.h>
+#include <App/ExpressionVisitors.h>
 
 using namespace App;
 using namespace Base;
@@ -1158,6 +1159,14 @@ void PropertySheet::renamedDocument(const App::Document * doc)
         setDirty(i->first);
         ++i;
     }
+}
+
+void PropertySheet::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
+{
+    RenameObjectIdentifierExpressionVisitor<PropertySheet> v(*this, paths, *this);
+
+    for (std::map<CellAddress, Cell*>::iterator it = data.begin(); it != data.end(); ++it)
+        it->second->visit(v);
 }
 
 void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
