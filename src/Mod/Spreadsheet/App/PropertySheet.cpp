@@ -49,32 +49,12 @@ using namespace Spreadsheet;
 
 namespace Spreadsheet {
 
-class RelabelDocumentObjectExpressionVisitor : public ExpressionVisitor {
+class BuildDocDepsExpressionVisitor : public ExpressionModifier<PropertySheet> {
 public:
 
-    RelabelDocumentObjectExpressionVisitor(const std::string & _oldName, const std::string & _newName)
-        : oldName(_oldName)
-        , newName(_newName)
-    {
-    }
-
-    void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr)
-            expr->renameDocumentObject(oldName, newName);
-    }
-
-private:
-    std::string oldName;
-    std::string newName;
-};
-
-class BuildDocDepsExpressionVisitor : public ExpressionVisitor {
-public:
-
-    BuildDocDepsExpressionVisitor(std::set<App::DocumentObject*> & _docDeps)
-        : docDeps(_docDeps)
+    BuildDocDepsExpressionVisitor(PropertySheet & prop, std::set<App::DocumentObject*> & _docDeps)
+        : ExpressionModifier(prop)
+        , docDeps(_docDeps)
     {
 
     }
@@ -87,8 +67,10 @@ public:
                 const App::Property * prop = expr->getProperty();
                 App::DocumentObject * docObj = freecad_dynamic_cast<App::DocumentObject>(prop->getContainer());
 
-                if (docObj)
+                if (docObj) {
+                    setExpressionChanged();
                     docDeps.insert(docObj);
+                }
             }
             catch (const Base::Exception &) {
                 // Ignore this type of exception; it means that the property was not found, which is ok here
@@ -98,27 +80,6 @@ public:
 
 private:
     std::set<App::DocumentObject*> & docDeps;
-};
-
-class RelabelDocumentExpressionVisitor : public ExpressionVisitor {
-public:
-
-    RelabelDocumentExpressionVisitor(const std::string & _oldName, const std::string & _newName)
-        : oldName(_oldName)
-        , newName(_newName)
-    {
-    }
-
-    void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr)
-            expr->renameDocument(oldName, newName);
-    }
-
-private:
-    std::string oldName;
-    std::string newName;
 };
 
 }
@@ -1130,7 +1091,7 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
     AtomicPropertyChange signaller(*this);
-    RelabelDocumentObjectExpressionVisitor v(documentObjectName[docObj], docObj->Label.getValue());
+    RelabelDocumentObjectExpressionVisitor<PropertySheet> v(*this, documentObjectName[docObj], docObj->Label.getValue());
 
     while (i != data.end()) {
         i->second->visit(v);
@@ -1151,7 +1112,7 @@ void PropertySheet::renamedDocument(const App::Document * doc)
 
     /* Resolve all cells */
     AtomicPropertyChange signaller(*this);
-    RelabelDocumentExpressionVisitor v(documentName[doc], doc->Label.getValue());
+    RelabelDocumentExpressionVisitor<PropertySheet> v(*this, documentName[doc], doc->Label.getValue());
 
     while (i != data.end()) {
         i->second->visit(v);
@@ -1240,7 +1201,7 @@ void PropertySheet::rebuildDocDepList()
     AtomicPropertyChange signaller(*this);
 
     docDeps.clear();
-    BuildDocDepsExpressionVisitor v(docDeps);
+    BuildDocDepsExpressionVisitor v(*this, docDeps);
 
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
