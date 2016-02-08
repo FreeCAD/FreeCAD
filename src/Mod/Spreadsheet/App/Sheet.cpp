@@ -1312,6 +1312,13 @@ void Sheet::observeDocument(Document * document)
     }
 }
 
+void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
+{
+    DocumentObject::renameObjectIdentifiers(paths);
+
+    cells.renameObjectIdentifiers(paths);
+}
+
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity);
 
 Property *PropertySpreadsheetQuantity::Copy() const

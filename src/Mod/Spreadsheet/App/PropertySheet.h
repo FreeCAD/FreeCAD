@@ -141,6 +141,8 @@ public:
 
     void renamedDocument(const App::Document *doc);
 
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths);
+
     void deletedDocumentObject(const App::DocumentObject *docObj);
 
     void documentSet();

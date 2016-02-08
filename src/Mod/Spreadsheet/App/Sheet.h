@@ -227,6 +227,8 @@ public:
 
     void observeDocument(App::Document *document);
 
+    virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
+
 protected:
 
     void providesTo(CellAddress address, std::set<CellAddress> & result) const;
