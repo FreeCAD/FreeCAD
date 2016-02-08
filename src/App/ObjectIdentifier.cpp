@@ -365,6 +365,29 @@ bool ObjectIdentifier::renameDocumentObject(const std::string &oldName, const st
     return false;
 }
 
+
+/**
+ * @brief Check whether a rename call with the same arguments would actually cause a rename.
+ * @param oldName Name of current document object
+ * @param newName New name of document object
+ */
+
+bool ObjectIdentifier::validDocumentObjectRename(const std::string &oldName, const std::string &newName)
+{
+    if (oldName == newName)
+        return false;
+
+    if (documentObjectNameSet && documentObjectName == oldName)
+        return true;
+    else {
+        ResolveResults result(*this);
+
+        if (result.propertyIndex == 1 && result.resolvedDocumentObjectName == oldName)
+            return true;
+    }
+    return false;
+}
+
 /**
  * @brief Modify object identifier given that the document \a oldName has changed name to \a newName.
  * @param oldName Name of current document
@@ -387,6 +410,29 @@ bool ObjectIdentifier::renameDocument(const std::string &oldName, const std::str
             documentName = newName;
             return true;
         }
+    }
+
+    return false;
+}
+
+/**
+ * @brief Check whether a rename call with the same arguments would actually cause a rename.
+ * @param oldName Name of current document
+ * @param newName New name of document
+ */
+
+bool ObjectIdentifier::validDocumentRename(const std::string &oldName, const std::string &newName)
+{
+    if (oldName == newName)
+        return false;
+
+    if (documentNameSet && documentName == oldName)
+        return true;
+    else {
+        ResolveResults result(*this);
+
+        if (result.resolvedDocumentName == oldName)
+            return true;
     }
 
     return false;
