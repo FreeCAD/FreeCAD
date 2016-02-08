@@ -85,6 +85,7 @@ SET(Document_HPP_SRCS
     DocumentObserver.h
     DocumentObserverPython.h
     Expression.h
+    ExpressionVisitors.h
     FeatureCustom.h
     FeaturePython.h
     FeaturePythonPyImp.h

@@ -46,7 +46,7 @@ public:
     virtual void visit(Expression * e) = 0;
 };
 
-template<class P> class AppExport ExpressionModifier : public ExpressionVisitor {
+template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
     ExpressionModifier(P & _prop)
         : prop(_prop) { }
@@ -368,7 +368,11 @@ public:
 
     void setPath(const ObjectIdentifier & path);
 
+    bool validDocumentObjectRename(const std::string & oldName, const std::string & newName);
+
     bool renameDocumentObject(const std::string & oldName, const std::string & newName);
+
+    bool validDocumentRename(const std::string &oldName, const std::string &newName);
 
     bool renameDocument(const std::string &oldName, const std::string &newName);
 
