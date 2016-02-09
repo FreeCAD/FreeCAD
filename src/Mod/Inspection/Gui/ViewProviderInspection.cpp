@@ -299,10 +299,10 @@ void ViewProviderInspection::setDistances()
         return;
     }
 
-    if (pcColorMat->diffuseColor.getNum() != (int)fValues.size())
-        pcColorMat->diffuseColor.setNum((int)fValues.size());
-    if (pcColorMat->transparency.getNum() != (int)fValues.size())
-        pcColorMat->transparency.setNum((int)fValues.size());
+    if (pcColorMat->diffuseColor.getNum() != static_cast<int>(fValues.size()))
+        pcColorMat->diffuseColor.setNum(static_cast<int>(fValues.size()));
+    if (pcColorMat->transparency.getNum() != static_cast<int>(fValues.size()))
+        pcColorMat->transparency.setNum(static_cast<int>(fValues.size()));
 
     SbColor * cols = pcColorMat->diffuseColor.startEditing();
     float   * tran = pcColorMat->transparency.startEditing();
@@ -311,10 +311,12 @@ void ViewProviderInspection::setDistances()
     for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
         App::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
-        if (pcColorBar->isVisible(*jt))
+        if (pcColorBar->isVisible(*jt)) {
             tran[j] = 0.0f;
-        else
+        }
+        else {
             tran[j] = 0.8f;
+        }
     }
 
     pcColorMat->diffuseColor.finishEditing();
