@@ -103,8 +103,8 @@ class CommandPathArray:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Array',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathArray","Array"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathArray","Creates an array from a selected path")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Array","Array"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Array","Creates an array from a selected path")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -114,10 +114,10 @@ class CommandPathArray:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("PathArray","Please select exactly one path object\n"))
+            FreeCAD.Console.PrintError(translate("Path_Array","Please select exactly one path object\n"))
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
-            FreeCAD.Console.PrintError(translate("PathArray","Please select exactly one path object\n"))
+            FreeCAD.Console.PrintError(translate("Path_Array","Please select exactly one path object\n"))
             return
         
         # if everything is ok, execute and register the transaction in the undo/redo stack

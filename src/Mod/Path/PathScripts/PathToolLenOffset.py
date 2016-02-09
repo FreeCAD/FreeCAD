@@ -123,15 +123,15 @@ class _ViewProviderTLO:
 class CommandPathToolLenOffset:
     def GetResources(self):
         return {'Pixmap'  : 'Path-LengthOffset',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolLenOffset","Tool Length Offset"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolLenOffset","Tool Length Offset"),
                 'Accel': "P, T",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolLenOffset","Create a Tool Length Offset object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolLenOffset","Create a Tool Length Offset object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathPlane","Create a Selection Plane object"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_ToolLenOffset","Create a Selection Plane object"))
         FreeCADGui.addModule("PathScripts.PathToolLenOffset")
         snippet = '''
 import Path

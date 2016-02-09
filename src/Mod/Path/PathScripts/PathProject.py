@@ -119,9 +119,9 @@ class CommandProject:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Project',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathProject","Project"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Project","Project"),
                 'Accel': "P, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProject","Creates a Path Project object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Project","Creates a Path Project object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -132,7 +132,7 @@ class CommandProject:
         for obj in sel:
             if obj.isDerivedFrom("Path::Feature"):
                 incl.append(obj)
-        FreeCAD.ActiveDocument.openTransaction(translate("PathProject","Create Project"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Project","Create Project"))
         CommandProject.Create(incl)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

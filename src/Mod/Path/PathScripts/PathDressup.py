@@ -95,9 +95,9 @@ class CommandPathDressup:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup","Dress-up"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Dressup","Dress-up"),
                 'Accel': "P, S",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup","Creates a Path Dess-up object from a selected path")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Dressup","Creates a Path Dess-up object from a selected path")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -107,17 +107,17 @@ class CommandPathDressup:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("PathDressup","Please select one path object\n"))
+            FreeCAD.Console.PrintError(translate("Path_Dressup","Please select one path object\n"))
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("PathDressup","The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(translate("Path_Dressup","The selected object is not a path\n"))
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("PathDressup", "Please select a Path object"))
+            FreeCAD.Console.PrintError(translate("Path_Dressup", "Please select a Path object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup","Create Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Dressup","Create Dress-up"))
         FreeCADGui.addModule("PathScripts.PathDressup")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Dressup")')

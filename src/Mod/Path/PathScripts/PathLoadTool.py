@@ -126,9 +126,9 @@ class _ViewProviderLoadTool:
 class CommandPathLoadTool:
     def GetResources(self):
         return {'Pixmap'  : 'Path-LoadTool',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathLoadTool","Tool Number to Load"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool","Tool Number to Load"),
                 'Accel': "P, T",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathLoadTool","Tool Number to Load")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool","Tool Number to Load")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None

@@ -116,15 +116,15 @@ class _ViewProviderFixture:
 class CommandPathFixture:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Datums',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathFixture","Fixture"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Fixture","Fixture"),
                 'Accel': "P, F",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathFixture","Creates a Fixture Offset object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Fixture","Creates a Fixture Offset object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathFixture","Create a Fixture Offset"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Fixture","Create a Fixture Offset"))
         FreeCADGui.addModule("PathScripts.PathFixture")
         snippet = '''
 import Path

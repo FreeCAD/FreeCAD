@@ -80,16 +80,16 @@ class CommandPathCopy:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Copy',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathCopy","Copy"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Copy","Copy"),
                 'Accel': "P, Y",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathCopy","Creates a linked copy of another path")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Copy","Creates a linked copy of another path")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
 
-        FreeCAD.ActiveDocument.openTransaction(translate("PathCopy","Create Copy"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Copy","Create Copy"))
         FreeCADGui.addModule("PathScripts.PathCopy")
 
         consolecode = '''
