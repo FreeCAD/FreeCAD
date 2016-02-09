@@ -240,7 +240,7 @@ int main( int argc, char ** argv )
         exit(0);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
     catch (...) {
         Base::Console().Error("Application unexpectedly terminated\n");

@@ -1484,11 +1484,18 @@ static void init_resources()
 
 void Application::initApplication(void)
 {
+    static bool init = false;
+    if (init) {
+        Base::Console().Error("Tried to run Gui::Application::initApplication() twice!\n");
+        return;
+    }
+
     try {
         initTypes();
         new Base::ScriptProducer( "FreeCADGuiInit", FreeCADGuiInit );
         init_resources();
         old_qtmsg_handler = qInstallMsgHandler(messageHandler);
+        init = true;
     }
     catch (...) {
         // force to flush the log
