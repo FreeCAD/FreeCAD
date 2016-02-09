@@ -2205,6 +2205,8 @@ DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
     objs.push_back(obj);
 
     MergeDocuments md(this);
+    // if not copying recursively then suppress possible warnings
+    md.setVerbose(recursive);
     if (recursive) {
         objs = obj->getDocument()->getDependencyList(objs);
     }
