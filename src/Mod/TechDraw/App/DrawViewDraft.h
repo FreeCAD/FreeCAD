@@ -60,7 +60,7 @@ public:
     }
 
 protected:
-    void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop);
     Base::BoundBox3d bbox;
     std::string getSVGHead(void);
     std::string getSVGTail(void);

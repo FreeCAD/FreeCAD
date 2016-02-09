@@ -38,6 +38,11 @@
 #endif
 
 #include <qmath.h>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTextBlockFormat>
+#include <QTextFrame>
+#include <QSizeF>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -59,8 +64,13 @@ QGIViewAnnotation::QGIViewAnnotation(const QPoint &pos, QGraphicsScene *scene)
     setFlag(QGraphicsItem::ItemIsMovable, true);
 
     m_textItem = new QGCustomText();
+    m_textItem->setTextInteractionFlags(Qt::NoTextInteraction);
+    //To allow on screen editing of text:
+    //m_textItem->setTextInteractionFlags(Qt::TextEditorInteraction);   //this works
+    //QObject::connect(QGraphicsTextItem::document(), SIGNAL(contentsChanged()),m_textItem, SLOT(updateText()));  //not tested
     addToGroup(m_textItem);
     m_textItem->setPos(0.,0.);
+
 }
 
 QGIViewAnnotation::~QGIViewAnnotation()
@@ -114,29 +124,43 @@ void QGIViewAnnotation::drawAnnotation()
 
     TechDraw::DrawViewAnnotation *viewAnno = dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject());
 
-    // get the Text values
     const std::vector<std::string>& annoText = viewAnno->Text.getValues();
+
+    //build HTML/CSS formating around Text lines
     std::stringstream ss;
+    ss << "<html>\n<head>\n<style>\n";
+    ss << "p {";
+    ss << "font-family:" << viewAnno->Font.getValue() << "; ";
+    ss << "font-size:" << viewAnno->TextSize.getValue() << "pt; ";               //units compatibility???
+    if (viewAnno->TextFormat.isValue("Normal")) {
+        ss << "font-weight:normal; font-style:normal; ";
+    } else if (viewAnno->TextFormat.isValue("Bold")) {
+        ss << "font-weight:bold; font-style:normal; ";
+    } else if (viewAnno->TextFormat.isValue("Italic")) {
+        ss << "font-weight:normal; font-style:italic; ";
+    } else if (viewAnno->TextFormat.isValue("Bold-Italic")) {
+        ss << "font-weight:bold; font-style:italic; ";
+    } else {
+        Base::Console().Warning("%s has invalid TextFormat\n",viewAnno->getNameInDocument());
+        ss << "font-weight:normal; font-style:normal; ";
+    }
+    ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
+    App::Color c = viewAnno->TextColor.getValue();
+    ss << "color:" << c.asCSSString() << "; ";
+    ss << "}\n</style>\n</head>\n<body>\n<p>";
     for(std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end(); it++) {
         if (it == annoText.begin()) {
             ss << *it;
         } else {
-            ss << "\n" << *it ;
+            ss << "<br>" << *it ;
         }
     }
-
-    QFont font;
-    font.setFamily(QString::fromUtf8(viewAnno->Font.getValue()));
-    font.setPointSizeF(viewAnno->TextSize.getValue());           //scene units (mm), not points
-    m_textItem->setFont(font);
-
-    App::Color c = viewAnno->TextColor.getValue();
-    m_textItem->setDefaultTextColor(c.asQColor());
+    ss << "</p>\n</body>\n</html> ";
 
     prepareGeometryChange();
+    m_textItem->setTextWidth(viewAnno->MaxWidth.getValue());
     QString qs = QString::fromUtf8(ss.str().c_str());
-    m_textItem->setPlainText(qs);
-    m_textItem->adjustSize();
+    m_textItem->setHtml(qs);
     m_textItem->setPos(0.,0.);
 }
 
