@@ -82,7 +82,8 @@ PyObject* DrawViewClipPy::getChildViewNames(PyObject* args)
     std::vector<std::string>::iterator it = strings.begin();
     for( ; it != strings.end(); it++) {
         PyObject* pString = PyString_FromString(it->c_str());           //TODO: unicode & py3
-        int rc = PyList_Append(result, pString);
+        //int rc =
+        static_cast<void> (PyList_Append(result, pString));
     }
 
 //    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");

@@ -29,6 +29,8 @@
 #endif
 
 #include <QColor>
+#include <sstream>
+#include <iomanip>
 
 namespace App
 {
@@ -116,6 +118,18 @@ public:
     {
         return(QColor(int(r*255.0),int(g*255.0),int(b*255.0)));
     }
+    /**
+    * returns color as CSS color "#RRGGBB"
+    *
+    */
+    std::string asCSSString() {
+        std::stringstream ss;
+        ss << "#" << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << int(r*255.0)
+                                                                     << std::setw(2) << int(g*255.0)
+                                                                     << std::setw(2) << int(b*255.0);
+        return ss.str();
+}
+
     /// color values, public accesible
     float r,g,b,a;
 };

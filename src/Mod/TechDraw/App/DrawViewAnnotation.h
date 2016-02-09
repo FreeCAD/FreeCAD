@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
- 
+
 
 
 #ifndef _DrawViewAnnotation_h_
@@ -30,9 +30,10 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include "DrawView.h"
+#include "App/PropertyStandard.h"
 #include <App/FeaturePython.h>
 
+#include "DrawView.h"
 
 namespace TechDraw
 {
@@ -53,6 +54,9 @@ public:
     App::PropertyString       Font;
     App::PropertyColor        TextColor;
     App::PropertyInteger      TextSize;
+    App::PropertyInteger      LineSpace;
+    App::PropertyEnumeration  TextFormat; // Plain,Bold,Italic,Bold-Italic
+    App::PropertyFloat        MaxWidth;
 
     /** @name methods overide Feature */
     //@{
@@ -64,6 +68,12 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderAnnotation";
     }
+
+protected:
+    virtual void onChanged(const App::Property* prop);
+
+private:
+    static const char* TextFormatEnums[];
 };
 
 typedef App::FeaturePythonT<DrawViewAnnotation> DrawViewAnnotationPython;

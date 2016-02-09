@@ -48,6 +48,11 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewAnnotation, TechDraw::DrawView)
 
+const char* DrawViewAnnotation::TextFormatEnums[]= {"Normal",
+                                      "Bold",
+                                      "Italic",
+                                      "Bold-Italic",
+                                      NULL};
 
 DrawViewAnnotation::DrawViewAnnotation(void)
 {
@@ -58,10 +63,15 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
 
     ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"The text to be displayed");
-    ADD_PROPERTY_TYPE(Font ,(fontName.c_str())         ,vgroup,App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),vgroup,App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the text");
 
     ADD_PROPERTY_TYPE(TextSize,(8),vgroup,App::Prop_None,"The size of the text in mm");
+    ADD_PROPERTY_TYPE(MaxWidth,(-1.0),vgroup,App::Prop_None,"The maximum width of the Annotation block");
+    ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing adjustment");
+
+    TextFormat.setEnums(TextFormatEnums);
+    ADD_PROPERTY(TextFormat, ((long)0));
 
     //Scale.StatusBits.set(3);         //hide scale.  n/a for Annotation
     //ScaleType.StatusBits.set(3);
@@ -73,9 +83,30 @@ DrawViewAnnotation::~DrawViewAnnotation()
 {
 }
 
+void DrawViewAnnotation::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &Text ||
+            prop == &Font ||
+            prop == &TextColor ||
+            prop == &TextSize ||
+            prop == &LineSpace ||
+            prop == &TextFormat ||                                     //changing this doesn't recompute until focus changes??
+            prop == &MaxWidth) {
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    TechDraw::DrawView::onChanged(prop);
+}
+
 App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)
 {
-    return App::DocumentObject::StdReturn;
+    return TechDraw::DrawView::execute();
 }
 
 // Python Drawing feature ---------------------------------------------------------
