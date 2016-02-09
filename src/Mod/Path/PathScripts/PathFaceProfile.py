@@ -111,8 +111,8 @@ class CommandPathFaceProfile:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-FaceProfile',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathFaceProfile","Face Profile"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathFaceProfile","Creates a profile object around a selected face")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_FaceProfile","Face Profile"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_FaceProfile","Creates a profile object around a selected face")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -122,13 +122,13 @@ class CommandPathFaceProfile:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("PathFaceProfile","Please select one face or wire\n"))
+            FreeCAD.Console.PrintError(translate("Path_FaceProfile","Please select one face or wire\n"))
             return
         if len(selection[0].SubObjects) != 1:
-            FreeCAD.Console.PrintError(translate("PathFaceProfile","Please select only one face or wire\n"))
+            FreeCAD.Console.PrintError(translate("Path_FaceProfile","Please select only one face or wire\n"))
             return
         if not selection[0].SubObjects[0].ShapeType in ["Face","Wire"]:
-            FreeCAD.Console.PrintError(translate("PathFaceProfile","Please select only a face or a wire\n"))
+            FreeCAD.Console.PrintError(translate("Path_FaceProfile","Please select only a face or a wire\n"))
             return
         
         # if everything is ok, execute and register the transaction in the undo/redo stack

@@ -173,15 +173,15 @@ class _ViewProviderKurve:
 class CommandPathKurve:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Kurve',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathProfile","Profile"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Kurve","Profile"),
                 'Accel': "P, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProfile","Creates a Path Profile object from selected edges, using libarea for offset algorithm")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Kurve","Creates a Path Profile object from selected edges, using libarea for offset algorithm")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathKurve","Create a Profile operation using libarea"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Kurve","Create a Profile operation using libarea"))
         FreeCADGui.addModule("PathScripts.PathKurve")
         snippet = '''
 import Path

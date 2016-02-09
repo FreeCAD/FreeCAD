@@ -105,15 +105,15 @@ class _ViewProviderComment:
 class CommandPathComment:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Comment',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathComment","Comment"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Comment","Comment"),
                 'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathComment","Add a Comment to your CNC program")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Comment","Add a Comment to your CNC program")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathComment","Create a Comment in your CNC program"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Comment","Create a Comment in your CNC program"))
         FreeCADGui.addModule("PathScripts.PathComment")
         snippet = '''
 import Path
