@@ -3649,9 +3649,7 @@ class Edit(Modifier):
         when valid x, y, and z have been entered there'''
         if (numy != None):
             v = Vector(v,numy,numz)
-        self.doc.openTransaction("Edit "+self.obj.Name)
         self.update(v)
-        self.doc.commitTransaction()
         self.doc.recompute()
         self.editing = None
         if (Draft.getType(self.obj) == "BezCurve"):
@@ -3724,9 +3722,8 @@ class Edit(Modifier):
             # DNC: fix: add points to last segment if curve is closed
             if ( self.obj.Closed ) and ( uNewPoint > uPoints[-1] ) :
                 pts.append(self.invpl.multVec(point))
-        self.doc.openTransaction("Edit "+self.obj.Name)
         self.obj.Points = pts
-        self.doc.commitTransaction()
+        self.doc.recompute()
         self.resetTrackers()
 
     def delPoint(self,point):
@@ -3736,11 +3733,10 @@ class Edit(Modifier):
         else:
             pts = self.obj.Points
             pts.pop(point)
-            self.doc.openTransaction("Edit "+self.obj.Name)
             self.obj.Points = pts
             if Draft.getType(self.obj) =="BezCurve":
                 self.obj.Proxy.resetcontinuity(self.obj)
-            self.doc.commitTransaction()
+            self.doc.recompute()
             self.resetTrackers()
 
     def smoothBezPoint(self,point, info=None, style='Symmetric'):
@@ -3820,10 +3816,8 @@ class Edit(Modifier):
             FreeCAD.Console.PrintWarning('Continuity indexing error:'+\
                 'point:%d deg:%d len(cont):%d' % (knot,deg,\
                 len(self.obj.Continuity)))
-        self.doc.openTransaction("Edit "+self.obj.Name)
         self.obj.Points = pts
         self.obj.Continuity=newcont
-        self.doc.commitTransaction()
         self.resetTrackers()
 
     def resetTrackersBezier(self):
