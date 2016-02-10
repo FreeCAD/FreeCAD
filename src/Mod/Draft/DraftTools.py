@@ -3921,8 +3921,8 @@ class AddPoint(Modifier):
         selection = FreeCADGui.Selection.getSelection()
         if selection:
             if (Draft.getType(selection[0]) in ['Wire','BSpline']):
-                FreeCADGui.draftToolBar.vertUi(True)
                 FreeCADGui.runCommand("Draft_Edit")
+                FreeCADGui.draftToolBar.vertUi(True)
 
 
 class DelPoint(Modifier):
@@ -3946,8 +3946,8 @@ class DelPoint(Modifier):
         selection = FreeCADGui.Selection.getSelection()
         if selection:
             if (Draft.getType(selection[0]) in ['Wire','BSpline']):
-                FreeCADGui.draftToolBar.vertUi(False)
                 FreeCADGui.runCommand("Draft_Edit")
+                FreeCADGui.draftToolBar.vertUi(False)
 
 
 class WireToBSpline(Modifier):
