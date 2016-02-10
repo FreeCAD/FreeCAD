@@ -69,7 +69,7 @@ ifctemplate = """ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;1');
 FILE_NAME('$filename','$timestamp',('$owner','$email'),('$company'),'IfcOpenShell','IfcOpenShell','');
-FILE_SCHEMA(('IFC2X3'));
+FILE_SCHEMA(('$ifcschema'));
 ENDSEC;
 DATA;
 #1=IFCPERSON($,$,'$owner',$,$,$,$,$);
@@ -859,6 +859,7 @@ def export(exportList,filename):
         email = s[1].strip(">")
     global template
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
+    template = template.replace("$ifcschema",ifcopenshell.schema_identifier)
     template = template.replace("$owner",owner)
     template = template.replace("$company",FreeCAD.ActiveDocument.Company)
     template = template.replace("$email",email)
@@ -979,9 +980,11 @@ def export(exportList,filename):
                 ifcfile.createIfcRelVoidsElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Subtraction','',product,prod2)
 
         # properties
-        if hasattr(obj,"IfcProperties") or hasattr(obj,"IfcAttributes"):
-            if DEBUG : print("      add ifc properties")
+        ifcprop = False
+        if hasattr(obj,"IfcProperties"):
             if obj.IfcProperties:
+                ifcprop = True
+                if DEBUG : print("      adding ifc properties")
                 if obj.IfcProperties.TypeId == 'Spreadsheet::Sheet':
                     sheet = obj.IfcProperties
                     propertiesDic = {}
@@ -1033,7 +1036,10 @@ def export(exportList,filename):
                             props.append(ifcfile.createIfcPropertySingleValue(prop["key"],None,ifcfile.create_entity(prop["tp"],prop["val"]),None))
                         pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
                         ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
-            elif obj.IfcAttributes:
+        if (not ifcprop) and hasattr(obj,"IfcAttributes"):
+            if obj.IfcAttributes:
+                ifcprop = True
+                if DEBUG : print("      adding ifc attributes")
                 props = []
                 for key in obj.IfcAttributes:
                     if not (key in ["IfcUID","FlagForceBrep"]):
@@ -1062,8 +1068,9 @@ def export(exportList,filename):
                 if props:
                     pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
                     ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
-            else:
-                if DEBUG : print("no ifc properties to export")
+        if not ifcprop:
+            #if DEBUG : print("no ifc properties to export")
+            pass
 
         count += 1
 
@@ -1103,8 +1110,14 @@ def export(exportList,filename):
     for m in Arch.getDocumentMaterials():
         mat = ifcfile.createIfcMaterial(m.Label.encode("utf8"))
         materials[m.Label] = mat
-        if "Color" in m.Material:
-            rgb = tuple([float(f) for f in m.Material['Color'].strip("()").split(",")])
+        rgb = None
+        for colorslot in ["Color","DiffuseColor","ViewColor"]:
+            if colorslot in m.Material:
+                if m.Material[colorslot]:
+                    if m.Material[colorslot][0] == "(":
+                        rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
+                        break
+        if rgb:
             col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
             ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
             iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
