@@ -55,7 +55,7 @@ public:
     App::PropertyColor        TextColor;
     App::PropertyInteger      TextSize;
     App::PropertyInteger      LineSpace;
-    App::PropertyEnumeration  TextFormat; // Plain,Bold,Italic,Bold-Italic
+    App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
     App::PropertyFloat        MaxWidth;
 
     /** @name methods overide Feature */
@@ -73,7 +73,7 @@ protected:
     virtual void onChanged(const App::Property* prop);
 
 private:
-    static const char* TextFormatEnums[];
+    static const char* TextStyleEnums[];
 };
 
 typedef App::FeaturePythonT<DrawViewAnnotation> DrawViewAnnotationPython;

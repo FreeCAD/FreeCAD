@@ -48,7 +48,7 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewAnnotation, TechDraw::DrawView)
 
-const char* DrawViewAnnotation::TextFormatEnums[]= {"Normal",
+const char* DrawViewAnnotation::TextStyleEnums[]= {"Normal",
                                       "Bold",
                                       "Italic",
                                       "Bold-Italic",
@@ -70,8 +70,8 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     ADD_PROPERTY_TYPE(MaxWidth,(-1.0),vgroup,App::Prop_None,"The maximum width of the Annotation block");
     ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing adjustment");
 
-    TextFormat.setEnums(TextFormatEnums);
-    ADD_PROPERTY(TextFormat, ((long)0));
+    TextStyle.setEnums(TextStyleEnums);
+    ADD_PROPERTY(TextStyle, ((long)0));
 
     //Scale.StatusBits.set(3);         //hide scale.  n/a for Annotation
     //ScaleType.StatusBits.set(3);
@@ -91,7 +91,7 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
             prop == &TextColor ||
             prop == &TextSize ||
             prop == &LineSpace ||
-            prop == &TextFormat ||                                     //changing this doesn't recompute until focus changes??
+            prop == &TextStyle ||                                     //changing this doesn't recompute until focus changes??
             prop == &MaxWidth) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
