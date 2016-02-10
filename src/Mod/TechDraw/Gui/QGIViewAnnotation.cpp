@@ -132,16 +132,16 @@ void QGIViewAnnotation::drawAnnotation()
     ss << "p {";
     ss << "font-family:" << viewAnno->Font.getValue() << "; ";
     ss << "font-size:" << viewAnno->TextSize.getValue() << "pt; ";               //units compatibility???
-    if (viewAnno->TextFormat.isValue("Normal")) {
+    if (viewAnno->TextStyle.isValue("Normal")) {
         ss << "font-weight:normal; font-style:normal; ";
-    } else if (viewAnno->TextFormat.isValue("Bold")) {
+    } else if (viewAnno->TextStyle.isValue("Bold")) {
         ss << "font-weight:bold; font-style:normal; ";
-    } else if (viewAnno->TextFormat.isValue("Italic")) {
+    } else if (viewAnno->TextStyle.isValue("Italic")) {
         ss << "font-weight:normal; font-style:italic; ";
-    } else if (viewAnno->TextFormat.isValue("Bold-Italic")) {
+    } else if (viewAnno->TextStyle.isValue("Bold-Italic")) {
         ss << "font-weight:bold; font-style:italic; ";
     } else {
-        Base::Console().Warning("%s has invalid TextFormat\n",viewAnno->getNameInDocument());
+        Base::Console().Warning("%s has invalid TextStyle\n",viewAnno->getNameInDocument());
         ss << "font-weight:normal; font-style:normal; ";
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
