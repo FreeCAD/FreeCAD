@@ -49,6 +49,8 @@ class _CommandMechanicalShowResult(FemCommands):
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
             return
 
+        self.hide_parts_constraints_show_meshes()
+
         import _TaskPanelResultControl
         taskd = _TaskPanelResultControl._TaskPanelResultControl()
         FreeCADGui.Control.showDialog(taskd)

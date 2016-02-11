@@ -46,6 +46,7 @@ class _CommandPurgeFemResults(FemCommands):
         fea = FemTools()
         fea.reset_all()
 
+        self.hide_meshes_show_parts_constraints()
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())

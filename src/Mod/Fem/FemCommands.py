@@ -97,3 +97,27 @@ class FemCommands(object):
                 return True
             else:
                 return False
+                
+        def hide_parts_constraints_show_meshes(self):
+            if FreeCAD.GuiUp:
+                for acnstrmesh in FreeCAD.activeDocument().Objects:
+                    if "Constraint" in acnstrmesh.TypeId:
+                        acnstrmesh.ViewObject.Visibility = False
+                    if "Mesh" in acnstrmesh.TypeId:
+                        aparttoshow = acnstrmesh.Name.replace("_Mesh","")
+                        for apart in FreeCAD.activeDocument().Objects:
+                            if aparttoshow == apart.Name:
+                                apart.ViewObject.Visibility = False
+                        acnstrmesh.ViewObject.Visibility = True #OvG: Hide constraints and parts and show meshes
+
+        def hide_meshes_show_parts_constraints(self):
+            if FreeCAD.GuiUp:
+                for acnstrmesh in FreeCAD.activeDocument().Objects:
+                    if "Constraint" in acnstrmesh.TypeId:
+                        acnstrmesh.ViewObject.Visibility = True
+                    if "Mesh" in acnstrmesh.TypeId:
+                        aparttoshow = acnstrmesh.Name.replace("_Mesh","")
+                        for apart in FreeCAD.activeDocument().Objects:
+                            if aparttoshow == apart.Name:
+                                apart.ViewObject.Visibility = True
+                        acnstrmesh.ViewObject.Visibility = False #OvG: Hide meshes and show constraints and meshed part e.g. on purging results

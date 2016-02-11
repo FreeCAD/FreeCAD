@@ -43,6 +43,9 @@ class _CommandSolverJobControl(FemCommands):
         self.is_active = 'with_solver'
 
     def Activated(self):
+
+        self.hide_parts_constraints_show_meshes()
+
         solver_obj = FreeCADGui.Selection.getSelection()[0]
         FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
 

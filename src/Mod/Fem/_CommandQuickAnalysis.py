@@ -47,6 +47,8 @@ class _CommandQuickAnalysis(FemCommands):
             if ret_code == 0:
                 self.fea.load_results()
                 self.show_results_on_mesh()
+                self.hide_parts_constraints_show_meshes()
+
             else:
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
