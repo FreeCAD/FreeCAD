@@ -111,7 +111,6 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::AdditiveLoft       ::init();
     PartDesign::SubtractiveLoft    ::init();
     PartDesign::ShapeBinder        ::init();
-    PartDesign::ShapeBinder2D      ::init();
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();

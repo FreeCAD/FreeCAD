@@ -245,8 +245,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
     bool bEditSelected = false;
     if (support.getSize() == 1 && support.getValue() ){
-        if (support.getValue()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-                support.getValue()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()))
+        if (support.getValue()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
             bEditSelected = true;
     }
 
@@ -266,16 +265,9 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         openCommand(tmp.c_str());
 
-        if ( support.getValue() &&
-               ( support.getValue()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()) ||
-                 support.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()) ) ) {
-            doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                    "PartDesign::ShapeBinder2D",FeatName.c_str());
-        } else {
-            doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",
+        doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",
                     "PartDesign::ShapeBinder",FeatName.c_str());
-        }
-
+        
         //test if current selection fits a mode.
         if (support.getSize() > 0) {
             doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
