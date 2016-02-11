@@ -261,6 +261,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
 }
 
 App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool independent) {
+    
     App::DocumentObject* copy = nullptr;
     if( independent &&
         (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId()) ||
@@ -356,15 +357,6 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
                 datumCopy->Shape.setValue(static_cast<Part::Datum*>(obj)->Shape.getValue());
             }
         }
-        else if(obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-                obj->getTypeId() == PartDesign::ShapeBinder2D::getClassTypeId()) {
-            copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder2D", name.c_str());
-
-            if(!independent)
-                static_cast<PartDesign::ShapeBinder2D*>(copy)->Support.setValue(obj, entity.c_str());
-            else
-                shapeProp = &static_cast<PartDesign::ShapeBinder*>(copy)->Shape;
-        }
         else if(obj->getTypeId() == PartDesign::ShapeBinder::getClassTypeId() ||
                 obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
 
@@ -386,7 +378,6 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
     return copy;
 }
-
 
 void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
 {

@@ -124,8 +124,6 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool auxillery)
     
     if(getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
         PartDesign::ShapeBinder::getFilterdReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
-    else if(getObject()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()))
-        PartDesign::ShapeBinder::getFilterdReferences(&static_cast<PartDesign::ShapeBinder2D*>(getObject())->Support, obj, subs);
     else 
         return;
         

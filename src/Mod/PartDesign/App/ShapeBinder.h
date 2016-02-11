@@ -27,15 +27,14 @@
 #include <QString>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/Part2DObject.h>
 
 namespace PartDesign
 {
 
-/*Those two feature are not realy a classical datum. They are fully defined shapes and not
- *infinit geometries like planes and lines. Also they are not calculated by references and hence
- *are not "attaced" to anything. Furthermore real shapes must be visualized. This makes it hard
- *to reuse the existing datum infrastructure and a special handling foor those two types is
+/*This feature is not realy a classical datum. It is a fully defined shape and not
+ *infinit geometrie like a plane and a line. Also it is not calculated by references and hence
+ *is not "attaced" to anything. Furthermore real shapes must be visualized. This makes it hard
+ *to reuse the existing datum infrastructure and a special handling for this type is
  *created.
  */
 // TODO Add a better documentation (2015-09-11, Fat-Zer)
@@ -59,23 +58,6 @@ public:
 
 protected:
     virtual short int mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
-};
-
-//this class is needed as long as sketch-based features can only work with Part2DObjects
-class PartDesignExport ShapeBinder2D : public Part::Part2DObject
-{
-    PROPERTY_HEADER(PartDesign::ShapeBinder2D);
-
-public:
-    ShapeBinder2D();
-    virtual ~ShapeBinder2D();
-
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderShapeBinder";
-    }
-
-protected:
     virtual App::DocumentObjectExecReturn* execute(void);
 };
 

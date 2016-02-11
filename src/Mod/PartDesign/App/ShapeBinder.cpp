@@ -149,27 +149,3 @@ TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector
     }
     return base;
 }
-
-
-PROPERTY_SOURCE(PartDesign::ShapeBinder2D, Part::Part2DObject)
-
-ShapeBinder2D::ShapeBinder2D() {
-
-}
-
-ShapeBinder2D::~ShapeBinder2D() {
-
-}
-
-App::DocumentObjectExecReturn* ShapeBinder2D::execute(void) {
-
-    if(! this->isRestoring()){
-
-        Part::Feature* obj = nullptr;
-        std::vector<std::string> subs;
-
-        ShapeBinder::getFilterdReferences(&Support, obj, subs);
-        Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
-    }
-    return Part::Part2DObject::execute();
-}
