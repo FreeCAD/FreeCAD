@@ -886,10 +886,11 @@ def export(exportList,filename):
     count = 1
 
     # build clones table
-    for o in objectslist:
-        b = Draft.getCloneBase(o,strict=True)
-        if b:
-            clones.setdefault(b.Name,[]).append(o.Name)
+    if CREATE_CLONES:
+        for o in objectslist:
+            b = Draft.getCloneBase(o,strict=True)
+            if b:
+                clones.setdefault(b.Name,[]).append(o.Name)
             
     #print "clones table: ",clones
     #print objectslist
