@@ -640,7 +640,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     ifc_spreadsheet.set(str('A'+str(n)), catname.encode("utf8"))
                                     ifc_spreadsheet.set(str('B'+str(n)), l.Name.encode("utf8"))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
-                                    if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier']:
+                                    if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                                         ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
                                     else :
                                         ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
@@ -1005,7 +1005,7 @@ def export(exportList,filename):
                             else :
                                 key = str(key)
                             tp = tp.encode("utf8")
-                            if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
+                            if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 val = val.encode("utf8")
                             elif tp == "IfcBoolean":
                                 if val == 'True':
@@ -1053,7 +1053,7 @@ def export(exportList,filename):
                             val = val.strip("'")
                             val = val.strip('"')
                             if DEBUG: print "      property ",key," : ",val.encode("utf8"), " (", str(tp), ")"
-                            if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
+                            if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 val = val.encode("utf8")
                             elif tp == "IfcBoolean":
                                 if val == ".T.":
