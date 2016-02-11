@@ -50,6 +50,7 @@
 #include "ViewProviderFemConstraintPressure.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
+#include "ViewProviderFemConstraintDisplacement.h"
 #include "ViewProviderResult.h"
 #include "Workbench.h"
 
@@ -83,28 +84,29 @@ PyMODINIT_FUNC initFemGui()
     CreateFemCommands();
 
     // addition objects
-    FemGui::Workbench                          ::init();
-    FemGui::ViewProviderFemAnalysis            ::init();
-    FemGui::ViewProviderFemAnalysisPython      ::init();
-    FemGui::ViewProviderFemMesh                ::init();
-    FemGui::ViewProviderFemMeshShape           ::init();
-    FemGui::ViewProviderFemMeshShapeNetgen     ::init();
-    FemGui::ViewProviderSolver                 ::init();
-    FemGui::ViewProviderSolverPython           ::init();
-    FemGui::ViewProviderSetNodes               ::init();
-    FemGui::ViewProviderSetElements            ::init();
-    FemGui::ViewProviderSetFaces               ::init();
-    FemGui::ViewProviderSetGeometry            ::init();
-    FemGui::ViewProviderFemConstraint          ::init();
-    FemGui::ViewProviderFemConstraintBearing   ::init();
-    FemGui::ViewProviderFemConstraintFixed     ::init();
-    FemGui::ViewProviderFemConstraintForce     ::init();
-    FemGui::ViewProviderFemConstraintPressure  ::init();
-    FemGui::ViewProviderFemConstraintGear      ::init();
-    FemGui::ViewProviderFemConstraintPulley    ::init();
-    FemGui::ViewProviderResult                 ::init();
-    FemGui::ViewProviderResultPython           ::init();
-    FemGui::PropertyFemMeshItem                ::init();
+    FemGui::Workbench                             ::init();
+    FemGui::ViewProviderFemAnalysis               ::init();
+    FemGui::ViewProviderFemAnalysisPython         ::init();
+    FemGui::ViewProviderFemMesh                   ::init();
+    FemGui::ViewProviderFemMeshShape              ::init();
+    FemGui::ViewProviderFemMeshShapeNetgen        ::init();
+    FemGui::ViewProviderSolver                    ::init();
+    FemGui::ViewProviderSolverPython              ::init();
+    FemGui::ViewProviderSetNodes                  ::init();
+    FemGui::ViewProviderSetElements               ::init();
+    FemGui::ViewProviderSetFaces                  ::init();
+    FemGui::ViewProviderSetGeometry               ::init();
+    FemGui::ViewProviderFemConstraint             ::init();
+    FemGui::ViewProviderFemConstraintBearing      ::init();
+    FemGui::ViewProviderFemConstraintFixed        ::init();
+    FemGui::ViewProviderFemConstraintForce        ::init();
+    FemGui::ViewProviderFemConstraintPressure     ::init();
+    FemGui::ViewProviderFemConstraintGear         ::init();
+    FemGui::ViewProviderFemConstraintPulley       ::init();
+    FemGui::ViewProviderFemConstraintDisplacement ::init();
+    FemGui::ViewProviderResult                    ::init();
+    FemGui::ViewProviderResultPython              ::init();
+    FemGui::PropertyFemMeshItem                   ::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemImp> ("FEM");
