@@ -719,7 +719,7 @@ void MDIViewPage::setRenderer(QAction *action)
 }
 bool MDIViewPage::onMsg(const char *pMsg, const char **ppReturn)
 {
-    auto doc(getGuiDocument());
+    Gui::Document *doc(getGuiDocument());
 
     if (!doc) {
         return false;
