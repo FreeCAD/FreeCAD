@@ -865,6 +865,13 @@ ObjectIdentifier ObjectIdentifier::parse(const DocumentObject *docObj, const std
         throw Base::Exception("Invalid property specification.");
 }
 
+std::string ObjectIdentifier::resolveErrorString() const
+{
+    ResolveResults result(*this);
+
+    return result.resolveErrorString();
+}
+
 /**
  * @brief << operator, used to add a component to the object identifier.
  * @param value Component object
@@ -1110,4 +1117,18 @@ ObjectIdentifier::ResolveResults::ResolveResults(const ObjectIdentifier &oi)
     , propertyName()
 {
     oi.resolve(*this);
+}
+
+std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
+{
+    if (resolvedDocument == 0)
+        return std::string("Document not found: ") + resolvedDocumentName.toString();
+    else if (resolvedDocumentObject == 0)
+        return std::string("Document object not found: ") + resolvedDocumentObjectName.toString();
+    else if (resolvedProperty == 0)
+        return std::string("Property not found: ") + propertyName;
+
+    assert(false);
+
+    return "";
 }
