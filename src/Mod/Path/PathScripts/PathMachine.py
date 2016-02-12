@@ -41,26 +41,26 @@ except AttributeError:
 class Machine:
     def __init__(self,obj):
 
-        obj.addProperty("App::PropertyString",    "MachineName","Base",translate("Machine Name","Name of the Machine that will use the CNC program"))
+        obj.addProperty("App::PropertyString", "MachineName","Base",translate("Path_Machine","Name of the Machine that will use the CNC program"))
 
-        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", translate("Post Processor","Select the Post Processor file for this machine"))
+        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", translate("Path_Machine","Select the Post Processor file for this machine"))
         obj.setEditorMode("PostProcessor",1) #set to read only
-        obj.addProperty("App::PropertyEnumeration", "MachineUnits","CodeOutput", translate( "Machine Units",  "Units that the machine works in, ie Metric or Inch"))
+        obj.addProperty("App::PropertyEnumeration", "MachineUnits","CodeOutput", translate("Path_Machine","Units that the machine works in, ie Metric or Inch"))
         obj.MachineUnits=['Metric', 'Inch']
 
-        obj.addProperty("Path::PropertyTooltable","Tooltable", "Base",translate("Tool Table","The tooltable used for this CNC program")) 
+        obj.addProperty("Path::PropertyTooltable","Tooltable", "Base",translate("Path_Machine","The tooltable used for this CNC program")) 
 
-        obj.addProperty("App::PropertyDistance", "X_Max", "Limits", translate("X Maximum Limit","The Maximum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Y_Max", "Limits", translate("Y Maximum Limit","The Maximum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Z_Max", "Limits", translate("Y Maximum Limit","The Maximum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "X_Max", "Limits", translate("Path_Machine","The Maximum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Y_Max", "Limits", translate("Path_Machine","The Maximum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Z_Max", "Limits", translate("Path_Machine","The Maximum distance in X the machine can travel"))
 
-        obj.addProperty("App::PropertyDistance", "X_Min", "Limits", translate("X Minimum Limit","The Minimum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Y_Min", "Limits", translate("Y Minimum Limit","The Minimum distance in X the machine can travel"))
-        obj.addProperty("App::PropertyDistance", "Z_Min", "Limits", translate("Y Minimum Limit","The Minimum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "X_Min", "Limits", translate("Path_Machine","The Minimum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Y_Min", "Limits", translate("Path_Machine","The Minimum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Z_Min", "Limits", translate("Path_Machine","The Minimum distance in X the machine can travel"))
 
-        obj.addProperty("App::PropertyDistance", "X", "HomePosition", translate("X Home Position","Home position of machine, in X (mainly for visualization)"))
-        obj.addProperty("App::PropertyDistance", "Y", "HomePosition", translate("Y Home Position","Home position of machine, in Y (mainly for visualization)"))
-        obj.addProperty("App::PropertyDistance", "Z", "HomePosition", translate("Z Home Position","Home position of machine, in Z (mainly for visualization)"))
+        obj.addProperty("App::PropertyDistance", "X", "HomePosition", translate("Path_Machine","Home position of machine, in X (mainly for visualization)"))
+        obj.addProperty("App::PropertyDistance", "Y", "HomePosition", translate("Path_Machine","Home position of machine, in Y (mainly for visualization)"))
+        obj.addProperty("App::PropertyDistance", "Z", "HomePosition", translate("Path_Machine","Home position of machine, in Z (mainly for visualization)"))
 
         obj.Proxy = self
         mode = 2
@@ -199,15 +199,15 @@ class _ViewProviderMachine:
 class CommandPathMachine:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Machine',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathMachine","Machine Object"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Machine","Machine Object"),
                 'Accel': "P, M",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathMachine","Create a Machine object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Machine","Create a Machine object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathMachine","Create a Machine object"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Machine","Create a Machine object"))
         CommandPathMachine.Create()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
