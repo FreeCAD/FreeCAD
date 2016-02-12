@@ -717,42 +717,33 @@ void MDIViewPage::setRenderer(QAction *action)
         m_view->setRenderer(QGVPage::Image);
     }
 }
-bool MDIViewPage::onMsg(const char* pMsg, const char** ppReturn)
+bool MDIViewPage::onMsg(const char *pMsg, const char **ppReturn)
 {
-    if (strcmp("ViewFit",pMsg) == 0) {
+    auto doc(getGuiDocument());
+
+    if (!doc) {
+        return false;
+    } else if (strcmp("ViewFit", pMsg) == 0) {
         viewAll();
         return true;
-    } else if (strcmp("Redo", pMsg) == 0 ) {
-        getAppDocument()->redo();
-        Gui::Command::updateActive();
-        return true;
     } else if (strcmp("Save", pMsg) == 0 ) {
-        getAppDocument()->save();
+        doc->save();
         Gui::Command::updateActive();
         return true;
     } else if (strcmp("SaveAs", pMsg) == 0 ) {
-        getAppDocument()->saveAs("");
+        doc->saveAs();
         Gui::Command::updateActive();
         return true;
     } else if (strcmp("Undo", pMsg) == 0 ) {
-        getAppDocument()->undo();
+        doc->undo(1);
+        Gui::Command::updateActive();
+        return true;
+    } else if (strcmp("Redo", pMsg) == 0 ) {
+        doc->redo(1);
         Gui::Command::updateActive();
         return true;
     }
-    else  if(strcmp("Undo",pMsg) == 0 ) {
-        Gui::Document *doc = getGuiDocument();
-        if (doc) {
-            doc->undo(1);
-            return true;
-        }
-    }
-    else  if(strcmp("Redo",pMsg) == 0 ) {
-        Gui::Document *doc = getGuiDocument();
-        if (doc) {
-            doc->redo(1);
-            return true;
-        }
-    }
+
     return false;
 }
 
