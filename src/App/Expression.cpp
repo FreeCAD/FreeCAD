@@ -989,7 +989,7 @@ const Property * VariableExpression::getProperty() const
     if (prop)
         return prop;
     else
-        throw ExpressionError(std::string("Property '") + var.getPropertyName() + std::string("' not found."));
+        throw Expression::Exception(var.resolveErrorString().c_str());
 }
 
 /**

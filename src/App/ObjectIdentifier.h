@@ -229,6 +229,8 @@ public:
 
     static ObjectIdentifier parse(const App::DocumentObject *docObj, const std::string & str);
 
+    std::string resolveErrorString() const;
+
 protected:
 
     struct ResolveResults {
@@ -242,6 +244,8 @@ protected:
         String resolvedDocumentObjectName;
         App::Property * resolvedProperty;
         std::string propertyName;
+
+        std::string resolveErrorString() const;
     };
 
     std::string getPythonAccessor() const;
