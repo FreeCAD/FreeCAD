@@ -3,7 +3,7 @@
 <context>
     <name>Arch</name>
     <message>
-        <location filename="ArchWindow.py" line="1155"/>
+        <location filename="ArchWindow.py" line="1158"/>
         <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,12 +43,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1149"/>
+        <location filename="ArchWindow.py" line="1152"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1150"/>
+        <location filename="ArchWindow.py" line="1153"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -158,7 +158,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="804"/>
+        <location filename="ArchComponent.py" line="805"/>
         <source>closing Sketch edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -308,57 +308,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="473"/>
+        <location filename="ArchWindow.py" line="467"/>
         <source>Create Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="620"/>
+        <location filename="ArchWindow.py" line="623"/>
         <source>the components of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1151"/>
+        <location filename="ArchWindow.py" line="1154"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1152"/>
+        <location filename="ArchWindow.py" line="1155"/>
         <source>Create/update component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1153"/>
+        <location filename="ArchWindow.py" line="1156"/>
         <source>Base 2D object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1159"/>
+        <location filename="ArchWindow.py" line="1162"/>
         <source>Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1156"/>
+        <location filename="ArchWindow.py" line="1159"/>
         <source>Create new component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1157"/>
+        <location filename="ArchWindow.py" line="1160"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1158"/>
+        <location filename="ArchWindow.py" line="1161"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1160"/>
+        <location filename="ArchWindow.py" line="1163"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1161"/>
+        <location filename="ArchWindow.py" line="1164"/>
         <source>Z offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -658,38 +658,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="462"/>
+        <location filename="ArchWindow.py" line="453"/>
         <source>Pick a face on an existing object or select a preset
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="528"/>
+        <location filename="ArchWindow.py" line="522"/>
         <source>Window options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="621"/>
+        <location filename="ArchWindow.py" line="624"/>
         <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="623"/>
+        <location filename="ArchWindow.py" line="626"/>
         <source>The width of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="624"/>
+        <location filename="ArchWindow.py" line="627"/>
         <source>The height of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="625"/>
+        <location filename="ArchWindow.py" line="628"/>
         <source>The normal direction of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1126"/>
+        <location filename="ArchWindow.py" line="1129"/>
         <source>Unable to create component
 </source>
         <translation type="unfinished"></translation>
@@ -712,7 +712,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="650"/>
+        <location filename="ArchComponent.py" line="651"/>
         <source>Error computing the shape of this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -792,12 +792,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="298"/>
+        <location filename="ArchComponent.py" line="302"/>
         <source>Custom IFC properties and attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="628"/>
+        <location filename="ArchWindow.py" line="631"/>
         <source>A material for this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -812,17 +812,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="657"/>
+        <location filename="ArchComponent.py" line="658"/>
         <source>has no solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="659"/>
+        <location filename="ArchComponent.py" line="660"/>
         <source>has an invalid shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="661"/>
+        <location filename="ArchComponent.py" line="662"/>
         <source>has a null shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1328,7 +1328,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="622"/>
+        <location filename="ArchWindow.py" line="625"/>
         <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1356,6 +1356,36 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
         <location filename="ArchStructure.py" line="218"/>
         <source>Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCommands.py" line="1217"/>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCommands.py" line="1219"/>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCommands.py" line="1220"/>
+        <source>Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCommands.py" line="1226"/>
+        <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCommands.py" line="1244"/>
+        <source>Create IFC properties spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchWindow.py" line="526"/>
+        <source>Auto include in host object</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1614,6 +1644,19 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
         <location filename="ArchCommands.py" line="1151"/>
         <source>Ifc Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Arch_IfcSpreadsheet</name>
+    <message>
+        <location filename="ArchCommands.py" line="1235"/>
+        <source>Create IFC spreadsheet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCommands.py" line="1237"/>
+        <source>Creates a spreadsheet to store ifc properties of an object.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2228,12 +2271,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="296"/>
+        <location filename="preferences-ifc.ui" line="316"/>
         <source>Exclude list: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="303"/>
+        <location filename="preferences-ifc.ui" line="323"/>
         <source>A comma-separated list of Ifc entities to exclude from import</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2283,7 +2326,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="335"/>
+        <location filename="preferences-ifc.ui" line="355"/>
         <source>Some IFC viewers don&apos;t like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2328,7 +2371,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="338"/>
+        <location filename="preferences-ifc.ui" line="358"/>
         <source>Force export as Brep</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2358,7 +2401,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="327"/>
+        <location filename="preferences-ifc.ui" line="347"/>
         <source>Export options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2573,22 +2616,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="355"/>
+        <location filename="preferences-ifc.ui" line="375"/>
         <source>Use triangulation options set in the DAE options page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="358"/>
+        <location filename="preferences-ifc.ui" line="378"/>
         <source>Use DAE triangulation options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="375"/>
+        <location filename="preferences-ifc.ui" line="395"/>
         <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences-ifc.ui" line="378"/>
+        <location filename="preferences-ifc.ui" line="398"/>
         <source>Join coplanar facets when triangulating</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2615,6 +2658,16 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
         <location filename="preferences-ifc.ui" line="26"/>
         <source>Show this dialog when importing and exporting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="296"/>
+        <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="299"/>
+        <source>Import Ifc Properties in spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

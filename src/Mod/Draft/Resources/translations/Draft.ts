@@ -14,12 +14,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_AddPoint</name>
     <message>
-        <location filename="DraftTools.py" line="3920"/>
+        <location filename="DraftTools.py" line="3914"/>
         <source>Add Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3921"/>
+        <location filename="DraftTools.py" line="3915"/>
         <source>Adds a point to an existing wire/bspline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,12 +27,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_AddToGroup</name>
     <message>
-        <location filename="DraftTools.py" line="3873"/>
+        <location filename="DraftTools.py" line="3867"/>
         <source>Add to group...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3874"/>
+        <location filename="DraftTools.py" line="3868"/>
         <source>Adds the selected object(s) to an existing group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -66,12 +66,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Array</name>
     <message>
-        <location filename="DraftTools.py" line="4142"/>
+        <location filename="DraftTools.py" line="4136"/>
         <source>Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4143"/>
+        <location filename="DraftTools.py" line="4137"/>
         <source>Creates a polar or rectangular array from a selected object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -118,12 +118,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Clone</name>
     <message>
-        <location filename="DraftTools.py" line="4296"/>
+        <location filename="DraftTools.py" line="4290"/>
         <source>Clone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4297"/>
+        <location filename="DraftTools.py" line="4291"/>
         <source>Clones the selected object(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -144,12 +144,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_DelPoint</name>
     <message>
-        <location filename="DraftTools.py" line="3945"/>
+        <location filename="DraftTools.py" line="3939"/>
         <source>Remove Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3946"/>
+        <location filename="DraftTools.py" line="3940"/>
         <source>Removes a point from an existing wire or bspline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -183,12 +183,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-        <location filename="DraftTools.py" line="4084"/>
+        <location filename="DraftTools.py" line="4078"/>
         <source>Draft to Sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4085"/>
+        <location filename="DraftTools.py" line="4079"/>
         <source>Convert bidirectionally between Draft and Sketch objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -235,12 +235,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Facebinder</name>
     <message>
-        <location filename="DraftTools.py" line="4367"/>
+        <location filename="DraftTools.py" line="4361"/>
         <source>Facebinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4368"/>
+        <location filename="DraftTools.py" line="4362"/>
         <source>Creates a facebinder object from selected face(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -261,12 +261,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_FlipDimension</name>
     <message>
-        <location filename="DraftTools.py" line="4395"/>
+        <location filename="DraftTools.py" line="4389"/>
         <source>Flip Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4396"/>
+        <location filename="DraftTools.py" line="4390"/>
         <source>Flip the normal direction of a dimension</source>
         <translation type="unfinished"></translation>
     </message>
@@ -274,12 +274,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Heal</name>
     <message>
-        <location filename="DraftTools.py" line="4348"/>
+        <location filename="DraftTools.py" line="4342"/>
         <source>Heal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4349"/>
+        <location filename="DraftTools.py" line="4343"/>
         <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -300,12 +300,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Mirror</name>
     <message>
-        <location filename="DraftTools.py" line="4434"/>
+        <location filename="DraftTools.py" line="4428"/>
         <source>Mirror</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4435"/>
+        <location filename="DraftTools.py" line="4429"/>
         <source>Mirrors the selected objects along a line defined by two points</source>
         <translation type="unfinished"></translation>
     </message>
@@ -339,12 +339,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_PathArray</name>
     <message>
-        <location filename="DraftTools.py" line="4171"/>
+        <location filename="DraftTools.py" line="4165"/>
         <source>PathArray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4172"/>
+        <location filename="DraftTools.py" line="4166"/>
         <source>Creates copies of a selected object along a selected path.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -352,12 +352,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Point</name>
     <message>
-        <location filename="DraftTools.py" line="4207"/>
+        <location filename="DraftTools.py" line="4201"/>
         <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4208"/>
+        <location filename="DraftTools.py" line="4202"/>
         <source>Creates a point object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -417,12 +417,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_SelectGroup</name>
     <message>
-        <location filename="DraftTools.py" line="4012"/>
+        <location filename="DraftTools.py" line="4006"/>
         <source>Select group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4013"/>
+        <location filename="DraftTools.py" line="4007"/>
         <source>Selects all objects with the same parents as this group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -443,12 +443,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Shape2DView</name>
     <message>
-        <location filename="DraftTools.py" line="4044"/>
+        <location filename="DraftTools.py" line="4038"/>
         <source>Shape 2D view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4045"/>
+        <location filename="DraftTools.py" line="4039"/>
         <source>Creates Shape 2D views of selected objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -469,12 +469,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-        <location filename="DraftTools.py" line="4282"/>
+        <location filename="DraftTools.py" line="4276"/>
         <source>Show Snap Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4283"/>
+        <location filename="DraftTools.py" line="4277"/>
         <source>Shows Draft snap toolbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -482,12 +482,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Angle</name>
     <message>
-        <location filename="DraftTools.py" line="4641"/>
+        <location filename="DraftTools.py" line="4635"/>
         <source>Angles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4642"/>
+        <location filename="DraftTools.py" line="4636"/>
         <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
         <translation type="unfinished"></translation>
     </message>
@@ -495,12 +495,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Center</name>
     <message>
-        <location filename="DraftTools.py" line="4653"/>
+        <location filename="DraftTools.py" line="4647"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4654"/>
+        <location filename="DraftTools.py" line="4648"/>
         <source>Snaps to center of circles and arcs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -508,12 +508,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-        <location filename="DraftTools.py" line="4701"/>
+        <location filename="DraftTools.py" line="4695"/>
         <source>Dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4702"/>
+        <location filename="DraftTools.py" line="4696"/>
         <source>Shows temporary dimensions when snapping to Arch objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -521,12 +521,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-        <location filename="DraftTools.py" line="4629"/>
+        <location filename="DraftTools.py" line="4623"/>
         <source>Endpoint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4630"/>
+        <location filename="DraftTools.py" line="4624"/>
         <source>Snaps to endpoints of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -534,12 +534,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Extension</name>
     <message>
-        <location filename="DraftTools.py" line="4665"/>
+        <location filename="DraftTools.py" line="4659"/>
         <source>Extension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4666"/>
+        <location filename="DraftTools.py" line="4660"/>
         <source>Snaps to extension of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -547,12 +547,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Grid</name>
     <message>
-        <location filename="DraftTools.py" line="4593"/>
+        <location filename="DraftTools.py" line="4587"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4594"/>
+        <location filename="DraftTools.py" line="4588"/>
         <source>Snaps to grid points</source>
         <translation type="unfinished"></translation>
     </message>
@@ -560,12 +560,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-        <location filename="DraftTools.py" line="4605"/>
+        <location filename="DraftTools.py" line="4599"/>
         <source>Intersection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4606"/>
+        <location filename="DraftTools.py" line="4600"/>
         <source>Snaps to edges intersections</source>
         <translation type="unfinished"></translation>
     </message>
@@ -573,12 +573,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Lock</name>
     <message>
-        <location filename="DraftTools.py" line="4559"/>
+        <location filename="DraftTools.py" line="4553"/>
         <source>Toggle On/Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4560"/>
+        <location filename="DraftTools.py" line="4554"/>
         <source>Activates/deactivates all snap tools at once</source>
         <translation type="unfinished"></translation>
     </message>
@@ -586,12 +586,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-        <location filename="DraftTools.py" line="4569"/>
+        <location filename="DraftTools.py" line="4563"/>
         <source>Midpoint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4570"/>
+        <location filename="DraftTools.py" line="4564"/>
         <source>Snaps to midpoints of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -599,12 +599,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Near</name>
     <message>
-        <location filename="DraftTools.py" line="4677"/>
+        <location filename="DraftTools.py" line="4671"/>
         <source>Nearest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4678"/>
+        <location filename="DraftTools.py" line="4672"/>
         <source>Snaps to nearest point on edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -612,12 +612,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-        <location filename="DraftTools.py" line="4689"/>
+        <location filename="DraftTools.py" line="4683"/>
         <source>Ortho</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4690"/>
+        <location filename="DraftTools.py" line="4684"/>
         <source>Snaps to orthogonal and 45 degrees directions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -625,12 +625,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-        <location filename="DraftTools.py" line="4617"/>
+        <location filename="DraftTools.py" line="4611"/>
         <source>Parallel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4618"/>
+        <location filename="DraftTools.py" line="4612"/>
         <source>Snaps to parallel directions of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -638,12 +638,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-        <location filename="DraftTools.py" line="4581"/>
+        <location filename="DraftTools.py" line="4575"/>
         <source>Perpendicular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4582"/>
+        <location filename="DraftTools.py" line="4576"/>
         <source>Snaps to perpendicular points on edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -651,12 +651,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-        <location filename="DraftTools.py" line="4713"/>
+        <location filename="DraftTools.py" line="4707"/>
         <source>Working Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4714"/>
+        <location filename="DraftTools.py" line="4708"/>
         <source>Restricts the snapped point to the current working plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -716,12 +716,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_ToggleGrid</name>
     <message>
-        <location filename="DraftTools.py" line="4327"/>
+        <location filename="DraftTools.py" line="4321"/>
         <source>Toggle Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4328"/>
+        <location filename="DraftTools.py" line="4322"/>
         <source>Toggles the Draft grid on/off</source>
         <translation type="unfinished"></translation>
     </message>
@@ -768,12 +768,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_VisGroup</name>
     <message>
-        <location filename="DraftTools.py" line="4410"/>
+        <location filename="DraftTools.py" line="4404"/>
         <source>VisGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4411"/>
+        <location filename="DraftTools.py" line="4405"/>
         <source>Adds a VisGroup</source>
         <translation type="unfinished"></translation>
     </message>
@@ -794,12 +794,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
 <context>
     <name>Draft_WireToBSpline</name>
     <message>
-        <location filename="DraftTools.py" line="3970"/>
+        <location filename="DraftTools.py" line="3964"/>
         <source>Wire to BSpline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3971"/>
+        <location filename="DraftTools.py" line="3965"/>
         <source>Converts between Wire and BSpline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1772,157 +1772,157 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="608"/>
+        <location filename="DraftGui.py" line="612"/>
         <source>active command:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="851"/>
+        <location filename="DraftGui.py" line="859"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="610"/>
+        <location filename="DraftGui.py" line="614"/>
         <source>Active Draft command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="611"/>
+        <location filename="DraftGui.py" line="615"/>
         <source>X coordinate of next point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="852"/>
+        <location filename="DraftGui.py" line="860"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="613"/>
+        <location filename="DraftGui.py" line="617"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="614"/>
+        <location filename="DraftGui.py" line="618"/>
         <source>Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="615"/>
+        <location filename="DraftGui.py" line="619"/>
         <source>Y coordinate of next point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="616"/>
+        <location filename="DraftGui.py" line="620"/>
         <source>Z coordinate of next point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="901"/>
+        <location filename="DraftGui.py" line="909"/>
         <source>Radius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="624"/>
+        <location filename="DraftGui.py" line="630"/>
         <source>Radius of Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="625"/>
+        <location filename="DraftGui.py" line="631"/>
         <source>&amp;Relative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="626"/>
+        <location filename="DraftGui.py" line="632"/>
         <source>Coordinates relative to last point or absolute (SPACE)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="627"/>
+        <location filename="DraftGui.py" line="633"/>
         <source>F&amp;illed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="628"/>
+        <location filename="DraftGui.py" line="634"/>
         <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="629"/>
+        <location filename="DraftGui.py" line="635"/>
         <source>&amp;Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="630"/>
+        <location filename="DraftGui.py" line="636"/>
         <source>Finishes the current drawing or editing operation (F)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="631"/>
+        <location filename="DraftGui.py" line="637"/>
         <source>If checked, command will not finish until you press the command button again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="633"/>
+        <location filename="DraftGui.py" line="639"/>
         <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="634"/>
+        <location filename="DraftGui.py" line="640"/>
         <source>&amp;OCC-style offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="635"/>
+        <location filename="DraftGui.py" line="641"/>
         <source>Add points to the current object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="636"/>
+        <location filename="DraftGui.py" line="642"/>
         <source>Remove points from the current object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="637"/>
+        <location filename="DraftGui.py" line="643"/>
         <source>Make Bezier node sharp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="638"/>
+        <location filename="DraftGui.py" line="644"/>
         <source>Make Bezier node tangent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="639"/>
+        <location filename="DraftGui.py" line="645"/>
         <source>Make Bezier node symmetric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="640"/>
+        <location filename="DraftGui.py" line="646"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="641"/>
+        <location filename="DraftGui.py" line="647"/>
         <source>Undo the last segment (CTRL+Z)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="643"/>
+        <location filename="DraftGui.py" line="649"/>
         <source>Finishes and closes the current line (C)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="644"/>
+        <location filename="DraftGui.py" line="650"/>
         <source>&amp;Wipe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="645"/>
+        <location filename="DraftGui.py" line="651"/>
         <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="649"/>
+        <location filename="DraftGui.py" line="655"/>
         <source>Number of sides</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1932,132 +1932,132 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="651"/>
+        <location filename="DraftGui.py" line="657"/>
         <source>XY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="652"/>
+        <location filename="DraftGui.py" line="658"/>
         <source>Select XY plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="653"/>
+        <location filename="DraftGui.py" line="659"/>
         <source>XZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="654"/>
+        <location filename="DraftGui.py" line="660"/>
         <source>Select XZ plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="655"/>
+        <location filename="DraftGui.py" line="661"/>
         <source>YZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="656"/>
+        <location filename="DraftGui.py" line="662"/>
         <source>Select YZ plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="657"/>
+        <location filename="DraftGui.py" line="663"/>
         <source>View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="658"/>
+        <location filename="DraftGui.py" line="664"/>
         <source>Select plane perpendicular to the current view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="660"/>
+        <location filename="DraftGui.py" line="666"/>
         <source>Do not project points to a drawing plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="662"/>
+        <location filename="DraftGui.py" line="668"/>
         <source>If checked, objects will be copied instead of moved (C)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="663"/>
+        <location filename="DraftGui.py" line="669"/>
         <source>Text string to draw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="664"/>
+        <location filename="DraftGui.py" line="670"/>
         <source>String</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="665"/>
+        <location filename="DraftGui.py" line="671"/>
         <source>Height of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="666"/>
+        <location filename="DraftGui.py" line="672"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="667"/>
+        <location filename="DraftGui.py" line="673"/>
         <source>Intercharacter spacing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="668"/>
+        <location filename="DraftGui.py" line="674"/>
         <source>Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="669"/>
+        <location filename="DraftGui.py" line="675"/>
         <source>Full path to font file:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="670"/>
+        <location filename="DraftGui.py" line="676"/>
         <source>Open a FileChooser for font file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="690"/>
+        <location filename="DraftGui.py" line="696"/>
         <source>Set/unset a working plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="691"/>
+        <location filename="DraftGui.py" line="697"/>
         <source>Line Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="692"/>
+        <location filename="DraftGui.py" line="698"/>
         <source>Face Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="693"/>
+        <location filename="DraftGui.py" line="699"/>
         <source>Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="694"/>
+        <location filename="DraftGui.py" line="700"/>
         <source>Font Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="695"/>
+        <location filename="DraftGui.py" line="701"/>
         <source>Apply to selected objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="696"/>
+        <location filename="DraftGui.py" line="702"/>
         <source>Toggles Construction Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="742"/>
+        <location filename="DraftGui.py" line="748"/>
         <source>Select Plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2072,222 +2072,222 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="801"/>
+        <location filename="DraftGui.py" line="808"/>
         <source>Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="808"/>
+        <location filename="DraftGui.py" line="815"/>
         <source>Center X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="807"/>
+        <location filename="DraftGui.py" line="814"/>
         <source>Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="811"/>
+        <location filename="DraftGui.py" line="818"/>
         <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="894"/>
+        <location filename="DraftGui.py" line="902"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="891"/>
+        <location filename="DraftGui.py" line="899"/>
         <source>Trim</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="983"/>
+        <location filename="DraftGui.py" line="991"/>
         <source>Pick Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="988"/>
+        <location filename="DraftGui.py" line="996"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1025"/>
+        <location filename="DraftGui.py" line="1033"/>
         <source>Global X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1026"/>
+        <location filename="DraftGui.py" line="1034"/>
         <source>Global Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1027"/>
+        <location filename="DraftGui.py" line="1035"/>
         <source>Global Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1030"/>
+        <location filename="DraftGui.py" line="1038"/>
         <source>Local X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1031"/>
+        <location filename="DraftGui.py" line="1039"/>
         <source>Local Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1032"/>
+        <location filename="DraftGui.py" line="1040"/>
         <source>Local Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1239"/>
+        <location filename="DraftGui.py" line="1247"/>
         <source>Invalid Size value. Using 200.0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1247"/>
+        <location filename="DraftGui.py" line="1255"/>
         <source>Invalid Tracking value. Using 0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1261"/>
+        <location filename="DraftGui.py" line="1269"/>
         <source>Please enter a text string.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1269"/>
+        <location filename="DraftGui.py" line="1277"/>
         <source>Select a Font file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1299"/>
+        <location filename="DraftGui.py" line="1307"/>
         <source>Please enter a font file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="845"/>
+        <location filename="Draft.py" line="852"/>
         <source>Draft.makeBSpline: not enough points
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="851"/>
+        <location filename="Draft.py" line="858"/>
         <source>Draft.makeBSpline: Equal endpoints forced Closed
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="853"/>
+        <location filename="Draft.py" line="860"/>
         <source>Draft.makeBSpline: Invalid pointslist
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2878"/>
+        <location filename="Draft.py" line="2885"/>
         <source>Found groups: closing each open object inside
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2883"/>
+        <location filename="Draft.py" line="2890"/>
         <source>Found mesh(es): turning into Part shapes
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2891"/>
+        <location filename="Draft.py" line="2898"/>
         <source>Found 1 solidificable object: solidifying it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2896"/>
+        <location filename="Draft.py" line="2903"/>
         <source>Found 2 objects: fusing them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2911"/>
+        <location filename="Draft.py" line="2918"/>
         <source>Found 1 non-parametric objects: draftifying it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2942"/>
+        <location filename="Draft.py" line="2949"/>
         <source>Found 1 open wire: closing it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2947"/>
+        <location filename="Draft.py" line="2954"/>
         <source>Found several open wires: joining them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2952"/>
+        <location filename="Draft.py" line="2959"/>
         <source>Found several edges: wiring them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2961"/>
+        <location filename="Draft.py" line="2968"/>
         <source>Unable to upgrade these objects.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3117"/>
+        <location filename="Draft.py" line="3124"/>
         <source>Found 1 block: exploding it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3129"/>
+        <location filename="Draft.py" line="3136"/>
         <source>Found 1 parametric object: breaking its dependencies
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3136"/>
+        <location filename="Draft.py" line="3143"/>
         <source>Found 2 objects: subtracting them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3143"/>
+        <location filename="Draft.py" line="3150"/>
         <source>Found several faces: splitting them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3148"/>
+        <location filename="Draft.py" line="3155"/>
         <source>Found several objects: subtracting them from the first one
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3153"/>
+        <location filename="Draft.py" line="3160"/>
         <source>Found 1 face: extracting its wires
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3158"/>
+        <location filename="Draft.py" line="3165"/>
         <source>Found only wires: extracting their edges
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3162"/>
+        <location filename="Draft.py" line="3169"/>
         <source>No more downgrade possible
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="4593"/>
+        <location filename="Draft.py" line="4600"/>
         <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </source>
         <translation type="unfinished"></translation>
@@ -2635,7 +2635,7 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4052"/>
+        <location filename="DraftTools.py" line="4046"/>
         <source>Select an object to project
 </source>
         <translation type="unfinished"></translation>
@@ -2653,54 +2653,54 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3738"/>
+        <location filename="DraftTools.py" line="3735"/>
         <source>Active object must have more than two points/nodes
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3787"/>
+        <location filename="DraftTools.py" line="3783"/>
         <source>Selection is not a Knot
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3812"/>
+        <location filename="DraftTools.py" line="3808"/>
         <source>Endpoint of BezCurve can&apos;t be smoothed
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4092"/>
+        <location filename="DraftTools.py" line="4086"/>
         <source>Select an object to convert
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4150"/>
+        <location filename="DraftTools.py" line="4144"/>
         <source>Select an object to array
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4179"/>
+        <location filename="DraftTools.py" line="4173"/>
         <source>Please select base and path objects
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4265"/>
+        <location filename="DraftTools.py" line="4259"/>
         <source>Create Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4304"/>
+        <location filename="DraftTools.py" line="4298"/>
         <source>Select an object to clone
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4375"/>
+        <location filename="DraftTools.py" line="4369"/>
         <source>Select face(s) on existing object(s)
 </source>
         <translation type="unfinished"></translation>
@@ -2732,99 +2732,99 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3123"/>
+        <location filename="Draft.py" line="3130"/>
         <source>Found 1 multi-solids compound: exploding it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="648"/>
+        <location filename="DraftGui.py" line="654"/>
         <source>Sides</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2384"/>
+        <location filename="Draft.py" line="2391"/>
         <source>BSplines and Bezier curves are not supported by this tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2380"/>
+        <location filename="Draft.py" line="2387"/>
         <source>The given object is not planar and cannot be converted into a sketch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2901"/>
+        <location filename="Draft.py" line="2908"/>
         <source>Found several objects: creating a shell
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2906"/>
+        <location filename="Draft.py" line="2913"/>
         <source>Found several coplanar objects or faces: creating one face
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2924"/>
+        <location filename="Draft.py" line="2931"/>
         <source>Found 1 linear object: converting to line
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2932"/>
+        <location filename="Draft.py" line="2939"/>
         <source>Found 1 closed sketch object: creating a face from it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2937"/>
+        <location filename="Draft.py" line="2944"/>
         <source>Found closed wires: creating faces
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2957"/>
+        <location filename="Draft.py" line="2964"/>
         <source>Found several non-treatable objects: creating compound
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="617"/>
+        <location filename="DraftGui.py" line="623"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="618"/>
+        <location filename="DraftGui.py" line="624"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="619"/>
+        <location filename="DraftGui.py" line="625"/>
         <source>Length of current segment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="620"/>
+        <location filename="DraftGui.py" line="626"/>
         <source>Angle of current segment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="622"/>
+        <location filename="DraftGui.py" line="628"/>
         <source>Check this to lock the current angle (l)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="646"/>
+        <location filename="DraftGui.py" line="652"/>
         <source>&amp;Select edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="647"/>
+        <location filename="DraftGui.py" line="653"/>
         <source>Selects an existing edge to be measured by this dimension (E)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="659"/>
+        <location filename="DraftGui.py" line="665"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2835,22 +2835,22 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4116"/>
+        <location filename="DraftTools.py" line="4110"/>
         <source>Convert to Sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4120"/>
+        <location filename="DraftTools.py" line="4114"/>
         <source>Convert to Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4132"/>
+        <location filename="DraftTools.py" line="4126"/>
         <source>Convert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4161"/>
+        <location filename="DraftTools.py" line="4155"/>
         <source>Array</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2897,73 +2897,83 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2500"/>
+        <location filename="Draft.py" line="2507"/>
         <source>No object given
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2503"/>
+        <location filename="Draft.py" line="2510"/>
         <source>The two points are coincident
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="632"/>
+        <location filename="DraftGui.py" line="638"/>
         <source>Co&amp;ntinue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="642"/>
+        <location filename="DraftGui.py" line="648"/>
         <source>Cl&amp;ose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="661"/>
+        <location filename="DraftGui.py" line="667"/>
         <source>C&amp;opy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1922"/>
+        <location filename="DraftGui.py" line="1930"/>
         <source>Faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1923"/>
+        <location filename="DraftGui.py" line="1931"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1924"/>
+        <location filename="DraftGui.py" line="1932"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftGui.py" line="1925"/>
+        <location filename="DraftGui.py" line="1933"/>
         <source>Facebinder elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4479"/>
+        <location filename="DraftTools.py" line="4473"/>
         <source>Mirror</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4444"/>
+        <location filename="DraftTools.py" line="4438"/>
         <source>Select an object to mirror
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4458"/>
+        <location filename="DraftTools.py" line="4452"/>
         <source>Pick start point of mirror line:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4541"/>
+        <location filename="DraftTools.py" line="4535"/>
         <source>Pick end point of mirror line:
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DraftGui.py" line="621"/>
+        <source>Enter point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DraftGui.py" line="622"/>
+        <source>Enter a new point with the given coordinates</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
