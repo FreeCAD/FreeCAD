@@ -656,11 +656,15 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
         // Get dependencies for the document object pointed to be *j
         std::vector<DocumentObject*> targets;
         targets.push_back(docObj);
-        std::vector<DocumentObject*> deps = (*j).getDocument()->getDependencyList(targets);
 
-        for (std::vector<DocumentObject*>::const_iterator i = deps.begin(); i != deps.end(); ++i) {
-            if (*i == pathDocObj)
-                return (*j).toString() + " reference creates a cyclic dependency.";
+        // Does the dependency resolve to a document? If not, ignore it
+        if ((*j).getDocument()) {
+            std::vector<DocumentObject*> deps = (*j).getDocument()->getDependencyList(targets);
+
+            for (std::vector<DocumentObject*>::const_iterator i = deps.begin(); i != deps.end(); ++i) {
+                if (*i == pathDocObj)
+                    return (*j).toString() + " reference creates a cyclic dependency.";
+            }
         }
     }
 
