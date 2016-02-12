@@ -119,7 +119,7 @@ class CommandPathHop:
             FreeCAD.Console.PrintError(translate("Path_Hop","The selected object is not a path\n"))
             return
         
-        FreeCAD.ActiveDocument.openTransaction(translate("Pat_hHop","Create Hop"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Hop","Create Hop"))
         FreeCADGui.addModule("PathScripts.PathHop")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Hop")')
