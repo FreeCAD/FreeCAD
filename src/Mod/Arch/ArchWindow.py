@@ -636,25 +636,26 @@ class _Window(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop in ["Base","WindowParts"]:
-            self.execute(obj)
-        elif prop in ["HoleDepth"]:
-            for o in obj.InList:
-                if Draft.getType(o) in AllowedHosts:
-                    o.Proxy.execute(o)
-        elif prop in ["Width","Height"]:
-            if obj.Preset != 0:
-                if obj.Base:
-                    try:
-                        if prop == "Height":
-                            obj.Base.setDatum(16,obj.Height.Value)
-                        elif prop == "Width":
-                            obj.Base.setDatum(17,obj.Width.Value)
-                    except:
-                        # restoring constraints when loading a file fails
-                        # because of load order, but it doesn't harm...
-                        pass
-                    FreeCAD.ActiveDocument.recompute()
+        if not "Restore" in obj.State:
+            if prop in ["Base","WindowParts"]:
+                self.execute(obj)
+            elif prop in ["HoleDepth"]:
+                for o in obj.InList:
+                    if Draft.getType(o) in AllowedHosts:
+                        o.Proxy.execute(o)
+            if prop in ["Width","Height"]:
+                if obj.Preset != 0:
+                    if obj.Base:
+                        try:
+                            if prop == "Height":
+                                obj.Base.setDatum(16,obj.Height.Value)
+                            elif prop == "Width":
+                                obj.Base.setDatum(17,obj.Width.Value)
+                        except:
+                            # restoring constraints when loading a file fails
+                            # because of load order, but it doesn't harm...
+                            pass
+                        FreeCAD.ActiveDocument.recompute()
 
 
     def execute(self,obj):
