@@ -1,4 +1,6 @@
-PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
+IF (BUILD_GUI)
+    PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
+ENDIF (BUILD_GUI)
 
 SET(Material_SRCS
     Init.py
@@ -34,10 +36,12 @@ fc_target_copy_resource(Material
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${Material_SRCS})
 
-fc_target_copy_resource(Material
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Material
-    Material_rc.py)
+IF (BUILD_GUI)
+    fc_target_copy_resource(Material
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Material
+        Material_rc.py)
+ENDIF (BUILD_GUI)
 
 ADD_CUSTOM_TARGET(MaterialLib ALL
     SOURCES ${MaterialLib_Files}

@@ -1,6 +1,8 @@
 add_subdirectory(App)
 
-PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
+IF (BUILD_GUI)
+    PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
+ENDIF (BUILD_GUI)
 
 SET(Draft_SRCS
     Init.py
@@ -28,10 +30,12 @@ ADD_CUSTOM_TARGET(Draft ALL
 
 fc_copy_sources(Draft "${CMAKE_BINARY_DIR}/Mod/Draft" ${Draft_SRCS})
 
-fc_target_copy_resource(Draft
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Draft
-    Draft_rc.py)
+IF (BUILD_GUI)
+    fc_target_copy_resource(Draft
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Draft
+        Draft_rc.py)
+ENDIF (BUILD_GUI)
 
 INSTALL(
     FILES

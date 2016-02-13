@@ -1,4 +1,6 @@
-PYSIDE_WRAP_RC(Arch_QRC_SRCS Resources/Arch.qrc)
+IF (BUILD_GUI)
+    PYSIDE_WRAP_RC(Arch_QRC_SRCS Resources/Arch.qrc)
+ENDIF (BUILD_GUI)
 
 SET(Arch_SRCS
     Init.py
@@ -53,10 +55,12 @@ fc_target_copy_resource(Arch
     ${Arch_presets}
 )
 
-fc_target_copy_resource(Arch
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Arch
-    Arch_rc.py)
+IF (BUILD_GUI)
+    fc_target_copy_resource(Arch
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Arch
+        Arch_rc.py)
+ENDIF (BUILD_GUI)
 
 INSTALL(
     FILES
