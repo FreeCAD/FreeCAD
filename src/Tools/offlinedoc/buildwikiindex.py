@@ -133,14 +133,15 @@ def getlinks(html):
         rg = re.findall('href=.*?php\?title=(.*?)"',l)
         if rg:
             rg = rg[0]
-            if "#" in rg:
-                rg = rg.split('#')[0]
-            if ":" in rg:
-                NORETRIEVE.append(rg)
-            if ";" in rg:
-                NORETRIEVE.append(rg)
-            if "&" in rg:
-                NORETRIEVE.append(rg)
+            if not "Command_Reference" in rg:
+                if "#" in rg:
+                    rg = rg.split('#')[0]
+                if ":" in rg:
+                    NORETRIEVE.append(rg)
+                if ";" in rg:
+                    NORETRIEVE.append(rg)
+                if "&" in rg:
+                    NORETRIEVE.append(rg)
             if "/" in rg:
                 if not GETTRANSLATIONS:
                     NORETRIEVE.append(rg)
