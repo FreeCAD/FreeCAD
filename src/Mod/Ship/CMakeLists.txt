@@ -1,4 +1,6 @@
-PYSIDE_WRAP_RC(Ship_QRC_SRCS resources/Ship.qrc)
+IF(BUILD_GUI)
+    PYSIDE_WRAP_RC(Ship_QRC_SRCS resources/Ship.qrc)
+ENDIF(BUILD_GUI)
 
 SET(ShipMain_SRCS
     InitGui.py
@@ -116,10 +118,12 @@ ADD_CUSTOM_TARGET(Ship ALL
 
 fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
 
-fc_target_copy_resource(Ship
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Ship
-    Ship_rc.py)
+IF(BUILD_GUI)
+    fc_target_copy_resource(Ship
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Ship
+        Ship_rc.py)
+ENDIF(BUILD_GUI)
 
 INSTALL(
     FILES
