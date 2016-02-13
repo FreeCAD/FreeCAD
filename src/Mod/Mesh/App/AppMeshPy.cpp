@@ -218,7 +218,7 @@ private:
 
         MeshObject mesh;
         MeshCore::Material mat;
-        if (mesh.load(EncodedName.c_str())) {
+        if (mesh.load(EncodedName.c_str(), &mat)) {
             Base::FileInfo file(EncodedName.c_str());
             unsigned long segmct = mesh.countSegments();
             if (segmct > 1) {
