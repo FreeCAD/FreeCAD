@@ -43,14 +43,14 @@ public:
     static void LoadAscii(PointKernel&, const char *FileName);
 };
 
-#ifdef HAVE_PCL_IO
-class PlyReader
+class Reader
 {
 public:
-    PlyReader();
-    ~PlyReader();
+    Reader();
+    virtual ~Reader();
+    virtual void read(const std::string& filename) = 0;
+
     void clear();
-    void read(const std::string& filename);
     const PointKernel& getPoints() const;
     bool hasProperties() const;
     const std::vector<float>& getIntensities() const;
@@ -60,11 +60,36 @@ public:
     const std::vector<Base::Vector3f>& getNormals() const;
     bool hasNormals() const;
 
-private:
+protected:
     PointKernel points;
     std::vector<float> intensity;
     std::vector<App::Color> colors;
     std::vector<Base::Vector3f> normals;
+};
+
+class AscReader : public Reader
+{
+public:
+    AscReader();
+    ~AscReader();
+    void read(const std::string& filename);
+};
+
+#ifdef HAVE_PCL_IO
+class PlyReader : public Reader
+{
+public:
+    PlyReader();
+    ~PlyReader();
+    void read(const std::string& filename);
+};
+
+class PcdReader : public Reader
+{
+public:
+    PcdReader();
+    ~PcdReader();
+    void read(const std::string& filename);
 };
 #endif
 
