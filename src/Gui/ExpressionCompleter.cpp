@@ -236,7 +236,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & path ) const
 void ExpressionCompleter::slotUpdate(const QString & prefix)
 {
     using namespace boost::tuples;
-    int j = (prefix.size() > 0 && prefix.at(0) == QChar::fromAscii('=')) ? 1 : 0;
+    int j = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
     std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(Base::Tools::toStdString(prefix.mid(j)));
     std::string completionPrefix;
 
