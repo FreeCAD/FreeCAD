@@ -435,6 +435,10 @@ void FileOptionsDialog::accept()
         else if (ext.toLower() != suf.toLower()) {
             fn = QString::fromLatin1("%1.%2").arg(fn).arg(suf);
             selectFile(fn);
+            // That's the built-in line edit (fixes Debian bug #811200)
+            QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
+            if (fileNameEdit)
+                fileNameEdit->setText(fn);
         }
     }
 
