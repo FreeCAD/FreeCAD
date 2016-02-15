@@ -280,7 +280,7 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
     RelabelDocumentObjectExpressionVisitor<PropertyExpressionEngine> v(*this, obj.getOldLabel(), obj.Label.getStrValue());
 
     for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
-        int changed = v.getChanged();
+        bool changed = v.getChanged();
 
         it->second.expression->visit(v);
 
