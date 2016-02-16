@@ -991,7 +991,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
     QList<QWidget*>::const_iterator it = list.begin();
     QObject *obj;
-    QString sigStr = QString::fromAscii("2%1").arg(QString::fromAscii(signal));
+    QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
 
     while ( it != list.end() ) {
         obj = *it;
@@ -1005,7 +1005,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     if (objS) {
         SignalConnect* sc = new SignalConnect(this, cb);
         mySingals.push_back(sc);
-        return QObject::connect(objS, sigStr.toAscii(), sc, SLOT ( onExecute() )  );
+        return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
     }
     else
         qWarning( "'%s' does not exist.\n", sender );
@@ -1063,14 +1063,14 @@ Py::Object PyResource::value(const Py::Tuple& args)
             int nSize = str.count();
             Py::List slist(nSize);
             for (int i=0; i<nSize;++i) {
-                slist.setItem(i, Py::String(str[i].toAscii()));
+                slist.setItem(i, Py::String(str[i].toLatin1()));
             }
             item = slist;
         }   break;
     case QVariant::ByteArray:
         break;
     case QVariant::String:
-        item = Py::String(v.toString().toAscii());
+        item = Py::String(v.toString().toLatin1());
         break;
     case QVariant::Double:
         item = Py::Float(v.toDouble());
@@ -1107,7 +1107,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 
     QVariant v;
     if (PyString_Check(psValue)) {
-        v = QString::fromAscii(PyString_AsString(psValue));
+        v = QString::fromLatin1(PyString_AsString(psValue));
     }
     else if (PyInt_Check(psValue)) {
         int val = PyInt_AsLong(psValue);
@@ -1129,7 +1129,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
                 continue;
 
             char* pItem = PyString_AsString(item);
-            str.append(QString::fromAscii(pItem));
+            str.append(QString::fromLatin1(pItem));
         }
 
         v = str;
