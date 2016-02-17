@@ -64,6 +64,9 @@ public:
 
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
+    
+    static std::string gethideMeshShowPartStr();
+    static std::string gethideMeshShowPartStr(const std::string showConstr);
 
 protected:
     void onChanged(const App::Property* prop);
