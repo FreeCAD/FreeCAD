@@ -227,7 +227,7 @@ class inp_writer:
             f.write('**FreeCAD material name: ' + mat_info_name + '\n')
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
             f.write('*ELASTIC \n')
-            f.write('{}, \n'.format(YM_in_MPa))
+            f.write('{},  '.format(YM_in_MPa))
             f.write('{0:.3f}\n'.format(PR))
             density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
             density_in_tone_per_mm3 = float(density.getValueAs('t/mm^3'))
