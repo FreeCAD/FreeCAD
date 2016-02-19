@@ -240,10 +240,8 @@ void TaskDlgFemConstraintPressure::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint pressure");
+        QString msg = QObject::tr("Constraint normal stress");
         Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 

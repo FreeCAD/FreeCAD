@@ -435,27 +435,10 @@ void TaskFemConstraintDisplacement::addToSelection()
                     addMe=false;
                 }
             }
-            // limit constraint such that only vertexes or faces or edges can be used depending on what was selected first
-            std::string searchStr("");
-            if (subNames[subIt].find("Vertex")!=std::string::npos)
-                searchStr="Vertex";
-            else if (subNames[subIt].find("Edge")!=std::string::npos)
-                searchStr="Edge";
-            else
-                searchStr="Face";
-            if ((std::none_of(SubElements.begin(),SubElements.end(),[&](std::string const &s){return s.find(searchStr)!=std::string::npos;}))&&(SubElements.size()>0)){
-                std::string Msg="Only one type of selection (vertex,face or edge) per constraint allowed!";
-                QMessageBox::warning(this, tr("Selection error"),QString::fromStdString(Msg));
-                addMe=false;
-            }
             if (addMe){
-                disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-                    this, SLOT(setSelection(QListWidgetItem*)));
                 Objects.push_back(obj);
                 SubElements.push_back(subNames[subIt]);
                 ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
-                connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-                    this, SLOT(setSelection(QListWidgetItem*)));
             }
         }
     }
@@ -475,7 +458,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
     Fem::ConstraintDisplacement* pcConstraint = static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    std::vector<unsigned int> itemsToDel;
+    std::vector<int> itemsToDel;
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
         if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
@@ -497,32 +480,30 @@ void TaskFemConstraintDisplacement::removeFromSelection()
         }
     }
     
-    std::sort(itemsToDel.begin(),itemsToDel.end());
     while (itemsToDel.size()>0){
         Objects.erase(Objects.begin()+itemsToDel.back());
         SubElements.erase(SubElements.begin()+itemsToDel.back());
         itemsToDel.pop_back();
     }
-    
     //Update UI
     disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-
+    
     ui->lw_references->clear();
     for (unsigned int j=0;j<Objects.size();j++){
         ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
     }
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-
+    
     pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
 }
 
 void TaskFemConstraintDisplacement::setSelection(QListWidgetItem* item){
-    std::string s = item->text().toStdString();
     std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
+    
+    std::string s = item->text().toStdString();
     std::string delimiter = ":";
 
     size_t pos = 0;
@@ -532,13 +513,16 @@ void TaskFemConstraintDisplacement::setSelection(QListWidgetItem* item){
     objName = s.substr(0, pos);
     s.erase(0, pos + delimiter.length());
     subName=s;
-
+    
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
 
 void TaskFemConstraintDisplacement::onReferenceDeleted() {
-    TaskFemConstraintDisplacement::removeFromSelection(); //OvG: On right-click face is automatically selected, so just remove
+    int row = ui->lw_references->currentIndex().row();
+    TaskFemConstraint::onReferenceDeleted(row);
+    ui->lw_references->model()->removeRow(row);
+    ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
 }
 
 const std::string TaskFemConstraintDisplacement::getReferences() const
@@ -600,10 +584,8 @@ void TaskDlgFemConstraintDisplacement::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint displacement");
+        QString msg = QObject::tr("Constraint normal stress");
         Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
@@ -651,7 +633,7 @@ bool TaskDlgFemConstraintDisplacement::accept()
             name.c_str(), parameterDisplacement->get_rotzfix() ? "True" : "False");
             
         std::string scale = parameterDisplacement->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+		Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
