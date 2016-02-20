@@ -35,6 +35,7 @@
 #include <Base/Stream.h>
 #include <Base/Rotation.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
@@ -565,6 +566,32 @@ void PropertyPlacement::getPaths(std::vector<ObjectIdentifier> &paths) const
                     << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
                     << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
                     << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+}
+
+void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    if (path.getSubPathStr() == ".Rotation.Angle") {
+        double avalue;
+
+        if (value.type() == typeid(Base::Quantity))
+            avalue = boost::any_cast<Base::Quantity>(value).getValue();
+        else if (value.type() == typeid(double))
+            avalue = boost::any_cast<double>(value);
+        else if (value.type() == typeid(int))
+            avalue =  boost::any_cast<int>(value);
+        else if (value.type() == typeid(unsigned int))
+            avalue =  boost::any_cast<unsigned int >(value);
+        else if (value.type() == typeid(short))
+            avalue =  boost::any_cast<short>(value);
+        else if (value.type() == typeid(unsigned short))
+            avalue =  boost::any_cast<unsigned short>(value);
+        else
+            throw std::bad_cast();
+
+        Property::setPathValue(path, Base::toRadians(avalue));
+    }
+    else
+        Property::setPathValue(path, value);
 }
 
 PyObject *PropertyPlacement::getPyObject(void)

@@ -28,6 +28,9 @@
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/WidgetFactory.h>
@@ -39,6 +42,7 @@
 #include "DlgEvaluateMeshImp.h"
 #include "PropertyEditorMesh.h"
 #include "DlgSettingsMeshView.h"
+#include "DlgSettingsImportExportImp.h"
 #include "SoFCMeshObject.h"
 #include "SoFCIndexedFaceSet.h"
 #include "SoPolygon.h"
@@ -62,14 +66,29 @@ void loadMeshResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-static struct PyMethodDef MeshGui_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+namespace MeshGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("MeshGui")
+    {
+        initialize("This module is the MeshGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
 };
 
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace MeshGui
+
 /* Python entry */
-extern "C" {
-void MeshGuiExport initMeshGui()
+PyMODINIT_FUNC initMeshGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -84,7 +103,7 @@ void MeshGuiExport initMeshGui()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    (void) Py_InitModule("MeshGui", MeshGui_methods);   /* mod name, table ptr */
+    (void) MeshGui::initModule();
     Base::Console().Log("Loading GUI of Mesh module... done\n");
 
     // Register icons
@@ -96,6 +115,7 @@ void MeshGuiExport initMeshGui()
 
     // register preferences pages
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> ("Display");
+    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsImportExport>     ( QT_TRANSLATE_NOOP("QObject", "Import-Export") );
 
     MeshGui::SoFCMeshObjectElement              ::initClass();
     MeshGui::SoSFMeshObject                     ::initClass();
@@ -135,5 +155,3 @@ void MeshGuiExport initMeshGui()
     // add resources and reloads the translators
     loadMeshResource();
 }
-
-} // extern "C" {

@@ -91,7 +91,7 @@
     <message>
         <location line="+1"/>
         <source>LinearPattern</source>
-        <translation>LinearPattern</translation>
+        <translation type="unfinished">LinearPattern</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>PolarPattern</source>
-        <translation>PolarPattern</translation>
+        <translation type="unfinished">PolarPattern</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a polar pattern feature</source>
-        <translation>create a polar pattern feature</translation>
+        <translation type="unfinished">create a polar pattern feature</translation>
     </message>
 </context>
 <context>
@@ -253,12 +253,12 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Aantal tanden:</translation>
+        <translation>Aantal tanden:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation>Modules:</translation>
     </message>
     <message>
         <location line="+85"/>
@@ -269,13 +269,13 @@
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">True</translation>
+        <translation>Waar</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">False</translation>
+        <translation>Onwaar</translation>
     </message>
     <message>
         <location line="-19"/>
@@ -285,7 +285,7 @@
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Drukhoek:</translation>
+        <translation>Drukhoek:</translation>
     </message>
 </context>
 <context>
@@ -407,9 +407,9 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgChamferParameters</name>
     <message>
-        <location line="+74"/>
+        <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Afschuining bewerken</translation>
+        <translation>Afschuining bewerken</translation>
     </message>
 </context>
 <context>
@@ -423,15 +423,15 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgFilletParameters</name>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="+126"/>
+        <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Afronding bewerken</translation>
+        <translation>Afronding bewerken</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+452"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="+462"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -439,7 +439,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="+358"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="+362"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -447,7 +447,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMultiTransformParameters</name>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="+443"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="+447"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -455,7 +455,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+527"/>
+        <location filename="../../TaskPadParameters.cpp" line="+540"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -463,12 +463,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="+441"/>
+        <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Uitsparing bewerken</translation>
+        <translation>Uitsparing bewerken</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+16"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -476,7 +476,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+396"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="+404"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -484,7 +484,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
 <context>
     <name>PartDesignGui::TaskDlgScaledParameters</name>
     <message>
-        <location filename="../../TaskScaledParameters.cpp" line="+235"/>
+        <location filename="../../TaskScaledParameters.cpp" line="+243"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -558,7 +558,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Straal:</translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="-74"/>
+        <location filename="../../TaskFilletParameters.cpp" line="-86"/>
         <source>Fillet parameters</source>
         <translation>Afrondingsparameters</translation>
     </message>
@@ -636,7 +636,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+5"/>
         <source>Up to first</source>
-        <translation>Up to first</translation>
+        <translation type="unfinished">Up to first</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -646,7 +646,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
         <source>TaskHoleParameters</source>
-        <translation>TaskHoleParameters</translation>
+        <translation type="unfinished">TaskHoleParameters</translation>
     </message>
 </context>
 <context>
@@ -669,19 +669,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizontale schetsas</translation>
+        <translation>Horizontale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Verticale schetsas</translation>
+        <translation>Verticale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecteer referentie...</translation>
+        <translation>Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -699,7 +699,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Gevallen</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -716,7 +716,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">niet gedefinieerd</translation>
+        <translation>niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -751,19 +751,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizontale schetsas</translation>
+        <translation>Horizontale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Verticale schetsas</translation>
+        <translation>Verticale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecteer referentie...</translation>
+        <translation>Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -782,12 +782,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Selecteer een vlak</translation>
+        <translation>Selecteer een vlak</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">niet gedefinieerd</translation>
+        <translation>niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -813,7 +813,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Weergave verversen</translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="-372"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="-376"/>
         <source>Edit</source>
         <translation>Bewerken</translation>
     </message>
@@ -887,7 +887,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../TaskPadParameters.cpp" line="-398"/>
+        <location filename="../../TaskPadParameters.cpp" line="-408"/>
         <location line="+109"/>
         <location line="+106"/>
         <location line="+100"/>
@@ -948,12 +948,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">TaskPadParameters</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="-371"/>
+        <location filename="../../TaskPadParameters.cpp" line="-374"/>
         <source>Pad parameters</source>
         <translation>Opdikkingsparameters</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+73"/>
         <location line="+315"/>
         <source>No face selected</source>
         <translation>Geen vlak geselecteerd</translation>
@@ -1032,8 +1032,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-360"/>
-        <location line="+278"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-368"/>
+        <location line="+281"/>
         <source>Dimension</source>
         <translation>Afmeting</translation>
     </message>
@@ -1045,12 +1045,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Omgekeerd</translation>
+        <translation>Omgekeerd</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-282"/>
-        <location line="+102"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-285"/>
+        <location line="+105"/>
         <location line="+113"/>
         <location line="+80"/>
         <source>Face</source>
@@ -1067,7 +1067,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Lengte</translation>
     </message>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="-350"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-353"/>
         <source>Pocket parameters</source>
         <translation>Uitsparingsparameters</translation>
     </message>
@@ -1077,25 +1077,25 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
         <location line="+61"/>
-        <location line="+278"/>
+        <location line="+281"/>
         <source>To first</source>
         <translation>Naar eerste</translation>
     </message>
     <message>
-        <location line="-279"/>
-        <location line="+278"/>
+        <location line="-282"/>
+        <location line="+281"/>
         <source>Through all</source>
         <translation>Langs alle</translation>
     </message>
     <message>
-        <location line="-276"/>
-        <location line="+278"/>
+        <location line="-279"/>
+        <location line="+281"/>
         <source>Up to face</source>
         <translation>Naar oppervlak</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location line="+109"/>
+        <location line="-287"/>
+        <location line="+112"/>
         <location line="+186"/>
         <source>No face selected</source>
         <translation>Geen vlak geselecteerd</translation>
@@ -1132,7 +1132,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">As</translation>
+        <translation>As</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1141,10 +1141,10 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecteer referentie...</translation>
+        <translation>Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1162,7 +1162,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Gevallen</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1235,7 +1235,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">niet gedefinieerd</translation>
+        <translation>niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -1256,12 +1256,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Factor</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+14"/>
         <source>Occurrences</source>
         <translation>Gevallen</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1276,7 +1276,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>Transformed feature messages</translation>
+        <translation type="unfinished">Transformed feature messages</translation>
     </message>
 </context>
 <context>
@@ -1369,17 +1369,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1434,7 +1434,7 @@ Create the sketch on a face.</source>
 Creëer de schets op een vlak.</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+55"/>
+        <location filename="../../TaskPadParameters.cpp" line="+86"/>
         <location filename="../../ViewProviderPad.cpp" line="+64"/>
         <source>Edit pad</source>
         <translation>Opdikking bewerken</translation>
@@ -1498,7 +1498,7 @@ Creëer de schets op een vlak.</translation>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Missing neutral plane</translation>
+        <translation type="unfinished">Missing neutral plane</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1532,12 +1532,12 @@ Creëer de schets op een vlak.</translation>
         <translation>bewerking is geslaagd</translation>
     </message>
     <message>
-        <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
+        <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
         <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
         <translation type="unfinished">Edit revolve</translation>
     </message>

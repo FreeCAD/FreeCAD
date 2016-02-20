@@ -61,6 +61,9 @@ class PathWorkbench ( Workbench ):
         # load the builtin modules
         import Path
         import PathGui
+        from PySide import QtGui
+        FreeCADGui.addLanguagePath(":/translations")
+        FreeCADGui.addIconPath(":/icons")
         # load python modules
         from PathScripts import PathProfile
         from PathScripts import PathPocket
@@ -82,30 +85,35 @@ class PathWorkbench ( Workbench ):
         from PathScripts import PathMachine
         from PathScripts import PathFromShape
         from PathScripts import PathKurve
+        from PathScripts import PathArray
+        from PathScripts import PathFaceProfile
+        from PathScripts import PathFacePocket
+        from PathScripts import PathCustom
+        from PathScripts import PathInspect
+        from PathScripts import PathSimpleCopy
 
         # build commands list
-        commands =["Path_Stock","Path_Plane","Path_Fixture","Path_ToolTableEdit","Path_Profile","Path_Kurve","Path_Pocket","Path_Drilling",\
-        "Path_Dressup","Path_Hop","Path_Shape","Path_Copy","Path_CompoundExtended","Path_Project"]
-
-        projcmdlist = ["Path_Project", "Path_ToolTableEdit","Path_Post"]
-        prepcmdlist = ["Path_Plane","Path_Fixture","Path_LoadTool","Path_ToolLenOffset","Path_Comment","Path_Stop"]
-        opcmdlist = ["Path_Profile","Path_Kurve","Path_Pocket","Path_Drilling","Path_FromShape"]
-        modcmdlist = ["Path_Copy","Path_CompoundExtended","Path_Dressup","Path_Hop"]
+        projcmdlist = ["Path_Project", "Path_ToolTableEdit","Path_Post","Path_Inspect"]
+        prepcmdlist = ["Path_Plane","Path_Fixture","Path_LoadTool","Path_ToolLenOffset","Path_Comment","Path_Stop",
+                       "Path_FaceProfile","Path_FacePocket","Path_Custom","Path_FromShape"]
+        opcmdlist = ["Path_Profile","Path_Kurve","Path_Pocket","Path_Drilling"]
+        modcmdlist = ["Path_Copy","Path_CompoundExtended","Path_Dressup","Path_Hop","Path_Array","Path_SimpleCopy"]
 
 
         # Add commands to menu and toolbar
-        def QT_TRANSLATE_NOOP(scope, text): return text
-#        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Path"),commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Commands for setting up Project"),projcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Prepatory Commands"),prepcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Operations"),opcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("PathWorkbench","Commands for grouping,copying, and organizing operations"),modcmdlist)
+        def QT_TRANSLATE_NOOP(scope, text): 
+            return text
+        def translate(context,text):
+            return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
+        self.appendToolbar(translate("Path","Project Setup"),projcmdlist)
+        self.appendToolbar(translate("Path","Partial Commands"),prepcmdlist)
+        self.appendToolbar(translate("Path","New Operations"),opcmdlist)
+        self.appendToolbar(translate("Path","Path Modification"),modcmdlist)
 
-#        self.appendMenu(QT_TRANSLATE_NOOP("PathWorkbench","Path"),commands)
-        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Project Setup")],projcmdlist)
-        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Prepatory Commands")],prepcmdlist)
-        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","New Operation")],opcmdlist)
-        self.appendMenu([QT_TRANSLATE_NOOP("PathWorkbench","Path"),QT_TRANSLATE_NOOP("Path","Path Modification")],modcmdlist)
+        self.appendMenu([translate("Path","Path"),translate("Path","Project Setup")],projcmdlist)
+        self.appendMenu([translate("Path","Path"),translate("Path","Partial Commands")],prepcmdlist)
+        self.appendMenu([translate("Path","Path"),translate("Path","New Operations")],opcmdlist)
+        self.appendMenu([translate("Path","Path"),translate("Path","Path Modification")],modcmdlist)
         
         # Add preferences pages
         import os
@@ -117,12 +125,20 @@ class PathWorkbench ( Workbench ):
         return "Gui::PythonWorkbench"
         
     def Activated(self):
+        # update the translation engine
+        FreeCADGui.updateLocale()
         Msg("Path workbench activated\n")
                 
     def Deactivated(self):
         Msg("Path workbench deactivated\n")
+        
+    def ContextMenu(self, recipient):
+        if len(FreeCADGui.Selection.getSelection()) == 1:
+            if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
+                self.appendContextMenu("",["Path_Inspect"])
+
 
 Gui.addWorkbench(PathWorkbench())
 
-FreeCAD.addImportType("GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap)","PathGui")
-FreeCAD.addExportType("GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap)","PathGui")
+FreeCAD.addImportType("GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)","PathGui")
+FreeCAD.addExportType("GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)","PathGui")

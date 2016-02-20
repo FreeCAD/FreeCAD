@@ -70,12 +70,13 @@ void SheetObserver::slotDeletedObject(const DocumentObject &Obj)
 
 void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property &Prop)
 {
-    const char * name = Obj.getPropertyName(&Prop);
-    assert(name != 0);
-
     if (&Prop == &Obj.Label)
         sheet->renamedDocumentObject(&Obj);
     else {
+        const char * name = Obj.getPropertyName(&Prop);
+
+        if (name == 0)
+            return;
 
         if (isUpdating.find(name) != isUpdating.end())
             return;

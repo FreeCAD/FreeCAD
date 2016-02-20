@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
+import Tools
 import TankInstance as Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
@@ -40,18 +41,9 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.ship = self.widget(QtGui.QComboBox, "Ship")
 
-        # Create the object
         ship = self.ships[form.ship.currentIndex()]
-        obj = App.ActiveDocument.addObject("Part::FeaturePython", "Tank")
-        tank = Instance.Tank(obj, self.solids, ship)
-        Instance.ViewProviderTank(obj.ViewObject)
+        Tools.createTank(self.solids, ship)
 
-        # Set it as a child of the ship
-        tanks = ship.Tanks[:]
-        tanks.append(obj.Name)
-        ship.Tanks = tanks
-
-        App.ActiveDocument.recompute()
         return True
 
     def reject(self):

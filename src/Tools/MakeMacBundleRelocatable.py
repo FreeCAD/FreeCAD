@@ -1,9 +1,26 @@
 import os
 import sys
-import subprocess
+from subprocess import Popen, PIPE, check_call, check_output
 import pprint
+import re
 
-SYS_PATHS = ["/System/", "/usr/lib/"]
+# This script is intended to help copy dynamic libraries used by FreeCAD into
+# a Mac application bundle and change dyld commands as appropriate.  There are
+# two key items that this currently does differently from other similar tools:
+#
+#  * @rpath is used rather than @executable_path because the libraries need to
+#    be loadable through a Python interpreter and the FreeCAD binaries.
+#  * We need to be able to add multiple rpaths in some libraries.
+
+# Assume any libraries in these paths don't need to be bundled
+systemPaths = [ "/System/", "/usr/lib/",
+                "/Library/Frameworks/3DconnexionClient.framework/" ]
+
+# If a library is in these paths, but not systemPaths, a warning will be
+# issued and it will NOT be bundled.  Generally, libraries installed by
+# MacPorts or Homebrew won't end up in /Library/Frameworks, so we assume
+# that libraries found there aren't meant to be bundled.
+warnPaths = ["/Library/Frameworks/"]
 
 class LibraryNotFound(Exception):
     pass
@@ -63,16 +80,22 @@ class DepsGraph:
                             stack.append(ck)
                     operation(self, self.graph[node_key], *op_args)
 
+
 def is_macho(path):
-    output = subprocess.check_output(["file", path])
+    output = check_output(["file", path])
     if output.count("Mach-O") != 0:
         return True
     
     return False
 
 def is_system_lib(lib):
-    for p in SYS_PATHS:
+    for p in systemPaths:
         if lib.startswith(p):
+            return True
+    for p in warnPaths:
+        if lib.startswith(p):
+            print "WARNING: library %s will not be bundled!" % lib
+            print "See MakeMacRelocatable.py for more information."
             return True
     return False
 
@@ -83,7 +106,7 @@ def get_path(name, search_paths):
     return None
 
 def list_install_names(path_macho):
-    output = subprocess.check_output(["otool", "-L", path_macho])
+    output = check_output(["otool", "-L", path_macho])
     lines = output.split("\t")
     libs = []
 
@@ -129,7 +152,7 @@ def create_dep_nodes(install_names, search_paths):
         path = get_path(lib_name, search_paths)
 
         if install_path != "" and lib[0] != "@":
-            #we have an absolte path install name
+            #we have an absolute path install name
             if not path:
                 path = install_path
        
@@ -148,7 +171,6 @@ def paths_at_depth(prefix, paths, depth):
             filtered.append(p)
     return filtered
     
-
 def should_visit(prefix, path_filters, path):
     s_path = path.strip('/').split('/')
     filters = []
@@ -227,14 +249,38 @@ def in_bundle(lib, bundle_path):
 
 def copy_into_bundle(graph, node, bundle_path):
     if not in_bundle(node.path, bundle_path):
-        subprocess.check_call(["cp", "-L", os.path.join(node.path, node.name),
-                               os.path.join(bundle_path, "lib", node.name)])
+        check_call([ "cp", "-L", os.path.join(node.path, node.name),
+                                 os.path.join(bundle_path, "lib", node.name) ])
+
         node.path = os.path.join(bundle_path, "lib")
         
         #fix permissions
-        subprocess.check_call(["chmod", "a+w", os.path.join(bundle_path,
-                                                            "lib", node.name)])
- 
+        check_call([ "chmod", "a+w",
+                     os.path.join(bundle_path, "lib", node.name) ])
+
+def get_rpaths(library):
+    "Returns a list of rpaths specified within library"
+
+    out = check_output(["otool", "-l", library])
+
+    pathRegex = r"^path (.*) \(offset \d+\)$"
+    expectingRpath = False
+    rpaths = []
+    for line in out.split('\n'):
+        line = line.strip()
+
+        if "cmd LC_RPATH" in line:
+            expectingRpath = True
+        elif "Load command" in line:
+            expectingRpath = False
+        elif expectingRpath:
+            m = re.match(pathRegex, line)
+            if m:
+                rpaths.append(m.group(1))
+                expectingRpath = False
+
+    return rpaths
+
 def add_rpaths(graph, node, bundle_path):
     if node.children:
         lib = os.path.join(node.path, node.name)
@@ -245,8 +291,8 @@ def add_rpaths(graph, node, bundle_path):
             for install_name in install_names:
                 name = os.path.basename(install_name)
                 #change install names to use rpaths
-                subprocess.check_call(["install_name_tool", "-change", 
-                    install_name, "@rpath/" + name, lib]) 
+                check_call([ "install_name_tool", "-change",
+                    install_name, "@rpath/" + name, lib ])
                   
                 dep_node = node.children[node.children.index(name)]
                 rel_path = os.path.relpath(graph.get_node(dep_node).path,
@@ -258,8 +304,12 @@ def add_rpaths(graph, node, bundle_path):
                     rpath = "@loader_path/" + rel_path + "/"
                 if rpath not in rpaths:
                     rpaths.append(rpath)
-            for path in rpaths:
-                subprocess.call(["install_name_tool", "-add_rpath", path, lib])
+
+            for rpath in rpaths:
+                # Ensure that lib has rpath set
+                if not rpath in get_rpaths(lib):
+                    check_output([ "install_name_tool",
+                                   "-add_rpath", rpath, lib ])
 
 def main():
     if len(sys.argv) < 2:

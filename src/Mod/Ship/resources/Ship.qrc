@@ -6,6 +6,7 @@
         <file>icons/Ship_GZ.svg</file>
         <file>icons/Ship_Hydrostatics.svg</file>
         <file>icons/Ship_Load.svg</file>
+        <file>icons/Ship_LoadCondition.svg</file>
         <file>icons/Ship_Logo.svg</file>
         <file>icons/Ship_Module.svg</file>
         <file>icons/Ship_OutlineDraw.svg</file>
@@ -36,5 +37,7 @@
         <file>translations/Ship_zh-TW.qm</file>
         <file>translations/Ship_pt-PT.qm</file>
         <file>translations/Ship_sr.qm</file>
+        <file>translations/Ship_el.qm</file>
+        <file>translations/Ship_sl.qm</file>
     </qresource>
 </RCC> 

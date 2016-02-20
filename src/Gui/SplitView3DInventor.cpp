@@ -43,7 +43,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
 
-AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
 {
     // important for highlighting 
@@ -114,8 +114,8 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -143,8 +143,8 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -367,11 +367,232 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
     //_viewer->getWidget()->setCursor(aCursor);
 }
 
+PyObject *AbstractSplitView::getPyObject(void)
+{
+    static bool init = false;
+    if (!init) {
+        init = true;
+        AbstractSplitViewPy::init_type();
+    }
+
+    return new AbstractSplitViewPy(this);
+}
+
+void AbstractSplitView::setPyObject(PyObject *)
+{
+    throw Base::AttributeError("Attribute is read-only");
+}
+
+// ------------------------------------------------------
+
+void AbstractSplitViewPy::init_type()
+{
+    behaviors().name("AbstractSplitViewPy");
+    behaviors().doc("Python binding class for the Inventor viewer class");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+
+    add_varargs_method("fitAll",&AbstractSplitViewPy::fitAll,"fitAll()");
+    add_varargs_method("viewBottom",&AbstractSplitViewPy::viewBottom,"viewBottom()");
+    add_varargs_method("viewFront",&AbstractSplitViewPy::viewFront,"viewFront()");
+    add_varargs_method("viewLeft",&AbstractSplitViewPy::viewLeft,"viewLeft()");
+    add_varargs_method("viewRear",&AbstractSplitViewPy::viewRear,"viewRear()");
+    add_varargs_method("viewRight",&AbstractSplitViewPy::viewRight,"viewRight()");
+    add_varargs_method("viewTop",&AbstractSplitViewPy::viewTop,"viewTop()");
+    add_varargs_method("viewAxometric",&AbstractSplitViewPy::viewAxometric,"viewAxometric()");
+}
+
+AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
+  : _view(vi)
+{
+}
+
+AbstractSplitViewPy::~AbstractSplitViewPy()
+{
+}
+
+Py::Object AbstractSplitViewPy::repr()
+{
+    std::string s;
+    std::ostringstream s_out;
+    if (!_view)
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    s_out << "AbstractSplitView";
+    return Py::String(s_out.str());
+}
+
+Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewFit", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewBottom", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewFront", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewLeft", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewRear", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewRight", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewTop", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->onMsg("ViewAxo", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
 // ------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
 
-SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : AbstractSplitView(pcDocument,parent, wflags)
 {
     QSplitter* mainSplitter=0;

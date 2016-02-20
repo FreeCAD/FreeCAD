@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+
+#include "PreCompiled.h"
 #include "PropertiesDialog.h"
 #include <Base/Tools.h>
 #include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
@@ -175,7 +177,7 @@ void PropertiesDialog::styleChanged()
 
 void PropertiesDialog::displayUnitChanged(const QString & text)
 {
-    if (text == "") {
+    if (text.isEmpty()) {
         displayUnit = DisplayUnit();
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
         return;
@@ -202,33 +204,10 @@ void PropertiesDialog::aliasChanged(const QString & text)
 {
     QPalette palette = ui->alias->palette();
 
-    if (text.indexOf(QRegExp("^[A-Za-z][_A-Za-z0-9]*$")) >= 0) {
-        try {
-            CellAddress address(text.toUtf8().constData());
+    aliasOk = text.isEmpty() || sheet->isValidAlias(Base::Tools::toStdString(text));
 
-            palette.setColor(QPalette::Text, Qt::red);
-            aliasOk = false;
-            alias = "";
-        }
-        catch (...) {
-            aliasOk = true;
-            palette.setColor(QPalette::Text, Qt::black);
-            alias = Base::Tools::toStdString(text);
-        }
-    }
-    else {
-        if (text == "") {
-            aliasOk = true;
-            palette.setColor(QPalette::Text, Qt::black);
-        }
-        else {
-            aliasOk = false;
-            ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-            palette.setColor(QPalette::Text, Qt::red);
-        }
-        alias = "";
-    }
-
+    alias = aliasOk ? Base::Tools::toStdString(text) : "";
+    palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
     ui->alias->setPalette(palette);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }

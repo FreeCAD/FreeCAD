@@ -39,7 +39,6 @@ SET(InspectionGui_SRCS
     ${Inspection_QRC_SRCS}
     ${Dialogs_SRCS}
     AppInspectionGui.cpp
-    AppInspectionGuiPy.cpp
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h

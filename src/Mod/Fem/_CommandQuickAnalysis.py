@@ -40,13 +40,15 @@ class _CommandQuickAnalysis(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
                           'Accel': "R, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
-        self.is_active = 'with_analysis'
+        self.is_active = 'with_solver'
 
     def Activated(self):
         def load_results(ret_code):
             if ret_code == 0:
                 self.fea.load_results()
                 self.show_results_on_mesh()
+                self.hide_parts_constraints_show_meshes()
+
             else:
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 

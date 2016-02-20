@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015-2016        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -99,16 +99,18 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
 
+    connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
+
     QPalette palette = ui->cells->palette();
     palette.setColor(QPalette::Base, QColor(255, 255, 255));
     palette.setColor(QPalette::Text, QColor(0, 0, 0));
     ui->cells->setPalette(palette);
 
-    QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_BackgroundColor"));
+    QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
     if (bgList.size() > 0)
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
 
-    QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_ForegroundColor"));
+    QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_ForegroundColor"));
     if (fgList.size() > 0)
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
 
@@ -246,6 +248,16 @@ void SheetView::rowResizeFinished()
     newRowSizes.clear();
 }
 
+void SheetView::modelUpdated(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+    const QModelIndex & current = ui->cells->currentIndex();
+
+    if (current < topLeft || bottomRight < current)
+        return;
+
+    updateContentLine();
+}
+
 void SheetView::columnResized(int col, int oldSize, int newSize)
 {
     newColumnSizes[col] = newSize;
@@ -295,7 +307,9 @@ void SheetView::updateCell(const App::Property *prop)
         CellAddress address;
 
         sheet->getCellAddress(prop, address);
-        updateContentLine();
+
+        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
+            updateContentLine();
     }
     catch (...) {
         // Property is not a cell

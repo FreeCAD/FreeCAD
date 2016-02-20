@@ -36,8 +36,8 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
-def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
-    """makeRebar(baseobj,sketch,[diameter,amount,offset,name]): adds a Reinforcement Bar object
+def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):
+    """makeRebar([baseobj,sketch,diameter,amount,offset,name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
@@ -45,19 +45,28 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
     _Rebar(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)
-    if hasattr(sketch,"Support"):
-        if sketch.Support:
-            if isinstance(sketch.Support,tuple):
-                if sketch.Support[0] == baseobj:
+    if baseobj and sketch:
+        if hasattr(sketch,"Support"):
+            if sketch.Support:
+                if isinstance(sketch.Support,tuple):
+                    if sketch.Support[0] == baseobj:
+                        sketch.Support = None
+                elif sketch.Support == baseobj:
                     sketch.Support = None
-            elif sketch.Support == baseobj:
-                sketch.Support = None
-    obj.Base = sketch
-    if FreeCAD.GuiUp:
-        sketch.ViewObject.hide()
-    a = baseobj.Armatures
-    a.append(obj)
-    baseobj.Armatures = a
+        obj.Base = sketch
+        if FreeCAD.GuiUp:
+            sketch.ViewObject.hide()
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        if p.GetBool("archRemoveExternal",False):
+            a = baseobj.Armatures
+            a.append(obj)
+            baseobj.Armatures = a
+        else:
+            import Arch
+            host = getattr(Arch,"make"+Draft.getType(baseobj))(baseobj)
+            a = host.Armatures
+            a.append(obj)
+            host.Armatures = a
     if diameter:
         obj.Diameter = diameter
     else:

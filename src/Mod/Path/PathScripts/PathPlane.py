@@ -111,15 +111,15 @@ class _ViewProviderPlane:
 class CommandPathPlane:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Plane',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPlane","Selection Plane"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Plane","Selection Plane"),
                 'Accel': "P, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPlane","Create a Selection Plane object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Plane","Create a Selection Plane object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathPlane","Create a Selection Plane object"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Plane","Create a Selection Plane object"))
         FreeCADGui.addModule("PathScripts.PathPlane")
         snippet = '''
 import Path

@@ -37,7 +37,7 @@ class Sheet;
 class PropertySheet;
 class SheetObserver;
 
-class PropertySheet : public App::Property {
+class PropertySheet : public App::Property, private App::AtomicPropertyChangeInterface<PropertySheet> {
     TYPESYSTEM_HEADER();
 public:
 
@@ -81,6 +81,12 @@ public:
 
     Cell * getValue(CellAddress key);
 
+    const Cell * getValue(CellAddress key) const;
+
+    const Cell * getValueFromAlias(const std::string &alias) const;
+
+    bool isValidAlias(const std::string &candidate);
+
     std::set<CellAddress> getUsedCells() const;
 
     Sheet * sheet() const { return owner; }
@@ -123,14 +129,6 @@ public:
 
     const std::set<App::DocumentObject*> & getDocDeps() const { return docDeps; }
 
-    class Signaller {
-    public:
-        Signaller(PropertySheet & sheet);
-        ~Signaller();
-    private:
-        PropertySheet & mSheet;
-    };
-
     void recomputeDependencies(CellAddress key);
 
     PyObject *getPyObject(void);
@@ -143,6 +141,8 @@ public:
 
     void renamedDocument(const App::Document *doc);
 
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths);
+
     void deletedDocumentObject(const App::DocumentObject *docObj);
 
     void documentSet();
@@ -151,9 +151,15 @@ private:
 
     PropertySheet(const PropertySheet & other);
 
-    friend class Signaller;
+    /* friends */
+
+    friend class AtomicPropertyChange;
 
     friend class SheetObserver;
+
+    friend class Cell;
+
+    friend class Sheet;
 
     Cell *cellAt(CellAddress address);
 
@@ -164,8 +170,6 @@ private:
     bool colSortFunc(const CellAddress &a, const CellAddress &b);
 
     bool rowSortFunc(const CellAddress &a, const CellAddress &b);
-
-    friend class Cell;
 
     /*! Set of cells that have been marked dirty */
     std::set<CellAddress> dirty;
@@ -223,9 +227,6 @@ private:
 
     /*! Mapping of alias property to cell position */
     std::map<std::string, CellAddress> revAliasProp;
-
-    /*! Internal counter used to track when to emit aboutToSet and hasSetValue calls */
-    int signalCounter;
 
     /*! The associated python object */
     Py::Object PythonObject;

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <memory>
 #endif
 
 // PCL test
@@ -31,6 +32,9 @@
 #  include <pcl/io/ply_io.h>
 #  include <pcl/point_types.h>
 #endif
+
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -44,144 +48,261 @@
 #include "Points.h"
 #include "PointsPy.h"
 #include "PointsAlgos.h"
-#include "FeaturePointsImportAscii.h"
+#include "PointsFeature.h"
+#include "Properties.h"
 
-using namespace Points;
-
-/* module functions */
-static PyObject *
-open(PyObject *self, PyObject *args)
+namespace Points {
+class Module : public Py::ExtensionModule<Module>
 {
-    char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
-        return NULL;
-    std::string EncodedName = std::string(Name);
-    PyMem_Free(Name);
+public:
+    Module() : Py::ExtensionModule<Module>("Points")
+    {
+        add_varargs_method("open",&Module::open
+        );
+        add_varargs_method("insert",&Module::insert
+        );
+        add_varargs_method("show",&Module::show
+        );
+        initialize("This module is the Points module."); // register with Python
+    }
 
-    PY_TRY {
-        Base::Console().Log("Open in Points with %s",EncodedName.c_str());
-        Base::FileInfo file(EncodedName.c_str());
+    virtual ~Module() {}
 
-        // extract ending
-        if (file.extension() == "")
-            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
+private:
+    Py::Object open(const Py::Tuple& args)
+    {
+        char* Name;
+        if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&Name))
+            throw Py::Exception();
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
-        if (file.hasExtension("asc")) {
-            // create new document and add Import feature
-            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
-            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
-            Points::PointKernel pkTemp;
-            pkTemp.load(EncodedName.c_str());
-            pcFeature->Points.setValue( pkTemp );
+        try {
+            Base::Console().Log("Open in Points with %s",EncodedName.c_str());
+            Base::FileInfo file(EncodedName.c_str());
 
-        }
+            // extract ending
+            if (file.extension().empty())
+                throw Py::RuntimeError("No file extension");
+
+            std::auto_ptr<Reader> reader;
+            if (file.hasExtension("asc")) {
+                reader.reset(new AscReader);
+            }
 #ifdef HAVE_PCL_IO
-        else if (file.hasExtension("ply")) {
-            // create new document import
-            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
-            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
-            Points::PointKernel pkTemp;
-
-            // pcl test
-            pcl::PointCloud<pcl::PointXYZ> cloud_in;
-            pcl::io::loadPLYFile<pcl::PointXYZ>(EncodedName.c_str(),cloud_in); 
-
-            for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
-                pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
-            pcFeature->Points.setValue( pkTemp );
-        }
+            else if (file.hasExtension("ply")) {
+                reader.reset(new PlyReader);
+            }
+            else if (file.hasExtension("pcd")) {
+                reader.reset(new PcdReader);
+            }
 #endif
-        else {
-            Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
+            else {
+                throw Py::RuntimeError("Unsupported file extension");
+            }
+
+            reader->read(EncodedName);
+
+            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+
+            Points::Feature *pcFeature = 0;
+            if (reader->hasProperties()) {
+                // is organized in a grid structure?
+                if (reader->isOrganized()) {
+                    pcFeature = new Points::OrganizedCustom();
+
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Width"));
+                    if (width) {
+                        width->setValue(reader->getWidth());
+                    }
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Height"));
+                    if (height) {
+                        height->setValue(reader->getHeight());
+                    }
+                }
+                else {
+                    pcFeature = new Points::FeatureCustom();
+                }
+
+                pcFeature->Points.setValue(reader->getPoints());
+                // add gray values
+                if (reader->hasIntensities()) {
+                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity"));
+                    if (prop) {
+                        prop->setValues(reader->getIntensities());
+                    }
+                }
+                // add colors
+                if (reader->hasColors()) {
+                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                        (pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                    if (prop) {
+                        prop->setValues(reader->getColors());
+                    }
+                }
+                // add normals
+                if (reader->hasNormals()) {
+                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                    if (prop) {
+                        prop->setValues(reader->getNormals());
+                    }
+                }
+
+                // delayed adding of the points feature
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
+                pcDoc->recomputeFeature(pcFeature);
+            }
+            else {
+                Points::Feature *pcFeature = static_cast<Points::Feature*>
+                    (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
+                pcFeature->Points.setValue(reader->getPoints());
+                pcDoc->recomputeFeature(pcFeature);
+            }
         }
-    } PY_CATCH;
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
 
-    Py_Return;
-}
+        return Py::None();
+    }
 
-static PyObject *
-insert(PyObject *self, PyObject *args)
-{
-    char* Name;
-    const char* DocName;
-    if (!PyArg_ParseTuple(args, "ets","utf-8",&Name,&DocName))
-        return NULL;
-    std::string EncodedName = std::string(Name);
-    PyMem_Free(Name);
+    Py::Object insert(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* DocName;
+        if (!PyArg_ParseTuple(args.ptr(), "ets","utf-8",&Name,&DocName))
+            throw Py::Exception();
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
-    PY_TRY {
-        Base::Console().Log("Import in Points with %s",EncodedName.c_str());
-        Base::FileInfo file(EncodedName.c_str());
+        try {
+            Base::Console().Log("Import in Points with %s",EncodedName.c_str());
+            Base::FileInfo file(EncodedName.c_str());
 
-        // extract ending
-        if (file.extension() == "")
-            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
+            // extract ending
+            if (file.extension().empty())
+                throw Py::RuntimeError("No file extension");
 
-        if (file.hasExtension("asc")) {
-            // add Import feature
+            std::auto_ptr<Reader> reader;
+            if (file.hasExtension("asc")) {
+                reader.reset(new AscReader);
+            }
+#ifdef HAVE_PCL_IO
+            else if (file.hasExtension("ply")) {
+                reader.reset(new PlyReader);
+            }
+            else if (file.hasExtension("pcd")) {
+                reader.reset(new PcdReader);
+            }
+#endif
+            else {
+                throw Py::RuntimeError("Unsupported file extension");
+            }
+
+            reader->read(EncodedName);
+
             App::Document *pcDoc = App::GetApplication().getDocument(DocName);
             if (!pcDoc) {
                 pcDoc = App::GetApplication().newDocument(DocName);
             }
 
-            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
-            Points::PointKernel pkTemp;
-            pkTemp.load(EncodedName.c_str());
-            pcFeature->Points.setValue( pkTemp );
-        }
-#ifdef HAVE_PCL_IO
-        else if (file.hasExtension("ply")) {
-            App::Document *pcDoc = App::GetApplication().getDocument(DocName);
-            if (!pcDoc) {
-                pcDoc = App::GetApplication().newDocument(DocName);
+            Points::Feature *pcFeature = 0;
+            if (reader->hasProperties()) {
+                // is organized in a grid structure?
+                if (reader->isOrganized()) {
+                    pcFeature = new Points::OrganizedCustom();
+
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Width"));
+                    if (width) {
+                        width->setValue(reader->getWidth());
+                    }
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Height"));
+                    if (height) {
+                        height->setValue(reader->getHeight());
+                    }
+                }
+                else {
+                    pcFeature = new Points::FeatureCustom();
+                }
+
+                pcFeature->Points.setValue(reader->getPoints());
+                // add gray values
+                if (reader->hasIntensities()) {
+                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity"));
+                    if (prop) {
+                        prop->setValues(reader->getIntensities());
+                    }
+                }
+                // add colors
+                if (reader->hasColors()) {
+                    App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                        (pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                    if (prop) {
+                        prop->setValues(reader->getColors());
+                    }
+                }
+                // add normals
+                if (reader->hasNormals()) {
+                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
+                        (pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                    if (prop) {
+                        prop->setValues(reader->getNormals());
+                    }
+                }
+
+                // delayed adding of the points feature
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
+                pcDoc->recomputeFeature(pcFeature);
             }
-
-            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
-            Points::PointKernel pkTemp;
-
-            // pcl test
-            pcl::PointCloud<pcl::PointXYZ> cloud_in;
-            pcl::io::loadPLYFile<pcl::PointXYZ>(EncodedName.c_str(),cloud_in); 
-
-            for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
-                pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
-            pcFeature->Points.setValue( pkTemp );
+            else {
+                Points::Feature *pcFeature = static_cast<Points::Feature*>
+                    (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
+                pcFeature->Points.setValue(reader->getPoints());
+                pcDoc->recomputeFeature(pcFeature);
+            }
         }
-#endif
-        else {
-            Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
         }
-    } PY_CATCH;
 
-    Py_Return;
-}
+        return Py::None();
+    }
 
-static PyObject * 
-show(PyObject *self, PyObject *args)
-{
-    PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(PointsPy::Type), &pcObj))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    Py::Object show(const Py::Tuple& args)
+    {
+        PyObject *pcObj;
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &(PointsPy::Type), &pcObj))
+            throw Py::Exception();
 
-    PY_TRY {
-        App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
-        if (!pcDoc)
-            pcDoc = App::GetApplication().newDocument();
-        PointsPy* pPoints = static_cast<PointsPy*>(pcObj);
-        Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", "Points");
-        // copy the data
-        //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
-        pcFeature->Points.setValue(*(pPoints->getPointKernelPtr()));
-        //pcDoc->recompute();
-    } PY_CATCH;
+        try {
+            App::Document *pcDoc = App::GetApplication().getActiveDocument();
+            if (!pcDoc)
+                pcDoc = App::GetApplication().newDocument();
+            PointsPy* pPoints = static_cast<PointsPy*>(pcObj);
+            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", "Points");
+            // copy the data
+            //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
+            pcFeature->Points.setValue(*(pPoints->getPointKernelPtr()));
+            //pcDoc->recompute();
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
 
-    Py_Return;
-}
-
-// registration table  
-struct PyMethodDef Points_Import_methods[] = {
-    {"open",  open,   1},       /* method name, C func ptr, always-tuple */
-    {"insert",insert, 1},
-    {"show",show, 1},
-    {NULL, NULL}                /* end of table marker */
+        return Py::None();
+    }
 };
+
+PyObject* initModule()
+{
+    return (new Module())->module().ptr();
+}
+
+} // namespace Points

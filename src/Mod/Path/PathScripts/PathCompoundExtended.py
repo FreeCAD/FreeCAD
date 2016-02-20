@@ -58,7 +58,11 @@ class ObjectCompoundExtended:
         cmds = []
         for child in obj.Group:
             if child.isDerivedFrom("Path::Feature"):
-                cmds.extend(child.Path.Commands)
+                if obj.UsePlacements:
+                    for c in child.Path.Commands:
+                        cmds.append(c.transform(child.Placement))
+                else:
+                    cmds.extend(child.Path.Commands)
         if cmds:
             path = Path.Path(cmds)
             obj.Path = path
@@ -88,16 +92,16 @@ class CommandCompoundExtended:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Compound',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathCompoundExtended","Compound"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_CompoundExtended","Compound"),
                 'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathCompoundExtended","Creates a Path Compound object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_CompoundExtended","Creates a Path Compound object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
 
-        FreeCAD.ActiveDocument.openTransaction(translate("PathCompoundExtended","Create Compound"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_CompoundExtended","Create Compound"))
         FreeCADGui.addModule("PathScripts.PathCompoundExtended")
         snippet = '''
 import Path

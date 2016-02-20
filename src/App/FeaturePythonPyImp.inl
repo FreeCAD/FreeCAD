@@ -331,7 +331,7 @@ PyObject*  FeaturePythonPyT<FeaturePyT>::addProperty(PyObject *args)
     char *sType,*sName=0,*sGroup=0,*sDoc=0;
     short attr=0;
     PyObject *ro = Py_False, *hd = Py_False;
-    if (!PyArg_ParseTuple(args, "s|ssshO!O!", &sType,&sName,&sGroup,&sDoc,&attr,
+    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
         &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
         return NULL;                             // NULL triggers exception 
 

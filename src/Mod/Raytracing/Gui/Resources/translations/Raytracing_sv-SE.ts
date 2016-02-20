@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Export a Raytracing project to a file</translation>
+        <translation>Exportera Raytracing-projekt till fil</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -26,35 +26,35 @@
 <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+204"/>
+        <location line="+206"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Rendering</translation>
+        <translation>Rendering</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New Luxrender project</source>
-        <translation type="unfinished">New Luxrender project</translation>
+        <translation>Nytt Luxrender-projekt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new Luxrender project into the document</source>
-        <translation type="unfinished">Insert new Luxrender project into the document</translation>
+        <translation>Infoga nytt Luxrender-projekt i dokument</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation>Ingen mall</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation>Ingen mall tillgänglig</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-338"/>
+        <location line="-340"/>
         <source>Raytracing</source>
         <translation>Rendering</translation>
     </message>
@@ -91,40 +91,40 @@
     <message>
         <location line="+1"/>
         <source>New POV-Ray project</source>
-        <translation type="unfinished">New POV-Ray project</translation>
+        <translation>Nytt POV-Ray-projekt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Insert new POV-Ray project into the document</translation>
+        <translation>Infoga nytt POV-Ray-projekt i dokumentet</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation>Ingen mall</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation>Ingen mall tillgänglig</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+201"/>
+        <location line="+203"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Rendering</translation>
+        <translation>Rendering</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation type="unfinished">&amp;Render</translation>
+        <translation>&amp;Rendera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Renders the current raytracing project with an external renderer</translation>
+        <translation>Renderar det aktuella raytracing-projektet med en extern renderare</translation>
     </message>
 </context>
 <context>
@@ -132,35 +132,35 @@
     <message>
         <location line="+249"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Rendering</translation>
+        <translation>Rendering</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Reset Camera</source>
-        <translation type="unfinished">&amp;Reset Camera</translation>
+        <translation>&amp;Återställ kamera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sets the camera of the selected Raytracing project to match the current view</source>
-        <translation type="unfinished">Sets the camera of the selected Raytracing project to match the current view</translation>
+        <translation>Ställer in kameran för det valda Raytracingprojektet till att matcha den aktuella vyn</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-734"/>
+        <location line="-736"/>
         <source>Raytracing</source>
         <translation>Rendering</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished">Export camera to POV-Ray...</translation>
+        <translation>Exportera kamera till POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation>Exportera kamerans position i den aktiva 3D-vyn i povray format till en fil</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -181,7 +181,7 @@
     <message>
         <location line="+1"/>
         <source>Export part to POV-Ray...</source>
-        <translation type="unfinished">Export part to POV-Ray...</translation>
+        <translation>Exportera detalj till POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -203,12 +203,12 @@
         <location line="-79"/>
         <location line="+139"/>
         <location line="+93"/>
-        <location line="+395"/>
+        <location line="+397"/>
         <source>No perspective camera</source>
         <translation>Ingen perspektivkamera</translation>
     </message>
     <message>
-        <location line="-626"/>
+        <location line="-628"/>
         <location line="+139"/>
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
@@ -245,7 +245,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Skriv den aktiva 3D vyn med kameraposition och allt dess innehåll till en povray fil</translation>
     </message>
     <message>
-        <location line="+505"/>
+        <location line="+507"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
         <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
@@ -259,43 +259,35 @@ Do you want to continue?</translation>
         <translation type="obsolete">Povray (*.POV)</translation>
     </message>
     <message>
+        <source>POV-Ray (*.pov)</source>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
+    </message>
+    <message>
+        <source>All Files (*.*)</source>
+        <translation type="obsolete">Alla filer (*.*)</translation>
+    </message>
+    <message>
         <location line="-591"/>
         <location line="+51"/>
-        <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
-    </message>
-    <message>
-        <location line="-50"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+281"/>
-        <location line="+109"/>
-        <source>All Files (*.*)</source>
-        <translation>Alla filer (*.*)</translation>
-    </message>
-    <message>
-        <location line="-502"/>
-        <location line="+51"/>
         <location line="+63"/>
-        <location line="+281"/>
+        <location line="+283"/>
         <source>Export page</source>
         <translation>Exportera sida</translation>
     </message>
     <message>
-        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished">POV-Ray(*.pov)</translation>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="-103"/>
         <location line="+87"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Wrong selection</source>
         <translation>Fel val</translation>
     </message>
     <message>
-        <location line="-396"/>
+        <location line="-398"/>
         <source>Select a Part object.</source>
         <translation>Välj ett Del objekt.</translation>
     </message>
@@ -303,35 +295,40 @@ Do you want to continue?</translation>
         <location line="+10"/>
         <location line="+12"/>
         <source>No Raytracing project to insert</source>
-        <translation type="unfinished">No Raytracing project to insert</translation>
+        <translation>Inget Raytracing-projekt att infoga</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>Create a Raytracing project to insert a view.</source>
-        <translation type="unfinished">Create a Raytracing project to insert a view.</translation>
+        <translation>Skapa ett Strålföljningsprojekt om du vill infoga en vy.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select a Raytracing project to insert the view.</source>
-        <translation type="unfinished">Select a Raytracing project to insert the view.</translation>
+        <translation>Välj ett Strålföljningsprojekt för att infoga vyn.</translation>
     </message>
     <message>
         <location line="+64"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Select one Raytracing project object.</source>
-        <translation type="unfinished">Select one Raytracing project object.</translation>
+        <translation>Välj ett Strålföljningsprojekt-objekt.</translation>
     </message>
     <message>
-        <location line="-234"/>
+        <location line="-308"/>
+        <source>Luxrender</source>
+        <translation type="unfinished">Luxrender</translation>
+    </message>
+    <message>
+        <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
-        <translation type="unfinished">POV-Ray not found</translation>
+        <translation>POV-Ray hittades inte</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the POV-Ray executable in the preferences.</translation>
+        <translation>Var god ställ in sökvägen till den körbara filen för POV-Ray i inställningarna.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -339,40 +336,52 @@ Do you want to continue?</translation>
         <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Rendered image (*.bmp *.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
+        <location line="+74"/>
         <source>Lux project file missing</source>
-        <translation type="unfinished">Lux project file missing</translation>
+        <translation>Lux-projektfil saknas</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Lux project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The Lux project file doesn&apos;t exist.</translation>
+        <translation>Lux-projektfilen finns inte.</translation>
     </message>
     <message>
         <location line="-68"/>
         <location line="+6"/>
         <source>Luxrender not found</source>
-        <translation type="unfinished">Luxrender not found</translation>
+        <translation>Luxrender hittades inte</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-482"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+279"/>
+        <source>POV-Ray</source>
+        <translation type="unfinished">POV-Ray</translation>
+    </message>
+    <message>
+        <location line="-391"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+283"/>
+        <location line="+109"/>
+        <source>All Files</source>
+        <translation>Alla Filer</translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
+        <translation>Var god ställ in sökvägen till luxrender eller luxconsole i inställningarna.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the luxrender or luxconsole executable in the preferences.</translation>
+        <translation>Var god korrigera sökvägen till luxrender eller luxconsole i inställningarna.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>POV-Ray file missing</source>
-        <translation type="unfinished">POV-Ray file missing</translation>
+        <translation>POV-Ray-fil saknas</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -381,17 +390,18 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Rendered image (*.bmp)</source>
-        <translation type="obsolete">Rendered image (*.bmp)</translation>
+        <translation type="obsolete">Renderad bilden (*.bmp)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">Rendered image (*.png)</translation>
+        <translation type="obsolete">Renderad bilden (*.png)</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
-        <translation type="unfinished">Renderad bild</translation>
+        <translation>Renderad bild</translation>
     </message>
     <message>
         <source>No Povray project to insert</source>
@@ -420,17 +430,17 @@ Do you want to continue?</translation>
     <message>
         <location line="+103"/>
         <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation type="unfinished">The path to the POV-Ray executable, if you want to render from FreeCAD</translation>
+        <translation>Sökvägen till POV-Ray, om du vill utföra strålföljning från FreeCAD</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>POV-Ray executable:</source>
-        <translation type="unfinished">POV-Ray executable:</translation>
+        <translation>POV-Rays binär:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>POV-Ray output parameters:</source>
-        <translation type="unfinished">POV-Ray output parameters:</translation>
+        <translation>POV-Ray utdataparametrar:</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -455,42 +465,42 @@ Do you want to continue?</translation>
     <message>
         <location line="-159"/>
         <source>Render</source>
-        <translation type="unfinished">Render</translation>
+        <translation>Strålföljning</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>+P +A</source>
-        <translation type="unfinished">+P +A</translation>
+        <translation>+P +A</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>+W: </source>
-        <translation type="unfinished">+W: </translation>
+        <translation>+W : </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The width of the rendered image</source>
-        <translation type="unfinished">The width of the rendered image</translation>
+        <translation>Bredden på den renderade bilden</translation>
     </message>
     <message>
         <location line="+19"/>
         <source> +H : </source>
-        <translation type="unfinished"> +H : </translation>
+        <translation> +H : </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The height of the rendered image</source>
-        <translation type="unfinished">The height of the rendered image</translation>
+        <translation>Höjden på den renderade bilden</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Luxrender executable:</source>
-        <translation type="unfinished">Luxrender executable:</translation>
+        <translation>Luxrender körbar:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The path to the luxrender (or luxconsole) executable</source>
-        <translation type="unfinished">The path to the luxrender (or luxconsole) executable</translation>
+        <translation>Körbara sökvägen till luxrender (eller luxconsole)</translation>
     </message>
     <message>
         <location line="+38"/>

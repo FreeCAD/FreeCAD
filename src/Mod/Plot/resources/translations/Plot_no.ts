@@ -115,7 +115,7 @@
     <message>
       <location filename="TaskPanel.py" line="180"/>
       <source>Active axes</source>
-      <translation type="unfinished">Aktive akser</translation>
+      <translation>Aktive akser</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="220"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="TaskPanel.py" line="138"/>
       <source>Active axes</source>
-      <translation type="unfinished">Aktive akser</translation>
+      <translation>Aktive akser</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="143"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="TaskPanel.py" line="126"/>
       <source>Position</source>
-      <translation type="unfinished">Posisjon</translation>
+      <translation>Posisjon</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="132"/>

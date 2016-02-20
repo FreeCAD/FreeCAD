@@ -200,7 +200,7 @@ void ViewProviderTransformed::recomputeFeature(void)
     pcTransformed->getDocument()->recomputeFeature(pcTransformed);
     const std::vector<App::DocumentObjectExecReturn*> log = pcTransformed->getDocument()->getRecomputeLog();
     unsigned rejected = pcTransformed->getRejectedTransformations().size();
-    QString msg = QString::fromAscii("%1");
+    QString msg = QString::fromLatin1("%1");
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)

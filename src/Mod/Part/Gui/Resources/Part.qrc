@@ -87,5 +87,7 @@
         <file>translations/Part_hu.qm</file>
         <file>translations/Part_pt-PT.qm</file>
         <file>translations/Part_sr.qm</file>
+        <file>translations/Part_el.qm</file>
+        <file>translations/Part_sl.qm</file>
     </qresource>
 </RCC> 

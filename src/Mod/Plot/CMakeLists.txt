@@ -1,4 +1,6 @@
-PYSIDE_WRAP_RC(Plot_QRC_SRCS resources/Plot.qrc)
+IF (BUILD_GUI)
+    PYSIDE_WRAP_RC(Plot_QRC_SRCS resources/Plot.qrc)
+ENDIF (BUILD_GUI)
 
 SET(PlotMain_SRCS
 	Plot.py
@@ -56,10 +58,12 @@ ADD_CUSTOM_TARGET(Plot ALL
 
 fc_copy_sources(Plot "${CMAKE_BINARY_DIR}/Mod/Plot" ${all_files})
 
-fc_target_copy_resource(Plot
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Plot
-    Plot_rc.py)
+IF (BUILD_GUI)
+    fc_target_copy_resource(Plot
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Plot
+        Plot_rc.py)
+ENDIF (BUILD_GUI)
 
 INSTALL(
     FILES

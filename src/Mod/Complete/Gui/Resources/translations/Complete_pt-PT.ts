@@ -52,7 +52,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Drafting</source>
-        <translation>&amp;Ferramentas de Desenho</translation>
+        <translation>&amp;Ferramentas de traço</translation>
     </message>
     <message>
         <location line="+1"/>

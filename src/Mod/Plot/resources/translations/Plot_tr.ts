@@ -19,7 +19,7 @@
     <message>
       <location filename="PlotGui.py" line="62"/>
       <source>Configure axes</source>
-      <translation type="unfinished">Configure axes</translation>
+      <translation>Eksenleri yapılandırmak</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="65"/>
@@ -32,7 +32,7 @@
     <message>
       <location filename="PlotGui.py" line="110"/>
       <source>Show/Hide grid</source>
-      <translation type="unfinished">Show/Hide grid</translation>
+      <translation>kılavuz Göster/gizle </translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="113"/>
@@ -45,7 +45,7 @@
     <message>
       <location filename="PlotGui.py" line="154"/>
       <source>Set labels</source>
-      <translation type="unfinished">Set labels</translation>
+      <translation>Etiketi ayarla</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="157"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="TaskPanel.py" line="175"/>
       <source>Configure axes</source>
-      <translation type="unfinished">Configure axes</translation>
+      <translation>Eksenleri yapılandırmak</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="180"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="TaskPanel.py" line="133"/>
       <source>Set labels</source>
-      <translation type="unfinished">Set labels</translation>
+      <translation>Etiketi ayarla</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="138"/>
@@ -261,17 +261,17 @@
     <message>
       <location filename="TaskPanel.py" line="143"/>
       <source>Title</source>
-      <translation type="unfinished">Title</translation>
+      <translation>Başlık</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="148"/>
       <source>X label</source>
-      <translation type="unfinished">X label</translation>
+      <translation>X etiketi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="153"/>
       <source>Y label</source>
-      <translation type="unfinished">Y label</translation>
+      <translation>Y etiket</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="158"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="TaskPanel.py" line="187"/>
       <source>Y axis title</source>
-      <translation type="unfinished">Y axis title</translation>
+      <translation>Y ekseni başlığı</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="193"/>
@@ -377,12 +377,12 @@
     <message>
       <location filename="TaskPanel.py" line="157"/>
       <source>X image size</source>
-      <translation type="unfinished">X image size</translation>
+      <translation>X görüntü boyutu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="163"/>
       <source>Y image size</source>
-      <translation type="unfinished">Y image size</translation>
+      <translation>Y görüntü boyutu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="169"/>
@@ -395,7 +395,7 @@
     <message>
       <location filename="TaskPanel.py" line="154"/>
       <source>No label</source>
-      <translation type="unfinished">No label</translation>
+      <translation>Etiket yok</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="160"/>
@@ -410,7 +410,7 @@
     <message>
       <location filename="TaskPanel.py" line="172"/>
       <source>Marker</source>
-      <translation type="unfinished">Marker</translation>
+      <translation>İşaretleyici</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="149"/>
@@ -435,22 +435,22 @@
     <message>
       <location filename="TaskPanel.py" line="208"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Çizgi Kalınlığı</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="214"/>
       <source>Marker size</source>
-      <translation type="unfinished">Marker size</translation>
+      <translation>İşaretci boyutu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="220"/>
       <source>Line and marker color</source>
-      <translation type="unfinished">Line and marker color</translation>
+      <translation>Çizgi ve marker renk</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="226"/>
       <source>Removes this serie</source>
-      <translation type="unfinished">Removes this serie</translation>
+      <translation>Bu seriyi kaldırır</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="190"/>

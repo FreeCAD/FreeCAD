@@ -59,7 +59,7 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Kies oriëntasie</translation>
+        <translation>Kies oriëntasie</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -69,27 +69,27 @@
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">XY-vlak</translation>
+        <translation>XY-vlak</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ-Vlak</translation>
+        <translation>XZ-Vlak</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ-Vlak</translation>
+        <translation>YZ-Vlak</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Omgekeerde rigting</translation>
+        <translation>Omgekeerde rigting</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Verskuiwing:</translation>
+        <translation>Verskuiwing:</translation>
     </message>
 </context>
 <context>
@@ -136,12 +136,12 @@
         <translation>Standaard</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Gereed...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>grys</translation>
     </message>

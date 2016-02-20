@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Раван од слике</translation>
+        <translation>Раван од слике</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -136,12 +136,12 @@
         <translation>Normalno</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Спреман...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>сиве боје</translation>
     </message>

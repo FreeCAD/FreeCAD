@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include "ViewProviderImport.h"
 #include <Mod/Part/App/PartFeature.h>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -35,8 +36,6 @@
 #include <Base/Sequencer.h>
 #include <Gui/View3DInventorViewer.h>
 #include <App/Application.h>
-
-#include "ViewProviderImport.h"
 
 
 using namespace PartGui;

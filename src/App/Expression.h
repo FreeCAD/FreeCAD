@@ -46,6 +46,25 @@ public:
     virtual void visit(Expression * e) = 0;
 };
 
+template<class P> class ExpressionModifier : public ExpressionVisitor {
+public:
+    ExpressionModifier(P & _prop)
+        : prop(_prop) { }
+
+    virtual ~ExpressionModifier() { }
+
+    void setExpressionChanged() {
+        if (!signaller)
+            signaller = boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange>(AtomicPropertyChangeInterface<P>::getAtomicPropertyChange(prop));
+    }
+
+    bool getChanged() const { return signaller != 0; }
+
+protected:
+    P & prop;
+    boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange> signaller;
+};
+
 /**
   * Base class for expressions.
   *
@@ -349,11 +368,13 @@ public:
 
     void setPath(const ObjectIdentifier & path);
 
-    void setName(const std::string & name) { assert(0); }
+    bool validDocumentObjectRename(const std::string & oldName, const std::string & newName);
 
-    void renameDocumentObject(const std::string & oldName, const std::string & newName);
+    bool renameDocumentObject(const std::string & oldName, const std::string & newName);
 
-    void renameDocument(const std::string &oldName, const std::string &newName);
+    bool validDocumentRename(const std::string &oldName, const std::string &newName);
+
+    bool renameDocument(const std::string &oldName, const std::string &newName);
 
     const App::Property *getProperty() const;
 

@@ -59,7 +59,7 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Odaberite orijentaciju</translation>
+        <translation>Odaberite orijentaciju</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -69,27 +69,27 @@
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">XY ravnina</translation>
+        <translation>XY ravnina</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ-Ravnina</translation>
+        <translation>XZ-Ravnina</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ-Ravnina</translation>
+        <translation>YZ-Ravnina</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Obrnutim smjerom</translation>
+        <translation>Obrnutim smjerom</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Odmak:</translation>
+        <translation>Odmak:</translation>
     </message>
 </context>
 <context>
@@ -136,12 +136,12 @@
         <translation>Standard</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Spreman...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>siva</translation>
     </message>

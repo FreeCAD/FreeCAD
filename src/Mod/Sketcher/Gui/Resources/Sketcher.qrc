@@ -189,5 +189,7 @@
         <file>translations/Sketcher_uk.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_el.qm</file>
+        <file>translations/Sketcher_sl.qm</file>
     </qresource>
 </RCC> 

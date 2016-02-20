@@ -40,9 +40,27 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Interpreter.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;
+
+namespace Gui {
+    namespace Dialog {
+        class MacroItem : public QTreeWidgetItem
+        {
+        public:
+            MacroItem(QTreeWidget * widget, bool systemwide)
+            : QTreeWidgetItem(widget),
+            systemWide(systemwide){}
+            
+            ~MacroItem(){}
+            
+            bool systemWide;
+        };
+    }
+}
+
 
 /* TRANSLATOR Gui::Dialog::DlgMacroExecuteImp */
 
@@ -51,22 +69,24 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WFlags fl )
+DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ), WindowParameter( "Macro" )
 {
     this->setupUi(this);
     // retrieve the macro path from parameter or use the user data as default
     std::string path = getWindowParameter()->GetASCII("MacroPath",
-        App::Application::getUserAppDataDir().c_str());
+        App::Application::getUserMacroDir().c_str());
     this->macroPath = QString::fromUtf8(path.c_str());
     fileChooser->setFileName(this->macroPath);
 
     // Fill the List box
     QStringList labels; labels << tr("Macros");
-    macroListBox->setHeaderLabels(labels);
-    macroListBox->header()->hide();
+    userMacroListBox->setHeaderLabels(labels);
+    userMacroListBox->header()->hide();
+    systemMacroListBox->setHeaderLabels(labels);
+    systemMacroListBox->header()->hide();
     fillUpList();
 }
 
@@ -85,25 +105,98 @@ void DlgMacroExecuteImp::fillUpList(void)
 {
     // lists all files in macro path
     QDir dir(this->macroPath, QLatin1String("*.FCMacro *.py"));
-  
+
     // fill up with the directory
-    macroListBox->clear();
+    userMacroListBox->clear();
     for (unsigned int i=0; i<dir.count(); i++ ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(macroListBox);
+        MacroItem* item = new MacroItem(userMacroListBox,false);
         item->setText(0, dir[i]);
+    }
+
+    QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    dir = QDir(dirstr, QLatin1String("*.FCMacro *.py"));
+
+    systemMacroListBox->clear();
+    if (dir.exists()) {
+        for (unsigned int i=0; i<dir.count(); i++ ) {
+            MacroItem* item = new MacroItem(systemMacroListBox,true);
+            item->setText(0, dir[i]);
+        }
     }
 }
 
 /** 
  * Selects a macro file in the list view.
  */
-void DlgMacroExecuteImp::on_macroListBox_currentItemChanged(QTreeWidgetItem* item)
+void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
         LineEditMacroName->setText(item->text(0));
+
         executeButton->setEnabled(true);
-        editButton->setEnabled(true);
         deleteButton->setEnabled(true);
+        createButton->setEnabled(true);
+    }
+    else {
+        executeButton->setEnabled(false);
+        deleteButton->setEnabled(false);
+        createButton->setEnabled(true);
+    }
+}
+
+void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetItem* item)
+{
+    if (item) {
+        LineEditMacroName->setText(item->text(0));
+
+        executeButton->setEnabled(true);
+        deleteButton->setEnabled(false);
+        createButton->setEnabled(false);
+    }
+    else {
+        executeButton->setEnabled(false);
+        deleteButton->setEnabled(false);
+        createButton->setEnabled(false);
+    }
+}
+
+void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
+{
+    QTreeWidgetItem* item;
+
+    if (index == 0) { //user-specific
+        item = userMacroListBox->currentItem();
+        if (item) {
+            executeButton->setEnabled(true);
+            deleteButton->setEnabled(true);
+            createButton->setEnabled(true);
+        }
+        else {
+            executeButton->setEnabled(false);
+            deleteButton->setEnabled(false);
+            createButton->setEnabled(true);
+        }
+    }
+    else { //index==1 system-wide
+        item = systemMacroListBox->currentItem();
+
+        if (item) {
+            executeButton->setEnabled(true);
+            deleteButton->setEnabled(false);
+            createButton->setEnabled(false);
+        }
+        else {
+            executeButton->setEnabled(false);
+            deleteButton->setEnabled(false);
+            createButton->setEnabled(false);
+        }
+    }
+
+    if (item) {
+        LineEditMacroName->setText(item->text(0));
+    }
+    else {
+        LineEditMacroName->clear();
     }
 }
 
@@ -112,16 +205,46 @@ void DlgMacroExecuteImp::on_macroListBox_currentItemChanged(QTreeWidgetItem* ite
  */
 void DlgMacroExecuteImp::accept()
 {
-    QTreeWidgetItem* item = macroListBox->currentItem();
-    if (!item) return;
-    
+    QTreeWidgetItem* item;
+
+    int index = tabMacroWidget->currentIndex();
+    if (index == 0) { //user-specific
+        item = userMacroListBox->currentItem();
+    }
+    else {
+        //index == 1 system-wide
+        item = systemMacroListBox->currentItem();
+    }
+    if (!item)
+        return;
+
     QDialog::accept();
-    QDir dir(this->macroPath);
+
+    MacroItem * mitem = static_cast<MacroItem *>(item);
+
+    QDir dir;
+
+    if (!mitem->systemWide){
+        dir =QDir(this->macroPath);
+    }
+    else {
+        QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+        dir = QDir(dirstr);
+    }
+
     QFileInfo fi(dir, item->text(0));
-    Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
-    // after macro run recalculate the document
-    if (Application::Instance->activeDocument())
-        Application::Instance->activeDocument()->getDocument()->recompute();
+    try {
+        Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
+        // after macro run recalculate the document
+        if (Application::Instance->activeDocument())
+            Application::Instance->activeDocument()->getDocument()->recompute();
+    }
+    catch (const Base::SystemExitException&) {
+        // handle SystemExit exceptions
+        Base::PyGILStateLocker locker;
+        Base::PyException e;
+        e.ReportException();
+    }
 }
 
 /**
@@ -139,18 +262,45 @@ void DlgMacroExecuteImp::on_fileChooser_fileNameChanged(const QString& fn)
     }
 }
 
-/** 
+/**
  * Opens the macro file in an editor.
  */
 void DlgMacroExecuteImp::on_editButton_clicked()
 {
-    QTreeWidgetItem* item = macroListBox->currentItem();
-    if (!item) return;
+    QDir dir;
+    QTreeWidgetItem* item = 0;
 
-    QDir dir(this->macroPath);
-    QString file = QString::fromAscii("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
+    int index = tabMacroWidget->currentIndex();
+    if (index == 0) { //user-specific
+        item = userMacroListBox->currentItem();
+        dir.setPath(this->macroPath);
+    }
+    else {
+        //index == 1 system-wide
+        item = systemMacroListBox->currentItem();
+        dir.setPath(QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro"));
+    }
 
-    Application::Instance->open(file.toUtf8(), "FreeCADGui");
+    if (!item)
+        return;
+
+    MacroItem * mitem = static_cast<MacroItem *>(item);
+
+    QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
+    PythonEditor* editor = new PythonEditor();
+    editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
+    PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+    edit->open(file);
+    edit->resize(400, 300);
+    getMainWindow()->addWindow(edit);
+
+    if (mitem->systemWide) {
+        editor->setReadOnly(true);
+        QString shownName;
+        shownName = QString::fromLatin1("%1[*] - [%2]").arg(item->text(0)).arg(tr("Read-only"));
+        edit->setWindowTitle(shownName);
+    }
+
     close();
 }
 
@@ -166,6 +316,10 @@ void DlgMacroExecuteImp::on_createButton_clicked()
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
             fn += QLatin1String(".FCMacro");
         QDir dir(this->macroPath);
+        // create the macroPath if inexistant
+        if (!dir.exists()) {
+            dir.mkpath(this->macroPath);
+        }
         QFileInfo fi(dir, fn);
         if (fi.exists() && fi.isFile())
         {
@@ -185,7 +339,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fi.absoluteFilePath());
-            edit->setWindowTitle(QString::fromAscii("%1[*]").arg(fn));
+            edit->setWindowTitle(QString::fromLatin1("%1[*]").arg(fn));
             edit->resize(400, 300);
             getMainWindow()->addWindow(edit);
             close();
@@ -196,8 +350,17 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 /** Deletes the selected macro file from your harddisc. */
 void DlgMacroExecuteImp::on_deleteButton_clicked()
 {
-    QTreeWidgetItem* item = macroListBox->currentItem();
-    if (!item) return;
+    QTreeWidgetItem* item = userMacroListBox->currentItem();
+    if (!item)
+        return;
+
+    MacroItem * mitem = static_cast<MacroItem *>(item);
+
+    if (mitem->systemWide) {
+        QMessageBox::critical(qApp->activeWindow(), QObject::tr("Delete macro"),
+            QObject::tr("Not allowed to delete system-wide macros"));
+        return;
+    }
 
     QString fn = item->text(0);
     int ret = QMessageBox::question(this, tr("Delete macro"),
@@ -207,8 +370,8 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
     {
         QDir dir(this->macroPath);
         dir.remove(fn);
-        int index = macroListBox->indexOfTopLevelItem(item);
-        macroListBox->takeTopLevelItem(index);
+        int index = userMacroListBox->indexOfTopLevelItem(item);
+        userMacroListBox->takeTopLevelItem(index);
         delete item;
     }
 }

@@ -465,20 +465,24 @@ Eall
 69,
 
 ***********************************************************
+** Node sets for prescribed displacement constraint
+** written by write_displacement_nodes function
+
+***********************************************************
 ** Materials
 ** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
-*MATERIAL, NAME=Steel
+**FreeCAD material name: Steel
+*MATERIAL, NAME=MechanicalMaterial
 *ELASTIC 
-200000 , 
-0.300
+200000 ,  0.300
 *DENSITY 
 7.900e-09, 
 
 ***********************************************************
 ** Sections
 ** written by write_femelementsets function
-*SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=Steel
+*SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
 ** One step is needed to calculate the mechanical analysis of FreeCAD
@@ -494,6 +498,11 @@ Eall
 FemConstraintFixed,1
 FemConstraintFixed,2
 FemConstraintFixed,3
+
+
+***********************************************************
+** Displacement constraint applied
+** written by write_displacement function
 
 
 ***********************************************************

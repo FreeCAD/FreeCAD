@@ -467,7 +467,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                                                        );
 
                     if (getMainWindow()) {
-                        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                         mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
@@ -511,7 +511,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     //FIXME: We shouldn't replace the possibly defined edit cursor
     //with the arrow cursor. But it seems that we don't even have to.
     //if (getMainWindow()){
-    //    getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+    //    getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
     //    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     //    mdi->restoreOverrideCursor();
     //}
@@ -542,7 +542,7 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
                                                        ,x,y,z);
 
     if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
 }
 
 void SelectionSingleton::rmvPreselect()
@@ -641,7 +641,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         if (ActiveGate) {
             if (!ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)) {
                 if (getMainWindow()) {
-                    getMainWindow()->showMessage(QString::fromAscii("Selection not allowed by filter"),5000);
+                    getMainWindow()->showMessage(QString::fromLatin1("Selection not allowed by filter"),5000);
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                     mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }

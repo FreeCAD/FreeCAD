@@ -66,6 +66,8 @@
         <file>icons/Draft_ShapeString.svg</file>
         <file>icons/Draft_Facebinder.svg</file>
         <file>icons/Draft_FlipDimension.svg</file>
+        <file>icons/Draft_Mirror.svg</file>
+        <file>icons/Draft_Grid.svg</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>
         <file>patterns/line.svg</file>
@@ -95,6 +97,8 @@
         <file>translations/Draft_ro.qm</file>
         <file>translations/Draft_pt-PT.qm</file>
         <file>translations/Draft_sr.qm</file>
+        <file>translations/Draft_el.qm</file>
+        <file>translations/Draft_sl.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>

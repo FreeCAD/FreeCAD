@@ -32,6 +32,7 @@
 #include <Base/Tools.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Document.h>
+#include <boost/bind.hpp>
 
 using namespace Gui;
 using namespace App;
@@ -39,6 +40,7 @@ using namespace App;
 ExpressionBinding::ExpressionBinding()
     : iconLabel(0)
     , iconHeight(-1)
+    , m_autoApply(false)
 {
 }
 
@@ -66,6 +68,9 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
 
     lastExpression = getExpression();
     docObj->ExpressionEngine.setValue(path, expr);
+    
+    if(m_autoApply)
+        apply();
 }
 
 void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
@@ -75,6 +80,10 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     Q_ASSERT(prop != 0);
 
     path = prop->canonicalPath(_path);
+    
+    //connect to be informed about changes
+    DocumentObject * docObj = path.getDocumentObject();
+    connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, _1));
 }
 
 void ExpressionBinding::bind(const Property &prop)
@@ -111,8 +120,8 @@ std::string ExpressionBinding::getEscapedExpressionString() const
 
 QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 {
-    QString key = QString::fromAscii("%1_%2x%3")
-        .arg(QString::fromAscii(name))
+    QString key = QString::fromLatin1("%1_%2x%3")
+        .arg(QString::fromLatin1(name))
         .arg(size.width())
         .arg(size.height());
     QPixmap icon;
@@ -163,6 +172,7 @@ bool ExpressionBinding::apply()
     Property * prop(path.getProperty());
 
     assert(prop != 0);
+    Q_UNUSED(prop);
 
     DocumentObject * docObj(path.getDocumentObject());
 
@@ -171,5 +181,11 @@ bool ExpressionBinding::apply()
 
     std::string name = docObj->getNameInDocument();
 
-    return apply("App.ActiveDocument." + name + "." + std::string(prop->getName()));
+    return apply("App.ActiveDocument." + name + "." + getPath().toEscapedString());
+}
+
+void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {
+
+    if(id==path)
+        onChange();
 }

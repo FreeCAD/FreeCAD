@@ -42,7 +42,7 @@
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>Faz um rascunho sobre uma face</translation>
+        <translation>Fazer um projecto sobre uma face</translation>
     </message>
 </context>
 <context>
@@ -109,12 +109,12 @@
     <message>
         <location line="+1"/>
         <source>Mirrored</source>
-        <translation>Espelho</translation>
+        <translation>Espelhado</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a mirrored feature</source>
-        <translation>criar um espelhamento</translation>
+        <translation>Criar um espelhamento</translation>
     </message>
 </context>
 <context>
@@ -127,7 +127,7 @@
     <message>
         <location line="+1"/>
         <source>MultiTransform</source>
-        <translation>MultiTransform</translation>
+        <translation>Multi-transformação</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -145,7 +145,7 @@
     <message>
         <location line="+1"/>
         <source>Pad</source>
-        <translation>Pad</translation>
+        <translation>Preencher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -163,12 +163,12 @@
     <message>
         <location line="+1"/>
         <source>Pocket</source>
-        <translation>Pocket</translation>
+        <translation>Perfuração</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a pocket with the selected sketch</source>
-        <translation>Cria um pocket (bolso) a partir do esboço selecionado</translation>
+        <translation>criar uma perfuração no esboço selecionado</translation>
     </message>
 </context>
 <context>
@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Alterar parâmetro</translation>
+        <translation>Alterar parâmetro envolvente</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Número de dentes:</translation>
+        <translation>Número de dentes:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Módulos:</translation>
+        <translation>Módulos:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Alta precisão:</translation>
+        <translation>Alta precisão:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Verdadeiro</translation>
+        <translation>Verdadeiro</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Falso</translation>
+        <translation>Falso</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Engrenagem externo:</translation>
+        <translation>Engrenagem externa:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Ângulo de pressão:</translation>
+        <translation>Ângulo de pressão:</translation>
     </message>
 </context>
 <context>
@@ -335,7 +335,7 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location filename="../../FeaturePickDialog.ui" line="+14"/>
         <source>Choose feature</source>
-        <translation>Escolha um objeto</translation>
+        <translation>Escolha o recurso</translation>
     </message>
 </context>
 <context>
@@ -406,9 +406,9 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgChamferParameters</name>
     <message>
-        <location line="+74"/>
+        <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Editar chanfro</translation>
+        <translation>Editar chanfro</translation>
     </message>
 </context>
 <context>
@@ -422,15 +422,15 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgFilletParameters</name>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="+126"/>
+        <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Editar arredondado</translation>
+        <translation>Editar filete</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+452"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="+462"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -438,7 +438,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="+358"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="+362"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -446,7 +446,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMultiTransformParameters</name>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="+443"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="+447"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -454,7 +454,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+527"/>
+        <location filename="../../TaskPadParameters.cpp" line="+540"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -462,12 +462,12 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="+441"/>
+        <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Editar o bolso</translation>
+        <translation>Editar perfuração</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+16"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -475,7 +475,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+396"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="+404"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -483,7 +483,7 @@ Selecione primeiro uma ou mais arestas.</translation>
 <context>
     <name>PartDesignGui::TaskDlgScaledParameters</name>
     <message>
-        <location filename="../../TaskScaledParameters.cpp" line="+235"/>
+        <location filename="../../TaskScaledParameters.cpp" line="+243"/>
         <source>Input error</source>
         <translation>Erro de entrada</translation>
     </message>
@@ -557,9 +557,9 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Raio:</translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="-74"/>
+        <location filename="../../TaskFilletParameters.cpp" line="-86"/>
         <source>Fillet parameters</source>
-        <translation>Parâmetros de fileto</translation>
+        <translation>Parâmetros do filete</translation>
     </message>
 </context>
 <context>
@@ -607,7 +607,7 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+52"/>
         <source>Groove parameters</source>
-        <translation>Parâmetros de ranhura</translation>
+        <translation>Parâmetros da ranhura</translation>
     </message>
 </context>
 <context>
@@ -668,19 +668,19 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Eixo horizontal do esboço</translation>
+        <translation>Eixo horizontal do esboço</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Eixo vertical do esboço</translation>
+        <translation>Eixo vertical do esboço</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecionar referência...</translation>
+        <translation>Selecionar referência...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -698,7 +698,7 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Ocorrências</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -715,7 +715,7 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Indefinido</translation>
+        <translation>Indefinido</translation>
     </message>
 </context>
 <context>
@@ -750,19 +750,19 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Eixo horizontal do esboço</translation>
+        <translation>Eixo horizontal do esboço</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Eixo vertical do esboço</translation>
+        <translation>Eixo vertical do esboço</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecionar referência...</translation>
+        <translation>Selecionar referência...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -781,12 +781,12 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Selecionar uma face</translation>
+        <translation>Selecionar uma face</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Indefinido</translation>
+        <translation>Indefinido</translation>
     </message>
 </context>
 <context>
@@ -812,7 +812,7 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Actualizar a vista</translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="-372"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="-376"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
@@ -886,7 +886,7 @@ Selecione primeiro uma ou mais arestas.</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../TaskPadParameters.cpp" line="-398"/>
+        <location filename="../../TaskPadParameters.cpp" line="-408"/>
         <location line="+109"/>
         <location line="+106"/>
         <location line="+100"/>
@@ -947,12 +947,12 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation type="obsolete">Parametros do TaskPad</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="-371"/>
+        <location filename="../../TaskPadParameters.cpp" line="-374"/>
         <source>Pad parameters</source>
-        <translation>Parâmetros do Pad</translation>
+        <translation>Parâmetros de preenchimento</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+73"/>
         <location line="+315"/>
         <source>No face selected</source>
         <translation>Nenhuma face selecionada</translation>
@@ -1031,8 +1031,8 @@ Selecione primeiro uma ou mais arestas.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-360"/>
-        <location line="+278"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-368"/>
+        <location line="+281"/>
         <source>Dimension</source>
         <translation>Dimensão</translation>
     </message>
@@ -1044,12 +1044,12 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Invertido</translation>
+        <translation>Invertido</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-282"/>
-        <location line="+102"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-285"/>
+        <location line="+105"/>
         <location line="+113"/>
         <location line="+80"/>
         <source>Face</source>
@@ -1066,9 +1066,9 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Comprimento</translation>
     </message>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="-350"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-353"/>
         <source>Pocket parameters</source>
-        <translation>Parâmetros do bolso</translation>
+        <translation>Parâmetros da perfuração</translation>
     </message>
     <message>
         <source>To last</source>
@@ -1076,25 +1076,25 @@ Selecione primeiro uma ou mais arestas.</translation>
     </message>
     <message>
         <location line="+61"/>
-        <location line="+278"/>
+        <location line="+281"/>
         <source>To first</source>
         <translation>Até o primeiro</translation>
     </message>
     <message>
-        <location line="-279"/>
-        <location line="+278"/>
+        <location line="-282"/>
+        <location line="+281"/>
         <source>Through all</source>
-        <translation>Através de todos</translation>
+        <translation>Atravessando tudo</translation>
     </message>
     <message>
-        <location line="-276"/>
-        <location line="+278"/>
+        <location line="-279"/>
+        <location line="+281"/>
         <source>Up to face</source>
         <translation>Até a face</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location line="+109"/>
+        <location line="-287"/>
+        <location line="+112"/>
         <location line="+186"/>
         <source>No face selected</source>
         <translation>Nenhuma face selecionada</translation>
@@ -1131,19 +1131,19 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Eixo</translation>
+        <translation>Eixo</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal do eixo no desenho</translation>
+        <translation>Normal do eixo no desenho</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecionar referência...</translation>
+        <translation>Selecionar referência...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1161,7 +1161,7 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Ocorrências</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1234,7 +1234,7 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Indefinido</translation>
+        <translation>Indefinido</translation>
     </message>
 </context>
 <context>
@@ -1255,12 +1255,12 @@ Selecione primeiro uma ou mais arestas.</translation>
         <translation>Fator</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+14"/>
         <source>Occurrences</source>
         <translation>Ocorrências</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1341,7 +1341,7 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>Filete só funciona em partes</translation>
+        <translation>O filete só funciona em peças</translation>
     </message>
     <message>
         <location line="+312"/>
@@ -1368,17 +1368,17 @@ Selecione primeiro uma ou mais arestas.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Não há esboços válidos selecionados</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum dos objetos 2D/esboços selecionados é válido para fazer um bloco (pad). Por favor selecione um esboço válido ou objeto 2D que não está sendo usado por qualquer outro recurso.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum dos objetos 2D/esboços selecionados é válido para revolver. Por favor selecione um esboço válido ou objeto 2D que não está sendo usado por qualquer outro recurso.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1412,7 +1412,7 @@ Selecione primeiro uma ou mais arestas.</translation>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Por favor crie primeiro um recurso aditivo ou subtrativo</translation>
+        <translation>Por favor, primeiro crie um recurso aditivo ou subtrativo</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1420,7 +1420,7 @@ Selecione primeiro uma ou mais arestas.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Faça primeiro uma operação aditiva ou subtrativa</translation>
+        <translation>Por favor, primeiro faça uma operação aditiva ou subtrativa</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1432,7 +1432,7 @@ Create the sketch on a face.</source>
         <translation type="obsolete">O esboço tem que ter um suporte para fazer um Pocket. Crie o esboço em cima de uma face.</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+55"/>
+        <location filename="../../TaskPadParameters.cpp" line="+86"/>
         <location filename="../../ViewProviderPad.cpp" line="+64"/>
         <source>Edit pad</source>
         <translation>Editar pad</translation>
@@ -1440,7 +1440,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderPocket.cpp" line="+65"/>
         <source>Edit pocket</source>
-        <translation>Editar o bolso</translation>
+        <translation>Editar perfuração</translation>
     </message>
     <message>
         <location filename="../../ViewProviderChamfer.cpp" line="+58"/>
@@ -1485,18 +1485,18 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">A ligação ao desenho base foi perdida</translation>
+        <translation>A ligação com o esboço base foi perdida</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">O objeto não pode ser editado porque sua ligação com seu esboço de base foi perdida.</translation>
+        <translation>O objeto não pode ser editado porque sua ligação com seu esboço base foi perdida.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Plano neutro faltante</translation>
+        <translation>Falta o plano neutro</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1512,7 +1512,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
         <source>Edit fillet</source>
-        <translation>Editar arredondado</translation>
+        <translation>Editar filete</translation>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
@@ -1530,14 +1530,14 @@ Create the sketch on a face.</source>
         <translation>Transformação sucedida</translation>
     </message>
     <message>
-        <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
+        <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Editar sulco</translation>
+        <translation>Editar ranhura</translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Editar revolução</translation>
+        <translation>Editar revolução</translation>
     </message>
 </context>
 <context>

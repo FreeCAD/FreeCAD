@@ -178,7 +178,7 @@ void Box::Restore(Base::XMLReader &reader)
     if (location_xyz) {
         plm.setPosition(Base::Vector3d(x.getValue(),y.getValue(),z.getValue()));
         this->Placement.setValue(this->Placement.getValue() * plm);
-        this->Shape.StatusBits.set(10); // override the shape's location later on
+        this->Shape.setStatus(App::Property::User1, true); // override the shape's location later on
     }
     // for 0.8 releases
     else if (location_axis) {
@@ -189,7 +189,7 @@ void Box::Restore(Base::XMLReader &reader)
         plm.setRotation(rot);
         plm.setPosition(Base::Vector3d(p.x,p.y,p.z));
         this->Placement.setValue(this->Placement.getValue() * plm);
-        this->Shape.StatusBits.set(10); // override the shape's location later on
+        this->Shape.setStatus(App::Property::User1, true); // override the shape's location later on
     }
 
     reader.readEndElement("Properties");
@@ -205,8 +205,8 @@ void Box::onChanged(const App::Property* prop)
     }
     else if (prop == &this->Shape) {
         // see Box::Restore
-        if (this->Shape.StatusBits.test(10)) {
-            this->Shape.StatusBits.reset(10);
+        if (this->Shape.testStatus(App::Property::User1)) {
+            this->Shape.setStatus(App::Property::User1, false);
             App::DocumentObjectExecReturn *ret = recompute();
             delete ret;
             return;

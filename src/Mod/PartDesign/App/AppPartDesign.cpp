@@ -49,15 +49,12 @@
 #include "FeatureMultiTransform.h"
 #include "FeatureHole.h"
 
-extern struct PyMethodDef PartDesign_methods[];
-
-PyDoc_STRVAR(module_PartDesign_doc,
-"This module is the PartDesign module.");
-
+namespace PartDesign {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void PartDesignExport init_PartDesign()
+PyMODINIT_FUNC init_PartDesign()
 {
     // load dependent module
     try {
@@ -68,7 +65,8 @@ void PartDesignExport init_PartDesign()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    Py_InitModule3("_PartDesign", PartDesign_methods, module_PartDesign_doc);   /* mod name, table ptr */
+
+    (void)PartDesign::initModule();
     Base::Console().Log("Loading PartDesign module... done\n");
 
 
@@ -97,5 +95,3 @@ void PartDesignExport init_PartDesign()
     PartDesign::Chamfer            ::init();
     PartDesign::Draft           ::init();
 }
-
-} // extern "C"

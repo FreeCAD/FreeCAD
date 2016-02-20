@@ -1,4 +1,6 @@
-PYSIDE_WRAP_RC(Ship_QRC_SRCS resources/Ship.qrc)
+IF(BUILD_GUI)
+    PYSIDE_WRAP_RC(Ship_QRC_SRCS resources/Ship.qrc)
+ENDIF(BUILD_GUI)
 
 SET(ShipMain_SRCS
     InitGui.py
@@ -29,6 +31,7 @@ SET(ShipCreateShip_SRCS
 	shipCreateShip/Preview.py
 	shipCreateShip/TaskPanel.py
 	shipCreateShip/TaskPanel.ui
+	shipCreateShip/Tools.py
 )
 SOURCE_GROUP("shipcreateship" FILES ${ShipCreateShip_SRCS})
 
@@ -62,6 +65,7 @@ SET(ShipCreateWeight_SRCS
 	shipCreateWeight/__init__.py
 	shipCreateWeight/TaskPanel.py
 	shipCreateWeight/TaskPanel.ui
+	shipCreateWeight/Tools.py
 )
 SOURCE_GROUP("shipcreateweight" FILES ${ShipCreateWeight_SRCS})
 
@@ -69,6 +73,7 @@ SET(ShipCreateTank_SRCS
 	shipCreateTank/__init__.py
 	shipCreateTank/TaskPanel.py
 	shipCreateTank/TaskPanel.ui
+	shipCreateTank/Tools.py
 )
 SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
 
@@ -77,8 +82,24 @@ SET(ShipCapacityCurve_SRCS
 	shipCapacityCurve/PlotAux.py
 	shipCapacityCurve/TaskPanel.py
 	shipCapacityCurve/TaskPanel.ui
+	shipCapacityCurve/Tools.py
 )
 SOURCE_GROUP("shipcapacitycurve" FILES ${ShipCapacityCurve_SRCS})
+
+SET(ShipCreateLoadCondition_SRCS
+    shipCreateLoadCondition/__init__.py
+    shipCreateLoadCondition/Tools.py
+)
+SOURCE_GROUP("shipcreateloadcondition" FILES ${ShipCreateLoadCondition_SRCS})
+
+SET(ShipGZ_SRCS
+	shipGZ/__init__.py
+	shipGZ/PlotAux.py
+	shipGZ/TaskPanel.py
+	shipGZ/TaskPanel.ui
+	shipGZ/Tools.py
+)
+SOURCE_GROUP("shipgz" FILES ${ShipGZ_SRCS})
 
 SET(ShipUtils_SRCS
 	shipUtils/__init__.py
@@ -89,7 +110,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipCreateLoadCondition_SRCS} ${ShipGZ_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files} ${Ship_QRC_SRCS}
@@ -97,10 +118,12 @@ ADD_CUSTOM_TARGET(Ship ALL
 
 fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
 
-fc_target_copy_resource(Ship
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Ship
-    Ship_rc.py)
+IF(BUILD_GUI)
+    fc_target_copy_resource(Ship
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Ship
+        Ship_rc.py)
+ENDIF(BUILD_GUI)
 
 INSTALL(
     FILES
@@ -155,6 +178,18 @@ INSTALL(
         ${ShipCapacityCurve_SRCS}
     DESTINATION
         Mod/Ship/shipCapacityCurve
+)
+INSTALL(
+    FILES
+        ${ShipCreateLoadCondition_SRCS}
+    DESTINATION
+        Mod/Ship/shipCreateLoadCondition
+)
+INSTALL(
+    FILES
+        ${ShipGZ_SRCS}
+    DESTINATION
+        Mod/Ship/shipGZ
 )
 INSTALL(
     FILES

@@ -26,14 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Parameter.h>
-
 #include "ViewProviderCircleParametric.h"
-
-
-//#include "Tree.h"
-
+#include <Base/Parameter.h>
 
 
 using namespace PartGui;
@@ -45,7 +39,7 @@ using namespace std;
 
 PROPERTY_SOURCE(PartGui::ViewProviderCircleParametric, PartGui::ViewProviderPart)
 
-       
+
 ViewProviderCircleParametric::ViewProviderCircleParametric()
 {
   sPixmap = "Part_Circle_Parametric.svg";

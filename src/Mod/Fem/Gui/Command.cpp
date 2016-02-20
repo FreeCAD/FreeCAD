@@ -80,6 +80,18 @@ bool getConstraintPrerequisits(Fem::FemAnalysis **Analysis)
 
 }
 
+//OvG: Visibility automation show parts and hide meshes on activation of a constraint
+std::string gethideMeshShowPartStr()
+{
+    return
+    "for amesh in App.activeDocument().Objects:\n\
+    if \"Mesh\" in amesh.TypeId:\n\
+        aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
+        for apart in App.activeDocument().Objects:\n\
+            if aparttoshow == apart.Name:\n\
+                apart.ViewObject.Visibility = True\n\
+        amesh.ViewObject.Visibility = False\n";
+}
 
 //=====================================================================================
 DEF_STD_CMD_A(CmdFemCreateAnalysis);
@@ -207,6 +219,51 @@ bool CmdFemAddPart::isActive(void)
 
 //=====================================================================================
 
+DEF_STD_CMD_A(CmdFemCreateSolver);
+
+CmdFemCreateSolver::CmdFemCreateSolver()
+  : Command("Fem_CreateSolver")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Add a solver to the Analysis");
+    sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
+    sWhatsThis      = "Fem_CreateSolver";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-solver";
+}
+
+void CmdFemCreateSolver::activated(int iMsg)
+{
+#ifndef FCWithNetgen
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
+    return;
+#endif 
+
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("Solver");
+
+    openCommand("Create solver for FEM or CFD analysis");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::FemSolverObject\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemCreateSolver::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//=====================================================================================
+
+
 DEF_STD_CMD_A(CmdFemConstraintBearing);
 
 CmdFemConstraintBearing::CmdFemConstraintBearing()
@@ -233,6 +290,9 @@ void CmdFemConstraintBearing::activated(int iMsg)
     openCommand("Make FEM constraint for bearing");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintBearing\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -270,7 +330,11 @@ void CmdFemConstraintFixed::activated(int iMsg)
 
     openCommand("Make FEM constraint fixed geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -308,8 +372,13 @@ void CmdFemConstraintForce::activated(int iMsg)
 
     openCommand("Make FEM constraint force on geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Force = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Force = 1.0",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.Reversed = False",FeatName.c_str()); //OvG: set default to False
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -347,9 +416,14 @@ void CmdFemConstraintPressure::activated(int iMsg)
 
     openCommand("Make FEM constraint pressure on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPressure\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Pressure = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Pressure = 1000.0",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.Reversed = False",FeatName.c_str()); //OvG: set default to False
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
                              Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -388,6 +462,9 @@ void CmdFemConstraintGear::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -431,6 +508,9 @@ void CmdFemConstraintPulley::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Force = 100.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.TensionForce = 100.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -440,7 +520,48 @@ bool CmdFemConstraintPulley::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
+//=====================================================================================
 
+DEF_STD_CMD_A(CmdFemConstraintDisplacement);
+
+CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
+  : Command("Fem_ConstraintDisplacement")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create FEM displacement constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a displacement acting on a face");
+    sWhatsThis      = "Fem_ConstraintDisplacement";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-displacement";
+}
+
+void CmdFemConstraintDisplacement::activated(int iMsg)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintDisplacement");
+
+    openCommand("Make FEM constraint displacement on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
+                             Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintDisplacement::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
 // #####################################################################################################
 
 
@@ -643,6 +764,7 @@ void CreateFemCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     //rcCmdMgr.addCommand(new CmdFemCreateAnalysis());
     rcCmdMgr.addCommand(new CmdFemAddPart());
+    //rcCmdMgr.addCommand(new CmdFemCreateSolver()); // Solver will be extended and created in python
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());
@@ -651,4 +773,5 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintPressure());
     rcCmdMgr.addCommand(new CmdFemConstraintGear());
     rcCmdMgr.addCommand(new CmdFemConstraintPulley());
+    rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
 }

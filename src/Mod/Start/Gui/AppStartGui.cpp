@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -46,13 +49,24 @@ void loadStartResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef StartGui_Import_methods[];
+namespace StartGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("StartGui")
+    {
+        initialize("This module is the StartGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+} // namespace StartGui
 
 
 /* Python entry */
-extern "C" {
-void StartGuiExport initStartGui()
+PyMODINIT_FUNC initStartGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -81,7 +95,7 @@ void StartGuiExport initStartGui()
         PyErr_Print();
     }
 
-    (void) Py_InitModule("StartGui", StartGui_Import_methods);   /* mod name, table ptr */
+    new StartGui::Module();
     Base::Console().Log("Loading GUI of Start module... done\n");
 
     // instantiating the commands
@@ -91,5 +105,3 @@ void StartGuiExport initStartGui()
      // add resources and reloads the translators
     loadStartResource();
 }
-
-} // extern "C" {

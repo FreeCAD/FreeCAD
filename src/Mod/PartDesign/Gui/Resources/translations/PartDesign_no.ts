@@ -37,7 +37,7 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Draft</translation>
+        <translation type="unfinished">Draft</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Involute tannhjulsparametere</translation>
+        <translation>Involute tannhjulsparametere</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Antall tenner:</translation>
+        <translation>Antall tenner:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Moduler:</translation>
+        <translation>Moduler:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Høy presisjon:</translation>
+        <translation>Høy presisjon:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Sant</translation>
+        <translation>Sant</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Usant</translation>
+        <translation>Usant</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Eksternt tannjhul:</translation>
+        <translation>Eksternt tannjhul:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Trykkvinkel:</translation>
+        <translation>Trykkvinkel:</translation>
     </message>
 </context>
 <context>
@@ -407,9 +407,9 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgChamferParameters</name>
     <message>
-        <location line="+74"/>
+        <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Redigere skråkant/fase</translation>
+        <translation>Redigere skråkant/fase</translation>
     </message>
 </context>
 <context>
@@ -423,15 +423,15 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgFilletParameters</name>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="+126"/>
+        <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Rediger avrunding</translation>
+        <translation>Rediger avrunding</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+452"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="+462"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -439,7 +439,7 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="+358"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="+362"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -447,7 +447,7 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMultiTransformParameters</name>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="+443"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="+447"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -455,7 +455,7 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+527"/>
+        <location filename="../../TaskPadParameters.cpp" line="+540"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -463,12 +463,12 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="+441"/>
+        <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Rediger lomme/pocket</translation>
+        <translation>Rediger lomme/pocket</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+16"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -476,7 +476,7 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+396"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="+404"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -484,7 +484,7 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>PartDesignGui::TaskDlgScaledParameters</name>
     <message>
-        <location filename="../../TaskScaledParameters.cpp" line="+235"/>
+        <location filename="../../TaskScaledParameters.cpp" line="+243"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -558,7 +558,7 @@ Merk en eller flere kanter først.</translation>
         <translation>Radius:</translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="-74"/>
+        <location filename="../../TaskFilletParameters.cpp" line="-86"/>
         <source>Fillet parameters</source>
         <translation>Avrundingsparametre</translation>
     </message>
@@ -603,7 +603,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+14"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+52"/>
@@ -646,7 +646,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
         <source>TaskHoleParameters</source>
-        <translation>TaskHoleParameters</translation>
+        <translation type="unfinished">TaskHoleParameters</translation>
     </message>
 </context>
 <context>
@@ -669,24 +669,24 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vannrett skisse akse</translation>
+        <translation>Vannrett skisse akse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Loddrett skisse akse</translation>
+        <translation>Loddrett skisse akse</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Velg referanse...</translation>
+        <translation>Velg referanse...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -699,14 +699,14 @@ Merk en eller flere kanter først.</translation>
         <translation>Forekomster</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
@@ -716,7 +716,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Udefinert</translation>
+        <translation>Udefinert</translation>
     </message>
 </context>
 <context>
@@ -751,19 +751,19 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vannrett skisse akse</translation>
+        <translation>Vannrett skisse akse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Loddrett skisse akse</translation>
+        <translation>Loddrett skisse akse</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Velg referanse...</translation>
+        <translation>Velg referanse...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -773,7 +773,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <source>Select a plane</source>
@@ -782,12 +782,12 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Velg en flate</translation>
+        <translation>Velg en flate</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Udefinert</translation>
+        <translation>Udefinert</translation>
     </message>
 </context>
 <context>
@@ -810,10 +810,10 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+17"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="-372"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="-376"/>
         <source>Edit</source>
         <translation>Rediger</translation>
     </message>
@@ -887,7 +887,7 @@ Merk en eller flere kanter først.</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../TaskPadParameters.cpp" line="-398"/>
+        <location filename="../../TaskPadParameters.cpp" line="-408"/>
         <location line="+109"/>
         <location line="+106"/>
         <location line="+100"/>
@@ -897,7 +897,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+19"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -948,12 +948,12 @@ Merk en eller flere kanter først.</translation>
         <translation type="obsolete">Oppgavepadparametere</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="-371"/>
+        <location filename="../../TaskPadParameters.cpp" line="-374"/>
         <source>Pad parameters</source>
         <translation>Polstre-parametre</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+73"/>
         <location line="+315"/>
         <source>No face selected</source>
         <translation>Ingen flater valgt</translation>
@@ -962,7 +962,7 @@ Merk en eller flere kanter først.</translation>
         <location line="-307"/>
         <location line="+294"/>
         <source>To last</source>
-        <translation>To last</translation>
+        <translation type="unfinished">To last</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -1032,8 +1032,8 @@ Merk en eller flere kanter først.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-360"/>
-        <location line="+278"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-368"/>
+        <location line="+281"/>
         <source>Dimension</source>
         <translation>Dimensjon</translation>
     </message>
@@ -1045,12 +1045,12 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Reversert</translation>
+        <translation>Reversert</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-282"/>
-        <location line="+102"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-285"/>
+        <location line="+105"/>
         <location line="+113"/>
         <location line="+80"/>
         <source>Face</source>
@@ -1059,7 +1059,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+19"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location line="-60"/>
@@ -1067,7 +1067,7 @@ Merk en eller flere kanter først.</translation>
         <translation>Lengde</translation>
     </message>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="-350"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-353"/>
         <source>Pocket parameters</source>
         <translation>Pocket parametere</translation>
     </message>
@@ -1077,25 +1077,25 @@ Merk en eller flere kanter først.</translation>
     </message>
     <message>
         <location line="+61"/>
-        <location line="+278"/>
+        <location line="+281"/>
         <source>To first</source>
         <translation>Til første</translation>
     </message>
     <message>
-        <location line="-279"/>
-        <location line="+278"/>
+        <location line="-282"/>
+        <location line="+281"/>
         <source>Through all</source>
         <translation>Gjennom alle</translation>
     </message>
     <message>
-        <location line="-276"/>
-        <location line="+278"/>
+        <location line="-279"/>
+        <location line="+281"/>
         <source>Up to face</source>
         <translation>Opp til flate</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location line="+109"/>
+        <location line="-287"/>
+        <location line="+112"/>
         <location line="+186"/>
         <source>No face selected</source>
         <translation>Ingen flater valgt</translation>
@@ -1132,24 +1132,24 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Akse</translation>
+        <translation>Akse</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal skisse akse</translation>
+        <translation>Normal skisse akse</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Velg referanse...</translation>
+        <translation>Velg referanse...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1162,14 +1162,14 @@ Merk en eller flere kanter først.</translation>
         <translation>Forekomster</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-55"/>
@@ -1212,7 +1212,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+14"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
     <message>
         <source>Vertical</source>
@@ -1235,7 +1235,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Udefinert</translation>
+        <translation>Udefinert</translation>
     </message>
 </context>
 <context>
@@ -1256,19 +1256,19 @@ Merk en eller flere kanter først.</translation>
         <translation>Faktor</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+14"/>
         <source>Occurrences</source>
         <translation>Forekomster</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Update view</source>
-        <translation>Update view</translation>
+        <translation type="unfinished">Update view</translation>
     </message>
 </context>
 <context>
@@ -1369,17 +1369,17 @@ Merk en eller flere kanter først.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1413,7 +1413,7 @@ Merk en eller flere kanter først.</translation>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Lag først et tilleg eller fratreks detalj</translation>
+        <translation>Lag først et tilleg eller fratreks detalj</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1434,7 +1434,7 @@ Create the sketch on a face.</source>
 Opprett skisse på en flate.</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+55"/>
+        <location filename="../../TaskPadParameters.cpp" line="+86"/>
         <location filename="../../ViewProviderPad.cpp" line="+64"/>
         <source>Edit pad</source>
         <translation>Rediger pad</translation>
@@ -1487,13 +1487,13 @@ Opprett skisse på en flate.</translation>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Mistet koblingen til støtte skisse</translation>
+        <translation>Mistet koblingen til støtte skisse</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">Objektet kan ikke redigeres fordi koblingen til støtte skissen er tapt.</translation>
+        <translation>Objektet kan ikke redigeres fordi koblingen til støtte skissen er tapt.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1532,14 +1532,14 @@ Opprett skisse på en flate.</translation>
         <translation>Omvandling lykkes</translation>
     </message>
     <message>
-        <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
+        <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Rediger groove/spor</translation>
+        <translation>Rediger groove/spor</translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Rediger revolusjon/omdreining</translation>
+        <translation>Rediger revolusjon/omdreining</translation>
     </message>
 </context>
 <context>

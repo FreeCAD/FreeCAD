@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -45,8 +48,6 @@
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
 
-//#include "resources/qrc_PartDesign.cpp"
-
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
 
@@ -57,13 +58,30 @@ void loadPartDesignResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef PartDesignGui_Import_methods[];
+namespace PartDesignGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("PartDesignGui")
+    {
+        initialize("This module is the PartDesignGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace PartDesignGui
 
 
 /* Python entry */
-extern "C" {
-void PartDesignGuiExport initPartDesignGui()
+PyMODINIT_FUNC initPartDesignGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -79,7 +97,7 @@ void PartDesignGuiExport initPartDesignGui()
         return;
     }
 
-    (void) Py_InitModule("PartDesignGui", PartDesignGui_Import_methods);   /* mod name, table ptr */
+    (void)PartDesignGui::initModule();
     Base::Console().Log("Loading GUI of PartDesign module... done\n");
 
     // instantiating the commands
@@ -103,5 +121,3 @@ void PartDesignGuiExport initPartDesignGui()
      // add resources and reloads the translators
     loadPartDesignResource();
 }
-
-} // extern "C" {

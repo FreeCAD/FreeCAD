@@ -252,9 +252,9 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
-    lineEdit()->setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -276,40 +276,52 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
 
     try {
         ExpressionBinding::setExpression(expr);
-
-        if (getExpression()) {
-            std::auto_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-            if (value) {
-                updateText(value->getQuantity());
-                setReadOnly(true);
-                iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
-
-                QPalette p(lineEdit()->palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                lineEdit()->setPalette(p);
-            }
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
-        }
-        else {
-            setReadOnly(false);
-            iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-            lineEdit()->setPalette(p);
-
-        }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 }
+
+void Gui::QuantitySpinBox::onChange() {
+    
+    Q_ASSERT(isBound());
+    
+    if (getExpression()) {
+        std::auto_ptr<Expression> result(getExpression()->eval());
+        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+
+        if (value) {
+            std::stringstream s;
+            s << value->getValue();
+
+            lineEdit()->setText(value->getQuantity().getUserString());
+            setReadOnly(true);
+            QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
+            iconLabel->setPixmap(pixmap);
+
+            QPalette p(lineEdit()->palette());
+            p.setColor(QPalette::Text, Qt::lightGray);
+            lineEdit()->setPalette(p);
+        }
+        iconLabel->setToolTip(QString());
+        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+    }
+    else {
+        setReadOnly(false);
+        QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+        iconLabel->setPixmap(pixmap);
+        QPalette p(lineEdit()->palette());
+        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
+        lineEdit()->setPalette(p);
+        iconLabel->setToolTip(QString());
+    }
+    iconLabel->setToolTip(QString());
+}
+
 
 bool QuantitySpinBox::apply(const std::string & propName)
 {
@@ -363,7 +375,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromAscii(e.what()));
+        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 
 }

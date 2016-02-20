@@ -161,6 +161,7 @@ class _CommandWall:
     def Activated(self):
         self.Align = "Center"
         self.Length = None
+        self.lengthValue = 0
         self.continueCmd = False
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Width = p.GetFloat("WallWidth",200)
@@ -222,7 +223,7 @@ class _CommandWall:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         elif len(self.points) == 2:
             import Part
-            l = Part.Line(self.points[0],self.points[1])
+            l = Part.Line(FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1]))
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
@@ -257,8 +258,10 @@ class _CommandWall:
 
     def addDefault(self,l):
         FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","'+translate('Arch','WallTrace')+'")')
+        FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
         FreeCADGui.doCommand('base.addGeometry(trace)')
-        FreeCADGui.doCommand('Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.axis')
 
     def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
@@ -322,11 +325,20 @@ class _CommandWall:
         grid.addWidget(label4,4,0,1,1)
         grid.addWidget(value4,4,1,1,1)
 
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.setFocus)
+        QtCore.QObject.connect(self.Length,QtCore.SIGNAL("returnPressed()"),value1.selectAll)
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.setFocus)
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("returnPressed()"),value2.selectAll)
+        QtCore.QObject.connect(value2,QtCore.SIGNAL("returnPressed()"),self.createFromGUI)
         return w
+        
+    def setLength(self,d):
+        self.lengthValue = d
 
     def setWidth(self,d):
         self.Width = d
@@ -343,7 +355,15 @@ class _CommandWall:
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
-
+            
+    def createFromGUI(self):
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommand('Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.escape()
 
 class _CommandMergeWalls:
     "the Arch Merge Walls command definition"
@@ -397,7 +417,7 @@ class _Wall(ArchComponent.Component):
         obj.addProperty("App::PropertyEnumeration","Align","Arch",translate("Arch","The alignment of this wall on its base object, if applicable"))
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.addProperty("App::PropertyInteger","Face","Arch",translate("Arch","The face number of the base object used to build this wall"))
-        obj.addProperty("App::PropertyLength","Offset","Arch",translate("Arch","The offset between this wall and its baseline (only for left and right alignments)"))
+        obj.addProperty("App::PropertyDistance","Offset","Arch",translate("Arch","The offset between this wall and its baseline (only for left and right alignments)"))
         obj.Align = ['Left','Right','Center']
         obj.Role = Roles
         self.Type = "Wall"
@@ -446,6 +466,12 @@ class _Wall(ArchComponent.Component):
                     base = obj.Base.Shape.copy()
                 elif obj.Base.Shape.Edges:
                     # case 3: the base is flat, we need to extrude it
+                    if not obj.Base.Shape.Faces:
+                        # set the length property
+                        if hasattr(obj.Base.Shape,"Length"):
+                            l = obj.Base.Shape.Length
+                            if obj.Length != l:
+                                obj.Length = l
                     profiles = self.getProfiles(obj)
                     if profiles:
                         normal.multiply(height)

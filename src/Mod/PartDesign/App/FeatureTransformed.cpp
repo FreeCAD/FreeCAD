@@ -60,7 +60,7 @@ Transformed::Transformed() : rejected(0)
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
-    Placement.StatusBits.set(2, true);
+    Placement.setStatus(App::Property::ReadOnly, true);
 }
 
 void Transformed::positionBySupport(void)

@@ -73,12 +73,12 @@
     <message>
         <location line="+1"/>
         <source>Groove</source>
-        <translation>Groove</translation>
+        <translation type="unfinished">Groove</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation>Groove a selected sketch</translation>
+        <translation type="unfinished">Groove a selected sketch</translation>
     </message>
 </context>
 <context>
@@ -253,7 +253,7 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Antal tänder:</translation>
+        <translation>Antal tänder:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -269,13 +269,13 @@
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">True</translation>
+        <translation>Sann</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">False</translation>
+        <translation>Falsk</translation>
     </message>
     <message>
         <location line="-19"/>
@@ -407,9 +407,9 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgChamferParameters</name>
     <message>
-        <location line="+74"/>
+        <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Redigera fasning</translation>
+        <translation>Redigera fasning</translation>
     </message>
 </context>
 <context>
@@ -423,15 +423,15 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgFilletParameters</name>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="+126"/>
+        <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Redigera avrundning</translation>
+        <translation>Redigera avrundning</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+452"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="+462"/>
         <source>Input error</source>
         <translation>Inmatningsfel</translation>
     </message>
@@ -439,7 +439,7 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="+358"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="+362"/>
         <source>Input error</source>
         <translation>Inmatningsfel</translation>
     </message>
@@ -447,7 +447,7 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgMultiTransformParameters</name>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="+443"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="+447"/>
         <source>Input error</source>
         <translation>Inmatningsfel</translation>
     </message>
@@ -455,7 +455,7 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+527"/>
+        <location filename="../../TaskPadParameters.cpp" line="+540"/>
         <source>Input error</source>
         <translation>Inmatningsfel</translation>
     </message>
@@ -463,12 +463,12 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="+441"/>
+        <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Redigera ficka</translation>
+        <translation>Redigera ficka</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+16"/>
         <source>Input error</source>
         <translation>Inmatningsfel</translation>
     </message>
@@ -476,7 +476,7 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+396"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="+404"/>
         <source>Input error</source>
         <translation>Inmatningsfel</translation>
     </message>
@@ -484,7 +484,7 @@ Välj en eller fler kanter först.</translation>
 <context>
     <name>PartDesignGui::TaskDlgScaledParameters</name>
     <message>
-        <location filename="../../TaskScaledParameters.cpp" line="+235"/>
+        <location filename="../../TaskScaledParameters.cpp" line="+243"/>
         <source>Input error</source>
         <translation>Inmatningsfel</translation>
     </message>
@@ -558,7 +558,7 @@ Välj en eller fler kanter först.</translation>
         <translation>Radie:</translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="-74"/>
+        <location filename="../../TaskFilletParameters.cpp" line="-86"/>
         <source>Fillet parameters</source>
         <translation>Fasningsparametrar</translation>
     </message>
@@ -669,19 +669,19 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horisontell skissaxel</translation>
+        <translation>Horisontell skissaxel</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikal skissaxel</translation>
+        <translation>Vertikal skissaxel</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Välj referens...</translation>
+        <translation>Välj referens...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -699,7 +699,7 @@ Välj en eller fler kanter först.</translation>
         <translation>Förekomster</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -716,7 +716,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Odefinierad</translation>
+        <translation>Odefinierad</translation>
     </message>
 </context>
 <context>
@@ -751,19 +751,19 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horisontell skissaxel</translation>
+        <translation>Horisontell skissaxel</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikal skissaxel</translation>
+        <translation>Vertikal skissaxel</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Välj referens...</translation>
+        <translation>Välj referens...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -782,12 +782,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Välj en yta</translation>
+        <translation>Välj en yta</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Odefinierad</translation>
+        <translation>Odefinierad</translation>
     </message>
 </context>
 <context>
@@ -813,7 +813,7 @@ Välj en eller fler kanter först.</translation>
         <translation>Uppdatera vy</translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="-372"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="-376"/>
         <source>Edit</source>
         <translation>Redigera</translation>
     </message>
@@ -887,7 +887,7 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../TaskPadParameters.cpp" line="-398"/>
+        <location filename="../../TaskPadParameters.cpp" line="-408"/>
         <location line="+109"/>
         <location line="+106"/>
         <location line="+100"/>
@@ -948,12 +948,12 @@ Välj en eller fler kanter först.</translation>
         <translation type="obsolete">Parametrar för uppgiften Solidifiera</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="-371"/>
+        <location filename="../../TaskPadParameters.cpp" line="-374"/>
         <source>Pad parameters</source>
         <translation>Pad parametrar</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+73"/>
         <location line="+315"/>
         <source>No face selected</source>
         <translation>Inget yta vald</translation>
@@ -1032,8 +1032,8 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-360"/>
-        <location line="+278"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-368"/>
+        <location line="+281"/>
         <source>Dimension</source>
         <translation>Dimension</translation>
     </message>
@@ -1045,12 +1045,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Omvänd</translation>
+        <translation>Omvänd</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-282"/>
-        <location line="+102"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-285"/>
+        <location line="+105"/>
         <location line="+113"/>
         <location line="+80"/>
         <source>Face</source>
@@ -1067,7 +1067,7 @@ Välj en eller fler kanter först.</translation>
         <translation>Längd</translation>
     </message>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="-350"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-353"/>
         <source>Pocket parameters</source>
         <translation>Fickparametrar</translation>
     </message>
@@ -1077,25 +1077,25 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
         <location line="+61"/>
-        <location line="+278"/>
+        <location line="+281"/>
         <source>To first</source>
         <translation>Till första</translation>
     </message>
     <message>
-        <location line="-279"/>
-        <location line="+278"/>
+        <location line="-282"/>
+        <location line="+281"/>
         <source>Through all</source>
         <translation>Genom alla</translation>
     </message>
     <message>
-        <location line="-276"/>
-        <location line="+278"/>
+        <location line="-279"/>
+        <location line="+281"/>
         <source>Up to face</source>
         <translation>Upp till yta</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location line="+109"/>
+        <location line="-287"/>
+        <location line="+112"/>
         <location line="+186"/>
         <source>No face selected</source>
         <translation>Inget yta vald</translation>
@@ -1132,19 +1132,19 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Axel</translation>
+        <translation>Axel</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal skissaxel</translation>
+        <translation>Normal skissaxel</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Välj referens...</translation>
+        <translation>Välj referens...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1162,7 +1162,7 @@ Välj en eller fler kanter först.</translation>
         <translation>Förekomster</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1235,7 +1235,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Odefinierad</translation>
+        <translation>Odefinierad</translation>
     </message>
 </context>
 <context>
@@ -1256,12 +1256,12 @@ Välj en eller fler kanter först.</translation>
         <translation>Faktor</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+14"/>
         <source>Occurrences</source>
         <translation>Förekomster</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+14"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1276,7 +1276,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>Transformed feature messages</translation>
+        <translation type="unfinished">Transformed feature messages</translation>
     </message>
 </context>
 <context>
@@ -1369,17 +1369,17 @@ Välj en eller fler kanter först.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1433,7 +1433,7 @@ Create the sketch on a face.</source>
         <translation type="obsolete">Skissen måste ha ett stöd för fickfunktionen. Skapa en skiss på en yta.</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+55"/>
+        <location filename="../../TaskPadParameters.cpp" line="+86"/>
         <location filename="../../ViewProviderPad.cpp" line="+64"/>
         <source>Edit pad</source>
         <translation>Redigera pad</translation>
@@ -1518,7 +1518,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
         <source>One transformed shape does not intersect support</source>
-        <translation>One transformed shape does not intersect support</translation>
+        <translation type="unfinished">One transformed shape does not intersect support</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1531,12 +1531,12 @@ Create the sketch on a face.</source>
         <translation>Transformeringen lyckades</translation>
     </message>
     <message>
-        <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
+        <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
         <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
         <translation type="unfinished">Edit revolve</translation>
     </message>

@@ -22,9 +22,10 @@
 #***************************************************************************
 
 import FreeCAD,os
+from PySide import QtCore, QtGui
+
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
 else:
     def translate(ctxt,txt):

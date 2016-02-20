@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+475"/>
+        <location filename="../../Command.cpp" line="+476"/>
         <source>Drawing</source>
         <translation>Piirros</translation>
     </message>
@@ -44,18 +44,18 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation type="unfinished">Piirros</translation>
+        <translation>Piirros</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp; Vedos näkymä</translation>
+        <translation>&amp; Vedos näkymä</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished">Lisää valitun kohteen (kohteiden) vedosnäkymän aktiivisessa piirroksessa</translation>
+        <translation>Lisää valitun kohteen (kohteiden) vedosnäkymän aktiivisessa piirroksessa</translation>
     </message>
 </context>
 <context>
@@ -198,22 +198,41 @@
     </message>
 </context>
 <context>
+    <name>CmdDrawingSpreadsheetView</name>
+    <message>
+        <location line="+62"/>
+        <source>Drawing</source>
+        <translation>Piirros</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Spreadsheet View</source>
+        <translation type="unfinished">&amp;Spreadsheet View</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <source>Inserts a view of a selected spreadsheet in the active drawing</source>
+        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+    </message>
+</context>
+<context>
     <name>CmdDrawingSymbol</name>
     <message>
-        <location line="-110"/>
+        <location line="-176"/>
         <source>Drawing</source>
-        <translation type="unfinished">Piirros</translation>
+        <translation>Piirros</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Symbol</source>
-        <translation type="unfinished">&amp; Symboli</translation>
+        <translation>&amp; Symboli</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">Lisää symbolin svg-tiedostosta aktiiviseen piirrokseen</translation>
+        <translation>Lisää symbolin svg-tiedostosta aktiiviseen piirrokseen</translation>
     </message>
 </context>
 <context>
@@ -269,9 +288,13 @@
         <translation>Vie PDF-asiakirjaan</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>PDF file (*.pdf)</source>
-        <translation>PDF-tiedosto (*.pdf)</translation>
+        <translation type="obsolete">PDF-tiedosto (*.pdf)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>PDF file</source>
+        <translation type="unfinished">PDF file</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -311,28 +334,38 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished">Erilainen sivun suunta</translation>
+        <translation>Erilainen sivun suunta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">Tulostin käyttää eri paperisuuntaa kuin piirros.
+        <translation>Tulostin käyttää eri paperisuuntaa kuin piirros.
 Haluatko jatkaa?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished">Erilainen paperikoko</translation>
+        <translation>Erilainen paperikoko</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">Tulostin käyttää eri paperikokoa kuin piirros.
+        <translation>Tulostin käyttää eri paperikokoa kuin piirros.
 Haluatko jatkaa?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Opening file failed</source>
+        <translation type="unfinished">Opening file failed</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
     </message>
 </context>
 <context>
@@ -356,118 +389,108 @@ Haluatko jatkaa?</translation>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation type="unfinished">Napsauta hiiren oikeata nappia aksonometrisille asetuksille</translation>
+        <translation>Napsauta hiiren oikeata nappia aksonometrisille asetuksille</translation>
     </message>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">Ylävasen x / y</translation>
+        <translation>Ylävasen x / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Välit dx / dy   </translation>
+        <translation>Välit dx / dy   </translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Show hidden lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Show smooth lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
+        <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Akseli ulos oikealle</translation>
+        <translation> Akseli ulos oikealle</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> pystykallistus</translation>
+        <translation> pystykallistus</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+200"/>
         <source>X +ve</source>
-        <translation type="unfinished">X + ve</translation>
+        <translation>X + ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Y +ve</source>
-        <translation type="unfinished">Y + ve</translation>
+        <translation>Y + ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Z +ve</source>
-        <translation type="unfinished">Z + ve</translation>
+        <translation>Z + ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+200"/>
         <source>X -ve</source>
-        <translation type="unfinished">X - ve</translation>
+        <translation>X - ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Y -ve</source>
-        <translation type="unfinished">Y - ve</translation>
+        <translation>Y - ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Z -ve</source>
-        <translation type="unfinished">Z - ve</translation>
+        <translation>Z - ve</translation>
     </message>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isometrinen</translation>
+        <translation>Isometrinen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimetrinen</translation>
+        <translation>Dimetrinen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">Trimetrinen</translation>
+        <translation>Trimetrinen</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Mittakaava</translation>
+        <translation> Mittakaava</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> Katso projektio   </translation>
+        <translation> Katso projektio   </translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished"> Akseli tasattu ylös</translation>
+        <translation> Akseli tasattu ylös</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Käännä</translation>
+        <translation>Käännä</translation>
     </message>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimetrinen</translation>
+        <translation> Trimetrinen</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -487,12 +510,12 @@ Haluatko jatkaa?</translation>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">Näkymä:</translation>
+        <translation>Näkymä:</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation type="unfinished">Akseli tasattu oikealle:</translation>
+        <translation>Akseli tasattu oikealle:</translation>
     </message>
     <message>
         <source>Primary View</source>
@@ -572,15 +595,17 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Toissijainen dx / dy</translation>
     </message>
     <message>
-        <source>Show hidden</source>
-        <translation type="obsolete">Näytä piilotetut</translation>
+        <location line="+125"/>
+        <source>Show hidden lines</source>
+        <translation type="unfinished">Show hidden lines</translation>
     </message>
     <message>
-        <source>Show smooth</source>
-        <translation type="obsolete">Näytä sileä</translation>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation type="unfinished">Show smooth lines</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+11"/>
         <source>Axonometric</source>
         <translation>Aksonometrisiä</translation>
     </message>
@@ -588,7 +613,7 @@ Haluatko jatkaa?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+50"/>
+        <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
         <translation>Näkyvät terävät reunat</translation>
     </message>
@@ -641,6 +666,26 @@ Haluatko jatkaa?</translation>
         <location line="+17"/>
         <source>Project shapes</source>
         <translation>Projektin muodot</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>No active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active document to complete the operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>No active view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active view to complete the operation</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -696,32 +741,32 @@ Haluatko jatkaa?</translation>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Vaakasuora</translation>
+        <translation>Vaakasuora</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Pystysuora</translation>
+        <translation>Pystysuora</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1%2 %3</translation>
+        <translation>%1%2 %3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Lisää uusi %1%2 %3 piirros</translation>
+        <translation>Lisää uusi %1%2 %3 piirros</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished">%1%2 %3 (%4)</translation>
+        <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Laita uusi %1%2 %3 (%4) piirros</translation>
+        <translation>Laita uusi %1%2 %3 (%4) piirros</translation>
     </message>
 </context>
 <context>
@@ -737,21 +782,20 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Piirustuksen katseluohjelma</translation>
     </message>
     <message>
-        <location line="-518"/>
-        <location line="+519"/>
         <source>Scalable Vector Graphics (*.svg *.svgz)</source>
-        <translation>Skaalautuvat vektorigrafiikat (*.svg *.svgz)</translation>
+        <translation type="obsolete">Skaalautuvat vektorigrafiikat (*.svg *.svgz)</translation>
     </message>
     <message>
-        <location line="-267"/>
+        <location line="-266"/>
         <location line="+78"/>
         <location line="+49"/>
         <location line="+186"/>
+        <location line="+116"/>
         <source>Wrong selection</source>
         <translation>Väärä valinta</translation>
     </message>
     <message>
-        <location line="-312"/>
+        <location line="-428"/>
         <source>Select a Part object.</source>
         <translation>Valitse osa-objekti.</translation>
     </message>
@@ -768,27 +812,36 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Luo sivu johon lisäät näkymiä.</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-253"/>
+        <location line="+519"/>
+        <location line="+52"/>
+        <source>Scalable Vector Graphic</source>
+        <translation type="unfinished">Scalable Vector Graphic</translation>
+    </message>
+    <message>
+        <location line="-310"/>
         <location line="+78"/>
         <location line="+80"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+175"/>
         <source>No page found</source>
-        <translation type="unfinished">Sivua ei löydy</translation>
+        <translation>Sivua ei löydy</translation>
     </message>
     <message>
-        <location line="-250"/>
+        <location line="-425"/>
         <location line="+78"/>
         <location line="+80"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+175"/>
         <source>Create a page first.</source>
-        <translation type="unfinished">Luo sivu ensin.</translation>
+        <translation>Luo sivu ensin.</translation>
     </message>
     <message>
-        <location line="-182"/>
+        <location line="-357"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished">Valitse täsmälleen yksi osa-kohde.</translation>
+        <translation>Valitse täsmälleen yksi osa-kohde.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -797,26 +850,34 @@ Haluatko jatkaa?</translation>
         <translation>Valitse yksi sivu-objekti.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
+        <source>All Files</source>
+        <translation type="unfinished">All Files</translation>
+    </message>
+    <message>
+        <location line="+110"/>
+        <source>Select exactly one Spreadsheet object.</source>
+        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+    </message>
+    <message>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished">SVG (*.svg)</translation>
+        <translation type="obsolete">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
         <translation type="obsolete">SVG(*.svg)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>All Files (*.*)</source>
-        <translation>Kaikki tiedostot (*.*)</translation>
+        <translation type="obsolete">Kaikki tiedostot (*.*)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-108"/>
         <source>Export page</source>
         <translation>Vie sivu</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+155"/>
+        <location filename="../../ViewProviderPage.cpp" line="+152"/>
         <source>Show drawing</source>
         <translation>Näytä piirustus</translation>
     </message>
@@ -845,22 +906,22 @@ Haluatko jatkaa?</translation>
         <translation type="obsolete">Pohja</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
-        <location line="+929"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+51"/>
+        <location line="+907"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Tee aksonometrisenä...</translation>
+        <translation>Tee aksonometrisenä...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">Muokkaa aksonometrisiä asetuksia...</translation>
+        <translation>Muokkaa aksonometrisiä asetuksia...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Tee ortograafinen</translation>
+        <translation>Tee ortograafinen</translation>
     </message>
 </context>
 <context>

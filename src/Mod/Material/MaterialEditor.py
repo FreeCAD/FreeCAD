@@ -238,10 +238,10 @@ class MaterialEditor:
                 importFCMat.write(filename,d)
 
     def show(self):
-        self.widget.show()
+        return self.widget.show()
         
     def exec_(self):
-        self.widget.exec_()
+        return self.widget.exec_()
 
 def translate(context,text):
     "translates text"

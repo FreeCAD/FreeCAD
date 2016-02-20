@@ -50,7 +50,7 @@ ViewProviderDrawingView::ViewProviderDrawingView()
     sPixmap = "Page";
 
     // Do not show in property editor
-    DisplayMode.StatusBits.set(3, true);
+    DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderDrawingView::~ViewProviderDrawingView()
@@ -127,6 +127,18 @@ void ViewProviderDrawingView::updateData(const App::Property*)
 {
 }
 
+// Python viewprovider -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(DrawingGui::ViewProviderDrawingViewPython, DrawingGui::ViewProviderDrawingView)
+/// @endcond
+
+// explicit template instantiation
+template class DrawingGuiExport ViewProviderPythonFeatureT<DrawingGui::ViewProviderDrawingView>;
+}
+
+
 // ----------------------------------------------------------------------------
 
 PROPERTY_SOURCE(DrawingGui::ViewProviderDrawingClip, Gui::ViewProviderDocumentObjectGroup)
@@ -136,7 +148,7 @@ ViewProviderDrawingClip::ViewProviderDrawingClip()
     sPixmap = "Page";
 
     // Do not show in property editor
-    DisplayMode.StatusBits.set(3, true);
+    DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderDrawingClip::~ViewProviderDrawingClip()

@@ -34,92 +34,92 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Opzioni di mesh</translation>
+        <translation>Opzioni di mesh</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standard</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Lunghezza massima dello spigolo:</translation>
+        <translation>Lunghezza massima dello spigolo:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Finezza:</translation>
+        <translation>Finezza:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Molto grossa</translation>
+        <translation>Molto grossa</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Grossolana</translation>
+        <translation>Grossolana</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderata</translation>
+        <translation>Moderata</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation>Fine</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Molto fine</translation>
+        <translation>Molto fine</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Definito dall&apos;utente</translation>
+        <translation>Definito dall&apos;utente</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Classe dimensione mesh:</translation>
+        <translation>Classe dimensione mesh:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Numero di elementi per spigolo:</translation>
+        <translation>Numero di elementi per spigolo:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Numero di elementi per il raggio di curvatura:</translation>
+        <translation>Numero di elementi per il raggio di curvatura:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Ottimizza superficie</translation>
+        <translation>Ottimizza superficie</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Elementi di secondo ordine</translation>
+        <translation>Elementi di secondo ordine</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Dominato da quadrangoli</translation>
+        <translation>Dominato da quadrangoli</translation>
     </message>
     <message>
         <source>Settings</source>

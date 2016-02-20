@@ -1067,19 +1067,19 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             const SMDS_MeshEdge* aEdge = aEdgeIte->next();
             int num = aEdge->NbNodes();
             switch (num){
-            case 2: { // case for Segment element
+            case 2: { // Seg2: N1, N2
                 int nIdx0 = mapNodeIndex[aEdge->GetNode(0)];
                 int nIdx1 = mapNodeIndex[aEdge->GetNode(1)];
                 insEdgeVec(EdgeMap, nIdx0, nIdx1);
                 break;
             }
 
-            case 3: { // case for Segment element
+            case 3: { // Seg3: N1, N2, N3 (N3 is middle Node)
                 int nIdx0 = mapNodeIndex[aEdge->GetNode(0)];
                 int nIdx1 = mapNodeIndex[aEdge->GetNode(1)];
                 int nIdx2 = mapNodeIndex[aEdge->GetNode(2)];
-                insEdgeVec(EdgeMap, nIdx0, nIdx1);
-                insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                insEdgeVec(EdgeMap, nIdx0, nIdx2);
+                insEdgeVec(EdgeMap, nIdx2, nIdx1);
                 break;
             }
             }

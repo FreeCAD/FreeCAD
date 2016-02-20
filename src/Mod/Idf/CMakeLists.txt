@@ -6,40 +6,40 @@ SET(Idf_SRCS
 SOURCE_GROUP("" FILES ${Idf_SRCS})
 
 SET(IdfLibs_SRCS
-    lib/License.txt
-    lib/0603_SMD.stp
-    lib/0805_SMD.stp
-    lib/1206_SMD.stp
-    lib/1210_SMD.stp
-    lib/1812_SMD.stp
-    lib/2225_SMD.stp
-    lib/2512_SMD.stp
-    lib/CAP_50SGV_8_10.stp
-    lib/EPL22_6_16.stp
-    lib/footprints_models.csv
-    lib/I22_2_5_16.stp
-    lib/I22_2_5_16withEPL22_6_16.stp
-    lib/MSOP_10.stp
-    lib/RLF_12545.stp
-    lib/RLF_7030.stp
-    lib/SMB_DO_214AA.stp
-    lib/SMC_DO_214AB.stp
-    lib/SOD_323.igs
-    lib/SOD_323.stp
-    lib/SOD_523.stp
-    lib/SOT23.stp
-    lib/SOT404.stp
-    lib/SOT428_DPAK.stp
-    lib/SOT_323_3.stp
-    lib/SOT_96.stp
-    lib/TCMT1107_4.stp
-    lib/TSM_103_01_L_DV_A.stp
-    lib/TSM_104_01_L_DV_A.stp
-    lib/TSS0P_8.stp
-    lib/VC0603_SMD.stp
-    lib/RLF_12545.igs
-    lib/SOT23.igs
-    lib/SOT404.igs
+    Idflibs/License.txt
+    Idflibs/0603_SMD.stp
+    Idflibs/0805_SMD.stp
+    Idflibs/1206_SMD.stp
+    Idflibs/1210_SMD.stp
+    Idflibs/1812_SMD.stp
+    Idflibs/2225_SMD.stp
+    Idflibs/2512_SMD.stp
+    Idflibs/CAP_50SGV_8_10.stp
+    Idflibs/EPL22_6_16.stp
+    Idflibs/footprints_models.csv
+    Idflibs/I22_2_5_16.stp
+    Idflibs/I22_2_5_16withEPL22_6_16.stp
+    Idflibs/MSOP_10.stp
+    Idflibs/RLF_12545.stp
+    Idflibs/RLF_7030.stp
+    Idflibs/SMB_DO_214AA.stp
+    Idflibs/SMC_DO_214AB.stp
+    Idflibs/SOD_323.igs
+    Idflibs/SOD_323.stp
+    Idflibs/SOD_523.stp
+    Idflibs/SOT23.stp
+    Idflibs/SOT404.stp
+    Idflibs/SOT428_DPAK.stp
+    Idflibs/SOT_323_3.stp
+    Idflibs/SOT_96.stp
+    Idflibs/TCMT1107_4.stp
+    Idflibs/TSM_103_01_L_DV_A.stp
+    Idflibs/TSM_104_01_L_DV_A.stp
+    Idflibs/TSS0P_8.stp
+    Idflibs/VC0603_SMD.stp
+    Idflibs/RLF_12545.igs
+    Idflibs/SOT23.igs
+    Idflibs/SOT404.igs
 )
 SOURCE_GROUP("Idflibs" FILES ${IdfLibs_SRCS})
 

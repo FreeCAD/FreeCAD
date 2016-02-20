@@ -79,11 +79,11 @@ InputField::InputField(QWidget * parent)
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; }"));
+    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; }"));
     iconLabel->hide();
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateIconLabel(const QString&)));
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
     QSize msz = minimumSizeHint();
     setMinimumSize(qMax(msz.width(), iconLabel->sizeHint().height() + frameWidth * 2 + 2),
                    qMax(msz.height(), iconLabel->sizeHint().height() + frameWidth * 2 + 2));
@@ -137,8 +137,8 @@ bool InputField::apply()
 
 QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 {
-    QString key = QString::fromAscii("%1_%2x%3")
-        .arg(QString::fromAscii(name))
+    QString key = QString::fromLatin1("%1_%2x%3")
+        .arg(QString::fromLatin1(name))
         .arg(size.width())
         .arg(size.height());
     QPixmap icon;
@@ -185,7 +185,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *editMenu = createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
-    QMenu* menu = new QMenu(QString::fromAscii("InputFieldContextmenu"));
+    QMenu* menu = new QMenu(QString::fromLatin1("InputFieldContextmenu"));
 
     menu->addMenu(editMenu);
     menu->addSeparator();
@@ -253,10 +253,10 @@ void InputField::newInput(const QString & text)
     }
     catch(Base::Exception &e){
         ErrorText = e.what();
-        this->setToolTip(QString::fromAscii(ErrorText.c_str()));
+        this->setToolTip(QString::fromLatin1(ErrorText.c_str()));
         QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
-        parseError(QString::fromAscii(ErrorText.c_str()));
+        parseError(QString::fromLatin1(ErrorText.c_str()));
         validInput = false;
         return;
     }
@@ -266,10 +266,10 @@ void InputField::newInput(const QString & text)
 
     // check if unit fits!
     if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
-        this->setToolTip(QString::fromAscii("Wrong unit"));
+        this->setToolTip(QString::fromLatin1("Wrong unit"));
         QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
-        parseError(QString::fromAscii("Wrong unit"));
+        parseError(QString::fromLatin1("Wrong unit"));
         validInput = false;
         return;
     }
@@ -289,7 +289,7 @@ void InputField::newInput(const QString & text)
         ErrorText = "Minimum reached";
     }
 
-    this->setToolTip(QString::fromAscii(ErrorText.c_str()));
+    this->setToolTip(QString::fromLatin1(ErrorText.c_str()));
 
     double dFactor;
     res.getUserString(dFactor,actUnitStr);

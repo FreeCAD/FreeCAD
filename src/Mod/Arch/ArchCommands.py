@@ -202,17 +202,19 @@ def makeComponent(baseobj=None,name="Component",delete=False):
 def fixDAG(obj):
     '''fixDAG(object): Fixes non-DAG problems in windows and rebars
     by removing supports and external geometry from underlying sketches'''
-    if Draft.getType(obj) in ["Window","Rebar"]:
-        if obj.Base:
-            if hasattr(obj.Base,"Support"):
-                if obj.Base.Support:
-                    FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                    obj.Base.Support = None
-            if hasattr(obj.Base,"ExternalGeometry"):
-                if obj.Base.ExternalGeometry:
-                    for g in obj.Base.ExternalGeometry:
-                        obj.Base.delExternal(0)
-                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch external reference to avoid cross-referencing"))
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    if p.GetBool("archRemoveExternal",False):
+        if Draft.getType(obj) in ["Window","Rebar"]:
+            if obj.Base:
+                if hasattr(obj.Base,"Support"):
+                    if obj.Base.Support:
+                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
+                        obj.Base.Support = None
+                if hasattr(obj.Base,"ExternalGeometry"):
+                    if obj.Base.ExternalGeometry:
+                        for g in obj.Base.ExternalGeometry:
+                            obj.Base.delExternal(0)
+                            FreeCAD.Console.PrintMessage(translate("Arch","removing sketch external reference to avoid cross-referencing"))
 
 def copyProperties(obj1,obj2):
     '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
@@ -498,11 +500,15 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
             return newobj
     return None
 
-def removeCurves(shape,tolerance=5):
-    '''removeCurves(shape,tolerance=5): replaces curved faces in a shape
-    with faceted segments'''
+def removeCurves(shape,dae=False,tolerance=5):
+    '''removeCurves(shape,dae,tolerance=5): replaces curved faces in a shape
+    with faceted segments. If dae is True, DAE triangulation options are used'''
     import Mesh
-    t = shape.cleaned().tessellate(tolerance)
+    if dae:
+        import importDAE
+        t = importDAE.triangulate(shape.cleaned())
+    else:
+        t = shape.cleaned().tessellate(tolerance)
     m = Mesh.Mesh(t)
     return getShapeFromMesh(m)
 
@@ -1132,7 +1138,7 @@ class _CommandCheck:
         else:
             FreeCADGui.Selection.clearSelection()
             for i in result:
-                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+i[1])
+                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+i[1].decode("utf8"))
                 FreeCADGui.Selection.addSelection(i[0])
 
 
@@ -1202,6 +1208,47 @@ class _CommandComponent:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
+def makeIfcSpreadsheet(obj=None):
+    import Spreadsheet
+    ifc_spreadsheet = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet','IfcProperties')
+    ifc_spreadsheet.set('A1', translate("Arch","Category"))
+    ifc_spreadsheet.set('B1', translate("Arch","Key"))
+    ifc_spreadsheet.set('C1', translate("Arch","Type"))
+    ifc_spreadsheet.set('D1', translate("Arch","Value"))
+    ifc_spreadsheet.set('E1', translate("Arch","Unit"))
+    if obj :
+        if hasattr(obj,"IfcProperties"):
+            obj.IfcProperties = ifc_spreadsheet
+            return ifc_spreadsheet
+        else :
+            FreeCAD.Console.PrintWarning(translate("Arch", "The object have not IfcProperties attribute. Cancel spreadsheet creation for object : ") + obj.Label)
+            FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
+    else:
+        return ifc_spreadsheet
+
+class _CommandIfcSpreadsheet:
+    "the Arch Schedule command definition"
+    def GetResources(self):
+        return {'Pixmap': 'Arch_Schedule',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Create IFC spreadsheet..."),
+                'Accel': "I, P",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store ifc properties of an object.")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create IFC properties spreadsheet"))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.Control.closeDialog()
+        if sel:
+            for o in sel:
+                FreeCADGui.doCommand("Arch.makeIfcSpreadsheet(FreeCAD.ActiveDocument."+o.Name+")")
+        else :
+            FreeCADGui.doCommand("Arch.makeIfcSpreadsheet()")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
@@ -1216,3 +1263,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())
+    FreeCADGui.addCommand('Arch_IfcSpreadsheet',_CommandIfcSpreadsheet())

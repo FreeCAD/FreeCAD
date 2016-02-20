@@ -39,7 +39,7 @@ class GuiExport TextureMapping : public QDialog
     Q_OBJECT
 
 public:
-    TextureMapping(QWidget* parent = 0, Qt::WFlags fl = 0);
+    TextureMapping(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~TextureMapping();
     void accept();
     void reject();

@@ -25,14 +25,17 @@
 #ifndef _PreComp_
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
+#include "ViewProvider.h"
+#include "Workbench.h"
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include <Mod/Points/App/PropertyPointKernel.h>
-
-#include "ViewProvider.h"
-#include "Workbench.h"
 
 // use a different name to CreateCommand()
 void CreatePointsCommands(void);
@@ -44,15 +47,25 @@ void loadPointsResource()
     Gui::Translator::instance()->refresh();
 }
 
+namespace PointsGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("PointsGui")
+    {
+        initialize("This module is the PointsGui module."); // register with Python
+    }
 
-/* registration table  */
-static struct PyMethodDef PointsGui_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+    virtual ~Module() {}
+
+private:
 };
 
+} // namespace PointsGui
+
+
 /* Python entry */
-extern "C" {
-void PointsGuiExport initPointsGui()
+PyMODINIT_FUNC initPointsGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -69,14 +82,15 @@ void PointsGuiExport initPointsGui()
     }
 
     Base::Console().Log("Loading GUI of Points module... done\n");
-    (void) Py_InitModule("PointsGui", PointsGui_methods);   /* mod name, table ptr */
+    (void)new PointsGui::Module();
 
     // instantiating the commands
     CreatePointsCommands();
 
-    PointsGui::ViewProviderPoints::init();
-    PointsGui::ViewProviderPython::init();
-    PointsGui::Workbench         ::init();
+    PointsGui::ViewProviderPoints       ::init();
+    PointsGui::ViewProviderOrganized    ::init();
+    PointsGui::ViewProviderPython       ::init();
+    PointsGui::Workbench                ::init();
     Gui::ViewProviderBuilder::add(
         Points::PropertyPointKernel::getClassTypeId(),
         PointsGui::ViewProviderPoints::getClassTypeId());
@@ -84,5 +98,3 @@ void PointsGuiExport initPointsGui()
     // add resources and reloads the translators
     loadPointsResource();
 }
-
-} // extern "C"

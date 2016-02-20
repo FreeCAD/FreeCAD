@@ -277,16 +277,28 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
             else {
                 Command* pCmd = rMgr.getCommandByName(it2->first.c_str());
                 if (!pCmd) { // unknown command
-                    // try to find out the appropriate module name
-                    std::string pyMod = it2->second + "Gui";
+                    // first try the module name as is
+                    std::string pyMod = it2->second;
                     try {
                         Base::Interpreter().loadModule(pyMod.c_str());
+                        // Try again
+                        pCmd = rMgr.getCommandByName(it2->first.c_str());
                     }
                     catch(const Base::Exception&) {
                     }
+                }
 
-                    // Try again
-                    pCmd = rMgr.getCommandByName(it2->first.c_str());
+                // still not there?
+                if (!pCmd) {
+                    // add the 'Gui' suffix
+                    std::string pyMod = it2->second + "Gui";
+                    try {
+                        Base::Interpreter().loadModule(pyMod.c_str());
+                        // Try again
+                        pCmd = rMgr.getCommandByName(it2->first.c_str());
+                    }
+                    catch(const Base::Exception&) {
+                    }
                 }
 
                 if (pCmd) {
@@ -312,7 +324,7 @@ void Workbench::setupCustomShortcuts() const
                 // may be UTF-8 encoded
                 QString str = QString::fromUtf8(it->second.c_str());
                 QKeySequence shortcut = str;
-                cmd->getAction()->setShortcut(shortcut);
+                cmd->getAction()->setShortcut(shortcut.toString(QKeySequence::NativeText));
             }
         }
     }

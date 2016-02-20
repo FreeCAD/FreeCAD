@@ -12,7 +12,8 @@ if (FREECAD_USE_3DCONNEXION)
     add_definitions(-D_USE_3DCONNEXION_SDK)
     if(APPLE)
         set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
-        set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers )
+        set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers
+                                    ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers/3DconnexionClient )
     endif(APPLE)
 endif(FREECAD_USE_3DCONNEXION)
 

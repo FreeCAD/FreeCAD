@@ -44,8 +44,12 @@ endif(WIN32)
 
 # ================================================================================
 
+# Issues with boost::any on older versions with C++11 enabled.
+set(BOOST_MIN_VERSION 1.55)
+
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     set(CMAKE_COMPILER_IS_CLANGXX TRUE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
@@ -60,6 +64,15 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     endif(UNIX)
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
+IF(CMAKE_COMPILER_IS_GNUCXX)
+    EXECUTE_PROCESS( COMMAND ${CMAKE_C_COMPILER} -dumpversion
+                     OUTPUT_VARIABLE GCC_VERSION )
+    IF(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    ELSE(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+        UNSET(BOOST_MIN_VERSION) # For Ubuntu 12.04
+    ENDIF(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+ENDIF()
 
 # ================================================================================
 # Output directories for install target
@@ -280,6 +293,7 @@ endif(BUILD_RAYTRACING)
 #inferred from cmakelists.txt. appears to be working.
 if(BUILD_DRAWING)
   set(BUILD_PART ON)
+  set(BUILD_SPREADSHEET ON)
 endif(BUILD_DRAWING)
 
 #inferred from cmakelists.txt. appears to be working.
@@ -406,7 +420,9 @@ if(FREECAD_LIBPACK_USE)
     find_package(SWIG)
 
     IF(NOT SWIG_FOUND)
-        MESSAGE("SWIG was not found, build no SWIG binding for pivy")
+        MESSAGE("==================================================\n"
+                "SWIG not found, don't build SWIG binding for pivy.\n"
+                "==================================================\n")
     ENDIF(NOT SWIG_FOUND)
 
 # -------------------------------- Shiboken/PySide ------------------------
@@ -571,7 +587,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
-    find_package(Boost COMPONENTS filesystem program_options regex signals system thread REQUIRED)
+    find_package(Boost ${BOOST_MIN_VERSION} 
+        COMPONENTS filesystem program_options regex signals system thread REQUIRED)
 
     IF(NOT Boost_FOUND)
         MESSAGE(FATAL_ERROR "========================================\n"
@@ -590,7 +607,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     find_package(XercesC REQUIRED)
     IF(NOT XercesC_FOUND)
         MESSAGE(FATAL_ERROR "==================\n"
-                            "XercesC not found!\n"
+                            "XercesC not found.\n"
                             "==================\n")
     ENDIF(NOT XercesC_FOUND)
 
@@ -620,7 +637,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     else()
         find_package(SMESH)
         if(NOT SMESH_FOUND)
-            message(ERROR "SMESH was not found.")
+            message(ERROR "================\n"
+                          "SMESH not found.\n"
+                          "================\n")
         endif()
         include_directories(${SMESH_INCLUDE_DIR})
     endif()
@@ -644,7 +663,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     IF(NOT SWIG_FOUND)
         MESSAGE("==================================================\n"
-                "SWIG was not found, build no SWIG binding for pivy\n"
+                "SWIG not found, don't build SWIG binding for pivy.\n"
                 "==================================================\n")
     ENDIF(NOT SWIG_FOUND)
 
@@ -652,9 +671,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     find_package(Eigen3)
     IF(NOT EIGEN3_FOUND)
-        MESSAGE("====================\n"
-                "Eigen3 was not found\n"
-                "====================\n")
+        MESSAGE("=================\n"
+                "Eigen3 not found.\n"
+                "=================\n")
     ENDIF(NOT EIGEN3_FOUND)
 
 # -------------------------------- Qt --------------------------------
@@ -677,14 +696,14 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     IF(NOT QT4_FOUND)
         MESSAGE(FATAL_ERROR "=======================\n"
-                            "Qt libraries not found!\n"
+                            "Qt libraries not found.\n"
                             "=======================\n")
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("========================================================\n"
-                "Qt Webkit not found, will not build browser integration!\n"
-                "========================================================\n")
+        MESSAGE("=====================================================\n"
+                "Qt Webkit not found, don't build browser integration.\n"
+                "=====================================================\n")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 
@@ -718,9 +737,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(FREECAD_USE_FREETYPE)
         find_package(Freetype)
         if(NOT FREETYPE_FOUND)
-            MESSAGE("==============================================================================\n"
-                    "FreeType2 library is not available. Part module will lack of makeWireString().\n"
-                    "==============================================================================\n")
+            MESSAGE("===============================================================\n"
+                    "FreeType2 not found. Part module will lack of makeWireString().\n"
+                    "===============================================================\n")
         endif(NOT FREETYPE_FOUND)
     endif(FREECAD_USE_FREETYPE)
 
@@ -730,27 +749,25 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- OpenGL --------------------------------
 
         find_package(OpenGL)
-                include(FindPackageMessage)
-                if(OPENGL_GLU_FOUND)
-                    find_package_message(OPENGL_GLU
-                        "Found OpenGLU: ${OPENGL_glu_LIBRARY}"
-                        "[${OPENGL_glu_LIBRARY}][${OEPNGL_INCLUDE_DIR}]")
-                else(OPENGL_GLU_FOUND)
-                    message(FATAL_ERROR "==============================\n"
-                                        "The GLU library was not found.\n"
-                                        "==============================\n")
-                endif(OPENGL_GLU_FOUND)
+        include(FindPackageMessage)
+        if(OPENGL_GLU_FOUND)
+            find_package_message(OPENGL_GLU
+                "Found OpenGLU: ${OPENGL_glu_LIBRARY}"
+                "[${OPENGL_glu_LIBRARY}][${OEPNGL_INCLUDE_DIR}]")
+        else(OPENGL_GLU_FOUND)
+            message(FATAL_ERROR "======================\n"
+                                "GLU library not found.\n"
+                                "======================\n")
+        endif(OPENGL_GLU_FOUND)
 
 # -------------------------------- Coin3D --------------------------------
 
-        if(BUILD_GUI)
-            find_package(Coin3D REQUIRED)
-            if(NOT COIN3D_FOUND)
-                MESSAGE(FATAL_ERROR "====================\n"
-                                    "Coin3D was not found\n"
-                                    "====================\n")
-            endif(NOT COIN3D_FOUND)
-        endif(BUILD_GUI)
+        find_package(Coin3D REQUIRED)
+        if(NOT COIN3D_FOUND)
+            MESSAGE(FATAL_ERROR "=================\n"
+                                "Coin3D not found.\n"
+                                "=================\n")
+        endif(NOT COIN3D_FOUND)
 
 # ------------------------------ Spaceball -------------------------------
 
@@ -793,7 +810,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         IF(MATPLOTLIB_FOUND)
             message(STATUS "-- matplotlib-${MATPLOTLIB_VERSION} has been found.")
         ELSE(MATPLOTLIB_FOUND)
-            message("-- matplotlib not found, Plot module won't be available!")
+            message("=====================================================\n"
+                    "matplotlib not found, Plot module won't be available.\n"
+                    "=====================================================\n")
         ENDIF(MATPLOTLIB_FOUND)
 
 # ------------------------------------------------------------------------

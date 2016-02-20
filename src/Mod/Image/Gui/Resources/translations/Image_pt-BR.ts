@@ -59,37 +59,37 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Escolher a orientação</translation>
+        <translation>Escolher a orientação</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Plano de imagem</translation>
+        <translation>Plano de imagem</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">Plano XY</translation>
+        <translation>Plano XY</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">Plano XZ</translation>
+        <translation>Plano XZ</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">Plano YZ</translation>
+        <translation>Plano YZ</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Inverter direção</translation>
+        <translation>Inverter direção</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Offset:</translation>
+        <translation>Offset:</translation>
     </message>
 </context>
 <context>
@@ -136,12 +136,12 @@
         <translation>Padrão</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Pronto...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>cinza</translation>
     </message>

@@ -270,9 +270,14 @@ class _ViewProviderSectionPlane:
                     norm = vobj.Object.Proxy.getNormal(vobj.Object)
                     mp = vobj.Object.Shape.CenterOfMass
                     mp = DraftVecUtils.project(mp,norm)
-                    dist = mp.Length + 0.1 # to not clip exactly on the section object
+                    dist = mp.Length #- 0.1 # to not clip exactly on the section object
                     norm = norm.negative()
-                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),-dist)
+                    if mp.getAngle(norm) > 1:
+                        dist += 1
+                        dist = -dist
+                    else:
+                        dist -= 0.1
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip,0)
                 else:
@@ -384,7 +389,7 @@ class _ArchDrawingView:
                             import ArchVRM, WorkingPlane
                             wp = WorkingPlane.plane()
                             wp.setFromPlacement(obj.Source.Placement)
-                            wp.inverse()
+                            #wp.inverse()
                             render = ArchVRM.Renderer()
                             render.setWorkingPlane(wp)
                             render.addObjects(objs)
@@ -392,12 +397,14 @@ class _ArchDrawingView:
                                 render.cut(obj.Source.Shape,obj.ShowCut)
                             else:
                                 render.cut(obj.Source.Shape)
+                            self.svg += '<g transform="scale(1,-1)">\n'
                             self.svg += render.getViewSVG(linewidth="LWPlaceholder")
                             self.svg += fillpattern
                             self.svg += render.getSectionSVG(linewidth="SWPlaceholder",fillpattern="sectionfill")
                             if hasattr(obj,"ShowCut"):
                                 if obj.ShowCut:
                                     self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
+                            self.svg += '</g>\n'
                             # print render.info()
 
                         else:

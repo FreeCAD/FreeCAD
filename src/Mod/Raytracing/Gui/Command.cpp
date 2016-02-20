@@ -374,7 +374,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
 
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("*.pov"));
+    QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.pov"));
     for (unsigned int i=0; i<dir.count(); i++ ) {
         QFileInfo fi(dir[i]);
         QAction* a = pcAction->addAction(fi.baseName());
@@ -771,7 +771,7 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
 
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("*.lxs"));
+    QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.lxs"));
     for (unsigned int i=0; i<dir.count(); i++ ) {
         QFileInfo fi(dir[i]);
         QAction* a = pcAction->addAction(fi.baseName());

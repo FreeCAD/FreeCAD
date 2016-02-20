@@ -242,7 +242,7 @@ void SelectionFilterPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    behaviors().type_object()->tp_new = &PyMake;
+    behaviors().set_tp_new(PyMake);
     add_varargs_method("match",&SelectionFilterPy::match,"match()");
     add_varargs_method("result",&SelectionFilterPy::result,"result()");
     add_varargs_method("test",&SelectionFilterPy::test,"test()");

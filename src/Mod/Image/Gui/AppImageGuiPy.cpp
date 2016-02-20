@@ -27,6 +27,9 @@
 # include <QFileInfo>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include "ImageView.h"
 
 #include <Base/Console.h>
@@ -36,21 +39,32 @@
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 
-using namespace ImageGui;
-
-
-/* module functions */
-static PyObject * 
-open(PyObject *self, PyObject *args) 
+namespace ImageGui {
+class Module : public Py::ExtensionModule<Module>
 {
-    char* Name;
-    const char* DocName=0;
-    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
-        return NULL;
-    std::string EncodedName = std::string(Name);
-    PyMem_Free(Name);
+public:
+    Module() : Py::ExtensionModule<Module>("ImageGui")
+    {
+        add_varargs_method("open",&Module::open
+        );
+        add_varargs_method("insert",&Module::open
+        );
+        initialize("This module is the ImageGui module."); // register with Python
+    }
 
-    PY_TRY {
+    virtual ~Module() {}
+
+private:
+    Py::Object open(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* DocName=0;
+        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
+            throw Py::Exception();
+
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
         QString fileName = QString::fromUtf8(EncodedName.c_str());
         QFileInfo file(fileName);
 
@@ -73,8 +87,9 @@ open(PyObject *self, PyObject *args)
                 }
             }
         }
-        else
-            Py_Error(PyExc_IOError, "Could not load image file");
+        else {
+            throw Py::Exception(PyExc_IOError, "Could not load image file");
+        }
 
         // Displaying the image in a view.
         // This ImageView object takes ownership of the pixel data (in 'pointImageTo') so we don't need to delete it here
@@ -85,22 +100,13 @@ open(PyObject *self, PyObject *args)
         Gui::getMainWindow()->addWindow( iView );
         iView->pointImageTo((void *)pPixelData, (unsigned long)imageq.width(), (unsigned long)imageq.height(), format, 0, true);
 
-    } PY_CATCH;
-
-    Py_Return;
-}
-
-
-/* module functions */
-static PyObject *
-insert(PyObject *self, PyObject *args)
-{
-    return open(self, args);
-}
-
-/* registration table  */
-struct PyMethodDef ImageGui_Import_methods[] = {
-    {"open"       ,open ,       1}, /* method name, C func ptr, always-tuple */
-    {"insert"     ,insert,      1},
-    {NULL, NULL}                   /* end of table marker */
+        return Py::None();
+    }
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace ImageGui

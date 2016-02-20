@@ -392,14 +392,33 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
 
         // Don't read transient properties
         if (!(getPropertyType(prop) & Prop_Transient)) {
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0)
-                prop->Restore(reader);
-            else if (prop)
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                try {
+                    prop->Restore(reader);
+                }
+                catch (const Base::XMLParseException&) {
+                    throw; // re-throw
+                }
+                catch (const Base::Exception &e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+                catch (const std::exception &e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+#ifndef FC_DEBUG
+                catch (...) {
+                    Base::Console().Error("DynamicProperty::Restore: Unknown C++ exception thrown");
+                }
+#endif
+            }
+            else if (prop) {
                 Base::Console().Warning("%s: Overread data for property %s of type %s, expected type is %s\n",
                     pc->getTypeId().getName(), prop->getName(), prop->getTypeId().getName(), TypeName);
-            else
+            }
+            else {
                 Base::Console().Warning("%s: No property found with name %s and type %s\n",
                     pc->getTypeId().getName(), PropName, TypeName);
+            }
         }
         reader.readEndElement("Property");
     }

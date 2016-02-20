@@ -4,23 +4,23 @@
 <context>
     <name>CmdFemAddPart</name>
     <message>
-        <location filename="../../Command.cpp" line="+153"/>
+        <location filename="../../Command.cpp" line="+165"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a part to the Analysis</source>
-        <translation type="unfinished">Adăugaţi o parte la analiză</translation>
+        <translation>Adăugaţi o parte la analiză</translation>
     </message>
 </context>
 <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-        <location line="+61"/>
+        <location line="+106"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -34,11 +34,29 @@
     </message>
 </context>
 <context>
-    <name>CmdFemConstraintFixed</name>
+    <name>CmdFemConstraintDisplacement</name>
     <message>
-        <location line="+36"/>
+        <location line="+256"/>
         <source>Fem</source>
         <translation type="unfinished">Metoda elementelor finite</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create FEM displacement constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create FEM constraint for a displacement acting on a face</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdFemConstraintFixed</name>
+    <message>
+        <location line="-219"/>
+        <source>Fem</source>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -54,9 +72,9 @@
 <context>
     <name>CmdFemConstraintForce</name>
     <message>
-        <location line="+36"/>
+        <location line="+40"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -72,9 +90,9 @@
 <context>
     <name>CmdFemConstraintGear</name>
     <message>
-        <location line="+77"/>
+        <location line="+87"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -90,27 +108,27 @@
 <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-        <location line="-42"/>
+        <location line="-47"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM pressure constraint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create FEM pressure constraint</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a pressure acting on a face</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create FEM constraint for a pressure acting on a face</translation>
     </message>
 </context>
 <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-        <location line="+76"/>
+        <location line="+84"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -126,15 +144,15 @@
 <context>
     <name>CmdFemCreateAnalysis</name>
     <message>
-        <location line="-320"/>
+        <location line="-385"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a FEM analysis</source>
-        <translation type="unfinished">Creează o analiză FEM</translation>
+        <translation>Creează o analiză FEM</translation>
     </message>
 </context>
 <context>
@@ -155,33 +173,47 @@
 <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-        <location line="+505"/>
+        <location line="+614"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Define/create a nodes set...</source>
-        <translation type="unfinished">Definește/crează o configurare a nodurilor...</translation>
+        <translation>Definește/crează o configurare a nodurilor...</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Selecţie greşită</translation>
+        <translation>Selecţie greşită</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select a single FEM mesh or nodes set, please.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select a single FEM mesh or nodes set, please.</translation>
+    </message>
+</context>
+<context>
+    <name>CmdFemCreateSolver</name>
+    <message>
+        <location line="-522"/>
+        <source>Fem</source>
+        <translation>Metoda elementelor finite</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Add a solver to the Analysis</source>
+        <translation type="unfinished">Add a solver to the Analysis</translation>
     </message>
 </context>
 <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-        <location line="-88"/>
+        <location line="+432"/>
         <source>Fem</source>
-        <translation type="unfinished">Metoda elementelor finite</translation>
+        <translation>Metoda elementelor finite</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -196,62 +228,108 @@
     <message>
         <location filename="../../DlgSettingsFem.ui" line="+14"/>
         <source>FEM</source>
-        <translation type="unfinished">FEM</translation>
+        <translation>FEM</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>CalculiX</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CalculiX</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Use internal editor for .inp files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use internal editor for .inp files</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>External editor:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">External editor:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Leave blank to use default CalculiX ccx binary file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Leave blank to use default CalculiX ccx binary file</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>ccx binary</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ccx binary</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Working directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Working directory</translation>
     </message>
     <message>
         <location line="+42"/>
+        <source>Default analysis settings</source>
+        <translation type="unfinished">Default analysis settings</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Default type on analysis</source>
+        <translation type="unfinished">Default type on analysis</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Static</source>
+        <translation type="unfinished">Static</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Frequency</source>
+        <translation type="unfinished">Frequency</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Eigenmode number</source>
+        <translation type="unfinished">Eigenmode number</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Type</source>
+        <translation>Tip</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>High frequency limit</source>
+        <translation type="unfinished">High frequency limit</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Low frequency limit</source>
+        <translation type="unfinished">Low frequency limit</translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <location line="+7"/>
+        <source>Hz</source>
+        <translation type="unfinished">Hz</translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Materials</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Materials</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Use built-in materials</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use built-in materials</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Use materials from .FreeCAD/Materials directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use materials from .FreeCAD/Materials directory</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Use materials from user defined directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Use materials from user defined directory</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>User directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User directory</translation>
     </message>
 </context>
 <context>
@@ -282,7 +360,7 @@
     <message>
         <location filename="../../TaskAnalysisInfo.cpp" line="+45"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation>Set de noduri</translation>
     </message>
 </context>
 <context>
@@ -290,27 +368,35 @@
     <message>
         <location filename="../../TaskCreateNodeSet.cpp" line="+63"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation>Set de noduri</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-        <location filename="../../TaskFemConstraint.cpp" line="+185"/>
+        <location filename="../../TaskFemConstraint.cpp" line="+195"/>
         <location line="+11"/>
         <source>Input error</source>
-        <translation type="unfinished">Eroare de intrare</translation>
+        <translation>Eroare de intrare</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You must specify at least one reference</source>
-        <translation type="unfinished">Trebuie să specificați cel puțin o referință</translation>
+        <translation>Trebuie să specificați cel puțin o referință</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-        <location filename="../../TaskFemConstraintBearing.cpp" line="+349"/>
+        <location filename="../../TaskFemConstraintBearing.cpp" line="+351"/>
+        <source>Input error</source>
+        <translation>Eroare de intrare</translation>
+    </message>
+</context>
+<context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+        <location filename="../../TaskFemConstraintDisplacement.cpp" line="+639"/>
         <source>Input error</source>
         <translation type="unfinished">Eroare de intrare</translation>
     </message>
@@ -318,25 +404,37 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+369"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+358"/>
+        <location line="+26"/>
         <source>Input error</source>
-        <translation type="unfinished">Eroare de intrare</translation>
+        <translation>Eroare de intrare</translation>
+    </message>
+    <message>
+        <location line="-26"/>
+        <source>Please specify a force greater than 0</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-        <location filename="../../TaskFemConstraintGear.cpp" line="+309"/>
+        <location filename="../../TaskFemConstraintGear.cpp" line="+310"/>
         <source>Input error</source>
-        <translation type="unfinished">Eroare de intrare</translation>
+        <translation>Eroare de intrare</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-        <location filename="../../TaskFemConstraintPressure.cpp" line="+260"/>
+        <location filename="../../TaskFemConstraintPressure.cpp" line="+257"/>
+        <location line="+16"/>
         <source>Input error</source>
-        <translation type="unfinished">Eroare de intrare</translation>
+        <translation>Eroare de intrare</translation>
+    </message>
+    <message>
+        <location line="-16"/>
+        <source>Please specify a pressure greater than 0</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -344,7 +442,7 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="+204"/>
         <source>Input error</source>
-        <translation type="unfinished">Eroare de intrare</translation>
+        <translation>Eroare de intrare</translation>
     </message>
 </context>
 <context>
@@ -352,12 +450,12 @@
     <message>
         <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="+75"/>
         <source>Edit FEM mesh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit FEM mesh</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Meshing failure</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Meshing failure</translation>
     </message>
 </context>
 <context>
@@ -365,13 +463,13 @@
     <message>
         <location filename="../../TaskDriver.cpp" line="+51"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation>Set de noduri</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraint</name>
     <message>
-        <location filename="../../TaskFemConstraint.cpp" line="-120"/>
+        <location filename="../../TaskFemConstraint.cpp" line="-128"/>
         <source>FEM constraint parameters</source>
         <translation type="unfinished">FEM constraint parameters</translation>
     </message>
@@ -379,9 +477,9 @@
 <context>
     <name>FemGui::TaskFemConstraintBearing</name>
     <message>
-        <location filename="../../TaskFemConstraintBearing.cpp" line="-274"/>
+        <location filename="../../TaskFemConstraintBearing.cpp" line="-275"/>
         <source>Delete</source>
-        <translation type="unfinished">Ştergeţi</translation>
+        <translation>Ştergeţi</translation>
     </message>
     <message>
         <location line="+98"/>
@@ -389,39 +487,67 @@
         <location line="+7"/>
         <location line="+16"/>
         <location line="+6"/>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Eroare de selecție</translation>
+        <translation>Eroare de selecție</translation>
     </message>
     <message>
-        <location line="-37"/>
+        <location line="-38"/>
         <source>Please use only a single reference for bearing constraint</source>
         <translation type="unfinished">Please use only a single reference for bearing constraint</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces can be picked</source>
-        <translation type="unfinished">Numai fețele pot fi ridicate</translation>
+        <translation>Numai fețele pot fi ridicate</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Only cylindrical faces can be picked</source>
-        <translation type="unfinished">Numai fețele cilindrice pot fi ridicate</translation>
+        <translation>Numai fețele cilindrice pot fi ridicate</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Numai fețele plane pot fi ridicate</translation>
+        <translation>Numai fețele plane pot fi ridicate</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Numai marginile liniare pot fi ridicate</translation>
+        <translation>Numai marginile liniare pot fi ridicate</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Numai fețe și margini pot fi ridicate</translation>
+        <translation>Numai fețe și margini pot fi ridicate</translation>
+    </message>
+</context>
+<context>
+    <name>FemGui::TaskFemConstraintDisplacement</name>
+    <message>
+        <location filename="../../TaskFemConstraintDisplacement.cpp" line="-570"/>
+        <source>Delete</source>
+        <translation type="unfinished">Ştergeţi</translation>
+    </message>
+    <message>
+        <location line="+343"/>
+        <location line="+10"/>
+        <location line="+32"/>
+        <location line="+10"/>
+        <source>Selection error</source>
+        <translation type="unfinished">Eroare de selecție</translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <location line="+42"/>
+        <source>Nothing selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-32"/>
+        <location line="+42"/>
+        <source>Selected object is not a part!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -429,13 +555,13 @@
     <message>
         <location filename="../../TaskFemConstraintFixed.cpp" line="+74"/>
         <source>Delete</source>
-        <translation type="unfinished">Ştergeţi</translation>
+        <translation>Ştergeţi</translation>
     </message>
     <message>
         <location line="+61"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Eroare de selecție</translation>
+        <translation>Eroare de selecție</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -451,9 +577,9 @@
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-295"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-283"/>
         <source>Delete</source>
-        <translation type="unfinished">Ştergeţi</translation>
+        <translation>Ştergeţi</translation>
     </message>
     <message>
         <source>Point load [N]</source>
@@ -470,94 +596,94 @@
     <message>
         <location line="+67"/>
         <source>Point load</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare punct</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare linie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Area load</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare suprafață</translation>
     </message>
     <message>
         <location line="+30"/>
-        <location line="+5"/>
+        <location line="+6"/>
         <location line="+31"/>
         <location line="+6"/>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Eroare de selecție</translation>
+        <translation>Eroare de selecție</translation>
     </message>
     <message>
-        <location line="-46"/>
+        <location line="-48"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
         <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Only faces, edges and vertices can be picked</source>
         <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Numai fețele plane pot fi ridicate</translation>
+        <translation>Numai fețele plane pot fi ridicate</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Numai marginile liniare pot fi ridicate</translation>
+        <translation>Numai marginile liniare pot fi ridicate</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Numai fețe și margini pot fi ridicate</translation>
+        <translation>Numai fețe și margini pot fi ridicate</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintGear</name>
     <message>
-        <location filename="../../TaskFemConstraintGear.cpp" line="-155"/>
+        <location filename="../../TaskFemConstraintGear.cpp" line="-156"/>
         <location line="+6"/>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Eroare de selecție</translation>
+        <translation>Eroare de selecție</translation>
     </message>
     <message>
-        <location line="-10"/>
+        <location line="-11"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Numai fețele plane pot fi ridicate</translation>
+        <translation>Numai fețele plane pot fi ridicate</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Numai marginile liniare pot fi ridicate</translation>
+        <translation>Numai marginile liniare pot fi ridicate</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Numai fețe și margini pot fi ridicate</translation>
+        <translation>Numai fețe și margini pot fi ridicate</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-        <location filename="../../TaskFemConstraintPressure.cpp" line="-199"/>
+        <location filename="../../TaskFemConstraintPressure.cpp" line="-196"/>
         <source>Delete</source>
-        <translation type="unfinished">Ştergeţi</translation>
+        <translation>Ştergeţi</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Selection error</source>
-        <translation type="unfinished">Eroare de selecție</translation>
+        <translation>Eroare de selecție</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Only faces can be picked</source>
-        <translation type="unfinished">Numai fețele pot fi ridicate</translation>
+        <translation>Numai fețele pot fi ridicate</translation>
     </message>
 </context>
 <context>
@@ -565,12 +691,12 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
         <source>Pulley diameter</source>
-        <translation type="unfinished">Diametru scripete</translation>
+        <translation>Diametru scripete</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Torque [Nm]</source>
-        <translation type="unfinished">Cuplul [Nm]</translation>
+        <translation>Cuplul [Nm]</translation>
     </message>
 </context>
 <context>
@@ -586,95 +712,224 @@
     <message>
         <location filename="../../TaskTetParameter.cpp" line="+52"/>
         <source>Tet Parameter</source>
-        <translation type="unfinished">Parametru tet</translation>
+        <translation>Parametru tet</translation>
+    </message>
+</context>
+<context>
+    <name>FemGui::ViewProviderFemAnalysis</name>
+    <message>
+        <location filename="../../ViewProviderAnalysis.cpp" line="+84"/>
+        <source>Activate analysis</source>
+        <translation type="unfinished">Activate analysis</translation>
     </message>
 </context>
 <context>
     <name>FemGui::ViewProviderFemMeshShapeNetgen</name>
     <message>
-        <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="+78"/>
+        <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="+76"/>
         <source>Meshing failure</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Meshing failure</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+    </message>
+</context>
+<context>
+    <name>Form</name>
+    <message>
+        <location filename="../../../TaskPanelFemBeamSection.ui" line="+14"/>
+        <location filename="../../../TaskPanelFemShellThickness.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Formular</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Cross Section</source>
+        <translation type="unfinished">Cross Section</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location filename="../../../TaskPanelFemShellThickness.ui" line="+18"/>
+        <source>Use FreeCAD Property Editor</source>
+        <translation type="unfinished">Use FreeCAD Property Editor</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>to edit the cross section values</source>
+        <translation type="unfinished">to edit the cross section values</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location filename="../../../TaskPanelFemShellThickness.ui" line="+17"/>
+        <source>References</source>
+        <translation type="unfinished">References</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location filename="../../../TaskPanelFemShellThickness.ui" line="+6"/>
+        <source>Leave references blank </source>
+        <translation type="unfinished">Leave references blank </translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../../../TaskPanelFemShellThickness.ui" line="+7"/>
+        <source>to choose all remaining shapes</source>
+        <translation type="unfinished">to choose all remaining shapes</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location filename="../../../TaskPanelFemShellThickness.ui" line="+10"/>
+        <source>Add reference</source>
+        <translation>Adaugă referinţă</translation>
+    </message>
+    <message>
+        <location filename="../../../TaskPanelFemShellThickness.ui" line="-46"/>
+        <source>Thickness</source>
+        <translation>Grosime</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>to edit the thickness value</source>
+        <translation type="unfinished">to edit the thickness value</translation>
     </message>
 </context>
 <context>
     <name>MechanicalMaterial</name>
     <message>
-        <location filename="../../../MechanicalAnalysis.ui" line="+14"/>
+        <location filename="../../../TaskPanelFemSolverCalculix.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Analiză mecanică</translation>
+        <translation>Analiză mecanică</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+6"/>
+        <source>Working directory</source>
+        <translation type="unfinished">Working directory</translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Write Calculix Input File</source>
-        <translation type="unfinished">Write Calculix Input File</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location line="+10"/>
+        <source>Analysis type</source>
+        <translation type="unfinished">Analysis type</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Static</source>
+        <translation type="unfinished">Static</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Frequency</source>
+        <translation type="unfinished">Frequency</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Write .inp file</source>
+        <translation type="unfinished">Write .inp file</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Edit .inp file</source>
+        <translation type="unfinished">Edit .inp file</translation>
+    </message>
+    <message>
+        <source>Write Calculix Input File</source>
+        <translation type="obsolete">Write Calculix Input File</translation>
+    </message>
+    <message>
         <source>Edit Calculix Input File</source>
-        <translation type="unfinished">Edit Calculix Input File</translation>
+        <translation type="obsolete">Edit Calculix Input File</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Run Calculix</source>
-        <translation type="unfinished">Rulează Calculix</translation>
+        <translation>Rulează Calculix</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+21"/>
         <source>Time:</source>
-        <translation type="unfinished">Timp:</translation>
+        <translation>Timp:</translation>
     </message>
     <message>
-        <location filename="../../../MechanicalMaterial.ui" line="+14"/>
+        <location filename="../../../TaskPanelMechanicalMaterial.ui" line="+14"/>
         <source>Mechanical material</source>
-        <translation type="unfinished">Material mecanic</translation>
+        <translation>Material mecanic</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Material</source>
+        <translation>Materialul</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">alege...</translation>
+        <translation>alege...</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>References</source>
+        <translation type="unfinished">References</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Leave references blank </source>
+        <translation type="unfinished">Leave references blank </translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>to choose all remaining shapes</source>
+        <translation type="unfinished">to choose all remaining shapes</translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>MatWeb database...</source>
-        <translation type="unfinished">Baza de date MatWeb...</translation>
+        <source>Add reference</source>
+        <translation>Adaugă referinţă</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+19"/>
+        <source>Properties</source>
+        <translation type="unfinished">Properties</translation>
+    </message>
+    <message>
+        <location line="+145"/>
+        <source>External material resources</source>
+        <translation type="unfinished">External material resources</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>MatWeb database...</source>
+        <translation>Baza de date MatWeb...</translation>
+    </message>
+    <message>
+        <location line="-140"/>
         <source>Young&apos;s Modulus:</source>
-        <translation type="unfinished">Young&apos;s Modulus:</translation>
+        <translation>Young&apos;s Modulus:</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Density</source>
-        <translation type="unfinished"></translation>
+        <translation>Densitate</translation>
     </message>
     <message>
-        <location line="+19"/>
         <source>0 kg/m^3</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">0 kg/m^3</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="-145"/>
         <source>Material Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Material Description</translation>
     </message>
     <message>
         <source>Pa</source>
         <translation type="obsolete">Pa</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+107"/>
         <source>Poisson Ratio:</source>
         <translation type="unfinished">Poisson Ratio:</translation>
     </message>
@@ -682,96 +937,92 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-474"/>
+        <location filename="../../Command.cpp" line="-595"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">Nu sunt analize active</translation>
+        <translation>Nu sunt analize active</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">Trebuie să creați sau să activați o analiză</translation>
+        <translation>Trebuie să creați sau să activați o analiză</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+42"/>
         <location line="+8"/>
         <location line="+54"/>
         <location line="+8"/>
+        <location line="+55"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Selecţie greşită</translation>
+        <translation>Selecţie greşită</translation>
     </message>
     <message>
-        <location line="-69"/>
+        <location line="-124"/>
         <location line="+62"/>
+        <location line="+63"/>
         <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-        <translation type="unfinished">Versiunea dumneavoastră Free Cad este construită fără suport NETGEN. Conectarea în rețea nu va funcționa....</translation>
+        <translation>Versiunea dumneavoastră Free Cad este construită fără suport NETGEN. Conectarea în rețea nu va funcționa....</translation>
     </message>
     <message>
-        <location line="-54"/>
+        <location line="-117"/>
         <location line="+62"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation type="unfinished">Selecteaza o muchie, fata sau corp. Este permis doar un singur corp.</translation>
+        <translation>Selecteaza o muchie, fata sau corp. Este permis doar un singur corp.</translation>
     </message>
     <message>
         <location line="-57"/>
         <location line="+62"/>
         <source>Wrong object type</source>
-        <translation type="unfinished">Tip de obiect greşit</translation>
+        <translation>Tip de obiect greşit</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>Fillet works only on parts</source>
-        <translation type="unfinished">Rotunjirea e posibila numai pentru componente</translation>
+        <translation>Rotunjirea e posibila numai pentru componente</translation>
     </message>
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="+16"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Renunţă</translation>
+        <translation>Renunţă</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFemConstraint.cpp" line="+145"/>
         <source>Edit constraint</source>
-        <translation type="unfinished">Editare restricţie</translation>
+        <translation>Editare restricţie</translation>
     </message>
     <message>
-        <location line="+274"/>
-        <location line="+2"/>
         <source>Combo View</source>
-        <translation type="unfinished">Vizualizare combo</translation>
+        <translation type="obsolete">Vizualizare combo</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>combiTab</source>
-        <translation type="unfinished">combiTab</translation>
+        <translation type="obsolete">combiTab</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>qt_tabwidget_stackedwidget</source>
-        <translation type="unfinished">qt_tabwidget_stackedwidget</translation>
+        <translation type="obsolete">qt_tabwidget_stackedwidget</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>ShaftWizard</source>
-        <translation type="unfinished">ShaftWizard</translation>
+        <translation type="obsolete">ShaftWizard</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>ShaftWizardLayout</source>
-        <translation type="unfinished">ShaftWizardLayout</translation>
+        <translation type="obsolete">ShaftWizardLayout</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemConstraintBearing.cpp" line="+75"/>
+        <location filename="../../ViewProviderFemConstraintBearing.cpp" line="+74"/>
         <location filename="../../ViewProviderFemConstraintFixed.cpp" line="+74"/>
         <location filename="../../ViewProviderFemConstraintForce.cpp" line="+73"/>
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="+74"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="+73"/>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
+        <translation>O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -780,7 +1031,7 @@
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="+1"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation type="unfinished">Doriţi să închideţi această fereastră de dialog?</translation>
+        <translation>Doriţi să închideţi această fereastră de dialog?</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="-15"/>
@@ -793,17 +1044,23 @@
         <translation type="unfinished">Constraint force</translation>
     </message>
     <message>
+        <location filename="../../TaskFemConstraintDisplacement.cpp" line="+123"/>
         <location filename="../../TaskFemConstraintPressure.cpp" line="+98"/>
         <source>Constraint normal stress</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Constraint normal stress</translation>
+    </message>
+    <message>
+        <location filename="../../PropertyFemMeshItem.cpp" line="+98"/>
+        <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
+        <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
     </message>
 </context>
 <context>
     <name>ShowDisplacement</name>
     <message>
-        <location filename="../../../ShowDisplacement.ui" line="+14"/>
+        <location filename="../../../TaskPanelShowDisplacement.ui" line="+14"/>
         <source>Show result</source>
-        <translation type="unfinished">Arată rezultatul</translation>
+        <translation>Arată rezultatul</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -812,57 +1069,57 @@
     <message>
         <location line="+121"/>
         <source>Displacement</source>
-        <translation type="unfinished">Deplasare</translation>
+        <translation>Deplasare</translation>
     </message>
     <message>
         <location line="-39"/>
         <source>Max:</source>
-        <translation type="unfinished">Max:</translation>
+        <translation>Max:</translation>
     </message>
     <message>
         <location line="-74"/>
         <source>Result type</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Result type</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Y displacement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Y displacement</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>X displacement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">X displacement</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Z displacement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Z displacement</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Von Mises stress</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Von Mises stress</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Abs displacement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Abs displacement</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Min:</source>
-        <translation type="unfinished">Min:</translation>
+        <translation>Min:</translation>
     </message>
     <message>
         <location line="-72"/>
         <source>None</source>
-        <translation type="unfinished">Niciunul</translation>
+        <translation>Niciunul</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Avg:</source>
-        <translation type="unfinished">Medie:</translation>
+        <translation>Medie:</translation>
     </message>
     <message>
         <source>mm</source>
@@ -871,12 +1128,12 @@
     <message>
         <location line="+64"/>
         <source>Show</source>
-        <translation type="unfinished">Arată</translation>
+        <translation>Arată</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Factor:</source>
-        <translation type="unfinished">Factor:</translation>
+        <translation>Factor:</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -889,7 +1146,7 @@
     <message>
         <location filename="../../TaskAnalysisInfo.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -907,47 +1164,47 @@
     <message>
         <location filename="../../TaskCreateNodeSet.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Volume</source>
-        <translation type="unfinished">Volum</translation>
+        <translation>Volum</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Surface</source>
-        <translation type="unfinished">Suprafață</translation>
+        <translation>Suprafață</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nodes: 0</source>
-        <translation type="unfinished">Noduri: 0</translation>
+        <translation>Noduri: 0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Poly</source>
-        <translation type="unfinished">Poligon</translation>
+        <translation>Poligon</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Box</source>
-        <translation type="unfinished">Caseta</translation>
+        <translation>Caseta</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Pick</source>
-        <translation type="unfinished">Alege</translation>
+        <translation>Alege</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Add</source>
-        <translation type="unfinished">Adaugă</translation>
+        <translation>Adaugă</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Angle-search</source>
-        <translation type="unfinished">Căutare-unghi</translation>
+        <translation>Căutare-unghi</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -957,7 +1214,7 @@
     <message>
         <location line="+9"/>
         <source>Stop angle:</source>
-        <translation type="unfinished">Oprire unghi:</translation>
+        <translation>Oprire unghi:</translation>
     </message>
 </context>
 <context>
@@ -965,7 +1222,7 @@
     <message>
         <location filename="../../TaskDriver.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -973,37 +1230,37 @@
     <message>
         <location filename="../../TaskFemConstraint.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Add reference</source>
-        <translation type="unfinished">Adaugă referinţă</translation>
+        <translation>Adaugă referinţă</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Încărcare [N]</translation>
+        <translation>Încărcare [N]</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Diameter</source>
-        <translation type="unfinished">Diametru</translation>
+        <translation>Diametru</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other diameter</source>
-        <translation type="unfinished">Alte diametru</translation>
+        <translation>Alte diametru</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Center distance</source>
-        <translation type="unfinished">Centrul distanței</translation>
+        <translation>Centrul distanței</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Direction</source>
-        <translation type="unfinished">Direcţia</translation>
+        <translation>Direcţia</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1013,7 +1270,7 @@
     <message>
         <location line="+9"/>
         <source>Location</source>
-        <translation type="unfinished">Locatia</translation>
+        <translation>Locatia</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1026,17 +1283,17 @@
     <message>
         <location filename="../../TaskFemConstraintBearing.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Adaugă referinţă</translation>
+        <translation>Adaugă referinţă</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Gear diameter</source>
-        <translation type="unfinished">Diametru roată dințată</translation>
+        <translation>Diametru roată dințată</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1046,17 +1303,17 @@
     <message>
         <location line="+24"/>
         <source>Center distance</source>
-        <translation type="unfinished">Centrul distanței</translation>
+        <translation>Centrul distanței</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Force</source>
-        <translation type="unfinished">Forță</translation>
+        <translation>Forță</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Belt tension force</source>
-        <translation type="unfinished">Forță tensiune centură</translation>
+        <translation>Forță tensiune centură</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1066,27 +1323,27 @@
     <message>
         <location line="+9"/>
         <source>Force location [deg]</source>
-        <translation type="unfinished">Forțează locația [deg]</translation>
+        <translation>Forțează locația [deg]</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Force Direction</source>
-        <translation type="unfinished">Forțează direcția</translation>
+        <translation>Forțează direcția</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reversed direction</source>
-        <translation type="unfinished">Direcţie inversă</translation>
+        <translation>Direcţie inversă</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Axial free</source>
-        <translation type="unfinished">Axial liber</translation>
+        <translation>Axial liber</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Location</source>
-        <translation type="unfinished">Locatia</translation>
+        <translation>Locatia</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1095,16 +1352,94 @@
     </message>
 </context>
 <context>
+    <name>TaskFemConstraintDisplacement</name>
+    <message>
+        <location filename="../../TaskFemConstraintDisplacement.ui" line="+35"/>
+        <source>Prescribed Displacement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Select multiple face(s), click Add or Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Add</source>
+        <translation type="unfinished">Adaugă</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Displacement x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+42"/>
+        <location line="+42"/>
+        <location line="+61"/>
+        <location line="+39"/>
+        <location line="+42"/>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-219"/>
+        <location line="+42"/>
+        <location line="+42"/>
+        <location line="+61"/>
+        <location line="+39"/>
+        <location line="+45"/>
+        <source>Fixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-203"/>
+        <source>Displacement y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
+        <source>Displacement z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>Rotations are only valid for Beam and Shell elements.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Rotation x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>Rotation y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>Rotation z</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TaskFemConstraintFixed</name>
     <message>
         <location filename="../../TaskFemConstraintFixed.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Adaugă referinţă</translation>
+        <translation>Adaugă referinţă</translation>
     </message>
 </context>
 <context>
@@ -1112,22 +1447,22 @@
     <message>
         <location filename="../../TaskFemConstraintForce.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Adaugă referinţă</translation>
+        <translation>Adaugă referinţă</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Încărcare [N]</translation>
+        <translation>Încărcare [N]</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Direction</source>
-        <translation type="unfinished">Direcţia</translation>
+        <translation>Direcţia</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1140,22 +1475,22 @@
     <message>
         <location filename="../../TaskFemConstraintPressure.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Adaugă referinţă</translation>
+        <translation>Adaugă referinţă</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Pressure</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pressure</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1 MPa</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1 MPa</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1168,7 +1503,7 @@
     <message>
         <location filename="../../TaskObjectName.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -1176,57 +1511,57 @@
     <message>
         <location filename="../../TaskTetParameter.ui" line="+20"/>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Max. Size:</source>
-        <translation type="unfinished">Dimensiune maximă:</translation>
+        <translation>Dimensiune maximă:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Second order</source>
-        <translation type="unfinished">A doua comandă</translation>
+        <translation>A doua comandă</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Finețe:</translation>
+        <translation>Finețe:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>VeryCoarse</source>
-        <translation type="unfinished">Foarte brut</translation>
+        <translation>Foarte brut</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Brut</translation>
+        <translation>Brut</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderat</translation>
+        <translation>Moderat</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fin</translation>
+        <translation>Fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>VeryFine</source>
-        <translation type="unfinished">Foarte fin</translation>
+        <translation>Foarte fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>UserDefined</source>
-        <translation type="unfinished">Definit de utilizator</translation>
+        <translation>Definit de utilizator</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Growth Rate:</source>
-        <translation type="unfinished">Rată de creştere:</translation>
+        <translation>Rată de creştere:</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1241,22 +1576,22 @@
     <message>
         <location line="+16"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimizează</translation>
+        <translation>Optimizează</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Node count: </source>
-        <translation type="unfinished">Numărul de nod: </translation>
+        <translation>Numărul de nod: </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Triangle count:</source>
-        <translation type="unfinished">Numărul de triunghiuri:</translation>
+        <translation>Numărul de triunghiuri:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Tetraeder count:</source>
-        <translation type="unfinished">Numărul de tetraedre:</translation>
+        <translation>Numărul de tetraedre:</translation>
     </message>
 </context>
 <context>

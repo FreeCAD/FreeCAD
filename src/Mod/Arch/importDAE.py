@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Mesh, os, numpy
+import FreeCAD, Mesh, os, numpy, MeshPart
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -45,6 +45,27 @@ def checkCollada():
         return False
     else:
         return True
+        
+def triangulate(shape):
+    "triangulates the given face"
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    mesher = p.GetInt("ColladaMesher",0)
+    tessellation = p.GetFloat("ColladaTessellation",1.0)
+    grading = p.GetFloat("ColladaGrading",0.3)
+    segsperedge = p.GetInt("ColladaSegsPerEdge",1)
+    segsperradius = p.GetInt("ColladaSegsPerRadius",2)
+    secondorder = p.GetBool("ColladaSecondOrder",False)
+    optimize = p.GetBool("ColladaOptimize",True)
+    allowquads = p.GetBool("ColladaAllowQuads",False)
+    if mesher == 0:
+        return shape.tessellate(tessellation)
+    elif mesher == 1:
+        return MeshPart.meshFromShape(Shape=shape,MaxLength=tessellation).Topology
+    else:
+        return MeshPart.meshFromShape(Shape=shape,GrowthRate=grading,SegPerEdge=segsperedge,
+               SegPerRadius=segsperradius,SecondOrder=secondorder,Optimize=optimize,
+               AllowQuad=allowquads).Topology
+
     
 def open(filename):
     "called when freecad wants to open a file"
@@ -131,7 +152,7 @@ def export(exportList,filename,tessellation=1):
         m = None
         if obj.isDerivedFrom("Part::Feature"):
             print "exporting object ",obj.Name, obj.Shape
-            m = Mesh.Mesh(obj.Shape.tessellate(tessellation))
+            m = Mesh.Mesh(triangulate(obj.Shape))
         elif obj.isDerivedFrom("Mesh::Feature"):
             print "exporting object ",obj.Name, obj.Mesh
             m = obj.Mesh

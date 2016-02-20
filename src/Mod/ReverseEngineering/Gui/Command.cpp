@@ -31,7 +31,7 @@
 
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Points/App/PointsFeature.h>
+#include <Mod/Points/App/ViewFeature.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 
@@ -45,6 +45,7 @@
 
 #include "../App/ApproxSurface.h"
 #include "FitBSplineSurface.h"
+#include "Poisson.h"
 
 using namespace std;
 
@@ -179,9 +180,97 @@ bool CmdApproxPlane::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdPoissonReconstruction);
+
+CmdPoissonReconstruction::CmdPoissonReconstruction()
+  : Command("Reen_PoissonReconstruction")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Poisson...");
+    sToolTipText    = QT_TR_NOOP("Poisson surface reconstruction");
+    sWhatsThis      = "Reen_PoissonReconstruction";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdPoissonReconstruction::activated(int iMsg)
+{
+    App::DocumentObjectT objT;
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    if (obj.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Reen_ApproxSurface", "Wrong selection"),
+            qApp->translate("Reen_ApproxSurface", "Please select a single point cloud.")
+        );
+        return;
+    }
+
+    objT = obj.front();
+    Gui::Control().showDialog(new ReenGui::TaskPoisson(objT));
+}
+
+bool CmdPoissonReconstruction::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+DEF_STD_CMD_A(CmdViewTriangulation);
+
+CmdViewTriangulation::CmdViewTriangulation()
+  : Command("Reen_ViewTriangulation")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("View triangulation");
+    sToolTipText    = QT_TR_NOOP("View triangulation");
+    sToolTipText    = QT_TR_NOOP("View triangulation");
+    sWhatsThis      = "Reen_ViewTriangulation";
+}
+
+void CmdViewTriangulation::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::ViewFeature::getClassTypeId());
+    addModule(App,"ReverseEngineering");
+    openCommand("View triangulation");
+    try {
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
+            App::DocumentObjectT objT(*it);
+            QString document = QString::fromStdString(objT.getDocumentPython());
+            QString object = QString::fromStdString(objT.getObjectPython());
+
+            QString command = QString::fromLatin1("%1.addObject('Mesh::Feature', 'View mesh').Mesh = ReverseEngineering.viewTriangulation("
+                "Points=%2.Points,"
+                "Width=%2.Width,"
+                "Height=%2.Height)"
+            )
+            .arg(document)
+            .arg(object)
+            ;
+            doCommand(Doc, command.toLatin1());
+        }
+
+        commitCommand();
+        updateActive();
+    }
+    catch (const Base::Exception& e) {
+        abortCommand();
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Reen_ViewTriangulation", "View triangulation failed"),
+            QString::fromLatin1(e.what())
+        );
+    }
+}
+
+bool CmdViewTriangulation::isActive(void)
+{
+    return Gui::Selection().countObjectsOfType(Points::ViewFeature::getClassTypeId()) > 0;
+}
+
 void CreateReverseEngineeringCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdApproxSurface());
     rcCmdMgr.addCommand(new CmdApproxPlane());
+    rcCmdMgr.addCommand(new CmdPoissonReconstruction());
+    rcCmdMgr.addCommand(new CmdViewTriangulation());
 }

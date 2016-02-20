@@ -88,7 +88,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     for (int i=ui->axis->count()-1; i >= count+2; i--)
         ui->axis->removeItem(i);
     for (int i=ui->axis->count(); i < count+2; i++)
-        ui->axis->addItem(QString::fromAscii("Sketch axis %1").arg(i-2));
+        ui->axis->addItem(QString::fromLatin1("Sketch axis %1").arg(i-2));
 
     int pos=-1;
 

@@ -59,37 +59,37 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Valitse suunta</translation>
+        <translation>Valitse suunta</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Kuvataso</translation>
+        <translation>Kuvataso</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">XY-taso</translation>
+        <translation>XY-taso</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ-taso</translation>
+        <translation>XZ-taso</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ-taso</translation>
+        <translation>YZ-taso</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Vastakkainen suunta</translation>
+        <translation>Vastakkainen suunta</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Siirtymä:</translation>
+        <translation>Siirtymä:</translation>
     </message>
 </context>
 <context>
@@ -136,12 +136,12 @@
         <translation>Standardi</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Valmis...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>harmaa</translation>
     </message>

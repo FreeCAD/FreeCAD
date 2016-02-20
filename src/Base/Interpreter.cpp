@@ -159,7 +159,10 @@ std::string InterpreterSingleton::runString(const char *sCmd)
 
     presult = PyRun_String(sCmd, Py_file_input, dict, dict); /* eval direct */
     if (!presult) {
-        throw PyException();
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
     }
 
     PyObject* repr = PyObject_Repr(presult);
@@ -265,43 +268,43 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
         //std::string encoding = PyUnicode_GetDefaultEncoding();
         //PyUnicode_SetDefaultEncoding("utf-8");
         //PyUnicode_SetDefaultEncoding(encoding.c_str());
+        PyObject *module, *dict;
+        module = PyImport_AddModule("__main__");
+        dict = PyModule_GetDict(module);
         if (local) {
-            PyObject *module, *dict;
-            module = PyImport_AddModule("__main__");
-            dict = PyModule_GetDict(module);
             dict = PyDict_Copy(dict);
-            if (PyDict_GetItemString(dict, "__file__") == NULL) {
-                PyObject *f = PyString_FromString(pxFileName);
-                if (f == NULL) {
-                    fclose(fp);
-                    return;
-                }
-                if (PyDict_SetItemString(dict, "__file__", f) < 0) {
-                    Py_DECREF(f);
-                    fclose(fp);
-                    return;
-                }
-                Py_DECREF(f);
-            }
-
-            PyObject *result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
-            fclose(fp);
-            Py_DECREF(dict);
-            if (!result) {
-                if (PyErr_ExceptionMatches(PyExc_SystemExit))
-                    throw SystemExitException();
-                else
-                    throw PyException();
-            }
-            Py_DECREF(result);
         }
         else {
-            int ret = PyRun_SimpleFile(fp, pxFileName);
-            fclose(fp);
-            if (ret != 0)
-                throw PyException();
+            Py_INCREF(dict); // avoid to further distinguish between local and global dict
         }
 
+        if (PyDict_GetItemString(dict, "__file__") == NULL) {
+            PyObject *f = PyString_FromString(pxFileName);
+            if (f == NULL) {
+                fclose(fp);
+                Py_DECREF(dict);
+                return;
+            }
+            if (PyDict_SetItemString(dict, "__file__", f) < 0) {
+                Py_DECREF(f);
+                fclose(fp);
+                Py_DECREF(dict);
+                return;
+            }
+            Py_DECREF(f);
+        }
+
+        PyObject *result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
+        fclose(fp);
+        Py_DECREF(dict);
+
+        if (!result) {
+            if (PyErr_ExceptionMatches(PyExc_SystemExit))
+                throw SystemExitException();
+            else
+                throw PyException();
+        }
+        Py_DECREF(result);
     }
     else {
         std::string err = "Unknown file: ";

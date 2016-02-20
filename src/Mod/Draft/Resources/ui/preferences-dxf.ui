@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>506</width>
-    <height>560</height>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,9 +21,41 @@
     <number>9</number>
    </property>
    <item>
+    <widget class="Gui::PrefCheckBox" name="checkBox_6">
+     <property name="text">
+      <string>Show this dialog when importing and exporting</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>dxfShowDialog</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Draft</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBox_4">
+     <property name="toolTip">
+      <string>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</string>
+     </property>
+     <property name="text">
+      <string>Use legacy python importer</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>dxfUseLegacyImporter</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Draft</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Automatic update</string>
+      <string>Automatic update (legacy importer only)</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -62,27 +94,11 @@
        <number>9</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_4">
-          <property name="toolTip">
-           <string>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</string>
-          </property>
-          <property name="text">
-           <string>Use legacy python importer</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxfUseLegacyImporter</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Note: Not all the options below are used by the new importer yet</string>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -279,26 +295,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
-          <property name="toolTip">
-           <string>If this is checked, the exported objects will be projected to reflect the current view direction</string>
-          </property>
-          <property name="text">
-           <string>Project exported objects along current view direction</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxfproject</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
@@ -470,6 +466,49 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfmesh</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_5">
+          <property name="toolTip">
+           <string>if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</string>
+          </property>
+          <property name="text">
+           <string>Export Drawing Views as blocks</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfExportBlocks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
+          <property name="toolTip">
+           <string>If this is checked, the exported objects will be projected to reflect the current view direction</string>
+          </property>
+          <property name="text">
+           <string>Project exported objects along current view direction</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfproject</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>

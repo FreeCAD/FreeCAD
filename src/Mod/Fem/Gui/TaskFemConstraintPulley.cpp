@@ -201,7 +201,7 @@ bool TaskDlgFemConstraintPulley::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TensionForce = %f",name.c_str(), parameterPulley->getTensionForce());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

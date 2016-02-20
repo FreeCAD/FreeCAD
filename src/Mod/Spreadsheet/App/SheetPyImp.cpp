@@ -67,10 +67,19 @@ PyObject* SheetPy::set(PyObject *args)
         return 0;
 
     try {
-        Range rangeIter(address);
-        do {
-            getSheetPtr()->setCell(rangeIter.address().c_str(), contents);
-        } while (rangeIter.next());
+        Sheet * sheet = getSheetPtr();
+        std::string cellAddress = sheet->getAddressFromAlias(address).c_str();
+
+        /* Check to see if address is really an alias first */
+        if (cellAddress.size() > 0)
+            sheet->setCell(cellAddress.c_str(), contents);
+        else {
+            Range rangeIter(address);
+
+            do {
+                sheet->setCell(rangeIter.address().c_str(), contents);
+            } while (rangeIter.next());
+        }
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -441,15 +450,70 @@ PyObject* SheetPy::setAlias(PyObject *args)
 {
     CellAddress address;
     const char * strAddress;
-    const char * value;
+    PyObject * value;
 
-    if (!PyArg_ParseTuple(args, "ss:setAlias", &strAddress, &value))
+    if (!PyArg_ParseTuple(args, "sO:setAlias", &strAddress, &value))
         return 0;
 
     try {
         address = stringToAddress(strAddress);
-        getSheetPtr()->setAlias(address, value);
+
+        if (PyString_Check(value))
+            getSheetPtr()->setAlias(address, PyString_AsString(value));
+        else if (value == Py_None)
+            getSheetPtr()->setAlias(address, "");
+        else
+            throw Base::TypeError("String or None expected");
+
         Py_Return;
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+}
+
+PyObject* SheetPy::getAlias(PyObject *args)
+{
+    const char * strAddress;
+
+    if (!PyArg_ParseTuple(args, "s:getAlias", &strAddress))
+        return 0;
+
+    try {
+        CellAddress address(strAddress);
+        const Cell * cell = getSheetPtr()->getCell(address);
+        std::string alias;
+
+        if (cell && cell->getAlias(alias))
+            return Py::new_reference_to( Py::String( alias ) );
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+}
+
+PyObject* SheetPy::getCellFromAlias(PyObject *args)
+{
+    const char * alias;
+
+    if (!PyArg_ParseTuple(args, "s:getAlias", &alias))
+        return 0;
+
+    try {
+        std::string address = getSheetPtr()->getAddressFromAlias(alias);
+
+        if (address.size() > 0)
+            return Py::new_reference_to( Py::String( address ) );
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());

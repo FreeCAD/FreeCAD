@@ -89,48 +89,38 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
-// ------------------------------------------------------------------
+// ---------------------------------------------------------
 
-PROPERTY_SOURCE(Points::Export, Points::Feature)
+PROPERTY_SOURCE(Points::Organized, Points::Feature)
 
-Export::Export(void)
+Organized::Organized()
 {
-    ADD_PROPERTY(Sources ,(0));
-    ADD_PROPERTY(FileName,(""));
-    ADD_PROPERTY(Format  ,(""));
+    ADD_PROPERTY_TYPE(Width,(1),"Width",App::Prop_ReadOnly,"Width");
+    ADD_PROPERTY_TYPE(Height,(1),"Height",App::Prop_ReadOnly,"Height");
 }
 
-App::DocumentObjectExecReturn *Export::execute(void)
+Organized::~Organized()
 {
-  // ask for write permission
-  Base::FileInfo fi(FileName.getValue());
-  Base::FileInfo di(fi.dirPath().c_str());
-  if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable())
-  {
-      return new App::DocumentObjectExecReturn("No write permission for file");
-  }
+}
 
-  Base::ofstream str(fi, std::ios::out | std::ios::binary);
+// ---------------------------------------------------------
 
-  if (fi.hasExtension("asc"))
-  {
-    const std::vector<App::DocumentObject*>& features = Sources.getValues();
-    for ( std::vector<App::DocumentObject*>::const_iterator it = features.begin(); it != features.end(); ++it )
-    {
-      Feature *pcFeat  = dynamic_cast<Feature*>(*it);
-      const PointKernel& kernel = pcFeat->Points.getValue();
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Points::FeatureCustom, Points::Feature)
+/// @endcond
 
-      str << "# " << pcFeat->getNameInDocument() << " Number of points: " << kernel.size() << std::endl;
-      for ( PointKernel::const_iterator it = kernel.begin(); it != kernel.end(); ++it )
-        str << it->x << " " << it->y << " " << it->z << std::endl;
-    }
-  }
-  else
-  {
-      return new App::DocumentObjectExecReturn("File format not supported");
-  }
+// explicit template instantiation
+template class PointsExport FeatureCustomT<Points::Feature>;
+}
 
-  return App::DocumentObject::StdReturn;
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Points::OrganizedCustom, Points::Organized)
+/// @endcond
+
+// explicit template instantiation
+template class PointsExport FeatureCustomT<Points::Organized>;
 }
 
 // ---------------------------------------------------------

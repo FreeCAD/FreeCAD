@@ -59,37 +59,37 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Välj orientering</translation>
+        <translation>Välj orientering</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Image plane</translation>
+        <translation>Bildplan</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">XY-plan</translation>
+        <translation>XY-plan</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ-Plan</translation>
+        <translation>XZ-Plan</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ-Plan</translation>
+        <translation>YZ-Plan</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Omvänd riktning</translation>
+        <translation>Omvänd riktning</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Offset:</translation>
+        <translation>Offset:</translation>
     </message>
 </context>
 <context>
@@ -136,12 +136,12 @@
         <translation>Standard</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Klar...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>Grå</translation>
     </message>

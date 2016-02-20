@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">影像平面</translation>
+        <translation>影像平面</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -136,12 +136,12 @@
         <translation>標準</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>準備...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>灰色</translation>
     </message>

@@ -69,8 +69,8 @@ Std_TestQM::Std_TestQM()
 void Std_TestQM::activated(int iMsg)
 {
     QStringList files = QFileDialog::getOpenFileNames(getMainWindow(),
-        QString::fromAscii("Test translation"), QString(),
-        QString::fromAscii("Translation (*.qm)"));
+        QString::fromLatin1("Test translation"), QString(),
+        QString::fromLatin1("Translation (*.qm)"));
     if (!files.empty()) {
         Translator::instance()->activateLanguage("English");
         QList<QTranslator*> i18n = qApp->findChildren<QTranslator*>();

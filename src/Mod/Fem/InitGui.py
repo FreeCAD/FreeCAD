@@ -30,6 +30,10 @@
 #***************************************************************************/
 
 
+import FreeCAD
+import FreeCADGui
+
+
 class FemWorkbench (Workbench):
     "Fem workbench object"
     def __init__(self):
@@ -45,14 +49,13 @@ class FemWorkbench (Workbench):
         import _CommandMechanicalShowResult
         import _CommandQuickAnalysis
         import _CommandPurgeFemResults
-        import _CommandMechanicalJobControl
+        import _CommandSolverJobControl
         import _CommandFemFromShape
         import _CommandNewMechanicalAnalysis
         import _CommandFemShellThickness
         import _CommandFemBeamSection
         import _CommandMechanicalMaterial
-
-        import MechanicalAnalysis
+        import _CommandFemSolverCalculix
 
         import subprocess
         from platform import system
@@ -88,8 +91,7 @@ class FemWorkbench (Workbench):
         else:
             FreeCAD.Console.PrintError("Setting working directory \'{}\' for ccx failed!\n")
 
-
     def GetClassName(self):
         return "FemGui::Workbench"
 
-Gui.addWorkbench(FemWorkbench())
+FreeCADGui.addWorkbench(FemWorkbench())

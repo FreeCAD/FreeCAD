@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Экспорт проекта Raytracing в файл</translation>
+        <translation>Экспорт проекта Raytracing в файл</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -26,35 +26,35 @@
 <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+204"/>
+        <location line="+206"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Трасcировщик лучей</translation>
+        <translation>Трасcировщик лучей</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New Luxrender project</source>
-        <translation type="unfinished">Новый проект Luxrender</translation>
+        <translation>Новый проект Luxrender</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new Luxrender project into the document</source>
-        <translation type="unfinished">Вставка в документ нового проекта Luxrender</translation>
+        <translation>Вставка в документ нового проекта Luxrender</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">Без шаблона</translation>
+        <translation>Без шаблона</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">Шаблоны не доступны</translation>
+        <translation>Шаблоны не доступны</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-338"/>
+        <location line="-340"/>
         <source>Raytracing</source>
         <translation>Трасcировщик лучей</translation>
     </message>
@@ -66,7 +66,7 @@
     <message>
         <location line="+1"/>
         <source>Insert a new part object into a Raytracing project</source>
-        <translation type="unfinished">Вставить новую часть объекта в проект Raytracing</translation>
+        <translation>Вставить новую часть объекта в проект Raytracing</translation>
     </message>
     <message>
         <source>Insert a new part object into a Povray project</source>
@@ -91,40 +91,40 @@
     <message>
         <location line="+1"/>
         <source>New POV-Ray project</source>
-        <translation type="unfinished">Новый проект POV-Ray</translation>
+        <translation>Новый проект POV-Ray</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Вставить новый POV-Ray проект в документ</translation>
+        <translation>Вставить новый POV-Ray проект в документ</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">Без шаблона</translation>
+        <translation>Без шаблона</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">Шаблоны не доступны</translation>
+        <translation>Шаблоны не доступны</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+201"/>
+        <location line="+203"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Трасcировщик лучей</translation>
+        <translation>Трасcировщик лучей</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation type="unfinished">C визуализацией</translation>
+        <translation>C визуализацией</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Визуализирует текущий проект raytracing c помощью внешнего рендера</translation>
+        <translation>Визуализирует текущий проект raytracing c помощью внешнего рендера</translation>
     </message>
 </context>
 <context>
@@ -132,31 +132,31 @@
     <message>
         <location line="+249"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Трасcировщик лучей</translation>
+        <translation>Трасcировщик лучей</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Reset Camera</source>
-        <translation type="unfinished">Со сбросом настроек камеры</translation>
+        <translation>Со сбросом настроек камеры</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sets the camera of the selected Raytracing project to match the current view</source>
-        <translation type="unfinished">Устанавливает камеру в выбранном проекте Raytracing для соответствия текущему изображению
+        <translation>Устанавливает камеру в выбранном проекте Raytracing для соответствия текущему изображению
 </translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-734"/>
+        <location line="-736"/>
         <source>Raytracing</source>
         <translation>Трасcировщик лучей</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished">Экспорт камеры в POV-Ray...</translation>
+        <translation>Экспорт камеры в POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -204,12 +204,12 @@
         <location line="-79"/>
         <location line="+139"/>
         <location line="+93"/>
-        <location line="+395"/>
+        <location line="+397"/>
         <source>No perspective camera</source>
         <translation>Вид не в перспективе </translation>
     </message>
     <message>
-        <location line="-626"/>
+        <location line="-628"/>
         <location line="+139"/>
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
@@ -246,10 +246,10 @@ Do you want to continue?</source>
         <translation type="obsolete">Записать текущий 3D-вид камеры и ее содержимого в файл POV-Ray</translation>
     </message>
     <message>
-        <location line="+505"/>
+        <location line="+507"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">Текущий вид камеры не является перспективным и таким образом результат luxrender изображения позже может выглядеть иначе, чем вы ожидаете. Вы хотите продолжить?</translation>
+        <translation>Текущий вид камеры не является перспективным и таким образом результат luxrender изображения позже может выглядеть иначе, чем вы ожидаете. Вы хотите продолжить?</translation>
     </message>
 </context>
 <context>
@@ -259,43 +259,35 @@ Do you want to continue?</source>
         <translation type="obsolete">POV-Ray (*.pov)</translation>
     </message>
     <message>
+        <source>POV-Ray (*.pov)</source>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
+    </message>
+    <message>
+        <source>All Files (*.*)</source>
+        <translation type="obsolete">Все файлы (*.*)</translation>
+    </message>
+    <message>
         <location line="-591"/>
         <location line="+51"/>
-        <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
-    </message>
-    <message>
-        <location line="-50"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+281"/>
-        <location line="+109"/>
-        <source>All Files (*.*)</source>
-        <translation>Все файлы (*.*)</translation>
-    </message>
-    <message>
-        <location line="-502"/>
-        <location line="+51"/>
         <location line="+63"/>
-        <location line="+281"/>
+        <location line="+283"/>
         <source>Export page</source>
         <translation>Экспорт страницы</translation>
     </message>
     <message>
-        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished">POV-Ray(*.pov)</translation>
+        <translation type="obsolete">POV-Ray(*.pov)</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="-103"/>
         <location line="+87"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Wrong selection</source>
         <translation>Неправильное выделение</translation>
     </message>
     <message>
-        <location line="-396"/>
+        <location line="-398"/>
         <source>Select a Part object.</source>
         <translation>Выберите часть.</translation>
     </message>
@@ -303,27 +295,32 @@ Do you want to continue?</source>
         <location line="+10"/>
         <location line="+12"/>
         <source>No Raytracing project to insert</source>
-        <translation type="unfinished">Ни одного проекта Raytracing для вставки</translation>
+        <translation>Ни одного проекта Raytracing для вставки</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>Create a Raytracing project to insert a view.</source>
-        <translation type="unfinished">Создать проект Raytracing, чтобы вставить изображение.</translation>
+        <translation>Создать проект Raytracing, чтобы вставить изображение.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select a Raytracing project to insert the view.</source>
-        <translation type="unfinished">Выбрать проект Raytracing чтобы вставить изображение.</translation>
+        <translation>Выбрать проект Raytracing чтобы вставить изображение.</translation>
     </message>
     <message>
         <location line="+64"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Select one Raytracing project object.</source>
-        <translation type="unfinished">Выбрать один объект проекта Raytracing.</translation>
+        <translation>Выбрать один объект проекта Raytracing.</translation>
     </message>
     <message>
-        <location line="-234"/>
+        <location line="-308"/>
+        <source>Luxrender</source>
+        <translation type="unfinished">Luxrender</translation>
+    </message>
+    <message>
+        <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
         <translation type="unfinished">POV-Ray not found</translation>
@@ -339,12 +336,7 @@ Do you want to continue?</source>
         <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Rendered image (*.bmp *.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
+        <location line="+74"/>
         <source>Lux project file missing</source>
         <translation type="unfinished">Lux project file missing</translation>
     </message>
@@ -357,17 +349,34 @@ Do you want to continue?</source>
         <location line="-68"/>
         <location line="+6"/>
         <source>Luxrender not found</source>
-        <translation type="unfinished">Luxrender не найден</translation>
+        <translation>Luxrender не найден</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-482"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+279"/>
+        <source>POV-Ray</source>
+        <translation>POV-Ray</translation>
+    </message>
+    <message>
+        <location line="-391"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+283"/>
+        <location line="+109"/>
+        <source>All Files</source>
+        <translation type="unfinished">All Files</translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Пожалуйста задайте находящийся в списке предпочтений путь в luxrender или luxconsole.</translation>
+        <translation>Пожалуйста задайте находящийся в списке предпочтений путь в luxrender или luxconsole.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Пожалуйста скорректируйте находящийся в списке предпочтений путь в luxrender или luxconsole.</translation>
+        <translation>Пожалуйста скорректируйте находящийся в списке предпочтений путь в luxrender или luxconsole.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -384,14 +393,15 @@ Do you want to continue?</source>
         <translation type="obsolete">Rendered image (*.bmp)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">Визуализированное изображение (*.png)</translation>
+        <translation type="obsolete">Визуализированное изображение (*.png)</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
-        <translation type="unfinished">Визуализированного изображение</translation>
+        <translation>Визуализированного изображение</translation>
     </message>
     <message>
         <source>No Povray project to insert</source>
@@ -455,42 +465,42 @@ Do you want to continue?</source>
     <message>
         <location line="-159"/>
         <source>Render</source>
-        <translation type="unfinished">Визуализация</translation>
+        <translation>Визуализация</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>+P +A</source>
-        <translation type="unfinished">+ P + A</translation>
+        <translation>+ P + A</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>+W: </source>
-        <translation type="unfinished">+ W: </translation>
+        <translation>+ W: </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The width of the rendered image</source>
-        <translation type="unfinished">Ширина визуализированного изображения</translation>
+        <translation>Ширина визуализированного изображения</translation>
     </message>
     <message>
         <location line="+19"/>
         <source> +H : </source>
-        <translation type="unfinished"> + H: </translation>
+        <translation> + H: </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The height of the rendered image</source>
-        <translation type="unfinished">Высота визуализированного изображения</translation>
+        <translation>Высота визуализированного изображения</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Luxrender executable:</source>
-        <translation type="unfinished">Исполняемый файл Luxrender:</translation>
+        <translation>Исполняемый файл Luxrender:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The path to the luxrender (or luxconsole) executable</source>
-        <translation type="unfinished">Исполняемый путь в luxrender (или luxconsole)</translation>
+        <translation>Исполняемый путь в luxrender (или luxconsole)</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -502,7 +512,7 @@ Do you want to continue?</source>
         <location line="+23"/>
         <location line="+16"/>
         <source>Used by utility tools</source>
-        <translation type="unfinished">Используется вспомогательными утилитами</translation>
+        <translation>Используется вспомогательными утилитами</translation>
     </message>
     <message>
         <location line="-13"/>
@@ -540,17 +550,17 @@ Do you want to continue?</source>
     <message>
         <location filename="../../ViewProvider.cpp" line="+68"/>
         <source>Edit LuxRender project</source>
-        <translation type="unfinished">Редактировать проект LuxRender</translation>
+        <translation>Редактировать проект LuxRender</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>LuxRender template</source>
-        <translation type="unfinished">Шаблон Luxrender</translation>
+        <translation>Шаблон Luxrender</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a LuxRender template</source>
-        <translation type="unfinished">Выбрать шаблон LuxRender</translation>
+        <translation>Выбрать шаблон LuxRender</translation>
     </message>
 </context>
 <context>
@@ -558,17 +568,17 @@ Do you want to continue?</source>
     <message>
         <location line="+48"/>
         <source>Edit Povray project</source>
-        <translation type="unfinished">Редактировать проект Povray</translation>
+        <translation>Редактировать проект Povray</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Povray template</source>
-        <translation type="unfinished">Шаблон Povray</translation>
+        <translation>Шаблон Povray</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a Povray template</source>
-        <translation type="unfinished">Выбрать шаблон Povray</translation>
+        <translation>Выбрать шаблон Povray</translation>
     </message>
 </context>
 <context>

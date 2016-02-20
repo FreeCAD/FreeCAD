@@ -101,9 +101,9 @@ class CommandPathHop:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Hop',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathHop","Hop"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Hop","Hop"),
                 'Accel': "P, H",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathHop","Creates a Path Hop object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Hop","Creates a Path Hop object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -113,14 +113,15 @@ class CommandPathHop:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("PathHop","Please select one path object\n"))
+            FreeCAD.Console.PrintError(translate("Path_Hop","Please select one path object\n"))
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("PathHop","The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(translate("Path_Hop","The selected object is not a path\n"))
             return
         
-        FreeCAD.ActiveDocument.openTransaction(translate("PathHop","Create Hop"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Hop","Create Hop"))
         FreeCADGui.addModule("PathScripts.PathHop")
+        FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Hop")')
         FreeCADGui.doCommand('PathScripts.PathHop.ObjectHop(obj)')
         FreeCADGui.doCommand('PathScripts.PathHop.ViewProviderPathHop(obj.ViewObject)')

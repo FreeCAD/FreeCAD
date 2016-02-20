@@ -243,7 +243,7 @@ void SketchBased::onChanged(const App::Property* prop)
 {
     if (prop == &Sketch) {
         // if attached to a sketch then mark it as read-only
-        this->Placement.StatusBits.set(2, Sketch.getValue() != 0);
+        this->Placement.setStatus(App::Property::ReadOnly, Sketch.getValue() != 0);
     }
 
     Feature::onChanged(prop);

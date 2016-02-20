@@ -116,7 +116,7 @@ void DownloadDialog::downloadFile()
     QByteArray path = QUrl::toPercentEncoding(url.path(), "!$&'()*+,;=:@/");
     if (path.isEmpty())
         path = "/";
-    httpGetId = http->get(QString::fromAscii(path), file);
+    httpGetId = http->get(QString::fromLatin1(path), file);
 
     statusLabel->setText(tr("Downloading %1.").arg(fileName));
     downloadButton->setEnabled(false);

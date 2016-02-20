@@ -80,7 +80,7 @@ class ArchWorkbench(Workbench):
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
-                     "Arch_Bimserver","Arch_Git"]
+                     "Arch_Bimserver","Arch_Git","Arch_IfcSpreadsheet"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
@@ -91,7 +91,8 @@ class ArchWorkbench(Workbench):
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
                         "Draft_Clone"]
-        self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString","Draft_PathArray"]
+        self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString",
+                                "Draft_PathArray","Draft_Mirror"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",

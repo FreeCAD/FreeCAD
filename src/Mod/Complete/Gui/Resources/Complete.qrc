@@ -24,5 +24,7 @@
         <file>translations/Complete_hu.qm</file>
         <file>translations/Complete_pt-PT.qm</file>
         <file>translations/Complete_sr.qm</file>
+        <file>translations/Complete_el.qm</file>
+        <file>translations/Complete_sl.qm</file>
     </qresource>
 </RCC> 

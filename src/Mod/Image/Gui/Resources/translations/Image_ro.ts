@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Imagine plană</translation>
+        <translation>Imagine plană</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -136,12 +136,12 @@
         <translation>Standard</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Gata...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>gri</translation>
     </message>

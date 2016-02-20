@@ -32,10 +32,6 @@ class _ViewProviderFemAnalysis:
                 FreeCADGui.activateWorkbench("FemWorkbench")
             FemGui.setActiveAnalysis(self.Object)
             return True
-        else:
-            import _TaskPanelJobControl
-            taskd = _TaskPanelJobControl(self.Object)
-            FreeCADGui.Control.showDialog(taskd)
         return True
 
     def __getstate__(self):

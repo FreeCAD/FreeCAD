@@ -145,7 +145,7 @@ void StdCmdOpen::activated(int iMsg)
     }
     else {
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            getGuiApplication()->open(it.key().toUtf8(), it.value().toAscii());
+            getGuiApplication()->open(it.key().toUtf8(), it.value().toLatin1());
         }
     }
 }
@@ -215,7 +215,7 @@ void StdCmdImport::activated(int iMsg)
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->importFrom(it.key().toUtf8(),
                 getActiveGuiDocument()->getDocument()->getName(),
-                it.value().toAscii());
+                it.value().toLatin1());
         }
 
         if (emptyDoc) {
@@ -288,7 +288,7 @@ void StdCmdExport::activated(int iMsg)
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->exportTo(it.key().toUtf8(),
                 getActiveGuiDocument()->getDocument()->getName(),
-                it.value().toAscii());
+                it.value().toLatin1());
         }
     }
 }
@@ -397,7 +397,7 @@ StdCmdNew::StdCmdNew()
 void StdCmdNew::activated(int iMsg)
 {
     QString cmd;
-    cmd = QString::fromAscii("App.newDocument(\"%1\")")
+    cmd = QString::fromLatin1("App.newDocument(\"%1\")")
         .arg(qApp->translate("StdCmdNew","Unnamed"));
     doCommand(Command::Doc,(const char*)cmd.toUtf8());
 }
@@ -752,7 +752,7 @@ Action * StdCmdUndo::createAction(void)
     Action *pcAction;
 
     pcAction = new UndoAction(this,getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
@@ -795,7 +795,7 @@ Action * StdCmdRedo::createAction(void)
     Action *pcAction;
 
     pcAction = new RedoAction(this,getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));

@@ -26,9 +26,9 @@
 <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+204"/>
+        <location line="+206"/>
         <source>Raytracing</source>
-        <translation type="unfinished">光线追踪</translation>
+        <translation>光线追踪</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -43,18 +43,18 @@
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">没有模板</translation>
+        <translation>没有模板</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">没有可用的模板</translation>
+        <translation>没有可用的模板</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-338"/>
+        <location line="-340"/>
         <source>Raytracing</source>
         <translation>光线追踪</translation>
     </message>
@@ -101,20 +101,20 @@
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">没有模板</translation>
+        <translation>没有模板</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">没有可用的模板</translation>
+        <translation>没有可用的模板</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+201"/>
+        <location line="+203"/>
         <source>Raytracing</source>
-        <translation type="unfinished">光线追踪</translation>
+        <translation>光线追踪</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -132,7 +132,7 @@
     <message>
         <location line="+249"/>
         <source>Raytracing</source>
-        <translation type="unfinished">光线追踪</translation>
+        <translation>光线追踪</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -148,7 +148,7 @@
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-734"/>
+        <location line="-736"/>
         <source>Raytracing</source>
         <translation>光线追踪</translation>
     </message>
@@ -203,12 +203,12 @@
         <location line="-79"/>
         <location line="+139"/>
         <location line="+93"/>
-        <location line="+395"/>
+        <location line="+397"/>
         <source>No perspective camera</source>
         <translation>没有透视相机</translation>
     </message>
     <message>
-        <location line="-626"/>
+        <location line="-628"/>
         <location line="+139"/>
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
@@ -245,7 +245,7 @@ Do you want to continue?</source>
         <translation type="obsolete">将当前相机3D视图以及所有内容写入到Povray文件</translation>
     </message>
     <message>
-        <location line="+505"/>
+        <location line="+507"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
         <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
@@ -259,43 +259,35 @@ Do you want to continue?</translation>
         <translation type="obsolete">Povray(*.pov)</translation>
     </message>
     <message>
+        <source>POV-Ray (*.pov)</source>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
+    </message>
+    <message>
+        <source>All Files (*.*)</source>
+        <translation type="obsolete">所有文件(*.*)</translation>
+    </message>
+    <message>
         <location line="-591"/>
         <location line="+51"/>
-        <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
-    </message>
-    <message>
-        <location line="-50"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+281"/>
-        <location line="+109"/>
-        <source>All Files (*.*)</source>
-        <translation>所有文件(*.*)</translation>
-    </message>
-    <message>
-        <location line="-502"/>
-        <location line="+51"/>
         <location line="+63"/>
-        <location line="+281"/>
+        <location line="+283"/>
         <source>Export page</source>
         <translation>导出页面</translation>
     </message>
     <message>
-        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished">POV-Ray(*.pov)</translation>
+        <translation type="obsolete">POV-Ray(*.pov)</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="-103"/>
         <location line="+87"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Wrong selection</source>
         <translation>选择错误</translation>
     </message>
     <message>
-        <location line="-396"/>
+        <location line="-398"/>
         <source>Select a Part object.</source>
         <translation>选择零件对象.</translation>
     </message>
@@ -317,13 +309,18 @@ Do you want to continue?</translation>
     </message>
     <message>
         <location line="+64"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Select one Raytracing project object.</source>
         <translation type="unfinished">Select one Raytracing project object.</translation>
     </message>
     <message>
-        <location line="-234"/>
+        <location line="-308"/>
+        <source>Luxrender</source>
+        <translation type="unfinished">Luxrender</translation>
+    </message>
+    <message>
+        <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
         <translation type="unfinished">POV-Ray not found</translation>
@@ -339,12 +336,7 @@ Do you want to continue?</translation>
         <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Rendered image (*.bmp *.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
+        <location line="+74"/>
         <source>Lux project file missing</source>
         <translation type="unfinished">Lux project file missing</translation>
     </message>
@@ -360,7 +352,24 @@ Do you want to continue?</translation>
         <translation type="unfinished">Luxrender not found</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-482"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+279"/>
+        <source>POV-Ray</source>
+        <translation type="unfinished">POV-Ray</translation>
+    </message>
+    <message>
+        <location line="-391"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+283"/>
+        <location line="+109"/>
+        <source>All Files</source>
+        <translation type="unfinished">All Files</translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
         <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
     </message>
@@ -384,11 +393,12 @@ Do you want to continue?</translation>
         <translation type="obsolete">Rendered image (*.bmp)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">Rendered image (*.png)</translation>
+        <translation type="obsolete">Rendered image (*.png)</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
         <translation type="unfinished">Rendered image</translation>
@@ -455,7 +465,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-159"/>
         <source>Render</source>
-        <translation type="unfinished">呈现</translation>
+        <translation>呈现</translation>
     </message>
     <message>
         <location line="+40"/>

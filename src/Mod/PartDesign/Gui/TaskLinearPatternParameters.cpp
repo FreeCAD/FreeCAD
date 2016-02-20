@@ -121,7 +121,7 @@ void TaskLinearPatternParameters::setupUI()
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
             break;
         }
     }
@@ -163,7 +163,7 @@ void TaskLinearPatternParameters::updateUI()
     for (int i=ui->comboDirection->count()-1; i >= 2; i--)
         ui->comboDirection->removeItem(i);
     for (int i=ui->comboDirection->count(); i < maxcount; i++)
-        ui->comboDirection->addItem(QString::fromAscii("Sketch axis %1").arg(i-2));
+        ui->comboDirection->addItem(QString::fromLatin1("Sketch axis %1").arg(i-2));
 
     bool undefined = false;
     if (directionFeature != NULL && !directions.empty()) {
@@ -178,7 +178,7 @@ void TaskLinearPatternParameters::updateUI()
             else
                 undefined = true;
         } else if (directionFeature != NULL && !directions.empty()) {
-            ui->comboDirection->addItem(QString::fromAscii(directions.front().c_str()));
+            ui->comboDirection->addItem(QString::fromLatin1(directions.front().c_str()));
             ui->comboDirection->setCurrentIndex(maxcount);
         }
     } else {
@@ -222,7 +222,7 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
 
         std::string subName(msg.pSubName);
         if (originalSelected(msg)) {
-            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
+            ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
         } else if (referenceSelectionMode &&
                    ((subName.size() > 4 && subName.substr(0,4) == "Edge") ||
                     (subName.size() > 4 && subName.substr(0,4) == "Face"))) {
@@ -247,7 +247,7 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                 for (int i=ui->comboDirection->count()-1; i >= maxcount; i--)
                     ui->comboDirection->removeItem(i);
 
-                ui->comboDirection->addItem(QString::fromAscii(subName.c_str()));
+                ui->comboDirection->addItem(QString::fromLatin1(subName.c_str()));
                 ui->comboDirection->setCurrentIndex(maxcount);
                 ui->comboDirection->addItem(tr("Select reference..."));
             }
@@ -459,7 +459,7 @@ bool TaskDlgLinearPatternParameters::accept()
         parameter->apply();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

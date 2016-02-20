@@ -95,7 +95,7 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
 
         SoMaterialBundle mb(action);
 
-        SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+        SoTextureCoordinateBundle tb(action, true, false);
         SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
         this->getVertexData(state, coords, normals, cindices,
@@ -129,14 +129,14 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
     float size = std::min<float>((float)mod,3.0f);
     glPointSize(size);
 
-    SbBool per_face = FALSE;
-    SbBool per_vert = FALSE;
+    SbBool per_face = false;
+    SbBool per_vert = false;
     switch (binding) {
         case SoMaterialBindingElement::PER_FACE:
-            per_face = TRUE;
+            per_face = true;
             break;
         case SoMaterialBindingElement::PER_VERTEX:
-            per_vert = TRUE;
+            per_vert = true;
             break;
         default:
             break;
@@ -153,10 +153,10 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
     for (int index=0; index<numindices; ct++) {
         if (ct%mod==0) {
             if (per_face)
-                materials->send(ct, TRUE);
+                materials->send(ct, true);
             v1 = *viptr++; index++;
             if (per_vert)
-                materials->send(v1, TRUE);
+                materials->send(v1, true);
             if (normals)
                 currnormal = &normals[*normalindices++];
             glNormal3fv((const GLfloat*)currnormal);
@@ -164,7 +164,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
 
             v2 = *viptr++; index++;
             if (per_vert)
-                materials->send(v2, TRUE);
+                materials->send(v2, true);
             if (normals)
                 currnormal = &normals[*normalindices++];
             glNormal3fv((const GLfloat*)currnormal);
@@ -172,7 +172,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
 
             v3 = *viptr++; index++;
             if (per_vert)
-                materials->send(v3, TRUE);
+                materials->send(v3, true);
             if (normals)
                 currnormal = &normals[*normalindices++];
             glNormal3fv((const GLfloat*)currnormal);
@@ -199,7 +199,7 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         // thus we search there for it.
         SoSearchAction sa;
         sa.setInterest(SoSearchAction::FIRST);
-        sa.setSearchingAll(FALSE);
+        sa.setSearchingAll(false);
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
@@ -221,7 +221,7 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         // thus we search there for it.
         SoSearchAction sa;
         sa.setInterest(SoSearchAction::FIRST);
-        sa.setSearchingAll(FALSE);
+        sa.setSearchingAll(false);
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();

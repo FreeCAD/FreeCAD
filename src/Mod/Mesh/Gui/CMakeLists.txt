@@ -19,6 +19,8 @@ set(Mesh_MOC_HDRS
     DlgEvaluateMeshImp.h
     DlgRegularSolidImp.h
     DlgSettingsMeshView.h
+    DlgSettingsImportExportImp.h
+
     DlgSmoothing.h
     MeshEditor.h
     PropertyEditorMesh.h
@@ -32,6 +34,7 @@ set(Dialogs_UIC_SRCS
     DlgEvaluateMesh.ui
     DlgRegularSolid.ui
     DlgSettingsMeshView.ui
+    DlgSettingsImportExport.ui
     DlgSmoothing.ui
     RemoveComponents.ui
     Segmentation.ui
@@ -49,6 +52,8 @@ SET(Dialogs_SRCS
     DlgSettingsMeshView.ui
     DlgSettingsMeshView.cpp
     DlgSettingsMeshView.h
+    DlgSettingsImportExportImp.cpp
+    DlgSettingsImportExportImp.h
     DlgSmoothing.ui
     DlgSmoothing.cpp
     DlgSmoothing.h

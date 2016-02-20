@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -26,6 +26,7 @@ import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
 import Preview
+import Tools
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
@@ -40,19 +41,16 @@ class TaskPanel:
     def accept(self):
         """Create the ship instance"""
         self.preview.clean()
-        obj = App.ActiveDocument.addObject("Part::FeaturePython", "Ship")
-        ship = Instance.Ship(obj, self.solids)
-        Instance.ViewProviderShip(obj.ViewObject)
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.length = self.widget(QtGui.QLineEdit, "Length")
         form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        obj.Length = Locale.fromString(form.length.text())
-        obj.Breadth = Locale.fromString(form.breadth.text())
-        obj.Draft = Locale.fromString(form.draft.text())
-        App.ActiveDocument.recompute()
+        Tools.createShip(self.solids,
+                         Locale.fromString(form.length.text()),
+                         Locale.fromString(form.breadth.text()),
+                         Locale.fromString(form.draft.text()))
         return True
 
     def reject(self):

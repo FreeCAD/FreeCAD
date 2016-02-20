@@ -30,5 +30,9 @@
         <file>translations/Web_uk.qm</file>
         <file>translations/Web_it.qm</file>
         <file>translations/Web_pt-BR.qm</file>
+        <file>translations/Web_el.qm</file>
+        <file>translations/Web_sk.qm</file>
+        <file>translations/Web_tr.qm</file>
+        <file>translations/Web_sl.qm</file>
     </qresource>
 </RCC> 

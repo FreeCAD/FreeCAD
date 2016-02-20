@@ -48,9 +48,9 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgTipOfTheDayImp::DlgTipOfTheDayImp( QWidget* parent, Qt::WFlags fl )
+DlgTipOfTheDayImp::DlgTipOfTheDayImp( QWidget* parent, Qt::WindowFlags fl )
   : QDialog( parent, fl | Qt::WindowTitleHint | Qt::WindowSystemMenuHint ),
   WindowParameter("General")
 {
@@ -104,7 +104,7 @@ void DlgTipOfTheDayImp::onResponseHeaderReceived(const QHttpResponseHeader & res
 {
     if (responseHeader.statusCode() != 200) {
         QString msg = tr("Download failed: %1\n").arg(responseHeader.reasonPhrase());
-        Base::Console().Log(msg.toAscii());
+        Base::Console().Log(msg.toLatin1());
         _http->abort();
     }
 }
@@ -115,7 +115,7 @@ void DlgTipOfTheDayImp::onDone(bool err)
         return;
 
     // get the page and search for the tips section
-    QString text = QString::fromAscii(_http->readAll());
+    QString text = QString::fromLatin1(_http->readAll());
     QRegExp rx(QLatin1String("<p>You find the latest information.+<div class=\"printfooter\">"));
     if (rx.indexIn(text) > -1) {
         // the text of interest
@@ -143,7 +143,7 @@ void DlgTipOfTheDayImp::onStateChanged (int state)
             break;
         case QHttp::Closing:
         case QHttp::Unconnected:
-            Base::Console().Log("%s\n",(const char*)_http->errorString().toAscii());
+            Base::Console().Log("%s\n",(const char*)_http->errorString().toLatin1());
             break;
         default:
             break;

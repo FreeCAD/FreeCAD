@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QCheckBox>
+# include <QMessageBox>
 #endif
 
 
@@ -86,13 +87,19 @@ TaskProjection::~TaskProjection()
 bool TaskProjection::accept()
 {
     Gui::Document* document = Gui::Application::Instance->activeDocument();
-    if (!document)
+    if (!document) {
+        QMessageBox::warning(widget, tr("No active document"),
+            tr("There is currently no active document to complete the operation"));
+        return true;
+    }
+    std::list<Gui::MDIView*> mdis = document->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+    if (mdis.empty()) {
+        QMessageBox::warning(widget, tr("No active view"),
+            tr("There is currently no active view to complete the operation"));
         return false;
-    Gui::MDIView* mdi = document->getActiveView();
-    if (!mdi || !mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
-        return false;
+    }
 
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdis.front())->getViewer();
     SbVec3f pnt, dir;
     viewer->getNearPlane(pnt, dir);
     float x=0, y=1,z=1;
@@ -100,7 +107,7 @@ bool TaskProjection::accept()
 
     std::vector<Part::Feature*> shapes = Gui::Selection().getObjectsOfType<Part::Feature>();
     Gui::Command::openCommand("Project shape");
-    Gui::Command::doCommand(Gui::Command::Doc,"import Drawing");
+    Gui::Command::addModule(Gui::Command::Doc,"Drawing");
     for (std::vector<Part::Feature*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
         const char* object = (*it)->getNameInDocument();
         Gui::Command::doCommand(Gui::Command::Doc,

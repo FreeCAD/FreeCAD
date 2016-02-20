@@ -36,9 +36,9 @@ import FreeCAD
 
 def InitApplications():
 	try:
-		import sys,os
+		import sys,os,traceback,cStringIO
 	except ImportError:
-		FreeCAD.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
+		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
 	# Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
 	ModDir = FreeCAD.getHomePath()+'Mod'
@@ -52,6 +52,8 @@ def InitApplications():
 	HomeMod = os.path.realpath(HomeMod)
 	MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
 	MacroMod = os.path.realpath(MacroDir+"/Mod")
+	SystemWideMacroDir = FreeCAD.getHomePath()+'Macro'
+	SystemWideMacroDir = os.path.realpath(SystemWideMacroDir)
 
 	#print FreeCAD.getHomePath()
 	if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
@@ -96,7 +98,12 @@ def InitApplications():
 					exec open(InstallFile).read()
 				except Exception, inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
-					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Log('-'*100+'\n')
+					output=cStringIO.StringIO()
+					traceback.print_exc(file=output)
+					Log(output.getvalue())
+					Log('-'*100+'\n')
+					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
@@ -125,6 +132,8 @@ def InitApplications():
 		Log("   " + i + "\n")
 	# add MacroDir to path (RFE #0000504)
 	sys.path.append(MacroDir)
+	# add SystemWideMacroDir to path
+	sys.path.append(SystemWideMacroDir)
 	# add special path for MacOSX (bug #0000307)
 	import platform
 	if len(platform.mac_ver()[0]) > 0:

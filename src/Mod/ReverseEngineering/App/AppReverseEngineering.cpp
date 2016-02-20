@@ -59,8 +59,23 @@ public:
             "Iterations=5,Correction=True,PatchFactor=1.0"
         );
 #if defined(HAVE_PCL_SURFACE)
-        add_varargs_method("triangulate",&Module::triangulate,
+        add_keyword_method("triangulate",&Module::triangulate,
             "triangulate(PointKernel,searchRadius[,mu=2.5])."
+        );
+        add_keyword_method("poissonReconstruction",&Module::poissonReconstruction,
+            "poissonReconstruction(PointKernel)."
+        );
+        add_keyword_method("viewTriangulation",&Module::viewTriangulation,
+            "viewTriangulation(PointKernel, width, height)."
+        );
+        add_keyword_method("gridProjection",&Module::gridProjection,
+            "gridProjection(PointKernel)."
+        );
+        add_keyword_method("marchingCubesRBF",&Module::marchingCubesRBF,
+            "marchingCubesRBF(PointKernel)."
+        );
+        add_keyword_method("marchingCubesHoppe",&Module::marchingCubesHoppe,
+            "marchingCubesHoppe(PointKernel)."
         );
 #endif
 #if defined(HAVE_PCL_OPENNURBS)
@@ -196,20 +211,270 @@ private:
         }
     }
 #if defined(HAVE_PCL_SURFACE)
-    Py::Object triangulate(const Py::Tuple& args)
+    /*
+import ReverseEngineering as Reen
+import Points
+import Mesh
+import random
+
+r=random.Random()
+
+p=Points.Points()
+pts=[]
+for i in range(21):
+  for j in range(21):
+    pts.append(App.Vector(i,j,r.gauss(5,0.05)))
+
+p.addPoints(pts)
+m=Reen.triangulate(Points=p,SearchRadius=2.2)
+Mesh.show(m)
+    */
+    Py::Object triangulate(const Py::Tuple& args, const Py::Dict& kwds)
     {
-        PyObject *pcObj;
+        PyObject *pts;
         double searchRadius;
+        PyObject *vec = 0;
+        int ksearch=5;
         double mu=2.5;
-        if (!PyArg_ParseTuple(args.ptr(), "O!d|d", &(Points::PointsPy::Type), &pcObj, &searchRadius, &mu))
+
+        static char* kwds_greedy[] = {"Points", "SearchRadius", "Mu", "KSearch",
+                                      "Normals", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|diO", kwds_greedy,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &searchRadius, &mu, &ksearch, &vec))
             throw Py::Exception();
 
-        Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(pcObj);
-        Points::PointKernel* points = pPoints->getPointKernelPtr();
-        
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
         Mesh::MeshObject* mesh = new Mesh::MeshObject();
         SurfaceTriangulation tria(*points, *mesh);
-        tria.perform(searchRadius, mu);
+        tria.setMu(mu);
+        tria.setSearchRadius(searchRadius);
+        if (vec) {
+            Py::Sequence list(vec);
+            std::vector<Base::Vector3f> normals;
+            normals.reserve(list.size());
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Base::Vector3d v = Py::Vector(*it).toVector();
+                normals.push_back(Base::convertTo<Base::Vector3f>(v));
+            }
+            tria.perform(normals);
+        }
+        else {
+            tria.perform(ksearch);
+        }
+
+        return Py::asObject(new Mesh::MeshPy(mesh));
+    }
+    Py::Object poissonReconstruction(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        PyObject *vec = 0;
+        int ksearch=5;
+        int octreeDepth=-1;
+        int solverDivide=-1;
+        double samplesPerNode=-1.0;
+
+        static char* kwds_poisson[] = {"Points", "KSearch", "OctreeDepth", "SolverDivide",
+                                      "SamplesPerNode", "Normals", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iiidO", kwds_poisson,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &ksearch, &octreeDepth, &solverDivide, &samplesPerNode, &vec))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        Mesh::MeshObject* mesh = new Mesh::MeshObject();
+        Reen::PoissonReconstruction poisson(*points, *mesh);
+        poisson.setDepth(octreeDepth);
+        poisson.setSolverDivide(solverDivide);
+        poisson.setSamplesPerNode(samplesPerNode);
+        if (vec) {
+            Py::Sequence list(vec);
+            std::vector<Base::Vector3f> normals;
+            normals.reserve(list.size());
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Base::Vector3d v = Py::Vector(*it).toVector();
+                normals.push_back(Base::convertTo<Base::Vector3f>(v));
+            }
+            poisson.perform(normals);
+        }
+        else {
+            poisson.perform(ksearch);
+        }
+
+        return Py::asObject(new Mesh::MeshPy(mesh));
+    }
+    /*
+import ReverseEngineering as Reen
+import Points
+import Mesh
+import random
+import math
+
+r=random.Random()
+
+p=Points.Points()
+pts=[]
+for i in range(21):
+  for j in range(21):
+    pts.append(App.Vector(i,j,r.random()))
+
+p.addPoints(pts)
+m=Reen.viewTriangulation(p,21,21)
+Mesh.show(m)
+
+def boxmueller():
+  r1,r2=random.random(),random.random()
+  return math.sqrt(-2*math.log(r1))*math.cos(2*math.pi*r2)
+
+p=Points.Points()
+pts=[]
+for i in range(21):
+  for j in range(21):
+    pts.append(App.Vector(i,j,r.gauss(5,0.05)))
+
+p.addPoints(pts)
+m=Reen.viewTriangulation(p,21,21)
+Mesh.show(m)
+    */
+    Py::Object viewTriangulation(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        PyObject *vec = 0;
+        int width;
+        int height;
+
+        static char* kwds_view[] = {"Points", "Width", "Height", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|ii", kwds_view,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &width, &height))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        try {
+            Mesh::MeshObject* mesh = new Mesh::MeshObject();
+            ImageTriangulation view(width, height, *points, *mesh);
+            view.perform();
+
+            return Py::asObject(new Mesh::MeshPy(mesh));
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+    }
+    Py::Object gridProjection(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        PyObject *vec = 0;
+        int ksearch=5;
+
+        static char* kwds_greedy[] = {"Points", "KSearch", "Normals", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iO", kwds_greedy,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &ksearch, &vec))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        Mesh::MeshObject* mesh = new Mesh::MeshObject();
+        GridReconstruction tria(*points, *mesh);
+        if (vec) {
+            Py::Sequence list(vec);
+            std::vector<Base::Vector3f> normals;
+            normals.reserve(list.size());
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Base::Vector3d v = Py::Vector(*it).toVector();
+                normals.push_back(Base::convertTo<Base::Vector3f>(v));
+            }
+            tria.perform(normals);
+        }
+        else {
+            tria.perform(ksearch);
+        }
+
+        return Py::asObject(new Mesh::MeshPy(mesh));
+    }
+    Py::Object marchingCubesRBF(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        PyObject *vec = 0;
+        int ksearch=5;
+
+        static char* kwds_greedy[] = {"Points", "KSearch", "Normals", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iO", kwds_greedy,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &ksearch, &vec))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        Mesh::MeshObject* mesh = new Mesh::MeshObject();
+        MarchingCubesRBF tria(*points, *mesh);
+        if (vec) {
+            Py::Sequence list(vec);
+            std::vector<Base::Vector3f> normals;
+            normals.reserve(list.size());
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Base::Vector3d v = Py::Vector(*it).toVector();
+                normals.push_back(Base::convertTo<Base::Vector3f>(v));
+            }
+            tria.perform(normals);
+        }
+        else {
+            tria.perform(ksearch);
+        }
+
+        return Py::asObject(new Mesh::MeshPy(mesh));
+    }
+    /*
+import ReverseEngineering as Reen
+import Points
+import Mesh
+import random
+
+r=random.Random()
+
+p=Points.Points()
+pts=[]
+for i in range(21):
+  for j in range(21):
+    pts.append(App.Vector(i,j,r.gauss(5,0.05)))
+
+p.addPoints(pts)
+m=Reen.marchingCubesHoppe(Points=p)
+Mesh.show(m)
+    */
+    Py::Object marchingCubesHoppe(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        PyObject *vec = 0;
+        int ksearch=5;
+
+        static char* kwds_greedy[] = {"Points", "KSearch", "Normals", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iO", kwds_greedy,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &ksearch, &vec))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        Mesh::MeshObject* mesh = new Mesh::MeshObject();
+        MarchingCubesHoppe tria(*points, *mesh);
+        if (vec) {
+            Py::Sequence list(vec);
+            std::vector<Base::Vector3f> normals;
+            normals.reserve(list.size());
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Base::Vector3d v = Py::Vector(*it).toVector();
+                normals.push_back(Base::convertTo<Base::Vector3f>(v));
+            }
+            tria.perform(normals);
+        }
+        else {
+            tria.perform(ksearch);
+        }
 
         return Py::asObject(new Mesh::MeshPy(mesh));
     }
@@ -217,7 +482,7 @@ private:
 #if defined(HAVE_PCL_OPENNURBS)
     Py::Object fitBSpline(const Py::Tuple& args, const Py::Dict& kwds)
     {
-        PyObject *pcObj;
+        PyObject *pts;
         int degree = 2;
         int refinement = 4;
         int iterations = 10;
@@ -229,14 +494,13 @@ private:
         static char* kwds_approx[] = {"Points", "Degree", "Refinement", "Iterations",
                                       "InteriorSmoothness", "InteriorWeight", "BoundarySmoothness", "BoundaryWeight", NULL};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iiidddd", kwds_approx,
-                                        &(Points::PointsPy::Type), &pcObj,
+                                        &(Points::PointsPy::Type), &pts,
                                         &degree, &refinement, &iterations,
                                         &interiorSmoothness, &interiorWeight,
                                         &boundarySmoothness, &boundaryWeight))
             throw Py::Exception();
 
-        Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(pcObj);
-        Points::PointKernel* points = pPoints->getPointKernelPtr();
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
 
         BSplineFitting fit(points->getBasicPoints());
         fit.setOrder(degree+1);
@@ -260,8 +524,7 @@ private:
 
 
 /* Python entry */
-extern "C" {
-void ReenExport initReverseEngineering()
+PyMODINIT_FUNC initReverseEngineering()
 {
     // load dependent module
     try {
@@ -276,5 +539,3 @@ void ReenExport initReverseEngineering()
     new Reen::Module();
     Base::Console().Log("Loading ReverseEngineering module... done\n");
 }
-
-} // extern "C"

@@ -62,7 +62,6 @@ SOURCE_GROUP("Qt" FILES ${PartDesignGui_MOC_SRCS})
 
 SET(RobotGui_SRCS_Module
     AppRobotGui.cpp
-    AppRobotGuiPy.cpp
     Resources/Robot.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -94,7 +93,7 @@ SET(RobotGui_SRCS_ViewProvider
 SOURCE_GROUP("ViewProvider" FILES ${RobotGui_SRCS_ViewProvider})
 
 SET(RobotGui_SRCS_TaskBoxes
-	TaskRobot6Axis.ui
+    TaskRobot6Axis.ui
     TaskRobot6Axis.cpp
     TaskRobot6Axis.h
     TaskTrajectory.ui
@@ -125,21 +124,21 @@ SET(RobotGui_SRCS_TaskDlg
     TaskDlgSimulate.cpp
     TaskDlgEdge2Trac.h
     TaskDlgEdge2Trac.cpp
-	TaskDlgTrajectoryCompound.h
-	TaskDlgTrajectoryCompound.cpp
-	TaskDlgTrajectoryDressUp.h
-	TaskDlgTrajectoryDressUp.cpp
+    TaskDlgTrajectoryCompound.h
+    TaskDlgTrajectoryCompound.cpp
+    TaskDlgTrajectoryDressUp.h
+    TaskDlgTrajectoryDressUp.cpp
 )
 SOURCE_GROUP("Task_Dialogs" FILES ${RobotGui_SRCS_TaskDlg})
 
 SET(RobotGui_SRCS
     ${RobotGui_UIC_HDRS}
     ${RobotResource_SRCS}
-	${RobotGui_SRCS_Module}
-	${RobotGui_SRCS_ViewProvider}
-	${RobotGui_SRCS_Commands}
-	${RobotGui_SRCS_TaskBoxes}
-	${RobotGui_SRCS_TaskDlg}
+    ${RobotGui_SRCS_Module}
+    ${RobotGui_SRCS_ViewProvider}
+    ${RobotGui_SRCS_Commands}
+    ${RobotGui_SRCS_TaskBoxes}
+    ${RobotGui_SRCS_TaskDlg}
 )
 
 

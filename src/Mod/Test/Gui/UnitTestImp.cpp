@@ -77,15 +77,15 @@ bool UnitTestDialog::hasInstance()
  *  name 'name' and widget flags set to 'f'.
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WFlags f)
+UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
   : QDialog(parent, f)
 {
     this->setupUi(this);
     // As it doesn't seem to be able to change the "Highlight" color for the active colorgroup
     // we force e.g. the "Motif" style only for the progressbar to change the color to green or red.
-    this->progressBar->setStyle(QStyleFactory::create(QString::fromAscii("Motif")));
+    this->progressBar->setStyle(QStyleFactory::create(QString::fromLatin1("Motif")));
     setProgressColor(QColor(40,210,43)); // a darker green
 
     // red items

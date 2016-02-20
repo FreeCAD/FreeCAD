@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Image plane</translation>
+        <translation>Resim planı</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -136,12 +136,12 @@
         <translation>Standart</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Hazır...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>gri</translation>
     </message>

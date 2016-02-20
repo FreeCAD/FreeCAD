@@ -110,7 +110,7 @@ void SoDatumLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromAscii(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
 

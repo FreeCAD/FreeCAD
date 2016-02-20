@@ -262,9 +262,9 @@ class CommandPathPocket:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Pocket',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPocket","Pocket"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Pocket","Pocket"),
                 'Accel': "P, O",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket","Creates a Path Pocket object from a loop of edges or a face")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Pocket","Creates a Path Pocket object from a loop of edges or a face")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -274,26 +274,26 @@ class CommandPathPocket:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("PathPocket","Please select an edges loop from one object, or a single face\n"))
+            FreeCAD.Console.PrintError(translate("Path_Pocket","Please select an edges loop from one object, or a single face\n"))
             return
         if len(selection[0].SubObjects) == 0:
-            FreeCAD.Console.PrintError(translate("PathPocket","Please select an edges loop from one object, or a single face\n"))
+            FreeCAD.Console.PrintError(translate("Path_Pocket","Please select an edges loop from one object, or a single face\n"))
             return
         for s in selection[0].SubObjects:
             if s.ShapeType != "Edge":
                 if (s.ShapeType != "Face") or (len(selection[0].SubObjects) != 1):
-                    FreeCAD.Console.PrintError(translate("PathPocket","Please select only edges or a single face\n"))
+                    FreeCAD.Console.PrintError(translate("Path_Pocket","Please select only edges or a single face\n"))
                     return
         if selection[0].SubObjects[0].ShapeType == "Edge":
             try:
                 import Part
                 w = Part.Wire(selection[0].SubObjects)
             except:
-                FreeCAD.Console.PrintError(translate("PathPocket","The selected edges don't form a loop\n"))
+                FreeCAD.Console.PrintError(translate("Path_Pocket","The selected edges don't form a loop\n"))
                 return
         
         # if everything is ok, execute and register the transaction in the undo/redo stack
-        FreeCAD.ActiveDocument.openTransaction(translate("PathPocket","Create Pocket"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Pocket","Create Pocket"))
         FreeCADGui.addModule("PathScripts.PathPocket")
         FreeCADGui.doCommand('prjexists = False')
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Pocket")')

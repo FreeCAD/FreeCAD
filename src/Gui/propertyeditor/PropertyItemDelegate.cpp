@@ -58,7 +58,14 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     PropertyItem *property = static_cast<PropertyItem*>(index.internalPointer());
 
     if (property && property->isSeparator()) {
-        option.palette.setColor(QPalette::Text, option.palette.color(QPalette::BrightText));
+        QColor color = option.palette.color(QPalette::BrightText);
+        QObject* par = parent();
+        if (par) {
+            QVariant value = par->property("groupTextColor");
+            if (value.canConvert<QColor>())
+                color = value.value<QColor>();
+        }
+        option.palette.setColor(QPalette::Text, color);
         option.font.setBold(true);
         option.state &= ~QStyle::State_Selected;
     }
@@ -70,8 +77,14 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     option.state &= ~QStyle::State_HasFocus;
 
     if (property && property->isSeparator()) {
-        QBrush bg = option.palette.dark();
-        painter->fillRect(option.rect, bg);
+        QBrush brush = option.palette.dark();
+        QObject* par = parent();
+        if (par) {
+            QVariant value = par->property("groupBackground");
+            if (value.canConvert<QBrush>())
+                brush = value.value<QBrush>();
+        }
+        painter->fillRect(option.rect, brush);
     }
 
     QPen savedPen = painter->pen();

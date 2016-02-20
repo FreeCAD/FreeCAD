@@ -94,7 +94,7 @@
 <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-        <location line="+63"/>
+        <location line="+60"/>
         <source>Robot</source>
         <translation>Robot</translation>
     </message>
@@ -368,8 +368,8 @@
         <location line="+49"/>
         <location line="+100"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-52"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-49"/>
+        <location line="+62"/>
         <location filename="../../CommandInsertRobot.cpp" line="+181"/>
         <location filename="../../CommandTrajectory.cpp" line="-276"/>
         <location line="+56"/>
@@ -381,8 +381,8 @@
     <message>
         <location line="-28"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-61"/>
+        <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
         <translation>Selectaţi un obiect Robot şi un obiect de Traiectorie.</translation>
@@ -398,20 +398,28 @@
         <translation>Aveţi nevoie de cel puţin două puncte într-o traiectorie pentru a o simula.</translation>
     </message>
     <message>
-        <location filename="../../CommandExport.cpp" line="-43"/>
-        <location line="+65"/>
         <source>KRL file(*.src)</source>
-        <translation>Fişier KRL(*.src)</translation>
+        <translation type="obsolete">Fişier KRL(*.src)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
         <source>All Files (*.*)</source>
-        <translation>Toate fișierele (*.*)</translation>
+        <translation type="obsolete">Toate fișierele (*.*)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-40"/>
+        <location line="+62"/>
+        <source>KRL file</source>
+        <translation type="unfinished">KRL file</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
+        <source>All Files</source>
+        <translation type="unfinished">All Files</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
         <source>Export program</source>
         <translation>Program de export</translation>
     </message>
@@ -565,7 +573,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.cpp" line="+47"/>
         <source>TaskEdge2TracParameter</source>
-        <translation>TaskEdge2TracParameter</translation>
+        <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
 </context>
 <context>
@@ -623,7 +631,7 @@
     <message>
         <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
         <source>TaskRobot6Axis</source>
-        <translation>TaskRobot6Axis</translation>
+        <translation type="unfinished">TaskRobot6Axis</translation>
     </message>
 </context>
 <context>
@@ -631,7 +639,7 @@
     <message>
         <location filename="../../TaskRobotControl.cpp" line="+46"/>
         <source>TaskRobotControl</source>
-        <translation>TaskRobotControl</translation>
+        <translation type="unfinished">TaskRobotControl</translation>
     </message>
 </context>
 <context>
@@ -639,7 +647,7 @@
     <message>
         <location filename="../../TaskRobotMessages.cpp" line="+46"/>
         <source>TaskRobotMessages</source>
-        <translation>TaskRobotMessages</translation>
+        <translation type="unfinished">TaskRobotMessages</translation>
     </message>
 </context>
 <context>
@@ -742,7 +750,7 @@
     <message>
         <location filename="../../TaskTrajectory.cpp" line="+44"/>
         <source>Trajectory</source>
-        <translation>Trajectory</translation>
+        <translation type="unfinished">Trajectory</translation>
     </message>
 </context>
 <context>
@@ -750,7 +758,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
         <source>Dress Up Parameter</source>
-        <translation>Dress Up Parameter</translation>
+        <translation type="unfinished">Dress Up Parameter</translation>
     </message>
 </context>
 <context>

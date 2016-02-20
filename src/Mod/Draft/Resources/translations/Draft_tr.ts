@@ -2,92 +2,106 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="tr" sourcelanguage="en">
   <context>
+    <name>Draft</name>
+    <message>
+      <location filename="importDXF.py" line="76"/>
+      <source>Download of dxf libraries failed.
+Please download and install them manually.
+See complete instructions at
+http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
+      <translation type="unfinished">Download of dxf libraries failed.
+Please download and install them manually.
+See complete instructions at
+http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3749"/>
+      <location filename="DraftTools.py" line="3920"/>
       <source>Add Point</source>
-      <translation type="unfinished">Nokta Ekle</translation>
+      <translation>Nokta Ekle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3750"/>
+      <location filename="DraftTools.py" line="3921"/>
       <source>Adds a point to an existing wire/bspline</source>
-      <translation type="unfinished">Mevcut bağlantı/bspline'a bir nokta ekler</translation>
+      <translation>Mevcut bağlantı/bspline'a bir nokta ekler</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="DraftTools.py" line="3702"/>
+      <location filename="DraftTools.py" line="3873"/>
       <source>Add to group...</source>
-      <translation type="unfinished">Gruba ekle...</translation>
+      <translation>Gruba ekle...</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3703"/>
+      <location filename="DraftTools.py" line="3874"/>
       <source>Adds the selected object(s) to an existing group</source>
-      <translation type="unfinished">Seçili nesneyi/nesneleri mevcut bir gruba ekler</translation>
+      <translation>Seçili nesneyi/nesneleri mevcut bir gruba ekler</translation>
     </message>
   </context>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="DraftTools.py" line="2177"/>
+      <location filename="DraftTools.py" line="2202"/>
       <source>Apply Current Style</source>
-      <translation type="unfinished">Varsayılan çizim şeklini uygula</translation>
+      <translation>Varsayılan çizim şeklini uygula</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2178"/>
+      <location filename="DraftTools.py" line="2203"/>
       <source>Applies current line width and color to selected objects</source>
-      <translation type="unfinished">Seçili nesnelere geçerli çizgi genişliğini ve rengini uygular</translation>
+      <translation>Seçili nesnelere geçerli çizgi genişliğini ve rengini uygular</translation>
     </message>
   </context>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="DraftTools.py" line="961"/>
+      <location filename="DraftTools.py" line="968"/>
       <source>Arc</source>
-      <translation type="unfinished">Çember yayı</translation>
+      <translation>Çember yayı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="962"/>
+      <location filename="DraftTools.py" line="969"/>
       <source>Creates an arc. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Bir çember yayı oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT</translation>
+      <translation>Bir çember yayı oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT</translation>
     </message>
   </context>
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="DraftTools.py" line="3969"/>
+      <location filename="DraftTools.py" line="4142"/>
       <source>Array</source>
-      <translation type="unfinished">Dizi</translation>
+      <translation>Dizi</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3970"/>
+      <location filename="DraftTools.py" line="4143"/>
       <source>Creates a polar or rectangular array from a selected object</source>
-      <translation type="unfinished">Seçilen bir nesneden yuvarlak ya da dikdörtgen bir dizi oluşturur</translation>
+      <translation>Seçilen bir nesneden yuvarlak ya da dikdörtgen bir dizi oluşturur</translation>
     </message>
   </context>
   <context>
     <name>Draft_BSpline</name>
     <message>
-      <location filename="DraftTools.py" line="592"/>
+      <location filename="DraftTools.py" line="596"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>B-Spline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="593"/>
+      <location filename="DraftTools.py" line="597"/>
       <source>Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Bir çok-noktalı b-eğri(bspline) oluşturur. Yaslamak için CTRL,sınırlamak için SHIFT</translation>
+      <translation>Bir çok-noktalı b-eğri(bspline) oluşturur. Yaslamak için CTRL,sınırlamak için SHIFT</translation>
     </message>
   </context>
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="DraftTools.py" line="688"/>
+      <location filename="DraftTools.py" line="693"/>
       <source>BezCurve</source>
       <translation type="unfinished">BezCurve</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="689"/>
+      <location filename="DraftTools.py" line="694"/>
       <source>Creates a Bezier curve. CTRL to snap, SHIFT to constrain</source>
       <translation type="unfinished">Creates a Bezier curve. CTRL to snap, SHIFT to constrain</translation>
     </message>
@@ -95,124 +109,129 @@
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="DraftTools.py" line="1261"/>
+      <location filename="DraftTools.py" line="1277"/>
       <source>Circle</source>
-      <translation type="unfinished">Çember</translation>
+      <translation>Çember</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1262"/>
+      <location filename="DraftTools.py" line="1278"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
-      <translation type="unfinished">Bir çember oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT</translation>
+      <translation>Bir çember oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT</translation>
     </message>
   </context>
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="DraftTools.py" line="4123"/>
+      <location filename="DraftTools.py" line="4296"/>
       <source>Clone</source>
-      <translation type="unfinished">Klon</translation>
+      <translation>Klon</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4124"/>
+      <location filename="DraftTools.py" line="4297"/>
       <source>Clones the selected object(s)</source>
-      <translation type="unfinished">Seçili nesnelerin birebir kopyalarını oluşturur</translation>
+      <translation>Seçili nesnelerin birebir kopyalarını oluşturur</translation>
     </message>
   </context>
   <context>
     <name>Draft_CloseLine</name>
     <message>
-      <location filename="DraftTools.py" line="811"/>
+      <location filename="DraftTools.py" line="817"/>
       <source>Close Line</source>
-      <translation type="unfinished">Çizgiyi kapatır</translation>
+      <translation>Çizgiyi kapatır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="812"/>
+      <location filename="DraftTools.py" line="818"/>
       <source>Closes the line being drawn</source>
-      <translation type="unfinished">Çizilen çizgiyi kapatır</translation>
+      <translation>Çizilen çizgiyi kapatır</translation>
     </message>
   </context>
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3774"/>
+      <location filename="DraftTools.py" line="3945"/>
       <source>Remove Point</source>
-      <translation type="unfinished">Nokta Kaldır</translation>
+      <translation>Nokta Kaldır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3775"/>
+      <location filename="DraftTools.py" line="3946"/>
       <source>Removes a point from an existing wire or bspline</source>
-      <translation type="unfinished">Mevcut bağlantı veya bspline içinden bir noktayı kaldırır</translation>
+      <translation>Mevcut bağlantı veya bspline içinden bir noktayı kaldırır</translation>
     </message>
   </context>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="DraftTools.py" line="1641"/>
+      <location filename="DraftTools.py" line="1660"/>
       <source>Dimension</source>
-      <translation type="unfinished">Boyut</translation>
+      <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1642"/>
+      <location filename="DraftTools.py" line="1661"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
-      <translation type="unfinished">Bir boyut oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT, bir segment seçmek için ALT</translation>
+      <translation>Bir boyut oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT, bir segment seçmek için ALT</translation>
     </message>
   </context>
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="DraftTools.py" line="2589"/>
+      <location filename="DraftTools.py" line="2644"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Önceki sürüme dön</translation>
+      <translation>Önceki sürüme dön</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2590"/>
-      <source>Explodes the selected objects into simpler objects, or subtract faces</source>
-      <translation type="unfinished">Seçili nesneleri daha basit parçacıklara ayrıştırır, veya yüzleri birbirinden çıkarır</translation>
+      <location filename="DraftTools.py" line="2645"/>
+      <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
+      <translation type="unfinished">Explodes the selected objects into simpler objects, or subtracts faces</translation>
     </message>
   </context>
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="DraftTools.py" line="3912"/>
+      <location filename="DraftTools.py" line="4084"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Taslaktan krokiye</translation>
+      <translation>Taslaktan krokiye</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4085"/>
+      <source>Convert bidirectionally between Draft and Sketch objects</source>
+      <translation>Taslak ve Kroki nesneleri arasında çift yönlü olarak dönüştür</translation>
     </message>
   </context>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="DraftTools.py" line="3092"/>
+      <location filename="DraftTools.py" line="3241"/>
       <source>Drawing</source>
-      <translation type="unfinished">Çizim</translation>
+      <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3093"/>
+      <location filename="DraftTools.py" line="3242"/>
       <source>Puts the selected objects on a Drawing sheet.</source>
-      <translation type="unfinished">Seçili nesneleri çizim sayfasına koyar.</translation>
+      <translation>Seçili nesneleri çizim sayfasına koyar.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="DraftTools.py" line="3181"/>
+      <location filename="DraftTools.py" line="3341"/>
       <source>Edit</source>
-      <translation type="unfinished">Düzenle</translation>
+      <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3182"/>
+      <location filename="DraftTools.py" line="3342"/>
       <source>Edits the active object</source>
-      <translation type="unfinished">Etkin nesneyi düzenler</translation>
+      <translation>Etkin nesneyi düzenler</translation>
     </message>
   </context>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="DraftTools.py" line="1451"/>
+      <location filename="DraftTools.py" line="1468"/>
       <source>Ellipse</source>
       <translation type="unfinished">Ellipse</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1452"/>
+      <location filename="DraftTools.py" line="1469"/>
       <source>Creates an ellipse. CTRL to snap</source>
       <translation type="unfinished">Creates an ellipse. CTRL to snap</translation>
     </message>
@@ -220,12 +239,12 @@
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="DraftTools.py" line="4193"/>
+      <location filename="DraftTools.py" line="4367"/>
       <source>Facebinder</source>
       <translation type="unfinished">Facebinder</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4194"/>
+      <location filename="DraftTools.py" line="4368"/>
       <source>Creates a facebinder object from selected face(s)</source>
       <translation type="unfinished">Creates a facebinder object from selected face(s)</translation>
     </message>
@@ -233,25 +252,25 @@
   <context>
     <name>Draft_FinishLine</name>
     <message>
-      <location filename="DraftTools.py" line="791"/>
+      <location filename="DraftTools.py" line="797"/>
       <source>Finish line</source>
-      <translation type="unfinished">Çizgiyi bitir</translation>
+      <translation>Çizgiyi bitir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="792"/>
+      <location filename="DraftTools.py" line="798"/>
       <source>Finishes a line without closing it</source>
-      <translation type="unfinished">Kapatmadan bir çizgiyi bitirir</translation>
+      <translation>Kapatmadan bir çizgiyi bitirir</translation>
     </message>
   </context>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="DraftTools.py" line="4221"/>
+      <location filename="DraftTools.py" line="4395"/>
       <source>Flip Dimension</source>
       <translation type="unfinished">Flip Dimension</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4222"/>
+      <location filename="DraftTools.py" line="4396"/>
       <source>Flip the normal direction of a dimension</source>
       <translation type="unfinished">Flip the normal direction of a dimension</translation>
     </message>
@@ -259,77 +278,77 @@
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="DraftTools.py" line="4174"/>
+      <location filename="DraftTools.py" line="4348"/>
       <source>Heal</source>
       <translation type="unfinished">Heal</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4175"/>
-      <source>Heal faultly Draft objects saved from an earlier FreeCAD version</source>
-      <translation type="unfinished">Heal faultly Draft objects saved from an earlier FreeCAD version</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="DraftTools.py" line="4236"/>
-      <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="4237"/>
-      <source>Adds a layer</source>
-      <translation type="unfinished">Adds a layer</translation>
+      <location filename="DraftTools.py" line="4349"/>
+      <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
+      <translation type="unfinished">Heal faulty Draft objects saved from an earlier FreeCAD version</translation>
     </message>
   </context>
   <context>
     <name>Draft_Line</name>
     <message>
-      <location filename="DraftTools.py" line="434"/>
+      <location filename="DraftTools.py" line="437"/>
       <source>Line</source>
-      <translation type="unfinished">Çizgi</translation>
+      <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="435"/>
+      <location filename="DraftTools.py" line="438"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">2-noktalı çizgi oluşturur. kilitlemek için CTRL, sınırlamak için SHIFT</translation>
+      <translation>2-noktalı çizgi oluşturur. kilitlemek için CTRL, sınırlamak için SHIFT</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Mirror</name>
+    <message>
+      <location filename="DraftTools.py" line="4434"/>
+      <source>Mirror</source>
+      <translation type="unfinished">Mirror</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4435"/>
+      <source>Mirrors the selected objects along a line defined by two points</source>
+      <translation type="unfinished">Mirrors the selected objects along a line defined by two points</translation>
     </message>
   </context>
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="DraftTools.py" line="2052"/>
+      <location filename="DraftTools.py" line="2078"/>
       <source>Move</source>
-      <translation type="unfinished">Taşı</translation>
+      <translation>Taşı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2053"/>
+      <location filename="DraftTools.py" line="2079"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation type="unfinished">Seçilen nesneleri 2 nokta arasında taşır. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
+      <translation>Seçilen nesneleri 2 nokta arasında taşır. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
     </message>
   </context>
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="DraftTools.py" line="2397"/>
+      <location filename="DraftTools.py" line="2424"/>
       <source>Offset</source>
-      <translation type="unfinished">Uzaklaşma</translation>
+      <translation>Uzaklaşma</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2398"/>
+      <location filename="DraftTools.py" line="2425"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation type="unfinished">Aktif nesneyi uzaklaştırır. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
+      <translation>Aktif nesneyi uzaklaştırır. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
     </message>
   </context>
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="DraftTools.py" line="3998"/>
+      <location filename="DraftTools.py" line="4171"/>
       <source>PathArray</source>
       <translation type="unfinished">PathArray</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3999"/>
+      <location filename="DraftTools.py" line="4172"/>
       <source>Creates copies of a selected object along a selected path.</source>
       <translation type="unfinished">Creates copies of a selected object along a selected path.</translation>
     </message>
@@ -337,121 +356,116 @@
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="DraftTools.py" line="4034"/>
+      <location filename="DraftTools.py" line="4207"/>
       <source>Point</source>
-      <translation type="unfinished">Nokta</translation>
+      <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4035"/>
+      <location filename="DraftTools.py" line="4208"/>
       <source>Creates a point object</source>
-      <translation type="unfinished">Bir nokta nesnesi oluşturur</translation>
+      <translation>Bir nokta nesnesi oluşturur</translation>
     </message>
   </context>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="DraftTools.py" line="1271"/>
+      <location filename="DraftTools.py" line="1287"/>
       <source>Polygon</source>
-      <translation type="unfinished">Çokgen</translation>
+      <translation>Çokgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1272"/>
+      <location filename="DraftTools.py" line="1288"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Sıradan bir çokgen oluşturur. CTRL koparır, SHIFT sınırlar</translation>
+      <translation>Sıradan bir çokgen oluşturur. CTRL koparır, SHIFT sınırlar</translation>
     </message>
   </context>
   <context>
     <name>Draft_Rectangle</name>
     <message>
-      <location filename="DraftTools.py" line="847"/>
+      <location filename="DraftTools.py" line="853"/>
       <source>Rectangle</source>
-      <translation type="unfinished">Dikdörtgen</translation>
+      <translation>Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="848"/>
+      <location filename="DraftTools.py" line="854"/>
       <source>Creates a 2-point rectangle. CTRL to snap</source>
-      <translation type="unfinished">2-noktalı bir dikdörtgen oluşturur. kilitlemek için CTRL</translation>
+      <translation>2-noktalı bir dikdörtgen oluşturur. kilitlemek için CTRL</translation>
     </message>
   </context>
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="DraftTools.py" line="2213"/>
+      <location filename="DraftTools.py" line="2240"/>
       <source>Rotate</source>
-      <translation type="unfinished">Döndür</translation>
+      <translation>Döndür</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2214"/>
+      <location filename="DraftTools.py" line="2241"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
-      <translation type="unfinished">Seçili nesneleri döndürür. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
+      <translation>Seçili nesneleri döndürür. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
     </message>
   </context>
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="DraftTools.py" line="2945"/>
+      <location filename="DraftTools.py" line="3089"/>
       <source>Scale</source>
-      <translation type="unfinished">Ölçek</translation>
+      <translation>Ölçek</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2946"/>
+      <location filename="DraftTools.py" line="3090"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation type="unfinished">Temel bir noktaya göre seçilen nesneleri ölçekler. CTRL ile koparılabilir, SHIFT ile eksen üzerinde sınırlandırılabilir, ALT ile kopyalanabilir</translation>
+      <translation>Temel bir noktaya göre seçilen nesneleri ölçekler. CTRL ile koparılabilir, SHIFT ile eksen üzerinde sınırlandırılabilir, ALT ile kopyalanabilir</translation>
     </message>
   </context>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="DraftTools.py" line="3841"/>
+      <location filename="DraftTools.py" line="4012"/>
       <source>Select group</source>
-      <translation type="unfinished">Grubu seç</translation>
+      <translation>Grubu seç</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3842"/>
+      <location filename="DraftTools.py" line="4013"/>
       <source>Selects all objects with the same parents as this group</source>
-      <translation type="unfinished">Aynı ebeveynelere sahip nesneleri bu grup olarak seçer</translation>
+      <translation>Aynı ebeveynelere sahip nesneleri bu grup olarak seçer</translation>
     </message>
   </context>
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="DraftTools.py" line="317"/>
+      <location filename="DraftTools.py" line="319"/>
       <source>SelectPlane</source>
-      <translation type="unfinished">DüzlemSeçin</translation>
+      <translation>DüzlemSeçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="318"/>
+      <location filename="DraftTools.py" line="320"/>
       <source>Select a working plane for geometry creation</source>
-      <translation type="unfinished">Geometri oluşturulması için bir çalışma düzlemi seçin</translation>
+      <translation>Geometri oluşturulması için bir çalışma düzlemi seçin</translation>
     </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="DraftTools.py" line="3873"/>
+      <location filename="DraftTools.py" line="4044"/>
       <source>Shape 2D view</source>
-      <translation type="unfinished">Şekil 2B görünümü</translation>
+      <translation>Şekil 2B görünümü</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3874"/>
+      <location filename="DraftTools.py" line="4045"/>
       <source>Creates Shape 2D views of selected objects</source>
-      <translation type="unfinished">Seçili nesnelerin Şekil 2B görünümünü oluşturur</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="3913"/>
-      <source>Convert bidirectionally between Draft and Sketch objects</source>
-      <translation type="unfinished">Taslak ve Kroki nesneleri arasında çift yönlü olarak dönüştür</translation>
+      <translation>Seçili nesnelerin Şekil 2B görünümünü oluşturur</translation>
     </message>
   </context>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="DraftTools.py" line="1932"/>
+      <location filename="DraftTools.py" line="1957"/>
       <source>Shape from text...</source>
       <translation type="unfinished">Shape from text...</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1933"/>
+      <location filename="DraftTools.py" line="1958"/>
       <source>Creates text string in shapes.</source>
       <translation type="unfinished">Creates text string in shapes.</translation>
     </message>
@@ -459,25 +473,25 @@
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="DraftTools.py" line="4109"/>
+      <location filename="DraftTools.py" line="4282"/>
       <source>Show Snap Bar</source>
-      <translation type="unfinished">Yaslanma çubuğunu göster</translation>
+      <translation>Yaslanma çubuğunu göster</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4110"/>
+      <location filename="DraftTools.py" line="4283"/>
       <source>Shows Draft snap toolbar</source>
-      <translation type="unfinished">Taslak yaslanma araç çubuğunu gösterir</translation>
+      <translation>Taslak yaslanma araç çubuğunu gösterir</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="DraftTools.py" line="4344"/>
+      <location filename="DraftTools.py" line="4641"/>
       <source>Angles</source>
       <translation type="unfinished">Angles</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4345"/>
+      <location filename="DraftTools.py" line="4642"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
       <translation type="unfinished">Snaps to 45 and 90 degrees points on arcs and circles</translation>
     </message>
@@ -485,12 +499,12 @@
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="DraftTools.py" line="4356"/>
+      <location filename="DraftTools.py" line="4653"/>
       <source>Center</source>
       <translation type="unfinished">Center</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4357"/>
+      <location filename="DraftTools.py" line="4654"/>
       <source>Snaps to center of circles and arcs</source>
       <translation type="unfinished">Snaps to center of circles and arcs</translation>
     </message>
@@ -498,12 +512,12 @@
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="DraftTools.py" line="4404"/>
+      <location filename="DraftTools.py" line="4701"/>
       <source>Dimensions</source>
       <translation type="unfinished">Dimensions</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4405"/>
+      <location filename="DraftTools.py" line="4702"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
       <translation type="unfinished">Shows temporary dimensions when snapping to Arch objects</translation>
     </message>
@@ -511,12 +525,12 @@
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="DraftTools.py" line="4332"/>
+      <location filename="DraftTools.py" line="4629"/>
       <source>Endpoint</source>
       <translation type="unfinished">Endpoint</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4333"/>
+      <location filename="DraftTools.py" line="4630"/>
       <source>Snaps to endpoints of edges</source>
       <translation type="unfinished">Snaps to endpoints of edges</translation>
     </message>
@@ -524,12 +538,12 @@
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="DraftTools.py" line="4368"/>
+      <location filename="DraftTools.py" line="4665"/>
       <source>Extension</source>
       <translation type="unfinished">Extension</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4369"/>
+      <location filename="DraftTools.py" line="4666"/>
       <source>Snaps to extension of edges</source>
       <translation type="unfinished">Snaps to extension of edges</translation>
     </message>
@@ -537,12 +551,12 @@
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="DraftTools.py" line="4296"/>
+      <location filename="DraftTools.py" line="4593"/>
       <source>Grid</source>
       <translation type="unfinished">Grid</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4297"/>
+      <location filename="DraftTools.py" line="4594"/>
       <source>Snaps to grid points</source>
       <translation type="unfinished">Snaps to grid points</translation>
     </message>
@@ -550,12 +564,12 @@
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="DraftTools.py" line="4308"/>
+      <location filename="DraftTools.py" line="4605"/>
       <source>Intersection</source>
       <translation type="unfinished">Intersection</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4309"/>
+      <location filename="DraftTools.py" line="4606"/>
       <source>Snaps to edges intersections</source>
       <translation type="unfinished">Snaps to edges intersections</translation>
     </message>
@@ -563,12 +577,12 @@
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="DraftTools.py" line="4262"/>
+      <location filename="DraftTools.py" line="4559"/>
       <source>Toggle On/Off</source>
       <translation type="unfinished">Toggle On/Off</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4263"/>
+      <location filename="DraftTools.py" line="4560"/>
       <source>Activates/deactivates all snap tools at once</source>
       <translation type="unfinished">Activates/deactivates all snap tools at once</translation>
     </message>
@@ -576,12 +590,12 @@
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="DraftTools.py" line="4272"/>
+      <location filename="DraftTools.py" line="4569"/>
       <source>Midpoint</source>
       <translation type="unfinished">Midpoint</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4273"/>
+      <location filename="DraftTools.py" line="4570"/>
       <source>Snaps to midpoints of edges</source>
       <translation type="unfinished">Snaps to midpoints of edges</translation>
     </message>
@@ -589,12 +603,12 @@
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="DraftTools.py" line="4380"/>
+      <location filename="DraftTools.py" line="4677"/>
       <source>Nearest</source>
       <translation type="unfinished">Nearest</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4381"/>
+      <location filename="DraftTools.py" line="4678"/>
       <source>Snaps to nearest point on edges</source>
       <translation type="unfinished">Snaps to nearest point on edges</translation>
     </message>
@@ -602,12 +616,12 @@
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="DraftTools.py" line="4392"/>
+      <location filename="DraftTools.py" line="4689"/>
       <source>Ortho</source>
       <translation type="unfinished">Ortho</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4393"/>
+      <location filename="DraftTools.py" line="4690"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
       <translation type="unfinished">Snaps to orthogonal and 45 degrees directions</translation>
     </message>
@@ -615,12 +629,12 @@
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="DraftTools.py" line="4320"/>
+      <location filename="DraftTools.py" line="4617"/>
       <source>Parallel</source>
       <translation type="unfinished">Parallel</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4321"/>
+      <location filename="DraftTools.py" line="4618"/>
       <source>Snaps to parallel directions of edges</source>
       <translation type="unfinished">Snaps to parallel directions of edges</translation>
     </message>
@@ -628,12 +642,12 @@
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="DraftTools.py" line="4284"/>
+      <location filename="DraftTools.py" line="4581"/>
       <source>Perpendicular</source>
       <translation type="unfinished">Perpendicular</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4285"/>
+      <location filename="DraftTools.py" line="4582"/>
       <source>Snaps to perpendicular points on edges</source>
       <translation type="unfinished">Snaps to perpendicular points on edges</translation>
     </message>
@@ -641,12 +655,12 @@
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="DraftTools.py" line="4416"/>
+      <location filename="DraftTools.py" line="4713"/>
       <source>Working Plane</source>
       <translation type="unfinished">Working Plane</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4417"/>
+      <location filename="DraftTools.py" line="4714"/>
       <source>Restricts the snapped point to the current working plane</source>
       <translation type="unfinished">Restricts the snapped point to the current working plane</translation>
     </message>
@@ -654,1978 +668,2052 @@
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="DraftTools.py" line="1564"/>
+      <location filename="DraftTools.py" line="1582"/>
       <source>Text</source>
-      <translation type="unfinished">Metin</translation>
+      <translation>Metin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1565"/>
+      <location filename="DraftTools.py" line="1583"/>
       <source>Creates an annotation. CTRL to snap</source>
-      <translation type="unfinished">Bir açıklama oluşturur.kilitlemek için CTRL</translation>
+      <translation>Bir açıklama oluşturur.kilitlemek için CTRL</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="DraftTools.py" line="3066"/>
+      <location filename="DraftTools.py" line="3215"/>
       <source>Toggle construcion Mode</source>
-      <translation type="unfinished">İnşa kipini değiştir</translation>
+      <translation>İnşa kipini değiştir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3068"/>
+      <location filename="DraftTools.py" line="3217"/>
       <source>Toggles the Construction Mode for next objects.</source>
-      <translation type="unfinished">Sonraki nesneler için inşa kipini değiştirir</translation>
+      <translation>Sonraki nesneler için inşa kipini değiştirir</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="DraftTools.py" line="3079"/>
+      <location filename="DraftTools.py" line="3228"/>
       <source>Toggle Continue Mode</source>
       <translation type="unfinished">Toggle Continue Mode</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3080"/>
+      <location filename="DraftTools.py" line="3229"/>
       <source>Toggles the Continue Mode for next commands.</source>
-      <translation type="unfinished">Sonraki komut devam modunu açar veya kapatır.</translation>
+      <translation>Sonraki komut devam modunu açar veya kapatır.</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="DraftTools.py" line="3152"/>
+      <location filename="DraftTools.py" line="3312"/>
       <source>Toggle display mode</source>
-      <translation type="unfinished">Görüntüleme modunu değiştir</translation>
+      <translation>Görüntüleme modunu değiştir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3153"/>
+      <location filename="DraftTools.py" line="3313"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
-      <translation type="unfinished">Seçili nesneler, ağkafes ve düzgüçizgiler arasında değişimini sağlar.</translation>
+      <translation>Seçili nesneler, ağkafes ve düzgüçizgiler arasında değişimini sağlar.</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="DraftTools.py" line="4154"/>
+      <location filename="DraftTools.py" line="4327"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Izgarayı(klavuzu) Aç/Kapa</translation>
+      <translation>Izgarayı(klavuzu) Aç/Kapa</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4155"/>
-      <source>Toggles the Draft gid on/off</source>
-      <translation type="unfinished">Taslak ızgarasının görünürlüğünü değiştir</translation>
+      <location filename="DraftTools.py" line="4328"/>
+      <source>Toggles the Draft grid on/off</source>
+      <translation type="unfinished">Toggles the Draft grid on/off</translation>
     </message>
   </context>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="DraftTools.py" line="2621"/>
+      <location filename="DraftTools.py" line="2677"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2622"/>
+      <location filename="DraftTools.py" line="2678"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
-      <translation type="unfinished">Seçili nesneyi genişletır yada kırpar veya tek yüzleri uzatır. CTRL yaslar, SHIFT geçerli parça veya normale kısıtlar, alt ters çevirir</translation>
+      <translation>Seçili nesneyi genişletır yada kırpar veya tek yüzleri uzatır. CTRL yaslar, SHIFT geçerli parça veya normale kısıtlar, alt ters çevirir</translation>
     </message>
   </context>
   <context>
     <name>Draft_UndoLine</name>
     <message>
-      <location filename="DraftTools.py" line="831"/>
+      <location filename="DraftTools.py" line="837"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Son segmenti geri alır</translation>
+      <translation>Son segmenti geri alır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="832"/>
+      <location filename="DraftTools.py" line="838"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
-      <translation type="unfinished">Çizilen çizginin son çizilen segmentini geri alır</translation>
+      <translation>Çizilen çizginin son çizilen segmentini geri alır</translation>
     </message>
   </context>
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="DraftTools.py" line="2560"/>
+      <location filename="DraftTools.py" line="2614"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Güncelle</translation>
+      <translation>Güncelle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2561"/>
+      <location filename="DraftTools.py" line="2615"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unite faces</source>
-      <translation type="unfinished">Seçili parçaları tek hale getirir, veya uç uca bağlanmış vektörler birleştirip içi doldurulmuş bir yüz haline getirir, veya yüzleri birleştirir</translation>
+      <translation>Seçili parçaları tek hale getirir, veya uç uca bağlanmış vektörler birleştirip içi doldurulmuş bir yüz haline getirir, veya yüzleri birleştirir</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_VisGroup</name>
+    <message>
+      <location filename="DraftTools.py" line="4410"/>
+      <source>VisGroup</source>
+      <translation type="unfinished">VisGroup</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4411"/>
+      <source>Adds a VisGroup</source>
+      <translation type="unfinished">Adds a VisGroup</translation>
     </message>
   </context>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="DraftTools.py" line="577"/>
+      <location filename="DraftTools.py" line="581"/>
       <source>DWire</source>
-      <translation type="unfinished">DWire</translation>
+      <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="578"/>
+      <location filename="DraftTools.py" line="582"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Çok noktalı DraftWire (DWire-TelTaslak) oluşturur. Yapışkanlık için CTRL, kısıtlama için SHIFT</translation>
+      <translation>Çok noktalı DraftWire (DWire-TelTaslak) oluşturur. Yapışkanlık için CTRL, kısıtlama için SHIFT</translation>
     </message>
   </context>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="DraftTools.py" line="3799"/>
+      <location filename="DraftTools.py" line="3970"/>
       <source>Wire to BSpline</source>
-      <translation type="unfinished">BSpline'a bağla</translation>
+      <translation>BSpline'a bağla</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3800"/>
+      <location filename="DraftTools.py" line="3971"/>
       <source>Converts between Wire and BSpline</source>
-      <translation type="unfinished">Tel ve BSpline arasında dönüştürür</translation>
+      <translation>Tel ve BSpline arasında dönüştürür</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDraft</name>
     <message>
-      <location filename="userprefs-base.ui" line="26"/>
+      <location filename="preferences-draft.ui" line="26"/>
       <source>General Draft Settings</source>
-      <translation type="unfinished">Genel Çizim Ayarları</translation>
+      <translation>Genel Çizim Ayarları</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="54"/>
+      <location filename="preferences-draftvisual.ui" line="54"/>
       <source>the default color for new objects</source>
-      <translation type="unfinished">yeni nesneler için varsayılan renk</translation>
+      <translation>yeni nesneler için varsayılan renk</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="98"/>
+      <location filename="preferences-draftvisual.ui" line="98"/>
       <source>the default linewidth for new objects</source>
-      <translation type="unfinished">yeni nesneler için varsayılan çizgi kalınlığı</translation>
+      <translation>yeni nesneler için varsayılan çizgi kalınlığı</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="171"/>
+      <location filename="preferences-draftvisual.ui" line="171"/>
       <source>the default color for snap symbols</source>
-      <translation type="unfinished">Koparma simgesi için varsayılan renk</translation>
+      <translation>Koparma simgesi için varsayılan renk</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="439"/>
+      <location filename="preferences-draft.ui" line="422"/>
       <source>This is the default color for objects being drawn while in construction mode.</source>
-      <translation type="unfinished">Bu, inşa kipinde çizine nesneler için varsayılan renktir.</translation>
+      <translation>Bu, inşa kipinde çizine nesneler için varsayılan renktir.</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="399"/>
+      <location filename="preferences-draft.ui" line="382"/>
       <source>This is the default group name for construction geometry</source>
-      <translation type="unfinished">Bu, inşa geometrisi için varsayılan grup adıdır.</translation>
+      <translation>Bu, inşa geometrisi için varsayılan grup adıdır.</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="402"/>
+      <location filename="preferences-draft.ui" line="385"/>
       <source>Construction</source>
-      <translation type="unfinished">İnşaat</translation>
+      <translation>İnşaat</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="195"/>
+      <location filename="preferences-draftvisual.ui" line="195"/>
       <source>check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Araç çubuğun içerisinden varsayılan olarak renk/çizgi kalınlığını kullanmak için bunu işaretleyin</translation>
+      <translation>Araç çubuğun içerisinden varsayılan olarak renk/çizgi kalınlığını kullanmak için bunu işaretleyin</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="198"/>
+      <location filename="preferences-draftvisual.ui" line="198"/>
       <source>Save current color and linewidth across sessions</source>
-      <translation type="unfinished">Oturumlar arası kullanım için mevcut rengi ve çizgi kalınlığını sakla</translation>
+      <translation>Oturumlar arası kullanım için mevcut rengi ve çizgi kalınlığını sakla</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="107"/>
+      <location filename="preferences-draft.ui" line="87"/>
       <source>If this is checked, copy mode will be kept across command, otherwise commands will always start in no-copy mode</source>
-      <translation type="unfinished">Eğer bu işaretli ise, kopyalama kipi, uçbirimler arasında kullanılabilir olacaktır, aksi durumda uçbirimler her zaman kopyalanamaz kipte başlayacaktır</translation>
+      <translation>Eğer bu işaretli ise, kopyalama kipi, uçbirimler arasında kullanılabilir olacaktır, aksi durumda uçbirimler her zaman kopyalanamaz kipte başlayacaktır</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="110"/>
+      <location filename="preferences-draft.ui" line="90"/>
       <source>Global copy mode</source>
-      <translation type="unfinished">Genel kopyalama kipi</translation>
+      <translation>Genel kopyalama kipi</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="363"/>
+      <location filename="preferences-draft.ui" line="343"/>
       <source>If this is checked, objects will appear as filled as default. Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">Eğer bu işaretli ise, nesneler varsayılan olarak doldurulmuş şekilde görünecekler. Aksi durumda, çerçeve şeklinde görünecekler</translation>
+      <translation>Eğer bu işaretli ise, nesneler varsayılan olarak doldurulmuş şekilde görünecekler. Aksi durumda, çerçeve şeklinde görünecekler</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="150"/>
+      <location filename="preferences-draft.ui" line="130"/>
       <source>Default working plane</source>
-      <translation type="unfinished">Varsayılan çalışma düzlemi</translation>
+      <translation>Varsayılan çalışma düzlemi</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="177"/>
+      <location filename="preferences-draft.ui" line="157"/>
       <source>None</source>
-      <translation type="unfinished">Hiçbiri</translation>
+      <translation>Hiçbiri</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="182"/>
+      <location filename="preferences-draft.ui" line="162"/>
       <source>XY (Top)</source>
-      <translation type="unfinished">XY (Üst)</translation>
+      <translation>XY (Üst)</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="187"/>
+      <location filename="preferences-draft.ui" line="167"/>
       <source>XZ (Front)</source>
-      <translation type="unfinished">XZ (Ön)</translation>
+      <translation>XZ (Ön)</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="192"/>
+      <location filename="preferences-draft.ui" line="172"/>
       <source>YZ (Side)</source>
-      <translation type="unfinished">YZ (tarafı)</translation>
+      <translation>YZ (tarafı)</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="230"/>
+      <location filename="preferences-draft.ui" line="210"/>
       <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001)</source>
-      <translation type="unfinished">Dahili koordinat işlemlerinde ondalıkların sayısı (Örneğin 3 için 0.001)</translation>
+      <translation>Dahili koordinat işlemlerinde ondalıkların sayısı (Örneğin 3 için 0.001)</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="441"/>
+      <location filename="preferences-drafttexts.ui" line="89"/>
       <source>Default height for texts and dimensions</source>
-      <translation type="unfinished">Yazılar ve boyutlar için varsayılan yükseklik</translation>
+      <translation>Yazılar ve boyutlar için varsayılan yükseklik</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="403"/>
+      <location filename="preferences-drafttexts.ui" line="47"/>
       <source>This is the default font name for all Draft texts and dimensions.
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
 such as "Arial:Bold"</source>
-      <translation type="unfinished">Bu, mevcut taslak metinler ve boyutlar için varsayılan yazı tipi adıdır.
+      <translation>Bu, mevcut taslak metinler ve boyutlar için varsayılan yazı tipi adıdır.
 Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile adı olarak "Arial,Helvetica,sans", veya stil ile herhangi bir ad "Arial:Bold" gibi yazı tipi değerleri alabilir.</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="235"/>
+      <location filename="preferences-draftvisual.ui" line="235"/>
       <source>Default template sheet</source>
-      <translation type="unfinished">Varsayılan şablon sayfası</translation>
+      <translation>Varsayılan şablon sayfası</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="261"/>
+      <location filename="preferences-draftvisual.ui" line="261"/>
       <source>The default template to use when creating a new drawing sheet</source>
-      <translation type="unfinished">Yeni bir çizim sayfası oluştururken varsayılan taslağı kullan</translation>
+      <translation>Yeni bir çizim sayfası oluştururken varsayılan taslağı kullan</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="46"/>
+      <location filename="preferences-svg.ui" line="40"/>
       <source>Import style</source>
-      <translation type="unfinished">Çizim şeklini içeri aktar</translation>
+      <translation>Çizim şeklini içeri aktar</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="66"/>
+      <location filename="preferences-svg.ui" line="60"/>
       <source>None (fastest)</source>
-      <translation type="unfinished">Hiçbiri (en hızlısı)</translation>
+      <translation>Hiçbiri (en hızlısı)</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="71"/>
+      <location filename="preferences-svg.ui" line="65"/>
       <source>Use default color and linewidth</source>
-      <translation type="unfinished">Varsayılan renk ve çizgi kalınlığı kullanın.</translation>
+      <translation>Varsayılan renk ve çizgi kalınlığı kullanın.</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="76"/>
+      <location filename="preferences-svg.ui" line="70"/>
       <source>Original color and linewidth</source>
-      <translation type="unfinished">Öz renk ve çizgi kalınlığını kullan</translation>
+      <translation>Öz renk ve çizgi kalınlığını kullan</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="76"/>
+      <location filename="preferences-dxf.ui" line="128"/>
       <source>if this is checked, paper space objects will be imported too</source>
-      <translation type="unfinished">Eğer bu işaretliyse, sayfa uzay nesnesi de içeri aktarılacaktır</translation>
+      <translation>Eğer bu işaretliyse, sayfa uzay nesnesi de içeri aktarılacaktır</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="47"/>
+      <location filename="preferences-dxf.ui" line="99"/>
       <source>if this is unchecked, texts/mtexts won't be imported</source>
-      <translation type="unfinished">Eğer bu işaretli değilse, metinler(texts)/mmetinler(mtexts) içeri aktarılmayacaktır</translation>
+      <translation>Eğer bu işaretli değilse, metinler(texts)/mmetinler(mtexts) içeri aktarılmayacaktır</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="389"/>
+      <location filename="preferences-dxf.ui" line="428"/>
       <source>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Dilimleri DXF'e aktarırken, Dilimler çokludoğrulara dönüşürler. Bu değer her bir çokludoğru bölümü için en büyük uzunluktur.. Eğer sıfırsa, bütün dilime tek bir bölüm gibi davranılmıştır.</translation>
+      <translation>Dilimleri DXF'e aktarırken, Dilimler çokludoğrulara dönüşürler. Bu değer her bir çokludoğru bölümü için en büyük uzunluktur.. Eğer sıfırsa, bütün dilime tek bir bölüm gibi davranılmıştır.</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="53"/>
+      <location filename="preferences-svg.ui" line="47"/>
       <source>This is the method choosed for importing SVG object color into FreeCAD.</source>
-      <translation type="unfinished">Bu, SVG renkli nesnesini FreeCAD'e aktarmak için seçili yöntemdir.</translation>
+      <translation>Bu, SVG renkli nesnesini FreeCAD'e aktarmak için seçili yöntemdir.</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="169"/>
+      <location filename="preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation type="unfinished">Eğer alanlarında (3B yüzeylerin de) içeri aktarılmasını istiyorsanız, bunu işaretleyin.</translation>
+      <translation>Eğer alanlarında (3B yüzeylerin de) içeri aktarılmasını istiyorsanız, bunu işaretleyin.</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="172"/>
+      <location filename="preferences-oca.ui" line="49"/>
       <source>Import OCA areas</source>
-      <translation type="unfinished">OCA alanlarını içeri aktar</translation>
+      <translation>OCA alanlarını içeri aktar</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="14"/>
+      <location filename="preferences-draft.ui" line="14"/>
       <source>General settings</source>
-      <translation type="unfinished">Genel ayarlar</translation>
+      <translation>Genel ayarlar</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="392"/>
+      <location filename="preferences-draft.ui" line="375"/>
       <source>Construction group name</source>
-      <translation type="unfinished">Yapı grup adı</translation>
+      <translation>Yapı grup adı</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="290"/>
+      <location filename="preferences-draft.ui" line="270"/>
       <source>Tolerance</source>
-      <translation type="unfinished">Tolerans</translation>
+      <translation>Tolerans</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="316"/>
+      <location filename="preferences-draft.ui" line="296"/>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same.</source>
-      <translation type="unfinished">Bu bir tolerans kullanan işlevler tarafından kullanılan değerdir. Bu değerin altında farklılıkları olan değerler aynı olarak kabul edilecektir.</translation>
+      <translation>Bu bir tolerans kullanan işlevler tarafından kullanılan değerdir. Bu değerin altında farklılıkları olan değerler aynı olarak kabul edilecektir.</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="26"/>
-      <source>DXF format options</source>
-      <translation type="unfinished">DXF biçimi seçenekleri</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import1.ui" line="92"/>
+      <location filename="preferences-dxf.ui" line="144"/>
       <source>Check this if you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">Eğer isimlendirilmemiş blokları istiyorsanız, bunu işaretleyin</translation>
+      <translation>Eğer isimlendirilmemiş blokları istiyorsanız, bunu işaretleyin</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="194"/>
+      <location filename="preferences-dxf.ui" line="246"/>
       <source>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</source>
-      <translation type="unfinished">Bu onay kutusu işaretliyse, freecad çakışan nesneleri tel olarak birleştirmeyi deneyecek. Dikkat edin, bu biraz zaman alabilir...</translation>
+      <translation>Bu onay kutusu işaretliyse, freecad çakışan nesneleri tel olarak birleştirmeyi deneyecek. Dikkat edin, bu biraz zaman alabilir...</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="197"/>
+      <location filename="preferences-dxf.ui" line="249"/>
       <source>Join geometry</source>
-      <translation type="unfinished">Geometriyi birleştir</translation>
+      <translation>Geometriyi birleştir</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="26"/>
-      <source>SVG format options</source>
-      <translation type="unfinished">SVG biçim seçenekleri</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import2.ui" line="149"/>
-      <source>OCA format options</source>
-      <translation type="unfinished">OCA biçim seçenekleri</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="278"/>
+      <location filename="preferences-draftvisual.ui" line="278"/>
       <source>Alternate SVG Patterns location</source>
-      <translation type="unfinished">Alternatif SVG Şablonları konumu</translation>
+      <translation>Alternatif SVG Şablonları konumu</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="304"/>
+      <location filename="preferences-draftvisual.ui" line="304"/>
       <source>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</source>
-      <translation type="unfinished">Burada standart Taslak(Draft) tarama şablonlarına eklenebilen, &lt;pattern&gt; tanımlaması içeren SVG dosyalarını barındıran bir dizin seçebilirsiniz</translation>
+      <translation>Burada standart Taslak(Draft) tarama şablonlarına eklenebilen, &lt;pattern&gt; tanımlaması içeren SVG dosyalarını barındıran bir dizin seçebilirsiniz</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="54"/>
+      <location filename="preferences-draft.ui" line="34"/>
       <source>Draft interface mode</source>
-      <translation type="unfinished">Taslak arabirimi modu</translation>
+      <translation>Taslak arabirimi modu</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="77"/>
+      <location filename="preferences-draft.ui" line="57"/>
       <source>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</source>
-      <translation type="unfinished">Taslak modülü çalışacak arayüz modu budur: Araç çubuğu modu, yer tüm taslak ayarları için ayrı bir araç çubuğu yerleştirecektir, Araç çubuğu modu, tüm kullanıcı etkileşimleri için FreeCAD Görev penceresi sistemini kullanacaktır</translation>
+      <translation>Taslak modülü çalışacak arayüz modu budur: Araç çubuğu modu, yer tüm taslak ayarları için ayrı bir araç çubuğu yerleştirecektir, Araç çubuğu modu, tüm kullanıcı etkileşimleri için FreeCAD Görev penceresi sistemini kullanacaktır</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="90"/>
+      <location filename="preferences-draft.ui" line="70"/>
       <source>Toolbar</source>
-      <translation type="unfinished">Araç çubuğu</translation>
+      <translation>Araç çubuğu</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="95"/>
+      <location filename="preferences-draft.ui" line="75"/>
       <source>Taskview</source>
-      <translation type="unfinished">Görev Penceresi</translation>
+      <translation>Görev Penceresi</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="57"/>
+      <location filename="preferences-draftsnap.ui" line="57"/>
       <source>Constrain mod</source>
-      <translation type="unfinished">Kısıtlama modu</translation>
+      <translation>Kısıtlama modu</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="77"/>
+      <location filename="preferences-draftsnap.ui" line="77"/>
       <source>The Constraining modifier key</source>
-      <translation type="unfinished">Kısıtlama değiştirici anahtar</translation>
+      <translation>Kısıtlama değiştirici anahtar</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="197"/>
+      <location filename="preferences-draftsnap.ui" line="197"/>
       <source>shift</source>
-      <translation type="unfinished">üst karakter</translation>
+      <translation>üst karakter</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="202"/>
+      <location filename="preferences-draftsnap.ui" line="202"/>
       <source>ctrl</source>
-      <translation type="unfinished">CTRL</translation>
+      <translation>CTRL</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="207"/>
+      <location filename="preferences-draftsnap.ui" line="207"/>
       <source>alt</source>
-      <translation type="unfinished">alt</translation>
+      <translation>alt</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="109"/>
+      <location filename="preferences-draftsnap.ui" line="109"/>
       <source>Snap mod</source>
-      <translation type="unfinished">Yaslama modu</translation>
+      <translation>Yaslama modu</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="129"/>
+      <location filename="preferences-draftsnap.ui" line="129"/>
       <source>The snap modifier key</source>
-      <translation type="unfinished">Yaslama belirleyici tuş</translation>
+      <translation>Yaslama belirleyici tuş</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="164"/>
+      <location filename="preferences-draftsnap.ui" line="164"/>
       <source>Alt mod</source>
-      <translation type="unfinished">Alt mod</translation>
+      <translation>Alt mod</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="184"/>
+      <location filename="preferences-draftsnap.ui" line="184"/>
       <source>The alt modifier key</source>
-      <translation type="unfinished">Alt belirleyici tuşu</translation>
+      <translation>Alt belirleyici tuşu</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="130"/>
+      <location filename="preferences-draft.ui" line="110"/>
       <source>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</source>
-      <translation type="unfinished">Normalde, nesneleri kopyaladıktan sonra kopya seçili kalır. Bu seçenek seçili ise, bunun yerine temel nesneler seçili olacaktır.</translation>
+      <translation>Normalde, nesneleri kopyaladıktan sonra kopya seçili kalır. Bu seçenek seçili ise, bunun yerine temel nesneler seçili olacaktır.</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="133"/>
+      <location filename="preferences-draft.ui" line="113"/>
       <source>Select base objects after copying</source>
-      <translation type="unfinished">Kopyaladıktan sonra temel nesneleri seç</translation>
+      <translation>Kopyaladıktan sonra temel nesneleri seç</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="395"/>
+      <location filename="preferences-draftsnap.ui" line="271"/>
       <source>If checked, a grid will appear when drawing</source>
-      <translation type="unfinished">Bu onay kutusu işaretlendiğinde, çizim yapılırken bir ızgara görünür</translation>
+      <translation>Bu onay kutusu işaretlendiğinde, çizim yapılırken bir ızgara görünür</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="398"/>
+      <location filename="preferences-draftsnap.ui" line="274"/>
       <source>Use grid</source>
-      <translation type="unfinished">Izgara kullan</translation>
+      <translation>Izgara kullan</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="320"/>
+      <location filename="preferences-draftsnap.ui" line="372"/>
       <source>Grid spacing</source>
-      <translation type="unfinished">Izgara aralığı</translation>
+      <translation>Izgara aralığı</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="343"/>
+      <location filename="preferences-draftsnap.ui" line="395"/>
       <source>The spacing between each grid line</source>
-      <translation type="unfinished">Her bir kılavuz çizgisi arasındaki mesafe</translation>
+      <translation>Her bir kılavuz çizgisi arasındaki mesafe</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="274"/>
+      <location filename="preferences-draftsnap.ui" line="323"/>
       <source>Main lines every</source>
-      <translation type="unfinished">Ana çizgiler her</translation>
+      <translation>Ana çizgiler her</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="297"/>
+      <location filename="preferences-draftsnap.ui" line="346"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation type="unfinished">Ana çizgiler daha kalın çizilecektir. Şimdi burada ana çizgiler arasında kaç kare olacağını belirleyiniz.</translation>
+      <translation>Ana çizgiler daha kalın çizilecektir. Şimdi burada ana çizgiler arasında kaç kare olacağını belirleyiniz.</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="204"/>
+      <location filename="preferences-draft.ui" line="184"/>
       <source>Internal precision level</source>
-      <translation type="unfinished">Dahili duyarlık düzeyi</translation>
+      <translation>Dahili duyarlık düzeyi</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="250"/>
+      <location filename="preferences-draft.ui" line="230"/>
       <source>Dimensions precision level</source>
-      <translation type="unfinished">Boyutlar kesinlik, duyarlık düzeyi</translation>
+      <translation>Boyutlar kesinlik, duyarlık düzeyi</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="650"/>
+      <location filename="preferences-drafttexts.ui" line="273"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation type="unfinished">Bu, boyutlar dikey olduğunda boyut yazılarının yönüdür. Varsayılan ISO standardı olarak Soldur.</translation>
+      <translation>Bu, boyutlar dikey olduğunda boyut yazılarının yönüdür. Varsayılan ISO standardı olarak Soldur.</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="660"/>
+      <location filename="preferences-drafttexts.ui" line="283"/>
       <source>Left (ISO standard)</source>
-      <translation type="unfinished">Sol (ISO standardı)</translation>
+      <translation>Sol (ISO standardı)</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="665"/>
+      <location filename="preferences-drafttexts.ui" line="288"/>
       <source>Right</source>
-      <translation type="unfinished">Sağ</translation>
+      <translation>Sağ</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="214"/>
+      <location filename="preferences-dxf.ui" line="266"/>
       <source>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
-      <translation type="unfinished">Seçiliyse, aynı katmanlardan nesneler Taslak bloklarında birleştirilecektir, görüntü hızlanır ama onları düzenlemek daha az kolay olacaktır</translation>
+      <translation>Seçiliyse, aynı katmanlardan nesneler Taslak bloklarında birleştirilecektir, görüntü hızlanır ama onları düzenlemek daha az kolay olacaktır</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="217"/>
+      <location filename="preferences-dxf.ui" line="269"/>
       <source>Group layers into blocks</source>
-      <translation type="unfinished">Grup katmanları bloklara</translation>
+      <translation>Grup katmanları bloklara</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="234"/>
+      <location filename="preferences-dxf.ui" line="466"/>
       <source>If this is checked, all objects containing faces will be exported as 3d polyfaces</source>
-      <translation type="unfinished">Seçiliyse, yüzleri içeren tüm nesneler 3d polyfaces olarak ihraç edilecektir</translation>
+      <translation>Seçiliyse, yüzleri içeren tüm nesneler 3d polyfaces olarak ihraç edilecektir</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="237"/>
+      <location filename="preferences-dxf.ui" line="469"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation type="unfinished">3d nesnelerini Polyface kafesler olarak ihraç et</translation>
+      <translation>3d nesnelerini Polyface kafesler olarak ihraç et</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="34"/>
-      <source>If this is checked, the Draft workbench won't appear. Useful since all of the Draft tools are also in the Arch workbench.</source>
-      <translation type="unfinished">Seçiliyse, taslak tezgahı görünmez. Tüm taslak araçları da Arch(yay) tezgahı içinde de mevcut olduğunda kullanışlıdır.</translation>
-    </message>
-    <message>
-      <location filename="userprefs-base.ui" line="37"/>
-      <source>Hide Draft workbench</source>
-      <translation type="unfinished">Taslak tezgahını gizle</translation>
-    </message>
-    <message>
-      <location filename="userprefs-snap.ui" line="219"/>
+      <location filename="preferences-draftsnap.ui" line="219"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation type="unfinished">Bu onay kutusu işaretliyse, yapışma araç çubuğu yapışmayı her kullanışınızda görünecektir</translation>
+      <translation>Bu onay kutusu işaretliyse, yapışma araç çubuğu yapışmayı her kullanışınızda görünecektir</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="222"/>
+      <location filename="preferences-draftsnap.ui" line="222"/>
       <source>Show Draft Snap toolbar</source>
-      <translation type="unfinished">Taslak yapışma araç çubuğunu göster</translation>
+      <translation>Taslak yapışma araç çubuğunu göster</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="242"/>
+      <location filename="preferences-draftsnap.ui" line="242"/>
       <source>Hide Draft snap toolbar after use</source>
-      <translation type="unfinished">Kullanımdan sonra taslak yapışma araç çubuğunu gizle</translation>
+      <translation>Kullanımdan sonra taslak yapışma araç çubuğunu gizle</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="215"/>
+      <location filename="preferences-draftvisual.ui" line="215"/>
       <source>if checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation type="unfinished">Bu onay kutusu seçiliyse, çizim işlemleri sırasında geçerli çalışma ortamının yönünü gösteren bir araç gözükür</translation>
+      <translation>Bu onay kutusu seçiliyse, çizim işlemleri sırasında geçerli çalışma ortamının yönünü gösteren bir araç gözükür</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="218"/>
+      <location filename="preferences-draftvisual.ui" line="218"/>
       <source>Show Working Plane tracker</source>
-      <translation type="unfinished">Çalışma Alanı izleyicisini göster</translation>
+      <translation>Çalışma Alanı izleyicisini göster</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="372"/>
+      <location filename="preferences-draftsnap.ui" line="297"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation type="unfinished">Eğer işaretliyse, Taslak tezgahı etkin olduğunda Taslak ızgarası(klavuzu) daima görünürdür. Aksi taktirde sadece bir komut kullanıldığında görünür</translation>
+      <translation>Eğer işaretliyse, Taslak tezgahı etkin olduğunda Taslak ızgarası(klavuzu) daima görünürdür. Aksi taktirde sadece bir komut kullanıldığında görünür</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="274"/>
+      <location filename="preferences-dxf.ui" line="306"/>
       <source>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Seçiliyse, ithal edilen metinler DXF belgesi içindeki boyutları yerine, standart taslak metin boyutunu alacaktır</translation>
+      <translation>Seçiliyse, ithal edilen metinler DXF belgesi içindeki boyutları yerine, standart taslak metin boyutunu alacaktır</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="277"/>
+      <location filename="preferences-dxf.ui" line="309"/>
       <source>Use standard font size for texts</source>
-      <translation type="unfinished">Metinler için standart yazı tipi boyutunu kullan</translation>
+      <translation>Metinler için standart yazı tipi boyutunu kullan</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="314"/>
+      <location filename="preferences-dxf.ui" line="346"/>
       <source>If this is checked, hatches will be converted into simple wires</source>
-      <translation type="unfinished">Seçiliyse, taramalar basit tellere dönüştürülür</translation>
+      <translation>Seçiliyse, taramalar basit tellere dönüştürülür</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="317"/>
+      <location filename="preferences-dxf.ui" line="349"/>
       <source>Import hatch boundaries as wires</source>
-      <translation type="unfinished">Tarama sınır boyutlarını teller olarak ithal et</translation>
+      <translation>Tarama sınır boyutlarını teller olarak ithal et</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="334"/>
+      <location filename="preferences-dxf.ui" line="366"/>
       <source>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</source>
-      <translation type="unfinished">Bu seçiliyse, polylineların tanımlanmış genişliği varsa, onlar doğru genişlikle kapalı teller olarak oluşturulur</translation>
+      <translation>Bu seçiliyse, polylineların tanımlanmış genişliği varsa, onlar doğru genişlikle kapalı teller olarak oluşturulur</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="337"/>
+      <location filename="preferences-dxf.ui" line="369"/>
       <source>Render polylines with width</source>
-      <translation type="unfinished">Polylineları genişlik ile işle</translation>
+      <translation>Polylineları genişlik ile işle</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="95"/>
+      <location filename="preferences-svg.ui" line="127"/>
       <source>Style of SVG file to write when exporting a Sketch.</source>
-      <translation type="unfinished">Bir taslak dosyasını ihraç ederken yazılacak SVG dosya biçimi.</translation>
+      <translation>Bir taslak dosyasını ihraç ederken yazılacak SVG dosya biçimi.</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="108"/>
+      <location filename="preferences-svg.ui" line="140"/>
       <source>Translated (for print &amp; display)</source>
-      <translation type="unfinished">Dönüştürüldü (baskı &amp; görüntü için)</translation>
+      <translation>Dönüştürüldü (baskı &amp; görüntü için)</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="113"/>
+      <location filename="preferences-svg.ui" line="145"/>
       <source>Raw (for CAM)</source>
-      <translation type="unfinished">Ham (CAM için)</translation>
+      <translation>Ham (CAM için)</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="125"/>
+      <location filename="preferences-svg.ui" line="157"/>
       <source>When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</source>
-      <translation type="unfinished">SVG olarak ihraç ederken, tüm beyaz çizgileri, beyaz bir arka plana karşı daha iyi okunabilirlik için siyah olarak göster</translation>
+      <translation>SVG olarak ihraç ederken, tüm beyaz çizgileri, beyaz bir arka plana karşı daha iyi okunabilirlik için siyah olarak göster</translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="128"/>
+      <location filename="preferences-svg.ui" line="160"/>
       <source>Translate white line color to black</source>
-      <translation type="unfinished">Beyaz çizgi rengini siyaha çevir</translation>
+      <translation>Beyaz çizgi rengini siyaha çevir</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="343"/>
+      <location filename="preferences-draft.ui" line="323"/>
       <source>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</source>
       <translation type="unfinished">When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="346"/>
+      <location filename="preferences-draft.ui" line="326"/>
       <source>Use Part Primitives when available</source>
       <translation type="unfinished">Use Part Primitives when available</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="26"/>
+      <location filename="preferences-draftsnap.ui" line="26"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Yapışma</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="34"/>
+      <location filename="preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
       <translation type="unfinished">If this is checked, snapping is activated without the need to press the snap mod key</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="37"/>
+      <location filename="preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
       <translation type="unfinished">Always snap (disable snap mod)</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="384"/>
+      <location filename="preferences-draft.ui" line="367"/>
       <source>Construction geometry</source>
-      <translation type="unfinished">Yapı geometrisi</translation>
+      <translation>Yapı geometrisi</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="419"/>
+      <location filename="preferences-draft.ui" line="402"/>
       <source>Construction geometry color</source>
       <translation type="unfinished">Construction geometry color</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="40"/>
+      <location filename="preferences-dxf.ui" line="92"/>
       <source>Import</source>
       <translation type="unfinished">Import</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="50"/>
+      <location filename="preferences-dxf.ui" line="102"/>
       <source>texts and dimensions</source>
       <translation type="unfinished">texts and dimensions</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="63"/>
+      <location filename="preferences-dxf.ui" line="115"/>
       <source>points</source>
       <translation type="unfinished">points</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="79"/>
+      <location filename="preferences-dxf.ui" line="131"/>
       <source>layouts</source>
       <translation type="unfinished">layouts</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="95"/>
+      <location filename="preferences-dxf.ui" line="147"/>
       <source>*blocks</source>
       <translation type="unfinished">*blocks</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="254"/>
+      <location filename="preferences-dxf.ui" line="286"/>
       <source>If this is checked, the exported objects will be projected to reflect the current view direction</source>
       <translation type="unfinished">If this is checked, the exported objects will be projected to reflect the current view direction</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="257"/>
+      <location filename="preferences-dxf.ui" line="289"/>
       <source>Project exported objects along current view direction</source>
       <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="354"/>
+      <location filename="preferences-dxf.ui" line="386"/>
       <source>Ellipse export is badly supported. Use this to export them as polylines instead.</source>
       <translation type="unfinished">Ellipse export is badly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="410"/>
-      <source>DWG format options</source>
-      <translation type="unfinished">DWG format options</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import1.ui" line="418"/>
+      <location filename="preferences-dwg.ui" line="34"/>
       <source>Path to Teigha File Converter</source>
       <translation type="unfinished">Path to Teigha File Converter</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="425"/>
+      <location filename="preferences-dwg.ui" line="41"/>
       <source>The path to your Teigha File Converter executable</source>
       <translation type="unfinished">The path to your Teigha File Converter executable</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="14"/>
+      <location filename="preferences-draftvisual.ui" line="14"/>
       <source>Visual settings</source>
       <translation type="unfinished">Visual settings</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="26"/>
+      <location filename="preferences-draftvisual.ui" line="26"/>
       <source>Visual Settings</source>
       <translation type="unfinished">Visual Settings</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="34"/>
+      <location filename="preferences-draftvisual.ui" line="34"/>
       <source>Default line color</source>
-      <translation type="unfinished">Varsayılan çizgi rengi</translation>
+      <translation>Varsayılan çizgi rengi</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="78"/>
+      <location filename="preferences-draftvisual.ui" line="78"/>
       <source>Default line width</source>
       <translation type="unfinished">Default line width</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="118"/>
+      <location filename="preferences-draftvisual.ui" line="118"/>
       <source>Snap symbols style</source>
       <translation type="unfinished">Snap symbols style</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="138"/>
+      <location filename="preferences-draftvisual.ui" line="138"/>
       <source>Draft classic style</source>
       <translation type="unfinished">Draft classic style</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="143"/>
+      <location filename="preferences-draftvisual.ui" line="143"/>
       <source>Bitsnpieces style</source>
       <translation type="unfinished">Bitsnpieces style</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="164"/>
+      <location filename="preferences-draftvisual.ui" line="164"/>
       <source>Color</source>
       <translation type="unfinished">Color</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="321"/>
+      <location filename="preferences-draftvisual.ui" line="321"/>
       <source>Hatch patterns resolution</source>
       <translation type="unfinished">Hatch patterns resolution</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="263"/>
+      <location filename="preferences-draftsnap.ui" line="263"/>
       <source>Grid</source>
       <translation type="unfinished">Grid</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="375"/>
+      <location filename="preferences-draftsnap.ui" line="300"/>
       <source>Always show the grid</source>
       <translation type="unfinished">Always show the grid</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="362"/>
+      <location filename="preferences-drafttexts.ui" line="14"/>
       <source>Texts and dimensions</source>
       <translation type="unfinished">Texts and dimensions</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="370"/>
-      <source>Texts</source>
-      <translation type="unfinished">Texts</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="390"/>
-      <source>font</source>
-      <translation type="unfinished">font</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="415"/>
+      <location filename="preferences-drafttexts.ui" line="59"/>
       <source>Internal font</source>
       <translation type="unfinished">Internal font</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="596"/>
-      <source>size</source>
-      <translation type="unfinished">size</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="464"/>
-      <source>Dimensions arrows</source>
-      <translation type="unfinished">Dimensions arrows</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="563"/>
-      <source>style</source>
-      <translation type="unfinished">style</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="498"/>
+      <location filename="preferences-drafttexts.ui" line="211"/>
       <source>Dot</source>
       <translation type="unfinished">Dot</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="503"/>
+      <location filename="preferences-drafttexts.ui" line="216"/>
       <source>Circle</source>
-      <translation type="unfinished">Çember</translation>
+      <translation>Çember</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="508"/>
+      <location filename="preferences-drafttexts.ui" line="221"/>
       <source>Arrow</source>
       <translation type="unfinished">Arrow</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="523"/>
+      <location filename="preferences-drafttexts.ui" line="240"/>
       <source>The default size of arrows</source>
       <translation type="unfinished">The default size of arrows</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="543"/>
-      <source>Dimensions lines</source>
-      <translation type="unfinished">Dimensions lines</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="583"/>
-      <source>text above</source>
-      <translation type="unfinished">text above</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="588"/>
-      <source>text inside</source>
-      <translation type="unfinished">text inside</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="603"/>
+      <location filename="preferences-drafttexts.ui" line="168"/>
       <source>The default size of dimensions extension lines</source>
       <translation type="unfinished">The default size of dimensions extension lines</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="623"/>
-      <source>Dimensions text</source>
-      <translation type="unfinished">Dimensions text</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="643"/>
-      <source>orientation</source>
-      <translation type="unfinished">orientation</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="673"/>
-      <source>spacing</source>
-      <translation type="unfinished">spacing</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="680"/>
+      <location filename="preferences-drafttexts.ui" line="307"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation type="unfinished">The space between the dimension line and the dimension text</translation>
     </message>
     <message>
-      <location filename="userprefs-visual.ui" line="720"/>
-      <source>Default ShapeString Font File</source>
-      <translation type="unfinished">Default ShapeString Font File</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="746"/>
+      <location filename="preferences-drafttexts.ui" line="375"/>
       <source>Select a font file</source>
       <translation type="unfinished">Select a font file</translation>
     </message>
     <message>
-      <location filename="userprefs-base.ui" line="366"/>
+      <location filename="preferences-draft.ui" line="346"/>
       <source>Fill objects with faces whenever possible</source>
       <translation type="unfinished">Fill objects with faces whenever possible</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="14"/>
-      <source>DXF / DWG options</source>
-      <translation type="unfinished">DXF / DWG options</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import1.ui" line="112"/>
+      <location filename="preferences-dxf.ui" line="164"/>
       <source>Create</source>
-      <translation type="unfinished">Oluştur</translation>
+      <translation>Oluştur</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="119"/>
-      <source>If thi sis checked, only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">If thi sis checked, only standard Part objects will be created (fastest)</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import1.ui" line="122"/>
+      <location filename="preferences-dxf.ui" line="174"/>
       <source>simple Part shapes</source>
       <translation type="unfinished">simple Part shapes</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="138"/>
+      <location filename="preferences-dxf.ui" line="190"/>
       <source>If this is checked, parametric Draft objects will be created whenever possible</source>
       <translation type="unfinished">If this is checked, parametric Draft objects will be created whenever possible</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="141"/>
+      <location filename="preferences-dxf.ui" line="193"/>
       <source>Draft objects</source>
       <translation type="unfinished">Draft objects</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="154"/>
+      <location filename="preferences-dxf.ui" line="206"/>
       <source>If this is checked, sketches will be created whenever possible</source>
       <translation type="unfinished">If this is checked, sketches will be created whenever possible</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="157"/>
+      <location filename="preferences-dxf.ui" line="209"/>
       <source>Sketches</source>
       <translation type="unfinished">Sketches</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="226"/>
       <source>If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</source>
       <translation type="unfinished">If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="177"/>
+      <location filename="preferences-dxf.ui" line="229"/>
       <source>Get original colors from the DXF file</source>
       <translation type="unfinished">Get original colors from the DXF file</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="294"/>
-      <source>If this is checked, DXF layers will be imported as Draft layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft layers</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import1.ui" line="297"/>
-      <source>Use Draft Layers</source>
-      <translation type="unfinished">Use Draft Layers</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import1.ui" line="357"/>
+      <location filename="preferences-dxf.ui" line="389"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation type="unfinished">Treat ellipses and splines as polylines</translation>
     </message>
     <message>
-      <location filename="userprefs-import1.ui" line="373"/>
+      <location filename="preferences-dxf.ui" line="418"/>
       <source>Max Spline Segment: </source>
       <translation type="unfinished">Max Spline Segment: </translation>
     </message>
     <message>
-      <location filename="userprefs-import2.ui" line="14"/>
-      <source>SVG / OCA options</source>
-      <translation type="unfinished">SVG / OCA options</translation>
-    </message>
-    <message>
-      <location filename="userprefs-import2.ui" line="88"/>
+      <location filename="preferences-svg.ui" line="120"/>
       <source>Export style</source>
       <translation type="unfinished">Export style</translation>
     </message>
     <message>
-      <location filename="userprefs-snap.ui" line="14"/>
-      <source>Snapping settings</source>
-      <translation type="unfinished">Snapping settings</translation>
-    </message>
-    <message>
-      <location filename="userprefs-visual.ui" line="700"/>
+      <location filename="preferences-drafttexts.ui" line="333"/>
       <source>Show the unit suffix in dimensions</source>
       <translation type="unfinished">Show the unit suffix in dimensions</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="26"/>
+      <source>Automatic update</source>
+      <translation type="unfinished">Automatic update</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="34"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="37"/>
+      <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
+      <translation type="unfinished">Allow FreeCAD to automatically download and update the DXF libraries</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="171"/>
+      <source>If this is checked, only standard Part objects will be created (fastest)</source>
+      <translation type="unfinished">If this is checked, only standard Part objects will be created (fastest)</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="326"/>
+      <source>If this is checked, DXF layers will be imported as Draft VisGroups</source>
+      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft VisGroups</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="329"/>
+      <source>Use VisGroups</source>
+      <translation type="unfinished">Use VisGroups</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="434"/>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftsnap.ui" line="427"/>
+      <source>Grid size</source>
+      <translation type="unfinished">Grid size</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftsnap.ui" line="447"/>
+      <source>the number of horizontal or vertical lines of the grid</source>
+      <translation type="unfinished">the number of horizontal or vertical lines of the grid</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftsnap.ui" line="453"/>
+      <source> lines</source>
+      <translation type="unfinished"> lines</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="144"/>
+      <source>text above (2D)</source>
+      <translation type="unfinished">text above (2D)</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="149"/>
+      <source> text inside (3D)</source>
+      <translation type="unfinished"> text inside (3D)</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="370"/>
+      <source>Dashed line definition</source>
+      <translation type="unfinished">Dashed line definition</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="476"/>
+      <source>A SVG linestyle definition</source>
+      <translation type="unfinished">A SVG linestyle definition</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="393"/>
+      <source>0.09,0.05</source>
+      <translation type="unfinished">0.09,0.05</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="413"/>
+      <source>Dashdot line definition</source>
+      <translation type="unfinished">Dashdot line definition</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="436"/>
+      <source>0.09,0.05,0.02,0.05</source>
+      <translation type="unfinished">0.09,0.05,0.02,0.05</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="456"/>
+      <source>Dotted line definition</source>
+      <translation type="unfinished">Dotted line definition</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="479"/>
+      <source>0.02,0.02</source>
+      <translation type="unfinished">0.02,0.02</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftsnap.ui" line="14"/>
+      <source>Grid and snapping</source>
+      <translation type="unfinished">Grid and snapping</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="26"/>
+      <source>Text settings</source>
+      <translation type="unfinished">Text settings</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="34"/>
+      <source>Font family</source>
+      <translation type="unfinished">Font family</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="76"/>
+      <source>Font size</source>
+      <translation type="unfinished">Font size</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="116"/>
+      <source>Dimension settings</source>
+      <translation type="unfinished">Dimension settings</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="124"/>
+      <source>Display mode</source>
+      <translation type="unfinished">Display mode</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="161"/>
+      <source>Extension lines  size</source>
+      <translation type="unfinished">Extension lines  size</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="197"/>
+      <source>Arrows style</source>
+      <translation type="unfinished">Arrows style</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="233"/>
+      <source>Arrows size</source>
+      <translation type="unfinished">Arrows size</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="266"/>
+      <source>Text orientation</source>
+      <translation type="unfinished">Text orientation</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="300"/>
+      <source>Text spacing</source>
+      <translation type="unfinished">Text spacing</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="354"/>
+      <source>ShapeString settings</source>
+      <translation type="unfinished">ShapeString settings</translation>
+    </message>
+    <message>
+      <location filename="preferences-drafttexts.ui" line="362"/>
+      <source>Default ShapeString font file</source>
+      <translation type="unfinished">Default ShapeString font file</translation>
+    </message>
+    <message>
+      <location filename="preferences-draftvisual.ui" line="362"/>
+      <source>Drawing view line definitions</source>
+      <translation type="unfinished">Drawing view line definitions</translation>
+    </message>
+    <message>
+      <location filename="preferences-dwg.ui" line="14"/>
+      <source>DWG</source>
+      <translation type="unfinished">DWG</translation>
+    </message>
+    <message>
+      <location filename="preferences-dwg.ui" line="26"/>
+      <source>DWG conversion</source>
+      <translation type="unfinished">DWG conversion</translation>
+    </message>
+    <message>
+      <location filename="preferences-dwg.ui" line="56"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="14"/>
+      <source>DXF</source>
+      <translation type="unfinished">DXF</translation>
+    </message>
+    <message>
+      <location filename="preferences-svg.ui" line="26"/>
+      <source>Import options</source>
+      <translation type="unfinished">Import options</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="69"/>
+      <source>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</source>
+      <translation type="unfinished">If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="72"/>
+      <source>Use legacy python importer</source>
+      <translation type="unfinished">Use legacy python importer</translation>
+    </message>
+    <message>
+      <location filename="preferences-svg.ui" line="106"/>
+      <source>Export options</source>
+      <translation type="unfinished">Export options</translation>
+    </message>
+    <message>
+      <location filename="preferences-oca.ui" line="14"/>
+      <source>OCA</source>
+      <translation type="unfinished">OCA</translation>
+    </message>
+    <message>
+      <location filename="preferences-svg.ui" line="14"/>
+      <source>SVG</source>
+      <translation type="unfinished">SVG</translation>
+    </message>
+    <message>
+      <location filename="preferences-svg.ui" line="82"/>
+      <source>If this is checked, no units conversion will occur. One unit in the SVG file will translate as one millimeter.</source>
+      <translation type="unfinished">If this is checked, no units conversion will occur. One unit in the SVG file will translate as one millimeter.</translation>
+    </message>
+    <message>
+      <location filename="preferences-svg.ui" line="85"/>
+      <source>Disable units scaling</source>
+      <translation type="unfinished">Disable units scaling</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="486"/>
+      <source>if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
+      <translation type="unfinished">if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="489"/>
+      <source>Export Drawing Views as blocks</source>
+      <translation type="unfinished">Export Drawing Views as blocks</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="DraftSnap.py" line="1058"/>
+      <location filename="DraftSnap.py" line="1075"/>
       <source>Draft Snap</source>
       <translation type="unfinished">Draft Snap</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="128"/>
+      <location filename="InitGui.py" line="127"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Taslak oluşturma araçları</translation>
+      <translation>Taslak oluşturma araçları</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="129"/>
+      <location filename="InitGui.py" line="128"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Taslak değişiklik araçları</translation>
+      <translation>Taslak değişiklik araçları</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="257"/>
+      <location filename="DraftGui.py" line="266"/>
       <source>Draft Command Bar</source>
       <translation type="unfinished">Draft Command Bar</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="558"/>
+      <location filename="DraftGui.py" line="605"/>
       <source>active command:</source>
-      <translation type="unfinished">Etkin söz dizisi:</translation>
+      <translation>Etkin söz dizisi:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="779"/>
+      <location filename="DraftGui.py" line="848"/>
       <source>None</source>
-      <translation type="unfinished">Hiçbiri</translation>
+      <translation>Hiçbiri</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="560"/>
+      <location filename="DraftGui.py" line="607"/>
       <source>Active Draft command</source>
-      <translation type="unfinished">Aktif Çizim komutu</translation>
+      <translation>Aktif Çizim komutu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="561"/>
+      <location filename="DraftGui.py" line="608"/>
       <source>X coordinate of next point</source>
-      <translation type="unfinished">birsonraki noktanın X koordinatı</translation>
+      <translation>birsonraki noktanın X koordinatı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="780"/>
+      <location filename="DraftGui.py" line="849"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="563"/>
+      <location filename="DraftGui.py" line="610"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="564"/>
+      <location filename="DraftGui.py" line="611"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="565"/>
+      <location filename="DraftGui.py" line="612"/>
       <source>Y coordinate of next point</source>
-      <translation type="unfinished">birsonraki noktanın Y koordinatı</translation>
+      <translation>birsonraki noktanın Y koordinatı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="566"/>
+      <location filename="DraftGui.py" line="613"/>
       <source>Z coordinate of next point</source>
-      <translation type="unfinished">birsonraki noktanın Z koordinatı</translation>
+      <translation>birsonraki noktanın Z koordinatı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="828"/>
+      <location filename="DraftGui.py" line="898"/>
       <source>Radius</source>
-      <translation type="unfinished">Yarıçap</translation>
+      <translation>Yarıçap</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="568"/>
+      <location filename="DraftGui.py" line="621"/>
       <source>Radius of Circle</source>
-      <translation type="unfinished">Çemberin Yarıçapı</translation>
+      <translation>Çemberin Yarıçapı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="569"/>
+      <location filename="DraftGui.py" line="622"/>
       <source>&amp;Relative</source>
-      <translation type="unfinished">&amp;Göreli</translation>
+      <translation>&amp;Göreli</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="570"/>
+      <location filename="DraftGui.py" line="623"/>
       <source>Coordinates relative to last point or absolute (SPACE)</source>
-      <translation type="unfinished">Mutlak ya da son noktaya göre koordinatlar.(SPACE tuşu)</translation>
+      <translation>Mutlak ya da son noktaya göre koordinatlar.(SPACE tuşu)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="571"/>
+      <location filename="DraftGui.py" line="624"/>
       <source>F&amp;illed</source>
-      <translation type="unfinished">&amp;Dolduruldu</translation>
+      <translation>&amp;Dolduruldu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="572"/>
+      <location filename="DraftGui.py" line="625"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
-      <translation type="unfinished">Bunu eğer nesne doldurulmuş görünmesiyle işaretleyin, yoksa telkafes olarak görünecektir(i)</translation>
+      <translation>Bunu eğer nesne doldurulmuş görünmesiyle işaretleyin, yoksa telkafes olarak görünecektir(i)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="573"/>
+      <location filename="DraftGui.py" line="626"/>
       <source>&amp;Finish</source>
-      <translation type="unfinished">&amp;Bitir</translation>
+      <translation>&amp;Bitir</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="574"/>
+      <location filename="DraftGui.py" line="627"/>
       <source>Finishes the current drawing or editing operation (F)</source>
-      <translation type="unfinished">Geçerli çizim ya da düzenleme işlemini(F) tamamlar</translation>
+      <translation>Geçerli çizim ya da düzenleme işlemini(F) tamamlar</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="575"/>
+      <location filename="DraftGui.py" line="628"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation type="unfinished">Eğer işaretliyse, komut tekrar komut tuşuna basana kadar bitmeyecek</translation>
+      <translation>Eğer işaretliyse, komut tekrar komut tuşuna basana kadar bitmeyecek</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="576"/>
-      <source>&amp;Continue</source>
-      <translation type="unfinished">&amp;amp; Devam</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="577"/>
+      <location filename="DraftGui.py" line="630"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation type="unfinished">Bu onay kutusu seçiliyse, klasik kaydırmanın yerine OCC-tarzı kaydırma gerçekleştirilecek</translation>
+      <translation>Bu onay kutusu seçiliyse, klasik kaydırmanın yerine OCC-tarzı kaydırma gerçekleştirilecek</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="578"/>
+      <location filename="DraftGui.py" line="631"/>
       <source>&amp;OCC-style offset</source>
-      <translation type="unfinished">&amp;amp; OCC tarzı ofset</translation>
+      <translation>&amp;amp; OCC tarzı ofset</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="579"/>
+      <location filename="DraftGui.py" line="632"/>
       <source>Add points to the current object</source>
-      <translation type="unfinished">Etkin nesneye noktalar ekle</translation>
+      <translation>Etkin nesneye noktalar ekle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="580"/>
+      <location filename="DraftGui.py" line="633"/>
       <source>Remove points from the current object</source>
-      <translation type="unfinished">Etkin nesneden noktalar kaldır</translation>
+      <translation>Etkin nesneden noktalar kaldır</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="581"/>
+      <location filename="DraftGui.py" line="634"/>
       <source>Make Bezier node sharp</source>
       <translation type="unfinished">Make Bezier node sharp</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="582"/>
+      <location filename="DraftGui.py" line="635"/>
       <source>Make Bezier node tangent</source>
       <translation type="unfinished">Make Bezier node tangent</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="583"/>
+      <location filename="DraftGui.py" line="636"/>
       <source>Make Bezier node symmetric</source>
       <translation type="unfinished">Make Bezier node symmetric</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="584"/>
+      <location filename="DraftGui.py" line="637"/>
       <source>&amp;Undo</source>
-      <translation type="unfinished">Gerial</translation>
+      <translation>Gerial</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="585"/>
+      <location filename="DraftGui.py" line="638"/>
       <source>Undo the last segment (CTRL+Z)</source>
-      <translation type="unfinished">Son segmenti geri al (CTRL+Z)</translation>
+      <translation>Son segmenti geri al (CTRL+Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="586"/>
-      <source>&amp;Close</source>
-      <translation type="unfinished">Kapat</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="587"/>
+      <location filename="DraftGui.py" line="640"/>
       <source>Finishes and closes the current line (C)</source>
-      <translation type="unfinished">Sonlandırır ve geçerli çizgiyi kapatır (C)</translation>
+      <translation>Sonlandırır ve geçerli çizgiyi kapatır (C)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="588"/>
+      <location filename="DraftGui.py" line="641"/>
       <source>&amp;Wipe</source>
-      <translation type="unfinished">&amp; Silme</translation>
+      <translation>&amp; Silme</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="589"/>
+      <location filename="DraftGui.py" line="642"/>
       <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
-      <translation type="unfinished">Bu çizginin mevcut bölümlerini siler ve son noktadan yeniden başlar(W)</translation>
+      <translation>Bu çizginin mevcut bölümlerini siler ve son noktadan yeniden başlar(W)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="591"/>
+      <location filename="DraftGui.py" line="646"/>
       <source>Number of sides</source>
-      <translation type="unfinished">Yüzlerin sayısı</translation>
+      <translation>Yüzlerin sayısı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2547"/>
+      <location filename="DraftTools.py" line="2602"/>
       <source>Offset</source>
-      <translation type="unfinished">Uzaklaşma</translation>
+      <translation>Uzaklaşma</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="593"/>
+      <location filename="DraftGui.py" line="648"/>
       <source>XY</source>
-      <translation type="unfinished">XY</translation>
+      <translation>XY</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="594"/>
+      <location filename="DraftGui.py" line="649"/>
       <source>Select XY plane</source>
-      <translation type="unfinished">XY düzlemini seçin</translation>
+      <translation>XY düzlemini seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="595"/>
+      <location filename="DraftGui.py" line="650"/>
       <source>XZ</source>
-      <translation type="unfinished">XZ</translation>
+      <translation>XZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="596"/>
+      <location filename="DraftGui.py" line="651"/>
       <source>Select XZ plane</source>
-      <translation type="unfinished">XZ düzlemini seçin</translation>
+      <translation>XZ düzlemini seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="597"/>
+      <location filename="DraftGui.py" line="652"/>
       <source>YZ</source>
-      <translation type="unfinished">YZ</translation>
+      <translation>YZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="598"/>
+      <location filename="DraftGui.py" line="653"/>
       <source>Select YZ plane</source>
-      <translation type="unfinished">YZ düzlemini seçin</translation>
+      <translation>YZ düzlemini seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="599"/>
+      <location filename="DraftGui.py" line="654"/>
       <source>View</source>
-      <translation type="unfinished">Görünüm</translation>
+      <translation>Görünüm</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="600"/>
+      <location filename="DraftGui.py" line="655"/>
       <source>Select plane perpendicular to the current view</source>
-      <translation type="unfinished">Geçerli görünüşe dik düzlemi seçin</translation>
+      <translation>Geçerli görünüşe dik düzlemi seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="602"/>
+      <location filename="DraftGui.py" line="657"/>
       <source>Do not project points to a drawing plane</source>
-      <translation type="unfinished">Çizim düzlemine noktaların izdüşümünü almayın</translation>
+      <translation>Çizim düzlemine noktaların izdüşümünü almayın</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="603"/>
-      <source>&amp;Copy</source>
-      <translation type="unfinished">&amp;amp; Kopyala</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="604"/>
+      <location filename="DraftGui.py" line="659"/>
       <source>If checked, objects will be copied instead of moved (C)</source>
-      <translation type="unfinished">Bu onay kutusu işaretliyse, nesneler taşıma değil kopyalama yapılır (C)</translation>
+      <translation>Bu onay kutusu işaretliyse, nesneler taşıma değil kopyalama yapılır (C)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="605"/>
+      <location filename="DraftGui.py" line="660"/>
       <source>Text string to draw</source>
       <translation type="unfinished">Text string to draw</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="606"/>
+      <location filename="DraftGui.py" line="661"/>
       <source>String</source>
-      <translation type="unfinished">Dize</translation>
+      <translation>Dize</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="607"/>
+      <location filename="DraftGui.py" line="662"/>
       <source>Height of text</source>
       <translation type="unfinished">Height of text</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="608"/>
+      <location filename="DraftGui.py" line="663"/>
       <source>Height</source>
-      <translation type="unfinished">Height</translation>
+      <translation>Yükseklik</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="609"/>
+      <location filename="DraftGui.py" line="664"/>
       <source>Intercharacter spacing</source>
       <translation type="unfinished">Intercharacter spacing</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="610"/>
+      <location filename="DraftGui.py" line="665"/>
       <source>Tracking</source>
       <translation type="unfinished">Tracking</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="611"/>
+      <location filename="DraftGui.py" line="666"/>
       <source>Full path to font file:</source>
       <translation type="unfinished">Full path to font file:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="612"/>
+      <location filename="DraftGui.py" line="667"/>
       <source>Open a FileChooser for font file</source>
       <translation type="unfinished">Open a FileChooser for font file</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="632"/>
+      <location filename="DraftGui.py" line="687"/>
       <source>Set/unset a working plane</source>
       <translation type="unfinished">Set/unset a working plane</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="633"/>
+      <location filename="DraftGui.py" line="688"/>
       <source>Line Color</source>
-      <translation type="unfinished">Çizgi rengi</translation>
+      <translation>Çizgi rengi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="634"/>
+      <location filename="DraftGui.py" line="689"/>
       <source>Face Color</source>
-      <translation type="unfinished">Yüz rengi</translation>
+      <translation>Yüz rengi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="635"/>
+      <location filename="DraftGui.py" line="690"/>
       <source>Line Width</source>
-      <translation type="unfinished">Çizgi genişliği</translation>
+      <translation>Çizgi genişliği</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="636"/>
+      <location filename="DraftGui.py" line="691"/>
       <source>Font Size</source>
-      <translation type="unfinished">Yazı tipi boyutu</translation>
+      <translation>Yazı tipi boyutu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="637"/>
+      <location filename="DraftGui.py" line="692"/>
       <source>Apply to selected objects</source>
-      <translation type="unfinished">Seçili nesnelere uygulayın</translation>
+      <translation>Seçili nesnelere uygulayın</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="638"/>
+      <location filename="DraftGui.py" line="693"/>
       <source>Toggles Construction Mode</source>
-      <translation type="unfinished">Konstrüksiyon duna geçer</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="684"/>
-      <source>Select Plane</source>
-      <translation type="unfinished">Düzlemi seçin</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="437"/>
-      <source>Line</source>
-      <translation type="unfinished">Çizgi</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="580"/>
-      <source>DWire</source>
-      <translation type="unfinished">DWire</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="729"/>
-      <source>Circle</source>
-      <translation type="unfinished">Çember</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="736"/>
-      <source>Center X</source>
-      <translation type="unfinished">Merkez X</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="735"/>
-      <source>Arc</source>
-      <translation type="unfinished">Çember yayı</translation>
+      <translation>Konstrüksiyon duna geçer</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="739"/>
+      <source>Select Plane</source>
+      <translation>Düzlemi seçin</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="440"/>
+      <source>Line</source>
+      <translation>Çizgi</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="584"/>
+      <source>DWire</source>
+      <translation>DWire</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="798"/>
+      <source>Circle</source>
+      <translation>Çember</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="805"/>
+      <source>Center X</source>
+      <translation>Merkez X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="804"/>
+      <source>Arc</source>
+      <translation>Çember yayı</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="808"/>
       <source>Point</source>
-      <translation type="unfinished">Nokta</translation>
+      <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="821"/>
+      <location filename="DraftGui.py" line="891"/>
       <source>Distance</source>
-      <translation type="unfinished">Uzaklık</translation>
+      <translation>Uzaklık</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="818"/>
+      <location filename="DraftGui.py" line="888"/>
       <source>Trim</source>
-      <translation type="unfinished">Kırp</translation>
+      <translation>Kırp</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="909"/>
+      <location filename="DraftGui.py" line="980"/>
       <source>Pick Object</source>
-      <translation type="unfinished">Nesne Seç</translation>
+      <translation>Nesne Seç</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="914"/>
+      <location filename="DraftGui.py" line="985"/>
       <source>Edit</source>
-      <translation type="unfinished">Düzenle</translation>
+      <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="948"/>
+      <location filename="DraftGui.py" line="1022"/>
       <source>Global X</source>
       <translation type="unfinished">Global X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="949"/>
+      <location filename="DraftGui.py" line="1023"/>
       <source>Global Y</source>
       <translation type="unfinished">Global Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="950"/>
+      <location filename="DraftGui.py" line="1024"/>
       <source>Global Z</source>
       <translation type="unfinished">Global Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="953"/>
+      <location filename="DraftGui.py" line="1027"/>
       <source>Local X</source>
       <translation type="unfinished">Local X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="954"/>
+      <location filename="DraftGui.py" line="1028"/>
       <source>Local Y</source>
       <translation type="unfinished">Local Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="955"/>
+      <location filename="DraftGui.py" line="1029"/>
       <source>Local Z</source>
       <translation type="unfinished">Local Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1148"/>
+      <location filename="DraftGui.py" line="1231"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation type="unfinished">Invalid Size value. Using 200.0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1156"/>
+      <location filename="DraftGui.py" line="1239"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation type="unfinished">Invalid Tracking value. Using 0.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1170"/>
+      <location filename="DraftGui.py" line="1253"/>
       <source>Please enter a text string.</source>
       <translation type="unfinished">Please enter a text string.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1178"/>
+      <location filename="DraftGui.py" line="1261"/>
       <source>Select a Font file</source>
       <translation type="unfinished">Select a Font file</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1208"/>
+      <location filename="DraftGui.py" line="1291"/>
       <source>Please enter a font file.</source>
       <translation type="unfinished">Please enter a font file.</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="809"/>
+      <location filename="Draft.py" line="835"/>
       <source>Draft.makeBSpline: not enough points
 </source>
       <translation type="unfinished">Draft.makeBSpline: not enough points
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="815"/>
+      <location filename="Draft.py" line="841"/>
       <source>Draft.makeBSpline: Equal endpoints forced Closed
 </source>
       <translation type="unfinished">Draft.makeBSpline: Equal endpoints forced Closed
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="817"/>
+      <location filename="Draft.py" line="843"/>
       <source>Draft.makeBSpline: Invalid pointslist
 </source>
       <translation type="unfinished">Draft.makeBSpline: Invalid pointslist
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2528"/>
+      <location filename="Draft.py" line="2867"/>
       <source>Found groups: closing each open object inside
 </source>
-      <translation type="unfinished">Gruplar bulundu: içindeki açık her nesne kapatılıyor </translation>
+      <translation>Gruplar bulundu: içindeki açık her nesne kapatılıyor </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2533"/>
+      <location filename="Draft.py" line="2872"/>
       <source>Found mesh(es): turning into Part shapes
 </source>
       <translation type="unfinished">Found mesh(es): turning into Part shapes
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2541"/>
+      <location filename="Draft.py" line="2880"/>
       <source>Found 1 solidificable object: solidifying it
 </source>
-      <translation type="unfinished">Katılaştırılabilir 1 nesne bulundu: Katılaştırılıyor </translation>
+      <translation>Katılaştırılabilir 1 nesne bulundu: Katılaştırılıyor </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2546"/>
+      <location filename="Draft.py" line="2885"/>
       <source>Found 2 objects: fusing them
 </source>
-      <translation type="unfinished">2 Nesne bulundu: eritiliyorlar </translation>
+      <translation>2 Nesne bulundu: eritiliyorlar </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2551"/>
-      <source>Found several objects: making a shell
-</source>
-      <translation type="unfinished">Found several objects: making a shell
-</translation>
-    </message>
-    <message>
-      <location filename="Draft.py" line="2556"/>
-      <source>Found several coplanar objects or faces: making one face
-</source>
-      <translation type="unfinished">Found several coplanar objects or faces: making one face
-</translation>
-    </message>
-    <message>
-      <location filename="Draft.py" line="2561"/>
+      <location filename="Draft.py" line="2900"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
-      <translation type="unfinished">1 Parametrik olmayan nesne bulundu: Eskizleniyor </translation>
+      <translation>1 Parametrik olmayan nesne bulundu: Eskizleniyor </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2569"/>
-      <source>Found 1 closed sketch object: making a face from it
-</source>
-      <translation type="unfinished">1 Kapalı kroki nesnesı bulundu: ondan bir yüz yapılıyor </translation>
-    </message>
-    <message>
-      <location filename="Draft.py" line="2574"/>
-      <source>Found closed wires: making faces
-</source>
-      <translation type="unfinished">Found closed wires: making faces
-</translation>
-    </message>
-    <message>
-      <location filename="Draft.py" line="2579"/>
+      <location filename="Draft.py" line="2931"/>
       <source>Found 1 open wire: closing it
 </source>
-      <translation type="unfinished">1 açık çizgi bulundu: kapatılıyor </translation>
+      <translation>1 açık çizgi bulundu: kapatılıyor </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2584"/>
+      <location filename="Draft.py" line="2936"/>
       <source>Found several open wires: joining them
 </source>
       <translation type="unfinished">Found several open wires: joining them
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2589"/>
+      <location filename="Draft.py" line="2941"/>
       <source>Found several edges: wiring them
 </source>
-      <translation type="unfinished">Birkaç kenar bulundu:Kablolanıyor </translation>
+      <translation>Birkaç kenar bulundu:Kablolanıyor </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2594"/>
-      <source>Found several non-treatable objects: making compound
-</source>
-      <translation type="unfinished">Birkaç iyileştirilemeyen nesne bulundu: Birleştiriliyorlar </translation>
-    </message>
-    <message>
-      <location filename="Draft.py" line="2598"/>
+      <location filename="Draft.py" line="2950"/>
       <source>Unable to upgrade these objects.
 </source>
       <translation type="unfinished">Unable to upgrade these objects.
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2753"/>
+      <location filename="Draft.py" line="3106"/>
       <source>Found 1 block: exploding it
 </source>
       <translation type="unfinished">Found 1 block: exploding it
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2765"/>
+      <location filename="Draft.py" line="3118"/>
       <source>Found 1 parametric object: breaking its dependencies
 </source>
-      <translation type="unfinished">Bulunan 1 parametrik nesne: bağımlılıkları çözülüyor</translation>
+      <translation>Bulunan 1 parametrik nesne: bağımlılıkları çözülüyor</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2772"/>
+      <location filename="Draft.py" line="3125"/>
       <source>Found 2 objects: subtracting them
 </source>
-      <translation type="unfinished">Bulunan 2 nesne: birbirlerinden çıkarılıyor</translation>
+      <translation>Bulunan 2 nesne: birbirlerinden çıkarılıyor</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2779"/>
+      <location filename="Draft.py" line="3132"/>
       <source>Found several faces: splitting them
 </source>
-      <translation type="unfinished">Bulunan birden fazla yüz: yüzler ayrıştırılıyor</translation>
+      <translation>Bulunan birden fazla yüz: yüzler ayrıştırılıyor</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2784"/>
+      <location filename="Draft.py" line="3137"/>
       <source>Found several objects: subtracting them from the first one
 </source>
-      <translation type="unfinished">Bulunan birden fazla nesne: ilk nesneden bulunanlar çıkarılıyor</translation>
+      <translation>Bulunan birden fazla nesne: ilk nesneden bulunanlar çıkarılıyor</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2789"/>
+      <location filename="Draft.py" line="3142"/>
       <source>Found 1 face: extracting its wires
 </source>
-      <translation type="unfinished">Bulunan 1 yüz: bağlantıları ayıklanıyor</translation>
+      <translation>Bulunan 1 yüz: bağlantıları ayıklanıyor</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2794"/>
+      <location filename="Draft.py" line="3147"/>
       <source>Found only wires: extracting their edges
 </source>
-      <translation type="unfinished">Bulunan sadece bağlantılar: kenarları ayıklanıyor</translation>
+      <translation>Bulunan sadece bağlantılar: kenarları ayıklanıyor</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2798"/>
+      <location filename="Draft.py" line="3151"/>
       <source>No more downgrade possible
 </source>
-      <translation type="unfinished">Daha fazla versiyon düşürme mümkün değil </translation>
+      <translation>Daha fazla versiyon düşürme mümkün değil </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="4061"/>
+      <location filename="Draft.py" line="4577"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </source>
       <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="341"/>
+      <location filename="DraftTools.py" line="343"/>
       <source>Pick a face to define the drawing plane
 </source>
-      <translation type="unfinished">Çizim düzlemini tanımlamak için bir yüz seçin</translation>
+      <translation>Çizim düzlemini tanımlamak için bir yüz seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1673"/>
+      <location filename="DraftTools.py" line="1694"/>
       <source>Pick first point:
 </source>
-      <translation type="unfinished">Birinci noktayı seçin</translation>
+      <translation>Birinci noktayı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="463"/>
+      <location filename="DraftTools.py" line="466"/>
       <source>Create Line</source>
       <translation type="unfinished">Create Line</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="474"/>
+      <location filename="DraftTools.py" line="478"/>
       <source>Create DWire</source>
-      <translation type="unfinished">DWire oluştur</translation>
+      <translation>DWire oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="511"/>
+      <location filename="DraftTools.py" line="515"/>
       <source>DWire has been closed
 </source>
-      <translation type="unfinished">DWire kapatıldı </translation>
+      <translation>DWire kapatıldı </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="735"/>
+      <location filename="DraftTools.py" line="741"/>
       <source>Last point has been removed
 </source>
-      <translation type="unfinished">Son nokta kaldırıldı </translation>
+      <translation>Son nokta kaldırıldı </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="742"/>
+      <location filename="DraftTools.py" line="748"/>
       <source>Pick next point:
 </source>
-      <translation type="unfinished">Bir sonraki noktayı seçin</translation>
+      <translation>Bir sonraki noktayı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="745"/>
+      <location filename="DraftTools.py" line="751"/>
       <source>Pick next point, or (F)inish or (C)lose:
 </source>
-      <translation type="unfinished">Bir sonraki noktayı seçin, ya da (F)Bitir ya da (C)Kapat</translation>
+      <translation>Bir sonraki noktayı seçin, ya da (F)Bitir ya da (C)Kapat</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="596"/>
+      <location filename="DraftTools.py" line="600"/>
       <source>BSpline</source>
-      <translation type="unfinished">BSpline</translation>
+      <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="630"/>
+      <location filename="DraftTools.py" line="635"/>
       <source>Spline has been closed
 </source>
-      <translation type="unfinished">Eğri kapatıldı </translation>
+      <translation>Eğri kapatıldı </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="668"/>
+      <location filename="DraftTools.py" line="674"/>
       <source>Create BSpline</source>
-      <translation type="unfinished">BSpline oluştur</translation>
+      <translation>BSpline oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="692"/>
+      <location filename="DraftTools.py" line="697"/>
       <source>BezCurve</source>
       <translation type="unfinished">BezCurve</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="727"/>
+      <location filename="DraftTools.py" line="733"/>
       <source>Bezier curve has been closed
 </source>
       <translation type="unfinished">Bezier curve has been closed
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="770"/>
+      <location filename="DraftTools.py" line="777"/>
       <source>Create BezCurve</source>
       <translation type="unfinished">Create BezCurve</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="851"/>
+      <location filename="DraftTools.py" line="857"/>
       <source>Rectangle</source>
-      <translation type="unfinished">Dikdörtgen</translation>
+      <translation>Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="894"/>
+      <location filename="DraftTools.py" line="900"/>
       <source>Create Plane</source>
       <translation type="unfinished">Create Plane</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="903"/>
+      <location filename="DraftTools.py" line="910"/>
       <source>Create Rectangle</source>
-      <translation type="unfinished">Dikdörtgen oluştur</translation>
+      <translation>Dikdörtgen oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1550"/>
+      <location filename="DraftTools.py" line="1568"/>
       <source>Pick opposite point:
 </source>
-      <translation type="unfinished">Karşıt noktayı seçin</translation>
+      <translation>Karşıt noktayı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1291"/>
+      <location filename="DraftTools.py" line="1307"/>
       <source>Pick center point:
 </source>
-      <translation type="unfinished">Merkez noktasını seçin</translation>
+      <translation>Merkez noktasını seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1425"/>
+      <location filename="DraftTools.py" line="1442"/>
       <source>Pick radius:
 </source>
-      <translation type="unfinished">Yarıçapı seçin</translation>
+      <translation>Yarıçapı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1232"/>
+      <location filename="DraftTools.py" line="1248"/>
       <source>Pick start angle:
 </source>
-      <translation type="unfinished">Başlangıç açısını seçin</translation>
+      <translation>Başlangıç açısını seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1138"/>
+      <location filename="DraftTools.py" line="1147"/>
       <source>Pick aperture:
 </source>
-      <translation type="unfinished">Aralık seç</translation>
+      <translation>Aralık seç</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1159"/>
+      <location filename="DraftTools.py" line="1169"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Daire oluştur</translation>
+      <translation>Daire oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1185"/>
+      <location filename="DraftTools.py" line="1202"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Ark oluştur</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="1227"/>
-      <source>Start Angle</source>
-      <translation type="unfinished">Başlangıç açısı</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="1234"/>
-      <source>Aperture</source>
-      <translation type="unfinished">Açıklık</translation>
+      <translation>Ark oluştur</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="1243"/>
+      <source>Start Angle</source>
+      <translation>Başlangıç açısı</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="1250"/>
+      <source>Aperture</source>
+      <translation>Açıklık</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="1259"/>
       <source>Aperture angle:
 </source>
-      <translation type="unfinished">Aralık açısı:</translation>
+      <translation>Aralık açısı:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1275"/>
+      <location filename="DraftTools.py" line="1291"/>
       <source>Polygon</source>
-      <translation type="unfinished">Çokgen</translation>
+      <translation>Çokgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1407"/>
+      <location filename="DraftTools.py" line="1425"/>
       <source>Create Polygon</source>
-      <translation type="unfinished">Poligon oluşturun</translation>
+      <translation>Poligon oluşturun</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1455"/>
+      <location filename="DraftTools.py" line="1472"/>
       <source>Ellipse</source>
       <translation type="unfinished">Ellipse</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1510"/>
+      <location filename="DraftTools.py" line="1528"/>
       <source>Create Ellipse</source>
       <translation type="unfinished">Create Ellipse</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1568"/>
+      <location filename="DraftTools.py" line="1586"/>
       <source>Text</source>
-      <translation type="unfinished">Metin</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="1579"/>
-      <source>Pick location point:
-</source>
-      <translation type="unfinished">Konum noktasını seçin</translation>
+      <translation>Metin</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="1598"/>
+      <source>Pick location point:
+</source>
+      <translation>Konum noktasını seçin</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="1618"/>
       <source>Create Text</source>
-      <translation type="unfinished">Metin oluşturma</translation>
+      <translation>Metin oluşturma</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1645"/>
+      <location filename="DraftTools.py" line="1664"/>
       <source>Dimension</source>
-      <translation type="unfinished">Boyut</translation>
+      <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1727"/>
+      <location filename="DraftTools.py" line="1746"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Boyut oluştur</translation>
+      <translation>Boyut oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1883"/>
+      <location filename="DraftTools.py" line="1904"/>
       <source>Edges don't intersect!
 </source>
-      <translation type="unfinished">Kenarlar kesişmiyor!</translation>
+      <translation>Kenarlar kesişmiyor!</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1936"/>
+      <location filename="DraftTools.py" line="1961"/>
       <source>ShapeString</source>
       <translation type="unfinished">ShapeString</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1949"/>
+      <location filename="DraftTools.py" line="1975"/>
       <source>Pick ShapeString location point:
 </source>
       <translation type="unfinished">Pick ShapeString location point:
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1969"/>
+      <location filename="DraftTools.py" line="1996"/>
       <source>Create ShapeString</source>
       <translation type="unfinished">Create ShapeString</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2109"/>
+      <location filename="DraftTools.py" line="2135"/>
       <source>Move</source>
-      <translation type="unfinished">Taşı</translation>
+      <translation>Taşı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2062"/>
+      <location filename="DraftTools.py" line="2088"/>
       <source>Select an object to move
 </source>
-      <translation type="unfinished">Taşımak için bir nesne seçin </translation>
+      <translation>Taşımak için bir nesne seçin </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2084"/>
+      <location filename="DraftTools.py" line="2110"/>
       <source>Pick start point:
 </source>
-      <translation type="unfinished">Başlangıç noktasını seçin:</translation>
+      <translation>Başlangıç noktasını seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2990"/>
+      <location filename="DraftTools.py" line="3135"/>
       <source>Copy</source>
-      <translation type="unfinished">Kopyala</translation>
+      <translation>Kopyala</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2162"/>
+      <location filename="DraftTools.py" line="2187"/>
       <source>Pick end point:
 </source>
-      <translation type="unfinished">Bitiş noktasını seçin:</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="2197"/>
-      <source>Change Style</source>
-      <translation type="unfinished">Stil Değiştir</translation>
+      <translation>Bitiş noktasını seçin:</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2223"/>
+      <source>Change Style</source>
+      <translation>Stil Değiştir</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="2250"/>
       <source>Select an object to rotate
 </source>
-      <translation type="unfinished">Döndürmek için bir nesne seçin</translation>
+      <translation>Döndürmek için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2240"/>
+      <location filename="DraftTools.py" line="2267"/>
       <source>Pick rotation center:
 </source>
-      <translation type="unfinished">Döndürme merkezini seçin:</translation>
+      <translation>Döndürme merkezini seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2269"/>
+      <location filename="DraftTools.py" line="2296"/>
       <source>Rotate</source>
-      <translation type="unfinished">Döndür</translation>
+      <translation>Döndür</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2373"/>
+      <location filename="DraftTools.py" line="2400"/>
       <source>Pick base angle:
 </source>
-      <translation type="unfinished">Taban açısını seçin:</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="2385"/>
-      <source>Pick rotation angle:
-</source>
-      <translation type="unfinished">Döndürme açısını seçin:</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="2409"/>
-      <source>Select an object to offset
-</source>
-      <translation type="unfinished">Uzaklaştırmak için bir nesne seçin</translation>
+      <translation>Taban açısını seçin:</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2412"/>
+      <source>Pick rotation angle:
+</source>
+      <translation>Döndürme açısını seçin:</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="2436"/>
+      <source>Select an object to offset
+</source>
+      <translation>Uzaklaştırmak için bir nesne seçin</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="2439"/>
       <source>Offset only works on one object at a time
 </source>
-      <translation type="unfinished">Uzaklaştırma bir kerede sadece bir nesne üzerinde çalışır</translation>
+      <translation>Uzaklaştırma bir kerede sadece bir nesne üzerinde çalışır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2420"/>
+      <location filename="DraftTools.py" line="2447"/>
       <source>Cannot offset this object type
 </source>
-      <translation type="unfinished">Bu nesne türü kaydırılamaz </translation>
+      <translation>Bu nesne türü kaydırılamaz </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2695"/>
+      <location filename="DraftTools.py" line="2762"/>
       <source>Pick distance:
 </source>
-      <translation type="unfinished">Mesafeyi seçin:</translation>
+      <translation>Mesafeyi seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2597"/>
+      <location filename="DraftTools.py" line="2652"/>
       <source>Select an object to upgrade
 </source>
-      <translation type="unfinished">Yükseltmek için bir nesne seçin</translation>
+      <translation>Yükseltmek için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2577"/>
+      <location filename="DraftTools.py" line="2632"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Güncelle</translation>
+      <translation>Güncelle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2606"/>
+      <location filename="DraftTools.py" line="2662"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Önceki sürüme dön</translation>
+      <translation>Önceki sürüme dön</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2633"/>
-      <source>Select an object to trim/extend
-</source>
-      <translation type="unfinished">Seçili nesneyi düzenle/genişlet</translation>
-    </message>
-    <message>
-      <location filename="DraftTools.py" line="2994"/>
+      <location filename="DraftTools.py" line="3139"/>
       <source>Scale</source>
-      <translation type="unfinished">Ölçek</translation>
+      <translation>Ölçek</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2955"/>
+      <location filename="DraftTools.py" line="3099"/>
       <source>Select an object to scale
 </source>
-      <translation type="unfinished">Ölçeklemek için bir nesne seçin</translation>
+      <translation>Ölçeklemek için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2970"/>
+      <location filename="DraftTools.py" line="3114"/>
       <source>Pick base point:
 </source>
-      <translation type="unfinished">Temel noktayı seçin:</translation>
+      <translation>Temel noktayı seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3051"/>
+      <location filename="DraftTools.py" line="3200"/>
       <source>Pick scale factor:
 </source>
-      <translation type="unfinished">Ölçekleme katsayısını seçin:</translation>
+      <translation>Ölçekleme katsayısını seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3881"/>
+      <location filename="DraftTools.py" line="4052"/>
       <source>Select an object to project
 </source>
       <translation type="unfinished">Select an object to project
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3197"/>
+      <location filename="DraftTools.py" line="3357"/>
       <source>Select a Draft object to edit
 </source>
       <translation type="unfinished">Select a Draft object to edit
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3282"/>
+      <location filename="DraftTools.py" line="3448"/>
       <source>This object type is not editable
 </source>
-      <translation type="unfinished">Bu nesne düzenlenebilir değildir</translation>
+      <translation>Bu nesne düzenlenebilir değildir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3567"/>
+      <location filename="DraftTools.py" line="3738"/>
       <source>Active object must have more than two points/nodes
 </source>
-      <translation type="unfinished">Etkin nesne ikiden fazla nokta/bağlanma noktasına sahip olmalıdır</translation>
+      <translation>Etkin nesne ikiden fazla nokta/bağlanma noktasına sahip olmalıdır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3616"/>
+      <location filename="DraftTools.py" line="3787"/>
       <source>Selection is not a Knot
 </source>
       <translation type="unfinished">Selection is not a Knot
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3641"/>
+      <location filename="DraftTools.py" line="3812"/>
       <source>Endpoint of BezCurve can't be smoothed
 </source>
       <translation type="unfinished">Endpoint of BezCurve can't be smoothed
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3920"/>
+      <location filename="DraftTools.py" line="4092"/>
       <source>Select an object to convert
 </source>
       <translation type="unfinished">Select an object to convert
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3977"/>
+      <location filename="DraftTools.py" line="4150"/>
       <source>Select an object to array
 </source>
       <translation type="unfinished">Select an object to array
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4006"/>
+      <location filename="DraftTools.py" line="4179"/>
       <source>Please select base and path objects
 </source>
       <translation type="unfinished">Please select base and path objects
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4091"/>
+      <location filename="DraftTools.py" line="4265"/>
       <source>Create Point</source>
       <translation type="unfinished">Create Point</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4131"/>
+      <location filename="DraftTools.py" line="4304"/>
       <source>Select an object to clone
 </source>
       <translation type="unfinished">Select an object to clone
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4201"/>
+      <location filename="DraftTools.py" line="4375"/>
       <source>Select face(s) on existing object(s)
 </source>
       <translation type="unfinished">Select face(s) on existing object(s)
@@ -2639,41 +2727,284 @@ Values with differences below this value will be treated as same.</source>
 </translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="102"/>
-      <source>Installed Macros</source>
-      <translation type="unfinished">Yüklü makrolar</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="133"/>
+      <location filename="InitGui.py" line="132"/>
       <source>&amp;Draft</source>
-      <translation type="unfinished">&amp;Taslak</translation>
+      <translation>&amp;Taslak</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="131"/>
+      <location filename="InitGui.py" line="130"/>
       <source>Utilities</source>
       <translation type="unfinished">Utilities</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="132"/>
+      <location filename="InitGui.py" line="131"/>
       <source>Wire tools</source>
-      <translation type="unfinished">Tel Araçları</translation>
+      <translation>Tel Araçları</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="133"/>
+      <location filename="InitGui.py" line="132"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Yapışma</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2759"/>
+      <location filename="Draft.py" line="3112"/>
       <source>Found 1 multi-solids compound: exploding it
 </source>
       <translation type="unfinished">Found 1 multi-solids compound: exploding it
 </translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="590"/>
+      <location filename="DraftGui.py" line="645"/>
       <source>Sides</source>
       <translation type="unfinished">Sides</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2373"/>
+      <source>BSplines and Bezier curves are not supported by this tool</source>
+      <translation type="unfinished">BSplines and Bezier curves are not supported by this tool</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2369"/>
+      <source>The given object is not planar and cannot be converted into a sketch.</source>
+      <translation type="unfinished">The given object is not planar and cannot be converted into a sketch.</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2890"/>
+      <source>Found several objects: creating a shell
+</source>
+      <translation type="unfinished">Found several objects: creating a shell
+</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2895"/>
+      <source>Found several coplanar objects or faces: creating one face
+</source>
+      <translation type="unfinished">Found several coplanar objects or faces: creating one face
+</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2913"/>
+      <source>Found 1 linear object: converting to line
+</source>
+      <translation type="unfinished">Found 1 linear object: converting to line
+</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2921"/>
+      <source>Found 1 closed sketch object: creating a face from it
+</source>
+      <translation type="unfinished">Found 1 closed sketch object: creating a face from it
+</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2926"/>
+      <source>Found closed wires: creating faces
+</source>
+      <translation type="unfinished">Found closed wires: creating faces
+</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2946"/>
+      <source>Found several non-treatable objects: creating compound
+</source>
+      <translation type="unfinished">Found several non-treatable objects: creating compound
+</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="614"/>
+      <source>Length</source>
+      <translation>Uzunluk</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="615"/>
+      <source>Angle</source>
+      <translation>Açı</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="616"/>
+      <source>Length of current segment</source>
+      <translation type="unfinished">Length of current segment</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="617"/>
+      <source>Angle of current segment</source>
+      <translation type="unfinished">Angle of current segment</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="619"/>
+      <source>Check this to lock the current angle (l)</source>
+      <translation type="unfinished">Check this to lock the current angle (l)</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="643"/>
+      <source>&amp;Select edge</source>
+      <translation type="unfinished">&amp;Select edge</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="644"/>
+      <source>Selects an existing edge to be measured by this dimension (E)</source>
+      <translation type="unfinished">Selects an existing edge to be measured by this dimension (E)</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="656"/>
+      <source>Auto</source>
+      <translation type="unfinished">Auto</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="2470"/>
+      <source>Sorry, offset of Bezier curves is currently still not supported
+</source>
+      <translation type="unfinished">Sorry, offset of Bezier curves is currently still not supported
+</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4116"/>
+      <source>Convert to Sketch</source>
+      <translation type="unfinished">Convert to Sketch</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4120"/>
+      <source>Convert to Draft</source>
+      <translation type="unfinished">Convert to Draft</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4132"/>
+      <source>Convert</source>
+      <translation type="unfinished">Convert</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4161"/>
+      <source>Array</source>
+      <translation>Dizi</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="2691"/>
+      <source>Select object(s) to trim/extend
+</source>
+      <translation type="unfinished">Select object(s) to trim/extend
+</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="2997"/>
+      <source>Unable to trim these objects, only Draft wires and arcs are supported
+</source>
+      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported
+</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="3000"/>
+      <source>Unable to trim these objects, too many wires
+</source>
+      <translation type="unfinished">Unable to trim these objects, too many wires
+</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="3017"/>
+      <source>These objects don't intersect
+</source>
+      <translation type="unfinished">These objects don't intersect
+</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="3020"/>
+      <source>Too many intersection points
+</source>
+      <translation type="unfinished">Too many intersection points
+</translation>
+    </message>
+    <message>
+      <location filename="importDXF.py" line="91"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2489"/>
+      <source>No object given
+</source>
+      <translation type="unfinished">No object given
+</translation>
+    </message>
+    <message>
+      <location filename="Draft.py" line="2492"/>
+      <source>The two points are coincident
+</source>
+      <translation type="unfinished">The two points are coincident
+</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="629"/>
+      <source>Co&amp;ntinue</source>
+      <translation type="unfinished">Co&amp;ntinue</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="639"/>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;Kapat</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="658"/>
+      <source>C&amp;opy</source>
+      <translation>K&amp;opyala</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1914"/>
+      <source>Faces</source>
+      <translation type="unfinished">Faces</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1915"/>
+      <source>Remove</source>
+      <translation>Kaldır</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1916"/>
+      <source>Add</source>
+      <translation>Ekle</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1917"/>
+      <source>Facebinder elements</source>
+      <translation type="unfinished">Facebinder elements</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4479"/>
+      <source>Mirror</source>
+      <translation type="unfinished">Mirror</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4444"/>
+      <source>Select an object to mirror
+</source>
+      <translation type="unfinished">Select an object to mirror
+</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4458"/>
+      <source>Pick start point of mirror line:
+</source>
+      <translation type="unfinished">Pick start point of mirror line:
+</translation>
+    </message>
+    <message>
+      <location filename="DraftTools.py" line="4541"/>
+      <source>Pick end point of mirror line:
+</source>
+      <translation type="unfinished">Pick end point of mirror line:
+</translation>
     </message>
   </context>
 </TS>

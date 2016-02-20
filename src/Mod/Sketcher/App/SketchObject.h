@@ -72,6 +72,12 @@ public:
     */
     bool noRecomputes;
 
+    /*!
+     \brief Returns true if the sketcher supports the given geometry
+     \param geo - the geometry
+     \retval bool - true if the geometry is supported
+     */
+    bool isSupportedGeometry(const Part::Geometry *geo) const;
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo, bool construction=false);
     /// add unspecified geometry
@@ -264,6 +270,12 @@ protected:
 
     void constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed);
     void constraintsRemoved(const std::set<App::ObjectIdentifier> &removed);
+    /*!
+     \brief Returns a list of supported geometries from the input list
+     \param geoList - the geometry list
+     \retval list - the supported geometry list
+     */
+    std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
 private:
     std::vector<Part::Geometry *> ExternalGeo;

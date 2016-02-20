@@ -40,7 +40,6 @@ SET(SpreadsheetGui_RES_SRCS
     Resources/Spreadsheet.qrc
 )
 
-#fc_add_resources(SpreadsheetGui_QRC_SRCS ${SpreadsheetGui_RES_SRCS})
 qt4_add_resources(SpreadsheetGui_QRC_SRCS ${SpreadsheetGui_RES_SRCS})
 
 set(SpreadsheetGui_UIC_SRCS
@@ -52,9 +51,8 @@ qt4_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
 
 SET(SpreadsheetGui_SRCS
 #   ${SpreadsheetGui_MOC_SRCS}
-#    ${SpreadsheetGui_QRC_SRCS}
+    ${SpreadsheetGui_QRC_SRCS}
     AppSpreadsheetGui.cpp
-    AppSpreadsheetGuiPy.cpp
     Command.cpp
     LineEdit.h
     LineEdit.cpp

@@ -68,21 +68,21 @@ std::string Uuid::createUuid(void)
     QString uuid = QUuid::createUuid().toString();
     uuid = uuid.mid(1);
     uuid.chop(1);
-    Uuid = (const char*)uuid.toAscii();
+    Uuid = (const char*)uuid.toLatin1();
     return Uuid;
 }
 
 void Uuid::setValue(const char* sString) 
 { 
     if (sString) { 
-        QUuid uuid(QString::fromAscii(sString)); 
+        QUuid uuid(QString::fromLatin1(sString)); 
         if (uuid.isNull()) 
             throw std::runtime_error("invalid uuid"); 
         // remove curly braces 
         QString id = uuid.toString(); 
         id = id.mid(1); 
         id.chop(1); 
-        _uuid = (const char*)id.toAscii(); 
+        _uuid = (const char*)id.toLatin1(); 
     } 
 } 
 

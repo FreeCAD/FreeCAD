@@ -130,7 +130,7 @@ void TaskRobot6Axis::viewTcp(const Base::Placement pos)
     double A,B,C;
     pos.getRotation().getYawPitchRoll(A,B,C);
 
-    QString result = QString::fromAscii("TCP:( %1, %2, %3, %4, %5, %6 )")
+    QString result = QString::fromLatin1("TCP:( %1, %2, %3, %4, %5, %6 )")
         .arg(pos.getPosition().x,0,'f',1)
         .arg(pos.getPosition().y,0,'f',1)
         .arg(pos.getPosition().z,0,'f',1)
@@ -146,7 +146,7 @@ void TaskRobot6Axis::viewTool(const Base::Placement pos)
     double A,B,C;
     pos.getRotation().getYawPitchRoll(A,B,C);
 
-    QString result = QString::fromAscii("Tool:( %1, %2, %3, %4, %5, %6 )")
+    QString result = QString::fromLatin1("Tool:( %1, %2, %3, %4, %5, %6 )")
         .arg(pos.getPosition().x,0,'f',1)
         .arg(pos.getPosition().y,0,'f',1)
         .arg(pos.getPosition().z,0,'f',1)

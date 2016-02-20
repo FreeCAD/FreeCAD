@@ -25,6 +25,7 @@
 #define POINTS_FEATURE_H
 
 #include <App/GeoFeature.h>
+#include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
@@ -75,28 +76,31 @@ public:
     PropertyPointKernel Points; /**< The point kernel property. */
 };
 
-/**
- * The Export class writes a point cloud to a file.
- * @author Werner Mayer
+/** Feature for organized points.
  */
-class Export : public Feature
+class PointsExport Organized : public Feature
 {
-    PROPERTY_HEADER(Points::Export);
+    PROPERTY_HEADER(Points::Organized);
 
 public:
-    Export();
+    /// Constructor
+    Organized(void);
+    virtual ~Organized(void);
 
-    App::PropertyLinkList   Sources;
-    App::PropertyString FileName;
-    App::PropertyString Format;
+    App::PropertyInteger Width;
+    App::PropertyInteger Height;
 
-    /** @name methods override Feature */
+    /** @name methods overide Feature */
     //@{
-    /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    /// returns the type name of the ViewProvider
+    virtual const char* getViewProviderName(void) const {
+        return "PointsGui::ViewProviderOrganized";
+    }
     //@}
 };
 
+typedef App::FeatureCustomT<Feature> FeatureCustom;
+typedef App::FeatureCustomT<Organized> OrganizedCustom;
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
 } //namespace Points

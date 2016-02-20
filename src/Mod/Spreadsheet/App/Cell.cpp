@@ -118,7 +118,7 @@ Cell::Cell(const Cell &other)
 
 Cell &Cell::operator =(const Cell &rhs)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
     used = 0;
     address = rhs.address;
@@ -149,7 +149,7 @@ Cell::~Cell()
 
 void Cell::setExpression(App::Expression *expr)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
     /* Remove dependencies */
     owner->removeDependencies(address);
@@ -209,7 +209,7 @@ bool Cell::getStringContent(std::string & s) const
 
 void Cell::setContent(const char * value)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
     App::Expression * expr = 0;
 
     setUsed(PARSE_EXCEPTION_SET, false);
@@ -258,7 +258,7 @@ void Cell::setContent(const char * value)
 void Cell::setAlignment(int _alignment)
 {
     if (_alignment != alignment) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         alignment = _alignment;
         setUsed(ALIGNMENT_SET, alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER));
@@ -284,7 +284,7 @@ bool Cell::getAlignment(int & _alignment) const
 void Cell::setStyle(const std::set<std::string> & _style)
 {
     if (_style != style) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         style = _style;
         setUsed(STYLE_SET, style.size() > 0);
@@ -310,7 +310,7 @@ bool Cell::getStyle(std::set<std::string> & _style) const
 void Cell::setForeground(const App::Color &color)
 {
     if (color != foregroundColor) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         foregroundColor = color;
         setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
@@ -336,7 +336,7 @@ bool Cell::getForeground(App::Color &color) const
 void Cell::setBackground(const App::Color &color)
 {
     if (color != backgroundColor) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         backgroundColor = color;
         setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
@@ -371,7 +371,7 @@ void Cell::setDisplayUnit(const std::string &unit)
     }
 
     if (newDisplayUnit != displayUnit) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         displayUnit = newDisplayUnit;
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
@@ -394,7 +394,7 @@ bool Cell::getDisplayUnit(DisplayUnit &unit) const
 void Cell::setAlias(const std::string &n)
 {
     if (alias != n) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         owner->revAliasProp.erase(alias);
 
@@ -426,7 +426,7 @@ bool Cell::getAlias(std::string &n) const
 
 void Cell::setComputedUnit(const Base::Unit &unit)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
     computedUnit = unit;
     setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
@@ -454,7 +454,7 @@ bool Cell::getComputedUnit(Base::Unit & unit) const
 void Cell::setSpans(int rows, int columns)
 {
     if (rows != rowSpan || columns != colSpan) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         rowSpan = rows;
         colSpan = columns;
@@ -538,7 +538,7 @@ void Cell::restore(Base::XMLReader &reader)
     const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
     if (content) {
         setContent(content);

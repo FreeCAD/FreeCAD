@@ -82,7 +82,7 @@ Branding::XmlConfig Branding::getUserDefines() const
     if (!root.isNull()) {
         child = root.firstChildElement();
         while (!child.isNull()) {
-            std::string name = (const char*)child.localName().toAscii();
+            std::string name = (const char*)child.localName().toLatin1();
             std::string value = (const char*)child.text().toUtf8();
             if (std::find(filter.begin(), filter.end(), name) != filter.end())
                 cfg[name] = value;

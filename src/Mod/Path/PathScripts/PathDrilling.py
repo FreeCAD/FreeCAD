@@ -146,9 +146,9 @@ class CommandPathDrilling:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Drilling',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDrilling","Drilling"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Drilling","Drilling"),
                 'Accel': "P, D",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDrilling","Creates a Path Drilling object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Drilling","Creates a Path Drilling object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -164,7 +164,7 @@ class CommandPathDrilling:
         if not selection:
             return
         # if everything is ok, execute and register the transaction in the undo/redo stack
-        FreeCAD.ActiveDocument.openTransaction(translate("PathDrilling","Create Drilling"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling","Create Drilling"))
         FreeCADGui.addModule("PathScripts.PathDrilling")
         
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Drilling")

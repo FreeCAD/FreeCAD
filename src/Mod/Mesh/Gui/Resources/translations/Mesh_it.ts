@@ -225,15 +225,15 @@
     <name>CmdMeshFromPartShape</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Mesh</translation>
+        <translation>Mesh</translation>
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">Crea mesh da una forma...</translation>
+        <translation>Crea mesh da una forma...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">Forma della tassellazione</translation>
+        <translation>Forma della tassellazione</translation>
     </message>
 </context>
 <context>
@@ -281,15 +281,15 @@
     <name>CmdMeshMerge</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Mesh</translation>
+        <translation>Mesh</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>Unisci</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished"></translation>
+        <translation>Unisce le Mesh selezionate in una unica</translation>
     </message>
 </context>
 <context>
@@ -405,7 +405,7 @@
     </message>
     <message>
         <source>Create mesh segments...</source>
-        <translation>Creare segmenti di mesh...</translation>
+        <translation>Crea segmenti di mesh...</translation>
     </message>
     <message>
         <source>Create mesh segments</source>
@@ -461,15 +461,15 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
         <source>Mesh</source>
-        <translation type="unfinished">Mesh</translation>
+        <translation>Mesh</translation>
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Taglia mesh con un piano</translation>
+        <translation>Taglia mesh con un piano</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Taglia una mesh con un piano</translation>
+        <translation>Taglia una mesh con un piano</translation>
     </message>
 </context>
 <context>
@@ -835,6 +835,33 @@ Please run the command to repair folds first</source>
     </message>
 </context>
 <context>
+    <name>MeshGui::DlgSettingsImportExport</name>
+    <message>
+        <source>Mesh Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines the deviation of tessellation to the actual surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum mesh deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
         <source>Mesh view</source>
@@ -937,7 +964,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Solo selezione</translation>
+        <translation>Solo selezione</translation>
     </message>
 </context>
 <context>
@@ -963,7 +990,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFillHole</name>
     <message>
         <source>Finish</source>
-        <translation type="unfinished">Termina</translation>
+        <translation>Termina</translation>
     </message>
 </context>
 <context>
@@ -1076,31 +1103,31 @@ Please run the command to repair folds first</source>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished">Selezione</translation>
+        <translation>Selezione</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Aggiungi</translation>
+        <translation>Aggiungi</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation type="unfinished">Rispetta solo i triangoli visibili</translation>
+        <translation>Rispetta solo i triangoli visibili</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation type="unfinished">Rispetta solo i triangoli con le normali in direzione dello schermo</translation>
+        <translation>Rispetta solo i triangoli con le normali in direzione dello schermo</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Usa uno strumento pennello per selezionare l&apos;area</translation>
+        <translation>Usa uno strumento pennello per selezionare l&apos;area</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Cancella completamente l&apos;area selezionata</translation>
+        <translation>Cancella completamente l&apos;area selezionata</translation>
     </message>
 </context>
 <context>
@@ -1118,27 +1145,27 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Seleziona piano</translation>
+        <translation>Seleziona piano</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Seleziona un piano con il quale tagliare la mesh.</translation>
+        <translation>Seleziona un piano con il quale tagliare la mesh.</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation>OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Errore sconosciuto durante l&apos;esecuzione di OpenSCAD.</translation>
+        <translation>Errore sconosciuto durante l&apos;esecuzione di OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD non può essere trovato sul tuo sistema. Visita http://www.openscad.org/index.html per installarlo.</translation>
+        <translation>OpenSCAD non può essere trovato sul tuo sistema. Visita http://www.openscad.org/index.html per installarlo.</translation>
     </message>
 </context>
 <context>
@@ -1176,47 +1203,47 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Binary STL (*.stl)</source>
-        <translation>STL binario (*.stl)</translation>
+        <translation type="obsolete">STL binario (*.stl)</translation>
     </message>
     <message>
         <source>ASCII STL (*.ast)</source>
-        <translation>STL ASCII (*.ast)</translation>
+        <translation type="obsolete">STL ASCII (*.ast)</translation>
     </message>
     <message>
         <source>Binary Mesh (*.bms)</source>
-        <translation>Mesh Binario (*.bms)</translation>
+        <translation type="obsolete">Mesh Binario (*.bms)</translation>
     </message>
     <message>
         <source>Alias Mesh (*.obj)</source>
-        <translation>Alias mesh (*.obj)</translation>
+        <translation type="obsolete">Alias mesh (*.obj)</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii (*.iv)</source>
-        <translation>Inventor V2.1 ascii (*.iv)</translation>
+        <translation type="obsolete">Inventor V2.1 ascii (*.iv)</translation>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation>Tutti i file (*.*)</translation>
+        <translation type="obsolete">Tutti i file (*.*)</translation>
     </message>
     <message>
         <source>ASCII STL (*.stl)</source>
-        <translation>STL ASCII (*.ast)</translation>
+        <translation type="obsolete">STL ASCII (*.ast)</translation>
     </message>
     <message>
         <source>VRML V2.0 (*.wrl *.vrml)</source>
-        <translation>VRML V2.0 (*.wrl *.vrml)</translation>
+        <translation type="obsolete">VRML V2.0 (*.wrl *.vrml)</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0 (*.wrz)</source>
-        <translation>VRML 2.0 compresso (*.wrz)</translation>
+        <translation type="obsolete">VRML 2.0 compresso (*.wrz)</translation>
     </message>
     <message>
         <source>Nastran (*.nas *.bdf)</source>
-        <translation>Nastran (*.nas *.bdf)</translation>
+        <translation type="obsolete">Nastran (*.nas *.bdf)</translation>
     </message>
     <message>
         <source>Python module def (*.py)</source>
-        <translation>Modulo Python (*.py)</translation>
+        <translation type="obsolete">Modulo Python (*.py)</translation>
     </message>
     <message>
         <source>Meshing Tolerance</source>
@@ -1244,7 +1271,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2 Faces: %3]</source>
-        <translation>[Punti: %1, Spigoli: %2 Facce: %3]</translation>
+        <translation type="obsolete">[Punti: %1, Spigoli: %2 Facce: %3]</translation>
     </message>
     <message>
         <source>Leave info mode</source>
@@ -1268,11 +1295,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Stanford Polygon (*.ply)</source>
-        <translation>Poligono di Stanford (*.ply)</translation>
+        <translation type="obsolete">Poligono di Stanford (*.ply)</translation>
     </message>
     <message>
         <source>Object File Format (*.off)</source>
-        <translation>Formato file oggetto (*.off)</translation>
+        <translation type="obsolete">Formato file oggetto (*.off)</translation>
     </message>
     <message>
         <source>Standford Polygon (*.ply)</source>
@@ -1292,15 +1319,79 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-        <translation>Tutti i file Mesh (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
+        <translation type="obsolete">Tutti i file Mesh (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
         <source>X3D Extensible 3D (*.x3d)</source>
-        <translation type="unfinished">X3D Espandibile 3D (*.x3d)</translation>
+        <translation type="obsolete">X3D Espandibile 3D (*.x3d)</translation>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Visualizza i componenti</translation>
+        <translation>Visualizza i componenti</translation>
+    </message>
+    <message>
+        <source>All Mesh Files</source>
+        <translation>Tutti i file Mesh</translation>
+    </message>
+    <message>
+        <source>Binary STL</source>
+        <translation>STL binario</translation>
+    </message>
+    <message>
+        <source>ASCII STL</source>
+        <translation>ASCII STL</translation>
+    </message>
+    <message>
+        <source>Binary Mesh</source>
+        <translation>Binario Mesh</translation>
+    </message>
+    <message>
+        <source>Alias Mesh</source>
+        <translation>Alias Mesh</translation>
+    </message>
+    <message>
+        <source>Object File Format</source>
+        <translation>Object File Format</translation>
+    </message>
+    <message>
+        <source>Inventor V2.1 ascii</source>
+        <translation>Inventor ascii V2.1</translation>
+    </message>
+    <message>
+        <source>Stanford Polygon</source>
+        <translation>Poligono Stanford</translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation>Tutti i file</translation>
+    </message>
+    <message>
+        <source>X3D Extensible 3D</source>
+        <translation>X3D Extensible 3D</translation>
+    </message>
+    <message>
+        <source>VRML V2.0</source>
+        <translation>VRML v 2.0</translation>
+    </message>
+    <message>
+        <source>Compressed VRML 2.0</source>
+        <translation>Compresso VRML 2.0</translation>
+    </message>
+    <message>
+        <source>Nastran</source>
+        <translation>Nastran</translation>
+    </message>
+    <message>
+        <source>Python module def</source>
+        <translation>Modulo def di Python</translation>
+    </message>
+    <message>
+        <source>[Points: %1, Edges: %2, Faces: %3]</source>
+        <translation>[Punti: %1, bordi: %2, facce: %3]</translation>
+    </message>
+    <message>
+        <source>Import-Export</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

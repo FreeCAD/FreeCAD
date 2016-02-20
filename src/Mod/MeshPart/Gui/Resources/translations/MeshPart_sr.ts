@@ -34,92 +34,92 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Опције израде мреже</translation>
+        <translation>Опције израде мреже</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Стандард</translation>
+        <translation>Стандард</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Макcимална дужина ивице:</translation>
+        <translation>Макcимална дужина ивице:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Финоћа:</translation>
+        <translation>Финоћа:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Врло грубо</translation>
+        <translation>Врло грубо</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Грубо</translation>
+        <translation>Грубо</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Средње</translation>
+        <translation>Средње</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Фино</translation>
+        <translation>Фино</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Врло фино</translation>
+        <translation>Врло фино</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Дефиниcано од cтране кориcника</translation>
+        <translation>Дефиниcано од cтране кориcника</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Профилисање величине мреже:</translation>
+        <translation>Профилисање величине мреже:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Елементи по ивици:</translation>
+        <translation>Елементи по ивици:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Елементи по радијусу закривљења:</translation>
+        <translation>Елементи по радијусу закривљења:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Оптимизуј површину</translation>
+        <translation>Оптимизуј површину</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Елементи другог реда</translation>
+        <translation>Елементи другог реда</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Доминирају квадрати</translation>
+        <translation>Доминирају квадрати</translation>
     </message>
     <message>
         <source>Settings</source>

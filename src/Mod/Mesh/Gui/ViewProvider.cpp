@@ -238,6 +238,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     ADD_PROPERTY(CreaseAngle,(0.0f));
     CreaseAngle.setConstraints(&angleRange);
     ADD_PROPERTY(OpenEdges,(false));
+    ADD_PROPERTY(Coloring,(false));
     ADD_PROPERTY(Lighting,(1));
     Lighting.setEnums(LightingEnums);
     ADD_PROPERTY(LineColor,(0,0,0));
@@ -309,6 +310,8 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 
     if (hGrp->GetBool("ShowBoundingBox", false))
         pcHighlight->style = Gui::SoFCSelection::BOX;
+
+    Coloring.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderMesh::~ViewProviderMesh()
@@ -390,6 +393,9 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     else if (prop == &LineColor) {
         const App::Color& c = LineColor.getValue();
         pLineColor->diffuseColor.setValue(c.r,c.g,c.b);
+    }
+    else if (prop == &Coloring) {
+        tryColorPerVertex(Coloring.getValue());
     }
     else {
         // Set the inverse color for open edges
@@ -496,6 +502,20 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcFlatWireRoot->addChild(pcMatBinding);
     pcFlatWireRoot->addChild(getShapeNode());
     addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
+
+    if (getColorProperty()) {
+        Coloring.setStatus(App::Property::Hidden, false);
+    }
+}
+
+void ViewProviderMesh::updateData(const App::Property* prop)
+{
+    Gui::ViewProviderGeometryObject::updateData(prop);
+    //if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    //}
+    if (prop->getTypeId() == App::PropertyColorList::getClassTypeId()) {
+        Coloring.setStatus(App::Property::Hidden, false);
+    }
 }
 
 QIcon ViewProviderMesh::getIcon() const
@@ -531,16 +551,74 @@ QIcon ViewProviderMesh::getIcon() const
 #endif
 }
 
+App::PropertyColorList* ViewProviderMesh::getColorProperty() const
+{
+    if (pcObject) {
+        std::map<std::string,App::Property*> Map;
+        pcObject->getPropertyMap(Map);
+        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
+            Base::Type type = it->second->getTypeId();
+            if (type == App::PropertyColorList::getClassTypeId()) {
+                App::PropertyColorList* colors = static_cast<App::PropertyColorList*>(it->second);
+                return colors;
+            }
+        }
+    }
+
+    return 0; // no such property found
+}
+
+void ViewProviderMesh::tryColorPerVertex(bool on)
+{
+    if (on) {
+        App::PropertyColorList* colors = getColorProperty();
+        if (colors) {
+            const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+            const Mesh::MeshObject& mesh = meshProp.getValue();
+            int numPoints = static_cast<int>(mesh.countPoints());
+
+            if (colors->getSize() == numPoints) {
+                setColorPerVertex(colors);
+            }
+        }
+    }
+    else {
+        pcMatBinding->value = SoMaterialBinding::OVERALL;
+        const App::Color& c = ShapeColor.getValue();
+        pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+    }
+}
+
+void ViewProviderMesh::setColorPerVertex(const App::PropertyColorList* prop)
+{
+    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+    const std::vector<App::Color>& val = prop->getValues();
+
+    pcShapeMaterial->diffuseColor.setNum(val.size());
+    SbColor* col = pcShapeMaterial->diffuseColor.startEditing();
+
+    std::size_t i=0;
+    for (std::vector<App::Color>::const_iterator it = val.begin(); it != val.end(); ++it) {
+        col[i++].setValue(it->r, it->g, it->b);
+    }
+
+    pcShapeMaterial->diffuseColor.finishEditing();
+}
+
 void ViewProviderMesh::setDisplayMode(const char* ModeName)
 {
-    if (strcmp("Shaded",ModeName)==0)
+    if (strcmp("Shaded",ModeName)==0) {
         setDisplayMaskMode("Flat");
-    else if (strcmp("Points",ModeName)==0)
+    }
+    else if (strcmp("Points",ModeName)==0) {
         setDisplayMaskMode("Point");
-    else if (strcmp("Flat Lines",ModeName)==0)
+    }
+    else if (strcmp("Flat Lines",ModeName)==0) {
         setDisplayMaskMode("FlatWireframe");
-    else if (strcmp("Wireframe",ModeName)==0)
+    }
+    else if (strcmp("Wireframe",ModeName)==0) {
         setDisplayMaskMode("Wireframe");
+    }
 
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
@@ -1529,7 +1607,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
 
     if (newFacets.empty())
         return; // nothing to do
- 
+
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
     Mesh::MeshObject* kernel = fea->Mesh.startEditing();
@@ -1543,6 +1621,30 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
     // Get the attached mesh property
     Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
     Mesh::MeshObject* kernel = meshProp.startEditing();
+
+    // get the colour property if there
+    App::PropertyColorList* prop = getColorProperty();
+    if (prop && prop->getSize() == static_cast<int>(kernel->countPoints())) {
+        std::vector<unsigned long> pointDegree;
+        unsigned long invalid = kernel->getPointDegree(facets, pointDegree);
+        if (invalid > 0) {
+            // switch off coloring mode
+            Coloring.setValue(false);
+
+            const std::vector<App::Color>& colors = prop->getValues();
+            std::vector<App::Color> valid_colors;
+            valid_colors.reserve(kernel->countPoints() - invalid);
+            std::size_t numPoints = pointDegree.size();
+            for (std::size_t index = 0; index < numPoints; index++) {
+                if (pointDegree[index] > 0) {
+                    valid_colors.push_back(colors[index]);
+                }
+            }
+
+            prop->setValues(valid_colors);
+        }
+    }
+
     //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
     kernel->deleteFacets(facets);
     meshProp.finishEditing();
@@ -1799,7 +1901,7 @@ void ViewProviderIndexedFaceSet::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderIndexedFaceSet::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         ViewProviderMeshBuilder builder;
         builder.createMesh(prop, pcMeshCoord, pcMeshFaces);
@@ -1884,7 +1986,7 @@ void ViewProviderMeshObject::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderMeshObject::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         const Mesh::PropertyMeshKernel* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop);
         this->pcMeshNode->mesh.setValue(mesh->getValuePtr());

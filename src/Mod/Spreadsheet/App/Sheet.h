@@ -140,6 +140,10 @@ public:
 
     void setAlias(CellAddress address, const std::string & alias);
 
+    std::string getAddressFromAlias(const std::string & alias) const;
+
+    bool isValidAlias(const std::string &candidate);
+
     void setSpans(CellAddress address, int rows, int columns);
 
     std::set<std::string> dependsOn(CellAddress address) const;
@@ -222,6 +226,8 @@ public:
     //@}
 
     void observeDocument(App::Document *document);
+
+    virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
 protected:
 

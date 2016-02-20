@@ -41,5 +41,7 @@
         <file>translations/PartDesign_hu.qm</file>
         <file>translations/PartDesign_pt-PT.qm</file>
         <file>translations/PartDesign_sr.qm</file>
+        <file>translations/PartDesign_el.qm</file>
+        <file>translations/PartDesign_sl.qm</file>
     </qresource>
 </RCC> 

@@ -215,6 +215,10 @@ TaskDlgFemConstraintFixed::TaskDlgFemConstraintFixed(ViewProviderFemConstraintFi
 
 bool TaskDlgFemConstraintFixed::accept()
 {
+    std::string name = ConstraintView->getObject()->getNameInDocument();
+    const TaskFemConstraintFixed* parameterFixed = static_cast<const TaskFemConstraintFixed*>(parameter);
+    std::string scale = parameterFixed->getScale();  //OvG: determine modified scale
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     return TaskDlgFemConstraint::accept();
 }
 

@@ -38,7 +38,7 @@ public:
     // Input:
     //     A[iSize][iSize], entries are A[row][col]
     // Output:
-    //     return value is TRUE if successful, FALSE if pivoting failed
+    //     return value is true if successful, false if pivoting failed
     //     InvA[iSize][iSize], inverse matrix
     bool Inverse (const GMatrix<Real>& rkA, GMatrix<Real>& rkInvA);
 
@@ -46,7 +46,7 @@ public:
     //     A[iSize][iSize] coefficient matrix, entries are A[row][col]
     //     B[iSize] vector, entries are B[row]
     // Output:
-    //     return value is TRUE if successful, FALSE if pivoting failed
+    //     return value is true if successful, false if pivoting failed
     //     X[iSize] is solution X to AX = B
     bool Solve (const GMatrix<Real>& rkA, const Real* afB, Real* afX);
 
@@ -57,7 +57,7 @@ public:
     //     Upper diagonal C[iSize-1]
     //     Right-hand side R[iSize]
     // Output:
-    //     return value is TRUE if successful, FALSE if pivoting failed
+    //     return value is true if successful, false if pivoting failed
     //     U[iSize] is solution
     bool SolveTri (int iSize, Real* afA, Real* afB, Real* afC, Real* afR,
         Real* afU);
@@ -69,7 +69,7 @@ public:
     //     Upper diagonal is constant, C
     //     Right-hand side Rr[iSize]
     // Output:
-    //     return value is TRUE if successful, FALSE if pivoting failed
+    //     return value is true if successful, false if pivoting failed
     //     U[iSize] is solution
     bool SolveConstTri (int iSize, Real fA, Real fB, Real fC, Real* afR,
         Real* afU);
@@ -102,7 +102,7 @@ public:
     //     A, a banded matrix
     //     B[iSize] vector, entries are B[row]
     // Output:
-    //     return value is TRUE if successful, FALSE if pivoting failed
+    //     return value is true if successful, false if pivoting failed
     //     X[iSize] is solution X to AX = B
     bool SolveBanded (const BandedMatrix<Real>& rkA, const Real* afB,
         Real* afX);
@@ -111,7 +111,7 @@ public:
     // Input:
     //     A, a banded matrix
     // Output:
-    //     return value is TRUE if the inverse exists, FALSE otherwise
+    //     return value is true if the inverse exists, false otherwise
     //     InvA, the inverse of A
     bool Invert (const BandedMatrix<Real>& rkA, GMatrix<Real>& rkInvA);
 

@@ -56,6 +56,10 @@ class FemCommands(object):
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.results_present()
             elif self.is_active == 'with_part_feature':
                 active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
+            elif self.is_active == 'with_solver':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_selected()
+            elif self.is_active == 'with_analysis_without_solver':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and not self.analysis_has_solver()
             return active
 
         def results_present(self):
@@ -75,3 +79,45 @@ class FemCommands(object):
 
         def active_analysis_in_active_doc(self):
             return FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument
+
+        def solver_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
+                return True
+            else:
+                return False
+
+        def analysis_has_solver(self):
+            solver = False
+            analysis_members = FemGui.getActiveAnalysis().Member
+            for o in analysis_members:
+                if o.isDerivedFrom("Fem::FemSolverObjectPython"):
+                    solver = True
+            if solver is True:
+                return True
+            else:
+                return False
+                
+        def hide_parts_constraints_show_meshes(self):
+            if FreeCAD.GuiUp:
+                for acnstrmesh in FreeCAD.activeDocument().Objects:
+                    if "Constraint" in acnstrmesh.TypeId:
+                        acnstrmesh.ViewObject.Visibility = False
+                    if "Mesh" in acnstrmesh.TypeId:
+                        aparttoshow = acnstrmesh.Name.replace("_Mesh","")
+                        for apart in FreeCAD.activeDocument().Objects:
+                            if aparttoshow == apart.Name:
+                                apart.ViewObject.Visibility = False
+                        acnstrmesh.ViewObject.Visibility = True #OvG: Hide constraints and parts and show meshes
+
+        def hide_meshes_show_parts_constraints(self):
+            if FreeCAD.GuiUp:
+                for acnstrmesh in FreeCAD.activeDocument().Objects:
+                    if "Constraint" in acnstrmesh.TypeId:
+                        acnstrmesh.ViewObject.Visibility = True
+                    if "Mesh" in acnstrmesh.TypeId:
+                        aparttoshow = acnstrmesh.Name.replace("_Mesh","")
+                        for apart in FreeCAD.activeDocument().Objects:
+                            if aparttoshow == apart.Name:
+                                apart.ViewObject.Visibility = True
+                        acnstrmesh.ViewObject.Visibility = False #OvG: Hide meshes and show constraints and meshed part e.g. on purging results

@@ -162,7 +162,7 @@ void ViewProviderDocumentObjectGroup::hide(void)
 {
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!Visibility.StatusBits.test(9) && this->visible) {
+    if (!Visibility.testStatus(App::Property::User1) && this->visible) {
         App::DocumentObject * group = getObject();
         if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
             const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
@@ -183,7 +183,7 @@ void ViewProviderDocumentObjectGroup::show(void)
 {
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!Visibility.StatusBits.test(9) && !this->visible) {
+    if (!Visibility.testStatus(App::Property::User1) && !this->visible) {
         App::DocumentObject * group = getObject();
         if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
             const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
@@ -207,9 +207,9 @@ bool ViewProviderDocumentObjectGroup::isShow(void) const
 
 void ViewProviderDocumentObjectGroup::Restore(Base::XMLReader &reader)
 {
-    Visibility.StatusBits.set(9); // tmp. set
+    Visibility.setStatus(App::Property::User1, true); // tmp. set
     ViewProviderDocumentObject::Restore(reader);
-    Visibility.StatusBits.reset(9); // unset
+    Visibility.setStatus(App::Property::User1, false); // unset
 }
 
 /**

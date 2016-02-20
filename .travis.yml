@@ -38,6 +38,7 @@ before_install:
     - sudo apt-get install -y pyside-tools
     - sudo apt-get install -y python-dev
     - sudo apt-get install -y python-pyside
+    - sudo apt-get install -y python-matplotlib
     - sudo apt-get install -y qt4-dev-tools
     - sudo apt-get install -y qt4-qmake
     - sudo apt-get install -y shiboken

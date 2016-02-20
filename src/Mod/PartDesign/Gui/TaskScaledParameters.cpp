@@ -106,7 +106,7 @@ void TaskScaledParameters::setupUI()
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
             break;
         }
     }
@@ -143,7 +143,7 @@ void TaskScaledParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
         App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
-        ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
+        ui->lineOriginal->setText(QString::fromLatin1(selectedObject->getNameInDocument()));
     }
 }
 
@@ -240,7 +240,7 @@ bool TaskDlgScaledParameters::accept()
         parameter->apply();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

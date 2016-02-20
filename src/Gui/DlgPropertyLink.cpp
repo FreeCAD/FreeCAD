@@ -44,7 +44,7 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgPropertyLink */
 
-DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::WFlags fl)
+DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), link(list), ui(new Ui_DlgPropertyLink)
 {
 #ifdef FC_DEBUG

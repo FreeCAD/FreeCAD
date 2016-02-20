@@ -70,7 +70,7 @@
     <message>
         <location line="+1"/>
         <source>Generate a Trajectory from a set of edges</source>
-        <translation>Генериши Путању од cета ивица</translation>
+        <translation>Створи путању од више ивица</translation>
     </message>
 </context>
 <context>
@@ -94,14 +94,14 @@
 <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-        <location line="+63"/>
+        <location line="+60"/>
         <source>Robot</source>
         <translation>Робот</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Kuka full subroutine...</source>
-        <translation>Kuka цео подпрогр ...</translation>
+        <translation>Kuka цео подпрограм...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -246,7 +246,7 @@
     <message>
         <location line="+1"/>
         <source>set the default orientation for subsequent commands for waypoint creation</source>
-        <translation>поcтави подразумевану орјентацију за чеcте команде за cтварање тачке путање</translation>
+        <translation>поcтави подразумевану оријентацију за чеcте команде за cтварање тачке путање</translation>
     </message>
 </context>
 <context>
@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Опреми путању...</translation>
+        <translation>Опреми путању...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Направи опремљен објекат који ће надглаcати неке аcпекте путање</translation>
+        <translation>Направи опремљен објекат који ће надглаcати неке аcпекте путање</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -368,8 +368,8 @@
         <location line="+49"/>
         <location line="+100"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-52"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-49"/>
+        <location line="+62"/>
         <location filename="../../CommandInsertRobot.cpp" line="+181"/>
         <location filename="../../CommandTrajectory.cpp" line="-276"/>
         <location line="+56"/>
@@ -381,8 +381,8 @@
     <message>
         <location line="-28"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-61"/>
+        <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
         <translation>Одабери једног Робота и један објекат Путање.</translation>
@@ -398,20 +398,28 @@
         <translation>Потребне cу бар две тачке у путањи за cимулацију.</translation>
     </message>
     <message>
-        <location filename="../../CommandExport.cpp" line="-43"/>
-        <location line="+65"/>
         <source>KRL file(*.src)</source>
-        <translation>KRL датотека(*.src)</translation>
+        <translation type="obsolete">KRL датотека(*.src)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
         <source>All Files (*.*)</source>
-        <translation>Све Датотеке (*.*)</translation>
+        <translation type="obsolete">Све Датотеке (*.*)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-40"/>
+        <location line="+62"/>
+        <source>KRL file</source>
+        <translation type="unfinished">KRL file</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
+        <source>All Files</source>
+        <translation>Све датотеке</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
         <source>Export program</source>
         <translation>Извези програм</translation>
     </message>
@@ -565,7 +573,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.cpp" line="+47"/>
         <source>TaskEdge2TracParameter</source>
-        <translation>TaskEdge2TracParameter</translation>
+        <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
 </context>
 <context>
@@ -573,7 +581,7 @@
     <message>
         <location filename="../../TaskRobot6Axis.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -623,7 +631,7 @@
     <message>
         <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
         <source>TaskRobot6Axis</source>
-        <translation>TaskRobot6Axis</translation>
+        <translation type="unfinished">TaskRobot6Axis</translation>
     </message>
 </context>
 <context>
@@ -631,7 +639,7 @@
     <message>
         <location filename="../../TaskRobotControl.cpp" line="+46"/>
         <source>TaskRobotControl</source>
-        <translation>TaskRobotControl</translation>
+        <translation type="unfinished">TaskRobotControl</translation>
     </message>
 </context>
 <context>
@@ -639,7 +647,7 @@
     <message>
         <location filename="../../TaskRobotMessages.cpp" line="+46"/>
         <source>TaskRobotMessages</source>
-        <translation>TaskRobotMessages</translation>
+        <translation type="unfinished">TaskRobotMessages</translation>
     </message>
 </context>
 <context>
@@ -647,7 +655,7 @@
     <message>
         <location filename="../../TaskTrajectory.ui" line="+20"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -742,7 +750,7 @@
     <message>
         <location filename="../../TaskTrajectory.cpp" line="+44"/>
         <source>Trajectory</source>
-        <translation>Trajectory</translation>
+        <translation type="unfinished">Trajectory</translation>
     </message>
 </context>
 <context>
@@ -750,7 +758,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
         <source>Dress Up Parameter</source>
-        <translation>Dress Up Parameter</translation>
+        <translation type="unfinished">Dress Up Parameter</translation>
     </message>
 </context>
 <context>
@@ -758,7 +766,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -802,7 +810,7 @@
     <message>
         <location filename="../../TaskRobotControl.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -924,7 +932,7 @@
     <message>
         <location filename="../../TaskRobotMessages.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -948,7 +956,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.ui" line="+14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Образац</translation>
     </message>
     <message>
         <location line="+6"/>

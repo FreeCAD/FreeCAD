@@ -49,6 +49,7 @@ def All():
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSketcherApp"))
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartApp"))
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartDesignApp"))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSpreadsheet"))
     # gui tests of modules
     if (FreeCAD.GuiUp == 1):
         suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSketcherGui"))

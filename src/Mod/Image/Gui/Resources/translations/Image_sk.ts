@@ -69,17 +69,17 @@
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">Rovina XY</translation>
+        <translation>Rovina XY</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ rovina</translation>
+        <translation>XZ rovina</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ rovine</translation>
+        <translation>YZ rovine</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -89,7 +89,7 @@
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Odstup:</translation>
+        <translation>Odstup:</translation>
     </message>
 </context>
 <context>
@@ -136,12 +136,12 @@
         <translation>Štandardné</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Hotovo...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>šedá</translation>
     </message>

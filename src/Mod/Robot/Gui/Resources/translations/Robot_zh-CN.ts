@@ -94,7 +94,7 @@
 <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-        <location line="+63"/>
+        <location line="+60"/>
         <source>Robot</source>
         <translation>机器人</translation>
     </message>
@@ -368,8 +368,8 @@
         <location line="+49"/>
         <location line="+100"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-52"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-49"/>
+        <location line="+62"/>
         <location filename="../../CommandInsertRobot.cpp" line="+181"/>
         <location filename="../../CommandTrajectory.cpp" line="-276"/>
         <location line="+56"/>
@@ -381,8 +381,8 @@
     <message>
         <location line="-28"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-61"/>
+        <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
         <translation>选择一个机器人和一个轨迹对象.</translation>
@@ -398,20 +398,28 @@
         <translation>你至少需要两个路径点以进行轨迹模拟.</translation>
     </message>
     <message>
-        <location filename="../../CommandExport.cpp" line="-43"/>
-        <location line="+65"/>
         <source>KRL file(*.src)</source>
-        <translation>KRL文件(*.src)</translation>
+        <translation type="obsolete">KRL文件(*.src)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
         <source>All Files (*.*)</source>
-        <translation>所有文件(*.*)</translation>
+        <translation type="obsolete">所有文件(*.*)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-40"/>
+        <location line="+62"/>
+        <source>KRL file</source>
+        <translation type="unfinished">KRL file</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
+        <source>All Files</source>
+        <translation type="unfinished">All Files</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
         <source>Export program</source>
         <translation>导出程序</translation>
     </message>

@@ -199,9 +199,9 @@ class ViewProviderProfile:
 class CommandPathProfile:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Profile',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathProfile","Profile"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Profile"),
                 'Accel': "P, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProfile","Creates a Path Profile object from selected faces")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Creates a Path Profile object from selected faces")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -216,7 +216,7 @@ class CommandPathProfile:
             return
 
         # if everything is ok, execute and register the transaction in the undo/redo stack
-        FreeCAD.ActiveDocument.openTransaction(translate("PathProfile","Create Profile"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Profile","Create Profile"))
         FreeCADGui.addModule("PathScripts.PathProfile")
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Profile")

@@ -26,9 +26,11 @@
         <Component Id="CompModShip" Guid="4ddaaa92-1ccc-4462-ab58-606082aa277e" Win64='$(var.Win_64)' KeyPath="yes">
             <File Id="ShipInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="ShipInstance" Name="Instance.py" DiskId="1" />
+            <File Id="ShipConsoleInterface" Name="Ship.py" DiskId="1" />
             <File Id="ShipGuiPy" Name="ShipGui.py" DiskId="1" />
             <File Id="ShipResources" Name="Ship_rc.py" DiskId="1" />
             <File Id="ShipTankInstance" Name="TankInstance.py" DiskId="1" />
+            <File Id="ShipWeightInstance" Name="WeightInstance.py" DiskId="1" />
         </Component>
 		<Directory Id="ModShipResources" Name="resources" FileSource="../../Mod/Ship/resources" >
 			<Directory Id="ModShipExamples" Name="examples" FileSource="../../Mod/Ship/resources/examples" >
@@ -49,12 +51,53 @@
 				<File Id="shipAreasCurve05" Name="TaskPanel.ui"   />
 			</Component>
 		</Directory>
+		<Directory Id="ModshipCapacityCurve" Name="shipCapacityCurve" FileSource="../../Mod/Ship/shipCapacityCurve" >
+			<Component Id="CompModshipCapacityCurve"  Guid="1714cf1c-728a-4989-8ea0-622043f6c9b3" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipCapacityCurve01" Name="__init__.py"   />
+				<File Id="shipCapacityCurve02" Name="PlotAux.py"   />
+				<File Id="shipCapacityCurve03" Name="TaskPanel.py"   />
+				<File Id="shipCapacityCurve04" Name="TaskPanel.ui"   />
+				<File Id="shipCapacityCurve05" Name="Tools.py"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipCreateLoadCondition" Name="shipCreateLoadCondition" FileSource="../../Mod/Ship/shipCreateLoadCondition" >
+			<Component Id="CompModshipCreateLoadCondition"  Guid="821f7073-b0aa-47c5-ada4-7e4c045c06e6" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipCreateLoadCondition01" Name="__init__.py"   />
+				<File Id="shipCreateLoadCondition02" Name="Tools.py"   />
+			</Component>
+		</Directory>
 		<Directory Id="ModshipCreateShip" Name="shipCreateShip" FileSource="../../Mod/Ship/shipCreateShip" >
 			<Component Id="CompModshipCreateShip"  Guid="7492bfb5-96d8-4555-8cc0-682c79a779ac" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="shipCreateShip01" Name="__init__.py"   />
 				<File Id="shipCreateShip02" Name="Preview.py"   />
 				<File Id="shipCreateShip03" Name="TaskPanel.py"   />
 				<File Id="shipCreateShip04" Name="TaskPanel.ui"   />
+				<File Id="shipCreateShip05" Name="Tools.py"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipCreateTank" Name="shipCreateTank" FileSource="../../Mod/Ship/shipCreateTank" >
+			<Component Id="CompModshipCreateTank"  Guid="eed2147f-2a45-4c12-aac6-bffae3ac1253" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipCreateTank01" Name="__init__.py"   />
+				<File Id="shipCreateTank02" Name="TaskPanel.py"   />
+				<File Id="shipCreateTank03" Name="TaskPanel.ui"   />
+				<File Id="shipCreateTank04" Name="Tools.py"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipCreateWeight" Name="shipCreateWeight" FileSource="../../Mod/Ship/shipCreateWeight" >
+			<Component Id="CompModshipCreateWeight"  Guid="05b5db99-5bcc-421a-83e5-2279cb4f9ab0" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipCreateWeight01" Name="__init__.py"   />
+				<File Id="shipCreateWeight02" Name="TaskPanel.py"   />
+				<File Id="shipCreateWeight03" Name="TaskPanel.ui"   />
+				<File Id="shipCreateWeight04" Name="Tools.py"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipGZ" Name="shipGZ" FileSource="../../Mod/Ship/shipGZ" >
+			<Component Id="CompModshipGZ"  Guid="62099cb8-1ba3-45df-b012-42f6bb80fb1b" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipGZ01" Name="__init__.py"   />
+				<File Id="shipGZ02" Name="PlotAux.py"   />
+				<File Id="shipGZ03" Name="TaskPanel.py"   />
+				<File Id="shipGZ04" Name="TaskPanel.ui"   />
+				<File Id="shipGZ05" Name="Tools.py"   />
 			</Component>
 		</Directory>
 		<Directory Id="ModshipHydrostatics" Name="shipHydrostatics" FileSource="../../Mod/Ship/shipHydrostatics" >
@@ -85,6 +128,7 @@
 		<Directory Id="ModshipUtils" Name="shipUtils" FileSource="../../Mod/Ship/shipUtils" >
 			<Component Id="CompModshipUtils"  Guid="7fca3f4d-861a-44fb-ab2e-cd256e3ba9b3" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="shipUtils01" Name="__init__.py"   />
+				<File Id="shipUtils02" Name="Locale.py"   />
 				<File Id="shipUtils02" Name="Math.py"   />
 				<File Id="shipUtils03" Name="Paths.py"   />
 				<File Id="shipUtils04" Name="Units.py"   />

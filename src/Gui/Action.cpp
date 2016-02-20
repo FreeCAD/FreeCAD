@@ -60,7 +60,7 @@ using namespace Gui::Dialog;
 Action::Action (Command* pcCmd, QObject * parent)
   : QObject(parent), _action(new QAction( this )), _pcCmd(pcCmd)
 {
-    _action->setObjectName(QString::fromAscii(_pcCmd->getName()));
+    _action->setObjectName(QString::fromLatin1(_pcCmd->getName()));
     connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
 }
 
@@ -68,7 +68,7 @@ Action::Action (Command* pcCmd, QAction* action, QObject * parent)
   : QObject(parent), _action(action), _pcCmd(pcCmd)
 {
     _action->setParent(this);
-    _action->setObjectName(QString::fromAscii(_pcCmd->getName()));
+    _action->setObjectName(QString::fromLatin1(_pcCmd->getName()));
     connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
 }
 
@@ -535,8 +535,8 @@ void WorkbenchGroup::setWorkbenchData(int i, const QString& wb)
     workbenches[i]->setToolTip(tip);
     workbenches[i]->setStatusTip(tr("Select the '%1' workbench").arg(name));
     workbenches[i]->setVisible(true);
-    if (i < 10)
-        workbenches[i]->setShortcut(QKeySequence(QString::fromUtf8("Ctrl+%1").arg(i)));
+    if (i < 9)
+        workbenches[i]->setShortcut(QKeySequence(QString::fromUtf8("W,%1").arg(i+1)));
 }
 
 void WorkbenchGroup::refreshWorkbenchList()
@@ -589,7 +589,7 @@ void WorkbenchGroup::slotAddWorkbench(const char* name)
     QList<QAction*> workbenches = _group->actions();
     for (QList<QAction*>::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if (!(*it)->isVisible()) {
-            QString wb = QString::fromAscii(name);
+            QString wb = QString::fromLatin1(name);
             QPixmap px = Application::Instance->workbenchIcon(wb);
             QString text = Application::Instance->workbenchMenuText(wb);
             QString tip = Application::Instance->workbenchToolTip(wb);
@@ -606,7 +606,7 @@ void WorkbenchGroup::slotAddWorkbench(const char* name)
 
 void WorkbenchGroup::slotRemoveWorkbench(const char* name)
 {
-    QString workbench = QString::fromAscii(name);
+    QString workbench = QString::fromLatin1(name);
     QList<QAction*> workbenches = _group->actions();
     for (QList<QAction*>::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if ((*it)->objectName() == workbench) {
@@ -668,7 +668,7 @@ void RecentFilesAction::setFiles(const QStringList& files)
     int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
-        recentFiles[index]->setText(QString::fromAscii("&%1 %2").arg(index+1).arg(fi.fileName()));
+        recentFiles[index]->setText(QString::fromLatin1("&%1 %2").arg(index+1).arg(fi.fileName()));
         recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));
@@ -719,7 +719,7 @@ void RecentFilesAction::activateFile(int id)
         // invokes appendFile()
         SelectModule::Dict dict = SelectModule::importHandler(filename);
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            Application::Instance->open(it.key().toUtf8(), it.value().toAscii());
+            Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
             break;
         }
     }
@@ -769,11 +769,11 @@ void RecentFilesAction::save()
     QList<QAction*> recentFiles = _group->actions();
     int num = std::min<int>(count, recentFiles.count());
     for (int index = 0; index < num; index++) {
-        QString key = QString::fromAscii("MRU%1").arg(index);
+        QString key = QString::fromLatin1("MRU%1").arg(index);
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty())
             break;
-        hGrp->SetASCII(key.toAscii(), value.toUtf8());
+        hGrp->SetASCII(key.toLatin1(), value.toUtf8());
     }
 }
 

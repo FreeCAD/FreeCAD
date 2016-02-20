@@ -18,7 +18,6 @@ qt4_add_resources(Start_QRC_SRCS Resources/Start.qrc)
 SET(StartGui_SRCS
     ${Start_QRC_SRCS}
     AppStartGui.cpp
-    AppStartGuiPy.cpp
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h

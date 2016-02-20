@@ -53,7 +53,7 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
   : CustomizeActionPage(parent), bShown( false )
@@ -62,10 +62,22 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
     // search for all macros
     std::string cMacroPath = App::GetApplication().
         GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-        ->GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str());
+        ->GetASCII("MacroPath",App::Application::getUserMacroDir().c_str());
 
     QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro *.py"));
-    actionMacros->insertItems(0, d.entryList());
+    
+    for (unsigned int i=0; i<d.count(); i++ )
+	actionMacros->insertItem(0,d[i],QVariant(false));
+    
+    QString systemMacroDirStr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    
+    d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
+    
+    if(d.exists()) {
+	for (unsigned int i=0; i<d.count(); i++ ) {
+	    actionMacros->insertItem(0,d[i],QVariant(true));
+	}
+    }
 
     QStringList labels; labels << tr("Icons") << tr("Macros");
     actionListWidget->setHeaderLabels(labels);
@@ -198,7 +210,7 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
         actionMenu      -> setText(QString::fromUtf8(pScript->getMenuText()));
         actionToolTip   -> setText(QString::fromUtf8(pScript->getToolTipText()));
         actionStatus    -> setText(QString::fromUtf8(pScript->getStatusTip()));
-        actionAccel     -> setText(QString::fromAscii(pScript->getAccel()));
+        actionAccel     -> setText(QString::fromLatin1(pScript->getAccel()));
         pixmapLabel->clear();
         m_sPixmap = QString::null;
         const char* name = pScript->getPixmap();
@@ -226,9 +238,9 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     }
 
     // search for the command in the manager
-    QByteArray actionName = newActionName().toAscii();
+    QByteArray actionName = newActionName().toLatin1();
     CommandManager& rclMan = Application::Instance->commandManager();
-    MacroCommand* macro = new MacroCommand(actionName);
+    MacroCommand* macro = new MacroCommand(actionName, actionMacros->itemData(actionMacros->currentIndex()).toBool());
     rclMan.addCommand( macro );
 
     // add new action
@@ -260,12 +272,12 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
-        macro->setPixmap(m_sPixmap.toAscii());
+        macro->setPixmap(m_sPixmap.toLatin1());
     pixmapLabel->clear();
     m_sPixmap = QString::null;
 
     if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toAscii());
+        macro->setAccel(actionAccel->text().toLatin1());
     }
     actionAccel->clear();
 
@@ -315,12 +327,12 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
     actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
-        macro->setPixmap(m_sPixmap.toAscii());
+        macro->setPixmap(m_sPixmap.toLatin1());
     pixmapLabel->clear();
     m_sPixmap = QString::null;
 
     if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toAscii());
+        macro->setAccel(actionAccel->text().toLatin1());
     }
     actionAccel->clear();
 
@@ -335,7 +347,7 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
         action->setStatusTip(QString::fromUtf8(macro->getStatusTip()));
         if (macro->getPixmap())
             action->setIcon(Gui::BitmapFactory().pixmap(macro->getPixmap()));
-        action->setShortcut(QString::fromAscii(macro->getAccel()));
+        action->setShortcut(QString::fromLatin1(macro->getAccel()));
 
         QString accel = action->shortcut().toString(QKeySequence::NativeText);
         if (!accel.isEmpty()) {
@@ -456,7 +468,7 @@ void IconDialog::onAddIconPath()
                 QStringList filters;
                 QList<QByteArray> formats = QImageReader::supportedImageFormats();
                 for (QList<QByteArray>::iterator jt = formats.begin(); jt != formats.end(); ++jt)
-                    filters << QString::fromAscii("*.%1").arg(QString::fromAscii(*jt).toLower());
+                    filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*jt).toLower());
                 QDir d(*it);
                 d.setNameFilters(filters);
                 QFileInfoList fi = d.entryInfoList();
@@ -505,7 +517,7 @@ QString DlgCustomActionsImp::newActionName()
     do
     {
         bUsed = false;
-        sName = QString::fromAscii("Std_Macro_%1").arg( id++ );
+        sName = QString::fromLatin1("Std_Macro_%1").arg( id++ );
 
         std::vector<Command*>::iterator it;
         for ( it = aclCurMacros.begin(); it!= aclCurMacros.end(); ++it )

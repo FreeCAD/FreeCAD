@@ -27,6 +27,7 @@
 
 #include "MeshKernel.h"
 #include "MeshIO.h"
+#include "Algorithm.h"
 #include "Builder.h"
 
 #include <Base/Builder3D.h>
@@ -231,6 +232,10 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+    boost::regex rx_c("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
     boost::regex rx_f3("^f\\s+([0-9]+)/?[0-9]*/?[0-9]*"
                          "\\s+([0-9]+)/?[0-9]*/?[0-9]*"
                          "\\s+([0-9]+)/?[0-9]*/?[0-9]*\\s*$");
@@ -257,6 +262,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     if (!buf)
         return false;
 
+    MeshIO::Binding rgb_value = MeshIO::OVERALL;
     bool readvertices=false;
     while (std::getline(rstrIn, line)) {
         for (std::string::iterator it = line.begin(); it != line.end(); ++it)
@@ -267,6 +273,21 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+        }
+        else if (boost::regex_match(line.c_str(), what, rx_c)) {
+            readvertices = true;
+            fX = (float)std::atof(what[1].first);
+            fY = (float)std::atof(what[4].first);
+            fZ = (float)std::atof(what[7].first);
+            float r = std::min<int>(std::atof(what[10].first),255) / 255.0f;
+            float g = std::min<int>(std::atof(what[11].first),255) / 255.0f;
+            float b = std::min<int>(std::atof(what[12].first),255) / 255.0f;
+            meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+
+            App::Color c(r,g,b);
+            unsigned long prop = static_cast<uint32_t>(c.getPackedValue());
+            meshPoints.back().SetProperty(prop);
+            rgb_value = MeshIO::PER_VERTEX;
         }
         else if (boost::regex_match(line.c_str(), what, rx_f3)) {
             // starts a new segment
@@ -306,26 +327,22 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         }
     }
 
-    this->_rclMesh.Clear(); // remove all data before
-    // Don't use Assign() because Merge() checks which points are really needed.
-    // This method sets already the correct neighbourhood
-    unsigned long ct = meshPoints.size();
-    std::list<unsigned long> removeFaces;
-    for (MeshFacetArray::_TConstIterator it = meshFacets.begin(); it != meshFacets.end(); ++it) {
-        bool ok = true;
-        for (int i=0;i<3;i++) {
-            if (it->_aulPoints[i] >= ct) {
-                Base::Console().Warning("Face index %lu out of range\n", it->_aulPoints[i]);
-                ok = false;
+    // now get back the colors from the vertex property
+    if (rgb_value == MeshIO::PER_VERTEX) {
+        if (_material) {
+            _material->binding = MeshIO::PER_VERTEX;
+            _material->diffuseColor.reserve(meshPoints.size());
+
+            for (MeshPointArray::iterator it = meshPoints.begin(); it != meshPoints.end(); ++it) {
+                unsigned long prop = it->_ulProp;
+                App::Color c;
+                c.setPackedValue(static_cast<uint32_t>(prop));
+                _material->diffuseColor.push_back(c);
             }
         }
-
-        if (!ok)
-            removeFaces.push_front(it-meshFacets.begin());
     }
 
-    for (std::list<unsigned long>::iterator it = removeFaces.begin(); it != removeFaces.end(); ++it)
-        meshFacets.erase(meshFacets.begin() + *it);
+    this->_rclMesh.Clear(); // remove all data before
 
     MeshKernel tmp;
     tmp.Adopt(meshPoints,meshFacets);
@@ -720,6 +737,16 @@ bool MeshInput::LoadPLY (std::istream &inp)
     if (num_z != 1)
         return false;
 
+    for (std::vector<std::pair<std::string, Ply::Number> >::iterator it = 
+        vertex_props.begin(); it != vertex_props.end(); ++it) {
+        if (it->first == "diffuse_red")
+            it->first = "red";
+        else if (it->first == "diffuse_green")
+            it->first = "green";
+        else if (it->first == "diffuse_blue")
+            it->first = "blue";
+    }
+
     // check if valid colors are set
     std::size_t num_r = std::count_if(vertex_props.begin(), vertex_props.end(), 
                     std::bind2nd(property, "red"));
@@ -951,12 +978,16 @@ bool MeshInput::LoadPLY (std::istream &inp)
     }
 
     this->_rclMesh.Clear(); // remove all data before
-    // Don't use Assign() because Merge() checks which points are really needed.
-    // This method sets already the correct neighbourhood
+#if 1
+    MeshCleanup(meshPoints,meshFacets).RemoveInvalids();
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(),meshFacets);
+    meshAdj.SetFacetNeighbourhood();
+    this->_rclMesh.Adopt(meshPoints,meshFacets);
+#else
     MeshKernel tmp;
     tmp.Adopt(meshPoints,meshFacets);
     this->_rclMesh.Merge(tmp);
-
+#endif
     return true;
 }
 
@@ -1721,36 +1752,80 @@ bool MeshOutput::SaveBinarySTL (std::ostream &rstrOut) const
 }
 
 /** Saves an OBJ file. */
-bool MeshOutput::SaveOBJ (std::ostream &rstrOut) const
+bool MeshOutput::SaveOBJ (std::ostream &out) const
 {
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    if (!rstrOut || rstrOut.bad() == true)
+    if (!out || out.bad() == true)
         return false;
 
-    Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());  
+    Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
+    bool exportColor = false;
+    if (_material) {
+        if (_material->binding == MeshIO::PER_FACE) {
+            Base::Console().Warning("Cannot export color information because it's defined per face");
+        }
+        else if (_material->binding == MeshIO::PER_VERTEX) {
+            if (_material->diffuseColor.size() != rPoints.size()) {
+                Base::Console().Warning("Cannot export color information because there is a different number of points and colors");
+            }
+            else {
+                exportColor = true;
+            }
+        }
+        else if (_material->binding == MeshIO::OVERALL) {
+            if (_material->diffuseColor.empty()) {
+                Base::Console().Warning("Cannot export color information because there is no color defined");
+            }
+            else {
+                exportColor = true;
+            }
+        }
+    }
+
+    // Header
+    out << "# Created by FreeCAD <http://www.freecadweb.org>" << std::endl;
+    out.precision(6);
+    out.setf(std::ios::fixed | std::ios::showpoint);
 
     // vertices
-    if (this->apply_transform) {
-        Base::Vector3f pt;
-        for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+    Base::Vector3f pt;
+    std::size_t index = 0;
+    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
+        if (this->apply_transform) {
             pt = this->_transform * *it;
-            rstrOut << "v " << pt.x << " " << pt.y << " " << pt.z << std::endl;
-            seq.next(true); // allow to cancel
         }
-    }
-    else {
-        for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
-            rstrOut << "v " << it->x << " " << it->y << " " << it->z << std::endl;
-            seq.next(true); // allow to cancel
+        else {
+            pt.Set(it->x, it->y, it->z);
         }
+
+        if (exportColor) {
+            App::Color c;
+            if (_material->binding == MeshIO::PER_VERTEX) {
+                c = _material->diffuseColor[index];
+            }
+            else {
+                c = _material->diffuseColor.front();
+            }
+
+            int r = static_cast<int>(c.r * 255.0f);
+            int g = static_cast<int>(c.g * 255.0f);
+            int b = static_cast<int>(c.b * 255.0f);
+
+            out << "v " << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b << std::endl;
+        }
+        else {
+            out << "v " << pt.x << " " << pt.y << " " << pt.z << std::endl;
+        }
+        seq.next(true); // allow to cancel
     }
+
     // facet indices (no texture and normal indices)
     for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        rstrOut << "f " << it->_aulPoints[0]+1 << " "
-                        << it->_aulPoints[1]+1 << " "
-                        << it->_aulPoints[2]+1 << std::endl;
+        out << "f " << it->_aulPoints[0]+1 << " "
+                    << it->_aulPoints[1]+1 << " "
+                    << it->_aulPoints[2]+1 << std::endl;
         seq.next(true); // allow to cancel
     }
 
@@ -2437,4 +2512,159 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
     rstrOut << "}\n"; // close children and Transform
 
     return true;
+}
+
+// ----------------------------------------------------------------------------
+
+MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
+  : pointArray(p)
+  , facetArray(f)
+{
+}
+
+MeshCleanup::~MeshCleanup()
+{
+}
+
+void MeshCleanup::RemoveInvalids()
+{
+    // first mark all points as invalid
+    pointArray.SetFlag(MeshPoint::INVALID);
+    std::size_t numPoints = pointArray.size();
+
+    // Now go through the facets and invalidate facets with wrong indices
+    // If a facet is valid all its referenced points are validated again
+    // Points that are not referenced are still invalid and thus can be deleted
+    for (MeshFacetArray::_TIterator it = facetArray.begin(); it != facetArray.end(); ++it) {
+        for (int i=0; i<3; i++) {
+            // vertex index out of range
+            if (it->_aulPoints[i] >= numPoints) {
+                it->SetInvalid();
+                break;
+            }
+        }
+
+        // validate referenced points
+        if (it->IsValid()) {
+            pointArray[it->_aulPoints[0]].ResetInvalid();
+            pointArray[it->_aulPoints[1]].ResetInvalid();
+            pointArray[it->_aulPoints[2]].ResetInvalid();
+        }
+    }
+
+    // Remove the invalid items
+    RemoveInvalidFacets();
+    RemoveInvalidPoints();
+}
+
+void MeshCleanup::RemoveInvalidFacets()
+{
+    std::size_t countInvalidFacets = std::count_if(facetArray.begin(), facetArray.end(),
+                    std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+    if (countInvalidFacets > 0) {
+        MeshFacetArray copy_facets(facetArray.size() - countInvalidFacets);
+        // copy all valid facets to the new array
+        std::remove_copy_if(facetArray.begin(), facetArray.end(), copy_facets.begin(),
+            std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+        facetArray.swap(copy_facets);
+    }
+}
+
+void MeshCleanup::RemoveInvalidPoints()
+{
+    std::size_t countInvalidPoints = std::count_if(pointArray.begin(), pointArray.end(),
+                    std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+    if (countInvalidPoints > 0) {
+        // generate array of decrements
+        std::vector<unsigned long> decrements;
+        decrements.resize(pointArray.size());
+        unsigned long decr = 0;
+
+        MeshPointArray::_TIterator p_end = pointArray.end();
+        std::vector<unsigned long>::iterator decr_it = decrements.begin();
+        for (MeshPointArray::_TIterator p_it = pointArray.begin(); p_it != p_end; ++p_it, ++decr_it) {
+            *decr_it = decr;
+            if (!p_it->IsValid())
+                decr++;
+        }
+
+        // correct point indices of the facets
+        MeshFacetArray::_TIterator f_end = facetArray.end();
+        for (MeshFacetArray::_TIterator f_it = facetArray.begin(); f_it != f_end; ++f_it) {
+            f_it->_aulPoints[0] -= decrements[f_it->_aulPoints[0]];
+            f_it->_aulPoints[1] -= decrements[f_it->_aulPoints[1]];
+            f_it->_aulPoints[2] -= decrements[f_it->_aulPoints[2]];
+        }
+
+        // delete point, number of valid points
+        std::size_t validPoints = pointArray.size() - countInvalidPoints;
+        MeshPointArray copy_points(validPoints);
+        // copy all valid facets to the new array
+        std::remove_copy_if(pointArray.begin(), pointArray.end(), copy_points.begin(),
+            std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+        pointArray.swap(copy_points);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+MeshPointFacetAdjacency::MeshPointFacetAdjacency(std::size_t p, MeshFacetArray& f)
+  : numPoints(p)
+  , facets(f)
+{
+    Build();
+}
+
+MeshPointFacetAdjacency::~MeshPointFacetAdjacency()
+{
+}
+
+void MeshPointFacetAdjacency::Build()
+{
+    std::vector<std::size_t> numFacetAdjacency(numPoints);
+    for (MeshFacetArray::iterator it = facets.begin(); it != facets.end(); ++it) {
+        numFacetAdjacency[it->_aulPoints[0]]++;
+        numFacetAdjacency[it->_aulPoints[1]]++;
+        numFacetAdjacency[it->_aulPoints[2]]++;
+    }
+
+    pointFacetAdjacency.resize(numPoints);
+    for (std::size_t i = 0; i < numPoints; i++)
+        pointFacetAdjacency[i].reserve(numFacetAdjacency[i]);
+
+    std::size_t numFacets = facets.size();
+    for (std::size_t i = 0; i < numFacets; i++) {
+        for (int j = 0; j < 3; j++) {
+            pointFacetAdjacency[facets[i]._aulPoints[j]].push_back(i);
+        }
+    }
+}
+
+void MeshPointFacetAdjacency::SetFacetNeighbourhood()
+{
+    std::size_t numFacets = facets.size();
+    for (std::size_t index = 0; index < numFacets; index++) {
+        MeshFacet& facet1 = facets[index];
+        for (int i = 0; i < 3; i++) {
+            std::size_t n1 = facet1._aulPoints[i];
+            std::size_t n2 = facet1._aulPoints[(i+1)%3];
+
+            bool success = false;
+            const std::vector<std::size_t>& refFacets = pointFacetAdjacency[n1];
+            for (std::vector<std::size_t>::const_iterator it = refFacets.begin(); it != refFacets.end(); ++it) {
+                if (*it != index) {
+                    MeshFacet& facet2 = facets[*it];
+                    if (facet2.HasPoint(n2)) {
+                        facet1._aulNeighbours[i] = *it;
+                        success = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!success) {
+                facet1._aulNeighbours[i] = ULONG_MAX;
+            }
+        }
+    }
 }

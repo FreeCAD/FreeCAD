@@ -38,18 +38,18 @@ class SoNormal;
 class SoEventCallback;
 
 namespace App {
-  class PropertyColorList;
+    class PropertyColorList;
 }
 
 namespace Gui {
-  class SoFCSelection;
+    class SoFCSelection;
 }
 
 namespace Points {
-  class PropertyGreyValueList;
-  class PropertyNormalList;
-  class PointKernel;
-  class Feature;
+    class PropertyGreyValueList;
+    class PropertyNormalList;
+    class PointKernel;
+    class Feature;
 }
 
 namespace PointsGui {
@@ -117,6 +117,23 @@ protected:
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
+};
+
+/**
+ * The ViewProviderOrganized class creates
+ * a node representing the organized points.
+ * @author Werner Mayer
+ */
+class PointsGuiExport ViewProviderOrganized : public ViewProviderPoints
+{
+    PROPERTY_HEADER(PointsGui::ViewProviderOrganized);
+
+public:
+    ViewProviderOrganized();
+    virtual ~ViewProviderOrganized();
+
+    /// Update the point representation
+    virtual void updateData(const App::Property*);
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderPoints> ViewProviderPython;

@@ -258,7 +258,7 @@ void NumberExpression::negate()
 std::string NumberExpression::toString() const
 {
     std::stringstream s;
-    s << quantity.getValue();
+    s << std::setprecision(std::numeric_limits<double>::digits10 + 1) << quantity.getValue();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')
@@ -989,7 +989,7 @@ const Property * VariableExpression::getProperty() const
     if (prop)
         return prop;
     else
-        throw ExpressionError(std::string("Property '") + var.getPropertyName() + std::string("' not found."));
+        throw Expression::Exception(var.resolveErrorString().c_str());
 }
 
 /**
@@ -1030,6 +1030,16 @@ Expression * VariableExpression::eval() const
         int ivalue = boost::any_cast<int>(value);
 
         return new NumberExpression(owner, ivalue);
+    }
+    else if (value.type() == typeid(long)) {
+        long lvalue = boost::any_cast<long>(value);
+
+        return new NumberExpression(owner, lvalue);
+    }
+    else if (value.type() == typeid(bool)) {
+        double bvalue = boost::any_cast<bool>(value) ? 1.0 : 0.0;
+
+        return new NumberExpression(owner, bvalue);
     }
     else if (value.type() == typeid(std::string)) {
         std::string svalue = boost::any_cast<std::string>(value);
@@ -1090,14 +1100,24 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
      var = path;
 }
 
-void VariableExpression::renameDocumentObject(const std::string &oldName, const std::string &newName)
+bool VariableExpression::validDocumentObjectRename(const std::string &oldName, const std::string &newName)
 {
-    var.renameDocumentObject(oldName, newName);
+    return var.validDocumentObjectRename(oldName, newName);
 }
 
-void VariableExpression::renameDocument(const std::string &oldName, const std::string &newName)
+bool VariableExpression::renameDocumentObject(const std::string &oldName, const std::string &newName)
 {
-    var.renameDocument(oldName, newName);
+    return var.renameDocumentObject(oldName, newName);
+}
+
+bool VariableExpression::validDocumentRename(const std::string &oldName, const std::string &newName)
+{
+    return var.validDocumentRename(oldName, newName);
+}
+
+bool VariableExpression::renameDocument(const std::string &oldName, const std::string &newName)
+{
+    return var.renameDocument(oldName, newName);
 }
 
 //

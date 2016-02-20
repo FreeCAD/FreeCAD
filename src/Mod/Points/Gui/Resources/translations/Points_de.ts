@@ -4,7 +4,7 @@
 <context>
     <name>CmdPointsExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+104"/>
+        <location filename="../../Command.cpp" line="+108"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -24,7 +24,7 @@
 <context>
     <name>CmdPointsImport</name>
     <message>
-        <location line="-47"/>
+        <location line="-51"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -44,7 +44,7 @@
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location line="+122"/>
+        <location line="+117"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -229,10 +229,20 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-84"/>
-        <location line="+43"/>
         <source>Ascii Points (*.asc);;All Files (*.*)</source>
-        <translation>ASCII-Punkte (.asc); Alle Dateien (*.*)</translation>
+        <translation type="obsolete">ASCII-Punkte (.asc); Alle Dateien (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="-78"/>
+        <location line="+49"/>
+        <source>Ascii Points</source>
+        <translation>ASCII-Punkte</translation>
+    </message>
+    <message>
+        <location line="-49"/>
+        <location line="+49"/>
+        <source>All Files</source>
+        <translation>Alle Dateien</translation>
     </message>
 </context>
 <context>

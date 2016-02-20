@@ -51,7 +51,7 @@ class DlgCustomizeImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgCustomizeImp(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgCustomizeImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgCustomizeImp();
 
     static void addPage(const char* className);

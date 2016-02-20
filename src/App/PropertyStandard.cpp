@@ -1142,13 +1142,20 @@ void PropertyFloatList::setPyObject(PyObject *value)
 
         for (Py_ssize_t i=0; i<nSize;++i) {
             PyObject* item = PyList_GetItem(value, i);
-            if (!PyFloat_Check(item)) {
+            if (PyFloat_Check(item)) {
+                values[i] = PyFloat_AsDouble(item);
+#if PYTHON_VERSION_MAJOR >= 3
+            } else if (PyLong_Check(item)) {
+                values[i] = static_cast<double>(PyLong_AsLong(item));
+#else
+            } else if (PyInt_Check(item)) {
+                values[i] = static_cast<double>(PyInt_AsLong(item));
+#endif
+            } else {
                 std::string error = std::string("type in list must be float, not ");
                 error += item->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
-            
-            values[i] = PyFloat_AsDouble(item);
         }
 
         setValues(values);
