@@ -104,8 +104,28 @@ private:
             reader->read(EncodedName);
 
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+
+            Points::Feature *pcFeature = 0;
             if (reader->hasProperties()) {
-                Points::FeatureCustom *pcFeature = new Points::FeatureCustom();
+                // is organized in a grid structure?
+                if (reader->isOrganized()) {
+                    pcFeature = new Points::OrganizedCustom();
+
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Width"));
+                    if (width) {
+                        width->setValue(reader->getWidth());
+                    }
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Height"));
+                    if (height) {
+                        height->setValue(reader->getHeight());
+                    }
+                }
+                else {
+                    pcFeature = new Points::FeatureCustom();
+                }
+
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {
@@ -190,8 +210,27 @@ private:
                 pcDoc = App::GetApplication().newDocument(DocName);
             }
 
+            Points::Feature *pcFeature = 0;
             if (reader->hasProperties()) {
-                Points::FeatureCustom *pcFeature = new Points::FeatureCustom();
+                // is organized in a grid structure?
+                if (reader->isOrganized()) {
+                    pcFeature = new Points::OrganizedCustom();
+
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Width"));
+                    if (width) {
+                        width->setValue(reader->getWidth());
+                    }
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Height"));
+                    if (height) {
+                        height->setValue(reader->getHeight());
+                    }
+                }
+                else {
+                    pcFeature = new Points::FeatureCustom();
+                }
+
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {

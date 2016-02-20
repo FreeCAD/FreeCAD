@@ -57,7 +57,9 @@ PyMODINIT_FUNC initPoints()
 
     // add data types
     Points::Feature               ::init();
+    Points::Organized             ::init();
     Points::FeatureCustom         ::init();
+    Points::OrganizedCustom       ::init();
     Points::FeaturePython         ::init();
     Points::ViewFeature           ::init();
 }

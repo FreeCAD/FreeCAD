@@ -59,12 +59,16 @@ public:
     bool hasColors() const;
     const std::vector<Base::Vector3f>& getNormals() const;
     bool hasNormals() const;
+    bool isOrganized() const;
+    int getWidth() const;
+    int getHeight() const;
 
 protected:
     PointKernel points;
     std::vector<float> intensity;
     std::vector<App::Color> colors;
     std::vector<Base::Vector3f> normals;
+    int width, height;
 };
 
 class AscReader : public Reader

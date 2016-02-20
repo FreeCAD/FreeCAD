@@ -91,6 +91,20 @@ void Feature::onChanged(const App::Property* prop)
 
 // ---------------------------------------------------------
 
+PROPERTY_SOURCE(Points::Organized, Points::Feature)
+
+Organized::Organized()
+{
+    ADD_PROPERTY_TYPE(Width,(1),"Width",App::Prop_ReadOnly,"Width");
+    ADD_PROPERTY_TYPE(Height,(1),"Height",App::Prop_ReadOnly,"Height");
+}
+
+Organized::~Organized()
+{
+}
+
+// ---------------------------------------------------------
+
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Points::FeatureCustom, Points::Feature)
@@ -98,6 +112,15 @@ PROPERTY_SOURCE_TEMPLATE(Points::FeatureCustom, Points::Feature)
 
 // explicit template instantiation
 template class PointsExport FeatureCustomT<Points::Feature>;
+}
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Points::OrganizedCustom, Points::Organized)
+/// @endcond
+
+// explicit template instantiation
+template class PointsExport FeatureCustomT<Points::Organized>;
 }
 
 // ---------------------------------------------------------

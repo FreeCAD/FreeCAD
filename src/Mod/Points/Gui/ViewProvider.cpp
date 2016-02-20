@@ -456,6 +456,30 @@ void ViewProviderPoints::cut(const std::vector<SbVec2f>& picked, Gui::View3DInve
 
 // -------------------------------------------------
 
+PROPERTY_SOURCE(PointsGui::ViewProviderOrganized, PointsGui::ViewProviderPoints)
+
+ViewProviderOrganized::ViewProviderOrganized()
+{
+}
+
+ViewProviderOrganized::~ViewProviderOrganized()
+{
+}
+
+void ViewProviderOrganized::updateData(const App::Property* prop)
+{
+    Gui::ViewProviderGeometryObject::updateData(prop);
+    if (prop->getTypeId() == Points::PropertyPointKernel::getClassTypeId()) {
+        ViewProviderPointsBuilder builder;
+        builder.createPoints(prop, pcPointsCoord, pcPoints);
+
+        // The number of points might have changed, so force also a resize of the Inventor internals
+        setActiveMode();
+    }
+}
+
+// -------------------------------------------------
+
 namespace Gui {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PointsGui::ViewProviderPython, PointsGui::ViewProviderPoints)
