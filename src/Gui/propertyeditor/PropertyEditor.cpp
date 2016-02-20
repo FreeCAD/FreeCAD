@@ -49,6 +49,10 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
     setAlternatingRowColors(true);
     setRootIsDecorated(true);
+
+    QStyleOptionViewItem opt = viewOptions();
+    this->background = opt.palette.dark();
+    this->groupColor = opt.palette.color(QPalette::BrightText);
 }
 
 PropertyEditor::~PropertyEditor()
@@ -63,6 +67,26 @@ void PropertyEditor::setAutomaticDocumentUpdate(bool v)
 bool PropertyEditor::isAutomaticDocumentUpdate(bool) const
 {
     return autoupdate;
+}
+
+QBrush PropertyEditor::groupBackground() const
+{
+    return this->background;
+}
+
+void PropertyEditor::setGroupBackground(const QBrush& c)
+{
+    this->background = c;
+}
+
+QColor PropertyEditor::groupTextColor() const
+{
+    return this->groupColor;
+}
+
+void PropertyEditor::setGroupTextColor(const QColor& c)
+{
+    this->groupColor = c;
 }
 
 QStyleOptionViewItem PropertyEditor::viewOptions() const
@@ -114,7 +138,7 @@ void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QM
     QStyleOptionViewItem opt = viewOptions();
     PropertyItem *property = static_cast<PropertyItem*>(index.internalPointer());
     if (property && property->isSeparator()) {
-        painter->fillRect(rect, opt.palette.dark());
+        painter->fillRect(rect, this->background);
     //} else if (selectionModel()->isSelected(index)) {
     //    painter->fillRect(rect, opt.palette.brush(QPalette::Highlight));
     }
