@@ -122,6 +122,8 @@ void PointsAlgos::LoadAscii(PointKernel &points, const char *FileName)
 
 Reader::Reader()
 {
+    width = 0;
+    height = 0;
 }
 
 Reader::~Reader()
@@ -173,6 +175,21 @@ const std::vector<Base::Vector3f>& Reader::getNormals() const
 bool Reader::hasNormals() const
 {
     return (!normals.empty());
+}
+
+bool Reader::isOrganized() const
+{
+    return (width > 1 && height > 1);
+}
+
+int Reader::getWidth() const
+{
+    return width;
+}
+
+int Reader::getHeight() const
+{
+    return height;
 }
 
 // ----------------------------------------------------------------------------
@@ -350,6 +367,9 @@ void PcdReader::read(const std::string& filename)
         if (cloud2.fields[i].name == "rgba")
             hasColors = true;
     }
+
+    width = cloud2.width;
+    height = cloud2.height;
 
     if (hasNormals && hasColors) {
         pcl::PointCloud<pcl::PointXYZRGBNormal> cloud_in;

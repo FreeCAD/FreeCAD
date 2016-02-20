@@ -119,6 +119,23 @@ private:
     static App::PropertyFloatConstraint::Constraints floatRange;
 };
 
+/**
+ * The ViewProviderOrganized class creates
+ * a node representing the organized points.
+ * @author Werner Mayer
+ */
+class PointsGuiExport ViewProviderOrganized : public ViewProviderPoints
+{
+    PROPERTY_HEADER(PointsGui::ViewProviderOrganized);
+
+public:
+    ViewProviderOrganized();
+    virtual ~ViewProviderOrganized();
+
+    /// Update the point representation
+    virtual void updateData(const App::Property*);
+};
+
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderPoints> ViewProviderPython;
 
 } // namespace PointsGui
